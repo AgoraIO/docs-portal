@@ -1,10 +1,19 @@
 ---
-title: "音视频录制"
-description: "音视频录制 API reference."
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_recording
+  sourcePath: html-docs/rtc/Android/API/toc_recording.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMediaRecorder
 
@@ -12,33 +21,43 @@ description: "音视频录制 API reference."
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```java
+```text
 public abstract AgoraMediaRecorder createMediaRecorder(RecorderStreamInfo info);
 ```
 
 <a id="api_irtcengine_createmediarecorder__detailed_desc"></a>
 
-在开始录制音视频流之前，你需要调用该方法创建一个录制器实例。你可以多次调用该方法创建多个录制器，并通过 `info` 参数指定要录制的频道名和用户 ID。 成功创建录制器后，你需要调用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_setmediarecorderobserver) 为录制器注册观察者以监听录制相关的回调，然后调用 [startRecording](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_startrecording) 开始录制。
+在开始录制音视频流之前，你需要调用该方法创建一个录制器实例。你可以多次调用该方法创建多个录制器，并通过 `info` 参数指定要录制的频道名和用户 ID。
+
+成功创建录制器后，你需要调用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_setmediarecorderobserver) 为录制器注册观察者以监听录制相关的回调，然后调用 [startRecording](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_startrecording) 开始录制。
 
 <a id="api_irtcengine_createmediarecorder__parameters"></a>
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 要录制的音视频流的信息。详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/android/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
 ### 返回值
 
-- 方法调用成功，返回 AgoraMediaRecorder 实例。
-- 方法调用失败，返回 null。
+- 方法调用成功，返回 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder) 实例。
+- 方法调用失败，返回 `null`。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediarecorder"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMediaRecorder
 
@@ -46,7 +65,7 @@ public abstract AgoraMediaRecorder createMediaRecorder(RecorderStreamInfo info);
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```java
+```text
 public abstract void destroyMediaRecorder(AgoraMediaRecorder mediaRecorder);
 ```
 
@@ -58,21 +77,29 @@ public abstract void destroyMediaRecorder(AgoraMediaRecorder mediaRecorder);
 
 ### 参数
 
-#### `mediaRecorder`
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 要销毁的录制器实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setMediaRecorderObserver
 
@@ -80,42 +107,50 @@ public abstract void destroyMediaRecorder(AgoraMediaRecorder mediaRecorder);
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```java
+```text
 public int setMediaRecorderObserver(IMediaRecorderCallback callback)
 ```
 
 <a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
-:::info[注]
-在调用该方法前，请确保：
+:::note
+注： 在调用该方法前，请确保：
 
-- RtcEngine 对象已创建并初始化。
-- 已通过 createMediaRecorder 创建音视频录制对象。
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 对象已创建并初始化。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/android/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
 :::
 
 <a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
 
 ### 参数
 
-#### `callback`
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制的回调。详见 [IMediaRecorderCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording1"></a>
+
+<a id="ariaid-title5"></a>
 
 ## startAudioRecording [1/2]
 
@@ -123,31 +158,37 @@ public int setMediaRecorderObserver(IMediaRecorderCallback callback)
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```java
+```text
 public abstract int startAudioRecording(String filePath, int quality);
 ```
 
 <a id="api_irtcengine_startaudiorecording1__detailed_desc"></a>
 
-你必须在调用 `joinChannel` 后调用该方法。调用 `leaveChannel` 时，录音会自动停止。 请确保指定的目录存在且可写。
+你必须在调用 `joinChannel` 后调用该方法。调用 `leaveChannel` 时，录音会自动停止。
 
-:::info[注]
-调用该方法时，默认的录音采样率为 32 kHz，且无法更改。
+请确保指定的目录存在且可写。
+
+:::note
+注： 调用该方法时，默认的录音采样率为 32 kHz，且无法更改。
 :::
 
 <a id="api_irtcengine_startaudiorecording1__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
-本地保存录音文件的绝对路径，包括文件名和扩展名。例如： /sdcard/emulated/0/audio.aac。
+本地保存录音文件的绝对路径，包括文件名和扩展名。例如：/sdcard/emulated/0/audio.aac。
 
-:::info[注]
-请确保指定路径存在且可写。
+:::note
+注： 请确保指定路径存在且可写。
 :::
 
-#### `quality`
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量：
 
@@ -155,17 +196,23 @@ public abstract int startAudioRecording(String filePath, int quality);
 - 1：中等质量。采样率为 32 kHz，录制 10 分钟的文件大小约为 2 MB。
 - 2：高质量。采样率为 32 kHz，录制 10 分钟的文件大小约为 3.75 MB。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_startaudiorecording1__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title6"></a>
 
 ## startAudioRecording [2/2]
 
@@ -173,7 +220,7 @@ public abstract int startAudioRecording(String filePath, int quality);
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```java
+```text
 public abstract int startAudioRecording(AudioRecordingConfiguration config);
 ```
 
@@ -182,7 +229,7 @@ public abstract int startAudioRecording(AudioRecordingConfiguration config);
 调用该方法后，你可以录制频道中用户的音频并获取录音文件。录音文件仅支持以下格式：
 
 - WAV：音频保真度高但文件较大。例如，在 32000 Hz 采样率下，10 分钟录音约为 73 MB。
-- AAC：音频保真度较低但文件较小。例如，在 32000 Hz 采样率和 AUDIO_RECORDING_QUALITY_MEDIUM 录音质量下，10 分钟录音约为 2 MB。
+- AAC：音频保真度较低但文件较小。例如，在 32000 Hz 采样率和 `AUDIO_RECORDING_QUALITY_MEDIUM` 录音质量下，10 分钟录音约为 2 MB。
 
 当用户离开频道时，录制会自动停止。
 
@@ -196,21 +243,29 @@ public abstract int startAudioRecording(AudioRecordingConfiguration config);
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录制配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/android/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_startrecording"></a>
+
+<a id="ariaid-title7"></a>
 
 ## startRecording
 
@@ -218,16 +273,17 @@ public abstract int startAudioRecording(AudioRecordingConfiguration config);
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```java
+```text
 public int startRecording(MediaRecorderConfiguration config)
 ```
 
 <a id="api_imediarecorder_startrecording__detailed_desc"></a>
 
-该方法用于开始录制音频和视频流。声网 SDK 支持同时录制本地和远端用户的音视频流。 在调用该方法前，请确保：
+该方法用于开始录制音频和视频流。声网 SDK 支持同时录制本地和远端用户的音视频流。
+在调用该方法前，请确保：
 
-- 已使用 createMediaRecorder 创建媒体录制器对象。
-- 已使用 setMediaRecorderObserver 注册媒体录制器观察者以监听录制相关的回调。
+- 已使用 [createMediaRecorder](/zh-CN/api-reference/rtc/android/recording#api_irtcengine_createmediarecorder) 创建媒体录制器对象。
+- 已使用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_setmediarecorderobserver) 注册媒体录制器观察者以监听录制相关的回调。
 - 已加入频道。
 
 该方法支持录制以下数据：
@@ -235,9 +291,11 @@ public int startRecording(MediaRecorderConfiguration config)
 - 由麦克风采集的音频，格式为 AAC。
 - 由摄像头采集的视频，格式为 H.264 或 H.265。
 
-录制开始后，如果视频分辨率发生变化，SDK 会停止录制；如果音频采样率或声道数发生变化，SDK 会继续录制并生成一个 MP4 文件。 仅当检测到可录制的音视频流时，才会生成录制文件。如果没有可录制的流，或录制过程中音视频流中断超过 5 秒，SDK 会停止录制并触发 [onRecorderStateChanged](/zh-CN/api-reference/rtc/android/recording#callback_imediarecorderobserver_onrecorderstatechanged) （`RECORDER_STATE_ERROR`, `RECORDER_REASON_NO_STREAM` ）回调。
+录制开始后，如果视频分辨率发生变化，SDK 会停止录制；如果音频采样率或声道数发生变化，SDK 会继续录制并生成一个 MP4 文件。仅当检测到可录制的音视频流时，才会生成录制文件。如果没有可录制的流，或录制过程中音视频流中断超过 5 秒，SDK 会停止录制并触发 [onRecorderStateChanged](/zh-CN/api-reference/rtc/android/recording#callback_imediarecorderobserver_onrecorderstatechanged)（`RECORDER_STATE_ERROR`, `RECORDER_REASON_NO_STREAM`）回调。
 
-:::info[注]
+:::note
+注：
+
 - 如果需要录制本地音视频流，请确保本地用户角色在开始录制前已设置为主播。
 - 如果需要录制远端用户的音视频流，请确保在开始录制前已订阅远端用户的音视频流。
 :::
@@ -246,27 +304,37 @@ public int startRecording(MediaRecorderConfiguration config)
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制的配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/android/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效。请确保：
+
     - 指定的录制文件保存路径正确且可写。
     - 指定的录制文件格式正确。
     - 最大录制时长设置正确。
-  - -4：当前 RtcEngine 状态不支持该操作。可能是录制已在进行中，或因错误而停止。
-  - -7：在 RtcEngine 初始化前调用该方法。请确保在调用该方法前已创建 AgoraMediaRecorder 对象。
+  - -4：当前 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 状态不支持该操作。可能是录制已在进行中，或因错误而停止。
+  - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化前调用该方法。请确保在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder) 对象。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title8"></a>
 
 ## stopAudioRecording
 
@@ -274,7 +342,7 @@ public int startRecording(MediaRecorderConfiguration config)
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```java
+```text
 public abstract int stopAudioRecording();
 ```
 
@@ -285,12 +353,15 @@ public abstract int stopAudioRecording();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
+
+<a id="ariaid-title9"></a>
 
 ## stopRecording
 
@@ -298,14 +369,14 @@ public abstract int stopAudioRecording();
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```java
+```text
 public int stopRecording()
 ```
 
 <a id="api_imediarecorder_stoprecording__detailed_desc"></a>
 
-:::info[注]
-调用 [startRecording](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_startrecording) 后，如果你想停止录制，必须调用此方法；否则生成的录制文件可能无法正常播放。
+:::note
+注： 调用 [startRecording](/zh-CN/api-reference/rtc/android/recording#api_imediarecorder_startrecording) 后，如果你想停止录制，必须调用此方法；否则生成的录制文件可能无法正常播放。
 :::
 
 <a id="api_imediarecorder_stoprecording__return_values"></a>
@@ -314,12 +385,16 @@ public int stopRecording()
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败：
-  - -7：在初始化 RtcEngine 之前调用该方法。请确保在调用此方法之前已创建 Recorder 实例。
+
+  - -7：在初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 之前调用该方法。请确保在调用此方法之前已创建 `Recorder` 实例。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onRecorderInfoUpdated
 
@@ -327,7 +402,7 @@ public int stopRecording()
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```java
+```text
 void onRecorderInfoUpdated(String channelId, int uid, RecorderInfo info)
 ```
 
@@ -345,22 +420,34 @@ void onRecorderInfoUpdated(String channelId, int uid, RecorderInfo info)
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `info`
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息，详见 [RecorderInfo](/zh-CN/api-reference/rtc/android/class-recorderinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaRecorderCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onRecorderStateChanged
 
@@ -368,7 +455,7 @@ void onRecorderInfoUpdated(String channelId, int uid, RecorderInfo info)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```java
+```text
 @CalledByNative void onRecorderStateChanged(String channelId, int uid, int state, int reason);
 ```
 
@@ -380,31 +467,43 @@ SDK 在音视频流的录制状态发生变化时会触发该回调，报告当�
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前录制状态：
 
-- RECORDER_STATE_ERROR （-1）：录制过程中发生错误。
-- RECORDER_STATE_START （2）：开始录制音视频流。
-- RECORDER_STATE_STOP （3）：停止录制音视频流。
+- `RECORDER_STATE_ERROR`（-1）：录制过程中发生错误。
+- `RECORDER_STATE_START`（2）：开始录制音视频流。
+- `RECORDER_STATE_STOP`（3）：停止录制音视频流。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态变化的原因：
 
-- RECORDER_REASON_NONE （0）：一切正常。
-- RECORDER_REASON_WRITE_FAILED （1）：录制文件写入失败。
-- RECORDER_REASON_NO_STREAM （2）：无可用音视频流，或音视频流中断超过 5 秒。
-- RECORDER_REASON_OVER_MAX_DURATION （3）：录制时长超过最大限制。
-- RECORDER_REASON_CONFIG_CHANGED （4）：录制配置发生变化。
+- `RECORDER_REASON_NONE`（0）：一切正常。
+- `RECORDER_REASON_WRITE_FAILED`（1）：录制文件写入失败。
+- `RECORDER_REASON_NO_STREAM`（2）：无可用音视频流，或音视频流中断超过 5 秒。
+- `RECORDER_REASON_OVER_MAX_DURATION`（3）：录制时长超过最大限制。
+- `RECORDER_REASON_CONFIG_CHANGED`（4）：录制配置发生变化。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IMediaRecorderCallback](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imediarecorderobserver)

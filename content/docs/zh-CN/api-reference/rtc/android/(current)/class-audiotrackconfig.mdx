@@ -1,10 +1,18 @@
 ---
-title: "AudioTrackConfig"
-description: "用于配置自定义音频轨道。"
+title: AudioTrackConfig
+description: 用于配置自定义音频轨道。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_audiotrackconfig
+  sourcePath: html-docs/rtc/Android/API/class_audiotrackconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_audiotrackconfig__prototype"></a>
 
-```java
+```text
 public class AudioTrackConfig {
   public boolean enableLocalPlayback;
   public boolean enableAudioProcessing;
@@ -15,20 +23,27 @@ public class AudioTrackConfig {
 
 ## 属性
 
-### `enableLocalPlayback`
+<ParameterList>
+<a id="enablelocalplayback"></a>
+<Parameter name="enableLocalPlayback">
 
 是否启用本地音频播放设备：
 
 - true：（默认）启用本地音频播放设备。
 - false：不启用本地音频播放设备。
 
-### `enableAudioProcessing`
+</Parameter>
+<a id="enableaudioprocessing"></a>
+<Parameter name="enableAudioProcessing">
 
-:::info[注]
-该参数仅对自定义音频采集中的 `AUDIO_TRACK_DIRECT` 类型生效。
+:::note
+注： 该参数仅对自定义音频采集中的 `AUDIO_TRACK_DIRECT` 类型生效。
 :::
 
 是否启用音频处理模块：
 
 - true：启用音频处理模块，应用回声消除（AEC）、噪声抑制（ANS）和自动增益控制（AGC）效果。
 - false：（默认）不启用音频处理模块。
+
+</Parameter>
+</ParameterList>

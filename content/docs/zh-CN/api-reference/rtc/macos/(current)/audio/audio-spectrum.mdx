@@ -1,10 +1,19 @@
 ---
-title: "音频频谱"
-description: "音频频谱 API reference."
+title: 音频频谱
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_audio_spectrum
+  sourcePath: html-docs/rtc/macOS/API/toc_audio_spectrum.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_spectrum"></a>
 
 <a id="api_irtcengine_disableaudiospectrummonitor"></a>
+
+<a id="ariaid-title2"></a>
 
 ## disableAudioSpectrumMonitor
 
@@ -12,7 +21,7 @@ description: "音频频谱 API reference."
 
 <a id="api_irtcengine_disableaudiospectrummonitor__prototype"></a>
 
-```objectivec
+```text
 - (int)disableAudioSpectrumMonitor NS_SWIFT_NAME(disableAudioSpectrumMonitor());
 ```
 
@@ -20,8 +29,8 @@ description: "音频频谱 API reference."
 
 如果你已调用 [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 方法启用音频频谱监测，可以调用此方法禁用该功能。
 
-:::info[注]
-你可以在加入频道前或后调用此方法。
+:::note
+注： 你可以在加入频道前或后调用此方法。
 :::
 
 <a id="api_irtcengine_disableaudiospectrummonitor__return_values"></a>
@@ -29,12 +38,15 @@ description: "音频频谱 API reference."
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiospectrummonitor"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableAudioSpectrumMonitor:
 
@@ -42,7 +54,7 @@ description: "音频频谱 API reference."
 
 <a id="api_irtcengine_enableaudiospectrummonitor__prototype"></a>
 
-```objectivec
+```text
 - (int)enableAudioSpectrumMonitor:(int)intervalInMS NS_SWIFT_NAME(enableAudioSpectrumMonitor(_:));
 ```
 
@@ -50,8 +62,8 @@ description: "音频频谱 API reference."
 
 如果你希望获取本地或远端用户的音频频谱数据，可以注册音频频谱观察器并调用该方法。
 
-:::info[注]
-你可以在加入频道前或加入频道后调用该方法。
+:::note
+注： 你可以在加入频道前或加入频道后调用该方法。
 :::
 
 <a id="api_irtcengine_enableaudiospectrummonitor__scenario"></a>
@@ -64,22 +76,31 @@ description: "音频频谱 API reference."
 
 ### 参数
 
-#### `intervalInMS`
+<ParameterList>
+<a id="intervalinms"></a>
+<Parameter name="intervalInMS">
 
 SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) 和 [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) 回调的时间间隔（单位为毫秒，默认值为 100）。该参数不能小于 10，否则调用该方法会失败。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiospectrummonitor__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_registeraudiospectrumobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## registerAudioSpectrumDelegate:
 
@@ -87,7 +108,7 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 <a id="api_irtcengine_registeraudiospectrumobserver__prototype"></a>
 
-```objectivec
+```text
 - (int)registerAudioSpectrumDelegate:(id<AgoraAudioSpectrumDelegate> _Nullable )delegate NS_SWIFT_NAME(registerAudioSpectrumDelegate(_:));
 ```
 
@@ -95,29 +116,37 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 成功注册音频频谱观察者并调用 [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) 启用音频频谱监测后，SDK 会根据你设置的时间间隔，触发你在 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver) 中实现的回调。
 
-:::info[注]
-你可以在加入频道前或加入频道后调用此方法。
+:::note
+注： 你可以在加入频道前或加入频道后调用此方法。
 :::
 
 <a id="api_irtcengine_registeraudiospectrumobserver__parameters"></a>
 
 ### 参数
 
-#### `delegate`
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## unregisterAudioSpectrumDelegate:
 
@@ -125,7 +154,7 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__prototype"></a>
 
-```objectivec
+```text
 - (int)unregisterAudioSpectrumDelegate:(id<AgoraAudioSpectrumDelegate> _Nullable)delegate NS_SWIFT_NAME(unregisterAudioSpectrumDelegate(_:));
 ```
 
@@ -133,29 +162,37 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 如果你已调用 [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/macos/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) 方法注册了音频频谱观察者，想要关闭音频频谱监测时，可以调用该方法。
 
-:::info[注]
-你可以在加入频道前或加入频道后调用此方法。
+:::note
+注： 你可以在加入频道前或加入频道后调用此方法。
 :::
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__parameters"></a>
 
 ### 参数
 
-#### `delegate`
+<ParameterList>
+<a id="delegate-1"></a>
+<Parameter name="delegate">
 
 音频频谱观察者。详见 [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregisteraudiospectrumobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onLocalAudioSpectrum:
 
@@ -163,7 +200,7 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__prototype"></a>
 
-```objectivec
+```text
 - (BOOL)onLocalAudioSpectrum:(NSArray<NSNumber *> * _Nullable)audioSpectrumData NS_SWIFT_NAME(onLocalAudioSpectrum(_:));
 ```
 
@@ -175,9 +212,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-#### `audioSpectrumData`
+<ParameterList>
+<a id="audiospectrumdata"></a>
+<Parameter name="audioSpectrumData">
 
 本地用户的音频频谱数据。声网将音频频率划分为 256 个频率域，并通过该参数报告每个频率域的能量值。每个能量值的取值范围为 [-300, 1]，单位为 dBFS。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onlocalaudiospectrum__return_values"></a>
 
@@ -187,9 +229,12 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 - NO：未接收到音频频谱数据。
 
 ### 所属接口类
+
 - [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onRemoteAudioSpectrum:
 
@@ -197,7 +242,7 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__prototype"></a>
 
-```objectivec
+```text
 - (BOOL)onRemoteAudioSpectrum:(NSArray<AgoraAudioSpectrumInfo *> * _Nullable)AudioSpectrumInfo NS_SWIFT_NAME(onRemoteAudioSpectrum(_:));
 ```
 
@@ -215,9 +260,14 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 
 ### 参数
 
-#### `AudioSpectrumInfo`
+<ParameterList>
+<a id="audiospectruminfo"></a>
+<Parameter name="AudioSpectrumInfo">
 
 远端用户的音频频谱信息。数组的数量为 SDK 监测到的远端用户数量。若该数组为 nil，表示未检测到远端用户的音频频谱。详见 [AgoraAudioSpectrumInfo](/zh-CN/api-reference/rtc/macos/class-useraudiospectruminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_iaudiospectrumobserver_onremoteaudiospectrum__return_values"></a>
 
@@ -227,4 +277,5 @@ SDK 触发 [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/macos/audio/audio-sp
 - NO：未接收到频谱数据。
 
 ### 所属接口类
+
 - [AgoraAudioSpectrumDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_iaudiospectrumobserver)

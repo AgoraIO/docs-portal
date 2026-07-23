@@ -1,10 +1,19 @@
 ---
-title: "媒体播放器缓存"
-description: "媒体播放器缓存 API reference."
+title: 媒体播放器缓存
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_mediaplayer_cache
+  sourcePath: html-docs/rtc/Cpp/API/toc_mediaplayer_cache.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_cache"></a>
 
 <a id="api_imediaplayercachemanager_enableautoremovecache"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableAutoRemoveCache
 
@@ -12,7 +21,7 @@ description: "媒体播放器缓存 API reference."
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__prototype"></a>
 
-```cpp
+```text
 virtual int enableAutoRemoveCache(bool enable) = 0;
 ```
 
@@ -24,24 +33,32 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 
 ### 参数
 
-#### `enable`
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否启用 SDK 自动删除缓存的媒体文件：
 
 - true：自动删除缓存的媒体文件。
 - false：（默认）不自动删除缓存的媒体文件。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachedir"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getCacheDir
 
@@ -49,7 +66,7 @@ virtual int enableAutoRemoveCache(bool enable) = 0;
 
 <a id="api_imediaplayercachemanager_getcachedir__prototype"></a>
 
-```cpp
+```text
 virtual int getCacheDir(char* path, int length) = 0;
 ```
 
@@ -61,25 +78,35 @@ virtual int getCacheDir(char* path, int length) = 0;
 
 ### 参数
 
-#### `path`
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 输出参数，待缓存媒体文件的存储路径。
 
-#### `length`
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 `path` 缓存文件存储路径字符串的最大长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachefilecount"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getCacheFileCount
 
@@ -87,7 +114,7 @@ virtual int getCacheDir(char* path, int length) = 0;
 
 <a id="api_imediaplayercachemanager_getcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int getCacheFileCount() = 0;
 ```
 
@@ -98,12 +125,15 @@ virtual int getCacheFileCount() = 0;
 ### 返回值
 
 - 方法调用成功，返回已缓存的媒体文件数量。
-- &lt; 0：方法调用失败，参见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，参见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMaxCacheFileCount
 
@@ -111,7 +141,7 @@ virtual int getCacheFileCount() = 0;
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int getMaxCacheFileCount() = 0;
 ```
 
@@ -122,12 +152,15 @@ virtual int getMaxCacheFileCount() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getMaxCacheFileSize
 
@@ -135,7 +168,7 @@ virtual int getMaxCacheFileCount() = 0;
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize__prototype"></a>
 
-```cpp
+```text
 virtual int64_t getMaxCacheFileSize() = 0;
 ```
 
@@ -148,12 +181,15 @@ virtual int64_t getMaxCacheFileSize() = 0;
 ### 返回值
 
 - 方法调用成功，返回缓存媒体文件聚合存储空间的最大大小（单位为字节）。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeallcaches"></a>
+
+<a id="ariaid-title7"></a>
 
 ## removeAllCaches
 
@@ -161,14 +197,14 @@ virtual int64_t getMaxCacheFileSize() = 0;
 
 <a id="api_imediaplayercachemanager_removeallcaches__prototype"></a>
 
-```cpp
+```text
 virtual int removeAllCaches() = 0;
 ```
 
 <a id="api_imediaplayercachemanager_removeallcaches__detailed_desc"></a>
 
-:::info[注]
-[removeAllCaches](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) 不会删除当前正在播放的缓存媒体文件。
+:::note
+注： [removeAllCaches](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) 不会删除当前正在播放的缓存媒体文件。
 :::
 
 <a id="api_imediaplayercachemanager_removeallcaches__return_values"></a>
@@ -176,12 +212,15 @@ virtual int removeAllCaches() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removecachebyuri"></a>
+
+<a id="ariaid-title8"></a>
 
 ## removeCacheByUri
 
@@ -189,35 +228,43 @@ virtual int removeAllCaches() = 0;
 
 <a id="api_imediaplayercachemanager_removecachebyuri__prototype"></a>
 
-```cpp
+```text
 virtual int removeCacheByUri(const char *uri) = 0;
 ```
 
 <a id="api_imediaplayercachemanager_removecachebyuri__detailed_desc"></a>
 
-:::info[注]
-[removeCacheByUri](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) 当前不会删除正在播放的缓存媒体文件。
+:::note
+注： [removeCacheByUri](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) 当前不会删除正在播放的缓存媒体文件。
 :::
 
 <a id="api_imediaplayercachemanager_removecachebyuri__parameters"></a>
 
 ### 参数
 
-#### `uri`
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 要删除的媒体文件的 URI（统一资源标识符）。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeoldcache"></a>
+
+<a id="ariaid-title9"></a>
 
 ## removeOldCache
 
@@ -225,7 +272,7 @@ virtual int removeCacheByUri(const char *uri) = 0;
 
 <a id="api_imediaplayercachemanager_removeoldcache__prototype"></a>
 
-```cpp
+```text
 virtual int removeOldCache() = 0;
 ```
 
@@ -233,8 +280,8 @@ virtual int removeOldCache() = 0;
 
 当缓存文件存储空间即将达到上限时，你可以调用该方法，SDK 会删除最少使用的缓存媒体文件。
 
-:::info[注]
-[removeOldCache](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) 不会删除当前正在播放的缓存媒体文件。
+:::note
+注： [removeOldCache](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) 不会删除当前正在播放的缓存媒体文件。
 :::
 
 <a id="api_imediaplayercachemanager_removeoldcache__return_values"></a>
@@ -242,12 +289,15 @@ virtual int removeOldCache() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setcachedir"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setCacheDir
 
@@ -255,39 +305,47 @@ virtual int removeOldCache() = 0;
 
 <a id="api_imediaplayercachemanager_setcachedir__prototype"></a>
 
-```cpp
+```text
 virtual int setCacheDir(const char *path) = 0;
 ```
 
 <a id="api_imediaplayercachemanager_setcachedir__detailed_desc"></a>
 
-:::info[注]
-请确保在调用该方法前已初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)。
+:::note
+注： 请确保在调用该方法前已初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)。
 :::
 
 <a id="api_imediaplayercachemanager_setcachedir__parameters"></a>
 
 ### 参数
 
-#### `path`
+<ParameterList>
+<a id="path-1"></a>
+<Parameter name="path">
 
 要缓存的媒体文件的绝对路径。
 
-:::info[注]
-确保该目录已存在且可写。
+:::note
+注： 确保该目录已存在且可写。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setMaxCacheFileCount
 
@@ -295,7 +353,7 @@ virtual int setCacheDir(const char *path) = 0;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__prototype"></a>
 
-```cpp
+```text
 virtual int setMaxCacheFileCount(int count) = 0;
 ```
 
@@ -305,21 +363,29 @@ virtual int setMaxCacheFileCount(int count) = 0;
 
 ### 参数
 
-#### `count`
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 可缓存的媒体文件的最大数量。默认值为 1000。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setMaxCacheFileSize
 
@@ -327,7 +393,7 @@ virtual int setMaxCacheFileCount(int count) = 0;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__prototype"></a>
 
-```cpp
+```text
 virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 ```
 
@@ -337,21 +403,29 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 
 ### 参数
 
-#### `cacheSize`
+<ParameterList>
+<a id="cachesize"></a>
+<Parameter name="cacheSize">
 
 缓存媒体文件的聚合存储空间的最大大小（字节）。默认值为 1 GB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MEDIA_PLAYER_REASON。
+- &lt; 0：方法调用失败，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerCacheStats
 
@@ -359,7 +433,7 @@ virtual int setMaxCacheFileSize(int64_t cacheSize) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerCacheStats(const media::base::CacheStatistics& stats)
 ```
 
@@ -371,9 +445,15 @@ virtual void onPlayerCacheStats(const media::base::CacheStatistics& stats)
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 媒体文件缓存统计信息。详见 [CacheStatistics](/zh-CN/api-reference/rtc/cpp-all-platforms/class-cachestatistics)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,0 +1,161 @@
+---
+title: WhiteMemberState Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteMemberState
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteMemberState.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | [WhiteReadonlyMemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-readonly-member-state): WhiteObject |
+| --- | --- |
+| Declared in | WhiteMemberState.h |
+
+<a id="overview"></a>
+
+## Overview
+
+互动白板实时房间的工具状态。初始工具为 `pencil`，无默认值。
+
+<a id="tasks"></a>
+
+<a id="//api/name/currentApplianceName"></a>
+
+### `currentApplianceName`
+
+互动白板实时房间内当前使用的工具名称。初始工具为 `pencil`，无默认值。
+
+<ApiSignature>
+
+@property (nonatomic, copy, readwrite, nullable) WhiteApplianceNameKey currentApplianceName
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/strokeColor"></a>
+
+### `strokeColor`
+
+线条颜色，为 RGB 格式，例如，(0, 0, 255) 表示蓝色。
+
+<ApiSignature>
+
+@property (nonatomic, copy, readwrite, nullable) NSArray&lt;NSNumber*&gt; *strokeColor
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/strokeWidth"></a>
+
+### `strokeWidth`
+
+线条粗细。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readwrite, nullable) NSNumber *strokeWidth
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/textSize"></a>
+
+### `textSize`
+
+字体大小。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readwrite, nullable) NSNumber *textSize
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/textColor"></a>
+
+### `textColor`
+
+文本颜色，为 RGB 格式，例如，(0, 0, 255) 表示蓝色。
+
+<ApiSignature>
+
+@property (nonatomic, copy, readwrite, nullable) NSArray&lt;NSNumber*&gt; *textColor
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/pencilEraserSize"></a>
+
+### `pencilEraserSize`
+
+局部橡皮擦大小。取值范围为 [1,3]，值越大代表尺寸越大。
+
+<ApiSignature>
+
+@property (nonatomic, strong, readwrite, nullable) NSNumber *pencilEraserSize
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/textCanSelectText"></a>
+
+### `textCanSelectText`
+
+是否开启在文字教具下直接选择并编辑文字。NSNumber取值为 bool 类型。
+
+<ApiSignature>
+
+@property (nonatomic, assign, readwrite, nullable) NSNumber *textCanSelectText
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：（默认）不开启。
+
+#### Declared In
+
+`WhiteMemberState.h`
+
+<a id="//api/name/dottedLine"></a>
+
+### `dottedLine`
+
+是否开启铅笔工具画虚线功能。NSNumber 取值为 bool 类型。
+该功能要求设置 `disableNewPencil` 为 false。
+
+<ApiSignature>
+
+@property (nonatomic, assign, readwrite, nullable) NSNumber *dottedLine
+
+</ApiSignature>
+
+#### Discussion
+
+- `YES`：开启。
+- `NO`：（默认）不开启。
+
+#### Declared In
+
+`WhiteMemberState.h`

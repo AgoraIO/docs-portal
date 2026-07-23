@@ -1,0 +1,121 @@
+---
+title: com.herewhite.sdk.domain.WindowDocsEvent类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[`WindowDocsEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) 类，用于定义文档操作事件。
+
+## 构造及析构函数说明
+
+<a id="ae1621e8775231eddb45bc4fd32c611ae"></a>
+
+### WindowDocsEvent()
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.WindowDocsEvent.WindowDocsEvent(String *event*, [Options](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options) *options*)
+
+</ApiSignature>
+
+<ParameterList title="参数">
+<Parameter name="event">
+
+文档事件。包括以下几种：
+
+- `prevPage`: 上一页。
+- `nextPage`: 下一页。
+- `prevStep`: 上一步。
+- `nextStep`: 下一步。
+- `jumpToPage`: 跳转至页码。
+
+</Parameter>
+<Parameter name="options">
+
+事件参数。仅当 `event` 为 `jumpToPage` 时需要传入，用于指定期望跳转的页码。
+
+</Parameter>
+</ParameterList>
+
+## 成员函数说明
+
+<a id="a9102805f760173eede329af8078eee10"></a>
+
+### JumpToPage()
+
+<ApiSignature labels="static">
+
+static [WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) com.herewhite.sdk.domain.WindowDocsEvent.JumpToPage(Integer *page*)
+
+</ApiSignature>
+
+跳转至页码。
+
+<ParameterList title="参数">
+<Parameter name="page">
+
+期望跳转的页码。
+
+</Parameter>
+</ParameterList>
+
+## 类成员变量说明
+
+<a id="ad5785268175d048f620944af33fd972e"></a>
+
+### PrevPage
+
+<ApiSignature labels="static">
+
+[WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) com.herewhite.sdk.domain.WindowDocsEvent.PrevPage = new [WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)("prevPage")
+
+</ApiSignature>
+
+上一页。
+
+<a id="aedf821539faafb8218917eae89a7c368"></a>
+
+### NextPage
+
+<ApiSignature labels="static">
+
+[WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) com.herewhite.sdk.domain.WindowDocsEvent.NextPage = new [WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)("nextPage")
+
+</ApiSignature>
+
+下一页。
+
+<a id="a022821139a3d40ddb23761a4a0bd8197"></a>
+
+### PrevStep
+
+<ApiSignature labels="static">
+
+[WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) com.herewhite.sdk.domain.WindowDocsEvent.PrevStep = new [WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)("prevStep")
+
+</ApiSignature>
+
+上一步。
+
+<a id="aed61a32e60215c44667794affe622815"></a>
+
+### NextStep
+
+<ApiSignature labels="static">
+
+[WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event) com.herewhite.sdk.domain.WindowDocsEvent.NextStep = new [WindowDocsEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event)("nextStep")
+
+</ApiSignature>
+
+下一步。

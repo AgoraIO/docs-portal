@@ -1,0 +1,311 @@
+---
+title: Class AgoraRteMessageHandle
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_core_processor_message_handler_goraRteMessageHandle.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_core_processor_message_handler_goraRteMessageHandle.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AgoraRteMessageHandle(dataStore: [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store), __namedParameters: \{ sceneId: string; streamUuid: string; userUuid: string \}): [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiSignature>
+
+Overrides [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[constructor](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#constructor)
+
+<ParameterList title="Parameters">
+<Parameter name="dataStore" required>
+
+<ParameterType>
+
+[AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="__namedParameters" type="\&#123; sceneId: string; streamUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="sceneId" type="string" required />
+<Parameter name="streamUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="logger"></a>
+
+### Readonly logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+<a id="sceneId"></a>
+
+### sceneId
+
+sceneId: string
+
+<a id="streamUuid"></a>
+
+### streamUuid
+
+streamUuid: string
+
+<a id="userUuid"></a>
+
+### userUuid
+
+userUuid: string
+
+## Methods
+
+<a id="emit"></a>
+
+### emit
+
+<ApiSignature>
+
+emit(evt: string, ...args: any[]): [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiSignature>
+
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[emit](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#emit)
+
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="...args" type="any[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="handleNonSeqMessage"></a>
+
+### handleNonSeqMessage
+
+<ApiSignature>
+
+handleNonSeqMessage(message: [AgoraRteNonSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-non-sequence-message)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="message" required>
+
+<ParameterType>
+
+[AgoraRteNonSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-non-sequence-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="handleSeqMessage"></a>
+
+### handleSeqMessage
+
+<ApiSignature>
+
+handleSeqMessage(message: [AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="message" required>
+
+<ParameterType>
+
+[AgoraRteSequenceMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-processor-type-gora-rte-sequence-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="handleSnapshot"></a>
+
+### handleSnapshot
+
+<ApiSignature>
+
+handleSnapshot(snapshot: [AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="snapshot" required>
+
+<ParameterType>
+
+[AgoraRteSyncSnapshotData](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-rte-sync-snapshot-data)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off(evt: string, cb: CallableFunction): [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiSignature>
+
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[off](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#off)
+
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="on"></a>
+
+### on
+
+<ApiSignature>
+
+on(evt: string, cb: CallableFunction): [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiSignature>
+
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[on](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#on)
+
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="once"></a>
+
+### once
+
+<ApiSignature>
+
+once(evt: string, cb: CallableFunction): [AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiSignature>
+
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[once](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#once)
+
+<ParameterList title="Parameters">
+<Parameter name="evt" type="string" required />
+<Parameter name="cb" type="CallableFunction" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteMessageHandle](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-message-handler-gora-rte-message-handle)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeAllEventListeners"></a>
+
+### removeAllEventListeners
+
+<ApiSignature>
+
+removeAllEventListeners(): void
+
+</ApiSignature>
+
+Inherited from [AGEventEmitter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter).[removeAllEventListeners](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-utils-events-gevent-emitter#removeAllEventListeners)
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

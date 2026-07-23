@@ -1,10 +1,18 @@
 ---
-title: "registerFaceInfoObserver"
-description: "注册一个人脸信息观测器。"
+title: registerFaceInfoObserver
+description: 注册一个人脸信息观测器。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/api_imediaengine_registerfaceinfoobserver
+  sourcePath: html-docs/rtc/Flutter/API/api_imediaengine_registerfaceinfoobserver.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_imediaengine_registerfaceinfoobserver__prototype"></a>
 
-```dart
+```text
 void registerFaceInfoObserver(FaceInfoObserver observer);
 ```
 
@@ -12,9 +20,11 @@ void registerFaceInfoObserver(FaceInfoObserver observer);
 
 你可以调用该方法注册 [onFaceInfo](/zh-CN/api-reference/rtc/flutter/callback-ifaceinfoobserver-onfaceinfo) 回调获取声网语音驱动插件处理后的人脸信息。调用该方法注册人脸信息观测器时，你可以根据需要注册 [FaceInfoObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ifaceinfoobserver) 类中的回调。在成功注册人脸信息观测器后，SDK 会在捕捉到经过语音驱动插件转换的人脸信息时，触发你所注册的回调。
 
-:::info[注]
+:::note
+注：
+
 - 该方法需要在加入频道前调用。
-- 调用该方法前，你需要确保已调用 enableExtension 启用语音驱动插件。
+- 调用该方法前，你需要确保已调用 [enableExtension](/zh-CN/api-reference/rtc/flutter/extension#api_irtcengine_enableextension) 启用语音驱动插件。
 :::
 
 <a id="api_imediaengine_registerfaceinfoobserver__scenario"></a>
@@ -27,12 +37,21 @@ void registerFaceInfoObserver(FaceInfoObserver observer);
 
 ## 参数
 
-### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 人脸信息观测器，详见 [FaceInfoObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_ifaceinfoobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registerfaceinfoobserver__return_values"></a>
 
 ## 返回值
 
 方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)

@@ -1,0 +1,97 @@
+---
+title: agora::linuxsdk::AudioFrame结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/structagora_1_1linuxsdk_1_1_audio_frame
+  sourcePath: html-docs/recording/cpp/structagora_1_1linuxsdk_1_1_audio_frame.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+原始音频数据格式。
+
+## 构造及析构函数说明
+
+<a id="aad626bea15823539e673576123bc7b00"></a>
+
+### AudioFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::AudioFrame::AudioFrame()
+
+</ApiSignature>
+
+<a id="adac23d351be5d075a62b683f558f77e5"></a>
+
+### ~AudioFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::AudioFrame::~AudioFrame()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a49628a954836656a3ed5847b9171c26a"></a>
+
+### type
+
+<ApiSignature>
+
+[AUDIO_FRAME_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#ab3e34cf1c0328e3f9e0dee0b7d768dc4) agora::linuxsdk::AudioFrame::type
+
+</ApiSignature>
+
+原始音频数据格式，PCM 或 AAC。
+
+<a id="a1369464e59c9b58aea839f149a78225c"></a>
+
+### pcm
+
+<ApiSignature>
+
+[AudioPcmFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1linuxsdk-1-1-audio-pcm-frame)* agora::linuxsdk::AudioFrame::pcm
+
+</ApiSignature>
+
+PCM 格式，详见 [AudioPcmFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1linuxsdk-1-1-audio-pcm-frame)。
+
+<a id="a6c1115275eddf02008579cad84179cf7"></a>
+
+### aac
+
+<ApiSignature>
+
+[AudioAacFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1linuxsdk-1-1-audio-aac-frame)* agora::linuxsdk::AudioFrame::aac
+
+</ApiSignature>
+
+AAC 格式，详见 [AudioAacFrame](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1linuxsdk-1-1-audio-aac-frame)。
+
+<a id="ac5476c4f8f8f310013dfd4789135cd48"></a>
+
+<ApiSignature>
+
+union \{ ... \} agora::linuxsdk::AudioFrame::frame
+
+</ApiSignature>
+
+<a id="a204e969d0552e483a80e59c495033d8e"></a>
+
+### mType
+
+<ApiSignature>
+
+[MEMORY_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9c599c551b7b9f9577a1cc6e0f240e05) agora::linuxsdk::AudioFrame::mType
+
+</ApiSignature>
+
+存储方式，详见 [MEMORY_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9c599c551b7b9f9577a1cc6e0f240e05)。

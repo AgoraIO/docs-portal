@@ -1,81 +1,120 @@
 ---
-title: "VoiceBeautifierPreset"
-description: "预设的美声效果选项。"
+title: VoiceBeautifierPreset
+description: 预设的美声效果选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/enum_voicebeautifierpreset
+  sourcePath: html-docs/rtc/Flutter/API/enum_voicebeautifierpreset.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_voicebeautifierpreset__parameters"></a>
 
 ## 枚举值
 
-### `voiceBeautifierOff`
+<ParameterList>
+<a id="voicebeautifieroff"></a>
+<Parameter name="voiceBeautifierOff">
 
 原声，即关闭美声效果。
 
-### `chatBeautifierMagnetic`
+</Parameter>
+<a id="chatbeautifiermagnetic"></a>
+<Parameter name="chatBeautifierMagnetic">
 
 磁性（男）。
 
-:::info[注]
-该设置仅对男声有效，请勿用于设置女声，否则音频会失真。
+:::note
+注： 该设置仅对男声有效，请勿用于设置女声，否则音频会失真。
 :::
 
-### `chatBeautifierFresh`
+</Parameter>
+<a id="chatbeautifierfresh"></a>
+<Parameter name="chatBeautifierFresh">
 
 清新（女）。
 
-:::info[注]
-该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
+:::note
+注： 该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
 :::
 
-### `chatBeautifierVitality`
+</Parameter>
+<a id="chatbeautifiervitality"></a>
+<Parameter name="chatBeautifierVitality">
 
 活力（女）。
 
-:::info[注]
-该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
+:::note
+注： 该设置仅对女声有效，请勿用于设置男声，否则音频会失真。
 :::
 
-### `singingBeautifier`
+</Parameter>
+<a id="singingbeautifier"></a>
+<Parameter name="singingBeautifier">
 
 歌唱美声。
 
-- 如果调用 setVoiceBeautifierPreset (singingBeautifier)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
-- 如果调用 setVoiceBeautifierParameters (singingBeautifier, param1, param2)，你可以美化男声或女声并添加混响效果。
+- 如果调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)(singingBeautifier)，你可以美化男声并添加歌声在小房间的混响效果。请勿用于设置女声，否则音频会失真。
+- 如果调用 [setVoiceBeautifierParameters](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)(singingBeautifier, param1, param2)，你可以美化男声或女声并添加混响效果。
 
-### `timbreTransformationVigorous`
+</Parameter>
+<a id="timbretransformationvigorous"></a>
+<Parameter name="timbreTransformationVigorous">
 
 浑厚。
 
-### `timbreTransformationDeep`
+</Parameter>
+<a id="timbretransformationdeep"></a>
+<Parameter name="timbreTransformationDeep">
 
 低沉。
 
-### `timbreTransformationMellow`
+</Parameter>
+<a id="timbretransformationmellow"></a>
+<Parameter name="timbreTransformationMellow">
 
 圆润。
 
-### `timbreTransformationFalsetto`
+</Parameter>
+<a id="timbretransformationfalsetto"></a>
+<Parameter name="timbreTransformationFalsetto">
 
 假音。
 
-### `timbreTransformationFull`
+</Parameter>
+<a id="timbretransformationfull"></a>
+<Parameter name="timbreTransformationFull">
 
 饱满。
 
-### `timbreTransformationClear`
+</Parameter>
+<a id="timbretransformationclear"></a>
+<Parameter name="timbreTransformationClear">
 
 清澈。
 
-### `timbreTransformationResounding`
+</Parameter>
+<a id="timbretransformationresounding"></a>
+<Parameter name="timbreTransformationResounding">
 
 高亢。
 
-### `timbreTransformationRinging`
+</Parameter>
+<a id="timbretransformationringing"></a>
+<Parameter name="timbreTransformationRinging">
 
 嘹亮。
 
-### `ultraHighQualityVoice`
+</Parameter>
+<a id="ultrahighqualityvoice"></a>
+<Parameter name="ultraHighQualityVoice">
 
 超高音质，即让音频更清晰、细节更丰富。
 
-- 为达到更好的效果，建议在调用 setVoiceBeautifierPreset 前将 setAudioProfile2 的 profile 参数设置为 audioProfileMusicHighQuality (4) 或 audioProfileMusicHighQualityStereo (5)，且 scenario 参数设置为 audioScenarioGameStreaming (3)。
+- 为达到更好的效果，建议在调用 [setVoiceBeautifierPreset](/zh-CN/api-reference/rtc/flutter/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) 前将 `setAudioProfile2` 的 `profile` 参数设置为 `audioProfileMusicHighQuality`(4) 或 `audioProfileMusicHighQualityStereo`(5)，且 `scenario` 参数设置为 `audioScenarioGameStreaming`(3)。
 - 如果用户的音频采集设备可以高度还原音频细节，建议你不要开启超高音质，否则 SDK 会过度还原音频细节，达不到预期效果。
+
+</Parameter>
+</ParameterList>

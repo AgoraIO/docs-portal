@@ -1,10 +1,19 @@
 ---
-title: "虚拟背景"
-description: "虚拟背景 API reference."
+title: 虚拟背景
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_virtualbackground
+  sourcePath: html-docs/rtc/Cpp/API/toc_virtualbackground.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_virtualbackground"></a>
 
 <a id="api_irtcengine_enablevirtualbackground"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableVirtualBackground
 
@@ -12,21 +21,24 @@ description: "虚拟背景 API reference."
 
 <a id="api_irtcengine_enablevirtualbackground__prototype"></a>
 
-```cpp
+```text
 virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgroundSource, SegmentationProperty segproperty, agora::media::MEDIA_SOURCE_TYPE type = agora::media::PRIMARY_CAMERA_SOURCE) = 0;
 ```
 
 <a id="api_irtcengine_enablevirtualbackground__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v3.7.200 版本新增。
+:::
 
 虚拟背景功能支持本地用户将原始背景替换为静态图片、动态视频、模糊背景或人像背景分割，以实现画中画效果。启用虚拟背景功能后，频道内的所有用户都可以看到自定义背景。请在调用 [enableVideo](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_enablevideo) 或 `startPreview` 后调用此方法。
 
-:::info[注]
+:::note
+注：
+
 - 使用视频作为虚拟背景会导致内存持续增长，可能引发应用崩溃。建议降低视频的分辨率和帧率。
 - 此功能对设备性能要求较高。调用此方法时，SDK 会自动检测当前设备的性能。声网建议在以下处理器设备上使用虚拟背景功能：
+
   - Snapdragon 700 系列 750G 及以上版本。
   - Snapdragon 800 系列 835 及以上版本。
   - Dimensity 700 系列 720 及以上版本。
@@ -34,12 +46,14 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
   - Kirin 900 系列 980 及以上版本。
   - 配备 i5 及以上 CPU 的设备。
   - 配备 A9 及以上芯片的设备，包括：
+
     - iPhone 6S 及以上版本。
     - iPad Air 第三代及以上版本。
     - iPad 第五代及以上版本。
     - iPad Pro 第一代及以上版本。
     - iPad mini 第五代及以上版本。
 - 声网建议在以下场景中使用此功能：
+
   - 使用高清摄像头设备，且环境光线均匀。
   - 拍摄画面中物体较少，人像为半身像且无遮挡。
   - 背景为纯色，且与用户服装颜色有明显区别。
@@ -50,35 +64,48 @@ virtual int enableVirtualBackground(bool enabled, VirtualBackgroundSource backgr
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否启用虚拟背景：
 
 - true：启用虚拟背景。
 - false：关闭虚拟背景。
 
-#### `backgroundSource`
+</Parameter>
+<a id="backgroundsource"></a>
+<Parameter name="backgroundSource">
 
 自定义背景。SDK 会对自定义背景图像进行缩放和裁剪，以适配采集的视频分辨率，并确保图像内容不失真。详见 [VirtualBackgroundSource](/zh-CN/api-reference/rtc/cpp-all-platforms/class-virtualbackgroundsource)。
 
-#### `segproperty`
+</Parameter>
+<a id="segproperty"></a>
+<Parameter name="segproperty">
 
 背景图像的处理属性。详见 [SegmentationProperty](/zh-CN/api-reference/rtc/cpp-all-platforms/class-segmentationproperty)。
 
-#### `type`
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 媒体源类型。详见 [MEDIA_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediasourcetype)。
 
-- 若使用摄像头采集本地视频，使用默认值 PRIMARY_CAMERA_SOURCE。
-- 若使用自定义视频源，设置为 CUSTOM_VIDEO_SOURCE。
+- 若使用摄像头采集本地视频，使用默认值 `PRIMARY_CAMERA_SOURCE`。
+- 若使用自定义视频源，设置为 `CUSTOM_VIDEO_SOURCE`。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevirtualbackground__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -4：设备性能不满足虚拟背景功能的要求。建议在性能更高的设备上尝试此功能。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)

@@ -1,20 +1,28 @@
 ---
-title: "MediaRecorderConfiguration"
-description: "音视频流录制配置。"
+title: MediaRecorderConfiguration
+description: 音视频流录制配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mediarecorderconfiguration__prototype"></a>
 
-```arkts
+```text
 export class MediaRecorderConfiguration {
-  
+
   public storagePath: string;
-  
+
   public containerFormat: number = AgoraMediaRecorder.CONTAINER_MP4;
-  
+
   public streamType: number = AgoraMediaRecorder.STREAM_TYPE_BOTH;
-  
+
   public maxDurationMs: number = 120000;
-  
+
   public recorderInfoUpdateInterval: number = 0;
   public constructor(storagePath: string, containerFormat: number, streamType: number,
                      maxDurationMs: number, recorderInfoUpdateInterval: number) {
@@ -31,19 +39,27 @@ export class MediaRecorderConfiguration {
 
 <a id="class_mediarecorderconfiguration__parameters"></a>
 
-### `storagePath`
+##
+
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
 
 录制文件在本地保存的绝对路径，需精确到文件名及格式。例如：
 
-:::warning[注意]
-请确保你指定的路径存在并且可写。
+:::caution
+注意： 请确保你指定的路径存在并且可写。
 :::
 
-### `containerFormat`
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
 
 录制文件的格式，目前仅支持 CONTAINER_MP4。
 
-### `streamType`
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 录制内容：
 
@@ -51,10 +67,17 @@ export class MediaRecorderConfiguration {
 - STREAM_TYPE_VIDEO：仅视频。
 - STREAM_TYPE_BOTH：（默认）音视频。
 
-### `maxDurationMs`
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
 
 最大录制时长，单位为毫秒，默认值为 120000。
 
-### `recorderInfoUpdateInterval`
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
 
 录制信息更新间隔，单位为毫秒，取值范围为 [1000,10000]。SDK 会根据该值的设置触发 [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调，报告更新后的录制信息。
+
+</Parameter>
+</ParameterList>

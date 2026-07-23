@@ -1,0 +1,82 @@
+---
+title: Interface MicrophoneAudioTrackInitConfig
+description: 创建麦克风音频流时的配置对象，用于 AgoraRTC.createMicrophoneAudioTrack。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/microphoneaudiotrackinitconfig
+  sourcePath: html-docs/rtc/React/interfaces/microphoneaudiotrackinitconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- MicrophoneAudioTrackInitConfig
+
+## Index
+
+### Properties
+
+- [AEC](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig#aec)
+- [AGC](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig#agc)
+- [ANS](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig#ans)
+- [encoderConfig](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig#encoderconfig)
+- [microphoneId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/microphoneaudiotrackinitconfig#microphoneid)
+
+## Properties
+
+<a id="aec"></a>
+
+### Optional AEC
+
+AEC: boolean
+
+是否开启回声消除：
+
+- `true`: 开启回声消除。
+- `false`: 不开启回声消除。
+
+<a id="agc"></a>
+
+### Optional AGC
+
+AGC: boolean
+
+是否开启自动增益：
+
+- `true`: 开启自动增益。
+- `false`: 不开启自动增益。
+
+<a id="ans"></a>
+
+### Optional ANS
+
+ANS: boolean
+
+是否开启噪声抑制：
+
+- `true`: 开启噪声抑制。
+- `false`: 不开启噪声抑制。
+
+<a id="encoderconfig"></a>
+
+### Optional encoderConfig
+
+encoderConfig: [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration)|[AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset)
+
+控制音频的编码配置。
+
+你可以通过 [AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#audioencoderconfigurationpreset) 传入 SDK 内置的编码配置；也可以通过传入一个 [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/audioencoderconfiguration) 来自定义音频编码配置。
+
+> Firefox 不支持设置音频编码码率。
+
+<a id="microphoneid"></a>
+
+### Optional microphoneId
+
+microphoneId: string
+
+指定麦克风的设备 ID。
+
+你可以通过 [AgoraRTC.getMicrophones](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#getmicrophones) 来获取当前的麦克风设备列表。

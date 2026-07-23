@@ -130,7 +130,7 @@ description: "查看旁路推流的事件类型，了解关键概念、参数说
 
 ## 2 ConverterUpdatedEvent
 
-当你调用 [`Update`](../media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId) 成功更新一个 Converter 配置时，消息通知服务器会向你的服务器通知推流配置更新事件。
+当你调用 [`Update`](/zh-CN/api-reference/api-ref/media-push/update) 成功更新一个 Converter 配置时，消息通知服务器会向你的服务器通知推流配置更新事件。
 
 `eventType` 为 `2(ConverterUpdatedEvent)`。
 
@@ -352,7 +352,7 @@ description: "查看旁路推流的事件类型，了解关键概念、参数说
     - `updateTs`: Number 型字段。最近一次更新 Converter 配置时的 Unix 时间戳（秒）。
 - `lts`: Number 型字段，该事件在业务服务器上发生的 Unix 时间戳（秒）。
 - `destroyReason`: String 型字段，描述 Converter 被销毁的原因。
-    - `Delete Request`: 业务服务器收到你的 [`Delete`](../media-push/operations/delete-region-v1-projects-appId-rtmp-converters-converterId) 请求。
+    - `Delete Request`: 业务服务器收到你的 [`Delete`](/zh-CN/api-reference/api-ref/media-push/delete) 请求。
     - `Idle Timeout`: 超时退出。
     - `Internal Error`: 内部错误。例如，硬件故障。
 - `fields`: String 型字段。JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask)。用于指定返回 `converter` 字段的子集。在本示例中，`fields` 指定了声网服务器返回 converter 字段中的 `id`，`createTs`，`updateTs` 和 `state` 等字段子集。

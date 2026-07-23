@@ -1,10 +1,19 @@
 ---
-title: "自定义音频采集和渲染"
-description: "自定义音频采集和渲染 API reference."
+title: 自定义音频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_audio_custom_capturenrendering
+  sourcePath: html-docs/rtc/Csharp/API/toc_audio_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_custom_capturenrendering"></a>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## AdjustCustomAudioPlayoutVolume
 
@@ -12,7 +21,7 @@ description: "自定义音频采集和渲染 API reference."
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustCustomAudioPlayoutVolume(uint trackId, int volume);
 ```
 
@@ -20,8 +29,10 @@ public abstract int AdjustCustomAudioPlayoutVolume(uint trackId, int volume);
 
 ### 详情
 
-:::warning[注意]
-在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__seq"></a>
+
+:::caution
+注意： 在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 调用该方法设置音频在本地播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
@@ -30,25 +41,35 @@ public abstract int AdjustCustomAudioPlayoutVolume(uint trackId, int volume);
 
 ### 参数
 
-#### `trackId`
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 CreateCustomAudioTrack 方法返回的自定义音频轨道 ID。
 
-#### `volume`
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
 
 自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## AdjustCustomAudioPublishVolume
 
@@ -56,7 +77,7 @@ public abstract int AdjustCustomAudioPlayoutVolume(uint trackId, int volume);
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
 
-```csharp
+```text
 public abstract int AdjustCustomAudioPublishVolume(uint trackId, int volume);
 ```
 
@@ -64,8 +85,8 @@ public abstract int AdjustCustomAudioPublishVolume(uint trackId, int volume);
 
 ### 详情
 
-:::warning[注意]
-在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
+:::caution
+注意： 在调用该方法前，请确保你已经调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法创建自定义音频采集轨道。
 :::
 
 调用该方法设置音频在远端播放的音量后，如果你想重新调整音量，你可以再次调用该方法。
@@ -74,25 +95,35 @@ public abstract int AdjustCustomAudioPublishVolume(uint trackId, int volume);
 
 ### 参数
 
-#### `trackId`
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。将该参数设置为调用 CreateCustomAudioTrack 方法返回的自定义音频轨道 ID。
 
-#### `volume`
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 自定义采集音频的播放音量，取值范围为 [0,100]。0 表示静音，100 表示原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaengine_createcustomaudiotrack"></a>
+
+<a id="ariaid-title4"></a>
 
 ## CreateCustomAudioTrack
 
@@ -100,7 +131,7 @@ public abstract int AdjustCustomAudioPublishVolume(uint trackId, int volume);
 
 <a id="api_imediaengine_createcustomaudiotrack__prototype"></a>
 
-```csharp
+```text
 public abstract uint CreateCustomAudioTrack(AUDIO_TRACK_TYPE trackType, AudioTrackConfig config);
 ```
 
@@ -108,40 +139,49 @@ public abstract uint CreateCustomAudioTrack(AUDIO_TRACK_TYPE trackType, AudioTra
 
 ### 详情
 
-:::warning[注意]
-该方法需要在加入频道前调用。
+:::caution
+注意： 该方法需要在加入频道前调用。
 :::
 
 如需在频道中发布自定义采集音频，可参考以下步骤：
 
 1. 调用该方法创建音频轨道并获得音频轨道 ID。
-2. 调用 JoinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
-3. 调用 PushAudioFrame 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
+2. 调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 `true`。
+3. 调用 [PushAudioFrame](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
 
 <a id="api_imediaengine_createcustomaudiotrack__parameters"></a>
 
 ### 参数
 
-#### `trackType`
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
 
 自定义音频轨道类型。详见 [AUDIO_TRACK_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiotracktype)。
 
-:::warning[注意]
-如指定 AUDIO_TRACK_DIRECT，则必须在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2。
+:::caution
+注意： 如指定 AUDIO_TRACK_DIRECT，则必须在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2。
 :::
 
-#### `config`
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 自定义音频轨道配置。详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/csharp-windows/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_createcustomaudiotrack__return_values"></a>
 
 ### 返回值
 
 - 方法调用成功，返回音频轨道 ID 作为该音频轨道的唯一标识。
-- 方法调用失败，返回 0xffffffff。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_destroycustomaudiotrack"></a>
+
+<a id="ariaid-title5"></a>
 
 ## DestroyCustomAudioTrack
 
@@ -149,7 +189,7 @@ public abstract uint CreateCustomAudioTrack(AUDIO_TRACK_TYPE trackType, AudioTra
 
 <a id="api_imediaengine_destroycustomaudiotrack__prototype"></a>
 
-```csharp
+```text
 public abstract int DestroyCustomAudioTrack(uint trackId);
 ```
 
@@ -161,18 +201,25 @@ public abstract int DestroyCustomAudioTrack(uint trackId);
 
 ### 参数
 
-#### `trackId`
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
 
 调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_destroycustomaudiotrack__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_setexternalaudiosource2"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SetExternalAudioSource
 
@@ -180,15 +227,17 @@ public abstract int DestroyCustomAudioTrack(uint trackId);
 
 <a id="api_imediaengine_setexternalaudiosource2__prototype"></a>
 
-```csharp
+```text
 public abstract int SetExternalAudioSource(bool enabled, int sampleRate, int channels, bool localPlayback = false, bool publish = true);
 ```
 
 <a id="api_imediaengine_setexternalaudiosource2__detailed_desc"></a>
 
-#### `弃用：`
+<a id="弃用"></a>
 
+:::error[弃用：]
 该方法已废弃，请改用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack)。
+:::
 
 <a id="api_imediaengine_setexternalaudiosource2__timing"></a>
 
@@ -206,43 +255,60 @@ public abstract int SetExternalAudioSource(bool enabled, int sampleRate, int cha
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启使用外部音频源的功能：
 
-- true：开启外部音频源。
-- false：（默认）关闭外部音频源。
+- `true`：开启外部音频源。
+- `false`：（默认）关闭外部音频源。
 
-#### `sampleRate`
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
-外部音频源的采样率 (Hz)，可设置为 `8000`， `16000`， `32000`， `44100` 或 `48000`。
+外部音频源的采样率 (Hz)，可设置为 `8000`，`16000`，`32000`，`44100` 或 `48000`。
 
-#### `channels`
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
-外部音频源的声道数，可设置为 `1` （单声道）或 `2` （双声道）。
+外部音频源的声道数，可设置为 `1`（单声道）或 `2`（双声道）。
 
-#### `localPlayback`
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
 
 是否在本地播放外部音频源：
 
-- true：在本地播放。
-- false：（默认）不在本地播放。
+- `true`：在本地播放。
+- `false`：（默认）不在本地播放。
 
-#### `publish`
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否将音频发布到远端：
 
-- true：（默认）发布到远端。
-- false：不发布到远端。
+- `true`：（默认）发布到远端。
+- `false`：不发布到远端。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_setexternalaudiosource2__return_values"></a>
 
 ### 返回值
 
+<a id="api_imediaengine_setexternalaudiosource2__ul_cff_fnf_3qb"></a>
+
 - 0：方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_pullaudioframe"></a>
+
+<a id="ariaid-title7"></a>
 
 ## PullAudioFrame
 
@@ -250,7 +316,7 @@ public abstract int SetExternalAudioSource(bool enabled, int sampleRate, int cha
 
 <a id="api_imediaengine_pullaudioframe__prototype"></a>
 
-```csharp
+```text
 public abstract int PullAudioFrame(AudioFrame frame);
 ```
 
@@ -264,7 +330,7 @@ public abstract int PullAudioFrame(AudioFrame frame);
 
 该方法需要在加入频道后调用。
 
-调用该方法前，你需要调用 [SetExternalAudioSink](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink) `(enabled: true)` 开启并设置外部渲染。
+调用该方法前，你需要调用 [SetExternalAudioSink](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink)`(enabled: true)` 开启并设置外部渲染。
 
 <a id="api_imediaengine_pullaudioframe__restriction"></a>
 
@@ -281,18 +347,25 @@ public abstract int PullAudioFrame(AudioFrame frame);
 
 ### 参数
 
-#### `frame`
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 指向 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe) 的指针。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pullaudioframe__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_pushaudioframe0"></a>
+
+<a id="ariaid-title8"></a>
 
 ## PushAudioFrame
 
@@ -300,7 +373,7 @@ public abstract int PullAudioFrame(AudioFrame frame);
 
 <a id="api_imediaengine_pushaudioframe0__prototype"></a>
 
-```csharp
+```text
 public abstract int PushAudioFrame(AudioFrame frame, uint trackId = 0);
 ```
 
@@ -314,8 +387,8 @@ public abstract int PushAudioFrame(AudioFrame frame, uint trackId = 0);
 
 调用该方法推送外部音频数据前，请先进行以下操作：
 
-1. 调用 CreateCustomAudioTrack 创建音频轨道并获得音频轨道 ID。
-2. 调用 JoinChannel [2/2] 加入频道时，将 ChannelMediaOptions 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 true。
+1. 调用 [CreateCustomAudioTrack](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 创建音频轨道并获得音频轨道 ID。
+2. 调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/csharp-windows/class-channelmediaoptions) 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 `true`。
 
 <a id="api_imediaengine_pushaudioframe0__restriction"></a>
 
@@ -327,22 +400,31 @@ public abstract int PushAudioFrame(AudioFrame frame, uint trackId = 0);
 
 ### 参数
 
-#### `frame`
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
 
 外部音频帧。详见 [AudioFrame](/zh-CN/api-reference/rtc/csharp-windows/class-audioframe)。
 
-#### `trackId`
+</Parameter>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
 
 音频轨道 ID。如果你要发布自定义的外部音频源，则将该参数设置为你想要发布的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_pushaudioframe0__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaengine_setexternalaudiosink"></a>
+
+<a id="ariaid-title9"></a>
 
 ## SetExternalAudioSink
 
@@ -350,7 +432,7 @@ public abstract int PushAudioFrame(AudioFrame frame, uint trackId = 0);
 
 <a id="api_imediaengine_setexternalaudiosink__prototype"></a>
 
-```csharp
+```text
 public abstract int SetExternalAudioSink(bool enabled, int sampleRate, int channels);
 ```
 
@@ -380,30 +462,40 @@ public abstract int SetExternalAudioSink(bool enabled, int sampleRate, int chann
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 设置是否开启外部音频渲染：
 
-- true：开启外部音频渲染。
-- false：（默认）关闭外部音频渲染。
+- `true`：开启外部音频渲染。
+- `false`：（默认）关闭外部音频渲染。
 
-#### `sampleRate`
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
 
 外部音频渲染的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
 
-#### `channels`
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 外部音频渲染的声道数:
 
 - 1: 单声道
 - 2: 双声道
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaengine_setexternalaudiosink__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)

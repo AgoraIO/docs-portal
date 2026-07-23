@@ -1,10 +1,24 @@
 ---
-title: "视频基础功能"
-description: "视频基础功能 API reference."
+title: 视频基础功能
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_video_basic
+  sourcePath: html-docs/rtc/RN/API/toc_video_basic.html
+  generator: oxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local API Center target was found for
+        https://doc.shengwang.cn/doc/showroom/android/overview/product-overview.
 ---
+
 <a id="toc_video_basic"></a>
 
 <a id="api_irtcengine_disablevideo"></a>
+
+<a id="ariaid-title2"></a>
 
 ## disableVideo
 
@@ -12,7 +26,7 @@ description: "视频基础功能 API reference."
 
 <a id="api_irtcengine_disablevideo__prototype"></a>
 
-```typescript
+```text
 abstract disableVideo(): number;
 ```
 
@@ -20,13 +34,16 @@ abstract disableVideo(): number;
 
 该方法用于关闭视频模块。
 
-:::info[注]
+:::note
+注：
+
 - 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
 :::
 
 <a id="api_irtcengine_disablevideo__timing"></a>
@@ -36,7 +53,7 @@ abstract disableVideo(): number;
 加入频道前后均可调用：
 
 - 如果在加入频道前调用，则开启纯音频模式。
-- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 enableVideo 方法可开启视频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
 
 <a id="api_irtcengine_disablevideo__related"></a>
 
@@ -49,12 +66,15 @@ abstract disableVideo(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalvideo"></a>
+
+<a id="ariaid-title3"></a>
 
 ## enableLocalVideo
 
@@ -62,15 +82,20 @@ abstract disableVideo(): number;
 
 <a id="api_irtcengine_enablelocalvideo__prototype"></a>
 
-```typescript
+```text
 abstract enableLocalVideo(enabled: boolean): number;
 ```
 
 <a id="api_irtcengine_enablelocalvideo__detailed_desc"></a>
 
-该方法禁用或重新启用本地视频采集，不影响接收远端视频。 调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。 如果你在频道内调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo) (false) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo) (true)，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_updatechannelmediaoptions) 并设置 `options` 参数，将本地采集的视频流发布到频道中。 成功禁用或启用本地视频采集后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+该方法禁用或重新启用本地视频采集，不影响接收远端视频。
+调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。
+如果你在频道内调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo)(false) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo)(true)，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_updatechannelmediaoptions) 并设置 `options` 参数，将本地采集的视频流发布到频道中。
+成功禁用或启用本地视频采集后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
 
-:::info[注]
+:::note
+注：
+
 - 该方法在加入频道前后均可调用，但加入频道前调用的设置，在加入频道后才会生效。
 - 该方法设置内部引擎为启用状态，在离开频道后仍然有效。
 :::
@@ -79,24 +104,32 @@ abstract enableLocalVideo(enabled: boolean): number;
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启本地视频采集。
 
 - true:（默认）开启本地视频采集。
 - false: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 false 时，该方法不需要本地有摄像头。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_enablelocalvideo__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablevideo"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableVideo
 
@@ -104,7 +137,7 @@ abstract enableLocalVideo(enabled: boolean): number;
 
 <a id="api_irtcengine_enablevideo__prototype"></a>
 
-```typescript
+```text
 abstract enableVideo(): number;
 ```
 
@@ -112,14 +145,17 @@ abstract enableVideo(): number;
 
 视频模块默认为关闭状态，需要调用该方法启用。如果后续需要关闭视频模块，需调用 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo) 方法。
 
-:::info[注]
+:::note
+注：
+
 - 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
 - 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
-  - enableLocalVideo: 是否启动摄像头采集并创建本地视频流。
-  - muteLocalVideoStream: 是否发布本地视频流。
-  - muteRemoteVideoStream: 是否接收并播放远端视频流。
-  - muteAllRemoteVideoStreams: 是否接收并播放所有远端视频流。
-- 在频道内调用该方法时，会重置 enableLocalVideo、 muteRemoteVideoStream 和 muteAllRemoteVideoStreams 的设置，需谨慎使用。
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
+- 在频道内调用该方法时，会重置 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo)、[muteRemoteVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteremotevideostream) 和 [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 的设置，需谨慎使用。
 :::
 
 <a id="api_irtcengine_enablevideo__timing"></a>
@@ -142,12 +178,15 @@ abstract enableVideo(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvideoencoderconfiguration"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setVideoEncoderConfiguration
 
@@ -155,7 +194,7 @@ abstract enableVideo(): number;
 
 <a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
 
-```typescript
+```text
 abstract setVideoEncoderConfiguration(
     config: VideoEncoderConfiguration
   ): number;
@@ -165,8 +204,10 @@ abstract setVideoEncoderConfiguration(
 
 设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
 
-:::info[注]
-- 该方法的 config 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 config 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+:::note
+注：
+
+- 该方法的 `config` 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 `config` 渲染本地视频，它会自动降低到一个合适的视频参数设置。
 :::
 
 <a id="api_irtcengine_setvideoencoderconfiguration__timing"></a>
@@ -179,21 +220,29 @@ abstract setVideoEncoderConfiguration(
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setVideoEncoderConfigurationEx
 
@@ -201,7 +250,7 @@ abstract setVideoEncoderConfiguration(
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
 
-```typescript
+```text
 abstract setVideoEncoderConfigurationEx(
     config: VideoEncoderConfiguration,
     connection: RtcConnection
@@ -212,8 +261,8 @@ abstract setVideoEncoderConfigurationEx(
 
 设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
 
-:::info[注]
-该方法的 `config` 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 `config` 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+:::note
+注： 该方法的 `config` 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 `config` 渲染本地视频，它会自动降低到一个合适的视频参数设置。
 :::
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__timing"></a>
@@ -226,25 +275,35 @@ abstract setVideoEncoderConfigurationEx(
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/class-videoencoderconfiguration)。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setvideoscenario"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setVideoScenario
 
@@ -252,7 +311,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="api_irtcengine_setvideoscenario__prototype"></a>
 
-```typescript
+```text
 abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 ```
 
@@ -260,48 +319,63 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 
 成功调用该方法设置视频业务场景后，SDK 会基于指定场景启用最佳实践策略，自动调整关键性能指标，进而优化视频体验质量。
 
-:::info[注]
-该方法需要在加入频道前调用。
+:::note
+注： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_irtcengine_setvideoscenario__parameters"></a>
 
 ### 参数
 
-#### `scenarioType`
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
 
-视频业务场景。详见 [VideoApplicationScenarioType](/zh-CN/api-reference/rtc/react-native/enum-videoapplicationscenariotype)。 `ApplicationScenarioMeeting` (1) 适用于会议场景。如果用户已调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (`DisableSimulcastStream`)，会议场景对小流的动态开关不生效。 该枚举值仅适用于主播 vs 主播场景。SDK 会针对该场景启用以下策略：
+视频业务场景。详见 [VideoApplicationScenarioType](/zh-CN/api-reference/rtc/react-native/enum-videoapplicationscenariotype)。
+`ApplicationScenarioMeeting` (1) 适用于会议场景。如果用户已调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (`DisableSimulcastStream`)，会议场景对小流的动态开关不生效。
+该枚举值仅适用于主播 vs 主播场景。SDK 会针对该场景启用以下策略：
 
 - 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
 - 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
+
   - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
-  - 有人订阅大流时，大流会重置为用户最近一次调用 setVideoEncoderConfiguration 时的 VideoEncoderConfiguration 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：960 × 540
     - 视频帧率：15 fps
     - 码率：1000 Kbps
 - 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
+
   - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
-  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode 时的 SimulcastStreamConfig 配置。如果用户此前没有进行设置，则使用如下值：
+  - 有人订阅小流时，开启小流并重置为用户最近一次调用 [setDualStreamMode](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_setdualstreammode2) 时的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/react-native/class-simulcaststreamconfig) 配置。如果用户此前没有进行设置，则使用如下值：
+
     - 视频分辨率：480 × 272
     - 视频帧率：15 fps
     - 码率：500 Kbps
 
-`ApplicationScenario1v1` (2) 适用于[视频 1v1 通话](https://doc.shengwang.cn/doc/one-to-one-live/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。 `ApplicationScenarioLiveshow` (3) 适用于[秀场直播](https://doc.shengwang.cn/doc/showroom/android/overview/product-overview)场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+`ApplicationScenario1v1` (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。`ApplicationScenarioLiveshow` (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/react-native/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvideoscenario__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -1：一般性的错误（未明确归类）。
   - -4：不支持设置视频业务场景。可能的原因是当前使用的是音频 SDK。
-  - -7： IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -7：[IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象尚未初始化。你需要在调用该方法前成功初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview"></a>
+
+<a id="ariaid-title8"></a>
 
 ## startPreviewWithoutSourceType
 
@@ -309,7 +383,7 @@ abstract setVideoScenario(scenarioType: VideoApplicationScenarioType): number;
 
 <a id="api_irtcengine_startpreview__prototype"></a>
 
-```typescript
+```text
 abstract startPreviewWithoutSourceType(): number;
 ```
 
@@ -317,9 +391,11 @@ abstract startPreviewWithoutSourceType(): number;
 
 该方法用于启动本地视频预览。
 
-:::info[注]
+:::note
+注：
+
 - 本地预览默认开启镜像功能。
-- 在离开频道后，本地预览依然处于开启状态。你需要调用 stopPreview 关闭本地预览。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [stopPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_stoppreview2) 关闭本地预览。
 :::
 
 <a id="api_irtcengine_startpreview__timing"></a>
@@ -333,12 +409,15 @@ abstract startPreviewWithoutSourceType(): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startpreview2"></a>
+
+<a id="ariaid-title9"></a>
 
 ## startPreview
 
@@ -346,7 +425,7 @@ abstract startPreviewWithoutSourceType(): number;
 
 <a id="api_irtcengine_startpreview2__prototype"></a>
 
-```typescript
+```text
 abstract startPreview(sourceType?: VideoSourceType): number;
 ```
 
@@ -354,9 +433,11 @@ abstract startPreview(sourceType?: VideoSourceType): number;
 
 该方法用于启动本地视频预览，并指定出现在预览画面中的视频源。
 
-:::info[注]
+:::note
+注：
+
 - 本地预览默认开启镜像功能。
-- 在离开频道后，本地预览依然处于开启状态。你需要调用 stopPreview 关闭本地预览。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [stopPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_stoppreview2) 关闭本地预览。
 :::
 
 <a id="api_irtcengine_startpreview2__timing"></a>
@@ -369,21 +450,29 @@ abstract startPreview(sourceType?: VideoSourceType): number;
 
 ### 参数
 
-#### `sourceType`
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startpreview2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stoppreview2"></a>
+
+<a id="ariaid-title10"></a>
 
 ## stopPreview
 
@@ -391,7 +480,7 @@ abstract startPreview(sourceType?: VideoSourceType): number;
 
 <a id="api_irtcengine_stoppreview2__prototype"></a>
 
-```typescript
+```text
 abstract stopPreview(sourceType?: VideoSourceType): number;
 ```
 
@@ -413,21 +502,29 @@ abstract stopPreview(sourceType?: VideoSourceType): number;
 
 ### 参数
 
-#### `sourceType`
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stoppreview2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onFirstLocalVideoFrame
 
@@ -435,7 +532,7 @@ abstract stopPreview(sourceType?: VideoSourceType): number;
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
 
-```typescript
+```text
 onFirstLocalVideoFrame?(
     source: VideoSourceType,
     width: number,
@@ -452,26 +549,40 @@ onFirstLocalVideoFrame?(
 
 ### 参数
 
-#### `source`
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-#### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
-本地渲染视频的宽 (px)。
+本地渲染视频的宽 (px) 。
 
-#### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 本地渲染视频的高 (px)。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
-从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview) / [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview) 或 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 开启本地视频预览到发生此事件过去的时间。
+从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview)/[startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 [startPreviewWithoutSourceType](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview) 或 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 开启本地视频预览到发生此事件过去的时间。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onFirstLocalVideoFramePublished
 
@@ -479,7 +590,7 @@ onFirstLocalVideoFrame?(
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
 
-```typescript
+```text
 onFirstLocalVideoFramePublished?(
     connection: RtcConnection,
     elapsed: number
@@ -490,26 +601,36 @@ onFirstLocalVideoFramePublished?(
 
 SDK 会在以下三种时机触发该回调：
 
-- 开启本地视频模块的情况下，调用 joinChannel 成功加入频道后。
-- 调用 muteLocalVideoStream (true)，再调用 muteLocalVideoStream (false) 后。
-- 调用 disableVideo，再调用 enableVideo 后。
+- 开启本地视频模块的情况下，调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 成功加入频道后。
+- 调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalvideostream)(true)，再调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalvideostream)(false) 后。
+- 调用 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo)，再调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 后。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onFirstRemoteVideoDecoded
 
@@ -517,7 +638,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
 
-```typescript
+```text
 onFirstRemoteVideoDecoded?(
     connection: RtcConnection,
     remoteUid: number,
@@ -533,38 +654,55 @@ SDK 会在以下时机触发该回调：
 
 - 远端用户首次上线后发送视频。
 - 远端用户视频离线再上线后发送视频。出现这种中断的可能原因包括：
+
   - 远端用户离开频道。
   - 远端用户掉线。
-  - 远端用户调用 disableVideo 方法关闭视频模块。
+  - 远端用户调用 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo) 方法关闭视频模块。
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-#### `width`
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-#### `height`
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 开始到该回调触发的延迟（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
+
+<a id="ariaid-title14"></a>
 
 ## onFirstRemoteVideoFrame
 
@@ -572,7 +710,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
 
-```typescript
+```text
 onFirstRemoteVideoFrame?(
     connection: RtcConnection,
     remoteUid: number,
@@ -584,38 +722,54 @@ onFirstRemoteVideoFrame?(
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
 
-:::info[注]
-该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
+:::note
+注： 该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
 :::
 
 <a id="callback_irtcengineeventhandler_onfirstremotevideoframe__parameters"></a>
 
 ### 参数
 
-#### `remoteUid`
+<ParameterList>
+<a id="remoteuid-1"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户的视频流。
 
-#### `connection`
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `width`
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
 
 视频流宽（px）。
 
-#### `height`
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
 
 视频流高（px）。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 到发生此事件过去的时间（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideoevent"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onLocalVideoEvent
 
@@ -623,15 +777,15 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onlocalvideoevent__prototype"></a>
 
-```typescript
+```text
 onLocalVideoEvent?(source: VideoSourceType, event: LocalVideoEventType): void;
 ```
 
 <a id="callback_irtcengineeventhandler_onlocalvideoevent__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.6.1 版本新增。
+:::
 
 你可以通过该回调获取本地视频事件的原因。
 
@@ -639,18 +793,28 @@ onLocalVideoEvent?(source: VideoSourceType, event: LocalVideoEventType): void;
 
 ### 参数
 
-#### `source`
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
 
 视频源类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-#### `event`
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 本地视频事件类型，详见 [LocalVideoEventType](/zh-CN/api-reference/rtc/react-native/enum-localvideoeventtype)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onLocalVideoStateChanged
 
@@ -658,7 +822,7 @@ onLocalVideoEvent?(source: VideoSourceType, event: LocalVideoEventType): void;
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
 
-```typescript
+```text
 onLocalVideoStateChanged?(
     source: VideoSourceType,
     state: LocalVideoStreamState,
@@ -670,42 +834,57 @@ onLocalVideoStateChanged?(
 
 本地视频的状态发生改变时，SDK 会触发该回调，报告当前的本地视频状态以及状态改变的原因。
 
-:::info[注]
+:::note
+注：
+
 - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
-- 如果视频采集出现异常，正常情况下可以通过该回调的 reason 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 state 为 LocalVideoStreamStateCapturing 或 LocalVideoStreamStateEncoding，且 onLocalVideoStats 回调的 captureFrameRate 为 0。
+- 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `LocalVideoStreamStateCapturing` 或 `LocalVideoStreamStateEncoding`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
 :::
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__timing"></a>
 
 ### 触发时机
 
-- SDK 会在如下情况触发该回调，且 state 为 LocalVideoStreamStateFailed， reason 为 LocalVideoStreamReasonCaptureFailure：
+- SDK 会在如下情况触发该回调，且 `state` 为 LocalVideoStreamStateFailed，`reason` 为 `LocalVideoStreamReasonCaptureFailure`：
+
   - 应用退到后台，系统回收摄像头。
   - Android 9 及以上版本，App 切后台一段时间后，系统会收回相机权限。
-  - Android 6 及以上版本，如果相机被第三方应用占用一段时间后释放，则 SDK 会触发该回调，并报告 onLocalVideoStateChanged (LocalVideoStreamStateCapturing，LocalVideoStreamReasonOk) 回调。
+  - Android 6 及以上版本，如果相机被第三方应用占用一段时间后释放，则 SDK 会触发该回调，并报告 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)(`LocalVideoStreamStateCapturing，LocalVideoStreamReasonOk`) 回调。
   - 摄像头正常启动，但连续 4 秒都没有输出采集的视频。
-- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 LocalVideoStreamStateCapturing， reason 为 LocalVideoStreamReasonCaptureFailure。
+- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 `state` 为 `LocalVideoStreamStateCapturing`，`reason` 为 `LocalVideoStreamReasonCaptureFailure`。
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
 
 ### 参数
 
-#### `source`
+<ParameterList>
+<a id="source-2"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 本地视频状态，详见 [LocalVideoStreamState](/zh-CN/api-reference/rtc/react-native/enum-localvideostreamstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地视频状态改变原因，详见 [LocalVideoStreamReason](/zh-CN/api-reference/rtc/react-native/enum-localvideostreamreason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
+
+<a id="ariaid-title17"></a>
 
 ## onLocalVideoStats
 
@@ -713,7 +892,7 @@ onLocalVideoStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
 
-```typescript
+```text
 onLocalVideoStats?(connection: RtcConnection, stats: LocalVideoStats): void;
 ```
 
@@ -725,18 +904,28 @@ onLocalVideoStats?(connection: RtcConnection, stats: LocalVideoStats): void;
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `stats`
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
 
 本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/react-native/class-localvideostats)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
+
+<a id="ariaid-title18"></a>
 
 ## onRemoteVideoStateChanged
 
@@ -744,7 +933,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
 
-```typescript
+```text
 onRemoteVideoStateChanged?(
     connection: RtcConnection,
     remoteUid: number,
@@ -756,38 +945,54 @@ onRemoteVideoStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__detailed_desc"></a>
 
-:::info[注]
-频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
+:::note
+注： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
 :::
 
 <a id="callback_irtcengineeventhandler_onremotevideostatechanged__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid-2"></a>
+<Parameter name="remoteUid">
 
 发生视频状态改变的远端用户 ID。
 
-#### `state`
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端视频流状态，详见 [RemoteVideoState](/zh-CN/api-reference/rtc/react-native/enum-remotevideostate)。
 
-#### `reason`
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端视频流状态改变的具体原因，详见 [RemoteVideoStateReason](/zh-CN/api-reference/rtc/react-native/enum-remotevideostatereason)。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 方法到发生本事件经历的时间，单位为毫秒。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideostats"></a>
+
+<a id="ariaid-title19"></a>
 
 ## onRemoteVideoStats
 
@@ -795,7 +1000,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
 
-```typescript
+```text
 onRemoteVideoStats?(connection: RtcConnection, stats: RemoteVideoStats): void;
 ```
 
@@ -807,18 +1012,28 @@ onRemoteVideoStats?(connection: RtcConnection, stats: RemoteVideoStats): void;
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-6"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `stats`
+</Parameter>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
 远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/react-native/class-remotevideostats)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
+
+<a id="ariaid-title20"></a>
 
 ## onRemoteVideoTransportStats
 
@@ -826,7 +1041,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
 
-```typescript
+```text
 onRemoteVideoTransportStats?(
     connection: RtcConnection,
     remoteUid: number,
@@ -838,40 +1053,59 @@ onRemoteVideoTransportStats?(
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 该回调已被废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+:::
 
-该回调描述远端用户通话中端到端的网络统计信息，通过视频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。 通话中，当用户收到远端用户/主播发送的视频数据包后，会每 2 秒触发一次该回调。
+该回调描述远端用户通话中端到端的网络统计信息，通过视频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。
+通话中，当用户收到远端用户/主播发送的视频数据包后，会每 2 秒触发一次该回调。
 
 <a id="callback_irtcengineeventhandler_onremotevideotransportstats__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-7"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid-3"></a>
+<Parameter name="remoteUid">
 
 用户 ID，指定是哪个用户/主播的视频包。
 
-#### `delay`
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 视频包从发送端到接收端的延时（毫秒）。
 
-#### `lost`
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 视频包从发送端到接收端的丢包率 (%)。
 
-#### `rxKBitRate`
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 远端视频包的接收码率（Kbps）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
+
+<a id="ariaid-title21"></a>
 
 ## onUserEnableLocalVideo
 
@@ -879,7 +1113,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
 
-```typescript
+```text
 onUserEnableLocalVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -889,12 +1123,14 @@ onUserEnableLocalVideo?(
 
 <a id="callback_irtcengineeventhandler_onuserenablelocalvideo__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-1"></a>
 
+:::error[废弃]
 弃用： 该回调已废弃，请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
 
-- RemoteVideoStateStopped (0) 和 RemoteVideoStateReasonRemoteMuted (5)。
-- RemoteVideoStateDecoding (2) 和 RemoteVideoStateReasonRemoteUnmuted (6)。
+- `RemoteVideoStateStopped`(0) 和 `RemoteVideoStateReasonRemoteMuted`(5)。
+- `RemoteVideoStateDecoding` (2) 和 `RemoteVideoStateReasonRemoteUnmuted`(6)。
+:::
 
 该回调是由远端用户调用 [enableLocalVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablelocalvideo) 方法开启或关闭视频采集触发的。
 
@@ -902,25 +1138,37 @@ onUserEnableLocalVideo?(
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-8"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid-4"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-#### `enabled`
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 远端用户是否启用视频采集：
 
 - true: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
 - false: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
+
+<a id="ariaid-title22"></a>
 
 ## onUserEnableVideo
 
@@ -928,7 +1176,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
 
-```typescript
+```text
 onUserEnableVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -938,29 +1186,42 @@ onUserEnableVideo?(
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__detailed_desc"></a>
 
-关闭视频功能是指该用户只能进行语音通话，不能显示、发送自己的视频，也不能接收、显示别人的视频。 该回调是由远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
+关闭视频功能是指该用户只能进行语音通话，不能显示、发送自己的视频，也不能接收、显示别人的视频。
+该回调是由远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
 
 <a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-9"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid-5"></a>
+<Parameter name="remoteUid">
 
 用户 ID，提示是哪个用户的视频流。
 
-#### `enabled`
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 - true: 该用户已启用视频功能。
 - false: 该用户已关闭视频功能。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermutevideo"></a>
+
+<a id="ariaid-title23"></a>
 
 ## onUserMuteVideo
 
@@ -968,7 +1229,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
 
-```typescript
+```text
 onUserMuteVideo?(
     connection: RtcConnection,
     remoteUid: number,
@@ -980,33 +1241,45 @@ onUserMuteVideo?(
 
 当远端用户调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/react-native/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
 
-:::info[注]
-当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
+:::note
+注： 当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
 :::
 
 <a id="callback_irtcengineeventhandler_onusermutevideo__parameters"></a>
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-10"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `remoteUid`
+</Parameter>
+<a id="remoteuid-6"></a>
+<Parameter name="remoteUid">
 
 远端用户 ID。
 
-#### `muted`
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户是否取消发布视频流：
 
 - true: 取消发布视频流。
 - false: 发布视频流。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
+
+<a id="ariaid-title24"></a>
 
 ## onVideoPublishStateChanged
 
@@ -1014,7 +1287,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
 
-```typescript
+```text
 onVideoPublishStateChanged?(
     source: VideoSourceType,
     channel: string,
@@ -1030,30 +1303,46 @@ onVideoPublishStateChanged?(
 
 ### 参数
 
-#### `channel`
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
 
 频道名。
 
-#### `source`
+</Parameter>
+<a id="source-3"></a>
+<Parameter name="source">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-#### `oldState`
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
 
 之前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-#### `newState`
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
 
 当前的发布状态，详见 [StreamPublishState](/zh-CN/api-reference/rtc/react-native/enum-streampublishstate)。
 
-#### `elapseSinceLastState`
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
 
 两次状态变化时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
+
+<a id="ariaid-title25"></a>
 
 ## onVideoSizeChanged
 
@@ -1061,7 +1350,7 @@ onVideoPublishStateChanged?(
 
 <a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
 
-```typescript
+```text
 onVideoSizeChanged?(
     connection: RtcConnection,
     sourceType: VideoSourceType,
@@ -1078,38 +1367,56 @@ onVideoSizeChanged?(
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection-11"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
 
-#### `sourceType`
+</Parameter>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/react-native/enum-videosourcetype)。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 图像尺寸和旋转信息发生变化的用户 ID（本地用户的 `uid` 为 0。此时视频为本地用户的视频预览）。
 
-#### `width`
+</Parameter>
+<a id="width-3"></a>
+<Parameter name="width">
 
 视频流的宽度（像素）。
 
-#### `height`
+</Parameter>
+<a id="height-3"></a>
+<Parameter name="height">
 
 视频流的高度（像素）。
 
-#### `rotation`
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
 
 旋转信息，取值范围 [0,360)。
 
-:::info[注]
-在 iOS 平台上，该参数值始终为 0。
+:::note
+注： 在 iOS 平台上，该参数值始终为 0。
 :::
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onvideostopped"></a>
+
+<a id="ariaid-title26"></a>
 
 ## onVideoStopped
 
@@ -1117,17 +1424,20 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native
 
 <a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
 
-```typescript
+```text
 onVideoStopped?(): void;
 ```
 
 <a id="callback_irtcengineeventhandler_onvideostopped__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-2"></a>
 
-弃用： 请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 `LocalVideoStreamStateStopped` (0)。
+:::error[废弃]
+弃用： 请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 `LocalVideoStreamStateStopped`(0)。
+:::
 
 App 如需在停止视频后对 `view` 做其他处理（比如显示其他画面），可以在这个回调中进行。
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

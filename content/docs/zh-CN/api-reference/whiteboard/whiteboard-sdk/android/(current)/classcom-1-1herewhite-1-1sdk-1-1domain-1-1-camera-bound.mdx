@@ -1,0 +1,318 @@
+---
+title: com.herewhite.sdk.domain.CameraBound类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_camera_bound
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_camera_bound.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_camera_bound.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.domain.CameraBound类 参考 图示".
+---
+
+类 com.herewhite.sdk.domain.CameraBound 继承关系图:
+
+![com.herewhite.sdk.domain.CameraBound类 参考 图示](/img/api-center-generated/cd718fa1359c-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_camera_bound.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) 类，用于设置视角边界。
+
+视角边界指白板场景内，用户可以移动视角的范围。当视角超出视角边界时，视角会被拉回。
+
+:::info[自从]
+2.5.0
+:::
+
+## 构造及析构函数说明
+
+<a id="ab3be3d1c15ab69dcf067dcba4d5cea00"></a>
+
+### CameraBound()
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.CameraBound.CameraBound(Double *miniScale*, Double *maxScale*)
+
+</ApiSignature>
+
+初始化视角边界。
+
+<ParameterList title="参数">
+<Parameter name="miniScale">
+
+视角边界的最小缩放比例。
+
+</Parameter>
+<Parameter name="maxScale">
+
+视角边界的最大缩放比例。
+
+</Parameter>
+</ParameterList>
+
+## 成员函数说明
+
+<a id="af10a016ee2828d33beb9f63012d4f5d6"></a>
+
+### getCenterX()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.CameraBound.getCenterX()
+
+</ApiSignature>
+
+获取视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+视角边界的中心点在世界坐标系中的 X 轴坐标。
+
+<a id="a55381452b418bd007dace0e3ab42e2a9"></a>
+
+### setCenterX()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setCenterX(Double *centerX*)
+
+</ApiSignature>
+
+设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<ParameterList title="参数">
+<Parameter name="centerX">
+
+视角边界的中心点在世界坐标系的 X 轴坐标。默认值为 0.0。
+
+</Parameter>
+</ParameterList>
+
+<a id="a07258c5ab55fa52c2e358f78e1fdfa0c"></a>
+
+### getCenterY()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.CameraBound.getCenterY()
+
+</ApiSignature>
+
+获取视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+视角边界的中心点在世界坐标系中的 Y 轴坐标。
+
+<a id="aeb79b8c1d7c9471dc8e8e683d27bfc9c"></a>
+
+### setCenterY()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setCenterY(Double *centerY*)
+
+</ApiSignature>
+
+设置视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<ParameterList title="参数">
+<Parameter name="centerY">
+
+视角边界的中心点在世界坐标系中的 Y 轴坐标。默认值为 0.0。
+
+</Parameter>
+</ParameterList>
+
+<a id="a2959924ced012f75c8f7af2e2385ab8a"></a>
+
+### getWidth()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.CameraBound.getWidth()
+
+</ApiSignature>
+
+获取视角边界的宽度。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+视角边界的宽度，单位为像素。
+
+<a id="a9d516aef8b71282fcfe9bf0512767373"></a>
+
+### setWidth()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setWidth(Double *width*)
+
+</ApiSignature>
+
+设置视角边界的宽度。
+
+<ParameterList title="参数">
+<Parameter name="width">
+
+视角边界的宽度，单位为像素。如果不填，则表示无限制。
+
+</Parameter>
+</ParameterList>
+
+<a id="ac9f6023ff209476e7dad1421f32e6099"></a>
+
+### getHeight()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.CameraBound.getHeight()
+
+</ApiSignature>
+
+获取视角边界的宽度。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+视角边界的宽度，单位为像素。
+
+<a id="a9359ae034e2dc924d686604d4d1a42a3"></a>
+
+### setHeight()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setHeight(Double *height*)
+
+</ApiSignature>
+
+设置视角边界的高度。
+
+<ParameterList title="参数">
+<Parameter name="height">
+
+视角边界的高度，单位为像素。如果不填，则表示无限制。
+
+</Parameter>
+</ParameterList>
+
+<a id="a3f86f60880e9462b8a64775972aa6cdf"></a>
+
+### getMaxContentMode()
+
+<ApiSignature>
+
+[ContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config) com.herewhite.sdk.domain.CameraBound.getMaxContentMode()
+
+</ApiSignature>
+
+获取视角边界的缩放模式和最大缩放比例。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+视角边界的缩放模式和最大缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+<a id="ab00400e0704e141608d676e058c7806b"></a>
+
+### setMaxContentMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setMaxContentMode([ContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config) *maxContentMode*)
+
+</ApiSignature>
+
+设置视角边界的缩放模式和最大缩放比例。
+
+<ParameterList title="参数">
+<Parameter name="maxContentMode">
+
+视角边界的最大缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+</Parameter>
+</ParameterList>
+
+<a id="aa40a670d489a70de4b9e903d69e3c465"></a>
+
+### getMinContentMode()
+
+<ApiSignature>
+
+[ContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config) com.herewhite.sdk.domain.CameraBound.getMinContentMode()
+
+</ApiSignature>
+
+获取视角边界的缩放模式和最小缩放比例。
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+视角边界的缩放模式和最小缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+<a id="a4237cf9e50393447e59a23b54e352735"></a>
+
+### setMinContentMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setMinContentMode([ContentModeConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config) *minContentMode*)
+
+</ApiSignature>
+
+设置视角边界的缩放模式和最小缩放比例。
+
+<ParameterList title="参数">
+<Parameter name="minContentMode">
+
+视角边界的缩放模式和最小缩放比例，详见 [`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a68edcda93e00c71ead62c96fb908a507"></a>
+
+### getDamping()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.CameraBound.getDamping()
+
+</ApiSignature>
+
+获取用户将视角移出视角边界时感受到的阻力。
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+用户将视角移出视角边界时感受到的阻力。返回值范围为 [0.0,1.0]。数值越大，用户感受到的阻力越大。
+
+<a id="ac387fa1a63ff3df2a70276c8d1f52353"></a>
+
+### setDamping()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.CameraBound.setDamping(Double *damping*)
+
+</ApiSignature>
+
+设置用户将视角移出视角边界时感受到的阻力。
+
+<ParameterList title="参数">
+<Parameter name="damping">
+
+阻力大小，取值范围为 [0.0,1.0]。取值越大，用户感受到的阻力越大。
+
+- `0.0`: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。
+- `1.0`: 用户完全无法将视角移出视角边界。
+
+</Parameter>
+</ParameterList>

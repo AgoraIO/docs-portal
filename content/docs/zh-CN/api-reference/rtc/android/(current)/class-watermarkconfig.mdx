@@ -1,10 +1,18 @@
 ---
-title: "WatermarkConfig"
-description: "用于配置水印相关信息。"
+title: WatermarkConfig
+description: 用于配置水印相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_watermarkconfig
+  sourcePath: html-docs/rtc/Android/API/class_watermarkconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_watermarkconfig__prototype"></a>
 
-```java
+```text
 public class WatermarkConfig {
   public static final int WATERMARK_TYPE_IMAGE = 0;
   public static final int WATERMARK_TYPE_BUFFER = 1;
@@ -18,41 +26,64 @@ public class WatermarkConfig {
 
 <a id="class_watermarkconfig__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v4.6.0 版本新增。
+:::
 
 <a id="class_watermarkconfig__parameters"></a>
 
 ## 属性
 
-### `WATERMARK_TYPE_IMAGE`
+<ParameterList>
+<a id="watermark_type_image"></a>
+<Parameter name="WATERMARK_TYPE_IMAGE">
 
 指定水印类型为图片。
 
-### `WATERMARK_TYPE_BUFFER`
+</Parameter>
+<a id="watermark_type_buffer"></a>
+<Parameter name="WATERMARK_TYPE_BUFFER">
 
 指定水印类型为内存缓冲区。
 
-### `id`
+</Parameter>
+<a id="id"></a>
+<Parameter name="id">
 
 水印的唯一标识符，通常使用 UUID 生成。
 
-### `type`
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 水印类型：
 
-- WATERMARK_TYPE_IMAGE：图片类型。
-- WATERMARK_TYPE_BUFFER：缓冲区类型。
+- `WATERMARK_TYPE_IMAGE`：图片类型。
+- `WATERMARK_TYPE_BUFFER`：缓冲区类型。
 
-### `buffer`
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 包含水印图像数据的缓冲区。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/android/class-watermarkbuffer)。
 
-### `imageUrl`
+</Parameter>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
 
 用于加载水印图片的 URL 地址。
 
-### `options`
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
 
 定义水印位置和大小的选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/android/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [getImageUrl](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkconfig_getimageurl)
+- [getOptions](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_watermarkconfig_getoptions)
+- [getType](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkconfig_gettype)

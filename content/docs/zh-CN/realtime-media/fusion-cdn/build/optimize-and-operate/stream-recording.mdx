@@ -38,13 +38,13 @@ description: "了解如何在融合 CDN 直播中录制直播流，包括适用�
 
 <TabsContent value="standard">
 
-只需要调用[设置标准录制配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-regions-region) API。调用成功后，会自动为该发布点下的所有直播流开启标准录制。
+只需要调用[设置标准录制配置](/zh-CN/api-reference/api-ref/fusion-cdn/standard-recording-config-update) API。调用成功后，会自动为该发布点下的所有直播流开启标准录制。
 
 </TabsContent>
 
 <TabsContent value="custom">
 
-只需要调用[设置自定义录制配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-custom-regions-region) API。调用成功后，会自动为该发布点下的所有直播流开启自定义录制。
+只需要调用[设置自定义录制配置](/zh-CN/api-reference/api-ref/fusion-cdn/custom-recording-config-update) API。调用成功后，会自动为该发布点下的所有直播流开启自定义录制。
 
 </TabsContent>
 </Tabs>
@@ -73,9 +73,9 @@ description: "了解如何在融合 CDN 直播中录制直播流，包括适用�
 
 对部分直播流进行标准录制需要调用以下 API：
 
-1. 调用[设置标准录制配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-regions-region) API，设置录制文件的格式。
-2. 调用[开启/关闭发布点的标准录制](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-standard-auto) API，将 `enabled` 设为 `false`，关闭对该发布点的录制。
-3. 对于每一条需要录制的直播流，调用[开启单条流的标准录制](/doc/fusion-cdn/restful/streaming/operations/put-v1-projects-appid-fls-entry_points-entry_point-admin-record-standard-regions-region-tasks) API 并设置直播流名称等参数。
+1. 调用[设置标准录制配置](/zh-CN/api-reference/api-ref/fusion-cdn/standard-recording-config-update) API，设置录制文件的格式。
+2. 调用[开启/关闭发布点的标准录制](/zh-CN/api-reference/api-ref/fusion-cdn/standard-recording-auto-update) API，将 `enabled` 设为 `false`，关闭对该发布点的录制。
+3. 对于每一条需要录制的直播流，调用[开启单条流的标准录制](/zh-CN/api-reference/api-ref/fusion-cdn/standard-recording-stream-enable) API 并设置直播流名称等参数。
 
 </TabsContent>
 
@@ -83,9 +83,9 @@ description: "了解如何在融合 CDN 直播中录制直播流，包括适用�
 
 对部分直播流进行自定义录制需要调用以下 API：
 
-1. 调用[设置自定义录制配置](/doc/fusion-cdn/restful/streaming/operations/patch-v1-projects-appid-fls-entry_points-entry_point-settings-record-custom-regions-region) API，设置录制文件的格式和第三方云存储。
-2. 调用[开启/关闭发布点的自定义录制](/doc/fusion-cdn/restful/streaming/operations/enable-disable-customized-recording) API，将 `enabled` 设为 `false`，关闭对该发布点的录制。
-3. 对于每一条需要录制的直播流，调用[开启单条流的自定义录制](/doc/fusion-cdn/restful/streaming/operations/enable-customized-recording-for-a-stream) API 并设置直播流名称等参数。
+1. 调用[设置自定义录制配置](/zh-CN/api-reference/api-ref/fusion-cdn/custom-recording-config-update) API，设置录制文件的格式和第三方云存储。
+2. 调用[开启/关闭发布点的自定义录制](/zh-CN/api-reference/api-ref/fusion-cdn/custom-recording-auto-update) API，将 `enabled` 设为 `false`，关闭对该发布点的录制。
+3. 对于每一条需要录制的直播流，调用[开启单条流的自定义录制](/zh-CN/api-reference/api-ref/fusion-cdn/custom-recording-stream-enable) API 并设置直播流名称等参数。
 
 </TabsContent>
 </Tabs>

@@ -1,10 +1,19 @@
 ---
-title: "数据流 Datastream"
-description: "数据流 Datastream API reference."
+title: 数据流 Datastream
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_datastream
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_datastream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream2"></a>
+
+<a id="ariaid-title2"></a>
 
 ## CreateDataStream
 
@@ -12,7 +21,7 @@ description: "数据流 Datastream API reference."
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int CreateDataStream(int& streamId, const FDataStreamConfig& config);
 ```
@@ -35,25 +44,35 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 数据流设置。详见 [FDataStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-datastreamconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## CreateDataStreamEx
 
@@ -61,7 +80,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int CreateDataStreamEx(int& streamId, const FDataStreamConfig& config, const FRtcConnection& connection);
 ```
@@ -84,29 +103,41 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-1"></a>
+<Parameter name="streamId">
 
 输出参数，创建好的数据流 ID。
 
-#### `config`
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 数据流设置。详见 [FDataStreamConfig](/zh-CN/api-reference/rtc/unreal-blueprint/class-datastreamconfig)。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
 ### 返回值
 
 - 0: 创建数据流成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
+
+<a id="ariaid-title4"></a>
 
 ## SendStreamMessage
 
@@ -114,7 +145,7 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendStreamMessage(int streamId, const FString& data);
 ```
@@ -125,15 +156,21 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以调用该方法向频道内所有用户发送数据流消息。
 
+<a id="api_irtcengine_sendstreammessage__limit"></a>
+
 SDK 对该方法的实现进行了如下限制：
 
 - 频道内每个客户端最多可以同时拥有 5 个数据通道，所有数据通道共用的总发包码率限制为 30 KB/s。
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 
+<a id="api_irtcengine_sendstreammessage__error"></a>
+
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::warning[注意]
-- 该方法需要在加入频道后、且调用 CreateDataStream 创建数据通道之后调用。
+:::caution
+注意：
+
+- 该方法需要在加入频道后、且调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 创建数据通道之后调用。
 - 该方法仅适用于主播用户。
 :::
 
@@ -141,29 +178,41 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-2"></a>
+<Parameter name="streamId">
 
 数据流 ID。可以通过 CreateDataStream 获取。
 
-#### `data`
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 待发送的数据。
 
-#### `length`
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendstreammessage__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_sendstreammessageex"></a>
+
+<a id="ariaid-title5"></a>
 
 ## SendStreamMessageEx
 
@@ -171,7 +220,7 @@ SDK 对该方法的实现进行了如下限制：
 
 <a id="api_irtcengineex_sendstreammessageex__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SendStreamMessageEx(int streamId, const FString& data, const  FRtcConnection& connection);
 ```
@@ -189,8 +238,10 @@ SDK 对该方法的实现进行了如下限制：
 
 成功调用该方法后，远端会触发 [OnStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [OnStreamMessageError](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调。
 
-:::warning[注意]
-- 该方法需要在 JoinChannelEx 后调用。
+:::caution
+注意：
+
+- 该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 后调用。
 - 请确保在调用该方法前，已调用 CreateDataStreamEx 创建了数据通道。
 :::
 
@@ -198,33 +249,47 @@ SDK 对该方法的实现进行了如下限制：
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-3"></a>
+<Parameter name="streamId">
 
 数据流 ID。可以通过 CreateDataStreamEx 获取。
 
-#### `data`
+</Parameter>
+<a id="data-1"></a>
+<Parameter name="data">
 
 待发送的数据。
 
-#### `length`
+</Parameter>
+<a id="length-1"></a>
+<Parameter name="length">
 
 数据长度。
 
-#### `connection`
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_sendstreammessageex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
+
+<a id="ariaid-title6"></a>
 
 ## OnStreamMessage
 
@@ -232,12 +297,14 @@ Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnStreamMessage(int64 uid, int streamId, const FString& data, int length, int64 sentTs);
 ```
 
 <a id="callback_irtcengineeventhandler_onstreammessage__detailed_desc"></a>
+
+### 详情
 
 该回调表示本地用户收到了远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
@@ -245,30 +312,46 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `userId`
+<ParameterList>
+<a id="userid"></a>
+<Parameter name="userId">
 
 发送消息的用户 ID。
 
-#### `streamId`
+</Parameter>
+<a id="streamid-4"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-#### `data`
+</Parameter>
+<a id="data-2"></a>
+<Parameter name="data">
 
 接收到的数据。
 
-#### `length`
+</Parameter>
+<a id="length-2"></a>
+<Parameter name="length">
 
 数据长度，单位为字节。
 
-#### `sentTs`
+</Parameter>
+<a id="sentts"></a>
+<Parameter name="sentTs">
 
 数据流发出的时间。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
+
+<a id="ariaid-title7"></a>
 
 ## OnStreamMessageError
 
@@ -276,12 +359,14 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 	void OnStreamMessageError(int64 uid, int streamId, int code, int missed, int cached);
 ```
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
+
+### 详情
 
 该回调表示本地用户未收到远端用户调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的流消息。
 
@@ -289,25 +374,39 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 ### 参数
 
-#### `userId`
+<ParameterList>
+<a id="userid-1"></a>
+<Parameter name="userId">
 
 发送消息的用户 ID。
 
-#### `streamId`
+</Parameter>
+<a id="streamid-5"></a>
+<Parameter name="streamId">
 
 接收到的消息的 Stream ID。
 
-#### `code`
+</Parameter>
+<a id="code"></a>
+<Parameter name="code">
 
-错误码。详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code)。
+错误码。详见 [错误码](/zh-CN/api-reference/rtc/error-code)。
 
-#### `missed`
+</Parameter>
+<a id="missed"></a>
+<Parameter name="missed">
 
 丢失的消息数量。
 
-#### `cached`
+</Parameter>
+<a id="cached"></a>
+<Parameter name="cached">
 
 数据流中断时，后面缓存的消息数量。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

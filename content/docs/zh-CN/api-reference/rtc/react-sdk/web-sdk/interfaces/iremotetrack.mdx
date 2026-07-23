@@ -1,0 +1,657 @@
+---
+title: Interface IRemoteTrack
+description: 远端轨道对象的基础类，为远端音频轨道 RemoteAudioTrack 和远端视频轨道 RemoteVideoTrack 提供一些公共的方法。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/iremotetrack
+  sourcePath: html-docs/rtc/React/interfaces/iremotetrack.html
+  generator: typedoc
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/react/classes/eventemitter.html.
+---
+
+### Hierarchy
+
+- ITrack
+
+  - IRemoteTrack
+
+    - [IRemoteAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremoteaudiotrack)
+    - [IRemoteVideoTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotevideotrack)
+
+## Index
+
+### Events
+
+- [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)
+- [transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+- [video-state-changed](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_video_state_changed)
+
+### Properties
+
+- [isPlaying](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#isplaying)
+- [trackMediaType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#trackmediatype)
+
+### Methods
+
+- [getListeners](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getlisteners)
+- [getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getmediastreamtrack)
+- [getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getrtcrtptransceiver)
+- [getStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getstats)
+- [getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#gettrackid)
+- [getUserId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#getuserid)
+- [off](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#off)
+- [on](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#on)
+- [once](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#once)
+- [play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#play)
+- [removeAllListeners](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#removealllisteners)
+- [stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#stop)
+
+## Events
+
+<a id="event_first_frame_decoded"></a>
+
+### first-frame-decoded
+
+<ApiSignature>
+
+first-frame-decoded(): void
+
+</ApiSignature>
+
+首帧音频或视频解码时触发。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="event_transceiver_updated_2"></a>
+
+### transceiver-updated
+
+<ApiSignature>
+
+transceiver-updated(transceiver: RTCRtpTransceiver): void
+
+</ApiSignature>
+
+当前轨道的 `RTCRtpTransceiver` 实例更新回调。
+
+<ParameterList title="Parameters">
+<Parameter name="transceiver" type="RTCRtpTransceiver" required>
+
+新的 `RTCRtpTransceiver` 实例。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="event_video_state_changed"></a>
+
+### video-state-changed
+
+<ApiSignature>
+
+video-state-changed(videoState: [VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)): void
+
+</ApiSignature>
+
+视频状态发生变化时触发。
+
+<ParameterList title="Parameters">
+<Parameter name="videoState" required>
+
+<ParameterType>
+
+[VideoState](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/videostate)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="isplaying"></a>
+
+### isPlaying
+
+isPlaying: boolean
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[isPlaying](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#isplaying)
+
+媒体轨道是否正在页面上播放。
+
+- `true`: 媒体轨道正在页面上播放。
+- `false`: 媒体轨道没有在页面上播放。
+
+<a id="trackmediatype"></a>
+
+### trackMediaType
+
+trackMediaType: "audio"|"video"
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[trackMediaType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#trackmediatype)
+
+媒体轨道的类型：
+
+- `"audio"`: 音频轨道。
+- `"video"`: 视频轨道。
+
+## Methods
+
+<a id="getlisteners"></a>
+
+### getListeners
+
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
+
+Inherited from EventEmitter.getListeners
+
+指定一个事件名，获取当前所有监听这个事件的回调函数。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+事件名称。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getmediastreamtrack"></a>
+
+### getMediaStreamTrack
+
+<ApiSignature>
+
+getMediaStreamTrack(): MediaStreamTrack
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getMediaStreamTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getmediastreamtrack)
+
+获取浏览器原生的 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+MediaStreamTrack
+
+</ApiReturnType>
+
+一个 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) 对象。
+
+</ApiReturns>
+
+<a id="getrtcrtptransceiver"></a>
+
+### getRTCRtpTransceiver
+
+<ApiSignature>
+
+getRTCRtpTransceiver(type?: [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)): RTCRtpTransceiver | undefined
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getRTCRtpTransceiver](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#getrtcrtptransceiver)
+
+获取当前轨道的 [RTCRtpTransceiver](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpTransceiver) 实例。
+
+该方法目前主要用于视频流的[端到端加密（Beta）](/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption)。
+
+> 如果 SDK 发生断线重连，当前轨道对应的 `RTCRtpTransceiver` 实例可能会发生变化。你可以通过以下回调来获取新的 `RTCRtpTransceiver` 实例：
+>
+> - 本地轨道：[ILocalTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#event_transceiver_updated)
+> - 远端轨道：[IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)
+
+<ParameterList title="Parameters">
+<Parameter name="type" optional>
+
+<ParameterType>
+
+[StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)
+
+</ParameterType>
+
+视频流的类型。详见 [StreamType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/enums/streamtype)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+RTCRtpTransceiver | undefined
+
+</ApiReturnType>
+
+当前轨道的 `RTCRtpTransceiver` 实例。
+
+</ApiReturns>
+
+<a id="getstats"></a>
+
+### getStats
+
+<ApiSignature>
+
+getStats(): [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) | [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+
+</ApiSignature>
+
+获取远端轨道相关信息。
+
+### deprecated
+
+自 v4.1.0 起废弃，请使用 [AgoraRTCClient.getRemoteVideoStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getremotevideostats) 和 [AgoraRTCClient.getRemoteAudioStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient#getremoteaudiostats)。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) | [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats)
+
+</ApiReturnType>
+
+[RemoteAudioTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remoteaudiotrackstats) 或 [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats) 对象。
+
+</ApiReturns>
+
+<a id="gettrackid"></a>
+
+### getTrackId
+
+<ApiSignature>
+
+getTrackId(): string
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[getTrackId](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#gettrackid)
+
+获取由 SDK 生成的对于媒体轨道来说的唯一 ID。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+媒体轨道 ID。
+
+</ApiReturns>
+
+<a id="getuserid"></a>
+
+### getUserId
+
+<ApiSignature>
+
+getUserId(): [UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+
+</ApiSignature>
+
+获取发布远端轨道的远端用户 ID。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[UID](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#uid)
+
+</ApiReturnType>
+
+远端轨道对应的 `uid`。
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
+
+Inherited from EventEmitter.off
+
+取消一个指定事件的监听。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+指定事件的名称。
+
+</Parameter>
+<Parameter name="listener" type="Function" required>
+
+监听事件时传入的回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="on"></a>
+
+### on
+
+<ApiSignature>
+
+on(event: "track-updated", listener: typeof event_track_updated): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "first-frame-decoded", listener: typeof event_first_frame_decoded): void
+
+</ApiSignature>
+
+<ApiSignature>
+
+on(event: "transceiver-updated", listener: typeof event_transceiver_updated_2): void
+
+</ApiSignature>
+
+Overrides EventEmitter.on
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;track-updated&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_track_updated" required>
+
+详见 [track-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals#event_track_updated)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+Overrides EventEmitter.on
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;first-frame-decoded&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_first_frame_decoded" required>
+
+详见 [first-frame-decoded](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_first_frame_decoded)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+Overrides EventEmitter.on
+
+添加事件监听器。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="&quot;transceiver-updated&quot;" required>
+
+事件名称。
+
+</Parameter>
+<Parameter name="listener" type="typeof event_transceiver_updated_2" required>
+
+详见 [IRemoteTrack.transceiver-updated](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iremotetrack#event_transceiver_updated_2)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="once"></a>
+
+### once
+
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
+
+Inherited from EventEmitter.once
+
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
+
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+指定事件的名称。
+
+</Parameter>
+<Parameter name="listener" type="Function" required>
+
+传入的回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="play"></a>
+
+### play
+
+<ApiSignature>
+
+play(element?: string | HTMLElement): void
+
+</ApiSignature>
+
+Inherited from [ILocalTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack).[play](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ilocaltrack#play)
+
+在页面上播放媒体轨道。
+
+<ParameterList title="Parameters">
+<Parameter name="element" type="string | HTMLElement" optional>
+
+指定一个 DOM 元素，SDK 将在这个元素下创建 `<video>` 元素播放视频轨道，支持 2 种类型：
+
+- `string`: 指定该 DOM 元素的 ID 值。
+- `HTMLElement`: 直接传入一个 DOM 元素对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removealllisteners"></a>
+
+### removeAllListeners
+
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
+
+Inherited from EventEmitter.removeAllListeners
+
+指定一个事件，取消其所有的监听。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
+
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stop"></a>
+
+### stop
+
+<ApiSignature>
+
+stop(): void
+
+</ApiSignature>
+
+Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack).[stop](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/ibuffersourceaudiotrack#stop)
+
+停止播放。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

@@ -1,10 +1,18 @@
 ---
-title: "LocalTranscoderConfiguration"
-description: "用于配置本地客户端的视频合图。"
+title: LocalTranscoderConfiguration
+description: 用于配置本地客户端的视频合图。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_localtranscoderconfiguration
+  sourcePath: html-docs/rtc/Android/API/class_localtranscoderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localtranscoderconfiguration__prototype"></a>
 
-```java
+```text
 public class LocalTranscoderConfiguration {
   public ArrayList<TranscodingVideoStream> transcodingVideoStreams;
   public boolean syncWithPrimaryCamera;
@@ -16,17 +24,26 @@ public class LocalTranscoderConfiguration {
 
 ## 属性
 
-### `transcodingVideoStreams`
+<ParameterList>
+<a id="transcodingvideostreams"></a>
+<Parameter name="transcodingVideoStreams">
 
 本地视频合图所用的视频流。详见 [TranscodingVideoStream](/zh-CN/api-reference/rtc/android/class-transcodingvideostream)。
 
-### `syncWithPrimaryCamera`
+</Parameter>
+<a id="syncwithprimarycamera"></a>
+<Parameter name="syncWithPrimaryCamera">
 
 是否使用主摄像头采集的视频帧的时间戳作为合图后视频帧的时间戳。
 
 - true：（默认）使用采集帧的时间戳作为合图帧的时间戳。
 - false：不使用采集帧的时间戳，而是使用构建合图帧的时间戳。
 
-### `videoOutputConfiguration`
+</Parameter>
+<a id="videooutputconfiguration"></a>
+<Parameter name="videoOutputConfiguration">
 
 本地视频合图后输出的视频流的编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>

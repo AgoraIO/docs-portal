@@ -1,10 +1,19 @@
 ---
-title: "音视频录制"
-description: "音视频录制 API reference."
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_recording
+  sourcePath: html-docs/rtc/Cpp/API/toc_recording.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMediaRecorder
 
@@ -12,7 +21,7 @@ description: "音视频录制 API reference."
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```cpp
+```text
 virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInfo& info) = 0;
 ```
 
@@ -24,20 +33,29 @@ virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInf
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 音视频流信息。详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
 ### 返回值
 
-方法调用成功，返回 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder) 实例。详见 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)。 方法调用失败，返回 NULL。
+方法调用成功，返回 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder) 实例。详见 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)。
+方法调用失败，返回 NULL。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediarecorder"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMediaRecorder
 
@@ -45,7 +63,7 @@ virtual agora_refptr<IMediaRecorder> createMediaRecorder(const RecorderStreamInf
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```cpp
+```text
 virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0;
 ```
 
@@ -57,62 +75,79 @@ virtual int destroyMediaRecorder(agora_refptr<IMediaRecorder> mediaRecorder) = 0
 
 ### 参数
 
-#### `mediaRecorder`
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
 
 要销毁的录制器实例。详见 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
 
+<a id="ariaid-title4"></a>
+
 ## setMediaRecorderObserver
 
-注册 IMediaRecorderObserver 观察器。
+注册 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorderobserver) 观察器。
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```cpp
+```text
 virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 0;
 ```
 
 <a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
-该方法用于设置音视频录制的回调，使应用在录制过程中能够接收录制状态和信息通知。 在调用该方法前，请确保：
+该方法用于设置音视频录制的回调，使应用在录制过程中能够接收录制状态和信息通知。
+在调用该方法前，请确保：
 
-- 已创建并初始化 IRtcEngine 对象。
-- 已使用 createMediaRecorder 创建媒体录制器对象。
+- 已创建并初始化 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 对象。
+- 已使用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 创建媒体录制器对象。
 
 <a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
 
 ### 参数
 
-#### `callback`
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制的回调。详见 [IMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording1"></a>
+
+<a id="ariaid-title5"></a>
 
 ## startAudioRecording [1/3]
 
@@ -120,7 +155,7 @@ virtual int setMediaRecorderObserver(media::IMediaRecorderObserver* callback) = 
 
 <a id="api_irtcengine_startaudiorecording1__prototype"></a>
 
-```cpp
+```text
 virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TYPE quality) = 0;
 ```
 
@@ -128,41 +163,53 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 
 调用该方法后，你可以在通话过程中录制频道中所有用户的音频，并生成包含所有声音的录音文件。录音文件仅支持以下格式：
 
-- .wav：文件体积大，音频保真度高。
-- .aac：文件体积小，音频保真度低。
+- `.wav`：文件体积大，音频保真度高。
+- `.aac`：文件体积小，音频保真度低。
 
-:::info[注]
+:::note
+注：
+
 - 确保你指定的路径存在且可写。
-- 必须在调用 joinChannel 后调用该方法。如果在录音过程中调用了 leaveChannel，录音将自动停止。
+- 必须在调用 `joinChannel` 后调用该方法。如果在录音过程中调用了 `leaveChannel`，录音将自动停止。
 :::
 
 <a id="api_irtcengine_startaudiorecording1__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
-本地保存录音文件的绝对路径，包括文件名和扩展名。例如： C:\\music\\audio.aac。
+本地保存录音文件的绝对路径，包括文件名和扩展名。例如：C:\\music\\audio.aac。
 
-:::info[注]
-确保指定的路径存在且可写。
+:::note
+注： 确保指定的路径存在且可写。
 :::
 
-#### `quality`
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording1__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiorecording2"></a>
+
+<a id="ariaid-title6"></a>
 
 ## startAudioRecording [2/3]
 
@@ -170,7 +217,7 @@ virtual int startAudioRecording(const char* filePath, AUDIO_RECORDING_QUALITY_TY
 
 <a id="api_irtcengine_startaudiorecording2__prototype"></a>
 
-```cpp
+```text
 virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECORDING_QUALITY_TYPE quality) = 0;
 ```
 
@@ -178,28 +225,34 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 
 调用该方法后，你可以在通话过程中在客户端录制频道中所有用户的音频，并生成包含所有声音的录音文件。录音文件仅支持以下格式：
 
-- .wav：文件体积大，音频保真度高。
-- .aac：文件体积小，音频保真度低。
+- `.wav`：文件体积大，音频保真度高。
+- `.aac`：文件体积小，音频保真度低。
 
-:::info[注]
+:::note
+注：
+
 - 请确保在该方法中指定的路径存在且可写。
-- 必须在调用 joinChannel 后调用该方法。如果在录音过程中调用 leaveChannel，录音将自动停止。
-- 为确保录音质量，当 sampleRate 设置为 44.1 kHz 或 48 kHz 时，建议将 quality 设置为 AUDIO_RECORDING_QUALITY_MEDIUM 或 AUDIO_RECORDING_QUALITY_HIGH。
+- 必须在调用 `joinChannel` 后调用该方法。如果在录音过程中调用 `leaveChannel`，录音将自动停止。
+- 为确保录音质量，当 `sampleRate` 设置为 44.1 kHz 或 48 kHz 时，建议将 `quality` 设置为 `AUDIO_RECORDING_QUALITY_MEDIUM` 或 `AUDIO_RECORDING_QUALITY_HIGH`。
 :::
 
 <a id="api_irtcengine_startaudiorecording2__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
 
-本地保存录音文件的绝对路径，包括文件名和扩展名。例如： C:\\music\\audio.aac。
+本地保存录音文件的绝对路径，包括文件名和扩展名。例如：C:\\music\\audio.aac。
 
-:::info[注]
-请确保指定的路径存在且可写。
+:::note
+注： 请确保指定的路径存在且可写。
 :::
 
-#### `sampleRate`
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
 
 录音采样率（Hz）。你可以设置为以下值之一：
 
@@ -208,21 +261,29 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 - 44100
 - 48000
 
-#### `quality`
+</Parameter>
+<a id="quality-1"></a>
+<Parameter name="quality">
 
 录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title7"></a>
 
 ## startAudioRecording [3/3]
 
@@ -230,7 +291,7 @@ virtual int startAudioRecording(const char* filePath, int sampleRate, AUDIO_RECO
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```cpp
+```text
 virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 ```
 
@@ -239,7 +300,7 @@ virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 调用 `startAudioRecording` 方法后，你可以在通话过程中在客户端录制频道中用户的音频，并获取录音文件。录音文件支持以下格式：
 
 - WAV：音频保真度高，文件体积大。例如，在采样率为 32000 Hz 的情况下，10 分钟的录音约为 73 MB。
-- AAC：音频保真度较低，文件体积小。例如，在采样率为 32000 Hz 且录音质量设置为 AUDIO_RECORDING_QUALITY_MEDIUM 的情况下，10 分钟的录音约为 2 MB。
+- AAC：音频保真度较低，文件体积小。例如，在采样率为 32000 Hz 且录音质量设置为 `AUDIO_RECORDING_QUALITY_MEDIUM` 的情况下，10 分钟的录音约为 2 MB。
 
 当用户离开频道时，录音会自动停止。
 
@@ -253,21 +314,29 @@ virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_startrecording"></a>
+
+<a id="ariaid-title8"></a>
 
 ## startRecording
 
@@ -275,20 +344,21 @@ virtual int startAudioRecording(const AudioRecordingConfiguration& config) = 0;
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```cpp
+```text
 virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 ```
 
 <a id="api_imediarecorder_startrecording__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
-该方法用于开始录制音频和视频流，支持同时录制本地和远端用户的音视频流。 在调用该方法前，请确保：
+该方法用于开始录制音频和视频流，支持同时录制本地和远端用户的音视频流。
+在调用该方法前，请确保：
 
-- 已通过 createMediaRecorder 创建录制器实例。
-- 已通过 setMediaRecorderObserver 注册录制器观察者以监听录制回调。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 创建录制器实例。
+- 已通过 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_setmediarecorderobserver) 注册录制器观察者以监听录制回调。
 - 已加入频道。
 
 该方法支持录制以下内容：
@@ -301,10 +371,12 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 - 如果录制过程中视频分辨率发生变化，SDK 会停止录制。
 - 如果音频采样率或声道数发生变化，SDK 会继续录制，并生成一个 MP4 文件。
 
-仅当检测到可录制的音视频流时，录制文件才会成功生成。如果没有可录制的流，或录制过程中流中断超过 5 秒，SDK 会停止录制，并触发 [onRecorderStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#callback_imediarecorderobserver_onrecorderstatechanged) （`RECORDER_STATE_ERROR`， `RECORDER_REASON_NO_STREAM` ）回调。
+仅当检测到可录制的音视频流时，录制文件才会成功生成。如果没有可录制的流，或录制过程中流中断超过 5 秒，SDK 会停止录制，并触发 [onRecorderStateChanged](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#callback_imediarecorderobserver_onrecorderstatechanged)（`RECORDER_STATE_ERROR`，`RECORDER_REASON_NO_STREAM`）回调。
 
-:::info[注]
-- 如果你希望录制本地音视频流，请确保在开始录制前将本地用户角色设置为 broadcaster。
+:::note
+注：
+
+- 如果你希望录制本地音视频流，请确保在开始录制前将本地用户角色设置为 `broadcaster`。
 - 如果你希望录制远端音视频流，请确保在开始录制前已订阅远端用户的流。
 :::
 
@@ -312,27 +384,37 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2：参数无效。请确保：
+
     - 指定的录制文件路径正确且可写。
     - 指定的录制文件格式正确。
     - 最大录制时长设置正确。
-  - -4： IRtcEngine 当前状态不支持该操作。可能是已有录制正在进行，或录制因错误已停止。
-  - -7：调用该方法时 IRtcEngine 尚未初始化。请确保在调用该方法前已创建 IMediaRecorder 对象。
+  - -4：[IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 当前状态不支持该操作。可能是已有录制正在进行，或录制因错误已停止。
+  - -7：调用该方法时 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 尚未初始化。请确保在调用该方法前已创建 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder) 对象。
 
 ### 所属接口类
+
 - [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title9"></a>
 
 ## stopAudioRecording
 
@@ -340,7 +422,7 @@ virtual int startRecording(const media::MediaRecorderConfiguration& config) = 0;
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```cpp
+```text
 virtual int stopAudioRecording() = 0;
 ```
 
@@ -351,12 +433,15 @@ virtual int stopAudioRecording() = 0;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
+
+<a id="ariaid-title10"></a>
 
 ## stopRecording
 
@@ -364,18 +449,18 @@ virtual int stopAudioRecording() = 0;
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```cpp
+```text
 virtual int stopRecording() = 0;
 ```
 
 <a id="api_imediarecorder_stoprecording__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
-:::info[注]
-调用 [startRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_startrecording) 后，必须调用该方法停止录制，否则生成的录制文件可能无法正常播放。
+:::note
+注： 调用 [startRecording](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_startrecording) 后，必须调用该方法停止录制，否则生成的录制文件可能无法正常播放。
 :::
 
 <a id="api_imediarecorder_stoprecording__return_values"></a>
@@ -384,12 +469,16 @@ virtual int stopRecording() = 0;
 
 - 0：方法调用成功。
 - &lt; 0：方法调用失败：
-  - -7：调用该方法时 IRtcEngine 未初始化。请确保在调用该方法前已创建 IMediaRecorder 实例。
+
+  - -7：调用该方法时 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 未初始化。请确保在调用该方法前已创建 [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder) 实例。
 
 ### 所属接口类
+
 - [IMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onRecorderInfoUpdated
 
@@ -397,15 +486,15 @@ virtual int stopRecording() = 0;
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```cpp
+```text
 virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const RecorderInfo& info) = 0;
 ```
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 成功注册该回调并开始音视频流录制后，SDK 会根据 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/class-mediarecorderconfiguration) 中设置的 `recorderInfoUpdateInterval` 的值定期触发该回调，报告当前录制文件的名称、时长和大小。
 
@@ -419,22 +508,34 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `info`
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onRecorderStateChanged
 
@@ -442,15 +543,15 @@ virtual void onRecorderInfoUpdated(const char* channelId, rtc::uid_t uid, const 
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, RecorderState state, RecorderReasonCode reason) = 0;
 ```
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__detailed_desc"></a>
 
-#### `自从`
-
+:::info[自从]
 自 v4.0.0 版本新增。
+:::
 
 当音视频流的录制状态发生变化时，SDK 会触发该回调，报告当前的录制状态及其变化原因。
 
@@ -458,21 +559,33 @@ virtual void onRecorderStateChanged(const char* channelId, rtc::uid_t uid, Recor
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名。
 
-#### `uid`
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前录制状态。详见 [RecorderState](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-recorderstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 录制状态变化的原因。详见 [RecorderReasonCode](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-recorderreasoncode)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaRecorderObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediarecorderobserver)

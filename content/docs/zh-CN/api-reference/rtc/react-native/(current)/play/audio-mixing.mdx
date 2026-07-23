@@ -1,10 +1,19 @@
 ---
-title: "音乐文件播放"
-description: "音乐文件播放 API reference."
+title: 音乐文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_audio_mixing
+  sourcePath: html-docs/rtc/RN/API/toc_audio_mixing.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_mixing"></a>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustAudioMixingPlayoutVolume
 
@@ -12,7 +21,7 @@ description: "音乐文件播放 API reference."
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__prototype"></a>
 
-```typescript
+```text
 abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 ```
 
@@ -28,21 +37,29 @@ abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingplayoutvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustAudioMixingPublishVolume
 
@@ -50,7 +67,7 @@ abstract adjustAudioMixingPlayoutVolume(volume: number): number;
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__prototype"></a>
 
-```typescript
+```text
 abstract adjustAudioMixingPublishVolume(volume: number): number;
 ```
 
@@ -68,21 +85,29 @@ abstract adjustAudioMixingPublishVolume(volume: number): number;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音乐文件音量。取值范围为 [0,100]，100 （默认值）为原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingpublishvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustaudiomixingvolume"></a>
+
+<a id="ariaid-title4"></a>
 
 ## adjustAudioMixingVolume
 
@@ -90,7 +115,7 @@ abstract adjustAudioMixingPublishVolume(volume: number): number;
 
 <a id="api_irtcengine_adjustaudiomixingvolume__prototype"></a>
 
-```typescript
+```text
 abstract adjustAudioMixingVolume(volume: number): number;
 ```
 
@@ -98,8 +123,8 @@ abstract adjustAudioMixingVolume(volume: number): number;
 
 该方法调节混音音乐文件在本端和远端的播放音量大小。
 
-:::info[注]
-调用该方法不会影响 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
+:::note
+注： 调用该方法不会影响 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 方法中设置的音效文件播放音量。
 :::
 
 <a id="api_irtcengine_adjustaudiomixingvolume__timing"></a>
@@ -112,21 +137,29 @@ abstract adjustAudioMixingVolume(volume: number): number;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustaudiomixingvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingcurrentposition"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getAudioMixingCurrentPosition
 
@@ -134,7 +167,7 @@ abstract adjustAudioMixingVolume(volume: number): number;
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__prototype"></a>
 
-```typescript
+```text
 abstract getAudioMixingCurrentPosition(): number;
 ```
 
@@ -142,9 +175,11 @@ abstract getAudioMixingCurrentPosition(): number;
 
 该方法获取当前音乐文件播放进度，单位为毫秒。
 
-:::info[注]
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
-- 如需多次调用 getAudioMixingCurrentPosition，请确保调用间隔大于 500 ms。
+:::note
+注：
+
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+- 如需多次调用 [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition)，请确保调用间隔大于 500 ms。
 :::
 
 <a id="api_irtcengine_getaudiomixingcurrentposition__return_values"></a>
@@ -152,12 +187,15 @@ abstract getAudioMixingCurrentPosition(): number;
 ### 返回值
 
 - ≥ 0: 方法调用成功，返回当前音乐文件播放进度（ms）。0 表示当前音乐文件未开始播放。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingduration"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getAudioMixingDuration
 
@@ -165,7 +203,7 @@ abstract getAudioMixingCurrentPosition(): number;
 
 <a id="api_irtcengine_getaudiomixingduration__prototype"></a>
 
-```typescript
+```text
 abstract getAudioMixingDuration(): number;
 ```
 
@@ -184,12 +222,15 @@ abstract getAudioMixingDuration(): number;
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音乐文件时长。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume"></a>
+
+<a id="ariaid-title7"></a>
 
 ## getAudioMixingPlayoutVolume
 
@@ -197,7 +238,7 @@ abstract getAudioMixingDuration(): number;
 
 <a id="api_irtcengine_getaudiomixingplayoutvolume__prototype"></a>
 
-```typescript
+```text
 abstract getAudioMixingPlayoutVolume(): number;
 ```
 
@@ -216,12 +257,15 @@ abstract getAudioMixingPlayoutVolume(): number;
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiomixingpublishvolume"></a>
+
+<a id="ariaid-title8"></a>
 
 ## getAudioMixingPublishVolume
 
@@ -229,7 +273,7 @@ abstract getAudioMixingPlayoutVolume(): number;
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__prototype"></a>
 
-```typescript
+```text
 abstract getAudioMixingPublishVolume(): number;
 ```
 
@@ -237,8 +281,8 @@ abstract getAudioMixingPublishVolume(): number;
 
 该接口可以方便开发者排查音量相关问题。
 
-:::info[注]
-你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
+:::note
+注： 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiomixingpublishvolume__return_values"></a>
@@ -246,12 +290,15 @@ abstract getAudioMixingPublishVolume(): number;
 ### 返回值
 
 - ≥ 0: 方法调用成功则返回音量值，范围为 [0,100]。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_getaudiotrackcount"></a>
+
+<a id="ariaid-title9"></a>
 
 ## getAudioTrackCount
 
@@ -259,14 +306,16 @@ abstract getAudioMixingPublishVolume(): number;
 
 <a id="api_irtcengine_getaudiotrackcount__prototype"></a>
 
-```typescript
+```text
 abstract getAudioTrackCount(): number;
 ```
 
 <a id="api_irtcengine_getaudiotrackcount__detailed_desc"></a>
 
-:::info[注]
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
+:::note
+注：
+
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到`onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_getaudiotrackcount__return_values"></a>
@@ -274,12 +323,15 @@ abstract getAudioTrackCount(): number;
 ### 返回值
 
 - 方法调用成功时，返回当前音乐文件的音轨索引。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_pauseaudiomixing"></a>
+
+<a id="ariaid-title10"></a>
 
 ## pauseAudioMixing
 
@@ -287,7 +339,7 @@ abstract getAudioTrackCount(): number;
 
 <a id="api_irtcengine_pauseaudiomixing__prototype"></a>
 
-```typescript
+```text
 abstract pauseAudioMixing(): number;
 ```
 
@@ -306,12 +358,15 @@ abstract pauseAudioMixing(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_resumeaudiomixing"></a>
+
+<a id="ariaid-title11"></a>
 
 ## resumeAudioMixing
 
@@ -319,7 +374,7 @@ abstract pauseAudioMixing(): number;
 
 <a id="api_irtcengine_resumeaudiomixing__prototype"></a>
 
-```typescript
+```text
 abstract resumeAudioMixing(): number;
 ```
 
@@ -338,12 +393,15 @@ abstract resumeAudioMixing(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_selectaudiotrack"></a>
+
+<a id="ariaid-title12"></a>
 
 ## selectAudioTrack
 
@@ -351,7 +409,7 @@ abstract resumeAudioMixing(): number;
 
 <a id="api_irtcengine_selectaudiotrack__prototype"></a>
 
-```typescript
+```text
 abstract selectAudioTrack(index: number): number;
 ```
 
@@ -359,30 +417,40 @@ abstract selectAudioTrack(index: number): number;
 
 获取音乐文件的音轨数量后，你可以调用该方法指定任一音轨进行播放。例如，如果一个多音轨文件的不同音轨存放了不同语言的歌曲，则你可以调用该方法设置音乐文件的播放语言。
 
-:::info[注]
+:::note
+注：
+
 - 该方法支持的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件？](/zh-CN/api-reference/faq/product/audio_format)。
-- 你需要在调用 startAudioMixing 并收到 onAudioMixingStateChanged(AudioMixingStatePlaying) 回调后调用该方法。
+- 你需要在调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 并收到 `onAudioMixingStateChanged(AudioMixingStatePlaying)` 回调后调用该方法。
 :::
 
 <a id="api_irtcengine_selectaudiotrack__parameters"></a>
 
 ### 参数
 
-#### `index`
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 指定的播放音轨。取值范围应大于等于 0 且小于 [getAudioTrackCount](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_getaudiotrackcount) 的返回值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_selectaudiotrack__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediaplayer_selectmultiaudiotrack"></a>
+
+<a id="ariaid-title13"></a>
 
 ## selectMultiAudioTrack
 
@@ -390,7 +458,7 @@ abstract selectAudioTrack(index: number): number;
 
 <a id="api_imediaplayer_selectmultiaudiotrack__prototype"></a>
 
-```typescript
+```text
 abstract selectMultiAudioTrack(
     playoutTrackIndex: number,
     publishTrackIndex: number
@@ -399,7 +467,8 @@ abstract selectMultiAudioTrack(
 
 <a id="api_imediaplayer_selectmultiaudiotrack__detailed_desc"></a>
 
-你可以调用该方法分别设置本地播放和发送到远端的音轨。 在调用该方法前，你需要通过 [openWithMediaSource](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/react-native/class-mediasource) 将 `enableMultiAudioTrack` 设为 true。
+你可以调用该方法分别设置本地播放和发送到远端的音轨。
+在调用该方法前，你需要通过 [openWithMediaSource](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 来打开媒体文件，并通过 [MediaSource](/zh-CN/api-reference/rtc/react-native/class-mediasource) 将 `enableMultiAudioTrack` 设为 true。
 
 <a id="api_imediaplayer_selectmultiaudiotrack__scenario"></a>
 
@@ -411,13 +480,20 @@ abstract selectMultiAudioTrack(
 
 ### 参数
 
-#### `playoutTrackIndex`
+<ParameterList>
+<a id="playouttrackindex"></a>
+<Parameter name="playoutTrackIndex">
 
 用于本地播放的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
 
-#### `publishTrackIndex`
+</Parameter>
+<a id="publishtrackindex"></a>
+<Parameter name="publishTrackIndex">
 
 用于发送至远端的音轨索引。你可以通过 [getStreamInfo](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 来获取索引值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectmultiaudiotrack__return_values"></a>
 
@@ -427,9 +503,12 @@ abstract selectMultiAudioTrack(
 - &lt; 0: 方法调用失败。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setaudiomixingdualmonomode"></a>
+
+<a id="ariaid-title14"></a>
 
 ## setAudioMixingDualMonoMode
 
@@ -437,7 +516,7 @@ abstract selectMultiAudioTrack(
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__prototype"></a>
 
-```typescript
+```text
 abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 ```
 
@@ -445,8 +524,8 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 
 在双声道音频文件中，左声道和右声道可以存储不同的音频数据。根据实际需要，你可以设置声道模式为原始模式、左声道模式、右声道模式或混合模式。
 
-:::info[注]
-该方法仅适用于双声道的音频文件。
+:::note
+注： 该方法仅适用于双声道的音频文件。
 :::
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__scenario"></a>
@@ -468,21 +547,29 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 声道模式。详见 [AudioMixingDualMonoMode](/zh-CN/api-reference/rtc/react-native/enum-audiomixingdualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingdualmonomode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingpitch"></a>
+
+<a id="ariaid-title15"></a>
 
 ## setAudioMixingPitch
 
@@ -490,7 +577,7 @@ abstract setAudioMixingDualMonoMode(mode: AudioMixingDualMonoMode): number;
 
 <a id="api_irtcengine_setaudiomixingpitch__prototype"></a>
 
-```typescript
+```text
 abstract setAudioMixingPitch(pitch: number): number;
 ```
 
@@ -508,21 +595,29 @@ abstract setAudioMixingPitch(pitch: number): number;
 
 ### 参数
 
-#### `pitch`
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingpitch__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed"></a>
+
+<a id="ariaid-title16"></a>
 
 ## setAudioMixingPlaybackSpeed
 
@@ -530,7 +625,7 @@ abstract setAudioMixingPitch(pitch: number): number;
 
 <a id="api_irtcengine_setaudiomixingplaybackspeed__prototype"></a>
 
-```typescript
+```text
 abstract setAudioMixingPlaybackSpeed(speed: number): number;
 ```
 
@@ -542,7 +637,9 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 
 ### 参数
 
-#### `speed`
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 音乐文件的播放速度。推荐取值范围为 [50,400]，其中：
 
@@ -550,17 +647,23 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 - 100: 原始速度。
 - 400: 4 倍速。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setaudiomixingplaybackspeed__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudiomixingposition"></a>
+
+<a id="ariaid-title17"></a>
 
 ## setAudioMixingPosition
 
@@ -568,7 +671,7 @@ abstract setAudioMixingPlaybackSpeed(speed: number): number;
 
 <a id="api_irtcengine_setaudiomixingposition__prototype"></a>
 
-```typescript
+```text
 abstract setAudioMixingPosition(pos: number): number;
 ```
 
@@ -586,21 +689,29 @@ abstract setAudioMixingPosition(pos: number): number;
 
 ### 参数
 
-#### `pos`
+<ParameterList>
+<a id="pos"></a>
+<Parameter name="pos">
 
 整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudiomixingposition__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_startaudiomixing2"></a>
+
+<a id="ariaid-title18"></a>
 
 ## startAudioMixing
 
@@ -608,7 +719,7 @@ abstract setAudioMixingPosition(pos: number): number;
 
 <a id="api_irtcengine_startaudiomixing2__prototype"></a>
 
-```typescript
+```text
 abstract startAudioMixing(
     filePath: string,
     loopback: boolean,
@@ -621,13 +732,16 @@ abstract startAudioMixing(
 
 该方法支持播放的音频文件格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/api-reference/faq/product/audio_format)。如果本地音乐文件不存在、文件格式不支持或无法访问在线音乐文件 URL，则 SDK 会报告 AudioMixingReasonCanNotOpen。
 
-:::info[注]
-- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 playEffect。
+:::note
+注：
+
+- 使用该方法播放时长较短的音效文件可能会导致播放失败。如需播放音效文件，建议使用 [playEffect](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3)。
 - 如需多次调用该方法，请确保调用间隔大于 500 ms。
 - 在 Android 平台上调用该方法时，请注意如下事项：
+
   - 请确保使用 Android 4.2 或以上设备，且 API Level 不低于 16。
   - 如果播放的是在线音乐文件，建议不要使用重定向地址。重定向地址在某些机型上可能无法打开。
-  - 如果在模拟器上调用该方法，则请确保音乐文件在 /sdcard/ 目录下，且格式为 MP3。
+  - 如果在模拟器上调用该方法，则请确保音乐文件在 `/sdcard/` 目录下，且格式为 MP3。
 :::
 
 <a id="api_irtcengine_startaudiomixing2__timing"></a>
@@ -640,36 +754,47 @@ abstract startAudioMixing(
 
 ### 相关回调
 
-调用该方法成功播放音乐文件后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStatePlaying`) 回调。播放结束后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`) 回调。
+调用该方法成功播放音乐文件后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)(`AudioMixingStatePlaying`) 回调。播放结束后，本地会触发 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)(`AudioMixingStateStopped`) 回调。
 
 <a id="api_irtcengine_startaudiomixing2__parameters"></a>
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 文件路径：
 
-- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 /assets/ 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 content://com.android.providers.media.documents/document/audio%3A14441。
-- iOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 /var/mobile/Containers/Data/audio.mp4。
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- iOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
 
-#### `loopback`
+</Parameter>
+<a id="loopback"></a>
+<Parameter name="loopback">
 
 是否只在本地播放音乐文件：
 
 - true：只在本地播放音乐文件，只有本地用户能听到音乐。
 - false：将本地播放的音乐文件发布至远端，本地用户和远端用户都能听到音乐。
 
-#### `cycle`
+</Parameter>
+<a id="cycle"></a>
+<Parameter name="cycle">
 
 音乐文件的播放次数。
 
 - &gt; 0: 播放次数。例如，1 表示播放 1 次。
 - -1: 无限循环播放。
 
-#### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音乐文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiomixing2__return_values"></a>
 
@@ -677,17 +802,22 @@ abstract startAudioMixing(
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
+
   - -1：一般性的错误（未明确归类）。
   - -2：设置了无效的参数。
   - -3：SDK 尚未准备好：
+
     - 请检查是否已开启音频模块。
     - 请检查程序集完整性。
-    - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+    - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_stopaudiomixing"></a>
+
+<a id="ariaid-title19"></a>
 
 ## stopAudioMixing
 
@@ -695,7 +825,7 @@ abstract startAudioMixing(
 
 <a id="api_irtcengine_stopaudiomixing__prototype"></a>
 
-```typescript
+```text
 abstract stopAudioMixing(): number;
 ```
 
@@ -714,12 +844,15 @@ abstract stopAudioMixing(): number;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished"></a>
+
+<a id="ariaid-title20"></a>
 
 ## onAudioMixingFinished
 
@@ -727,22 +860,27 @@ abstract stopAudioMixing(): number;
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__prototype"></a>
 
-```typescript
+```text
 onAudioMixingFinished?(): void;
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiomixingfinished__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 弃用： 请改用 [onAudioMixingStateChanged](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged)。
+:::
 
 当调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 播放本地音乐文件结束后，会触发该回调。如果调用 [startAudioMixing](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2) 失败，会返回错误码 `WARN_AUDIO_MIXING_OPEN_ERROR`。
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged"></a>
+
+<a id="ariaid-title21"></a>
 
 ## onAudioMixingPositionChanged
 
@@ -750,7 +888,7 @@ onAudioMixingFinished?(): void;
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__prototype"></a>
 
-```typescript
+```text
 onAudioMixingPositionChanged?(position: number): void;
 ```
 
@@ -762,21 +900,29 @@ onAudioMixingPositionChanged?(position: number): void;
 
 ### 参数
 
-#### `position`
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
 
 音乐文件当前的播放进度，单位为 ms。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_irtcengineeventhandler_onaudiomixingpositionchanged__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged"></a>
+
+<a id="ariaid-title22"></a>
 
 ## onAudioMixingStateChanged
 
@@ -784,7 +930,7 @@ onAudioMixingPositionChanged?(position: number): void;
 
 <a id="callback_irtcengineeventhandler_onaudiomixingstatechanged__prototype"></a>
 
-```typescript
+```text
 onAudioMixingStateChanged?(
     state: AudioMixingStateType,
     reason: AudioMixingReasonType
@@ -799,13 +945,21 @@ onAudioMixingStateChanged?(
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 音乐文件播放状态。详见 [AudioMixingStateType](/zh-CN/api-reference/rtc/react-native/enum-audiomixingstatetype)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 错误码。详见 [AudioMixingReasonType](/zh-CN/api-reference/rtc/react-native/enum-audiomixingreasontype)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)

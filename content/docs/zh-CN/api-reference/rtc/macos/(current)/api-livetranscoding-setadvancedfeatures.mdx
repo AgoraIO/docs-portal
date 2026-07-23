@@ -1,10 +1,18 @@
 ---
 title: "setAdvancedFeatures:opened:"
-description: "启用或禁用带转码的 RTMP 或 RTMPS 推流的高级功能。"
+description: 启用或禁用带转码的 RTMP 或 RTMPS 推流的高级功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/api_livetranscoding_setadvancedfeatures
+  sourcePath: html-docs/rtc/macOS/API/api_livetranscoding_setadvancedfeatures.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_livetranscoding_setadvancedfeatures__prototype"></a>
 
-```objectivec
+```text
 - (void)setAdvancedFeatures:(NSString* _Nonnull)featureName opened:(BOOL)opened NS_SWIFT_NAME(setAdvancedFeatures(_:opened:));
 ```
 
@@ -16,16 +24,27 @@ description: "启用或禁用带转码的 RTMP 或 RTMPS 推流的高级功能�
 
 ## 参数
 
-### `featureName`
+<ParameterList>
+<a id="featurename"></a>
+<Parameter name="featureName">
 
 高级功能名称，包括以下选项：
 
-- LBHQ：低码率高画质的视频高级功能。
-- VEO：优化视频编码器的高级功能。
+- `LBHQ`：低码率高画质的视频高级功能。
+- `VEO`：优化视频编码器的高级功能。
 
-### `opened`
+</Parameter>
+<a id="opened"></a>
+<Parameter name="opened">
 
 是否启用该高级功能：
 
 - YES：启用该高级功能。
 - NO：（默认）禁用该高级功能。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/macos/class-livetranscoding)

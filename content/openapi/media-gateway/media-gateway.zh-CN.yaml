@@ -1327,7 +1327,7 @@ components:
           maximum: 60
         bitrate:
           type: number
-          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](/zh-CN/realtime-media/rtmp-gateway/reference/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
+          description: "视频编码码率，单位为 Kbps。\n- 如果开启小流（提供下面的 `simulcastStream`），则该字段为必填，且要保证值大于 `simulcastStream.bitrate`。\n- 如果未开启小流（不提供 `simulcastStream`），则该字段为选填。如果不填，会跟随源流码率；如果填 `0`，会根据 `width`、`height` 和 `fps` 三个字段的值自动匹配声网推荐的码率，详见[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)。\n    > 在不开启小流的情况下，建议使用自动匹配的码率，无需自行设置码率。"
           minimum: 0
           maximum: 14000
         simulcastStream:

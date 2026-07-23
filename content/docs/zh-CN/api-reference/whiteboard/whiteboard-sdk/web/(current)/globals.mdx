@@ -1,0 +1,5380 @@
+---
+title: Agora Interactive Whiteboard Web SDK API Reference
+description: 视角状态，包含视角为主播模式的用户信息。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/globals
+  sourcePath: html-docs/whiteboard/Web/globals.html
+  generator: typedoc
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/javascript/enums/conversiontype.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/javascript/enums/eventscope.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/javascript/enums/status.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/whiteboard/javascript/whiteboard-sdk/overview/concepts.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/whiteboard/javascript/whiteboard-sdk/overview/concepts.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/whiteboard/javascript/whiteboard-sdk/overview/concepts.
+---
+
+## Index
+
+### Enumerations
+
+- [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/animationmode)
+- [ApplianceNames](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/appliancenames)
+- [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)
+- ConversionType
+- [CurrentStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/currentstep)
+- [CursorNames](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/cursornames)
+- [DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype)
+- [EventPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/eventphase)
+- EventScope
+- [KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)
+- [LoggerReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/loggerreportmode)
+- [LowTaskAnimationInterval](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/lowtaskanimationinterval)
+- [NewPencilWritingQuality](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/newpencilwritingquality)
+- [ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)
+- [OriginCoordType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/origincoordtype)
+- [PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerphase)
+- [PlayerSeekingResult](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerseekingresult)
+- [RenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/renderengine)
+- [RoomErrorLevel](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomerrorlevel)
+- [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase)
+- [ScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scenepathtype)
+- [Scope](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scope)
+- [ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype)
+- [ShapeType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/shapetype)
+- Status
+- [ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)
+
+### Classes
+
+- [InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin)
+- [WhiteWebSdk](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk)
+
+### Interfaces
+
+- [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)
+- [Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor)
+- [CursorAdapter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter)
+- [CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)
+- [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+- [OptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions)
+- [Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)
+- [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)
+- [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)
+- [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)
+- [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+### Type aliases
+
+- [BroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#broadcaststate)
+- [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)
+- [CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+- [CameraState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerastate)
+- [Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+- [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#constructroomparams)
+- [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+- [ConvertedFile](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#convertedfile)
+- [CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription)
+- [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)
+- [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate)
+- [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+- [EventFilter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventfilter)
+- [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventlistener)
+- [EventsListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#eventslistener)
+- [FloatBarOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#floatbaroptions)
+- [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)
+- [HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+- [HotKeyChecker](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeychecker)
+- [HotKeyDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeydescription)
+- [HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent)
+- [HotKeys](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeys)
+- [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+- [ImageInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#imageinformation)
+- [International](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#international)
+- [InvisibleCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblecallbacks)
+- [InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)
+- [InvisiblePluginContext](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisibleplugincontext)
+- [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams)
+- [Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level)
+- [LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#loggeroptions)
+- [MagixEventListenerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#magixeventlisteneroptions)
+- [Margin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#margin)
+- [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+- [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberinformation)
+- [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+- [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
+- [PlayableCheckingParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playablecheckingparams)
+- [PlayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playercallbacks)
+- [PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playerstate)
+- [Plugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugin)
+- [PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)
+- [PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pluginprops)
+- [Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#point)
+- [PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)
+- [PreviewConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#previewconfig)
+- [Progress](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#progress)
+- [RTCClient](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#rtcclient)
+- [ReconnectionOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#reconnectionoptions)
+- [Rectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#rectangle)
+- [RenderPlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#renderplugin)
+- [ReplayRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#replayroomparams)
+- [RoomCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks)
+- [RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roommember)
+- [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomstate)
+- [SceneDefinition](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenedefinition)
+- [SceneMap](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenemap)
+- [SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenestate)
+- [ScenesCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenescallbacks)
+- [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+- [TextFormat](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#textformat)
+- [UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)
+- [UserFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userfonts)
+- [UserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userpayload)
+- [WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)
+- [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration)
+- [WorldViewRectangle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#worldviewrectangle)
+- [WrappedComponents](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#wrappedcomponents)
+
+### Variables
+
+- [AdminObserverId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#adminobserverid)
+- [AkkoVersion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#akkoversion)
+- [DefaultHotKeys](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#defaulthotkeys)
+- [DisplayerConsumer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerconsumer)
+- [PlayerConsumer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playerconsumer)
+- [RoomConsumer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomconsumer)
+- [WhiteVersion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whiteversion)
+
+### Functions
+
+- [contentModeAspectFill](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodeaspectfill)
+- [contentModeAspectFillScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodeaspectfillscale)
+- [contentModeAspectFit](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodeaspectfit)
+- [contentModeAspectFitScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodeaspectfitscale)
+- [contentModeAspectFitSpace](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodeaspectfitspace)
+- [contentModeScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmodescale)
+- [createPlugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#createplugins)
+- [injectCustomStyle](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#injectcustomstyle)
+- [isPlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#isplayer)
+- [isRoom](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#isroom)
+- [setAsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#setasyncmoduleloadmode)
+
+## Type aliases
+
+<a id="broadcaststate"></a>
+
+### BroadcastState
+
+BroadcastState: \{broadcasterId?:number;mode:[ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)\}
+
+- Defined in [index-zh.d.ts\:2951](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2951)
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="broadcasterId" type="number" optional>
+
+主播模式用户的用户 ID。若没有主播模式的用户，则为 `undefined`。
+
+</Parameter>
+<Parameter name="mode" required>
+
+<ParameterType>
+
+[ViewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/viewmode)
+
+</ParameterType>
+
+用户的视角模式。
+
+</Parameter>
+</ParameterList>
+
+<a id="camera"></a>
+
+### Camera
+
+Camera: \{centerX:number;centerY:number;scale:number\}
+
+- Defined in [index-zh.d.ts\:166](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L166)
+
+视角的描述。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="centerX" type="number" required>
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="centerY" type="number" required>
+
+视角的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="scale" type="number" required>
+
+视角的缩放比例。
+
+</Parameter>
+</ParameterList>
+
+<a id="camerabound"></a>
+
+### CameraBound
+
+CameraBound: \{centerX?:number;centerY?:number;damping?:number;height?:number;maxContentMode?:[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode);minContentMode?:[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode);width?:number\}
+
+- Defined in [index-zh.d.ts\:1437](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1437)
+
+`CameraBound` 类型用于设置视角边界。
+
+视角边界是白板上用户可以看见的部分。在视角边界内，用户可以自由移动和缩放视角。视角如果超出了视角边界的范围，会被 SDK 拉回视角边界内。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="centerX" type="number" optional>
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标，默认值是 0.0。
+
+</Parameter>
+<Parameter name="centerY" type="number" optional>
+
+视角边界的中心点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标，默认值是 0.0。
+
+</Parameter>
+<Parameter name="damping" type="number" optional>
+
+用户将视角移出视角边界时感受到的阻力大小。取值范围为 [0.0,1.0]，默认值为 0.75。取值越大，用户感受到的阻力越大。
+
+- `0.0`: 用户将视角移出视角边界时，完全感受不到阻力，但当其手指离开屏幕时，视角会恢复到原位。
+- `1.0`: 用户完全无法将视角移出视角边界。
+
+</Parameter>
+<Parameter name="height" type="number" optional>
+
+视角边界的高度，单位为像素。默认值是 `Infinity`，表示没有限制。
+
+</Parameter>
+<Parameter name="maxContentMode" optional>
+
+<ParameterType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ParameterType>
+
+视角边界的最大缩放比例。如果不填，则表示视角缩放没有上限。
+
+</Parameter>
+<Parameter name="minContentMode" optional>
+
+<ParameterType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ParameterType>
+
+视角边界的最小缩放比例。如果不填，则表示视角缩放没有下限。
+
+</Parameter>
+<Parameter name="width" type="number" optional>
+
+视角边界的宽度，单位为像素。默认值是 `Infinity`，表示没有限制。
+
+</Parameter>
+</ParameterList>
+
+<a id="camerastate"></a>
+
+### CameraState
+
+CameraState: [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera)&\{height:number;width:number\}
+
+- Defined in [index-zh.d.ts\:4781](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4781)
+
+:::info[since]
+2.10.0
+
+视角状态。该类型继承 [Camera](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camera) 且增加以下属性：
+
+- **width**: *number*
+
+  视角的宽。
+- **height**: *number*
+
+  视角的高。
+:::
+
+<a id="color"></a>
+
+### Color
+
+Color: number[]
+
+- Defined in [index-zh.d.ts\:3470](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3470)
+
+颜色，RGB 格式。例如， `[0, 0, 255]` 代表蓝色。
+
+<a id="constructroomparams"></a>
+
+### ConstructRoomParams
+
+ConstructRoomParams: \{cameraBound?:[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound);commandWheelToZoom?:boolean;cursorAdapter?:[CursorAdapter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter)|false;disableAutoResize?:boolean;disableCameraTransform?:boolean;disableOthersSelectingBox?:boolean;invisiblePlugins?:ReadonlyArray&lt;[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)&lt;string,any,any&gt;&gt;;wrappedComponents?:[WrappedComponents](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#wrappedcomponents)\}
+
+- Defined in [index-zh.d.ts\:3905](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3905)
+
+[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room) 对象和 [Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room) 对象共用的参数配置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="cameraBound" optional>
+
+<ParameterType>
+
+[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerabound)
+
+</ParameterType>
+
+设置视角边界，即用户可以自由移动视角的范围。默认值为 `undefined`，表示视角没有任何限制。
+
+</Parameter>
+<Parameter name="commandWheelToZoom" type="boolean" optional>
+
+是否允许按住 `command` 键并滑动鼠标滚轮来放大或缩小白板。
+
+:::info[since]
+2.16.51
+
+- `true`：允许按住 `command` 键并滚动来放大缩小白板。
+- `false`：(默认)不允许按住 `command` 键并滚动来放大缩小白板。
+:::
+
+### note
+
+- 该属性仅使用于 macOS 系统。
+- 该属性不影响 `control` 滚轮的放大缩小行为。
+
+</Parameter>
+<Parameter name="cursorAdapter" optional>
+
+<ParameterType>
+
+[CursorAdapter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter) | false
+
+</ParameterType>
+
+设置鼠标的光标适配器，详见 [《鼠标光标适配器》](https://developer.netless.link/javascript-zh/home/cursor-adapter)。
+ 设置为 `false` 将不再显示内部预设光标 (激光笔、橡皮擦等)。
+
+</Parameter>
+<Parameter name="disableAutoResize" type="boolean" optional>
+
+是否关闭自动适配尺寸功能。
+
+- `true`：关闭自动适配尺寸功能。关闭后，如果视角的尺寸发生改变，必须主动调用 `refreshViewSize` 来保证适配。
+- `false`：（默认）启用自动适配尺寸功能。
+
+</Parameter>
+<Parameter name="disableCameraTransform" type="boolean" optional>
+
+是否禁止用户通过触屏手势或鼠标滚轮移动或缩放调整视角。
+
+- `true`：禁止用户调整视角。
+- `false`：（默认）允许用户调整视角。
+
+该属性不会影响 `setCameraBound`、`moveCamera`、`moveCameraToContain` 方法的使用。
+
+</Parameter>
+<Parameter name="disableOthersSelectingBox" type="boolean" optional>
+
+是否隐藏其他人的鼠标移动到白板组件上时显示的高亮框。
+
+:::info[since]
+2.12.0
+
+- `true`：隐藏其他人的高亮框。
+- `false`：显示其他人的高亮框。
+
+该属性不影响自己的高亮框显示。
+:::
+
+</Parameter>
+<Parameter name="invisiblePlugins" optional>
+
+<ParameterType>
+
+ReadonlyArray & lt;[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass) & lt;string,any,any & gt; & gt;
+
+</ParameterType>
+
+不可见插件列表。
+
+</Parameter>
+<Parameter name="wrappedComponents" optional>
+
+<ParameterType>
+
+[WrappedComponents](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#wrappedcomponents)
+
+</ParameterType>
+
+由 `React.ComponentType` 类型组成的数组，用于自定义包装白板的界面。默认值为 []。
+
+</Parameter>
+</ParameterList>
+
+<a id="contentmode"></a>
+
+### ContentMode
+
+ContentMode: (screenSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size), boundSize:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size))=&gt;number
+
+- Defined in [index-zh.d.ts\:1478](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1478)
+
+实时缩放比例。
+
+### param
+
+屏幕的尺寸。
+
+### param
+
+视角边界的尺寸。
+
+### returns
+
+根据 `screenSize` 和 `boundSize` 计算出来的缩放比例。
+
+#### Type declaration
+
+<ApiSignature>
+
+(screenSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size), boundSize: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)): number
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="screenSize" required>
+
+<ParameterType>
+
+[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="boundSize" required>
+
+<ParameterType>
+
+[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="convertedfile"></a>
+
+### ConvertedFile
+
+ConvertedFile: \{conversionFileUrl:string;height:number;preview?:string;width:number\}
+
+- Defined in [index-zh.d.ts\:5093](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L5093)
+
+转换后生成的图片或动态 PPT 页。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="conversionFileUrl" type="string" required>
+
+图片的 URL 地址或动态 PPT 页的 URI 地址。
+
+</Parameter>
+<Parameter name="height" type="number" required>
+
+图片或动态 PPT 页在白板中的高度，单位为像素。
+
+</Parameter>
+<Parameter name="preview" type="string" optional>
+
+图片或动态 PPT 预览图的 URL 地址。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+图片或动态 PPT 页在白板中的宽度，单位为像素。
+
+</Parameter>
+</ParameterList>
+
+<a id="cursordescription"></a>
+
+### CursorDescription
+
+CursorDescription: \{height:number;width:number;x:number;y:number\}
+
+- Defined in [index-zh.d.ts\:508](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L508)
+
+光标的描述。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="height" type="number" required>
+
+光标图形的高。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+光标图形的宽。
+
+</Parameter>
+<Parameter name="x" type="number" required>
+
+光标指示区域中心的 X 轴坐标（以光标图形的左上角为原点）。
+
+</Parameter>
+<Parameter name="y" type="number" required>
+
+光标指示区域中心的 Y 轴坐标（以光标图形的左上角为原点）。
+
+</Parameter>
+</ParameterList>
+
+<a id="displayercallbacks"></a>
+
+### DisplayerCallbacks
+
+DisplayerCallbacks: \{onBackgroundError:(url:string)=&gt;void;onCatchErrorWhenAppendFrame:(userId:number, error:Error)=&gt;void;onCatchErrorWhenRender:(error:Error)=&gt;void;onEnableWriteNowChanged:(enableWriteNow:boolean)=&gt;void;onHandToolActive:(active:boolean)=&gt;void;onPPTMediaPause:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))=&gt;void;onPPTMediaPlay:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))=&gt;void;onPPTMediaPlayError:(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error:Error)=&gt;void;onRenderDuration:(renderDuration:number)=&gt;void;onSliceChanged:(slice:string)=&gt;void\}
+
+- Defined in [index-zh.d.ts\:1923](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1923)
+
+`Displayer` 对象的回调。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="onBackgroundError" type="(url:string)= &amp; gt;void" required>
+
+加载背景图片失败回调。
+
+<ApiSignature>
+
+(url: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onCatchErrorWhenAppendFrame" type="(userId:number, error:Error)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(userId: number, error: Error): void
+
+</ApiSignature>
+
+同步用户行为发生错误的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="userId" type="number" required>
+
+该用户的用户 ID。
+
+</Parameter>
+<Parameter name="error" type="Error" required>
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onCatchErrorWhenRender" type="(error:Error)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(error: Error): void
+
+</ApiSignature>
+
+渲染发生错误回调。
+
+<ParameterList title="Parameters">
+<Parameter name="error" type="Error" required>
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onEnableWriteNowChanged" type="(enableWriteNow:boolean)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(enableWriteNow: boolean): void
+
+</ApiSignature>
+
+用户的可写权限发生改变的回调。
+
+:::info[since]
+2.10.0
+:::
+
+<ParameterList title="Parameters">
+<Parameter name="enableWriteNow" type="boolean" required>
+
+用户当前是否有写的权限：
+
+- `true`：有写的权限。
+- `false`：没有写的权限。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onHandToolActive" type="(active:boolean)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(active: boolean): void
+
+</ApiSignature>
+
+抓手工具的启用状态发生改变的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="active" type="boolean" required>
+
+抓手工具是否启用:
+
+- `true`：启用。
+- `false`：不启用。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onPPTMediaPause" required>
+
+<ParameterType>
+
+(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))= & gt;void
+
+</ParameterType>
+
+<ApiSignature>
+
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)): void
+
+</ApiSignature>
+
+暂停播放动态 PPT 中媒体文件的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
+
+插入媒体文件的 shape 对象的 ID。
+
+</Parameter>
+<Parameter name="type" required>
+
+<ParameterType>
+
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+
+</ParameterType>
+
+媒体文件的类型。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onPPTMediaPlay" required>
+
+<ParameterType>
+
+(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype))= & gt;void
+
+</ParameterType>
+
+<ApiSignature>
+
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)): void
+
+</ApiSignature>
+
+播放动态 PPT 中媒体文件的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
+
+插入媒体文件的 shape 对象的 ID。
+
+</Parameter>
+<Parameter name="type" required>
+
+<ParameterType>
+
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+
+</ParameterType>
+
+媒体文件的类型。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onPPTMediaPlayError" required>
+
+<ParameterType>
+
+(shapeId:string, type:[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error:Error)= & gt;void
+
+</ParameterType>
+
+<ApiSignature>
+
+(shapeId: string, type: [MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype), error: Error): void
+
+</ApiSignature>
+
+动态 PPT 中的媒体文件播放出错回调。
+
+<ParameterList title="Parameters">
+<Parameter name="shapeId" type="string" required>
+
+插入媒体文件的 shape 对象的 ID。
+
+</Parameter>
+<Parameter name="type" required>
+
+<ParameterType>
+
+[MediaType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#mediatype)
+
+</ParameterType>
+
+媒体文件的类型。
+
+</Parameter>
+<Parameter name="error" type="Error" required>
+
+错误提示。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onRenderDuration" type="(renderDuration:number)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(renderDuration: number): void
+
+</ApiSignature>
+
+渲染时长回调。
+
+<ParameterList title="Parameters">
+<Parameter name="renderDuration" type="number" required>
+
+渲染时长。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onSliceChanged" type="(slice:string)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(slice: string): void
+
+</ApiSignature>
+
+所处分片发生改变的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="slice" type="string" required>
+
+所处分片的 UUID。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="displayerstate"></a>
+
+### DisplayerState
+
+DisplayerState: \{cameraState:[CameraState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerastate);globalState:[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate);roomMembers:ReadonlyArray&lt;[RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roommember)&gt;;sceneState:[SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenestate)\}
+
+- Defined in [index-zh.d.ts\:1899](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1899)
+
+`DisplayerState` 是 `Room` 对象和 `Player` 对象共有的类型。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="cameraState" required>
+
+<ParameterType>
+
+[CameraState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerastate)
+
+</ParameterType>
+
+当前视角的状态。
+
+:::info[since]
+2.10.0
+:::
+
+</Parameter>
+<Parameter name="globalState" required>
+
+<ParameterType>
+
+[GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)
+
+</ParameterType>
+
+房间的全局状态。详见 [GlobalState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalstate)。
+
+</Parameter>
+<Parameter name="roomMembers" required>
+
+<ParameterType>
+
+ReadonlyArray & lt;[RoomMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roommember) & gt;
+
+</ParameterType>
+
+房间内所有互动模式（具有读写权限）用户的状态。
+
+</Parameter>
+<Parameter name="sceneState" required>
+
+<ParameterType>
+
+[SceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#scenestate)
+
+</ParameterType>
+
+当前场景的状态。
+
+</Parameter>
+</ParameterList>
+
+<a id="event"></a>
+
+### Event
+
+Event: \{authorId:number;event:string;payload:any;phase:[EventPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/eventphase);scope:[Scope](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scope)\}
+
+- Defined in [index-zh.d.ts\:24](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L24)
+
+自定义事件。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="authorId" type="number" required>
+
+事件触发者的用户 ID，若是系统事件，则为 AdminObserverId。
+
+</Parameter>
+<Parameter name="event" type="string" required>
+
+自定义事件的名称。
+
+</Parameter>
+<Parameter name="payload" type="any" required>
+
+自定义事件的内容。
+
+</Parameter>
+<Parameter name="phase" required>
+
+<ParameterType>
+
+[EventPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/eventphase)
+
+</ParameterType>
+
+自定义事件的状态。
+
+</Parameter>
+<Parameter name="scope" required>
+
+<ParameterType>
+
+[Scope](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/scope)
+
+</ParameterType>
+
+自定义事件的范围。
+
+</Parameter>
+</ParameterList>
+
+<a id="eventfilter"></a>
+
+### EventFilter
+
+EventFilter: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event))=&gt;boolean
+
+- Defined in [index-zh.d.ts\:4767](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4767)
+
+事件过滤器。
+
+#### Type declaration
+
+<ApiSignature>
+
+(event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)): boolean
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" required>
+
+<ParameterType>
+
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="eventlistener"></a>
+
+### EventListener
+
+EventListener: (event:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event))=&gt;void
+
+- Defined in [index-zh.d.ts\:4737](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4737)
+
+事件监听器。
+
+#### Type declaration
+
+<ApiSignature>
+
+(event: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" required>
+
+<ParameterType>
+
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="eventslistener"></a>
+
+### EventsListener
+
+EventsListener: (events:[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[])=&gt;void
+
+- Defined in [index-zh.d.ts\:4762](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4762)
+
+事件组监听器。
+
+#### Type declaration
+
+<ApiSignature>
+
+(events: [Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="events" required>
+
+<ParameterType>
+
+[Event](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#event)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="floatbaroptions"></a>
+
+### FloatBarOptions
+
+FloatBarOptions: \{colors:ReadonlyArray&lt;Readonly&lt;[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)&gt;&gt;\}
+
+- Defined in [index-zh.d.ts\:530](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L530)
+
+悬浮条的配置参数。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="colors" required>
+
+<ParameterType>
+
+ReadonlyArray & lt;Readonly & lt;[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color) & gt; & gt;
+
+</ParameterType>
+
+悬浮条调色盘的颜色列表。
+
+</Parameter>
+</ParameterList>
+
+<a id="globalstate"></a>
+
+### GlobalState
+
+GlobalState: \{\}
+
+- Defined in [index-zh.d.ts\:3478](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3478)
+
+实时房间的公共全局变量。
+
+房间内所有用户看到的都是相同的 `globalState`，所有互动模式用户都可以读写。修改 `globalState` 属性会立即生效并同步给所有用户。
+
+#### Type declaration
+
+<a id="hotkey"></a>
+
+### HotKey
+
+HotKey: string|[HotKeyDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeydescription)|ReadonlyArray&lt;string|[HotKeyDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeydescription)&gt;|[HotKeyChecker](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeychecker)
+
+- Defined in [index-zh.d.ts\:1061](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1061)
+
+自定义快捷键。
+
+<a id="hotkeychecker"></a>
+
+### HotKeyChecker
+
+HotKeyChecker: (event:[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent), kind:[KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind))=&gt;boolean
+
+- Defined in [index-zh.d.ts\:1141](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1141)
+
+快捷键检查器。
+
+### param
+
+自定义快捷键的事件。
+
+### param
+
+键盘的类型。
+
+### returns
+
+是否为指定的快捷键：
+
+- `true`：是指定的快捷键。
+- `false`：不是指定的快捷键。
+
+#### Type declaration
+
+<ApiSignature>
+
+(event: [HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent), kind: [KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)): boolean
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="event" required>
+
+<ParameterType>
+
+[HotKeyEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeyevent)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="kind" required>
+
+<ParameterType>
+
+[KeyboardKind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/keyboardkind)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="hotkeydescription"></a>
+
+### HotKeyDescription
+
+HotKeyDescription: \{altKey:boolean|null;ctrlKey:boolean|null;key:string;shiftKey:boolean|null\}
+
+- Defined in [index-zh.d.ts\:1066](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1066)
+
+自定义快捷键的描述。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="altKey" type="boolean | null" required>
+
+是否使用 Alt 键。
+
+</Parameter>
+<Parameter name="ctrlKey" type="boolean | null" required>
+
+是否使用 Ctrl 键。
+ C
+
+</Parameter>
+<Parameter name="key" type="string" required>
+
+指定的键。
+
+</Parameter>
+<Parameter name="shiftKey" type="boolean | null" required>
+
+是否使用 Shift 键。
+
+</Parameter>
+</ParameterList>
+
+<a id="hotkeyevent"></a>
+
+### HotKeyEvent
+
+HotKeyEvent: \{altKey:boolean;ctrlKey:boolean;key:string;kind:"KeyDown"|"KeyUp";nativeEvent?:KeyboardEvent;shiftKey:boolean\}
+
+- Defined in [index-zh.d.ts\:1088](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1088)
+
+自定义快捷键的事件。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="altKey" type="boolean" required>
+
+是否使用 Alt 键。
+
+</Parameter>
+<Parameter name="ctrlKey" type="boolean" required>
+
+是否使用 Ctrl 键。
+
+</Parameter>
+<Parameter name="key" type="string" required>
+
+指定的键。
+
+</Parameter>
+<Parameter name="kind" type="&quot;KeyDown&quot; | &quot;KeyUp&quot;" required>
+
+快捷键的事件类型。
+
+- `KeyDown`：键被按下。
+- `KeyUp`：键被松开。
+
+</Parameter>
+<Parameter name="nativeEvent" type="KeyboardEvent" optional>
+
+浏览器的原生事件。
+
+</Parameter>
+<Parameter name="shiftKey" type="boolean" required>
+
+是否使用 Shift 键。
+
+</Parameter>
+</ParameterList>
+
+<a id="hotkeys"></a>
+
+### HotKeys
+
+HotKeys: \{changeToArrow:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToClick:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToEllipse:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToEraser:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToHand:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToLaserPointer:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToPencil:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToRectangle:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToSelector:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToStraight:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);changeToText:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);copy:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);delete:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);duplicate:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);lock:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);paste:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);redo:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey);undo:[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)\}
+
+- Defined in [index-zh.d.ts\:983](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L983)
+
+快捷键对应的效果。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="changeToArrow" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到箭头工具（`arrow`）。
+
+</Parameter>
+<Parameter name="changeToClick" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到点选工具 (`clicker`)。
+
+</Parameter>
+<Parameter name="changeToEllipse" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到椭圆工具（`ellipse`）。
+
+</Parameter>
+<Parameter name="changeToEraser" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到橡皮工具（`eraser`）。
+
+</Parameter>
+<Parameter name="changeToHand" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到抓手工具（`hand`）。
+
+</Parameter>
+<Parameter name="changeToLaserPointer" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到激光笔（`laserPointer`）。
+
+</Parameter>
+<Parameter name="changeToPencil" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到铅笔工具（`pencil`）。
+
+</Parameter>
+<Parameter name="changeToRectangle" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到矩形工具（`rectangle`）。
+
+</Parameter>
+<Parameter name="changeToSelector" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到选择工具（`selector`）。
+
+</Parameter>
+<Parameter name="changeToStraight" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到直线工具（`straight`）。
+
+</Parameter>
+<Parameter name="changeToText" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+切换到文字工具（`text`）。
+
+</Parameter>
+<Parameter name="copy" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+复制。
+
+</Parameter>
+<Parameter name="delete" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+删除。
+
+</Parameter>
+<Parameter name="duplicate" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+复制并粘贴。
+
+</Parameter>
+<Parameter name="lock" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+锁定缩放比例。
+
+</Parameter>
+<Parameter name="paste" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+粘贴。
+
+</Parameter>
+<Parameter name="redo" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+重做。
+
+</Parameter>
+<Parameter name="undo" required>
+
+<ParameterType>
+
+[HotKey](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkey)
+
+</ParameterType>
+
+撤回。
+
+</Parameter>
+</ParameterList>
+
+<a id="identifier"></a>
+
+### Identifier
+
+Identifier: string
+
+- Defined in [index-zh.d.ts\:4431](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4431)
+
+组件插件的唯一标识符。
+
+<a id="imageinformation"></a>
+
+### ImageInformation
+
+ImageInformation: \{centerX:number;centerY:number;crossOrigin?:boolean|string;height:number;locked:boolean;uniformScale?:boolean;uuid:string;width:number\}
+
+- Defined in [index-zh.d.ts\:3518](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3518)
+
+图片的描述。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="centerX" type="number" required>
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="centerY" type="number" required>
+
+图片的中心在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="crossOrigin" type="boolean | string" optional>
+
+是否以跨域方式加载图片。
+
+:::info[since]
+2.16.48
+
+- `true`: （默认）以跨域方式加载图片。
+- `false`: 不以跨域方式加载图片。
+:::
+
+</Parameter>
+<Parameter name="height" type="number" required>
+
+图片的高度，单位为像素。如果图片的高度超出视角的边界，用户将看不到超出部分。
+
+</Parameter>
+<Parameter name="locked" type="boolean" required>
+
+图片是否被锁定。
+
+- `true`: 图片被锁定。锁定一张图片后，用户无法移动或缩放该图片。
+- `false`: 图片没有被锁定。
+
+</Parameter>
+<Parameter name="uniformScale" type="boolean" optional>
+
+图片是否只能等比放缩。
+
+:::info[since]
+2.12.0
+
+- `true`: 只能等比缩放。
+- `false`: 可以非等比缩放。
+:::
+
+</Parameter>
+<Parameter name="uuid" type="string" required>
+
+图片的 UUID，即图片在互动白板实时房间中的唯一标识符。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+图片的宽度，单位为像素。如果图片的宽度超出视角的边界，用户将看不到超出部分。
+
+</Parameter>
+</ParameterList>
+
+<a id="international"></a>
+
+### International
+
+International: \{displayNote?:string;displaySidebar?:string;hideNote?:string;hideSidebar?:string;jumpTo?:string;nextPage?:string;nextStep?:string;pageNumber?:string;prePage?:string;preStep?:string;resetCurrentPPTAnimation?:string;resetCurrentSlideAnimation?:string\}
+
+- Defined in [index-zh.d.ts\:4897](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4897)
+
+`International` 类，用于添加 PPT 预览菜单栏的界面文字。你可以直接传入要展示的文字，例如 “Next”。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="displayNote" type="string" optional>
+
+“显示 PPT 备注”的界面文字。
+
+</Parameter>
+<Parameter name="displaySidebar" type="string" optional>
+
+“显示侧边栏”的界面文字。
+
+</Parameter>
+<Parameter name="hideNote" type="string" optional>
+
+“隐藏 PPT 备注”的界面文字。
+
+</Parameter>
+<Parameter name="hideSidebar" type="string" optional>
+
+“隐藏侧边栏”的界面文字。
+
+</Parameter>
+<Parameter name="jumpTo" type="string" optional>
+
+“跳转到”的界面文字。
+
+</Parameter>
+<Parameter name="nextPage" type="string" optional>
+
+“下一页”的界面文字。
+
+</Parameter>
+<Parameter name="nextStep" type="string" optional>
+
+“下一步”的界面文字。
+
+</Parameter>
+<Parameter name="pageNumber" type="string" optional>
+
+“页码”的界面文字。
+
+</Parameter>
+<Parameter name="prePage" type="string" optional>
+
+“上一页”的界面文字。
+
+</Parameter>
+<Parameter name="preStep" type="string" optional>
+
+“上一步”的界面文字。
+
+</Parameter>
+<Parameter name="resetCurrentPPTAnimation" type="string" optional>
+
+“重置当前 PPT 文件的动画”的界面文字。
+
+</Parameter>
+<Parameter name="resetCurrentSlideAnimation" type="string" optional>
+
+“重置当前 PPT 页的动画”的界面文字。
+
+</Parameter>
+</ParameterList>
+
+<a id="invisiblecallbacks"></a>
+
+### InvisibleCallbacks
+
+InvisibleCallbacks&lt;A&gt;: \{onAttributesUpdate:(attributes:A)=&gt;void;onDestroy:()=&gt;void\}
+
+- Defined in [index-zh.d.ts\:755](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L755)
+
+不可见插件的回调事件。
+
+<ParameterList title="Type parameters">
+<Parameter name="A" type="Object" />
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="onAttributesUpdate" type="(attributes:A)= &amp; gt;void" required>
+
+<ApiSignature>
+
+(attributes: A): void
+
+</ApiSignature>
+
+不可见插件属性更新的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="attributes" type="A" required>
+
+更新的插件属性。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onDestroy" type="()= &amp; gt;void" required>
+
+<ApiSignature>
+
+(): void
+
+</ApiSignature>
+
+删除不可见插件的回调。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="invisiblepluginclass"></a>
+
+### InvisiblePluginClass
+
+InvisiblePluginClass&lt;K, A, P&gt;: \{kind:K;onCreate?:(plugin:P)=&gt;void;onDestroy?:(plugin:P)=&gt;void\}
+
+- Defined in [index-zh.d.ts\:731](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L731)
+
+不可见插件。
+
+<ParameterList title="Type parameters">
+<Parameter name="K" type="string" />
+<Parameter name="A" type="Object" />
+<Parameter name="P">
+
+<ParameterType>
+
+[InvisiblePlugin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/invisibleplugin) & lt;A & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="kind" type="K" required>
+
+插件的类型。
+
+</Parameter>
+<Parameter name="onCreate" type="(plugin:P)= &amp; gt;void" optional>
+
+<ApiSignature>
+
+(plugin: P): void
+
+</ApiSignature>
+
+创建插件对象的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" type="P" required>
+
+创建的插件对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onDestroy" type="(plugin:P)= &amp; gt;void" optional>
+
+<ApiSignature>
+
+(plugin: P): void
+
+</ApiSignature>
+
+删除插件对象的回调。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" type="P" required>
+
+删除的插件对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="invisibleplugincontext"></a>
+
+### InvisiblePluginContext
+
+InvisiblePluginContext: \{displayer:[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer);kind:string\}
+
+- Defined in [index-zh.d.ts\:716](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L716)
+
+不可见插件的上下文。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="displayer" required>
+
+<ParameterType>
+
+[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+
+</ParameterType>
+
+不可见插件的 `Displayer` 对象。
+
+</Parameter>
+<Parameter name="kind" type="string" required>
+
+不可见插件的类型。
+
+</Parameter>
+</ParameterList>
+
+<a id="joinroomparams"></a>
+
+### JoinRoomParams
+
+JoinRoomParams: [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#constructroomparams)&\{disableDeviceInputs?:boolean;disableEraseImage?:boolean;disableMagixEventDispatchLimit?:boolean;disableNewPencil?:boolean;disablePencilWrittingLimitFrequency?:boolean;enableDrawPoint?:boolean;floatBar?:boolean|Partial&lt;[FloatBarOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#floatbaroptions)&gt;;hotKeys?:Partial&lt;[HotKeys](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeys)&gt;;isWritable?:boolean;newPencilWritingQuality?:[NewPencilWritingQuality](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/newpencilwritingquality);optimizeOptions?:[OptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions);region?:string;rejectWhenReadonlyErrorLevel?:[RoomErrorLevel](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomerrorlevel);roomToken:string;uid:string;userPayload?:\{\};uuid:string\}
+
+- Defined in [index-zh.d.ts\:4100](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4100)
+
+[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room) 对象的参数设置，用于加入互动白板实时房间。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#constructroomparams) 且包含以下属性：
+
+- **uuid**: *string*
+
+  房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该属性。
+- **uid**: *string*
+
+  用户的 UID，即用户的唯一标识符，字符串格式，不能超过 1024 字节。请确保同一房间内每个用户 `uid` 的唯一性。
+- **region?**: *string*
+
+  连接的数据中心，支持传入以下值：
+
+  | `region` | 数据中心 | 服务区 |
+  | --- | --- | --- |
+  | `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+  | `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+  | `in-mum` | 印度孟买 | 印度 |
+  | `eu` | 欧洲（法兰克福） | 欧洲 |
+  | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+  **Note**
+
+  - 该属性必须与要加入的互动白板实时房间所在数据中心一致，否则无法加入房间。
+  - 该属性与 [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration) 中的 `region` 作用相同，二者只需要设置其中一个。如果同时设置，该属性会覆盖 `WhiteWebSdkConfiguration` 中的 `region`。
+- **roomToken**: *string*
+
+  房间的 Room Token，用于加入房间时的用户鉴权。详见互动白板 Token 概述。
+- **userPayload?**: *\{[key: string]: any;\}*
+
+  自定义用户信息。该属性可以是任意类型的数据结构。
+
+  房间内其他用户可以通过如下代码读取特定用户在加入房间时设置的 `userPayload`：
+
+### example
+
+```javascript
+for (var member of room.state.roomMembers) {
+    // 读取房间内某个用户的 userPayload 字段
+    console.log(member.userPayload);
+}
+```
+
+- **isWritable?**: *boolean*
+
+  用户在房间中是否为互动模式（具有读写权限）。
+
+  - `true`： （默认）互动模式，即具有读写权限。
+  - `false`：订阅模式，即具有只读权限。
+
+    该方法与 `disableDeviceInputs` 的区别详见 [《只读模式｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E5%8F%AA%E8%AF%BB%E6%A8%A1%E5%BC%8F)。
+- **disableDeviceInputs?**: *boolean*
+
+  是否禁止用户通过鼠标、键盘、触摸屏幕操作白板工具。
+
+  - `true`： 禁止用户操作白板工具。
+  - `false`：（默认）允许用户操作白板工具。
+
+    该方法与 `isWritable` 的区别详见[《禁止设备操作｜禁止操作》](https://developer.netless.link/javascript-zh/home/disable#%E7%A6%81%E6%AD%A2%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C)。
+- **enableDrawPoint?**: *boolean*
+
+  是否允许使用铅笔工具（`pencil`）画点。
+
+  - `true`： 允许。
+  - `false`：（默认）不允许。此时使用铅笔工具单击白板绘制的点不会保留在屏幕上。
+
+  **Note**
+
+  该属性只有在 `disableNewPencil` 设为 `false` 时生效。
+- **disableNewPencil?**: *boolean*
+
+  **自从：2.12.5**
+
+  关闭/开启新铅笔工具：
+
+  - `true`:（默认）关闭新铅笔工具。
+  - `false`: 开启新铅笔工具。开启后，SDK 会对铅笔工具（`pencil`）应用新版笔迹平滑算法，使书写笔迹更加流畅自然，并带有笔锋效果。
+
+  **Note**
+
+  为正常显示笔迹，在开启新铅笔前，请确保该房间内的所有用户使用如下 SDK：
+
+  - Android SDK 2.12.3 或更高版本
+  - iOS SDK 2.12.3 或更高版本
+  - Web SDK 2.12.5 或更高版本
+- **disableMagixEventDispatchLimit?**: *boolean*
+
+  **自从：2.15.0**
+
+  是否关闭发送自定义事件的频率限制：
+
+  - `true`：关闭频率限制。可能会出现卡顿。
+  - `false`：（默认）开启频率限制。开启后，SDK 每隔 75 ms 发送一个事件。
+- **disableEraseImage?**: *boolean*
+
+  是否禁止橡皮擦除白板上的图片：
+
+  - `true`： 禁止擦除。
+  - `false`：（默认）允许擦除。
+- **disablePencilWrittingLimitFrequency**?: *boolean*
+
+  **自从：2.15.2**
+
+  使用 `pencil` 书写时，是否关闭笔迹同步的频率限制：
+
+  - `true`：关闭频率限制。笔迹会立即同步，但是可能会增加 CPU 性能消耗。
+  - `false`：（默认）开启频率限制。笔迹同步会有轻微延迟，但是可以降低 CPU 性能消耗。
+- **floatBar?**: *boolean | Partial*
+
+  当 `currentApplianceName` 设为 `selector` 或 `text` 时，是否出现浮动条：
+
+  - `true`： 出现浮动条。
+  - `false`：（默认）不出现浮动条。
+- **hotKeys?**: *Partial*
+
+  添加自定义快捷键。若不传，则使用**默认快捷键键**方案，具体如下：
+
+  | 键盘按键 | 效果 |
+  | --- | --- |
+  | Backspace 或 Delete | 删除所选对象 |
+  | Shift | 锁定放缩长宽比，令其等比放缩 |
+  | Ctrl + Z 或 Command + Z | 撤回 |
+  | Ctrl + Y 或 Command + Y | 重做 |
+  | Ctrl + C 或 Command + C | 复制 |
+  | Ctrl + V 或 Command + V | 粘贴 |
+
+  如果你想关闭快捷键功能，可以将该属性的其值设为 `{}`。
+- **rejectWhenReadonlyErrorLevel?**: *RoomErrorLevel*
+
+  没有可写权限的用户进行写操作时，SDK 的应对方式。
+- **optimizeOptions?**: **OptimizeOptions**
+
+:::info[since]
+2.16.48
+
+白板绘制性能优化选项。详见 [OptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/optimizeoptions)。
+:::
+
+<a id="level"></a>
+
+### Level
+
+Level: "debug"|"info"|"warn"|"error"
+
+- Defined in [index-zh.d.ts\:112](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L112)
+
+日志等级。
+
+:::info[since]
+2.11.8
+
+日志级别由高到低的排序为 `error`，`warn`，`info`，和 `debug`。选择一个级别，你就可以看到不低于该级别的所有日志信息。
+ 例如，选择 `info` 级别，就可以看到 `error`、`warn`、`info` 级别的所有日志信息。
+
+- `error`：报错日志，表明出现了直接导致 SDK 无法正常运行的错误。
+- `warn`：警告日志。当传入的参数不符合 SDK 要求时，SDK 会自动调整并发出警告。如果调用废弃 API，SDK 不会发出警告信息。
+- `info`：信息日志，主要为连接状态。
+- `debug`：调试日志，最详细的日志，目前内容与 `info` 一致。
+:::
+
+<a id="loggeroptions"></a>
+
+### LoggerOptions
+
+LoggerOptions: \{printLevelMask?:[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level);reportDebugLogMode?:[LoggerReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/loggerreportmode);reportLevelMask?:[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level);reportQualityMode?:[LoggerReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/loggerreportmode)\}
+
+- Defined in [index-zh.d.ts\:774](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L774)
+
+日志的配置参数。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="printLevelMask" optional>
+
+<ParameterType>
+
+[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level)
+
+</ParameterType>
+
+日志打印等级，详见 [Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level)。默认等级为 `info`。
+
+</Parameter>
+<Parameter name="reportDebugLogMode" optional>
+
+<ParameterType>
+
+[LoggerReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/loggerreportmode)
+
+</ParameterType>
+
+SDK 上报 `debug` 等级日志的模式。
+
+</Parameter>
+<Parameter name="reportLevelMask" optional>
+
+<ParameterType>
+
+[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level)
+
+</ParameterType>
+
+日志上报等级，详见 [Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#level)。
+
+</Parameter>
+<Parameter name="reportQualityMode" optional>
+
+<ParameterType>
+
+[LoggerReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/loggerreportmode)
+
+</ParameterType>
+
+SDK 上报连接质量数据的模式。
+
+</Parameter>
+</ParameterList>
+
+<a id="magixeventlisteneroptions"></a>
+
+### MagixEventListenerOptions
+
+MagixEventListenerOptions: \{fireInterval?:number;fireSelfEventAfterCommit?:boolean\}
+
+- Defined in [index-zh.d.ts\:4744](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4744)
+
+自定义事件监听选项。
+
+:::info[since]
+v2.15.2
+:::
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="fireInterval" type="number" optional>
+
+SDK 触发自定义事件回调的间隔，单位为毫秒，默认值为 500。取值必须 ≥ 500。
+
+SDK 会根据该参数的值周期性触发自定义事件回调。
+
+</Parameter>
+<Parameter name="fireSelfEventAfterCommit" type="boolean" optional>
+
+设置是否待服务器确认 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#dispatchmagixevent) 方法调用成功后再发送事件回调：
+
+- true：调用 [dispatchMagixEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#dispatchmagixevent) 后立即触发事件回调。
+- false：（默认）待服务器确认事件发送成功后再发送事件回调。
+
+</Parameter>
+</ParameterList>
+
+<a id="margin"></a>
+
+### Margin
+
+Margin: \{bottom:number;left:number;right:number;top:number\}
+
+- Defined in [index-zh.d.ts\:4820](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4820)
+
+空白区域的设置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="bottom" type="number" required>
+
+下方的空白，单位为像素。
+
+</Parameter>
+<Parameter name="left" type="number" required>
+
+左边的空白，单位为像素。
+
+</Parameter>
+<Parameter name="right" type="number" required>
+
+右边的空白，单位为像素。
+
+</Parameter>
+<Parameter name="top" type="number" required>
+
+上方的空白，单位为像素。
+
+</Parameter>
+</ParameterList>
+
+<a id="mediatype"></a>
+
+### MediaType
+
+MediaType: "video"|"audio"
+
+- Defined in [index-zh.d.ts\:4791](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4791)
+
+媒体文件的类型。
+
+- `video`：视频文件。
+- `audio`：音频文件。
+
+<a id="memberinformation"></a>
+
+### MemberInformation
+
+MemberInformation: \{id:number;payload:any;session:string\}
+
+- Defined in [index-zh.d.ts\:4536](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4536)
+
+自定义用户信息。
+
+### deprecated
+
+已废弃。请改用 [JoinRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#joinroomparams) 中的 `userPayload`。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="id" type="number" required />
+<Parameter name="payload" type="any" required />
+<Parameter name="session" type="string" required />
+</ParameterList>
+
+<a id="memberstate"></a>
+
+### MemberState
+
+MemberState: \{arrowCompleteToSelector?:boolean;bold?:boolean;currentApplianceName:[ApplianceNames](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/appliancenames);dottedLine?:boolean;ellipseCompleteToSelector?:boolean;fillColor?:[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color);italic?:boolean;lineThrough?:boolean;rectangleCompleteToSelector?:boolean;shapeCompleteToSelector?:boolean;shapeType?:[ShapeType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/shapetype);straightCompleteToSelector?:boolean;strokeColor:[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color);strokeWidth:number;textCanSelectText?:boolean;textColor?:[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color);textCompleteToSelector?:boolean;textSize:number;textSizeOverride?:number;underline?:boolean\}
+
+- Defined in [index-zh.d.ts\:3096](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3096)
+
+互动白板实时房间的白板工具状态。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="arrowCompleteToSelector" type="boolean" optional>
+
+是否在画完箭头后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="bold" type="boolean" optional>
+
+是否加粗：
+
+- `true`：加粗。
+- `false`：（默认）不加粗。
+
+</Parameter>
+<Parameter name="currentApplianceName" required>
+
+<ParameterType>
+
+[ApplianceNames](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/appliancenames)
+
+</ParameterType>
+
+当前使用的白板工具名称，详见 [ApplianceNames](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/appliancenames)。
+
+</Parameter>
+<Parameter name="dottedLine" type="boolean" optional>
+
+是否支持绘制虚线（仅限铅笔工具）：
+
+- `true`：支持绘制虚线。
+- `false`：（默认）不支持绘制虚线。
+
+</Parameter>
+<Parameter name="ellipseCompleteToSelector" type="boolean" optional>
+
+是否在画完圆形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="fillColor" optional>
+
+<ParameterType>
+
+[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+
+</ParameterType>
+
+设置图形元素的填充色。仅适用于圆、矩形等封闭图形。
+
+</Parameter>
+<Parameter name="italic" type="boolean" optional>
+
+是否使用斜体：
+
+- `true`：使用斜体。
+- `false`：（默认）不使用斜体。
+
+</Parameter>
+<Parameter name="lineThrough" type="boolean" optional>
+
+是否加删除线：
+
+- `true`：加删除线。
+- `false`：（默认）不加删除线。
+
+</Parameter>
+<Parameter name="rectangleCompleteToSelector" type="boolean" optional>
+
+是否在画完矩形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="shapeCompleteToSelector" type="boolean" optional>
+
+是否在画完三角、气泡等图形后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="shapeType" optional>
+
+<ParameterType>
+
+[ShapeType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/shapetype)
+
+</ParameterType>
+
+绘制图形的类型。
+
+</Parameter>
+<Parameter name="straightCompleteToSelector" type="boolean" optional>
+
+是否在画完直线后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="strokeColor" required>
+
+<ParameterType>
+
+[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+
+</ParameterType>
+
+绘制线条的颜色，为 RGB 格式，例如 `[0, 0, 255]` 表示蓝色。
+
+</Parameter>
+<Parameter name="strokeWidth" type="number" required>
+
+绘制线条的粗细。
+
+</Parameter>
+<Parameter name="textCanSelectText" type="boolean" optional>
+
+是否允许直接选择并编辑文字：
+
+- `true`：允许直接选择并编辑文字。
+- `false`：（默认）不允许直接选择并编辑文字。
+
+</Parameter>
+<Parameter name="textColor" optional>
+
+<ParameterType>
+
+[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+
+</ParameterType>
+
+字体颜色，为 RGB 格式，例如 `[0, 0, 255]` 表示蓝色。
+
+</Parameter>
+<Parameter name="textCompleteToSelector" type="boolean" optional>
+
+是否在使用文字工具打完字后自动切到选择工具：
+
+- `true`：自动切换。
+- `false`：（默认）不自动切换。
+
+</Parameter>
+<Parameter name="textSize" type="number" required>
+
+字体大小，取值必须大于 0。Chrome 浏览器对于小于 12 的字体会自动调整为 12。
+
+</Parameter>
+<Parameter name="textSizeOverride" type="number" optional>
+
+设置文本工具的默认字体大小。如果不设置则默认使用 `textSize`，即上一次设置的文字大小。
+
+</Parameter>
+<Parameter name="underline" type="boolean" optional>
+
+是否加下划线：
+
+- `true`：加下划线。
+- `false`：（默认）不加下划线。
+
+</Parameter>
+</ParameterList>
+
+<a id="nativeevent"></a>
+
+### NativeEvent
+
+NativeEvent: MouseEvent|WheelEvent|KeyboardEvent|TouchEvent
+
+- Defined in [index-zh.d.ts\:4549](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4549)
+
+浏览器的原生事件。
+
+- `MouseEvent`：鼠标事件，详见 [MouseEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/MouseEvent)。
+- `WheelEvent`：滚轮事件，详见 [WheelEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/WheelEvent)。
+- `KeyboardEvent`：键盘事件，详见 [KeyboardEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent)。
+- `TouchEvent`：触摸事件，详见 [TouchEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/TouchEvent)。
+
+<a id="playablecheckingparams"></a>
+
+### PlayableCheckingParams
+
+PlayableCheckingParams: \{beginTimestamp?:number;duration?:number;region?:string;room:string;roomToken:string;slice?:string\}
+
+- Defined in [index-zh.d.ts\:4208](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4208)
+
+检查白板房间是否可以回放的参数配置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="beginTimestamp" type="number" optional>
+
+回放的起始时间（单位为毫秒的 Unix 时间戳）。
+
+该属性必须和 `room`、`duration` 一起使用，而且使用时禁止传入 `slice`。
+
+</Parameter>
+<Parameter name="duration" type="number" optional>
+
+回放的时长（毫秒）。
+
+该属性必须和 `room`、`beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
+
+</Parameter>
+<Parameter name="region" type="string" optional>
+
+当前房间所在的数据中心，支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+</Parameter>
+<Parameter name="room" type="string" required>
+
+房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。
+
+- 如果只传该属性，不传 `beginTimestamp` 和 `duration`，则表明回放该房间的所有录像片段。
+- 如果同时传入该属性和 `beginTimestamp`、`duration`，则表明回放该房间在对应时间范围内的所有录像片段。
+
+</Parameter>
+<Parameter name="roomToken" type="string" required>
+
+房间的 Room Token，用于加入房间时的用户鉴权。详见互动白板 Token 概述。
+
+</Parameter>
+<Parameter name="slice" type="string" optional>
+
+回放的录像片段的 UUID。你可以在房间录制的时候从 `room.slice` 获取。
+
+**Note**
+
+- 该属性需要和 `room` 同时传入。
+- 传入该属性表明只回放特定片段，因此禁止再传入 `beginTimestamp` 和 `duration`。
+
+</Parameter>
+</ParameterList>
+
+<a id="playercallbacks"></a>
+
+### PlayerCallbacks
+
+PlayerCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)&\{onIsPlayableChanged:(isPlayable:boolean)=&gt;void;onLoadFirstFrame:()=&gt;void;onPhaseChanged:(phase:[PlayerPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/playerphase))=&gt;void;onPlayerStateChanged:(modifyState:Partial&lt;[PlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#playerstate)&gt;)=&gt;void;onProgressTimeChanged:(progressTimestamp:number)=&gt;void;onStoppedWithError:(error:Error)=&gt;void\}
+
+- Defined in [index-zh.d.ts\:2933](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2933)
+
+`PlayerCallbacks` 包含白板回放的事件回调。该类型继承 [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks) 且包含以下成员：
+
+- **onIsPlayableChanged**: *(isPlayable: boolean)=&gt;void*
+
+  `isPlayable` 发生改变的回调。
+
+### param
+
+`isPlayable` 是否能立即播放：
+
+- `true`：可以立即播放。
+- `false`：不能立即播放。
+
+- **onPhaseChanged**: *(phase: PlayerPhase)=&gt;void*
+
+  回放阶段发生改变的回调。
+
+### param
+
+`phase` 回放阶段。
+
+- **onLoadFirstFrame**: *()=&gt;void*
+
+  首帧加载完成的回调。
+- **onPlayerStateChanged**: *(modifyState: Partial)=&gt;void*
+
+  回放状态发生改变的回调。
+
+### param
+
+`modifyState` 回放状态。
+
+- **onStoppedWithError**: *(error: Error)=&gt;void*
+
+  出错导致回放暂停的回调。
+
+### param
+
+`error` 错误信息。
+
+- **onProgressTimeChanged**: *(progressTimestamp: number)=&gt;void*
+
+  回放进度发生改变的回调。
+
+### param
+
+`progressTimestamp` 回放进度。
+
+<a id="playerstate"></a>
+
+### PlayerState
+
+PlayerState: [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate)&\{observerMode:[ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)\}
+
+- Defined in [index-zh.d.ts\:2898](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2898)
+
+`Player` 对象的状态。该类型继承 [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate) 且包含以下成员：
+
+- **observerMode**: *ObserverMode*
+
+白板回放的观看模式，详见 [ObserverMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/observermode)。
+
+<a id="plugin"></a>
+
+### Plugin
+
+Plugin&lt;C, T&gt;: \{defaultAttributes?:T;hitTest?:(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, x:number, y:number, selectorRadius:number)=&gt;boolean;kind?:string;render:ComponentType&lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pluginprops)&lt;C,T&gt;&gt;;willInterruptEvent?:(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent))=&gt;boolean\}
+
+- Defined in [index-zh.d.ts\:549](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L549)
+
+组件插件的描述。Agora 支持的自定义插件包括组件插件和不可见插件。
+
+<ParameterList title="Type parameters">
+<Parameter name="C" />
+<Parameter name="T" />
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="defaultAttributes" type="T" optional>
+
+属性的默认值。
+
+</Parameter>
+<Parameter name="hitTest" optional>
+
+<ParameterType>
+
+(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;, x:number, y:number, selectorRadius:number)= & gt;boolean
+
+</ParameterType>
+
+<ApiSignature>
+
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, x: number, y: number, selectorRadius: number): boolean
+
+</ApiSignature>
+
+碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+
+</ParameterType>
+
+组件插件对象。
+
+</Parameter>
+<Parameter name="x" type="number" required>
+
+可选中区域的中心点的 X 轴坐标。
+
+</Parameter>
+<Parameter name="y" type="number" required>
+
+可选中区域的中心点的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="selectorRadius" type="number" required>
+
+可选中区域的半径。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+碰撞检测的结果：
+
+- `true`：检测成功。
+- `false`：检测失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="kind" type="string" optional>
+
+组件插件的类型，即该组件插件的唯一识别符。
+
+</Parameter>
+<Parameter name="render" required>
+
+<ParameterType>
+
+ComponentType & lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pluginprops) & lt;C,T & gt; & gt;
+
+</ParameterType>
+
+组件插件的外观。
+
+</Parameter>
+<Parameter name="willInterruptEvent" optional>
+
+<ParameterType>
+
+(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent))= & gt;boolean
+
+</ParameterType>
+
+<ApiSignature>
+
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, event: [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)): boolean
+
+</ApiSignature>
+
+设置是否拦截该组件插件的原生事件。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+
+</ParameterType>
+
+组件插件对象。
+
+</Parameter>
+<Parameter name="event" required>
+
+<ParameterType>
+
+[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
+
+</ParameterType>
+
+原生事件。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否拦截该组件插件的原生事件：
+
+- `true`：拦截。
+- `false`：不拦截。
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="plugindescription"></a>
+
+### PluginDescription
+
+PluginDescription&lt;A&gt;: \{attributes?:A;height?:number;originX?:number;originY?:number;selectable?:boolean;width?:number\}
+
+- Defined in [index-zh.d.ts\:3438](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3438)
+
+组件插件对象的描述。
+
+<ParameterList title="Type parameters">
+<Parameter name="A" />
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="attributes" type="A" optional>
+
+组件插件对象的属性。
+
+</Parameter>
+<Parameter name="height" type="number" optional>
+
+组件插件对象的高。
+
+</Parameter>
+<Parameter name="originX" type="number" optional>
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY" type="number" optional>
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="selectable" type="boolean" optional>
+
+能否选中组件插件对象：
+
+- `true`：能选中。
+- `false`：不能选中。
+
+</Parameter>
+<Parameter name="width" type="number" optional>
+
+组件插件对象的宽。
+
+</Parameter>
+</ParameterList>
+
+<a id="pluginprops"></a>
+
+### PluginProps
+
+PluginProps&lt;C, T&gt;: \{margin:[Margin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#margin);origin:[Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#point);plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;;scale:number;size:[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)\}
+
+- Defined in [index-zh.d.ts\:3301](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3301)
+
+组件插件的外观设置。
+
+<ParameterList title="Type parameters">
+<Parameter name="C" />
+<Parameter name="T" />
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="margin" required>
+
+<ParameterType>
+
+[Margin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#margin)
+
+</ParameterType>
+
+组件插件图标周围的空白。
+
+</Parameter>
+<Parameter name="origin" required>
+
+<ParameterType>
+
+[Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#point)
+
+</ParameterType>
+
+组件插件图标的中心点在世界坐标系中（以白板初始化时的中心点为原点的坐标系）的坐标。
+
+</Parameter>
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+
+</ParameterType>
+
+组件插件对象。
+
+</Parameter>
+<Parameter name="scale" type="number" required>
+
+组件插件图标的缩放比例。
+
+</Parameter>
+<Parameter name="size" required>
+
+<ParameterType>
+
+[Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)
+
+</ParameterType>
+
+组件插件图标的大小。
+
+</Parameter>
+</ParameterList>
+
+<a id="point"></a>
+
+### Point
+
+Point: \{x:number;y:number\}
+
+- Defined in [index-zh.d.ts\:4842](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4842)
+
+世界坐标系（以白板初始化时的中心点为原点的坐标系）的点坐标。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="x" type="number" required>
+
+点在世界坐标系中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="y" type="number" required>
+
+点在世界坐标系中的 Y 轴坐标。
+
+</Parameter>
+</ParameterList>
+
+<a id="pptdescription"></a>
+
+### PptDescription
+
+PptDescription: \{height:number;previewURL?:string;src:string;width:number\}
+
+- Defined in [index-zh.d.ts\:3494](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3494)
+
+图片或动态 PPT 页的描述。
+
+你可以在初始化 `WhiteScene` 时配置 `PptDescription`，以在白板上插入图片或动态 PPT。
+
+支持的图片或动态 PPT 格式包括：
+
+- PNG、JPG/JPEG、WEBP 格式的图片，或由 PPT、PPTX、DOC、DOCX、PDF 格式的文件转换成 PNG、JPG/JPEG、WEBP 格式的图片。
+- 使用 [文档转换功能](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)转换过的 PPTX 文件。
+
+**Note**
+
+- 一个场景只能插入一张图片或动态 PPT 页。
+- 插入的图片或动态 PPT 页的中心点坐标默认为世界坐标系的原点。图片或动态 PPT 页插入场景后，你无法改变它在白板上的位置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="height" type="number" required>
+
+图片或动态 PPT 在白板中的高度，单位为像素。
+
+</Parameter>
+<Parameter name="previewURL" type="string" optional>
+
+图片或动态 PPT 预览图的 URL 地址。动态 PPT 预览图的 URL 地址可以从[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)中的 `previews` 字段获取，例如，"[https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png"。](https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/2fdxxxxx67e/preview/1.png%22%E3%80%82)
+
+</Parameter>
+<Parameter name="src" type="string" required>
+
+图片或动态 PPT 页的地址，支持的格式如下：
+
+- 图片：URL 地址，可以是你自己生成的 URL 地址，也可以是通过文档转换功能生成的 URL 地址，例如，`"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/staticConvert/2fdxxxxx67e/1.jpeg"`。
+- 动态 PPT 页：通过文档转换功能生成的 URI 地址，例如，`"pptx://cover.herewhite.com/dynamicConvert/6a212c90fa5311ea8b9c074232aaccd4/1.slide"`。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+图片或动态 PPT 在白板中的宽度，单位为像素。
+
+</Parameter>
+</ParameterList>
+
+<a id="previewconfig"></a>
+
+### PreviewConfig
+
+PreviewConfig: \{international?:[International](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#international)\}
+
+- Defined in [index-zh.d.ts\:4485](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4485)
+
+PPT 预览页面的配置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="international" optional>
+
+<ParameterType>
+
+[International](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#international)
+
+</ParameterType>
+
+给预览页面的菜单栏添加界面文字。详见 [International](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#international)。
+
+</Parameter>
+</ParameterList>
+
+<a id="progress"></a>
+
+### Progress
+
+Progress: \{convertedFileList:[ConvertedFile](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#convertedfile)[];convertedPageSize:number;convertedPercentage:number;currentStep?:[CurrentStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/currentstep);totalPageSize:number\}
+
+- Defined in [index-zh.d.ts\:4881](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4881)
+
+文档转换任务的进度详情。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="convertedFileList" required>
+
+<ParameterType>
+
+[ConvertedFile](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#convertedfile)[]
+
+</ParameterType>
+
+转换后生成的图片或动态 PPT 页。
+
+</Parameter>
+<Parameter name="convertedPageSize" type="number" required>
+
+已转换的页数。
+
+</Parameter>
+<Parameter name="convertedPercentage" type="number" required>
+
+转换进度的百分比。
+
+</Parameter>
+<Parameter name="currentStep" optional>
+
+<ParameterType>
+
+[CurrentStep](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/currentstep)
+
+</ParameterType>
+
+转换任务当前的步骤。
+
+</Parameter>
+<Parameter name="totalPageSize" type="number" required>
+
+总页数。
+
+</Parameter>
+</ParameterList>
+
+<a id="rtcclient"></a>
+
+### RTCClient
+
+RTCClient: \{adjustAudioMixingPlayoutVolume?:(volume:number)=&gt;number;adjustAudioMixingPublishVolume?:(volume:number)=&gt;number;adjustAudioMixingVolume?:(volume:number)=&gt;number;getAudioMixingCurrentPosition?:()=&gt;number;getAudioMixingDuration?:()=&gt;number;getAudioMixingPlayoutVolume?:()=&gt;number;getAudioMixingPublishVolume?:()=&gt;number;pauseAudioMixing:()=&gt;number;resumeAudioMixing:()=&gt;number;setAudioMixingPosition:(position:number)=&gt;number;startAudioMixing:(filePath:string, loopback:boolean, replace:boolean, cycle:number, callback?:(state:number, errorCode:number)=&gt;void)=&gt;number;stopAudioMixing:(callback?:(state:number, errorCode:number)=&gt;void)=&gt;number\}
+
+- Defined in [index-zh.d.ts\:4947](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4947)
+
+`AgoraRTCClient` 类用于桥接 Agora RTC SDK 的混音方法和白板 SDK。
+
+当用户同时使用音视频功能和互动白板，且在互动白板中展示的动态 PPT 包含音频文件时，可能遇到以下问题：
+
+- 播放 PPT 内的音频时声音很小。
+- 播放 PPT 内的音频时有回声。
+
+为解决上述问题，你可以使用 `AgoraRTCClient` 类调用 Agora RTC SDK 的混音方法播放动态 PPT 中的音频文件。
+
+**Note**
+
+目前仅支持 Electron 平台的 Agora RTC SDK.
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="adjustAudioMixingPlayoutVolume" type="(volume:number)= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(volume: number): number
+
+</ApiSignature>
+
+调节音乐文件的本地播放音量。
+
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
+
+音乐文件在本端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="adjustAudioMixingPublishVolume" type="(volume:number)= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(volume: number): number
+
+</ApiSignature>
+
+调节音乐文件的远端播放音量。
+
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
+
+音乐文件在远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="adjustAudioMixingVolume" type="(volume:number)= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(volume: number): number
+
+</ApiSignature>
+
+调节音乐文件的播放音量。
+
+该方法调节混音里伴奏在本端和远端播放的音量。
+
+<ParameterList title="Parameters">
+<Parameter name="volume" type="number" required>
+
+伴奏在本端和远端播放的音量。取值范围为 0 到 100 间的整数，默认为 100，即保持原始文件音量。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="getAudioMixingCurrentPosition" type="()= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+获取音乐文件的播放进度。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回播放进度，单位为毫秒。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="getAudioMixingDuration" type="()= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+获取指定音乐文件的总时长。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回总时长，单位为毫秒。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="getAudioMixingPlayoutVolume" type="()= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+获取音乐文件的本地播放音量。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="getAudioMixingPublishVolume" type="()= &amp; gt;number" optional>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+获取音乐文件的远端播放音量。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 方法调用成功则返回音量值，取值范围为 0 到 100 间的整数。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="pauseAudioMixing" type="()= &amp; gt;number" required>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+暂停播放音乐文件及混音。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="resumeAudioMixing" type="()= &amp; gt;number" required>
+
+<ApiSignature>
+
+(): number
+
+</ApiSignature>
+
+恢复播放音乐文件及混音。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="setAudioMixingPosition" type="(position:number)= &amp; gt;number" required>
+
+<ApiSignature>
+
+(position: number): number
+
+</ApiSignature>
+
+设置音乐文件的播放位置。
+
+该方法可以设置音频文件的播放位置，这样你可以根据实际情况播放文件，而不是非得从头到尾播放一个文件。
+
+<ParameterList title="Parameters">
+<Parameter name="position" type="number" required>
+
+设置的播放位置，单位为毫秒，取值必须为整数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="startAudioMixing" type="(filePath:string, loopback:boolean, replace:boolean, cycle:number, callback?:(state:number, errorCode:number)= &amp; gt;void)= &amp; gt;number" required>
+
+<ApiSignature>
+
+(filePath: string, loopback: boolean, replace: boolean, cycle: number, callback?: (state: number, errorCode: number) =&gt; void): number
+
+</ApiSignature>
+
+开始播放音乐文件及混音。
+
+<ParameterList title="Parameters">
+<Parameter name="filePath" type="string" required>
+
+指定需要混音的本地或在线音频文件的绝对路径。
+
+</Parameter>
+<Parameter name="loopback" type="boolean" required>
+
+是否只有本地用户可以听到混音后的音频流：
+
+- `true`：只有本地可以听到混音的音频流。
+- `false`：本地和对方都可以听到混音的音频流。
+
+</Parameter>
+<Parameter name="replace" type="boolean" required>
+
+是否播放麦克风采集的音频：
+
+- `true`： 只播放音频文件，不播放麦克风采集的音频。
+- `false`: 将音频文件和麦克风采集的音频混音后播放。
+
+</Parameter>
+<Parameter name="cycle" type="number" required>
+
+音乐文件的播放次数。
+
+- ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
+- -1: 无限循环播放。
+
+</Parameter>
+<Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
+
+开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
+
+<ApiSignature>
+
+(state: number, errorCode: number): void
+
+</ApiSignature>
+
+开始播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
+
+<ParameterList title="Parameters">
+<Parameter name="state" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="stopAudioMixing" type="(callback?:(state:number, errorCode:number)= &amp; gt;void)= &amp; gt;number" required>
+
+<ApiSignature>
+
+(callback?: (state: number, errorCode: number) =&gt; void): number
+
+</ApiSignature>
+
+停止播放音乐文件及混音。
+
+<ParameterList title="Parameters">
+<Parameter name="callback" type="(state:number, errorCode:number)= &amp; gt;void" optional>
+
+停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
+
+<ApiSignature>
+
+(state: number, errorCode: number): void
+
+</ApiSignature>
+
+停止播放音乐文件及混音的回调。其中 `state: number` 为音乐文件及混音的播放状态，
+ `errorCode: number` 为错误码。
+
+<ParameterList title="Parameters">
+<Parameter name="state" type="number" required />
+<Parameter name="errorCode" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+number
+
+</ApiReturnType>
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="reconnectionoptions"></a>
+
+### ReconnectionOptions
+
+ReconnectionOptions: \{disableReconnect:boolean\}
+
+- Defined in [index-zh.d.ts\:90](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L90)
+
+断线重连设置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="disableReconnect" type="boolean" required>
+
+是否关闭断线重连：
+
+- `true`: 关闭断线重连。
+- `false`: 开启断线重连。
+
+</Parameter>
+</ParameterList>
+
+<a id="rectangle"></a>
+
+### Rectangle
+
+Rectangle: [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size)&\{originX:number;originY:number\}
+
+- Defined in [index-zh.d.ts\:192](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L192)
+
+视觉矩形的描述。该类继承 [Size](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#size) 且包含以下成员：
+
+- **originX**: *number*
+
+  视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+- **originY**: *number*
+
+  视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<a id="renderplugin"></a>
+
+### RenderPlugin
+
+RenderPlugin&lt;C, T&gt;: \{defaultAttributes?:T;hitTest?:(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, x:number, y:number, selectorRadius:number)=&gt;boolean;kind:string;render:ComponentType&lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pluginprops)&lt;C,T&gt;&gt;;willInterruptEvent?:(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C,T&gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent))=&gt;boolean\}
+
+- Defined in [index-zh.d.ts\:4554](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4554)
+
+组件插件的渲染。
+
+<ParameterList title="Type parameters">
+<Parameter name="C" />
+<Parameter name="T" />
+</ParameterList>
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="defaultAttributes" type="T" optional>
+
+组件插件属性的默认值。
+
+</Parameter>
+<Parameter name="hitTest" optional>
+
+<ParameterType>
+
+(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;, x:number, y:number, selectorRadius:number)= & gt;boolean
+
+</ParameterType>
+
+<ApiSignature>
+
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, x: number, y: number, selectorRadius: number): boolean
+
+</ApiSignature>
+
+碰撞检测。你可以通过碰撞检测定义组件插件可以被选择工具选中的区域。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+
+</ParameterType>
+
+组件插件对象。
+
+</Parameter>
+<Parameter name="x" type="number" required>
+
+可选中区域的中心点的 X 轴坐标。
+
+</Parameter>
+<Parameter name="y" type="number" required>
+
+可选中区域的中心点的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="selectorRadius" type="number" required>
+
+可选中区域的半径。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+碰撞检测的结果：
+
+- `true`：检测成功。
+- `false`：检测失败。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="kind" type="string" required>
+
+组件插件类型，为该组件插件的唯一识别符。
+
+</Parameter>
+<Parameter name="render" required>
+
+<ParameterType>
+
+ComponentType & lt;[PluginProps](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pluginprops) & lt;C,T & gt; & gt;
+
+</ParameterType>
+
+组件插件的外观。
+
+</Parameter>
+<Parameter name="willInterruptEvent" optional>
+
+<ParameterType>
+
+(plugin:[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;, event:[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent))= & gt;boolean
+
+</ParameterType>
+
+<ApiSignature>
+
+(plugin: [PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance)&lt;C, T&gt;, event: [NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)): boolean
+
+</ApiSignature>
+
+设置是否拦截该组件插件的原生事件。
+
+<ParameterList title="Parameters">
+<Parameter name="plugin" required>
+
+<ParameterType>
+
+[PluginInstance](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance) & lt;C,T & gt;
+
+</ParameterType>
+
+组件插件对象。
+
+</Parameter>
+<Parameter name="event" required>
+
+<ParameterType>
+
+[NativeEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#nativeevent)
+
+</ParameterType>
+
+原生事件。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否拦截该组件插件的原生事件：
+
+- `true`：拦截。
+- `false`：不拦截。
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="replayroomparams"></a>
+
+### ReplayRoomParams
+
+ReplayRoomParams: [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#constructroomparams)&\{alignmentInterval?:number;alignmentThreshold?:number;beginTimestamp?:number;crops?:Array&lt;\{from:number;to:number\}&gt;;duration?:number;region?:string;room:string;roomToken:string;slice?:string\}
+
+- Defined in [index-zh.d.ts\:4191](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4191)
+
+`Player` 对象的参数配置，用于白板回放。该类型继承 [ConstructRoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#constructroomparams) 且增加以下属性：
+
+- **region?**: *string*
+
+  `Player` 对象所在的数据中心。支持传入以下值：
+
+  | `region` | 数据中心 | 服务区 |
+  | --- | --- | --- |
+  | `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+  | `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+  | `in-mum` | 印度孟买 | 印度 |
+  | `eu` | 欧洲（法兰克福） | 欧洲 |
+  | `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+  **Note**
+
+  - 如果你不设置该属性，SDK 会使用 [WhiteWebSdkConfiguration](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitewebsdkconfiguration) 中 `region` 的值。
+  - 如果在初始化 `WhiteWebSdk` 对象和创建 `Player` 对象时都没有设置数据中心，SDK 会报错。
+- **slice?**: *string*
+
+  回放的录像片段的 UUID。你可以在房间录制的时候从 `room.slice` 获取。
+
+  **Note**
+
+  - 该属性需要和 `room` 同时传入。
+  - 传入该属性表明只回放特定片段，因此禁止再传入 `beginTimestamp` 和 `duration`。
+- **room**: *string*
+
+  回放房间的 UUID，即房间的唯一标识符。成功创建房间后会返回该值。
+
+  - 如果只传该属性，不传 `beginTimestamp` 和 `duration`，则表明回放该房间的所有录像片段。
+  - 如果同时传入该属性和 `beginTimestamp` 和 `duration`，则表明回放该房间在对应时间范围内的所有录像片段。
+- **roomToken**: *string*
+
+  房间的 Room Token，用于加入房间时的用户鉴权。详见互动白板 Token 概述。
+- **beginTimestamp?**: *number*
+
+  白板回放的起始时间（单位为毫秒的 Unix 时间戳）。
+
+  该属性必须和 `room`、`duration` 一起使用，而且使用时禁止传入 `slice`。
+- **duration?**: *number*
+
+  白板回放的时长（毫秒）。
+
+  该属性必须和 `room`、`beginTimestamp` 一起使用，而且使用时禁止传入 `slice`。
+- **crops?**: *Array*
+
+:::info[since]
+2.16.48
+
+回放录像裁剪区间，包含以下属性：
+ - `from`: number。裁剪区间起点时间戳。
+ - `to`: number。裁剪区间终点时间戳。
+
+- **alignmentThreshold?**: *number*
+:::
+
+:::info[since]
+2.16.48
+
+回放时间轴对齐阈值, 超过此阈值会对齐回放播放器时间, 单位 ms, 默认值为 600 ms。
+
+- **alignmentInterval?**: *number*
+:::
+
+:::info[since]
+2.16.48
+
+回放时间轴对齐时长, 即在此段时间内，将回放时间通过倍速播放对齐到外部时间戳, 单位 ms, 默认值为 3000 ms。
+:::
+
+<a id="roomcallbacks"></a>
+
+### RoomCallbacks
+
+RoomCallbacks: [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks)&\{onCanRedoStepsUpdate:(canRedoSteps:number)=&gt;void;onCanUndoStepsUpdate:(canUndoSteps:number)=&gt;void;onConnection:(duration:number)=&gt;void;onDisconnectWithError:(error:Error)=&gt;void;onKeyDown:(event:KeyboardEvent)=&gt;void;onKeyUp:(event:KeyboardEvent)=&gt;void;onKickedWithReason:(reason:string)=&gt;void;onObjectsLimit:(limit:number, soft:boolean)=&gt;void;onPhaseChanged:(phase:[RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase))=&gt;void;onRoomStateChanged:(modifyState:Partial&lt;[RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomstate)&gt;)=&gt;void;willInterceptKeyboardEvent:(event:KeyboardEvent)=&gt;boolean\}
+
+- Defined in [index-zh.d.ts\:2723](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2723)
+
+`RoomCallbacks` 包含白板房间的事件回调。该类型继承 [DisplayerCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayercallbacks) 并增加以下成员：
+
+- **onConnection**: *(duration: number)=&gt;void*
+
+  房间连接成功回调，报告已经建立 WebSocket 连接，将要进入初始化阶段。
+
+### param
+
+`duration` 建立连接的时间，单位是毫秒。
+
+- **onPhaseChanged**: *(phase: RoomPhase)=&gt;void*
+
+  房间连接状态发生变化的回调。
+
+### param
+
+`phase` 房间的连接状态，详见 [RoomPhase](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase)。你可以阅读[管理房间连接状态](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-phase)了解更多信息。
+
+- **onRoomStateChanged**: *(modifyState: Partial)=&gt;void*
+
+  房间状态属性发生变化回调。
+
+  该回调仅返回发生变化的房间状态属性，未发生变化的房间状态字段均为空。
+
+### param
+
+`modifyState` 发生变化的房间状态属性，详见 [RoomState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomstate)。
+
+- **onDisconnectWithError**: *(error: Error)=&gt;void*
+
+  白板 SDK 与白板服务器连接中断回调。
+
+### param
+
+`error` 错误信息。
+
+- **onObjectsLimit**: *limit: number, soft: boolean)=&gt;void*
+
+  白板中的元素数量超过限制回调。
+
+### param
+
+`limit` 白板中的元素数量限制。
+
+### param
+
+`soft` 是否为软限制：
+ - `true`：软限制。当白板中的元素数量超过限制时，SDK 会发出警告，但仍可以插入白板元素。
+ - `false`：硬限制。当白板中的元素数量超过限制时，SDK 会发出警告，本次添加元素操作无效，房间状态会被强制回退至操作前，且后端会将进行本次操作的用户踢出频道。
+
+- **onKickedWithReason**: *(reason: string)=&gt;void*
+
+  用户被服务器移出房间回调。
+
+### param
+
+`reason` 用户被移出房间的原因。
+
+| `reason` 字段 | 描述 |
+| --- | --- |
+| kickByAdmin | 被管理员踢出 |
+| roomDelete | 房间被删除 |
+| roomZombie | 房间不活跃 |
+| roomBan | 房间被封禁 |
+| GatewayAdjust | 网关调整 |
+| replaceByOther | 被另一个用户顶替，当前用户被迫下线 |
+| crash | 服务器崩溃 |
+
+- **onCanUndoStepsUpdate**: *(canUndoSteps: number)=&gt;void*
+
+  可撤销次数发生变化回调。
+
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) 撤销上一步操作时，会触发该回调，报告剩余的可撤销次数。
+
+### param
+
+`canUndoSteps` 剩余的可撤销次数。
+
+- **onCanRedoStepsUpdate**: *(canRedoSteps: number)=&gt;void*
+
+  可重做次数发生变化回调。
+
+  当本地用户调用 [undo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) 重做上一步操作时，会触发该回调，报告剩余的可重做次数。
+
+### param
+
+`canRedoSteps` 剩余的可重做次数。
+
+- **willInterceptKeyboardEvent**: *(event: KeyboardEvent)=&gt;boolean*
+
+  是否拦截监听的键盘事件：
+
+  - `true`: 拦截。拦截后，该键盘事件不会触发回调。
+  - `false`: 不拦截。
+- **onKeyDown**: *(event: KeyboardEvent)=&gt;void*
+
+  键盘按下事件回调。
+- **onKeyUp**: *(event: KeyboardEvent)=&gt;void*
+
+  键盘松开事件回调。
+
+<a id="roommember"></a>
+
+### RoomMember
+
+RoomMember: \{memberId:number;memberState:[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate);payload:[UserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userpayload);session:string\}
+
+- Defined in [index-zh.d.ts\:2989](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2989)
+
+实时房间内互动模式（具有读写权限）用户的信息。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="memberId" type="number" required>
+
+用户 ID。
+
+在用户加入互动白板实时房间时，会自动分配用户 ID，用于标识房间内的用户。同一房间中的每个用户具有唯一的用户 ID。
+
+</Parameter>
+<Parameter name="memberState" required>
+
+<ParameterType>
+
+[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)
+
+</ParameterType>
+
+用户所有的白板工具状态，详见 [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)。
+
+</Parameter>
+<Parameter name="payload" required>
+
+<ParameterType>
+
+[UserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userpayload)
+
+</ParameterType>
+
+自定义用户信息，在用户加入房间时传入。详见 [UserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userpayload)。
+
+:::info[since]
+v2.15.0
+:::
+
+</Parameter>
+<Parameter name="session" type="string" required>
+
+当前的 session ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="roomstate"></a>
+
+### RoomState
+
+RoomState: [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate)&\{broadcastState:Readonly&lt;[BroadcastState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#broadcaststate)&gt;;memberState:[MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)\}
+
+- Defined in [index-zh.d.ts\:3043](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3043)
+
+互动白板实时房间的所有状态。该类继承 [DisplayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#displayerstate) 且包含以下成员：
+
+- **memberState**: *MemberState*
+
+  当前使用的白板工具，详见 [MemberState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)。
+- **broadcastState**: *Readonly*
+
+  当前的视角状态。
+
+<a id="scenedefinition"></a>
+
+### SceneDefinition
+
+SceneDefinition: \{name?:string;ppt?:[PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)\}
+
+- Defined in [index-zh.d.ts\:2751](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2751)
+
+场景定义。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="name" type="string" optional>
+
+场景名称。
+
+</Parameter>
+<Parameter name="ppt" optional>
+
+<ParameterType>
+
+[PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)
+
+</ParameterType>
+
+在场景中展示的图片或动态 PPT。每个场景中可以展示一张图片或一页动态 PPT，你可以通过 `PptDescription` 设置待插入图片或动态 PPT 的宽、高、资源地址或预览图等。详见 [PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)。
+
+</Parameter>
+</ParameterList>
+
+<a id="scenemap"></a>
+
+### SceneMap
+
+SceneMap: \{\}
+
+- Defined in [index-zh.d.ts\:1507](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1507)
+
+场景列表。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="[dirPath" required>
+
+<ParameterType>
+
+string]:[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)[]
+
+</ParameterType>
+
+某一场景目录下的所有场景。
+
+</Parameter>
+</ParameterList>
+
+<a id="scenestate"></a>
+
+### SceneState
+
+SceneState: \{contextPath:string;index:number;sceneName:string;scenePath:string;scenes:ReadonlyArray&lt;[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene)&gt;\}
+
+- Defined in [index-zh.d.ts\:3051](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3051)
+
+场景状态。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="contextPath" type="string" required>
+
+当前场景所属场景目录的路径。
+
+:::info[since]
+2.10.3
+:::
+
+</Parameter>
+<Parameter name="index" type="number" required>
+
+当前场景在所属场景目录中的索引号。
+
+</Parameter>
+<Parameter name="sceneName" type="string" required>
+
+当前场景的名称。
+
+:::info[since]
+2.10.3
+:::
+
+</Parameter>
+<Parameter name="scenePath" type="string" required>
+
+当前场景的路径。
+
+</Parameter>
+<Parameter name="scenes" required>
+
+<ParameterType>
+
+ReadonlyArray & lt;[WhiteScene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#whitescene) & gt;
+
+</ParameterType>
+
+当前场景目录下所有场景的列表。
+
+</Parameter>
+</ParameterList>
+
+<a id="scenescallbacks"></a>
+
+### ScenesCallbacks
+
+ScenesCallbacks: \{onAddScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void;onAddSceneGroup:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void;onRemoveScene:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void;onRemoveSceneGroup:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)=&gt;void;onScenesCountUpdate:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount:number)=&gt;void;onScenesGroupCountUpdate:(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount:number)=&gt;void\}
+
+- Defined in [index-zh.d.ts\:4688](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4688)
+
+场景回调。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="onAddScene" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)= & gt;void
+
+</ParameterType>
+
+新增场景回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+新增场景的场景名称。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onAddSceneGroup" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)= & gt;void
+
+</ParameterType>
+
+新增子场景目录回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+新增的子场景目录的名称。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onRemoveScene" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)= & gt;void
+
+</ParameterType>
+
+删除场景回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+被删除场景的场景名称。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onRemoveSceneGroup" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name:string)= & gt;void
+
+</ParameterType>
+
+删除子场景目录回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+被删除的子场景目录的名称。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), name: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="name" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onScenesCountUpdate" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount:number)= & gt;void
+
+</ParameterType>
+
+指定场景目录下场景数量发生变化回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+指定场景目录下当前的场景数量。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), scenesCount: number): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="scenesCount" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onScenesGroupCountUpdate" required>
+
+<ParameterType>
+
+(scenesCallbacks:[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount:number)= & gt;void
+
+</ParameterType>
+
+指定场景目录下子场景目录数量发生变化回调。
+
+### param
+
+场景目录的信息。详见 [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)。
+
+### param
+
+指定场景目录下当前子场景目录的数量。
+
+<ApiSignature>
+
+(scenesCallbacks: [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode), sceneGroupsCount: number): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="scenesCallbacks" required>
+
+<ParameterType>
+
+[ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="sceneGroupsCount" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<a id="size"></a>
+
+### Size
+
+Size: \{height:number;width:number\}
+
+- Defined in [index-zh.d.ts\:200](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L200)
+
+尺寸大小。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="height" type="number" required>
+
+高度。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+宽度。
+
+</Parameter>
+</ParameterList>
+
+<a id="textformat"></a>
+
+### TextFormat
+
+TextFormat: \{bold?:boolean;color?:[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color);fontSize?:number;italic?:boolean;lineThrough?:boolean;underline?:boolean\}
+
+- Defined in [index-zh.d.ts\:4601](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4601)
+
+字体样式。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="bold" type="boolean" optional>
+
+是否加粗：
+
+- `true`：加粗。
+- `false`：（默认）不加粗。
+
+</Parameter>
+<Parameter name="color" optional>
+
+<ParameterType>
+
+[Color](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#color)
+
+</ParameterType>
+
+颜色，RGB 格式。例如，`[0, 0, 255]` 代表蓝色。
+
+</Parameter>
+<Parameter name="fontSize" type="number" optional>
+
+字体大小，取值必须大于 0。
+
+</Parameter>
+<Parameter name="italic" type="boolean" optional>
+
+是否使用斜体：
+
+- `true`：使用斜体。
+- `false`：（默认）不使用斜体。
+
+</Parameter>
+<Parameter name="lineThrough" type="boolean" optional>
+
+是否加删除线：
+
+- `true`：加删除线。
+- `false`：（默认）不加删除线。
+
+</Parameter>
+<Parameter name="underline" type="boolean" optional>
+
+是否加下划线：
+
+- `true`：加下划线。
+- `false`：（默认）不加下划线。
+
+</Parameter>
+</ParameterList>
+
+<a id="usercursoricons"></a>
+
+### UserCursorIcons
+
+UserCursorIcons: \{\}
+
+- Defined in [index-zh.d.ts\:4856](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4856)
+
+用户自定义图标。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="[key" type="string]:ReadonlyArray &amp; lt;string &amp; gt;" required />
+</ParameterList>
+
+<a id="userfonts"></a>
+
+### UserFonts
+
+UserFonts: \{\}
+
+- Defined in [index-zh.d.ts\:335](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L335)
+
+自定义字体。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="[font" type="string]:string" required>
+
+`key-value` 键值对，`key` 为字体名称，`value` 为字体的 URL 地址，例如 `"Calibri": "https://your-cdn.com/Calibri.ttf"`。
+
+</Parameter>
+</ParameterList>
+
+<a id="userpayload"></a>
+
+### UserPayload
+
+UserPayload: \{\}&\{uid:string\}
+
+- Defined in [index-zh.d.ts\:3027](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3027)
+
+自定义用户信息。
+
+- **[key: string]**: *any*
+
+  key-value 结构的自定义用户信息，例如，`"avatar", "https://example.com/user.png"`。
+- **uid**: *string*
+
+  用户标识，字符串格式，不能超过 1024 字节。
+
+  请确保同一房间内每个用户 `uid` 的唯一性。
+
+:::info[since]
+v2.15.0
+:::
+
+<a id="whitescene"></a>
+
+### WhiteScene
+
+WhiteScene: \{name:string;ppt?:[PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)\}
+
+- Defined in [index-zh.d.ts\:4643](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L4643)
+
+白板场景。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="name" type="string" required>
+
+场景名称。
+
+</Parameter>
+<Parameter name="ppt" optional>
+
+<ParameterType>
+
+[PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription)
+
+</ParameterType>
+
+在场景中展示的图片或动态 PPT。每个场景中可以展示一张图片或一页动态 PPT，你可以通过 [PptDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription) 设置待插入图片或动态 PPT 的宽、高、资源地址或预览图等。
+
+</Parameter>
+</ParameterList>
+
+<a id="whitewebsdkconfiguration"></a>
+
+### WhiteWebSdkConfiguration
+
+WhiteWebSdkConfiguration: \{appIdentifier:string;deviceType?:[DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype);disableCurveAnimes?:boolean;disableNewPencilStroke?:boolean;disableRotation?:boolean;fontFamily?:string;fonts?:[UserFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userfonts);handToolKey?:string;invisiblePlugins?:ReadonlyArray&lt;[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass)&lt;string,any,any&gt;&gt;;loggerOptions?:[LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#loggeroptions);onWhiteSetupFailed?:(error:Error)=&gt;void;onlyCallbackRemoteStateModify?:boolean;plugins?:[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins);preloadDynamicPPT?:boolean;reconnectionOptions?:Partial&lt;[ReconnectionOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#reconnectionoptions)&gt;|false;region?:string;renderEngine?:[RenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/renderengine);screenType?:[ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype);urlInterrupter?:(url:string)=&gt;string;useMobXState?:boolean;wrappedComponents?:[WrappedComponents](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#wrappedcomponents)\}
+
+- Defined in [index-zh.d.ts\:3711](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3711)
+
+`WhiteWebSdk` 对象的配置。
+
+**Note**
+
+成功初始化 `WhiteWebSdk` 后，无法再调用 `WhiteWebSdkConfiguration` 中的任何方法修改 `WhiteWebSdk` 的配置。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="appIdentifier" type="string" required>
+
+白板项目的唯一标识。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
+
+</Parameter>
+<Parameter name="deviceType" optional>
+
+<ParameterType>
+
+[DeviceType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype)
+
+</ParameterType>
+
+该客户端的设备类型，决定 SDK 如何处理鼠标事件和触碰事件。
+
+如果填写错误，会导致 SDK 对设备输入的响应行为不符合预期。如果不填，SDK 会根据内在逻辑自动判断设备的类型。
+
+</Parameter>
+<Parameter name="disableCurveAnimes" type="boolean" optional>
+
+是否关闭新铅笔工具（`pencil`）的补间动画功能：
+
+- `true`：关闭补间动画功能。关闭该功能后，会缩短延时，但远端用户看到的笔迹绘制过程可能出现卡顿。
+- `false`：（默认）开启补间动画功能。开启后，当本地用户使用 `pencil` 在白板上绘制或书写时，SDK 会自动在关键帧之间插入帧，使远端用户看到的书写或绘制过程更加流畅，但会因此增加延时。
+
+### note
+
+该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
+
+</Parameter>
+<Parameter name="disableNewPencilStroke" type="boolean" optional>
+
+是否关闭新铅笔的笔锋效果：
+
+- `true`：关闭笔锋效果。
+- `false`：（默认）开启笔锋效果。
+
+### note
+
+该属性仅在 `disableNewPencil` 设为 `fasle` 时生效。
+
+</Parameter>
+<Parameter name="disableRotation" type="boolean" optional>
+
+是否关闭图片旋转：
+
+- `true`：禁止图片旋转。
+- `false`：（默认）开启图片旋转。开启后，可对选中的图片任意旋转。
+
+</Parameter>
+<Parameter name="fontFamily" type="string" optional>
+
+文字工具（`currentApplianceName="text"`）的字体。若不传，SDK 会使用浏览器的默认字体。
+
+</Parameter>
+<Parameter name="fonts" optional>
+
+<ParameterType>
+
+[UserFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userfonts)
+
+</ParameterType>
+
+自定义字体。
+
+为显示动态 PPT 中的非常规字体，你需要先将字体文件上传到自己的业务服务器或云存储中并生成 URL 地址，然后在初始化 `WhiteWebSdk` 时，将 URL 地址传给 `fonts` 属性。详见 [UserFonts](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#userfonts)。
+
+</Parameter>
+<Parameter name="handToolKey" type="string" optional>
+
+抓手工具对应的快捷键。
+
+按下该键时，会自动切换成抓手工具（`currentApplianceName="hand"`）；松开后，切回原来的工具。如果不传，则关闭该快捷键功能。
+
+</Parameter>
+<Parameter name="invisiblePlugins" optional>
+
+<ParameterType>
+
+ReadonlyArray & lt;[InvisiblePluginClass](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#invisiblepluginclass) & lt;string,any,any & gt; & gt;
+
+</ParameterType>
+
+不可见插件。
+
+</Parameter>
+<Parameter name="loggerOptions" optional>
+
+<ParameterType>
+
+[LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#loggeroptions)
+
+</ParameterType>
+
+SDK 上报日志的选项，详见 [LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#loggeroptions)。
+
+</Parameter>
+<Parameter name="onWhiteSetupFailed" type="(error:Error)= &amp; gt;void" optional>
+
+<ApiSignature>
+
+(error: Error): void
+
+</ApiSignature>
+
+`WhiteWebSdk` 初始化失败的回调。
+
+### example
+
+```ts
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    onWhiteSetupFailed: function(error) {
+        console.error(error);
+    },
+});
+```
+
+该回调仅用于网络或鉴权失败时的错误处理。如果是因为参数原因初始化失败，会在调用 `new WhiteWebSdk({...})` 时提示发生错误。
+
+<ParameterList title="Parameters">
+<Parameter name="error" type="Error" required>
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="onlyCallbackRemoteStateModify" type="boolean" optional>
+
+是否开启仅接收远端用户状态改变回调：
+
+- `true`：（默认）开启。开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调。
+- `false`：关闭。关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
+
+</Parameter>
+<Parameter name="plugins" optional>
+
+<ParameterType>
+
+[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)
+
+</ParameterType>
+
+组件插件。
+
+</Parameter>
+<Parameter name="preloadDynamicPPT" type="boolean" optional>
+
+是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源：
+
+- `true`：一次性加载所有动态 PPT。
+- `false`: （默认）不一次性加载所有动态 PPT。
+
+**Note**
+
+Agora 不推荐设置 `preloadDynamicPPT(true)`，这样会使 PPT 显示缓慢。
+
+</Parameter>
+<Parameter name="reconnectionOptions" optional>
+
+<ParameterType>
+
+Partial & lt;[ReconnectionOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#reconnectionoptions) & gt; | false
+
+</ParameterType>
+
+断线重连设置。默认开启自动断线重连。
+
+如果要关闭断线重连，你可以将 `reconnectionOptions` 设为 `false` 或将 `disableReconnect` 设为 `true`。
+ 详见[《实时房间状态管理》](https://developer.netless.link/document-zh/home/room-state-management)。
+
+</Parameter>
+<Parameter name="region" type="string" optional>
+
+数据中心，支持传入以下值：
+
+| `region` | 数据中心 | 服务区 |
+| --- | --- | --- |
+| `us-sv` | 美国硅谷 | 北美洲、南美洲 |
+| `sg` | 新加坡 | 新加坡、东亚、东南亚 |
+| `in-mum` | 印度孟买 | 印度 |
+| `eu` | 欧洲（法兰克福） | 欧洲 |
+| `cn-hz` | 中国杭州 | 其他数据中心服务区未覆盖的地区 |
+
+**Note**
+
+该方法设置的数据中心必须与[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)时设置的数据中心一致；否则，SDK 将无法连接到房间。
+
+</Parameter>
+<Parameter name="renderEngine" optional>
+
+<ParameterType>
+
+[RenderEngine](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/renderengine)
+
+</ParameterType>
+
+白板上绘画的渲染模式。默认为 `Canvas`。
+
+</Parameter>
+<Parameter name="screenType" optional>
+
+<ParameterType>
+
+[ScreenType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/screentype)
+
+</ParameterType>
+
+该客户端的屏幕类型，用于调整手势识别参数。默认为 `Desktop`。
+
+</Parameter>
+<Parameter name="urlInterrupter" type="(url:string)= &amp; gt;string" optional>
+
+<ApiSignature>
+
+(url: string): string
+
+</ApiSignature>
+
+将白板中图片等资源的 URL 拦截并替换。
+
+例如，你可以使用如下代码给所有图片的 URL 增加尾缀：
+
+### example
+
+```ts
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    urlInterrupter: function(url) {
+        return url + "?token=bm1n4pisugWrWK";
+    },
+});
+```
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required>
+
+图片等资源原来的 URL。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+替换后的 URL。
+
+</ApiReturns>
+
+</Parameter>
+<Parameter name="useMobXState" type="boolean" optional>
+
+是否用 MobX 监听 `displayer.state`：
+
+- `true`：用 MobX 监听 `displayer.state`。此时 `displayer.state` 会变成 MobX observable object，详见 [Creating observable state](https://mobx.js.org/observable-state.html#observable)。
+- `false`：不用 MobX 监听 `displayer.state`。
+
+</Parameter>
+<Parameter name="wrappedComponents" optional>
+
+<ParameterType>
+
+[WrappedComponents](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#wrappedcomponents)
+
+</ParameterType>
+
+由 `React.ComponentType` 类型组成的数组，用于包装白板的界面。默认值为 []。
+
+你可以使用如下代码对白板的界面进行自定义包装：
+
+### example
+
+```ts
+import React from "react";
+
+class WrappedComponent extends React.Component {
+
+    render() {
+        return (
+            <div>
+                <span>hello world</span>
+                {this.props.children}
+            </div>
+        );
+    }
+}
+
+const whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "$APP_IDENTIFIER",
+    wrappedComponents: [WrappedComponent],
+});
+```
+
+</Parameter>
+</ParameterList>
+
+<a id="worldviewrectangle"></a>
+
+### WorldViewRectangle
+
+WorldViewRectangle: \{height:number;originX:number;originY:number;width:number\}
+
+- Defined in [index-zh.d.ts\:3572](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3572)
+
+配置视觉矩形。
+
+视觉矩形是用户的视角必须容纳的区域。设置好视觉矩形后，SDK 会自动将视角会调整到刚好可以完整展示视觉矩形所表示的范围。
+
+你可以根据要展示的 PPT 幻灯片或图像的尺寸设置视觉矩形，以确保相同的内容在不同尺寸的屏幕上都可以完整显示。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="height" type="number" required>
+
+视觉矩形的高度。
+
+视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="originX" type="number" required>
+
+视觉矩形左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY" type="number" required>
+
+视觉矩形左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="width" type="number" required>
+
+视觉矩形的宽度。
+
+视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+</ParameterList>
+
+<a id="wrappedcomponents"></a>
+
+### WrappedComponents
+
+WrappedComponents: ReadonlyArray&lt;ComponentType&lt;\{\}&gt;&gt;
+
+- Defined in [index-zh.d.ts\:230](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L230)
+
+由 `React.ComponentType` 类型组成的数组，用于包装白板的界面。默认值为 []。
+
+## Variables
+
+<a id="adminobserverid"></a>
+
+### Const AdminObserverId
+
+AdminObserverId: number
+
+- Defined in [index-zh.d.ts\:19](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L19)
+
+系统事件触发者的用户 ID。
+
+<a id="akkoversion"></a>
+
+### Const AkkoVersion
+
+AkkoVersion: any
+
+- Defined in [index-zh.d.ts\:14](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L14)
+
+Akko 的版本。
+
+<a id="defaulthotkeys"></a>
+
+### Const DefaultHotKeys
+
+DefaultHotKeys: Partial&lt;[HotKeys](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#hotkeys)&gt;
+
+- Defined in [index-zh.d.ts\:978](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L978)
+
+默认的快捷键。
+
+| 键盘按键 | 效果 |
+| --- | --- |
+| Backspace 或 Delete | 删除所选对象 |
+| Shift | 锁定放缩长宽比，令其等比放缩 |
+| Ctrl + Z 或 Command + Z | 撤回 |
+| Ctrl + Y 或 Command + Y | 重做 |
+| Ctrl + C 或 Command + C | 复制 |
+| Ctrl + V 或 Command + V | 粘贴 |
+
+<a id="displayerconsumer"></a>
+
+### Const DisplayerConsumer
+
+DisplayerConsumer: Consumer&lt;[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)&gt;
+
+- Defined in [index-zh.d.ts\:3081](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3081)
+
+`Displayer` 对象的 Consumer。
+
+<a id="playerconsumer"></a>
+
+### Const PlayerConsumer
+
+PlayerConsumer: Consumer&lt;[Player](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/player)|undefined&gt;
+
+- Defined in [index-zh.d.ts\:3091](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3091)
+
+`Player` 对象的 Consumer。
+
+<a id="roomconsumer"></a>
+
+### Const RoomConsumer
+
+RoomConsumer: Consumer&lt;[Room](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room)|undefined&gt;
+
+- Defined in [index-zh.d.ts\:3086](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3086)
+
+`Room` 对象的 Consumer。
+
+<a id="whiteversion"></a>
+
+### Const WhiteVersion
+
+WhiteVersion: string
+
+- Defined in [index-zh.d.ts\:9](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L9)
+
+当前 SDK 的版本号，格式为字符串，如 `"2.12.11"`。
+
+## Functions
+
+<a id="contentmodeaspectfill"></a>
+
+### contentModeAspectFill
+
+<ApiSignature>
+
+contentModeAspectFill(): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1421](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1421)
+
+等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+视角的实时缩放比例。
+
+</ApiReturns>
+
+<a id="contentmodeaspectfillscale"></a>
+
+### contentModeAspectFillScale
+
+<ApiSignature>
+
+contentModeAspectFillScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1429](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1429)
+
+等比例缩放视角，使视角边界的短边正好顶住与其垂直的屏幕的两边，以保证视角边界铺满屏幕；在此基础上再将视角边界缩放指定的倍数。
+
+<ParameterList title="Parameters">
+<Parameter name="scale" type="number" required>
+
+在等比例缩放的基础上再缩放视角边界的倍数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+视角的实时缩放比例。
+
+</ApiReturns>
+
+<a id="contentmodeaspectfit"></a>
+
+### contentModeAspectFit
+
+<ApiSignature>
+
+contentModeAspectFit(): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1398](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1398)
+
+等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+实时缩放比例。
+
+</ApiReturns>
+
+<a id="contentmodeaspectfitscale"></a>
+
+### contentModeAspectFitScale
+
+<ApiSignature>
+
+contentModeAspectFitScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1406](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1406)
+
+等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边，以保证在屏幕上完整展示视角边界；在此基础上，再将视角边界缩放指定的倍数。
+
+<ParameterList title="Parameters">
+<Parameter name="scale" type="number" required>
+
+在等比例缩放的基础上再缩放视角边界的倍数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+实时缩放比例。
+
+</ApiReturns>
+
+<a id="contentmodeaspectfitspace"></a>
+
+### contentModeAspectFitSpace
+
+<ApiSignature>
+
+contentModeAspectFitSpace(space: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1414](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1414)
+
+等比例缩放视角，使视角边界的长边正好顶住与其垂直的屏幕的两边；在此基础上，在视角边界的四周填充指定的空白空间。
+
+<ParameterList title="Parameters">
+<Parameter name="space" type="number" required>
+
+在等比例缩放的基础上再填充的空白空间，单位为像素。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+实时缩放比例。
+
+</ApiReturns>
+
+<a id="contentmodescale"></a>
+
+### contentModeScale
+
+<ApiSignature>
+
+contentModeScale(scale: number): [ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:1392](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L1392)
+
+按指定的比例缩放视角边界。
+
+<ParameterList title="Parameters">
+<Parameter name="scale" type="number" required>
+
+指定的缩放比例。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[ContentMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#contentmode)
+
+</ApiReturnType>
+
+实时缩放比例。
+
+</ApiReturns>
+
+<a id="createplugins"></a>
+
+### createPlugins
+
+<ApiSignature>
+
+createPlugins&lt;C_MAP&gt;(plugins: Readonly&lt;\{\}&gt;): [Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:542](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L542)
+
+创建插件。
+
+<ParameterList title="Type parameters">
+<Parameter name="C_MAP" type="Object" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="plugins" type="Readonly &amp; lt;\&#123;\&#125; &amp; gt;" required>
+
+创建的插件。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[Plugins](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugins)&lt;C_MAP&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="injectcustomstyle"></a>
+
+### injectCustomStyle
+
+<ApiSignature>
+
+injectCustomStyle(icons: [UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:3600](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3600)
+
+添加自定义的图标。
+
+<ParameterList title="Parameters">
+<Parameter name="icons" required>
+
+<ParameterType>
+
+[UserCursorIcons](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#usercursoricons)
+
+</ParameterType>
+
+自定义的图标。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="isplayer"></a>
+
+### isPlayer
+
+<ApiSignature>
+
+isPlayer(displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)): boolean
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:929](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L929)
+
+判断 `Displayer` 对象是否为 `Player` 对象。
+
+<ParameterList title="Parameters">
+<Parameter name="displayer" required>
+
+<ParameterType>
+
+[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+
+</ParameterType>
+
+`Displayer` 对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+该 `Displayer` 对象是否为 `Player` 对象：
+
+- `true`：该 `Displayer` 对象是 `Player` 对象。
+- `false`：该 `Displayer` 对象不是 `Player` 对象。
+
+</ApiReturns>
+
+<a id="isroom"></a>
+
+### isRoom
+
+<ApiSignature>
+
+isRoom(displayer: [Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)): boolean
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:918](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L918)
+
+判断 `Displayer` 对象是否为 `Room` 对象。
+
+<ParameterList title="Parameters">
+<Parameter name="displayer" required>
+
+<ParameterType>
+
+[Displayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer)
+
+</ParameterType>
+
+`Displayer` 对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+`Displayer` 对象是否为 `Room` 对象：
+
+- `true`：该 `Displayer` 对象是 `Room` 对象。
+- `false`：该 `Displayer` 对象不是 `Room` 对象。
+
+</ApiReturns>
+
+<a id="setasyncmoduleloadmode"></a>
+
+### setAsyncModuleLoadMode
+
+<ApiSignature>
+
+setAsyncModuleLoadMode(mode: [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:835](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L835)
+
+设置异步模块的加载模式。
+
+<ParameterList title="Parameters">
+<Parameter name="mode" required>
+
+<ParameterType>
+
+[AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)
+
+</ParameterType>
+
+异步模块的加载模式，详见 [AsyncModuleLoadMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/asyncmoduleloadmode)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

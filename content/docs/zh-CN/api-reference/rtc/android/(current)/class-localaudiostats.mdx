@@ -1,10 +1,18 @@
 ---
-title: "LocalAudioStats"
-description: "LocalAudioStats 提供本地音频的统计信息。"
+title: LocalAudioStats
+description: LocalAudioStats 提供本地音频的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_localaudiostats
+  sourcePath: html-docs/rtc/Android/API/class_localaudiostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localaudiostats__prototype"></a>
 
-```java
+```text
 public static class LocalAudioStats {
   public int numChannels;
   public int sentSampleRate;
@@ -22,38 +30,59 @@ public static class LocalAudioStats {
 
 ## 属性
 
-### `numChannels`
+<ParameterList>
+<a id="numchannels"></a>
+<Parameter name="numChannels">
 
 音频通道数。
 
-### `sentSampleRate`
+</Parameter>
+<a id="sentsamplerate"></a>
+<Parameter name="sentSampleRate">
 
 本地用户发送音频流的采样率，单位为 Hz。
 
-### `sentBitrate`
+</Parameter>
+<a id="sentbitrate"></a>
+<Parameter name="sentBitrate">
 
 本地用户发送音频流的平均码率，单位为 Kbps。
 
-### `internalCodec`
+</Parameter>
+<a id="internalcodec"></a>
+<Parameter name="internalCodec">
 
 内部使用的负载编解码器。
 
-### `txPacketLossRate`
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 应用抗丢包策略前，从本地客户端到声网服务器的音频丢包率（%）。
 
-### `audioDeviceDelay`
+</Parameter>
+<a id="audiodevicedelay"></a>
+<Parameter name="audioDeviceDelay">
 
 音频设备模块在播放或采集音频时的延迟，单位为毫秒。
 
-### `audioPlayoutDelay`
+</Parameter>
+<a id="audioplayoutdelay"></a>
+<Parameter name="audioPlayoutDelay">
 
 设备播放音频的延迟，单位为毫秒。
 
-### `earMonitorDelay`
+</Parameter>
+<a id="earmonitordelay"></a>
+<Parameter name="earMonitorDelay">
 
 耳返延迟，单位为毫秒，指从麦克风输入到耳机输出的延迟。
 
-### `aecEstimatedDelay`
+</Parameter>
+<a id="aecestimateddelay"></a>
+<Parameter name="aecEstimatedDelay">
 
 回声消除（AEC）模块估算的延迟，单位为毫秒，指本地播放音频到被本地采集之间的信号延迟。
+
+</Parameter>
+</ParameterList>

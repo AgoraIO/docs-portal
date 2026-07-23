@@ -1,10 +1,18 @@
 ---
-title: "Packet"
-description: "用于配置 Packet 实例。"
+title: Packet
+description: 用于配置 Packet 实例。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_packet
+  sourcePath: html-docs/rtc/Cpp/API/class_packet.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_packet__prototype"></a>
 
-```cpp
+```text
 struct Packet {
   const unsigned char* buffer;
   unsigned int size;
@@ -15,14 +23,21 @@ struct Packet {
 
 ## 属性
 
-### `buffer`
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 发送或接收数据的缓冲区地址。
 
-:::info[注]
-声网建议将 `buffer` 设置为大于 2048 字节的值。否则，可能会遇到未定义行为（如崩溃）。
+:::note
+注： 声网建议将 `buffer` 设置为大于 2048 字节的值。否则，可能会遇到未定义行为（如崩溃）。
 :::
 
-### `size`
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
 
 发送或接收数据的缓冲区大小。
+
+</Parameter>
+</ParameterList>

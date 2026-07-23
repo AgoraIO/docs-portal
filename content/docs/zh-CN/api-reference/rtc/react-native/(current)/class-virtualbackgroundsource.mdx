@@ -1,18 +1,26 @@
 ---
-title: "VirtualBackgroundSource"
-description: "自定义的背景。"
+title: VirtualBackgroundSource
+description: 自定义的背景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_virtualbackgroundsource
+  sourcePath: html-docs/rtc/RN/API/class_virtualbackgroundsource.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_virtualbackgroundsource__prototype"></a>
 
-```typescript
+```text
 export class VirtualBackgroundSource {
-  
+
   background_source_type?: BackgroundSourceType;
-  
+
   color?: number;
-  
+
   source?: string;
-  
+
   blur_degree?: BackgroundBlurDegree;
 }
 ```
@@ -21,33 +29,44 @@ export class VirtualBackgroundSource {
 
 ## 属性
 
-### `background_source_type`
+<ParameterList>
+<a id="background_source_type"></a>
+<Parameter name="background_source_type">
 
 自定义的背景。详见 [BackgroundSourceType](/zh-CN/api-reference/rtc/react-native/enum-backgroundsourcetype)。
 
-### `color`
+</Parameter>
+<a id="color"></a>
+<Parameter name="color">
 
 自定义的背景图颜色。格式为 RGB 定义下的十六进制整数，不带 # 号，如 0xFFB6C1 表示浅粉色。 默认值为 0xFFFFFF，表示白色。 取值范围为 [0x000000，0xffffff]。如果取值非法，SDK 会用白色背景图替换原背景图。
 
-:::info[注]
-该参数仅在自定义背景为以下类型时生效，具体效果如下：
+:::note
+注： 该参数仅在自定义背景为以下类型时生效，具体效果如下：
 
 - BackgroundColor：背景图为该参数传入颜色的纯色图片。
-- BackgroundImg：如果 source 中的图片使用了透明背景，则会使用该参数传入的颜色填充透明背景。
+- BackgroundImg：如果 `source` 中的图片使用了透明背景，则会使用该参数传入的颜色填充透明背景。
 :::
 
-### `source`
+</Parameter>
+<a id="source"></a>
+<Parameter name="source">
 
 自定义背景的本地绝对路径。支持 PNG、JPG、MP4、 AVI、 MKV 和 FLV 格式。如果路径无效，SDK 会使用原背景图或 `color` 指定的纯色背景。
 
-:::info[注]
-该参数仅在自定义背景图类型为 BackgroundImg 或 BackgroundVideo 时生效。
+:::note
+注： 该参数仅在自定义背景图类型为 BackgroundImg 或 BackgroundVideo 时生效。
 :::
 
-### `blur_degree`
+</Parameter>
+<a id="blur_degree"></a>
+<Parameter name="blur_degree">
 
 自定义背景图的模糊程度。详见 [BackgroundBlurDegree](/zh-CN/api-reference/rtc/react-native/enum-backgroundblurdegree)。
 
-:::info[注]
-该参数仅在自定义背景图类型为 BackgroundBlur 时生效。
+:::note
+注： 该参数仅在自定义背景图类型为 BackgroundBlur 时生效。
 :::
+
+</Parameter>
+</ParameterList>

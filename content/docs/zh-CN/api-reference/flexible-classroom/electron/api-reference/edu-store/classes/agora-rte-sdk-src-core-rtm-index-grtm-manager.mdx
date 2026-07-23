@@ -1,0 +1,327 @@
+---
+title: Class AGRtmManager
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_rte_sdk_src_core_rtm_index_GRtmManager.html
+  sourcePath: html-docs/flexible-classroom/Electron/classes/agora_rte_sdk_src_core_rtm_index_GRtmManager.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AGRtmManager(): [AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+</ApiSignature>
+
+Overrides EventEmitter.constructor
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AGRtmManager](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-rtm-index-grtm-manager)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Accessors
+
+<a id="client"></a>
+
+### client
+
+<ApiSignature>
+
+get client(): RtmClient
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+RtmClient
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="connectionState"></a>
+
+### connectionState
+
+<ApiSignature>
+
+get connectionState(): [AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRtmConnectionState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtm-type-gora-rtm-connection-state)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="logFilter"></a>
+
+### logFilter
+
+<ApiSignature>
+
+get logFilter(): \{ debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+\{ debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean \}
+
+</ApiReturnType>
+
+<ParameterList title="Returns &#123; debug: boolean; error: boolean; info: boolean; track: boolean; warn: boolean &#125;">
+<Parameter name="debug" type="boolean" required />
+<Parameter name="error" type="boolean" required />
+<Parameter name="info" type="boolean" required />
+<Parameter name="track" type="boolean" required />
+<Parameter name="warn" type="boolean" required />
+</ParameterList>
+
+</ApiReturns>
+
+<a id="sessionId"></a>
+
+### sessionId
+
+<ApiSignature>
+
+get sessionId(): string
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+string
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="createObserverChannel"></a>
+
+### createObserverChannel
+
+<ApiSignature>
+
+createObserverChannel(channelName: string): [RtmChannel, EventEmitter]
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[RtmChannel, EventEmitter]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="destroyRtm"></a>
+
+### destroyRtm
+
+<ApiSignature>
+
+destroyRtm(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="join"></a>
+
+### join
+
+<ApiSignature>
+
+join(channel: RtmChannel, bus: EventEmitter, channelName: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="channel" type="RtmChannel" required />
+<Parameter name="bus" type="EventEmitter" required />
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="leave"></a>
+
+### leave
+
+<ApiSignature>
+
+leave(channelName: string): Promise&lt;void&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="login"></a>
+
+### login
+
+<ApiSignature>
+
+login(token: string, uid: string, configs: [AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)): Promise&lt;void&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="token" type="string" required />
+<Parameter name="uid" type="string" required />
+<Parameter name="configs" required>
+
+<ParameterType>
+
+[AGRtmManagerInitConfig](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtm-type-grtm-manager-init-config)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="reset"></a>
+
+### reset
+
+<ApiSignature>
+
+reset(): void
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendChannelMessage"></a>
+
+### sendChannelMessage
+
+<ApiSignature>
+
+sendChannelMessage(channelName: string, message: any, options: any): Promise&lt;void&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="channelName" type="string" required />
+<Parameter name="message" type="any" required />
+<Parameter name="options" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendPeerMessage"></a>
+
+### sendPeerMessage
+
+<ApiSignature>
+
+sendPeerMessage(peerId: string, message: any, options: any): Promise&lt;boolean&gt;
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="peerId" type="string" required />
+<Parameter name="message" type="any" required />
+<Parameter name="options" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;boolean&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

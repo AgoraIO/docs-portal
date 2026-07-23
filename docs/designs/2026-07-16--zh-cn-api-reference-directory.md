@@ -96,7 +96,7 @@
 新增显式数据文件：
 
 ```ts
-src/components/docs-overview/api-reference-cards-data.zh-cn.ts
+src/lib/api-reference-cards-data.zh-cn.ts
 ```
 
 建议类型：

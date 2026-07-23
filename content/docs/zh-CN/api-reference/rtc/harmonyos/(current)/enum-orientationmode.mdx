@@ -1,22 +1,39 @@
 ---
-title: "ORIENTATION_MODE"
-description: "视频编码的方向模式。"
+title: ORIENTATION_MODE
+description: 视频编码的方向模式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/enum_orientationmode
+  sourcePath: html-docs/rtc/HarmonyOS/API/enum_orientationmode.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_orientationmode__parameters"></a>
 
 ## 枚举值
 
-### `ORIENTATION_MODE_ADAPTIVE`
+<ParameterList>
+<a id="orientation_mode_adaptive"></a>
+<Parameter name="ORIENTATION_MODE_ADAPTIVE">
 
 0: （默认）该模式下 SDK 输出的视频方向与采集到的视频方向一致。接收端会根据收到的视频旋转信息对视频进行旋转。该模式适用于接收端可以调整视频方向的场景。
 
 - 如果采集的视频是横屏模式，则输出的视频也是横屏模式。
 - 如果采集的视频是竖屏模式，则输出的视频也是竖屏模式。
 
-### `ORIENTATION_FIXED_LANDSCAPE`
+</Parameter>
+<a id="orientation_fixed_landscape"></a>
+<Parameter name="ORIENTATION_FIXED_LANDSCAPE">
 
 1: 该模式下 SDK 固定输出风景（横屏）模式的视频。如果采集到的视频是竖屏模式，则视频编码器会对其进行裁剪。该模式适用于当接收端无法调整视频方向时，如使用旁路推流场景下。
 
-### `ORIENTATION_FIXED_PORTRAIT`
+</Parameter>
+<a id="orientation_fixed_portrait"></a>
+<Parameter name="ORIENTATION_FIXED_PORTRAIT">
 
 2: 该模式下 SDK 固定输出人像（竖屏）模式的视频，如果采集到的视频是横屏模式，则视频编码器会对其进行裁剪。该模式适用于当接收端无法调整视频方向时，如使用旁路推流场景下。
+
+</Parameter>
+</ParameterList>

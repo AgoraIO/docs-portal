@@ -16,15 +16,15 @@ description: "了解如何在云端转码中保障 REST 服务高可用，包括
 
 ## 多路任务保障
 
-如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路cloud-transcoder任务单独计费，计费方式详见[计费说明](/zh-CN/realtime-media/transcoding#计费说明)。实现步骤如下：
+如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路cloud-transcoder任务单独计费，计费方式详见[计费说明](/zh-CN/realtime-media/transcoding)。实现步骤如下：
 
 1. 同时发起主任务和备份任务，针对相同的主播源流进行转码，并向同一频道或不同频道推送转码输出的流，观众端订阅主任务中的输出频道内的 `uid`。
 
 2. 在客户端监听以下回调事件，可以及时通知观众端订阅备份任务中的 `uid`：
 
-    - 主播掉线回调 [`onUserOffline`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onuseroffline)
+    - 主播掉线回调 [`onUserOffline`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuseroffline)
 
-    - 主播音视频状态变化回调 [`onRemoteAudioStateChanged`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)/[`onRemoteVideoStateChanged`](https://doc.shengwang.cn/api-ref/rtc/android/API/toc_video_basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+    - 主播音视频状态变化回调 [`onRemoteAudioStateChanged`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)/[`onRemoteVideoStateChanged`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)
 
 ## 切换域名
 

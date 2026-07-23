@@ -1,10 +1,18 @@
 ---
-title: "SimulcastStreamConfig"
-description: "用于配置视频小流。"
+title: SimulcastStreamConfig
+description: 用于配置视频小流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_simulcaststreamconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_simulcaststreamconfig.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_simulcaststreamconfig__prototype"></a>
 
-```cpp
+```text
 struct SimulcastStreamConfig {
  VideoDimensions dimensions;
  int kBitrate;
@@ -19,14 +27,23 @@ struct SimulcastStreamConfig {
 
 ## 属性
 
-### `dimensions`
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 视频尺寸。默认值为视频大流的 50%。详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
 
-### `kBitrate`
+</Parameter>
+<a id="kbitrate"></a>
+<Parameter name="kBitrate">
 
 视频码率（Kbps）。默认值为 -1。无需设置该参数，SDK 会根据你设置的视频分辨率和帧率自动匹配最合适的码率。
 
-### `framerate`
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="framerate">
 
 本地视频帧率（fps）。默认值为 5。
+
+</Parameter>
+</ParameterList>

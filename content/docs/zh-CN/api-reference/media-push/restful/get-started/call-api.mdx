@@ -1,0 +1,117 @@
+---
+title: 如何调用 API
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/media-push/restful/get-started/call-api
+  sourcePath: docs/media-push/get-started/call-api.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 1 legacy MDX syntax signal(s).
+---
+
+本文介绍声网 RESTful API 的构成，并引导你如何正确地调用 API。
+
+## 前提条件
+
+在调用 RESTful API 之前，请确保已获取声网 App ID 和 Token（可选，用于安全鉴权）；对于服务端产品，还需要获取客户 ID 和客户密钥。可参考[开通服务](/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service)。
+
+## 配置 URL
+
+以旁路推流为例，[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的请求 URL 示例如下：
+
+```text
+https://api.sd-rtn.com/{region}/v1/projects/{appId}/rtmp-converters/{converterId}
+```
+
+其中：
+
+- `https`：通信协议。声网使用 HTTPS 协议。
+
+- `api.sd-rtn.com`：声网服务端域名。
+
+- `{region}/v1/projects/{appId}/rtmp-converters/{converterId}`：资源路径。
+  - `{region}`：请求的目标区域，如中国大陆为 `cn`。
+  - `v1/projects`：API 版本和资源名。
+  - `{appId}`：声网为每个开发者提供的 App ID，是项目的唯一标识。
+  - `rtmp-converters`：代表声网产品或服务，此处为旁路推流服务。
+  - `{converterId}`：指定要操作的对象，此处填入需要更新的 Converter 的 ID。
+
+以上示例仅作参考，你可以参照要调用的 API 的文档，在代码源文件或调试应用中先选择调用方法（如 GET、POST、PUT、PATCH、DELETE），然后根据 API 文档来配置实际的请求 URL。请求 URL 需要区分大小写。
+
+## 发送请求
+
+请求包括请求 Header 和请求 Body 两部分。在配置完 URL 后，你需要设置请求 Header 和请求 Body 信息，然后向服务器发送请求。
+
+以下是[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的请求示例：
+
+```shell
+curl --location --request PATCH 'https://api.sd-rtn.com/cn/v1/projects/<your_app_id>/rtmp-converters/<your_converter_id>' \
+--header 'Accept: application/json' \
+--header 'Authorization: <http_basic_auth>' \
+--header 'Content-Type: application/json' \
+--header 'X-Request-ID: ' \
+--data '{
+  "converter": {
+    "rtmpUrl": "rtmp://example.agora.io/live/show68_backup"
+  },
+  "fields": "rtmpUrl"
+}'
+```
+
+本示例代码将由 `<your_converter_id>` 标识的一个旁路推流任务的推流地址更新为 `rtmp://example.agora.io/live/show68_backup`。示例仅作参考，你可以参照要调用的 API 的文档，配置实际的请求 Header 和请求 Body 信息。
+
+### 请求 Header
+
+请求 Header 包含了处理请求所需要的信息，比如：
+
+- `Accept`：告知服务器，客户端可以处理哪些类型的响应，如 `application/json`。
+- `Authorization`：声网 RESTful API 要求 HTTP 认证。每次发送 HTTP 请求时，都必须在请求 Header 中填入 Authorization 字段。关于如何生成该字段的值，请参考[实现 HTTP 基本认证](/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth)。
+- `Content-Type`：指定请求体的类型为 `application/json` 。
+- `X-Request-ID`：本次请求的 UUID（通用唯一识别码）。
+
+### 请求 Body（可选）
+
+请求 Body 包含了要发送给服务器的数据。例如，更新一个旁路推流 Converter，你需要在请求 Body 中包含 Converter 的参数信息，如转码推流配置、推流地址等。详情可参考 API 文档的参数描述。请求 Body 需要区分大小写。
+
+## 接收响应
+
+在发送请求后，声网服务器会对你的请求进行响应。响应包括响应状态码、响应 Header 和响应 Body。
+
+### 响应状态码
+
+响应的 HTTP 状态码分为 200 和非 200 两种情况，详情可参考[响应状态码](/zh-CN/realtime-media/media-push/reference/response-code)。
+
+- 如果返回的 HTTP 状态码为 200，表示请求成功。
+- 如果 HTTP 状态码不为 200，参考响应状态码排查问题。
+
+### 响应 Header（可选）
+
+响应 Header 指明了响应的标识，以区分不同请求收到的响应。常见的响应 Header 包括：
+
+- `X-Request-ID`，本次请求的 UUID（通用唯一识别码）。
+- `X-Resource-ID`，标识本次请求创建的资源，如 Converter 的 ID。
+
+### 响应 Body
+
+响应 Body 包含了服务器返回的数据。例如，更新指定 Converter 的响应 Body 包括 Converter 的 ID、创建时间戳、运行状态等信息。具体信息以 API 的返回值为准。
+
+以下是[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的响应示例：
+
+```json
+{
+  "converter": {
+    "id": "4c014467d647XXXXXXXXXX9f6fa57686",
+    "createTs": 1591786766,
+    "updateTs": 1591788746,
+    "state": "running"
+  },
+  "fields": "id,createTs,updateTs,state"
+}
+```
+
+## 错误处理
+
+当你遇到问题时，可以使用你的 API 调试工具查看请求和响应，结合[响应状态码](/zh-CN/realtime-media/media-push/reference/response-code)进行排查。如未能解决问题，可联系[技术支持](https://ticket.shengwang.cn)。

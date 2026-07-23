@@ -1,10 +1,18 @@
 ---
-title: "SpatialAudioParams"
-description: "配置空间音频参数。"
+title: SpatialAudioParams
+description: 配置空间音频参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_spatialaudioparams
+  sourcePath: html-docs/rtc/Cpp/API/class_spatialaudioparams.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_spatialaudioparams__prototype"></a>
 
-```cpp
+```text
 struct SpatialAudioParams {
   Optional<double> speaker_azimuth;
   Optional<double> speaker_elevation;
@@ -21,7 +29,9 @@ struct SpatialAudioParams {
 
 ## 属性
 
-### `speaker_azimuth`
+<ParameterList>
+<a id="speaker_azimuth"></a>
+<Parameter name="speaker_azimuth">
 
 远端用户或媒体播放器相对于本地用户的方位角，单位为度，取值范围为 [0, 360]。
 
@@ -31,7 +41,9 @@ struct SpatialAudioParams {
 - 270：正右方。
 - 360：正前方。
 
-### `speaker_elevation`
+</Parameter>
+<a id="speaker_elevation"></a>
+<Parameter name="speaker_elevation">
 
 远端用户或媒体播放器相对于本地用户的仰角，单位为度，取值范围为 [-90, 90]。
 
@@ -39,47 +51,62 @@ struct SpatialAudioParams {
 - -90：水平面向下旋转 90 度。
 - 90：水平面向上旋转 90 度。
 
-### `speaker_distance`
+</Parameter>
+<a id="speaker_distance"></a>
+<Parameter name="speaker_distance">
 
 远端用户或媒体播放器相对于本地用户的距离，单位为米，取值范围为 [1, 50]。默认值为 1 米。
 
-### `speaker_orientation`
+</Parameter>
+<a id="speaker_orientation"></a>
+<Parameter name="speaker_orientation">
 
 远端用户或媒体播放器相对于本地用户的朝向角，单位为度，取值范围为 [0, 180]。
 
 - 0：（默认）声源与听者朝向一致。
 - 180：声源与听者相对而立。
 
-### `enable_blur`
+</Parameter>
+<a id="enable_blur"></a>
+<Parameter name="enable_blur">
 
 是否开启音频模糊处理：
 
 - true：开启音频模糊。
 - false：（默认）关闭音频模糊。
 
-### `enable_air_absorb`
+</Parameter>
+<a id="enable_air_absorb"></a>
+<Parameter name="enable_air_absorb">
 
 是否开启空气吸收效果，用于模拟声音在空气中传播时的衰减特性。在一定传播距离下，高频声音衰减较快，低频声音衰减较慢。
 
-- true：（默认）开启空气吸收。请确保 speaker_attenuation 的值不为 0，否则该设置不生效。
+- true：（默认）开启空气吸收。请确保 `speaker_attenuation` 的值不为 `0`，否则该设置不生效。
 - false：关闭空气吸收。
 
-### `speaker_attenuation`
+</Parameter>
+<a id="speaker_attenuation"></a>
+<Parameter name="speaker_attenuation">
 
 远端用户或媒体播放器的声音衰减系数，取值范围为 [0, 1]。
 
 - 0：广播模式，音量和音色不随距离衰减，本地用户听到的音量和音色不变。
-- (0, 0.5)：弱衰减模式，音量和音色在传播过程中轻微衰减，声音传播距离比真实环境更远。需同时开启 enable_air_absorb。
-- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 speaker_attenuation。
-- (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。需同时开启 enable_air_absorb。
+- (0, 0.5)：弱衰减模式，音量和音色在传播过程中轻微衰减，声音传播距离比真实环境更远。需同时开启 `enable_air_absorb`。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation`。
+- (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。需同时开启 `enable_air_absorb`。
 
-### `enable_doppler`
+</Parameter>
+<a id="enable_doppler"></a>
+<Parameter name="enable_doppler">
 
-:::info[注]
-该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常见的音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。启用该参数后，建议以固定周期（如 30 毫秒）调用 [updatePlayerPositionInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateplayerpositioninfo_ilocalspatialaudioengine)、 [updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法，持续更新声源与接收者之间的相对距离。以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
+:::note
+注： 该参数适用于声源高速移动的场景（例如赛车游戏）。不推荐在常见的音视频互动场景中使用（例如语音聊天、连麦或在线 KTV）。启用该参数后，建议以固定周期（如 30 毫秒）调用 [updatePlayerPositionInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateplayerpositioninfo_ilocalspatialaudioengine)、[updateSelfPosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateselfposition_ilocalspatialaudioengine) 和 [updateRemotePosition](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法，持续更新声源与接收者之间的相对距离。以下因素可能导致多普勒效应不可预测或声音抖动：更新周期过长、更新周期不规律，或因网络丢包或延迟导致距离信息丢失。
 :::
 
 是否开启多普勒效应：当声源与接收者之间存在相对位移时，接收者听到的音调会发生变化。
 
 - true：开启多普勒效应。
 - false：（默认）关闭多普勒效应。
+
+</Parameter>
+</ParameterList>

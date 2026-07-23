@@ -1,97 +1,150 @@
 ---
-title: "RtePlayerEvent"
-description: "播放器事件类型。"
+title: RtePlayerEvent
+description: 播放器事件类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_rteplayerevent
+  sourcePath: html-docs/rtc/Cpp/API/enum_rteplayerevent.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rteplayerevent__detailed_desc"></a>
 
-### `自从`
-
+:::info[自从]
 自 v4.4.0 版本新增。
+:::
 
 <a id="enum_rteplayerevent__parameters"></a>
 
 ## 枚举值
 
-### `kRtePlayerEventSeekBegin`
+<ParameterList>
+<a id="krteplayereventseekbegin"></a>
+<Parameter name="kRtePlayerEventSeekBegin">
 
 （0）：开始跳转到指定位置播放。
 
-### `kRtePlayerEventSeekComplete`
+</Parameter>
+<a id="krteplayereventseekcomplete"></a>
+<Parameter name="kRtePlayerEventSeekComplete">
 
 （1）：跳转到指定位置完成。
 
-### `kRtePlayerEventSeekError`
+</Parameter>
+<a id="krteplayereventseekerror"></a>
+<Parameter name="kRtePlayerEventSeekError">
 
 （2）：跳转到指定位置时发生错误。
 
-### `kRtePlayerEventBufferLow`
+</Parameter>
+<a id="krteplayereventbufferlow"></a>
+<Parameter name="kRtePlayerEventBufferLow">
 
 （3）：当前缓冲区不足，无法支持播放。
 
-### `kRtePlayerEventBufferRecover`
+</Parameter>
+<a id="krteplayereventbufferrecover"></a>
+<Parameter name="kRtePlayerEventBufferRecover">
 
 （4）：当前缓冲区已恢复至可播放状态。
 
-### `kRtePlayerEventFreezeStart`
+</Parameter>
+<a id="krteplayereventfreezestart"></a>
+<Parameter name="kRtePlayerEventFreezeStart">
 
 （5）：检测到音视频卡顿。
 
-### `kRtePlayerEventFreezeStop`
+</Parameter>
+<a id="krteplayereventfreezestop"></a>
+<Parameter name="kRtePlayerEventFreezeStop">
 
 （6）：音视频卡顿结束。
 
-### `kRtePlayerEventOneLoopPlaybackCompleted`
+</Parameter>
+<a id="krteplayereventoneloopplaybackcompleted"></a>
+<Parameter name="kRtePlayerEventOneLoopPlaybackCompleted">
 
 （7）：完成一次循环播放。
 
-### `kRtePlayerEventAuthenticationWillExpire`
+</Parameter>
+<a id="krteplayereventauthenticationwillexpire"></a>
+<Parameter name="kRtePlayerEventAuthenticationWillExpire">
 
 （8）：Token 即将过期。你需要重新生成新的 Token，并通过 [OpenWithUrl](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_player_openwithurl) 更新 URL。
 
-### `kRtePlayerEventAbrFallbackToAudioOnlyLayer`
+</Parameter>
+<a id="krteplayereventabrfallbacktoaudioonlylayer"></a>
+<Parameter name="kRtePlayerEventAbrFallbackToAudioOnlyLayer">
 
 （9）：由于网络问题，从接收音视频降级为仅接收音频。
 
-### `kRtePlayerEventAbrRecoverFromAudioOnlyLayer`
+</Parameter>
+<a id="krteplayereventabrrecoverfromaudioonlylayer"></a>
+<Parameter name="kRtePlayerEventAbrRecoverFromAudioOnlyLayer">
 
 （10）：网络恢复后，从仅接收音频恢复为接收音视频。
 
-### `kRtePlayerEventSwitchBegin`
+</Parameter>
+<a id="krteplayereventswitchbegin"></a>
+<Parameter name="kRtePlayerEventSwitchBegin">
 
 （11）：开始切换到新 URL。
 
-### `kRtePlayerEventSwitchComplete`
+</Parameter>
+<a id="krteplayereventswitchcomplete"></a>
+<Parameter name="kRtePlayerEventSwitchComplete">
 
 （12）：切换到新 URL 完成。
 
-### `kRtePlayerEventSwitchError`
+</Parameter>
+<a id="krteplayereventswitcherror"></a>
+<Parameter name="kRtePlayerEventSwitchError">
 
 （13）：切换到新 URL 时发生错误。
 
-### `kRtePlayerEventFirstDisplayed`
+</Parameter>
+<a id="krteplayereventfirstdisplayed"></a>
+<Parameter name="kRtePlayerEventFirstDisplayed">
 
 （14）：首帧视频已显示。
 
-### `kRtePlayerEventReachCacheFileMaxCount`
+</Parameter>
+<a id="krteplayereventreachcachefilemaxcount"></a>
+<Parameter name="kRtePlayerEventReachCacheFileMaxCount">
 
 （15）：达到缓存文件数量上限。
 
-### `kRtePlayerEventReachCacheFileMaxSize`
+</Parameter>
+<a id="krteplayereventreachcachefilemaxsize"></a>
+<Parameter name="kRtePlayerEventReachCacheFileMaxSize">
 
 （16）：达到缓存文件大小上限。
 
-### `kRtePlayerEventTryOpenStart`
+</Parameter>
+<a id="krteplayereventtryopenstart"></a>
+<Parameter name="kRtePlayerEventTryOpenStart">
 
 （17）：开始尝试打开新 URL。
 
-### `kRtePlayerEventTryOpenSucceed`
+</Parameter>
+<a id="krteplayereventtryopensucceed"></a>
+<Parameter name="kRtePlayerEventTryOpenSucceed">
 
 （18）：成功打开新 URL。
 
-### `kRtePlayerEventTryOpenFailed`
+</Parameter>
+<a id="krteplayereventtryopenfailed"></a>
+<Parameter name="kRtePlayerEventTryOpenFailed">
 
 （19）：打开新 URL 失败。
 
-### `kRtePlayerEventAudioTrackChanged`
+</Parameter>
+<a id="krteplayereventaudiotrackchanged"></a>
+<Parameter name="kRtePlayerEventAudioTrackChanged">
 
 （20）：当前音轨已变更。
+
+</Parameter>
+</ParameterList>

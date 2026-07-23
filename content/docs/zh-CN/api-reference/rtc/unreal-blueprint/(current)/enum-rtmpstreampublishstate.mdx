@@ -1,34 +1,57 @@
 ---
-title: "ERTMP_STREAM_PUBLISH_STATE"
-description: "推流状态。"
+title: ERTMP_STREAM_PUBLISH_STATE
+description: 推流状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_rtmpstreampublishstate
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_rtmpstreampublishstate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_rtmpstreampublishstate__parameters"></a>
 
 ## 枚举值
 
-### `RTMP_STREAM_PUBLISH_STATE_IDLE`
+<ParameterList>
+<a id="rtmp_stream_publish_state_idle"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_IDLE">
 
 0：推流未开始或已结束。
 
-### `RTMP_STREAM_PUBLISH_STATE_CONNECTING`
+</Parameter>
+<a id="rtmp_stream_publish_state_connecting"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_CONNECTING">
 
 1：正在连接推流服务器和 CDN 服务器。
 
-### `RTMP_STREAM_PUBLISH_STATE_RUNNING`
+</Parameter>
+<a id="rtmp_stream_publish_state_running"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_RUNNING">
 
 2：推流正在进行。成功推流后，会返回该状态。
 
-### `RTMP_STREAM_PUBLISH_STATE_RECOVERING`
+</Parameter>
+<a id="rtmp_stream_publish_state_recovering"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_RECOVERING">
 
 3：正在恢复推流。当 CDN 出现异常，或推流短暂中断时，SDK 会自动尝试恢复推流，并返回该状态。
 
-- 如成功恢复推流，则进入状态 RTMP_STREAM_PUBLISH_STATE_RUNNING (2)。
-- 如服务器出错或 60 秒内未成功恢复，则进入状态 RTMP_STREAM_PUBLISH_STATE_FAILURE (4)。如果觉得 60 秒太长，也可以主动尝试重连。
+- 如成功恢复推流，则进入状态 RTMP_STREAM_PUBLISH_STATE_RUNNING(2)。
+- 如服务器出错或 60 秒内未成功恢复，则进入状态 RTMP_STREAM_PUBLISH_STATE_FAILURE(4)。如果觉得 60 秒太长，也可以主动尝试重连。
 
-### `RTMP_STREAM_PUBLISH_STATE_FAILURE`
+</Parameter>
+<a id="rtmp_stream_publish_state_failure"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_FAILURE">
 
 4：推流失败。失败后，你可以通过返回的错误码排查错误原因。
 
-### `RTMP_STREAM_PUBLISH_STATE_DISCONNECTING`
+</Parameter>
+<a id="rtmp_stream_publish_state_disconnecting"></a>
+<Parameter name="RTMP_STREAM_PUBLISH_STATE_DISCONNECTING">
 
-5：SDK 正在与推流服务器和 CDN 服务器断开连接。当你调用 [StopRtmpStream](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 方法正常结束推流时，SDK 会依次报告推流状态为 RTMP_STREAM_PUBLISH_STATE_DISCONNECTING、 RTMP_STREAM_PUBLISH_STATE_IDLE。
+5：SDK 正在与推流服务器和 CDN 服务器断开连接。当你调用 [StopRtmpStream](/zh-CN/api-reference/rtc/unreal-blueprint/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 方法正常结束推流时，SDK 会依次报告推流状态为 RTMP_STREAM_PUBLISH_STATE_DISCONNECTING、RTMP_STREAM_PUBLISH_STATE_IDLE。
+
+</Parameter>
+</ParameterList>

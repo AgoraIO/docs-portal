@@ -1,0 +1,3057 @@
+---
+title: Class EduApiService
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_services_api_duApiService.html
+  sourcePath: html-docs/flexible-classroom/Electron/classes/agora_edu_core_src_services_api_duApiService.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new EduApiService(): [EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
+
+</ApiSignature>
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[constructor](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#constructor)
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[EduApiService](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-services-api-du-api-service)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Properties
+
+<a id="fallbackRequestHandler"></a>
+
+### fallbackRequestHandler
+
+fallbackRequestHandler: FallbackRequestHandler
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fallbackRequestHandler](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fallbackRequestHandler)
+
+<a id="headers"></a>
+
+### Optional headers
+
+headers?: Record&lt;string,unknown&gt;
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[headers](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#headers)
+
+<a id="host"></a>
+
+### Optional host
+
+host?: string
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[host](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#host)
+
+<a id="logger"></a>
+
+### logger
+
+logger: ["agora-rte-sdk/src/core/logger/type"](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-rte-sdk-src-core-logger-type).[Logger](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-logger-type-ogger)
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[logger](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#logger)
+
+<a id="pathPrefix"></a>
+
+### Optional pathPrefix
+
+pathPrefix?: string
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[pathPrefix](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#pathPrefix)
+
+<a id="domainHolder"></a>
+
+### Static domainHolder
+
+domainHolder: DomainHolder
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[domainHolder](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#domainHolder)
+
+## Methods
+
+<a id="acceptGroupInvite"></a>
+
+### acceptGroupInvite
+
+<ApiSignature>
+
+acceptGroupInvite(roomUuid: string, groupUuid: string, data?: \{ leaveGroupUuids: string[] \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+接受分组邀请
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="groupUuid" type="string" required />
+<Parameter name="data" type="\&#123; leaveGroupUuids: string[] \&#125;" optional>
+
+<ParameterList>
+<Parameter name="leaveGroupUuids" type="string[]" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="acceptHandsUp"></a>
+
+### acceptHandsUp
+
+<ApiSignature>
+
+acceptHandsUp(params: \{ roomUuid: string; toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+接受举手上台请求
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addCloudDriveFile"></a>
+
+### addCloudDriveFile
+
+<ApiSignature>
+
+addCloudDriveFile(resourceUuid: string, userUuid: string, resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+新增云盘资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
+
+<ParameterType>
+
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addCloudDriveFileV3"></a>
+
+### addCloudDriveFileV3
+
+<ApiSignature>
+
+addCloudDriveFileV3(resourceUuid: string, userUuid: string, resourceInfo: [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+### deprecated
+
+This API will be removed in near future.
+新增云盘资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
+
+<ParameterType>
+
+[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addGroup"></a>
+
+### addGroup
+
+<ApiSignature>
+
+addGroup(roomUuid: string, data: \{ groups: [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]; inProgress: boolean \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+新增组
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ groups: [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]; inProgress: boolean \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="allowHandsUp"></a>
+
+### allowHandsUp
+
+<ApiSignature>
+
+allowHandsUp(params: \{ defaultAcceptRole?: "" | "audience"; roomUuid: string; state: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+允许举手上台申请
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; defaultAcceptRole?: &quot;&quot; | &quot;audience&quot;; roomUuid: string; state: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="defaultAcceptRole" type="&quot;&quot; | &quot;audience&quot;" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="broadcastHxChatMessage"></a>
+
+### broadcastHxChatMessage
+
+<ApiSignature>
+
+broadcastHxChatMessage(roomUuid: string, data: \{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送全体消息(AgoraChat)
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="broadcastMessage"></a>
+
+### broadcastMessage
+
+<ApiSignature>
+
+broadcastMessage(roomUuid: string, data: \{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送全体消息(根据区域判断)
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="broadcastRtmChatMessage"></a>
+
+### broadcastRtmChatMessage
+
+<ApiSignature>
+
+broadcastRtmChatMessage(roomUuid: string, data: \{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送全体消息(RTM)
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ msg: string; range: [BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range); toGroupUuids?: string[]; type: [BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="range" required>
+
+<ParameterType>
+
+[BroadcastMessageRange](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-range)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="toGroupUuids" type="string[]" optional />
+<Parameter name="type" required>
+
+<ParameterType>
+
+[BroadcastMessageType](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roadcast-message-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="cancelHandsUp"></a>
+
+### cancelHandsUp
+
+<ApiSignature>
+
+cancelHandsUp(params: \{ roomUuid: string; toUserUuid?: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+取消举手上台申请
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string; toUserUuid?: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="checkIn"></a>
+
+### checkIn
+
+<ApiSignature>
+
+checkIn(session: Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;, handsUpLimit?: \{ maxAccept: number; maxWait: number; timeout: number; type: number \}, stream?: \{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+预检
+
+<ParameterList title="Parameters">
+<Parameter name="session" required>
+
+<ParameterType>
+
+Partial & lt; [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info) & gt;
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="handsUpLimit" type="\&#123; maxAccept: number; maxWait: number; timeout: number; type: number \&#125;" optional>
+
+<ParameterList>
+<Parameter name="maxAccept" type="number" required />
+<Parameter name="maxWait" type="number" required />
+<Parameter name="timeout" type="number" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="stream" optional>
+
+<ParameterType>
+
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="confirmInvited"></a>
+
+### confirmInvited
+
+<ApiSignature>
+
+confirmInvited(params: \{ roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+接受举手上台请求
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="copyScenes"></a>
+
+### copyScenes
+
+<ApiSignature>
+
+copyScenes(roomUuid: string, fromRoomUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+复制房间笔迹
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="fromRoomUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteBatchUserProperties"></a>
+
+### deleteBatchUserProperties
+
+<ApiSignature>
+
+deleteBatchUserProperties(param0: \{ data: \{ cause?: unknown; properties: string[]; userUuid: string \}[]; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+批量删除用户属性
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; data: \&#123; cause?: unknown; properties: string[]; userUuid: string \&#125;[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; cause?: unknown; properties: string[]; userUuid: string \&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteWidget"></a>
+
+### deleteWidget
+
+<ApiSignature>
+
+deleteWidget(roomUuid: string, widgetUuid: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+删除房间 widget
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="dismissHandsUp"></a>
+
+### dismissHandsUp
+
+<ApiSignature>
+
+dismissHandsUp(params: \{ roomUuid: string; toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+拒绝举手上台请求
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="entry"></a>
+
+### entry
+
+<ApiSignature>
+
+entry(session: Partial&lt;[EduSessionInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info)&gt;, stream?: \{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+进入房间
+
+<ParameterList title="Parameters">
+<Parameter name="session" required>
+
+<ParameterType>
+
+Partial & lt; [EduSessionInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-du-session-info) & gt;
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="stream" optional>
+
+<ParameterType>
+
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); audioState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoState?: [AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="audioState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaPublishState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-track-gora-rte-media-publish-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetch"></a>
+
+### fetch
+
+<ApiSignature>
+
+fetch(params: [AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+Inherited from [ApiBase](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base).[fetch](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-rte-sdk-src-core-services-base-pi-base#fetch)
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+[AgoraFetchParams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-services-base-gora-fetch-params)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetchFileUploadSts"></a>
+
+### fetchFileUploadSts
+
+<ApiSignature>
+
+fetchFileUploadSts(param0: Partial&lt;\{ contentType: string; conversion?: Partial&lt;Partial&lt;\{ canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \}&gt;&gt;; ext: string; resourceName: string; size: number; userUuid: string \}&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取上传信息
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="Partial &amp; lt; \&#123; contentType: string; conversion?: Partial &amp; lt; Partial &amp; lt; \&#123; canvasVersion: boolean; outputFormat: string; preview: boolean; scale: number; type: string \&#125; &amp; gt; &amp; gt; ; ext: string; resourceName: string; size: number; userUuid: string \&#125; &amp; gt;" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetchPersonalResources"></a>
+
+### fetchPersonalResources
+
+<ApiSignature>
+
+fetchPersonalResources(userUuid: string, options: \{ converted?: number; limit?: number; nextId?: string; orderBy?: string; pageNo?: number; pageSize?: number; parentResourceUuid?: string; resourceName?: string; tags?: string[] \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取个人资源列表
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="options" type="\&#123; converted?: number; limit?: number; nextId?: string; orderBy?: string; pageNo?: number; pageSize?: number; parentResourceUuid?: string; resourceName?: string; tags?: string[] \&#125;" required>
+
+<ParameterList>
+<Parameter name="converted" type="number" optional />
+<Parameter name="limit" type="number" optional />
+<Parameter name="nextId" type="string" optional />
+<Parameter name="orderBy" type="string" optional />
+<Parameter name="pageNo" type="number" optional />
+<Parameter name="pageSize" type="number" optional />
+<Parameter name="parentResourceUuid" type="string" optional />
+<Parameter name="resourceName" type="string" optional />
+<Parameter name="tags" type="string[]" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="fetchUserList"></a>
+
+### fetchUserList
+
+<ApiSignature>
+
+fetchUserList(roomId: string, params: \{ count?: number; nextId: undefined | null | string | number; role: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum); type?: "0" | "1"; userName?: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取房间内用户列表
+
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="params" required>
+
+<ParameterType>
+
+\{ count?: number; nextId: undefined | null | string | number; role: [EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum); type?: "0" | "1"; userName?: string \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="count" type="number" optional />
+<Parameter name="nextId" type="undefined | null | string | number" required />
+<Parameter name="role" required>
+
+<ParameterType>
+
+[EduRoleTypeEnum](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-type-du-role-type-enum)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="type" type="&quot;0&quot; | &quot;1&quot;" optional />
+<Parameter name="userName" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getAgoraChatToken"></a>
+
+### getAgoraChatToken
+
+<ApiSignature>
+
+getAgoraChatToken(param0: \{ roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取 AgoraChat 用户登录 Token
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getAnswerList"></a>
+
+### getAnswerList
+
+<ApiSignature>
+
+getAnswerList(roomUuid: string, popupQuizId: string, query: \{ count: number; nextId: number \}): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+获取答题列表
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="query" type="\&#123; count: number; nextId: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="count" type="number" required />
+<Parameter name="nextId" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getConversationHistoryChatMessage"></a>
+
+### getConversationHistoryChatMessage
+
+<ApiSignature>
+
+getConversationHistoryChatMessage(params: \{ data: \{ nextId: string; sort: number; studentUuid: string \}; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取聊天历史会话信息
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; data: \&#123; nextId: string; sort: number; studentUuid: string \&#125;; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; nextId: string; sort: number; studentUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+<Parameter name="studentUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getConversationList"></a>
+
+### getConversationList
+
+<ApiSignature>
+
+getConversationList(params: \{ data: \{ nextId: string \}; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取聊天会话列表
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; data: \&#123; nextId: string \&#125;; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; nextId: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getHistoryChatMessage"></a>
+
+### getHistoryChatMessage
+
+<ApiSignature>
+
+getHistoryChatMessage(params: \{ data: \{ nextId: string; sort: number \}; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取聊天历史记录
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; data: \&#123; nextId: string; sort: number \&#125;; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; nextId: string; sort: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="string" required />
+<Parameter name="sort" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getRecordList"></a>
+
+### getRecordList
+
+<ApiSignature>
+
+getRecordList(param0: \{ nextId?: number; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+查询房间录制列表
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; nextId?: number; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="nextId" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getRoomEvents"></a>
+
+### getRoomEvents
+
+<ApiSignature>
+
+getRoomEvents(param0: \{ causeDataFilterKeys?: string; causeDataFilterValues?: string; cmd?: number; nextId?: number; roomUuid: string; userUuid?: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+查询房间sequences事件
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; causeDataFilterKeys?: string; causeDataFilterValues?: string; cmd?: number; nextId?: number; roomUuid: string; userUuid?: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="causeDataFilterKeys" type="string" optional />
+<Parameter name="causeDataFilterValues" type="string" optional />
+<Parameter name="cmd" type="number" optional />
+<Parameter name="nextId" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getWindowManagerAttributes"></a>
+
+### getWindowManagerAttributes
+
+<ApiSignature>
+
+getWindowManagerAttributes(roomUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+获取白板windowManager属性（课件）
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="kickOutOnceOrBan"></a>
+
+### kickOutOnceOrBan
+
+<ApiSignature>
+
+kickOutOnceOrBan(userUuid: string, isBan: boolean, roomUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+踢出房间
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+<Parameter name="isBan" type="boolean" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="muteChat"></a>
+
+### muteChat
+
+<ApiSignature>
+
+muteChat(params: \{ muteChat: number; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+聊天禁言
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; muteChat: number; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="muteChat" type="number" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="pauseCountdownTimer"></a>
+
+### pauseCountdownTimer
+
+<ApiSignature>
+
+pauseCountdownTimer(roomUuid: string, countdownTimerId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+暂停倒计时
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="refuseHandsUp"></a>
+
+### refuseHandsUp
+
+<ApiSignature>
+
+refuseHandsUp(params: \{ roomUuid: string; toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+拒绝举手上台请求
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="rejectGroupInvite"></a>
+
+### rejectGroupInvite
+
+<ApiSignature>
+
+rejectGroupInvite(roomUuid: string, groupUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+拒绝进入分组邀请
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="groupUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlGetTokens"></a>
+
+### remoteControlGetTokens
+
+<ApiSignature>
+
+remoteControlGetTokens(roomUuid: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制-获取远程控制需要的token
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlStudentAcceptInvite"></a>
+
+### remoteControlStudentAcceptInvite
+
+<ApiSignature>
+
+remoteControlStudentAcceptInvite(roomUuid: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制-学生同意邀请
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlTeacherAuthorization"></a>
+
+### remoteControlTeacherAuthorization
+
+<ApiSignature>
+
+remoteControlTeacherAuthorization(roomUuid: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制授权
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlTeacherInvite"></a>
+
+### remoteControlTeacherInvite
+
+<ApiSignature>
+
+remoteControlTeacherInvite(roomUuid: string, data: \{ toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制-老师发起邀请
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlTeacherStopInvite"></a>
+
+### remoteControlTeacherStopInvite
+
+<ApiSignature>
+
+remoteControlTeacherStopInvite(roomUuid: string, toUserUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制-老师结束邀请
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remoteControlTeacherUnauthorization"></a>
+
+### remoteControlTeacherUnauthorization
+
+<ApiSignature>
+
+remoteControlTeacherUnauthorization(roomUuid: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+远程控制取消授权
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeGroup"></a>
+
+### removeGroup
+
+<ApiSignature>
+
+removeGroup(roomUuid: string, data: \{ removeGroupUuids: string[] \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+删除分组
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123; removeGroupUuids: string[] \&#125;" required>
+
+<ParameterList>
+<Parameter name="removeGroupUuids" type="string[]" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeMaterials"></a>
+
+### removeMaterials
+
+<ApiSignature>
+
+removeMaterials(resourceUuids: string[], userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+删除个人资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuids" type="string[]" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeWidgetExtraProperties"></a>
+
+### removeWidgetExtraProperties
+
+<ApiSignature>
+
+removeWidgetExtraProperties(roomUuid: string, widgetUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+移除 extra 中的属性
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeWidgetUserProperties"></a>
+
+### removeWidgetUserProperties
+
+<ApiSignature>
+
+removeWidgetUserProperties(roomUuid: string, widgetUuid: string, userUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+移除用户 widget 属性
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="reportMicCameraStateLeagcy"></a>
+
+### reportMicCameraStateLeagcy
+
+<ApiSignature>
+
+reportMicCameraStateLeagcy(payload: \{ data: unknown; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+上报麦克风设备状态（兼容历史版本）
+
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123; data: unknown; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="unknown" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="resumeCountdownTimer"></a>
+
+### resumeCountdownTimer
+
+<ApiSignature>
+
+resumeCountdownTimer(roomUuid: string, countdownTimerId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+恢复倒计时
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="revokeAllCoVideo"></a>
+
+### revokeAllCoVideo
+
+<ApiSignature>
+
+revokeAllCoVideo(params: \{ roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+所有成员取消连麦
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="revokeCoVideo"></a>
+
+### revokeCoVideo
+
+<ApiSignature>
+
+revokeCoVideo(params: \{ roomUuid: string; toUserUuid?: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+指定成员取消连麦
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; roomUuid: string; toUserUuid?: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="toUserUuid" type="string" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendChat"></a>
+
+### sendChat
+
+<ApiSignature>
+
+sendChat(params: \{ data: \{ message: string; type: number \}; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送聊天信息
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; data: \&#123; message: string; type: number \&#125;; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; message: string; type: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="message" type="string" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendConversationChat"></a>
+
+### sendConversationChat
+
+<ApiSignature>
+
+sendConversationChat(params: \{ data: \{ message: string; type: number \}; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送聊天会话信息
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; data: \&#123; message: string; type: number \&#125;; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; message: string; type: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="message" type="string" required />
+<Parameter name="type" type="number" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendNotificationMessage"></a>
+
+### sendNotificationMessage
+
+<ApiSignature>
+
+sendNotificationMessage(roomUuid: string, data: \{ msg: string; rang: number; toGroupUuids: string[]; type: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送全体消息
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="\&#123; msg: string; rang: number; toGroupUuids: string[]; type: string \&#125;" required>
+
+rang: 1.大房间 2.指定组 3.全体（大房间+所有组）
+toGroupUuids: 当type=2时，传入指定小组id
+type: 消息类型；txt\:文本消息，img：图片消息，loc：位置消息，audio：语音消息，video：视频消息，file：文件消息
+msg: 消息
+
+<ParameterList>
+<Parameter name="msg" type="string" required />
+<Parameter name="rang" type="number" required />
+<Parameter name="toGroupUuids" type="string[]" required />
+<Parameter name="type" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="sendRewards"></a>
+
+### sendRewards
+
+<ApiSignature>
+
+sendRewards(params: \{ rewards: \{ changeReward: number; userUuid: string \}[]; roomUuid: string \}, isBatch?: boolean): Promise&lt;any&gt;
+
+</ApiSignature>
+
+发送奖励
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; rewards: \&#123; changeReward: number; userUuid: string \&#125;[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="rewards" type="\&#123; changeReward: number; userUuid: string \&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="isBatch" type="boolean" optional />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setWindowManagerAttributes"></a>
+
+### setWindowManagerAttributes
+
+<ApiSignature>
+
+setWindowManagerAttributes(roomUuid: string, data: unknown): Promise&lt;any&gt;
+
+</ApiSignature>
+
+保存白板windowManager属性（课件）
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startAnswer"></a>
+
+### startAnswer
+
+<ApiSignature>
+
+startAnswer(roomUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+开启选择题
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startCarousel"></a>
+
+### startCarousel
+
+<ApiSignature>
+
+startCarousel(payload: \{ count?: number; interval?: number; range?: number; roomUuid: string; type?: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+开启轮播
+
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123; count?: number; interval?: number; range?: number; roomUuid: string; type?: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="count" type="number" optional />
+<Parameter name="interval" type="number" optional />
+<Parameter name="range" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="type" type="number" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startCountdownTimer"></a>
+
+### startCountdownTimer
+
+<ApiSignature>
+
+startCountdownTimer(roomUuid: string, duration: number): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+开启倒计时
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="duration" type="number" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startHandsUp"></a>
+
+### startHandsUp
+
+<ApiSignature>
+
+startHandsUp(params: \{ payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+举手
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="payload" type="unknown" optional />
+<Parameter name="retry" type="boolean" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="timout" type="number" optional />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startPolling"></a>
+
+### startPolling
+
+<ApiSignature>
+
+startPolling(roomUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+开启投票
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startShareScreen"></a>
+
+### startShareScreen
+
+<ApiSignature>
+
+startShareScreen(roomId: string, userUuid: string, audioOptions?: Partial&lt;[AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states)&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
+
+开启屏幕共享
+
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="audioOptions" optional>
+
+<ParameterType>
+
+Partial & lt; [AgoraStreamStates](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-type-gora-stream-states) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startShareScreenStateless"></a>
+
+### startShareScreenStateless
+
+<ApiSignature>
+
+startShareScreenStateless(roomId: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+开启屏幕共享
+
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopAnswer"></a>
+
+### stopAnswer
+
+<ApiSignature>
+
+stopAnswer(roomUuid: string, popupQuizId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+停止选择
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopCarousel"></a>
+
+### stopCarousel
+
+<ApiSignature>
+
+stopCarousel(payload: \{ roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+关闭轮播
+
+<ParameterList title="Parameters">
+<Parameter name="payload" type="\&#123; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopCountdownTimer"></a>
+
+### stopCountdownTimer
+
+<ApiSignature>
+
+stopCountdownTimer(roomUuid: string, countdownTimerId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+结束倒计时
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="countdownTimerId" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopPolling"></a>
+
+### stopPolling
+
+<ApiSignature>
+
+stopPolling(roomUuid: string, pollId: string): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+结束投票
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="pollId" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopShareScreen"></a>
+
+### stopShareScreen
+
+<ApiSignature>
+
+stopShareScreen(roomId: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+停止屏幕共享
+
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopShareScreenStateless"></a>
+
+### stopShareScreenStateless
+
+<ApiSignature>
+
+stopShareScreenStateless(roomId: string, userUuid: string): Promise&lt;any&gt;
+
+</ApiSignature>
+
+停止屏幕共享
+
+<ParameterList title="Parameters">
+<Parameter name="roomId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="submitAnswer"></a>
+
+### submitAnswer
+
+<ApiSignature>
+
+submitAnswer(roomUuid: string, popupQuizId: string, userUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+提交答案
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="submitResult"></a>
+
+### submitResult
+
+<ApiSignature>
+
+submitResult(roomUuid: string, pollId: string, userUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+投票
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="pollId" type="string" required>
+
+投票id
+
+</Parameter>
+<Parameter name="userUuid" type="string" required>
+
+用户ID
+
+</Parameter>
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateAnswerCorrectItems"></a>
+
+### updateAnswerCorrectItems
+
+<ApiSignature>
+
+updateAnswerCorrectItems(roomUuid: string, popupQuizId: string, correctItems: string[]): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+修改答题正确选项
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="popupQuizId" type="string" required />
+<Parameter name="correctItems" type="string[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateBatchUserProperties"></a>
+
+### updateBatchUserProperties
+
+<ApiSignature>
+
+updateBatchUserProperties(param0: \{ data: \{ cause?: unknown; properties: unknown; userUuid: string \}[]; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+批量更新用户属性
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; data: \&#123; cause?: unknown; properties: unknown; userUuid: string \&#125;[]; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="\&#123; cause?: unknown; properties: unknown; userUuid: string \&#125;[]" required />
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateClassState"></a>
+
+### updateClassState
+
+<ApiSignature>
+
+updateClassState(params: \{ roomUuid: string; state: [ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state) \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新教室状态
+
+<ParameterList title="Parameters">
+<Parameter name="params" required>
+
+<ParameterType>
+
+\{ roomUuid: string; state: [ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state) \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" required>
+
+<ParameterType>
+
+[ClassState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-room-type-lass-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateCloudDriveFile"></a>
+
+### updateCloudDriveFile
+
+<ApiSignature>
+
+updateCloudDriveFile(resourceUuid: string, userUuid: string, resourceInfo: Pick&lt;[CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info), "resourceName"&gt;): Promise&lt;any&gt;
+
+</ApiSignature>
+
+修改云盘资源
+
+<ParameterList title="Parameters">
+<Parameter name="resourceUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="resourceInfo" required>
+
+<ParameterType>
+
+Pick & lt; [CloudDriveResourceInfo](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-cloud-drive-type-loud-drive-resource-info),"resourceName" & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateExpandedScopeAndStreams"></a>
+
+### updateExpandedScopeAndStreams
+
+<ApiSignature>
+
+updateExpandedScopeAndStreams(roomUuid: string, state: 0 | 1, data: \{ userUuids: string[] \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新视频墙开关状态和发流用户列表
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required>
+
+课堂 ID
+
+</Parameter>
+<Parameter name="state" type="0 | 1" required>
+
+：视频墙开关状态
+
+- 1：开启视频墙功能
+- 0：关闭视频墙功能
+
+</Parameter>
+<Parameter name="data" type="\&#123; userUuids: string[] \&#125;" required>
+
+想要控制发流权限的用户 ID 列表
+
+<ParameterList>
+<Parameter name="userUuids" type="string[]" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateFlexProperties"></a>
+
+### updateFlexProperties
+
+<ApiSignature>
+
+updateFlexProperties(roomUuid: string, params: \{ cause?: unknown; increments?: unknown; properties?: unknown; throttleTime?: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新用户属性
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="params" type="\&#123; cause?: unknown; increments?: unknown; properties?: unknown; throttleTime?: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="cause" type="unknown" optional />
+<Parameter name="increments" type="unknown" optional />
+<Parameter name="properties" type="unknown" optional />
+<Parameter name="throttleTime" type="number" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateGroupInfo"></a>
+
+### updateGroupInfo
+
+<ApiSignature>
+
+updateGroupInfo(roomUuid: string, data: \{ groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[] \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+修改分组信息
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[] \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateGroupState"></a>
+
+### updateGroupState
+
+<ApiSignature>
+
+updateGroupState(roomUuid: string, data: \{ groups: [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]; inProgress?: boolean; syncBoardScenes?: boolean \}, state?: [GroupState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)): Promise&lt;any&gt;
+
+</ApiSignature>
+
+开启/关闭分组
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ groups: [GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]; inProgress?: boolean; syncBoardScenes?: boolean \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[GroupDetail](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/modules/agora-edu-core-src-stores-domain-common-group-type#GroupDetail)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" optional />
+<Parameter name="syncBoardScenes" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+<Parameter name="state" optional>
+
+<ParameterType>
+
+[GroupState](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/enums/agora-edu-core-src-stores-domain-common-group-type-roup-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateGroupUsers"></a>
+
+### updateGroupUsers
+
+<ApiSignature>
+
+updateGroupUsers(roomUuid: string, data: \{ groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]; inProgress: boolean \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新分组成员
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="data" required>
+
+<ParameterType>
+
+\{ groups: [PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]; inProgress: boolean \}
+
+</ParameterType>
+
+🔢 inProgress 是否邀请，true 发送邀请 false 直接加入
+
+<ParameterList>
+<Parameter name="groups" required>
+
+<ParameterType>
+
+[PatchGroup](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/interfaces/agora-edu-core-src-stores-domain-common-group-type-atch-group)[]
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="inProgress" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateRecordingState"></a>
+
+### updateRecordingState
+
+<ApiSignature>
+
+updateRecordingState(params: \{ args?: unknown; backupCount?: number; roomUuid: string; state: number \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新录制状态
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; args?: unknown; backupCount?: number; roomUuid: string; state: number \&#125;" required>
+
+<ParameterList>
+<Parameter name="args" type="unknown" optional />
+<Parameter name="backupCount" type="number" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="state" type="number" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateRecordingStateOngoing"></a>
+
+### updateRecordingStateOngoing
+
+<ApiSignature>
+
+updateRecordingStateOngoing(params: \{ opts: \{ onHold: boolean \}; roomUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新录制状态(录制中)
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; opts: \&#123; onHold: boolean \&#125;; roomUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="opts" type="\&#123; onHold: boolean \&#125;" required>
+
+<ParameterList>
+<Parameter name="onHold" type="boolean" required />
+</ParameterList>
+
+</Parameter>
+<Parameter name="roomUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateUserTags"></a>
+
+### updateUserTags
+
+<ApiSignature>
+
+updateUserTags(param0: \{ data: unknown; key: string; roomUuid: string; userUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+更新用户tag属性
+
+<ParameterList title="Parameters">
+<Parameter name="param0" type="\&#123; data: unknown; key: string; roomUuid: string; userUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="data" type="unknown" required />
+<Parameter name="key" type="string" required />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateWidgetProperties"></a>
+
+### updateWidgetProperties
+
+<ApiSignature>
+
+updateWidgetProperties(roomUuid: string, widgetUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+更新房间 widget 属性
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateWidgetUserProperties"></a>
+
+### updateWidgetUserProperties
+
+<ApiSignature>
+
+updateWidgetUserProperties(roomUuid: string, widgetUuid: string, userUuid: string, properties: unknown): Promise&lt;\{ data: any \}&gt;
+
+</ApiSignature>
+
+设置用户 widget 属性
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="widgetUuid" type="string" required />
+<Parameter name="userUuid" type="string" required />
+<Parameter name="properties" type="unknown" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;\{ data: any \}&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="waveArm"></a>
+
+### waveArm
+
+<ApiSignature>
+
+waveArm(params: \{ payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \}): Promise&lt;any&gt;
+
+</ApiSignature>
+
+挥手
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; payload?: unknown; retry?: boolean; roomUuid: string; timout?: number; toUserUuid: string \&#125;" required>
+
+<ParameterList>
+<Parameter name="payload" type="unknown" optional />
+<Parameter name="retry" type="boolean" optional />
+<Parameter name="roomUuid" type="string" required />
+<Parameter name="timout" type="number" optional />
+<Parameter name="toUserUuid" type="string" required />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;any&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

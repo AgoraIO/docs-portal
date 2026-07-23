@@ -1,10 +1,18 @@
 ---
-title: "MediaRecorderConfiguration"
-description: "音视频流录制配置。"
+title: MediaRecorderConfiguration
+description: 音视频流录制配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/Csharp/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_mediarecorderconfiguration__prototype"></a>
 
-```csharp
+```text
 public struct MediaRecorderConfiguration {
         public string storagePath;
         public MediaRecorderContainerFormat containerFormat;
@@ -26,57 +34,87 @@ public struct MediaRecorderConfiguration {
 
 ## 属性
 
-### `storagePath`
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
 
 录制文件在本地保存的绝对路径，需精确到文件名及格式。例如：
 
-- Windows: C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\example.mp4
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.mp4`
 
-:::warning[注意]
-请确保你指定的路径存在并且可写。
+:::caution
+注意： 请确保你指定的路径存在并且可写。
 :::
 
-### `containerFormat`
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
 
 录制文件的格式。详见 [MediaRecorderContainerFormat](/zh-CN/api-reference/rtc/csharp-windows/enum-mediarecordercontainerformat)。
 
-### `streamType`
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
 
 录制内容。详见 [MediaRecorderStreamType](/zh-CN/api-reference/rtc/csharp-windows/enum-mediarecorderstreamtype)。
 
-### `maxDurationMs`
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
 
 最大录制时长，单位为毫秒，默认值为 120000。
 
-### `recorderInfoUpdateInterval`
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
 
 录制信息更新间隔，单位为毫秒，取值范围为 [1000,10000]。SDK 会根据该值的设置触发 [OnRecorderInfoUpdated](/zh-CN/api-reference/rtc/csharp-windows/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调，报告更新后的录制信息。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
-录制视频的宽度 (px)，宽 × 高的最大值不应超过 3840 × 2160。 该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+录制视频的宽度 (px)，宽 × 高的最大值不应超过 3840 × 2160。
+                    该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
-录制视频的高度 (px)，宽 × 高的最大值不超过 3840 × 2160。 该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+录制视频的高度 (px)，宽 × 高的最大值不超过 3840 × 2160。
+                    该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
 
-### `fps`
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
 
-录制视频的帧率，最高值不超过 30，如： 5、10、15、24、30 等。 该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+录制视频的帧率，最高值不超过 30，如： 5、10、15、24、30 等。
+                    该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
 
-### `sample_rate`
+</Parameter>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
 
-录制音频的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。 该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+录制音频的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
+                    该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
 
-### `channel_num`
+</Parameter>
+<a id="channel_num"></a>
+<Parameter name="channel_num">
 
 录制音频的声道数:
 
 - 1: 单声道
 - 2: 双声道
 
-该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
 
-### `videoSourceType`
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
 
-录制视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。 该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type 设置为 PREVIEW 时需要传入。
+录制视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-videosourcetype)。
+                    该参数仅在 调用 [CreateMediaRecorder](/zh-CN/api-reference/rtc/csharp-windows/recording#api_irtcengine_createmediarecorder) 且将 RecorderStreamInfo 中的 type设置为 PREVIEW 时需要传入。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,125 @@
+---
+title: agora::linuxsdk::AudioPcmFrame类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/classagora_1_1linuxsdk_1_1_audio_pcm_frame
+  sourcePath: html-docs/recording/cpp/classagora_1_1linuxsdk_1_1_audio_pcm_frame.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+PCM 格式原始音频数据的具体参数。
+
+## 构造及析构函数说明
+
+<a id="a3284da139873acdff64dd51146ef4089"></a>
+
+### AudioPcmFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::AudioPcmFrame::AudioPcmFrame([u64_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9cc1f6639ee34314ef127d703c7c7b5d) *frame_ms*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *sample_rates*, [uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) *samples*)
+
+</ApiSignature>
+
+<a id="a4a6e71119967c94ce7a275b37f9f495c"></a>
+
+### ~AudioPcmFrame()
+
+<ApiSignature>
+
+agora::linuxsdk::AudioPcmFrame::~AudioPcmFrame()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a4ab560a78e06ec0a39048a54a26bb72d"></a>
+
+### frame_ms_
+
+<ApiSignature>
+
+[u64_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a9cc1f6639ee34314ef127d703c7c7b5d) agora::linuxsdk::AudioPcmFrame::frame_ms_
+
+</ApiSignature>
+
+该帧的时间戳。
+
+<a id="a0f215d31aa444ee01744e07e061ba606"></a>
+
+### channels_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::AudioPcmFrame::channels_
+
+</ApiSignature>
+
+声道数量，例如双声道等。
+
+<a id="a1ee6811615e06b0baa7a8ce76d6244e2"></a>
+
+### sample_bits_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::AudioPcmFrame::sample_bits_
+
+</ApiSignature>
+
+采样的数据位宽。
+
+<a id="a68a497f9faea9a0fa23584cfdc319c10"></a>
+
+### sample_rates_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::AudioPcmFrame::sample_rates_
+
+</ApiSignature>
+
+采样率。
+
+<a id="aff668d4085c2486afe96229deb11beda"></a>
+
+### samples_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::AudioPcmFrame::samples_
+
+</ApiSignature>
+
+该帧的采样样本的数量。
+
+<a id="a5a83e05df2b40d55b9b84e04aba6d8d5"></a>
+
+### pcmBuf_
+
+<ApiSignature>
+
+const [uchar_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#af50c9c155458449dbe080a49543815fa)* agora::linuxsdk::AudioPcmFrame::pcmBuf_
+
+</ApiSignature>
+
+音频帧缓冲区。
+
+<a id="a19fdb8500256bf5beacbec5ec60bef28"></a>
+
+### pcmBufSize_
+
+<ApiSignature>
+
+[uint_t](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a77da0a90fda43eee8b6a004e607cf116) agora::linuxsdk::AudioPcmFrame::pcmBufSize_
+
+</ApiSignature>
+
+音频帧缓冲区的大小。

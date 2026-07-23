@@ -1,10 +1,19 @@
 ---
-title: "人声音效"
-description: "人声音效 API reference."
+title: 人声音效
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_audio_effect
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_audio_effect.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_effect"></a>
 
 <a id="api_irtcengine_enablevoiceaituner"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnableVoiceAITuner
 
@@ -12,7 +21,7 @@ description: "人声音效 API reference."
 
 <a id="api_irtcengine_enablevoiceaituner__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int EnableVoiceAITuner(bool enabled, EVOICE_AI_TUNER_TYPE type);
 ```
@@ -43,28 +52,38 @@ AI 调音器功能支持美化音质，调整音色风格。
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 是否开启 AI 调音器功能：
 
-- true：开启 AI 调音器功能。
-- false：（默认）关闭 AI 调音器功能。
+- `true`：开启 AI 调音器功能。
+- `false`：（默认）关闭 AI 调音器功能。
 
-#### `type`
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 AI 调音器音效类型，详见 [EVOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-voiceaitunertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablevoiceaituner__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setadvancedaudiooptions"></a>
+
+<a id="ariaid-title3"></a>
 
 ## SetAdvancedAudioOptions
 
@@ -72,7 +91,7 @@ AI 调音器音效类型，详见 [EVOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rt
 
 <a id="api_irtcengine_setadvancedaudiooptions__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAdvancedAudioOptions(const FAdvancedAudioOptions& options);
 ```
@@ -83,29 +102,37 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 如果你对音频处理有进阶需求，例如需要采集和发送立体声，可以调用该方法设置音频的高级选项。
 
-:::warning[注意]
-你需要在 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2)、 [EnableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_enableaudio) 和 [EnableLocalAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture#api_irtcengine_enablelocalaudio) 前调用该方法。
+:::caution
+注意： 你需要在 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2)、[EnableAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_enableaudio) 和 [EnableLocalAudio](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-capture#api_irtcengine_enablelocalaudio) 前调用该方法。
 :::
 
 <a id="api_irtcengine_setadvancedaudiooptions__parameters"></a>
 
 ### 参数
 
-#### `options`
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
 
 音频的高级选项。详见 [FAdvancedAudioOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-advancedaudiooptions)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setadvancedaudiooptions__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setainsmode"></a>
+
+<a id="ariaid-title4"></a>
 
 ## SetAINSMode
 
@@ -113,14 +140,15 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setainsmode__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAINSMode(bool enabled, EAUDIO_AINS_MODE mode);
 ```
 
 <a id="api_irtcengine_setainsmode__detailed_desc"></a>
 
-你可以调用开方法来开启 AI 降噪功能。该功能可以在保证语音质量的前提下，智能化检测并降低周围环境中多种稳态与非稳态噪声，使人声更加清晰。 稳态噪声指在任何时间点上都具有相同频率的噪声，常见的稳态噪声有：
+你可以调用开方法来开启 AI 降噪功能。该功能可以在保证语音质量的前提下，智能化检测并降低周围环境中多种稳态与非稳态噪声，使人声更加清晰。
+                稳态噪声指在任何时间点上都具有相同频率的噪声，常见的稳态噪声有：
 
 - 电视机噪声
 - 空调噪声
@@ -154,28 +182,38 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
 是否开启 AI 降噪功能：
 
-- true： 开启 AI 降噪功能。
-- false： （默认）关闭 AI 降噪功能。
+- `true`：开启 AI 降噪功能。
+- `false`：（默认）关闭 AI 降噪功能。
 
-#### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 降噪模式，详见 [EAUDIO_AINS_MODE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioainsmode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setainsmode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectparameters"></a>
+
+<a id="ariaid-title5"></a>
 
 ## SetAudioEffectParameters
 
@@ -183,7 +221,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setaudioeffectparameters__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioEffectParameters(FENUMWRAP_AUDIO_EFFECT_PRESET preset, int param1, int param2);
 ```
@@ -201,73 +239,91 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfileAndScenario 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
+- 调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 该方法在加入频道前后都能调用。
-- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
+- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD(1)或 AUDIO_PROFILE_IOT(6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetAudioEffectParameters 后，不建议调用以下方法，否则 SetAudioEffectParameters 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetVoiceBeautifierPreset
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceBeautifierParameters
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setaudioeffectparameters__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
 
 SDK 预设的音效，支持以下设置：
 
 - ROOM_ACOUSTICS_3D_VOICE，3D 人声音效。
-  - 你需要在使用该枚举前将 SetAudioProfileAndScenario 的 profile 参数设置 为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO (3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)，否则该枚举设置无效。
+
+  - 你需要在使用该枚举前将 SetAudioProfileAndScenario 的 profile 参数设置 为 AUDIO_PROFILE_MUSIC_STANDARD_STEREO(3) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)，否则该枚举设置无效。
   - 启用 3D 人声后，用户需要使用支持双声道的音频播放设备才能听到预期效果。
 - PITCH_CORRECTION，电音音效。
 
-#### `param1`
+</Parameter>
+<a id="param1"></a>
+<Parameter name="param1">
 
 - 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，则 param1 表示 3D 人声音效的环绕周期。取值范围为 [1,60]，单位为秒。默认值为 10，表示人声会 10 秒环绕 360 度。
 - 如果 preset 设为 PITCH_CORRECTION，则 param1 表示电音音效的基础调式：
-  - 1: （默认）自然大调。
-  - 2: 自然小调。
-  - 3: 和风小调。
 
-#### `param2`
+  - `1`: （默认）自然大调。
+  - `2`: 自然小调。
+  - `3`: 和风小调。
 
-- 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，你需要将 param2 设置为 0。
+</Parameter>
+<a id="param2"></a>
+<Parameter name="param2">
+
+- 如果 preset 设为 ROOM_ACOUSTICS_3D_VOICE，你需要将 param2 设置为 `0`。
 - 如果 preset 设为 PITCH_CORRECTION，则 param2 表示电音音效的主音音高：
-  - 1: A
-  - 2: A#
-  - 3: B
-  - 4: (Default) C
-  - 5: C#
-  - 6: D
-  - 7: D#
-  - 8: E
-  - 9: F
-  - 10: F#
-  - 11: G
-  - 12: G#
+
+  - `1`: A
+  - `2`: A#
+  - `3`: B
+  - `4`: (Default) C
+  - `5`: C#
+  - `6`: D
+  - `7`: D#
+  - `8`: E
+  - `9`: F
+  - `10`: F#
+  - `11`: G
+  - `12`: G#
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectparameters__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioeffectpreset"></a>
+
+<a id="ariaid-title6"></a>
 
 ## SetAudioEffectPreset
 
@@ -275,7 +331,7 @@ SDK 预设的音效，支持以下设置：
 
 <a id="api_irtcengine_setaudioeffectpreset__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetAudioEffectPreset(FENUMWRAP_AUDIO_EFFECT_PRESET preset);
 ```
@@ -292,43 +348,52 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfileAndScenario 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
+- 调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
 <a id="api_irtcengine_setaudioeffectpreset__restriction"></a>
 
 ### 调用限制
 
-- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
+- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD(1)或 AUDIO_PROFILE_IOT(6)，否则该方法不生效。
 - 如果调用 SetAudioEffectPreset 并设置除 ROOM_ACOUSTICS_3D_VOICE 或 PITCH_CORRECTION 外的枚举，请勿再调用 [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)，否则 SetAudioEffectPreset 设置的效果会被覆盖。
 - 调用 SetAudioEffectPreset 后，不建议调用以下方法，否则 SetAudioEffectPreset 设置的效果会被覆盖：
+
   - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
   - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
   - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
   - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
   - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
   - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 
 <a id="api_irtcengine_setaudioeffectpreset__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset-1"></a>
+<Parameter name="preset">
 
 预设的音效选项，详见 [FENUMWRAP_AUDIO_EFFECT_PRESET](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioeffectpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioeffectpreset__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceequalization"></a>
+
+<a id="ariaid-title7"></a>
 
 ## SetLocalVoiceEqualization
 
@@ -336,7 +401,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalvoiceequalization__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalVoiceEqualization(EAUDIO_EQUALIZATION_BAND_FREQUENCY bandFrequency, int bandGain);
 ```
@@ -359,25 +424,35 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `bandFrequency`
+<ParameterList>
+<a id="bandfrequency"></a>
+<Parameter name="bandFrequency">
 
-频谱子带索引。取值范围是 [0,9]，分别代表音效的 10 个频带。对应的中心频率为 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz。详见 [EAUDIO_EQUALIZATION_BAND_FREQUENCY](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioequalizationbandfrequency)。
+频谱子带索引。取值范围是 [0,9]，分别代表音效的 10 个频带。对应的中心频率为 [31，62，125，250，500，1k，2k，4k，8k，16k] Hz。详见 [EAUDIO_EQUALIZATION_BAND_FREQUENCY](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioequalizationbandfrequency) 。
 
-#### `bandGain`
+</Parameter>
+<a id="bandgain"></a>
+<Parameter name="bandGain">
 
 每个 band 的增益，单位是 dB，每一个值的范围是 [-15,15]，默认值为 0。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceequalization__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoiceformant"></a>
+
+<a id="ariaid-title8"></a>
 
 ## SetLocalVoiceFormant
 
@@ -385,7 +460,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalvoiceformant__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalVoiceFormant(const FString & formantRatio = "0.0");
 ```
@@ -416,25 +491,33 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `formantRatio`
+<ParameterList>
+<a id="formantratio"></a>
+<Parameter name="formantRatio">
 
 共振峰比率，取值范围为 [-1.0，1.0]。默认值为 0.0，即不改变原声的音色。
 
-:::info[注]
-声网推荐的取值范围为 [-0.4，0.6]，超出此范围外音效听感可能不佳。
+:::note
+注： 声网推荐的取值范围为 [-0.4，0.6] ，超出此范围外音效听感可能不佳。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoiceformant__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicepitch"></a>
+
+<a id="ariaid-title9"></a>
 
 ## SetLocalVoicePitch
 
@@ -442,7 +525,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalvoicepitch__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalVoicePitch(float pitch);
 ```
@@ -465,21 +548,29 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 ### 参数
 
-#### `pitch`
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 语音频率。可以 [0.5,2.0] 范围内设置。取值越小，则音调越低。默认值为 1.0，表示不需要修改音调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicepitch__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setlocalvoicereverb"></a>
+
+<a id="ariaid-title10"></a>
 
 ## SetLocalVoiceReverb
 
@@ -487,7 +578,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setlocalvoicereverb__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetLocalVoiceReverb(EAUDIO_REVERB_TYPE reverbKey, int value);
 ```
@@ -498,33 +589,43 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 SDK 提供一个使用更为简便的方法 [SetAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)，直接实现流行、R&B、KTV 等预置的混响效果。
 
-:::info[注]
-该方法在加入频道前后都能调用。
+:::note
+注： 该方法在加入频道前后都能调用。
 :::
 
 <a id="api_irtcengine_setlocalvoicereverb__parameters"></a>
 
 ### 参数
 
-#### `reverbKey`
+<ParameterList>
+<a id="reverbkey"></a>
+<Parameter name="reverbKey">
 
 混响音效 Key。该方法共有 5 个混响音效 Key，详见 [EAUDIO_REVERB_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audioreverbtype)。
 
-#### `value`
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 各混响音效 Key 所对应的值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalvoicereverb__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierparameters"></a>
+
+<a id="ariaid-title11"></a>
 
 ## SetVoiceBeautifierParameters
 
@@ -532,7 +633,7 @@ SDK 提供一个使用更为简便的方法 [SetAudioEffectPreset](/zh-CN/api-re
 
 <a id="api_irtcengine_setvoicebeautifierparameters__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVoiceBeautifierParameters(FENUMWRAP_VOICE_BEAUTIFIER_PRESET preset, int param1, int param2);
 ```
@@ -545,60 +646,75 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfileAndScenario 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
+- 调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 该方法在加入频道前后都能调用。
-- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
+- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD(1)或 AUDIO_PROFILE_IOT(6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceBeautifierParameters，不建议调用以下方法，否则 SetVoiceBeautifierParameters 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetVoiceBeautifierPreset
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 :::
 
 <a id="api_irtcengine_setvoicebeautifierparameters__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset-2"></a>
+<Parameter name="preset">
 
 预设的音效：
 
-- SINGING_BEAUTIFIER: 歌唱美声。
+- `SINGING_BEAUTIFIER`: 歌唱美声。
 
-#### `param1`
+</Parameter>
+<a id="param1-1"></a>
+<Parameter name="param1">
 
 歌声的性别特征：
 
-- 1: 男声。
-- 2: 女声。
+- `1`: 男声。
+- `2`: 女声。
 
-#### `param2`
+</Parameter>
+<a id="param2-1"></a>
+<Parameter name="param2">
 
 歌声的混响效果：
 
-- 1: 歌声在小房间的混响效果。
-- 2: 歌声在大房间的混响效果。
-- 3: 歌声在大厅的混响效果。
+- `1`: 歌声在小房间的混响效果。
+- `2`: 歌声在大房间的混响效果。
+- `3`: 歌声在大厅的混响效果。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierparameters__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoicebeautifierpreset"></a>
+
+<a id="ariaid-title12"></a>
 
 ## SetVoiceBeautifierPreset
 
@@ -606,7 +722,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setvoicebeautifierpreset__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVoiceBeautifierPreset(FENUMWRAP_VOICE_BEAUTIFIER_PRESET preset);
 ```
@@ -621,46 +737,57 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 加入频道前后均可调用。
 
+<a id="api_irtcengine_setvoicebeautifierpreset__recommend"></a>
+
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfileAndScenario 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
+- 调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
 <a id="api_irtcengine_setvoicebeautifierpreset__restriction"></a>
 
 ### 调用限制
 
-- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
+- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD(1)或 AUDIO_PROFILE_IOT(6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceBeautifierPreset，不建议调用以下方法，否则 SetVoiceBeautifierPreset 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetLocalVoicePitch
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-  - SetVoiceBeautifierParameters
-  - SetVoiceConversionPreset
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetVoiceConversionPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 
 <a id="api_irtcengine_setvoicebeautifierpreset__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset-3"></a>
+<Parameter name="preset">
 
 预设的美声效果选项，详见 [FENUMWRAP_VOICE_BEAUTIFIER_PRESET](/zh-CN/api-reference/rtc/unreal-blueprint/enum-voicebeautifierpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoicebeautifierpreset__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setvoiceconversionpreset"></a>
+
+<a id="ariaid-title13"></a>
 
 ## SetVoiceConversionPreset
 
@@ -668,7 +795,7 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 <a id="api_irtcengine_setvoiceconversionpreset__prototype"></a>
 
-```cpp
+```text
 UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 	int SetVoiceConversionPreset(FENUMWRAP_VOICE_CONVERSION_PRESET preset);
 ```
@@ -685,40 +812,47 @@ UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
 
 为获取更好的人声效果，建议你在调用该方法前进行以下操作：
 
-- 调用 SetAudioScenario 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING (3)。
-- 调用 SetAudioProfileAndScenario 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY (4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO (5)。
+- 调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 将音频场景设为高音质场景，即 AUDIO_SCENARIO_GAME_STREAMING(3)。
+- 调用 [SetAudioProfileAndScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioprofile) 将 profile 设为 AUDIO_PROFILE_MUSIC_HIGH_QUALITY(4) 或 AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)。
 
 <a id="api_irtcengine_setvoiceconversionpreset__restriction"></a>
 
 ### 调用限制
 
-- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD (1) 或 AUDIO_PROFILE_IOT (6)，否则该方法不生效。
+- 请勿将 SetAudioProfileAndScenario 的 profile 参数设置为 AUDIO_PROFILE_SPEECH_STANDARD(1)或 AUDIO_PROFILE_IOT(6)，否则该方法不生效。
 - 该方法对人声的处理效果最佳，不建议调用该方法处理含音乐的音频数据。
 - 调用 SetVoiceConversionPreset 后，不建议调用以下方法，否则 SetVoiceConversionPreset 设置的效果会被覆盖：
-  - SetAudioEffectPreset
-  - SetAudioEffectParameters
-  - SetVoiceBeautifierPreset
-  - SetVoiceBeautifierParameters
-  - SetLocalVoicePitch
-  - SetLocalVoiceFormant
-  - SetLocalVoiceEqualization
-  - SetLocalVoiceReverb
-- 该方法依赖于美声动态库 libagora_audio_beauty_extension.dll，如果删除该动态库会导致无法正常开启该功能。
+
+  - [SetAudioEffectPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+  - [SetAudioEffectParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters)
+  - [SetVoiceBeautifierPreset](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+  - [SetVoiceBeautifierParameters](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters)
+  - [SetLocalVoicePitch](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+  - [SetLocalVoiceFormant](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant)
+  - [SetLocalVoiceEqualization](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+  - [SetLocalVoiceReverb](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+- 该方法依赖于美声动态库 `libagora_audio_beauty_extension.dll`，如果删除该动态库会导致无法正常开启该功能。
 
 <a id="api_irtcengine_setvoiceconversionpreset__parameters"></a>
 
 ### 参数
 
-#### `preset`
+<ParameterList>
+<a id="preset-4"></a>
+<Parameter name="preset">
 
 预设的变声效果选项: [FENUMWRAP_VOICE_CONVERSION_PRESET](/zh-CN/api-reference/rtc/unreal-blueprint/enum-voiceconversionpreset)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setvoiceconversionpreset__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)

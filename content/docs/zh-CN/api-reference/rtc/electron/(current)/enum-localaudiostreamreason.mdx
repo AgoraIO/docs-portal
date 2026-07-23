@@ -1,47 +1,76 @@
 ---
-title: "LocalAudioStreamReason"
-description: "本地音频状态改变原因。"
+title: LocalAudioStreamReason
+description: 本地音频状态改变原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/enum_localaudiostreamreason
+  sourcePath: html-docs/rtc/Electron/API/enum_localaudiostreamreason.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_localaudiostreamreason__parameters"></a>
 
 ## 枚举值
 
-### `LocalAudioStreamReasonOk`
+<ParameterList>
+<a id="localaudiostreamreasonok"></a>
+<Parameter name="LocalAudioStreamReasonOk">
 
 0：本地音频状态正常。
 
-### `LocalAudioStreamReasonFailure`
+</Parameter>
+<a id="localaudiostreamreasonfailure"></a>
+<Parameter name="LocalAudioStreamReasonFailure">
 
 1：本地音频出错原因不明确。建议提示用户尝试重新加入频道。
 
-### `LocalAudioStreamReasonDeviceNoPermission`
+</Parameter>
+<a id="localaudiostreamreasondevicenopermission"></a>
+<Parameter name="LocalAudioStreamReasonDeviceNoPermission">
 
 2：没有权限启动本地音频采集设备。请提示用户开启权限。
 
-:::info[注]
-弃用：该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/electron/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 `RecordAudio`。
+:::note
+注： 弃用：该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/electron/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 `RecordAudio`。
 :::
 
-### `LocalAudioStreamReasonRecordFailure`
+</Parameter>
+<a id="localaudiostreamreasonrecordfailure"></a>
+<Parameter name="LocalAudioStreamReasonRecordFailure">
 
 4：本地音频采集失败。
 
-### `LocalAudioStreamReasonEncodeFailure`
+</Parameter>
+<a id="localaudiostreamreasonencodefailure"></a>
+<Parameter name="LocalAudioStreamReasonEncodeFailure">
 
 5：本地音频编码失败。
 
-### `LocalAudioStreamReasonNoRecordingDevice`
+</Parameter>
+<a id="localaudiostreamreasonnorecordingdevice"></a>
+<Parameter name="LocalAudioStreamReasonNoRecordingDevice">
 
 6：无本地音频采集设备。请提示用户在设备的控制面板中检查麦克风是否与设备连接正常，检查麦克风是否正常工作。
 
-### `LocalAudioStreamReasonNoPlayoutDevice`
+</Parameter>
+<a id="localaudiostreamreasonnoplayoutdevice"></a>
+<Parameter name="LocalAudioStreamReasonNoPlayoutDevice">
 
 7：无本地音频播放设备。请提示用户在设备的控制面板中检查扬声器是否与设备连接正常，检查扬声器是否正常工作。
 
-### `LocalAudioStreamReasonRecordInvalidId`
+</Parameter>
+<a id="localaudiostreamreasonrecordinvalidid"></a>
+<Parameter name="LocalAudioStreamReasonRecordInvalidId">
 
 9：（仅适用于 Windows）本地音频采集设备的 ID 无效。请提示用户检查音频采集设备 ID。
 
-### `LocalAudioStreamReasonPlayoutInvalidId`
+</Parameter>
+<a id="localaudiostreamreasonplayoutinvalidid"></a>
+<Parameter name="LocalAudioStreamReasonPlayoutInvalidId">
 
 10：（仅适用于 Windows）本地音频播放设备的 ID 无效。请提示用户检查音频播放设备 ID。
+
+</Parameter>
+</ParameterList>

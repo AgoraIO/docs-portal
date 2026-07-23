@@ -1,10 +1,18 @@
 ---
-title: "BeautyOptions"
-description: "美颜特效设置参数。"
+title: BeautyOptions
+description: 美颜特效设置参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_beautyoptions
+  sourcePath: html-docs/rtc/Cpp/API/class_beautyoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_beautyoptions__prototype"></a>
 
-```cpp
+```text
 struct BeautyOptions {
   LIGHTENING_CONTRAST_LEVEL lighteningContrastLevel;
   float lighteningLevel;
@@ -18,22 +26,35 @@ struct BeautyOptions {
 
 ## 属性
 
-### `lighteningContrastLevel`
+<ParameterList>
+<a id="lighteningcontrastlevel"></a>
+<Parameter name="lighteningContrastLevel">
 
 对比度等级，与 `lighteningLevel` 参数配合使用。值越大，明暗对比越强。详见 [LIGHTENING_CONTRAST_LEVEL](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-lighteningcontrastlevel)。
 
-### `lighteningLevel`
+</Parameter>
+<a id="lighteninglevel"></a>
+<Parameter name="lighteningLevel">
 
 美白等级，取值范围为 [0.0, 1.0]。0.0 表示原始亮度，默认值为 0.0。值越大，美白程度越高。
 
-### `smoothnessLevel`
+</Parameter>
+<a id="smoothnesslevel"></a>
+<Parameter name="smoothnessLevel">
 
 磨皮等级，取值范围为 [0.0, 1.0]。0.0 表示原始平滑度，默认值为 0.0。值越大，磨皮程度越高。
 
-### `rednessLevel`
+</Parameter>
+<a id="rednesslevel"></a>
+<Parameter name="rednessLevel">
 
 红润等级，取值范围为 [0.0, 1.0]。0.0 表示原始红润度，默认值为 0.0。值越大，红润程度越高。
 
-### `sharpnessLevel`
+</Parameter>
+<a id="sharpnesslevel"></a>
+<Parameter name="sharpnessLevel">
 
 锐化等级，取值范围为 [0.0, 1.0]。0.0 表示原始锐度，默认值为 0.0。值越大，锐化程度越高。
+
+</Parameter>
+</ParameterList>

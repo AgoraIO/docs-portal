@@ -1,10 +1,19 @@
 ---
-title: "已编码音频数据"
-description: "已编码音频数据 API reference."
+title: 已编码音频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_encoded
+  sourcePath: html-docs/rtc/Android/API/toc_audio_encoded.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_encoded"></a>
 
 <a id="api_irtcengine_registeraudioencodedframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerAudioEncodedFrameObserver
 
@@ -12,39 +21,49 @@ description: "已编码音频数据 API reference."
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__prototype"></a>
 
-```java
+```text
 public abstract int registerAudioEncodedFrameObserver(AudioEncodedFrameObserverConfig config, IAudioEncodedFrameObserver observer);
 ```
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__detailed_desc"></a>
 
-:::info[注]
-调用该方法需在加入频道后进行。你可以调用此方法或 `startAudioRecording` 来设置音频文件的录制类型和质量，但不建议同时使用这两个方法。只有后调用的方法会生效。
+:::note
+注： 调用该方法需在加入频道后进行。你可以调用此方法或 `startAudioRecording` 来设置音频文件的录制类型和质量，但不建议同时使用这两个方法。只有后调用的方法会生效。
 :::
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__parameters"></a>
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 编码音频的观察器配置。详见 [AudioEncodedFrameObserverConfig](/zh-CN/api-reference/rtc/android/class-audioencodedframeobserverconfig)。
 
-#### `observer`
+</Parameter>
+<a id="observer"></a>
+<Parameter name="observer">
 
 编码音频数据的观察器。详见 [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registeraudioencodedframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe"></a>
+
+<a id="ariaid-title3"></a>
 
 ## onMixedAudioEncodedFrame
 
@@ -52,7 +71,7 @@ public abstract int registerAudioEncodedFrameObserver(AudioEncodedFrameObserverC
 
 <a id="callback_iaudioencodedframeobserver_onmixedaudioencodedframe__prototype"></a>
 
-```java
+```text
 public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerChannel, int channels, int samplesPerSec, int codecType);
 ```
 
@@ -64,26 +83,36 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 
 ### 参数
 
-#### `buffer`
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-#### `samplesPerChannel`
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样数。
 
-#### `channels`
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-#### `samplesPerSec`
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
 
 录制采样率（Hz）。
 
-#### `codecType`
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
@@ -92,10 +121,16 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 - 9：HE-AAC。
 - 11：HE-AAC v2。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioencodedframeobserver)
 
 <a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe"></a>
+
+<a id="ariaid-title4"></a>
 
 ## onPlaybackAudioEncodedFrame
 
@@ -103,7 +138,7 @@ public abstract void onMixedAudioEncodedFrame(ByteBuffer buffer, int samplesPerC
 
 <a id="callback_iaudioencodedframeobserver_onplaybackaudioencodedframe__prototype"></a>
 
-```java
+```text
 public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesPerChannel, int channels, int samplesPerSec, int codecType);
 ```
 
@@ -121,38 +156,54 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 
 ### 参数
 
-#### `buffer`
+<ParameterList>
+<a id="buffer-1"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-#### `samplesPerChannel`
+</Parameter>
+<a id="samplesperchannel-1"></a>
+<Parameter name="samplesPerChannel">
 
 每个声道中的采样数。
 
-#### `channels`
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-#### `samplesPerSec`
+</Parameter>
+<a id="samplespersec-1"></a>
+<Parameter name="samplesPerSec">
 
 录音采样率（Hz）。
 
-#### `codecType`
+</Parameter>
+<a id="codectype-1"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
-- 1：OPUS。
-- 8：LC-AAC。
-- 9：HE-AAC。
-- 11：HE-AAC v2。
+- `1`：OPUS。
+- `8`：LC-AAC。
+- `9`：HE-AAC。
+- `11`：HE-AAC v2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioencodedframeobserver)
 
 <a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onRecordAudioEncodedFrame
 
@@ -160,7 +211,7 @@ public abstract void onPlaybackAudioEncodedFrame(ByteBuffer buffer, int samplesP
 
 <a id="callback_iaudioencodedframeobserver_onrecordaudioencodedframe__prototype"></a>
 
-```java
+```text
 public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPerChannel, int channels, int samplesPerSec, int codecType);
 ```
 
@@ -172,33 +223,47 @@ public abstract void onRecordAudioEncodedFrame(ByteBuffer buffer, int samplesPer
 
 ### 参数
 
-#### `buffer`
+<ParameterList>
+<a id="buffer-2"></a>
+<Parameter name="buffer">
 
 音频缓冲区。
 
-#### `samplesPerChannel`
+</Parameter>
+<a id="samplesperchannel-2"></a>
+<Parameter name="samplesPerChannel">
 
 音频帧中每个声道的采样数。
 
-#### `channels`
+</Parameter>
+<a id="channels-2"></a>
+<Parameter name="channels">
 
 声道数：
 
 - 1：单声道。
 - 2：立体声。若为立体声，数据为交错排列。
 
-#### `samplesPerSec`
+</Parameter>
+<a id="samplespersec-2"></a>
+<Parameter name="samplesPerSec">
 
 录制采样率（Hz）。
 
-#### `codecType`
+</Parameter>
+<a id="codectype-2"></a>
+<Parameter name="codecType">
 
 音频编码类型：
 
-- 1：OPUS。
-- 8：LC-AAC。
-- 9：HE-AAC。
-- 11：HE-AAC v2。
+- `1`：OPUS。
+- `8`：LC-AAC。
+- `9`：HE-AAC。
+- `11`：HE-AAC v2。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IAudioEncodedFrameObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_iaudioencodedframeobserver)

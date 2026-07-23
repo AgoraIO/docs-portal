@@ -1,10 +1,19 @@
 ---
-title: "音视频观测器"
-description: "音视频观测器 API reference."
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_observer"></a>
 
 <a id="api_imediaplayer_registeraudioframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerAudioFrameObserver [1/2]
 
@@ -12,7 +21,7 @@ description: "音视频观测器 API reference."
 
 <a id="api_imediaplayer_registeraudioframeobserver__prototype"></a>
 
-```cpp
+```text
 virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 ```
 
@@ -26,21 +35,31 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver__return_values"></a>
 
 ### 返回值
 
+<a id="api_imediaplayer_registeraudioframeobserver__ul_uns_l2y_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_registeraudioframeobserver2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## registerAudioFrameObserver [2/2]
 
@@ -48,7 +67,7 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 
 <a id="api_imediaplayer_registeraudioframeobserver2__prototype"></a>
 
-```cpp
+```text
 virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer,
                                          RAW_AUDIO_FRAME_OP_MODE_TYPE mode) = 0;
 ```
@@ -57,25 +76,37 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer,
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 音频帧观测器，观测每帧音频的接收，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiopcmframesink)。
 
-#### `mode`
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
 
 音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registeraudioframeobserver2__return_values"></a>
 
 ### 返回值
 
+<a id="api_imediaplayer_registeraudioframeobserver2__ul_uns_l2y_hqb"></a>
+
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_registerplayersourceobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## registerPlayerSourceObserver
 
@@ -83,7 +114,7 @@ virtual int registerAudioFrameObserver(media::IAudioPcmFrameSink* observer,
 
 <a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
 
-```cpp
+```text
 virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) = 0;
 ```
 
@@ -105,21 +136,29 @@ virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) =
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-2"></a>
+<Parameter name="observer">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_registervideoframeobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## registerVideoFrameObserver
 
@@ -127,7 +166,7 @@ virtual int registerPlayerSourceObserver(IMediaPlayerSourceObserver* observer) =
 
 <a id="api_imediaplayer_registervideoframeobserver__prototype"></a>
 
-```cpp
+```text
 virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observer) = 0;
 ```
 
@@ -141,21 +180,29 @@ virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observe
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-3"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_registervideoframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregisteraudioframeobserver"></a>
+
+<a id="ariaid-title6"></a>
 
 ## unregisterAudioFrameObserver
 
@@ -163,7 +210,7 @@ virtual int registerVideoFrameObserver(media::base::IVideoFrameObserver* observe
 
 <a id="api_imediaplayer_unregisteraudioframeobserver__prototype"></a>
 
-```cpp
+```text
 virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 0;
 ```
 
@@ -171,21 +218,29 @@ virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-4"></a>
+<Parameter name="observer">
 
 音频帧观测器，详见 [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisteraudioframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregisterplayersourceobserver"></a>
+
+<a id="ariaid-title7"></a>
 
 ## unregisterPlayerSourceObserver
 
@@ -193,7 +248,7 @@ virtual int unregisterAudioFrameObserver(media::IAudioPcmFrameSink* observer) = 
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
 
-```cpp
+```text
 virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer) = 0;
 ```
 
@@ -201,21 +256,29 @@ virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer)
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-5"></a>
+<Parameter name="observer">
 
 播放观测器，报告播放中的事件，详见 [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_unregistervideoframeobserver"></a>
+
+<a id="ariaid-title8"></a>
 
 ## unregisterVideoFrameObserver
 
@@ -223,7 +286,7 @@ virtual int unregisterPlayerSourceObserver(IMediaPlayerSourceObserver* observer)
 
 <a id="api_imediaplayer_unregistervideoframeobserver__prototype"></a>
 
-```cpp
+```text
 virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver* observer) = 0;
 ```
 
@@ -231,21 +294,29 @@ virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-6"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收，详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_unregistervideoframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication"></a>
+
+<a id="ariaid-title9"></a>
 
 ## onAudioVolumeIndication
 
@@ -253,11 +324,13 @@ virtual int unregisterVideoFrameObserver(agora::media::base::IVideoFrameObserver
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__prototype"></a>
 
-```cpp
+```text
 virtual void onAudioVolumeIndication(int volume) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onaudiovolumeindication__detailed_desc"></a>
+
+### 详情
 
 SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
 
@@ -265,14 +338,22 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放器的当前音量，取值范围为 [0,255]。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_iaudiopcmframesink_onframe"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onFrame
 
@@ -280,11 +361,13 @@ SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量�
 
 <a id="callback_iaudiopcmframesink_onframe__prototype"></a>
 
-```cpp
+```text
 virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 ```
 
 <a id="callback_iaudiopcmframesink_onframe__detailed_desc"></a>
+
+### 详情
 
 注册音频数据观测器后，每次接收到一帧音频帧时，都会触发该回调，报告音频帧信息。
 
@@ -292,14 +375,22 @@ virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 
 ### 参数
 
-#### `frame`
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
-音频帧信息。 详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-audiopcmframe)。
+音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-audiopcmframe)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IAudioPcmFrameSink](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_iaudiopcmframesink)
 
 <a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onMetaData
 
@@ -307,11 +398,13 @@ virtual void onFrame(agora::media::base::AudioPcmFrame* frame) = 0;
 
 <a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
 
-```cpp
+```text
 virtual void onMetaData(const void* data, int length) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+### 详情
 
 解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
 
@@ -319,18 +412,28 @@ virtual void onMetaData(const void* data, int length) = 0;
 
 ### 参数
 
-#### `data`
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
 
 具体数据，用户自定义格式的数据。
 
-#### `length`
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
 
 数据长度，单位为 byte。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onPlayBufferUpdated
 
@@ -338,11 +441,13 @@ virtual void onMetaData(const void* data, int length) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
+
+### 详情
 
 播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
 
@@ -353,14 +458,22 @@ virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 
 ### 参数
 
-#### `playCachedBuffer`
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
 
 当前缓冲的数据能支持的播放时间 (毫秒)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerEvent
 
@@ -368,11 +481,13 @@ virtual void onPlayBufferUpdated(int64_t playCachedBuffer) = 0;
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t elapsedTime, const char* message) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+### 详情
 
 - 调用 [seek](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
 
@@ -380,22 +495,34 @@ virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t el
 
 ### 参数
 
-#### `eventCode`
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
 
 播放器事件，详见 [MEDIA_PLAYER_EVENT](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerevent)。
 
-#### `elapsedTime`
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 发生事件的时间 (毫秒)。
 
-#### `message`
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
 
 事件的信息。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title14"></a>
 
 ## onPlayerInfoUpdated
 
@@ -403,11 +530,13 @@ virtual void onPlayerEvent(media::base::MEDIA_PLAYER_EVENT eventCode, int64_t el
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
+
+### 详情
 
 当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
 
@@ -415,14 +544,22 @@ virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-playerupdatedinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onPlayerSourceStateChanged
 
@@ -430,12 +567,14 @@ virtual void onPlayerInfoUpdated(const media::base::PlayerUpdatedInfo& info) = 0
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state,
                                           media::base::MEDIA_PLAYER_REASON reason) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+### 详情
 
 当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
 
@@ -443,18 +582,28 @@ virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state,
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 新的播放状态，详见 [MEDIA_PLAYER_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerstate)。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 播放器状态改变的原因，详见 [MEDIA_PLAYER_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-mediaplayerreason)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onPlayerSrcInfoChanged
 
@@ -462,7 +611,7 @@ virtual void onPlayerSourceStateChanged(media::base::MEDIA_PLAYER_STATE state,
 
 <a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
 
-```cpp
+```text
 virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const media::base::SrcInfo& to) = 0;
 ```
 
@@ -470,18 +619,28 @@ virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const medi
 
 ### 参数
 
-#### `from`
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
 
 变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-srcinfo)。
 
-#### `to`
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
 
 变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/unreal-cpp/class-srcinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title17"></a>
 
 ## onPositionChanged
 
@@ -489,11 +648,13 @@ virtual void onPlayerSrcInfoChanged(const media::base::SrcInfo& from, const medi
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
 
-```cpp
+```text
 virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 ```
 
 <a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+### 详情
 
 播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
 
@@ -501,18 +662,28 @@ virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 
 ### 参数
 
-#### `positionMs`
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
 
 当前播放进度，单位为 ms。
 
-#### `timestampMs`
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
 
 当前播放进度的 NTP 时间戳，单位为 ms。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title18"></a>
 
 ## onPreloadEvent
 
@@ -520,7 +691,7 @@ virtual void onPositionChanged(int64_t positionMs, int64_t timestampMs) = 0;
 
 <a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
 
-```cpp
+```text
 virtual void onPreloadEvent(const char* src, media::base::PLAYER_PRELOAD_EVENT event) = 0;
 ```
 
@@ -528,18 +699,28 @@ virtual void onPreloadEvent(const char* src, media::base::PLAYER_PRELOAD_EVENT e
 
 ### 参数
 
-#### `src`
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
 
 媒体资源的路径。
 
-#### `event`
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
 
 预加载媒体资源时发生的事件。详见 [PLAYER_PRELOAD_EVENT](/zh-CN/api-reference/rtc/unreal-cpp/enum-playerpreloadevent)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayersourceobserver)
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata"></a>
+
+<a id="ariaid-title19"></a>
 
 ## onReadData
 
@@ -547,11 +728,13 @@ virtual void onPreloadEvent(const char* src, media::base::PLAYER_PRELOAD_EVENT e
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__prototype"></a>
 
-```cpp
+```text
 virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 ```
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__detailed_desc"></a>
+
+### 详情
 
 使用 [openWithMediaSource](/zh-CN/api-reference/rtc/unreal-cpp/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 打开媒体资源时，SDK 会触发该回调向你请求传入媒体资源数据的 Buffer。
 
@@ -559,13 +742,20 @@ virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 
 ### 参数
 
-#### `buffer`
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
 
 输入参数，数据 Buffer，单位为字节。请将 SDK 报告的 bufferSize 数据写入到此参数中。
 
-#### `bufferSize`
+</Parameter>
+<a id="buffersize"></a>
+<Parameter name="bufferSize">
 
 数据 Buffer 的长度，单位为字节。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imediaplayercustomdataprovider_onreaddata__return_values"></a>
 
@@ -575,4 +765,5 @@ virtual int onReadData(unsigned char *buffer, int bufferSize) = 0;
 - 如果读取数据失败，请在返回值中传入 0。
 
 ### 所属接口类
+
 - [IMediaPlayerCustomDataProvider](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercustomdataprovider)

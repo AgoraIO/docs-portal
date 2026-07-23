@@ -1,7 +1,23 @@
 ---
-title: "API 概览"
-description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。"
+title: API 概览
+description: 声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/rtc_api_overview
+  sourcePath: html-docs/rtc/HarmonyOS/API/rtc_api_overview.html
+  generator: oxygen
+  warnings:
+    - code: generated-fragment-normalized
+      severity: info
+      message: Normalized 1 legacy fragment link(s) to stable local anchors.
+    - code: unresolved-fragment
+      severity: warning
+      message: >-
+        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
+        links.
 ---
+
 <a id="rtc_api_overview__initialize"></a>
 
 ## 初始化相关
@@ -75,7 +91,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [enableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
 | [disableAudio](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_disableaudio) | 关闭音频模块。 |
 | [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示。 |
-| [enableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | 启用用户音量提示。 |
+| [enableAudioVolumeIndicationEx](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | <Slot name="api-center-table-0" /> |
 | [setAudioProfile](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioprofile2) | 设置音频编码属性。 |
 | [setAudioScenario](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
 | [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 用户音量提示回调。 |
@@ -84,6 +100,12 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频流状态发生改变回调。 |
 | [onLocalAudioStats](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 通话中本地音频流的统计信息回调。 |
 | [onRemoteAudioStats](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 通话中远端音频流的统计信息回调。 |
+
+<Slot for="api-center-table-0">
+
+启用用户音量提示。
+
+</Slot>
 
 <a id="rtc_api_overview__audio_capture"></a>
 
@@ -227,7 +249,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 
 ## 媒体播放器
 
-更多有关媒体播放器的方法，详见 [内置媒体播放器](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-initialize)。
+更多有关媒体播放器的方法，详见[内置媒体播放器](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-initialize)。
 
 | 方法/回调 | 描述 |
 | --- | --- |
@@ -247,7 +269,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [destroyMusicPlayer](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_destroymusicplayer) | 销毁音乐播放器对象。 |
 | [preload](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicontentcenter_preload2) | 预加载音乐资源。 |
 | [isPreloaded](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_ispreloaded) | 检测音乐资源是否已被预加载。 |
-| [open](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusicplayer_open) | 通过音乐资源编号打开音乐资源。 |
+| [open](/zh-CN/api-reference/rtc/harmonyos/play/drm) | 通过音乐资源编号打开音乐资源。 |
 | [registerEventHandler](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_registereventhandler) | 注册音乐内容中心回调事件。 |
 | [unregisterEventHandler](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_unregistereventhandler) | 取消注册音乐内容中心事件回调。 |
 | [renewToken](/zh-CN/api-reference/rtc/harmonyos/play/drm#api_imusiccontentcenter_renewtoken) | 更新 Token。 |
@@ -341,7 +363,7 @@ description: "声网通过全球部署的 SD-RTN™，提供可以灵活搭配�
 | [getCameraMaxZoomFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) | 获取摄像头支持最大缩放比例。 |
 | [setCameraZoomFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcamerazoomfactor) | 设置摄像头缩放比例。 |
 | [isCameraFocusSupported](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_iscamerafocussupported) | 检测设备是否支持手动对焦功能。 |
-| [setCameraExposureFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcameraexposurefactor) | 设置当前摄像头的曝光系数。 |
+| [setCameraExposureFactor](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#factor) | 设置当前摄像头的曝光系数。 |
 | [setCameraFocusPositionInPreview](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) | 设置手动对焦位置，并触发对焦。 |
 | [onCameraExposureAreaChanged](/zh-CN/api-reference/rtc/harmonyos/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) | 摄像头曝光区域已改变回调。 |
 

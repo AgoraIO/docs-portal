@@ -1,0 +1,115 @@
+---
+title: Interface CursorAdapter
+description: 设置鼠标的光标适配器。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursoradapter.html
+  sourcePath: html-docs/whiteboard/Web/interfaces/cursoradapter.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- CursorAdapter
+
+## Index
+
+### Properties
+
+- [onAddedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onaddedcursor)
+- [onMovingCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onmovingcursor)
+- [onRemovedCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#onremovedcursor)
+
+### Methods
+
+- [createCursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursoradapter#createcursor)
+
+## Properties
+
+<a id="onaddedcursor"></a>
+
+### onAddedCursor
+
+onAddedCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor))=&gt;void)|undefined
+
+- Defined in [index-zh.d.ts\:487](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L487)
+
+光标出现在白板上的回调。
+
+### param
+
+光标对象。
+
+<a id="onmovingcursor"></a>
+
+### onMovingCursor
+
+onMovingCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor), positionX:number, positionY:number)=&gt;void)|undefined
+
+- Defined in [index-zh.d.ts\:501](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L501)
+
+光标在白板上移动的回调。
+
+### param
+
+光标对象。
+
+### param
+
+光标指示区域中心的 X 轴坐标（以白板左上角为原点）。
+
+### param
+
+光标指示区域中心的 Y 轴坐标（以白板左上角为原点）。
+
+<a id="onremovedcursor"></a>
+
+### onRemovedCursor
+
+onRemovedCursor: ((cursor:[Cursor](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor))=&gt;void)|undefined
+
+- Defined in [index-zh.d.ts\:493](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L493)
+
+光标从白板上消失的回调。
+
+### param
+
+光标对象。
+
+## Methods
+
+<a id="createcursor"></a>
+
+### createCursor
+
+<ApiSignature>
+
+createCursor(memberId: number): [CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription) & \{ reactNode?: any \}
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:479](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L479)
+
+创建光标的描述。该方法在用户光标首次出现之前会被调用。
+
+<ParameterList title="Parameters">
+<Parameter name="memberId" type="number" required>
+
+用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription) & \{ reactNode?: any \}
+
+</ApiReturnType>
+
+用户光标的描述。
+
+</ApiReturns>

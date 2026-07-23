@@ -135,7 +135,7 @@ override fun onCallEventChanged(event: CallEvent, eventReason: String?) {
 
 #### 信令 Token
 
-1. 监听 RTM Token 是否过期。通过[添加并监听 CallRtmManager 状态回调](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one#3-添加并监听-callrtmmanager-状态回调) 监听 `ICallRtmManagerListener` 的 `onTokenPrivilegeWillExpire`。
+1. 监听 RTM Token 是否过期。通过[添加并监听 CallRtmManager 状态回调](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one) 监听 `ICallRtmManagerListener` 的 `onTokenPrivilegeWillExpire`。
 
    ```kotlin
    val listener = object: ICallRtmManagerListener {
@@ -200,7 +200,7 @@ override fun onCallEventChanged(event: CallEvent, eventReason: String?) {
    ```
 
 :::info[信息]
-建议给 RTC 和 RTM 配置相同的 Token 过期时间，然后通过[信令 Token](#信令-token) 方式，借助 RTM 来检测过期并同时更新。
+建议给 RTC 和 RTM 配置相同的 Token 过期时间，然后通过[信令 Token](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline) 方式，借助 RTM 来检测过期并同时更新。
 :::
 
 </PlatformStructured>
@@ -321,7 +321,7 @@ func onCallStateChanged(with state: CallStateType,
 
 #### 信令 Token
 
-1. 监听 RTM Token 是否过期。通过[添加并监听 CallRtmManager 状态回调](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one#3-添加并监听-callrtmmanager-状态回调) 监听 `ICallRtmManagerListener` 的 `onTokenPrivilegeWillExpire`。
+1. 监听 RTM Token 是否过期。通过[添加并监听 CallRtmManager 状态回调](/zh-CN/solutions/one-to-one-live/custom-signaling/build/implement-core-features/start-one-to-one) 监听 `ICallRtmManagerListener` 的 `onTokenPrivilegeWillExpire`。
 
    ```swift
    extension Pure1v1RoomViewController: ICallRtmManagerListener {
@@ -387,7 +387,7 @@ func onCallStateChanged(with state: CallStateType,
    ```
 
 :::info[信息]
-建议给 RTC 和 RTM 配置相同的 Token 过期时间，然后通过[信令 Token](#信令-token) 方式，借助 RTM 来检测过期并同时更新。
+建议给 RTC 和 RTM 配置相同的 Token 过期时间，然后通过[信令 Token](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/integration-guideline) 方式，借助 RTM 来检测过期并同时更新。
 :::
 
 </PlatformStructured>

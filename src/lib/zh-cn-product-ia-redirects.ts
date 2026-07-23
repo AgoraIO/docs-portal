@@ -167,9 +167,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-syncing':
     '/zh-CN/solutions/online-ktv/auikaraoke/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/auikaraoke/api/auikaraoke-api':
-    '/zh-CN/solutions/online-ktv/auikaraoke/reference/auikaraoke-api',
+    '/zh-CN/api-reference/online-ktv/android/auikaraoke/api/auikaraoke-api',
   'realtime-media/online-ktv/auikaraoke/api/lyrics-api':
-    '/zh-CN/solutions/online-ktv/auikaraoke/reference/lyrics-api',
+    '/zh-CN/api-reference/online-ktv/android/auikaraoke/api/lyrics-api',
   'realtime-media/online-ktv/auikaraoke/get-started/enable-service':
     '/zh-CN/solutions/online-ktv/auikaraoke/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/auikaraoke/get-started/run-github-project-backend':
@@ -191,13 +191,13 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/online-ktv/ktv-scenario/advanced-features/lyrics-syncing':
     '/zh-CN/solutions/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/ktv-scenario/api/ktv-api':
-    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api',
   'realtime-media/online-ktv/ktv-scenario/api/lyrics-api':
-    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/lyrics-api',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/lyrics-api',
   'realtime-media/online-ktv/ktv-scenario/api/music-content-center':
-    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/music-content-center',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
   'realtime-media/online-ktv/ktv-scenario/api/rtc-api':
-    '/zh-CN/solutions/online-ktv/ktv-scenario/reference/rtc-api',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/rtc-api',
   'realtime-media/online-ktv/ktv-scenario/get-started/enable-service':
     '/zh-CN/solutions/online-ktv/ktv-scenario/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/ktv-scenario/implementation/chorus':
@@ -225,11 +225,11 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/online-ktv/online-ktv-sdk/advanced-features/lyrics-syncing':
     '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing',
   'realtime-media/online-ktv/online-ktv-sdk/api/lyrics-api':
-    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api',
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api',
   'realtime-media/online-ktv/online-ktv-sdk/api/music-content-center':
-    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center',
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
   'realtime-media/online-ktv/online-ktv-sdk/api/rtc-api':
-    '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api',
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/rtc-api',
   'realtime-media/online-ktv/online-ktv-sdk/get-started/enable-service':
     '/zh-CN/solutions/online-ktv/online-ktv-sdk/build/setup-and-access/enable-service',
   'realtime-media/online-ktv/online-ktv-sdk/overview/billing':
@@ -798,7 +798,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/transcoding/webhook/enable-event-notification':
     '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
   'realtime-media/transcoding/webhook/ncs-events':
-    '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+    '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+  'realtime-media/transcoding/reference/ncs-events':
+    '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
   'realtime-media/usage-analytics/fls/data':
     '/zh-CN/realtime-media/usage-analytics/build/fls/data',
   'realtime-media/usage-analytics/overview/billing':
@@ -1249,6 +1251,24 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/one-to-one-live/rtm/reference/downloads',
   'solutions/one-to-one-live/rtm/solution-compare':
     '/zh-CN/solutions/one-to-one-live/rtm/reference/solution-compare',
+  'solutions/online-ktv/auikaraoke/reference/auikaraoke-api':
+    '/zh-CN/api-reference/online-ktv/android/auikaraoke/api/auikaraoke-api',
+  'solutions/online-ktv/auikaraoke/reference/lyrics-api':
+    '/zh-CN/api-reference/online-ktv/android/auikaraoke/api/lyrics-api',
+  'solutions/online-ktv/ktv-scenario/reference/ktv-api':
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api',
+  'solutions/online-ktv/ktv-scenario/reference/lyrics-api':
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/lyrics-api',
+  'solutions/online-ktv/ktv-scenario/reference/music-content-center':
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
+  'solutions/online-ktv/ktv-scenario/reference/rtc-api':
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/rtc-api',
+  'solutions/online-ktv/online-ktv-sdk/reference/lyrics-api':
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/lyrics-api',
+  'solutions/online-ktv/online-ktv-sdk/reference/music-content-center':
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+  'solutions/online-ktv/online-ktv-sdk/reference/rtc-api':
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/rtc-api',
   'solutions/online-music-class/advanced-features/fish-eye':
     '/zh-CN/solutions/online-music-class/build/extend-karaoke/fish-eye',
   'solutions/online-music-class/api/fish-eye':

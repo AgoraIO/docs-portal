@@ -1,10 +1,19 @@
 ---
-title: "媒体播放器缓存"
-description: "媒体播放器缓存 API reference."
+title: 媒体播放器缓存
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_mediaplayer_cache
+  sourcePath: html-docs/rtc/RN/API/toc_mediaplayer_cache.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_cache"></a>
 
 <a id="api_imediaplayercachemanager_enableautoremovecache"></a>
+
+<a id="ariaid-title2"></a>
 
 ## enableAutoRemoveCache
 
@@ -12,7 +21,7 @@ description: "媒体播放器缓存 API reference."
 
 <a id="api_imediaplayercachemanager_enableautoremovecache__prototype"></a>
 
-```typescript
+```text
 abstract enableAutoRemoveCache(enable: boolean): number;
 ```
 
@@ -24,24 +33,32 @@ abstract enableAutoRemoveCache(enable: boolean): number;
 
 ### 参数
 
-#### `enable`
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否自动清除缓存文件：
 
 - true：开启自动清除缓存文件功能。
 - false：（默认）关闭自动清除缓存文件功能。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayercachemanager_enableautoremovecache__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachedir"></a>
+
+<a id="ariaid-title3"></a>
 
 ## getCacheDir
 
@@ -49,7 +66,7 @@ abstract enableAutoRemoveCache(enable: boolean): number;
 
 <a id="api_imediaplayercachemanager_getcachedir__prototype"></a>
 
-```typescript
+```text
 abstract getCacheDir(length: number): string;
 ```
 
@@ -61,21 +78,29 @@ abstract getCacheDir(length: number): string;
 
 ### 参数
 
-#### `length`
+<ParameterList>
+<a id="length"></a>
+<Parameter name="length">
 
 输入参数，缓存文件储存路径字符串的最大长度。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_getcachedir__return_values"></a>
 
 ### 返回值
 
 - 方法调用成功时，返回缓存文件的储存路径。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getcachefilecount"></a>
+
+<a id="ariaid-title4"></a>
 
 ## getCacheFileCount
 
@@ -83,7 +108,7 @@ abstract getCacheDir(length: number): string;
 
 <a id="api_imediaplayercachemanager_getcachefilecount__prototype"></a>
 
-```typescript
+```text
 abstract getCacheFileCount(): number;
 ```
 
@@ -94,12 +119,15 @@ abstract getCacheFileCount(): number;
 ### 返回值
 
 - ≥ 0：方法调用成功，返回当前已缓存的媒体文件的总数量。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## getMaxCacheFileCount
 
@@ -107,7 +135,7 @@ abstract getCacheFileCount(): number;
 
 <a id="api_imediaplayercachemanager_getmaxcachefilecount__prototype"></a>
 
-```typescript
+```text
 abstract getMaxCacheFileCount(): number;
 ```
 
@@ -120,12 +148,15 @@ SDK 默认的缓存文件数量上限为 1000。
 ### 返回值
 
 - &gt; 0：方法调用成功，返回缓存文件数量的上限。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize"></a>
+
+<a id="ariaid-title6"></a>
 
 ## getMaxCacheFileSize
 
@@ -133,7 +164,7 @@ SDK 默认的缓存文件数量上限为 1000。
 
 <a id="api_imediaplayercachemanager_getmaxcachefilesize__prototype"></a>
 
-```typescript
+```text
 abstract getMaxCacheFileSize(): number;
 ```
 
@@ -146,12 +177,15 @@ SDK 默认的缓存文件总缓存上限为 1GB。你可以调用 [setMaxCacheFi
 ### 返回值
 
 - &gt; 0：方法调用成功，返回缓存文件的总缓存上限，单位为字节。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeallcaches"></a>
+
+<a id="ariaid-title7"></a>
 
 ## removeAllCaches
 
@@ -159,14 +193,14 @@ SDK 默认的缓存文件总缓存上限为 1GB。你可以调用 [setMaxCacheFi
 
 <a id="api_imediaplayercachemanager_removeallcaches__prototype"></a>
 
-```typescript
+```text
 abstract removeAllCaches(): number;
 ```
 
 <a id="api_imediaplayercachemanager_removeallcaches__detailed_desc"></a>
 
-:::info[注]
-该方法不会删除正在播放中的已缓存媒体文件。
+:::note
+注： 该方法不会删除正在播放中的已缓存媒体文件。
 :::
 
 <a id="api_imediaplayercachemanager_removeallcaches__return_values"></a>
@@ -174,12 +208,15 @@ abstract removeAllCaches(): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removecachebyuri"></a>
+
+<a id="ariaid-title8"></a>
 
 ## removeCacheByUri
 
@@ -187,35 +224,43 @@ abstract removeAllCaches(): number;
 
 <a id="api_imediaplayercachemanager_removecachebyuri__prototype"></a>
 
-```typescript
+```text
 abstract removeCacheByUri(uri: string): number;
 ```
 
 <a id="api_imediaplayercachemanager_removecachebyuri__detailed_desc"></a>
 
-:::info[注]
-该方法不会删除正在播放中的已缓存媒体文件。
+:::note
+注： 该方法不会删除正在播放中的已缓存媒体文件。
 :::
 
 <a id="api_imediaplayercachemanager_removecachebyuri__parameters"></a>
 
 ### 参数
 
-#### `uri`
+<ParameterList>
+<a id="uri"></a>
+<Parameter name="uri">
 
 待删除的缓存文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_removecachebyuri__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_removeoldcache"></a>
+
+<a id="ariaid-title9"></a>
 
 ## removeOldCache
 
@@ -223,7 +268,7 @@ abstract removeCacheByUri(uri: string): number;
 
 <a id="api_imediaplayercachemanager_removeoldcache__prototype"></a>
 
-```typescript
+```text
 abstract removeOldCache(): number;
 ```
 
@@ -231,8 +276,8 @@ abstract removeOldCache(): number;
 
 缓存媒体文件占用过多空间时，你可以调用该方法清理缓存文件。调用该方法后，SDK 会删除最少使用的一个缓存媒体文件。
 
-:::info[注]
-当你调用此方法删除缓存媒体文件时，当前正在播放的已缓存媒体文件不会被删除。
+:::note
+注： 当你调用此方法删除缓存媒体文件时，当前正在播放的已缓存媒体文件不会被删除。
 :::
 
 <a id="api_imediaplayercachemanager_removeoldcache__return_values"></a>
@@ -240,12 +285,15 @@ abstract removeOldCache(): number;
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setcachedir"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setCacheDir
 
@@ -253,35 +301,43 @@ abstract removeOldCache(): number;
 
 <a id="api_imediaplayercachemanager_setcachedir__prototype"></a>
 
-```typescript
+```text
 abstract setCacheDir(path: string): number;
 ```
 
 <a id="api_imediaplayercachemanager_setcachedir__detailed_desc"></a>
 
-:::info[注]
-该方法需在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 之后调用。
+:::note
+注： 该方法需在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 之后调用。
 :::
 
 <a id="api_imediaplayercachemanager_setcachedir__parameters"></a>
 
 ### 参数
 
-#### `path`
+<ParameterList>
+<a id="path"></a>
+<Parameter name="path">
 
 缓存文件储存的绝对路径。请确保指定的目录存在且可写。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setcachedir__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setMaxCacheFileCount
 
@@ -289,7 +345,7 @@ abstract setCacheDir(path: string): number;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__prototype"></a>
 
-```typescript
+```text
 abstract setMaxCacheFileCount(count: number): number;
 ```
 
@@ -299,21 +355,29 @@ abstract setMaxCacheFileCount(count: number): number;
 
 ### 参数
 
-#### `count`
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
 
 可缓存的媒体文件数量的上限，默认值为 1000。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilecount__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize"></a>
+
+<a id="ariaid-title12"></a>
 
 ## setMaxCacheFileSize
 
@@ -321,7 +385,7 @@ abstract setMaxCacheFileCount(count: number): number;
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__prototype"></a>
 
-```typescript
+```text
 abstract setMaxCacheFileSize(cacheSize: number): number;
 ```
 
@@ -331,21 +395,29 @@ abstract setMaxCacheFileSize(cacheSize: number): number;
 
 ### 参数
 
-#### `cacheSize`
+<ParameterList>
+<a id="cachesize"></a>
+<Parameter name="cacheSize">
 
 缓存媒体文件的总缓存上限，单位为字节。默认为 1 GB。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayercachemanager_setmaxcachefilesize__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败，详见 MediaPlayerReason。
+- &lt; 0：方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)。
 
 ### 所属接口类
+
 - [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayercachemanager)
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onPlayerCacheStats
 
@@ -353,7 +425,7 @@ abstract setMaxCacheFileSize(cacheSize: number): number;
 
 <a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
 
-```typescript
+```text
 onPlayerCacheStats?(stats: CacheStatistics): void;
 ```
 
@@ -365,9 +437,15 @@ onPlayerCacheStats?(stats: CacheStatistics): void;
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
 缓存中的媒体资源的相关信息，详见 [CacheStatistics](/zh-CN/api-reference/rtc/react-native/class-cachestatistics)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerSourceObserver](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaplayersourceobserver)

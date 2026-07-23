@@ -1,31 +1,54 @@
 ---
-title: "ECHANNEL_PROFILE_TYPE"
-description: "频道场景。"
+title: ECHANNEL_PROFILE_TYPE
+description: 频道场景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_channelprofiletype
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_channelprofiletype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_channelprofiletype__parameters"></a>
 
 ## 枚举值
 
-### `CHANNEL_PROFILE_COMMUNICATION`
+<ParameterList>
+<a id="channel_profile_communication"></a>
+<Parameter name="CHANNEL_PROFILE_COMMUNICATION">
 
 0: 通信场景。声网推荐使用直播场景以获取更好的音视频体验。
 
-### `CHANNEL_PROFILE_LIVE_BROADCASTING`
+</Parameter>
+<a id="channel_profile_live_broadcasting"></a>
+<Parameter name="CHANNEL_PROFILE_LIVE_BROADCASTING">
 
 1:（默认）直播场景。
 
-### `CHANNEL_PROFILE_GAME`
+</Parameter>
+<a id="channel_profile_game"></a>
+<Parameter name="CHANNEL_PROFILE_GAME">
 
 2: （已废弃）游戏场景。
 
-##### `废弃：`
+<a id="废弃"></a>
 
+:::error[废弃：]
 请改用 CHANNEL_PROFILE_LIVE_BROADCASTING。
+:::
 
-### `CHANNEL_PROFILE_CLOUD_GAMING`
+</Parameter>
+<a id="channel_profile_cloud_gaming"></a>
+<Parameter name="CHANNEL_PROFILE_CLOUD_GAMING">
 
 3: 互动场景。该场景对延时进行了优化。如果你的场景中有用户需要频繁互动，建议使用该场景。
 
-##### `废弃：`
+<a id="废弃-1"></a>
 
+:::error[废弃：]
 请改用 CHANNEL_PROFILE_LIVE_BROADCASTING。
+:::
+
+</Parameter>
+</ParameterList>

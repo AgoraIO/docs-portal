@@ -1,27 +1,48 @@
 ---
-title: "RemoteAudioState"
-description: "远端音频流状态。"
+title: RemoteAudioState
+description: 远端音频流状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/enum_remoteaudiostate
+  sourcePath: html-docs/rtc/Flutter/API/enum_remoteaudiostate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_remoteaudiostate__parameters"></a>
 
 ## 枚举值
 
-### `remoteAudioStateStopped`
+<ParameterList>
+<a id="remoteaudiostatestopped"></a>
+<Parameter name="remoteAudioStateStopped">
 
-0: 远端音频默认初始状态。在 `remoteAudioReasonLocalMuted`、 `remoteAudioReasonRemoteMuted` 或 `remoteAudioReasonRemoteOffline` 的情况下，会报告该状态。
+0: 远端音频默认初始状态。在 `remoteAudioReasonLocalMuted`、`remoteAudioReasonRemoteMuted` 或 `remoteAudioReasonRemoteOffline` 的情况下，会报告该状态。
 
-### `remoteAudioStateStarting`
+</Parameter>
+<a id="remoteaudiostatestarting"></a>
+<Parameter name="remoteAudioStateStarting">
 
 1: 本地用户已接收远端音频首包。
 
-### `remoteAudioStateDecoding`
+</Parameter>
+<a id="remoteaudiostatedecoding"></a>
+<Parameter name="remoteAudioStateDecoding">
 
-2: 远端音频流正在解码，正常播放。在 `remoteAudioReasonNetworkRecovery`、 `remoteAudioReasonLocalUnmuted` 或 `remoteAudioReasonRemoteUnmuted` 的情况下，会报告该状态。
+2: 远端音频流正在解码，正常播放。在 `remoteAudioReasonNetworkRecovery`、`remoteAudioReasonLocalUnmuted` 或 `remoteAudioReasonRemoteUnmuted` 的情况下，会报告该状态。
 
-### `remoteAudioStateFrozen`
+</Parameter>
+<a id="remoteaudiostatefrozen"></a>
+<Parameter name="remoteAudioStateFrozen">
 
 3: 远端音频流卡顿。在 `remoteAudioReasonNetworkCongestion` 的情况下，会报告该状态。
 
-### `remoteAudioStateFailed`
+</Parameter>
+<a id="remoteaudiostatefailed"></a>
+<Parameter name="remoteAudioStateFailed">
 
 4: 远端音频流播放失败。在 `remoteAudioReasonInternal` 的情况下，会报告该状态。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,109 @@
+---
+title: Interface LiveStreamingTranscodingUser
+description: 在配置 LiveStreamingTranscodingConfig 时用于管理参与 CDN 直播的视频转码合图的用户。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/livestreamingtranscodinguser.html
+  sourcePath: html-docs/rtc/Web/interfaces/livestreamingtranscodinguser.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- LiveStreamingTranscodingUser
+
+## Index
+
+### Properties
+
+- [alpha](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#alpha)
+- [audioChannel](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#audiochannel)
+- [height](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#height)
+- [uid](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#uid)
+- [width](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#width)
+- [x](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#x)
+- [y](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#y)
+- [zOrder](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser#zorder)
+
+## Properties
+
+<a id="alpha"></a>
+
+### Optional alpha
+
+alpha: number
+
+直播视频上用户视频的透明度, 取值范围为 [0.0,1.0]。
+
+- 0.0: 该区域图像完全透明。
+- 1.0:（默认值）该区域图像完全不透明。
+
+<a id="audiochannel"></a>
+
+### Optional audioChannel
+
+audioChannel: number
+
+直播音频所在声道。取值范围为 [0, 5]，默认值为 0。
+
+- 0：（推荐）默认混音设置，最多支持双声道，与主播端上行音频相关
+- 1：对应主播的音频，推流中位于 FL 声道。如果主播上行为双声道，会先把多声道混音成单声道
+- 2：对应主播的音频，推流中位于 FC 声道。如果主播上行为双声道，会先把多声道混音成单声道
+- 3：对应主播的音频，推流中位于 FR 声道。如果主播上行为双声道，会先把多声道混音成单声道
+- 4：对应主播的音频，推流中位于 BL 声道。如果主播上行为双声道，会先把多声道混音成单声道
+- 5：对应主播的音频，推流中位于 BR 声道。如果主播上行为双声道，会先把多声道混音成单声道
+
+<a id="height"></a>
+
+### Optional height
+
+height: number
+
+视频帧高度，默认值 640。
+
+<a id="uid"></a>
+
+### uid
+
+uid: [UID](/zh-CN/api-reference/rtc/web/globals#uid)
+
+直播推流的用户 ID。
+
+<a id="width"></a>
+
+### Optional width
+
+width: number
+
+视频帧宽度，默认值 360。
+
+<a id="x"></a>
+
+### Optional x
+
+x: number
+
+视频帧左上角的横轴位置，默认值为 0。
+
+<a id="y"></a>
+
+### Optional y
+
+y: number
+
+视频帧左上角的纵轴位置，默认值为 0。
+
+<a id="zorder"></a>
+
+### Optional zOrder
+
+zOrder: number
+
+直播视频上用户视频帧的图层编号。
+
+整数，取值范围为 [0,100]:
+
+- 最小值为 0（默认值），表示该区域图像位于最下层。
+- 最大值为 100，表示该区域图像位于最上层。

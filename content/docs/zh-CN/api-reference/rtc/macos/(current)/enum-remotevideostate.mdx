@@ -1,27 +1,48 @@
 ---
-title: "AgoraVideoRemoteState"
-description: "远端视频流的状态。"
+title: AgoraVideoRemoteState
+description: 远端视频流的状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_remotevideostate
+  sourcePath: html-docs/rtc/macOS/API/enum_remotevideostate.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_remotevideostate__parameters"></a>
 
 ## 枚举值
 
-### `AgoraVideoRemoteStateStopped`
+<ParameterList>
+<a id="agoravideoremotestatestopped"></a>
+<Parameter name="AgoraVideoRemoteStateStopped">
 
-（0）：远端视频处于初始状态。当出现 `AgoraVideoRemoteReasonLocalMuted`、 `AgoraVideoRemoteReasonRemoteMuted` 或 `AgoraVideoRemoteReasonRemoteOffline` 时，SDK 会报告该状态。
+（0）：远端视频处于初始状态。当出现 `AgoraVideoRemoteReasonLocalMuted`、`AgoraVideoRemoteReasonRemoteMuted` 或 `AgoraVideoRemoteReasonRemoteOffline` 时，SDK 会报告该状态。
 
-### `AgoraVideoRemoteStateStarting`
+</Parameter>
+<a id="agoravideoremotestatestarting"></a>
+<Parameter name="AgoraVideoRemoteStateStarting">
 
 （1）：接收到首个远端视频包。
 
-### `AgoraVideoRemoteStateDecoding`
+</Parameter>
+<a id="agoravideoremotestatedecoding"></a>
+<Parameter name="AgoraVideoRemoteStateDecoding">
 
-（2）：远端视频流已解码并正常播放。当出现 `AgoraVideoRemoteReasonRecovery`、 `AgoraVideoRemoteReasonLocalUnmuted`、 `AgoraVideoRemoteReasonRemoteUnmuted` 或 `AgoraVideoRemoteReasonAudioFallbackRecovery` 时，SDK 会报告该状态。
+（2）：远端视频流已解码并正常播放。当出现 `AgoraVideoRemoteReasonRecovery`、`AgoraVideoRemoteReasonLocalUnmuted`、`AgoraVideoRemoteReasonRemoteUnmuted` 或 `AgoraVideoRemoteReasonAudioFallbackRecovery` 时，SDK 会报告该状态。
 
-### `AgoraVideoRemoteStateFrozen`
+</Parameter>
+<a id="agoravideoremotestatefrozen"></a>
+<Parameter name="AgoraVideoRemoteStateFrozen">
 
 （3）：远端视频卡顿。当出现 `AgoraVideoRemoteReasonCongestion` 或 `AgoraVideoRemoteReasonAudioFallback` 时，SDK 会报告该状态。
 
-### `AgoraVideoRemoteStateFailed`
+</Parameter>
+<a id="agoravideoremotestatefailed"></a>
+<Parameter name="AgoraVideoRemoteStateFailed">
 
 （4）：远端视频启动失败。当出现 `AgoraVideoRemoteReasonInternal` 时，SDK 会报告该状态。
+
+</Parameter>
+</ParameterList>

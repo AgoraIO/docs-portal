@@ -1,0 +1,247 @@
+---
+title: WhitePlayerConfig Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhitePlayerConfig
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhitePlayerConfig.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | WhiteObject |
+| --- | --- |
+| Declared in | WhitePlayerConfig.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用于配置白板回放房间对象。
+
+<a id="tasks"></a>
+
+## Other Methods
+
+<a id="//api/name/initWithRoom:roomToken:"></a>
+
+### `– initWithRoom:roomToken:`
+
+设置 Room Token 并初始化 `WhitePlayerConfig` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithRoom:(NSString *)*roomUuid* roomToken:(NSString *)*roomToken*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomUuid">
+
+房间 UUID，即房间唯一标识符。
+
+</Parameter>
+<Parameter name="roomToken">
+
+用于鉴权的 Room Token。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhitePlayerConfig` 对象
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/region"></a>
+
+### `region`
+
+待回放的互动白板房间所在的数据中心。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteRegionKey region
+
+</ApiSignature>
+
+#### Availability
+
+2.11.0
+
+#### Discussion
+
+数据中心包括：
+
+- `WhiteRegionCN`：中国杭州。该数据中心为其他数据中心服务区未覆盖的地区提供服务。
+- `WhiteRegionUS`：美国硅谷。该数据中心为北美洲、南美洲地区提供服务。
+- `WhiteRegionIN`：印度孟买。该数据中心为印度地区提供服务。
+- `WhiteRegionSG`：新加坡。该数据中心为新加坡、东亚、东南亚地区提供服务。
+- `WhiteRegionEU`：欧洲（法兰克福）。该数据中心为欧洲地区提供服务。
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/modulesOrigin"></a>
+
+### `modulesOrigin`
+
+白板请求 modules 数据的地址。配置后不会请求白板默认地址。
+@example [https://modules.example.com](https://modules.example.com/)
+
+<ApiSignature>
+
+@property (nonatomic, copy, nullable) NSString *modulesOrigin
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/room"></a>
+
+### `room`
+
+房间 UUID，即房间唯一标识符。
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *room
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/roomToken"></a>
+
+### `roomToken`
+
+用于鉴权的 Room Token。
+
+<ApiSignature>
+
+@property (nonatomic, copy) NSString *roomToken
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/beginTimestamp"></a>
+
+### `beginTimestamp`
+
+白板回放的起始时间。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *beginTimestamp
+
+</ApiSignature>
+
+#### Discussion
+
+Unix 时间戳（毫秒），表示回放的起始 UTC 时间。例如，`1615370614269` 表示 2021-03-10 18\:03\:34 GMT+0800。
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/duration"></a>
+
+### `duration`
+
+白板回放的持续时长（秒）。如果没有设置，回放会从起始时间一直持续到退出房间。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSNumber *duration
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/mediaURL"></a>
+
+### `mediaURL`
+
+白板回放的音频地址。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSString *mediaURL
+
+</ApiSignature>
+
+#### Discussion
+
+**Note:**
+
+- 即使传入视频地址，也只会播放音频部分。
+- 如需显示视频画面，请使用 [WhiteCombinePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-combine-player) 方法。
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/step"></a>
+
+### `step`
+
+SDK 回调播放进度的频率（秒）。默认为 0.5 秒。
+
+<ApiSignature>
+
+@property (nonatomic, strong) NSNumber *step
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="//api/name/cameraBound"></a>
+
+### `cameraBound`
+
+视角边界，详见 [WhiteCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-camera-bound)。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) WhiteCameraBound *cameraBound
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`
+
+<a id="task_Deprecated-Methods"></a>
+
+## Deprecated Methods
+
+<a id="//api/name/)"></a>
+
+### `)`
+
+已废弃，请使用 [mediaURL](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-config#//api/name/mediaURL)。
+
+<ApiSignature>
+
+@property (nonatomic, strong, nullable) NSString *DEPRECATED_MSG_ATTRIBUTE ("use mediaURL property")
+
+</ApiSignature>
+
+#### Declared In
+
+`WhitePlayerConfig.h`

@@ -729,7 +729,7 @@ function MobileSidebarNode({
         className={className}
         onClick={onSelectPath}
         params={{}}
-        search={{}}
+        search={node.search ?? {}}
         to={node.url}
       >
         {content}

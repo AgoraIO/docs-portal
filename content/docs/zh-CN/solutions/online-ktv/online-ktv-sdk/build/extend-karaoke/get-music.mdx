@@ -70,7 +70,7 @@ mcc.getMusicCollectionByMusicChartId(0,0,10);
 mcc.searchMusic("hello",0,10);
 ```
 
-你还可以通过 [searchMusic[2/2]](/api-ref/rtc/android/API/toc_drm#searchMusic%20[2/2]) 和 [getMusicCollectionByMusicChartId[2/2]](/api-ref/rtc/android/API/toc_drm#getMusicCollectionByMusicChartId%20[2/2]) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
+你还可以通过 [searchMusic[2/2]](/zh-CN/api-reference/rtc/android/play/drm#searchmusic-22) 和 [getMusicCollectionByMusicChartId[2/2]](/zh-CN/api-reference/rtc/android/play/drm#getmusiccollectionbymusicchartid-22) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
 
 **筛选支持打分的音乐资源**：
 
@@ -96,7 +96,7 @@ mMcc.getMusicCollectionByMusicChartId(3, 1, 10, "{\"needHighPart\":true}");
 
 2. 获取歌曲列表
 
-   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等。调用说明及示例详见 [API 文档](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)。
+   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等。调用说明及示例详见 [API 文档](/zh-CN/api-reference/online-ktv)。
 
 ### 3. 加载版权音乐
 
@@ -115,7 +115,7 @@ mMcc.getMusicCollectionByMusicChartId(3, 1, 10, "{\"needHighPart\":true}");
    mcc.isPreloaded(songCode);
    ```
 
-   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/api-ref/rtc/android/API/toc_drm#getInternalSongCode) 来获取该片段的资源编号（`internalSongCode`）。
+   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/zh-CN/api-reference/rtc/android/play/drm#getinternalsongcode) 来获取该片段的资源编号（`internalSongCode`）。
 
    ```java
    // 传入音乐资源的编号和 jsonOption 的值来获取副歌片段的资源编号，详细参数解释请参考该方法的 API 文档
@@ -146,15 +146,15 @@ mMcc.getMusicCollectionByMusicChartId(3, 1, 10, "{\"needHighPart\":true}");
 
 本节介绍获取版权音乐使用的 API：
 
-- [实时互动 SDK API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api)
-- [RESTful API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)
+- [实时互动 SDK API](/zh-CN/api-reference/online-ktv)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
 本节介绍 PaaS 方案的相关实现文档：
 
 - [快速集成 PaaS 方案](/zh-CN/solutions/online-ktv/online-ktv-sdk/get-started/karaoke)
-- [歌词打分组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api)
+- [歌词打分组件](/zh-CN/api-reference/online-ktv)
 - [歌词强同步](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing)
 
 </PlatformStructured>
@@ -243,7 +243,7 @@ amcc.getMusicCollection(musicChartId: musicChartId, page: page, pageSize: pageSi
 amcc.searchMusic(with:keyword, page:page, pageSize:pageSize, jsonOption:jsonOption)
 ```
 
-你还可以通过 [searchMusicWithKeyWord](/api-ref/rtc/ios/API/toc_drm#searchMusicWithKeyWord) 和 [getMusicCollectionWithMusicChartId](/api-ref/rtc/ios/API/toc_drm#getMusicCollectionWithMusicChartId) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
+你还可以通过 [searchMusicWithKeyWord](/zh-CN/api-reference/rtc/ios/play/drm) 和 [getMusicCollectionWithMusicChartId](/zh-CN/api-reference/rtc/ios/play/drm) 中的 `jsonOption` 字段来筛选有副歌片段、支持打分的音乐资源。`jsonOption` 字段的具体说明见对应方法的 API 文档。
 
 **筛选支持打分的音乐资源**：
 
@@ -281,7 +281,7 @@ amcc.getMusicCollection(musicChartId: 3, page: 1, pageSize: 10, jsonOption: "{\"
 
 2. 获取歌曲列表
 
-   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等。调用说明及示例详见 [API 文档](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)。
+   根据你的需求调用不同的 RESTful API 来获取歌曲列表、热门榜单等。调用说明及示例详见 [API 文档](/zh-CN/api-reference/online-ktv)。
 
 ### 3. 加载版权音乐
 
@@ -305,7 +305,7 @@ amcc.preload(songCode: songCode, jsonOption: nil)
 amcc.isPreloaded(songCode: songCode)
 ```
 
-   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/api-ref/rtc/ios/API/toc_drm#getInternalSongCode) 来获取该片段的资源编号（`internalSongCode`）。
+   如果你需要预加载的是某一音乐资源独立的副歌片段，在预加载之前你还需要调用 [getInternalSongCode](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getinternalsongcode) 来获取该片段的资源编号（`internalSongCode`）。
 
 ```objc tab="Objective-C" tabGroup="internal"
 NSInteger newSongCode = [self.mcc getInternalSongCode:songCode jsonOption:@"{\"format\":{\"highpart\":0}}"];
@@ -345,15 +345,15 @@ mPlayer.openMedia(withSongCode: songCode, startPos: startPos)
 
 本节介绍获取版权音乐使用的 API：
 
-- [实时互动 SDK API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/rtc-api)
-- [RESTful API](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/music-content-center)
+- [实时互动 SDK API](/zh-CN/api-reference/online-ktv)
+- [RESTful API](/zh-CN/api-reference/online-ktv)
 
 ## 相关文档
 
 本节介绍 PaaS 方案的相关实现文档：
 
 - [快速集成 PaaS 方案](/zh-CN/solutions/online-ktv/online-ktv-sdk/get-started/karaoke)
-- [歌词打分组件](/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/lyrics-api)
+- [歌词打分组件](/zh-CN/api-reference/online-ktv)
 - [歌词强同步](/zh-CN/solutions/online-ktv/online-ktv-sdk/build/extend-karaoke/lyrics-syncing)
 
 </PlatformStructured>

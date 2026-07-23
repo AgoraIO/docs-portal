@@ -1,10 +1,19 @@
 ---
-title: "音频采集"
-description: "音频采集 API reference."
+title: 音频采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_audio_capture
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_audio_capture.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_capture"></a>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustLoopbackSignalVolume
 
@@ -12,7 +21,7 @@ description: "音频采集 API reference."
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__prototype"></a>
 
-```cpp
+```text
 virtual int adjustLoopbackSignalVolume(int volume) = 0;
 ```
 
@@ -26,21 +35,31 @@ virtual int adjustLoopbackSignalVolume(int volume) = 0;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 音乐文件音量范围为 0~100。100 （默认值）为原始文件音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_adjustloopbacksignalvolume__return_values"></a>
 
 ### 返回值
 
+<a id="api_irtcengine_adjustloopbacksignalvolume__ul_n4m_tyw_jqb"></a>
+
 - 0: 方法调用成功
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustrecordingsignalvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustRecordingSignalVolume
 
@@ -48,7 +67,7 @@ virtual int adjustLoopbackSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_adjustrecordingsignalvolume__prototype"></a>
 
-```cpp
+```text
 virtual int adjustRecordingSignalVolume(int volume) = 0;
 ```
 
@@ -72,7 +91,9 @@ virtual int adjustRecordingSignalVolume(int volume) = 0;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
@@ -80,17 +101,23 @@ virtual int adjustRecordingSignalVolume(int volume) = 0;
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_adjustrecordingsignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableinearmonitoring2"></a>
+
+<a id="ariaid-title4"></a>
 
 ## enableInEarMonitoring
 
@@ -98,11 +125,13 @@ virtual int adjustRecordingSignalVolume(int volume) = 0;
 
 <a id="api_irtcengine_enableinearmonitoring2__prototype"></a>
 
-```cpp
+```text
 virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 ```
 
 <a id="api_irtcengine_enableinearmonitoring2__detailed_desc"></a>
+
+<a id="api_irtcengine_enableinearmonitoring2__desc"></a>
 
 该方法用于打开或关闭耳返功能。
 
@@ -122,29 +151,40 @@ virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 开启/关闭耳返功能:
 
-- true: 开启耳返功能。
-- false: （默认）关闭耳返功能。
+- `true`: 开启耳返功能。
+- `false`: （默认）关闭耳返功能。
 
-#### `includeAudioFilters`
+</Parameter>
+<a id="includeaudiofilters"></a>
+<Parameter name="includeAudioFilters">
 
 耳返 Audio filter 类型。详见 [EAR_MONITORING_FILTER_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-earmonitoringfiltertype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableinearmonitoring2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - - 8: 请确保当前的音频路由为蓝牙或耳机。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enablelocalaudio"></a>
+
+<a id="ariaid-title5"></a>
 
 ## enableLocalAudio
 
@@ -152,7 +192,7 @@ virtual int enableInEarMonitoring(bool enabled, int includeAudioFilters) = 0;
 
 <a id="api_irtcengine_enablelocalaudio__prototype"></a>
 
-```cpp
+```text
 virtual int enableLocalAudio(bool enabled) = 0;
 ```
 
@@ -169,7 +209,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 ### 适用场景
 
-该方法不影响远端音频流的接收和播放。 enableLocalAudio `(false)` 适用于只接收远端音频而不发送本地采集音频的场景。
+该方法不影响远端音频流的接收和播放。enableLocalAudio`(false)` 适用于只接收远端音频而不发送本地采集音频的场景。
 
 <a id="api_irtcengine_enablelocalaudio__timing"></a>
 
@@ -187,28 +227,36 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 ### 相关回调
 
-音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 LOCAL_AUDIO_STREAM_STATE_STOPPED (0) 或 LOCAL_AUDIO_STREAM_STATE_RECORDING (1)。
+音频功能关闭或重新开启后，会收到 [onLocalAudioStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 回调，并报告 LOCAL_AUDIO_STREAM_STATE_STOPPED(0) 或 LOCAL_AUDIO_STREAM_STATE_RECORDING(1)。
 
 <a id="api_irtcengine_enablelocalaudio__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
 
-- true: 重新开启本地音频功能，即开启本地音频采集（默认）；
-- false: 关闭本地音频功能，即停止本地音频采集。
+- `true`: 重新开启本地音频功能，即开启本地音频采集（默认）；
+- `false`: 关闭本地音频功能，即停止本地音频采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enablelocalaudio__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableloopbackrecording"></a>
+
+<a id="ariaid-title6"></a>
 
 ## enableLoopbackRecording
 
@@ -216,7 +264,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 <a id="api_irtcengine_enableloopbackrecording__prototype"></a>
 
-```cpp
+```text
   virtual int enableLoopbackRecording(bool enabled, const char* deviceName = NULL) = 0;
 ```
 
@@ -226,39 +274,55 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 启用声卡采集功能后，声卡播放的声音会被合到本地音频流中，从而可以发送到远端。
 
-:::warning[注意]
+<a id="api_irtcengine_enableloopbackrecording__note_v4j_tbx_jqb"></a>
+
+:::caution
+注意：
+
 - 该方法仅适用于 macOS 和 Windows 平台。
 - 该方法在加入频道前后都能调用。
-- 如果你调用了 disableAudio 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 enableAudio 启用音频模块后再次调用 enableLoopbackRecording。
+- 如果你调用了 [disableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_disableaudio) 关闭音频模块，声卡采集功能也会被关闭。如果你需要再次启用声卡采集功能，需要调用 [enableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_enableaudio) 启用音频模块后再次调用 enableLoopbackRecording。
 :::
 
 <a id="api_irtcengine_enableloopbackrecording__parameters"></a>
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集:
 
-- true: 开启声卡采集；系统 声音 &gt; 输出 界面显示虚拟声卡名称。
-- false:（默认）关闭声卡采集；系统 声音 &gt; 输出 界面不显示虚拟声卡名称。
+<a id="api_irtcengine_enableloopbackrecording__ul_qjq_swq_t4b"></a>
 
-#### `deviceName`
+- `true`: 开启声卡采集；系统**声音 &gt; 输出**界面显示虚拟声卡名称。
+- `false`:（默认）关闭声卡采集；系统**声音 &gt; 输出**界面不显示虚拟声卡名称。
+
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableloopbackrecording__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableloopbackrecordingex"></a>
+
+<a id="ariaid-title7"></a>
 
 ## enableLoopbackRecordingEx
 
@@ -266,7 +330,7 @@ virtual int enableLocalAudio(bool enabled) = 0;
 
 <a id="api_irtcengineex_enableloopbackrecordingex__prototype"></a>
 
-```cpp
+```text
 virtual int enableLoopbackRecordingEx(const RtcConnection& connection, bool enabled, const char* deviceName = NULL) = 0;
 ```
 
@@ -276,7 +340,11 @@ virtual int enableLoopbackRecordingEx(const RtcConnection& connection, bool enab
 
 启用声卡采集功能后，声卡播放的声音会被合到本地音频流中，从而可以发送到远端。
 
-:::warning[注意]
+<a id="api_irtcengineex_enableloopbackrecordingex__note_v4j_tbx_jqb"></a>
+
+:::caution
+注意：
+
 - 该方法仅适用于 macOS 和 Windows 平台。
 - macOS 系统默认声卡不支持采集功能，如果你需要使用该功能，请启用一个虚拟声卡，并将 deviceName 设为该虚拟声卡的设备名。声网推荐你使用声网自研的虚拟声卡 AgoraALD 进行采集。
 - 该方法目前仅支持一路声卡采集。
@@ -286,33 +354,47 @@ virtual int enableLoopbackRecordingEx(const RtcConnection& connection, bool enab
 
 ### 参数
 
-#### `connection`
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
 
-#### `enabled`
+</Parameter>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
 
 是否开启声卡采集：
 
-- true: 开启声卡采集。
-- false:（默认）不开启声卡采集。
+<a id="api_irtcengineex_enableloopbackrecordingex__ul_kgm_wbx_jqb"></a>
 
-#### `deviceName`
+- `true`: 开启声卡采集。
+- `false`:（默认）不开启声卡采集。
+
+</Parameter>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 - macOS: 虚拟声卡的设备名。默认为空，代表使用 AgoraALD 虚拟声卡进行采集。
 - Windows: 声卡的设备名。默认为空，代表使用设备自带的声卡进行采集。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableloopbackrecordingex__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_muterecordingsignal"></a>
+
+<a id="ariaid-title8"></a>
 
 ## muteRecordingSignal
 
@@ -320,7 +402,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/c
 
 <a id="api_irtcengine_muterecordingsignal__prototype"></a>
 
-```cpp
+```text
 virtual int muteRecordingSignal(bool mute) = 0;
 ```
 
@@ -349,22 +431,30 @@ virtual int muteRecordingSignal(bool mute) = 0;
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
-- true: 静音。
-- false:（默认）原始音量。
+- `true`: 静音。
+- `false`:（默认）原始音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_muterecordingsignal__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setinearmonitoringvolume"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setInEarMonitoringVolume
 
@@ -372,7 +462,7 @@ virtual int muteRecordingSignal(bool mute) = 0;
 
 <a id="api_irtcengine_setinearmonitoringvolume__prototype"></a>
 
-```cpp
+```text
 virtual int setInEarMonitoringVolume(int volume) = 0;
 ```
 
@@ -394,7 +484,9 @@ virtual int setInEarMonitoringVolume(int volume) = 0;
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量，取值范围为 [0,400]。
 
@@ -402,13 +494,18 @@ virtual int setInEarMonitoringVolume(int volume) = 0;
 - 100: （默认）原始音量。
 - 400: 原始音量的 4 倍，自带溢出保护。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setinearmonitoringvolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置无效，例如耳返音量超出取值范围 (&lt; 0 或 &gt; 400)。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)

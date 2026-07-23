@@ -1,10 +1,24 @@
 ---
-title: "音频路由"
-description: "音频路由 API reference."
+title: 音频路由
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_audio_route
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_audio_route.html
+  generator: oxygen
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
+
 <a id="toc_audio_route"></a>
 
 <a id="api_irtcengine_isspeakerphoneenabled"></a>
+
+<a id="ariaid-title2"></a>
 
 ## isSpeakerphoneEnabled
 
@@ -12,7 +26,7 @@ description: "音频路由 API reference."
 
 <a id="api_irtcengine_isspeakerphoneenabled__prototype"></a>
 
-```arkts
+```text
 public abstract isSpeakerphoneEnabled(): boolean;
 ```
 
@@ -34,13 +48,16 @@ public abstract isSpeakerphoneEnabled(): boolean;
 
 ### 返回值
 
-- true: 扬声器已开启，语音会输出到扬声器。
-- false: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
+- `true`: 扬声器已开启，语音会输出到扬声器。
+- `false`: 扬声器未开启，语音会输出到非扬声器（听筒，耳机等）。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setDefaultAudioRouteToSpeakerphone
 
@@ -48,7 +65,7 @@ public abstract isSpeakerphoneEnabled(): boolean;
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__prototype"></a>
 
-```arkts
+```text
 public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):number;
 ```
 
@@ -58,6 +75,8 @@ public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):num
 
 不同场景下，系统默认的音频路由也不同。具体如下：
 
+<a id="api_irtcengine_setdefaultaudioroutetospeakerphone__ul_kq3_tpf_3qb"></a>
+
 - 语音通话：听筒
 - 语音直播：扬声器
 - 视频通话：扬声器
@@ -65,8 +84,10 @@ public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):num
 
 调用该 API 可以改变上述默认音频路由。
 
-:::info[注]
-在调用该方法设置默认音频路由后，系统实际音频路由会随着外接音频设备（有线耳机或蓝牙耳机）的连接发生改变。详见 音频路由。
+:::note
+注：
+
+在调用该方法设置默认音频路由后，系统实际音频路由会随着外接音频设备（有线耳机或蓝牙耳机）的连接发生改变。详见音频路由。
 :::
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__timing"></a>
@@ -87,34 +108,38 @@ public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):num
 
 ### 参数
 
-#### `defaultToSpeaker`
+<ParameterList>
+<a id="defaulttospeaker"></a>
+<Parameter name="defaultToSpeaker">
 
 是否使用扬声器作为默认的音频路由：
 
-- true: 设置默认音频路由为扬声器。
-- false: 设置默认音频路由为听筒。
+- `true`: 设置默认音频路由为扬声器。
+- `false`: 设置默认音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setdefaultaudioroutetospeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setenablespeakerphone"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setEnableSpeakerphone
 
 开启或关闭扬声器播放。
 
 <a id="api_irtcengine_setenablespeakerphone__prototype"></a>
-
-```arkts
-
-```
 
 <a id="api_irtcengine_setenablespeakerphone__detailed_desc"></a>
 
@@ -143,19 +168,25 @@ public abstract setDefaultAudioRoutetoSpeakerphone(defaultToSpeaker:boolean):num
 
 ### 参数
 
-#### `enabled`
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
 
 设置是否开启扬声器播放：
 
-- true: 开启。音频路由为扬声器。
-- false: 关闭。音频路由为听筒。
+- `true`: 开启。音频路由为扬声器。
+- `false`: 关闭。音频路由为听筒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setenablespeakerphone__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

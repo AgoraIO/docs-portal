@@ -52,7 +52,7 @@ Payload 中包含如下字段：
 | `domain` | String | 推流时使用的域名。 |
 | `streamKey` | String | 使用的推流码。 |
 | `rtcInfo` | Object | <Slot name="ncs-events-html-0-5-2" /> |
-| `transcoding` | Object | 推流使用的转码配置信息，具体字段信息可以参考[创建或重置流配置模板接口](/doc/rtmp-gateway/restful/rtmp-gateway/operations/put-region-v1-projects-appId-rtls-ingress-stream-templates-templateId)中关于 `transcoding` 字段的说明。 |
+| `transcoding` | Object | 推流使用的转码配置信息，具体字段信息可以参考[创建或重置流配置模板接口](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template)中关于 `transcoding` 字段的说明。 |
 | `beginAt` | String | 开始推流时间（RFC3339 格式）。 |
 
 <Slot for="ncs-events-html-0-5-2">
@@ -183,7 +183,7 @@ RTC 信息：
 |	`5` |	检测到冲突，例如同时往同一个 `channel` + `uid` 推流	 |如确实没有在同时推流，请隔 5 - 10 秒后重试几次 |
 |	`6`	| 流属性超过限定值（当前仅限码率） |	检查推流软件配置，调低目标码率值 |
 |	`7` |	超过 10 秒无任何音视频数据的流 |	检查是否上次推流异常退出了，然后重试推流 |
-|	`8` |	加入频道失败 |	`reason` 字段会提示具体的错误原因：`"connect to rtc failed, reason:$N"`。其中，`$N` 的值，可以参考官网文档中关于 [`onConnectionStateChanged`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调的 `reason` 参数说明 |
+|	`8` |	加入频道失败 |	`reason` 字段会提示具体的错误原因：`"connect to rtc failed, reason:$N"`。其中，`$N` 的值，可以参考官网文档中关于 [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调的 `reason` 参数说明 |
 | `9` |	与大网断开连接（具体原因需要[联系技术支持](https://ticket.shengwang.cn)调查）|	重试几次，若仍有问题，请联系技术支持，确认开通时提供的 App 证书是否正确 |
 | `10` |	未知的服务内部错误（具体原因需要[联系技术支持](https://ticket.shengwang.cn)调查）|	尝试重试几次，若仍有问题，请联系技术支持 |
 

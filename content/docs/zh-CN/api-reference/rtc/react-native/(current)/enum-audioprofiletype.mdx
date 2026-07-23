@@ -1,42 +1,71 @@
 ---
-title: "AudioProfileType"
-description: "音频编码属性。"
+title: AudioProfileType
+description: 音频编码属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/enum_audioprofiletype
+  sourcePath: html-docs/rtc/RN/API/enum_audioprofiletype.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_audioprofiletype__parameters"></a>
 
 ## 枚举值
 
-### `AudioProfileDefault`
+<ParameterList>
+<a id="audioprofiledefault"></a>
+<Parameter name="AudioProfileDefault">
 
 0: 默认值。
 
 - 直播场景下：48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
 - 通信场景下：32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
 
-### `AudioProfileSpeechStandard`
+</Parameter>
+<a id="audioprofilespeechstandard"></a>
+<Parameter name="AudioProfileSpeechStandard">
 
 1: 指定 32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
 
-### `AudioProfileMusicStandard`
+</Parameter>
+<a id="audioprofilemusicstandard"></a>
+<Parameter name="AudioProfileMusicStandard">
 
 2: 指定 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
 
-### `AudioProfileMusicStandardStereo`
+</Parameter>
+<a id="audioprofilemusicstandardstereo"></a>
+<Parameter name="AudioProfileMusicStandardStereo">
 
-3: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。 如需实现立体声，你还需要调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `AudioProcessingStereo`。
+3: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
+如需实现立体声，你还需要调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `AudioProcessingStereo`。
 
-### `AudioProfileMusicHighQuality`
+</Parameter>
+<a id="audioprofilemusichighquality"></a>
+<Parameter name="AudioProfileMusicHighQuality">
 
 4: 指定 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
 
-### `AudioProfileMusicHighQualityStereo`
+</Parameter>
+<a id="audioprofilemusichighqualitystereo"></a>
+<Parameter name="AudioProfileMusicHighQualityStereo">
 
-5: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。 如需实现立体声，你还需要调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `AudioProcessingStereo`。
+5: 指定 48 kHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+如需实现立体声，你还需要调用 [setAdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) 并在 [AdvancedAudioOptions](/zh-CN/api-reference/rtc/react-native/class-advancedaudiooptions) 中设置 `audioProcessingChannels` 为 `AudioProcessingStereo`。
 
-### `AudioProfileIot`
+</Parameter>
+<a id="audioprofileiot"></a>
+<Parameter name="AudioProfileIot">
 
 6: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AEC。
 
-### `AudioProfileNum`
+</Parameter>
+<a id="audioprofilenum"></a>
+<Parameter name="AudioProfileNum">
 
 枚举值边界。
+
+</Parameter>
+</ParameterList>

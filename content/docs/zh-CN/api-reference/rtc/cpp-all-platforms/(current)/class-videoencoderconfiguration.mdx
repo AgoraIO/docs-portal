@@ -1,10 +1,18 @@
 ---
-title: "VideoEncoderConfiguration"
-description: "用于设置视频编码参数。"
+title: VideoEncoderConfiguration
+description: 用于设置视频编码参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_videoencoderconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_videoencoderconfiguration.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videoencoderconfiguration__prototype"></a>
 
-```cpp
+```text
 struct VideoEncoderConfiguration {
   VIDEO_CODEC_TYPE codecType;
   VideoDimensions dimensions;
@@ -22,53 +30,74 @@ struct VideoEncoderConfiguration {
 
 ## 属性
 
-### `codecType`
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 本地视频流的首选编码器类型。详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videocodectype)。
 
-### `dimensions`
+</Parameter>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 编码后的视频尺寸（像素）。该参数以长 × 宽的格式衡量视频编码质量。默认值为 960 × 540。你可以设置自定义值。详见 [VideoDimensions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videodimensions)。
 
-### `frameRate`
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 编码视频帧的帧率（fps）。默认值为 15。
 
-### `bitrate`
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 视频的编码码率（Kbps）。该参数无需设置，保持默认值 STANDARD_BITRATE 即可。SDK 会根据你设置的视频分辨率和帧率自动匹配最合适的码率。
 
-- STANDARD_BITRATE （0）：推荐使用的标准码率模式。
-- COMPATIBLE_BITRATE （-1）：自适应码率模式，通常不建议使用该值。
+- STANDARD_BITRATE（0）：推荐使用的标准码率模式。
+- COMPATIBLE_BITRATE（-1）：自适应码率模式，通常不建议使用该值。
 
-### `minBitrate`
+</Parameter>
+<a id="minbitrate"></a>
+<Parameter name="minBitrate">
 
 视频的最小编码码率（Kbps）。SDK 会自动调整编码码率以适应网络状况。使用高于默认值的设置会强制视频编码器输出高质量图像，但可能导致更多丢包并影响视频传输的流畅性。
 
-:::info[注]
-该参数仅适用于互动直播场景。
+:::note
+注： 该参数仅适用于互动直播场景。
 :::
 
-### `orientationMode`
+</Parameter>
+<a id="orientationmode"></a>
+<Parameter name="orientationMode">
 
 编码后的视频方向模式。详见 [ORIENTATION_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-orientationmode)。
 
-### `degradationPreference`
+</Parameter>
+<a id="degradationpreference"></a>
+<Parameter name="degradationPreference">
 
 在带宽受限的情况下的视频编码降级偏好。详见 [DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-degradationpreference)。
 
-:::info[注]
-当该参数设置为 `MAINTAIN_FRAMERATE` （1）或 `MAINTAIN_BALANCED` （2）时， `orientationMode` 也必须设置为 `ORIENTATION_MODE_ADAPTIVE` （0），否则该设置不生效。
+:::note
+注： 当该参数设置为 `MAINTAIN_FRAMERATE`（1）或 `MAINTAIN_BALANCED`（2）时，`orientationMode` 也必须设置为 `ORIENTATION_MODE_ADAPTIVE`（0），否则该设置不生效。
 :::
 
-### `mirrorMode`
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 设置本地视频流发布时的镜像模式，仅影响远端用户看到的视频。详见 [VIDEO_MIRROR_MODE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomirrormodetype)。
 
-:::info[注]
-默认情况下，视频不镜像。
+:::note
+注： 默认情况下，视频不镜像。
 :::
 
-### `advanceOptions`
+</Parameter>
+<a id="advanceoptions"></a>
+<Parameter name="advanceOptions">
 
 视频编码的高级选项。详见 [AdvanceOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-advanceoptions)。
+
+</Parameter>
+</ParameterList>

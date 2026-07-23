@@ -1,0 +1,749 @@
+---
+title: com.herewhite.sdk.WhiteSdkConfiguration类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.WhiteSdkConfiguration类 参考 图示".
+---
+
+类 com.herewhite.sdk.WhiteSdkConfiguration 继承关系图:
+
+![com.herewhite.sdk.WhiteSdkConfiguration类 参考 图示](/img/api-center-generated/ae4a093fddb2-classcom_1_1herewhite_1_1sdk_1_1_white_sdk_configuration.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例的配置。
+
+### 注解
+
+成功初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 后，无法再调用 [`WhiteSdkConfiguration`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration) 类中的任何方法修改 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 的配置。
+
+## 构造及析构函数说明
+
+<a id="a1bdc84ab8acbe9f4732f07a62f429a3d"></a>
+
+### WhiteSdkConfiguration() [1/2]
+
+<ApiSignature>
+
+com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentifier*, boolean *log*)
+
+</ApiSignature>
+
+初始化互动白板 SDK 配置。
+
+<ParameterList title="参数">
+<Parameter name="appIdentifier">
+
+白板项目的唯一标识。详见[获取白板项目的 App Identifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
+
+</Parameter>
+<Parameter name="log">
+
+是否开启调试日志回调：
+
+- `true`：开启。
+- `false`：（默认）关闭。 调试日志仅包含调用初始化互动白板 SDK、加入房间和开始回放等方法的回调。
+
+</Parameter>
+</ParameterList>
+
+<a id="adefcf4cfce48f523164941ca1e2859a5"></a>
+
+### WhiteSdkConfiguration() [2/2]
+
+<ApiSignature>
+
+com.herewhite.sdk.WhiteSdkConfiguration.WhiteSdkConfiguration(String *appIdentifier*)
+
+</ApiSignature>
+
+初始化互动白板 SDK 配置。
+
+<ParameterList title="参数">
+<Parameter name="appIdentifier">
+
+白板项目的唯一标识。详见[获取白板项目的 App Identifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service)。
+
+</Parameter>
+</ParameterList>
+
+## 成员函数说明
+
+<a id="a3d6c7edc68f7143f7b045c89e5ce2d26"></a>
+
+### isEnableIFramePlugin()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableIFramePlugin()
+
+</ApiSignature>
+
+获取是否启用 iframe 插件。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否启用 iframe 插件：
+
+- `true`：开启。
+- `false`：未启用。
+
+<a id="a5983a2cd7a0fa6e51ce8ff7a78ef7c02"></a>
+
+### setEnableIFramePlugin()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setEnableIFramePlugin(boolean *enableIFramePlugin*)
+
+</ApiSignature>
+
+启用/禁用 iframe 插件。
+
+iframe 插件的功能，详见 [iframe-bridge](https://github.com/netless-io/netless-iframe-bridge)。
+
+<ParameterList title="参数">
+<Parameter name="enableIFramePlugin">
+
+是否启用 iframe 插件：
+
+- `true`：开启。
+- `false`：（默认）不启用。
+
+</Parameter>
+</ParameterList>
+
+<a id="a8acd28da7ca8b16197e36b46f51fd2ea"></a>
+
+### getRegion()
+
+<ApiSignature>
+
+[Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.WhiteSdkConfiguration.getRegion()
+
+</ApiSignature>
+
+获取设置的数据中心。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。
+
+<a id="a26095c960c0c25f4e5d07ac7dcea3b9d"></a>
+
+### setRegion()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setRegion([Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) *region*)
+
+</ApiSignature>
+
+设置数据中心。
+
+:::info[注解]
+该方法设置的数据中心必须与要加入的互动白板实时房间所在数据中心一致；否则，SDK 将无法连接到房间 。
+:::
+
+<ParameterList title="参数">
+<Parameter name="region">
+
+数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。
+
+</Parameter>
+</ParameterList>
+
+<a id="aea5543307dfdda534d09dc3fa609bbc8"></a>
+
+### isDisableNewPencilStroke()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isDisableNewPencilStroke()
+
+</ApiSignature>
+
+获取新铅笔工具的笔锋效果是否关闭。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+新铅笔工具的笔锋效果是否关闭：
+
+- `true`：关闭笔锋效果。
+- `false`：开启笔锋效果。
+
+<a id="a9145cf669a6de058fa0fd53dc1f2ff8b"></a>
+
+### setDisableNewPencilStroke()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setDisableNewPencilStroke(boolean *disableNewPencilStroke*)
+
+</ApiSignature>
+
+开启/关闭新铅笔工具的笔锋效果。
+
+:::info[注解]
+该方法仅在调用 [`setDisableNewPencil(false)`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a49c41b2dfd21f764d6e3ff63ca09f19d) 后生效。
+:::
+
+<ParameterList title="参数">
+<Parameter name="disableNewPencilStroke">
+
+是否关闭新铅笔工具的笔锋效果：
+
+</Parameter>
+</ParameterList>
+
+- `true`：关闭笔锋效果。
+- `false`：（默认）开启笔锋效果。
+
+<a id="aa056117366231f9c6a94e4c3c8e69ebe"></a>
+
+### setEnableSlideInterrupterAPI()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setEnableSlideInterrupterAPI(boolean *enableSlideInterrupterAPI*)
+
+</ApiSignature>
+
+开启/关闭 PPT 拦截替换功能。
+
+该方法可以开启或关闭 PPT 资源的拦截功能。 如果开启，在加载 URL 资源时会拦截资源并触发 `com.herewhite.sdk.window.SlideListener#slideUrlInterrupter(String, ResultCaller)` 回调，你可以在该回调中替换资源的地址。
+
+<ParameterList title="参数">
+<Parameter name="enableSlideInterrupterAPI">
+
+是否开启 PPT 资源拦截和替换功能：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="aede0a2d191b0dfc5c54c8ea5364392c5"></a>
+
+### getApiHosts()
+
+<ApiSignature>
+
+List&lt; String &gt; com.herewhite.sdk.WhiteSdkConfiguration.getApiHosts()
+
+</ApiSignature>
+
+获取白板的 API 服务器域名列表。
+
+<a id="ac600c7ef3c6ac6c6973230d9d201a32b"></a>
+
+### setApiHosts()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setApiHosts(List&lt; String &gt; *apiHosts*)
+
+</ApiSignature>
+
+配置白板的 API 服务器域名列表。 可以用于配置服务器代理。配置后，白板不再使用 SDK 自带配置。
+
+<ParameterList title="参数">
+<Parameter name="apiHosts">
+
+白板的 API 服务器域名列表。例如 [api.example.com]。
+
+</Parameter>
+</ParameterList>
+
+<a id="a38ec00b67242c2df696027e7f7b856fa"></a>
+
+### isEnableAppliancePlugin()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableAppliancePlugin()
+
+</ApiSignature>
+
+获取是否启用高性能白板绘制工具插件 (appliance-plugin)。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+是否启用 appliance-plugin：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+<a id="a826074833f28c8b49a8c475eb1a162d5"></a>
+
+### setEnableAppliancePlugin()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setEnableAppliancePlugin(boolean *enableAppliancePlugin*)
+
+</ApiSignature>
+
+启用/禁用高性能白板绘制工具插件 (appliance-plugin)。
+
+<ParameterList title="参数">
+<Parameter name="enableAppliancePlugin">
+
+是否启用 appliance-plugin：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae74760b5bbf80d908566a35d0146252b"></a>
+
+### setRenderEngine()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setRenderEngine([RenderEngineType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type) *renderEngine*)
+
+</ApiSignature>
+
+设置绘图的渲染模式。
+
+:::info[自从]
+2.8.0
+:::
+
+为优化白板上绘图的渲染，自 2.8.0 版本起，白板 SDK 新增 `canvas` 渲染模式，并从 2.9.0 版本起，将 `canvas` 渲染模式作为默认的渲染模式。
+
+:::info[注解]
+由于部分 Android 6.1 至 Android 8.1 设备无法支持 `canvas` 渲染模式，SDK 会自动将默认的渲染模式切换为 `svg` 渲染模式。
+:::
+
+<ParameterList title="参数">
+<Parameter name="renderEngine">
+
+绘图的渲染模式，详见 [`RenderEngineType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a8f4ae303b78245fa3820ada74c1cecd3"></a>
+
+### getRenderEngine()
+
+<ApiSignature>
+
+[RenderEngineType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type) com.herewhite.sdk.WhiteSdkConfiguration.getRenderEngine()
+
+</ApiSignature>
+
+获取绘图的渲染模式。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+绘图的渲染模式，详见 [`RenderEngineType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-render-engine-type)。
+
+<a id="a0cf413fba8c882bd85d3525f39868494"></a>
+
+### getPptParams()
+
+<ApiSignature>
+
+[PptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params) com.herewhite.sdk.WhiteSdkConfiguration.getPptParams()
+
+</ApiSignature>
+
+获取设置的动态 PPT 参数。
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+设置的动态 PPT 参数，详见 [`PptParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params)。
+
+<a id="a18fb497bc4386158c0e20f7f7f778780"></a>
+
+### setPptParams()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setPptParams([PptParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params) *pptParams*)
+
+</ApiSignature>
+
+设置动态 PPT 参数。
+
+<ParameterList title="参数">
+<Parameter name="pptParams">
+
+动态 PPT 参数，详见 [`PptParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration-1-1-ppt-params)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a56a503cb128959dda43df21d3274e467"></a>
+
+### getFonts()
+
+<ApiSignature>
+
+HashMap&lt; String, String &gt; com.herewhite.sdk.WhiteSdkConfiguration.getFonts()
+
+</ApiSignature>
+
+获取自定义字体。
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+自定义字体名称和地址。
+
+<a id="ae27b638d67a38871ebb59dc800fc6411"></a>
+
+### setFonts()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setFonts(HashMap&lt; String, String &gt; *fonts*)
+
+</ApiSignature>
+
+设置自定义字体。
+
+:::info[自从]
+2.2.0
+:::
+
+为正常显示动态 PPT 中的非常规字体，在初始化 [`WhiteSdk`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk) 实例时，你可以调用该方法传入该字体文件的 URL 地址。
+
+:::info[注解]
+调用该方法前，你需要将字体文件上传至你的 app 服务器或第三方云存储，并生成一个 URL 地址。
+:::
+
+<ParameterList title="参数">
+<Parameter name="fonts">
+
+自定义字体，为 `key-value` 键值对，`key` 为字体名称，`value` 为字体的 URL 地址，例如 `"Calibri", "https://your-cdn.com/Calibri.ttf"`。
+
+</Parameter>
+</ParameterList>
+
+<a id="a0e0f16c7abeef7ce60ae8c8537688999"></a>
+
+### isPreloadDynamicPPT()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isPreloadDynamicPPT()
+
+</ApiSignature>
+
+获取是否开启一次性加载动态 PPT 中的所有图片资源。
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+一次性加载动态 PPT 中的所有图片资源开启状态：
+
+- `true`：开启。
+- `false`: 未开启。
+
+<a id="a7a06793aeeade42d1e539765b27f2642"></a>
+
+### setPreloadDynamicPPT()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setPreloadDynamicPPT(boolean *preloadDynamicPPT*)
+
+</ApiSignature>
+
+设置是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源。
+
+:::info[注解]
+Agora 不推荐设置 `setPreloadDynamicPPT(true)`，这样会使 PPT 显示缓慢。
+:::
+
+<ParameterList title="参数">
+<Parameter name="preloadDynamicPPT">
+
+是否在加载动态 PPT 首页时，一次性加载动态 PPT 中的所有图片资源：
+
+- `true`：一次性加载所有动态 PPT。
+- `false`: （默认）不一次性加载所有动态 PPT。
+
+</Parameter>
+</ParameterList>
+
+<a id="ad9538a651c2d1a5a59592d9642d7ab06"></a>
+
+### getLoggerOptions()
+
+<ApiSignature>
+
+[LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options) com.herewhite.sdk.WhiteSdkConfiguration.getLoggerOptions()
+
+</ApiSignature>
+
+获取设置的日志选项。
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+设置的日志选项，详见 [`LoggerOptions`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options)。
+
+<a id="a54bb35b0fecf880950fa8cb8e6026098"></a>
+
+### setLoggerOptions()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setLoggerOptions([LoggerOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options) *loggerOptions*)
+
+</ApiSignature>
+
+设置日志选项。
+
+:::info[自从]
+2.4.2
+:::
+
+<ParameterList title="参数">
+<Parameter name="loggerOptions">
+
+日志选择，详见 [`LoggerOptions`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a58d1cff22044c385de34a7e239b34ca4"></a>
+
+### setUserCursor()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setUserCursor(boolean *userCursor*)
+
+</ApiSignature>
+
+设置是否显示用户头像。
+
+要显示用户头像，请确保你在 `userPayload` 对象中传入了头像的键值对， 并在调用 [`setUserPayload`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a17c8130727ea71cdeca6c3c2362cc0b7)。
+
+<ParameterList title="参数">
+<Parameter name="userCursor">
+
+是否显示用户头像：
+
+- `true`：显示。
+- `false`：（默认）不显示。
+
+</Parameter>
+</ParameterList>
+
+<a id="af1dc5d8e78cec31cdc7d70e6431a9fca"></a>
+
+### isUserCursor()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isUserCursor()
+
+</ApiSignature>
+
+获取是否显示用户头像。
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+是否显示用户头像：
+
+- `true`：显示。
+- `false`：不显示。
+
+<a id="ac3ec01e31aa709a3a62b40528c3045a8"></a>
+
+### isOnlyCallbackRemoteStateModify()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isOnlyCallbackRemoteStateModify()
+
+</ApiSignature>
+
+获取是否开启仅接收远端用户状态改变的回调。
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+是否开启仅接收远端用户状态改变回调：
+
+- `true`：开启。开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调。
+- `false`：关闭。关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
+
+<a id="a86641862170f62dbaed5e9b2548fc296"></a>
+
+### setOnlyCallbackRemoteStateModify()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setOnlyCallbackRemoteStateModify(boolean *onlyCallbackRemoteStateModify*)
+
+</ApiSignature>
+
+开启/关闭仅接收远端用户状态改变的回调。
+
+开启该功能后，本地用户仅会接收到远端用户状态改变的回调，自身状态的改变不会触发回调；关闭该功能后，本地用户会接收到远端用户状态改变的回调，也会接收到自身状态改变的回调。
+
+<ParameterList title="参数">
+<Parameter name="onlyCallbackRemoteStateModify">
+
+是否开启仅接收远端用户状态改变回调：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="a35e6de1283b312c6c8720bdc0b18b2d8"></a>
+
+### isLog()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isLog()
+
+</ApiSignature>
+
+获取是否开启调试日志打印。
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+是否开启调试日志打印：
+
+- `true`：开启。
+- `false`：关闭。
+
+<a id="af29676180672f3e54d050d591707312c"></a>
+
+### setLog()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setLog(boolean *log*)
+
+</ApiSignature>
+
+开启/关闭调试日志打印。
+
+调试日志仅包含调用初始化互动白板 SDK、加入房间和开始回放等方法的回调。
+
+<ParameterList title="参数">
+<Parameter name="log">
+
+是否开启调试日志打印：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="a04a8a5e4f6e942e1fadd061cb6cd27f8"></a>
+
+### isEnableInterrupterAPI()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableInterrupterAPI()
+
+</ApiSignature>
+
+获取是否开启图片拦截和替换功能。
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+是否开启图片拦截和替换功能：
+
+- `true`：开启。
+- `false`：关闭。
+
+<a id="aa2e118f6e449997fbd487a5d5357745b"></a>
+
+### setEnableInterrupterAPI()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setEnableInterrupterAPI(boolean *enableInterrupterAPI*)
+
+</ApiSignature>
+
+开启/关闭图片拦截替换功能。
+
+该方法可以开启或关闭图片拦截功能。 如果开启，在图片实际插入白板前，SDK 会拦截图片并触发 [`urlInterrupter`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a28839222c6e4b44a001da833300991d4) 回调，你可以在该回调中替换图片的地址。
+
+:::info[注解]
+Agora 建议不要开启图片拦截功能，否则会频繁触发回调。
+:::
+
+<ParameterList title="参数">
+<Parameter name="enableInterrupterAPI">
+
+是否开启图片拦截和替换功能：
+
+- `true`：开启。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>
+
+<a id="a1b0ac65018c580328b68c52af6793f35"></a>
+
+### isEnableImgErrorCallback()
+
+<ApiSignature>
+
+boolean com.herewhite.sdk.WhiteSdkConfiguration.isEnableImgErrorCallback()
+
+</ApiSignature>
+
+获取是否开启对图片加载失败事件的监听。
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+是否监听图片加载失败事件：
+
+- `true`：开启监听。
+- `false`：关闭监听。
+
+<a id="ac84ef5bcce300c954e05eace8b18c36b"></a>
+
+### setEnableImgErrorCallback()
+
+<ApiSignature>
+
+void com.herewhite.sdk.WhiteSdkConfiguration.setEnableImgErrorCallback(boolean *enableImgErrorCallback*)
+
+</ApiSignature>
+
+开启/关闭对图片加载失败事件的监听。
+
+<ParameterList title="参数">
+<Parameter name="enableImgErrorCallback">
+
+是否开启对图片加载失败事件的监听：
+
+- `true`：开启。开启后，所有 `img` 标签加载事件都会在 [`onMessage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae) 中回调。
+- `false`：（默认）关闭。
+
+</Parameter>
+</ParameterList>

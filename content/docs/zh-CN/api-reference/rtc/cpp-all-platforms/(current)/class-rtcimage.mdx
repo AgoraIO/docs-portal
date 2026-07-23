@@ -1,10 +1,18 @@
 ---
-title: "RtcImage"
-description: "用于设置水印和背景图像属性。"
+title: RtcImage
+description: 用于设置水印和背景图像属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_rtcimage
+  sourcePath: html-docs/rtc/Cpp/API/class_rtcimage.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_rtcimage__prototype"></a>
 
-```cpp
+```text
 typedef struct RtcImage {
   const char* url;
   int x;
@@ -20,27 +28,39 @@ typedef struct RtcImage {
 
 ## 属性
 
-### `url`
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
 
 图像的 HTTP/HTTPS URL 地址，最大长度为 1024 字节。
 
-### `x`
+</Parameter>
+<a id="x"></a>
+<Parameter name="x">
 
 图像在视频帧中的 x 坐标（以视频帧左上角为原点，单位为像素）。
 
-### `y`
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 图像在视频帧中的 y 坐标（以视频帧左上角为原点，单位为像素）。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 图像在视频帧中的宽度（单位为像素）。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 图像在视频帧中的高度（单位为像素）。
 
-### `zOrder`
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
 
 图像的图层索引。
 
@@ -48,9 +68,14 @@ typedef struct RtcImage {
 - 其他情况下为可选，取值范围为 [0, 255]，默认值为 0。
 - 0 表示底层，255 表示顶层。
 
-### `alpha`
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
 
 图像的透明度，取值范围为 [0.0, 1.0]：
 
 - 0.0：完全透明。
 - 1.0：（默认）不透明。
+
+</Parameter>
+</ParameterList>

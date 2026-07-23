@@ -7,14 +7,14 @@ description: "了解如何在水晶球中数据洞察普通版，包括适用场
 :::warning[注意]
 - 自 2022 年 8 月 3 日起，数据洞察新增数据重算机制，每天的数据会在 T+2 天重新计算一次。例如，2022 年 7 月 6 号的数据将在 7 月 8 日凌晨进行重算。在内部资源调度、用户网络不佳等原因导致数据上报延迟的情况下，数据重算机制可以保证历史数据的完整性。
 - 当前仅提供 2020 年 7 月 1 日起声网 RTC SDK 的用量和质量数据。
-- 自 2023 年 11 月 21 日起，视频卡顿率指标下计入视频卡顿时长的标准发生变化，由“视频卡顿超过 600 ms 被计入卡顿时长”，修改为“视频卡顿超过 500 ms 被计入卡顿时长”，详见[质量指标](#质量指标)。
+- 自 2023 年 11 月 21 日起，视频卡顿率指标下计入视频卡顿时长的标准发生变化，由“视频卡顿超过 600 ms 被计入卡顿时长”，修改为“视频卡顿超过 500 ms 被计入卡顿时长”，详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 :::
 
 ## 使用步骤
 
 按以下步骤使用数据洞察普通版：
 
-1. [订阅水晶球套餐包](/zh-CN/realtime-media/usage-analytics/reference/billing#如何订阅)，开通数据洞察功能。
+1. [订阅水晶球套餐包](/zh-CN/realtime-media/usage-analytics/reference/billing)，开通数据洞察功能。
 2. 登录[控制台](https://console.shengwang.cn/)，点击左侧菜单栏中的**水晶球**。
 3. 在水晶球页面的左侧菜单中选择你要查看的项目。点击**用量概览**查看用量数据，或者点击**质量概览**查看质量数据。
 4. 设置筛选条件：
@@ -40,7 +40,7 @@ description: "了解如何在水晶球中数据洞察普通版，包括适用场
 
 ![用量概览总览面板示意图](https://web-cdn.agora.io/docs-files/1680503897637)
 
-各指标的含义详见[用量指标](#用量指标)。
+各指标的含义详见[用量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 
 总览面板的每个曲线图都提供以下功能：
 
@@ -62,7 +62,7 @@ description: "了解如何在水晶球中数据洞察普通版，包括适用场
 
 ![用量概览指标分析面板示意图](https://web-cdn.agora.io/docs-files/1680503914006)
 
-各维度的含义详见[维度](#维度)。
+各维度的含义详见[维度](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 
 :::warning[注意]
 - 地域版块的地区条形图中，默认展示排名第一的国家的地区排名。如果要查看其它国家的地区排名，在地图上点击对应的国家即可。
@@ -79,7 +79,7 @@ description: "了解如何在水晶球中数据洞察普通版，包括适用场
 
 ![质量概览总览面板示意图](https://web-cdn.agora.io/docs-files/1680503928301)
 
-各指标的含义详见[质量指标](#质量指标)。
+各指标的含义详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 
 :::warning[注意]
 Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面的左上角选择平台为 Web RTC，用户体验版块下不会显示音频卡顿率的指标卡片。
@@ -95,12 +95,12 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 
 此外，用户体验版块下的曲线图还提供数据采样功能：
 
-- 频道采样：如果筛选条件设为**按小时**或**按分钟**，点击曲线图上的数据点，然后点击**频道数据采样**，可以看到对应时间的散点图。散点图的纵坐标为对应的指标，横坐标详见[质量指标](#质量指标)。
+- 频道采样：如果筛选条件设为**按小时**或**按分钟**，点击曲线图上的数据点，然后点击**频道数据采样**，可以看到对应时间的散点图。散点图的纵坐标为对应的指标，横坐标详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 - 用户采样：在频道数据采样的散点图上，点击数据点，然后点击**用户数据采样**，可以看到频道中卡顿率最高的六位用户的数据。如果需要查看某位用户更详细的通话质量数据，可以点击与该用户对应的**通话调查**。通话调查提供的数据详见[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
 
 :::warning[注意]
 - 部分套餐包不支持查看小时、查看分钟和数据采样的功能。详见[套餐包详情](/zh-CN/realtime-media/usage-analytics/reference/billing#套餐包详情)。
-- 只有点击的数据点符合对应的[采样规则](#采样规则)时，采样选项才会出现。
+- 只有点击的数据点符合对应的[采样规则](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)时，采样选项才会出现。
 :::
 
 ###  指标分析
@@ -109,9 +109,9 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 
 ![质量概览指标分析面板示意图](https://web-cdn.agora.io/docs-files/1680503943647)
 
-各维度的含义详见[维度](#维度)。
+各维度的含义详见[维度](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。
 
-气泡图展示所选的质量指标在当前维度下与用量的关系，纵坐标为所选指标，对应的横坐标详见[质量指标](#质量指标)。绿色气泡表示指标数据正常，红色气泡表示指标数据异常，异常情况包括：
+气泡图展示所选的质量指标在当前维度下与用量的关系，纵坐标为所选指标，对应的横坐标详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)。绿色气泡表示指标数据正常，红色气泡表示指标数据异常，异常情况包括：
 
 - 视频卡顿率大于 5%
 - 音频卡顿率大于 3%
@@ -153,18 +153,18 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 | 通话时长 | 使用声网 RTC SDK 进行视频通话和音频通话的时长。 |
 | 视频通话时长 | 使用声网 RTC SDK 进行视频通话的时长。 |
 | 音频通话时长 | 使用声网 RTC SDK 进行音频通话的时长。 |
-| 云录制最大并发任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务。仅开启云端录制时展示，详见[云端录制](https://docs.agora.io/cn/cloud-recording/product_cloud_recording)。 |
-| 输入在线媒体流最大并发任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务。仅开启输入在线媒体流时展示，详见[输入在线媒体流](https://docs.agora.io/cn/media-pull/inject_stream_restful_overview)。 |
+| 云录制最大并发任务数 | 每次调用 `start` 方法开启云端录制即创建一个云端录制任务。仅开启云端录制时展示，详见云端录制。 |
+| 输入在线媒体流最大并发任务数 | 每次调用 `Create` 方法创建一个云端播放器即创建一个输入媒体流任务。仅开启输入在线媒体流时展示，详见输入在线媒体流。 |
 | 旁路推流最大并发任务数 | <Slot name="basic-markdown-0-11-1" /> |
 
 <Slot for="basic-markdown-0-11-1">
 
-仅开启旁路推流时展示，详见[旁路推流](https://docs.agora.io/cn/media-push/streaming_product)。
+仅开启旁路推流时展示，详见旁路推流。
 提供三种推流模式的数据：
 
 - `SDK API_Raw mode`: 非转码推流模式，即调用 `startRtmpStreamWithoutTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `false`。
 - `SDK API_Mix mode`: 转码推流模式，即调用 `startRtmpStreamWithTranscoding`，或在 4.0.0 之前的版本中将 `addPublishStreamUrl` 中的 `transcodingEnabled` 设置为 `true`。
-- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见[旁路推流 RESTful API](https://docs.agora.io/cn/media-push/streaming_restful)。
+- `RESTful API`: 使用 RESTful API 开启旁路推流的模式，详见旁路推流 RESTful API。
 
 </Slot>
 
@@ -179,7 +179,7 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 | 5 s 登录成功率 | 5 秒内加入频道成功人数 / 尝试加入频道总人数 × 100%。         | 尝试加入频道总人数   |
 
 :::warning[注意]
-用于计算质量指标的总视频时长、总音频时长、音频和视频总时长均为[按流计算](#按流计算)的时长用量。
+用于计算质量指标的总视频时长、总音频时长、音频和视频总时长均为[按流计算](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)的时长用量。
 :::
 
 ####  维度
@@ -207,12 +207,12 @@ Web RTC 的质量指标不包括音频卡顿率。如果你在质量概览页面
 | 网络延迟率 | 网络延迟率大于 10%、1 分钟内所有频道的音视频时长之和超过 100 分钟。 |
 
 :::warning[注意]
-- 采样规则中的视频时长、音频时长、音频和视频总时长均为[按流计算](#按流计算)的时长用量。
+- 采样规则中的视频时长、音频时长、音频和视频总时长均为[按流计算](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)的时长用量。
 - 登录成功率、5 s 登录成功率暂不支持采样。
 :::
 
 ### 相关链接
 
-- [数据洞察 RESTful API](/doc/analytics/general/restful-aa/operations/get-beta-insight-usage-by_time)
+- [数据洞察 RESTful API](/zh-CN/api-reference/api-ref/agora-analytics/insight-usage-time)
 - [案例：常见问题排查](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting)
 - [数据洞察 Plus](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus)

@@ -1,10 +1,19 @@
 ---
-title: "媒体资源播放和渲染"
-description: "媒体资源播放和渲染 API reference."
+title: 媒体资源播放和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_mediaplayer_playnrender
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_mediaplayer_playnrender.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_playnrender"></a>
 
 <a id="api_imediaplayer_selectaudiotrack"></a>
+
+<a id="ariaid-title2"></a>
 
 ## selectAudioTrack
 
@@ -12,7 +21,7 @@ description: "媒体资源播放和渲染 API reference."
 
 <a id="api_imediaplayer_selectaudiotrack__prototype"></a>
 
-```arkts
+```text
 public abstract selectAudioTrack(index: number): number;
 ```
 
@@ -22,29 +31,39 @@ public abstract selectAudioTrack(index: number): number;
 
 获取音频文件的音轨索引后，你可以调用该方法指定任一音轨进行播放。如果一个多音轨文件的不同音轨存放了不同语言的歌曲，你可以调用该方法设置播放语言。
 
-:::warning[注意]
-你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
+<a id="api_imediaplayer_selectaudiotrack__note"></a>
+
+:::caution
+注意： 你需要在调用 [getStreamInfo](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) 获取音频流索引值后调用该方法。
 :::
 
 <a id="api_imediaplayer_selectaudiotrack__parameters"></a>
 
 ### 参数
 
-#### `index`
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
 
 音轨的索引值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_selectaudiotrack__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiodualmonomode"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setAudioDualMonoMode
 
@@ -52,7 +71,7 @@ public abstract selectAudioTrack(index: number): number;
 
 <a id="api_imediaplayer_setaudiodualmonomode__prototype"></a>
 
-```arkts
+```text
 public abstract setAudioDualMonoMode(mode:Constants.AudioDualMonoMode):number;
 ```
 
@@ -62,8 +81,12 @@ public abstract setAudioDualMonoMode(mode:Constants.AudioDualMonoMode):number;
 
 在双声道音频文件中，左声道和右声道可以存储不同的音频数据。根据实际需要，你可以设置声道模式为原始模式、左声道模式、右声道模式或混合模式。例如，在 KTV 场景中，音频文件的左声道存储了伴奏，右声道存储了原唱的歌声。如果你只需听伴奏，调用该方法设置音频文件的声道模式为左声道模式；如果你需要同时听伴奏和原唱，调用该方法设置声道模式为混合模式。
 
-:::warning[注意]
-- 你需要在调用 open 后调用该方法。
+<a id="api_imediaplayer_setaudiodualmonomode__note"></a>
+
+:::caution
+注意：
+
+- 你需要在调用 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 - 该方法仅适用于双声道的音频文件。
 :::
 
@@ -71,21 +94,29 @@ public abstract setAudioDualMonoMode(mode:Constants.AudioDualMonoMode):number;
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
-声道模式。 详见 [AudioDualMonoMode](/zh-CN/api-reference/rtc/harmonyos/enum-audiodualmonomode)。
+声道模式。详见 [AudioDualMonoMode](/zh-CN/api-reference/rtc/harmonyos/enum-audiodualmonomode)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiodualmonomode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setaudiopitch"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setAudioPitch
 
@@ -93,7 +124,7 @@ public abstract setAudioDualMonoMode(mode:Constants.AudioDualMonoMode):number;
 
 <a id="api_imediaplayer_setaudiopitch__prototype"></a>
 
-```arkts
+```text
 public abstract setAudioPitch(pitch:number): number;
 ```
 
@@ -101,29 +132,37 @@ public abstract setAudioPitch(pitch:number): number;
 
 ### 详情
 
-:::info[注]
-你需要在调用 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
+:::note
+注： 你需要在调用 [open](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后调用该方法。
 :::
 
 <a id="api_imediaplayer_setaudiopitch__parameters"></a>
 
 ### 参数
 
-#### `pitch`
+<ParameterList>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 按半音音阶调整本地播放的音乐文件的音调，默认值为 0，即不调整音调。取值范围为 [-12,12]，每相邻两个值的音高距离相差半音。取值的绝对值越大，音调升高或降低得越多。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setaudiopitch__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setloopcount"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setLoopCount
 
@@ -131,7 +170,7 @@ public abstract setAudioPitch(pitch:number): number;
 
 <a id="api_imediaplayer_setloopcount__prototype"></a>
 
-```arkts
+```text
 public abstract setLoopCount(loopCount:number):number;
 ```
 
@@ -147,24 +186,32 @@ public abstract setLoopCount(loopCount:number):number;
 
 ### 参数
 
-#### `loopCount`
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
 
 循环播放的次数。
 
 - ≥0：循环次数。例如，设为 0 表示不循环播放，一共播放一次；设为 1 表示循环播放一次，一共播放 2 次。
 - -1：无限循环播放。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayer_setloopcount__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplaybackspeed"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setPlaybackSpeed
 
@@ -172,7 +219,7 @@ public abstract setLoopCount(loopCount:number):number;
 
 <a id="api_imediaplayer_setplaybackspeed__prototype"></a>
 
-```arkts
+```text
 public abstract setPlaybackSpeed(speed: number) : number;
 ```
 
@@ -186,7 +233,9 @@ public abstract setPlaybackSpeed(speed: number) : number;
 
 ### 参数
 
-#### `speed`
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
 
 播放速度。推荐取值范围为 [50,400]，其中：
 
@@ -194,17 +243,23 @@ public abstract setPlaybackSpeed(speed: number) : number;
 - 100: 原始速度。
 - 400: 4 倍速。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayer_setplaybackspeed__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setPlayerOption
 
@@ -212,15 +267,17 @@ public abstract setPlaybackSpeed(speed: number) : number;
 
 <a id="api_imediaplayer_setplayeroption__prototype"></a>
 
-```arkts
+```text
 public abstract setPlayerOption(key:string, value:number);
 ```
 
 <a id="api_imediaplayer_setplayeroption__detailed_desc"></a>
 
+<a id="api_imediaplayer_setplayeroption__desc1"></a>
+
 媒体播放器支持通过 key 和 value 来设置选项。
 
-该方法和 [setPlayerOptionString](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 value 是 Int 型， setPlayerOptionString 的 value 是 String 型。二者不可混用。
+该方法和 [setPlayerOptionString](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) 的区别在于，该方法的 value 是 Int 型，setPlayerOptionString 的 value 是 String 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption__scenario"></a>
 
@@ -244,25 +301,35 @@ public abstract setPlayerOption(key:string, value:number);
 
 ### 参数
 
-#### `key`
+<ParameterList>
+<a id="key"></a>
+<Parameter name="key">
 
 key 值。
 
-#### `value`
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
 
 value 值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplayeroption__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setplayeroption2"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setPlayerOptionString
 
@@ -270,7 +337,7 @@ value 值。
 
 <a id="api_imediaplayer_setplayeroption2__prototype"></a>
 
-```arkts
+```text
 public abstract setPlayerOptionString(key:string, value:string): number;
 ```
 
@@ -278,7 +345,7 @@ public abstract setPlayerOptionString(key:string, value:string): number;
 
 媒体播放器支持通过 key 和 value 来设置选项。
 
-该方法和 [setPlayerOption](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 value 是 String 型， setPlayerOption 的 value 是 Int 型。二者不可混用。
+该方法和 [setPlayerOption](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) 的区别在于，该方法的 value 是 String 型，setPlayerOption 的 value 是 Int 型。二者不可混用。
 
 <a id="api_imediaplayer_setplayeroption2__scenario"></a>
 
@@ -302,25 +369,35 @@ public abstract setPlayerOptionString(key:string, value:string): number;
 
 ### 参数
 
-#### `key`
+<ParameterList>
+<a id="key-1"></a>
+<Parameter name="key">
 
 key 值。
 
-#### `value`
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
 
 value 值。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setplayeroption2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_imediaplayer_setview"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setView
 
@@ -328,7 +405,7 @@ value 值。
 
 <a id="api_imediaplayer_setview__prototype"></a>
 
-```arkts
+```text
 public abstract setView(view:string):number;
 ```
 
@@ -350,16 +427,22 @@ public abstract setView(view:string):number;
 
 ### 参数
 
-#### `videoView`
+<ParameterList>
+<a id="videoview"></a>
+<Parameter name="videoView">
 
 渲染视图。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaplayer_setview__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)

@@ -1,10 +1,19 @@
 ---
-title: "原始视频数据"
-description: "原始视频数据 API reference."
+title: 原始视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_video_raw
+  sourcePath: html-docs/rtc/Electron/API/toc_video_raw.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_raw"></a>
 
 <a id="api_imediaengine_registervideoframeobserver"></a>
+
+<a id="ariaid-title2"></a>
 
 ## registerVideoFrameObserver
 
@@ -12,16 +21,17 @@ description: "原始视频数据 API reference."
 
 <a id="api_imediaengine_registervideoframeobserver__prototype"></a>
 
-```typescript
+```text
 abstract registerVideoFrameObserver(observer: IVideoFrameObserver): number;
 ```
 
 <a id="api_imediaengine_registervideoframeobserver__detailed_desc"></a>
 
-如果你想要观测原始视频帧 (如 YUV 或 RGBA 格式)，声网推荐你通过该方法注册一个 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver) 类。 调用该方法注册视频观测器时，你可以根据需要注册 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver) 类中的回调。在成功注册视频观测器后，SDK 会在捕捉到每个视频帧时，触发你所注册的上述回调。
+如果你想要观测原始视频帧 (如 YUV 或 RGBA 格式)，声网推荐你通过该方法注册一个 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver) 类。
+调用该方法注册视频观测器时，你可以根据需要注册 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver) 类中的回调。在成功注册视频观测器后，SDK 会在捕捉到每个视频帧时，触发你所注册的上述回调。
 
-:::info[注]
-在处理回调时，你需要考虑视频帧中 `width` 和 `height` 参数的变化，因为观测得到的视频帧可能会随以下情况变化：
+:::note
+注： 在处理回调时，你需要考虑视频帧中 `width` 和 `height` 参数的变化，因为观测得到的视频帧可能会随以下情况变化：
 
 - 当网络状况差时，分辨率会阶梯式下降。
 - 当用户自行调整分辨率时，回调中报告的分辨率也会变化。
@@ -43,21 +53,29 @@ abstract registerVideoFrameObserver(observer: IVideoFrameObserver): number;
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
 接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_registervideoframeobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
+
+<a id="ariaid-title3"></a>
 
 ## unregisterVideoFrameObserver
 
@@ -65,7 +83,7 @@ abstract registerVideoFrameObserver(observer: IVideoFrameObserver): number;
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine__prototype"></a>
 
-```typescript
+```text
 abstract unregisterVideoFrameObserver(observer: IVideoFrameObserver): number;
 ```
 
@@ -75,21 +93,29 @@ abstract unregisterVideoFrameObserver(observer: IVideoFrameObserver): number;
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
 视频帧观测器，观测每帧视频的接收, 详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediaengine_unregistervideoframeobserver_imediaengine__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaengine)
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
+
+<a id="ariaid-title4"></a>
 
 ## onCaptureVideoFrame
 
@@ -97,7 +123,7 @@ abstract unregisterVideoFrameObserver(observer: IVideoFrameObserver): number;
 
 <a id="callback_ivideoframeobserver_oncapturevideoframe__prototype"></a>
 
-```typescript
+```text
 onCaptureVideoFrame?(
     sourceType: VideoSourceType,
     videoFrame: VideoFrame
@@ -108,9 +134,11 @@ onCaptureVideoFrame?(
 
 你可以在回调中获取本地设备采集到的原始视频数据。
 
-:::info[注]
+:::note
+注：
+
 - 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 - 建议你通过 C++ API 实现该回调。
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
 :::
@@ -125,25 +153,35 @@ onCaptureVideoFrame?(
 
 ### 参数
 
-#### `sourceType`
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
 视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
 
-#### `videoFrame`
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/electron/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - macOS：I420
 - Windows：YUV420
 :::
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onFrame
 
@@ -151,26 +189,35 @@ onCaptureVideoFrame?(
 
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__prototype"></a>
 
-```typescript
+```text
 onFrame?(frame: VideoFrame): void;
 ```
 
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__detailed_desc"></a>
 
-注册视频观测器后，每次接收到一帧视频时，都会触发该回调，报告视频帧信息。 建议你通过 C++ API 实现该回调。
+注册视频观测器后，每次接收到一帧视频时，都会触发该回调，报告视频帧信息。
+建议你通过 C++ API 实现该回调。
 
 <a id="callback_imediaplayervideoframeobserver_onframe_imediaplayervideoframeobserver__parameters"></a>
 
 ### 参数
 
-#### `frame`
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
 
 视频帧信息，详见 [VideoFrame](/zh-CN/api-reference/rtc/electron/class-videoframe)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_imediaplayervideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onPreEncodeVideoFrame
 
@@ -178,7 +225,7 @@ onFrame?(frame: VideoFrame): void;
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__prototype"></a>
 
-```typescript
+```text
 onPreEncodeVideoFrame?(
     sourceType: VideoSourceType,
     videoFrame: VideoFrame
@@ -187,38 +234,51 @@ onPreEncodeVideoFrame?(
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__detailed_desc"></a>
 
-成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。 完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
+成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
+完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
 
-:::info[注]
+:::note
+注：
+
 - 建议你通过 C++ API 实现该回调。
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
 - 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>
 
 ### 参数
 
-#### `sourceType`
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
 
 视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/electron/enum-videosourcetype)。
 
-#### `videoFrame`
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/electron/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - macOS：I420
 - Windows：YUV420
 :::
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)
 
 <a id="callback_ivideoframeobserver_onrendervideoframe"></a>
+
+<a id="ariaid-title7"></a>
 
 ## onRenderVideoFrame
 
@@ -226,7 +286,7 @@ onPreEncodeVideoFrame?(
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__prototype"></a>
 
-```typescript
+```text
 onRenderVideoFrame?(
     channelId: string,
     remoteUid: number,
@@ -238,35 +298,47 @@ onRenderVideoFrame?(
 
 成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
 
-:::info[注]
+:::note
+注：
+
 - 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
 - 建议你通过 C++ API 实现该回调。
 - 由于框架的限制，该回调不支持将处理后的视频数据发送回 SDK。
-- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
 :::
 
 <a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
 
 ### 参数
 
-#### `remoteUid`
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
 
 发送该帧视频的远端用户 ID。
 
-#### `videoFrame`
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
 
 视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/electron/class-videoframe)。
 
-:::info[注]
-通过该回调获取的视频帧数据格式默认值如下：
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
 
 - macOS：I420
 - Windows：YUV420
 :::
 
-#### `channelId`
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IVideoFrameObserver](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_ivideoframeobserver)

@@ -80,7 +80,7 @@ func (conn *RtcConnection) Connect(token string, channel string, uid string) int
 
 | 参数 | 描述 |
 | --- | --- |
-| `token` | RTC Token。详见 [使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/windows/basic-features/token-authentication)。 |
+| `token` | RTC Token。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。 |
 | `channel` | <Slot name="rtcconnection-go-html-0-2-1" /> |
 | `uid` | <Slot name="rtcconnection-go-html-0-3-1" /> |
 
@@ -187,7 +187,7 @@ v2.2.0 起新增。
 
 在 Connection 生命周期内，每个用户最多可以创建五条数据流。离开 Connection 时数据流会被销毁，如需使用需要重新创建数据流。
 
-将 `reliable` 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessageerror) 回调并获得相应报错信息。
+将 `reliable` 设置为 `true` 后，如果接收方 5 秒没有收到发送方所发送的数据，会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go) 回调并获得相应报错信息。
 
 #### 参数
 
@@ -243,7 +243,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 v2.2.0 起新增。
 :::
 
-调用 [`createDataStream`](#createdatastream) 创建数据流后，你可以调用该方法向频道内所有用户发送数据流消息。
+调用 [`createDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 创建数据流后，你可以调用该方法向频道内所有用户发送数据流消息。
 
 :::warning[注意]
 SDK 对该方法的实现进行了如下限制：
@@ -252,13 +252,13 @@ SDK 对该方法的实现进行了如下限制：
 - 每个数据通道每秒最多能发送 60 个包，每个包最大为 1 KB。
 :::
 
-成功调用该方法后，远端会触发 [`OnStreamMessage`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessageerror) 回调。
+成功调用该方法后，远端会触发 [`OnStreamMessage`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息；若调用失败，远端会触发 [`OnStreamMessageError`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go) 回调。
 
 #### 参数
 
 | 参数 | 描述 |
 | ---- | ---- |
-| `streamId` | 数据流 ID，可以通过 [`CreateDataStream`](#createdatastream) 获取。 |
+| `streamId` | 数据流 ID，可以通过 [`CreateDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 获取。 |
 | `msg` | 待发送的消息数据。 |
 
 #### 返回值
@@ -376,7 +376,7 @@ func (conn *RtcConnection) EnableEncryption(enable int, config *EncryptionConfig
 
 开启加密功能。
 
-该方法需要在 [`Connect`](#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
+该方法需要在 [`Connect`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
 
 #### 参数
 
@@ -424,7 +424,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 成功调用该方法后，远端会触发 [`on_stream_message`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息。
 
 :::warning[注意]
-- 请确保在调用该方法前，已调用 [`create_data_stream`](#createdatastream) 创建了数据通道。
+- 请确保在调用该方法前，已调用 [`create_data_stream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 创建了数据通道。
 - 直播场景下，该方法仅适用于主播用户。
 :::
 
@@ -432,7 +432,7 @@ func (conn *RtcConnection) SendStreamMessage(streamId int, msg []byte) int {
 
 | 参数        | 描述   |
 |-------------|------------|
-| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](#createdatastream) 获取。|
+| `stream_id` | 数据流 ID。可以通过 [`CreateDataStream`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#createdatastream) 获取。|
 | `data`      | 待发送的数据。|
 
 #### 返回值

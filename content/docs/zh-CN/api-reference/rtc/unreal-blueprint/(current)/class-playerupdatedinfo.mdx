@@ -1,10 +1,18 @@
 ---
-title: "FPlayerUpdatedInfo"
-description: "媒体播放器相关信息。"
+title: FPlayerUpdatedInfo
+description: 媒体播放器相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_playerupdatedinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_playerupdatedinfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_playerupdatedinfo__prototype"></a>
 
-```cpp
+```text
 USTRUCT(BlueprintType)
 struct FPlayerUpdatedInfo {
 	GENERATED_BODY()
@@ -27,7 +35,7 @@ public:
 
 	FPlayerUpdatedInfo(){}
 	FPlayerUpdatedInfo(const agora::media::base::PlayerUpdatedInfo& playerUpdatedInfo) {
-		
+
 		internalPlayerUuid = UTF8_TO_TCHAR(playerUpdatedInfo.internalPlayerUuid);
 		deviceId = UTF8_TO_TCHAR(playerUpdatedInfo.deviceId);
 		videoHeight = playerUpdatedInfo.videoHeight;
@@ -58,26 +66,41 @@ public:
 
 ## 属性
 
-### `deviceId`
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 设备 ID，标识一个设备。
 
-### `videoHeight`
+</Parameter>
+<a id="videoheight"></a>
+<Parameter name="videoHeight">
 
 视频高度 (pixel)。
 
-### `videoWidth`
+</Parameter>
+<a id="videowidth"></a>
+<Parameter name="videoWidth">
 
 视频宽度 (pixel)。
 
-### `audioSampleRate`
+</Parameter>
+<a id="audiosamplerate"></a>
+<Parameter name="audioSampleRate">
 
 音频采样率 (Hz)。
 
-### `audioChannels`
+</Parameter>
+<a id="audiochannels"></a>
+<Parameter name="audioChannels">
 
 声道数。
 
-### `audioBitsPerSample`
+</Parameter>
+<a id="audiobitspersample"></a>
+<Parameter name="audioBitsPerSample">
 
 每个音频采样点的位数 (bit)。
+
+</Parameter>
+</ParameterList>

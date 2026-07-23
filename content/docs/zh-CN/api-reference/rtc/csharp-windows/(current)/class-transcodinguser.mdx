@@ -1,10 +1,18 @@
 ---
-title: "TranscodingUser"
-description: "参与转码合流的每个主播的设置。"
+title: TranscodingUser
+description: 参与转码合流的每个主播的设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_transcodinguser
+  sourcePath: html-docs/rtc/Csharp/API/class_transcodinguser.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_transcodinguser__prototype"></a>
 
-```csharp
+```text
 public class TranscodingUser
     {
         public TranscodingUser()
@@ -47,57 +55,80 @@ public class TranscodingUser
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 主播的用户 ID。
 
-### `x`
+</Parameter>
+<a id="x"></a>
+<Parameter name="x">
 
 主播视频画面在输出视频画面的 x 坐标 (px)，以输出视频画面的左上角为原点。取值范围为[0,width]，width 为 [LiveTranscoding](/zh-CN/api-reference/rtc/csharp-windows/class-livetranscoding) 中设置的 `width`。
 
-### `y`
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
 
 主播视频画面在输出视频画面的 y 坐标 (px)，以输出视频画面的左上角为原点。取值范围为[0,height]，height 为 [LiveTranscoding](/zh-CN/api-reference/rtc/csharp-windows/class-livetranscoding) 中设置的 `height`。
 
-### `width`
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
 
 主播视频画面的宽 (px)。
 
-### `height`
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
 
 主播视频画面的高 (px)。
 
-### `zOrder`
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
 
 主播视频画面的图层编号。取值范围为 [0,100]。
 
 - 0:（默认）视频画面位于图层的最下层。
 - 100: 视频画面位于图层的最上层。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 如果取值小于 0 或大于 100，会返回错误 ERR_INVALID_ARGUMENT。
 - 支持将 zOrder 设置为 0。
 :::
 
-### `alpha`
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
 
 主播视频画面的透明度。取值范围为 [0.0,1.0]。
 
 - 0.0: 完全透明。
 - 1.0:（默认）完全不透明。
 
-### `audioChannel`
+</Parameter>
+<a id="audiochannel"></a>
+<Parameter name="audioChannel">
 
 主播音频在输出音频中占用的声道。默认值为 0，取值范围为 [0,5]：
 
-- 0: （推荐）默认混音设置，最多支持双声道，与主播上行音频相关。
-- 1: 主播音频在输出音频的 FL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
-- 2: 主播音频在输出音频的 FC 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
-- 3: 主播音频在输出音频的 FR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
-- 4: 主播音频在输出音频的 BL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
-- 5: 主播音频在输出音频的 BR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
-- 0xFF 或取值大于 5: 该主播音频静音，声网服务器移除该主播的音频。
+<a id="class_transcodinguser__ul_ugm_rrh_v4b"></a>
 
-:::warning[注意]
-取值不为 `0` 时，需要使用特殊的播放器。
+- `0`: （推荐）默认混音设置，最多支持双声道，与主播上行音频相关。
+- `1`: 主播音频在输出音频的 FL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `2`: 主播音频在输出音频的 FC 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `3`: 主播音频在输出音频的 FR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `4`: 主播音频在输出音频的 BL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `5`: 主播音频在输出音频的 BR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `0xFF` 或取值大于 `5`: 该主播音频静音，声网服务器移除该主播的音频。
+
+:::caution
+注意： 取值不为 `0` 时，需要使用特殊的播放器。
 :::
+
+</Parameter>
+</ParameterList>

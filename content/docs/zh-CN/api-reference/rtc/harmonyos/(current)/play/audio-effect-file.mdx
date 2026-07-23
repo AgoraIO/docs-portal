@@ -1,10 +1,19 @@
 ---
-title: "音效文件播放"
-description: "音效文件播放 API reference."
+title: 音效文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_audio_effect_file
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_audio_effect_file.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_effect_file"></a>
 
 <a id="api_irtcengine_playeffect3"></a>
+
+<a id="ariaid-title2"></a>
 
 ## playEffect
 
@@ -12,11 +21,13 @@ description: "音效文件播放 API reference."
 
 <a id="api_irtcengine_playeffect3__prototype"></a>
 
-```arkts
+```text
 public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch:number,pan:number,gain:number,publish:boolean,startPos?:number):number;
 ```
 
 <a id="api_irtcengine_playeffect3__detailed_desc"></a>
+
+<a id="api_irtcengine_playeffect3__playEffect-desc"></a>
 
 你可以多次调用该方法，传入不同的 soundID 和 filePath，同时播放多个音效文件。为获得最佳用户体验，建议同时播放的音效文件不超过 3 个。
 
@@ -42,26 +53,36 @@ public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch
 
 ### 参数
 
-#### `soundId`
+<ParameterList>
+<a id="soundid"></a>
+<Parameter name="soundId">
 
 音效的 ID。每个音效的 ID 具有唯一性。
 
-#### `filePath`
+</Parameter>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
 播放文件的地址。
 
-#### `loopCount`
+</Parameter>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
 
 音效循环播放的次数。
 
 - ≥ 0: 循环播放次数。例如，1 表示循环播放 1 次，即总计播放 2 次。
 - -1: 无限循环播放。
 
-#### `pitch`
+</Parameter>
+<a id="pitch"></a>
+<Parameter name="pitch">
 
 音效的音调，取值范围为 [0.5,2.0]。默认值为 1.0，表示原始音调。取值越小，则音调越低。
 
-#### `pan`
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
 
 音效的空间位置。取值范围为 [-1.0,1.0]，例如：
 
@@ -69,29 +90,40 @@ public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch
 - 0.0：音效出现在正前方
 - 1.0：音效出现在右边
 
-#### `gain`
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
 
 音效的音量。取值范围为 [0.0,100.0]。默认值为 100.0，表示原始音量。取值越小，则音量越低。
 
-#### `publish`
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
 
 是否将音效发布至远端：
 
-- true: 将音效发布至远端。本地用户和远端用户都能听到音效。
-- false: 不将音效发布至远端。只有本地用户能听到音效。
+- `true`: 将音效发布至远端。本地用户和远端用户都能听到音效。
+- `false`: 不将音效发布至远端。只有本地用户能听到音效。
 
-#### `startPos`
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
 
 音效文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_playeffect3__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_stopeffect"></a>
+
+<a id="ariaid-title3"></a>
 
 ## stopEffect
 
@@ -99,7 +131,7 @@ public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch
 
 <a id="api_irtcengine_stopeffect__prototype"></a>
 
-```arkts
+```text
 public abstract stopEffect(soundId:number):number;
 ```
 
@@ -121,18 +153,25 @@ public abstract stopEffect(soundId:number):number;
 
 ### 参数
 
-#### `soundId`
+<ParameterList>
+<a id="soundid-1"></a>
+<Parameter name="soundId">
 
 指定音效文件的 ID。每个音效文件均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_stopeffect__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
+
+<a id="ariaid-title4"></a>
 
 ## onAudioEffectFinished
 
@@ -140,11 +179,15 @@ public abstract stopEffect(soundId:number):number;
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished__prototype"></a>
 
-```arkts
+```text
 onAudioEffectFinished?:(soundId:number) => void;
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__desc"></a>
 
 当播放音效结束后，会触发该回调。
 
@@ -152,9 +195,15 @@ onAudioEffectFinished?:(soundId:number) => void;
 
 ### 参数
 
-#### `soundId`
+<ParameterList>
+<a id="soundid-2"></a>
+<Parameter name="soundId">
 
 指定音效的 ID。每个音效均有唯一的 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)

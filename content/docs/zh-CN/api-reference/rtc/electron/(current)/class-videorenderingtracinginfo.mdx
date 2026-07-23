@@ -1,10 +1,18 @@
 ---
-title: "VideoRenderingTracingInfo"
-description: "视频帧渲染过程中的指标信息。"
+title: VideoRenderingTracingInfo
+description: 视频帧渲染过程中的指标信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_videorenderingtracinginfo
+  sourcePath: html-docs/rtc/Electron/API/class_videorenderingtracinginfo.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_videorenderingtracinginfo__prototype"></a>
 
-```typescript
+```text
 export class VideoRenderingTracingInfo {
   elapsedTime?: number;
   start2JoinChannel?: number;
@@ -20,54 +28,79 @@ export class VideoRenderingTracingInfo {
 
 ## 属性
 
-### `elapsedTime`
+<ParameterList>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
 
 从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到触发 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/electron/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔 (ms)。建议在加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
 
-### `start2JoinChannel`
+</Parameter>
+<a id="start2joinchannel"></a>
+<Parameter name="start2JoinChannel">
 
 从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 的时间间隔 (ms)。负数表示在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
 
-### `join2JoinSuccess`
+</Parameter>
+<a id="join2joinsuccess"></a>
+<Parameter name="join2JoinSuccess">
 
 从调用 `joinChannel1` 或 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 到成功加入频道的时间间隔 (ms)。
 
-### `joinSuccess2RemoteJoined`
+</Parameter>
+<a id="joinsuccess2remotejoined"></a>
+<Parameter name="joinSuccess2RemoteJoined">
 
-:::info[注]
-- 如果本地用户在远端用户加入频道后调用 startMediaRenderingTracing，则该值为 0，无参考意义。
+:::note
+注：
+
+- 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为 0，无参考意义。
 - 为提升远端用户出图速度，建议远端用户加入频道中后，本地用户再加入频道，以降低该值。
 :::
 
-- 如果本地用户成功加入频道前调用 startMediaRenderingTracing，则该值为从本地用户成功加入频道到远端用户加入频道的时间间隔 (ms)。
-- 如果本地用户成功加入频道后调用 startMediaRenderingTracing，则该值为从调用 startMediaRenderingTracing 到远端用户加入频道的时间间隔 (ms)。
+- 如果本地用户成功加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从本地用户成功加入频道到远端用户加入频道的时间间隔 (ms)。
+- 如果本地用户成功加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔 (ms)。
 
-### `remoteJoined2SetView`
+</Parameter>
+<a id="remotejoined2setview"></a>
+<Parameter name="remoteJoined2SetView">
 
-:::info[注]
-- 如果本地用户在设置远端视图后再调用 startMediaRenderingTracing，则该值为 0，无参考意义。
+:::note
+注：
+
+- 如果本地用户在设置远端视图后再调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为 0，无参考意义。
 - 为提升远端用户出图速度，建议在远端用户加入频道之前设置远端视图，或者远端用户加入频道后立即设置远端视图，以降低该值。
 :::
 
-- 如果本地用户在远端用户加入频道前调用 startMediaRenderingTracing，则该值为从远端用户加入频道到本地用户设置远端视图的时间间隔 (ms)。
-- 如果本地用户在远端用户加入频道后调用 startMediaRenderingTracing，则该值为从调用 startMediaRenderingTracing 到设置远端视图的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到本地用户设置远端视图的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔 (ms)。
 
-### `remoteJoined2UnmuteVideo`
+</Parameter>
+<a id="remotejoined2unmutevideo"></a>
+<Parameter name="remoteJoined2UnmuteVideo">
 
-:::info[注]
-- 如果在订阅远端视频流后再调用 startMediaRenderingTracing，则该值为 0，无参考意义。
+:::note
+注：
+
+- 如果在订阅远端视频流后再调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为 0，无参考意义。
 - 为提升远端用户出图速度，建议在远端用户加入频道后，本地用户立即订阅远端视频流，以降低该值。
 :::
 
-- 如果本地用户在远端用户加入频道前调用 startMediaRenderingTracing，则该值为从远端用户加入频道到订阅远端视频流的时间间隔 (ms)。
-- 如果本地用户在远端用户加入频道后调用 startMediaRenderingTracing，则该值为从调用 startMediaRenderingTracing 到订阅远端视频流的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到订阅远端视频流的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔 (ms)。
 
-### `remoteJoined2PacketReceived`
+</Parameter>
+<a id="remotejoined2packetreceived"></a>
+<Parameter name="remoteJoined2PacketReceived">
 
-:::info[注]
-- 如果在接收到远端视频流后再调用 startMediaRenderingTracing，则该值为 0，无参考意义。
+:::note
+注：
+
+- 如果在接收到远端视频流后再调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为 0，无参考意义。
 - 为提升远端用户出图速度，建议在远端用户加入频道后立即发布视频流，本地用户立即订阅远端视频流，以降低该值。
 :::
 
-- 如果本地用户在远端用户加入频道前调用 startMediaRenderingTracing，则该值为从远端用户加入频道到本地用户接收到首个远端数据包的时间间隔 (ms)。
-- 如果本地用户在远端用户加入频道后调用 startMediaRenderingTracing，则该值为从调用 startMediaRenderingTracing 到接收到首个远端数据包的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从远端用户加入频道到本地用户接收到首个远端数据包的时间间隔 (ms)。
+- 如果本地用户在远端用户加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则该值为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收到首个远端数据包的时间间隔 (ms)。
+
+</Parameter>
+</ParameterList>

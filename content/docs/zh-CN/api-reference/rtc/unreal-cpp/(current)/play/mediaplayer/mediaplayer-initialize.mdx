@@ -1,10 +1,19 @@
 ---
-title: "初始化"
-description: "初始化 API reference."
+title: 初始化
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_mediaplayer_initialize
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_mediaplayer_initialize.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_mediaplayer_initialize"></a>
 
 <a id="api_irtcengine_createmediaplayer"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMediaPlayer
 
@@ -12,7 +21,7 @@ description: "初始化 API reference."
 
 <a id="api_irtcengine_createmediaplayer__prototype"></a>
 
-```cpp
+```text
 virtual agora_refptr <IMediaPlayer> createMediaPlayer() = 0;
 ```
 
@@ -38,13 +47,18 @@ virtual agora_refptr <IMediaPlayer> createMediaPlayer() = 0;
 
 ### 返回值
 
+<a id="api_irtcengine_createmediaplayer__ul_cwj_3ry_hqb"></a>
+
 - 方法调用成功：返回 [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer) 对象。
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediaplayer"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMediaPlayer
 
@@ -52,7 +66,7 @@ virtual agora_refptr <IMediaPlayer> createMediaPlayer() = 0;
 
 <a id="api_irtcengine_destroymediaplayer__prototype"></a>
 
-```cpp
+```text
 virtual int destroyMediaPlayer(agora_refptr<IMediaPlayer> media_player) = 0;
 ```
 
@@ -60,29 +74,39 @@ virtual int destroyMediaPlayer(agora_refptr<IMediaPlayer> media_player) = 0;
 
 ### 参数
 
-#### `media_player`
+<ParameterList>
+<a id="media_player"></a>
+<Parameter name="media_player">
 
 [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediaplayer__return_values"></a>
 
 ### 返回值
 
+<a id="api_irtcengine_destroymediaplayer__ul_iyv_sty_hqb"></a>
+
 - ≥ 0: 方法调用成功，返回媒体播放器 ID
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
 
 <a id="api_getmediaplayercachemanager"></a>
 
+<a id="ariaid-title4"></a>
+
 ## getMediaPlayerCacheManager
 
-获取 IMediaPlayerCacheManager 实例。
+获取 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 <a id="api_getmediaplayercachemanager__prototype"></a>
 
-```cpp
+```text
 AGORA_API agora::rtc::IMediaPlayerCacheManager* AGORA_CALL getMediaPlayerCacheManager();
 ```
 
@@ -109,4 +133,5 @@ AGORA_API agora::rtc::IMediaPlayerCacheManager* AGORA_CALL getMediaPlayerCacheMa
 [IMediaPlayerCacheManager](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayercachemanager) 实例。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaplayer)

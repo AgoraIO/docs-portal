@@ -1,51 +1,84 @@
 ---
-title: "LocalVideoStreamReason"
-description: "本地视频状态改变原因。"
+title: LocalVideoStreamReason
+description: 本地视频状态改变原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/enum_localvideostreamreason
+  sourcePath: html-docs/rtc/HarmonyOS/API/enum_localvideostreamreason.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="enum_localvideostreamreason__parameters"></a>
 
 ## 枚举值
 
-### `OK`
+<ParameterList>
+<a id="ok"></a>
+<Parameter name="OK">
 
 0：本地视频状态正常。
 
-### `FAILURE`
+</Parameter>
+<a id="failure"></a>
+<Parameter name="FAILURE">
 
 1：出错原因不明确。
 
-### `DEVICE_NO_PERMISSION`
+</Parameter>
+<a id="device_no_permission"></a>
+<Parameter name="DEVICE_NO_PERMISSION">
 
 2：没有权限启动本地视频采集设备。请提示用户开启设备权限后再重新加入频道。
 
-##### `弃用：`
+<a id="弃用"></a>
 
+:::error[弃用：]
 该枚举已废弃。请改用 [onPermissionError](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onpermissionerror) 回调中的 CAMERA。
+:::
 
-### `DEVICE_BUSY`
+</Parameter>
+<a id="device_busy"></a>
+<Parameter name="DEVICE_BUSY">
 
 3：本地视频采集设备正在使用中。请提示用户检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
 
-### `CAPTURE_FAILURE`
+</Parameter>
+<a id="capture_failure"></a>
+<Parameter name="CAPTURE_FAILURE">
 
 4：本地视频采集失败。请提示用户检查视频采集设备是否正常工作，检查摄像头是否被其他 App 占用，或者尝试重新加入频道。
 
-### `CODEC_NOT_SUPPORT`
+</Parameter>
+<a id="codec_not_support"></a>
+<Parameter name="CODEC_NOT_SUPPORT">
 
 5：本地视频编码失败。
 
-### `DEVICE_NOT_FOUND`
+</Parameter>
+<a id="device_not_found"></a>
+<Parameter name="DEVICE_NOT_FOUND">
 
 8：找不到本地视频采集设备。需检查摄像头是否与设备正常连接、摄像头是否正常工作，或者尝试重新加入频道。
 
-### `SCREEN_CAPTURE_STOPPED_BY_USER`
+</Parameter>
+<a id="screen_capture_stopped_by_user"></a>
+<Parameter name="SCREEN_CAPTURE_STOPPED_BY_USER">
 
 31：用户已停止屏幕共享。
 
-### `SCREEN_CAPTURE_INTERRUPTED_BY_OTHER`
+</Parameter>
+<a id="screen_capture_interrupted_by_other"></a>
+<Parameter name="SCREEN_CAPTURE_INTERRUPTED_BY_OTHER">
 
 32：屏幕共享进程已被其他屏幕共享进程打断。
 
-### `SCREEN_CAPTURE_STOPPED_BY_CALL`
+</Parameter>
+<a id="screen_capture_stopped_by_call"></a>
+<Parameter name="SCREEN_CAPTURE_STOPPED_BY_CALL">
 
 33：屏幕共享进程被系统来电打断。
+
+</Parameter>
+</ParameterList>

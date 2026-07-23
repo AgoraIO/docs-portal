@@ -1,0 +1,150 @@
+---
+title: agora::rtc::IVideoSinkBase类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_sink_base
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_video_sink_base.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+---
+
+继承自 agora::RefCountInterface.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IVideoSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 类是自定义视频接收端的基类。
+
+## 成员函数说明
+
+<a id="aec09504aff2e94f275431d538ab53c36"></a>
+
+### setProperty()
+
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::IVideoSinkBase::setProperty(const char * *key*, const void * *buf*, int *buf_size*)
+
+</ApiSignature>
+
+设置私有属性。
+
+<ParameterList title="参数">
+<Parameter name="key">
+
+属性名。
+
+</Parameter>
+<Parameter name="buf">
+
+属性缓冲区。
+
+</Parameter>
+<Parameter name="buf_size">
+
+属性缓冲区大小。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 私有属性的实际缓冲区大小： 方法调用成功。
+- -1：方法调用失败。
+
+<a id="a1a7933272cc9af497aa724db5087ceda"></a>
+
+### getProperty()
+
+<ApiSignature labels="inline virtual">
+
+virtual int agora::rtc::IVideoSinkBase::getProperty(const char * *key*, void * *buf*, int *buf_size*)
+
+</ApiSignature>
+
+获取私有属性。
+
+<ParameterList title="参数">
+<Parameter name="key">
+
+属性名。
+
+</Parameter>
+<Parameter name="buf">
+
+属性缓冲区。
+
+</Parameter>
+<Parameter name="buf_size">
+
+属性缓冲区大小。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 私有属性的实际缓冲区大小：方法调用成功。
+- -1：方法调用失败。
+
+<a id="a12a4f7d2fd8bf581f81a56e937c2a322"></a>
+
+### onFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::rtc::IVideoSinkBase::onFrame(const media::base::VideoFrame & *videoFrame*)
+
+</ApiSignature>
+
+在 [`IVideoSinkBase`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-sink-base) 对象收到视频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="videoFrame">
+
+VideoFrame 对象的引用。
+
+</Parameter>
+</ParameterList>
+
+<a id="acf2bb41f83e69489a68ddb6b10bdc56c"></a>
+
+### applyMirror()
+
+<ApiSignature labels="inline virtual">
+
+virtual bool agora::rtc::IVideoSinkBase::applyMirror()
+
+</ApiSignature>
+
+是否将视频帧转为镜像。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- true: 将视频帧转为镜像。
+- false: 不将视频帧转为镜像。
+
+<a id="a4141b805ee0086239b3a5402070c4a54"></a>
+
+### applyRotation()
+
+<ApiSignature labels="inline virtual">
+
+virtual bool agora::rtc::IVideoSinkBase::applyRotation()
+
+</ApiSignature>
+
+是否旋转视频帧。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- true: 旋转视频帧。
+- false: 不旋转视频帧。

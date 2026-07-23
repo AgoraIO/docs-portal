@@ -1,10 +1,18 @@
 ---
-title: "LocalVideoStats"
-description: "本地视频流统计信息。"
+title: LocalVideoStats
+description: 本地视频流统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_localvideostats
+  sourcePath: html-docs/rtc/Flutter/API/class_localvideostats.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_localvideostats__prototype"></a>
 
-```dart
+```text
 class LocalVideoStats {
   const LocalVideoStats(
       {this.uid,
@@ -107,109 +115,158 @@ class LocalVideoStats {
 
 ## 属性
 
-### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 本地用户的 ID。
 
-### `sentBitrate`
+</Parameter>
+<a id="sentbitrate"></a>
+<Parameter name="sentBitrate">
 
 实际发送码率 (Kbps)
 
-:::info[注]
-不包含丢包后重传视频等的发送码率。
+:::note
+注： 不包含丢包后重传视频等的发送码率。
 :::
 
-### `sentFrameRate`
+</Parameter>
+<a id="sentframerate"></a>
+<Parameter name="sentFrameRate">
 
 实际发送帧率 (fps)。
 
-:::info[注]
-不包含丢包后重传视频等的发送帧率。
+:::note
+注： 不包含丢包后重传视频等的发送帧率。
 :::
 
-### `captureFrameRate`
+</Parameter>
+<a id="captureframerate"></a>
+<Parameter name="captureFrameRate">
 
 本地视频采集帧率 (fps)。
 
-### `captureFrameWidth`
+</Parameter>
+<a id="captureframewidth"></a>
+<Parameter name="captureFrameWidth">
 
 本地视频采集宽度 (px)。
 
-### `captureFrameHeight`
+</Parameter>
+<a id="captureframeheight"></a>
+<Parameter name="captureFrameHeight">
 
 本地视频采集高度 (px)。
 
-### `regulatedCaptureFrameRate`
+</Parameter>
+<a id="regulatedcaptureframerate"></a>
+<Parameter name="regulatedCaptureFrameRate">
 
 SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频帧率 (fps)。Regulator 根据视频编码配置对摄像头采集视频的帧率进行调整。
 
-### `regulatedCaptureFrameWidth`
+</Parameter>
+<a id="regulatedcaptureframewidth"></a>
+<Parameter name="regulatedCaptureFrameWidth">
 
 SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频宽度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
 
-### `regulatedCaptureFrameHeight`
+</Parameter>
+<a id="regulatedcaptureframeheight"></a>
+<Parameter name="regulatedCaptureFrameHeight">
 
 SDK 内置的视频采集适配器（regulator）调整后的摄像头采集视频高度 (px)。Regulator 根据视频编码配置对摄像头采集视频的宽高进行调整。
 
-### `encoderOutputFrameRate`
+</Parameter>
+<a id="encoderoutputframerate"></a>
+<Parameter name="encoderOutputFrameRate">
 
 本地视频编码器的输出帧率，单位为 fps。
 
-### `rendererOutputFrameRate`
+</Parameter>
+<a id="rendereroutputframerate"></a>
+<Parameter name="rendererOutputFrameRate">
 
 本地视频渲染器的输出帧率，单位为 fps。
 
-### `targetBitrate`
+</Parameter>
+<a id="targetbitrate"></a>
+<Parameter name="targetBitrate">
 
 当前编码器的目标编码码率 (Kbps)，该码率为 SDK 根据当前网络状况预估的一个值。
 
-### `targetFrameRate`
+</Parameter>
+<a id="targetframerate"></a>
+<Parameter name="targetFrameRate">
 
 当前编码器的目标编码帧率 (fps)。
 
-### `qualityAdaptIndication`
+</Parameter>
+<a id="qualityadaptindication"></a>
+<Parameter name="qualityAdaptIndication">
 
 统计周期内本地视频质量（基于目标帧率和目标码率）的自适应情况。详见 [QualityAdaptIndication](/zh-CN/api-reference/rtc/flutter/enum-qualityadaptindication)。
 
-### `encodedBitrate`
+</Parameter>
+<a id="encodedbitrate"></a>
+<Parameter name="encodedBitrate">
 
 视频编码码率（Kbps）。
 
-:::info[注]
-不包含丢包后重传视频等的编码码率。
+:::note
+注： 不包含丢包后重传视频等的编码码率。
 :::
 
-### `encodedFrameHeight`
+</Parameter>
+<a id="encodedframeheight"></a>
+<Parameter name="encodedFrameHeight">
 
 视频编码高度（px）。
 
-### `encodedFrameWidth`
+</Parameter>
+<a id="encodedframewidth"></a>
+<Parameter name="encodedFrameWidth">
 
 视频编码宽度（px）。
 
-### `encodedFrameCount`
+</Parameter>
+<a id="encodedframecount"></a>
+<Parameter name="encodedFrameCount">
 
 视频发送的帧数，累计值。
 
-### `codecType`
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
 
 视频的编码类型。详见 [VideoCodecType](/zh-CN/api-reference/rtc/flutter/enum-videocodectype)。
 
-### `txPacketLossRate`
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
 
 弱网对抗前本端到声网边缘服务器的视频丢包率 (%)。
 
-### `captureFrameRate`
+</Parameter>
+<a id="captureframerate-1"></a>
+<Parameter name="captureFrameRate">
 
 本地视频采集帧率 (fps)。
 
-### `captureBrightnessLevel`
+</Parameter>
+<a id="capturebrightnesslevel"></a>
+<Parameter name="captureBrightnessLevel">
 
 本地采集的画质亮度级别。详见 [CaptureBrightnessLevelType](/zh-CN/api-reference/rtc/flutter/enum-capturebrightnessleveltype)。
 
-### `hwEncoderAccelerating`
+</Parameter>
+<a id="hwencoderaccelerating"></a>
+<Parameter name="hwEncoderAccelerating">
 
 本地视频编码加速类型。
 
 - 0：采用软件编码，未加速。
 - 1：采用硬件编码进行加速。
+
+</Parameter>
+</ParameterList>

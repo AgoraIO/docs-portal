@@ -1,10 +1,18 @@
 ---
-title: "ChannelMediaOptions"
-description: "频道媒体设置选项。"
+title: ChannelMediaOptions
+description: 频道媒体设置选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_channelmediaoptions
+  sourcePath: html-docs/rtc/RN/API/class_channelmediaoptions.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_channelmediaoptions__prototype"></a>
 
-```typescript
+```text
 export class ChannelMediaOptions {
 
   publishCameraTrack?: boolean;
@@ -83,41 +91,58 @@ export class ChannelMediaOptions {
 
 <a id="class_channelmediaoptions__detailed_desc"></a>
 
-[RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection) `publishMicrophoneTrack` `publishCustomAudioTrack` `publishMediaPlayerAudioTrack` true `publishCameraTrack` `publishScreenCaptureVideo`、 `publishCustomVideoTrack` `publishEncodedVideoTrack` true
+[RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)
+`publishMicrophoneTrack`
+`publishCustomAudioTrack`
+`publishMediaPlayerAudioTrack`
+true
+`publishCameraTrack`
+`publishScreenCaptureVideo`、
+`publishCustomVideoTrack`
+`publishEncodedVideoTrack`
+true
 
-:::info[注]
-建议你根据业务场景自行设置成员参数值，否则 SDK 会自动对成员参数进行赋值。
+:::note
+注： 建议你根据业务场景自行设置成员参数值，否则 SDK 会自动对成员参数进行赋值。
 :::
 
 <a id="class_channelmediaoptions__parameters"></a>
 
 ## 属性
 
-### `publishCameraTrack`
+<ParameterList>
+<a id="publishcameratrack"></a>
+<Parameter name="publishCameraTrack">
 
 设置是否发布摄像头采集的视频：
 
 - true：发布摄像头采集的视频。
 - false：不发布摄像头采集的视频。
 
-### `publishSecondaryCameraTrack`
+</Parameter>
+<a id="publishsecondarycameratrack"></a>
+<Parameter name="publishSecondaryCameraTrack">
 
 设置是否发布第二个摄像头采集的视频：
 
 - true：发布第二个摄像头采集的视频。
 - false：不发布第二个摄像头采集的视频。
 
-### `publishMicrophoneTrack`
+</Parameter>
+<a id="publishmicrophonetrack"></a>
+<Parameter name="publishMicrophoneTrack">
 
 设置是否发布麦克风采集到的音频：
 
 - true：发布麦克风采集到的音频。
 - false：不发布麦克风采集到的音频。
 
-### `publishThirdCameraTrack`
+</Parameter>
+<a id="publishthirdcameratrack"></a>
+<Parameter name="publishThirdCameraTrack">
 
-:::info[注]
-该参数仅适用于 Android 平台。
+:::note
+注： 该参数仅适用于 Android 平台。
 :::
 
 设置是否发布第三个摄像头采集的视频：
@@ -125,10 +150,12 @@ export class ChannelMediaOptions {
 - true：发布第三个摄像头采集的视频。
 - false：不发布第三个摄像头采集的视频。
 
-### `publishFourthCameraTrack`
+</Parameter>
+<a id="publishfourthcameratrack"></a>
+<Parameter name="publishFourthCameraTrack">
 
-:::info[注]
-该参数仅适用于 Android 平台。
+:::note
+注： 该参数仅适用于 Android 平台。
 :::
 
 设置是否发布第四个摄像头采集的视频：
@@ -136,105 +163,135 @@ export class ChannelMediaOptions {
 - true：发布第四个摄像头采集的视频。
 - false：不发布第四个摄像头采集的视频。
 
-### `publishScreenCaptureVideo`
+</Parameter>
+<a id="publishscreencapturevideo"></a>
+<Parameter name="publishScreenCaptureVideo">
 
 设置是否发布屏幕采集的视频：
 
 - true：发布屏幕采集到的视频。
 - false：不发布屏幕采集到的视频。
 
-### `publishScreenCaptureAudio`
+</Parameter>
+<a id="publishscreencaptureaudio"></a>
+<Parameter name="publishScreenCaptureAudio">
 
 设置是否发布屏幕采集的音频：
 
 - true：发布屏幕采集到的音频。
 - false：不发布屏幕采集到的音频。
 
-### `publishSecondaryScreenTrack`
+</Parameter>
+<a id="publishsecondaryscreentrack"></a>
+<Parameter name="publishSecondaryScreenTrack">
 
 设置是否发布第二个屏幕采集的视频：
 
 - true：发布第二个屏幕采集到的视频。
 - false：不发布第二个屏幕采集到的视频。
 
-### `publishTranscodedVideoTrack`
+</Parameter>
+<a id="publishtranscodedvideotrack"></a>
+<Parameter name="publishTranscodedVideoTrack">
 
 设置是否发布本地的转码视频：
 
 - true：发布本地的转码视频。
 - false：不发布本地的转码视频。
 
-### `publishMixedAudioTrack`
+</Parameter>
+<a id="publishmixedaudiotrack"></a>
+<Parameter name="publishMixedAudioTrack">
 
 设置是否发布本地混音音频：
 
 - true：发布本地混音音频。
 - false：不发布本地混音音频。
 
-### `publishLipSyncTrack`
+</Parameter>
+<a id="publishlipsynctrack"></a>
+<Parameter name="publishLipSyncTrack">
 
 设置是否发布语音驱动插件处理后的视频：
 
 - true：发布语音驱动插件处理后的视频。
 - false：（默认）不发布语音驱动插件处理后的视频。
 
-### `publishCustomAudioTrack`
+</Parameter>
+<a id="publishcustomaudiotrack"></a>
+<Parameter name="publishCustomAudioTrack">
 
 设置是否发布自定义采集的音频：
 
 - true：发布自定义采集到的音频。
 - false：不发布自定义采集到的音频。
 
-### `publishCustomAudioTrackId`
+</Parameter>
+<a id="publishcustomaudiotrackid"></a>
+<Parameter name="publishCustomAudioTrackId">
 
 待发布的自定义音频轨道的 ID，默认值为 0。你可以通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/react-native/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法来获取自定义音频轨道 ID。
 
-### `publishCustomVideoTrack`
+</Parameter>
+<a id="publishcustomvideotrack"></a>
+<Parameter name="publishCustomVideoTrack">
 
 设置是否发布自定义采集的视频：
 
 - true：发布自定义采集的视频。
 - false：不发布自定义采集到的视频。
 
-### `publishEncodedVideoTrack`
+</Parameter>
+<a id="publishencodedvideotrack"></a>
+<Parameter name="publishEncodedVideoTrack">
 
 设置是否发布编码后的视频：
 
 - true：发布编码后的视频。
 - false：不发布编码后的视频。
 
-### `publishMediaPlayerAudioTrack`
+</Parameter>
+<a id="publishmediaplayeraudiotrack"></a>
+<Parameter name="publishMediaPlayerAudioTrack">
 
 设置是否发布媒体播放器的音频：
 
 - true：发布媒体播放器的音频。
 - false：不发布媒体播放器的音频。
 
-### `publishMediaPlayerVideoTrack`
+</Parameter>
+<a id="publishmediaplayervideotrack"></a>
+<Parameter name="publishMediaPlayerVideoTrack">
 
 设置是否发布媒体播放器的视频：
 
 - true：发布媒体播放器的视频。
 - false：不发布媒体播放器的视频。
 
-### `autoSubscribeAudio`
+</Parameter>
+<a id="autosubscribeaudio"></a>
+<Parameter name="autoSubscribeAudio">
 
 设置是否自动订阅所有音频流：
 
 - true：自动订阅所有音频流。
 - false：不自动订阅任何音频流。
 
-### `autoSubscribeVideo`
+</Parameter>
+<a id="autosubscribevideo"></a>
+<Parameter name="autoSubscribeVideo">
 
 设置是否自动订阅所有视频流：
 
 - true：自动订阅所有视频流。
 - false：不自动订阅任何视频流。
 
-### `enableAudioRecordingOrPlayout`
+</Parameter>
+<a id="enableaudiorecordingorplayout"></a>
+<Parameter name="enableAudioRecordingOrPlayout">
 
-:::info[注]
-如果那你需要发布麦克风采集的音频流，请确保该参数设为 true。
+:::note
+注： 如果那你需要发布麦克风采集的音频流，请确保该参数设为 true。
 :::
 
 设置是否开启音频录制或播放：
@@ -242,51 +299,74 @@ export class ChannelMediaOptions {
 - true：开启音频录制或播放。
 - false：不开启音频录制或播放。
 
-### `publishMediaPlayerId`
+</Parameter>
+<a id="publishmediaplayerid"></a>
+<Parameter name="publishMediaPlayerId">
 
 待发布的媒体播放器的 ID。默认值为 0。
 
-### `clientRoleType`
+</Parameter>
+<a id="clientroletype"></a>
+<Parameter name="clientRoleType">
 
 用户角色。详见 [ClientRoleType](/zh-CN/api-reference/rtc/react-native/enum-clientroletype)。
 
-### `audienceLatencyLevel`
+</Parameter>
+<a id="audiencelatencylevel"></a>
+<Parameter name="audienceLatencyLevel">
 
 观众端延时级别。详见 [AudienceLatencyLevelType](/zh-CN/api-reference/rtc/react-native/enum-audiencelatencyleveltype)。
 
-### `defaultVideoStreamType`
+</Parameter>
+<a id="defaultvideostreamtype"></a>
+<Parameter name="defaultVideoStreamType">
 
 默认订阅的视频流类型: [VideoStreamType](/zh-CN/api-reference/rtc/react-native/enum-videostreamtype)。
 
-### `channelProfile`
+</Parameter>
+<a id="channelprofile"></a>
+<Parameter name="channelProfile">
 
 频道使用场景。详见 [ChannelProfileType](/zh-CN/api-reference/rtc/react-native/enum-channelprofiletype)。
 
-### `audioDelayMs`
+</Parameter>
+<a id="audiodelayms"></a>
+<Parameter name="audioDelayMs">
 
-发送音频帧的延时（毫秒）。你可以通过该参数来设置需要发送的音频帧的延时，以确保音画同步。 如果要关闭延时，将此参数值设置为 0。
+发送音频帧的延时（毫秒）。你可以通过该参数来设置需要发送的音频帧的延时，以确保音画同步。
+如果要关闭延时，将此参数值设置为 0。
 
-### `token`
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
 
-（可选）在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/rn/basic-features/token-authentication)。
+（可选）在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
-:::info[注]
-- 该参数仅在调用 updateChannelMediaOptions 或 updateChannelMediaOptionsEx 时生效。
-- 请确保用于生成 token 的 App ID、频道名和用户名和 initialize 方法初始化引擎时用的 App ID，以及 joinChannel 或 joinChannelEx 方法加入频道时设置的频道名和用户名是一致的。
+:::note
+注：
+
+- 该参数仅在调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_updatechannelmediaoptions) 或 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_updatechannelmediaoptionsex) 时生效。
+- 请确保用于生成 token 的 App ID、频道名和用户名和 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 方法初始化引擎时用的 App ID，以及 [joinChannel](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengine_joinchannel2) 或 [joinChannelEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex) 方法加入频道时设置的频道名和用户名是一致的。
 :::
 
-### `publishRhythmPlayerTrack`
+</Parameter>
+<a id="publishrhythmplayertrack"></a>
+<Parameter name="publishRhythmPlayerTrack">
 
 设置是否发布虚拟节拍器声音至远端：
 
 - true：发布。本地用户和远端用户都能听到节拍器。
 - false：不发布。只有本地用户能听到节拍器。
 
-### `isInteractiveAudience`
+</Parameter>
+<a id="isinteractiveaudience"></a>
+<Parameter name="isInteractiveAudience">
 
-:::info[注]
-- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 joinChannelEx 方法，以观众身份加入对方的直播间，并将 isInteractiveAudience 设置为 true。
-- 仅当用户角色为 ClientRoleAudience 时，该参数生效。
+:::note
+注：
+
+- 该参数用于实现跨直播间连麦场景。连麦主播需要调用 [joinChannelEx](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex) 方法，以观众身份加入对方的直播间，并将 `isInteractiveAudience` 设置为 true。
+- 仅当用户角色为 `ClientRoleAudience` 时，该参数生效。
 :::
 
 是否开启互动观众模式：
@@ -294,14 +374,18 @@ export class ChannelMediaOptions {
 - true：开启互动观众模式。成功开启后，本地用户作为互动观众，收到低延时和流畅的远端用户视频。
 - false：不开启互动观众模式。本地用户作为普通观众，收到默认设置的远端用户视频。
 
-### `customVideoTrackId`
+</Parameter>
+<a id="customvideotrackid"></a>
+<Parameter name="customVideoTrackId">
 
 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/react-native/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。默认值为 0。
 
-### `isAudioFilterable`
+</Parameter>
+<a id="isaudiofilterable"></a>
+<Parameter name="isAudioFilterable">
 
-:::info[注]
-如需启用该功能，请[联系销售](https://www.shengwang.cn/contact-sales/)。
+:::note
+注： 如需启用该功能，请[联系销售](https://www.shengwang.cn/contact-sales/)。
 :::
 
 设置是否让当前音频流根据音强算法参与选流。
@@ -309,10 +393,12 @@ export class ChannelMediaOptions {
 - true：参与音强选流。如未开启音强选流功能，该参数不会生效。
 - false：不参与音强选流。
 
-### `enableMultipath`
+</Parameter>
+<a id="enablemultipath"></a>
+<Parameter name="enableMultipath">
 
-:::info[注]
-权限和系统要求：
+:::note
+注： 权限和系统要求：
 
 - Android：Android 7.0 或更高版本（API 级别 24 或更高），需要 ACCESS_NETWORK_STATE 和 CHANGE_NETWORK_STATE 权限。
 - iOS：iOS 12.0 或更高版本。
@@ -325,10 +411,15 @@ export class ChannelMediaOptions {
 - true：启用多路径传输。
 - false：禁用多路径传输。
 
-### `preferMultipathType`
+</Parameter>
+<a id="prefermultipathtype"></a>
+<Parameter name="preferMultipathType">
 
 首选的传输路径类型。详见 [MultipathType](/zh-CN/api-reference/rtc/react-native/enum-multipathtype)。
 
-:::info[注]
-使用该参数时，请确保已将 `enableMultipath` 设置为 true。
+:::note
+注： 使用该参数时，请确保已将 `enableMultipath` 设置为 true。
 :::
+
+</Parameter>
+</ParameterList>

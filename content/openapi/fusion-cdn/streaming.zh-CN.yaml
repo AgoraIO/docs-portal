@@ -1651,7 +1651,7 @@ paths:
                   description: 是否开启回源鉴权。
                 url:
                   type: string
-                  description: 回源鉴权服务器的地址。声网向你的回源鉴权服务器发送请求的格式详见[回源与转推回调格式](/zh-CN/realtime-media/fusion-cdn/reference/api-reference#回源鉴权回调格式)。
+                  description: 回源鉴权服务器的地址。声网向你的回源鉴权服务器发送请求的格式详见[回源与转推回调格式](/zh-CN/api-reference/fusion-cdn/restful/api/reference#回源鉴权回调格式)。
                 secret:
                   type: string
                   description: 回源鉴权密钥。使用回源鉴权密钥生成签名的流程与消息通知服务一致，详见[验证签名](/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs)。
@@ -2209,7 +2209,7 @@ paths:
                     - `false`：（默认）关闭直播转推。'
                 callbackUrl:
                   type: string
-                  description: 你的回调 URL。启用直播转推后，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](/zh-CN/realtime-media/fusion-cdn/reference/api-reference#直播转推回调格式)。
+                  description: 你的回调 URL。启用直播转推后，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](/zh-CN/api-reference/fusion-cdn/restful/api/reference#直播转推回调格式)。
               x-examples:
                 Example 1:
                   enabled: true
@@ -2263,7 +2263,7 @@ paths:
                       - `false`：未启用直播转推。'
                   callbackUrl:
                     type: string
-                    description: 你的回调 URL。如果设置了该字段，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](/zh-CN/realtime-media/fusion-cdn/reference/api-reference#直播转推回调格式)。
+                    description: 你的回调 URL。如果设置了该字段，声网会向这个回调 URL 发送请求，获取推流的目标地址。详见[直播转推回调格式](/zh-CN/api-reference/fusion-cdn/restful/api/reference#直播转推回调格式)。
               examples:
                 响应 body:
                   value:
@@ -2879,12 +2879,12 @@ components:
 
             - `8`：[百度智能云](https://cloud.baidu.com/product/bos.html)
 
-            该参数对 `region` 的设置有限制作用。详见[第三方云存储地区说明](/zh-CN/realtime-media/fusion-cdn/reference/api-reference)。'
+            该参数对 `region` 的设置有限制作用。详见[第三方云存储地区说明](/zh-CN/api-reference/fusion-cdn/restful/api/reference)。'
         region:
           type: number
           description: '第三方云存储指定的地区信息。为了确保录制文件上传的成功率和实时性，第三方云存储的 `region` 与你发起请求的应用服务器必须在同一个区域中。例如：你发起请求的应用服务器在中国大陆地区，则第三方云存储需要设置为中国大陆区域内。
 
-            该参数受 `vendor` 参数设置的限制。详见[第三方云存储地区说明](/zh-CN/realtime-media/fusion-cdn/reference/api-reference)。'
+            该参数受 `vendor` 参数设置的限制。详见[第三方云存储地区说明](/zh-CN/api-reference/fusion-cdn/restful/api/reference)。'
         bucket:
           type: string
           description: 第三方云存储的 bucket，bucket 名称需要符合对应第三方云存储服务的命名规则。

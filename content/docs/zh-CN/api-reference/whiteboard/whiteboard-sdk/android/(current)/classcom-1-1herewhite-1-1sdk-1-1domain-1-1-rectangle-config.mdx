@@ -1,0 +1,366 @@
+---
+title: com.herewhite.sdk.domain.RectangleConfig类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_rectangle_config
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_rectangle_config.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_rectangle_config.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.domain.RectangleConfig类 参考 图示".
+---
+
+类 com.herewhite.sdk.domain.RectangleConfig 继承关系图:
+
+![com.herewhite.sdk.domain.RectangleConfig类 参考 图示](/img/api-center-generated/a935b724396f-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_rectangle_config.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) 类，用于配置白板的视觉矩形。
+
+:::info[自从]
+2.2.0
+:::
+
+视觉矩形是用户的视角必须容纳的区域。设置好视觉矩形后，SDK 会自动将视角会调整到刚好可以完整展示视觉矩形所表示的范围。
+
+你可以根据要展示的 PPT 幻灯片或图像的尺寸设置视觉矩形，以确保相同的内容在不同尺寸的屏幕上都可以完整显示。
+
+## 构造及析构函数说明
+
+<a id="a00abec6b2a88cc17382d0d3bbef282ea"></a>
+
+### RectangleConfig() [1/4]
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.RectangleConfig.RectangleConfig(Double *width*, Double *height*, [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) *mode*)
+
+</ApiSignature>
+
+[`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) 构造函数。
+
+在该函数中，你需要传入 `width`，`height` 和 `mode`。SDK 会根据你传入 `width` 和 `height` 计算视觉矩形左上角原点 在世界坐标系中的位置 `originX` 和 `originY`, 即 `originX = - width / 2.0d`，`originY = - height / 2.0d`。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+<ParameterList title="参数">
+<Parameter name="width">
+
+白板视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+白板视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="mode">
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a7c5540be82cfdeb3659fc655038181fa"></a>
+
+### RectangleConfig() [2/4]
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.RectangleConfig.RectangleConfig(Double *width*, Double *height*)
+
+</ApiSignature>
+
+[`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) 构造函数。
+
+在该函数中，你需要传入 `width` 和 `height`。SDK 会根据你传入 `width` 和 `height` 计算视觉矩形左上角原点 在世界坐标系中的位置 `originX` 和 `originY`, 即 `originX = - width / 2.0d`，`originY = - height / 2.0d`。
+
+该方法不支持设置动画模式，SDK 会默认将动画模式设置为 `Continuous`，即连续动画的模式。
+
+该方法适用于需要快速显示完整 PPT 内容的场景。
+
+<ParameterList title="参数">
+<Parameter name="width">
+
+视觉矩形宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+</ParameterList>
+
+<a id="a33e338dd76fcf5bfd8ad793a372d5766"></a>
+
+### RectangleConfig() [3/4]
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.RectangleConfig.RectangleConfig(Double *originX*, Double *originY*, Double *width*, Double *height*)
+
+</ApiSignature>
+
+[`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) 构造函数。
+
+在该函数中，你需要传入 `originX`、`originY`、`width` 和 `height`。SDK 会根据你传入的 `originX`、`originY`、`width` 和 `height` 确定视觉矩形在世界坐标系（即世界坐标系）中的位置和大小。
+
+该方法不支持设置动画模式，而是使用默认的连续动画 `Continuous` 模式。
+
+<ParameterList title="参数">
+<Parameter name="originX">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="width">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+</ParameterList>
+
+<a id="a9bdd60e088b51ab7a18adc66886b586e"></a>
+
+### RectangleConfig() [4/4]
+
+<ApiSignature>
+
+com.herewhite.sdk.domain.RectangleConfig.RectangleConfig(Double *originX*, Double *originY*, Double *width*, Double *height*, [AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) *mode*)
+
+</ApiSignature>
+
+[`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) 构造函数。
+
+在该函数中，你需要传入 `originX`、`originY`、`width`、`height` 和 `mode`。 SDK 会根据你传入的 `originX`、`originY`、`width`、`height` 和 `mode` 确定视觉矩形在世界坐标系（即世界坐标系）中的位置、大小和动画模式。
+
+<ParameterList title="参数">
+<Parameter name="originX">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="originY">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="width">
+
+视觉矩形的宽度。视觉矩形的宽度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="height">
+
+视觉矩形的高度。视觉矩形的高度不能小于实际展示内容的宽度，否则用户将看不见超出的部分。
+
+</Parameter>
+<Parameter name="mode">
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
+
+## 成员函数说明
+
+<a id="ad19772962b549055388361932d03b7ad"></a>
+
+### getOriginX()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.RectangleConfig.getOriginX()
+
+</ApiSignature>
+
+获取视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<a id="ae6701f37fe7bb14f02bb207eafa66c4d"></a>
+
+### setOriginX()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.RectangleConfig.setOriginX(Double *originX*)
+
+</ApiSignature>
+
+设置视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<ParameterList title="参数">
+<Parameter name="originX">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae92c2a2088b4839673e807bf08ef4ef6"></a>
+
+### getOriginY()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.RectangleConfig.getOriginY()
+
+</ApiSignature>
+
+获取视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<a id="ac21e75a67dd3a36f2c741686b07d5502"></a>
+
+### setOriginY()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.RectangleConfig.setOriginY(Double *originY*)
+
+</ApiSignature>
+
+设置视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<ParameterList title="参数">
+<Parameter name="originY">
+
+视觉矩形左上角原点在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+</Parameter>
+</ParameterList>
+
+<a id="a99dff390e92b94d1f88dba08ca04e4a7"></a>
+
+### getWidth()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.RectangleConfig.getWidth()
+
+</ApiSignature>
+
+获取视觉矩形的宽度。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+视觉矩形的宽度。
+
+<a id="a179635e6f558dc89107344b5c89dafe1"></a>
+
+### setWidth()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.RectangleConfig.setWidth(Double *width*)
+
+</ApiSignature>
+
+设置视觉矩形的宽度。
+
+<ParameterList title="参数">
+<Parameter name="width">
+
+视觉矩形的宽度。
+
+</Parameter>
+</ParameterList>
+
+<a id="a38edf7afae5e8cec8cc7e4c1ae93f957"></a>
+
+### getHeight()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.RectangleConfig.getHeight()
+
+</ApiSignature>
+
+获取视觉矩形的高度。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+视觉矩形的高度。
+
+<a id="a44a309679d4f0edce5d9e9abc9a500f5"></a>
+
+### setHeight()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.RectangleConfig.setHeight(Double *height*)
+
+</ApiSignature>
+
+设置视觉矩形的高度。
+
+<ParameterList title="参数">
+<Parameter name="height">
+
+视觉矩形的高度。
+
+</Parameter>
+</ParameterList>
+
+<a id="a864ee572d2fe0c42a090f5d63748998d"></a>
+
+### getAnimationMode()
+
+<ApiSignature>
+
+[AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) com.herewhite.sdk.domain.RectangleConfig.getAnimationMode()
+
+</ApiSignature>
+
+获取视觉矩形的动画模式。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+<a id="ad088be5a85d563e287938467a86aae20"></a>
+
+### setAnimationMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.RectangleConfig.setAnimationMode([AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) *animationMode*)
+
+</ApiSignature>
+
+设置视觉矩形的动画模式。
+
+<ParameterList title="参数">
+<Parameter name="animationMode">
+
+视觉矩形的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>

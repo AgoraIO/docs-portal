@@ -1,10 +1,19 @@
 ---
-title: "视频渲染"
-description: "视频渲染 API reference."
+title: 视频渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_video_rendering
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_video_rendering.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_video_rendering"></a>
 
 <a id="api_irtcengine_setlocalrendermode2"></a>
+
+<a id="ariaid-title2"></a>
 
 ## setLocalRenderMode
 
@@ -12,7 +21,7 @@ description: "视频渲染 API reference."
 
 <a id="api_irtcengine_setlocalrendermode2__prototype"></a>
 
-```arkts
+```text
 public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): number;
 ```
 
@@ -37,36 +46,50 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 
 ### 参数
 
-#### `renderMode`
+<ParameterList>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
 
 本地视图显示模式。
+
+<a id="api_irtcengine_setlocalrendermode2__rendermodetype"></a>
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-#### `mirrorMode`
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
 
 本地视图的镜像模式。
+
+<a id="api_irtcengine_setlocalrendermode2__videomirrormodetype"></a>
 
 - VIDEO_MIRROR_MODE_AUTO (0)：SDK 决定镜像模式。如果你使用前置摄像头，默认启动本地视图镜像模式；如果你启用后置摄像头，默认关闭本地视图镜像模式。
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
 
-:::warning[注意]
-如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+:::caution
+注意： 如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
 :::
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setlocalrendermode2__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setremoterendermode2"></a>
+
+<a id="ariaid-title3"></a>
 
 ## setRemoteRenderMode
 
@@ -74,7 +97,7 @@ public abstract setLocalRenderMode(renderMode: number, mirrorMode: number): numb
 
 <a id="api_irtcengine_setremoterendermode2__prototype"></a>
 
-```arkts
+```text
 public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode: number): number;
 ```
 
@@ -84,8 +107,10 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::warning[注意]
-- 请在调用 setupRemoteVideo 方法初始化远端视图后，调用该方法。
+:::caution
+注意：
+
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -93,18 +118,24 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `renderMode`
+</Parameter>
+<a id="rendermode-1"></a>
+<Parameter name="renderMode">
 
 远端用户视图的渲染模式。
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-#### `mirrorMode`
+</Parameter>
+<a id="mirrormode-1"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式。
 
@@ -112,17 +143,23 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_setremoterendermode2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setremoterendermodeex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## setRemoteRenderModeEx
 
@@ -130,7 +167,7 @@ public abstract setRemoteRenderMode(uid: number, renderMode: number, mirrorMode:
 
 <a id="api_irtcengineex_setremoterendermodeex__prototype"></a>
 
-```arkts
+```text
 public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:number,connection:RtcConnection):number;
 ```
 
@@ -140,8 +177,14 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 
 初始化远端用户视图后，你可以调用该方法更新远端用户视图在本地显示时的渲染和镜像模式。该方法只影响本地用户看到的视频画面。
 
-:::warning[注意]
-- 请在调用 setupRemoteVideo 方法初始化远端视图后，调用该方法。
+<a id="api_irtcengineex_setremoterendermodeex__note_dpq_mtr_mqb"></a>
+
+:::caution
+注意：
+
+<a id="api_irtcengineex_setremoterendermodeex__ul_ft3_ntr_mqb"></a>
+
+- 请在调用 [setupRemoteVideo](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setupremotevideo) 方法初始化远端视图后，调用该方法。
 - 你可以在通话中多次调用该方法，多次更新远端用户视图的显示模式。
 :::
 
@@ -149,18 +192,24 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `renderMode`
+</Parameter>
+<a id="rendermode-2"></a>
+<Parameter name="renderMode">
 
 远端视图显示模式：
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
-#### `mirrorMode`
+</Parameter>
+<a id="mirrormode-2"></a>
+<Parameter name="mirrorMode">
 
 远端用户视图的镜像模式：
 
@@ -168,17 +217,24 @@ public abstract setRemoteRenderModeEx(uid:number,renderMode:number,mirrorMode:nu
 - VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
 - VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setremoterendermodeex__return_values"></a>
 
 ### 返回值
 
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediaplayer_setrendermode"></a>
+
+<a id="ariaid-title5"></a>
 
 ## setRenderMode
 
@@ -186,7 +242,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="api_imediaplayer_setrendermode__prototype"></a>
 
-```arkts
+```text
 public abstract setRenderMode(mode:number):number;
 ```
 
@@ -194,24 +250,32 @@ public abstract setRenderMode(mode:number):number;
 
 ### 参数
 
-#### `mode`
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
 
 播放器视图的渲染模式：
 
 - RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
 - RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_imediaplayer_setrendermode__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [IMediaPlayer](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayer)
 
 <a id="api_irtcengine_setuplocalvideo"></a>
+
+<a id="ariaid-title6"></a>
 
 ## setupLocalVideo
 
@@ -219,7 +283,7 @@ public abstract setRenderMode(mode:number):number;
 
 <a id="api_irtcengine_setuplocalvideo__prototype"></a>
 
-```arkts
+```text
 public abstract setupLocalVideo(canvas: VideoCanvas): number;
 ```
 
@@ -229,8 +293,10 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 退出频道后绑定仍然有效。如果需要停止渲染或解除绑定，可以调用该方法将参数 view 设为 NULL，以停止渲染并清理渲染缓存。
 
-:::warning[注意]
-- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 setLocalRenderMode 方法。
+:::caution
+注意：
+
+- 如果你希望在通话中仅更新本地用户视图的渲染或镜像模式，请使用 [setLocalRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setlocalrendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setuplocalvideo__scenario"></a>
@@ -257,21 +323,29 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 ### 参数
 
-#### `canvas`
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
 
 本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setuplocalvideo__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setupremotevideo"></a>
+
+<a id="ariaid-title7"></a>
 
 ## setupRemoteVideo
 
@@ -279,7 +353,7 @@ public abstract setupLocalVideo(canvas: VideoCanvas): number;
 
 <a id="api_irtcengine_setupremotevideo__prototype"></a>
 
-```arkts
+```text
 public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 ```
 
@@ -295,29 +369,39 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::warning[注意]
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 setRemoteRenderMode 方法。
+:::caution
+注意：
+
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderMode](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengine_setremoterendermode2) 方法。
 :::
 
 <a id="api_irtcengine_setupremotevideo__parameters"></a>
 
 ### 参数
 
-#### `canvas`
+<ParameterList>
+<a id="canvas-1"></a>
+<Parameter name="canvas">
 
 远端视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setupremotevideo__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_setupremotevideoex"></a>
+
+<a id="ariaid-title8"></a>
 
 ## setupRemoteVideoEx
 
@@ -325,7 +409,7 @@ public abstract setupRemoteVideo(canvas: VideoCanvas): number;
 
 <a id="api_irtcengineex_setupremotevideoex__prototype"></a>
 
-```arkts
+```text
 public abstract setupRemoteVideoEx(remote:VideoCanvas, connection:RtcConnection) : number;
 ```
 
@@ -343,28 +427,38 @@ public abstract setupRemoteVideoEx(remote:VideoCanvas, connection:RtcConnection)
 
 离开频道后，SDK 会清除远端用户视图的绑定关系。
 
-:::warning[注意]
-- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 setRemoteRenderModeEx 方法。
+:::caution
+注意：
+
+- 如果你希望在通话中更新远端用户视图的渲染或镜像模式，请使用 [setRemoteRenderModeEx](/zh-CN/api-reference/rtc/harmonyos/video/video-rendering#api_irtcengineex_setremoterendermodeex) 方法。
 :::
 
 <a id="api_irtcengineex_setupremotevideoex__parameters"></a>
 
 ### 参数
 
-#### `canvas`
+<ParameterList>
+<a id="canvas-2"></a>
+<Parameter name="canvas">
 
 视频画布信息。详见 [VideoCanvas](/zh-CN/api-reference/rtc/harmonyos/class-videocanvas)。
 
-#### `connection`
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_setupremotevideoex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)

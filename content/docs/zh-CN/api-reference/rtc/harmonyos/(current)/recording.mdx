@@ -1,10 +1,19 @@
 ---
-title: "音视频录制"
-description: "音视频录制 API reference."
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_recording
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_recording.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_recording"></a>
 
 <a id="api_irtcengine_createmediarecorder"></a>
+
+<a id="ariaid-title2"></a>
 
 ## createMediaRecorder
 
@@ -12,7 +21,7 @@ description: "音视频录制 API reference."
 
 <a id="api_irtcengine_createmediarecorder__prototype"></a>
 
-```arkts
+```text
 public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorder;
 ```
 
@@ -28,9 +37,14 @@ public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorde
 
 ### 参数
 
-#### `info`
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
 
 需要录制的音视频流相关信息，详见 [RecorderStreamInfo](/zh-CN/api-reference/rtc/harmonyos/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createmediarecorder__return_values"></a>
 
@@ -40,9 +54,12 @@ public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorde
 - 方法调用失败：返回空指针。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_destroymediarecorder"></a>
+
+<a id="ariaid-title3"></a>
 
 ## destroyMediaRecorder
 
@@ -50,7 +67,7 @@ public abstract createMediaRecorder(info: RecorderStreamInfo): AgoraMediaRecorde
 
 <a id="api_irtcengine_destroymediarecorder__prototype"></a>
 
-```arkts
+```text
 public abstract destroyMediaRecorder(recorder: AgoraMediaRecorder): void;
 ```
 
@@ -64,26 +81,33 @@ public abstract destroyMediaRecorder(recorder: AgoraMediaRecorder): void;
 
 ### 参数
 
-#### `recorder`
+<ParameterList>
+<a id="recorder"></a>
+<Parameter name="recorder">
 
 待销毁的 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_destroymediarecorder__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_imediarecorder_setmediarecorderobserver"></a>
 
+<a id="ariaid-title4"></a>
+
 ## setMediaRecorderObserver
 
-注册 IMediaRecorderCallback 观测器。
+注册 [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver) 观测器。
 
 <a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
 
-```arkts
+```text
 public abstract setMediaRecorderObserver(callback: IMediaRecorderCallback | null): number;
 ```
 
@@ -95,28 +119,36 @@ public abstract setMediaRecorderObserver(callback: IMediaRecorderCallback | null
 
 调用该方法前请确保：
 
-- 已创建并初始化 RtcEngine 对象。
-- 已通过 createMediaRecorder 创建音视频录制对象。
+- 已创建并初始化 [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
 
 <a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
 
 ### 参数
 
-#### `callback`
+<ParameterList>
+<a id="callback"></a>
+<Parameter name="callback">
 
 音视频流录制回调，详见 [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_startaudiorecording"></a>
+
+<a id="ariaid-title5"></a>
 
 ## startAudioRecording
 
@@ -124,7 +156,7 @@ public abstract setMediaRecorderObserver(callback: IMediaRecorderCallback | null
 
 <a id="api_irtcengine_startaudiorecording__prototype"></a>
 
-```arkts
+```text
 public abstract startAudioRecording(filePath: string, quality: Constants.AudioRecordingQualityType): number;;
 ```
 
@@ -132,14 +164,14 @@ public abstract startAudioRecording(filePath: string, quality: Constants.AudioRe
 
 ### 详情
 
-:::warning[注意]
-调用该方法时，默认的录音采样率为 32 kHz，不可修改。
+:::caution
+注意： 调用该方法时，默认的录音采样率为 32 kHz，不可修改。
 :::
 
 SDK 支持通话过程中在客户端进行录音。该方法录制频道内所有用户的音频，并生成一个包含所有用户声音的录音文件，录音文件仅支持下列格式：
 
-- .wav: 文件大，音质保真度高；
-- .aac: 文件小，有一定的音质保真度损失。
+- `.wav`: 文件大，音质保真度高；
+- `.aac`: 文件小，有一定的音质保真度损失。
 
 请确保 App 里指定的目录存在且可写。该接口需在 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 之后调用。如果调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 时还在录音，录音会自动停止。
 
@@ -147,26 +179,39 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 ### 参数
 
-#### `filePath`
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
 
-录音文件在本地保存的绝对路径，需精确到文件名及格式。例如： `/sdcard/emulated/0/audio.aac`。
+录音文件在本地保存的绝对路径，需精确到文件名及格式。例如：`/sdcard/emulated/0/audio.aac`。
 
-:::warning[注意]
+<a id="api_irtcengine_startaudiorecording__note_scm_klz_mqb"></a>
+
+:::caution
+注意：
+
 请确保你指定的路径存在并且可写。
 :::
 
-#### `quality`
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
-录音质量。 详见 [AudioRecordingQuality](/zh-CN/api-reference/rtc/harmonyos/enum-audiorecordingqualitytype)。
+录音质量。详见 [AudioRecordingQuality](/zh-CN/api-reference/rtc/harmonyos/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title6"></a>
 
 ## startAudioRecordingWithConfiguration
 
@@ -174,7 +219,7 @@ SDK 支持通话过程中在客户端进行录音。该方法录制频道内所�
 
 <a id="api_irtcengine_startaudiorecording3__prototype"></a>
 
-```arkts
+```text
 public abstract startAudioRecordingWithConfiguration(config: AudioRecordingConfiguration): number;
 ```
 
@@ -203,21 +248,29 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
 
 录音配置。详见 [AudioRecordingConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_startaudiorecording3__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_startrecording"></a>
+
+<a id="ariaid-title7"></a>
 
 ## startRecording
 
@@ -225,7 +278,7 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 <a id="api_imediarecorder_startrecording__prototype"></a>
 
-```arkts
+```text
 public abstract startRecording(config: MediaRecorderConfiguration): number;
 ```
 
@@ -237,8 +290,8 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
 
 在开始录制前请确保：
 
-- 已通过 createMediaRecorder 创建音视频录制对象。
-- 已调用 setMediaRecorderObserver 注册录制对象观测器来监听录制的相关回调。
+- 已通过 [createMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/recording#api_irtcengine_createmediarecorder) 创建音视频录制对象。
+- 已调用 [setMediaRecorderObserver](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_setmediarecorderobserver) 注册录制对象观测器来监听录制的相关回调。
 - 已加入频道。
 
 该方法支持录制如下数据：
@@ -248,9 +301,11 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
 
 开启音视频流录制后，当视频分辨率在录制过程中发生变化时，SDK 会停止录制；当音频采样率和声道数发生变化时，SDK 会持续录制并生成单个 MP4 录制文件。
 
-仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 onRecorderStateChanged (`RECORDER_STATE_ERROR, RECORDER_ERROR_NO_STREAM`) 回调。
+仅当检测到可录制的音视频流时，才能成功生成录制文件；如果没有可录制的音视频流，或在录制过程中的音视频流中断超过 5 秒后，SDK 会停止录制，并触发 onRecorderStateChanged(`RECORDER_STATE_ERROR, RECORDER_ERROR_NO_STREAM`) 回调。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 如果你需要录制的是本地的音视频流，请在开始录制前确保本地用户的角色设为主播。
 - 如果你需要录制的是远端用户的音视频流，请在开始录制前确保已经订阅了该用户的音视频流。
 :::
@@ -259,27 +314,37 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
 
 ### 参数
 
-#### `config`
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
 
 音视频流录制配置。详见 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_imediarecorder_startrecording__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数无效。请确保：
+
     - 指定的录制文件保存路径正确且可写。
     - 指定的录制文件格式正确。
     - 设置的最大录制时长正确。
-  - -4: RtcEngine 当前状态不支持该操作。可能因为录制正在进行中或录制出错停止。
-  - -7: RtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 AgoraMediaRecorder 对象。
+  - -4: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 当前状态不支持该操作。可能因为录制正在进行中或录制出错停止。
+  - -7: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
 
 <a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title8"></a>
 
 ## stopAudioRecording
 
@@ -287,7 +352,7 @@ public abstract startRecording(config: MediaRecorderConfiguration): number;
 
 <a id="api_irtcengine_stopaudiorecording__prototype"></a>
 
-```arkts
+```text
 public abstract stopAudioRecording(): number;;
 ```
 
@@ -298,12 +363,15 @@ public abstract stopAudioRecording(): number;;
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
 
 <a id="api_imediarecorder_stoprecording"></a>
+
+<a id="ariaid-title9"></a>
 
 ## stopRecording
 
@@ -311,7 +379,7 @@ public abstract stopAudioRecording(): number;;
 
 <a id="api_imediarecorder_stoprecording__prototype"></a>
 
-```arkts
+```text
 public abstract stopRecording(): number;
 ```
 
@@ -319,8 +387,8 @@ public abstract stopRecording(): number;
 
 ### 详情
 
-:::warning[注意]
-调用 [startRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
+:::caution
+注意： 调用 [startRecording](/zh-CN/api-reference/rtc/harmonyos/recording#api_imediarecorder_startrecording) 后，如果要停止录制，请调用该方法停止录制；否则，生成的录制文件可能无法正常播放。
 :::
 
 <a id="api_imediarecorder_stoprecording__return_values"></a>
@@ -329,12 +397,16 @@ public abstract stopRecording(): number;
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败：
-  - -7: RtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 AgoraMediaRecorder 对象。
+
+  - -7: [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 尚未初始化就调用方法。请确认在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder) 对象。
 
 ### 所属接口类
+
 - [AgoraMediaRecorder](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorder)
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+<a id="ariaid-title10"></a>
 
 ## onRecorderInfoUpdated
 
@@ -342,11 +414,13 @@ public abstract stopRecording(): number;
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
 
-```arkts
+```text
 onRecorderInfoUpdated(channelId: string, uid: number, info: RecorderInfo): void;
 ```
 
 <a id="callback_imediarecorderobserver_onrecorderinfoupdated__detailed_desc"></a>
+
+### 详情
 
 成功注册该回调并开启音视频流录制后，SDK 会根据你在 [MediaRecorderConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-mediarecorderconfiguration) 中设置的 recorderInfoUpdateInterval 的值周期性触发该回调，报告当前录制文件的文件名、时长和大小。
 
@@ -354,22 +428,34 @@ onRecorderInfoUpdated(channelId: string, uid: number, info: RecorderInfo): void;
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `info`
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
 
 录制文件信息。详见 [RecorderInfo](/zh-CN/api-reference/rtc/harmonyos/class-recorderinfo)。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+<a id="ariaid-title11"></a>
 
 ## onRecorderStateChanged
 
@@ -377,11 +463,13 @@ onRecorderInfoUpdated(channelId: string, uid: number, info: RecorderInfo): void;
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
 
-```arkts
+```text
 onRecorderStateChanged(channelId: string, uid: number, state: number, reason: number): void;
 ```
 
 <a id="callback_imediarecorderobserver_onrecorderstatechanged__detailed_desc"></a>
+
+### 详情
 
 音视频流录制状态发生改变时，SDK 会触发该回调，报告当前的录制状态和引起录制状态改变的原因。
 
@@ -389,31 +477,43 @@ onRecorderStateChanged(channelId: string, uid: number, state: number, reason: nu
 
 ### 参数
 
-#### `channelId`
+<ParameterList>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
 
 频道名称。
 
-#### `uid`
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 用户 ID。
 
-#### `state`
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
 
 当前的录制状态：
 
-- RECORDER_STATE_ERROR （-1）：音视频流录制出错。
-- RECORDER_STATE_START （2）：音视频流录制开始。
-- RECORDER_STATE_STOP （3）：音视频流录制停止。
+- RECORDER_STATE_ERROR（-1）：音视频流录制出错。
+- RECORDER_STATE_START（2）：音视频流录制开始。
+- RECORDER_STATE_STOP（3）：音视频流录制停止。
 
-#### `error`
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 录制状态出错的原因：
 
-- RECORDER_REASON_NONE （0）：一切正常。
-- RECORDER_ERROR_WRITE_FAILED （1）：录制文件写入失败。
-- RECORDER_ERROR_NO_STREAM （2）：没有可录制的音视频流或者录制的音视频流中断超过 5 秒。
-- RECORDER_ERROR_OVER_MAX_DURATION （3）：录制时长超出上限。
-- RECORDER_ERROR_CONFIG_CHANGED （4）：录制配置改变。
+- RECORDER_REASON_NONE（0）：一切正常。
+- RECORDER_ERROR_WRITE_FAILED（1）：录制文件写入失败。
+- RECORDER_ERROR_NO_STREAM（2）：没有可录制的音视频流或者录制的音视频流中断超过 5 秒。
+- RECORDER_ERROR_OVER_MAX_DURATION（3）：录制时长超出上限。
+- RECORDER_ERROR_CONFIG_CHANGED（4）：录制配置改变。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
+
 - [IMediaRecorderCallback](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediarecorderobserver)

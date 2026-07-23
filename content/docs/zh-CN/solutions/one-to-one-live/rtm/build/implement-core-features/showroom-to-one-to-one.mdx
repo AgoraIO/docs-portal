@@ -127,7 +127,7 @@ val signalClient = createRtmSignalClient(rtmManager.getRtmClient())
 
 ### 5. 初始化 CallAPI
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#initialize) 方法初始化 1v1 场景化 API。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 1v1 场景化 API。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数。
 
 ```kotlin
 // 初始化配置
@@ -143,7 +143,7 @@ api.initialize(config)
 
 ### 6. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要根据报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `ICallApiListener`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要根据报告的状态实现不同的后续处理逻辑。
 
 ```kotlin
 api.addListener(this)
@@ -171,11 +171,11 @@ rtmManager?.login(rtmToken = rtmToken) {
 
 ### 8. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将 `channelName` 设为通配符或空字符串。详见[使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
-- 请确保用于生成 `rtcToken` 的 `uid` 和调用 [`initialize`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#initialize) 方法初始化 CallAPI 中传入的 `userId` 一致。
+- 请确保用于生成 `rtcToken` 的 `uid` 和调用 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 CallAPI 中传入的 `userId` 一致。
 :::
 
 ```kotlin
@@ -244,7 +244,7 @@ val ret = rtcEngine.joinChannel(
 通过 `CallAPI` 的 `call` 方法，呼叫主播。
 
 :::warning[注意]
-为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [16. 观众端更新频道号](#16-观众端更新频道号)。
+为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [16. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/showroom-to-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -307,7 +307,7 @@ private fun call(user: Pure1v1UserInfo) {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，如果仍然处于呼叫中，则可以调用 [`cancelCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#cancelcall) 取消呼叫，避免呼叫等待过长。
+呼叫返回失败时，如果仍然处于呼叫中，则可以调用 [`cancelCall`](/zh-CN/api-reference/private-room) 取消呼叫，避免呼叫等待过长。
 :::
 
 ### 12. 监听到呼叫事件并处理
@@ -401,7 +401,7 @@ override fun onCallStateChanged(
 
 ### 14. 观众挂断
 
-观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#hangup) 方法来结束和主播的通话。
+观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和主播的通话。
 
 ```kotlin
 private fun hangupAction() {
@@ -457,7 +457,7 @@ override fun onCallStateChanged(
 
 ### 16. 观众端更新频道号
 
-完成一轮呼叫后，观众端调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#prepareforcall) 更新频道号。
+完成一轮呼叫后，观众端调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 在秀场转 1v1 场景中，观众（即主叫）发起呼叫后，主播（即被叫）会获取到观众在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果观众不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -505,13 +505,13 @@ callApi.deinitialize {
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [16. 观众端更新频道号](#16-观众端更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [16. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/showroom-to-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [CallAPI 参考](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api)
+- [CallAPI 参考](/zh-CN/api-reference/private-room)
 - [RTC API 参考](/zh-CN/api-reference/rtc/android/rtc-api-overview)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化 RTM 信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/rtm/build/customize-and-extend/integration-guideline)。
@@ -640,7 +640,7 @@ let signalClient = CallRtmSignalClient(rtmClient: rtmManager.getRtmClient())
 
 ### 5. 初始化 CallAPI
 
-调用 `CallAPI` 的 [`initialize`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#initialize) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数。
+调用 `CallAPI` 的 [`initialize`](/zh-CN/api-reference/private-room) 方法初始化 `CallAPI`。你需要在该方法中设置 `appId`、`userId`、`rtcEngine` 和 `signalClient` 参数。
 
 ```swift
 // 初始化配置
@@ -655,7 +655,7 @@ callApi.initialize(config: config)
 
 ### 6. 添加并监听 CallAPI 的回调
 
-调用 [`addListener`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#addlistener) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#oncallstatechanged) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要根据报告的状态实现不同的后续处理逻辑。
+调用 [`addListener`](/zh-CN/api-reference/private-room) 方法注册 `CallAPI` 回调事件。然后实现 `CallAPI` 的回调 `CallApiListenerProtocol`，并监听 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调。`CallAPI` 在运行过程中，会通过该回调报告当前的通话状态。你需要根据报告的状态实现不同的后续处理逻辑。
 
 ```swift
 callApi.addListener(listener: self)
@@ -683,7 +683,7 @@ rtmManager?.login(rtmToken: rtmToken, completion: { err in
 
 ### 8. 准备通话环境
 
-调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#prepareforcall) 准备通话环境。
+调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 准备通话环境。
 
 :::warning[注意]
 - 请确保将该方法中的 `rtcToken` 设置为通配频道名的 Token，即在生成 Token 时将
@@ -692,7 +692,7 @@ rtmManager?.login(rtmToken: rtmToken, completion: { err in
 
   - 请确保用于生成
   `rtcToken` 的 `uid` 和调用
-  [`initialize`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#initialize) 方法初始化
+  [`initialize`](/zh-CN/api-reference/private-room) 方法初始化
   CallAPI 中传入的 `userId` 一致。
 :::
 
@@ -793,7 +793,7 @@ extension BroadcasterViewController {
 通过 `CallAPI` 的 `call` 方法，呼叫主播。
 
 :::warning[注意]
-为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [16. 观众端更新频道号](#16-观众端更新频道号)。
+为了保证通话安全性，建议每次呼叫前调用 `prepareForCall` 更新 `roomId`。详见 [16. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/showroom-to-one-to-one)。
 :::
 
 <Tabs defaultValue="video" groupId="make-call" persist>
@@ -856,7 +856,7 @@ private func _call(user: Pure1v1UserInfo) {
 </Tabs>
 
 :::warning[注意]
-呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#cancelcall) 可避免呼叫等待过长。
+呼叫返回失败时，可以判断当前状态，如果仍然处于呼叫中（`callState == .calling`），此时发起取消呼叫 [`cancelCall`](/zh-CN/api-reference/private-room) 可避免呼叫等待过长。
 :::
 
 ### 12. 监听到呼叫事件并处理
@@ -944,7 +944,7 @@ func onCallStateChanged(with state: CallStateType,
 
 ### 14. 观众挂断
 
-观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#hangup) 方法来结束和主播的通话。
+观众通过调用 `CallAPI` 的 [`hangup`](/zh-CN/api-reference/private-room) 方法来结束和主播的通话。
 
 ```swift
 func _hangupAction() {
@@ -1000,7 +1000,7 @@ extension BroadcasterViewController {
 
 ### 16. 观众端更新频道号
 
-完成一轮呼叫后，观众端调用 [`prepareForCall`](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api#prepareforcall) 更新频道号。
+完成一轮呼叫后，观众端调用 [`prepareForCall`](/zh-CN/api-reference/private-room) 更新频道号。
 
 在秀场转 1v1 场景中，观众（即主叫）发起呼叫后，主播（即被叫）会获取到观众在准备通话环境中设置的 `roomId`，从而加入对应的 RTC 频道进行通话。通话结束后，如果观众不更新 `roomId` 就发起新的呼叫，可能会有一定的安全风险。
 
@@ -1049,13 +1049,13 @@ callApi.deinitialize {
 
 ## 开发注意事项
 
-为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [16. 观众端更新频道号](#16-观众端更新频道号)。
+为确保通话安全，你需要在每次发起呼叫前，都调用 `prepareForCall` 方法更新 `roomId`，以保证每次通话使用不同的 RTC 频道，进而确保通话的私密性。详见 [16. 观众端更新频道号](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/showroom-to-one-to-one)。
 
 ## 参考文档
 
 在开发过程中，你可以参考如下文档，获取更多 API 调用详情：
 
-- [CallAPI 参考](/zh-CN/solutions/one-to-one-live/rtm/reference/call-api)
+- [CallAPI 参考](/zh-CN/api-reference/private-room)
 - [RTC API 参考](/zh-CN/api-reference/rtc/ios/rtc-api-overview)
 
 如果希望在项目中实现更高阶的功能，可以参考[优化 RTM 信令方案集成逻辑](/zh-CN/solutions/one-to-one-live/rtm/build/customize-and-extend/integration-guideline)。

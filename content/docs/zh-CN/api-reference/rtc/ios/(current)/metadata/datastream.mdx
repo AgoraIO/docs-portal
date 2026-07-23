@@ -1,18 +1,27 @@
 ---
-title: "数据流 Datastream"
-description: "数据流 Datastream API reference."
+title: 数据流 Datastream
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_datastream
+  sourcePath: html-docs/rtc/iOS/API/toc_datastream.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_datastream"></a>
 
 <a id="api_irtcengine_createdatastream1"></a>
 
-## createDataStream:reliable:ordered:
+<a id="ariaid-title2"></a>
+
+## createDataStream\:reliable\:ordered:
 
 创建数据流。
 
 <a id="api_irtcengine_createdatastream1__prototype"></a>
 
-```objectivec
+```text
 - (int)createDataStream:(NSInteger * _Nonnull)streamId
                reliable:(BOOL)reliable
                 ordered:(BOOL)ordered NS_SWIFT_NAME(createDataStream(_:reliable:ordered:));
@@ -22,8 +31,8 @@ description: "数据流 Datastream API reference."
 
 你可以调用该方法创建一个数据流，以提升数据传输的可靠性和顺序性。你可以在加入频道前或后调用该方法。
 
-:::info[注]
-每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要更全面的低延时、高并发、可扩展的实时消息和状态同步方案，建议使用实时消息。
+:::note
+注： 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可创建五个数据流。离开频道时数据流会被销毁，如需继续使用需重新创建。如果你需要更全面的低延时、高并发、可扩展的实时消息和状态同步方案，建议使用实时消息。
 :::
 
 <a id="api_irtcengine_createdatastream1__timing"></a>
@@ -36,55 +45,67 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-#### `reliable`
+</Parameter>
+<a id="reliable"></a>
+<Parameter name="reliable">
 
 设置接收端是否保证在五秒内收到数据流：
 
-- YES：接收端会在五秒内收到发送方发送的数据。如果接收端在五秒内未收到数据，SDK 会触发 rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached: 回调并返回错误码。
+- YES：接收端会在五秒内收到发送方发送的数据。如果接收端在五秒内未收到数据，SDK 会触发 [rtcEngine\:didOccurStreamMessageErrorFromUid\:streamId\:error\:missed\:cached:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 - NO：不保证接收端在五秒内收到数据流，延迟或丢失数据不会返回错误信息。
 
 请确保 `reliable` 和 `ordered` 同时设置为 YES 或同时设置为 NO。
 
-#### `ordered`
+</Parameter>
+<a id="ordered"></a>
+<Parameter name="ordered">
 
 设置接收端是否按发送顺序接收数据流：
 
 - YES：接收端按发送顺序接收数据。
 - NO：接收端不按发送顺序接收数据。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_createdatastream1__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_createdatastream2"></a>
 
-## createDataStream:config:
+<a id="ariaid-title3"></a>
+
+## createDataStream\:config:
 
 创建一个数据流。
 
 <a id="api_irtcengine_createdatastream2__prototype"></a>
 
-```objectivec
+```text
 - (int)createDataStream:(NSInteger * _Nonnull)streamId
                   config:(AgoraDataStreamConfig * _Nonnull)config NS_SWIFT_NAME(createDataStream(_:config:));
 ```
 
 <a id="api_irtcengine_createdatastream2__detailed_desc"></a>
 
-与 [createDataStream:reliable:ordered:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream1) 方法相比，该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据包。你可以在加入频道前或加入频道后调用该方法。
+与 [createDataStream\:reliable\:ordered:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream1) 方法相比，该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据包。你可以在加入频道前或加入频道后调用该方法。
 
-:::info[注]
-每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+:::note
+注： 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="api_irtcengine_createdatastream2__timing"></a>
@@ -97,33 +118,43 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-1"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-#### `config`
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
 
 数据流的配置，详见 [AgoraDataStreamConfig](/zh-CN/api-reference/rtc/ios/class-datastreamconfig)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_createdatastream2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_createdatastreamex1"></a>
 
-## createDataStreamEx:reliable:ordered:connection:
+<a id="ariaid-title4"></a>
+
+## createDataStreamEx\:reliable\:ordered\:connection:
 
 创建一个数据流。
 
 <a id="api_irtcengineex_createdatastreamex1__prototype"></a>
 
-```objectivec
+```text
 - (int)createDataStreamEx:(NSInteger * _Nonnull)streamId
                  reliable:(BOOL)reliable
                   ordered:(BOOL)ordered
@@ -132,14 +163,16 @@ description: "数据流 Datastream API reference."
 
 <a id="api_irtcengineex_createdatastreamex1__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
-该方法已废弃，请改用 [createDataStreamEx:config:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex2)。
+:::error[废弃]
+该方法已废弃，请改用 [createDataStreamEx\:config\:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex2)。
+:::
 
 你可以调用此方法创建一个数据流，以提升数据传输的可靠性和顺序性。
 
-:::info[注]
-每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期中最多可创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。
+:::note
+注： 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期中最多可创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。
 :::
 
 <a id="api_irtcengineex_createdatastreamex1__scenario"></a>
@@ -158,49 +191,63 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-2"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-#### `reliable`
+</Parameter>
+<a id="reliable-1"></a>
+<Parameter name="reliable">
 
 设置是否保证接收端在五秒内收到数据流：
 
-- YES：接收端会在五秒内收到发送方发送的数据。如果五秒内未收到，SDK 会触发 rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached: 回调并返回错误码。
+- YES：接收端会在五秒内收到发送方发送的数据。如果五秒内未收到，SDK 会触发 [rtcEngine\:didOccurStreamMessageErrorFromUid\:streamId\:error\:missed\:cached:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) 回调并返回错误码。
 - NO：不保证接收端在五秒内收到数据流，延迟或丢失不会返回错误信息。
 
 注意：请确保 `reliable` 和 `ordered` 同时设置为 YES 或同时设置为 NO。
 
-#### `ordered`
+</Parameter>
+<a id="ordered-1"></a>
+<Parameter name="ordered">
 
 设置接收端是否按发送顺序接收数据流：
 
 - YES：接收端按发送顺序接收数据。
 - NO：接收端不按发送顺序接收数据。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex1__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengineex_createdatastreamex2"></a>
 
-## createDataStreamEx:config:connection:
+<a id="ariaid-title5"></a>
+
+## createDataStreamEx\:config\:connection:
 
 创建一个数据流。
 
 <a id="api_irtcengineex_createdatastreamex2__prototype"></a>
 
-```objectivec
+```text
 - (int)createDataStreamEx:(NSInteger * _Nonnull)streamId
                    config:(AgoraDataStreamConfig * _Nonnull)config
                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(createDataStreamEx(_:config:connection:));
@@ -210,8 +257,8 @@ description: "数据流 Datastream API reference."
 
 该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据。
 
-:::info[注]
-每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+:::note
+注： 每个用户在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="api_irtcengineex_createdatastreamex2__scenario"></a>
@@ -230,52 +277,64 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-3"></a>
+<Parameter name="streamId">
 
 输出参数，创建的数据流 ID。
 
-#### `config`
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
 
 数据流的配置。详见 [AgoraDataStreamConfig](/zh-CN/api-reference/rtc/ios/class-datastreamconfig)。
 
-#### `connection`
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
 连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_createdatastreamex2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_sendstreammessage"></a>
 
-## sendStreamMessage:data:
+<a id="ariaid-title6"></a>
+
+## sendStreamMessage\:data:
 
 发送数据流消息。
 
 <a id="api_irtcengine_sendstreammessage__prototype"></a>
 
-```objectivec
+```text
 - (int)sendStreamMessage:(NSInteger)streamId
                     data:(NSData * _Nonnull)data NS_SWIFT_NAME(sendStreamMessage(_:data:));
 ```
 
 <a id="api_irtcengine_sendstreammessage__detailed_desc"></a>
 
-调用 [createDataStream:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以使用此方法向频道内的所有用户发送数据流消息。SDK 对此方法有以下限制：
+调用 [createDataStream\:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) 后，你可以使用此方法向频道内的所有用户发送数据流消息。SDK 对此方法有以下限制：
 
 - 每个客户端在频道中最多可同时拥有 5 个数据通道，所有数据通道共享的总包比特率上限为 30 KB/s。
 - 每个数据通道每秒最多可发送 60 个数据包，每个数据包最大为 1 KB。
 
-:::info[注]
-如果你需要一个更全面的解决方案来实现低延迟、高并发和可扩展的实时消息传递和状态同步，建议使用实时消息。
+:::note
+注： 如果你需要一个更全面的解决方案来实现低延迟、高并发和可扩展的实时消息传递和状态同步，建议使用实时消息。
 
-- 必须在调用 createDataStream:config: 并加入频道后调用此方法。
+- 必须在调用 [createDataStream\:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) 并加入频道后调用此方法。
 - 此方法仅适用于主播。
 :::
 
@@ -283,42 +342,52 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `streamId`
+<ParameterList>
+<a id="streamid-4"></a>
+<Parameter name="streamId">
 
-数据流 ID。你可以通过调用 [createDataStream:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) 获取该 ID。
+数据流 ID。你可以通过调用 [createDataStream\:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) 获取该 ID。
 
-#### `data`
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
 
 要发送的消息。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_sendstreammessage__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](/zh-CN/realtime-media/rtc/reference/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
+
 - [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onstreammessage"></a>
 
-## rtcEngine:receiveStreamMessageFromUid:streamId:data:
+<a id="ariaid-title7"></a>
+
+## rtcEngine\:receiveStreamMessageFromUid\:streamId\:data:
 
 当本地用户收到远端用户发送的数据流时触发。
 
 <a id="callback_irtcengineeventhandler_onstreammessage__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine receiveStreamMessageFromUid:(NSUInteger)uid streamId:(NSInteger)streamId data:(NSData * _Nonnull)data NS_SWIFT_NAME(rtcEngine(_:receiveStreamMessageFromUid:streamId:data:));
 ```
 
 <a id="callback_irtcengineeventhandler_onstreammessage__detailed_desc"></a>
 
-当你收到远端用户通过调用 [sendStreamMessage:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) 发送的数据流消息时，SDK 会触发该回调。
+当你收到远端用户通过调用 [sendStreamMessage\:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) 发送的数据流消息时，SDK 会触发该回调。
 
-:::info[注]
-如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+:::note
+注： 如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessage__timing"></a>
@@ -331,43 +400,57 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `engine`
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
 
 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-#### `uid`
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
 
 发送该消息的远端用户 ID。
 
-#### `streamId`
+</Parameter>
+<a id="streamid-5"></a>
+<Parameter name="streamId">
 
 接收到的消息所属的数据流 ID。
 
-#### `data`
+</Parameter>
+<a id="data-1"></a>
+<Parameter name="data">
 
 接收到的数据内容，
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror"></a>
 
-## rtcEngine:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:
+<a id="ariaid-title8"></a>
+
+## rtcEngine\:didOccurStreamMessageErrorFromUid\:streamId\:error\:missed\:cached:
 
 当本地用户未收到远端用户发送的数据流时触发的回调。
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__prototype"></a>
 
-```objectivec
+```text
 - (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didOccurStreamMessageErrorFromUid:(NSUInteger)uid streamId:(NSInteger)streamId error:(NSInteger)error missed:(NSInteger)missed cached:(NSInteger)cached NS_SWIFT_NAME(rtcEngine(_:didOccurStreamMessageErrorFromUid:streamId:error:missed:cached:));
 ```
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__detailed_desc"></a>
 
-当本地用户未能接收到远端用户通过调用 [sendStreamMessage:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的数据流消息时，SDK 会触发该回调。
+当本地用户未能接收到远端用户通过调用 [sendStreamMessage\:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) 方法发送的数据流消息时，SDK 会触发该回调。
 
-:::info[注]
-如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
+:::note
+注： 如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
 :::
 
 <a id="callback_irtcengineeventhandler_onstreammessageerror__timing"></a>
@@ -380,29 +463,45 @@ description: "数据流 Datastream API reference."
 
 ### 参数
 
-#### `engine`
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
 
 引擎对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
 
-#### `uid`
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `streamId`
+</Parameter>
+<a id="streamid-6"></a>
+<Parameter name="streamId">
 
 接收消息所属的数据流 ID。
 
-#### `error`
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
 
 错误码。
 
-#### `missed`
+</Parameter>
+<a id="missed"></a>
+<Parameter name="missed">
 
 丢失的消息数量。
 
-#### `cached`
+</Parameter>
+<a id="cached"></a>
+<Parameter name="cached">
 
 数据流中断时缓存的传入消息数量。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
+
 - [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
