@@ -83,7 +83,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](../subscription-packages.md) or [top-up package](../subscription-packages.md). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](../subscription-packages) or [top-up package](../subscription-packages). This option is highly recommended.
 
 ## Free-of-charge policy
 :::note

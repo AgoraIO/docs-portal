@@ -196,24 +196,23 @@ To do this, take the following steps:
     }
     ```
 
-### Enable Notifications
+### Set up Webhook notifications
 
+1. In [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar and switch to the **Webhooks** tab.
 
-To enable Notifications for Cloud Transcoding events:
+1. Select **New Webhook**.
 
-1. In [Agora Console](https://console.agora.io), go to **Realtime Services** and select **Notifications** under **Media Services**.
+1. In the **Product** dropdown, select **Cloud Transcoding**.
 
-1. In the notification type list, select **Cloud Transcoding**.
+1. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
 
-1. Copy the **Secret** for the notification type. You use this secret to [Add signature verification](#add-signature-verification).
+1. Fill in the following:
 
-1. Select **Create notification** and fill in the following:
-
-   * **Receiving region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
+   * **Region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
 
    * **Receiving URL**: The `HTTPS` public address of your server that receives the notifications, for example `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`. Only `HTTPS` endpoints are supported.
 
-   * **Subscribed events**: Select all the events that you want to subscribe to.
+   * **Subscribe to events**: Select all the events that you want to subscribe to.
 
      If the selected events generate a high number of queries per second (QPS), ensure that your server has sufficient processing capacity.
 
