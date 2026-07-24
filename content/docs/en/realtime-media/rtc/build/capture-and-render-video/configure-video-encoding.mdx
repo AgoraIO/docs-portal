@@ -1,0 +1,2821 @@
+---
+title: "Configure video encoding"
+description: "Configure resolution, frame rate, bitrate, and degradation preferences for Video Calling."
+---
+
+<PlatformStructured platform="android">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | `STANDARD_BITRATE` or 400 Kbps | `MAINTAIN_BALANCED` | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | `STANDARD_BITRATE` or 200 Kbps | `MAINTAIN_BALANCED` | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | `STANDARD_BITRATE` | `MAINTAIN_QUALITY` | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | `STANDARD_BITRATE` | `MAINTAIN_FRAMERATE` | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Configure video encoder settings
+VideoEncoderConfiguration videoConfig = new VideoEncoderConfiguration(
+  // Use VD_640x360 for one-to-one calls with larger video windows
+  // Use VD_320x240 for group calls with multiple smaller video windows
+  VideoEncoderConfiguration.VD_640x360,
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED // Balance quality and framerate under poor network
+);
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+videoConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(videoConfig);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Configure video encoder settings
+val videoConfig = VideoEncoderConfiguration(
+  // Use VD_640x360 for one-to-one calls with larger video windows
+  // Use VD_320x240 for group calls with multiple smaller video windows
+  VideoEncoderConfiguration.VD_640x360,
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED // Balance quality and framerate under poor network
+)
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+videoConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(videoConfig)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Configure video encoder settings for video calls
+VideoEncoderConfiguration videoCallConfig = new VideoEncoderConfiguration(
+  VideoEncoderConfiguration.VD_1280x720, // HD resolution for high video quality
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_30, // Higher framerate for smooth motion
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY // Prioritize video quality
+);
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+videoCallConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(videoCallConfig);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Configure video encoder settings for video calls
+val videoCallConfig = VideoEncoderConfiguration(
+  VideoEncoderConfiguration.VD_1280x720, // HD resolution for high video quality
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_30, // Higher framerate for smooth motion
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY // Prioritize video quality
+)
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+videoCallConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(videoCallConfig)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Configure video encoder settings for low-bandwidth scenarios
+VideoEncoderConfiguration lowBandwidthConfig = new VideoEncoderConfiguration(
+  VideoEncoderConfiguration.VD_320x180, // Minimal resolution to save bandwidth
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_10, // Lower framerate reduces bandwidth usage
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE // Keep playback smooth
+);
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(lowBandwidthConfig);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Configure video encoder settings for low-bandwidth scenarios
+val lowBandwidthConfig = VideoEncoderConfiguration(
+  VideoEncoderConfiguration.VD_320x180, // Minimal resolution to save bandwidth
+  VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_10, // Lower framerate reduces bandwidth usage
+  VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE // Keep playback smooth
+)
+// Mirror mode: AUTO lets SDK decide based on camera (front/back)
+lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+// Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
+lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+// Apply configuration (call before enableVideo() for faster first frame)
+engine.setVideoEncoderConfiguration(lowBandwidthConfig)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelVideo.java) source code for a more detailed example.
+
+### API reference
+
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+:::note
+On the macOS platform, the Status Bar is always positioned directly above the vertical ground direction, so there is no UI (Screen rotation) lock. The UI lock below applies only to the iOS platform.
+:::
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```swift
+// Configure video encoder settings
+// Use AgoraVideoDimension640x360 (or CGSize(width: 640, height: 360)) for one-to-one calls
+// Use CGSize(width: 320, height: 240) for group calls with multiple smaller video windows
+let videoConfig = AgoraVideoEncoderConfiguration(
+  size: AgoraVideoDimension640x360,
+  frameRate: .fps15, // 15 fps balances smoothness and bandwidth
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Balance quality and framerate under poor network
+videoConfig.degradationPreference = .maintainBalanced
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+videoConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(videoConfig)
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```swift
+// Configure video encoder settings for video calls
+let videoCallConfig = AgoraVideoEncoderConfiguration(
+  size: CGSize(width: 1280, height: 720), // HD resolution for high video quality
+  frameRate: .fps30, // Higher framerate for smooth motion
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Prioritize video quality
+videoCallConfig.degradationPreference = .maintainQuality
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+videoCallConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(videoCallConfig)
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```swift
+// Configure video encoder settings for low-bandwidth scenarios
+let lowBandwidthConfig = AgoraVideoEncoderConfiguration(
+  size: CGSize(width: 320, height: 180), // Minimal resolution to save bandwidth
+  frameRate: .fps10, // Lower framerate reduces bandwidth usage
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Keep playback smooth
+lowBandwidthConfig.degradationPreference = .maintainFramerate
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+lowBandwidthConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(lowBandwidthConfig)
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Basic/JoinChannelVideo) source code for a more detailed example.
+
+### API reference
+
+- [`AgoraVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoravideoencoderconfiguration)
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setvideoencoderconfiguration(_:))
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+:::note
+On the macOS platform, the Status Bar is always positioned directly above the vertical ground direction, so there is no UI (Screen rotation) lock. The UI lock below applies only to the iOS platform.
+:::
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```swift
+// Configure video encoder settings
+// Use AgoraVideoDimension640x360 (or CGSize(width: 640, height: 360)) for one-to-one calls
+// Use CGSize(width: 320, height: 240) for group calls with multiple smaller video windows
+let videoConfig = AgoraVideoEncoderConfiguration(
+  size: AgoraVideoDimension640x360,
+  frameRate: .fps15, // 15 fps balances smoothness and bandwidth
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Balance quality and framerate under poor network
+videoConfig.degradationPreference = .maintainBalanced
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+videoConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(videoConfig)
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```swift
+// Configure video encoder settings for video calls
+let videoCallConfig = AgoraVideoEncoderConfiguration(
+  size: CGSize(width: 1280, height: 720), // HD resolution for high video quality
+  frameRate: .fps30, // Higher framerate for smooth motion
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Prioritize video quality
+videoCallConfig.degradationPreference = .maintainQuality
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+videoCallConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(videoCallConfig)
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```swift
+// Configure video encoder settings for low-bandwidth scenarios
+let lowBandwidthConfig = AgoraVideoEncoderConfiguration(
+  size: CGSize(width: 320, height: 180), // Minimal resolution to save bandwidth
+  frameRate: .fps10, // Lower framerate reduces bandwidth usage
+  bitrate: AgoraVideoBitrateStandard, // SDK calculates optimal bitrate automatically
+  orientationMode: .adaptative, // Adjusts to device rotation
+  mirrorMode: .auto // AUTO lets SDK decide based on camera (front/back)
+)
+// Degradation preference: Keep playback smooth
+lowBandwidthConfig.degradationPreference = .maintainFramerate
+// Minimum bitrate: Use default (standard bitrate) for most cases; higher values may cause packet loss
+lowBandwidthConfig.minBitrate = AgoraVideoBitrateStandard
+// Apply configuration (call before enableVideo() for faster first frame)
+agoraKit.setVideoEncoderConfiguration(lowBandwidthConfig)
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelVideo) source code for a more detailed example.
+
+### API reference
+
+- [`AgoraVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoravideoencoderconfiguration)
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setvideoencoderconfiguration(_:))
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Video SDK provides two methods to set video properties:
+
+1. **Setting video properties when creating the video track:** Use `encoderConfig` parameter in `AgoraRTC.createCameraVideoTrack`, `AgoraRTC.createScreenVideoTrack`, or `AgoraRTC.createCustomVideoTrack`.
+
+2. **Dynamically adjust video track properties after creation:** Use `CameraVideoTrack.setEncoderConfiguration` or `LocalVideoTrack.setEncoderConfiguration` (supported before and after publishing).
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Preset | Notes |
+|----------|------------|------------|--------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | `480p_1` | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | `240p_1` | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | `720p_2` | High-quality video |
+| Low-bandwidth use cases | 320×180 | 15 fps | `180p_4` | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```javascript
+// Configure video track for standard video calls
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: {
+    width: 640,
+    height: 360,
+    frameRate: 15, // 15 fps balances smoothness and bandwidth
+    bitrateMin: 200, // Minimum bitrate in Kbps
+    bitrateMax: 1000, // Maximum bitrate in Kbps
+  },
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+**Using preset:**
+
+```javascript
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: "480p_1", // Preset for 640×480 at 15fps
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```javascript
+// Configure video track for video calls
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: {
+    width: 1280,
+    height: 720, // HD resolution for high video quality
+    frameRate: 30, // Higher framerate for smooth motion
+    bitrateMin: 600, // Minimum bitrate in Kbps
+    bitrateMax: 3000, // Maximum bitrate in Kbps
+  },
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+**Using preset:**
+
+```javascript
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: "720p_2", // Preset for 1280×720 at 30fps
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```javascript
+// Configure video track for low-bandwidth scenarios
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: {
+    width: 320,
+    height: 180, // Minimal resolution to save bandwidth
+    frameRate: 10, // Lower framerate reduces bandwidth usage
+    bitrateMin: 65, // Minimum bitrate in Kbps
+    bitrateMax: 500, // Maximum bitrate in Kbps
+  },
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+**Using preset:**
+
+```javascript
+AgoraRTC.createCameraVideoTrack({
+  encoderConfig: "180p_4", // Preset for 320×180 at 15fps
+}).then(localVideoTrack => {
+  // Publish the track
+});
+```
+
+### Dynamically adjust video properties
+
+You can adjust video properties after creating the track:
+
+```javascript
+// Change to a different preset
+localVideoTrack.setEncoderConfiguration("720p_1").then(() => {
+  // Configuration updated
+});
+
+// Or use custom configuration
+localVideoTrack.setEncoderConfiguration({
+  width: 1280,
+  height: 720,
+  frameRate: 30,
+  bitrateMin: 600,
+  bitrateMax: 3000,
+}).then(() => {
+  // Configuration updated
+});
+```
+:::note
+Try out the [adjust video profile](https://webdemo-global.agora.io/example/advanced/adjustVideoProfile/index.html) online demo.
+:::
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+The following table lists the Web SDK preset video profiles and the corresponding parameters. Choose a preset profile or refer to the table to customize your settings.
+
+| Preset | Resolution (Width × Height) | Frame rate (fps) | Bitrate (Kbps) |
+| -------- | --------------- | ----------- | ------------ |
+| `120p` | 160 × 120 | 15 | 65 |
+| `120p_1` | 160 × 120 | 15 | 65 |
+| `120p_3` | 120 × 120 | 15 | 50 |
+| `180p` | 320 × 180 | 15 | 140 |
+| `180p_1` | 320 × 180 | 15 | 140 |
+| `180p_3` | 180 × 180 | 15 | 100 |
+| `180p_4` | 240 × 180 | 15 | 120 |
+| `240p` | 320 × 240 | 15 | 200 |
+| `240p_1` | 320 × 240 | 15 | 200 |
+| `240p_3` | 240 × 240 | 15 | 140 |
+| `240p_4` | 424 × 240 | 15 | 220 |
+| `360p` | 640 × 360 | 15 | 400 |
+| `360p_1` | 640 × 360 | 15 | 400 |
+| `360p_3` | 360 × 360 | 15 | 260 |
+| `360p_4` | 640 × 360 | 30 | 600 |
+| `360p_6` | 360 × 360 | 30 | 400 |
+| `360p_7` | 480 × 360 | 15 | 320 |
+| `360p_8` | 480 × 360 | 30 | 490 |
+| `360p_9` | 640 × 360 | 15 | 800 |
+| `360p_10` | 640 × 360 | 24 | 800 |
+| `360p_11` | 640 × 360 | 24 | 1000 |
+| `480p` | 640 × 480 | 15 | 500 |
+| `480p_1` | 640 × 480 | 15 | 500 |
+| `480p_2` | 640 × 480 | 30 | 1000 |
+| `480p_3` | 480 × 480 | 15 | 400 |
+| `480p_4` | 640 × 480 | 30 | 750 |
+| `480p_6` | 480 × 480 | 30 | 600 |
+| `480p_8` | 848 × 480 | 15 | 610 |
+| `480p_9` | 848 × 480 | 30 | 930 |
+| `480p_10` | 640 × 480 | 10 | 400 |
+| `720p` | 1280 × 720 | 15 | 1130 |
+| `720p_1` | 1280 × 720 | 15 | 1130 |
+| `720p_2` | 1280 × 720 | 30 | 2000 |
+| `720p_3` | 1280 × 720 | 30 | 1710 |
+| `720p_auto`* | 1280 × 720 | 30 | 3000 |
+| `720p_5` | 960 × 720 | 15 | 910 |
+| `720p_6` | 960 × 720 | 30 | 1380 |
+| `1080p` | 1920 × 1080 | 15 | 2080 |
+| `1080p_1` | 1920 × 1080 | 15 | 2080 |
+| `1080p_2` | 1920 × 1080 | 30 | 3000 |
+| `1080p_3` | 1920 × 1080 | 30 | 3150 |
+| `1080p_5` | 1920 × 1080 | 60 | 4780 |
+
+* The `720p_auto` preset profile is only recommended for Safari to ensure that the encoding resolution is dynamically adjusted. See [release notes](../../reference/release-notes) for details.
+
+### Sample project
+
+For a working example, see [Adjust video profile](https://webdemo.agora.io/adjustVideoProfile/index.html).
+
+### API reference
+
+- [`createCameraVideoTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
+- [`setEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/icameravideotrack.html#setencoderconfiguration)
+- [`VideoEncoderConfigurationPreset`](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#videoencoderconfigurationpreset)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```cpp
+// Configure video encoder settings
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+VideoEncoderConfiguration videoConfig(
+  640, 360,
+  FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
+  STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
+  ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VIDEO_MIRROR_MODE_AUTO // AUTO lets SDK decide based on camera (front/back)
+);
+videoConfig.degradationPreference = MAINTAIN_BALANCED; // Balance quality and framerate under poor network
+videoConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(videoConfig);
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```cpp
+// Configure video encoder settings for video calls
+VideoEncoderConfiguration videoCallConfig(
+  1280, 720, // HD resolution for high video quality
+  FRAME_RATE_FPS_30, // Higher framerate for smooth motion
+  STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
+  ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VIDEO_MIRROR_MODE_AUTO // AUTO lets SDK decide based on camera (front/back)
+);
+videoCallConfig.degradationPreference = MAINTAIN_RESOLUTION; // Prioritize video quality
+videoCallConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(videoCallConfig);
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```cpp
+// Configure video encoder settings for low-bandwidth scenarios
+VideoEncoderConfiguration lowBandwidthConfig(
+  320, 180, // Minimal resolution to save bandwidth
+  FRAME_RATE_FPS_10, // Lower framerate reduces bandwidth usage
+  STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
+  ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  VIDEO_MIRROR_MODE_AUTO // AUTO lets SDK decide based on camera (front/back)
+);
+lowBandwidthConfig.degradationPreference = MAINTAIN_FRAMERATE; // Keep playback smooth
+lowBandwidthConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(lowBandwidthConfig);
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Basic/JoinChannelVideo) source code for a more detailed example.
+
+### API reference
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```javascript
+// Configure video encoder settings
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 640, height: 360 },
+ frameRate: FrameRate.FrameRateFps15, // 15 fps balances smoothness and bandwidth
+ bitrate: 0, // 0 = STANDARD_BITRATE, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainBalanced, // Balance quality and framerate under poor network
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```javascript
+// Configure video encoder settings for video calls
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 1280, height: 720 }, // HD resolution for high video quality
+ frameRate: FrameRate.FrameRateFps30, // Higher framerate for smooth motion
+ bitrate: 0, // 0 = STANDARD_BITRATE, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainResolution, // Prioritize video quality
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```javascript
+// Configure video encoder settings for low-bandwidth scenarios
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 320, height: 180 }, // Minimal resolution to save bandwidth
+ frameRate: FrameRate.FrameRateFps10, // Lower framerate reduces bandwidth usage
+ bitrate: 0, // 0 = STANDARD_BITRATE, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainFramerate, // Keep playback smooth
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### API reference
+
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```dart
+// Configure video encoder settings
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+await _engine.setVideoEncoderConfiguration(
+ const VideoEncoderConfiguration(
+  dimensions: VideoDimensions(width: 640, height: 360),
+  frameRate: 15, // 15 fps balances smoothness and bandwidth
+  bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode: OrientationMode.orientationModeAdaptive, // Adjusts to device rotation
+  degradationPreference: DegradationPreference.maintainBalanced, // Balance quality and framerate under poor network
+  mirrorMode: VideoMirrorModeType.videoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+ ),
+);
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```dart
+// Configure video encoder settings for video calls
+await _engine.setVideoEncoderConfiguration(
+ const VideoEncoderConfiguration(
+  dimensions: VideoDimensions(width: 1280, height: 720), // HD resolution for high video quality
+  frameRate: 30, // Higher framerate for smooth motion
+  bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode: OrientationMode.orientationModeAdaptive, // Adjusts to device rotation
+  degradationPreference: DegradationPreference.maintainResolution, // Prioritize video quality
+  mirrorMode: VideoMirrorModeType.videoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+ ),
+);
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```dart
+// Configure video encoder settings for low-bandwidth scenarios
+await _engine.setVideoEncoderConfiguration(
+ const VideoEncoderConfiguration(
+  dimensions: VideoDimensions(width: 320, height: 180), // Minimal resolution to save bandwidth
+  frameRate: 10, // Lower framerate reduces bandwidth usage
+  bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode: OrientationMode.orientationModeAdaptive, // Adjusts to device rotation
+  degradationPreference: DegradationPreference.maintainFramerate, // Keep playback smooth
+  mirrorMode: VideoMirrorModeType.videoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+ ),
+);
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### API reference
+
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+Customer satisfaction with your Video Calling integrated app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```typescript
+// Configure video encoder settings
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 640, height: 360 },
+ frameRate: 15, // 15 fps balances smoothness and bandwidth
+ bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainBalanced, // Balance quality and framerate under poor network
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```typescript
+// Configure video encoder settings for video calls
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 1280, height: 720 }, // HD resolution for high video quality
+ frameRate: 30, // Higher framerate for smooth motion
+ bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainResolution, // Prioritize video quality
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```typescript
+// Configure video encoder settings for low-bandwidth scenarios
+this.engine?.setVideoEncoderConfiguration({
+ dimensions: { width: 320, height: 180 }, // Minimal resolution to save bandwidth
+ frameRate: 10, // Lower framerate reduces bandwidth usage
+ bitrate: 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+ orientationMode: OrientationMode.OrientationModeAdaptive, // Adjusts to device rotation
+ degradationPreference: DegradationPreference.MaintainFramerate, // Keep playback smooth
+ mirrorMode: VideoMirrorModeType.VideoMirrorModeAuto, // AUTO lets SDK decide based on camera (front/back)
+ minBitrate: -1, // Use default (-1) for most cases; higher values may cause packet loss
+});
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### API reference
+
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+Customer satisfaction with your Video Calling app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `SetVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `EnableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```csharp
+// Configure video encoder settings
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+VideoEncoderConfiguration videoConfig = new VideoEncoderConfiguration
+{
+  dimensions = new VideoDimensions { width = 640, height = 360 },
+  frameRate = 15, // 15 fps balances smoothness and bandwidth
+  bitrate = 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_BALANCED, // Balance quality and framerate under poor network
+  mirrorMode = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_AUTO, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate = -1 // Use default (-1) for most cases; higher values may cause packet loss
+};
+// Apply configuration (call before EnableVideo() for faster first frame)
+RtcEngine.SetVideoEncoderConfiguration(videoConfig);
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```csharp
+// Configure video encoder settings for video calls
+VideoEncoderConfiguration videoCallConfig = new VideoEncoderConfiguration
+{
+  dimensions = new VideoDimensions { width = 1280, height = 720 }, // HD resolution for high video quality
+  frameRate = 30, // Higher framerate for smooth motion
+  bitrate = 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_RESOLUTION, // Prioritize video quality
+  mirrorMode = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_AUTO, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate = -1 // Use default (-1) for most cases; higher values may cause packet loss
+};
+// Apply configuration (call before EnableVideo() for faster first frame)
+RtcEngine.SetVideoEncoderConfiguration(videoCallConfig);
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```csharp
+// Configure video encoder settings for low-bandwidth scenarios
+VideoEncoderConfiguration lowBandwidthConfig = new VideoEncoderConfiguration
+{
+  dimensions = new VideoDimensions { width = 320, height = 180 }, // Minimal resolution to save bandwidth
+  frameRate = 10, // Lower framerate reduces bandwidth usage
+  bitrate = 0, // 0 = standard bitrate, SDK calculates optimal bitrate automatically
+  orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
+  degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE, // Keep playback smooth
+  mirrorMode = VIDEO_MIRROR_MODE_TYPE.VIDEO_MIRROR_MODE_AUTO, // AUTO lets SDK decide based on camera (front/back)
+  minBitrate = -1 // Use default (-1) for most cases; higher values may cause packet loss
+};
+// Apply configuration (call before EnableVideo() for faster first frame)
+RtcEngine.SetVideoEncoderConfiguration(lowBandwidthConfig);
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [SetVideoEncodeConfiguration](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SetVideoEncodeConfiguration) source code for a more detailed example.
+
+### API reference
+
+- [`SetVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+Customer satisfaction with your Video Calling app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `setVideoEncoderConfiguration` method to configure video encoding parameters. Best practice is to call this method before calling `enableVideo` to speed up the time required for the first frame to appear. Alternatively, call this method within the channel to flexibly adjust video encoding properties.
+
+The recommended video settings vary by use-case. For example, in a one-to-one video call, larger video windows call for higher resolution. In group calls with multiple participants, smaller video windows allow you to use lower resolution to conserve bandwidth. Low-bandwidth scenarios may need reduced resolution and frame rate.
+
+The following table shows sample settings for common use-cases:
+
+| Use case | Resolution | Frame rate | Bitrate | Degradation preference | Notes |
+|----------|------------|------------|---------|----------------------|-------|
+| Video calls (one-to-one) | 640×360 | 15 fps | Standard bitrate or 400 Kbps | Balanced | Larger video windows |
+| Video calls (group) | 320×240 | 15 fps | Standard bitrate or 200 Kbps | Balanced | Multiple smaller windows |
+| High-quality video calls | 1280×720 | 30 fps | Standard bitrate | Maintain quality | High-quality video |
+| Low-bandwidth use cases | 320×180 | 10 fps | Standard bitrate | Maintain framerate | Conserve bandwidth |
+
+For screen sharing video configuration, refer to the [Screen sharing](screen-sharing) guide.
+
+To set video encoder configuration, refer to the following sample configurations.
+
+### Standard video calls
+
+Use the following as a starting configuration for one-to-one and group video calls:
+
+```cpp
+// Configure video encoder settings
+VideoEncoderConfiguration videoConfig;
+// Use 640×360 for one-to-one calls with larger video windows
+// Use 320×240 for group calls with multiple smaller video windows
+videoConfig.dimensions.width = 640;
+videoConfig.dimensions.height = 360;
+videoConfig.frameRate = FRAME_RATE_FPS_15; // 15 fps balances smoothness and bandwidth
+videoConfig.bitrate = STANDARD_BITRATE; // SDK calculates optimal bitrate automatically
+videoConfig.orientationMode = ORIENTATION_MODE_ADAPTIVE; // Adjusts to device rotation
+videoConfig.degradationPreference = MAINTAIN_BALANCED; // Balance quality and framerate under poor network
+videoConfig.mirrorMode = VIDEO_MIRROR_MODE_AUTO; // AUTO lets SDK decide based on camera (front/back)
+videoConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(videoConfig);
+```
+
+### High-quality video calls
+
+Use the following as a starting configuration for video calling use cases:
+
+```cpp
+// Configure video encoder settings for video calls
+VideoEncoderConfiguration videoCallConfig;
+videoCallConfig.dimensions.width = 1280; // HD resolution for high video quality
+videoCallConfig.dimensions.height = 720;
+videoCallConfig.frameRate = FRAME_RATE_FPS_30; // Higher framerate for smooth motion
+videoCallConfig.bitrate = STANDARD_BITRATE; // SDK calculates optimal bitrate automatically
+videoCallConfig.orientationMode = ORIENTATION_MODE_ADAPTIVE; // Adjusts to device rotation
+videoCallConfig.degradationPreference = MAINTAIN_RESOLUTION; // Prioritize video quality
+videoCallConfig.mirrorMode = VIDEO_MIRROR_MODE_AUTO; // AUTO lets SDK decide based on camera (front/back)
+videoCallConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(videoCallConfig);
+```
+
+### Low-bandwidth use-cases
+
+Use the following as a starting configuration for limited bandwidth or mobile networks:
+
+```cpp
+// Configure video encoder settings for low-bandwidth scenarios
+VideoEncoderConfiguration lowBandwidthConfig;
+lowBandwidthConfig.dimensions.width = 320; // Minimal resolution to save bandwidth
+lowBandwidthConfig.dimensions.height = 180;
+lowBandwidthConfig.frameRate = FRAME_RATE_FPS_10; // Lower framerate reduces bandwidth usage
+lowBandwidthConfig.bitrate = STANDARD_BITRATE; // SDK calculates optimal bitrate automatically
+lowBandwidthConfig.orientationMode = ORIENTATION_MODE_ADAPTIVE; // Adjusts to device rotation
+lowBandwidthConfig.degradationPreference = MAINTAIN_FRAMERATE; // Keep playback smooth
+lowBandwidthConfig.mirrorMode = VIDEO_MIRROR_MODE_AUTO; // AUTO lets SDK decide based on camera (front/back)
+lowBandwidthConfig.minBitrate = DEFAULT_MIN_BITRATE; // Use default for most cases; higher values may cause packet loss
+// Apply configuration (call before enableVideo() for faster first frame)
+rtcEngine->setVideoEncoderConfiguration(lowBandwidthConfig);
+```
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the [SDK API-Example](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) source code for a more detailed example.
+
+### API reference
+
+- [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+- [`VideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_videoencoderconfiguration.html)
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+Customer satisfaction with your Video Calling app depends on the quality of video and audio it provides. The sharpness, smoothness, and overall quality of the video is directly linked to the frame rate, bitrate, and other video encoder settings. Choosing improper settings can result in poor video quality. Conversely, if the settings are too demanding, the available bandwidth quickly gets choked, leading to a suboptimal experience for your users.
+
+This page guides you on configuring the video encoder settings to ensure optimal video quality in your Video Calling app.
+
+## Understand the tech
+
+In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+
+#### Resolution, frame rate, and bitrate
+
+* **Resolution**: Defines the video encoding resolution in pixels. The default value is `960 × 540`. Higher resolutions generally result in better video clarity. Note that this parameter does not determine the final video orientation. Refer to [Video orientation](#video-orientation) for setting the video output orientation.
+
+* **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
+
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+
+* **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
+
+Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+
+To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
+
+The configured parameter settings represent maximum values under ideal conditions. In cases where video quality cannot reach the set maximum values due to network constraints or other factors, the actual values are adjusted to match the specified maximum resolution, frame rate, or bitrate as closely as possible.
+:::note
+Billing is based on actual video resolution, not configured settings. For example, if network adaptation reduces your video from 1280×720 to 640×360, you are billed for the lower resolution that users actually receive.
+:::
+#### Video orientation
+
+The way video is displayed on the playing device depends on `orientationMode` used on the encoding device, orientation of the capturing device, orientation of the playing device, and whether screen rotation is enabled on the playing device. On the capturing device, you can set the `orientationMode` to:
+
+* **Adaptive**
+
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+
+* **Fixed Portrait**
+
+  In this mode, the output video is always in portrait mode relative to the Status Bar. If the captured video is in landscape mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information.
+
+* **Fixed Landscape**
+
+  In this mode, the output video is always in landscape mode relative to the Status Bar. If the captured video is in portrait mode, the video encoder crops it. This method is suitable for situations where the receiving end cannot process the rotation information, such as web browsers or legacy applications.
+
+The following table shows how video orientation behaves under different mode and device configurations:
+
+| Orientation mode | Screen rotation | Capturing device | Recording server | Receiving end display |
+|-----------------|-----------------|------------------|------------------|----------------------|
+| **Adaptive** | Disabled | Landscape | Landscape | Landscape. Does not change with device rotation |
+| **Adaptive** | Disabled | Portrait | Portrait | Portrait. Does not change with device rotation |
+| **Adaptive** | Enabled | Landscape | Landscape | Landscape. Rotates with device orientation |
+| **Adaptive** | Enabled | Portrait | Portrait | Portrait. Rotates with device orientation |
+| **Fixed landscape** | | Landscape | Landscape | Always landscape |
+| **Fixed landscape** | | Portrait | Landscape (cropped) | Always landscape (cropped) |
+| **Fixed portrait** | | Portrait | Portrait | Always portrait |
+| **Fixed portrait** | | Landscape | Portrait (cropped) | Always portrait (cropped) |
+
+The following images illustrate the orientation behavior:
+
+**Adaptive orientation mode**
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_locked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_landscape.png)
+
+* Screen rotation: _Disabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_locked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_locked_portrait.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Landscape_
+  ![orientation_adaptive_unlocked_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_landscape.png)
+
+* Screen rotation: _Enabled_
+* Capturing device orientation: _Portrait_
+  ![orientation_adaptive_unlocked_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_adaptive_unlocked_portrait.png)
+
+**Landscape orientation mode**
+
+* Capturing device orientation: _Landscape_
+  ![orientation_landscape_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_landscape.png)
+
+* Capturing device orientation: _Portrait_
+  ![orientation_landscape_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_landscape_portrait.png)
+
+**Portrait orientation mode**
+
+* Capturing device orientation: _Portrait_
+  ![orientation_portrait_portrait](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_portrait.png)
+
+* Capturing device orientation: _Landscape_
+  ![orientation_portrait_landscape](https://assets-docs.agora.io/images/video-sdk/orientation_portrait_landscape.png)
+
+#### Degradation preference
+
+To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+
+#### Mirror mode
+
+By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
+
+## Implementation
+
+Use the `SetVideoEncoderConfiguration` method to configure video encoding parameters.
+You can call this method at any point after initialization, whether it's before or after joining a channel. For optimal performance, best practice is to enable the video module by calling `EnableVideo` before calling `SetVideoEncoderConfiguration`. This approach reduces the time required for the first frame to be generated.
+
+To set the video encoder configuration, take the following steps:
+
+1. **Create UI**
+
+  In `BP_VideoWidget`, create a **Video Encoder Configuration** area containing the following controls:
+
+  * `ET_FPS`: Set the frame rate of video encoding.
+  * `ET_Width`: Set the width of the video.
+  * `ET_Height`: Set the height of the video.
+  * `ET_BitRate`: Set the bitrate of the video.
+  * `ET_MinBitRate`: Set the minimum encoding bitrate of the video.
+
+  Sample UI Interface:
+  ![Video call ui](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-videoprofile-ui.png)
+
+2. **Bind events**
+
+  Follow the steps below to bind the corresponding events in the node.
+
+  1. In the `Bind UIEvent` node, bind the `OnVideoConfigConfirmClicked` callback. This callback is triggered when the user sets the video encoding parameters in the video encoder configuration.
+
+      ![OnVideoConfigConfirmClicked callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-bind-onvideoconfigconfirmclicked.png)
+
+  2. In the `Bind Event` node, bind the `OnVideoSizeChanged` callback. This callback is triggered when there is a change in the video size or rotation information.
+
+      ![OnVideoSizeChanged callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-bind-onvideosizechanged.png)
+
+3. **Implement the `OnVideoConfigConfirmClicked` callback**
+
+  To change the video encoder configuration, take the following steps:
+
+  1. In the **My Blueprint panel** of the Level Blueprint, follow these steps to create an `OnVideoConfigConfirmClicked` UI event node:
+    1. Open the Level Blueprint.
+    2. Locate the **My Blueprint** panel.
+    3. Create a new UI event node named `OnVideoConfigConfirmClicked`.
+
+  2. Connect the created UI element to the **Make VideoEncoderConfiguration** node. Pass in the encoding parameters entered by the user to configure the `VideoEncoderConfiguration`. Follow the steps below:
+    1. Retrieve the user-specified values from the UI elements.
+    2. Use these values as inputs to the **Make VideoEncoderConfiguration** node.
+    3. Connect the output of the **Make VideoEncoderConfiguration** node to the appropriate input of the video encoding process.
+
+        ![VideoEncoderConfiguration](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-videoconfig-value.png)
+
+  3. Call the `SetVideoEncoderConfiguration` method and configure the following parameters in the **Make VideoEncoderConfiguration** node according to your specific requirements:
+    1. **Orientation Mode:** Set the rotation direction of the video.
+    2. **Degradation Preference:** Specify the degradation preference for video encoding when bandwidth is limited.
+    3. **Mirror Mode:** Define whether the video screen seen by the remote user should be mirrored.
+    4. **Compression Preference:** Set the compression preference for video encoding.
+
+    Refer to the following sample interface:
+
+    ![Orientation Mode](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-setvideoencoderconfiguration.png)
+
+4. **Implement the `OnVideoSizeChanged` callback**
+
+  Follow the steps below to implement the `OnVideoSizeChanged` callback function and adjust the local view based on the video change information obtained in the callback:
+
+  1. In the **My Blueprint** panel of the level blueprint, create an `OnVideoSizeChanged` event node.
+  2. Within the `OnVideoSizeChanged` callback, obtain the key parameters of the video change information: `sourceType`, `uid`, `width`, `height`, `rotation`.
+  3. Pass these parameters into the **Make FVideoViewIdentity** node to adjust both the local and remote views accordingly.
+
+  Sample implementation:
+    - Connect the obtained parameters (`sourceType`, `uid`, `width`, `height`, `rotation`) to the corresponding inputs of the **Make FVideoViewIdentity** node.
+    - Adjust the local and remote views using the output of the **Make FVideoViewIdentity** node.
+  ![OnVideoSizeChanged callback](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/bp-onvideosizechanged.png)
+
+### Troubleshooting
+
+The following are some common issues and their solutions:
+
+| Issue | Possible solution |
+|--------|--------------------|
+| **Blurry video** | Increase resolution or bitrate |
+| **Choppy/laggy playback** | Reduce resolution, increase minimum bitrate, or use maintain framerate degradation |
+| **High bandwidth usage** | Lower resolution or frame rate |
+| **Video orientation incorrect** | Use fixed portrait or fixed landscape orientation mode |
+
+## Reference
+
+This section contains related information and API references.
+
+### Video profiles table
+
+Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+
+| Resolution (width × height) | Frame rate (fps) |
+|------------------|------------------|
+| 160 × 120     | 15    |
+| 120 × 120     | 15    |
+| 320 × 180     | 15    |
+| 180 × 180     | 15    |
+| 240 × 180     | 15    |
+| 320 × 240     | 15    |
+| 240 × 240     | 15    |
+| 424 × 240     | 15    |
+| 640 × 360     | 15    |
+| 360 × 360     | 15    |
+| 640 × 360     | 30    |
+| 360 × 360     | 30    |
+| 480 × 360     | 15    |
+| 480 × 360     | 30    |
+| 640 × 480     | 15    |
+| 480 × 480     | 15    |
+| 640 × 480     | 30    |
+| 480 × 480     | 30    |
+| 848 × 480     | 15    |
+| 848 × 480     | 30    |
+| 640 × 480     | 10    |
+| 960 × 540     | 15    |
+| 960 × 540     | 30    |
+| 1280 × 720    | 15    |
+| 1280 × 720    | 30    |
+| 960 × 720     | 15    |
+| 960 × 720     | 30    |
+| 1920 × 1080    | 15    |
+| 1920 × 1080    | 30    |
+| 1920 × 1080    | 60    |
+| 2560 × 1440    | 30    |
+| 2560 × 1440    | 60    |
+| 3840 × 2160    | 30    |
+| 3840 × 2160    | 60    |
+
+:::info
+After you set the resolution and frame rate, the SDK automatically sets the corresponding bitrate. Agora does not recommend that you modify the bitrate manually.
+
+:::
+### Sample project
+
+Agora provides open source sample projects for your reference. Download or view the following projects for more detailed examples.
+
+* [`SetVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+* [`FOnVideoSizeChanged`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onvideosizechanged)
+
+### API reference
+
+- [`SetVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration)
+</PlatformStructured>
+

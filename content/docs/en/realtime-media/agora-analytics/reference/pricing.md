@@ -135,6 +135,6 @@ Unsubscribing from a plan or switching to another plan takes effect on the first
 
 ## See also
 
--   [Pricing for Video SDK](/en/realtime-media/video/reference/pricing)
+-   [Pricing for Video SDK](/en/realtime-media/rtc/reference/pricing)
 
 -   [What are Agora’s policies on billing, fee deductions, and account suspension](billing-policies.md)
