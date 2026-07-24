@@ -437,11 +437,11 @@ describe('DocsContent', () => {
     );
 
     const article = await screen.findByRole('article');
-    expect(article).toHaveClass('gap-6');
+    expect(article).toHaveClass('gap-4');
     expect(article).not.toHaveClass('gap-9');
 
     const header = article.querySelector('header');
-    expect(header).toHaveClass('pb-5');
+    expect(header).toHaveClass('pb-4');
     expect(header).not.toHaveClass('pb-7');
   });
 
