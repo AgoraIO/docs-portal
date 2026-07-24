@@ -1,3 +1,7 @@
+import {
+  getZhCNSdkDownloadProductCopy,
+  SDK_DOWNLOAD_PRODUCT_GROUP_ORDER,
+} from './sdk-download-products';
 import type {
   SdkDownloadPlatform,
   SdkDownloadProduct,
@@ -8,26 +12,9 @@ export const SDK_DOWNLOAD_PRODUCT_ID_ATTRIBUTE = 'data-sdk-download-product-id';
 export const SDK_DOWNLOAD_PRODUCT_SECTION_SELECTOR =
   '[data-sdk-download-product-id]';
 
-const PRODUCT_GROUP_ORDER = [
-  'agents',
-  'voice',
-  'video',
-  'signaling',
-  'chat',
-  'iot',
-  'whiteboard',
-  'fastboard',
-  'mediaplayer-kit',
-  'server-gateway',
-  'on-premise-recording',
-  'meeting',
-  'flexible-classroom',
-  'cloud-scene',
-  'proctor',
-] as const;
-
 export function buildSdkDownloadProductNavItems(
   platforms: readonly SdkDownloadPlatform[],
+  locale: 'en' | 'zh-CN' = 'en',
 ) {
   const productById = new Map<string, { id: string; label: string }>();
 
@@ -37,7 +24,13 @@ export function buildSdkDownloadProductNavItems(
         const id = getSdkDownloadProductCatalogId(product);
 
         if (!productById.has(id)) {
-          productById.set(id, { id, label: product.label });
+          const localizedCopy =
+            locale === 'zh-CN' ? getZhCNSdkDownloadProductCopy(id) : undefined;
+
+          productById.set(id, {
+            id,
+            label: localizedCopy?.label ?? product.label,
+          });
         }
       }
     }
@@ -116,6 +109,8 @@ export function getSdkDownloadProductSectionId(productId: string) {
 }
 
 export function getSdkDownloadProductGroupRank(productId: string) {
-  const index = (PRODUCT_GROUP_ORDER as readonly string[]).indexOf(productId);
-  return index === -1 ? PRODUCT_GROUP_ORDER.length : index;
+  const index = (SDK_DOWNLOAD_PRODUCT_GROUP_ORDER as readonly string[]).indexOf(
+    productId,
+  );
+  return index === -1 ? SDK_DOWNLOAD_PRODUCT_GROUP_ORDER.length : index;
 }

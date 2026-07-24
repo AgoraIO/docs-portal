@@ -15,6 +15,7 @@ import { useCatalogSectionNavigation } from './useCatalogSectionNavigation';
 
 const sdkProductItems = buildSdkDownloadProductNavItems(
   zhCNSdkDownloadPlatforms,
+  'zh-CN',
 );
 
 export function SdkDownloadProductNav() {

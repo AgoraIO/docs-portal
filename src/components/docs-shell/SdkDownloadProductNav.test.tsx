@@ -18,6 +18,33 @@ describe('SdkDownloadProductNav', () => {
     vi.restoreAllMocks();
   });
 
+  it('keeps product labels in sync with the SDK cards', () => {
+    render(
+      <>
+        <SdkDownloadProductNav />
+        <SdksCatalog locale="zh-CN" />
+      </>,
+    );
+
+    const navigation = screen.getByRole('navigation', { name: 'SDK 产品' });
+    const cardsByProductId = new Map(
+      screen
+        .getAllByRole('article')
+        .map((card) => [
+          card.dataset.sdkDownloadProductId,
+          within(card).getByRole('heading', { level: 3 }).textContent,
+        ]),
+    );
+
+    for (const link of within(navigation).getAllByRole('link')) {
+      const productId = link
+        .getAttribute('href')
+        ?.replace('#sdk-download-product-', '');
+
+      expect(link).toHaveTextContent(cardsByProductId.get(productId) ?? '');
+    }
+  });
+
   it('only lists SDK products rendered by the current query filters', async () => {
     window.history.replaceState(
       {},
