@@ -13,7 +13,11 @@ export type OpenApiSchemaTreeNode = {
   exclusiveMaximum?: number;
   exclusiveMinimum?: number;
   format?: string;
+  maxItems?: number;
+  maxLength?: number;
   maximum?: number;
+  minItems?: number;
+  minLength?: number;
   minimum?: number;
   name: string;
   nullable?: boolean;
@@ -194,7 +198,15 @@ function buildSchemaNode(
       ? { exclusiveMinimum: value.exclusiveMinimum }
       : {}),
     ...(typeof value.format === 'string' ? { format: value.format } : {}),
+    ...(typeof value.maxItems === 'number' ? { maxItems: value.maxItems } : {}),
+    ...(typeof value.maxLength === 'number'
+      ? { maxLength: value.maxLength }
+      : {}),
     ...(typeof value.maximum === 'number' ? { maximum: value.maximum } : {}),
+    ...(typeof value.minItems === 'number' ? { minItems: value.minItems } : {}),
+    ...(typeof value.minLength === 'number'
+      ? { minLength: value.minLength }
+      : {}),
     ...(typeof value.minimum === 'number' ? { minimum: value.minimum } : {}),
     name,
     ...(isNullable(value) ? { nullable: true } : {}),

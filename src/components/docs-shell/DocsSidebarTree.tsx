@@ -170,8 +170,8 @@ function SidebarSection({
 
   if (!node.collapsible) {
     return (
-      <div>
-        <SidebarGroupLabel className="mt-3 mb-1 h-auto gap-2 px-2 py-0.5 text-[11px] font-semibold tracking-[0.08em] text-[color:var(--ink-4)] uppercase">
+      <div className="mt-5 first:mt-0">
+        <SidebarGroupLabel className="mb-1.5 h-auto gap-2 px-2 py-0.5 text-[12px] font-bold tracking-[0.06em] text-[color:var(--ink-2)] uppercase">
           <span
             className="block min-w-0 flex-1 break-words leading-5 whitespace-normal"
             title={node.title}

@@ -807,7 +807,7 @@ describe('docs content regressions', () => {
     );
     expect(srtStreaming).toContain('- `na`: North America');
     expect(srtStreaming).toContain(
-      '[Get streaming key](../build/set-up-and-authenticate/quickstart-best-practices#get-streaming-key)',
+      '[Get streaming key](../quickstart#get-streaming-key)',
     );
 
     const simulcasting = readDoc(

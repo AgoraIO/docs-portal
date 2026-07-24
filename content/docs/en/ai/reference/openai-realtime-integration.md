@@ -3,7 +3,7 @@ title: OpenAI Realtime integration
 description: Use Agora RTC transport with the OpenAI Realtime API when you need a custom voice stack instead of the managed Conversational AI Engine.
 ---
 
-This guide explains how to combine Agora's realtime audio transport with the OpenAI Realtime API.
+This guide explains how to combine Agora's real-time audio transport with the OpenAI Realtime API.
 
 Use this integration when you want Agora to handle the live audio session and network transport, while OpenAI Realtime handles the model-side conversational behavior.
 
@@ -27,7 +27,7 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 - **App certificate and token model**: Used for secure join flows where needed.
 - **Channel and user ID**: Define the live session and participants.
 - **SD-RTN**: Provides Agora's low-latency transport layer.
-- **OpenAI Realtime API**: Provides the model-side realtime conversation flow.
+- **OpenAI Realtime API**: Provides the model-side real-time conversation flow.
 
 ## Recommended quickstart flow
 

@@ -20,7 +20,7 @@ describe('sitemap', () => {
     }
   });
 
-  it('requires an explicit canonical host for cn deployments', () => {
+  it('uses the Vite-exposed site URL for cn deployments during hydration', () => {
     const previousSiteUrl = process.env.SITE_URL;
     const previousViteSiteUrl = process.env.VITE_SITE_URL;
     const previousPublicSiteUrl = process.env.PUBLIC_SITE_URL;
@@ -30,9 +30,7 @@ describe('sitemap', () => {
     process.env.PUBLIC_SITE_URL = 'https://public-alias.example.com';
 
     try {
-      expect(() => getSitemapBaseUrl('cn')).toThrow(
-        'SITE_URL is required when VITE_DOCS_REGION=cn',
-      );
+      expect(getSitemapBaseUrl('cn')).toBe('https://vite-alias.example.com');
     } finally {
       restoreEnvValue('SITE_URL', previousSiteUrl);
       restoreEnvValue('VITE_SITE_URL', previousViteSiteUrl);

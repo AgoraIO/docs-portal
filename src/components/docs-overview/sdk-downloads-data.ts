@@ -1431,8 +1431,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            id: '4.24.6-voice-sdk-web',
+            label: 'Version 4.24.6 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
+          },
+          {
             id: '4.24.5-voice-sdk-web',
-            label: 'Version 4.24.5 (Latest)',
+            label: 'Version 4.24.5',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
             packageManager:
@@ -1695,8 +1703,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.6-video-sdk-web',
+            label: 'Version 4.24.6 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
+          },
+          {
             id: '4.24.5-video-sdk-web',
-            label: 'Version 4.24.5 (Latest)',
+            label: 'Version 4.24.5',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
             packageManager:
@@ -1736,7 +1752,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.24.0-video-sdk-web',
-            label: 'Version 4.24.0 (Latest)',
+            label: 'Version 4.24.0',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_0_FULL.zip',
             packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
