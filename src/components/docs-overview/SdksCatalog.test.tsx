@@ -94,10 +94,7 @@ describe('SdksCatalog', () => {
       (option) => option.textContent,
     );
 
-    expect(optionLabels).toEqual([
-      'v4.6.3 - Latest',
-      'v4.6.3 Lite - Latest, Lite',
-    ]);
+    expect(optionLabels).toEqual(['v4.6.3 - Latest', 'v4.6.3 Lite - Latest']);
 
     fireEvent.change(select, { target: { value: '1' } });
 
@@ -299,14 +296,14 @@ describe('SdksCatalog', () => {
 
     render(<SdksCatalog locale="zh-CN" />);
 
-    expect(screen.getByText('正在显示 Signaling SDK')).toBeVisible();
+    expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
     expect(screen.getByRole('link', { name: '查看全部 SDK' })).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/sdks',
     );
 
     const signalingCard = screen.getByRole('article', {
-      name: 'Signaling SDK',
+      name: '实时消息 SDK',
     });
     expect(
       within(signalingCard).getByRole('tab', { name: 'HarmonyOS' }),
@@ -322,13 +319,13 @@ describe('SdksCatalog', () => {
   it('uses prop filters for zh-CN product download pages', () => {
     render(<SdksCatalog locale="zh-CN" platform="linux" product="signaling" />);
 
-    expect(screen.getByText('正在显示 Signaling SDK')).toBeVisible();
+    expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
     expect(
       screen.queryByRole('article', { name: '视频 SDK' }),
     ).not.toBeInTheDocument();
 
     const signalingCard = screen.getByRole('article', {
-      name: 'Signaling SDK',
+      name: '实时消息 SDK',
     });
     expect(
       within(signalingCard).getByRole('tab', { name: 'Linux' }),
@@ -346,13 +343,15 @@ describe('SdksCatalog', () => {
 
   it('renders flexible classroom solution SDKs in the zh-CN catalog', () => {
     render(
-      <SdksCatalog locale="zh-CN" platform="android" product="flexible-classroom" />,
+      <SdksCatalog
+        locale="zh-CN"
+        platform="android"
+        product="flexible-classroom"
+      />,
     );
 
     expect(screen.getByText('正在显示 灵动课堂 SDK')).toBeVisible();
-    expect(
-      screen.getByRole('article', { name: '灵动课堂 SDK' }),
-    ).toBeVisible();
+    expect(screen.getByRole('article', { name: '灵动课堂 SDK' })).toBeVisible();
     expect(
       screen.queryByRole('article', { name: '云课堂 SDK' }),
     ).not.toBeInTheDocument();
@@ -362,10 +361,14 @@ describe('SdksCatalog', () => {
   });
 
   it('renders meeting SDKs in the zh-CN catalog', () => {
-    render(<SdksCatalog locale="zh-CN" platform="electron" product="meeting" />);
+    render(
+      <SdksCatalog locale="zh-CN" platform="electron" product="meeting" />,
+    );
 
-    expect(screen.getByText('正在显示 灵动会议 SDK')).toBeVisible();
-    const meetingCard = screen.getByRole('article', { name: '灵动会议 SDK' });
+    expect(screen.getByText('正在显示 智能云会议引擎 SDK')).toBeVisible();
+    const meetingCard = screen.getByRole('article', {
+      name: '智能云会议引擎 SDK',
+    });
     expect(
       within(meetingCard).getByText('npm i fcr-ui-scene@3.1.0'),
     ).toBeVisible();
@@ -377,7 +380,7 @@ describe('SdksCatalog', () => {
     );
 
     const signalingCard = screen.getByRole('article', {
-      name: 'Signaling SDK',
+      name: '实时消息 SDK',
     });
 
     expect(
@@ -435,6 +438,29 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('localizes zh-CN package variant and language labels', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoOptions = within(
+      screen.getByRole('article', { name: '视频 SDK' }),
+    )
+      .getAllByRole('option')
+      .map((option) => option.textContent);
+    expect(videoOptions).toEqual([
+      'v4.6.3 完整版 - 最新',
+      'v4.6.3 轻量版 - 最新',
+    ]);
+
+    const serverOptions = within(
+      screen.getByRole('article', { name: 'RTC 服务端 SDK' }),
+    )
+      .getAllByRole('option')
+      .map((option) => option.textContent);
+    expect(serverOptions).toContain('v2.2.8 Go - 最新');
+    expect(serverOptions).toContain('v2.2.4 Python - 最新');
+    expect(serverOptions.join(' ')).not.toContain(' for ');
+  });
+
   it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
@@ -443,14 +469,59 @@ describe('SdksCatalog', () => {
       .map((node) => node.textContent?.trim())
       .filter(Boolean);
 
-    expect(headings.indexOf('Agora Agents SDK')).toBeLessThan(
+    expect(headings.indexOf('对话式 AI 引擎 SDK')).toBeLessThan(
       headings.indexOf('语音 SDK'),
     );
     expect(headings.indexOf('语音 SDK')).toBeLessThan(
-      headings.indexOf('灵动会议 SDK'),
+      headings.indexOf('智能云会议引擎 SDK'),
     );
-    expect(headings.indexOf('灵动会议 SDK')).toBeLessThan(
+    expect(headings.indexOf('智能云会议引擎 SDK')).toBeLessThan(
       headings.indexOf('灵动课堂 SDK'),
+    );
+  });
+
+  it('uses canonical Chinese product names and descriptions throughout the catalog', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const expectedProducts = [
+      ['对话式 AI 引擎 SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      [
+        '语音 SDK',
+        '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
+      ],
+      ['视频 SDK', '适用于音视频通话、互动直播和极速直播的实时互动 SDK'],
+      ['实时消息 SDK', '提供低延时消息、信令、状态同步和频道管理能力的 SDK'],
+      ['即时通讯 SDK', '适用于即时通讯场景的 SDK'],
+      ['物联网 aPaaS SDK', '适用于嵌入式设备实时音视频互动的 SDK'],
+      ['媒体播放器组件', '用于在客户端播放本地或在线媒体资源的组件'],
+      ['互动白板 SDK', '提供可高度定制且不含默认 UI 的互动白板核心能力'],
+      ['Fastboard SDK', '提供默认 UI，支持快速集成互动白板功能的 SDK'],
+      [
+        '智能云会议引擎 SDK',
+        '用于构建多人音视频会议、会控、协作办公和 AI 会议体验的 SDK',
+      ],
+      [
+        'RTC 服务端 SDK',
+        '部署在服务端，用于向 RTC 频道发送音视频流或从频道接收音视频流',
+      ],
+      ['本地服务端录制 SDK', '部署在本地服务端，用于录制 RTC 频道中的音视频流'],
+      ['灵动课堂 SDK', '适用于教育场景和课堂 UI 定制的 SDK'],
+      ['云课堂 SDK', '提供默认课堂 UI 的场景化 SDK'],
+      ['灵动监考 SDK', '适用于在线监考场景的 SDK'],
+    ] as const;
+
+    for (const [name, description] of expectedProducts) {
+      expect(
+        within(screen.getByRole('article', { name })).getByText(description),
+      ).toBeVisible();
+    }
+
+    const catalogText = screen
+      .getAllByRole('article')
+      .map((article) => article.textContent)
+      .join('\n');
+    expect(catalogText).not.toMatch(
+      /SDK for:?|Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
     );
   });
 
