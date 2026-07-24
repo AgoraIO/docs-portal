@@ -8,126 +8,126 @@ export const platformRegistry = {
       en: 'Web',
       'zh-CN': 'Web',
     },
-    order: 10,
+    order: 40,
   },
   javascript: {
     label: {
       en: 'JavaScript',
       'zh-CN': 'JavaScript',
     },
-    order: 15,
+    order: 90,
   },
   android: {
     label: {
       en: 'Android',
       'zh-CN': 'Android',
     },
-    order: 20,
+    order: 10,
   },
   ios: {
     label: {
       en: 'iOS',
       'zh-CN': 'iOS',
     },
-    order: 30,
+    order: 20,
   },
   flutter: {
     label: {
       en: 'Flutter',
       'zh-CN': 'Flutter',
     },
-    order: 40,
+    order: 70,
   },
   'react-native': {
     label: {
       en: 'React Native',
       'zh-CN': 'React Native',
     },
-    order: 50,
+    order: 80,
   },
   windows: {
     label: {
       en: 'Windows',
       'zh-CN': 'Windows',
     },
-    order: 60,
+    order: 50,
   },
   cpp: {
     label: {
       en: 'C++',
       'zh-CN': 'C++',
     },
-    order: 65,
+    order: 130,
   },
   macos: {
     label: {
       en: 'macOS',
       'zh-CN': 'macOS',
     },
-    order: 70,
+    order: 30,
   },
   electron: {
     label: {
       en: 'Electron',
       'zh-CN': 'Electron',
     },
-    order: 80,
+    order: 60,
   },
   unity: {
     label: {
       en: 'Unity',
       'zh-CN': 'Unity',
     },
-    order: 90,
+    order: 100,
   },
   unreal: {
     label: {
       en: 'Unreal Engine',
       'zh-CN': 'Unreal Engine',
     },
-    order: 100,
+    order: 110,
   },
   blueprint: {
     label: {
       en: 'Unreal Blueprint',
       'zh-CN': 'Unreal Blueprint',
     },
-    order: 110,
+    order: 120,
   },
   python: {
     label: {
       en: 'Python',
       'zh-CN': 'Python',
     },
-    order: 120,
+    order: 140,
   },
   go: {
     label: {
       en: 'Go',
       'zh-CN': 'Go',
     },
-    order: 122,
+    order: 150,
   },
   'linux-cpp': {
     label: {
       en: 'Linux C++',
       'zh-CN': 'Linux C++',
     },
-    order: 125,
+    order: 160,
   },
   'linux-c': {
     label: {
       en: 'Linux C',
       'zh-CN': 'Linux C',
     },
-    order: 130,
+    order: 170,
   },
   'linux-java': {
     label: {
       en: 'Linux Java',
       'zh-CN': 'Linux Java',
     },
-    order: 140,
+    order: 180,
   },
 } as const;
 

@@ -646,7 +646,7 @@ describe('common MDX registry', () => {
       <Group
         canonicalPlatform="web"
         groupMode="structured"
-        platforms='["android","ios","macos","web","windows","electron","flutter","react-native","javascript"]'
+        platforms='["android","ios","macos","web","windows","electron","flutter","react-native","javascript","blueprint","unity","unreal"]'
       >
         <div>Platform content</div>
       </Group>,
@@ -657,15 +657,18 @@ describe('common MDX registry', () => {
         .getAllByRole('tab')
         .map((tab) => tab.textContent?.trim()),
     ).toEqual([
-      'Web',
-      'JavaScript',
       'Android',
       'iOS',
+      'macOS',
+      'Web',
+      'Windows',
+      'Electron',
       'Flutter',
       'React Native',
-      'Windows',
-      'macOS',
-      'Electron',
+      'JavaScript',
+      'Unity',
+      'Unreal Engine',
+      'Unreal Blueprint',
     ]);
   });
 
@@ -800,7 +803,7 @@ describe('common MDX registry', () => {
       );
 
       await waitFor(() => {
-        expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
+        expect(screen.queryByRole('tab', { name: 'Web' })).toBeNull();
       });
 
       const tablist = screen.getByRole('tablist', { name: 'Platform' });
@@ -826,7 +829,7 @@ describe('common MDX registry', () => {
         'true',
       );
       expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'macOS' })).toBeInTheDocument();
       expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
       expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
 
@@ -837,7 +840,7 @@ describe('common MDX registry', () => {
       });
 
       expect(screen.getByRole('menu')).toBeVisible();
-      expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
+      expect(screen.getByRole('menuitem', { name: 'Web' })).toBeVisible();
       expect(screen.getByRole('menuitem', { name: 'Windows' })).toBeVisible();
       expect(
         screen.getByRole('menuitem', { name: 'React Native' }),

@@ -101,17 +101,31 @@ describe('platform registry', () => {
         'flutter',
         'react-native',
         'javascript',
+        'blueprint',
+        'unity',
+        'unreal',
       ]),
     ).toEqual([
-      'web',
-      'javascript',
       'android',
       'ios',
+      'macos',
+      'web',
+      'windows',
+      'electron',
       'flutter',
       'react-native',
-      'windows',
+      'javascript',
+      'unity',
+      'unreal',
+      'blueprint',
+    ]);
+  });
+
+  it('skips unavailable platforms without changing the shared relative order', () => {
+    expect(sortPlatformKeys(['macos', 'ios', 'web'])).toEqual([
+      'ios',
       'macos',
-      'electron',
+      'web',
     ]);
   });
 
