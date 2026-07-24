@@ -195,6 +195,8 @@ config.privateConfig.accessPointHostsCount = hosts.size();
 config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
 ```
 
+<a id="create"></a>
+
 ## createAgoraRtmClient
 
 ### 接口描述
@@ -248,13 +250,13 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 
 | 事件类型 | 描述 |
 | --- | --- |
-| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="onMessageEvent">onMessageEvent</code> | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#MessageEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="onPresenceEvent">onPresenceEvent</code> | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#PresenceEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="onMessageEvent">onMessageEvent</code> | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="onPresenceEvent">onPresenceEvent</code> | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code> | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/cpp/enumv#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/cpp/enumv#connectionreason)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#LinkStateEvent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="onTokenPrivilegeWillExpire">onTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span> |
 
 ### 添加监听
@@ -304,8 +306,8 @@ config.eventHandler = new RtmEventHandler();
 
 | 属性       |  类型  |   描述       |
 |----|-----| ----------- |
-| `type`            | `RTM_PRESENCE_EVENT_TYPE`    |   Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/api-ref/rtm2/cpp/enumv#presencetype)。  |
-| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/cpp/enumv#channeltype)。   |
+| `type`            | `RTM_PRESENCE_EVENT_TYPE`    |   Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#presencetype)。  |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。   |
 | `channelName`            | const char*                |  事件发生的频道名称。  |
 | `publisher`              | const char*                |  触发此事件的用户 ID。   |
 | `stateItems`            | `const StateItem*`    |  标识用户临时状态的键值对。  |
@@ -361,7 +363,7 @@ Topic 事件。
 
 | 属性        |  类型  |   描述   |
 |----|-----| ------ |
-| `type`            | `RTM_TOPIC_EVENT_TYPE`    |  Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/api-ref/rtm2/cpp/enumv#topictype)。  |
+| `type`            | `RTM_TOPIC_EVENT_TYPE`    |  Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#topictype)。  |
 | `channelName`            | const char*                |  事件发生的频道名称。   |
 | `publisher`              | const char*                |  触发此事件的用户 ID。   |
 | `topicInfos`            | `const TopicInfo*`               |  Topic 的详细信息，包含 Topic 名称、Topic 发布者等信息。   |
@@ -391,11 +393,11 @@ Storage 事件。
 
 | 属性         |  类型  |   描述      |
 |----|-----| ------- |
-| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/cpp/enumv#channeltype)。   |
-| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 类型。详见 [`RTM_STORAGE_TYPE`](/api-ref/rtm2/cpp/enumv#storagetype)。  |
-| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/api-ref/rtm2/cpp/enumv#storageeventtype)。  |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype)。   |
+| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 类型。详见 [`RTM_STORAGE_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#storagetype)。  |
+| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#storageeventtype)。  |
 | `target`              | const char*                |  用户 ID 或频道名称。   |
-| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/api-ref/rtm2/cpp/toc-storage/storage#setChannelMetadata)。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/cpp/storage#setchannelmetadata)。   |
 | `timestamp` | long | 事件发生的时间戳。                |
 
 #### LockEvent
@@ -429,11 +431,11 @@ SDK 连接状态事件。
 
 | 属性        |  类型  |   描述            |
 |----|-----| ------------- |
-| `currentState`            | `RTM_LINK_STATE`    |  当前的连接状态。详见 [`RTM_LINK_STATE`](/api-ref/rtm2/cpp/enumv#linkstate)。   |
-| `previousState`            | `RTM_LINK_STATE`    |  之前的连接状态。详见 [`RTM_LINK_STATE`](/api-ref/rtm2/cpp/enumv#linkstate)。   |
-| `serviceType`    | `RTM_SERVICE_TYPE` | 网络连接类型。详见 [`RTM_SERVICE_TYPE`](/api-ref/rtm2/cpp/enumv#rtmservicetype)。 |
-| `operation`    | `RTM_LINK_OPERATION` | 触发本次状态迁移的操作。详见 [`RTM_LINK_OPERATION`](/api-ref/rtm2/cpp/enumv#linkoperation)。 |
-| `reasonCode`    | `RTM_LINK_STATE_CHANGE_REASON` | 本次状态迁移的原因。详见 [`RTM_LINK_STATE_CHANGE_REASON`](/api-ref/rtm2/cpp/enumv#linkstatechangereason)。 |
+| `currentState`            | `RTM_LINK_STATE`    |  当前的连接状态。详见 [`RTM_LINK_STATE`](/zh-CN/api-reference/rtm/cpp/enumv#linkstate)。   |
+| `previousState`            | `RTM_LINK_STATE`    |  之前的连接状态。详见 [`RTM_LINK_STATE`](/zh-CN/api-reference/rtm/cpp/enumv#linkstate)。   |
+| `serviceType`    | `RTM_SERVICE_TYPE` | 网络连接类型。详见 [`RTM_SERVICE_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#rtmservicetype)。 |
+| `operation`    | `RTM_LINK_OPERATION` | 触发本次状态迁移的操作。详见 [`RTM_LINK_OPERATION`](/zh-CN/api-reference/rtm/cpp/enumv#linkoperation)。 |
+| `reasonCode`    | `RTM_LINK_STATE_CHANGE_REASON` | 本次状态迁移的原因。详见 [`RTM_LINK_STATE_CHANGE_REASON`](/zh-CN/api-reference/rtm/cpp/enumv#linkstatechangereason)。 |
 | `reason`    | const char* | 本次状态迁移的原因。该参数未来会废弃，请使用 `reasonCode` 参数替代。 |
 | `affectedChannels`    | const char** | 本次状态迁移影响的频道。 |
 | `affectedChannelCount`    | size_t | 本次状态迁移影响的频道数量。 |
@@ -520,6 +522,8 @@ virtual void logout(uint64_t& requestId) = 0;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `requestId` | uint64_t& | 必填 | - | （输出参数）请求标识符，后续用于识别和处理相应的请求。 |
+
+<a id="异步回调5"></a>
 
 ### 异步回调
 

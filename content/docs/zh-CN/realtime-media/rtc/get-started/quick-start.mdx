@@ -217,6 +217,8 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 </Accordion>
 </Accordions>
 
+<a id="实现流程"></a>
+
 ## 实现步骤
 
 本小节介绍如何实现一个实时音视频互动 App。你可以先复制完整的示例代码到你的项目中，快速体验实时音视频互动的基础功能，再按照实现步骤了解核心 API 调用。
@@ -4366,7 +4368,7 @@ https://miniapp-4.agoraio.cn
 
 ### 1. 初始化客户端对象
 
-调用 [`client.init`](/api-ref/rtc/mini-program/classes/client#init) 方法创建并初始化一个用于控制通话的客户端对象。你需要将 `APPID` 替换为你的声网项目的 App ID。详见[获取 App ID](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+调用 [`client.init`](/zh-CN/api-reference/rtc/mini-program/classes/client#init) 方法创建并初始化一个用于控制通话的客户端对象。你需要将 `APPID` 替换为你的声网项目的 App ID。详见[获取 App ID](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
 
 ```javascript
 // Callback 形式调用
@@ -4386,7 +4388,7 @@ await client.init(APPID)
 
 ### 2. 加入频道
 
-调用 [`client.join`](/api-ref/rtc/mini-program/classes/client#join) 方法加入频道。
+调用 [`client.join`](/zh-CN/api-reference/rtc/mini-program/classes/client#join) 方法加入频道。
 
 在 `client.join` 中你需要将 `yourToken` 替换成你自己生成的 Token。并填入想要加入的频道名以及用户 `uid`。在测试阶段，你可以直接在控制台[生成临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。在生产环境，我们推荐你在自己的服务端生成 Token，详见在[服务端生成 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -4405,7 +4407,7 @@ await client.join(yourToken, channel, uid)
 
 ### 3. 发布本地流
 
-成功加入频道后，就能调用 [`client.publish`](/api-ref/rtc/mini-program/classes/client#publish) 方法将本地音视频流发布到频道中。成功发布后，SDK 会返回该路音视频流的 URL。
+成功加入频道后，就能调用 [`client.publish`](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 方法将本地音视频流发布到频道中。成功发布后，SDK 会返回该路音视频流的 URL。
 
 ```javascript
 // Callback 形式调用
@@ -4423,7 +4425,7 @@ const url = await client.publish()
 
 ### 4. 订阅远端流
 
-当远端流发布到频道时，会触发 `stream-added` 事件，我们需要通过 [`client.on`](/api-ref/rtc/mini-program/classes/client#on) 监听该事件并在回调中订阅新加入的远端流。
+当远端流发布到频道时，会触发 `stream-added` 事件，我们需要通过 [`client.on`](/zh-CN/api-reference/rtc/mini-program/classes/client#on) 监听该事件并在回调中订阅新加入的远端流。
 
 ```javascript
 // Callback 形式调用
@@ -4458,7 +4460,7 @@ client.on("stream-removed", e => {
 
 **重连**
 
-如果你的项目中有切换到后台的场景需求，声网推荐调用 [`client.rejoin`](/api-ref/rtc/mini-program/classes/client#rejoin) 方法做好重连机制。你需要在该方法中传入当前频道内所有用户的 `uid` 作为额外参数。其他参数的设置与 `join` 方法相同。
+如果你的项目中有切换到后台的场景需求，声网推荐调用 [`client.rejoin`](/zh-CN/api-reference/rtc/mini-program/classes/client#rejoin) 方法做好重连机制。你需要在该方法中传入当前频道内所有用户的 `uid` 作为额外参数。其他参数的设置与 `join` 方法相同。
 
 ```javascript
 // Callback 形式调用
@@ -6656,7 +6658,7 @@ React Native 0.60.0 或以上版本支持自动链接原生模块，请勿手动
 
 ## 创建用户界面
 
-根据实时音视频互动的场景需要，为你的项目创建两个视图框，并使用 [`RtcSurfaceView`](/api-ref/rtc/rn/API/rtc_interface_class#class_rtcsurfaceview) 组件展示本地视频和远端视频，并配置加入频道和离开频道按钮。复制以下代码即可快速创建场景所需的用户界面。
+根据实时音视频互动的场景需要，为你的项目创建两个视图框，并使用 [`RtcSurfaceView`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_rtcsurfaceview) 组件展示本地视频和远端视频，并配置加入频道和离开频道按钮。复制以下代码即可快速创建场景所需的用户界面。
 
 <Accordions>
 <Accordion title="创建用户界面示例代码">
@@ -8247,7 +8249,7 @@ void UAgoraWidget::NativeDestruct()
 | 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
 | `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="quick-start-8170-2-2" /> |
-| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
+| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。 |
 | `FOnUserJoined` | 远端观众或主播加入当前频道回调。 | <Slot name="quick-start-8170-4-2" /> |
 | `FOnUserOffline` | 远端观众或主播离开当前频道回调。 | <Slot name="quick-start-8170-5-2" /> |
 
@@ -8269,7 +8271,7 @@ void UAgoraWidget::NativeDestruct()
 <Slot for="quick-start-8170-5-2">
 
 - `uid`: (Integer64) 离线观众或主播的用户 ID。
-- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。
+- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/zh-CN/api-reference/rtc/unreal-blueprint/enum-userofflinereasontype)。
 
 </Slot>
 
@@ -8453,7 +8455,7 @@ npm install agora-rtc-react
 
 ### 初始化 SDK
 
-首先调用 Web SDK 提供的 [createClient](/api-ref/rtc/react/interfaces/iagorartc.html#createclient) 方法创建 `client` 对象，用于 `<AgoraRTCProvider />` 组件。
+首先调用 Web SDK 提供的 [createClient](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartc#createclient) 方法创建 `client` 对象，用于 `<AgoraRTCProvider />` 组件。
 
 然后使用 `<AgoraRTCProvider />` 组件包裹 `<App />` 组件，方便后续使用状态和操作相关的 Hooks。
 

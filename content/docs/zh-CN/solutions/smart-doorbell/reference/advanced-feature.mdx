@@ -13,11 +13,11 @@ description: "查看智能门铃的告警通知和设备控制，了解关键概
 
 ## 设备控制
 
-客户端需要通过信令系统在设备端调节设备音量等。你可以在客户端集成声网 [RTM SDK](https://docs.agora.io/cn/Real-time-Messaging/product_rtm) 实现设备控制。RTSA Lite SDK 具备云信令接口，可以直接与 RTM SDK 进行通信。
+客户端需要通过信令系统在设备端调节设备音量等。你可以在客户端集成声网 [RTM SDK](/zh-CN/realtime-media/rtm) 实现设备控制。RTSA Lite SDK 具备云信令接口，可以直接与 RTM SDK 进行通信。
 
 ### 1. 生成 RTM Token
 
-使用信令接口需要通过 RTM Token 鉴权。你需要自行在业务后台生成 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm)。业务后台会分配此次通话的主叫用户 ID、被叫用户 ID 及对应的 RTM Token，并分别下发至客户端和设备端。这些参数都是后续客户端使用的 RTM SDK 和设备端使用的 RTSA Lite SDK 登录 RTM 系统所需要的。
+使用信令接口需要通过 RTM Token 鉴权。你需要自行在业务后台生成 [RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。业务后台会分配此次通话的主叫用户 ID、被叫用户 ID 及对应的 RTM Token，并分别下发至客户端和设备端。这些参数都是后续客户端使用的 RTM SDK 和设备端使用的 RTSA Lite SDK 登录 RTM 系统所需要的。
 
 ### 2. 设备端和客户端登录 RTM 系统
 
@@ -132,4 +132,4 @@ public void onMessageReceived(RtmMessage rtmMessage, String peerId) {
 在开发过程中，你需要注意如下事项：
 
 - RTC SDK、RTM SDK、RTSA Lite SDK 和你的 Token 生成器必须使用相同的 [App ID](/zh-CN/introduction/glossary#appid)，否则无法互通。
-- RTC SDK 和 RTSA Lite SDK 的音视频接口使用 [RTC Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication) 进行鉴权，RTM SDK 和 RTSA Lite SDK 的云信令接口使用 [RTM Token](https://docs.agora.io/cn/Real-time-Messaging/token2_server_rtm) 进行鉴权。两者生成方式不同且不可混用。
+- RTC SDK 和 RTSA Lite SDK 的音视频接口使用 [RTC Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication) 进行鉴权，RTM SDK 和 RTSA Lite SDK 的云信令接口使用 [RTM Token](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation) 进行鉴权。两者生成方式不同且不可混用。

@@ -124,7 +124,7 @@ join('your-appid', 'your-channel');
 
 ### 2. 注册插件
 
-在加入频道之前，创建 `SuperClarityExtension` 对象并调用 SDK 的[`registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc#registerExtensions) 方法注册插件。
+在加入频道之前，创建 `SuperClarityExtension` 对象并调用 SDK 的[`registerExtensions`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#registerextensions) 方法注册插件。
 
 ```typescript
 // 创建 SuperClarityExtension 对象
@@ -156,7 +156,7 @@ join('your-appid', 'your-channel');
 订阅远端视频轨道时，按照以下步骤开启 AI 画质插件：
 
 1. 调用插件的 `createProcessor` 方法创建插件的 `processor`，并监听相关事件。
-2. 调用 SDK 的 [`IRemoteVideoTrack.pipe`](/api-ref/rtc/javascript/interfaces/iremotevideotrack#pipe) 方法连接 AI 画质插件与该视频轨道之间的管线。
+2. 调用 SDK 的 [`IRemoteVideoTrack.pipe`](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#pipe) 方法连接 AI 画质插件与该视频轨道之间的管线。
 3. 调用插件的 `enable` 方法开启插件。开启后，播放该视频轨道即可看到 AI 画质插件的效果。
 
  :::warning[注意]
@@ -197,7 +197,7 @@ async function onUserPublished(user, mediaType) {
 
 虽然插件限制了创建的 `processor` 数量，但你可以通过切换视频轨道的方式，实现使用同一个 `processor` 对多个视频轨道进行 AI 画质处理。
 
-需要切换视频轨道时，调用 SDK 的 [`IRemoteVideotrack.unpipe`](/api-ref/rtc/javascript/interfaces/iremotevideotrack#unpipe) 方法断开 `processor` 与当前视频轨道的连接，然后调用 SDK 的 `IRemoteVideotrack.pipe` 方法连接新的视频轨道。
+需要切换视频轨道时，调用 SDK 的 [`IRemoteVideotrack.unpipe`](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#unpipe) 方法断开 `processor` 与当前视频轨道的连接，然后调用 SDK 的 `IRemoteVideotrack.pipe` 方法连接新的视频轨道。
 
 ```javascript
 {

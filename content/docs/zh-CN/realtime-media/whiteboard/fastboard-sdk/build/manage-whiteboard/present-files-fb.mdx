@@ -72,8 +72,8 @@ description: "了解 Fastboard SDK 在不同平台上的展示文件方式，包
 
 具体实现步骤如下：
 
-1. 将源文件上传至第三方云存储，调用[发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
-2. 调用[生成 Task Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-tasks-uuid) 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
+1. 将源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
+2. 调用[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token) 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
 3. 加入白板房间后，调用 `insertDocs` 方法，并通过该方法的 `params` 参数传入如下信息：
    - `taskUUID`：String。文档转换任务的 Task UUID。
    - `taskToken`：String。文档转换任务的 Task Token。
@@ -187,9 +187,9 @@ fastRoom.join { room ->
 
 具体实现步骤如下：
 
-1. 将源文件上传至第三方云存储，调用[发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
-2. 调用[生成 Task Token](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-tasks-uuid) API 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
-3. 调用[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 并传入该转换任务的 Task Token 和 Task UUID，获取转换后的文件信息，即响应包体中 `convertedFileList` 参数的值。
+1. 将源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
+2. 调用[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token) API 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
+3. 调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 并传入该转换任务的 Task Token 和 Task UUID，获取转换后的文件信息，即响应包体中 `convertedFileList` 参数的值。
 4. 加入白板房间后，根据文档的类型，调用 `insertPptx` 或 `insertStaticDocument` 方法，并传入如下参数：
    - `pages`：转换后的文件信息。你需要自行将 `convertedFileList` 转换为 `WhitePptPage` 数组。
    - `title`：窗口标题。
@@ -197,7 +197,7 @@ fastRoom.join { room ->
 
 下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何插入并展示一个带动画效果的 PPTX 文件。
 
-1. 成功完成了动态文档转换，并调用[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 获取了转换后的文件信息。
+1. 成功完成了动态文档转换，并调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 获取了转换后的文件信息。
 
 2. 在 `ViewController.swift` 文件中添加如下行，导入 Whiteboard SDK：
 
@@ -328,8 +328,8 @@ fastRoom.join { room ->
 
 声网 Fastboard SDK 集成了内置插件 DocsViewer，用于展示文档。你只需调用 Fastboard SDK 的 [`insertDocs`](/zh-CN/api-reference/whiteboard/fastboard/web#insertdocs) 方法，并传入文档的信息，即可在白板子窗口中分页演示文档，具体实现步骤如下：
 
-1. 调用[发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)将源文档分页转换成一组图片或网页。
-2. 调用[查询文档转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)获取文档转换结果。
+1. 调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)将源文档分页转换成一组图片或网页。
+2. 调用[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)获取文档转换结果。
 3. 调用 `insertDocs` 方法，并将每页图片或网页的宽、高和 URL 按顺序传入 `scenes` 参数中。
 
 将源文档转换为图片或网页时，你需要特别注意以下几点：
@@ -337,8 +337,8 @@ fastRoom.join { room ->
 - **确保转换后的图片或网页格式正确。**
   目前 Fastboard SDK 支持插入并展示的图片或网页格式如下：
 
-  - 由 PPT、PPTX、DOC、DOCX、PDF 格式的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。详见[静态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files#静态文档转换)。
-  - 由 PPTX 格式的源文件转换成的 HTML 网页。详见[动态文档转换](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files#动态文档转换)。
+  - 由 PPT、PPTX、DOC、DOCX、PDF 格式的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。详见[静态文档转换](/zh-CN/realtime-media/whiteboard/concepts#静态文档转换)。
+  - 由 PPTX 格式的源文件转换成的 HTML 网页。详见[动态文档转换](/zh-CN/realtime-media/whiteboard/concepts#动态文档转换)。
 - **确保图片或网页的访问权限。**
   你需要确保转换后的图片或网页可通过公网访问；此外，如果存储图片或网页的服务器与你的 Web 应用域名不同，你需要配置[跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)。否则，你的 Web 应用服务将无法访问并加载这些图片或网页。
 
@@ -349,9 +349,9 @@ fastRoom.join { room ->
 
 下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何插入并展示一个三页、带动画效果的 PPTX 文件。
 
-1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-projector-tasks)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
+1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
 
-2. 调用[查询转换任务进度](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid) 获取文档转换的结果。
+2. 调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 获取文档转换的结果。
 
 3. 在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的 `main.js` 文件中添加如下行插入文档：
 

@@ -224,7 +224,7 @@ Future<(RtmStatus, RemoveChannelMetadataResult?) removeChannelMetadata(
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-2-3-4" /> |
-| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `lockName` | String | 选填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
 | `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
@@ -330,7 +330,7 @@ Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
-| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-3-4-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
 | `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
@@ -445,7 +445,7 @@ Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
-| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-4-3-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
 | `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
@@ -600,7 +600,7 @@ Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-6-2-4" /> |
-| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
 | `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
 
@@ -697,7 +697,7 @@ Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | String | 必填 | - | 用户 ID。 |
-| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#MetadataItem)。 |
+| `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | - | <Slot name="storage-flutter-html-7-3-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
 | `recordUserId` | bool | 选填 | `false` | 是否记录编辑者的用户 ID。 |
@@ -877,6 +877,15 @@ class RtmStatus {
       final String userId;                        // 当前操作的用户 ID
   }
   ```
+
+## Metadata
+
+设置和管理 Metadata 的数据结构。包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | int | 选填 | `-1` | Metadata 的主版本号。`-1` 表示关闭版本校验；大于 `0` 时，仅当目标版本号与该值相符时执行操作。 |
+| `items` | `List<MetadataItem>` | 选填 | `null` | Metadata Item 列表。 |
 
 ## MetadataItem
 

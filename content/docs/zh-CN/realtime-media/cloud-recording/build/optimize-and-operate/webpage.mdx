@@ -21,7 +21,7 @@ description: "了解如何在云端录制中保障页面录制可靠性，包括
 
 建议你通过如下步骤确认录制服务已成功启动：
 
-1. 每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。`acquire` 和 `start` 的请求需配对调用。Resource ID 在获取到的 5 分钟内有效，需尽快使用。超时需要重新申请 Resource ID。
+1. 每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。`acquire` 和 `start` 的请求需配对调用。Resource ID 在获取到的 5 分钟内有效，需尽快使用。超时需要重新申请 Resource ID。
 
 2. 确认 `start` 请求成功，即成功获得 `sid`（录制 ID）。如果 `start` 请求失败，需要根据状态码采取相应措施：
    - 如果返回的 HTTP 状态码为 `40x`，则表示请求参数错误，需要进行排查。
@@ -42,7 +42,7 @@ description: "了解如何在云端录制中保障页面录制可靠性，包括
 
 #### 1. 设置页面加载超时时间
 
-调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法时通过 `readyTimeout` 字段设置页面加载超时的时间限制。
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时通过 `readyTimeout` 字段设置页面加载超时的时间限制。
 
 `readyTimeout`：Number 类型，单位为秒，取值范围 [0,60]：
 

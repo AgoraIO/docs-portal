@@ -22,7 +22,7 @@ description: "了解本地服务端录制在不同平台上的在录制中添加
 
 无论是单流录制，还是合流录制，SDK 都支持在录制视频过程中添加水印。下文以合流录制为例，介绍实现水印功能时核心的参数设置。
 
-你可以通过 [`enableAndUpdateVideoWatermarks`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarks) 开启或更新水印设置：
+你可以通过 [`enableAndUpdateVideoWatermarks`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#enableandupdatevideowatermarks) 开启或更新水印设置：
 
 ```cpp
 int enableAndUpdateVideoWatermarks(WatermarkConfig* watermark_configs, int num)
@@ -30,13 +30,13 @@ int enableAndUpdateVideoWatermarks(WatermarkConfig* watermark_configs, int num)
 
 其中，`watermark_configs` 为具体的水印数组指针；`num` 为水印个数。
 
-如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/api-ref/recording/cpp/iagoramediartcrecorder#disablevideowatermarks) 实现。
+如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#disablevideowatermarks) 实现。
 
 :::info[信息]
 单流录制场景下，实现的水印功能与合流录制一致。两者的差异在于不同场景下，调用的 API 不同。单流下：
 
-- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#enableandupdatevideowatermarksbyuid)
-- 关闭水印：[`disableVideoWatermarksByUid`](/api-ref/recording/cpp/iagoramediartcrecorder#disablevideowatermarksbyuid)
+- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#enableandupdatevideowatermarksbyuid)
+- 关闭水印：[`disableVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#disablevideowatermarksbyuid)
 :::
 
 ### 添加水印文字
@@ -92,7 +92,7 @@ watermarks[i].imageUrl = "path/to/watermark.png";
 
 ### 设置水印位置
 
-无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`WatermarkConfig`](/api-ref/recording/cpp/struct#watermarkconfig) 结构体中提供了两种位置设置模式。
+无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`WatermarkConfig`](/zh-CN/api-reference/local-server-recording/cpp/struct#watermarkconfig) 结构体中提供了两种位置设置模式。
 
 #### 固定像素值 FIT_MODE_COVER_POSITION
 
@@ -192,7 +192,7 @@ for(int i = 0; i < config.waterMarks.size(); i++){
 
 ## 参考信息
 
-- [API 参考](/api-ref/recording/cpp/api-overview)
+- [API 参考](/zh-CN/api-reference/local-server-recording/cpp/api-overview)
 
 </PlatformStructured>
 
@@ -216,7 +216,7 @@ for(int i = 0; i < config.waterMarks.size(); i++){
 
 无论是单流录制，还是合流录制，SDK 都支持在录制视频过程中添加水印。下文以合流录制为例，介绍实现水印功能时核心的参数设置。
 
-你可以通过 [`enableAndUpdateVideoWatermarks`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarks) 开启或更新水印设置：
+你可以通过 [`enableAndUpdateVideoWatermarks`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enableandupdatevideowatermarks) 开启或更新水印设置：
 
 ```java
 int enableAndUpdateVideoWatermarks(WatermarkConfig[] watermarkConfigs)
@@ -224,13 +224,13 @@ int enableAndUpdateVideoWatermarks(WatermarkConfig[] watermarkConfigs)
 
 其中，`watermarkConfigs` 为具体的水印数组。
 
-如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/api-ref/recording/java/agoramediartcrecorder#disablevideowatermarks) 实现。
+如果需要关闭水印功能，可以调用 [`disableVideoWatermarks`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#disablevideowatermarks) 实现。
 
 :::info[信息]
 单流录制场景下，实现的水印功能与合流录制一致。两者的差异在于不同场景下，调用的 API 不同。单流下：
 
-- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/api-ref/recording/java/agoramediartcrecorder#enableandupdatevideowatermarksbyuid)
-- 关闭水印：[`disableVideoWatermarksByUid`](/api-ref/recording/java/agoramediartcrecorder#disablevideowatermarksbyuid)
+- 开启或更新水印：[`enableAndUpdateVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#enableandupdatevideowatermarksbyuid)
+- 关闭水印：[`disableVideoWatermarksByUid`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#disablevideowatermarksbyuid)
 :::
 
 ### 添加水印文字
@@ -290,7 +290,7 @@ watermarks[i].setImageUrl("path/to/watermark.png");
 
 ### 设置水印位置
 
-无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`Constants.WatermarkFitMode`](/api-ref/recording/java/enum#watermarkfitmode) 中提供了两种位置设置模式。
+无论添加哪种水印，都需要设置水印在视频中的位置。SDK 在 [`Constants.WatermarkFitMode`](/zh-CN/api-reference/local-server-recording/java/enum#watermarkfitmode) 中提供了两种位置设置模式。
 
 #### 固定像素值 Constants.WatermarkFitMode.FIT_MODE_COVER_POSITION
 
@@ -422,6 +422,6 @@ if (null != recorderConfig.getWaterMark() && recorderConfig.getWaterMark().size(
 
 ## 参考信息
 
-[API 参考](/api-ref/recording/java/api-overview)
+[API 参考](/zh-CN/api-reference/local-server-recording/java/api-overview)
 
 </PlatformStructured>

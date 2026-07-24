@@ -87,7 +87,7 @@ AgoraBeautyMaterial.bundle
 
 ### 创建视频特效对象
 
-在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
 
 ```java
 // 假设 mRtcEngine 是已初始化的 RtcEngine 对象
@@ -103,7 +103,7 @@ mVideoEffectObject = mRtcEngine.createVideoEffectObject(bundlePath,
 
 ### 实现美颜效果
 
-调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+调用 [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
 
 ```java
 // 启用美颜效果，使用默认模板
@@ -178,7 +178,7 @@ mVideoEffectObject.addOrUpdateVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_I
 
 #### 移除特效节点
 
-使用 [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+使用 [`removeVideoEffect`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
 
 ```java
 // 移除美颜节点
@@ -193,7 +193,7 @@ mVideoEffectObject.removeVideoEffect(IVideoEffectObject.VIDEO_EFFECT_NODE_ID.FIL
 
 #### 保存和重置配置
 
-使用 [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+使用 [`performVideoEffectAction`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
 
 ```java
 // 保存当前美颜节点的所有参数
@@ -239,7 +239,7 @@ float currentSmoothness = mVideoEffectObject.getVideoEffectFloatParam("beauty_ef
 
 ### 销毁视频特效对象
 
-在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject) 释放资源：
 
 ```java
 mRtcEngine.destroyVideoEffectObject(mVideoEffectObject);
@@ -399,23 +399,23 @@ mVideoEffectObject = null;
 
 #### 视频特效对象管理
 
-- [`createVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
-- [`destroyVideoEffectObject`](/api-ref/rtc/android/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+- [`createVideoEffectObject`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject)
 
 #### 特效节点管理
 
-- [`addOrUpdateVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
-- [`removeVideoEffect`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
-- [`performVideoEffectAction`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+- [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
 
 #### 参数设置与获取
 
-- [`setVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
-- [`setVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
-- [`setVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
-- [`getVideoEffectFloatParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
-- [`getVideoEffectBoolParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
-- [`getVideoEffectIntParam`](/api-ref/rtc/android/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- [`setVideoEffectFloatParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
 
 #### 相关文档
 
@@ -508,7 +508,7 @@ AgoraBeautyMaterial.bundle
 
 ### 创建视频特效对象
 
-在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
 
 ```swift
 // 假设 agoraKit 是已初始化的 AgoraRtcEngineKit 对象
@@ -524,7 +524,7 @@ videoEffectObject = agoraKit.createVideoEffectObject(bundlePath: bundlePath,
 
 ### 实现美颜效果
 
-调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+调用 [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
 
 ```swift
 // 启用美颜效果，使用默认模板
@@ -600,7 +600,7 @@ videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.
 
 #### 移除特效节点
 
-使用 [`removeVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+使用 [`removeVideoEffect`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
 
 ```swift
 // 移除美颜节点
@@ -615,7 +615,7 @@ videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawVa
 
 #### 保存和重置配置
 
-使用 [`performVideoEffectAction`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+使用 [`performVideoEffectAction`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
 
 ```swift
 // 保存当前美颜节点的所有参数
@@ -661,7 +661,7 @@ let currentSmoothness = videoEffectObject?.getVideoEffectFloatParam("beauty_effe
 
 ### 销毁视频特效对象
 
-在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject) 释放资源：
 
 ```swift
 agoraKit.destroyVideoEffectObject(videoEffectObject)
@@ -821,23 +821,23 @@ videoEffectObject = nil
 
 #### 视频特效对象管理
 
-- [`createVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
-- [`destroyVideoEffectObject`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+- [`createVideoEffectObject`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject)
 
 #### 特效节点管理
 
-- [`addOrUpdateVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
-- [`removeVideoEffect`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
-- [`performVideoEffectAction`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+- [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
 
 #### 参数设置与获取
 
-- [`setVideoEffectFloatParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
-- [`setVideoEffectBoolParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
-- [`setVideoEffectIntParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
-- [`getVideoEffectFloatParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
-- [`getVideoEffectBoolParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
-- [`getVideoEffectIntParam`](/api-ref/rtc/ios/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- [`setVideoEffectFloatParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
 
 #### 相关文档
 
@@ -930,7 +930,7 @@ AgoraBeautyMaterial.bundle
 
 ### 创建视频特效对象
 
-在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
 
 ```swift
 // 假设 agoraKit 是已初始化的 AgoraRtcEngineKit 对象
@@ -946,7 +946,7 @@ videoEffectObject = agoraKit.createVideoEffectObject(bundlePath: bundlePath,
 
 ### 实现美颜效果
 
-调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+调用 [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
 
 ```swift
 // 启用美颜效果，使用默认模板
@@ -1022,7 +1022,7 @@ videoEffectObject?.addOrUpdateVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.
 
 #### 移除特效节点
 
-使用 [`removeVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+使用 [`removeVideoEffect`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
 
 ```swift
 // 移除美颜节点
@@ -1037,7 +1037,7 @@ videoEffectObject?.removeVideoEffect(nodeId: AgoraVideoEffectNodeId.filter.rawVa
 
 #### 保存和重置配置
 
-使用 [`performVideoEffectAction`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+使用 [`performVideoEffectAction`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
 
 ```swift
 // 保存当前美颜节点的所有参数
@@ -1083,7 +1083,7 @@ let currentSmoothness = videoEffectObject?.getVideoEffectFloatParam("beauty_effe
 
 ### 销毁视频特效对象
 
-在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject) 释放资源：
 
 ```swift
 agoraKit.destroyVideoEffectObject(videoEffectObject)
@@ -1243,23 +1243,23 @@ videoEffectObject = nil
 
 #### 视频特效对象管理
 
-- [`createVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
-- [`destroyVideoEffectObject`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+- [`createVideoEffectObject`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject)
 
 #### 特效节点管理
 
-- [`addOrUpdateVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
-- [`removeVideoEffect`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
-- [`performVideoEffectAction`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+- [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
 
 #### 参数设置与获取
 
-- [`setVideoEffectFloatParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
-- [`setVideoEffectBoolParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
-- [`setVideoEffectIntParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
-- [`getVideoEffectFloatParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
-- [`getVideoEffectBoolParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
-- [`getVideoEffectIntParam`](/api-ref/rtc/macos/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- [`setVideoEffectFloatParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
 
 #### 相关文档
 
@@ -1352,7 +1352,7 @@ AgoraBeautyMaterial.bundle
 
 ### 创建视频特效对象
 
-在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
+在初始化 RtcEngine 后，调用 [`createVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject) 为需要启用特效的视频源创建视频特效对象。
 
 ```cpp
 // 假设 m_rtcEngine 是已初始化的 IRtcEngine 指针
@@ -1363,7 +1363,7 @@ m_videoEffectObject = m_rtcEngine->createVideoEffectObject("C:\\path\\to\\beauty
 
 ### 实现美颜效果
 
-调用 [`addOrUpdateVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
+调用 [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) 启用美颜效果。传入空字符串 `""` 将使用素材包中的默认模板。
 
 ```cpp
 // 启用美颜效果，使用默认模板
@@ -1429,7 +1429,7 @@ m_videoEffectObject->addOrUpdateVideoEffect(agora::rtc::IVideoEffectObject::VIDE
 
 #### 移除特效节点
 
-使用 [`removeVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
+使用 [`removeVideoEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect) 移除特定的特效节点：
 
 ```cpp
 // 移除美颜节点
@@ -1444,7 +1444,7 @@ m_videoEffectObject->removeVideoEffect(agora::rtc::IVideoEffectObject::VIDEO_EFF
 
 #### 保存和重置配置
 
-使用 [`performVideoEffectAction`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
+使用 [`performVideoEffectAction`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) 保存调整后的参数，从而在下次开启美颜时自动加载之前保存的参数，或重置为模板默认值：
 
 ```cpp
 // 保存当前美颜节点的所有参数
@@ -1490,7 +1490,7 @@ float currentSmoothness = m_videoEffectObject->getVideoEffectFloatParam("beauty_
 
 ### 销毁视频特效对象
 
-在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject) 释放资源：
+在不需要使用特效或销毁 RtcEngine 前，调用 [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject) 释放资源：
 
 ```cpp
 m_rtcEngine->destroyVideoEffectObject(m_videoEffectObject);
@@ -1650,23 +1650,23 @@ m_videoEffectObject = nullptr;
 
 #### 视频特效对象管理
 
-- [`createVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_createvideoeffectobject)
-- [`destroyVideoEffectObject`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_irtcengine_destroyvideoeffectobject)
+- [`createVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject)
+- [`destroyVideoEffectObject`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject)
 
 #### 特效节点管理
 
-- [`addOrUpdateVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_addorupdatevideoeffect)
-- [`removeVideoEffect`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_removevideoeffect)
-- [`performVideoEffectAction`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_performvideoeffectaction)
+- [`addOrUpdateVideoEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect)
+- [`removeVideoEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect)
+- [`performVideoEffectAction`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction)
 
 #### 参数设置与获取
 
-- [`setVideoEffectFloatParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectfloatparam)
-- [`setVideoEffectBoolParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectboolparam)
-- [`setVideoEffectIntParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_setvideoeffectintparam)
-- [`getVideoEffectFloatParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectfloatparam)
-- [`getVideoEffectBoolParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectboolparam)
-- [`getVideoEffectIntParam`](/api-ref/rtc/windows/API/toc_video_enhance_option#api_ivideoeffectobject_getvideoeffectintparam)
+- [`setVideoEffectFloatParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam)
+- [`setVideoEffectBoolParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam)
+- [`setVideoEffectIntParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam)
+- [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
+- [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
+- [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
 
 #### 相关文档
 

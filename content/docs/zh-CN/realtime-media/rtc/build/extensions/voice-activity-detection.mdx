@@ -65,7 +65,7 @@ VAD 插件依赖一些 [Wasm 文件](https://webassembly.org/)。为保证浏览
 
 ### 3. 注册插件
 
-调用 [`AgoraRTC.registerExtensions`](/api-ref/rtc/javascript/interfaces/iagorartc.html#registerextensions) 方法并传入创建的 `VADExtension` 实例注册 VAD 插件。你还可以监听 Wasm 文件加载失败的事件。
+调用 [`AgoraRTC.registerExtensions`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#registerextensions) 方法并传入创建的 `VADExtension` 实例注册 VAD 插件。你还可以监听 Wasm 文件加载失败的事件。
 
 :::warning[注意]
 声网推荐你只创建一个 `VADExtension` 实例。
@@ -117,7 +117,7 @@ AgoraRTC.registerExtensions([extension]);
     });
     ```
 
-2. 调用 SDK 的 [`pipe`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#pipe) 方法并指定 [`processorDestination`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#processordestination) 属性，将插件注入音频处理管道。
+2. 调用 SDK 的 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 方法并指定 [`processorDestination`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#processordestination) 属性，将插件注入音频处理管道。
 
     ```typescript
     // 创建音频轨道

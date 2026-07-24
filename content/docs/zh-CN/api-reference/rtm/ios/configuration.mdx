@@ -8,6 +8,8 @@ RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法
 
 - [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
 
+<a id="rtmconfig"></a>
+
 ## AgoraRtmClientConfig
 
 ### 接口描述
@@ -219,6 +221,8 @@ rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
 rtm_config.presenceTimeout = 300;
 ```
 
+<a id="create"></a>
+
 ## initWithConfig
 
 ### 接口描述
@@ -268,13 +272,13 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 
 | 事件类型   | 描述                      |
 |--------------| ---------- |
-| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="didReceiveMessageEvent">didReceiveMessageEvent</code>             | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`AgoraRtmMessageEvent`](#AgoraRtmMessageEvent)。</span>                  |
-| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="didReceivePresenceEvent">didReceivePresenceEvent</code>            | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`AgoraRtmPresenceEvent`](#AgoraRtmPresenceEvent)。</span>            |
-| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="didReceiveTopicEvent">didReceiveTopicEvent</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`AgoraRtmTopicEvent`](#AgoraRtmTopicEvent)。</span>                |
-| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="didReceiveStorageEvent">didReceiveStorageEvent</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`AgoraRtmStorageEvent`](#AgoraRtmStorageEvent)。</span>  |
-| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="didReceiveLockEvent">didReceiveLockEvent</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`AgoraRtmLockEvent`](#AgoraRtmLockEvent)。</span>   |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="didReceiveMessageEvent">didReceiveMessageEvent</code>             | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`AgoraRtmMessageEvent`](#agorartmmessageevent)。</span>                  |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="didReceivePresenceEvent">didReceivePresenceEvent</code>            | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`AgoraRtmPresenceEvent`](#agorartmpresenceevent)。</span>            |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="didReceiveTopicEvent">didReceiveTopicEvent</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`AgoraRtmTopicEvent`](#agorartmtopicevent)。</span>                |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="didReceiveStorageEvent">didReceiveStorageEvent</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`AgoraRtmStorageEvent`](#agorartmstorageevent)。</span>  |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="didReceiveLockEvent">didReceiveLockEvent</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`AgoraRtmLockEvent`](#agorartmlockevent)。</span>   |
 | <code className="index-group-item-rtmeventlistener index-api-onconnection" id="connectionChangedToState">connectionChangedToState</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmClientConnectionState`](/zh-CN/api-reference/rtm/ios/enumv#connectionstate) 和 [`AgoraRtmClientConnectionChangeReason`](/zh-CN/api-reference/rtm/ios/enumv#connectionreason)。</span>              |
-|        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="didReceiveLinkStateEvent">didReceiveLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmLinkStateEvent`](#AgoraRtmLinkStateEvent)。</span> |
+|        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="didReceiveLinkStateEvent">didReceiveLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmLinkStateEvent`](#agorartmlinkstateevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
 
 <a id="添加监听"></a>
@@ -350,6 +354,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 [rtm removeDelegate:handlerEx];
 ```
 
+<a id="messageevent"></a>
+
 #### AgoraRtmMessageEvent
 
 消息事件。
@@ -373,6 +379,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 | `rawData`            | NSData    |  二进制消息。   |
 | `stringData`            | NSString    |  字符串消息。   |
 
+<a id="presenceevent"></a>
+
 #### AgoraRtmPresenceEvent
 
 用户 Presence 事件。
@@ -381,8 +389,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 
 | 属性       |  类型  |   描述      |
 |-------|--------| ---------- |
-| `type`            | `AgoraRtmPresenceEventType`    |   Presence 事件类型。详见 [`AgoraRtmPresenceEventType`](/api-ref/rtm2/ios/enumv#presencetype)。  |
-| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/ios/enumv#channeltype)。   |
+| `type`            | `AgoraRtmPresenceEventType`    |   Presence 事件类型。详见 [`AgoraRtmPresenceEventType`](/zh-CN/api-reference/rtm/ios/enumv#presencetype)。  |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
 | `channelName`            | NSString                |  事件发生的频道名称。  |
 | `publisher`              | NSString                |  触发此事件的用户 ID。   |
 | `states`            | NSDictionary    |  标识用户临时状态的键值对。  |
@@ -406,6 +414,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 | `userId`         |  NSString  |  用户 ID。     |
 | `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
 
+<a id="topicevent"></a>
+
 #### AgoraRtmTopicEvent
 
 Topic 事件。
@@ -414,7 +424,7 @@ Topic 事件。
 
 | 属性        |  类型  |   描述                 |
 |-----|------| ---------- |
-| `type`            | `AgoraRtmTopicEventType`    |  Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/api-ref/rtm2/ios/enumv#topictype)。  |
+| `type`            | `AgoraRtmTopicEventType`    |  Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/zh-CN/api-reference/rtm/ios/enumv#topictype)。  |
 | `channelName`            | NSString                |  事件发生的频道名称。   |
 | `publisher`              | NSString                |  触发此事件的用户 ID。   |
 | `topicInfos`            | `NSArray<AgoraRtmTopicInfo *>`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
@@ -434,6 +444,8 @@ Topic 事件。
 | `publisherUserId`            | NSString    |  消息发布者的用户 ID。  |
 | `publisherMeta`            | NSString                |  消息发布者的元数据。   |
 
+<a id="storageevent"></a>
+
 #### AgoraRtmStorageEvent
 
 Storage 事件。
@@ -442,12 +454,14 @@ Storage 事件。
 
 | 属性         |  类型  |   描述             |
 |-----|------| ---------- |
-| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/api-ref/rtm2/ios/enumv#channeltype)。   |
-| `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/api-ref/rtm2/ios/enumv#storagetype)。  |
-| `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/api-ref/rtm2/ios/enumv#storageeventtype)。  |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
+| `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/zh-CN/api-reference/rtm/ios/enumv#storagetype)。  |
+| `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/zh-CN/api-reference/rtm/ios/enumv#storageeventtype)。  |
 | `target`              | NSString                |  用户 ID 或频道名称。   |
-| `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/api-ref/rtm2/ios/toc-storage/storage#AgoraRtmMetadata)。   |
+| `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/zh-CN/api-reference/rtm/ios/storage#agorartmmetadata)。   |
 | `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+<a id="lockevent"></a>
 
 #### AgoraRtmLockEvent
 
@@ -479,16 +493,18 @@ SDK 连接状态事件。
 
 | 属性        |  类型  |   描述                   |
 |-----|------| ---------- |
-| `currentState`            | `AgoraRtmLinkState`    |  当前的连接状态。详见 [`AgoraRtmLinkState`](/api-ref/rtm2/ios/enumv#linkstate)。   |
-| `previousState`            | `AgoraRtmLinkState`    |  之前的连接状态。详见 [`AgoraRtmLinkState`](/api-ref/rtm2/ios/enumv#linkstate)。   |
-| `serviceType`    | `AgoraRtmServiceType` | 网络连接类型。详见 [`AgoraRtmServiceType`](/api-ref/rtm2/ios/enumv#rtmservicetype)。 |
-| `operation`    | `AgoraRtmLinkOperation` | 触发本次状态迁移的操作。详见 [`AgoraRtmLinkOperation`](/api-ref/rtm2/ios/enumv#linkoperation)。 |
-| `reasonCode`    | `AgoraRtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`AgoraRtmLinkStateChangeReason`](/api-ref/rtm2/ios/enumv#linkstatechangereason)。 |
+| `currentState`            | `AgoraRtmLinkState`    |  当前的连接状态。详见 [`AgoraRtmLinkState`](/zh-CN/api-reference/rtm/ios/enumv#linkstate)。   |
+| `previousState`            | `AgoraRtmLinkState`    |  之前的连接状态。详见 [`AgoraRtmLinkState`](/zh-CN/api-reference/rtm/ios/enumv#linkstate)。   |
+| `serviceType`    | `AgoraRtmServiceType` | 网络连接类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv#rtmservicetype)。 |
+| `operation`    | `AgoraRtmLinkOperation` | 触发本次状态迁移的操作。详见 [`AgoraRtmLinkOperation`](/zh-CN/api-reference/rtm/ios/enumv#linkoperation)。 |
+| `reasonCode`    | `AgoraRtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`AgoraRtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/ios/enumv#linkstatechangereason)。 |
 | `reason`    | NSString | 本次状态迁移的原因。该参数未来会废弃，请使用 `reasonCode` 参数替代。 |
 | `affectedChannels`    | `NSArray<NSString *>` | 本次状态迁移影响的频道。 |
 | `unrestoredChannels`    | `NSArray<NSString *>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
 | `isResumed`    | BOOL | 在连接断开的 2 分钟内，是否从 `AgoraRtmLinkStateDisconnected` 状态恢复成 `AgoraRtmLinkStateConnected` 状态。`true` 表示已恢复。 |
 | `timestamp`    | unsigned long long | 本次事件通知发送的时间戳。 |
+
+<a id="login"></a>
 
 ## loginByToken
 

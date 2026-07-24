@@ -201,6 +201,8 @@ const config: RtmConfig = {
 };
 ```
 
+<a id="Init"></a>
+
 ## RtmClient
 
 ### 接口描述
@@ -256,13 +258,13 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 
 | 事件类型 | 描述 |
 | --- | --- |
-| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="message">message</code> | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#MessageEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="presence">presence</code> | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#PresenceEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="topic">topic</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="storage">storage</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="lock">lock</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="linkState">linkState</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#LinkStateEvent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-ontokenevent" id="token">token</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 相关的事件通知。详见 [`TokenEvent`](#TokenEvent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="message">message</code> | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="presence">presence</code> | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="topic">topic</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="storage">storage</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="lock">lock</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="linkState">linkState</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontokenevent" id="token">token</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 相关的事件通知。详见 [`TokenEvent`](#tokenevent)。</span> |
 
 ### 添加监听
 
@@ -400,8 +402,8 @@ rtmClient.removeEventListener('storage');
 
 | 属性       |  类型  |   描述       |
 |----|-----| ----------- |
-| `eventType`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/api-ref/rtm2/harmonyos/enumv#presencetype)。  |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/api-ref/rtm2/harmonyos/enumv#channeltype)。   |
+| `eventType`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#presencetype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
 | `channelName`            | string                |  事件发生的频道名称。  |
 | `publisher`              | string                |  触发此事件的用户 ID。   |
 | `stateChanged`            | `StateItem[]`    |  状态变更的键值对数组。仅当 `eventType` 为 `REMOTE_STATE_CHANGED` 时有效。  |
@@ -440,7 +442,7 @@ Topic 事件。
 
 | 属性        |  类型  |   描述   |
 |----|-----| ------ |
-| `eventType`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/api-ref/rtm2/harmonyos/enumv#topictype)。  |
+| `eventType`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#topictype)。  |
 | `channelName`            | string                |  事件发生的频道名称。   |
 | `publisher`              | string                |  触发此事件的用户 ID。   |
 | `topicInfos`            | `TopicInfo[]`               |  Topic 的详细信息，包含 Topic 名称、Topic 发布者等信息。   |
@@ -468,11 +470,11 @@ Storage 事件。
 
 | 属性         |  类型  |   描述      |
 |----|-----| ------- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/api-ref/rtm2/harmonyos/enumv#channeltype)。   |
-| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/api-ref/rtm2/harmonyos/enumv#storagetype)。  |
-| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/api-ref/rtm2/harmonyos/enumv#storageeventtype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
+| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/zh-CN/api-reference/rtm/harmonyos/enumv#storagetype)。  |
+| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#storageeventtype)。  |
 | `target`              | string                |  用户 ID 或频道名称。   |
-| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/api-ref/rtm2/harmonyos/toc-storage/storage#setChannelMetadata)。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/harmonyos/storage#setchannelmetadata)。   |
 | `timestamp` | number | 事件发生的时间戳。                |
 
 #### LockEvent
@@ -505,11 +507,11 @@ SDK 连接状态事件。
 
 | 属性        |  类型  |   描述            |
 |----|-----| ------------- |
-| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/api-ref/rtm2/harmonyos/enumv#linkstate)。   |
-| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/api-ref/rtm2/harmonyos/enumv#linkstate)。   |
-| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/api-ref/rtm2/harmonyos/enumv#rtmservicetype)。 |
-| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/api-ref/rtm2/harmonyos/enumv#linkoperation)。 |
-| `reasonCode`    | `RtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`RtmLinkStateChangeReason`](/api-ref/rtm2/harmonyos/enumv#linkstatechangereason)。 |
+| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstate)。   |
+| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstate)。   |
+| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/harmonyos/enumv#rtmservicetype)。 |
+| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkoperation)。 |
+| `reasonCode`    | `RtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstatechangereason)。 |
 | `reason`    | string | 本次状态迁移的原因描述。 |
 | `affectedChannels`    | string[] | 本次状态迁移影响的频道。 |
 | `unrestoredChannels`    | `UnrestoredChannelInfo[]` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
@@ -524,7 +526,7 @@ Token 事件。
 
 | 属性        |  类型  |   描述            |
 |----|-----| ------------- |
-| `eventType`            | `RtmTokenEventType`    |  Token 事件类型。详见 [`RtmTokenEventType`](/api-ref/rtm2/harmonyos/enumv#tokeneventtype)。   |
+| `eventType`            | `RtmTokenEventType`    |  Token 事件类型。   |
 | `reason`            | string    |  Token 事件的详细描述，提供事件触发原因的可读说明。   |
 | `affectedResources`    | `AffectedResources` | 受此 Token 事件影响的资源，包含受影响的频道列表等信息。 |
 | `timestamp`    | number | 事件发生的时间戳。 |

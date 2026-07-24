@@ -6,7 +6,7 @@ description: "了解如何在实时互动 RTC 中发布和订阅，包括适用�
 
 本文详细介绍如何使用声网 Web SDK 发布和取消发布本地音视频，以及订阅和取消订阅远端音视频。
 
-完成本地轨道的创建并且成功加入频道后，就可以调用 [`AgoraRTCClient.publish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#publish) 将本地的音视频数据发布到当前频道，以供频道中的其他用户订阅。
+完成本地轨道的创建并且成功加入频道后，就可以调用 [`AgoraRTCClient.publish`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 将本地的音视频数据发布到当前频道，以供频道中的其他用户订阅。
 
 ```javascript
 const localAudioTrack = ...;
@@ -39,7 +39,7 @@ await client.publish([localAudioTrack, localVideoTrack]);
 
 ## 取消发布音视频
 
-成功发布本地轨道后，如果想取消发布，可以调用 [`AgoraRTCClient.unpublish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#unpublish)。
+成功发布本地轨道后，如果想取消发布，可以调用 [`AgoraRTCClient.unpublish`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#unpublish)。
 
 ```javascript
 // 发布音视频
@@ -61,7 +61,7 @@ await client.unpublish([localAudioTrack, localVideoTrack]);
 
 ## 订阅音视频
 
-当远端用户成功发布音视频轨道之后，SDK 会触发 [`user-published`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件。这个事件携带两个参数：远端用户对象 (`user`) 和远端发布的媒体类型 (`mediaType`)。此时，你可以调用 [`AgoraRTCClient.subscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#subscribe) 发起订阅。
+当远端用户成功发布音视频轨道之后，SDK 会触发 [`user-published`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。这个事件携带两个参数：远端用户对象 (`user`) 和远端发布的媒体类型 (`mediaType`)。此时，你可以调用 [`AgoraRTCClient.subscribe`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#subscribe) 发起订阅。
 
 该方法为异步方法，使用时需要配合 `Promise` 或者 `async/await`。
 
@@ -83,7 +83,7 @@ client.on("user-published", async (user, mediaType) => {
 });
 ```
 
-当订阅方法调用完成之后，你可以通过 `user.audioTrack` 和 `user.videoTrack` 获取相应的 [`RemoteAudioTrack`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html) 和 [`RemoteVideoTrack`](/api-ref/rtc/javascript/interfaces/iremotevideotrack.html) 对象。
+当订阅方法调用完成之后，你可以通过 `user.audioTrack` 和 `user.videoTrack` 获取相应的 [`RemoteAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack) 和 [`RemoteVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack) 对象。
 
 订阅和发布不同，每次订阅只能订阅一个音频或视频轨道。即使发布端同时发布了音频轨道和视频轨道，SDK 也会触发两次 `user-published` 事件：一次 `user-published(audio)`，一次 `user-published(video)`。按照上面的代码逻辑，会完成两次订阅。
 
@@ -98,7 +98,7 @@ client.on("user-published", async (user, mediaType) => {
 
 ## 取消订阅音视频
 
-你可以通过 [`AgoraRTCClient.unsubscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#unsubscribe) 取消订阅远端的音视频。
+你可以通过 [`AgoraRTCClient.unsubscribe`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#unsubscribe) 取消订阅远端的音视频。
 
 ```javascript
 // 订阅目标用户的音视频

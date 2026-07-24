@@ -78,13 +78,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/android/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/android/audio/audio-raw#registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -193,13 +193,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/ios/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/ios/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -308,13 +308,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/macos/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/macos/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/macos/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/macos/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/macos/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/macos/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/macos/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -494,13 +494,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/windows/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/windows/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/windows/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/windows/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/windows/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/windows/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -609,13 +609,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/harmonyos/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 `registerAudioFrameObserver` 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/harmonyos/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/harmonyos/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/harmonyos/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/harmonyos/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/harmonyos/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 `onEarMonitoringAudioFrame` 回调获取耳返的原始音频数据。
+- ②：通过 `onRecordAudioFrame` 回调获取采集的原始音频数据。
+- ③：通过 `onPlaybackAudioFrameBeforeMixing` 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 `onPlaybackAudioFrame` 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 `onMixedAudioFrame` 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -724,13 +724,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/electron/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/electron/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/electron/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/electron/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/electron/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/electron/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/electron/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -839,13 +839,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/unity/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/unity/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -954,13 +954,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/flutter/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/flutter/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -1069,13 +1069,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/rn/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/rn/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -1184,13 +1184,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/unreal-cpp/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -1299,13 +1299,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 `registerAudioFrameObserver` 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/unreal-blueprint/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 `onEarMonitoringAudioFrame` 回调获取耳返的原始音频数据。
+- ②：通过 `onRecordAudioFrame` 回调获取采集的原始音频数据。
+- ③：通过 `onPlaybackAudioFrameBeforeMixing` 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 `onPlaybackAudioFrame` 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 `onMixedAudioFrame` 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 
@@ -1414,13 +1414,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/android/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/android/audio/audio-raw#registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/android/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/android/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-raw#onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`
 :::
 
@@ -1529,13 +1529,13 @@ description: "查看实时互动 RTC 的关键概念，了解关键概念、参�
 ![音频模块功能示意图](https://web-cdn.agora.io/docs-portal/img/rtc/key-concept/audio-module.png)
 
 :::info[信息]
-调用 [`registerAudioFrameObserver`](/api-ref/rtc/csharp/API/toc_audio_raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
+调用 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器后，你可以在音频流程的不同观测位置获取原始音频数据，详情如下：
 
-- ①：通过 [`onEarMonitoringAudioFrame`](/api-ref/rtc/csharp/API/toc_audio_raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
-- ②：通过 [`onRecordAudioFrame`](/api-ref/rtc/csharp/API/toc_audio_raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
-- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/api-ref/rtc/csharp/API/toc_audio_raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
-- ④：通过 [`onPlaybackAudioFrame`](/api-ref/rtc/csharp/API/toc_audio_raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
-- ⑤：通过 [`onMixedAudioFrame`](/api-ref/rtc/csharp/API/toc_audio_raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
+- ①：通过 [`onEarMonitoringAudioFrame`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调获取耳返的原始音频数据。
+- ②：通过 [`onRecordAudioFrame`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调获取采集的原始音频数据。
+- ③：通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调获取每条拉流单独的原始音频播放数据。
+- ④：通过 [`onPlaybackAudioFrame`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调获取所有拉流混合的原始音频播放数据。
+- ⑤：通过 [`onMixedAudioFrame`](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调获取采集和播放混音后的原始音频数据。
     即：⑤ `onMixedAudioFrame` = ② `onRecordAudioFrame` + ④ `onPlaybackAudioFrame`。
 :::
 

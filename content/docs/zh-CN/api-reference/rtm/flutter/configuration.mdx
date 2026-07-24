@@ -215,6 +215,8 @@ final rtmConfig = RtmConfig(
 
 ```
 
+<a id="create"></a>
+
 <a id="初始化"></a>
 ## 初始化
 
@@ -311,12 +313,12 @@ RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型                 | 描述       |
 | ------- | ------- |
-| <code className="index-api-onmessageevent" id="message">message</code>          | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#MessageEvent)。</span>            |
-| <code className="index-api-onpresenceevent" id="presence">presence</code>       | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#PresenceEvent)。</span>        |
-| <code className="index-api-ontopicevent" id="topic">topic</code>                | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span>                       |
-| <code className="index-api-onstorageevent" id="storage">storage</code>          | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span> |
-| <code className="index-api-onlockevent" id="lock">lock</code>                   | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span>    |
-| <code className="index-api-onlinkstateevent" id="linkState">linkState</code>    | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#LinkStateEvent)。</span>       |
+| <code className="index-api-onmessageevent" id="message">message</code>          | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span>            |
+| <code className="index-api-onpresenceevent" id="presence">presence</code>       | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span>        |
+| <code className="index-api-ontopicevent" id="topic">topic</code>                | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>                       |
+| <code className="index-api-onstorageevent" id="storage">storage</code>          | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
+| <code className="index-api-onlockevent" id="lock">lock</code>                   | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>    |
+| <code className="index-api-onlinkstateevent" id="linkState">linkState</code>    | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span>       |
 | <code className="index-api-ontokenwillexpire" id="token">token</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>    |
 
 <a id="添加监听"></a>
@@ -373,8 +375,8 @@ rtmClient.removeListener({
 
 | 属性       |  类型  |   描述                                                                                                                         |
 |-------|--------| ---------- |
-| `type`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/api-ref/rtm2/flutter/enumv#presencetype)。  |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/api-ref/rtm2/flutter/enumv#channeltype)。   |
+| `type`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/zh-CN/api-reference/rtm/flutter/enumv#presencetype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。   |
 | `channelName`            | String                |  事件发生的频道名称。   |
 | `publisher`              | String                |  触发此事件的用户 ID。   |
 | `stateItems`            | `List<StateItem>`    |  标识用户临时状态的键值对。  |
@@ -425,7 +427,7 @@ Topic 事件。
 
 | 属性        |  类型  |   描述               |
 |-----|------| ---------- |
-| `type`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/api-ref/rtm2/flutter/enumv#topictype)。  |
+| `type`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/zh-CN/api-reference/rtm/flutter/enumv#topictype)。  |
 | `channelName`            | String                |  事件发生的频道名称。   |
 | `publisher`              | String                |  触发此事件的用户 ID。   |
 | `topicInfos`            | `List<TopicInfo>`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
@@ -453,11 +455,11 @@ Storage 事件。
 
 | 属性         |  类型  |   描述                  |
 |-----|------| ---------- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/api-ref/rtm2/flutter/enumv#channeltype)。   |
-| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/api-ref/rtm2/flutter/enumv#storagetype)。  |
-| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/api-ref/rtm2/flutter/enumv#storageeventtype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。   |
+| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/zh-CN/api-reference/rtm/flutter/enumv#storagetype)。  |
+| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/zh-CN/api-reference/rtm/flutter/enumv#storageeventtype)。  |
 | `target`              | String                |  用户 ID 或频道名称。   |
-| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/api-ref/rtm2/flutter/toc-storage/storage#Metadata)。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/flutter/storage#metadata)。   |
 | `timestamp` | int | 事件发生的时间戳。                |
 
 #### LockEvent
@@ -490,10 +492,10 @@ SDK 连接状态事件。
 
 | 属性        |  类型  |   描述               |
 |-----|------| ---------- |
-| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/api-ref/rtm2/flutter/enumv#linkstate)。   |
-| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/api-ref/rtm2/flutter/enumv#linkstate)。   |
-| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/api-ref/rtm2/flutter/enumv#rtmservicetype)。 |
-| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/api-ref/rtm2/flutter/enumv#linkoperation)。 |
+| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/flutter/enumv#linkstate)。   |
+| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/flutter/enumv#linkstate)。   |
+| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/flutter/enumv#rtmservicetype)。 |
+| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/flutter/enumv#linkoperation)。 |
 | `reason`    | String | 本次状态迁移的原因。 详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/flutter/enumv#linkstatechangereason)。 |
 | `affectedChannels`    | `List<String>` | 本次状态迁移影响的频道。 |
 | `unrestoredChannels`    | `List<String>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |

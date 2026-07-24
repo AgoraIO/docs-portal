@@ -229,11 +229,11 @@ RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型           | 描述      |
 | ------ | ----- |
-|     <code className="index-group-item-irtmclient index-api-onmessageevent" id="OnMessageEvent">OnMessageEvent</code>      | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#MessageEvent)。</span>      |
-|    <code className="index-group-item-irtmclient index-api-onpresenceevent" id="OnPresenceEvent">OnPresenceEvent</code>    | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#PresenceEvent)。</span>      |
-|        <code className="index-group-item-irtmclient index-api-ontopicevent" id="OnTopicEvent">OnTopicEvent</code>         | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#TopicEvent)。</span>             |
-|     <code className="index-group-item-irtmclient index-api-onstorageevent" id="OnStorageEvent">OnStorageEvent</code>      | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#StorageEvent)。</span>       |
-|          <code className="index-group-item-irtmclient index-api-onlockevent" id="OnLockEvent">OnLockEvent</code>          | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#LockEvent)。</span>              |
+|     <code className="index-group-item-irtmclient index-api-onmessageevent" id="OnMessageEvent">OnMessageEvent</code>      | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span>      |
+|    <code className="index-group-item-irtmclient index-api-onpresenceevent" id="OnPresenceEvent">OnPresenceEvent</code>    | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span>      |
+|        <code className="index-group-item-irtmclient index-api-ontopicevent" id="OnTopicEvent">OnTopicEvent</code>         | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>             |
+|     <code className="index-group-item-irtmclient index-api-onstorageevent" id="OnStorageEvent">OnStorageEvent</code>      | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span>       |
+|          <code className="index-group-item-irtmclient index-api-onlockevent" id="OnLockEvent">OnLockEvent</code>          | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>              |
 |        <code className="index-group-item-irtmclient index-api-onconnection" id="OnConnectionStateChanged">OnConnectionStateChanged</code>         | <span className="index-desc-onconnection">接收客户端网路连接状态变更的事件通知。详见 [`RTM_CONNECTION_STATE`](/zh-CN/api-reference/rtm/unity/enumv#connectionstate) 和 [`RTM_CONNECTION_CHANGE_REASON`](/zh-CN/api-reference/rtm/unity/enumv#connectionreason)。</span> |
 | <code className="index-group-item-irtmclient index-api-ontokenwillexpire" id="OnTokenPrivilegeWillExpire">OnTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 token 将要过期的事件通知。</span>                 |
 
@@ -353,8 +353,8 @@ Presence 事件通知。
 
 |     属性      |      类型      | 描述       |
 | ----------- | ---| ------- |
-|    `type`     | `RTM_PRESENCE_EVENT_TYPE` | Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#presencetype)。 |
-| `channelType` |                     `RTM_CHANNEL_TYPE`                     | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/unity/enumv#channeltype)。 |
+|    `type`     | `RTM_PRESENCE_EVENT_TYPE` | Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#presencetype)。 |
+| `channelType` |                     `RTM_CHANNEL_TYPE`                     | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
 | `channelName` |     string     | 事件发生的频道名称。                    |
 |  `publisher`  |     string     | 触发此事件的用户 ID。                |
 | `stateItems`  |  `StateItem[]`  | 标识用户临时状态的键值对。         |
@@ -384,7 +384,7 @@ Topic 事件通知。
 
 |     属性      |    类型     | 描述                  |
 | --------- | ------ | --------- |
-|    `type`     | `RTM_TOPIC_EVENT_TYPE` | Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#topictype)。 |
+|    `type`     | `RTM_TOPIC_EVENT_TYPE` | Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#topictype)。 |
 | `channelName` |   string    | 事件发生的频道名称。            |
 |  `publisher`  |   string    | 触发此事件的用户 ID。             |
 | `topicInfos`  |                      `TopicInfo[]`                      | Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。          |
@@ -412,8 +412,8 @@ Storage 事件通知。
 | 属性         |  类型  |   描述           |
 |-----|------| ---------- |
 | `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。   |
-| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_TYPE`](/api-ref/rtm2/unity/enumv#storagetype)。  |
-| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/api-ref/rtm2/unity/enumv#storageeventtype)。  |
+| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#storagetype)。  |
+| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#storageeventtype)。  |
 | `target`              | string                |  用户 ID 或频道名称。   |
 | `data`            | `RtmMetadata`               |   Metadata Item 数组。   |
 

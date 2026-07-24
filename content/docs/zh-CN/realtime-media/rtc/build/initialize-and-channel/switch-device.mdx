@@ -29,7 +29,7 @@ videoTrack.setDevice("<NEW_DEVICE_ID>").then(() => {
 <a id="hot-plugging"></a>
 ### 音视频采集设备热插拔
 
-声网 Web SDK 提供 [`AgoraRTC.onMicrophoneChanged`](/api-ref/rtc/javascript/interfaces/iagorartc.html#onmicrophonechanged) 和 [`AgoraRTC.onCameraChanged`](/api-ref/rtc/javascript/interfaces/iagorartc.html#oncamerachanged) 回调，用于监听音视频设备的插拔状态。如果你想要在新设备插入的时候强制使用新设备，你需要监听 `AgoraRTC.onMicrophoneChanged` 或 `AgoraRTC.onCameraChanged`，并在对应的回调函数里调用 [`MicrophoneAudioTrack.setDevice`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack#setdevice) 或 [`CameraVideoTrack.setDevice`](/api-ref/rtc/javascript/interfaces/icameravideotrack#setdevice) 来切换音视频采集设备。
+声网 Web SDK 提供 [`AgoraRTC.onMicrophoneChanged`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onmicrophonechanged) 和 [`AgoraRTC.onCameraChanged`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#oncamerachanged) 回调，用于监听音视频设备的插拔状态。如果你想要在新设备插入的时候强制使用新设备，你需要监听 `AgoraRTC.onMicrophoneChanged` 或 `AgoraRTC.onCameraChanged`，并在对应的回调函数里调用 [`MicrophoneAudioTrack.setDevice`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#setdevice) 或 [`CameraVideoTrack.setDevice`](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 来切换音视频采集设备。
 
 :::warning[注意]
 如果终端用户使用了虚拟设备或故障设备，在进行设备拔插操作时，热拔插的逻辑可能会导致无画面或者无声。

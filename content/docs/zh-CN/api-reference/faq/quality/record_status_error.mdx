@@ -17,7 +17,7 @@ title: "为什么录制状态出现异常？"
 
 你可以将日志中的 code 与各枚举值逐一进行按位与运算，计算结果非零的，即为退出原因。例如，code 为 `6`（0b110）时，将其与各枚举值逐一进行按位与计算，`LEAVE_CODE_SIG` (0b10）与 `LEAVE_CODE_NO_USERS` (0b100）的结果非零，则退出原因包括收到 SIGINT 信号以及录制超时。
 
-大多数情况为录制超时退出，详见[`idleLimitSec`](https://docs.agora.io/cn/Recording/API%20Reference/recording_cpp/structagora_1_1recording_1_1_recording_config.html#aca9710dfdb0596c88f26e3c1c3daf48b)。检查 `recording_sys.log`，是否有 "No users in channel" 的关键字即可确认。
+大多数情况为录制超时退出，详见[`idleLimitSec`](/zh-CN/api-reference/local-server-recording/cpp/legacy/structagora-1-1recording-1-1-recording-config#aca9710dfdb0596c88f26e3c1c3daf48b)。检查 `recording_sys.log`，是否有 "No users in channel" 的关键字即可确认。
 
 ## 如何判断录制是否崩溃
 

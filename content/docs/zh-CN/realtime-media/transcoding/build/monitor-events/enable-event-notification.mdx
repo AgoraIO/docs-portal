@@ -40,8 +40,8 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 | 字段名            | 值                 |
 | ----------------- | ------------------ |
 | `Content-Type`    | `application/json` |
-| `Agora-Signature` | 声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](#验证签名)。 |
-| `Agora-Signature-V2` | 声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](#验证签名)。 |
+| `Agora-Signature` | 声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)。 |
+| `Agora-Signature-V2` | 声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification)。 |
 
 消息通知回调的 Body 中包含以下字段：
 
@@ -51,7 +51,7 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 | `productId` | Number | 业务 ID：`3(Cloud Recording and Extension Service)`，代表云端录制或云端转码服务。 |
 | `eventType` | Number | 通知的事件类型。 |
 | `notifyMs`  | Number | 消息通知服务器向你的服务器发出回调请求的 Unix 时间戳，单位为毫秒。通知重试时会更新该时间。 |
-| `payload`   | JSON Object | 事件内容。`payload` 字段是一个 JSON Object，包含事件的具体内容。详细字段见 [Payload 说明](/zh-CN/realtime-media/transcoding/reference/ncs-events)。|
+| `payload`   | JSON Object | 事件内容。`payload` 字段是一个 JSON Object，包含事件的具体内容。详细字段见 [Payload 说明](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)。|
 
 ## 验证签名
 

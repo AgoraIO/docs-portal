@@ -12,15 +12,15 @@ description: "了解互动白板 SDK 中管理场景相关内容的适用场景�
 
 | 方法                | 描述                           |
 | :------------------ | :----------------------------- |
-| [`SceneState`](/api-ref/whiteboard/javascript/globals.html#scenestate)        | 获取当前场景的场景信息         |
-| [`entireScenes`](/api-ref/whiteboard/javascript/interfaces/displayer#entireScenes)      | 获取当前房间内所有场景的信息   |
-| [`scenePathType`](/api-ref/whiteboard/javascript/interfaces/displayer#scenePathType)     | 查询场景路径类型               |
-| [`putScenes`](/api-ref/whiteboard/javascript/interfaces/room#putScenes)         | 在指定场景目录下插入多个场景   |
-| [`setScenePath`](/api-ref/whiteboard/javascript/interfaces/room#setScenePath)      | 切换至指定的场景               |
-| [`setSceneIndex`](/api-ref/whiteboard/javascript/interfaces/room#setSceneIndex)     | 切换至当前场景目录下的指定场景 |
-| [`moveScene`](/api-ref/whiteboard/javascript/interfaces/room#moveScene)         | 移动或重命名场景               |
-| [`removeScenes`](/api-ref/whiteboard/javascript/interfaces/room#removeScenes)      | 删除场景或者场景目录           |
-| [`cleanCurrentScene`](/api-ref/whiteboard/javascript/interfaces/room#cleanCurrentScene) | 清除当前场景的所有内容         |
+| [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#sceneState)        | 获取当前场景的场景信息         |
+| [`entireScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#entirescenes)      | 获取当前房间内所有场景的信息   |
+| [`scenePathType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#scenepathtype)     | 查询场景路径类型               |
+| [`putScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#putscenes)         | 在指定场景目录下插入多个场景   |
+| [`setScenePath`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setscenepath)      | 切换至指定的场景               |
+| [`setSceneIndex`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setsceneindex)     | 切换至当前场景目录下的指定场景 |
+| [`moveScene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#movescene)         | 移动或重命名场景               |
+| [`removeScenes`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#removescenes)      | 删除场景或者场景目录           |
+| [`cleanCurrentScene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#cleancurrentscene) | 清除当前场景的所有内容         |
 
 ## 前提条件
 
@@ -77,7 +77,7 @@ scene index: 0
 - `path`：场景目录的路径，必须以 `/` 开头，不能为场景的路径。详见[场景标识](/zh-CN/realtime-media/whiteboard/concepts#场景标识)。
 - `scenes`：由多个场景构成的数组。单个场景包含以下字段：
   - `name`：场景名称。
-  - `ppt`：（可选）在场景中展示的图片或网页。每个场景中可以展示一张图片或网页。你可以通过 [`PptDescription`](/api-ref/whiteboard/javascript/globals#pptdescription) 设置待插入图片或网页的宽、高、资源路径或预览图等。
+  - `ppt`：（可选）在场景中展示的图片或网页。每个场景中可以展示一张图片或网页。你可以通过 [`PptDescription`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#pptdescription) 设置待插入图片或网页的宽、高、资源路径或预览图等。
 - `index.html`：（可选）待插入的多个场景中，第一个场景在该场景目录中的索引号，其后场景的索引号依次递增。如果传入的索引号大于该场景目录已有场景总数，新插入的场景会排在现有场景的最后。场景的索引号从 0 开始。
 
 例如，在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)的 `index.js` 文件中添加如下行，在根场景目录中插入两个新场景，分别为带图片的 `new-page5` 和不带图片的 `new-page6`。

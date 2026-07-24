@@ -27,7 +27,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 ### 问题修复
 
 - 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
-- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/android/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+- 修复部分场景下，设置 [`Presence`](/zh-CN/api-reference/rtm/android/presence) 的临时用户状态后，事件通知无法正常下发的问题。
 - 修复在 Android 16 系统的部分机型上，可能出现的权限获取范围过大问题。
 
 ## 2.2.7 版
@@ -101,7 +101,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 新增重连超时配置
 
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
 
 
 
@@ -117,7 +117,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 支持 IoT 设备域名白名单
 
 
-在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 
 
 
@@ -296,11 +296,11 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
   ```
 
 - 取消了 `StateItem` 类，并将如下参数由 `ArrayList<StateItem>` 类型变为 `HashMap<String, String>` 类型，参考对应 API 文档修改你的实现代码。
-  - [`setState`](/api-ref/rtm2/android/toc-presence/presence#setState) 中的 `items` 参数。
-  - [`PresenceEvent`](/api-ref/rtm2/android/toc-configuration/configuration#PresenceEvent) 中的 `stateItems` 参数。
-  - [`UserState`](/api-ref/rtm2/android/toc-presence/presence#getState) 中的 `states` 参数。
+  - [`setState`](/zh-CN/api-reference/rtm/android/presence#setstate) 中的 `items` 参数。
+  - [`PresenceEvent`](/zh-CN/api-reference/rtm/android/configuration#presenceevent) 中的 `stateItems` 参数。
+  - [`UserState`](/zh-CN/api-reference/rtm/android/presence#getstate) 中的 `states` 参数。
 
-- 在 [<code>RtmConnectionChangeReason</code>](/api-ref/rtm2/android/enumv#connectionreason) 中新增了 <code>CERTIFICATION_VERIFY_FAILURE(22)</code> 枚举，并将 <code>STREAM_CHANNEL_NOT_AVAILABLE</code> 和 <code>INCONSISTENT_APPID</code> 枚举对应的值修改为 23 和 24。
+- 在 [<code>RtmConnectionChangeReason</code>](/zh-CN/api-reference/rtm/android/enumv#connectionreason) 中新增了 <code>CERTIFICATION_VERIFY_FAILURE(22)</code> 枚举，并将 <code>STREAM_CHANNEL_NOT_AVAILABLE</code> 和 <code>INCONSISTENT_APPID</code> 枚举对应的值修改为 23 和 24。
 
 
 ### 新特性
@@ -310,31 +310,31 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 新增私有化部署能力
 
 
-该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
 
 
 #### 新增心跳时间配置
 
 
-该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 
 #### 新增双环境配置
 
 
-该版本在 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
 
 
 #### 新增用户频道类型
 
 
-该版本在 [<code>RtmChannelType</code>](/api-ref/rtm2/android/enumv#channeltype) 中新增 <code>USER</code> 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [<code>RtmChannelType</code>](/zh-CN/api-reference/rtm/android/enumv#channeltype) 中新增 <code>USER</code> 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
 
 
 #### 新增静默模式配置
 
 
-该版本在 [<code>SubscribeOptions</code>](/api-ref/rtm2/android/toc-channel/channel#subscribe) 和 [<code>JoinChannelOptions</code>](/api-ref/rtm2/android/toc-channel/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+该版本在 [<code>SubscribeOptions</code>](/zh-CN/api-reference/rtm/android/channel#subscribe) 和 [<code>JoinChannelOptions</code>](/zh-CN/api-reference/rtm/android/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
 
 
 ### 改进
@@ -344,7 +344,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 改进连接状态管理逻辑
 
 
-该版本新增 [<code>onLinkStateEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [<code>onLinkStateEvent</code>](/zh-CN/api-reference/rtm/android/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
@@ -358,11 +358,11 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 
 该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
 
-- [<code>MessageEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#MessageEvent)
-- [<code>PresenceEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#PresenceEvent)
-- [<code>TopicEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#TopicEvent)
-- [<code>StorageEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#StorageEvent)
-- [<code>LockEvent</code>](/api-ref/rtm2/android/toc-configuration/configuration#LockEvent)
+- [<code>MessageEvent</code>](/zh-CN/api-reference/rtm/android/configuration#messageevent)
+- [<code>PresenceEvent</code>](/zh-CN/api-reference/rtm/android/configuration#presenceevent)
+- [<code>TopicEvent</code>](/zh-CN/api-reference/rtm/android/configuration#topicevent)
+- [<code>StorageEvent</code>](/zh-CN/api-reference/rtm/android/configuration#storageevent)
+- [<code>LockEvent</code>](/zh-CN/api-reference/rtm/android/configuration#lockevent)
 
 
 #### 优化 API 行为
@@ -370,13 +370,13 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 
 该版本优化了以下 API 的行为：
 
-- [<code>login</code>](/api-ref/rtm2/android/toc-configuration/configuration#login)：
+- [<code>login</code>](/zh-CN/api-reference/rtm/android/configuration#login)：
   - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 <code>logout</code> 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
-- [<code>subscribe</code>](/api-ref/rtm2/android/toc-channel/channel#subscribe)：
+- [<code>subscribe</code>](/zh-CN/api-reference/rtm/android/channel#subscribe)：
   - 在之前版本中，不支持连续多次调用该方法。
   - 自 2.2.0 版本起，支持连续多次调用该方法。
-- [<code>join</code>](/api-ref/rtm2/android/toc-channel/channel#join)：
+- [<code>join</code>](/zh-CN/api-reference/rtm/android/channel#join)：
   - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
 
@@ -384,7 +384,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 修改 presenceTimeout 取值范围
 
 
-该版本将 [<code>RtmConfig</code>](/api-ref/rtm2/android/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+该版本将 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
 
 
 
@@ -474,8 +474,8 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 
 该版本对消息发送选项进行了如下优化，请在升级到该版本后更新 App 代码：
 
-- 在 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/api-ref/rtm2/android/toc-message/message#options)。
-- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/api-ref/rtm2/android/toc-topic/topic#options)。
+- 在 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/zh-CN/api-reference/rtm/android/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/zh-CN/api-reference/rtm/android/topic#options)。
 
 
 ### 改进
@@ -602,17 +602,17 @@ RtmEventListener eventListener = new RtmEventListener() {
 
 该版本为如下结构体新增构造函数：
 
-- [`JoinChannelOptions`](/api-ref/rtm2/android/toc-channel/channel#基本用法4)
-- [`JoinTopicOptions`](/api-ref/rtm2/android/toc-topic/topic#基本用法1)
-- [`MetadataItem`](/api-ref/rtm2/android/toc-storage/storage#基本用法11)
-- [`MetadataOptions`](/api-ref/rtm2/android/toc-storage/storage#基本用法1)
-- [`PresenceOptions`](/api-ref/rtm2/android/toc-presence/presence#基本用法1)
-- [`RtmEncryptionConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmEncryptionConfig)
-- [`RtmLogConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmLogConfig)
-- [`RtmProxyConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmProxyConfig)
-- [`StateItem`](/api-ref/rtm2/android/toc-presence/presence#基本用法3)
-- [`SubscribeOptions`](/api-ref/rtm2/android/toc-channel/channel#基本用法1)
-- [`TopicOptions`](/api-ref/rtm2/android/toc-topic/topic#基本用法4)
+- [`JoinChannelOptions`](/zh-CN/api-reference/rtm/android/channel#基本用法-4)
+- [`JoinTopicOptions`](/zh-CN/api-reference/rtm/android/topic#基本用法-1)
+- [`MetadataItem`](/zh-CN/api-reference/rtm/android/storage#metadata)
+- [`MetadataOptions`](/zh-CN/api-reference/rtm/android/storage#基本用法-1)
+- [`PresenceOptions`](/zh-CN/api-reference/rtm/android/presence#基本用法-1)
+- [`RtmEncryptionConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmencryptionconfig)
+- [`RtmLogConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmlogconfig)
+- [`RtmProxyConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmproxyconfig)
+- [`StateItem`](/zh-CN/api-reference/rtm/android/presence#基本用法-3)
+- [`SubscribeOptions`](/zh-CN/api-reference/rtm/android/channel#基本用法-1)
+- [`TopicOptions`](/zh-CN/api-reference/rtm/android/topic#基本用法-2)
 
 你可以继续使用之前的实现方式，也可以参考以下示例代码改用新的实现方式：
 
@@ -830,7 +830,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 ### 问题修复
 
 - 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
-- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/ios/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+- 修复部分场景下，设置 [`Presence`](/zh-CN/api-reference/rtm/ios/presence) 的临时用户状态后，事件通知无法正常下发的问题。
 
 ## 2.2.7 版
 
@@ -883,7 +883,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 ### 改进
 
 
-- 该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
+- 该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
 - 优化了登录操作 (`loginByToken`) 的响应机制。
 
 
@@ -906,7 +906,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 #### 新增重连超时配置
 
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
 
 
 
@@ -923,7 +923,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 #### 支持 IoT 设备域名白名单
 
 
-在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 
 
 
@@ -1112,9 +1112,9 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
   ```
 
 - 取消了 `AgoraRtmStateItem` 类，并将如下参数由 `NSArray<AgoraRtmStateItem *>` 类型变为 `NSDictionary` 类型，参考对应 API 文档修改你的实现代码。
-  - [`setState`](/api-ref/rtm2/ios/toc-presence/presence#setState) 中的 `items` 参数。
-  - [`PresenceEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmPresenceEvent) 中的 `states` 参数。
-  - [`UserState`](/api-ref/rtm2/ios/toc-presence/presence#getState) 中的 `states` 参数。
+  - [`setState`](/zh-CN/api-reference/rtm/ios/presence#setstate) 中的 `items` 参数。
+  - [`PresenceEvent`](/zh-CN/api-reference/rtm/ios/configuration#agorartmpresenceevent) 中的 `states` 参数。
+  - [`UserState`](/zh-CN/api-reference/rtm/ios/presence#getstate) 中的 `states` 参数。
 
 
 ### 新特性
@@ -1135,29 +1135,29 @@ end
 
 #### 新增私有化部署能力
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
 
 #### 新增用户频道类型
 
-该版本在 [`AgoraRtmChannelType`](/api-ref/rtm2/ios/enumv#channeltype) 中新增 `AgoraRtmChannelTypeUser` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype) 中新增 `AgoraRtmChannelTypeUser` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
 
 #### 新增静默模式配置
 
-该版本在 [`AgoraRtmSubscribeChannelFeature`](/api-ref/rtm2/ios/enumv#subscribechannelfeature) 中新增 `AgoraRtmSubscribeChannelFeatureBeQuiet` 枚举，在 [`AgoraRtmJoinChannelFeature`](/api-ref/rtm2/ios/enumv#joinchannelfeature) 中新增 `AgoraRtmJoinChannelFeatureBeQuiet` 枚举，用于设置静默订阅或加入频道。设置成功后，频道中其他用户无法感知该用户的出席状态。
+该版本在 [`AgoraRtmSubscribeChannelFeature`](/zh-CN/api-reference/rtm/ios/enumv#subscribechannelfeature) 中新增 `AgoraRtmSubscribeChannelFeatureBeQuiet` 枚举，在 [`AgoraRtmJoinChannelFeature`](/zh-CN/api-reference/rtm/ios/enumv#joinchannelfeature) 中新增 `AgoraRtmJoinChannelFeatureBeQuiet` 枚举，用于设置静默订阅或加入频道。设置成功后，频道中其他用户无法感知该用户的出席状态。
 
 ### 改进
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`didReceiveLinkStateEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`didReceiveLinkStateEvent`](/zh-CN/api-reference/rtm/ios/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 AgoraRtmPresenceEventTypeRemoteStateChanged 事件通知逻辑
 
@@ -1167,29 +1167,29 @@ end
 
 该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
 
-- [`AgoraRtmMessageEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#messageevent)
-- [`AgoraRtmPresenceEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#presenceevent)
-- [`AgoraRtmTopicEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#topicevent)
-- [`AgoraRtmStorageEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#storageevent)
-- [`AgoraRtmLockEvent`](/api-ref/rtm2/ios/toc-configuration/configuration#lockevent)
+- [`AgoraRtmMessageEvent`](/zh-CN/api-reference/rtm/ios/configuration#messageevent)
+- [`AgoraRtmPresenceEvent`](/zh-CN/api-reference/rtm/ios/configuration#presenceevent)
+- [`AgoraRtmTopicEvent`](/zh-CN/api-reference/rtm/ios/configuration#topicevent)
+- [`AgoraRtmStorageEvent`](/zh-CN/api-reference/rtm/ios/configuration#storageevent)
+- [`AgoraRtmLockEvent`](/zh-CN/api-reference/rtm/ios/configuration#lockevent)
 
 #### 优化 API 行为
 
 该版本优化了以下 API 的行为：
 
-- [`loginByToken`](/api-ref/rtm2/ios/toc-configuration/configuration#login)：
+- [`loginByToken`](/zh-CN/api-reference/rtm/ios/configuration#login)：
   - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
-- [`subscribeWithChannel`](/api-ref/rtm2/ios/toc-channel/channel#subscribe)：
+- [`subscribeWithChannel`](/zh-CN/api-reference/rtm/ios/channel#subscribe)：
   - 在之前版本中，不支持连续多次调用该方法。
   - 自 2.2.0 版本起，支持连续多次调用该方法。
-- [`joinWithOption`](/api-ref/rtm2/ios/toc-channel/channel#join)：
+- [`joinWithOption`](/zh-CN/api-reference/rtm/ios/channel#join)：
   - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
 
 #### 修改 presenceTimeout 取值范围
 
-该版本将 [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+该版本将 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
 
 ## 2.1.12 版
 
@@ -1269,8 +1269,8 @@ end
 
 该版本对消息发送选项进行了如下优化，请在升级到该版本后更新 App 代码：
 
-- 在 `AgoraRtmPublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`AgoraRtmPublishOptions`](/api-ref/rtm2/ios/toc-message/message#options)。
-- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `AgoraRtmPublishOptions` 修改为 `AgoraRtmTopicMessageOptions`。详见 [`AgoraRtmTopicMessageOptions`](/api-ref/rtm2/ios/toc-topic/topic#options)。
+- 在 `AgoraRtmPublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`AgoraRtmPublishOptions`](/zh-CN/api-reference/rtm/ios/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `AgoraRtmPublishOptions` 修改为 `AgoraRtmTopicMessageOptions`。详见 [`AgoraRtmTopicMessageOptions`](/zh-CN/api-reference/rtm/ios/topic#options)。
 
 ### 改进
 
@@ -1651,7 +1651,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 新增连接状态改变原因
 
-该版本在 [`LinkStateChangeReasonCode`](/api-ref/rtm2/javascript/enumv#连接状态改变原因类型) 中增加原因 `LOGIN_TOO_FREQUENT`，表示当前登录操作过于频繁。
+该版本在 [`LinkStateChangeReasonCode`](/zh-CN/api-reference/rtm/web/enumv#连接状态改变原因类型) 中增加原因 `LOGIN_TOO_FREQUENT`，表示当前登录操作过于频繁。
 
 #### 新增更新 Token 超时错误码
 
@@ -1689,7 +1689,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 支持历史消息
 
-该版本在 [`publish`](/api-ref/rtm2/javascript/toc-message/message#publish) 的 `PublishOptions` 参数中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过 [`getMessages`](/api-ref/rtm2/javascript/toc-message/message#getMessages) 方法获取。
+该版本在 [`publish`](/zh-CN/api-reference/rtm/web/message#publish) 的 `PublishOptions` 参数中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过 [`getMessages`](/zh-CN/api-reference/rtm/web/message#getmessages) 方法获取。
 
 :::info[信息]
 该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
@@ -1697,7 +1697,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### SDK 连接状态变化原因
 
-该版本在 SDK 连接状态 `linkState` 中添加 [`LinkStateChangeReasonCode`](/api-ref/rtm2/javascript/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
+该版本在 SDK 连接状态 `linkState` 中添加 [`LinkStateChangeReasonCode`](/zh-CN/api-reference/rtm/web/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
 
 ### 改进
 
@@ -1724,7 +1724,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 ### 升级必看
 
-该版本在 `RTMConfig` 中删除了 `token` 参数，并在 [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) 方法中新增了 `token` 参数作为替代，你需要在升级后修改你的实现代码：
+该版本在 `RTMConfig` 中删除了 `token` 参数，并在 [`login`](/zh-CN/api-reference/rtm/web/configuration#login) 方法中新增了 `token` 参数作为替代，你需要在升级后修改你的实现代码：
 
 ```javascript
 // v2.2.0 之前的方式
@@ -1793,25 +1793,25 @@ try {
 
 #### 新增私有化部署能力
 
-该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增用户频道类型
 
-该版本在 [`channelType`](/api-ref/rtm2/javascript/enumv) 中新增 `USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`channelType`](/zh-CN/api-reference/rtm/web/enumv) 中新增 `USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
 
 #### 新增静默模式配置
 
-该版本在 [`subscribe`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe) 和 [`join`](/api-ref/rtm2/javascript/toc-channel/channel#join) 方法的 `options` 对象中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+该版本在 [`subscribe`](/zh-CN/api-reference/rtm/web/channel#subscribe) 和 [`join`](/zh-CN/api-reference/rtm/web/channel#join) 方法的 `options` 对象中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
 
 ### 改进
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`linkState`](/api-ref/rtm2/javascript/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`linkState`](/zh-CN/api-reference/rtm/web/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
 
@@ -1831,19 +1831,19 @@ try {
 
 该版本优化了以下 API 的行为：
 
-- [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login)：
+- [`login`](/zh-CN/api-reference/rtm/web/configuration#login)：
   - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
-- [`subscribe`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe)：
+- [`subscribe`](/zh-CN/api-reference/rtm/web/channel#subscribe)：
   - 在之前版本中，不支持连续多次调用该方法。
   - 自 2.2.0 版本起，支持连续多次调用该方法。
-- [`join`](/api-ref/rtm2/javascript/toc-channel/channel#join)：
+- [`join`](/zh-CN/api-reference/rtm/web/channel#join)：
   - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.0 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
 
 #### 修改 presenceTimeout 取值范围
 
-该版本将 [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+该版本将 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
 
 #### 其他
 
@@ -2392,8 +2392,8 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 该版本对 `PublishAsync` 和 `PublishTopicMessageAsync` 方法中的 `options` 参数进行如下优化：
 
-- 在 `PublishAsync` 方法的 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/api-ref/rtm2/unity/toc-message/message#options)。
-- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/api-ref/rtm2/unity/toc-topic/topic#options)。
+- 在 `PublishAsync` 方法的 `PublishOptions` 中删除了 `sendTs` 参数，并新增了 `channelType` 参数。详见 [`PublishOptions`](/zh-CN/api-reference/rtm/unity/message#options)。
+- 将 `publishTopicMessage` 方法中的 `options` 参数类型由 `PublishOptions` 修改为 `TopicMessageOptions`。详见 [`TopicMessageOptions`](/zh-CN/api-reference/rtm/unity/topic#options)。
 
 #### 连接状态回调更名
 
@@ -2478,7 +2478,7 @@ else
   - 在 `PresenceEvent` 结构体中删除 `stateItemCount` 字段。
   - 在 `TopicEvent` 结构体中删除 `topicInfoCount` 字段，并将 `userId` 参数名修改为 `publisher`。
 
-详见 [API 参考](/api-ref/rtm2/unity/toc-configuration/configuration)。
+详见 [API 参考](/zh-CN/api-reference/rtm/unity/configuration)。
 
 ## 2.1.0-beta 版
 
@@ -2644,7 +2644,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 新增重连超时配置
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
 
 ## 2.2.5 版
 
@@ -2664,7 +2664,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 支持历史消息
 
-该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口 [`getMessages`](/api-ref/rtm2/flutter/toc-message/message#getmessages) 获取。详细的使用指南可以参考[历史消息](/zh-CN/realtime-media/rtm/build/manage-messages/history-message)。
+该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口 [`getMessages`](/zh-CN/api-reference/rtm/flutter/message#getmessages) 获取。详细的使用指南可以参考[历史消息](/zh-CN/realtime-media/rtm/build/manage-messages/history-message)。
 
 :::info[信息]
 该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
@@ -2672,11 +2672,11 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### SDK 连接状态变化原因
 
-该版本在 SDK 连接状态 `LinkStateEvent` 中添加 [`RtmLinkStateChangeReason`](/api-ref/rtm2/flutter/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
+该版本在 SDK 连接状态 `LinkStateEvent` 中添加 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/flutter/enumv#linkstatechangereason) 枚举类，报告连接状态变更的原因。
 
 #### 支持 IoT 设备域名白名单
 
-在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 
 #### 支持 16 KB 内存页大小（Android）
 
@@ -2903,7 +2903,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 ### 问题修复
 
 - 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
-- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/cpp/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+- 修复部分场景下，设置 [`Presence`](/zh-CN/api-reference/rtm/cpp/presence) 的临时用户状态后，事件通知无法正常下发的问题。
 
 ## 2.2.7 版
 
@@ -2926,7 +2926,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 新增重连超时配置
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
 
 ## 2.2.5 版
 
@@ -2936,7 +2936,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 支持 IoT 设备域名白名单
 
-在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 
 ### 问题修复
 
@@ -3035,7 +3035,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 初始化
 
-该版本删除了 `initialize` 方法，并在 [`createAgoraRtmClient`](/api-ref/rtm2/cpp/toc-configuration/configuration#createAgoraRtmClient) 方法中新增初始化参数作为替代。参考如下示例代码修改你的实现代码：
+该版本删除了 `initialize` 方法，并在 [`createAgoraRtmClient`](/zh-CN/api-reference/rtm/cpp/configuration#createagorartmclient) 方法中新增初始化参数作为替代。参考如下示例代码修改你的实现代码：
 
 ```cpp
 // v2.2.1 之前
@@ -3073,12 +3073,12 @@ if (!rtmClient || errorCode != 0) {
 
 该版本将除 `createAgoraRtmClient`、`createStreamChannel` 和 `release` 以外方法的返回值从 `int` 类型修改为 `void` 类型，并补齐以下异步回调：
 
-  - [`onPublishTopicMessageResult`](/api-ref/rtm2/cpp/toc-topic/topic#异步回调2)
-  - [`onUnsubscribeTopicResult`](/api-ref/rtm2/cpp/toc-topic/topic#异步回调5)
-  - [`onUnsubscribeResult`](/api-ref/rtm2/cpp/toc-channel/channel#异步回调2)
-  - [`onLogoutResult`](/api-ref/rtm2/cpp/toc-configuration/configuration#异步回调5)
-  - [`onRenewTokenResult`](/api-ref/rtm2/cpp/toc-token/token#异步回调1)
-  - [`onUnsubscribeUserMetadataResult`](/api-ref/rtm2/cpp/toc-storage/storage#异步回调10)
+  - [`onPublishTopicMessageResult`](/zh-CN/api-reference/rtm/cpp/topic#异步回调-2)
+  - [`onUnsubscribeTopicResult`](/zh-CN/api-reference/rtm/cpp/topic#异步回调5)
+  - [`onUnsubscribeResult`](/zh-CN/api-reference/rtm/cpp/channel#异步回调-2)
+  - [`onLogoutResult`](/zh-CN/api-reference/rtm/cpp/configuration#异步回调5)
+  - [`onRenewTokenResult`](/zh-CN/api-reference/rtm/cpp/token#异步回调-1)
+  - [`onUnsubscribeUserMetadataResult`](/zh-CN/api-reference/rtm/cpp/storage#异步回调10)
 
 #### 创建 Metadata
 
@@ -3096,35 +3096,35 @@ Metadata data;
 
 #### 枚举值变更
 
-该版本在 [`RTM_CONNECTION_CHANGE_REASON`](/api-ref/rtm2/cpp/enumv#connectionreason) 中新增了 `RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE(22)` 枚举，并将 `RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE` 和 `RTM_CONNECTION_CHANGED_INCONSISTENT_APPID` 枚举对应的值修改为 23 和 24。
+该版本在 [`RTM_CONNECTION_CHANGE_REASON`](/zh-CN/api-reference/rtm/cpp/enumv#connectionreason) 中新增了 `RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE(22)` 枚举，并将 `RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE` 和 `RTM_CONNECTION_CHANGED_INCONSISTENT_APPID` 枚举对应的值修改为 23 和 24。
 
 ### 新特性
 
 #### 新增私有化部署能力
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
-该版本在 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
 
 #### 新增用户频道类型
 
-该版本在 [`RTM_CHANNEL_TYPE`](/api-ref/rtm2/cpp/enumv#channeltype) 中新增 `RTM_CHANNEL_TYPE_USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype) 中新增 `RTM_CHANNEL_TYPE_USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
 
 #### 新增静默模式配置
 
-该版本在 [`SubscribeOptions`](/api-ref/rtm2/cpp/toc-channel/channel#subscribe) 和 [`JoinChannelOptions`](/api-ref/rtm2/cpp/toc-channel/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
+该版本在 [`SubscribeOptions`](/zh-CN/api-reference/rtm/cpp/channel#subscribe) 和 [`JoinChannelOptions`](/zh-CN/api-reference/rtm/cpp/channel#join) 中新增 `beQuiet` 属性。该属性设置为 `true` 时表示静默订阅或加入频道，频道中其他用户无法感知该用户的出席状态。
 
 ### 改进
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`onLinkStateEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`onLinkStateEvent`](/zh-CN/api-reference/rtm/cpp/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
 
 #### 改进 RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED 事件通知逻辑
 
@@ -3134,29 +3134,29 @@ Metadata data;
 
 该版本在如下数据结构中新增 `timestamp` 参数，报告触发事件通知的时间戳：
 
-- [`MessageEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#MessageEvent)
-- [`PresenceEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#PresenceEvent)
-- [`TopicEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#TopicEvent)
-- [`StorageEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#StorageEvent)
-- [`LockEvent`](/api-ref/rtm2/cpp/toc-configuration/configuration#LockEvent)
+- [`MessageEvent`](/zh-CN/api-reference/rtm/cpp/configuration#messageevent)
+- [`PresenceEvent`](/zh-CN/api-reference/rtm/cpp/configuration#presenceevent)
+- [`TopicEvent`](/zh-CN/api-reference/rtm/cpp/configuration#topicevent)
+- [`StorageEvent`](/zh-CN/api-reference/rtm/cpp/configuration#storageevent)
+- [`LockEvent`](/zh-CN/api-reference/rtm/cpp/configuration#lockevent)
 
 #### 优化 API 行为
 
 该版本优化了以下 API 的行为：
 
-- [`login`](/api-ref/rtm2/cpp/toc-configuration/configuration#login)：
+- [`login`](/zh-CN/api-reference/rtm/cpp/configuration#login)：
   - 在之前版本中，不支持连续多次调用该方法；也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.1 版本起，支持连续多次调用该方法，中间无需额外调用 `logout` 方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
-- [`subscribe`](/api-ref/rtm2/cpp/toc-channel/channel#subscribe)：
+- [`subscribe`](/zh-CN/api-reference/rtm/cpp/channel#subscribe)：
   - 在之前版本中，不支持连续多次调用该方法。
   - 自 2.2.1 版本起，支持连续多次调用该方法。
-- [`join`](/api-ref/rtm2/cpp/toc-channel/channel#join)：
+- [`join`](/zh-CN/api-reference/rtm/cpp/channel#join)：
   - 在之前版本中，不支持连续多次调用该方法，也不支持在该方法的 `token` 参数中传入空字符串。
   - 自 2.2.1 版本起，支持连续多次调用该方法。此外，当 `token` 参数为空字符串时，SDK 会默认使用你初始化时传入的 App ID 替代 Token。
 
 #### 修改 presenceTimeout 取值范围
 
-该版本将 [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
+该版本将 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中 `presenceTimeout` 参数的取值范围由 [10,300] 修改为 [5,300]。
 
 #### 其他
 
@@ -3164,11 +3164,11 @@ Metadata data;
 
 - 优化了底层算法能力，提升了数据同步速度。
 - 在以下方法中新增 `requestId` 参数：
-  - [`login`](/api-ref/rtm2/cpp/toc-configuration/configuration#login)
-  - [`logout`](/api-ref/rtm2/cpp/toc-configuration/configuration#logout)
-  - [`renewToken`](/api-ref/rtm2/cpp/toc-token/token)
-  - [`unsubscribe`](/api-ref/rtm2/cpp/toc-channel/channel#unsubscribe)
-- 在 [`createStreamChannel`](/api-ref/rtm2/cpp/toc-channel/channel#createStreamChannel) 方法中新增 `errorCode` 参数。
+  - [`login`](/zh-CN/api-reference/rtm/cpp/configuration#login)
+  - [`logout`](/zh-CN/api-reference/rtm/cpp/configuration#logout)
+  - [`renewToken`](/zh-CN/api-reference/rtm/cpp/token)
+  - [`unsubscribe`](/zh-CN/api-reference/rtm/cpp/channel#unsubscribe)
+- 在 [`createStreamChannel`](/zh-CN/api-reference/rtm/cpp/channel#createstreamchannel) 方法中新增 `errorCode` 参数。
 
 ### 问题修复
 
@@ -3408,7 +3408,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 ### 问题修复
 
 - 修复部分场景下，App 从后台恢复并叠加网络切换时，可能导致服务连接状态异常的问题。
-- 修复部分场景下，设置 [`Presence`](/api-ref/rtm2/swift/toc-presence/presence) 的临时用户状态后，事件通知无法正常下发的问题。
+- 修复部分场景下，设置 [`Presence`](/zh-CN/api-reference/rtm/swift/presence) 的临时用户状态后，事件通知无法正常下发的问题。
 
 ## 2.2.7 版
 
@@ -3458,7 +3458,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 ### 改进
 
-- 该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#AgoraRtmClientConfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
+- 该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/swift/configuration#agorartmclientconfig) 中新增 `callbackQueue` 参数，支持对回调所在的线程进行设置。
 - 优化了登录操作 (`loginByToken`) 的响应机制。
 
 ### 问题修复
@@ -3474,7 +3474,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 新增重连超时配置
 
-该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/swift/configuration#rtmconfig) 中增加 `reconnectTimeout` 字段。你可以通过该字段配置 SDK 在登录或断线重连时，返回超时错误的时间，单位为秒。当登录或重连超过设置的时间，SDK 会通过回调报告当前的连接状态和原因。
 
 ## 2.2.5 版
 
@@ -3484,7 +3484,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 支持 IoT 设备域名白名单
 
-在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/api-ref/rtm2/swift/toc-configuration/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)。为解决这一限制，该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/swift/configuration#rtmconfig) 中增加 `ispPolicyEnabled` 字段。通过将该字段设为 `true`，SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
 
 ### 问题修复
 

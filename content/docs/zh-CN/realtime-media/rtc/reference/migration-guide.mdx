@@ -1058,10 +1058,10 @@ client.on("user-published", async (remoteUser, mediaType) => {
 - Web SDK 4.x 移除了 `stream-added`、`stream-removed` 和 `stream-updated`，取而代之的是 `user-published` 和 `user-unpublished`。
 
     :::info[信息]
-    注意 `user-published` 回调中的第二个参数 `mediaType`，该参数有 3 个可能的值：`"video"`，`"audio"` 和 `"all"`。在我们的示例代码中，远端同时发布了音视频，所以 `mediaType` 理应为 `"all"`。但是在实际情况中，由于网络和发送端的不确定性，订阅端可能先收到一次 `user-published(mediaType: "audio")`，再收到一次 `user-published(mediaType: "video")`。因此在我们的示例代码中，我们做了一个简单的判断来处理这种情况。更多信息详见 [`client.on("user-published")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published)。
+    注意 `user-published` 回调中的第二个参数 `mediaType`，该参数有 3 个可能的值：`"video"`，`"audio"` 和 `"all"`。在我们的示例代码中，远端同时发布了音视频，所以 `mediaType` 理应为 `"all"`。但是在实际情况中，由于网络和发送端的不确定性，订阅端可能先收到一次 `user-published(mediaType: "audio")`，再收到一次 `user-published(mediaType: "video")`。因此在我们的示例代码中，我们做了一个简单的判断来处理这种情况。更多信息详见 [`client.on("user-published")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published)。
     :::
 
-- Web SDK 4.x 中，`subscribe` 是异步操作，会返回 Promise。传入的参数为 `remoteUser`，也就是远端用户对象，详见 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html)。
+- Web SDK 4.x 中，`subscribe` 是异步操作，会返回 Promise。传入的参数为 `remoteUser`，也就是远端用户对象，详见 [`AgoraRTCRemoteUser`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)。
 - 远端音视频轨道对象会在订阅操作成功后保存在 `remoteUser` 下，直接调用 play 即可播放。
 
 ## 核心 API 改动
@@ -1069,54 +1069,54 @@ client.on("user-published", async (remoteUser, mediaType) => {
 本节介绍 Web SDK 4.x 版本相对于 3.x 版本的核心 API 改动。
 ### AgoraRTC
 
-- `getScreenSources` 更名为 [`getElectronScreenSources`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getelectronscreensources)，并且移除了回调参数，现在会返回一个 Promise。
-- [`getDevices`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getdevices) 现在会返回一个 Promise，同时新增 [`getCameras`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getcameras) 和 [`getMicrophones`](/api-ref/rtc/javascript/interfaces/iagorartc.html#getmicrophones)。
-- 移除 `Logger` 对象，增加 [`disableLogUpload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#disablelogupload)、[`enableLogUpload`](/api-ref/rtc/javascript/interfaces/iagorartc.html#enablelogupload) 和 [`setLogLevel`](/api-ref/rtc/javascript/interfaces/iagorartc.html#setloglevel) 用于控制日志上报和打印行为。
+- `getScreenSources` 更名为 [`getElectronScreenSources`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getelectronscreensources)，并且移除了回调参数，现在会返回一个 Promise。
+- [`getDevices`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getdevices) 现在会返回一个 Promise，同时新增 [`getCameras`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getcameras) 和 [`getMicrophones`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#getmicrophones)。
+- 移除 `Logger` 对象，增加 [`disableLogUpload`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#disablelogupload)、[`enableLogUpload`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#enablelogupload) 和 [`setLogLevel`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#setloglevel) 用于控制日志上报和打印行为。
 - 移除 `createStream`，新增以下方法创建音视频对象：
-  - [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createmicrophoneaudiotrack): 创建麦克风轨道
-  - [`createCameraVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcameravideotrack): 创建摄像头轨道
-  - [`createScreenVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createscreenvideotrack): 创建屏幕共享轨道
-  - [`createBufferSourceAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createbuffersourceaudiotrack): 创建音频文件轨道（用于混音）
-  - [`createCustomAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomaudiotrack) 和 [`createCustomVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createcustomvideotrack): 创建自定义音视频轨道（用于自采集）
+  - [`createMicrophoneAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack): 创建麦克风轨道
+  - [`createCameraVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack): 创建摄像头轨道
+  - [`createScreenVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack): 创建屏幕共享轨道
+  - [`createBufferSourceAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createbuffersourceaudiotrack): 创建音频文件轨道（用于混音）
+  - [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomaudiotrack) 和 [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomvideotrack): 创建自定义音视频轨道（用于自采集）
 
 ### Client
 
 - 移除 `Client.init`
-- 移除 `Client.getConnectionState`，新增 [`Client.connectionState`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#connectionstate) 字段表示当前和服务器的连接状态
-- [`ConnectionState`](/api-ref/rtc/javascript/globals.html#connectionstate) 中新增状态 `RECONNECTING` 表示当前正在重连，原来的 `CONNECTING` 仅表示首次正在建立连接
-- 新增 [`Client.uid`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#uid) 来表示当前本地用户的用户 ID
-- 新增 [`Client.remoteUsers`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#remoteusers) 来表示当前远端用户的用户列表
+- 移除 `Client.getConnectionState`，新增 [`Client.connectionState`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#connectionstate) 字段表示当前和服务器的连接状态
+- [`ConnectionState`](/zh-CN/api-reference/rtc/web/globals#connectionstate) 中新增状态 `RECONNECTING` 表示当前正在重连，原来的 `CONNECTING` 仅表示首次正在建立连接
+- 新增 [`Client.uid`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#uid) 来表示当前本地用户的用户 ID
+- 新增 [`Client.remoteUsers`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#remoteusers) 来表示当前远端用户的用户列表
 - 移除 `Client.on("streamInjectStatus")`
-- 移除 [`Client.removeInjectStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#addinjectstreamurl) 的 `url` 参数
-- 移除 [`Client.enableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#enabledualstream) 和 [`Client.disableDualStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#disabledualstream) 的回调参数，现在会返回 Promise
+- 移除 `Client.removeInjectStream` 的 `url` 参数
+- 移除 [`Client.enableDualStream`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 和 [`Client.disableDualStream`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#disabledualstream) 的回调参数，现在会返回 Promise
 - 移除 `Client.getCameras`, `Client.getDevices`, `Client.getRecordingDevices`, 现在这些方法被移动到 `AgoraRTC` 下
 - 移除 `Client.getPlayoutDevices`
-- 移除 `Client.getLocalAudioStats`、`Client.getLocalVideoStats`、`Client.getRemoteAudioStats`、`Client.getRemoteVideoStats`，现在音视频媒体统计数据统一通过 [`LocalAudioTrack.getStats`](/api-ref/rtc/javascript/interfaces/ilocalaudiotrack.html#getstats)、[`LocalVideoTrack.getStats`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack.html#getstats)、[`RemoteAudioTrack.getStats`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html#getstats)、[`RemoteVideoTrack.getStats`](/api-ref/rtc/javascript/interfaces/iremotevideotrack.html#getstats) 这些方法来获取，同时字段都做了改变，具体参阅 API 文档
+- 移除 `Client.getLocalAudioStats`、`Client.getLocalVideoStats`、`Client.getRemoteAudioStats`、`Client.getRemoteVideoStats`，现在音视频媒体统计数据统一通过 [`LocalAudioTrack.getStats`](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#getstats)、[`LocalVideoTrack.getStats`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#getstats)、[`RemoteAudioTrack.getStats`](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#getstats)、[`RemoteVideoTrack.getStats`](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#getstats) 这些方法来获取，同时字段都做了改变，具体参阅 API 文档
 - 移除 `Client.getSystemStats`
-- 移除 `Client.getSessionStats` 和 `Client.getTransportStats`，现在使用一个方法统一获取这些状态 [`Client.getRTCStats`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#getrtcstats)
-- [`Client.join`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#join) 现在会返回一个 Promise，移除回调参数，增加 `appid` 参数
-- [`Client.leave`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#leave) 现在会返回一个 Promise，移除回调参数
-- 增加 [`Client.once`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#once) 只监听目标事件一次
-- 增加 [`Client.removeAllListeners`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#removealllisteners) 用于删除所有事件监听
-- [`Client.publish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#publish) 现在需要传入 [`LocalTrack`](/api-ref/rtc/javascript/interfaces/ilocaltrack.html) 的列表，现在会返回一个 Promise，同时移除 `Client.on("stream-published")` 回调。
-- [`Client.unpublish`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#publish) 现在会返回一个 Promise
-- [`Client.subscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#subscribe) 现在使用 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html) 作为参数，返回一个 Promise，移除 `Client.on("stream-subscribed")`
-- [`Client.unsubscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#unsubscribe) 现在使用 [`AgoraRTCRemoteUser`](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser.html) 作为参数，返回一个 Promise
-- [`Client.renewToken`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#renewtoken) 现在会返回一个 Promise
-- [`Client.setClientRole`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setclientrole) 移除回调参数，现在会返回一个 Promise。**设置角色为 `audience` 后 SDK 不会自动 `unpublish`，调用 `publish` 时也不会自动把角色设置成 `host`**
-- 移除 `Client.setEncryptionMode` 和 `Client.setEncryptionSecret`，现在通过一个方法 [`Client.setEncryptionConfig`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setencryptionconfig) 来配置
-- [`Client.setLiveTranscoding`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#setlivetranscoding)、[`Client.startLiveStreaming`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startlivestreaming) 和 [`Client.stopLiveStreaming`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stoplivestreaming) 现在都会返回 Promise，同时移除 `Client.on("liveTranscodingUpdated")`、`Client.on("liveStreamingStarted")`、`Client.on("liveStreamingFailed")` 和 `Client.on("liveStreamingStopped")` 事件
-- [`Client.startChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startchannelmediarelay) 现在会返回一个 Promise
-  - [`ChannelMediaRelayConfiguration`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html) 移除 `setDestChannelInfo`, 改为 [`addDestChannelInfo`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html#adddestchannelinfo) 并去除冗余参数，具体参考 API 文档
-  - [`ChannelMediaRelayConfiguration`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html) 去除了 [`setSrcChannelInfo`](/api-ref/rtc/javascript/interfaces/ichannelmediarelayconfiguration.html#setsrcchannelinfo) 的冗余参数
-- [`Client.stopChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stopchannelmediarelay) 现在会返回一个 Promise
-- [`Client.updateChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#updatechannelmediarelay) 移除回调参数，现在会返回一个 Promise
-- 移除 `Client.on("first-video-frame-decode")` 和 `Client.on("first-audio-frame-decode")`，现在这两个事件通过 [`RemoteTrack.on("first-frame-decode")`](/api-ref/rtc/javascript/interfaces/iremotetrack.html#event_first_frame_decoded) 触发
-- 移除 `Client.on("active-speaker")` 事件，相同的功能由 [`Client.on("volume-indicator")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_volume_indicator) 提供
-- `Client.on("onTokenPrivilegeWillExpire")` 和 `Client.on("onTokenPrivilegeDidExpire")` 更名为 [`Client.on("token-privilege-will-expire")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_token_privilege_will_expire) 和 [`Client.on("token-privilege-did-expire")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_token_privilege_did_expire)
+- 移除 `Client.getSessionStats` 和 `Client.getTransportStats`，现在使用一个方法统一获取这些状态 [`Client.getRTCStats`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#getrtcstats)
+- [`Client.join`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 现在会返回一个 Promise，移除回调参数，增加 `appid` 参数
+- [`Client.leave`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#leave) 现在会返回一个 Promise，移除回调参数
+- 增加 [`Client.once`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#once) 只监听目标事件一次
+- 增加 [`Client.removeAllListeners`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#removealllisteners) 用于删除所有事件监听
+- [`Client.publish`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 现在需要传入 [`LocalTrack`](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack) 的列表，现在会返回一个 Promise，同时移除 `Client.on("stream-published")` 回调。
+- [`Client.unpublish`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 现在会返回一个 Promise
+- [`Client.subscribe`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#subscribe) 现在使用 [`AgoraRTCRemoteUser`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) 作为参数，返回一个 Promise，移除 `Client.on("stream-subscribed")`
+- [`Client.unsubscribe`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#unsubscribe) 现在使用 [`AgoraRTCRemoteUser`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser) 作为参数，返回一个 Promise
+- [`Client.renewToken`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#renewtoken) 现在会返回一个 Promise
+- [`Client.setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 移除回调参数，现在会返回一个 Promise。**设置角色为 `audience` 后 SDK 不会自动 `unpublish`，调用 `publish` 时也不会自动把角色设置成 `host`**
+- 移除 `Client.setEncryptionMode` 和 `Client.setEncryptionSecret`，现在通过一个方法 [`Client.setEncryptionConfig`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setencryptionconfig) 来配置
+- [`Client.setLiveTranscoding`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setlivetranscoding)、[`Client.startLiveStreaming`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startlivestreaming) 和 [`Client.stopLiveStreaming`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stoplivestreaming) 现在都会返回 Promise，同时移除 `Client.on("liveTranscodingUpdated")`、`Client.on("liveStreamingStarted")`、`Client.on("liveStreamingFailed")` 和 `Client.on("liveStreamingStopped")` 事件
+- [`Client.startChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startchannelmediarelay) 现在会返回一个 Promise
+  - [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration) 移除 `setDestChannelInfo`, 改为 [`addDestChannelInfo`](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration#adddestchannelinfo) 并去除冗余参数，具体参考 API 文档
+  - [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration) 去除了 [`setSrcChannelInfo`](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration#setsrcchannelinfo) 的冗余参数
+- [`Client.stopChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stopchannelmediarelay) 现在会返回一个 Promise
+- [`Client.updateChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#updatechannelmediarelay) 移除回调参数，现在会返回一个 Promise
+- 移除 `Client.on("first-video-frame-decode")` 和 `Client.on("first-audio-frame-decode")`，现在这两个事件通过 [`RemoteTrack.on("first-frame-decode")`](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack#event_first_frame_decoded) 触发
+- 移除 `Client.on("active-speaker")` 事件，相同的功能由 [`Client.on("volume-indicator")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_volume_indicator) 提供
+- `Client.on("onTokenPrivilegeWillExpire")` 和 `Client.on("onTokenPrivilegeDidExpire")` 更名为 [`Client.on("token-privilege-will-expire")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_will_expire) 和 [`Client.on("token-privilege-did-expire")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_token_privilege_did_expire)
 - 移除 `Client.on("network-type-changed")` 事件， SDK 无法保证其可靠性
-- 移除 `Client.on("connected")` 和 `Client.on("reconnect")` 事件，连接状态事件统一从 [`Client.on("connection-state-change")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 获取
-- [`Client.on("stream-fallback")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_stream_fallback) 参数修改，增加 `isFallbackOrRecover` 参数，详见 API 文档
+- 移除 `Client.on("connected")` 和 `Client.on("reconnect")` 事件，连接状态事件统一从 [`Client.on("connection-state-change")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change) 获取
+- [`Client.on("stream-fallback")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_stream_fallback) 参数修改，增加 `isFallbackOrRecover` 参数，详见 API 文档
 
 ### Stream
 
@@ -1124,12 +1124,12 @@ Web SDK 4.x 以 Track 轨道对象取代 3.x 的 `Stream` 对象。一个音视�
 
 下面列出 4.x 和 3.x 在音视频控制上差异较大的几个功能：
 
-- 启用或禁用本地音视频：4.x 以 [`ILocalTrack.setEnabled`](/api-ref/rtc/javascript/interfaces/ilocalaudiotrack.html#setenabled) 取代 3.x 的 `Stream.muteAudio` 和 `Stream.muteVideo`，用于实现启用或禁用本地轨道。有以下行为变更：
+- 启用或禁用本地音视频：4.x 以 [`ILocalTrack.setEnabled`](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#setenabled) 取代 3.x 的 `Stream.muteAudio` 和 `Stream.muteVideo`，用于实现启用或禁用本地轨道。有以下行为变更：
   - 在 3.x 中，Mute 状态发生改变后 SDK 会触发 `Client.on("mute-audio")`、`Client.on("mute-video")`、`Client.on("unmute-audio")` 或 `Client.on("unmute-video")` 回调；4.x 中移除了上述回调，如果该本地轨道已发布，`setEnabled(false)` 后远端会触发 `Client.on("user-unpublished")`，`setEnabled(true)` 后远端会触发 `Client.on("user-published")`。
   - 在 3.x 中，调用 `Stream.muteVideo(true)` 禁用本地视频流后，摄像头的指示灯并不会关闭，因而影响用户体验。在 4.x 中，调用 `setEnabled(false)` 禁用本地视频轨道后，SDK 会立刻关闭摄像头。
 - 设置媒体设备：
-  - 4.x 以 [`IMicrophoneAudioTrack.setDevice`](/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack.html#setdevice) 和 [`ICameraVideoTrack.setDevice`](/api-ref/rtc/javascript/interfaces/icameravideotrack.html#setdevice) 取代 3.x 的 `Stream.switchDevice`，用于设置媒体输入设备。
-  - 4.x 以 [`IRemoteAudioTrack.setPlaybackDevice`](/api-ref/rtc/javascript/interfaces/iremoteaudiotrack.html#setplaybackdevice) 取代 3.x 的 `Stream.setAudioOutput`，用于设置音频输出设备。
+  - 4.x 以 [`IMicrophoneAudioTrack.setDevice`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#setdevice) 和 [`ICameraVideoTrack.setDevice`](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setdevice) 取代 3.x 的 `Stream.switchDevice`，用于设置媒体输入设备。
+  - 4.x 以 [`IRemoteAudioTrack.setPlaybackDevice`](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#setplaybackdevice) 取代 3.x 的 `Stream.setAudioOutput`，用于设置音频输出设备。
 
 </PlatformStructured>
 
@@ -2060,7 +2060,7 @@ agora_rtc_engine: ^6.0.0 后提供了 top-level 方法 `createAgoraRtcEngine` �
 
 **渲染控件**
 
-agora_rtc_engine: ^6.0.0 后移除了 [SurfaceView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_surfaceview.html)/[TextureView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_textureview.html) 控件，视频渲染统一使用 [`AgoraVideoView`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agoravideoview) 控件。
+agora_rtc_engine: ^6.0.0 后移除了 `SurfaceView`/`TextureView` 控件，视频渲染统一使用 [`AgoraVideoView`](/zh-CN/api-reference/rtc/flutter/class-agoravideoview) 控件。
 
 **多频道**
 
@@ -2110,7 +2110,7 @@ agora_rtc_engine: ^5.x 的 `RtcChannel` 和 `RtcEngine` 在功能上有部分重
 
 - 将 `ChannelMediaOptions` 中的 `publishAudioTrack` 替换为 `publishMicrophoneTrack`。
 - 移除 `joinChannelWithOptions` 方法。
-- `joinChannel` 方法移除 `info` 参数，新增 `options` 参数，详见 [`joinChannel`](/api-ref/rtc/flutter/API/toc_channel#api_irtcengine_joinchannel2) 方法。
+- `joinChannel` 方法移除 `info` 参数，新增 `options` 参数，详见 [`joinChannel`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 方法。
 
 如果你在 agora_rtc_engine: ^6.0.0-beta.2 版本中使用了该功能、并且希望升级到 agora_rtc_engine: ^6.0.0 版本，请在升级 SDK 后修改功能的实现。
 

@@ -139,7 +139,7 @@ title: "Proctor SDK API"
 | `token` | 用于鉴权的 Token。 详见[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)。 |
 | `region` | 区域，默认值为 `CN`，即中国大陆。建议设置为靠近你的课件或录制文件对象存储服务所在的区域，因为跨区域传输较大的静态资源会造成比较大的延迟。举例来说，如果你的 S3 服务在北美，则建议将 `region` 也设为北美区域。所有灵动课堂客户端必须设置相同的区域，否则无法互通。支持的区域详见 [`AgoraProctorRegion`](#agoraproctorregion)。 |
 | `mediaOptions` | （选填）媒体流相关设置，包含媒体流加密，详见 [`AgoraProctorMediaOptions`](#agoraproctormediaoptions)。 |
-| `userProperties` | （选填）由开发者自定义的用户属性，会传入 [`AgoraEduUserContext`](/api-ref/flexible-classroom/ios/API/class_usercontext) 的 `userProperties`，详见[如何设置自定义用户属性](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
+| `userProperties` | （选填）由开发者自定义的用户属性，会传入 [`AgoraEduUserContext`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-usercontext) 的 `userProperties`，详见[如何设置自定义用户属性](/zh-CN/api-reference/faq/integration/agora_class_custom_properties)。 |
 | `widgets` | 传入 Widget ID 和 Widget Config。 |
 
 
