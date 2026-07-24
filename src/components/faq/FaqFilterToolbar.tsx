@@ -1,14 +1,8 @@
-import { CheckCircle2Icon, ChevronDownIcon } from 'lucide-react';
+import { ReferenceFilterSelect } from '@/components/reference-center/ReferenceFilterControls';
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { faqPlatforms, faqProducts } from './faq-data';
 
-function FilterDropdown({
+function FilterSelect({
   label,
   onSelect,
   options,
@@ -20,35 +14,12 @@ function FilterDropdown({
   value: string;
 }) {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="h-9 justify-between gap-2 px-3 text-sm font-normal"
-          type="button"
-          variant="outline"
-        >
-          <span className="truncate">
-            <span className="text-muted-foreground">{label}:</span> {value}
-          </span>
-          <ChevronDownIcon data-icon="inline-end" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        className="max-h-80 w-64 overflow-auto"
-      >
-        {options.map((option) => (
-          <DropdownMenuItem
-            className="justify-between"
-            key={option}
-            onSelect={() => onSelect(option)}
-          >
-            {option}
-            {option === value ? <CheckCircle2Icon /> : null}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <ReferenceFilterSelect
+      label={label}
+      onChange={onSelect}
+      options={options.map((option) => ({ label: option, value: option }))}
+      value={value}
+    />
   );
 }
 
@@ -78,21 +49,21 @@ export function FaqFilterToolbar({
   products?: string[];
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <FilterDropdown
+    <div className="flex flex-wrap items-end gap-3">
+      <FilterSelect
         label={productLabel}
         onSelect={onProductChange}
         options={products}
         value={product}
       />
-      <FilterDropdown
+      <FilterSelect
         label={platformLabel}
         onSelect={onPlatformChange}
         options={platforms}
         value={platform}
       />
       {hasActiveFilters ? (
-        <Button onClick={onClear} size="sm" type="button" variant="ghost">
+        <Button onClick={onClear} type="button" variant="ghost">
           {clearLabel}
         </Button>
       ) : null}

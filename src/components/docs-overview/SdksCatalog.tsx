@@ -3,6 +3,15 @@ import { useMemo, useState, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
+  getSdkDownloadProductCatalogId,
+  getSdkDownloadProductGroupRank,
+  getSdkDownloadProductSectionId,
+} from './sdk-download-navigation';
+import {
+  getZhCNSdkDownloadProductCopy,
+  ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY,
+} from './sdk-download-products';
+import {
   type SdkDownloadPlatform,
   type SdkDownloadProduct,
   type SdkDownloadVersion,
@@ -33,88 +42,6 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
-const PRODUCT_GROUP_ORDER = [
-  'agents',
-  'voice',
-  'video',
-  'signaling',
-  'chat',
-  'iot',
-  'whiteboard',
-  'fastboard',
-  'mediaplayer-kit',
-  'server-gateway',
-  'on-premise-recording',
-  'meeting',
-  'flexible-classroom',
-  'cloud-scene',
-  'proctor',
-] as const;
-const ZH_CN_PRODUCT_COPY = {
-  agents: {
-    label: '对话式 AI 引擎 SDK',
-    info: '用于在服务端构建和运行语音智能体的 SDK',
-  },
-  voice: {
-    label: '语音 SDK',
-    info: '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
-  },
-  video: {
-    label: '视频 SDK',
-    info: '适用于音视频通话、互动直播和极速直播的实时互动 SDK',
-  },
-  signaling: {
-    label: '实时消息 SDK',
-    info: '提供低延时消息、信令、状态同步和频道管理能力的 SDK',
-  },
-  chat: {
-    label: '即时通讯 SDK',
-    info: '适用于即时通讯场景的 SDK',
-  },
-  iot: {
-    label: '物联网 aPaaS SDK',
-    info: '适用于嵌入式设备实时音视频互动的 SDK',
-  },
-  whiteboard: {
-    label: '互动白板 SDK',
-    info: '提供可高度定制且不含默认 UI 的互动白板核心能力',
-  },
-  fastboard: {
-    label: 'Fastboard SDK',
-    info: '提供默认 UI，支持快速集成互动白板功能的 SDK',
-  },
-  'mediaplayer-kit': {
-    label: '媒体播放器组件',
-    info: '用于在客户端播放本地或在线媒体资源的组件',
-  },
-  'server-gateway': {
-    label: 'RTC 服务端 SDK',
-    info: '部署在服务端，用于向 RTC 频道发送音视频流或从频道接收音视频流',
-  },
-  'on-premise-recording': {
-    label: '本地服务端录制 SDK',
-    info: '部署在本地服务端，用于录制 RTC 频道中的音视频流',
-  },
-  meeting: {
-    label: '智能云会议引擎 SDK',
-    info: '用于构建多人音视频会议、会控、协作办公和 AI 会议体验的 SDK',
-  },
-  'flexible-classroom': {
-    label: '灵动课堂 SDK',
-    info: '适用于教育场景和课堂 UI 定制的 SDK',
-  },
-  'cloud-scene': {
-    label: '云课堂 SDK',
-    info: '提供默认课堂 UI 的场景化 SDK',
-  },
-  proctor: {
-    label: '灵动监考 SDK',
-    info: '适用于在线监考场景的 SDK',
-  },
-} as const satisfies Record<
-  (typeof PRODUCT_GROUP_ORDER)[number],
-  { info: string; label: string }
->;
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -175,13 +102,13 @@ let restoreHistoryMethods: (() => void) | null = null;
 const productFilters = {
   agents: {
     label: 'Agora Agents SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY.agents.label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.agents.label,
     aliases: ['agents', 'agora-agents', 'ai-agents'],
     productIds: ['agents'],
   },
   chat: {
     label: 'Chat SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY.chat.label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.chat.label,
     aliases: ['chat', 'im'],
     productIds: ['chat'],
   },
@@ -211,19 +138,19 @@ const productFilters = {
   },
   iot: {
     label: 'IoT SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY.iot.label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.iot.label,
     aliases: ['iot'],
     productIds: ['iot'],
   },
   'mediaplayer-kit': {
     label: 'Mediaplayer Kit SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY['mediaplayer-kit'].label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY['mediaplayer-kit'].label,
     aliases: ['mediaplayer-kit', 'mediaplayer'],
     productIds: ['mediaplayer-kit'],
   },
   meeting: {
     label: 'Meeting SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY.meeting.label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.meeting.label,
     aliases: ['meeting', 'meeting-sdk'],
     productIds: ['meeting'],
   },
@@ -241,7 +168,7 @@ const productFilters = {
   },
   signaling: {
     label: 'Signaling SDK',
-    zhLabel: ZH_CN_PRODUCT_COPY.signaling.label,
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.signaling.label,
     aliases: ['signaling', 'rtm'],
     productIds: ['signaling'],
   },
@@ -296,13 +223,6 @@ function platformRank(platformId: string) {
   return index === -1 ? PLATFORM_ORDER.length : index;
 }
 
-function productGroupRank(productId: string) {
-  const index = (PRODUCT_GROUP_ORDER as readonly string[]).indexOf(
-    productId as (typeof PRODUCT_GROUP_ORDER)[number],
-  );
-  return index === -1 ? PRODUCT_GROUP_ORDER.length : index;
-}
-
 type ProductPlatformEntry = {
   platformId: string;
   platformLabel: string;
@@ -328,7 +248,7 @@ function buildProductGroups(
   for (const platform of platforms) {
     for (const kind of ['core', 'addOns'] as const) {
       for (const product of platform[kind] ?? []) {
-        const productId = getProductCatalogId(product);
+        const productId = getSdkDownloadProductCatalogId(product);
         let entries = entriesByProductId.get(productId);
         if (!entries) {
           entries = [];
@@ -382,7 +302,7 @@ function buildProductGroups(
         );
       const localizedCopy =
         locale === 'zh-CN'
-          ? ZH_CN_PRODUCT_COPY[productId as keyof typeof ZH_CN_PRODUCT_COPY]
+          ? getZhCNSdkDownloadProductCopy(productId)
           : undefined;
 
       return {
@@ -397,7 +317,9 @@ function buildProductGroups(
       };
     })
     .sort(
-      (a, b) => productGroupRank(a.productId) - productGroupRank(b.productId),
+      (a, b) =>
+        getSdkDownloadProductGroupRank(a.productId) -
+        getSdkDownloadProductGroupRank(b.productId),
     );
 }
 
@@ -489,7 +411,10 @@ export function SdksCatalog({
     : platformLabel;
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-3">
+    <section
+      className="not-prose my-8 flex flex-col gap-3"
+      data-sdk-download-catalog
+    >
       {summaryLabel ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
           <p className="m-0 text-sm font-medium text-foreground">
@@ -548,7 +473,9 @@ function ProductCard({
   return (
     <article
       aria-labelledby={titleId}
-      className="rounded-xl border border-border p-5"
+      className="scroll-mt-40 rounded-xl border border-border p-5"
+      data-sdk-download-product-id={group.productId}
+      id={getSdkDownloadProductSectionId(group.productId)}
     >
       <div className="flex items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
@@ -650,6 +577,7 @@ function useSdkCatalogQueryFilters(
     productId: ProductFilterId | null;
   },
 ) {
+  const { platformId, productId } = defaults;
   const search = useSyncExternalStore(
     subscribeToLocationSearch,
     getLocationSearch,
@@ -657,8 +585,8 @@ function useSdkCatalogQueryFilters(
   );
 
   return useMemo(
-    () => readQueryFilters(search, platforms, defaults),
-    [search, platforms, defaults.platformId, defaults.productId],
+    () => readQueryFilters(search, platforms, { platformId, productId }),
+    [search, platforms, platformId, productId],
   );
 }
 
@@ -776,67 +704,6 @@ function normalizePlatformFilter(
   }
 
   return platforms.some((entry) => entry.id === normalized) ? normalized : null;
-}
-
-function getProductCatalogId(product: SdkDownloadProduct) {
-  const normalizedId = product.id.toLowerCase();
-
-  if (normalizedId.includes('agents-sdk')) {
-    return 'agents';
-  }
-  if (normalizedId.includes('voice-sdk')) {
-    return 'voice';
-  }
-  if (normalizedId.includes('video-sdk')) {
-    return 'video';
-  }
-  if (
-    normalizedId.includes('signaling-sdk') ||
-    normalizedId.includes('rtm-sdk')
-  ) {
-    return 'signaling';
-  }
-  if (normalizedId.includes('chat-sdk')) {
-    return 'chat';
-  }
-  if (normalizedId.includes('meeting-sdk')) {
-    return 'meeting';
-  }
-  if (normalizedId.includes('mediaplayer-kit')) {
-    return 'mediaplayer-kit';
-  }
-  if (normalizedId.includes('proctor-sdk')) {
-    return 'proctor';
-  }
-  if (normalizedId.includes('cloud-scene-sdk')) {
-    return 'cloud-scene';
-  }
-  if (
-    normalizedId.includes('flexible-classroom-sdk') ||
-    normalizedId.includes('classroom-sdk')
-  ) {
-    return 'flexible-classroom';
-  }
-  if (normalizedId.includes('iot-sdk')) {
-    return 'iot';
-  }
-  if (
-    normalizedId.includes('fastboard') ||
-    normalizedId.includes('interactive-whiteboard-fastboard')
-  ) {
-    return 'fastboard';
-  }
-  if (normalizedId.includes('interactive-whiteboard')) {
-    return 'whiteboard';
-  }
-  if (normalizedId.includes('server-gateway')) {
-    return 'server-gateway';
-  }
-  if (normalizedId.includes('on-premise-recording')) {
-    return 'on-premise-recording';
-  }
-
-  return normalizedId.replace(/-(android|ios|web|macos|windows|linux)$/, '');
 }
 
 function getVersionKey(platformId: string, version: SdkDownloadVersion) {

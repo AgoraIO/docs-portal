@@ -77,7 +77,7 @@ describe('ApiReferenceCards', () => {
       HTMLSelectElement,
     );
     expect(
-      screen.getByRole('button', { name: '全部', pressed: true }),
+      screen.getByRole('radio', { checked: true, name: '全部' }),
     ).toBeVisible();
     expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
@@ -95,10 +95,10 @@ describe('ApiReferenceCards', () => {
       '/zh-CN/api-reference/conversational-ai/agent-python',
     );
 
-    fireEvent.click(screen.getByRole('button', { name: '服务端 SDK' }));
+    fireEvent.click(screen.getByRole('radio', { name: '服务端 SDK' }));
 
     expect(
-      screen.getByRole('button', { name: '服务端 SDK', pressed: true }),
+      screen.getByRole('radio', { checked: true, name: '服务端 SDK' }),
     ).toBeVisible();
     expect(
       screen.queryByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
@@ -115,7 +115,7 @@ describe('ApiReferenceCards', () => {
       screen.queryByRole('link', { name: /对话式 AI RESTful API/i }),
     ).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'RESTful API' }));
+    fireEvent.click(screen.getByRole('radio', { name: 'RESTful API' }));
 
     expect(
       screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
@@ -125,6 +125,38 @@ describe('ApiReferenceCards', () => {
         'restful',
       );
     });
+  });
+
+  it('keeps the platform select left of API type and the product select as a mobile fallback', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const productSelect = screen.getByLabelText('产品');
+    const platformSelect = screen.getByLabelText('平台/语言');
+    const apiType = screen.getByRole('group', { name: 'API 类型' });
+
+    expect(productSelect.closest('label')).toHaveClass('lg:hidden');
+    expect(platformSelect.closest('label')).not.toHaveClass('lg:hidden');
+    expect(platformSelect).toHaveDisplayValue('全部平台');
+    expect(
+      (platformSelect.closest('label')?.compareDocumentPosition(apiType) ?? 0) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(apiType).not.toHaveClass('lg:hidden');
+  });
+
+  it('renders only product cards without capability headings', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    expect(
+      screen.queryByRole('heading', { name: '实时互动基础能力' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '实时互动扩展能力' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '场景化解决方案' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
   });
 
   it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {
@@ -170,7 +202,7 @@ describe('ApiReferenceCards', () => {
     await waitFor(() => {
       expect(screen.getByLabelText('产品')).toHaveValue('rtc');
       expect(
-        screen.getByRole('button', { name: '客户端 SDK', pressed: true }),
+        screen.getByRole('radio', { checked: true, name: '客户端 SDK' }),
       ).toBeVisible();
     });
 
