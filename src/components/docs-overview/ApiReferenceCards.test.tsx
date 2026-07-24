@@ -77,7 +77,7 @@ describe('ApiReferenceCards', () => {
       HTMLSelectElement,
     );
     expect(
-      screen.getByRole('button', { name: '全部', pressed: true }),
+      screen.getByRole('radio', { checked: true, name: '全部' }),
     ).toBeVisible();
     expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
@@ -95,10 +95,10 @@ describe('ApiReferenceCards', () => {
       '/zh-CN/api-reference/conversational-ai/agent-python',
     );
 
-    fireEvent.click(screen.getByRole('button', { name: '服务端 SDK' }));
+    fireEvent.click(screen.getByRole('radio', { name: '服务端 SDK' }));
 
     expect(
-      screen.getByRole('button', { name: '服务端 SDK', pressed: true }),
+      screen.getByRole('radio', { checked: true, name: '服务端 SDK' }),
     ).toBeVisible();
     expect(
       screen.queryByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
@@ -115,7 +115,7 @@ describe('ApiReferenceCards', () => {
       screen.queryByRole('link', { name: /对话式 AI RESTful API/i }),
     ).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'RESTful API' }));
+    fireEvent.click(screen.getByRole('radio', { name: 'RESTful API' }));
 
     expect(
       screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
@@ -201,7 +201,7 @@ describe('ApiReferenceCards', () => {
     await waitFor(() => {
       expect(screen.getByLabelText('产品')).toHaveValue('rtc');
       expect(
-        screen.getByRole('button', { name: '客户端 SDK', pressed: true }),
+        screen.getByRole('radio', { checked: true, name: '客户端 SDK' }),
       ).toBeVisible();
     });
 

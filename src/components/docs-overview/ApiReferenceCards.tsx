@@ -1,19 +1,18 @@
-import { ChevronDownIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import {
+  ReferenceFilterSelect,
+  ReferenceFilterToggleGroup,
+} from '@/components/reference-center/ReferenceFilterControls';
 import {
   type ApiReferenceCardEntry,
   type ApiReferenceCardType,
   zhCNApiReferenceCards,
 } from '@/lib/api-reference-cards-data.zh-cn';
-import {
-  type ApiReferenceFilterOption,
-  buildApiReferenceFilterOptions,
-} from '@/lib/api-reference-filter-options';
+import { buildApiReferenceFilterOptions } from '@/lib/api-reference-filter-options';
 import {
   API_REFERENCE_CAPABILITY_GROUPS,
   getApiReferenceProductSectionId,
 } from '@/lib/api-reference-navigation';
-import { cn } from '@/lib/cn';
 
 type ApiReferenceCardsLocale = 'zh-CN';
 type ApiReferenceTypeFilter = 'all' | 'client' | 'restful' | 'server';
@@ -106,19 +105,29 @@ export function ApiReferenceCards({
     >
       <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
-          <FilterSelect
-            allLabel="全部产品"
+          <ReferenceFilterSelect
             className={type === 'all' ? 'lg:hidden' : undefined}
             label="产品"
             onChange={setProductId}
-            options={productOptions}
+            options={[
+              { label: '全部产品', value: 'all' },
+              ...productOptions.map((option) => ({
+                label: option.label,
+                value: option.id,
+              })),
+            ]}
             value={productId}
           />
-          <FilterSelect
-            allLabel="全部平台"
+          <ReferenceFilterSelect
             label="平台/语言"
             onChange={setPlatformId}
-            options={platformOptions}
+            options={[
+              { label: '全部平台', value: 'all' },
+              ...platformOptions.map((option) => ({
+                label: option.label,
+                value: option.id,
+              })),
+            ]}
             value={platformId}
           />
           {type === 'all' ? (
@@ -185,76 +194,12 @@ function ApiTypeSegmentedControl({
   value: ApiReferenceTypeFilter;
 }) {
   return (
-    <fieldset className="flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground">
-      <legend>API 类型</legend>
-      <div className="inline-flex h-8 rounded-lg bg-muted p-[3px] text-muted-foreground">
-        {apiTypeOptions.map((option) => {
-          const isActive = option.id === value;
-
-          return (
-            <button
-              aria-pressed={isActive}
-              className={[
-                'rounded-md border border-transparent px-2.5 text-xs font-medium transition-all hover:text-foreground',
-                isActive
-                  ? 'bg-background text-foreground shadow-sm dark:border-input dark:bg-input/30'
-                  : 'text-foreground/60',
-              ].join(' ')}
-              key={option.id}
-              onClick={() => onChange(option.id)}
-              type="button"
-            >
-              {option.label}
-            </button>
-          );
-        })}
-      </div>
-    </fieldset>
-  );
-}
-
-function FilterSelect({
-  allLabel = '全部',
-  className,
-  label,
-  onChange,
-  options,
-  value,
-}: {
-  allLabel?: string;
-  className?: string;
-  label: string;
-  onChange: (value: string) => void;
-  options: ApiReferenceFilterOption[];
-  value: string;
-}) {
-  const id = `api-reference-${label}`;
-
-  return (
-    <label
-      className={cn(
-        'flex flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground',
-        className,
-      )}
-    >
-      <span>{label}</span>
-      <span className="relative">
-        <select
-          className="h-8 min-w-40 appearance-none rounded-md border border-border bg-background py-1 pr-8 pl-2 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-          id={id}
-          onChange={(event) => onChange(event.target.value)}
-          value={value}
-        >
-          <option value="all">{allLabel}</option>
-          {options.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2 size-4 -translate-y-1/2 text-muted-foreground" />
-      </span>
-    </label>
+    <ReferenceFilterToggleGroup
+      label="API 类型"
+      onChange={onChange}
+      options={apiTypeOptions}
+      value={value}
+    />
   );
 }
 
@@ -590,13 +535,13 @@ const platformIcons: Record<string, string> = {
 };
 
 const apiTypeOptions: Array<{
-  id: ApiReferenceTypeFilter;
   label: string;
+  value: ApiReferenceTypeFilter;
 }> = [
-  { id: 'all', label: '全部' },
-  { id: 'client', label: '客户端 SDK' },
-  { id: 'server', label: '服务端 SDK' },
-  { id: 'restful', label: 'RESTful API' },
+  { label: '全部', value: 'all' },
+  { label: '客户端 SDK', value: 'client' },
+  { label: '服务端 SDK', value: 'server' },
+  { label: 'RESTful API', value: 'restful' },
 ];
 
 const productDescriptions: Record<string, string> = {
