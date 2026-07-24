@@ -40,11 +40,11 @@ export function ReferenceCenterPrimaryNav({
               <Link
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'flex min-h-9 items-center gap-2.5 rounded-md px-2.5 text-[13px] transition-colors',
+                  'group flex min-h-9 items-center gap-2.5 rounded-md px-2.5 text-[13px] transition-colors',
                   'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/40',
                   isActive
-                    ? 'bg-[color:var(--docs-soft-fill)] font-medium text-[color:var(--ink-1)]'
-                    : 'text-[color:var(--ink-3)] hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+                    ? 'bg-[color:var(--surface-muted)] font-medium text-[color:var(--ink-1)]'
+                    : 'text-[color:var(--ink-2)] hover:bg-[color:var(--surface-muted)] hover:text-[color:var(--ink-1)]',
                 )}
                 onClick={onSelectPath}
                 params={{}}
@@ -57,7 +57,7 @@ export function ReferenceCenterPrimaryNav({
                     'size-4 shrink-0',
                     isActive
                       ? 'text-[color:var(--ink-2)]'
-                      : 'text-[color:var(--ink-4)]',
+                      : 'text-[color:var(--ink-3)] group-hover:text-[color:var(--ink-2)]',
                   )}
                 />
                 <span>{entry.label}</span>
