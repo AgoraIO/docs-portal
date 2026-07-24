@@ -106,30 +106,38 @@ export function FaqCategory({
         {meta.description}
       </p>
 
-      <FaqSearch
-        placeholder={dataset.ui.searchCategoryPlaceholder(meta.label)}
-        query={query}
-        setQuery={setQuery}
-      />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <FaqFilterToolbar
-          clearLabel={dataset.ui.clear}
-          hasActiveFilters={hasActiveFilters}
-          onClear={resetFilters}
-          onPlatformChange={setPlatform}
-          onProductChange={setProduct}
-          platform={platform}
-          platformLabel={dataset.ui.platformFilter}
-          platforms={dataset.platforms}
-          product={product}
-          productLabel={dataset.ui.productFilter}
-          products={dataset.products}
+      <section
+        aria-label={
+          dataset.locale === 'zh-CN'
+            ? `${meta.label}筛选`
+            : `${meta.label} filters`
+        }
+        className="flex flex-col gap-4 border-border border-b pb-5"
+      >
+        <FaqSearch
+          placeholder={dataset.ui.searchCategoryPlaceholder(meta.label)}
+          query={query}
+          setQuery={setQuery}
         />
-        <Badge className="whitespace-nowrap" variant="outline">
-          {dataset.ui.questionCount(items.length)}
-        </Badge>
-      </div>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <FaqFilterToolbar
+            clearLabel={dataset.ui.clear}
+            hasActiveFilters={hasActiveFilters}
+            onClear={resetFilters}
+            onPlatformChange={setPlatform}
+            onProductChange={setProduct}
+            platform={platform}
+            platformLabel={dataset.ui.platformFilter}
+            platforms={dataset.platforms}
+            product={product}
+            productLabel={dataset.ui.productFilter}
+            products={dataset.products}
+          />
+          <Badge className="ml-auto whitespace-nowrap" variant="outline">
+            {dataset.ui.questionCount(items.length)}
+          </Badge>
+        </div>
+      </section>
 
       <FaqItemList
         categories={dataset.categories}
