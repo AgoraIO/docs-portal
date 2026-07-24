@@ -13,20 +13,20 @@ title: "发版说明"
 
 该版本对 <glossary>3A</glossary> 模块进行了优化。主要接口变更如下：
 
-- 从 [`rtc_channel_options_t`](/api-ref/rtsa/c/structrtc__channel__options__t.html) 中移除了 `audio_process_opt`，及其关联结构体 `rtc_audio_process_options_t`。
+- 从 [`rtc_channel_options_t`](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中移除了 `audio_process_opt`，及其关联结构体 `rtc_audio_process_options_t`。
 - 在 `rtc_channel_options_t` 中新增 `enable_audio_downlink_aec` 和 `enable_audio_downlink_aec_pcm_dump` 用于替代上述选项。
 
 新的实现支持用户输入硬件回采信号，从而显著提高下行 <glossary>3A</glossary> 处理效果。如从旧版本升级，请确保同步更新相关集成逻辑。
 
 #### 删除错误码 221 和 222
 
-该版本删除了[错误码](/api-ref/rtsa/c/agora__rtc__api_8h#agora_err_code_e)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
+该版本删除了[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
 
 ### 改进
 
 #### 音频收发 Codec 解耦
 
-该版本将音频的发送和接收编解码格式解耦，不再要求两者保持一致。相关接口更新为在 [`rtc_channel_options_t`](/api-ref/rtsa/c/structrtc__channel__options__t.html) 中添加了 `enable_audio_decode`，用于控制是否开启下行音频解码。
+该版本将音频的发送和接收编解码格式解耦，不再要求两者保持一致。相关接口更新为在 [`rtc_channel_options_t`](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中添加了 `enable_audio_decode`，用于控制是否开启下行音频解码。
 
 #### 音频模块改进
 
@@ -51,11 +51,11 @@ title: "发版说明"
 该版本对如下代码进行了更名。如果你由之前的版本升级到 v1.9.6 且集成过相应代码，请重新集成：
 
 - 错误码 `ERR_RTM_EXCEED_TCP_SKB` (1006) 更名为 `ERR_RTM_EXCEED_SND_BUFFER` (1006)。
-- 回调 `on_send_rtm_data_result` 更名为 [`on_rtm_send_data_result`](/api-ref/rtsa/c/structagora__rtm__handler__t#a15b2dba380611e1974686f74a3ec0ca7)。
+- 回调 `on_send_rtm_data_result` 更名为 [`on_rtm_send_data_result`](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a15b2dba380611e1974686f74a3ec0ca7)。
 
 #### 区域码清理
 
-该版本对 [`area_code_e`](/api-ref/rtsa/c/agora__rtc__api_8h#area_code_e) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
+该版本对 [`area_code_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#areacodee) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
 
 清理后的 `area_code_e` 支持如下区域：
 
@@ -95,12 +95,12 @@ title: "发版说明"
 
 该版本新增 String 型 UID 功能，支持用户使用 String 型的 User Account 加入频道实现互通。相关 API 包括：
 
-- [`agora_rtc_join_channel_with_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a64a24029bfaa5408e987122261385013)：使用 User Account 加入频道
-- [`agora_rtc_get_user_info_by_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a68efcfa431803942c8fdc733b00c30c1)：通过 User Account 获取远端用户信息
-- [`agora_rtc_get_user_info_by_uid`](/api-ref/rtsa/c/agora__rtc__api_8h#ad6b1be785d6c2b4fa8fb0eac90290194)：通过 UID 获取远端用户信息
-- [`on_user_info_updated`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a4c8f017cc2fa8aaa6e91c966b97a8aee)：远端用户信息变更回调
-- [`on_user_joined_with_user_account`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#aa57af03ef9f26ab68917fa7a30f703bd)：远端用户使用 User Account 加入频道回调
-- [`on_user_offline_with_user_account`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#af3a7f207010bafca7aa99fdba5a9b1ab)：使用 User Account 的场景下，远端用户离开频道回调
+- [`agora_rtc_join_channel_with_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013)：使用 User Account 加入频道
+- [`agora_rtc_get_user_info_by_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a68efcfa431803942c8fdc733b00c30c1)：通过 User Account 获取远端用户信息
+- [`agora_rtc_get_user_info_by_uid`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad6b1be785d6c2b4fa8fb0eac90290194)：通过 UID 获取远端用户信息
+- [`on_user_info_updated`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a4c8f017cc2fa8aaa6e91c966b97a8aee)：远端用户信息变更回调
+- [`on_user_joined_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa57af03ef9f26ab68917fa7a30f703bd)：远端用户使用 User Account 加入频道回调
+- [`on_user_offline_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3a7f207010bafca7aa99fdba5a9b1ab)：使用 User Account 的场景下，远端用户离开频道回调
 
 详细实现步骤和开发注意事项可以参考[使用 String 型 UID](/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid)。
 
@@ -112,9 +112,9 @@ title: "发版说明"
 
 为方便用户在频道内以广播的形式发送消息，该版本新增数据流功能。相关 API 包括：
 
-- [`agora_rtc_create_data_stream`](/api-ref/rtsa/c/agora__rtc__api_8h#aa6b288b479c7048b4cceb85d995771ed)：创建数据流
-- [`agora_rtc_send_stream_message`](/api-ref/rtsa/c/agora__rtc__api_8h#aee89fa14447b4529d45275afe5b5a86f)：发送数据流消息
-- [`on_stream_message`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a7c73b2bb0558e2b695d8838ee542c87a)：收到远端用户发送的数据流消息回调
+- [`agora_rtc_create_data_stream`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed)：创建数据流
+- [`agora_rtc_send_stream_message`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aee89fa14447b4529d45275afe5b5a86f)：发送数据流消息
+- [`on_stream_message`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a)：收到远端用户发送的数据流消息回调
 
 详细实现步骤和开发注意事项可以参考[发送和接收数据流 (Data Stream)](/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream)。
 
@@ -122,8 +122,8 @@ title: "发版说明"
 
 为方便用户向指定频道或所有频道内的用户发送消息，该版本新增媒体控制信息功能。相关 API 包括：
 
-- [`agora_rtc_send_media_ctrl_msg`](/api-ref/rtsa/c/agora__rtc__api_8h#a83dd3f91afbae5d54548c4d8e546aafc)：发送媒体控制信息
-- [`on_media_ctrl_msg`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#ab0a6462ac391a960f767d2cf6ce8078a)：收到远端用户发送的媒体控制信息回调
+- [`agora_rtc_send_media_ctrl_msg`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a83dd3f91afbae5d54548c4d8e546aafc)：发送媒体控制信息
+- [`on_media_ctrl_msg`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a)：收到远端用户发送的媒体控制信息回调
 
 ### 问题修复
 
@@ -162,7 +162,7 @@ title: "发版说明"
 
 #### 规整错误码
 
-为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/api-ref/rtsa/c/agora__rtc__api_8h#agora_err_code_e)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
+为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
 
 在之前的版本中，API 调用时返回的错误没有对外开放，开发者需要调用 `agora_rtc_err2str` 才能获取描述信息。你可以参考最新的 API 代码调整相关逻辑。
 
@@ -627,7 +627,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 ### 改进
 
-- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/api-ref/rtsa/c/agora__rtc__api_8h#agora_err_code_e)。
+- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)。
 - 该版本优化了 debug log，减少了 log 文件写入操作的系统资源占用。
 - 自该版本起，你可以略过申请 License 和激活步骤直接免费试用 RTSA SDK。试用期时效为 90 天且存在 10 路并发限制。
 
@@ -815,7 +815,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 #### 互通增强
 
-该版本增强了 RTSA SDK 间互通的能力，并实现了 RTSA SDK 与[声网 SDK](https://docs.agora.io/cn/Agora%20Platform/term_agora_rtc_sdk) 的互通，详见[产品概述的功能描述](/zh-CN/realtime-media/rtsa)章节。
+该版本增强了 RTSA SDK 间互通的能力，并实现了 RTSA SDK 与[声网 SDK](/zh-CN/realtime-media/rtc/reference/key-concept) 的互通，详见[产品概述的功能描述](/zh-CN/realtime-media/rtsa)章节。
 
 #### 配置 BWE
 

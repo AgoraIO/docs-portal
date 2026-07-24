@@ -119,7 +119,7 @@ public void onChannelMediaRelayStateChanged(int state, int code) {
 | 媒体流转发状态 | 状态码和错误码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `RELAY_STATE_RUNNING`(2) 和 `RELAY_OK`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/android/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)   |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)   |
 | 已停止媒体流转发。     | `RELAY_STATE_IDLE`(0) 和 `RELAY_OK`(0)      |
 
 ## 参考信息
@@ -142,13 +142,13 @@ public void onChannelMediaRelayStateChanged(int state, int code) {
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/android/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/android/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/android/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/android/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`onChannelMediaRelayStateChanged`](/api-ref/rtc/android/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`ChannelMediaRelayConfiguration`](/api-ref/rtc/android/API/class_channelmediarelayconfiguration)
-- [`ChannelMediaInfo`](/api-ref/rtc/android/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`onChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/android/class-channelmediarelayconfiguration)
+- [`ChannelMediaInfo`](/zh-CN/api-reference/rtc/android/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -263,7 +263,7 @@ func rtcEngine(_ engine: AgoraRtcEngineKit,
 | 媒体流转发状态 | 状态码和错误码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `AgoraChannelMediaRelayStateRunning`(2) 和 `AgoraChannelMediaRelayErrorNone`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/ios/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。   |  `AgoraChannelMediaRelayStateFailure`(3) |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。   |  `AgoraChannelMediaRelayStateFailure`(3) |
 | 已停止媒体流转发。  | `AgoraChannelMediaRelayStateIdle`(0) 和 `AgoraChannelMediaRelayErrorNone`(0)   |
 
 ## 参考信息
@@ -286,13 +286,13 @@ func rtcEngine(_ engine: AgoraRtcEngineKit,
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/ios/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/ios/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`channelMediaRelayStateDidChange`](/api-ref/rtc/ios/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`AgoraChannelMediaRelayConfiguration`](/api-ref/rtc/ios/API/class_channelmediarelayconfiguration)
-- [`AgoraChannelMediaRelayInfo`](/api-ref/rtc/ios/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`channelMediaRelayStateDidChange`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`AgoraChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/ios/class-channelmediarelayconfiguration)
+- [`AgoraChannelMediaRelayInfo`](/zh-CN/api-reference/rtc/ios/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -406,7 +406,7 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, channelMediaRelayStateDidChange stat
 | 媒体流转发状态 | 状态码和错误码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `AgoraChannelMediaRelayStateRunning`(2) 和 `AgoraChannelMediaRelayErrorNone`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/macos/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。   |  `AgoraChannelMediaRelayStateFailure`(3) |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。   |  `AgoraChannelMediaRelayStateFailure`(3) |
 | 已停止媒体流转发。  | `AgoraChannelMediaRelayStateIdle`(0) 和 `AgoraChannelMediaRelayErrorNone`(0)  |
 
 ## 参考信息
@@ -429,13 +429,13 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, channelMediaRelayStateDidChange stat
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/macos/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/macos/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/macos/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/macos/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`channelMediaRelayStateDidChange`](/api-ref/rtc/macos/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`AgoraChannelMediaRelayConfiguration`](/api-ref/rtc/macos/API/class_channelmediarelayconfiguration)
-- [`AgoraChannelMediaRelayInfo`](/api-ref/rtc/macos/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`channelMediaRelayStateDidChange`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`AgoraChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/macos/class-channelmediarelayconfiguration)
+- [`AgoraChannelMediaRelayInfo`](/zh-CN/api-reference/rtc/macos/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -544,11 +544,11 @@ client.stopChannelMediaRelay().then(() => {
 
 ### API 参考
 
-- [`startChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#startchannelmediarelay)
-- [`updateChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#updatechannelmediarelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#stopchannelmediarelay)
-- [`AgoraRTCClient.on("channel-media-relay-state")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_channel_media_relay_state)
-- [`AgoraRTCClient.on("channel-media-relay-event")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_channel_media_relay_event)
+- [`startChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startchannelmediarelay)
+- [`updateChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#updatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stopchannelmediarelay)
+- [`AgoraRTCClient.on("channel-media-relay-state")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state)
+- [`AgoraRTCClient.on("channel-media-relay-event")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_event)
 
 </PlatformStructured>
 
@@ -671,7 +671,7 @@ class CAgoraCrossChannelEventHandler : public IRtcEngineEventHandler {
 | 媒体流转发状态 | 状态码和错误码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `RELAY_STATE_RUNNING`(2) 和 `RELAY_OK`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/windows/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)    |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)    |
 | 已停止媒体流转发。     | `RELAY_STATE_IDLE`(0) 和 `RELAY_OK`(0)      |
 
 ## 参考信息
@@ -685,13 +685,13 @@ class CAgoraCrossChannelEventHandler : public IRtcEngineEventHandler {
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/windows/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/windows/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/windows/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/windows/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`onChannelMediaRelayStateChanged`](/api-ref/rtc/windows/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`ChannelMediaRelayConfiguration`](/api-ref/rtc/windows/API/class_channelmediarelayconfiguration)
-- [`ChannelMediaInfo`](/api-ref/rtc/windows/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`onChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediarelayconfiguration)
+- [`ChannelMediaInfo`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -804,7 +804,7 @@ rtcEngine.registerEventHandler(
 | 媒体流转发状态 | 状态码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `RelayStateRunning`(2) 和 `RelayOk`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/electron/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RelayStateFailure`(3)    |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RelayStateFailure`(3)    |
 | 已停止媒体流转发。     | `RelayStateIdle`(0) 和 `RelayOk`(0)      |
 
 ## 参考信息
@@ -827,13 +827,13 @@ rtcEngine.registerEventHandler(
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/electron/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/electron/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/electron/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/electron/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`onChannelMediaRelayStateChanged`](/api-ref/rtc/electron/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`ChannelMediaRelayConfiguration`](/api-ref/rtc/electron/API/class_channelmediarelayconfiguration)
-- [`ChannelMediaInfo`](/api-ref/rtc/electron/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`onChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/electron/class-channelmediarelayconfiguration)
+- [`ChannelMediaInfo`](/zh-CN/api-reference/rtc/electron/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -960,7 +960,7 @@ public override void OnChannelMediaRelayStateChanged(int state, int code)
 | 媒体流转发状态 | 状态码和错误码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `RELAY_STATE_RUNNING`(2) 和 `RELAY_OK`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/unity/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)    |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RELAY_STATE_FAILURE`(3)    |
 | 已停止媒体流转发。     | `RELAY_STATE_IDLE`(0) 和 `RELAY_OK`(0)      |
 
 ## 参考信息
@@ -983,13 +983,13 @@ public override void OnChannelMediaRelayStateChanged(int state, int code)
 
 ### API 参考
 
-- [`StartOrUpdateChannelMediaRelay`](/api-ref/rtc/unity/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`StopChannelMediaRelay`](/api-ref/rtc/unity/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`PauseAllChannelMediaRelay`](/api-ref/rtc/unity/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`ResumeAllChannelMediaRelay`](/api-ref/rtc/unity/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`OnChannelMediaRelayStateChanged`](/api-ref/rtc/unity/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`ChannelMediaRelayConfiguration`](/api-ref/rtc/unity/API/class_channelmediarelayconfiguration)
-- [`ChannelMediaInfo`](/api-ref/rtc/unity/API/class_channelmediainfo)
+- [`StartOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`StopChannelMediaRelay`](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`PauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`ResumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`OnChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/unity/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/unity/class-channelmediarelayconfiguration)
+- [`ChannelMediaInfo`](/zh-CN/api-reference/rtc/unity/class-channelmediainfo)
 
 </PlatformStructured>
 
@@ -1102,7 +1102,7 @@ rtcEngine.registerEventHandler(
 | 媒体流转发状态 | 状态码 |
 | ---------------- | ---------------- |
 | 源频道开始向目标频道传输数据。  | `RelayStateRunning`(2) 和 `RelayOk`(0)     |
-| 跨频道媒体流转发出现异常。可根据[错误码](/api-ref/rtc/rn/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RelayStateFailure`(3)    |
+| 跨频道媒体流转发出现异常。可根据[错误码](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)进行排查。    | `RelayStateFailure`(3)    |
 | 已停止媒体流转发。     | `RelayStateIdle`(0) 和 `RelayOk`(0)      |
 
 ## 参考信息
@@ -1125,12 +1125,12 @@ rtcEngine.registerEventHandler(
 
 ### API 参考
 
-- [`startOrUpdateChannelMediaRelay`](/api-ref/rtc/rn/API/toc_channel_media_relay#startOrUpdateChannelMediaRelay)
-- [`stopChannelMediaRelay`](/api-ref/rtc/rn/API/toc_channel_media_relay#api_irtcengine_stopchannelmediarelay)
-- [`pauseAllChannelMediaRelay`](/api-ref/rtc/rn/API/toc_channel_media_relay#api_irtcengine_pauseallchannelmediarelay)
-- [`resumeAllChannelMediaRelay`](/api-ref/rtc/rn/API/toc_channel_media_relay#api_irtcengine_resumeallchannelmediarelay)
-- [`onChannelMediaRelayStateChanged`](/api-ref/rtc/rn/API/toc_channel_media_relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
-- [`ChannelMediaRelayConfiguration`](/api-ref/rtc/rn/API/class_channelmediarelayconfiguration)
-- [`ChannelMediaInfo`](/api-ref/rtc/rn/API/class_channelmediainfo)
+- [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#startorupdatechannelmediarelay)
+- [`stopChannelMediaRelay`](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay)
+- [`pauseAllChannelMediaRelay`](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay)
+- [`resumeAllChannelMediaRelay`](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay)
+- [`onChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged)
+- [`ChannelMediaRelayConfiguration`](/zh-CN/api-reference/rtc/react-native/class-channelmediarelayconfiguration)
+- [`ChannelMediaInfo`](/zh-CN/api-reference/rtc/react-native/class-channelmediainfo)
 
 </PlatformStructured>

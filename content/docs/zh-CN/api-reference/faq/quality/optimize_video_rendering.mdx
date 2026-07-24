@@ -15,6 +15,8 @@ title: "如何调查首帧出图时间较长的问题？"
 
 本节介绍三种典型的排查场景供参考。
 
+<a id="加入频道前设置渲染数据打点"></a>
+
 **加入频道前设置渲染数据打点**
 
 在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 `startMediaRenderingTracing`方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。此时 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：
@@ -115,7 +117,7 @@ title: "如何调查首帧出图时间较长的问题？"
 
 **加入频道但暂不订阅流**
 
-在对首帧出图要求极高的情况下，可以先加入频道但不订阅媒体流，等用户在 App 上实际触发加入频道的操作时，调用 `startMediaRenderingTracing` 设置渲染数据打点，然后订阅远端主播的媒体流，详细实现见[首帧出图最佳实践](/doc/rtc/android/best-practice/first-frame-rendering)。在该场景下 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：
+在对首帧出图要求极高的情况下，可以先加入频道但不订阅媒体流，等用户在 App 上实际触发加入频道的操作时，调用 `startMediaRenderingTracing` 设置渲染数据打点，然后订阅远端主播的媒体流，详细实现见[首帧出图最佳实践](/zh-CN/realtime-media/rtc/build/video/first-frame-rendering)。在该场景下 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：
 
 | 字段名 | 含义 | 参考范围 | 说明及建议 |
 | --- | --- | --- | --- |
@@ -160,29 +162,29 @@ title: "如何调查首帧出图时间较长的问题？"
 ### API 参考
 
 - Windows
-  - [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#joinChannel%20[2/2])
-  - [`startMediaRenderingTracing`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
-  - [`onVideoRenderingTracingResult`](/api-ref/rtc/windows/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
-  - [`preloadChannel`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_preloadchannel)
+  - [`joinChannel`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#joinchannel-22)
+  - [`startMediaRenderingTracing`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_preloadchannel)
 
 - Android
-  - [`joinChannel`](/api-ref/rtc/android/API/toc_channel#joinChannel%20[2/2])
-  - [`startMediaRenderingTracing`](/api-ref/rtc/android/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
-  - [`onVideoRenderingTracingResult`](/api-ref/rtc/android/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
-  - [`preloadChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_preloadchannel)
+  - [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#joinchannel-22)
+  - [`startMediaRenderingTracing`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/zh-CN/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_preloadchannel)
 
 - iOS
-  - [`joinChannel`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:)
-  - [`startMediaRenderingTracing`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
-  - [`onVideoRenderingTracingResult`](/api-ref/rtc/ios/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
-  - [`preloadChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_preloadchannel)
+  - [`joinChannel`](/zh-CN/api-reference/rtc/ios/channel#joinchannelbytokenchanneliduidmediaoptionsjoinsuccess)
+  - [`startMediaRenderingTracing`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_preloadchannel)
 
 - macOS
-  - [`joinChannel`](/api-ref/rtc/macos/API/toc_channel#joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:)
-  - [`startMediaRenderingTracing`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_startmediarenderingtracing)
-  - [`onVideoRenderingTracingResult`](/api-ref/rtc/macos/API/toc_video_rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
-  - [`preloadChannel`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_preloadchannel)
+  - [`joinChannel`](/zh-CN/api-reference/rtc/macos/channel#joinchannelbytokenchanneliduidmediaoptionsjoinsuccess)
+  - [`startMediaRenderingTracing`](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)
+  - [`onVideoRenderingTracingResult`](/zh-CN/api-reference/rtc/macos/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult)
+  - [`preloadChannel`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_preloadchannel)
 
 ### 相关文档
 
-- [加快首帧出图](https://doc.shengwang.cn/doc/rtc/android/best-practice/first-frame-rendering)
+- [加快首帧出图](/zh-CN/realtime-media/rtc/build/video/first-frame-rendering)

@@ -20,7 +20,7 @@
 - `manual-mdx`: 141
 - `navigation`: 6
 - `navigation-data`: 1
-- `navigation-meta`: 104
+- `navigation-meta`: 106
 
 ## Warning explanations
 

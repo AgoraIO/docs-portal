@@ -3,6 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { setTimeout as wait } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import { maskFencedCode } from './lib/markdown-code.mjs';
 
 const DEFAULT_MAX_SAMPLES = 30;
 const DEFAULT_EXTERNAL_CONCURRENCY = 8;
@@ -89,10 +90,7 @@ export function auditDocsLinks({
     for (const filePath of openApiFiles) {
       const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
 
-      if (
-        openApiSourcePathFilter &&
-        !openApiSourcePathFilter.has(sourcePath)
-      ) {
+      if (openApiSourcePathFilter && !openApiSourcePathFilter.has(sourcePath)) {
         continue;
       }
 
@@ -482,10 +480,7 @@ function extractAnchors(markdown) {
 }
 
 function maskMarkdownCode(markdown) {
-  return markdown.replace(
-    /(^|\n)(`{3,}|~{3,})[\s\S]*?\n\2[^\n]*(?=\n|$)/g,
-    (match) => '\n'.repeat(match.split('\n').length - 1),
-  );
+  return maskFencedCode(markdown);
 }
 
 function cleanHeadingText(rawHeading) {
@@ -609,7 +604,15 @@ function classifyLink(
     return;
   }
 
-  if (href.startsWith('/') && isRootAssetHref(parsedHref.path)) {
+  const rootLinkEntry = href.startsWith('/')
+    ? resolveRootLink(sourceContextPath, href, existingRoutePaths)
+    : null;
+
+  if (
+    href.startsWith('/') &&
+    isRootAssetHref(parsedHref.path) &&
+    !rootLinkEntry?.resolved
+  ) {
     stats.assetLinks += 1;
     return;
   }
@@ -628,7 +631,11 @@ function classifyLink(
   }
 
   if (href.startsWith('/')) {
-    const entry = resolveRootLink(sourceContextPath, href, existingRoutePaths);
+    const entry = rootLinkEntry;
+
+    if (!entry) {
+      return;
+    }
 
     entry.source = link.source;
     entry.sourcePath = sourcePath;

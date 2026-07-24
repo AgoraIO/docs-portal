@@ -25,7 +25,7 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 
 ## 启用文档转换 Webhook 回调
 
-调用[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，在请求 Body 中的 `webhookEndpoint` 字段传入 Webhook 回调地址即可对本次转换启用文档转换 Webhook 回调。你也可以通过 `webhookRetry` 字段配置回调失败时的重试次数。回调内容和字段解释详见 [Webhook 回调内容](#webhook-回调内容)。
+调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)时，在请求 Body 中的 `webhookEndpoint` 字段传入 Webhook 回调地址即可对本次转换启用文档转换 Webhook 回调。你也可以通过 `webhookRetry` 字段配置回调失败时的重试次数。回调内容和字段解释详见 [Webhook 回调内容](#webhook-回调内容)。
 
 ```shell
 curl --request POST \
@@ -409,8 +409,8 @@ func calcSignatureV1(secret, payload string) string {
   - `static_convert`：静态文档转换，即文档转图片。
 - `prefixUrl`：String。转换结果文件地址前缀路径。
 - `pageCount`：Number。文档页数，转换任务失败时没有该字段。
-- `previews`：JSON Object。转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
-- `images`：JSON Object。文档转图片结果的地址和图片参数，每页对应一张图片。该参数仅在[发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)时，请求包体中的 `type` 设为 `static` 时才生效。
+- `previews`：JSON Object。转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
+- `images`：JSON Object。文档转图片结果的地址和图片参数，每页对应一张图片。该参数仅在[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)时，请求包体中的 `type` 设为 `static` 时才生效。
   - `width`：Number。图片宽度 (px)。
   - `height`：Number。图片高度 (px)。
   - `url`：String。图片连接地址。
@@ -444,5 +444,5 @@ func calcSignatureV1(secret, payload string) string {
 ### 相关文档
 
 - [使用文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)
-- [发起文档转换](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/post-v5-projector-tasks)
-- [查询转换任务进度](/doc/whiteboard/restful/whiteboard-sdk/restful-wb/operations/get-v5-projector-tasks-uuid)
+- [发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)
+- [查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)

@@ -330,6 +330,8 @@ virtual void unsubscribeTopic(const char* topic, const TopicOptions& options, ui
 | `users` | const char** |   选填   |   `NULL`    | 需要订阅的消息发布者（Publisher）的 `UserId` 列表，如果不设置，则默认随机订阅不超过 64 个用户。 |
 | `userCount` | size_t |   选填   |   `0`    | 用户数量。 |
 
+<a id="异步回调5"></a>
+
 ### 异步回调
 
 调用该方法后，SDK 会触发 `onUnsubscribeTopicResult` 回调并通过以下参数返回 API 调用结果：

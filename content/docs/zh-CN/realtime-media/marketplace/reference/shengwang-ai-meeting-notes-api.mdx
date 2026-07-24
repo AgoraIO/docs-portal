@@ -35,10 +35,10 @@ description: "查看云市场的智能会议纪要 API 参考，了解关键概�
 | `agoraRtcConfig.channelName` | 必填   | String | 声网 RTC 频道名。                    |
 | `agoraRtcConfig.token` | 可选  | String | 用于加入 RTC 频道的 Token。                  |
 | `agoraRtcConfig.uid` | 可选   | String | 用户 ID，用于标识加入频道拉流的机器人。              |
-| `agoraRtcConfig.encryption` | 可选   | Object | 如果 RTC 频道设置了加密，该参数必须设置。该参数包含 mode、secret、salt 字段，分别对应 [recordingConfig 的 decryptionMode、secret、salt 字段](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)。 |
-| `agoraRtmConfig.appId` | 必填   | String | 用于声网 RTM 的 App ID。详见 [RTM 2.x API](https://doc.shengwang.cn/api-ref/rtm2/android/toc-configuration/configuration)。                 |
-| `agoraRtmConfig.uid` | 必填   | String | 用于登录 RTM 系统的用户 ID。详见 [RTM 2.x API](https://doc.shengwang.cn/api-ref/rtm2/android/toc-configuration/configuration)。                        |
-| `agoraRtmConfig.token` | 必填   | String | 用于登录 RTM 系统的 Token。详见 [RTM 2.x API](https://doc.shengwang.cn/api-ref/rtm2/android/toc-configuration/configuration)。                    |
+| `agoraRtcConfig.encryption` | 可选   | Object | 如果 RTC 频道设置了加密，该参数必须设置。该参数包含 mode、secret、salt 字段，分别对应 [recordingConfig 的 decryptionMode、secret、salt 字段](/zh-CN/api-reference/api-ref/cloud-recording/start)。 |
+| `agoraRtmConfig.appId` | 必填   | String | 用于声网 RTM 的 App ID。详见 [RTM 2.x API](/zh-CN/api-reference/rtm/android/configuration)。                 |
+| `agoraRtmConfig.uid` | 必填   | String | 用于登录 RTM 系统的用户 ID。详见 [RTM 2.x API](/zh-CN/api-reference/rtm/android/configuration)。                        |
+| `agoraRtmConfig.token` | 必填   | String | 用于登录 RTM 系统的 Token。详见 [RTM 2.x API](/zh-CN/api-reference/rtm/android/configuration)。                    |
 | `ossConfig.endpoint` | 必填   | String | 你的第三方云存储地址，用于存储会议纪要结果。                          |
 | `ossConfig.accessKeyId` | 必填   | String | 第三方云存储的 access key。               |
 | `ossConfig.accessKeySecret` | 必填   | String | 第三方云存储的 secret key。           |
@@ -108,7 +108,7 @@ curl --location 'https://{hostname}/0/gateway_group/gateway/start_sync' \
 | `agoraRtcConfig.channelName` | 必填   | String | 声网 RTC 频道名。                    |
 | `agoraRtcConfig.token` | 可选  | String | 用于加入 RTC 频道的  Token。                  |
 | `agoraRtcConfig.uid` | 可选   | String | 用户 ID，用于标识加入频道拉流的机器人。              |
-| `agoraRtcConfig.encryption` | 可选   | Object | 如果 RTC 频道设置了加密，该参数必须设置。该参数包含 mode、secret、salt 字段，分别对应 [recordingConfig 的 decryptionMode、secret、salt 字段](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)。 |
+| `agoraRtcConfig.encryption` | 可选   | Object | 如果 RTC 频道设置了加密，该参数必须设置。该参数包含 mode、secret、salt 字段，分别对应 [recordingConfig 的 decryptionMode、secret、salt 字段](/zh-CN/api-reference/api-ref/cloud-recording/start)。 |
 | `ossConfig.endpoint` | 必填   | String | 你的第三方云存储地址，用于存储会议纪要结果。                          |
 | `ossConfig.accessKeyId` | 必填   | String | 第三方云存储的 access key。               |
 | `ossConfig.accessKeySecret` | 必填   | String | 第三方云存储的 secret key。           |

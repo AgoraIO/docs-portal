@@ -9,7 +9,7 @@ Topic 的相关操作主要有加入、离开、订阅和取消订阅，可以�
 
 ## 加入 Topic
 
-在 Topic 中发送消息的前提条件是加入 Topic。当前 RTM 支持单个客户端在同一个频道内同时加入不超过 8 个 Topic。加入 Topic 时，你可以设置一些预定义的属性，这将影响到后续通过此 Topic 发送消息的行为，包括消息是否保序、消息优先级、是否与共频道传输的音视频数据保持同步传输等。详细设置可以参考 [API 文档](/api-ref/rtm2//toc-topic/topic)及[发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message)。
+在 Topic 中发送消息的前提条件是加入 Topic。当前 RTM 支持单个客户端在同一个频道内同时加入不超过 8 个 Topic。加入 Topic 时，你可以设置一些预定义的属性，这将影响到后续通过此 Topic 发送消息的行为，包括消息是否保序、消息优先级、是否与共频道传输的音视频数据保持同步传输等。详细设置可以参考 [API 文档](/zh-CN/api-reference/rtm/toc-topic/topic)及[发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message)。
 
 成功加入频道后，SDK 会触发 `enumv.topictypejoin` 类型的 `config.ontopicevent` 事件，频道中所有开启 Topic 事件监听的用户都会收到此事件通知。
 

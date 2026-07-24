@@ -10,7 +10,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
 
-1. 调用 [`updateRoomProperties`](/api-ref/flexible-classroom/android/API/class_roomcontext#api_updateroomproperties) 方法更新房间自定义属性。
+1. 调用 [`updateRoomProperties`](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-roomcontext#api_updateroomproperties) 方法更新房间自定义属性。
 
    ```kotlin
    abstract fun updateRoomProperties(properties: MutableMap<String, Any>,
@@ -18,7 +18,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
                                      callback: EduContextCallback<Unit>? = null)
    ```
 
-2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/android/API/class_roomhandler#onRoomPropertiesUpdated) 来更新数据。
+2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-roomhandler#onroompropertiesupdated) 来更新数据。
 
    ```kotlin
    fun onRoomPropertiesUpdated(properties: Map<String, Any>,
@@ -39,7 +39,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 3. SDK 侧通过监听房间属性进行数据更新。
 
-   通过 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/android/API/class_roomhandler#onRoomPropertiesUpdated) 来实现监听。
+   通过 [`onRoomPropertiesUpdated`](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-roomhandler#onroompropertiesupdated) 来实现监听。
 
    ```kotlin
    fun onRoomPropertiesUpdated(properties: Map<String, Any>,
@@ -59,7 +59,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
 
-1. 调用 [`updateRoomProperties`](/api-ref/flexible-classroom/ios/API/class_roomcontext#updateRoomProperties) 方法更新房间自定义属性。
+1. 调用 [`updateRoomProperties`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-roomcontext#updateroomproperties) 方法更新房间自定义属性。
 
    ```objc
    void updateRoomProperties(Map<String, Any> properties,
@@ -68,7 +68,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
                              Callback<AgoraEduContextError> fail)
    ```
 
-2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/ios/API/class_roomhandler#onRoomPropertiesUpdated) 来更新数据。
+2. 通过监听房间属性 [`onRoomPropertiesUpdated`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-roomhandler#onroompropertiesupdated) 来更新数据。
 
    ```objc
    void onRoomPropertiesUpdated(Map<String, Any> changedProperties,
@@ -89,7 +89,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 3. SDK 侧通过监听房间属性进行数据更新。
 
-   通过 [`onRoomPropertiesUpdated`](/api-ref/flexible-classroom/ios/API/class_roomhandler#onRoomPropertiesUpdated) 来实现监听。
+   通过 [`onRoomPropertiesUpdated`](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-roomhandler#onroompropertiesupdated) 来实现监听。
 
    ```objc
    void onRoomPropertiesUpdated(Map<String, Any> changedProperties,
@@ -109,7 +109,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
 
-1. 调用 [`updateFlexProperties`](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore#updateFlexProperties) 方法更新房间自定义属性。
+1. 调用 [`updateFlexProperties`](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#updateFlexProperties) 方法更新房间自定义属性。
 
    方法原型：
 
@@ -168,7 +168,7 @@ description: "了解灵动课堂在不同平台上的灵动课堂房间属性最
 
 同步的数据少的时候可以直接借助灵动课堂的前端 SDK 更新房间属性接口，更新数据到房间中。
 
-1. 调用 [`updateFlexProperties`](/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore#updateFlexProperties) 方法更新房间自定义属性。
+1. 调用 [`updateFlexProperties`](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#updateFlexProperties) 方法更新房间自定义属性。
 
    方法原型：
 

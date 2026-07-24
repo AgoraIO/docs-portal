@@ -1732,7 +1732,7 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 | `INVALID_PARAMS` | 非法参数。 | 根据具体提示确认操作，并根据文档传入正确的参数。 |
 | `NOT_SUPPORTED` | 浏览器不支持。 | 参考[浏览器支持情况](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。 |
 | `INVALID_OPERATION` | 非法操作，通常是因为在当前状态不能进行该操作。 | 确认操作的先后顺序，比如发布前请确认已经加入频道。 |
-| `OPERATION_ABORTED` | 操作中止，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on("user-joined")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined) 回调确认本地网络状况，并重试该操作。 |
+| `OPERATION_ABORTED` | 操作中止，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_joined) 回调确认本地网络状况，并重试该操作。 |
 | `WEB_SECURITY_RESTRICT` | 浏览器安全策略限制。 | 请确保 Web 页面运行在[安全环境](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts)中。 |
 | `NO_ACTIVE_STATUS` | 声网项目未激活或被禁用。 | 请前往声网控制台确认项目状态是否为启用。 |
 
@@ -1741,7 +1741,7 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 | 处理方法 |
 | --- | --- | --- |
-| `NETWORK_TIMEOUT` | 请求超时，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on("user-joined")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined) 回调确认本地网络状况，并重试该操作。 |
+| `NETWORK_TIMEOUT` | 请求超时，通常是因为网络质量差或连接断开导致与声网服务器通信失败。 | 通过 [AgoraRTCClient.on("user-joined")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_joined) 回调确认本地网络状况，并重试该操作。 |
 | `NETWORK_RESPONSE_ERROR` | 响应错误，一般是状态码非法。 | 确认操作的参数是否正确，并根据文档传入正确的参数。 |
 | `NETWORK_ERROR` | 无法定位的网络错误。 | 无。 |
 
@@ -1749,8 +1749,8 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 | 处理方法 |
 | --- | --- | --- |
-| `WS_ABORT` | 请求声网服务器过程中 WebSocket 断开。 | 监听 [AgoraRTCClient.on("connection-state-change")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |
-| `WS_DISCONNECT` | 请求声网服务器前，WebSocket 就已经断开。 | 监听 [AgoraRTCClient.on("connection-state-change")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |
+| `WS_ABORT` | 请求声网服务器过程中 WebSocket 断开。 | 监听 [AgoraRTCClient.on("connection-state-change")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |
+| `WS_DISCONNECT` | 请求声网服务器前，WebSocket 就已经断开。 | 监听 [AgoraRTCClient.on("connection-state-change")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change) 事件，待连接状态变为 `CONNECTED` 后重试。 |
 | `WS_ERR` | WebSocket 连接发生错误。 | 检查当前浏览器对 WebSocket 的支持情况。 |
 
 ## 设备管理相关错误码
@@ -1764,7 +1764,7 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 | 处理方法 |
 | --- | --- | --- |
-| `TRACK_IS_DISABLED` | 轨道被禁用，通常因为轨道设置了 [Track.setEnabled(false)](/api-ref/rtc/javascript/interfaces/ilocaltrack#setEnabled)。 | 对该轨道调用 [Track.setEnabled(true)](/api-ref/rtc/javascript/interfaces/ilocaltrack#setEnabled) 后再进行操作。 |
+| `TRACK_IS_DISABLED` | 轨道被禁用，通常因为轨道设置了 [Track.setEnabled(false)](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#setenabled)。 | 对该轨道调用 [Track.setEnabled(true)](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#setenabled) 后再进行操作。 |
 | `SHARE_AUDIO_NOT_ALLOWED` | 屏幕共享音频时终端用户没有点击分享音频。 | 要求终端用户在弹出的屏幕共享窗口中勾选分享音频。 |
 | `MEDIA_OPTION_INVALID` | 不支持的媒体采集的参数。 | 修改媒体采集参数或使用 SDK 预设的配置。 |
 | `CONSTRAINT_NOT_SATISFIED` | 不支持的媒体采集的参数。 | 修改媒体采集参数或使用 SDK 预设的配置。 |
@@ -1798,9 +1798,9 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 | 处理方法 |
 | --- | --- | --- |
-| `INVALID_REMOTE_USER` | 非法的远端用户，可能是远端用户不在频道内或还未发布任何媒体轨道。 | 收到 [AgoraRTCClient.on("user-published")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件后再进行订阅操作。 |
-| `REMOTE_USER_IS_NOT_PUBLISHED` | 远端用户已发布了音频或视频轨道，但不是与你的订阅操作所指定的类型不符。 | 请确保订阅操作传入的轨道类型需要与 [AgoraRTCClient.on("user-published")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件给出的类型一致，或者在订阅前通过 [AgoraRTCRemoteUser.hasVideo](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasvideo) 和 [AgoraRTCRemoteUser.hasAudio](/api-ref/rtc/javascript/interfaces/iagorartcremoteuser#hasaudio) 确认远端用户是否发布了该类型的轨道。 |
-| `ERR_TOO_MANY_BROADCASTERS` | 频道内主播人数超过上限。 | 控制主播人数。例如：仅在用户需要发布音视频轨道的时候调用 [Client.setClientRole](/api-ref/rtc/javascript/interfaces/iagorartcclient#setclientrole)，将用户角色切换为主播。 |
+| `INVALID_REMOTE_USER` | 非法的远端用户，可能是远端用户不在频道内或还未发布任何媒体轨道。 | 收到 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件后再进行订阅操作。 |
+| `REMOTE_USER_IS_NOT_PUBLISHED` | 远端用户已发布了音频或视频轨道，但不是与你的订阅操作所指定的类型不符。 | 请确保订阅操作传入的轨道类型需要与 [AgoraRTCClient.on("user-published")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件给出的类型一致，或者在订阅前通过 [AgoraRTCRemoteUser.hasVideo](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#hasvideo) 和 [AgoraRTCRemoteUser.hasAudio](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser#hasaudio) 确认远端用户是否发布了该类型的轨道。 |
+| `ERR_TOO_MANY_BROADCASTERS` | 频道内主播人数超过上限。 | 控制主播人数。例如：仅在用户需要发布音视频轨道的时候调用 [Client.setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole)，将用户角色切换为主播。 |
 | `ERR_TOO_MANY_SUBSCRIBERS` | 当前用户订阅的主播人数超过上限。 | 按需订阅主播。 |
 
 ## 推流到 CDN
@@ -1808,8 +1808,8 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 | 处理方法 |
 | --- | --- | --- |
-| `LIVE_STREAMING_TASK_CONFLICT` | 推流任务已经存在。 | 先调用 [Client.stopLiveStreaming](/api-ref/rtc/javascript/interfaces/iagorartcclient#stopLiveStreaming) 停止该推流任务再重新进行推流操作。 |
-| `LIVE_STREAMING_INVALID_ARGUMENT` | 推流参数错误。 | 参考 [Client.startLiveStreaming](/api-ref/rtc/javascript/interfaces/iagorartcclient#startLiveStreaming) 的 API 文档检查推流操作的参数。 |
+| `LIVE_STREAMING_TASK_CONFLICT` | 推流任务已经存在。 | 先调用 [Client.stopLiveStreaming](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#stoplivestreaming) 停止该推流任务再重新进行推流操作。 |
+| `LIVE_STREAMING_INVALID_ARGUMENT` | 推流参数错误。 | 参考 [Client.startLiveStreaming](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#startlivestreaming) 的 API 文档检查推流操作的参数。 |
 | `LIVE_STREAMING_INTERNAL_SERVER_ERROR` | 推流服务器内部错误。 | 重新进行推流操作，如果仍然失败，刷新页面重试。 |
 | `LIVE_STREAMING_PUBLISH_STREAM_NOT_AUTHORIZED` | 推流 URL 被占用。 | 检查填入的 URL 是否被占用。 |
 | `LIVE_STREAMING_CDN_ERROR` | 推流的目标 CDN 出现错误导致推流失败。 | 确认目标 CDN 的健康状况。 |
@@ -1820,7 +1820,7 @@ SDK 的错误码对象 `AgoraRTCError` 继承自浏览器的 [Error 对象](http
 
 | 错误码 | 描述 |
 | --- | --- |
-| `CROSS_CHANNEL_WAIT_STATUS_ERROR` | 等待 [AgoraRTCClient.on("channel-media-relay-state")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_channel_media_relay_state) 回调出错。 |
+| `CROSS_CHANNEL_WAIT_STATUS_ERROR` | 等待 [AgoraRTCClient.on("channel-media-relay-state")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_channel_media_relay_state) 回调出错。 |
 | `CROSS_CHANNEL_FAILED_JOIN_SRC` | 发起跨频道转发媒体流请求失败。 |
 | `CROSS_CHANNEL_FAILED_JOIN_DEST` | 接受跨频道转发媒体流请求失败。 |
 | `CROSS_CHANNEL_FAILED_PACKET_SENT_TO_DEST` | 服务器接收跨频道转发媒体流失败。 |

@@ -119,6 +119,76 @@ describe('auditDocsLinks', () => {
     );
   });
 
+  it('validates anchors after indented fenced code blocks', async () => {
+    const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(docsRoot);
+
+    await writeDoc(
+      path.join(docsRoot, 'en', 'guide.mdx'),
+      [
+        '  ```shell',
+        '  npm install',
+        '```',
+        '',
+        '## Target section',
+        '',
+        '```ts',
+        'const ready = true;',
+        '```',
+        '',
+        '[Continue](#target-section)',
+      ].join('\n'),
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+
+    expect(stats.missingHashLinks).toEqual([]);
+    expect(stats.validHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'target-section',
+        href: '#target-section',
+      }),
+    ]);
+  });
+
+  it('validates anchors on docs routes whose names look like assets', async () => {
+    const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
+    tempDirs.push(docsRoot);
+
+    await writeDoc(
+      path.join(docsRoot, 'zh-CN', 'guide.mdx'),
+      [
+        '[valid](/zh-CN/api-reference/python-api/client.python#connect)',
+        '[missing](/zh-CN/api-reference/python-api/client.python#missing)',
+      ].join('\n'),
+    );
+    await writeDoc(
+      path.join(
+        docsRoot,
+        'zh-CN',
+        'api-reference',
+        'python-api',
+        'client.python.mdx',
+      ),
+      '<a id="connect"></a>\n## connect\n',
+    );
+
+    const stats = auditDocsLinks({ docsRoot });
+
+    expect(stats.validHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'connect',
+        href: '/zh-CN/api-reference/python-api/client.python#connect',
+      }),
+    ]);
+    expect(stats.missingHashLinks).toEqual([
+      expect.objectContaining({
+        anchor: 'missing',
+        href: '/zh-CN/api-reference/python-api/client.python#missing',
+      }),
+    ]);
+  });
+
   it('checks root JSX links against known docs and OpenAPI routes', async () => {
     const docsRoot = await mkdtemp(path.join(os.tmpdir(), 'docs-link-audit-'));
     tempDirs.push(docsRoot);
@@ -438,8 +508,7 @@ describe('auditDocsLinks', () => {
       expect.arrayContaining([
         expect.objectContaining({
           href: 'join',
-          normalizedHref:
-            '/zh-CN/api-reference/api-ref/conversational-ai/join',
+          normalizedHref: '/zh-CN/api-reference/api-ref/conversational-ai/join',
           resolution: 'openapi-route',
           sourcePath: 'openapi/conversational-ai/rest-api.zh-CN.yaml',
         }),

@@ -27,7 +27,7 @@ description: "了解如何在云端录制中云端截图，包括适用场景、
 
 ### 1. 申请录制服务器资源
 
-开始录制前，调用 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法请求一个用于云端录制的服务器资源，并将 `clientRequest.scene` 设置为 `0`。
+开始录制前，调用 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法请求一个用于云端录制的服务器资源，并将 `clientRequest.scene` 设置为 `0`。
 
 请求示例如下：
 
@@ -54,7 +54,7 @@ description: "了解如何在云端录制中云端截图，包括适用场景、
 
 ### 2. 开始截图
 
-在调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法时，你需要将路径参数 `mode` 设为 `individual`。
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，你需要将路径参数 `mode` 设为 `individual`。
 
 云端截图需要设置的 `clientRequest` 字段还包括：
 
@@ -191,4 +191,4 @@ description: "了解如何在云端录制中云端截图，包括适用场景、
 
 ## API 参考
 
-你可以参考 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 和 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法了解字段详情。
+你可以参考 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 和 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法了解字段详情。

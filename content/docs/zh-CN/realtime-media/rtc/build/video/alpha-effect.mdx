@@ -36,7 +36,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 1. 将采集到的视频数据推送到 SDK，同时设置视频帧中的 Alpha 数据。有以下两种方式可供选择。
 
-   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
 
      :::error[警告]
      请务必确保 `alphaBuffer` 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
@@ -63,7 +63,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染本地视图并实现 Alpha 透明特效。
 
     1. 创建一个 `TextureView` 对象用于渲染本地视图。
-    1. 调用 [`setupLocalVideo`](/api-ref/rtc/android/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
+    1. 调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置 `TextureView` 为本地视频的显示窗口。
 
@@ -84,7 +84,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染远端视频流在本地的视图并实现 Alpha 透明特效。
 
     1. 在收到 `onUserJoined` 回调后，创建一个 `TextureView` 对象用于渲染远端视图。
-    1. 调用  [`setupRemoteVideo`](/api-ref/rtc/android/API/toc_video_rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
+    1. 调用  [`setupRemoteVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置远端视频流在本地视频的显示窗口。
 
@@ -103,7 +103,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程2](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-2.svg)
 
-1. 在发送端调用 [`enableVirtualBackground`[2/2]](/api-ref/rtc/android/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+1. 在发送端调用 [`enableVirtualBackground`[2/2]](/zh-CN/api-reference/rtc/android/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
     - `enabled`：设置为 `true`，开启虚拟背景。
     - `backgroundSourceType`：设置为 `BACKGROUND_NONE`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 数据。
 
@@ -114,7 +114,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType);
     ```
 
-2. 在发送端调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/android/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
+2. 在发送端调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
 
     ```java
     VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(...);
@@ -131,7 +131,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程3](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-3.svg)
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/android/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
 
     ```java
     // 注册 IVideoFrameObserver
@@ -158,7 +158,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.registerVideoFrameObserver(observer);
     ```
 
-1. 通过 [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
+1. 通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
@@ -170,7 +170,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-2. 通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
+2. 通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
@@ -182,7 +182,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-3. 通过 [`onRenderVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
+3. 通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
 
     ```java
     public boolean onRenderVideoFrame(int type, VideoFrame videoFrame) {
@@ -239,7 +239,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 1. 将采集到的视频数据推送到 SDK，同时设置视频帧中的 Alpha 数据。有以下两种方式可供选择。
 
-   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
 
      :::error[警告]
      请务必确保 `alphaBuffer` 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
@@ -266,7 +266,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染本地视图并实现 Alpha 透明特效。
 
     1. 创建一个 `TextureView` 对象用于渲染本地视图。
-    1. 调用 [`setupLocalVideo`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
+    1. 调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置 `TextureView` 为本地视频的显示窗口。
 
@@ -287,7 +287,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染远端视频流在本地的视图并实现 Alpha 透明特效。
 
     1. 在收到 `onUserJoined` 回调后，创建一个 `TextureView` 对象用于渲染远端视图。
-    1. 调用  [`setupRemoteVideo`](/api-ref/rtc/ios/API/toc_video_rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
+    1. 调用  [`setupRemoteVideo`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置远端视频流在本地视频的显示窗口。
 
@@ -306,7 +306,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程2](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-2.svg)
 
-1. 在发送端调用 [`enableVirtualBackground`[2/2]](/api-ref/rtc/ios/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+1. 在发送端调用 [`enableVirtualBackground`[2/2]](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
     - `enabled`：设置为 `true`，开启虚拟背景。
     - `backgroundSourceType`：设置为 `BACKGROUND_NONE`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 数据。
 
@@ -317,7 +317,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType);
     ```
 
-2. 在发送端调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/ios/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
+2. 在发送端调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
 
     ```java
     VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(...);
@@ -334,7 +334,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程3](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-3.svg)
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/ios/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
 
     ```java
     // 注册 IVideoFrameObserver
@@ -361,7 +361,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.registerVideoFrameObserver(observer);
     ```
 
-1. 通过 [`onCaptureVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
+1. 通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
@@ -373,7 +373,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-2. 通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
+2. 通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
@@ -385,7 +385,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-3. 通过 [`onRenderVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
+3. 通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
 
     ```java
     public boolean onRenderVideoFrame(int type, VideoFrame videoFrame) {
@@ -442,7 +442,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 1. 将采集到的视频数据推送到 SDK，同时设置视频帧中的 Alpha 数据。有以下两种方式可供选择。
 
-   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
 
      :::error[警告]
      请务必确保 `alphaBuffer` 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
@@ -469,7 +469,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染本地视图并实现 Alpha 透明特效。
 
     1. 创建一个 `TextureView` 对象用于渲染本地视图。
-    1. 调用 [`setupLocalVideo`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
+    1. 调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置 `TextureView` 为本地视频的显示窗口。
 
@@ -490,7 +490,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染远端视频流在本地的视图并实现 Alpha 透明特效。
 
     1. 在收到 `onUserJoined` 回调后，创建一个 `TextureView` 对象用于渲染远端视图。
-    1. 调用  [`setupRemoteVideo`](/api-ref/rtc/macos/API/toc_video_rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
+    1. 调用  [`setupRemoteVideo`](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置远端视频流在本地视频的显示窗口。
 
@@ -509,7 +509,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程2](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-2.svg)
 
-1. 在发送端调用 [`enableVirtualBackground`[2/2]](/api-ref/rtc/macos/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+1. 在发送端调用 [`enableVirtualBackground`[2/2]](/zh-CN/api-reference/rtc/macos/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
     - `enabled`：设置为 `true`，开启虚拟背景。
     - `backgroundSourceType`：设置为 `BACKGROUND_NONE`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 数据。
 
@@ -520,7 +520,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType);
     ```
 
-2. 在发送端调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/macos/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
+2. 在发送端调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
 
     ```java
     VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(...);
@@ -537,7 +537,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程3](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-3.svg)
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/macos/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/macos/video/video-raw#api_irtcengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
 
     ```java
     // 注册 IVideoFrameObserver
@@ -564,7 +564,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.registerVideoFrameObserver(observer);
     ```
 
-1. 通过 [`onCaptureVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
+1. 通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
@@ -576,7 +576,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-2. 通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
+2. 通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
@@ -588,7 +588,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-3. 通过 [`onRenderVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
+3. 通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
 
     ```java
     public boolean onRenderVideoFrame(int type, VideoFrame videoFrame) {
@@ -645,7 +645,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 1. 将采集到的视频数据推送到 SDK，同时设置视频帧中的 Alpha 数据。有以下两种方式可供选择。
 
-   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/api-ref/rtc/android/API/toc_video_custom_capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+   - 方案一：调用 [`pushExternalVideoFrame`[2/2]](/zh-CN/api-reference/rtc/android/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe4) 方法，并通过设置 `alphaBuffer` 参数为视频帧指定 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
 
      :::error[警告]
      请务必确保 `alphaBuffer` 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
@@ -672,7 +672,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染本地视图并实现 Alpha 透明特效。
 
     1. 创建一个 `TextureView` 对象用于渲染本地视图。
-    1. 调用 [`setupLocalVideo`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
+    1. 调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置本地视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置 `TextureView` 为本地视频的显示窗口。
 
@@ -693,7 +693,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 1. 渲染远端视频流在本地的视图并实现 Alpha 透明特效。
 
     1. 在收到 `onUserJoined` 回调后，创建一个 `TextureView` 对象用于渲染远端视图。
-    1. 调用  [`setupRemoteVideo`](/api-ref/rtc/windows/API/toc_video_rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
+    1. 调用  [`setupRemoteVideo`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengine_setupremotevideo) 方法设置远端视图：
         - 设置 `enableAlphaMask` 参数为 `true`，开启 Alpha 遮罩渲染。
         - 设置远端视频流在本地视频的显示窗口。
 
@@ -712,7 +712,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程2](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-2.svg)
 
-1. 在发送端调用 [`enableVirtualBackground`[2/2]](/api-ref/rtc/windows/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+1. 在发送端调用 [`enableVirtualBackground`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
     - `enabled`：设置为 `true`，开启虚拟背景。
     - `backgroundSourceType`：设置为 `BACKGROUND_NONE`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 数据。
 
@@ -723,7 +723,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType);
     ```
 
-2. 在发送端调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/windows/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
+2. 在发送端调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
 
     ```java
     VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(...);
@@ -740,7 +740,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
 
 ![自定义视频采集流程3](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-3.svg)
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/windows/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#registervideoframeobserver) 方法注册一个原始视频观测器，并根据需要注册相应回调。
 
     ```java
     // 注册 IVideoFrameObserver
@@ -767,7 +767,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     rtcEngine.registerVideoFrameObserver(observer);
     ```
 
-1. 通过 [`onCaptureVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
+1. 通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取采集后的视频数据并根据需要进行前处理，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
@@ -779,7 +779,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-2. 通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
+2. 通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取本地视频编码前的视频数据，可以修改 Alpha 数据或直接添加 Alpha 数据。
 
     ```java
     public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
@@ -791,7 +791,7 @@ description: "了解实时互动 RTC 在不同平台上的 Alpha 透明特效方
     }
     ```
 
-3. 通过 [`onRenderVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
+3. 通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取远端发送的视频在本地渲染前的视频数据，可以修改 Alpha 数据、直接添加 Alpha 数据或根据得到的 Alpha 数据自行渲染视频图像。
 
     ```java
     public boolean onRenderVideoFrame(int type, VideoFrame videoFrame) {
@@ -840,14 +840,14 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
 
 ![自定义视频采集流程2](https://web-cdn.agora.io/docs-portal/img/rtc/alpha/alpha-process-2.svg)
 
-1. 在使用 `VideoSurface` 组件渲染本地视频时，调用 [`SetLocalVideoDataSourcePosition`](/api-ref/rtc/unity/API/toc_video_rendering#api_irtcengine_setlocalvideodatasourceposition) 获取视频帧的位置。将 `position` 设为 `POSITION_POST_CAPTURER`，表示获取本地视频采集完成后的视频帧。
+1. 在使用 `VideoSurface` 组件渲染本地视频时，调用 [`SetLocalVideoDataSourcePosition`](/zh-CN/api-reference/rtc/unity/video/video-rendering#api_irtcengine_setlocalvideodatasourceposition) 获取视频帧的位置。将 `position` 设为 `POSITION_POST_CAPTURER`，表示获取本地视频采集完成后的视频帧。
 
    ```csharp
    //设置本地视频帧的位置为 POSITION_POST_CAPTURER
    RtcEngine.SetLocalVideoDataSourcePosition(VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER);
    ```
 
-2. 在发送端调用 [`EnableVirtualBackground`](/api-ref/rtc/unity/API/toc_virtualbackground#api_irtcengine_enablevirtualbackground) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+2. 在发送端调用 [`EnableVirtualBackground`](/zh-CN/api-reference/rtc/unity/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
     - `enabled`：设置为 `true`，开启虚拟背景。
     - `backgroundSourceType`：设置为 `BACKGROUND_NONE`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 通道。
 
@@ -859,7 +859,7 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
     this.Log.UpdateLog("EnableVirtualBackground true :" + nRet);
     ```
 
-3. 调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 将 `encodeAlpha` 设为 `true`，将 Alpha 信息进行编码并发送至远端，然后调用 [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2) 加入频道。
+3. 调用 [`SetVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 将 `encodeAlpha` 设为 `true`，将 Alpha 信息进行编码并发送至远端，然后调用 [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道。
 
    ```csharp
    VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();
@@ -945,11 +945,11 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
    }
    ```
 
-2. 配置视频编码参数来把 Alpha 数据发送至远端。调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设为 `true` 来编码并发送 Alpha 数据至远端。
+2. 配置视频编码参数来把 Alpha 数据发送至远端。调用 [`SetVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设为 `true` 来编码并发送 Alpha 数据至远端。
 
-3. 创建一个视频轨道用于发布自定义采集的视频到频道内。调用 [`CreateCustomVideoTrack`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack) 创建一个自定义的视频轨道。
+3. 创建一个视频轨道用于发布自定义采集的视频到频道内。调用 [`CreateCustomVideoTrack`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建一个自定义的视频轨道。
 
-4. 调用 [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2) 加入频道，并设置频道媒体选项：
+4. 调用 [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置频道媒体选项：
    - 将 `customVideoTrackId` 设置为第 3 步中获得的视频轨道 ID。
    - 将 `publishCameraTrack` 设为 `false`，不发布摄像头采集的视频流。
    - 将 `publishCustomVideoTrack` 设置为 `true`，发布自定义采集的视频流。
@@ -987,7 +987,7 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
    }
    ```
 
-5. 推送自定义采集的视频流至 SDK。调用 [`PushVideoFrame`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_imediaengine_pushvideoframe) 方法来推送视频帧，同时为视频帧设置 Alpha 数据。你可以通过设置 `alphaBuffer` 或 `fillAlphaBuffer` 参数来为视频帧设置 Alpha 通道数据。
+5. 推送自定义采集的视频流至 SDK。调用 [`PushVideoFrame`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 方法来推送视频帧，同时为视频帧设置 Alpha 数据。你可以通过设置 `alphaBuffer` 或 `fillAlphaBuffer` 参数来为视频帧设置 Alpha 通道数据。
    - `alphaBuffer`：Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
    - `fillAlphaBuffer`：将该参数设为 `true` 后 SDK 可自动提取并填充 Alpha 通道数据，无需额外设置 `alphaBuffer`。`fillAlphaBuffer` 参数目前仅支持 BGRA 或 RGBA 格式的视频数据。
 
@@ -1086,11 +1086,11 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
    }
    ```
 
-2. 配置视频编码参数来把 Alpha 数据发送至远端。调用 [`SetVideoEncoderConfiguration`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设为 `true` 来编码并发送 Alpha 数据至远端。
+2. 配置视频编码参数来把 Alpha 数据发送至远端。调用 [`SetVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设为 `true` 来编码并发送 Alpha 数据至远端。
 
-3. 创建一个视频轨道用于发布自定义采集的视频到频道内。调用 [`CreateCustomVideoTrack`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_irtcengine_createcustomvideotrack) 创建一个自定义的视频轨道。
+3. 创建一个视频轨道用于发布自定义采集的视频到频道内。调用 [`CreateCustomVideoTrack`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 创建一个自定义的视频轨道。
 
-4. 调用 [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2) 加入频道，并设置频道媒体选项：
+4. 调用 [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2) 加入频道，并设置频道媒体选项：
    - 将 `customVideoTrackId` 设置为第 3 步中获得的视频轨道 ID。
    - 将 `publishCameraTrack` 设为 `false`，不发布摄像头采集的视频流。
    - 将 `publishCustomVideoTrack` 设置为 `true`，发布自定义采集的视频流。
@@ -1126,7 +1126,7 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
    }
    ```
 
-5. 推送拼接后的视频帧至 SDK。调用 [`PushVideoFrame`](/api-ref/rtc/unity/API/toc_video_custom_capturenrendering#api_irtcengine_pushvideoframe) 方法并通过 `alphaStitchMode` 参数来设置 Alpha 数据和视频帧的相对位置。
+5. 推送拼接后的视频帧至 SDK。调用 [`PushVideoFrame`](/zh-CN/api-reference/rtc/unity/video/video-custom-capturenrendering#pushvideoframe) 方法并通过 `alphaStitchMode` 参数来设置 Alpha 数据和视频帧的相对位置。
 
    示例代码如下：
 
@@ -1185,7 +1185,7 @@ Alpha 透明特效是指通过调整图像中每个像素的 Alpha 通道值来�
 
 ### 开启虚拟背景
 
-在发送端调用 [`enableVirtualBackground`](/api-ref/rtc/rn/API/toc_virtualbackground#enableVirtualBackground) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
+在发送端调用 [`enableVirtualBackground`](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/virtualbackground#enablevirtualbackground) 开启背景分割算法，得到人像区域的 Alpha 数据。建议设置参数如下：
 
 - `enabled`：设置为 `true`，开启虚拟背景。
 - `backgroundSource` 中的 `background_source_type`：设置为 `BackgroundNone`(0)，即：将人像和背景进行分割，并将背景处理为 Alpha 数据。
@@ -1205,7 +1205,7 @@ rtcEngine.enableVirtualBackground(
 
 ### 设置视频编码属性
 
-在发送端调用 [`setVideoEncoderConfiguration`](/api-ref/rtc/rn/API/toc_video_basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
+在发送端调用 [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置视频编码属性，将 `encodeAlpha` 设置为 `true`，则 Alpha 数据会被编码并发送到远端。
 
 ```typescript
 rtcEngine.setVideoEncoderConfiguration({advanceOptions: {encodeAlpha: true}});
@@ -1213,8 +1213,8 @@ rtcEngine.setVideoEncoderConfiguration({advanceOptions: {encodeAlpha: true}});
 
 ### 开启 Alpha 渲染
 
-1. 使用 [`RtcSurfaceView`](/api-ref/rtc/rn/API/rtc_interface_class#class_rtcsurfaceview) 组件创建本地视图和远端视图。
-2. 在 [`RtcRenderViewProps`](/api-ref/rtc/rn/API/class_rtcrendererviewprops) 属性的 `canvas` 参数中，将 [`VideoCanvas`](/api-ref/rtc/rn/API/class_videocanvas) 的 `enableAlphaMask` 设置为 `true` 开启 Alpha 遮罩渲染并实现 Alpha 透明特效。
+1. 使用 [`RtcSurfaceView`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_rtcsurfaceview) 组件创建本地视图和远端视图。
+2. 在 [`RtcRenderViewProps`](/zh-CN/api-reference/rtc/react-native/class-rtcrendererviewprops) 属性的 `canvas` 参数中，将 [`VideoCanvas`](/zh-CN/api-reference/rtc/react-native/class-videocanvas) 的 `enableAlphaMask` 设置为 `true` 开启 Alpha 遮罩渲染并实现 Alpha 透明特效。
 
 ```jsx
 <RtcSurfaceView 

@@ -16,7 +16,7 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
 
 ### 开始录制
 
-在调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法时，你需要将 `mode` 参数设置为 `mix`，开启合流录制模式。
+在调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时，你需要将 `mode` 参数设置为 `mix`，开启合流录制模式。
 
 :::warning[注意]
 录制模式的设置必须在开始录制的时候完成，不支持在录制开始后切换模式。
@@ -98,7 +98,7 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
 
 ### 停止录制
 
-录制完成后，调用 [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
+录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
 
 请求示例如下：
 
@@ -162,9 +162,9 @@ Native 端、Web 端及框架端用户在用户中途停止发流或退出频道
 
 你可以参考以下方法了解字段详情：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
-- [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop)
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
+- [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop)
 
 ### 常见问题
 

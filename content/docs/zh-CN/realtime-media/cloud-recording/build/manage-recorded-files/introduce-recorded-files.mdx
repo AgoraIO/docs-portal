@@ -20,7 +20,7 @@ description: "了解如何在云端录制中录制文件介绍，包括适用场
 
 ### 合流录制模式
 
-在[合流录制模式](/zh-CN/realtime-media/cloud-recording/reference/concepts#合流录制模式)下，录制过程中会实时生成一个 M3U8 文件和多个 TS 文件。若在录制配置中将 `avFileType` 设置为 `["hls","mp4"]`，录制服务会同时生成 MP4 文件；若未设置或未包含 `"mp4"`，则仅生成 M3U8/TS，你也可使用[转码脚本](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)将 M3U8/TS 合并并转换为 MP4 格式。
+在[合流录制模式](/zh-CN/realtime-media/cloud-recording/reference/concepts#录制模式)下，录制过程中会实时生成一个 M3U8 文件和多个 TS 文件。若在录制配置中将 `avFileType` 设置为 `["hls","mp4"]`，录制服务会同时生成 MP4 文件；若未设置或未包含 `"mp4"`，则仅生成 M3U8/TS，你也可使用[转码脚本](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)将 M3U8/TS 合并并转换为 MP4 格式。
 
 生成的录制文件命名规则如下：
 
@@ -28,9 +28,11 @@ description: "了解如何在云端录制中录制文件介绍，包括适用场
 - TS 文件名：`<sid>_<cname>_<utc>.ts`
 - MP4 文件名：`<sid>_<cname>_<index>.mp4`
 
+<a id="合流和页面录制模式"></a>
+
 ### 页面录制模式
 
-在[页面录制模式](/zh-CN/realtime-media/cloud-recording/reference/concepts#页面录制模式)下，录制过程中会实时生成一个 M3U8 文件和多个 TS 文件。若在录制配置中将 `avFileType` 设置为 `["hls","mp4"]`，录制服务会同时生成 MP4 文件；若未设置或未包含 `"mp4"`，则仅生成 M3U8/TS，你也可使用[转码脚本](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)将 M3U8/TS 合并并转换为 MP4 格式。
+在[页面录制模式](/zh-CN/realtime-media/cloud-recording/reference/concepts#录制模式)下，录制过程中会实时生成一个 M3U8 文件和多个 TS 文件。若在录制配置中将 `avFileType` 设置为 `["hls","mp4"]`，录制服务会同时生成 MP4 文件；若未设置或未包含 `"mp4"`，则仅生成 M3U8/TS，你也可使用[转码脚本](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)将 M3U8/TS 合并并转换为 MP4 格式。
 
 生成的录制文件命名规则如下：
 

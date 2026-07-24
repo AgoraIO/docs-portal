@@ -149,8 +149,8 @@ public void onConnectionStateChanged(int state, int reason) {
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/android/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/android/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -300,8 +300,8 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConn
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/ios/API/toc_network#api_irtcengine_getconnectionstate)
-- [`connectionChangedToState`](/api-ref/rtc/ios/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getconnectionstate)
+- [`connectionChangedToState`](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -451,8 +451,8 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConn
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/macos/API/toc_network#api_irtcengine_getconnectionstate)
-- [`connectionChangedToState`](/api-ref/rtc/macos/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_getconnectionstate)
+- [`connectionChangedToState`](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -462,9 +462,9 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConn
 
 ## 获取连接状态
 
-为帮助开发者更好地了解和管理用户在频道内的连接状态，声网 Web SDK 提供 [`AgoraRTCClient.connectionState`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#connectionstate) 字段和 [`AgoraRTCClient.on("connection-state-change")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 回调帮助你获取当前的连接状态。
+为帮助开发者更好地了解和管理用户在频道内的连接状态，声网 Web SDK 提供 [`AgoraRTCClient.connectionState`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#connectionstate) 字段和 [`AgoraRTCClient.on("connection-state-change")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change) 回调帮助你获取当前的连接状态。
 
-当用户连接状态发生改变时，SDK 会触发 [`AgoraRTCClient.on("connection-state-change")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change) 回调，并在回调中明确当前的连接状态和发生状态改变的原因。
+当用户连接状态发生改变时，SDK 会触发 [`AgoraRTCClient.on("connection-state-change")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change) 回调，并在回调中明确当前的连接状态和发生状态改变的原因。
 
 下面列出所有的连接状态：
 
@@ -510,11 +510,11 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConn
 
 ## API 参考
 
-- [`AgoraRTCClient.on("connection-state-change")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_connection_state_change)
-- [`AgoraRTCClient.on("user-joined")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_joined)
-- [`AgoraRTCClient.on("user-left")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_left)
-- [`AgoraRTCClient.on("user-published")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published)
-- [`AgoraRTCClient.on("user-unpublished")`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_unpublished)
+- [`AgoraRTCClient.on("connection-state-change")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_connection_state_change)
+- [`AgoraRTCClient.on("user-joined")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_joined)
+- [`AgoraRTCClient.on("user-left")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_left)
+- [`AgoraRTCClient.on("user-published")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published)
+- [`AgoraRTCClient.on("user-unpublished")`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished)
 
 </PlatformStructured>
 
@@ -657,8 +657,8 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConn
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/windows/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/windows/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -810,7 +810,7 @@ config.mEventHandler.onConnectionStateChanged = (
 
 ### API 参考
 
-- [`onConnectionStateChanged`](/api-ref/rtc/harmonyos/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -953,8 +953,8 @@ config.mEventHandler.onConnectionStateChanged = (
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/electron/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/electron/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/electron/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -1110,8 +1110,8 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ### API 参考
 
-- [`GetConnectionState`](/api-ref/rtc/unity/API/toc_network#api_irtcengine_getconnectionstate)
-- [`OnConnectionStateChanged`](/api-ref/rtc/unity/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`GetConnectionState`](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_getconnectionstate)
+- [`OnConnectionStateChanged`](/zh-CN/api-reference/rtc/unity/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -1254,8 +1254,8 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/flutter/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/flutter/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/flutter/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/flutter/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -1398,8 +1398,8 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/rn/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/rn/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/react-native/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -1550,8 +1550,8 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ### API 参考
 
-- [`getConnectionState`](/api-ref/rtc/unreal-cpp/API/toc_network#api_irtcengine_getconnectionstate)
-- [`onConnectionStateChanged`](/api-ref/rtc/unreal-cpp/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](/zh-CN/api-reference/rtc/unreal-cpp/network#api_irtcengine_getconnectionstate)
+- [`onConnectionStateChanged`](/zh-CN/api-reference/rtc/unreal-cpp/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>
 
@@ -1598,8 +1598,8 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
     | 输入参数 | 数据类型 | 参数描述 |
     |:-------|:--------|:---------|
-    | `state` | Enum | 当前网络连接状态。详见 [`ECONNECTION_STATE_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_connectionstatetype)。|
-    | `reason` | Enum | 引起当前网络连接状态改变的原因。详见 [`ECONNECTION_CHANGED_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_connectionchangedreasontype)。|
+    | `state` | Enum | 当前网络连接状态。详见 [`ECONNECTION_STATE_TYPE`](/zh-CN/api-reference/rtc/unreal-blueprint/enum-connectionstatetype)。|
+    | `reason` | Enum | 引起当前网络连接状态改变的原因。详见 [`ECONNECTION_CHANGED_REASON_TYPE`](/zh-CN/api-reference/rtc/unreal-blueprint/enum-connectionchangedreasontype)。|
 
 2. 添加对 **OnConnectionStateChanged** 回调的监听，如下图所示：
 
@@ -1710,7 +1710,7 @@ internal class UserEventHandler : IRtcEngineEventHandler
 
 ### API 参考
 
-- [`GetConnectionState`](/api-ref/rtc/unreal-blueprint/API/toc_network#api_irtcengine_getconnectionstate)
-- [`FOnConnectionStateChanged`](/api-ref/rtc/unreal-blueprint/API/toc_network#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`GetConnectionState`](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_getconnectionstate)
+- [`FOnConnectionStateChanged`](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged)
 
 </PlatformStructured>

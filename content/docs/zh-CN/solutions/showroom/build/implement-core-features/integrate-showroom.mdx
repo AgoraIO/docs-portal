@@ -79,7 +79,7 @@ description: "了解秀场直播在不同平台上的秀场直播方式，包括
 
 创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示初始化 RTC 引擎并开启视频模块的示例代码。
 
-你需要调用 [`create`](/api-ref/rtc/android/API/toc_initialize#create%20[2/2]) 方法创建 RTC 引擎，并在 `config` 参数中配置上下文 Context、项目的 App ID、注册事件回调。调用 [`enableVideo`](/api-ref/rtc/android/API/toc_video_basic#enableVideo) 开启视频。
+你需要调用 [`create`](/zh-CN/api-reference/rtc/android/initialize#create-22) 方法创建 RTC 引擎，并在 `config` 参数中配置上下文 Context、项目的 App ID、注册事件回调。调用 [`enableVideo`](/zh-CN/api-reference/rtc/android/video/video-basic#enablevideo) 开启视频。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-1.svg)
 
@@ -110,7 +110,7 @@ val rtcEngine: RtcEngineEx
 
 进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示加入频道的示例代码。
 
-调用 [`joinChannelEx`](/api-ref/rtc/android/API/toc_channel#joinChannelEx) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
+调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
 
 - 主播：可以发送和接收音视频流。直播间的房主即为主播。
 - 观众：只可以接收音视频流。
@@ -143,7 +143,7 @@ private fun joinChannel() {
 
 ### 3. 主播设置本地视图
 
-进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/api-ref/rtc/android/API/toc_video_rendering#setupLocalVideo) 在主播端设置并渲染主播视频的示例代码。
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#setuplocalvideo) 在主播端设置并渲染主播视频的示例代码。
 
 ```kotlin
 mRtcEngine.setupLocalVideo(
@@ -156,7 +156,7 @@ mRtcEngine.setupLocalVideo(
 
 ### 4. 观众渲染主播视频
 
-进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/api-ref/rtc/android/API/toc_video_rendering#setupRemoteVideoEx) 在观众端渲染远端视频（即主播的视频）的示例代码。
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#setupremotevideoex) 在观众端渲染远端视频（即主播的视频）的示例代码。
 
 ```kotlin
 mRtcEngine.setupRemoteVideoEx(
@@ -174,7 +174,7 @@ mRtcEngine.setupRemoteVideoEx(
 房主跨直播间 PK 连麦意味着不同频道内的主播加入对方频道进行连麦。当房间内用户收到房主 PK 连麦的信令消息后，房间内用户的代码逻辑如下：
 
 - 房间 A：
-    - 房主 A 通过 [`joinChannelEx`](/api-ref/rtc/android/API/toc_channel#joinChannelEx) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/api-ref/rtc/android/API/toc_video_rendering#setupRemoteVideoEx) 渲染频道 B 中主播的视频。
+    - 房主 A 通过 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#setupremotevideoex) 渲染频道 B 中主播的视频。
     - 观众通过 `joinChannelEx` 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 B 中主播的视频。
 - 房间 B：
     - 房主 B 通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
@@ -186,7 +186,7 @@ mRtcEngine.setupRemoteVideoEx(
 为了加快 PK 连麦时视频出图速度，在发起 PK 连麦的过程中就让用户加入对方频道并设置远端视图，但此时无需订阅音频流。等 PK 连麦建立成功后，直接将远端视频显示出来并订阅对方主播的音频流。请注意，提前加入频道会产生额外的费用，因此建议你根据实际业务需要调整集成逻辑。
 :::
 
-结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/api-ref/rtc/android/API/toc_channel#leaveChannelEx%20[1/2]) 离开对方频道。
+结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/android/channel#leavechannelex-12) 离开对方频道。
 
 本节展示用户加入对方频道和离开对方频道的示例代码，如需查阅 `setupRemoteVideoEx` 方法调用逻辑，请参考 [GitHub 示例项目](#示例项目)。
 
@@ -238,7 +238,7 @@ rtcEngine.leaveChannelEx(pkRtcConnection)
 
 结束连麦时，你需要让待下麦观众更新频道媒体选项、停止预览并取消本地视图。让其他用户收到该观众下麦通知后，取消渲染该观众的视频。完成这些逻辑后，直播间观众可以看到仅有主播的直播画面。
 
-本节展示观众连麦和结束连麦时更新频道媒体选项的示例代码。通过 [`updateChannelMediaOptionsEx`](/api-ref/rtc/android/API/toc_channel#updateChannelMediaOptionsEx) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `CLIENT_ROLE_AUDIENCE`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `CLIENT_ROLE_BROADCASTER`。
+本节展示观众连麦和结束连麦时更新频道媒体选项的示例代码。通过 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/android/channel#updatechannelmediaoptionsex) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `CLIENT_ROLE_AUDIENCE`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `CLIENT_ROLE_BROADCASTER`。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-4.svg)
 
@@ -276,7 +276,7 @@ mRtcEngine.updateChannelMediaOptionsEx(channelMediaOptions, rtcConnection)
 
 直播结束时，主播和观众离开房间，你可以离开频道并销毁 RTC 引擎。
 
-本节展示调用 [`destroy`](/api-ref/rtc/android/API/toc_initialize#destroy) 销毁 RTC 引擎的示例代码。
+本节展示调用 [`destroy`](/zh-CN/api-reference/rtc/android/initialize#destroy) 销毁 RTC 引擎的示例代码。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-5.svg)
 
@@ -403,7 +403,7 @@ override fun unloadConnections() {
 
 ### 1. 创建直播间
 
-创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示调用 [`sharedEngineWithConfig`](/api-ref/rtc/ios/API/toc_initialize#sharedEngineWithConfig) 初始化 RTC 引擎的示例代码。
+创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示调用 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#sharedEngineWithConfig) 初始化 RTC 引擎的示例代码。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-1.svg)
 
@@ -419,7 +419,7 @@ fileprivate(set) lazy var agoraKit: AgoraRtcEngineKit = {
 
 进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示加入频道的示例代码。
 
-调用 [`joinChannelExByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelExByToken%20[1/2]) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
+调用 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#joinChannelExByToken [1/2]) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
 
 - 主播：可以发送和接收音视频流。直播间的房主即为主播。
 - 观众：只可以接收音视频流。
@@ -513,7 +513,7 @@ kShowLogBaseContext)
 
 ### 3. 主播设置本地视图
 
-进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/api-ref/rtc/ios/API/toc_video_rendering#setupLocalVideo) 在主播端设置并渲染主播视频的示例代码。
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/ios/video/video-rendering#setuplocalvideo) 在主播端设置并渲染主播视频的示例代码。
 
 ```swift
 self.agoraKitManager.setupLocalVideo(uid: uid, canvasView: self.liveView.canvasView.localView)
@@ -540,7 +540,7 @@ func setupLocalVideo(uid: UInt, canvasView: UIView) {
 
 ### 4. 观众渲染主播视频
 
-进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/api-ref/rtc/ios/API/toc_video_rendering#setupRemoteVideoEx) 在观众端渲染远端视频（即主播的视频）的示例代码。
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 在观众端渲染远端视频（即主播的视频）的示例代码。
 
 ```swift
 self.agoraKitManager.setupRemoteVideo(channelId: channelId,
@@ -571,7 +571,7 @@ kShowLogBaseContext)
 房主跨直播间 PK 连麦意味着不同频道内的主播加入对方频道进行连麦。当房间内用户收到房主 PK 连麦的信令消息后，房间内用户的代码逻辑如下：
 
 - 房间 A：
-    - 房主 A 通过 [`joinChannelExByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelExByToken%20[1/2]) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/api-ref/rtc/ios/API/toc_video_rendering#setupRemoteVideoEx) 渲染频道 B 中主播的视频。
+    - 房主 A 通过 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#joinChannelExByToken [1/2]) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 渲染频道 B 中主播的视频。
     - 观众通过 `joinChannelEx` 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 B 中主播的视频。
 - 房间 B：
     - 房主 B 通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
@@ -583,7 +583,7 @@ kShowLogBaseContext)
 为了加快 PK 连麦时视频出图速度，在发起 PK 连麦的过程中就让用户加入对方频道并设置远端视图，但此时无需订阅音频流。等 PK 连麦建立成功后，直接将远端视频显示出来并订阅对方主播的音频流。请注意，提前加入频道会产生额外的费用，因此建议你根据实际业务需要调整集成逻辑。
 :::
 
-结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/api-ref/rtc/ios/API/toc_channel#leaveChannelEx%20[1/2]) 离开对方频道。
+结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/ios/channel#leaveChannelEx [1/2]) 离开对方频道。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-3.svg)
 
@@ -678,7 +678,7 @@ kShowLogBaseContext)
 
 结束连麦时，你需要让待下麦观众更新频道媒体选项、停止预览并取消本地视图。让其他用户收到该观众下麦通知后，取消渲染该观众的视频。完成这些逻辑后，直播间观众可以看到仅有主播的直播画面。
 
-本节展示观众连麦和结束连麦时更新频道媒体选项、设置视图的示例代码。通过 [`updateChannelExWithMediaOptions`](/api-ref/rtc/ios/API/toc_channel#updateChannelExWithMediaOptions) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `audience`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `broadcaster`。
+本节展示观众连麦和结束连麦时更新频道媒体选项、设置视图的示例代码。通过 [`updateChannelExWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#updateChannelExWithMediaOptions) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `audience`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `broadcaster`。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-4.svg)
 
@@ -724,7 +724,7 @@ func updateChannelEx(channelId: String, options: AgoraRtcChannelMediaOptions) {
 
 直播结束时，主播和观众离开房间，你可以离开频道并销毁 RTC 引擎。
 
-本节展示调用 [`destroy`](/api-ref/rtc/ios/API/toc_initialize#destroy) 销毁 RTC 引擎的示例代码。
+本节展示调用 [`destroy`](/zh-CN/api-reference/rtc/ios/initialize#destroy) 销毁 RTC 引擎的示例代码。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-5.svg)
 

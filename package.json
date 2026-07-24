@@ -26,6 +26,8 @@
     "docs:links:openapi-zh:strict": "node scripts/audit-doc-links.mjs --openapi-zh-only --fail-on-invalid",
     "docs:links:openapi-zh:baseline": "node scripts/check-openapi-zh-link-baseline.mjs",
     "docs:links:openapi-zh:baseline:update": "node scripts/check-openapi-zh-link-baseline.mjs --update",
+    "docs:links:cn-api:normalize": "node scripts/normalize-cn-api-links.mjs",
+    "docs:links:cn-api:check": "node scripts/normalize-cn-api-links.mjs --check",
     "docs:links:classify": "node scripts/classify-doc-link-audit.mjs --out=docs/agents/reports/2026-06-30-doc-link-strict-classification.md",
     "docs:links:classify:check": "node scripts/classify-doc-link-audit.mjs --check --out=docs/agents/reports/2026-06-30-doc-link-strict-classification.md",
     "docs:links:external": "node scripts/audit-doc-links.mjs --check-external --external-concurrency=8 --external-retries=2 --external-timeout=5000",

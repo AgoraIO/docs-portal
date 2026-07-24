@@ -47,19 +47,19 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 ### 改进
 
-为了提升云端录制的安全性，本次发布在 `start` 和 `update` 请求 Body 的 `storageConfig` 中新增了可选字段 `stsToken` 和 `stsExpiration`。你需要确保 `stsToken` 的时效足够长，以便云端录制能够顺利上传文件至三方云存储。详见 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 和 [`update`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-update) API 参考。
+为了提升云端录制的安全性，本次发布在 `start` 和 `update` 请求 Body 的 `storageConfig` 中新增了可选字段 `stsToken` 和 `stsExpiration`。你需要确保 `stsToken` 的时效足够长，以便云端录制能够顺利上传文件至三方云存储。详见 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 和 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) API 参考。
 
 ## 2024.03.05
 
 ### 改进
 
-本次发布在 `acquire` 请求 Body 的 `clientRequest` 中新增可选字段 `startParameter`。你设置该字段后，声网可以更精确地分配资源调度，提升请求异常时的恢复能力，进而提高云端录制的可用性。填写 `startParameter` 字段时，必须和 `start` 请求 Body 的 `clientRequest` 内容保持一致。详见 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) API 参考。
+本次发布在 `acquire` 请求 Body 的 `clientRequest` 中新增可选字段 `startParameter`。你设置该字段后，声网可以更精确地分配资源调度，提升请求异常时的恢复能力，进而提高云端录制的可用性。填写 `startParameter` 字段时，必须和 `start` 请求 Body 的 `clientRequest` 内容保持一致。详见 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) API 参考。
 
 ## 2023.12.25
 
 ### 新增功能
 
-本次发布新增支持指定某个区域的资源进行录制。可用于加速录制文件上传。详见 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 中的 `clientRequest.regionAffinity` 字段。
+本次发布新增支持指定某个区域的资源进行录制。可用于加速录制文件上传。详见 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 中的 `clientRequest.regionAffinity` 字段。
 
 ## 2023.11.30
 
@@ -209,7 +209,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 暂停页面录制
 
-[`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 和 [`update`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-update) 方法新增 `onhold` 字段，用于在页面录制开始或进行时暂停录制。
+[`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 和 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法新增 `onhold` 字段，用于在页面录制开始或进行时暂停录制。
 
 #### 录制同时截图
 
@@ -220,7 +220,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 该版本进行了如下改进：
 
 - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调新增错误码及错误信息，用于提示页面录制异常退出原因，用户可以根据该信息采取相应措施。
-- [`update`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-update) 方法新增 `webRecordingConfig` 字段，用于在页面录制过程中更新相关字段。
+- [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法新增 `webRecordingConfig` 字段，用于在页面录制过程中更新相关字段。
 
 ## 2021.07.30
 
@@ -228,7 +228,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 云端截图回调
 
-该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status#45) 回调，用于截图成功的通知，且返回截图文件名称。
+该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#45) 回调，用于截图成功的通知，且返回截图文件名称。
 
 #### Amazon S3 云存储区域新增
 
@@ -243,7 +243,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 ### 新增功能
 
-[`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法中新增 `maxVideoDuration` 字段，用于设置页面录制生成的 MP4 切片文件的最大时长。
+[`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中新增 `maxVideoDuration` 字段，用于设置页面录制生成的 MP4 切片文件的最大时长。
 
 ### 改进
 
@@ -259,7 +259,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 限定访问区域
 
-该版本在 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法中新增 `region` 字段，用于限定云端录制服务访问的区域。一旦指定了访问区域，云端录制服务将不会访问指定区域以外的服务器。支持的区域如下：
+该版本在 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法中新增 `region` 字段，用于限定云端录制服务访问的区域。一旦指定了访问区域，云端录制服务将不会访问指定区域以外的服务器。支持的区域如下：
 
 - 中国大陆
 - 亚洲区域（除中国大陆）
@@ -282,7 +282,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法新增 `region` 字段。
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法新增 `region` 字段。
 - [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#70) 回调中新增 `recorderStartTime` 字段。
 - 新增 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调。
 
@@ -311,7 +311,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法中的 `decryptionMode` 字段新增枚举值 `5` 和 `6`。
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `decryptionMode` 字段新增枚举值 `5` 和 `6`。
 - [`uploaded`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#31) 和 [`backuped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#32) 回调中新增 `fileList` 字段。
 
 ## 2021.03.31
@@ -336,8 +336,8 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法中的 `transcodingConfig` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
-- [`updateLayout`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-updateLayout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `transcodingConfig` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
+- [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
 - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 回调中新增 `fileList` 字段。
 
 ## 2021.02.05
@@ -354,8 +354,8 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法的 `scene` 字段新增枚举值 `2`，用于设置延时转码场景。
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法的 `scene` 字段新增枚举值 `2`，用于设置延时转码场景。
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
  方法中的 `clientRequest` 新增 `appsCollection` 字段。
 
 - 新增以下回调，用于报告转码的状态：
@@ -376,8 +376,8 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 该版本 API 变更如下：
 
 - 请求 URL 中的 `mode` 参数新增支持 `web`（页面录制模式）。
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法新增 `scene` 字段，用于设置云端录制资源使用场景。
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法新增 `scene` 字段，用于设置云端录制资源使用场景。
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
  方法中的 `extensionServiceConfig` 新增 `"web_recorder_service"` 服务。
 
 - 新增以下回调，用于报告页面录制状态：
@@ -402,7 +402,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
  方法中新增了 `extensionServiceConfig` 字段，用于指定阿里视频点播服务的配置。
 
 - 新增 `vod_started` 回调和 `vod_triggered` 回调，提供阿里视频点播服务上传模块的状态。
@@ -423,10 +423,10 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
  方法中新增了 `unSubscribeVideoUids` 和 `unSubscribeAudioUids` 字段，用于指定订阅黑名单。
 
-- 新增 [`update`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-update)
+- 新增 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update)
  方法，用于在录制过程中更新订阅名单。
 
 - 新增 `session_failover` 回调。
@@ -447,7 +447,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本 API 变更如下：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 方法中新增了 `resourceExpiredHour` 字段，用于设置云端录制 RESTful API 的调用时效。
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法中新增了 `resourceExpiredHour` 字段，用于设置云端录制 RESTful API 的调用时效。
 
 - RESTful API 回调通知中新增事件 [`session_exit`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#11)，提供云端录制服务的退出状态。
 

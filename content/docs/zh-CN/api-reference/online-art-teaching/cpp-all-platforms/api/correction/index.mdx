@@ -270,7 +270,7 @@ virtual int setLocalTrapezoidCorrectionOptions(const TrapezoidCorrectionOptions&
 
 | 参数 | 说明 |
 | --- | --- |
-| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。 |
 | `sourceType` | <Slot name="correction-windows-html-6-2-1" /> |
 
 <Slot for="correction-windows-html-6-2-1">
@@ -300,7 +300,7 @@ virtual int getLocalTrapezoidCorrectionOptions(TrapezoidCorrectionOptions& optio
 
 | 参数 | 说明 |
 | --- | --- |
-| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
+| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
 | `sourceType` | <Slot name="correction-windows-html-7-2-1" /> |
 
 <Slot for="correction-windows-html-7-2-1">
@@ -331,7 +331,7 @@ virtual int setRemoteTrapezoidCorrectionOptions(uid_t uid, const TrapezoidCorrec
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。 |
 
 #### 返回值
 
@@ -352,7 +352,7 @@ virtual int setRemoteTrapezoidCorrectionOptionsEx(uid_t uid, const TrapezoidCorr
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。 |
+| `options` | 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。 |
 | `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 #### 返回值
@@ -374,7 +374,7 @@ virtual int getRemoteTrapezoidCorrectionOptions(uid_t uid, TrapezoidCorrectionOp
 | 参数    | 说明                                                |
 | :------ | :-------------------------------------------------- |
 | `uid`     | 远端用户 ID。                                      |
-| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
+| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
 
 #### 返回值
 
@@ -395,7 +395,7 @@ virtual int getRemoteTrapezoidCorrectionOptionsEx(uid_t uid, TrapezoidCorrection
 | 参数 | 说明 |
 | --- | --- |
 | `uid` | 远端用户 ID。 |
-| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
+| `options` | [in/out] 透视校正配置参数。详见 [`TrapezoidCorrectionOptions`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#trapezoidcorrectionoptions)。对于输出参数而言，如果之前多次设置过透视校正参数，则获取的是之前多次设置的参数集合。 |
 | `connection` | Connection 信息。详见 [`RtcConnection`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rtcconnection)。 |
 
 #### 返回值
@@ -650,7 +650,7 @@ struct TrapezoidCorrectionOptions {
 
 | 参数 | 说明                         |
 | :--- | :--------------------------- |
-| `pt`   | 拖动起始点坐标。详见 [`Point`](#point)。 |
+| `pt`   | 拖动起始点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
 
 #### setDragDstPoint
 
@@ -660,7 +660,7 @@ struct TrapezoidCorrectionOptions {
 
 | 参数 | 说明                         |
 | :--- | :--------------------------- |
-| `pt`   | 拖动终止点坐标。详见 [`Point`](#point)。 |
+| `pt`   | 拖动终止点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
 
 #### setDragFinished
 
@@ -685,10 +685,10 @@ struct TrapezoidCorrectionOptions {
 
 | 参数        | 说明                               |
 | :---------- | :--------------------------------- |
-| `topLeft`     | 左上角拖动起始点坐标。详见 [`Point`](#point)。 |
-| `bottomLeft`  | 左下角拖动起始点坐标。详见 [`Point`](#point)。 |
-| `topRight`    | 右上角拖动起始点坐标。详见 [`Point`](#point)。 |
-| `bottomRight` | 右下角拖动起始点坐标。详见 [`Point`](#point)。 |
+| `topLeft`     | 左上角拖动起始点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `bottomLeft`  | 左下角拖动起始点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `topRight`    | 右上角拖动起始点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `bottomRight` | 右下角拖动起始点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
 
 #### setDragDstPoints
 
@@ -696,10 +696,10 @@ struct TrapezoidCorrectionOptions {
 
 | 参数        | 说明                               |
 | :---------- | :--------------------------------- |
-| `topLeft`     | 左上角拖动终止点坐标。详见 [`Point`](#point)。 |
-| `bottomLeft`  | 左下角拖动终止点坐标。详见 [`Point`](#point)。 |
-| `topRight`    | 右上角拖动终止点坐标。详见 [`Point`](#point)。 |
-| `bottomRight` | 右下角拖动终止点坐标。详见 [`Point`](#point)。 |
+| `topLeft`     | 左上角拖动终止点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `bottomLeft`  | 左下角拖动终止点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `topRight`    | 右上角拖动终止点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
+| `bottomRight` | 右下角拖动终止点坐标。详见 [`Point`](/zh-CN/api-reference/online-art-teaching/cpp-all-platforms/api/correction#point)。 |
 
 #### showAssistLine
 

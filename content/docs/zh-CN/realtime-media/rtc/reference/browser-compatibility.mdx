@@ -513,7 +513,7 @@ createClient({codec:'vp8', mode})
 **规避方案**：参考以下方案：
 
 - 方案一：升级至 Web SDK 4.7.3 或以上版本。SDK 会尝试在打断事件后恢复媒体播放。声网建议你在业务层面增加提示，引导用户刷新页面。
-- 方案二：升级至 Web SDK 4.20.0 或以上版本。SDK 会抛出打断事件通知，并且提供 `resumeAudioContext` 方法用于恢复媒体播放。详见 [API 文档](/api-ref/rtc/javascript/interfaces/iagorartc#resumeaudiocontext)。
+- 方案二：升级至 Web SDK 4.20.0 或以上版本。SDK 会抛出打断事件通知，并且提供 `resumeAudioContext` 方法用于恢复媒体播放。详见 [API 文档](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#resumeaudiocontext)。
 
 </Accordion>
 
@@ -656,7 +656,7 @@ createClient({codec:'vp8', mode})
 
 ## 检测浏览器兼容性
 
-声网 Web SDK 提供 [`checkSystemRequirements`](/api-ref/rtc/javascript/interfaces/iagorartc.html#checksystemrequirements) 方法，用于检测 SDK 是否能在当前浏览器中使用。
+声网 Web SDK 提供 [`checkSystemRequirements`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#checksystemrequirements) 方法，用于检测 SDK 是否能在当前浏览器中使用。
 
 ```typescript
 const result = AgoraRTC.checkSystemRequirements();

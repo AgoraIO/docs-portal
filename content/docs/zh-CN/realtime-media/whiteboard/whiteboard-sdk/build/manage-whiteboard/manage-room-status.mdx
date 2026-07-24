@@ -12,12 +12,12 @@ description: "了解互动白板 SDK 中管理房间业务状态相关内容的�
 
 在声网互动白板实时房间中，业务状态包含以下字段：
 
-- `MemberState`：当前使用的白板工具，详见 [`MemberState`](/api-ref/whiteboard/javascript/globals#memberstate)。通过修改当前房间的 `memberState`，可以切换白板工具。详见[使用白板工具](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb)。
-- `BroadcastState`：当前用户的视角模式以及房间中主播模式用户的用户 ID，详见 [`BroadcastState`](/api-ref/whiteboard/javascript/globals#broadcaststate)。
-- `CameraState`：视角状态，包含视角的中心点坐标、宽高和缩放比例等，详见 [`CameraState`](/api-ref/whiteboard/javascript/globals#camerastate)。
-- `RoomMember`：房间内所有互动模式（具有读写权限）用户的状态，详见 [`RoomMember`](/api-ref/whiteboard/javascript/globals#roommember)。
-- `SceneState`：当前场景的信息，包含场景名称、场景索引号和场景路径等，详见 [`SceneState`](/api-ref/whiteboard/javascript/globals#scenestate)。通过修改当前房间的 `SceneState`，可以切换场景。详见[管理场景](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-scene)。
-- `GlobalState`：房间的全局状态，详见 [`GlobalState`](/api-ref/whiteboard/javascript/globals#globalstate)。使用 `GlobalState` 可以实现自定义业务逻辑。
+- `MemberState`：当前使用的白板工具，详见 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate)。通过修改当前房间的 `memberState`，可以切换白板工具。详见[使用白板工具](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb)。
+- `BroadcastState`：当前用户的视角模式以及房间中主播模式用户的用户 ID，详见 [`BroadcastState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#broadcaststate)。
+- `CameraState`：视角状态，包含视角的中心点坐标、宽高和缩放比例等，详见 [`CameraState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#camerastate)。
+- `RoomMember`：房间内所有互动模式（具有读写权限）用户的状态，详见 [`RoomMember`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roommember)。
+- `SceneState`：当前场景的信息，包含场景名称、场景索引号和场景路径等，详见 [`SceneState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#sceneState)。通过修改当前房间的 `SceneState`，可以切换场景。详见[管理场景](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-scene)。
+- `GlobalState`：房间的全局状态，详见 [`GlobalState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#globalState)。使用 `GlobalState` 可以实现自定义业务逻辑。
 
 你可以直接读取各字段的值以获取业务状态，也可以通过注册回调监听业务状态的变化。
 
@@ -112,6 +112,6 @@ mode: "broadcaster"
 
 ## API 参考
 
-- [`state`](/api-ref/whiteboard/javascript/interfaces/room#state)
-- [`joinRoom`](/api-ref/whiteboard/javascript/classes/whitewebsdk#joinRoom)
-- [`RoomCallbacks`](/api-ref/whiteboard/javascript/globals#roomcallbacks)
+- [`state`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#state)
+- [`joinRoom`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/classes/whitewebsdk#joinroom)
+- [`RoomCallbacks`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#roomcallbacks)

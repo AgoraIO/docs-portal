@@ -13,7 +13,7 @@ description: "了解如何在互动白板 SDK 中白板工具，包括适用场�
 
 ## 技术原理
 
-互动白板 SDK 提供 [`setMemberState`](/api-ref/whiteboard/javascript/interfaces/room#setMemberState) 方法，用于设置当前白板房间内使用的工具。你可以通过修改当前 `Room` 对象的 [`MemberState`](/api-ref/whiteboard/javascript/globals#MemberState) 切换工具、选择图形、修改字体的大小、线条的颜色和粗细。
+互动白板 SDK 提供 [`setMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setmemberstate) 方法，用于设置当前白板房间内使用的工具。你可以通过修改当前 `Room` 对象的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate) 切换工具、选择图形、修改字体的大小、线条的颜色和粗细。
 
 `MemberState` 包含如下属性：
 
@@ -216,14 +216,14 @@ whiteWebSdk
 
 | 方法                                                         | 描述                        |
 | :----------------------------------------------------------- | :-------------------------- |
-| [`copy`](/api-ref/whiteboard/javascript/interfaces/room#copy) | 复制选中内容                |
-| [`paste`](/api-ref/whiteboard/javascript/interfaces/room#paste) | 粘贴复制的内容              |
-| [`duplicate`](/api-ref/whiteboard/javascript/interfaces/room#duplicate) | 复制并粘贴选中的内容        |
-| [`delete`](/api-ref/whiteboard/javascript/interfaces/room#delete) | 删除选中的内容              |
-| [`disableSerialization`](/api-ref/whiteboard/javascript/interfaces/room#disableSerialization) | 开启/禁止本地序列化         |
-| [`redo`](/api-ref/whiteboard/javascript/interfaces/room#redo) | 重做                        |
-| [`undo`](/api-ref/whiteboard/javascript/interfaces/room#undo) | 撤销上一步操作              |
-| [`disableEraseImage`](/api-ref/whiteboard/javascript/interfaces/room#disableEraseImage) | 关闭/开启橡皮擦擦除图片功能 |
-| [`disableDeviceInputs`](/api-ref/whiteboard/javascript/interfaces/room#disableDeviceInputs) | 禁止/允许用户操作白板工具   |
+| [`copy`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#copy) | 复制选中内容                |
+| [`paste`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#paste) | 粘贴复制的内容              |
+| [`duplicate`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#duplicate) | 复制并粘贴选中的内容        |
+| [`delete`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#delete) | 删除选中的内容              |
+| [`disableSerialization`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableserialization) | 开启/禁止本地序列化         |
+| [`redo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#redo) | 重做                        |
+| [`undo`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#undo) | 撤销上一步操作              |
+| [`disableEraseImage`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disableeraseimage) | 关闭/开启橡皮擦擦除图片功能 |
+| [`disableDeviceInputs`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disabledeviceinputs) | 禁止/允许用户操作白板工具   |
 
 上述方法也是 `room` 类的成员方法，也没有提供直接的 UI。你可以根据业务需要，自行设计 UI 并调用上述方法，实现相应的功能。

@@ -43,7 +43,7 @@ description: "了解声网解决方案在不同平台上的空间音频方式，
 
 #### 1 创建和初始化空间音频引擎
 
-使用空间音频前，你需要调用 [`create`](/api-ref/rtc/android/API/toc_spatial_audio#create) 和 [`initialize`](/api-ref/rtc/android/API/toc_spatial_audio#initialize) 创建和初始化空间音频引擎。
+使用空间音频前，你需要调用 [`create`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#create) 和 [`initialize`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#initialize) 创建和初始化空间音频引擎。
 
 :::warning[注意]
 - 请在加入 RTC 频道前调用 `create` 和 `initialize` 方法。
@@ -61,7 +61,7 @@ spatialAudioEngine.initialize(config);
 
 #### 2 设置空间音频接收范围
 
-调用 [`setAudioRecvRange`](/api-ref/rtc/android/API/toc_spatial_audio#setAudioRecvRange) 设置空间音频接收范围，当远端用户相对本地用户的距离超出这个范围，本地用户就会听不到远端用户的声音。
+调用 [`setAudioRecvRange`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#setaudiorecvrange) 设置空间音频接收范围，当远端用户相对本地用户的距离超出这个范围，本地用户就会听不到远端用户的声音。
 
 你可以通过 `ILocalSpatialAudioEngine` 处理是否停止发布和订阅音频流。
 
@@ -78,7 +78,7 @@ spatialAudioEngine.muteAllRemoteAudioStreams(false);
 
 #### 3 处理用户位置变化
 
-通过 [`onUserPositionChanged`](/zh-CN/solutions/meta-world/reference/meta-api#onuserpositionchanged) 回调监听用户的位置变化。如果当前用户是本地用户，调用 [`updateSelfPosition`](/api-ref/rtc/android/API/toc_spatial_audio#updateSelfPosition) 更新本地用户位置信息；如果当前用户是远端用户，调用 [`updateRemotePosition`](/api-ref/rtc/android/API/toc_spatial_audio#updateRemotePosition) 更新远端用户的信息位置。
+通过 [`onUserPositionChanged`](/zh-CN/solutions/meta-world/reference/meta-api#onuserpositionchanged) 回调监听用户的位置变化。如果当前用户是本地用户，调用 [`updateSelfPosition`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateselfposition) 更新本地用户位置信息；如果当前用户是远端用户，调用 [`updateRemotePosition`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateremoteposition) 更新远端用户的信息位置。
 
 :::warning[注意]
 请在加入 RTC 频道后监听和处理用户位置变化。
@@ -120,7 +120,7 @@ public void onUserPositionChanged(String uid, MetaUserPositionInfo posInfo) {
 
 #### 4 销毁空间音频引擎
 
-不需要使用空间音频时，调用 [`destroy`](/api-ref/rtc/android/API/toc_spatial_audio#destroy) 销毁空间音频引擎。
+不需要使用空间音频时，调用 [`destroy`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#destroy) 销毁空间音频引擎。
 
 :::warning[注意]
 请在离开 RTC 频道后和销毁 RTC 引擎前调用 `destroy`。
@@ -157,7 +157,7 @@ mediaPlayer.play();
 
 #### 2 设置播放器空间音频
 
-处理 Unity 场景的回调信息，解析得到物体的三维坐标位置和朝向，并将这些信息传入 [`updatePlayerPositionInfo`](/api-ref/rtc/android/API/toc_spatial_audio#updatePlayerPositionInfo) 方法，设置播放器的空间音频。
+处理 Unity 场景的回调信息，解析得到物体的三维坐标位置和朝向，并将这些信息传入 [`updatePlayerPositionInfo`](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#updateplayerpositioninfo) 方法，设置播放器的空间音频。
 
 ```java
 // 处理 Unity 场景回调信息
@@ -222,7 +222,7 @@ public void onRecvMessageFromScene(byte[] message) {
 
 #### 1. 创建和初始化空间音频引擎
 
-使用空间音频前，你需要调用 [`sharedLocalSpatialAudioWithConfig`](/api-ref/rtc/ios/API/toc_spatial_audio#sharedLocalSpatialAudioWithConfig) 创建和初始化空间音频引擎。
+使用空间音频前，你需要调用 [`sharedLocalSpatialAudioWithConfig`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#sharedlocalspatialaudiowithconfig) 创建和初始化空间音频引擎。
 
 :::warning[注意]
 - 请在加入 RTC 频道前调用 `sharedLocalSpatialAudioWithConfig`。
@@ -238,7 +238,7 @@ agoraLocalSpatialAudioKit = AgoraLocalSpatialAudioKit.sharedLocalSpatialAudio(wi
 
 #### 2 设置空间音频接收范围
 
-调用 [`setAudioRecvRange`](/api-ref/rtc/ios/API/toc_spatial_audio#setAudioRecvRange) 设置空间音频接收范围，当远端用户相对本地用户的距离超出这个范围，本地用户就会听不到远端用户的声音。
+调用 [`setAudioRecvRange`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#setaudiorecvrange) 设置空间音频接收范围，当远端用户相对本地用户的距离超出这个范围，本地用户就会听不到远端用户的声音。
 
 你可以通过 `AgoraLocalSpatialAudioKit` 处理是否停止发布和订阅音频流。
 
@@ -255,7 +255,7 @@ agoraLocalSpatialAudioKit.muteAllRemoteAudioStreams(false)
 
 #### 3 处理用户位置变化
 
-通过 [`onUserPositionChanged`](/zh-CN/solutions/meta-world/reference/meta-api#onuerpositionchanged) 回调监听用户的位置变化。如果当前用户是本地用户，调用 [`updateSelfPosition`](/api-ref/rtc/ios/API/toc_spatial_audio#updateSelfPosition) 更新本地用户位置信息；如果当前用户是远端用户，调用 [`updateRemotePosition`](/api-ref/rtc/ios/API/toc_spatial_audio#updateRemotePosition) 更新远端用户的信息位置。
+通过 [`onUserPositionChanged`](/zh-CN/solutions/meta-world/reference/meta-api#onuerpositionchanged) 回调监听用户的位置变化。如果当前用户是本地用户，调用 [`updateSelfPosition`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) 更新本地用户位置信息；如果当前用户是远端用户，调用 [`updateRemotePosition`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 更新远端用户的信息位置。
 
 :::warning[注意]
 请在加入 RTC 频道后监听和处理用户位置变化。
@@ -290,7 +290,7 @@ func metaScene(_ scene: AgoraMetaScene, onUserPositionChanged uid: String, posIn
 
 #### 4 销毁空间音频引擎
 
-不需要使用空间音频时，调用 [`destroy`](/api-ref/rtc/ios/API/toc_spatial_audio#destroy) 销毁空间音频引擎。
+不需要使用空间音频时，调用 [`destroy`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#destroy) 销毁空间音频引擎。
 
 :::warning[注意]
 请在离开 RTC 频道后和销毁 RTC 引擎前调用 `destroy`。
@@ -329,7 +329,7 @@ mediaPlayerKit.play()
 
 #### 2 设置播放器空间音频
 
-处理 Unity 场景的回调信息，解析得到物体的三维坐标位置和朝向，并将这些信息传入 [`updatePlayerPositionInfo`](/api-ref/rtc/ios/API/toc_spatial_audio#updatePlayerPositionInfo) 方法，设置播放器的空间音频。
+处理 Unity 场景的回调信息，解析得到物体的三维坐标位置和朝向，并将这些信息传入 [`updatePlayerPositionInfo`](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo) 方法，设置播放器的空间音频。
 
 ```swift
 // 处理 Unity 场景回调信息

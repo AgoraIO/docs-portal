@@ -11,7 +11,7 @@ description: "了解如何快速接入弹幕玩法，完成环境准备、参数
 - 一个有效的声网账号以及声网项目。请参考[开通弹幕服务](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service)从声网控制台获得以下信息：
     - App ID：声网随机生成的字符串，用于识别你的项目。
     - 客户 ID 和密钥：调用弹幕玩法 RESTful API 所需的 Key 和 Secret。
-    - 临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](https://doc.shengwang.cn/doc/rtc/android/basic-features/token-authentication)在你的 App 服务端生成 Token。
+    - 临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的 App 服务端生成 Token。
 - 已[联系销售](https://www.shengwang.cn/contact-sales/)开通弹幕玩法。
 - 你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 
@@ -22,7 +22,7 @@ PC 端开播弹幕玩法的流程如下图所示：
 ![](https://web-cdn.agora.io/docs-portal/img/danmaku/pc-qiuckstart.svg)
 
 :::info[信息]
-声网推荐你在阅读本节的同时在新标签页打开[弹幕玩法服务端 API 专区](/doc/danmaku/restful/danmaku/operations/start-pc-game)以获得佳的快速开始体验：
+声网推荐你在阅读本节的同时在新标签页打开[弹幕玩法服务端 API 专区](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)以获得佳的快速开始体验：
 
 - 详细的 API 参数说明、调用示例和调用注意事项
 - 使用专区右侧的“Send API Request”功能快捷调用 RESTful API
@@ -58,7 +58,7 @@ PC 端开播弹幕玩法的流程如下图所示：
 
 3. 包装 `payload`
 
-    参考[推送直播间消息](/doc/danmaku/restful/danmaku/operations/push-message)中的礼物 `payload` 参数说明，将上面步骤获取的参数包装成 `payload`，在后续直播间互动阶段发生送礼事件时，将正确的 `payload` 发送给声网云游戏服务平台。
+    参考[推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)中的礼物 `payload` 参数说明，将上面步骤获取的参数包装成 `payload`，在后续直播间互动阶段发生送礼事件时，将正确的 `payload` 发送给声网云游戏服务平台。
 
 ### 完成开播设置
 
