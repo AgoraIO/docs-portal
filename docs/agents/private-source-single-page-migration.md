@@ -58,7 +58,7 @@ This playbook is based on the migration of:
    node .agents/skills/fumadocs-migration/scripts/audit-legacy-docs.mjs \
      --source /Users/yejiayi/Documents/Doc-Source-Private \
      --profile doc-source-private \
-     --out /tmp/docs-portal-private-audit
+     --out /tmp/private-source-audit
    ```
 
 5. Check the audit entries for the wrapper and shared files.
