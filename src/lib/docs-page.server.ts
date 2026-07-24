@@ -1771,8 +1771,8 @@ function applyPageTocDepthLimit<T extends { depth: number }>(
   return maxDepth === null ? toc : toc.filter((item) => item.depth <= maxDepth);
 }
 
-function hasProcessedText(page: PageWithSource): page is PageWithSource & {
-  data: { getText: (kind: 'processed') => Promise<string> };
+function hasPageText(page: PageWithSource): page is PageWithSource & {
+  data: { getText: (kind: 'processed' | 'raw') => Promise<string> };
 } {
   return 'getText' in page.data && typeof page.data.getText === 'function';
 }
