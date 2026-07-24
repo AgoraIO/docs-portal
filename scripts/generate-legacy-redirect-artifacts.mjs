@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isDeepStrictEqual } from 'node:util';
 
 const repoRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -37,7 +38,9 @@ const vercelConfig = {
 
 await writeOrCheck(staticRedirectsPath, `${JSON.stringify(staticRedirects)}\n`);
 await writeOrCheck(bulkRedirectsPath, `${JSON.stringify(bulkRedirects)}\n`);
-await writeOrCheck(vercelPath, `${JSON.stringify(vercelConfig, null, 2)}\n`);
+await writeOrCheck(vercelPath, `${JSON.stringify(vercelConfig, null, 2)}\n`, {
+  compareJson: true,
+});
 
 console.log(
   [
@@ -153,7 +156,15 @@ function compareVercelRedirects(a, b) {
   );
 }
 
-async function writeOrCheck(filePath, content) {
+function isEquivalentJson(current, expected) {
+  try {
+    return isDeepStrictEqual(JSON.parse(current), JSON.parse(expected));
+  } catch {
+    return false;
+  }
+}
+
+async function writeOrCheck(filePath, content, { compareJson = false } = {}) {
   if (!checkOnly) {
     await writeFile(filePath, content);
     return;
@@ -166,7 +177,11 @@ async function writeOrCheck(filePath, content) {
     throw new Error(`${path.relative(repoRoot, filePath)} is missing`);
   }
 
-  if (current !== content) {
+  const matches = compareJson
+    ? isEquivalentJson(current, content)
+    : current === content;
+
+  if (!matches) {
     throw new Error(
       `${path.relative(
         repoRoot,
