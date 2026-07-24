@@ -47,15 +47,7 @@ describe('API Center scoped sidebars', () => {
       node.title ? [node.title] : [],
     );
     expect(titles.filter((title) => title === 'API 参考')).toHaveLength(1);
-    expect(titles).toEqual(
-      expect.arrayContaining([
-        'API 参考',
-        'SDK 下载',
-        '指南',
-        'Recipe',
-        '常见问题',
-      ]),
-    );
+    expect(titles).toEqual(['API 参考', 'SDK 下载', '示例配方', '常见问题']);
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
     expect(titles).not.toEqual(
@@ -67,7 +59,12 @@ describe('API Center scoped sidebars', () => {
         '灵动课堂',
       ]),
     );
-    expect(rootTitles).toEqual(['API 参考', 'SDK 下载', '指南']);
+    expect(rootTitles).toEqual([
+      'API 参考',
+      'SDK 下载',
+      '示例配方',
+      '常见问题',
+    ]);
   });
 
   it('keeps the same non-product navigation on the Recipes page', async () => {
@@ -79,16 +76,13 @@ describe('API Center scoped sidebars', () => {
 
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
-    expect(titles).toEqual(
-      expect.arrayContaining([
-        'API 参考',
-        'SDK 下载',
-        '指南',
-        'Recipe',
-        '常见问题',
-      ]),
-    );
-    expect(rootTitles).toEqual(['API 参考', 'SDK 下载', '指南']);
+    expect(titles).toEqual(['API 参考', 'SDK 下载', '示例配方', '常见问题']);
+    expect(rootTitles).toEqual([
+      'API 参考',
+      'SDK 下载',
+      '示例配方',
+      '常见问题',
+    ]);
   });
 
   it('uses the generated RTC Android current-version categories', async () => {
