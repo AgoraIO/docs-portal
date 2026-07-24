@@ -38,7 +38,7 @@ export function ReferenceFilterSelect<TValue extends string>({
       )}
       htmlFor={id}
     >
-      <span>{label}</span>
+      <span className="h-4 leading-4">{label}</span>
       <NativeSelect
         className={cn('min-w-40', selectClassName)}
         id={id}
@@ -68,15 +68,20 @@ export function ReferenceFilterToggleGroup<TValue extends string>({
   options: readonly ReferenceFilterOption<TValue>[];
   value: TValue;
 }) {
+  const labelId = useId();
+
   return (
-    <fieldset
+    <div
       className={cn(
-        'm-0 flex w-full min-w-0 flex-col items-start gap-1.5 border-0 p-0 text-xs font-medium text-muted-foreground sm:w-auto',
+        'flex w-full min-w-0 flex-col items-start gap-1.5 text-xs font-medium text-muted-foreground sm:w-auto',
         className,
       )}
     >
-      <legend className="p-0">{label}</legend>
+      <span className="h-4 leading-4" id={labelId}>
+        {label}
+      </span>
       <ToggleGroup
+        aria-labelledby={labelId}
         className="grid w-full grid-cols-2 sm:flex sm:w-fit"
         onValueChange={(nextValue) => {
           if (nextValue) {
@@ -98,7 +103,7 @@ export function ReferenceFilterToggleGroup<TValue extends string>({
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
-    </fieldset>
+    </div>
   );
 }
 
