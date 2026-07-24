@@ -50,6 +50,71 @@ const PRODUCT_GROUP_ORDER = [
   'cloud-scene',
   'proctor',
 ] as const;
+const ZH_CN_PRODUCT_COPY = {
+  agents: {
+    label: '对话式 AI 引擎 SDK',
+    info: '用于在服务端构建和运行语音智能体的 SDK',
+  },
+  voice: {
+    label: '语音 SDK',
+    info: '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
+  },
+  video: {
+    label: '视频 SDK',
+    info: '适用于音视频通话、互动直播和极速直播的实时互动 SDK',
+  },
+  signaling: {
+    label: '实时消息 SDK',
+    info: '提供低延时消息、信令、状态同步和频道管理能力的 SDK',
+  },
+  chat: {
+    label: '即时通讯 SDK',
+    info: '适用于即时通讯场景的 SDK',
+  },
+  iot: {
+    label: '物联网 aPaaS SDK',
+    info: '适用于嵌入式设备实时音视频互动的 SDK',
+  },
+  whiteboard: {
+    label: '互动白板 SDK',
+    info: '提供可高度定制且不含默认 UI 的互动白板核心能力',
+  },
+  fastboard: {
+    label: 'Fastboard SDK',
+    info: '提供默认 UI，支持快速集成互动白板功能的 SDK',
+  },
+  'mediaplayer-kit': {
+    label: '媒体播放器组件',
+    info: '用于在客户端播放本地或在线媒体资源的组件',
+  },
+  'server-gateway': {
+    label: 'RTC 服务端 SDK',
+    info: '部署在服务端，用于向 RTC 频道发送音视频流或从频道接收音视频流',
+  },
+  'on-premise-recording': {
+    label: '本地服务端录制 SDK',
+    info: '部署在本地服务端，用于录制 RTC 频道中的音视频流',
+  },
+  meeting: {
+    label: '智能云会议引擎 SDK',
+    info: '用于构建多人音视频会议、会控、协作办公和 AI 会议体验的 SDK',
+  },
+  'flexible-classroom': {
+    label: '灵动课堂 SDK',
+    info: '适用于教育场景和课堂 UI 定制的 SDK',
+  },
+  'cloud-scene': {
+    label: '云课堂 SDK',
+    info: '提供默认课堂 UI 的场景化 SDK',
+  },
+  proctor: {
+    label: '灵动监考 SDK',
+    info: '适用于在线监考场景的 SDK',
+  },
+} as const satisfies Record<
+  (typeof PRODUCT_GROUP_ORDER)[number],
+  { info: string; label: string }
+>;
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -78,7 +143,6 @@ const catalogCopy = {
     states: {
       latest: 'Latest',
       legacy: 'Legacy',
-      lite: 'Lite',
     },
   },
   'zh-CN': {
@@ -99,7 +163,6 @@ const catalogCopy = {
     states: {
       latest: '最新',
       legacy: '旧版',
-      lite: 'Lite',
     },
   },
 } as const;
@@ -112,13 +175,13 @@ let restoreHistoryMethods: (() => void) | null = null;
 const productFilters = {
   agents: {
     label: 'Agora Agents SDK',
-    zhLabel: 'Agora Agents SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY.agents.label,
     aliases: ['agents', 'agora-agents', 'ai-agents'],
     productIds: ['agents'],
   },
   chat: {
     label: 'Chat SDK',
-    zhLabel: 'Chat SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY.chat.label,
     aliases: ['chat', 'im'],
     productIds: ['chat'],
   },
@@ -148,19 +211,19 @@ const productFilters = {
   },
   iot: {
     label: 'IoT SDK',
-    zhLabel: 'IoT SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY.iot.label,
     aliases: ['iot'],
     productIds: ['iot'],
   },
   'mediaplayer-kit': {
     label: 'Mediaplayer Kit SDK',
-    zhLabel: 'Mediaplayer Kit SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY['mediaplayer-kit'].label,
     aliases: ['mediaplayer-kit', 'mediaplayer'],
     productIds: ['mediaplayer-kit'],
   },
   meeting: {
     label: 'Meeting SDK',
-    zhLabel: '灵动会议 SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY.meeting.label,
     aliases: ['meeting', 'meeting-sdk'],
     productIds: ['meeting'],
   },
@@ -178,7 +241,7 @@ const productFilters = {
   },
   signaling: {
     label: 'Signaling SDK',
-    zhLabel: 'Signaling SDK',
+    zhLabel: ZH_CN_PRODUCT_COPY.signaling.label,
     aliases: ['signaling', 'rtm'],
     productIds: ['signaling'],
   },
@@ -247,6 +310,7 @@ type ProductPlatformEntry = {
 };
 
 type ProductGroup = {
+  info: string;
   label: string;
   productId: string;
   defaultProduct: SdkDownloadProduct;
@@ -255,6 +319,7 @@ type ProductGroup = {
 
 function buildProductGroups(
   platforms: readonly SdkDownloadPlatform[],
+  locale: SdkCatalogLocale,
 ): ProductGroup[] {
   const order: string[] = [];
   const entriesByProductId = new Map<string, ProductPlatformEntry[]>();
@@ -312,16 +377,28 @@ function buildProductGroups(
     .map((productId) => {
       const platforms = (entriesByProductId.get(productId) ?? [])
         .slice()
-        .sort((a, b) => platformRank(a.platformId) - platformRank(b.platformId));
+        .sort(
+          (a, b) => platformRank(a.platformId) - platformRank(b.platformId),
+        );
+      const localizedCopy =
+        locale === 'zh-CN'
+          ? ZH_CN_PRODUCT_COPY[productId as keyof typeof ZH_CN_PRODUCT_COPY]
+          : undefined;
 
       return {
-        label: labelsByProductId.get(productId) ?? platforms[0].product.label,
+        info: localizedCopy?.info ?? platforms[0].product.info,
+        label:
+          localizedCopy?.label ??
+          labelsByProductId.get(productId) ??
+          platforms[0].product.label,
         productId,
         defaultProduct: platforms[0].product,
         platforms,
       };
     })
-    .sort((a, b) => productGroupRank(a.productId) - productGroupRank(b.productId));
+    .sort(
+      (a, b) => productGroupRank(a.productId) - productGroupRank(b.productId),
+    );
 }
 
 export function SdksCatalog({
@@ -338,8 +415,8 @@ export function SdksCatalog({
   const platforms = sdkDownloadDatasets[locale];
   const copy = catalogCopy[locale];
   const productGroups = useMemo(
-    () => buildProductGroups(platforms),
-    [platforms],
+    () => buildProductGroups(platforms, locale),
+    [locale, platforms],
   );
   const queryFilters = useSdkCatalogQueryFilters(platforms, {
     platformId: normalizePlatformFilter(platform, platforms),
@@ -355,11 +432,11 @@ export function SdksCatalog({
     ? productGroups.filter((group) =>
         productFilterProductIds?.has(group.productId),
       )
-      : queryFilters.platformId
-        ? productGroups.filter((group) =>
-            group.platforms.some(
-              (entry) => entry.platformId === queryFilters.platformId,
-            ),
+    : queryFilters.platformId
+      ? productGroups.filter((group) =>
+          group.platforms.some(
+            (entry) => entry.platformId === queryFilters.platformId,
+          ),
         )
       : productGroups;
   const visibleProductGroupsWithVersionFilter = useMemo(() => {
@@ -487,7 +564,7 @@ function ProductCard({
             {group.label}
           </h3>
           <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
-            {group.defaultProduct.info}
+            {group.info}
           </p>
         </div>
       </div>
@@ -670,7 +747,7 @@ function readQueryFilters(
   const product = params.get('product')?.trim().toLowerCase() ?? '';
   const platform = params.get('platform')?.trim().toLowerCase() ?? '';
   const productId = product
-    ? productAliasToFilter.get(product) ?? null
+    ? (productAliasToFilter.get(product) ?? null)
     : defaults.productId;
   const platformIds = new Set(platforms.map((entry) => entry.id));
   const platformId = platform
@@ -686,7 +763,7 @@ function readQueryFilters(
 
 function normalizeProductFilter(product: string | undefined) {
   const normalized = product?.trim().toLowerCase();
-  return normalized ? productAliasToFilter.get(normalized) ?? null : null;
+  return normalized ? (productAliasToFilter.get(normalized) ?? null) : null;
 }
 
 function normalizePlatformFilter(
@@ -971,19 +1048,24 @@ function getVersionMeta(version: SdkDownloadVersion, locale: SdkCatalogLocale) {
   const copy = catalogCopy[locale];
   const compactLabel = version.label.trim().replace(/\s+/g, ' ');
   const isLatest = isLatestVersion(version);
-  const isLite = /\bLite\b/i.test(compactLabel);
   const isLegacy = /\bLegacy\b|旧版/i.test(compactLabel);
   const states = [
     isLatest ? copy.states.latest : null,
-    isLite ? copy.states.lite : null,
     isLegacy ? copy.states.legacy : null,
   ].filter((state) => state !== null);
-  const displayLabel = compactLabel
+  const normalizedLabel = compactLabel
     .replace(/^version\s+/i, 'v')
     .replace(/^版本\s+/i, 'v')
     .replace(/\s*\(Latest\)/gi, '')
     .replace(/\s*[（(]最新[）)]/g, '')
     .trim();
+  const displayLabel =
+    locale === 'zh-CN'
+      ? normalizedLabel
+          .replace(/\bFull\b/gi, '完整版')
+          .replace(/\bLite\b/gi, '轻量版')
+          .replace(/\bfor\s+(?=C\+\+|Java|Go|Python)/gi, '')
+      : normalizedLabel;
 
   return {
     optionLabel: states.length
