@@ -260,11 +260,9 @@ private void initializeAgoraVideoSDK() {
 }
 ```
 
-
 </TabsContent>
 
 <TabsContent value="kotlin">
-
 
 ```kotlin
 // Fill in the App ID obtained from the Agora Console
@@ -287,7 +285,6 @@ private fun initializeRtcEngine() {
 
 
 </TabsContent>
-
 </Tabs>
 
 ### Join a channel
@@ -1379,9 +1376,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -2919,6 +2914,17 @@ To join a channel, call `join` with the following parameters:
 - **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/realtime-media/rtc/manage-agora-account#generate-temporary-tokens).
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID.
+
+When you join as a host, you can publish local media streams in the channel; you can also subscribe to streams published by other hosts. As an audience member, you may only subscribe to media streams published by hosts. 
+
+Set the channel profile, client role, and audience latency level according to your use case:
+
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|-------------|---------------|
+| **Voice calling** | `"rtc"` | — | `2`: Ultra low latency (default) |
+| **Video calling** | `"rtc"` | — | `2`: Ultra low latency (default) |
+| **Interactive live streaming** |  `"live"` | `"host"` or `"audience"` | `2`: Ultra low latency (default) |
+| **Broadcast streaming** | `"live"` | `"host"` or `"audience"` | `1`: Low latency |
 
 
 ```javascript
