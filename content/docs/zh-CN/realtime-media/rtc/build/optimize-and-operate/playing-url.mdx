@@ -93,8 +93,8 @@ String encodedToken = Uri.encode(token);
    | `{token}` | 可选 | 用于鉴权的 Token。生成 Token 后你可以参考[步骤 1](#1-拼接-url) 对 Token 进行编码。为确保安全性，声网推荐你使用 Token 鉴权。 |
    | `{uid}` | 可选 | 观众的用户 ID。 |
    | `{streamid}` | 可选 | 主播的用户 ID。你可以通过指定 `streamid` 来订阅对应主播的媒体流。 |
-   | `{subscription_layer}` | 可选 | 指定订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/api-ref/rtc/windows/API/enum_rteabrsubscriptionlayer#RteAbrSubscriptionLayer)。 |
-   | `{fallback_layer}` | 可选 | 网络环境不佳时，指定回退视频质量层级的下限，详见 [RteAbrFallbackLayer](/api-ref/rtc/windows/API/enum_rteabrfallbacklayer#RteAbrFallbackLayer)。 |
+   | `{subscription_layer}` | 可选 | 指定订阅的视频质量层级，详见 [RteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrsubscriptionlayer#RteAbrSubscriptionLayer)。 |
+   | `{fallback_layer}` | 可选 | 网络环境不佳时，指定回退视频质量层级的下限，详见 [RteAbrFallbackLayer](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rteabrfallbacklayer#RteAbrFallbackLayer)。 |
    | `is_string_uid` | 可选 | 用户 ID 的类型，取值说明见下方。 |
 
    `is_string_uid` 取值说明：
@@ -114,7 +114,7 @@ String encodedToken = Uri.encode(token);
 以下示例代码和 API 均以 Windows 平台为例。如目标平台为其他平台，请参考对应平台的 API 文档。
 :::
 
-- 调用 [`Rte`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#rte) 来构造一个 `Rte` 对象实例。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 设置你的项目的 App ID，然后调用 [`InitMediaEngine`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#initmediaengine) 来创建并初始化 RTE 引擎。
+- 调用 [`Rte`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#rte) 来构造一个 `Rte` 对象实例。调用 [`SetConfigs`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_setconfigs) 设置你的项目的 App ID，然后调用 [`InitMediaEngine`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#initmediaengine) 来创建并初始化 RTE 引擎。
 
   ```cpp
   // 创建一个 Config 对象实例
@@ -375,7 +375,7 @@ curl -X POST "https://api.agora.io/v1/projects/{appid}/abr/config/layers/6" \
    });
    ```
 
-2. 调用 [`SetAbrSubscriptionLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrsubscriptionlayer) 设置订阅的视频质量层级。调用 [`SetAbrFallbackLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrfallbacklayer) 设置网络情况差时回退的视频质量层级。调用 [`SetConfigs`](/api-ref/rtc/windows/API/toc_rte_player#api_rte_setconfigs) 将设置应用到播放器中。
+2. 调用 [`SetAbrSubscriptionLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrsubscriptionlayer) 设置订阅的视频质量层级。调用 [`SetAbrFallbackLayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#setabrfallbacklayer) 设置网络情况差时回退的视频质量层级。调用 [`SetConfigs`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_rte_setconfigs) 将设置应用到播放器中。
 
    :::warning[注意]
    观众设置订阅的视频分辨率不得超过主播源视频的分辨率。

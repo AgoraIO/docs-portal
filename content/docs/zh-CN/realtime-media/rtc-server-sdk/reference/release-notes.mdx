@@ -50,7 +50,7 @@ description: "查看 RTC 服务端 SDK 的版本更新、问题修复、行为�
 
 #### 设置 SDK 全局定制化参数
 
-该版本在 `IAgoraService` 类中新增了 [`getAgoraParameter`](/api-ref/rtc-server-sdk/cpp/classagora_1_1base_1_1_i_agora_service#a97df07f6f57f0d5b00e52a70065f1804) 方法。该方法和 `IRtcConnection` 类中的 [`getAgoraParameter`](/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_rtc_connection#af6f657c7f744cac441f1a5518b84ce42) 方法的区别是：
+该版本在 `IAgoraService` 类中新增了 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a97df07f6f57f0d5b00e52a70065f1804) 方法。该方法和 `IRtcConnection` 类中的 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af6f657c7f744cac441f1a5518b84ce42) 方法的区别是：
 
 - `IAgoraService::getAgoraParameter` 对 SDK 全局有效。
 - `IRtcConnection::getAgoraParameter` 仅对当前 Connection 有效。
@@ -312,7 +312,7 @@ chmod +x ./MediaStack/install_media.sh
 
 #### 原始音频数据支持 VAD
 
-为支持获取原始音频数据中的 VAD 信息，该版本新增重载的 [`registerAudioFrameObserver`](/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_local_user#registerAudioFrameObserver()%20[2/2]) 方法，支持通过 `enableVad` 参数开启 VAD 监测功能。
+为支持获取原始音频数据中的 VAD 信息，该版本新增重载的 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#registerAudioFrameObserver()%20[2/2]) 方法，支持通过 `enableVad` 参数开启 VAD 监测功能。
 
 开启后，你可以通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中的 `vadResult` 参数获取 VAD 状态信息。
 

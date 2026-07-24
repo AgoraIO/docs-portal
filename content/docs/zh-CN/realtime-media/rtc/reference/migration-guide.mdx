@@ -310,7 +310,7 @@ v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致�
 本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
 
 :::info[信息]
-如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_ios_video?platform=iOS)获取该版本相对于 v3.7.0 的版本间变更。
+如果升级前的版本为 v3.7.0 之前的版本，请查看 v3.x 发版说明获取该版本相对于 v3.7.0 的版本间变更。
 :::
 
 - 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
@@ -585,7 +585,7 @@ v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致�
 
 本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
 :::info[信息]
-如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_mac_video?platform=macOS)获取该版本相对于 v3.7.0 的版本间变更。
+如果升级前的版本为 v3.7.0 之前的版本，请查看 v3.x 发版说明获取该版本相对于 v3.7.0 的版本间变更。
 :::
 
 - 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
@@ -1087,7 +1087,7 @@ client.on("user-published", async (remoteUser, mediaType) => {
 - 新增 [`Client.uid`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#uid) 来表示当前本地用户的用户 ID
 - 新增 [`Client.remoteUsers`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#remoteusers) 来表示当前远端用户的用户列表
 - 移除 `Client.on("streamInjectStatus")`
-- 移除 [`Client.removeInjectStream`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#addinjectstreamurl) 的 `url` 参数
+- 移除 `Client.removeInjectStream` 的 `url` 参数
 - 移除 [`Client.enableDualStream`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#enabledualstream) 和 [`Client.disableDualStream`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#disabledualstream) 的回调参数，现在会返回 Promise
 - 移除 `Client.getCameras`, `Client.getDevices`, `Client.getRecordingDevices`, 现在这些方法被移动到 `AgoraRTC` 下
 - 移除 `Client.getPlayoutDevices`
@@ -1155,7 +1155,7 @@ v4.x SDK 对部分功能的实现方式进行了优化或修改，从而导致�
 本节以 v3.7.0 为基础，按如下分类介绍 v4.0.0 相对于 v3.7.0 的主要变更，你需要结合实际业务场景更新 App 代码：
 
 :::info[信息]
-如果升级前的版本为 v3.7.0 之前的版本，请查看 [v3.x 发版说明](https://docportal.shengwang.cn/cn/video-legacy/release_windows_video?platform=Windows)获取该版本相对于 v3.7.0 的版本间变更。
+如果升级前的版本为 v3.7.0 之前的版本，请查看 v3.x 发版说明获取该版本相对于 v3.7.0 的版本间变更。
 :::
 
 - 中断性变更：介绍影响较大的 API 兼容性变更，修改相关实现代码的预期耗时较多。
@@ -2060,7 +2060,7 @@ agora_rtc_engine: ^6.0.0 后提供了 top-level 方法 `createAgoraRtcEngine` �
 
 **渲染控件**
 
-agora_rtc_engine: ^6.0.0 后移除了 [SurfaceView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_surfaceview.html)/[TextureView](https://docs.agora.io/cn/video-legacy/API%20Reference/flutter/v5.3.0/API/class_rtc_local_view_textureview.html) 控件，视频渲染统一使用 [`AgoraVideoView`](/api-ref/rtc/flutter/API/rtc_interface_class#class_agoravideoview) 控件。
+agora_rtc_engine: ^6.0.0 后移除了 `SurfaceView`/`TextureView` 控件，视频渲染统一使用 [`AgoraVideoView`](/zh-CN/api-reference/rtc/flutter/class-agoravideoview) 控件。
 
 **多频道**
 

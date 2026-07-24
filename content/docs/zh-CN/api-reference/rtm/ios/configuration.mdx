@@ -8,6 +8,8 @@ RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法
 
 - [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
 
+<a id="rtmconfig"></a>
+
 ## AgoraRtmClientConfig
 
 ### 接口描述
@@ -219,6 +221,8 @@ rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
 rtm_config.presenceTimeout = 300;
 ```
 
+<a id="create"></a>
+
 ## initWithConfig
 
 ### 接口描述
@@ -350,6 +354,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 [rtm removeDelegate:handlerEx];
 ```
 
+<a id="messageevent"></a>
+
 #### AgoraRtmMessageEvent
 
 消息事件。
@@ -372,6 +378,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 |----|-----| ------ |
 | `rawData`            | NSData    |  二进制消息。   |
 | `stringData`            | NSString    |  字符串消息。   |
+
+<a id="presenceevent"></a>
 
 #### AgoraRtmPresenceEvent
 
@@ -406,6 +414,8 @@ RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
 | `userId`         |  NSString  |  用户 ID。     |
 | `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
 
+<a id="topicevent"></a>
+
 #### AgoraRtmTopicEvent
 
 Topic 事件。
@@ -434,6 +444,8 @@ Topic 事件。
 | `publisherUserId`            | NSString    |  消息发布者的用户 ID。  |
 | `publisherMeta`            | NSString                |  消息发布者的元数据。   |
 
+<a id="storageevent"></a>
+
 #### AgoraRtmStorageEvent
 
 Storage 事件。
@@ -448,6 +460,8 @@ Storage 事件。
 | `target`              | NSString                |  用户 ID 或频道名称。   |
 | `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/zh-CN/api-reference/rtm/ios/storage#agorartmmetadata)。   |
 | `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+<a id="lockevent"></a>
 
 #### AgoraRtmLockEvent
 
@@ -489,6 +503,8 @@ SDK 连接状态事件。
 | `unrestoredChannels`    | `NSArray<NSString *>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
 | `isResumed`    | BOOL | 在连接断开的 2 分钟内，是否从 `AgoraRtmLinkStateDisconnected` 状态恢复成 `AgoraRtmLinkStateConnected` 状态。`true` 表示已恢复。 |
 | `timestamp`    | unsigned long long | 本次事件通知发送的时间戳。 |
+
+<a id="login"></a>
 
 ## loginByToken
 

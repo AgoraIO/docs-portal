@@ -22,7 +22,7 @@ description: "了解如何在秀场直播中了解秒开秒切实现原理，包
 
 具体操作如下：
 
-- 如果房间总数量不超过 20，通过 [`preloadChannel`](/api-ref/rtc//API/toc_channel#api_irtcengine_preloadchannel) 方法对所有房间进行频道预加载。
+- 如果房间总数量不超过 20，通过 [`preloadChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_preloadchannel) 方法对所有房间进行频道预加载。
 
 - 如果房间总数量超过 20，通过 `preloadChannel` 方法对仅前 20 个房间进行频道预加载。如果用户滑动直播间列表，那么当滑动停止时，再通过 `preloadChannel` 方法对视野范围内的房间进行预加载。
 
@@ -38,15 +38,15 @@ description: "了解如何在秀场直播中了解秒开秒切实现原理，包
 
 具体操作如下：
 
-- 调用 [`joinChannelEx`](/api-ref/rtc//API/toc_channel#api_irtcengineex_joinchannelex) 加入频道，并订阅主播的音视频流。
+- 调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道，并订阅主播的音视频流。
 
 - `joinChannelEx` 方法的 `token` 参数可以使用[通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)，以加快加入频道的速度。
 
-- 订阅视频流后立即调用 [`setupRemoteVideoEx`](/api-ref/rtc//API/toc_video_rendering#api_irtcengineex_setupremotevideoex) 为 SDK 创建一个 `View`（视图），以避免错过首个视频 I 帧解码，从而确保视频首帧能够快速渲染。在直播间内页面创建完成后，你需要优先将该 `View` 添加到视频准备显示的区域容器上，以确保视频能够第一时间被渲染出来；其次再处理其他业务的 UI 渲染逻辑。
+- 订阅视频流后立即调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setupremotevideoex) 为 SDK 创建一个 `View`（视图），以避免错过首个视频 I 帧解码，从而确保视频首帧能够快速渲染。在直播间内页面创建完成后，你需要优先将该 `View` 添加到视频准备显示的区域容器上，以确保视频能够第一时间被渲染出来；其次再处理其他业务的 UI 渲染逻辑。
 
-- 通过 [`onFirstRemoteVideoDecoded`](/api-ref/rtc//API/toc_video_basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调监听视频首帧已解码事件。在 SDK 触发该回调前，播放一个视频正在载入的动画；在 SDK 触发该回调后，立即将直播视频画面设为可见。
+- 通过 [`onFirstRemoteVideoDecoded`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideodecoded) 回调监听视频首帧已解码事件。在 SDK 触发该回调前，播放一个视频正在载入的动画；在 SDK 触发该回调后，立即将直播视频画面设为可见。
 
-- 调用 [`adjustUserPlaybackSignalVolumeEx`](/api-ref/rtc//API/toc_audio_basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) 并设置音量为 0，以将接收到的主播的音频流进行静音。
+- 调用 [`adjustUserPlaybackSignalVolumeEx`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) 并设置音量为 0，以将接收到的主播的音频流进行静音。
 
 #### 2.2 进入直播间
 
@@ -58,7 +58,7 @@ description: "了解如何在秀场直播中了解秒开秒切实现原理，包
 
 #### 2.3 不进入直播间
 
-如果用户触碰直播间入口后，移开手指，未完成有效点击，不进入直播间，那么建议操作：调用 [`leaveChannelEx`](/api-ref/rtc//API/toc_channel#api_irtcengineex_leavechannelex) 离开频道。
+如果用户触碰直播间入口后，移开手指，未完成有效点击，不进入直播间，那么建议操作：调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_leavechannelex) 离开频道。
 
 ## 秒切
 

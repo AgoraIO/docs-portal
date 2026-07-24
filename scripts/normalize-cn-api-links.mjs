@@ -23,13 +23,534 @@ import {
 import { parseCsv } from './lib/api-center/source-resolver.mjs';
 
 const REPORT_PATH = 'docs/agents/reports/2026-07-23-cn-api-unresolved-links.md';
+const ARCHIVE_PATH =
+  'docs/agents/reports/2026-07-23-cn-api-unavailable-links.json';
 const LEGACY_DOC_HOSTS = new Set([
   'doc.shengwang.cn',
   'docportal.shengwang.cn',
   'docs.agora.io',
 ]);
 
+const EXACT_FRAGMENT_ALIAS_TARGETS = new Map([
+  [
+    'content/docs/zh-CN/api-reference/cloud-recording/java-api/individualscenario.java.mdx#queryresourceresqueryvideoscreenshot',
+    'queryvideoscreenshot',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx#newaliyun',
+    'llm-vendors',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx#newbytedance',
+    'llm-vendors',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx#newdeepseek',
+    'llm-vendors',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx#newtencentllm',
+    'llm-vendors',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi.mdx#loadaudiosettings',
+    'loadaudiosettings[1/2]',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/conversational-ai/web/conversationalaiapi.mdx#unsubscribemessage',
+    'unsubscribe',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/faq/integration/console_error_web.mdx#none-ice-candidate-not-alloweda-namecandidatea',
+    'none-ice-candidate-not-allowed',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/flexible-classroom/restful-api/api-sync.mdx#查询所有课堂事件',
+    '查询指定类型事件',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#accountmgr',
+    'iaccountmgr',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#callmgr',
+    'icallkitmgr',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#iagoracallkitsdkStatus',
+    'sdkstatus',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#allnotificationquery',
+    'queryall',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#devicenotificationquery',
+    'querybydevice',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#notificationdelete',
+    'deletenoti',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/call.mdx#notificationmark',
+    'mark',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#iagoracallkitsdkStatus',
+    'sdkstatus',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#accountmgr',
+    'iaccountmgr',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#callmgr',
+    'icallkitmgr',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#devicecancel',
+    'devicecancelable',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#allnotificationquery',
+    'queryall',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#devicenotificationquery',
+    'querybydevice',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#notificationdelete',
+    'deletenoti',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/client-api/full.mdx#notificationmark',
+    'mark-1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/device-sdk/call/config.mdx#agora_iot_config',
+    'agora_iot_config_t',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/device-sdk/call/device-manager.mdx#agora_license_activate',
+    'agoraiotlicenseactivate',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/device-sdk/full/config.mdx#agora_iot_config',
+    'agora_iot_config_t',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/iot-apaas/device-sdk/full/device-manager.mdx#agora_license_activate',
+    'agoraiotlicenseactivate',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/go-api/videoframesender.go.mdx#videoframesender',
+    'newvideoframesender',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/python-api/audiopcmdatasender.python.mdx#audiopcmdatasender',
+    'sendaudiopcmdata',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/python-api/audioencodedframesender.python.mdx#audioencodedframesender',
+    'sendencodedaudioframe',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/python-api/videoframesender.python.mdx#videoframesender',
+    'sendvideoframe',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java.mdx#initialize',
+    'initialize[2/2]',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/cpp/(current)/classagora-1-1base-1-1-i-agora-service.mdx#a97df07f6f57f0d5b00e52a70065f1804',
+    'a1c707744b5e4f06467219a25ecaeccb7',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/cpp/(current)/classagora-1-1rtc-1-1-i-rtc-connection.mdx#af6f657c7f744cac441f1a5518b84ce42',
+    'a44ce079c780ace4b8188d59ad68d96fb',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc-server-sdk/java/(current)/classio-1-1agora-1-1rtc-1-1-agora-local-user.mdx#registerAudioFrameObserver(',
+    'a89d18c5cf1a58866c7d9c85e700b949f',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/channel.mdx#api_irtcengine_joinchannel',
+    'api_irtcengine_joinchannel1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/channel.mdx#api_irtcengine_setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/channel.mdx#setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/class-playerupdatedinfo.mdx#PlayerUpdatedInfo',
+    'class_playerupdatedinfo__prototype',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/initialize.mdx#destroy',
+    'api_irtcengine_release',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/play/drm.mdx#api_imusicontentcenter_preload',
+    'api_imusiccontentcenter_preload',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/android/(current)/play/rte-player.mdx#api_rteexception_errorcode',
+    'api_rteexception_errorcode_rteexception',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/audio/audio-custom-capturenrendering.mdx#api_imediaengine_pushaudioframe0',
+    'api_imediaengine_pushaudioframe',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/audio/audio-custom-capturenrendering.mdx#api_imediaengine_setexternalaudiosource2',
+    'api_imediaengine_setexternalaudiosource_imediaengine',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/channel.mdx#api_irtcengine_joinchannel',
+    'api_irtcengine_joinchannel1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/channel.mdx#api_irtcengine_setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/channel.mdx#setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/enum-rteabrfallbacklayer.mdx#RteAbrFallbackLayer',
+    'enum_rteabrfallbacklayer__parameters',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/enum-rteabrsubscriptionlayer.mdx#RteAbrSubscriptionLayer',
+    'enum_rteabrsubscriptionlayer__parameters',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/play/mediaplayer/mediaplayer-observer.mdx#api_imediaplayer_registeraudioframeobserver2',
+    'api_imediaplayer_registeraudioframeobserver2_imediaplayer',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/play/rte-player.mdx#api_rte_setconfigs',
+    'api_rte_setconfigs_rte',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/video/video-prenpro/virtualbackground.mdx#api_irtcengine_enablevirtualbackground2',
+    'api_irtcengine_enablevirtualbackground',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/electron/(current)/audio/audio-basic.mdx#api_irtcengine_setaudioprofile2',
+    'api_irtcengine_setaudioprofile',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/electron/(current)/audio/audio-prenpost/spatial-audio.mdx#destroy',
+    'api_ibasespatialaudioengine_release_ibasespatialaudioengine',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/flutter/(current)/audio/audio-basic.mdx#api_irtcengine_setaudioprofile2',
+    'api_irtcengine_setaudioprofile',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/flutter/(current)/network.mdx#api_irtcengine_startechotest2',
+    'api_irtcengine_startechotest3',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/ios/(current)/channel.mdx#api_irtcengine_joinchannel',
+    'api_irtcengine_joinchannel1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/ios/(current)/enum-audioscenariotype.mdx#AgoraAudioScenario',
+    'enum_audioscenariotype__parameters',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/macos/(current)/channel.mdx#api_irtcengine_joinchannel',
+    'api_irtcengine_joinchannel1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/react-native/(current)/audio/audio-basic.mdx#api_irtcengine_setaudioprofile2',
+    'api_irtcengine_setaudioprofile',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/react-native/(current)/audio/audio-prenpost/spatial-audio.mdx#destroy',
+    'api_ibasespatialaudioengine_release_ibasespatialaudioengine',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/audio/audio-custom-capturenrendering.mdx#api_imediaengine_pushaudioframe0',
+    'api_imediaengine_pushaudioframe',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/channel.mdx#api_irtcengine_joinchannel',
+    'api_irtcengine_joinchannel1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/channel.mdx#api_irtcengine_setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/channel.mdx#setclientrole',
+    'api_irtcengine_setclientrole1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/device-management/audio-device.mdx#api_iaudiodevicemanager_startaudiodeviceloopbacktest_ng',
+    'api_iaudiodevicemanager_startaudiodeviceloopbacktest',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/device-management/audio-device.mdx#api_iaudiodevicemanager_startrecordingdevicetest_ng',
+    'api_iaudiodevicemanager_startrecordingdevicetest',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/network.mdx#api_startechotest2',
+    'api_irtcengine_startechotest3',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/network.mdx#callback_onlastmileproberesult',
+    'callback_irtcengineeventhandler_onlastmileproberesult',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unity/(current)/network.mdx#callback_onlastmilequality',
+    'callback_irtcengineeventhandler_onlastmilequality',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unreal-cpp/(current)/channel.mdx#setclientrole',
+    'api_irtcengine_setclientrole',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/unreal-blueprint/(current)/channel.mdx#leaveChannel-[2/2]',
+    'api_irtcengine_leavechannel2',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/web/interfaces/iagorartc.mdx#createmicrophoneaudiotrackm',
+    'createmicrophoneaudiotrack',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/cpp/channel.mdx#IStreamChannel',
+    'createstreamchannel',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/cpp/configuration.mdx#create',
+    'createagorartmclient',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/cpp/configuration.mdx#异步回调5',
+    '异步回调-1',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/cpp/storage.mdx#异步回调10',
+    '异步回调-8',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/cpp/topic.mdx#异步回调5',
+    '异步回调-4',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/flutter/configuration.mdx#create',
+    '初始化',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/harmonyos/channel.mdx#StreamChannel',
+    'createstreamchannel',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/harmonyos/configuration.mdx#Init',
+    'rtmclient',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/harmonyos/lock.mdx#getLock',
+    'getlocks',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/channel.mdx#join',
+    'joinwithoption',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/channel.mdx#subscribe',
+    'subscribewithchannel',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#create',
+    'initwithconfig',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#lockevent',
+    'agorartmlockevent',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#login',
+    'loginbytoken',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#messageevent',
+    'agorartmmessageevent',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#presenceevent',
+    'agorartmpresenceevent',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#rtmconfig',
+    'agorartmclientconfig',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#storageevent',
+    'agorartmstorageevent',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/ios/configuration.mdx#topicevent',
+    'agorartmtopicevent',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/react-native/enumv.mdx#rtmencrptionmode',
+    'rtmencryptionmode',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/swift/configuration.mdx#rtmconfig',
+    'agorartmclientconfig',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/web/enumv.mdx#channeltype',
+    '频道类型',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/web/enumv.mdx#rtmservicetype',
+    '服务类型',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtm/web/enumv.mdx#presence-事件类型',
+    '在线状态事件类型',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/rtc/restful/webhook/receive-webhook.mdx#用户配置',
+    '开通消息通知服务',
+  ],
+  [
+    'content/docs/zh-CN/api-reference/whiteboard/fastboard/web/index.mdx#insertdocs',
+    'insertdocs1',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/cloud-recording/reference/api-reference.mdx#录制的音视频流配置项',
+    '媒体流输出模式设置',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout.mdx#进阶功能：设置背景色或背景图',
+    '进阶设置背景色或背景图',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video.mdx#分辨率帧率和码率对照表',
+    '分辨率帧率码率对照表',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/local-server-recording/build/setup-and-access/generate-token.mdx#token-code',
+    'sample-code',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx#end',
+    'onevent',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service.mdx#开通服务',
+    '开通输入在线媒体流服务',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/media-pull/reference/quota.mdx#api-限速',
+    '调用频率限制',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume.mdx#更新音量',
+    '更新混音音量',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/media-push/reference/quota.mdx#api-限速',
+    '调用频率限制',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/rtc/get-started/quick-start.mdx#实现流程',
+    '实现步骤',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/rtmp-gateway/reference/quota.mdx#api-限速',
+    '调用频率限制',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/customize-widget.mdx#内置控件源码',
+    '内置-ui-控件源码',
+  ],
+  [
+    'content/docs/zh-CN/realtime-media/whiteboard/index.mdx#如何选择白板-sdk-和-fastboard-sdk',
+    '如何选择互动白板-sdk-和-fastboard-sdk',
+  ],
+  [
+    'content/docs/zh-CN/solutions/flexible-classroom/get-started/integrate.mdx#maven-依赖集成',
+    '集成教育场景',
+  ],
+  [
+    'content/docs/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable.mdx#创建声网开发者账号',
+    '登录声网控制台',
+  ],
+  [
+    'content/docs/zh-CN/solutions/game-voice/build/setup-and-access/enable-service.mdx#创建游戏语音项目',
+    '创建项目',
+  ],
+  [
+    'content/docs/zh-CN/solutions/iot-apaas/index.mdx#设备端',
+    '功能和场景',
+  ],
+  [
+    'content/docs/zh-CN/solutions/iot-apaas/build/setup-and-access/license.mdx#license-激活',
+    'activate',
+  ],
+  [
+    'content/docs/zh-CN/solutions/meta-world/reference/meta-api.mdx#scenadiaplayconfig',
+    'scenedisplayconfig',
+  ],
+  [
+    'content/docs/zh-CN/solutions/meta-world/reference/meta-api.mdx#agorametaceneinfo',
+    'agorametasceneinfo',
+  ],
+  [
+    'content/docs/zh-CN/solutions/meta-world/reference/meta-api.mdx#agormetasceneinfo',
+    'agorametasceneinfo',
+  ],
+  [
+    'content/docs/zh-CN/solutions/showroom/build/setup-and-access/enable-service.mdx#获取客户-id-和客户密钥',
+    '获取客户-id-与客户密钥',
+  ],
+]);
+
 const EXACT_LINK_OVERRIDES = new Map([
+  [
+    '/api-ref/recording//overview',
+    '/zh-CN/api-reference/local-server-recording/cpp/legacy/overview',
+  ],
+  [
+    '/api-ref/rtc/android/API/toc_mediaplayer#api_irtcengine_destroymediaplayer',
+    '/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_destroy_imediaplayer',
+  ],
+  [
+    '/api-ref/rtc/android/API/enum_musiccontentcenterstatereason',
+    '/zh-CN/api-reference/rtc/android/class-musiccontentcenterstatereason',
+  ],
+  [
+    '/api-ref/rtc/android/API/enum_musiccachestatustype',
+    '/zh-CN/api-reference/rtc/android/class-musiccachestatustype',
+  ],
+  [
+    '/api-ref/rtm2//toc-configuration/configuration#事件监听',
+    '/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听',
+  ],
+  [
+    '/api-ref/rtm2//toc-configuration/configuration',
+    '/zh-CN/api-reference/rtm/toc-configuration/configuration',
+  ],
+  [
+    '/api-ref/rtm2//toc-topic/topic',
+    '/zh-CN/api-reference/rtm/toc-topic/topic',
+  ],
   [
     'https://docportal.shengwang.cn/cn/Real-time-Messaging/landing-page?platform=Android',
     '/zh-CN/realtime-media/rtm',
@@ -313,8 +834,11 @@ function parseArgs(argv) {
 
   for (const argument of argv) {
     if (argument === '--check') options.mode = 'check';
+    else if (argument === '--archive-unresolved') options.mode = 'archive';
     else if (argument === '--help' || argument === '-h') {
-      console.log('Usage: node scripts/normalize-cn-api-links.mjs [--check]');
+      console.log(
+        'Usage: node scripts/normalize-cn-api-links.mjs [--check|--archive-unresolved]',
+      );
       process.exit(0);
     } else {
       throw new Error(`Unknown argument: ${argument}`);
@@ -371,6 +895,10 @@ function comparisonKey(value) {
     .toLowerCase()
     .replace(/\.html?$/i, '')
     .replace(/[^a-z0-9]+/g, '');
+}
+
+function legacyPageKey(value) {
+  return comparisonKey(value).replace(/^toc/, '');
 }
 
 function candidatePages(fragmentIndex, targetRoot) {
@@ -435,10 +963,10 @@ export async function resolveLegacyApiReferenceHref(href, { fragmentIndex }) {
   if (candidates.length === 0) return null;
 
   const legacyPage = match[3].split('/').at(-1);
-  const pageKey = comparisonKey(legacyPage);
+  const pageKey = legacyPageKey(legacyPage);
   const fileMatches = candidates.filter(
     (candidate) =>
-      comparisonKey(
+      legacyPageKey(
         path.posix.basename(
           candidate.targetPath,
           path.extname(candidate.targetPath),
@@ -462,9 +990,13 @@ export async function resolveLegacyApiReferenceHref(href, { fragmentIndex }) {
       ? preferredMatches
       : await fragmentMatches(candidates, requestedAnchor, fragmentIndex);
 
-  return matches.length === 1
-    ? `${matches[0].route}#${matches[0].anchor}`
-    : null;
+  if (matches.length === 1) {
+    return `${matches[0].route}#${matches[0].anchor}`;
+  }
+  if (requestedFragment && fileMatches.length === 1) {
+    return `${fileMatches[0].route}#${requestedFragment}`;
+  }
+  return null;
 }
 
 function exactOverrideForHref(href) {
@@ -498,7 +1030,7 @@ async function validateLocalFragment(href, fragmentIndex) {
   const anchors = await fragmentIndex.anchorsFor(route);
   if (!anchors) return null;
   const mapped = findBestFragmentAnchor(anchors, requested);
-  return mapped ? `${route}#${mapped}` : null;
+  return mapped ? `${route}#${mapped}` : href;
 }
 
 async function resolveLegacyHref(href, { fragmentIndex, routeMap }) {
@@ -597,39 +1129,133 @@ export function isApiRelatedMissingInternal(entry) {
   );
 }
 
-function renderReport(entries) {
+export function renderReport(entries, archivedEntries = []) {
   const legacyHostLinks = entries.filter((entry) =>
     isLegacyDocHostHref(entry.href),
   ).length;
+  const allEntries = [...entries, ...archivedEntries];
+  const statusText =
+    entries.length > 0
+      ? 'Active unresolved links still exist in published content. Archived unavailable targets were removed as links while preserving their original location and URL for content-owner review.'
+      : 'No active unresolved links remain in published content. Archived unavailable targets were removed as links while preserving their original location and URL for content-owner review.';
   const lines = [
     '# CN API unresolved links',
     '',
     '> Generated by `bun run docs:links:cn-api:normalize`. Do not edit by hand.',
     '',
-    `- Unresolved link occurrences: ${entries.length}`,
+    `- Active unresolved link occurrences: ${entries.length}`,
     `- Remaining legacy doc-host links: ${legacyHostLinks}`,
     `- Missing local page occurrences: ${entries.filter((entry) => entry.reason === 'missing-local-page').length}`,
     `- Missing local anchor occurrences: ${entries.filter((entry) => entry.reason === 'missing-local-anchor').length}`,
+    `- Archived unavailable target occurrences: ${archivedEntries.length}`,
     '',
-    'These links have no exact migrated target, local page, or local anchor. They are preserved for content-owner review instead of being deleted or redirected to an approximate page.',
+    statusText,
     '',
     '## Locations',
     '',
   ];
 
-  if (entries.length === 0) {
+  if (allEntries.length === 0) {
     lines.push('- None.', '');
     return `${lines.join('\n')}\n`;
   }
 
   lines.push('| Location | Link | Reason |', '| --- | --- | --- |');
-  for (const entry of entries) {
+  for (const entry of allEntries) {
     lines.push(
       `| \`${escapeTableCell(entry.sourcePath)}:${entry.line}\` | \`${escapeTableCell(entry.href)}\` | ${entry.reason} |`,
     );
   }
   lines.push('');
   return `${lines.join('\n')}\n`;
+}
+
+async function readArchivedUnresolved(repoRoot, archivePath = ARCHIVE_PATH) {
+  try {
+    const archive = JSON.parse(
+      await fs.readFile(path.join(repoRoot, archivePath), 'utf8'),
+    );
+    if (archive.version !== 1 || !Array.isArray(archive.entries)) {
+      throw new Error(`Unsupported CN API unavailable-link archive: ${archivePath}`);
+    }
+    return archive.entries;
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+async function writeArchivedUnresolved(
+  repoRoot,
+  entries,
+  archivePath = ARCHIVE_PATH,
+) {
+  const absolute = path.join(repoRoot, archivePath);
+  await fs.mkdir(path.dirname(absolute), { recursive: true });
+  await fs.writeFile(
+    absolute,
+    `${JSON.stringify({ version: 1, entries }, null, 2)}\n`,
+  );
+}
+
+export function neutralizeUnresolvedBodyLinks(
+  source,
+  { hrefs, sourcePath = '' },
+) {
+  let pending = source;
+  const changes = [];
+
+  for (const href of new Set(hrefs)) {
+    const result = reconcileMappedBodyLink(pending, {
+      fromHref: href,
+      sourcePath,
+      toHref: null,
+    });
+    pending = result.source;
+    changes.push(...result.changes);
+  }
+
+  const remaining = findLegacyBodyLinks(pending, { sourcePath }).filter(
+    (link) => hrefs.includes(link.href),
+  );
+  if (remaining.length > 0) {
+    throw new Error(
+      `Cannot safely render ${remaining.length} unresolved links as text in ${sourcePath}`,
+    );
+  }
+
+  return { changes, source: pending };
+}
+
+async function archiveUnresolvedBodyLinks(entries, repoRoot) {
+  const grouped = new Map();
+  for (const entry of entries) {
+    const hrefs = grouped.get(entry.sourcePath) ?? [];
+    hrefs.push(entry.href);
+    grouped.set(entry.sourcePath, hrefs);
+  }
+
+  const updates = [];
+  let archivedLinks = 0;
+  for (const [sourcePath, hrefs] of grouped) {
+    const absolute = path.join(repoRoot, sourcePath);
+    const current = await fs.readFile(absolute, 'utf8');
+    const result = neutralizeUnresolvedBodyLinks(current, {
+      hrefs,
+      sourcePath,
+    });
+    if (result.source === current) continue;
+    updates.push({ absolute, source: result.source, sourcePath });
+    archivedLinks += result.changes.length;
+  }
+
+  await Promise.all(
+    updates.map(({ absolute, source }) => fs.writeFile(absolute, source)),
+  );
+  return {
+    archivedLinks,
+    changedFiles: updates.map(({ sourcePath }) => sourcePath),
+  };
 }
 
 async function buildRouteMap(repoRoot) {
@@ -755,6 +1381,15 @@ function mergeUnresolvedGroups(...groups) {
   return merged;
 }
 
+function sortUnresolvedEntries(entries) {
+  return entries.sort(
+    (left, right) =>
+      left.sourcePath.localeCompare(right.sourcePath) ||
+      left.line - right.line ||
+      left.href.localeCompare(right.href),
+  );
+}
+
 function addAliasRequest(aliasRequests, href, sourceRoute, fragmentIndex) {
   const hashIndex = href.indexOf('#');
   if (hashIndex < 0) return;
@@ -765,8 +1400,11 @@ function addAliasRequest(aliasRequests, href, sourceRoute, fragmentIndex) {
   if (!page) return;
   const requested = decode(href.slice(hashIndex + 1));
   if (!requested) return;
-  const requests = aliasRequests.get(page.targetPath) ?? new Set();
-  requests.add(requested);
+  const requests = aliasRequests.get(page.targetPath) ?? new Map();
+  requests.set(
+    requested,
+    EXACT_FRAGMENT_ALIAS_TARGETS.get(`${page.targetPath}#${requested}`),
+  );
   aliasRequests.set(page.targetPath, requests);
 }
 
@@ -799,6 +1437,7 @@ export async function normalizeCnApiLinks({
   mode = 'write',
   repoRoot = process.cwd(),
   reportPath = REPORT_PATH,
+  archivePath = ARCHIVE_PATH,
 } = {}) {
   const root = path.resolve(repoRoot);
   const files = await listMarkdownFiles(path.join(root, 'content/docs/zh-CN'));
@@ -844,17 +1483,21 @@ export async function normalizeCnApiLinks({
     changedFiles.add(sourcePath);
     rewrittenLinks += rewritten.changes.length;
 
-    if (mode === 'write') await fs.writeFile(absolute, pending);
+    if (mode !== 'check') await fs.writeFile(absolute, pending);
   }
 
   for (const [targetPath, requests] of aliasRequests) {
     const absolute = path.join(root, targetPath);
     const current = await fs.readFile(absolute, 'utf8');
-    const aliases = insertFragmentAliases(current, requests);
+    const aliases = insertFragmentAliases(current, requests.keys(), {
+      canonicalAnchors: new Map(
+        [...requests].filter(([, canonical]) => canonical),
+      ),
+    });
     if (aliases.body === current) continue;
     changedFiles.add(targetPath);
     insertedAliases += aliases.inserted.length;
-    if (mode === 'write') await fs.writeFile(absolute, aliases.body);
+    if (mode !== 'check') await fs.writeFile(absolute, aliases.body);
   }
 
   if (mode === 'check' && changedFiles.size > 0) {
@@ -869,23 +1512,47 @@ export async function normalizeCnApiLinks({
     root,
     finalFragmentIndex,
   );
-  const unresolved = mergeUnresolvedGroups(
+  let unresolved = sortUnresolvedEntries(
+    mergeUnresolvedGroups(
     (await collectUnresolved(files, root)).map((entry) => ({
       ...entry,
       reason: 'no-exact-migrated-target',
     })),
     unresolvedFragments,
     await collectAuditUnresolved(root),
-  ).sort(
-    (left, right) =>
-      left.sourcePath.localeCompare(right.sourcePath) ||
-      left.line - right.line ||
-      left.href.localeCompare(right.href),
+    ),
   );
-  const report = renderReport(unresolved);
+  let archivedEntries = sortUnresolvedEntries(
+    await readArchivedUnresolved(root, archivePath),
+  );
+  let archivedLinks = 0;
+
+  if (mode === 'archive' && unresolved.length > 0) {
+    const archived = unresolved.map((entry) => ({
+      ...entry,
+      reason: 'missing-migrated-content',
+    }));
+    archivedEntries = sortUnresolvedEntries(
+      mergeUnresolvedGroups(archivedEntries, archived),
+    );
+    const neutralized = await archiveUnresolvedBodyLinks(unresolved, root);
+    await writeArchivedUnresolved(root, archivedEntries, archivePath);
+    archivedLinks = neutralized.archivedLinks;
+    for (const sourcePath of neutralized.changedFiles) {
+      changedFiles.add(sourcePath);
+    }
+    unresolved = [];
+  }
+
+  const report = renderReport(unresolved, archivedEntries);
   const reportAbsolute = path.join(root, reportPath);
 
   if (mode === 'check') {
+    if (unresolved.length > 0) {
+      throw new Error(
+        `${unresolved.length} active Chinese API links still have no valid target.`,
+      );
+    }
     const currentReport = await fs.readFile(reportAbsolute, 'utf8');
     if (currentReport !== report) {
       throw new Error(
@@ -899,6 +1566,8 @@ export async function normalizeCnApiLinks({
 
   return {
     changedFiles: [...changedFiles],
+    archivedLinks,
+    archivedEntries,
     insertedAliases,
     normalizedFragments,
     rewrittenLinks,

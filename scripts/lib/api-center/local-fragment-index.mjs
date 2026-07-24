@@ -178,6 +178,32 @@ function headingCandidates(source) {
   return candidates;
 }
 
+function anchorPositions(source) {
+  const positions = new Map();
+  const counts = new Map();
+  const scannable = maskCode(source);
+
+  for (const match of scannable.matchAll(
+    /<[\w:-]+\s+[^>]*(?:\bid|\bname)\s*=\s*(?:"([^"]+)"|'([^']+)')[^>]*>/gi,
+  )) {
+    const anchor = (match[1] ?? match[2] ?? '').trim();
+    if (anchor && !positions.has(anchor)) positions.set(anchor, match.index);
+  }
+
+  for (const match of scannable.matchAll(/^(#{1,6})\s+(.+?)\s*#*\s*$/gm)) {
+    const custom = match[2].match(/\s+\{#([^}\s]+)\}\s*$/)?.[1];
+    if (custom && !positions.has(custom)) positions.set(custom, match.index);
+    const base = headingSlug(match[2]);
+    if (!base) continue;
+    const count = counts.get(base) ?? 0;
+    counts.set(base, count + 1);
+    const anchor = count === 0 ? base : `${base}-${count}`;
+    if (!positions.has(anchor)) positions.set(anchor, match.index);
+  }
+
+  return positions;
+}
+
 function isContainedHeadingMatch(candidate, fragment) {
   const fragmentTitle = cleanHeadingText(decode(fragment).replace(/^#/, ''));
   const fragmentKey = comparisonKey(fragmentTitle);
@@ -234,9 +260,14 @@ function findHeadingForFragment(candidates, fragment) {
   return contained.length === 1 ? contained[0] : null;
 }
 
-export function insertFragmentAliases(source, requestedFragments) {
+export function insertFragmentAliases(
+  source,
+  requestedFragments,
+  { canonicalAnchors = new Map() } = {},
+) {
   const existing = extractMdxAnchors(source);
   const candidates = headingCandidates(source);
+  const positions = anchorPositions(source);
   const insertions = [];
   const inserted = [];
   const unresolved = [];
@@ -250,7 +281,14 @@ export function insertFragmentAliases(source, requestedFragments) {
     if (!needsStableAlias && findBestFragmentAnchor(existing, requested)) {
       continue;
     }
-    const heading = findHeadingForFragment(candidates, requested);
+    const canonical = canonicalAnchors.get(requested);
+    const canonicalIndex = canonical ? positions.get(canonical) : undefined;
+    const heading =
+      canonical && canonicalIndex !== undefined
+        ? { index: canonicalIndex }
+        : canonical
+          ? null
+          : findHeadingForFragment(candidates, requested);
     if (!heading) {
       unresolved.push(requested);
       continue;
@@ -266,7 +304,10 @@ export function insertFragmentAliases(source, requestedFragments) {
     const escaped = insertion.anchor
       .replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;');
-    output = `${output.slice(0, insertion.index)}<a id="${escaped}"></a>\n\n${output.slice(insertion.index)}`;
+    const before = output.slice(0, insertion.index);
+    const leadingBlankLine =
+      before.length > 0 && !before.endsWith('\n\n') ? '\n' : '';
+    output = `${before}${leadingBlankLine}<a id="${escaped}"></a>\n\n${output.slice(insertion.index)}`;
   }
   return { body: output, inserted, unresolved };
 }

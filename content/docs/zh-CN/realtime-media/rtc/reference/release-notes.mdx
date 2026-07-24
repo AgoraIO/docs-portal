@@ -142,14 +142,14 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
    该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-   - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-   - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-   - [`startDirectCdnStreaming`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-   - [`stopDirectCdnStreaming`](/api-ref/rtc/android/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-   - [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/android/API/class_directcdnstreamingmediaoptions)
-   - [`DirectCdnStreamingStats`](/api-ref/rtc/android/API/class_directcdnstreamingstats)
-   - [`DirectCdnStreamingState`](/api-ref/rtc/android/API/enum_directcdnstreamingstate)
-   - [`DirectCdnStreamingReason`](/api-ref/rtc/android/API/enum_directcdnstreamingreason)
+   - `setDirectCdnStreamingAudioConfiguration`
+   - `setDirectCdnStreamingVideoConfiguration`
+   - `startDirectCdnStreaming`
+   - `stopDirectCdnStreaming`
+   - `DirectCdnStreamingMediaOptions`
+   - `DirectCdnStreamingStats`
+   - `DirectCdnStreamingState`
+   - `DirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -288,7 +288,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 媒体播放器信息属性可访问
 
-   自该版本起，媒体播放器相关信息 [`PlayerUpdatedInfo`](/api-ref/rtc/android/API/class_playerupdatedinfo#PlayerUpdatedInfo) 中的所有属性访问修饰符已从 private 修改为 public。这一改进旨在提高类的可访问性，使得外部代码能够更方便地访问和修改这些属性。
+   自该版本起，媒体播放器相关信息 [`PlayerUpdatedInfo`](/zh-CN/api-reference/rtc/android/class-playerupdatedinfo#PlayerUpdatedInfo) 中的所有属性访问修饰符已从 private 修改为 public。这一改进旨在提高类的可访问性，使得外部代码能够更方便地访问和修改这些属性。
 
 ### 问题修复
 
@@ -604,7 +604,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 ### 升级必看
 
-为确保参数命名的一致性，该版本该版本将 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel)[1/2] 中的 `channelName` 改为 `channelId`，将 `optionalUid` 改为 `uid`。为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
+为确保参数命名的一致性，该版本该版本将 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel)[1/2] 中的 `channelName` 改为 `channelId`，将 `optionalUid` 改为 `uid`。为确保项目的正常运行，你需要在升级到该版本后更新 App 中的代码。
 
 ### 新增特性
 
@@ -746,12 +746,12 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 | --- | --- | --- |
 | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`onLocalVideoStateChanged`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | `error` | `reason` |
-| [`onDirectCdnStreamingStateChanged`](/api-ref/rtc/android/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
-| [`onMusicChartsResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode) | `reason` |
+| `onDirectCdnStreamingStateChanged` | `error` | `reason` |
+| [`onMusicChartsResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode) | `reason` |
 | [`onPreLoadEvent`](/zh-CN/api-reference/rtc/android/play/drm#onpreloadevent) | <Slot name="release-notes-android-html-0-5-1" /> | <Slot name="release-notes-android-html-0-5-2" /> |
-| [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode) | `reason` |
-| [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) | [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode) | `reason` |
-| [`onSongSimpleInfoResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode) | `reason` |
+| [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode) | `reason` |
+| [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) | [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode) | `reason` |
+| [`onSongSimpleInfoResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode) | `reason` |
 | [`onPlayerStateChanged`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) | `error` | `reason` |
 | [`onRtmpStreamingStateChanged`](/zh-CN/api-reference/rtc/android/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | `errCode` | `reason` |
 
@@ -765,16 +765,16 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 <Slot for="release-notes-android-html-0-5-2">
 
-- [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode)
+- [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode)
       - `reason`
 
 </Slot>
 
    | 原有枚举类                 | 现有枚举类                    |
    | -------------------------- | ----------------------------- |
-   | `DirectCdnStreamingError` | [`DirectCdnStreamingReason`](/api-ref/rtc/android/API/enum_directcdnstreamingreason)    |
+   | `DirectCdnStreamingError` | `DirectCdnStreamingReason`    |
    | `MediaPlayerError`        | [`MediaPlayerReason`](/zh-CN/api-reference/rtc/android/enum-mediaplayerreason)           |
-   |  `MusicContentCenterStatusCode`     | [`MusicContentCenterStateReason`](/api-ref/rtc/android/API/enum_musiccontentcenterstatereason) |
+   |  `MusicContentCenterStatusCode`     | [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/android/class-musiccontentcenterstatereason) |
 
    :::info[信息]
    有关具体枚举的改名详见 [API 变更](#api-changes)。
@@ -914,7 +914,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - [`AudioCaptureParameters`](/zh-CN/api-reference/rtc/android/class-screenaudioparameters) 中新增 `allowCaptureCurrentApp` 成员，用于设置在屏幕共享时是否采集当前 App 中的音频。该成员默认值为 `true`，即：默认采集当前 App 中的音频。在个别场景下，屏幕共享采集到的 App 音频可能由于信号延迟等原因引起远端出现回声，声网建议你在此场景下将该成员设置为 `false`，以消除屏幕共享进程中引入的远端回声。
 - 新增 [`onPlayerCacheStats`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats) 回调，当媒体资源开始缓存后，SDK 会每秒触发一次该回调，报告当前缓存的媒体资源的相关数据。
 - 新增 [`onPlayerPlaybackStats`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats) 回调，当媒体资源开始播放后，SDK 会每秒触发一次该回调，报告媒体当前播放的媒体资源的相关信息。你可以通过 [`PlayerPlaybackStats`](/zh-CN/api-reference/rtc/android/class-playerplaybackstats) 来获取当前音、视频的码率等信息。
-- [`MusicContentCenterStateReason`](/api-ref/rtc/android/API/enum_musiccontentcenterstatereason) 中新增状态码 `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` 表示 HTTP 内部发生错误，请稍后重试。
+- [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/android/class-musiccontentcenterstatereason) 中新增状态码 `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL` 表示 HTTP 内部发生错误，请稍后重试。
 - 该版本优化了 SDK 的域名解析策略，提高了复杂网络环境下调用 [`setLocalAccessPoint`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setlocalaccesspoint) 解析域名时的稳定性。
 - 传入含透明背景的图片作为虚拟背景的自定义背景图时，支持自定义图片透明背景的填充色。
 - [`LocalAudioStats`](/zh-CN/api-reference/rtc/android/class-localaudiostats) 新增 `earMonitorDelay` 和 `aecEstimatedDelay` 成员，分别用于报告耳返延迟和回声消除 (Acoustic Echo Cancellation, AEC) 延迟。
@@ -940,7 +940,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - [`onPlayerCacheStats`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats)
 - [`onPlayerPlaybackStats`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats)
 - [`PlayerPlaybackStats`](/zh-CN/api-reference/rtc/android/class-playerplaybackstats)
-- [`MusicContentCenterStateReason`](/api-ref/rtc/android/API/enum_musiccontentcenterstatereason) 中新增 `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL`
+- [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/android/class-musiccontentcenterstatereason) 中新增 `MUSIC_CONTENT_CENTER_STATE_REASON_HTTP_INTERNAL`
 - [`startPlaybackDeviceTest`](/zh-CN/api-reference/rtc/android/device-management/audio-device#startplaybackdevicetest)
 - [`stopPlaybackDeviceTest`](/zh-CN/api-reference/rtc/android/device-management/audio-device#stopplaybackdevicetest)
 - [`LocalAudioStats`](/zh-CN/api-reference/rtc/android/class-localaudiostats) 新增 `earMonitorDelay` 和 `aecEstimatedDelay` 成员
@@ -1006,7 +1006,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
   - `RTMP_STREAM_PUBLISH_ERROR_NET_DOWN`
   - `RTMP_STREAM_PUBLISH_ERROR_INVALID_PRIVILEGE`
   - `RTMP_STREAM_UNPUBLISH_ERROR_OK`
-- `MusicContentCenterStatusCode` 修改为 [`MusicContentCenterStateReason`](/api-ref/rtc/android/API/enum_musiccontentcenterstatereason)，其中的枚举名的 `STATUS_ERR` 字段全部修改为 `STATE_REASON`：
+- `MusicContentCenterStatusCode` 修改为 [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/android/class-musiccontentcenterstatereason)，其中的枚举名的 `STATUS_ERR` 字段全部修改为 `STATE_REASON`：
   - `MUSIC_CONTENT_CENTER_STATUS_ERR_GATEWAY`
   - `MUSIC_CONTENT_CENTER_STATUS_ERR_PERMISSION_AND_RESOURCE`
   - `MUSIC_CONTENT_CENTER_STATUS_ERR_INTERNAL_DATA_PARSE`
@@ -1095,7 +1095,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 本地系统时间不正确时，偶现加入频道失败。
 - 调用 [`playEffect`](/zh-CN/api-reference/rtc/android/play/audio-effect-file#api_irtcengine_playeffect3)[2/2] 使用相同的 `soundId` 播放两个不同的音效文件，偶现第一个音效文件播放完毕后会重复播放。
 - 主播调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_startaudiomixing2)[2/2] 播放音乐文件时，偶现主播本地无法听见音乐，远端用户可以正常听见。
-- 合唱场景下，调用 [`preload`](/api-ref/rtc/android/API/toc_drm#api_imusicontentcenter_preload)[1/2] 加载音乐，偶现加载失败。
+- 合唱场景下，调用 [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusicontentcenter_preload)[1/2] 加载音乐，偶现加载失败。
 - 在特定机型上开启 AI 降噪偶现崩溃。
 - 当本地系统时间不准确时，歌曲榜单加载失败。
 - 调用一次 `takeSnapshotEx` 获取视频截图会收到多次 [`onSnapshotTaken`](/zh-CN/api-reference/rtc/android/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) 视频截图结果回调。
@@ -1116,7 +1116,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 ### 升级必看
 
-该版本废弃了 [`IAgoraMusicContentCenter`](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter) 类下的 [`preload`](/api-ref/rtc/android/API/toc_drm#api_imusicontentcenter_preload)[1/2] 方法并新增 [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_preload2)[2/2] 方法。如果你使用了 [`preload`](/api-ref/rtc/android/API/toc_drm#api_imusicontentcenter_preload)[1/2] 方法实现预加载音乐资源，请在升级到该版本后更新 App 代码。
+该版本废弃了 [`IAgoraMusicContentCenter`](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imusiccontentcenter) 类下的 [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusicontentcenter_preload)[1/2] 方法并新增 [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusiccontentcenter_preload2)[2/2] 方法。如果你使用了 [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusicontentcenter_preload)[1/2] 方法实现预加载音乐资源，请在升级到该版本后更新 App 代码。
 
 ### 新增特性
 
@@ -1199,7 +1199,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 废弃
 
-- [`preload`](/api-ref/rtc/android/API/toc_drm#api_imusicontentcenter_preload)[1/2]
+- [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusicontentcenter_preload)[1/2]
 
 ## v4.2.1
 
@@ -1377,7 +1377,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - [`AudioTrackConfig`](/zh-CN/api-reference/rtc/android/class-audiotrackconfig)
 - [`AudioTrackType`](/zh-CN/api-reference/rtc/android/enum-audiotracktype)
 - [`MusicCacheInfo`](/zh-CN/api-reference/rtc/android/class-musiccacheinfo)
-- [`MusicCacheStatusType`](/api-ref/rtc/android/API/enum_musiccachestatustype)
+- [`MusicCacheStatusType`](/zh-CN/api-reference/rtc/android/class-musiccachestatustype)
 - [`RecorderStreamInfo`](/zh-CN/api-reference/rtc/android/class-recorderstreaminfo)
 - [`VideoScenario`](/zh-CN/api-reference/rtc/android/enum-videoapplicationscenariotype)
 - [`RtcEngineConfig`](/zh-CN/api-reference/rtc/android/class-rtcengineconfig) 中新增 `mDomainLimit` 和 `mAutoRegisterAgoraExtensions` 属性
@@ -1395,10 +1395,10 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### 修改
 
-- [`onMusicChartsResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 中的 `status` 修改为 [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode)
-- [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 中的 `status` 修改为 [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode)
-- [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 中的 `status` 修改为 [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode)
-- [`onPreLoadEvent`](/zh-CN/api-reference/rtc/android/play/drm#onpreloadevent) 中的 `msg` 修改为 [`errorCode`](/api-ref/rtc/android/API/toc_rte_player#api_rteexception_errorcode)
+- [`onMusicChartsResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) 中的 `status` 修改为 [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode)
+- [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) 中的 `status` 修改为 [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode)
+- [`onLyricResult`](/zh-CN/api-reference/rtc/android/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) 中的 `status` 修改为 [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode)
+- [`onPreLoadEvent`](/zh-CN/api-reference/rtc/android/play/drm#onpreloadevent) 中的 `msg` 修改为 [`errorCode`](/zh-CN/api-reference/rtc/android/play/rte-player#api_rteexception_errorcode)
 
 #### 废弃
 
@@ -1559,7 +1559,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats`](/api-ref/rtc/android/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -2038,14 +2038,14 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-   - [`setDirectCdnStreamingAudioConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-   - [`setDirectCdnStreamingVideoConfiguration:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-   - [`startDirectCdnStreaming:publishUrl:mediaOptions:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-   - [`stopDirectCdnStreaming`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/ios/API/class_directcdnstreamingmediaoptions)
-   - [`AgoraDirectCdnStreamingStats`](/api-ref/rtc/ios/API/class_directcdnstreamingstats)
-   - [`AgoraDirectCdnStreamingState`](/api-ref/rtc/ios/API/enum_directcdnstreamingstate)
-   - [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/ios/API/enum_directcdnstreamingreason)
+   - `setDirectCdnStreamingAudioConfiguration:`
+   - `setDirectCdnStreamingVideoConfiguration:`
+   - `startDirectCdnStreaming:publishUrl:mediaOptions:`
+   - `stopDirectCdnStreaming`
+   - `AgoraDirectCdnStreamingMediaOptions`
+   - `AgoraDirectCdnStreamingStats`
+   - `AgoraDirectCdnStreamingState`
+   - `AgoraDirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -2430,7 +2430,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - 在实时互动过程中，当多个远端同时加入频道时 App 偶现崩溃。
 - App 切后台一段时间、然后返回前台时，远端视频画面偶现卡住或花屏。
-- 发送端调用 [`startDirectCdnStreaming:publishUrl:mediaOptions:`](/api-ref/rtc/ios/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming) 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。
+- 发送端调用 `startDirectCdnStreaming:publishUrl:mediaOptions:` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。
 - 调用 [`pushExternalAudioFrameRawData:samples:sampleRate:channels:trackId:timestamp:`](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
 ## v4.3.2
@@ -2597,7 +2597,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 | --- | --- | --- |
 | [`rtcEngine:localAudioStateChanged:reason:`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`rtcEngine:localVideoStateChangedOfState:reason:sourceType:`](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | `error` | `reason` |
-| [`onDirectCdnStreamingStateChanged:reason:message:`](/api-ref/rtc/ios/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| `onDirectCdnStreamingStateChanged:reason:message:` | `error` | `reason` |
 | [`onMusicChartsResult:result:reason:`](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | `errorCode` | `reason` |
 | [`onPreLoadEvent:songCode:percent:lyricUrl:state:reason:`](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) | <Slot name="release-notes-ios-html-1-5-1" /> | <Slot name="release-notes-ios-html-1-5-2" /> |
 | [`onMusicCollectionResult:result:reason:`](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | `errorCode` | `reason` |
@@ -2625,7 +2625,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    | ------------------------------------ | ------------------------------------ |
    | `AgoraAudioLocalError`              | [`AgoraAudioLocalReason`](/zh-CN/api-reference/rtc/ios/enum-localaudiostreamreason)              |
    | `AgoraLocalVideoStreamError`        | [`AgoraLocalVideoStreamReason`](/zh-CN/api-reference/rtc/ios/enum-localvideostreamreason)        |
-   | `AgoraDirectCdnStreamingError`      | [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/ios/API/enum_directcdnstreamingreason)      |
+   | `AgoraDirectCdnStreamingError`      | `AgoraDirectCdnStreamingReason`      |
    | `AgoraMediaPlayerError`             | [`AgoraMediaPlayerReason`](/zh-CN/api-reference/rtc/ios/enum-mediaplayerreason)             |
    | `AgoraRtmpStreamingError`           | [`AgoraRtmpStreamingReason`](/zh-CN/api-reference/rtc/ios/enum-rtmpstreampublishreason)           |
    | `AgoraMusicContentCenterStatusCode` | [`AgoraMusicContentCenterStateReason`](/zh-CN/api-reference/rtc/ios/enum-musiccontentcenterstatereason) |
@@ -3435,7 +3435,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats:`](/api-ref/rtc/ios/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats:` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -3534,7 +3534,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 如果你已经使用了以下类或方法，请在升级到该版本后重新调用方法并更新参数设置。
 
 1. 为提高代码易用性，该版本将以下类中 `Optional` 类型的参数变更为 `Bool`、`Int` 等基本数据类型：
-   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/ios/API/class_directcdnstreamingmediaoptions) 中 `publishCameraTrack`、`publishMicrophoneTrack`、`publishCustomAudioTrack`、`publishCustomVideoTrack`、`publishMediaPlayerAudioTrack` 的参数类型由 `Optional` 变为 `Bool` 型。
+   - `AgoraDirectCdnStreamingMediaOptions` 中 `publishCameraTrack`、`publishMicrophoneTrack`、`publishCustomAudioTrack`、`publishCustomVideoTrack`、`publishMediaPlayerAudioTrack` 的参数类型由 `Optional` 变为 `Bool` 型。
    - [`AgoraMediaSource`](/zh-CN/api-reference/rtc/ios/class-mediasource) 中的 `isAgoraSource` 和 `isLiveSource` 由 `Optional` 型变为 `Bool` 型。
    - [`AgoraRtcChannelMediaOptions`](/zh-CN/api-reference/rtc/ios/class-channelmediaoptions) 中的所有参数类型由 `Optional` 变为 `Bool` 型或 `Int` 型。
 2. [`destroyCustomVideoTrack:`](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 方法中的 `position` 参数变更为 `trackid`。
@@ -3835,7 +3835,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### Media Player 支持获取音频缓冲延迟
 
-为解决 K 歌场景中可能会出现的主唱与伴唱伴奏不同步的问题，该版本在 Media Player 模块中新增 [`getAudioBufferDelay`](/api-ref/rtc/macos/API/toc_mediaplayer_info#api_imediaplayer_getaudiobufferdelay) 方法，用于获取播放媒体文件时毫秒级的音频缓冲延迟。
+为解决 K 歌场景中可能会出现的主唱与伴唱伴奏不同步的问题，该版本在 Media Player 模块中新增 `getAudioBufferDelay` 方法，用于获取播放媒体文件时毫秒级的音频缓冲延迟。
 
 ### 改进
 
@@ -3883,14 +3883,14 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
    该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-   - [`setDirectCdnStreamingAudioConfiguration:`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-   - [`setDirectCdnStreamingVideoConfiguration:`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-   - [`startDirectCdnStreaming:publishUrl:mediaOptions:`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-   - [`stopDirectCdnStreaming`](/api-ref/rtc/macos/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/macos/API/class_directcdnstreamingmediaoptions)
-   - [`AgoraDirectCdnStreamingStats`](/api-ref/rtc/macos/API/class_directcdnstreamingstats)
-   - [`AgoraDirectCdnStreamingState`](/api-ref/rtc/macos/API/enum_directcdnstreamingstate)
-   - [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/macos/API/enum_directcdnstreamingreason)
+   - `setDirectCdnStreamingAudioConfiguration:`
+   - `setDirectCdnStreamingVideoConfiguration:`
+   - `startDirectCdnStreaming:publishUrl:mediaOptions:`
+   - `stopDirectCdnStreaming`
+   - `AgoraDirectCdnStreamingMediaOptions`
+   - `AgoraDirectCdnStreamingStats`
+   - `AgoraDirectCdnStreamingState`
+   - `AgoraDirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -4375,7 +4375,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    | ---------------------------------- | --------------- | ------------------- |
    | [`rtcEngine:localAudioStateChanged:reason:`](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)           | `error`         | `reason`            |
    | `localVideoStateChanged`           | `error`         | `reason`            |
-   | [`onDirectCdnStreamingStateChanged:reason:message:`](/api-ref/rtc/macos/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error`         | `reason`            |
+   | `onDirectCdnStreamingStateChanged:reason:message:` | `error`         | `reason`            |
    | [`AgoraRtcMediaPlayer:didChangedToState:reason:`](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged)                | `error`         | `reason`            |
    | [`rtcEngine:rtmpStreamingChangedToState:state:reason:`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged)      | `errCode`       | `reason`            |
 
@@ -4383,7 +4383,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
    | ------------------------------------ | ------------------------------------ |
    | `AgoraAudioLocalError`              | [`AgoraAudioLocalReason`](/zh-CN/api-reference/rtc/macos/enum-localaudiostreamreason)              |
    | `AgoraLocalVideoStreamError`        | [`AgoraLocalVideoStreamReason`](/zh-CN/api-reference/rtc/macos/enum-localvideostreamreason)        |
-   | `AgoraDirectCdnStreamingError`      | [`AgoraDirectCdnStreamingReason`](/api-ref/rtc/macos/API/enum_directcdnstreamingreason)      |
+   | `AgoraDirectCdnStreamingError`      | `AgoraDirectCdnStreamingReason`      |
    | `AgoraMediaPlayerError`             | [`AgoraMediaPlayerReason`](/zh-CN/api-reference/rtc/macos/enum-mediaplayerreason)             |
    | `AgoraRtmpStreamingError`           | [`AgoraRtmpStreamingReason`](/zh-CN/api-reference/rtc/macos/enum-rtmpstreampublishreason)           |
    | `AgoraMusicContentCenterStatusCode` | `AgoraMusicContentCenterStateReason` |
@@ -5013,7 +5013,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - 使用媒体播放器播放采样率超过 48 kHz 的音频时，播放失败。
 - 把播放器的渲染视图设为 `UIViewController` 的视图后，使用播放器播放视频，视频窗口切到全屏时视频画面会从左下角开始逐渐放大。
-- 加入频道后接入外接摄像头，调用 [`setDevice:deviceId:`](/api-ref/rtc/macos/API/toc_common_device#api_ivideodevicecollection_setdevice) 指定视频采集设备为该外接摄像头，方法未生效。
+- 加入频道后接入外接摄像头，调用 [`setDevice:deviceId:`](/zh-CN/api-reference/rtc/macos/device-management/video-device#api_irtcengine_setdevice_irtcengine) 指定视频采集设备为该外接摄像头，方法未生效。
 - 当频道内有多路视频流时，调用部分视频增强插件相关 API 偶现失败。
 - 客户端主动退出频道时未向服务端发起请求，导致服务端判定为退出频道超时。
 
@@ -5115,7 +5115,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats:`](/api-ref/rtc/macos/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats:` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -5217,7 +5217,7 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 如果你已经使用了以下类或方法，请在升级到该版本后重新调用方法并更新参数设置。
 
 1. 为提高代码易用性，该版本将以下类中 `Optional` 类型的参数变更为 `Bool`、`Int` 等基本数据类型：
-   - [`AgoraDirectCdnStreamingMediaOptions`](/api-ref/rtc/macos/API/class_directcdnstreamingmediaoptions) 中 `publishCameraTrack`、`publishMicrophoneTrack`、`publishCustomAudioTrack`、`publishCustomVideoTrack`、`publishMediaPlayerAudioTrack` 的参数类型由 `Optional` 变为 `Bool` 型。
+   - `AgoraDirectCdnStreamingMediaOptions` 中 `publishCameraTrack`、`publishMicrophoneTrack`、`publishCustomAudioTrack`、`publishCustomVideoTrack`、`publishMediaPlayerAudioTrack` 的参数类型由 `Optional` 变为 `Bool` 型。
    - [`AgoraMediaSource`](/zh-CN/api-reference/rtc/macos/class-mediasource) 中的 `isAgoraSource` 和 `isLiveSource` 由 `Optional` 型变为 `Bool` 型。
    - [`AgoraRtcChannelMediaOptions`](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的所有参数类型由 `Optional` 变为 `Bool` 型或 `Int` 型。
 2. [`destroyCustomVideoTrack:`](/zh-CN/api-reference/rtc/macos/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 方法中的 `position` 参数变更为 `trackid`。
@@ -6185,7 +6185,7 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 
 #### 灵活监听 AgoraRTC 对象的事件
 
-自 v4.18.0 起，`IAgoraRTC` 类继承 [EventEmitter 类](/api-ref/rtc/javascript/classes/eventemitter.html)的所有方法，用于监听 `AgoraRTC` 对象的所有事件。
+自 v4.18.0 起，`IAgoraRTC` 类继承 EventEmitter 类的所有方法，用于监听 `AgoraRTC` 对象的所有事件。
 
 以 `onCameraChanged` 为例：
 
@@ -7350,14 +7350,14 @@ v4.0.0 修复了以下问题：
 
    该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-   - [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-   - [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-   - [`startDirectCdnStreaming`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-   - [`stopDirectCdnStreaming`](/api-ref/rtc/windows/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-   - [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/windows/API/class_directcdnstreamingmediaoptions)
-   - [`DirectCdnStreamingStats`](/api-ref/rtc/windows/API/class_directcdnstreamingstats)
-   - [`DIRECT_CDN_STREAMING_STATE`](/api-ref/rtc/windows/API/enum_directcdnstreamingstate)
-   - [`DIRECT_CDN_STREAMING_REASON`](/api-ref/rtc/windows/API/enum_directcdnstreamingreason)
+   - `setDirectCdnStreamingAudioConfiguration`
+   - `setDirectCdnStreamingVideoConfiguration`
+   - `startDirectCdnStreaming`
+   - `stopDirectCdnStreaming`
+   - `DirectCdnStreamingMediaOptions`
+   - `DirectCdnStreamingStats`
+   - `DIRECT_CDN_STREAMING_STATE`
+   - `DIRECT_CDN_STREAMING_REASON`
 
 #### 虚拟节拍器接口废弃
 
@@ -7503,7 +7503,7 @@ v4.0.0 修复了以下问题：
 该版本修复了以下问题：
 
 - 开启导唱功能播放多音轨歌曲时，调用 [`setAudioPitch`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiopitch) 方法调整歌曲音调后出现杂音。
-- 主播端调用 [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#createcustomaudiotrack) 创建自定义音频采集轨道并将 `trackType` 设为 `AUDIO_TRACK_DIRECT`，调用 [`pushAudioFrame`](/api-ref/rtc/windows/API/toc_audio_custom_capturenrendering#api_imediaengine_pushaudioframe0) 将自采集音频推送到频道内，然后调用 [`playEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 播放音效，频道内的观众听主播的音频有杂音。
+- 主播端调用 [`createCustomAudioTrack`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#createcustomaudiotrack) 创建自定义音频采集轨道并将 `trackType` 设为 `AUDIO_TRACK_DIRECT`，调用 [`pushAudioFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe0) 将自采集音频推送到频道内，然后调用 [`playEffect`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-effect-file#api_irtcengine_playeffect3) 播放音效，频道内的观众听主播的音频有杂音。
 - 集成了 SDK 的 App 在音视频互动过程中偶现主线程阻塞导致的 UI 卡顿。
 - 调用 [`startScreenCapture`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapture2)[2/2] 开启屏幕共享并在 `config` 中将 [`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters) 的 `enableHighLight` 设为 `true` 对共享窗口进行描边，将共享窗口置于最上层并最大化后，本地预览的共享画面出现闪烁。
 - 调用 [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebydisplayid) 共享指定屏幕的视频流，通过 [`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters) 的 `excludeWindowList` 来指定屏蔽的窗口，偶现部分窗口屏蔽失败。
@@ -7890,7 +7890,7 @@ v4.0.0 修复了以下问题：
 | --- | --- | --- |
 | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
-| [`onDirectCdnStreamingStateChanged`](/api-ref/rtc/windows/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| `onDirectCdnStreamingStateChanged` | `error` | `reason` |
 | [`onPlayerSourceStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) | `ec` | `reason` |
 | [`onRtmpStreamingStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | `errCode` | `reason` |
 
@@ -7898,7 +7898,7 @@ v4.0.0 修复了以下问题：
 | --- | --- |
 | `LOCAL_AUDIO_STREAM_ERROR` | [`LOCAL_AUDIO_STREAM_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localaudiostreamreason) |
 | `LOCAL_VIDEO_STREAM_ERROR` | [`LOCAL_VIDEO_STREAM_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localvideostreamreason) |
-| `DIRECT_CDN_STREAMING_ERROR` | [`DIRECT_CDN_STREAMING_REASON`](/api-ref/rtc/windows/API/enum_directcdnstreamingreason) |
+| `DIRECT_CDN_STREAMING_ERROR` | `DIRECT_CDN_STREAMING_REASON` |
 | `MEDIA_PLAYER_ERROR` | [`MEDIA_PLAYER_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediaplayerreason) |
 | `RTMP_STREAM_PUBLISH_ERROR` | [`RTMP_STREAM_PUBLISH_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-rtmpstreampublishreason) |
 
@@ -8395,7 +8395,7 @@ v4.0.0 修复了以下问题：
 - `onApiCallExecuted` 已删除，请改用相关频道和媒体的事件通知得知 API 的执行结果。
 - [`IAudioFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudioframeobserver) 类名变更为 [`IAudioPcmFrameSink`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_iaudiopcmframesink)，因此下列方法原型也有相应更新：
   - `onFrame`
-  - [`IMediaPlayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer) 下的 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#registeraudioframeobserver)[1/2]、[`registerAudioFrameObserver`](/api-ref/rtc/windows/API/toc_mediaplayer_observer#api_imediaplayer_registeraudioframeobserver2)[2/2]
+  - [`IMediaPlayer`](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaplayer) 下的 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#registeraudioframeobserver)[1/2]、[`registerAudioFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#api_imediaplayer_registeraudioframeobserver2)[2/2]
 - [`enableDualStreamMode`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_enabledualstreammode)[1/2] 和 [`enableDualStreamMode`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_enabledualstreammode3)[2/2] 已废弃，请改用 [`setDualStreamMode`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setdualstreammode)[1/2] 和 [`setDualStreamMode`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setdualstreammode2)[2/2]。
 - `startChannelMediaRelay`、`updateChannelMediaRelay`、`startChannelMediaRelayEx` 和 `updateChannelMediaRelayEx` 已废弃，请改用 [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 和 [`startOrUpdateChannelMediaRelayEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex)。
 - `OnRecordAudioEncodedFrame` 变更为 [`onRecordAudioEncodedFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe)。
@@ -8694,7 +8694,7 @@ v4.0.0 修复了以下问题：
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats`](/api-ref/rtc/windows/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -9662,14 +9662,14 @@ https://miniapp-4.agoraio.cn
 
 该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-- [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-- [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-- [`startDirectCdnStreaming`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-- [`stopDirectCdnStreaming`](/api-ref/rtc/electron/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-- [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/electron/API/class_directcdnstreamingmediaoptions)
-- [`DirectCdnStreamingStats`](/api-ref/rtc/electron/API/class_directcdnstreamingstats)
-- [`DirectCdnStreamingState`](/api-ref/rtc/electron/API/enum_directcdnstreamingstate)
-- [`DirectCdnStreamingReason`](/api-ref/rtc/electron/API/enum_directcdnstreamingreason)
+- `setDirectCdnStreamingAudioConfiguration`
+- `setDirectCdnStreamingVideoConfiguration`
+- `startDirectCdnStreaming`
+- `stopDirectCdnStreaming`
+- `DirectCdnStreamingMediaOptions`
+- `DirectCdnStreamingStats`
+- `DirectCdnStreamingState`
+- `DirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -10142,14 +10142,14 @@ https://miniapp-4.agoraio.cn
    | ---------------------------------- | ---------- | ---------- |
    | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged)         | `error`    | `reason`   |
    | [`onLocalVideoStateChanged`](/zh-CN/api-reference/rtc/electron/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged)         | `error`    | `reason`   |
-   | [`onDirectCdnStreamingStateChanged`](/api-ref/rtc/electron/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error`    | `reason`   |
+   | `onDirectCdnStreamingStateChanged` | `error`    | `reason`   |
    | [`onRtmpStreamingStateChanged`](/zh-CN/api-reference/rtc/electron/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged)      | `errCode`  | `reason`   |
 
    | 原有枚举类                   | 现有枚举类                 |
    | ---------------------------- | -------------------------- |
    | `LocalAudioStreamError`      | [`LocalAudioStreamReason`](/zh-CN/api-reference/rtc/electron/enum-localaudiostreamreason)   |
    | `LocalVideoStreamError`      | [`LocalVideoStreamReason`](/zh-CN/api-reference/rtc/electron/enum-localvideostreamreason)   |
-   | `DirectCdnStreamingError`    | [`DirectCdnStreamingReason`](/api-ref/rtc/electron/API/enum_directcdnstreamingreason) |
+   | `DirectCdnStreamingError`    | `DirectCdnStreamingReason` |
    | `MediaPlayerError`           | [`MediaPlayerReason`](/zh-CN/api-reference/rtc/electron/enum-mediaplayerreason)        |
    | `RtmpStreamPublishErrorType` | [`RtmpStreamPublishReason`](/zh-CN/api-reference/rtc/electron/enum-rtmpstreampublishreason)  |
 
@@ -11002,7 +11002,7 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats`](/api-ref/rtc/electron/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -11387,14 +11387,14 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-- [`SetDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-- [`SetDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-- [`StartDirectCdnStreaming`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-- [`StopDirectCdnStreaming`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-- [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/unity/API/class_directcdnstreamingmediaoptions)
-- [`DirectCdnStreamingStats`](/api-ref/rtc/unity/API/class_directcdnstreamingstats)
-- [`DIRECT_CDN_STREAMING_STATE`](/api-ref/rtc/unity/API/enum_directcdnstreamingstate)
-- [`DIRECT_CDN_STREAMING_REASON`](/api-ref/rtc/unity/API/enum_directcdnstreamingreason)
+- `SetDirectCdnStreamingAudioConfiguration`
+- `SetDirectCdnStreamingVideoConfiguration`
+- `StartDirectCdnStreaming`
+- `StopDirectCdnStreaming`
+- `DirectCdnStreamingMediaOptions`
+- `DirectCdnStreamingStats`
+- `DIRECT_CDN_STREAMING_STATE`
+- `DIRECT_CDN_STREAMING_REASON`
 
 #### 虚拟节拍器接口废弃
 
@@ -11831,7 +11831,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 - 在实时互动过程中，当多个远端同时加入频道时 App 偶现崩溃。(iOS)
 - App 切后台一段时间、然后返回前台时，远端视频画面偶现卡住或花屏。(iOS)
-- 发送端调用 [`StartDirectCdnStreaming`](/api-ref/rtc/unity/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming) 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
+- 发送端调用 `StartDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`PushAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
 ## v4.3.2
@@ -12016,7 +12016,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 | --- | --- | --- |
 | [`OnLocalAudioStateChanged`](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`OnLocalAudioStateChanged`](/zh-CN/api-reference/rtc/unity/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
-| [`OnDirectCdnStreamingStateChanged`](/api-ref/rtc/unity/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| `OnDirectCdnStreamingStateChanged` | `error` | `reason` |
 | [`OnMusicChartsResult`](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | `errorCode` | `reason` |
 | [`OnPreLoadEvent`](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | <Slot name="release-notes-slot-32-6-1" /> | <Slot name="release-notes-slot-32-6-2" /> |
 | [`OnMusicCollectionResult`](/zh-CN/api-reference/rtc/unity/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | `errorCode` | `reason` |
@@ -12042,7 +12042,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 | --- | --- |
 | `LOCAL_AUDIO_STREAM_ERROR` | [`LOCAL_AUDIO_STREAM_REASON`](/zh-CN/api-reference/rtc/unity/enum-localaudiostreamreason) |
 | `LOCAL_VIDEO_STREAM_ERROR` | [`LOCAL_VIDEO_STREAM_REASON`](/zh-CN/api-reference/rtc/unity/enum-localvideostreamreason) |
-| `DIRECT_CDN_STREAMING_ERROR` | [`DIRECT_CDN_STREAMING_REASON`](/api-ref/rtc/unity/API/enum_directcdnstreamingreason) |
+| `DIRECT_CDN_STREAMING_ERROR` | `DIRECT_CDN_STREAMING_REASON` |
 | `MEDIA_PLAYER_ERROR` | [`MEDIA_PLAYER_REASON`](/zh-CN/api-reference/rtc/unity/enum-mediaplayerreason) |
 | `RTMP_STREAM_PUBLISH_ERROR` | [`RTMP_STREAM_PUBLISH_REASON`](/zh-CN/api-reference/rtc/unity/enum-rtmpstreampublishreason) |
 | `MusicContentCenterStatusCode` | [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/unity/enum-musiccontentcenterstatereason) |
@@ -13097,7 +13097,7 @@ macOS：
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`OnDirectCdnStreamingStats`](/api-ref/rtc/unity/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `OnDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -13484,14 +13484,14 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-- [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-- [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-- [`startDirectCdnStreaming`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-- [`stopDirectCdnStreaming`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-- [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/flutter/API/class_directcdnstreamingmediaoptions)
-- [`DirectCdnStreamingStats`](/api-ref/rtc/flutter/API/class_directcdnstreamingstats)
-- [`DirectCdnStreamingState`](/api-ref/rtc/flutter/API/enum_directcdnstreamingstate)
-- [`DirectCdnStreamingReason`](/api-ref/rtc/flutter/API/enum_directcdnstreamingreason)
+- `setDirectCdnStreamingAudioConfiguration`
+- `setDirectCdnStreamingVideoConfiguration`
+- `startDirectCdnStreaming`
+- `stopDirectCdnStreaming`
+- `DirectCdnStreamingMediaOptions`
+- `DirectCdnStreamingStats`
+- `DirectCdnStreamingState`
+- `DirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -13895,7 +13895,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 音视频互动过程中偶现崩溃。(Android)
 - 在实时互动过程中，当多个远端同时加入频道时 App 偶现崩溃。(iOS)
 - App 切后台一段时间、然后返回前台时，远端视频画面偶现卡住或花屏。(iOS)
-- 发送端调用 [`startDirectCdnStreaming`](/api-ref/rtc/flutter/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming) 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
+- 发送端调用 `startDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`pushAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。(Android, iOS)
 
 ## v6.3.2 (对应 Native v4.3.2)
@@ -14079,7 +14079,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 | --- | --- | --- |
 | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/flutter/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`onLocalVideoStateChanged`](/zh-CN/api-reference/rtc/flutter/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | `error` | `reason` |
-| [`onDirectCdnStreamingStateChanged`](/api-ref/rtc/flutter/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| `onDirectCdnStreamingStateChanged` | `error` | `reason` |
 | [`onMusicChartsResult`](/zh-CN/api-reference/rtc/flutter/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | `errorCode` | `reason` |
 | [`onPreLoadEvent`](/zh-CN/api-reference/rtc/flutter/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | <Slot name="release-notes-flutter-html-1-5-1" /> | <Slot name="release-notes-flutter-html-1-5-2" /> |
 | [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/flutter/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | `errorCode` | `reason` |
@@ -14107,7 +14107,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
    | -------------------------- | ----------------------------- |
    | `LocalAudioStreamError`   | [`LocalAudioStreamReason`](/zh-CN/api-reference/rtc/flutter/enum-localaudiostreamreason)      |
    | `LocalVideoStreamError`   | [`LocalVideoStreamReason`](/zh-CN/api-reference/rtc/flutter/enum-localvideostreamreason)      |
-   | `DirectCdnStreamingError` | [`DirectCdnStreamingReason`](/api-ref/rtc/flutter/API/enum_directcdnstreamingreason)    |
+   | `DirectCdnStreamingError` | `DirectCdnStreamingReason`    |
    | `MediaPlayerError`        | [`MediaPlayerReason`](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)           |
    | `RtmpStreamPublishErrorType`  | [`RtmpStreamPublishReason`](/zh-CN/api-reference/rtc/flutter/enum-rtmpstreampublishreason)     |
    | `MusicContentCenterStatusCode`  | [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/flutter/enum-musiccontentcenterstatereason) |
@@ -15127,7 +15127,7 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats`](/api-ref/rtc/flutter/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 
@@ -15525,14 +15525,14 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 该版本废弃直推 CDN 功能的相关接口，并会在后续版本中删除，请改用[服务端旁路推流](/zh-CN/realtime-media/media-push)。
 
-- [`setDirectCdnStreamingAudioConfiguration`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingaudioconfiguration)
-- [`setDirectCdnStreamingVideoConfiguration`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_setdirectcdnstreamingvideoconfiguration)
-- [`startDirectCdnStreaming`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming)
-- [`stopDirectCdnStreaming`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_stopdirectcdnstreaming)
-- [`DirectCdnStreamingMediaOptions`](/api-ref/rtc/rn/API/class_directcdnstreamingmediaoptions)
-- [`DirectCdnStreamingStats`](/api-ref/rtc/rn/API/class_directcdnstreamingstats)
-- [`DirectCdnStreamingState`](/api-ref/rtc/rn/API/enum_directcdnstreamingstate)
-- [`DirectCdnStreamingReason`](/api-ref/rtc/rn/API/enum_directcdnstreamingreason)
+- `setDirectCdnStreamingAudioConfiguration`
+- `setDirectCdnStreamingVideoConfiguration`
+- `startDirectCdnStreaming`
+- `stopDirectCdnStreaming`
+- `DirectCdnStreamingMediaOptions`
+- `DirectCdnStreamingStats`
+- `DirectCdnStreamingState`
+- `DirectCdnStreamingReason`
 
 #### 虚拟节拍器接口废弃
 
@@ -15928,7 +15928,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 - 在实时互动过程中，当多个远端同时加入频道时 App 偶现崩溃。(iOS)
 - App 切后台一段时间、然后返回前台时，远端视频画面偶现卡住或花屏。(iOS)
-- 发送端调用 [`startDirectCdnStreaming`](/api-ref/rtc/rn/API/toc_cdn_streaming#api_irtcengine_startdirectcdnstreaming) 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
+- 发送端调用 `startDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`pushAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
 ## v4.3.2
@@ -16103,7 +16103,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 | --- | --- | --- |
 | [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/react-native/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | `error` | `reason` |
 | [`onLocalVideoStateChanged`](/zh-CN/api-reference/rtc/react-native/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | `error` | `reason` |
-| [`onDirectCdnStreamingStateChanged`](/api-ref/rtc/rn/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstatechanged) | `error` | `reason` |
+| `onDirectCdnStreamingStateChanged` | `error` | `reason` |
 | [`onMusicChartsResult`](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | `errorCode` | `reason` |
 | [`onPreLoadEvent`](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | <Slot name="release-notes-rn-html-0-5-1" /> | <Slot name="release-notes-rn-html-0-5-2" /> |
 | [`onMusicCollectionResult`](/zh-CN/api-reference/rtc/react-native/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | `errorCode` | `reason` |
@@ -16130,7 +16130,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 | ------------------------------ | ----------------------------- |
 | `LocalAudioStreamError`        | [`LocalAudioStreamReason`](/zh-CN/api-reference/rtc/react-native/enum-localaudiostreamreason)      |
 | `LocalVideoStreamError`        | [`LocalVideoStreamReason`](/zh-CN/api-reference/rtc/react-native/enum-localvideostreamreason)      |
-| `DirectCdnStreamingError`      | [`DirectCdnStreamingReason`](/api-ref/rtc/rn/API/enum_directcdnstreamingreason)    |
+| `DirectCdnStreamingError`      | `DirectCdnStreamingReason`    |
 | `MediaPlayerError`             | [`MediaPlayerReason`](/zh-CN/api-reference/rtc/react-native/enum-mediaplayerreason)           |
 | `RtmpStreamPublishErrorType`   | [`RtmpStreamPublishReason`](/zh-CN/api-reference/rtc/react-native/enum-rtmpstreampublishreason)     |
 | `MusicContentCenterStatusCode` | [`MusicContentCenterStateReason`](/zh-CN/api-reference/rtc/react-native/enum-musiccontentcenterstatereason) |
@@ -16925,7 +16925,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 #### CDN 推流
 
-为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 [`onDirectCdnStreamingStats`](/api-ref/rtc/rn/API/toc_cdn_streaming#callback_idirectcdnstreamingeventhandler_ondirectcdnstreamingstats) 回调报告推送的视频流的实际分辨率。
+为提升 CDN 推流的用户体验，当设置的视频分辨率超出摄像头设备支持的范围时，SDK 会根据你的设置进行自适应，取最接近、且长宽比与你设置的分辨率一致的值进行采集、编码、推流，同时通过 `onDirectCdnStreamingStats` 回调报告推送的视频流的实际分辨率。
 
 #### 跨频道媒体流转发
 

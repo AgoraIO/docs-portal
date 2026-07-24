@@ -147,6 +147,23 @@ describe('API Center local fragment index', () => {
     );
   });
 
+  it('adds a legacy alias at an explicitly selected canonical anchor', () => {
+    const result = insertFragmentAliases(
+      '---\ntitle: Constructors\n---\n<a id="newconstructor1"></a>\n\n## NewConstructor [1/2]\n',
+      new Set(['legacyconstructor']),
+      {
+        canonicalAnchors: new Map([
+          ['legacyconstructor', 'newconstructor1'],
+        ]),
+      },
+    );
+
+    expect(result.inserted).toEqual(['legacyconstructor']);
+    expect(result.body).toContain(
+      '---\n\n<a id="legacyconstructor"></a>\n\n<a id="newconstructor1"></a>',
+    );
+  });
+
   it('keeps insertion offsets stable when fenced code precedes a heading', () => {
     const aliasSource =
       '```ts\nconst longValue = true;\n```\n\n## 获取歌曲标签类别\n';

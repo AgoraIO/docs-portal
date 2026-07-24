@@ -147,7 +147,7 @@ voiceServiceProtocol.subscribeEvent(object : VoiceRoomSubscribeDelegate{
 
 ### 切换用户角色
 
-不管是房主邀请，还是听众主动申请，在听众成为连麦听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 方法将其角色从听众（`AUDIENCE`）切换成主播（`BROADCASTER`），以让连麦听众拥有发送音频流的权限。
+不管是房主邀请，还是听众主动申请，在听众成为连麦听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole) 方法将其角色从听众（`AUDIENCE`）切换成主播（`BROADCASTER`），以让连麦听众拥有发送音频流的权限。
 
 ```kotlin
 rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
@@ -189,7 +189,7 @@ fun onSeatUpdated(roomId: String, attributeMap: Map<String, String>, fromId: Str
 
 ### 切换用户角色
 
-不管是连麦听众主动下麦还是被踢下麦，在连麦听众成为普通听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_setclientrole) 方法将其角色从主播（`BROADCASTER`）切换成听众（`AUDIENCE`），以让其失去发送音频流的权限。
+不管是连麦听众主动下麦还是被踢下麦，在连麦听众成为普通听众后，你需要调用声网实时互动 SDK 中 [`setClientRole`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole) 方法将其角色从主播（`BROADCASTER`）切换成听众（`AUDIENCE`），以让其失去发送音频流的权限。
 
 ```kotlin
 rtcEngine?.setClientRole(Constants.CLIENT_ROLE_AUDIENCE)

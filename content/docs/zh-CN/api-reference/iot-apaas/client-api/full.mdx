@@ -12,7 +12,7 @@ title: "客户端全功能 API 参考"
 | [IDeviceMgrCallback](#idevicemgrcallback) | 设备管理事件 |
 | [IAlarmMgr](#ialarmmgr)  | 设备告警信息管理，包括移动侦察、有人经过等 |
 | [INotificationMgr](#inotificationmgr) | 设备系统信息管理，包括设备上线、下线、绑定、解绑等事件管理 |
-| [INotificationMgrCallback](#inotificationmgrcallback) | 设备系统信息管理事件 |
+| `INotificationMgrCallback` | 设备系统信息管理事件 |
 | [ErrCode](#errcode) | Iot SDK 在使用过程中的报错信息 |
 
 <a id="iagoraiotappsdk"></a>
@@ -125,6 +125,8 @@ var notificationMgr: INotificationMgr{get}
 
 - 通知信息接口，详见 [INotificationMgr](#inotificationmgr)。
 
+<a id="accountmgr"></a>
+
 <a id="iaccountmgr"></a>
 ## IAccountMgr
 
@@ -169,7 +171,7 @@ func getAccountInfo(result:@escaping(Int,String,AccountInfo?)->Void)
 
 **返回**
 
-- 账户信息，详见 [AccountInfo](#accountinfo)。
+- 账户信息，类型为 `AccountInfo`。
 
 - 错误码，详见 [ErrCode](#errcode)。
 
@@ -186,7 +188,7 @@ func updateAccountInfo(info:AccountInfo,result:@escaping(Int,String)->Void)
 
 | 参数   | 描述                                         |
 | ------ | -------------------------------------------- |
-| `info` | 账号信息，详见 [AccountInfo](#accountinfo)。 |
+| `info` | `AccountInfo` 类型的账号信息。 |
 
 **返回**
 
@@ -258,6 +260,8 @@ func publicKeySet(publicKey:String, _ result:@escaping (Int,String)->Void)
 **返回**
 
 - 错误码，详见 [ErrCode](#errcode)。
+
+<a id="callmgr"></a>
 
 <a id="icallkitmgr"></a>
 ## ICallkitMgr
@@ -643,7 +647,7 @@ func register(listener:IDeviceStateListener)
 
 | 参数       | 描述                                                         |
 | ---------- | ------------------------------------------------------------ |
-| `listener` | 设备状态回调接口，详见 [IDeviceStateListener](#devicestate)。 |
+| `listener` | `IDeviceStateListener` 类型的设备状态回调接口。 |
 
 **返回**
 
@@ -1190,7 +1194,7 @@ func queryByParam(queryParam:QueryParam,result:@escaping(Int,String,[IotAlarm]?)
 
 | 参数         | 描述                                                   |
 | ------------ | ------------------------------------------------------ |
-| `queryParam` | 告警信息查询参数，详见 [QueryParam](#queryparam) 类。 |
+| `queryParam` | 告警信息查询参数，详见 [AlarmQueryParam](#alarmqueryparam) 类。 |
 
 **返回**
 
@@ -1372,7 +1376,7 @@ func querySysByParam(queryParam:SysQueryParam,result:@escaping(Int,String,[IotAl
 
 | 参数         | 描述                                                   |
 | ------------ | ------------------------------------------------------ |
-| `queryParam` | 告警信息查询参数，详见  [QueryParam](#queryparam) 类。 |
+| `queryParam` | 系统信息查询参数，详见 [SysAlarmQueryParam](#sysalarmqueryparam) 类。 |
 
 **返回**
 
@@ -1466,6 +1470,8 @@ func updateToken(_ deviceToken:Data)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
+<a id="allnotificationquery"></a>
+
 <a id="queryall"></a>
 ### queryAll
 
@@ -1480,6 +1486,8 @@ func queryAll(result:@escaping(Int,String)->Void)
 **返回**
 
 - 错误码，详见 [ErrCode](#errcode)。
+
+<a id="devicenotificationquery"></a>
 
 <a id="querybydevice"></a>
 ### queryByDevice
@@ -1503,6 +1511,8 @@ func queryByDevice(productKey: String, deviceId: String,result:@escaping(Int,Str
 
 - 错误码，详见 [ErrCode](#errcode)。
 
+<a id="notificationdelete"></a>
+
 <a id="deletenoti"></a>
 <a id="delete"></a>
 ### delete
@@ -1524,6 +1534,8 @@ func delete(notificationIdList: [String],result:@escaping(Int,String)->Void)
 **返回**
 
 - 错误码，详见 [ErrCode](#errcode)。
+
+<a id="notificationmark"></a>
 
 <a id="mark"></a>
 ### mark
@@ -2489,6 +2501,8 @@ public class DeviceShare : NSObject{
 | `deviceNumber` | 设备编号。                   |
 | `deviceId`     | 设备 ID，必须是唯一的。 |
 
+<a id="devicecancel"></a>
+
 <a id="devicecancelable"></a>
 ### DeviceCancelable
 
@@ -3035,6 +3049,8 @@ public class RtcNetworkStatus : NSObject{
 | `TokenWillExpire`       |     RTM Token 即将过期。              |
 | `TokenDidExpire`       |     RTM Token 已经过期。               |
 | `UnknownError`       |        未知错误           |
+
+<a id="iagoracallkitsdkStatus"></a>
 
 <a id="sdkstatus"></a>
 ### SdkStatus 枚举

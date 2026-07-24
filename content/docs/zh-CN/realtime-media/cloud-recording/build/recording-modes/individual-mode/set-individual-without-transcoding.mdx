@@ -86,6 +86,12 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 
 你需要复制 `sid` 以备后用。
 
+<a id="进阶功能延时混音"></a>
+
+### 进阶功能：延时混音
+
+在单流音频不转码录制场景下，你可以通过 `appsCollection` 和 `transcodeOptions` 字段开启延时混音。录制服务会在录制结束后 24 小时内合并并转码指定频道内用户的录制文件，然后上传到指定的第三方云存储。
+
 ### 停止录制
 
 录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。

@@ -878,6 +878,15 @@ class RtmStatus {
   }
   ```
 
+## Metadata
+
+设置和管理 Metadata 的数据结构。包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | int | 选填 | `-1` | Metadata 的主版本号。`-1` 表示关闭版本校验；大于 `0` 时，仅当目标版本号与该值相符时执行操作。 |
+| `items` | `List<MetadataItem>` | 选填 | `null` | Metadata Item 列表。 |
+
 ## MetadataItem
 
 设置和管理 Metadata Item 的数据结构。包含以下属性：

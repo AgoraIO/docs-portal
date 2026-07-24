@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { isApiRelatedMissingInternal } from './normalize-cn-api-links.mjs';
+import { buildLocalFragmentIndex } from './lib/api-center/local-fragment-index.mjs';
+import {
+  isApiRelatedMissingInternal,
+  neutralizeUnresolvedBodyLinks,
+  renderReport,
+  resolveLegacyApiReferenceHref,
+} from './normalize-cn-api-links.mjs';
 
 describe('CN API link normalization', () => {
   it('includes missing pages linked from API reference content', () => {
@@ -36,5 +42,56 @@ describe('CN API link normalization', () => {
         sourcePath: 'zh-CN/realtime-media/rtc/example.mdx',
       }),
     ).toBe(false);
+  });
+
+  it('maps a legacy toc page before restoring its missing member alias', async () => {
+    const fragmentIndex = await buildLocalFragmentIndex({
+      repoRoot: '/tmp/cn-api-links-test',
+      virtualPages: [
+        {
+          body: '## joinChannel [1/2]\n\n## joinChannel [2/2]\n',
+          targetPath:
+            'content/docs/zh-CN/api-reference/rtc/android/(current)/channel.mdx',
+        },
+      ],
+    });
+
+    await expect(
+      resolveLegacyApiReferenceHref(
+        '/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel',
+        { fragmentIndex },
+      ),
+    ).resolves.toBe(
+      '/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel',
+    );
+  });
+
+  it('renders an unavailable Markdown target as its original label', () => {
+    const source =
+      'Call [`removedMethod`](/api-ref/rtc/android/API/removed) now.\n';
+    const result = neutralizeUnresolvedBodyLinks(source, {
+      hrefs: ['/api-ref/rtc/android/API/removed'],
+      sourcePath: 'content/docs/zh-CN/example.mdx',
+    });
+
+    expect(result.source).toBe('Call `removedMethod` now.\n');
+    expect(result.changes).toHaveLength(1);
+  });
+
+  it('separates active broken links from archived unavailable targets', () => {
+    const report = renderReport([], [
+      {
+        href: 'https://doc.shengwang.cn/removed',
+        line: 12,
+        reason: 'missing-migrated-content',
+        sourcePath: 'content/docs/zh-CN/example.mdx',
+      },
+    ]);
+
+    expect(report).toContain('- Active unresolved link occurrences: 0');
+    expect(report).toContain('- Remaining legacy doc-host links: 0');
+    expect(report).toContain('- Archived unavailable target occurrences: 1');
+    expect(report).toContain('No active unresolved links remain');
+    expect(report).toContain('missing-migrated-content');
   });
 });

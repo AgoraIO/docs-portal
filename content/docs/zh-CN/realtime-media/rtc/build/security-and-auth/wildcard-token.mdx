@@ -27,7 +27,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 - 如果你生成了 `uid` 为 `0` 的 Token，在使用时请注意：
 
-   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/api-ref/rtc/android/API/toc_channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
+   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
 
    - 如果你需要加入**多个**频道，在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道时，请确保将 `uid` 设为具体的用户 ID 而非 `0`。
 
@@ -39,7 +39,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
    如果使用通配 Token 的观众需要连麦，声网建议按照如下步骤来更新 Token（下列 API 以 C++ 为例）：
 
-   1. 调用 [`setClientRole`](/api-ref/rtc/android/API/toc_channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
+   1. 调用 [`setClientRole`](/zh-CN/api-reference/rtc/android/channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
 
    2. 生成 Token 时，在 `BuildTokenWithUid` 方法中指定频道名和用户 ID，且将用户权限（`role`）设为发流（ `kRolePublisher`），从而生成具有发流权限的 Token。
 
@@ -82,7 +82,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 - 如果你生成了 `uid` 为 `0` 的 Token，在使用时请注意：
 
-   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/api-ref/rtc/ios/API/toc_channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
+   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
 
    - 如果你需要加入**多个**频道，在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道时，请确保将 `uid` 设为具体的用户 ID 而非 `0`。
 
@@ -137,7 +137,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 - 如果你生成了 `uid` 为 `0` 的 Token，在使用时请注意：
 
-   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/api-ref/rtc/macos/API/toc_channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
+   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
 
    - 如果你需要加入**多个**频道，在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 加入频道时，请确保将 `uid` 设为具体的用户 ID 而非 `0`。
 
@@ -250,7 +250,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 - 如果你生成了 `uid` 为 `0` 的 Token，在使用时请注意：
 
-   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/api-ref/rtc/windows/API/toc_channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
+   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
 
    - 如果你需要加入**多个**频道，在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 加入频道时，请确保将 `uid` 设为具体的用户 ID 而非 `0`。
 
@@ -262,7 +262,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
    如果使用通配 Token 的观众需要连麦，声网建议按照如下步骤来更新 Token（下列 API 以 C++ 为例）：
 
-   1. 调用 [`setClientRole`](/api-ref/rtc/windows/API/toc_channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
+   1. 调用 [`setClientRole`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
 
    2. 生成 Token 时，在 `BuildTokenWithUid` 方法中指定频道名和用户 ID，且将用户权限（`role`）设为发流（ `kRolePublisher`），从而生成具有发流权限的 Token。
 
@@ -411,7 +411,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
 - 如果你生成了 `uid` 为 `0` 的 Token，在使用时请注意：
 
-   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
+   - 如果你只需要加入某**一个**频道，在调用 [`joinChannel`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel) 加入频道时，`uid` 可以设为 `0`。
 
    - 如果你需要加入**多个**频道，在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex) 加入频道时，请确保将 `uid` 设为具体的用户 ID 而非 `0`。
 
@@ -423,7 +423,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
    如果使用通配 Token 的观众需要连麦，声网建议按照如下步骤来更新 Token（下列 API 以 C++ 为例）：
 
-   1. 调用 [`setClientRole`](/api-ref/rtc/unity/API/toc_channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
+   1. 调用 [`setClientRole`](/zh-CN/api-reference/rtc/unity/channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
 
    2. 生成 Token 时，在 `BuildTokenWithUid` 方法中指定频道名和用户 ID，且将用户权限（`role`）设为发流（ `kRolePublisher`），从而生成具有发流权限的 Token。
 
@@ -582,7 +582,7 @@ description: "了解实时互动 RTC 在不同平台上的通配 Token 方式，
 
    如果使用通配 Token 的观众需要连麦，声网建议按照如下步骤来更新 Token（下列 API 以 C++ 为例）：
 
-   1. 调用 [`setClientRole`](/api-ref/rtc/unreal-cpp/API/toc_channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
+   1. 调用 [`setClientRole`](/zh-CN/api-reference/rtc/unreal-cpp/channel#setclientrole) 来将用户角色设为主播（`BROADCASTER`）。
 
    2. 生成 Token 时，在 `BuildTokenWithUid` 方法中指定频道名和用户 ID，且将用户权限（`role`）设为发流（ `kRolePublisher`），从而生成具有发流权限的 Token。
 

@@ -578,7 +578,7 @@ let rtcKit: AgoraRtcEngineKit = AgoraRtcEngineKit.sharedEngine(withAppId: KeyCen
         }
         ```
 
-    - 调用声网 RTC SDK 中 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannelByToken`](/api-ref/rtc/ios/API/toc_channel#joinChannelByToken%20[1/4])。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
+    - 调用声网 RTC SDK 中 `AgoraRtcEngineKit` 类的 `joinChannelByToken` 加入 RTC 频道以实现房间内的实时音频通话。方法中的参数含义和支持取值请参考 [`joinChannelByToken`](/zh-CN/api-reference/rtc/ios/channel#joinChannelByToken [1/4])。在这一步里需要填写声网 RTC Token。你可以使用[开通语聊房 SDK 相关服务](/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service)中获取的临时 Token，也可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)获取正式用途的声网 RTC Token。临时 Token 的有效期为 24 小时，建议你仅在测试用途下使用。
 
       你还可以调用 [`setChannelProfile`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setchannelprofile)、[`setAudioProfile`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2)、[`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)、[`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 来为不同业务场景（语聊社交、KTV、游戏陪玩、专业音频直播场景）设置语聊房的最佳音效。
 

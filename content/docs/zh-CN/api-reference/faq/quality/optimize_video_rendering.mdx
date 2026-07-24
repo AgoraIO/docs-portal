@@ -15,6 +15,8 @@ title: "如何调查首帧出图时间较长的问题？"
 
 本节介绍三种典型的排查场景供参考。
 
+<a id="加入频道前设置渲染数据打点"></a>
+
 **加入频道前设置渲染数据打点**
 
 在 App 用户触发加入频道的操作时（如点击加入按钮或滑动切换频道），立即调用 `startMediaRenderingTracing`方法开始打点，这样获得的首帧出图时间数据将更符合用户的实际体验感受。此时 `onVideoRenderingTracingResult` 中 `tracingInfo` 报告的数据含义如下表所示：

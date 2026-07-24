@@ -94,7 +94,7 @@ public abstract int sendStreamMessage(int streamId, byte[] message);
 
 ### 1 推送视频
 
-调用 [`enableVideoDisplay`](/zh-CN/solutions/meta-world/reference/meta-api#enablevideodisplay) 开启元宇宙中的视频显示屏，再通过 [`pushVideoFrameToDisplay`](/zh-CN/solutions/meta-world/reference/meta-api#pushvideoframetodisplay) 将你从媒体播放器 [`didReceiveVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onframe) 回调得到的视频帧赋值给 `AgoraVideoFrame` 并推送其至该视频显示屏。
+调用 [`enableVideoDisplay`](/zh-CN/solutions/meta-world/reference/meta-api#enablevideodisplay) 开启元宇宙中的视频显示屏，再通过 [`pushVideoFrameToDisplay`](/zh-CN/solutions/meta-world/reference/meta-api#pushvideoframetodisplay) 将你从媒体播放器 [`didReceiveVideoFrame`](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe) 回调得到的视频帧赋值给 `AgoraVideoFrame` 并推送其至该视频显示屏。
 
 ```swift
 // 开启视频显示屏

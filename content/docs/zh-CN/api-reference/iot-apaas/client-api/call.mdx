@@ -68,6 +68,8 @@ ICallkitMgr getCallkitMgr();
 
 - 呼叫系统接口，详见 [ICallkitMgr](#callmgr)。
 
+<a id="accountmgr"></a>
+
 <a id="iaccountmgr"></a>
 ## IAccountMgr
 
@@ -133,6 +135,8 @@ String getAccount();
 **返回**
 
 当前已经登录的账号名称
+
+<a id="callmgr"></a>
 
 <a id="icallkitmgr"></a>
 ## ICallkitMgr
@@ -866,7 +870,7 @@ func getAccountInfo(result:@escaping(Int,String,AccountInfo?)->Void)
 
 **返回**
 
-- 账户信息，详见 [AccountInfo](#accountinfo)。
+- 账户信息，类型为 `AccountInfo`。
 
 - 错误码，详见 [ErrCode](#errcode)。
 
@@ -883,7 +887,7 @@ func updateAccountInfo(info:AccountInfo,result:@escaping(Int,String)->Void)
 
 | 参数   | 描述                                         |
 | ------ | -------------------------------------------- |
-| `info` | 账号信息，详见 [AccountInfo](#accountinfo)。 |
+| `info` | `AccountInfo` 类型的账号信息。 |
 
 **返回**
 
@@ -1346,6 +1350,8 @@ func updateToken(_ deviceToken:Data)
 
 - 错误码，详见 [ErrCode](#errcode)。
 
+<a id="allnotificationquery"></a>
+
 <a id="queryall"></a>
 ### queryAll
 
@@ -1360,6 +1366,8 @@ func queryAll(result:@escaping(Int,String)->Void)
 **返回**
 
 - 错误码，详见 [ErrCode](#errcode)。
+
+<a id="devicenotificationquery"></a>
 
 <a id="querybydevice"></a>
 ### queryByDevice
@@ -1383,6 +1391,8 @@ func queryByDevice(productKey: String, deviceId: String,result:@escaping(Int,Str
 
 - 错误码，详见 [ErrCode](#errcode)。
 
+<a id="notificationdelete"></a>
+
 <a id="deletenoti"></a>
 <a id="delete"></a>
 ### delete
@@ -1404,6 +1414,8 @@ func delete(notificationIdList: [String],result:@escaping(Int,String)->Void)
 **返回**
 
 - 错误码，详见 [ErrCode](#errcode)。
+
+<a id="notificationmark"></a>
 
 <a id="mark"></a>
 ### mark
@@ -2104,6 +2116,8 @@ public class PageTurn:NSObject{
 | `rowCount`    | 条数             |
 | `start`       | 当前页开始条数。 |
 | `startIndex`  | 开始翻页的索引。 |
+
+<a id="iagoracallkitsdkStatus"></a>
 
 <a id="sdkstatus"></a>
 ### SdkStatus 枚举
