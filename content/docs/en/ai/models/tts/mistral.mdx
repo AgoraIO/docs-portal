@@ -12,7 +12,74 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows how to configure Mistral TTS when starting a conversational AI agent.
+The following examples show how to configure Mistral TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import MistralTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(MistralTTS(
+        api_key='<MISTRAL_API_KEY>',
+        model='voxtral-mini-tts-2603',
+        voice='<MISTRAL_TTS_VOICE>',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, MistralTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new MistralTTS({
+    apiKey: '<MISTRAL_API_KEY>',
+    model: 'voxtral-mini-tts-2603',
+    voice: '<MISTRAL_TTS_VOICE>',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewMistralTTS(vendors.MistralTTSOptions{
+        APIKey: "<MISTRAL_API_KEY>",
+        Model:  "voxtral-mini-tts-2603",
+        Voice:  "<MISTRAL_TTS_VOICE>",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
 
@@ -26,6 +93,9 @@ Use the following `tts` configuration in your request:
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Mistral documentation](https://docs.mistral.ai/api/endpoint/audio/speech).

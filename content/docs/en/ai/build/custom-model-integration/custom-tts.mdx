@@ -3,11 +3,11 @@ title: Connect your own TTS service
 description: Integrate a custom text-to-speech (TTS) service into Agora's Conversational AI Engine.
 ---
 
-By integrating a custom text-to-speech (TTS) service, you can use a self-built, privately deployed, or third-party TTS service as the speech synthesis module for your conversational AI agent. This page explains how to prepare an HTTP service compatible with the OpenAI TTS protocol and how to connect it when starting a conversational AI agent using the `generic_http` TTS configuration.
+By integrating a custom text-to-speech (TTS) service, you can use a self-built, privately deployed, or third-party TTS service as the speech synthesis module for your conversational AI agent. This page explains how to prepare an HTTP service compatible with the OpenAI TTS protocol, and how to connect it using the Agent SDK's `GenericTTS` vendor or directly through the REST API's `generic_http` TTS configuration.
 
 ## Understand the tech
 
-Agora's Conversational AI Engine calls your TTS service using an extended OpenAI TTS protocol. When you call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), set `tts.vendor` to `generic_http` and configure your TTS service address. The agent then sends an HTTP request to that address whenever it needs to synthesize speech.
+The Agent SDK constructs your custom TTS configuration through `GenericTTS`. When you start an agent session, the SDK serializes this configuration to `tts.vendor = "generic_http"`, and Agora's Conversational AI Engine sends an HTTP request to your TTS service whenever it needs to synthesize speech. If you call the REST API directly instead of using the SDK, you can configure the same `generic_http` TTS vendor without `GenericTTS`.
 
 ## Prerequisites
 
@@ -17,9 +17,14 @@ Before you begin, ensure that you have:
 - Prepared a TTS HTTP service that Agora's Conversational AI Engine can reach.
 - Confirmed your TTS service supports HTTP/1.1 or later.
 - Confirmed your TTS service can return audio data in PCM format.
+- If you're using the Agent SDK, installed a version that supports `GenericTTS`: Go and TypeScript SDK v2.4.0 or later, or Python SDK v2.4.1 or later.
 
 :::tip[Best practices]
 Use HTTPS for your TTS service in production.
+:::
+
+:::caution[Caution]
+`GenericTTS` only supports HTTP and HTTPS endpoints. Passing a `ws://` or `wss://` address causes the SDK to throw an error when constructing the TTS vendor.
 :::
 
 ## Implementation
@@ -63,7 +68,7 @@ Request body fields:
 | `instruction` | String | Instructions for voice style, emotion, or other playback directives. |
 
 :::info[Info]
-If your TTS service doesn't support multiple sample rates, make sure the sample rate of the audio it returns matches `tts.params.sample_rate`, configured when you start the agent.
+If your TTS service doesn't support multiple sample rates, make sure the sample rate of the audio it returns matches the `sample_rate` you configure in the next step.
 :::
 
 ### Verify your TTS service's response
@@ -103,7 +108,99 @@ If a request fails, your TTS service should return a standard HTTP error status 
 
 ### Configure the agent to use your custom TTS service
 
-When calling [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), set `vendor` to `generic_http` in the `tts` block, and configure your TTS service address and parameters. The following example shows only the `properties.tts` configuration:
+The following examples show `sttVendor`/`stt_vendor` and `llmVendor`/`llm_vendor` as placeholders for STT and LLM vendors you've already configured — select the services that fit your use case. The examples focus on connecting your custom TTS service using `GenericTTS`.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GenericTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(stt_vendor)  # configure your STT vendor
+    .with_llm(llm_vendor)  # configure your LLM vendor
+    .with_tts(GenericTTS(
+        url='https://your-tts-service.example.com/v1/audio/speech',
+        headers={
+            'Authorization': 'Bearer <your_tts_api_key>',
+        },
+        model='your-tts-model',
+        voice='alloy',
+        speed=1.0,
+        sample_rate=16000,
+        response_format='pcm',
+        instruction='calm',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GenericTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(sttVendor) // configure your STT vendor
+  .withLlm(llmVendor) // configure your LLM vendor
+  .withTts(new GenericTTS({
+    url: 'https://your-tts-service.example.com/v1/audio/speech',
+    headers: {
+      Authorization: 'Bearer <your_tts_api_key>',
+    },
+    model: 'your-tts-model',
+    voice: 'alloy',
+    speed: 1.0,
+    sampleRate: 16000,
+    responseFormat: 'pcm',
+    instruction: 'calm',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+speed := 1.0
+sampleRate := vendors.SampleRate16kHz
+agent := agentkit.NewAgent(client).
+  WithStt(sttVendor). // configure your STT vendor
+  WithLlm(llmVendor). // configure your LLM vendor
+  WithTts(
+    vendors.NewGenericTTS(vendors.GenericTTSOptions{
+        URL: "https://your-tts-service.example.com/v1/audio/speech",
+        Headers: map[string]string{
+            "Authorization": "Bearer <your_tts_api_key>",
+        },
+        Model:          "your-tts-model",
+        Voice:          "alloy",
+        Speed:          &speed,
+        SampleRate:     &sampleRate,
+        ResponseFormat: "pcm",
+        Instruction:    "calm",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
 
 ```json
 {
@@ -126,6 +223,9 @@ When calling [Start a conversational AI agent](/en/api-reference/api-ref/convers
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 `generic_http` configuration reference:
 
 | Field | Type | Required | Default | Description |
@@ -143,18 +243,91 @@ When calling [Start a conversational AI agent](/en/api-reference/api-ref/convers
 | `tts.params.instruction` | String | No | - | Instructions for voice style, emotion, or other playback directives. |
 | `tts.params.enable_request_id` | Boolean | No | `false` | Whether to include `request_id`, `request_seq_id`, and `request_end` in the TTS request body. |
 
+For the exact field names in each Agent SDK language, see the `GenericTTS` reference for [Go](/en/api-reference/api-ref/server-sdk/go#newgenerictts), [Python](/en/api-reference/api-ref/server-sdk/python#generictts), and [TypeScript](/en/api-reference/api-ref/server-sdk/typescript#generictts), or the full parameter reference at [Generic TTS](../../models/tts/generic-http).
+
 :::info[Info]
 Provide at least one of `tts.headers.Authorization` or `tts.params.api_key`. If you provide both, the system uses `tts.headers.Authorization`.
 :::
 
-For the full `generic_http` parameter reference, see [Generic TTS](../../models/tts/generic-http).
+After configuring `GenericTTS`, continue with `create_session()`/`createSession()`/`CreateSession()` and `session.start()` as shown in the [quickstart](../../get-started/quickstart).
 
 ### Receive request identifiers on demand
 
-If your TTS service needs to distinguish between multiple requests within the same playback turn, set `tts.params.enable_request_id` to `true`. When enabled, the system includes the following fields in the request body it sends to your TTS service:
+If your TTS service needs to distinguish between multiple requests within the same playback turn, pass `enable_request_id` as an additional parameter:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+GenericTTS(
+    # ... other options ...
+    additional_params={
+        'enable_request_id': True,
+    },
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+new GenericTTS({
+  // ... other options ...
+  additionalParams: {
+    enable_request_id: true,
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+vendors.GenericTTSOptions{
+    // ... other options ...
+    AdditionalParams: map[string]interface{}{
+        "enable_request_id": true,
+    },
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+"tts": {
+  "vendor": "generic_http",
+  "params": {
+    "enable_request_id": true
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+When enabled, the system includes the following fields in the request body it sends to your TTS service:
 
 | Field | Type | Description |
 |---|---|---|
 | `request_id` | String | A unique identifier for this TTS request. |
 | `request_seq_id` | Integer | The request sequence number within the current playback turn, starting from `0`. |
 | `request_end` | Boolean | Whether this is the last request in the current playback turn. |
+
+## Reference
+
+- [Quickstart](../../get-started/quickstart)
+- SDK API Reference
+    - [Go: NewGenericTTS](/en/api-reference/api-ref/server-sdk/go#newgenerictts)
+    - [Python: GenericTTS](/en/api-reference/api-ref/server-sdk/python#generictts)
+    - [TypeScript: GenericTTS](/en/api-reference/api-ref/server-sdk/typescript#generictts)
+- [Generic TTS](../../models/tts/generic-http)

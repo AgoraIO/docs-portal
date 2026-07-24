@@ -1002,6 +1002,58 @@ from agora_agent.agentkit.vendors import SarvamTTS
 | `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
+#### GradiumTTS
+
+```python
+from agora_agent.agentkit.vendors import GradiumTTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Gradium API key |
+| `url` | `str` | No | `None` | WebSocket endpoint for streaming TTS output |
+| `model_name` | `str` | No | `None` | Gradium TTS model name |
+| `voice_id` | `str` | No | `None` | Gradium voice identifier |
+| `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Gradium TTS parameters |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
+
+#### MistralTTS
+
+```python
+from agora_agent.agentkit.vendors import MistralTTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Mistral API key |
+| `model` | `str` | No | `None` | Mistral TTS model name |
+| `voice` | `str` | No | `None` | Mistral voice identifier |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Mistral TTS parameters |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
+
+#### GenericTTS
+
+Custom OpenAI-compatible HTTP TTS. `url` is required and must be an HTTP or HTTPS endpoint that includes a host. An invalid URL format, or a non-HTTP(S) scheme such as `ws` or `wss`, raises a `ValueError`. A valid URL is serialized as `tts.vendor = "generic_http"`.
+
+```python
+from agora_agent import GenericTTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `url` | `str` | Yes | — | The HTTP(S) endpoint of your custom TTS service |
+| `headers` | `Dict[str, str]` | No | `None` | Custom HTTP headers to forward to the TTS service. Omitted from the request if not set |
+| `api_key` | `str` | No | `None` | The API key used to authenticate with the TTS service |
+| `model` | `str` | No | `None` | The TTS model name |
+| `voice` | `str` | No | `None` | The voice name |
+| `speed` | `float` | No | `None` | The speech rate |
+| `sample_rate` | `int` | No | `None` | The sample rate, in Hz, of the output audio. If your TTS service doesn't support multiple sample rates, make sure the returned audio's sample rate matches this value |
+| `response_format` | `str` | No | `None` | The output audio format. Conversational AI Engine currently supports `pcm` |
+| `instruction` | `str` | No | `None` | Instructions for voice style, emotion, or other playback directives |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional parameters passed through to the TTS service. Explicit fields with the same name take precedence |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
+
 
 ### STT vendors
 

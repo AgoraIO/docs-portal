@@ -12,7 +12,81 @@ This integration is fully supported for use with Conversational AI Engine. While
 
 ### Sample configuration
 
-The following example shows how to configure Gradium TTS when starting a conversational AI agent.
+The following examples show how to configure Gradium TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GradiumTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(GradiumTTS(
+        api_key='<GRADIUM_API_KEY>',
+        url='wss://api.gradium.ai/api/speech/tts',
+        model_name='default',
+        voice_id='<GRADIUM_VOICE_ID>',
+        sample_rate=16000,
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GradiumTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new GradiumTTS({
+    apiKey: '<GRADIUM_API_KEY>',
+    url: 'wss://api.gradium.ai/api/speech/tts',
+    modelName: 'default',
+    voiceId: '<GRADIUM_VOICE_ID>',
+    sampleRate: 16000,
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+sampleRate := vendors.SampleRate16kHz
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewGradiumTTS(vendors.GradiumTTSOptions{
+        APIKey:     "<GRADIUM_API_KEY>",
+        URL:        "wss://api.gradium.ai/api/speech/tts",
+        ModelName:  "default",
+        VoiceID:    "<GRADIUM_VOICE_ID>",
+        SampleRate: &sampleRate,
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 Use the following `tts` configuration in your request:
 
@@ -28,6 +102,9 @@ Use the following `tts` configuration in your request:
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Gradium documentation](https://docs.gradium.ai/guides/text-to-speech).

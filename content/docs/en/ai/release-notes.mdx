@@ -17,9 +17,9 @@ Released on July XX, 2026.
 
 Included in this release:
 
-- **Generic HTTP TTS provider**
+- **Connect custom TTS services using the OpenAI protocol**
 
-  Integrate a custom TTS service that implements the OpenAI TTS protocol using the new `generic_http` TTS vendor. Configure [`tts.url`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-url), [`tts.headers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-headers), and `tts.params` when starting the agent. For details, see [Generic TTS](/en/ai/models/tts/generic-http) and [Connect your own TTS service](/en/ai/build/custom-model-integration/custom-tts).
+  You can now use a self-built, privately deployed, or third-party TTS service that implements the OpenAI TTS protocol as your agent's speech synthesis module. Configure it using the `GenericTTS` vendor in the Agora Agents SDKs (Go and TypeScript v2.4.0 or later, Python v2.4.1 or later), or the `generic_http` TTS vendor directly through the RESTful API. For details, see [Connect your own TTS service](/en/ai/build/custom-model-integration/custom-tts) and [Generic TTS](/en/ai/models/tts/generic-http).
 
 - **Client toolkit support for manual turn control**
 
@@ -79,7 +79,46 @@ This release adds the following APIs to the client toolkit for manual turn contr
 
 #### API changes
 
-This release introduces the following changes to the RESTful API.
+This release introduces the following changes for connecting TTS services.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+This release adds the following TTS vendor classes:
+
+- [`GenericTTS`](/en/api-reference/api-ref/server-sdk/python#generictts): Connect a custom TTS service using the OpenAI TTS protocol.
+- [`GradiumTTS`](/en/api-reference/api-ref/server-sdk/python#gradiumtts)
+- [`MistralTTS`](/en/api-reference/api-ref/server-sdk/python#mistraltts)
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+This release adds the following TTS vendor classes:
+
+- [`GenericTTS`](/en/api-reference/api-ref/server-sdk/typescript#generictts): Connect a custom TTS service using the OpenAI TTS protocol.
+- [`GradiumTTS` and `MistralTTS`](/en/api-reference/api-ref/server-sdk/typescript#other-tts-vendors)
+
+</TabsContent>
+
+<TabsContent value="go">
+
+This release adds the following TTS vendor constructors:
+
+- [`NewGenericTTS`](/en/api-reference/api-ref/server-sdk/go#newgenerictts): Connect a custom TTS service using the OpenAI TTS protocol.
+- [`NewGradiumTTS`](/en/api-reference/api-ref/server-sdk/go#newgradiumtts)
+- [`NewMistralTTS`](/en/api-reference/api-ref/server-sdk/go#newmistraltts)
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 - Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
@@ -91,7 +130,12 @@ This release introduces the following changes to the RESTful API.
   - **Updated parameters**
 
     - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `generic_http`: Integrate a custom TTS service using the OpenAI TTS protocol. See [Generic TTS](/en/ai/models/tts/generic-http).
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `gradium`: Use Gradium as the TTS provider. See [Gradium](/en/ai/models/tts/gradium).
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `mistral`: Use Mistral as the TTS provider. See [Mistral](/en/ai/models/tts/mistral).
     - [`tts.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-params): Now required when `tts.vendor` is `generic_http`.
+
+</TabsContent>
+</Tabs>
 
 ### v2.9
 
