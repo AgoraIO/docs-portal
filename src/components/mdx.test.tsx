@@ -638,40 +638,6 @@ describe('common MDX registry', () => {
     expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
   });
 
-  it('renders platform tabs in the shared registry order', () => {
-    const components = getMDXComponents() as Record<string, unknown>;
-    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
-
-    render(
-      <Group
-        canonicalPlatform="web"
-        groupMode="structured"
-        platforms='["android","ios","macos","web","windows","electron","flutter","react-native","javascript","blueprint","unity","unreal"]'
-      >
-        <div>Platform content</div>
-      </Group>,
-    );
-
-    expect(
-      within(screen.getByRole('tablist'))
-        .getAllByRole('tab')
-        .map((tab) => tab.textContent?.trim()),
-    ).toEqual([
-      'Android',
-      'iOS',
-      'macOS',
-      'Web',
-      'Windows',
-      'Electron',
-      'Flutter',
-      'React Native',
-      'JavaScript',
-      'Unity',
-      'Unreal Engine',
-      'Unreal Blueprint',
-    ]);
-  });
-
   it('hides the platform tablist when a group only has one platform', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;
@@ -803,7 +769,7 @@ describe('common MDX registry', () => {
       );
 
       await waitFor(() => {
-        expect(screen.queryByRole('tab', { name: 'Web' })).toBeNull();
+        expect(screen.queryByRole('tab', { name: 'macOS' })).toBeNull();
       });
 
       const tablist = screen.getByRole('tablist', { name: 'Platform' });
@@ -829,7 +795,7 @@ describe('common MDX registry', () => {
         'true',
       );
       expect(screen.getByRole('tab', { name: 'iOS' })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'macOS' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'Web' })).toBeInTheDocument();
       expect(screen.queryByRole('tab', { name: 'Windows' })).toBeNull();
       expect(screen.queryByRole('tab', { name: 'Flutter' })).toBeNull();
 
@@ -840,7 +806,7 @@ describe('common MDX registry', () => {
       });
 
       expect(screen.getByRole('menu')).toBeVisible();
-      expect(screen.getByRole('menuitem', { name: 'Web' })).toBeVisible();
+      expect(screen.getByRole('menuitem', { name: 'macOS' })).toBeVisible();
       expect(screen.getByRole('menuitem', { name: 'Windows' })).toBeVisible();
       expect(
         screen.getByRole('menuitem', { name: 'React Native' }),

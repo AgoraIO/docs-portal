@@ -29,7 +29,6 @@ import {
   getPlatformLabel,
   isKnownPlatform,
   type PlatformKey,
-  sortPlatformKeys,
 } from '@/lib/platforms/registry';
 
 type ControlledTabsProps = React.ComponentProps<typeof Tabs> & {
@@ -651,7 +650,7 @@ function PlatformTabs({
 function usePlatformList(platforms: string) {
   return useMemo(() => {
     const parsed = JSON.parse(platforms) as string[];
-    return sortPlatformKeys(parsed.filter(isKnownPlatform));
+    return parsed.filter(isKnownPlatform);
   }, [platforms]);
 }
 

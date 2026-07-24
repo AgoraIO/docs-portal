@@ -8,126 +8,126 @@ export const platformRegistry = {
       en: 'Web',
       'zh-CN': 'Web',
     },
-    order: 40,
+    order: 10,
   },
   javascript: {
     label: {
       en: 'JavaScript',
       'zh-CN': 'JavaScript',
     },
-    order: 90,
+    order: 15,
   },
   android: {
     label: {
       en: 'Android',
       'zh-CN': 'Android',
     },
-    order: 10,
+    order: 20,
   },
   ios: {
     label: {
       en: 'iOS',
       'zh-CN': 'iOS',
     },
-    order: 20,
+    order: 30,
   },
   flutter: {
     label: {
       en: 'Flutter',
       'zh-CN': 'Flutter',
     },
-    order: 70,
+    order: 40,
   },
   'react-native': {
     label: {
       en: 'React Native',
       'zh-CN': 'React Native',
     },
-    order: 80,
+    order: 50,
   },
   windows: {
     label: {
       en: 'Windows',
       'zh-CN': 'Windows',
     },
-    order: 50,
+    order: 60,
   },
   cpp: {
     label: {
       en: 'C++',
       'zh-CN': 'C++',
     },
-    order: 130,
+    order: 65,
   },
   macos: {
     label: {
       en: 'macOS',
       'zh-CN': 'macOS',
     },
-    order: 30,
+    order: 70,
   },
   electron: {
     label: {
       en: 'Electron',
       'zh-CN': 'Electron',
     },
-    order: 60,
+    order: 80,
   },
   unity: {
     label: {
       en: 'Unity',
       'zh-CN': 'Unity',
     },
-    order: 100,
+    order: 90,
   },
   unreal: {
     label: {
       en: 'Unreal Engine',
       'zh-CN': 'Unreal Engine',
     },
-    order: 110,
+    order: 100,
   },
   blueprint: {
     label: {
       en: 'Unreal Blueprint',
       'zh-CN': 'Unreal Blueprint',
     },
-    order: 120,
+    order: 110,
   },
   python: {
     label: {
       en: 'Python',
       'zh-CN': 'Python',
     },
-    order: 140,
+    order: 120,
   },
   go: {
     label: {
       en: 'Go',
       'zh-CN': 'Go',
     },
-    order: 150,
+    order: 122,
   },
   'linux-cpp': {
     label: {
       en: 'Linux C++',
       'zh-CN': 'Linux C++',
     },
-    order: 160,
+    order: 125,
   },
   'linux-c': {
     label: {
       en: 'Linux C',
       'zh-CN': 'Linux C',
     },
-    order: 170,
+    order: 130,
   },
   'linux-java': {
     label: {
       en: 'Linux Java',
       'zh-CN': 'Linux Java',
     },
-    order: 180,
+    order: 140,
   },
 } as const;
 
@@ -161,15 +161,6 @@ export function getPlatformLabel(
   locale: AppLocale,
 ): string {
   return platformRegistry[platform].label[locale];
-}
-
-export function sortPlatformKeys(
-  platforms: readonly PlatformKey[],
-): PlatformKey[] {
-  return [...platforms].sort(
-    (left, right) =>
-      platformRegistry[left].order - platformRegistry[right].order,
-  );
 }
 
 export function getCanonicalPlatform(platforms: string[]): {
