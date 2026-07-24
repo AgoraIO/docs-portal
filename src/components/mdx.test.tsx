@@ -638,6 +638,37 @@ describe('common MDX registry', () => {
     expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
   });
 
+  it('renders platform tabs in the shared registry order', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+
+    render(
+      <Group
+        canonicalPlatform="web"
+        groupMode="structured"
+        platforms='["android","ios","macos","web","windows","electron","flutter","react-native","javascript"]'
+      >
+        <div>Platform content</div>
+      </Group>,
+    );
+
+    expect(
+      within(screen.getByRole('tablist'))
+        .getAllByRole('tab')
+        .map((tab) => tab.textContent?.trim()),
+    ).toEqual([
+      'Web',
+      'JavaScript',
+      'Android',
+      'iOS',
+      'Flutter',
+      'React Native',
+      'Windows',
+      'macOS',
+      'Electron',
+    ]);
+  });
+
   it('hides the platform tablist when a group only has one platform', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const Group = components._PlatformTabsGroup as PlatformGroupComponent;

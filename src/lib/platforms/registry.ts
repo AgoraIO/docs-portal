@@ -163,6 +163,15 @@ export function getPlatformLabel(
   return platformRegistry[platform].label[locale];
 }
 
+export function sortPlatformKeys(
+  platforms: readonly PlatformKey[],
+): PlatformKey[] {
+  return [...platforms].sort(
+    (left, right) =>
+      platformRegistry[left].order - platformRegistry[right].order,
+  );
+}
+
 export function getCanonicalPlatform(platforms: string[]): {
   platform: string;
   usedFallback: boolean;

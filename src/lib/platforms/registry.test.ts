@@ -6,6 +6,7 @@ import {
   normalizePlatformKey,
   PLATFORM_CANONICAL_PRIORITY,
   PLATFORM_PREFERENCE_STORAGE_KEY,
+  sortPlatformKeys,
 } from './registry';
 
 describe('platform registry', () => {
@@ -86,6 +87,32 @@ describe('platform registry', () => {
     expect(getPlatformLabel('linux-cpp', 'en')).toBe('Linux C++');
     expect(getPlatformLabel('linux-c', 'en')).toBe('Linux C');
     expect(getPlatformLabel('linux-java', 'en')).toBe('Linux Java');
+  });
+
+  it('sorts platform keys by the shared registry order', () => {
+    expect(
+      sortPlatformKeys([
+        'android',
+        'ios',
+        'macos',
+        'web',
+        'windows',
+        'electron',
+        'flutter',
+        'react-native',
+        'javascript',
+      ]),
+    ).toEqual([
+      'web',
+      'javascript',
+      'android',
+      'ios',
+      'flutter',
+      'react-native',
+      'windows',
+      'macos',
+      'electron',
+    ]);
   });
 
   it('uses a namespaced storage key', () => {
