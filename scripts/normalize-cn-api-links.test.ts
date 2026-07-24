@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildLocalFragmentIndex } from './lib/api-center/local-fragment-index.mjs';
 import {
+  isApprovedLegacyFallback,
   isApiRelatedMissingInternal,
   neutralizeUnresolvedBodyLinks,
   renderReport,
@@ -89,9 +90,30 @@ describe('CN API link normalization', () => {
     ]);
 
     expect(report).toContain('- Active unresolved link occurrences: 0');
-    expect(report).toContain('- Remaining legacy doc-host links: 0');
+    expect(report).toContain(
+      '- Unapproved legacy doc-host link occurrences: 0',
+    );
+    expect(report).toContain('- Approved legacy fallback link occurrences: 0');
     expect(report).toContain('- Archived unavailable target occurrences: 1');
     expect(report).toContain('No active unresolved links remain');
     expect(report).toContain('missing-migrated-content');
+  });
+
+  it('allows a verified legacy fallback only in its approved source file', () => {
+    const href =
+      'https://doc.shengwang.cn/codebox/detail?demo=24&platform=2';
+
+    expect(
+      isApprovedLegacyFallback(
+        'content/docs/zh-CN/realtime-media/rtc/reference/downloads/android.mdx',
+        href,
+      ),
+    ).toBe(true);
+    expect(
+      isApprovedLegacyFallback(
+        'content/docs/zh-CN/realtime-media/rtc/reference/downloads/ios.mdx',
+        href,
+      ),
+    ).toBe(false);
   });
 });
