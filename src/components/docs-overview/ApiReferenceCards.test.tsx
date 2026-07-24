@@ -144,18 +144,19 @@ describe('ApiReferenceCards', () => {
     expect(apiType).not.toHaveClass('lg:hidden');
   });
 
-  it('uses the same capability groups as the product directory', () => {
+  it('renders only product cards without capability headings', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
-    const capabilityHeadings = screen
-      .getAllByRole('heading', { level: 2 })
-      .map((heading) => heading.textContent);
-
-    expect(capabilityHeadings).toEqual([
-      '实时互动基础能力',
-      '实时互动扩展能力',
-      '场景化解决方案',
-    ]);
+    expect(
+      screen.queryByRole('heading', { name: '实时互动基础能力' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '实时互动扩展能力' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '场景化解决方案' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
   });
 
   it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {

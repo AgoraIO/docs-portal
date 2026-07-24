@@ -51,7 +51,7 @@ export function ApiReferenceCards({
       matchesApiTypeFilter(entry, apiType),
   );
   const visibleGroups = groupEntriesByProduct(visibleEntries);
-  const visibleCapabilityGroups = groupProductsByCapability(visibleGroups);
+  const visibleProductGroups = orderProductsByCapability(visibleGroups);
   const hasFilter =
     productId !== 'all' || platformId !== 'all' || apiType !== 'all';
 
@@ -137,30 +137,16 @@ export function ApiReferenceCards({
       </section>
 
       {visibleEntries.length > 0 ? (
-        <div className="flex flex-col gap-10">
-          {visibleCapabilityGroups.map((capabilityGroup) => (
-            <section
-              aria-labelledby={`api-reference-capability-${capabilityGroup.id}`}
-              className="flex flex-col gap-[18px]"
-              key={capabilityGroup.id}
+        <div className="flex flex-col gap-[18px]">
+          {visibleProductGroups.map((group) => (
+            <div
+              className="scroll-mt-40"
+              data-api-reference-product-id={group.productId}
+              id={getApiReferenceProductSectionId(group.productId)}
+              key={group.productId}
             >
-              <h2
-                className="m-0 border-border border-b pb-2.5 text-base font-semibold text-foreground"
-                id={`api-reference-capability-${capabilityGroup.id}`}
-              >
-                {capabilityGroup.label}
-              </h2>
-              {capabilityGroup.products.map((group) => (
-                <div
-                  className="scroll-mt-40"
-                  data-api-reference-product-id={group.productId}
-                  id={getApiReferenceProductSectionId(group.productId)}
-                  key={group.productId}
-                >
-                  <ApiReferenceGroup group={group} />
-                </div>
-              ))}
-            </section>
+              <ApiReferenceGroup group={group} />
+            </div>
           ))}
         </div>
       ) : (
@@ -490,12 +476,6 @@ type ApiReferenceProductGroup = {
   solutionGroups: ApiReferenceSolutionEntryGroup[];
 };
 
-type ApiReferenceVisibleCapabilityGroup = {
-  id: string;
-  label: string;
-  products: ApiReferenceProductGroup[];
-};
-
 type ApiReferenceSolutionEntryGroup = {
   description?: string;
   entries: ApiReferenceCardEntry[];
@@ -575,29 +555,19 @@ function entryKey(entry: ApiReferenceCardEntry) {
   return `${entry.productId}-${entry.solutionId ?? 'default'}-${entry.platformId}-${entry.apiType}-${entry.href}`;
 }
 
-function groupProductsByCapability(
+function orderProductsByCapability(
   products: ApiReferenceProductGroup[],
-): ApiReferenceVisibleCapabilityGroup[] {
+): ApiReferenceProductGroup[] {
   const productById = new Map(
     products.map((product) => [product.productId, product]),
   );
 
-  return API_REFERENCE_CAPABILITY_GROUPS.flatMap((capabilityGroup) => {
-    const groupedProducts = capabilityGroup.productIds.flatMap((productId) => {
+  return API_REFERENCE_CAPABILITY_GROUPS.flatMap((capabilityGroup) =>
+    capabilityGroup.productIds.flatMap((productId) => {
       const product = productById.get(productId);
       return product ? [product] : [];
-    });
-
-    return groupedProducts.length > 0
-      ? [
-          {
-            id: capabilityGroup.id,
-            label: capabilityGroup.label,
-            products: groupedProducts,
-          },
-        ]
-      : [];
-  });
+    }),
+  );
 }
 
 function matchesApiTypeFilter(
