@@ -433,6 +433,9 @@ describe('DocsShell', () => {
       'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
     expect(docsBodyShell).toHaveClass(
+      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
+    );
+    expect(docsBodyShell).not.toHaveClass(
       'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
     );
     expect(docsSidebar).toHaveStyle({
@@ -713,7 +716,7 @@ describe('DocsShell', () => {
       'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]',
     );
     expect(docsBodyShell).toHaveClass(
-      'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]',
+      'xl:grid-cols-[256px_minmax(0,1fr)_220px]',
     );
     expect(screen.getByTestId('docs-sidebar')).toBeInTheDocument();
     expect(screen.getByTestId('docs-main-column')).toBeInTheDocument();
