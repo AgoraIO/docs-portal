@@ -3,6 +3,11 @@ import { useMemo, useState, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
+  getSdkDownloadProductCatalogId,
+  getSdkDownloadProductGroupRank,
+  getSdkDownloadProductSectionId,
+} from './sdk-download-navigation';
+import {
   type SdkDownloadPlatform,
   type SdkDownloadProduct,
   type SdkDownloadVersion,
@@ -296,13 +301,6 @@ function platformRank(platformId: string) {
   return index === -1 ? PLATFORM_ORDER.length : index;
 }
 
-function productGroupRank(productId: string) {
-  const index = (PRODUCT_GROUP_ORDER as readonly string[]).indexOf(
-    productId as (typeof PRODUCT_GROUP_ORDER)[number],
-  );
-  return index === -1 ? PRODUCT_GROUP_ORDER.length : index;
-}
-
 type ProductPlatformEntry = {
   platformId: string;
   platformLabel: string;
@@ -328,7 +326,7 @@ function buildProductGroups(
   for (const platform of platforms) {
     for (const kind of ['core', 'addOns'] as const) {
       for (const product of platform[kind] ?? []) {
-        const productId = getProductCatalogId(product);
+        const productId = getSdkDownloadProductCatalogId(product);
         let entries = entriesByProductId.get(productId);
         if (!entries) {
           entries = [];
@@ -397,7 +395,9 @@ function buildProductGroups(
       };
     })
     .sort(
-      (a, b) => productGroupRank(a.productId) - productGroupRank(b.productId),
+      (a, b) =>
+        getSdkDownloadProductGroupRank(a.productId) -
+        getSdkDownloadProductGroupRank(b.productId),
     );
 }
 
@@ -489,7 +489,10 @@ export function SdksCatalog({
     : platformLabel;
 
   return (
-    <section className="not-prose my-8 flex flex-col gap-3">
+    <section
+      className="not-prose my-8 flex flex-col gap-3"
+      data-sdk-download-catalog
+    >
       {summaryLabel ? (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
           <p className="m-0 text-sm font-medium text-foreground">
@@ -548,7 +551,9 @@ function ProductCard({
   return (
     <article
       aria-labelledby={titleId}
-      className="rounded-xl border border-border p-5"
+      className="scroll-mt-40 rounded-xl border border-border p-5"
+      data-sdk-download-product-id={group.productId}
+      id={getSdkDownloadProductSectionId(group.productId)}
     >
       <div className="flex items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
@@ -650,6 +655,7 @@ function useSdkCatalogQueryFilters(
     productId: ProductFilterId | null;
   },
 ) {
+  const { platformId, productId } = defaults;
   const search = useSyncExternalStore(
     subscribeToLocationSearch,
     getLocationSearch,
@@ -657,8 +663,8 @@ function useSdkCatalogQueryFilters(
   );
 
   return useMemo(
-    () => readQueryFilters(search, platforms, defaults),
-    [search, platforms, defaults.platformId, defaults.productId],
+    () => readQueryFilters(search, platforms, { platformId, productId }),
+    [search, platforms, platformId, productId],
   );
 }
 
@@ -776,67 +782,6 @@ function normalizePlatformFilter(
   }
 
   return platforms.some((entry) => entry.id === normalized) ? normalized : null;
-}
-
-function getProductCatalogId(product: SdkDownloadProduct) {
-  const normalizedId = product.id.toLowerCase();
-
-  if (normalizedId.includes('agents-sdk')) {
-    return 'agents';
-  }
-  if (normalizedId.includes('voice-sdk')) {
-    return 'voice';
-  }
-  if (normalizedId.includes('video-sdk')) {
-    return 'video';
-  }
-  if (
-    normalizedId.includes('signaling-sdk') ||
-    normalizedId.includes('rtm-sdk')
-  ) {
-    return 'signaling';
-  }
-  if (normalizedId.includes('chat-sdk')) {
-    return 'chat';
-  }
-  if (normalizedId.includes('meeting-sdk')) {
-    return 'meeting';
-  }
-  if (normalizedId.includes('mediaplayer-kit')) {
-    return 'mediaplayer-kit';
-  }
-  if (normalizedId.includes('proctor-sdk')) {
-    return 'proctor';
-  }
-  if (normalizedId.includes('cloud-scene-sdk')) {
-    return 'cloud-scene';
-  }
-  if (
-    normalizedId.includes('flexible-classroom-sdk') ||
-    normalizedId.includes('classroom-sdk')
-  ) {
-    return 'flexible-classroom';
-  }
-  if (normalizedId.includes('iot-sdk')) {
-    return 'iot';
-  }
-  if (
-    normalizedId.includes('fastboard') ||
-    normalizedId.includes('interactive-whiteboard-fastboard')
-  ) {
-    return 'fastboard';
-  }
-  if (normalizedId.includes('interactive-whiteboard')) {
-    return 'whiteboard';
-  }
-  if (normalizedId.includes('server-gateway')) {
-    return 'server-gateway';
-  }
-  if (normalizedId.includes('on-premise-recording')) {
-    return 'on-premise-recording';
-  }
-
-  return normalizedId.replace(/-(android|ios|web|macos|windows|linux)$/, '');
 }
 
 function getVersionKey(platformId: string, version: SdkDownloadVersion) {

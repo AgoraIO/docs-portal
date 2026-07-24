@@ -127,18 +127,35 @@ describe('ApiReferenceCards', () => {
     });
   });
 
-  it('keeps product and platform selects as mobile fallbacks on the merged catalog', () => {
+  it('keeps the platform select left of API type and the product select as a mobile fallback', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
-    expect(screen.getByLabelText('产品').closest('label')).toHaveClass(
-      'lg:hidden',
-    );
-    expect(screen.getByLabelText('平台/语言').closest('label')).toHaveClass(
-      'lg:hidden',
-    );
-    expect(screen.getByRole('group', { name: 'API 类型' })).not.toHaveClass(
-      'lg:hidden',
-    );
+    const productSelect = screen.getByLabelText('产品');
+    const platformSelect = screen.getByLabelText('平台/语言');
+    const apiType = screen.getByRole('group', { name: 'API 类型' });
+
+    expect(productSelect.closest('label')).toHaveClass('lg:hidden');
+    expect(platformSelect.closest('label')).not.toHaveClass('lg:hidden');
+    expect(platformSelect).toHaveDisplayValue('全部平台');
+    expect(
+      (platformSelect.closest('label')?.compareDocumentPosition(apiType) ?? 0) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(apiType).not.toHaveClass('lg:hidden');
+  });
+
+  it('uses the same capability groups as the product directory', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const capabilityHeadings = screen
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.textContent);
+
+    expect(capabilityHeadings).toEqual([
+      '实时互动基础能力',
+      '实时互动扩展能力',
+      '场景化解决方案',
+    ]);
   });
 
   it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {
