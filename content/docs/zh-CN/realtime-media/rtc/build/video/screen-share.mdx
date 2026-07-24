@@ -113,7 +113,7 @@ implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 
 ### 配置权限
 
-自 Android 9 版本起，Android 系统对于后台 App 访问用户数据进行了限制。自 Android 14 版本起，如果 App 的 `targetSdkVersion` 设置为 34 或更高，必须正确声明前台服务类型，否则应用在后台时屏幕共享等功能会受到影响。详见[为什么部分 Android 版本 App 锁屏或切后台音视频采集或播放（渲染）无效？](/zh-CN/api-reference/faq/quality/android_background#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88)。
+自 Android 9 版本起，Android 系统对于后台 App 访问用户数据进行了限制。自 Android 14 版本起，如果 App 的 `targetSdkVersion` 设置为 34 或更高，必须正确声明前台服务类型，否则应用在后台时屏幕共享等功能会受到影响。详见[为什么部分 Android 版本 App 锁屏或切后台音视频采集或播放（渲染）无效？](/zh-CN/api-reference/faq/quality/android_background#解决方案)。
 
 为确保屏幕共享在应用后台时能正常运行，你需要正确集成前台服务。如果没有正确配置，可能会导致以下问题：
 
@@ -334,11 +334,11 @@ engine.stopScreenCapture();
 
 ### API 参考
 
-- [`startScreenCapture`](/api-ref/rtc/android/API/toc_screencapture#startScreenCapture)
-- [`updateScreenCaptureParameters`](/api-ref/rtc/android/API/toc_screencapture#updateScreenCaptureParameters)
-- [`stopScreenCapture`](/api-ref/rtc/android/API/toc_screencapture#stopScreenCapture)
-- [`setScreenCaptureScenario`](/api-ref/rtc/android/API/toc_screencapture#setScreenCaptureScenario)
-- [`setExternalMediaProjection`](/api-ref/rtc/android/API/toc_screencapture#api_irtcengine_setexternalmediaprojection)
+- [`startScreenCapture`](/zh-CN/api-reference/rtc/android/video/screencapture#startscreencapture)
+- [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/android/video/screencapture#updatescreencaptureparameters)
+- [`stopScreenCapture`](/zh-CN/api-reference/rtc/android/video/screencapture#stopscreencapture)
+- [`setScreenCaptureScenario`](/zh-CN/api-reference/rtc/android/video/screencapture#setscreencapturescenario)
+- [`setExternalMediaProjection`](/zh-CN/api-reference/rtc/android/video/screencapture#api_irtcengine_setexternalmediaprojection)
 
 </PlatformStructured>
 
@@ -710,9 +710,9 @@ agoraKit.updateChannel(with: option)
 
 ### API 参考
 
-- [`startScreenCapture`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_startscreencapture)
-- [`updateScreenCapture`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_updatescreencapture)
-- [`stopScreenCapture`](/api-ref/rtc/ios/API/toc_screencapture#api_irtcengine_stopscreencapture)
+- [`startScreenCapture`](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_startscreencapture)
+- [`updateScreenCapture`](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_updatescreencapture)
+- [`stopScreenCapture`](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_stopscreencapture)
 
 </PlatformStructured>
 
@@ -1020,13 +1020,13 @@ agoraKit.stopScreenCapture()
 
 ### API 参考
 
-- [`getScreenCaptureSourcesWithThumbSize`](/api-ref/rtc/macos/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-- [`startScreenCaptureByDisplayId`](/api-ref/rtc/macos/API/toc_screencapture#startScreenCaptureByDisplayId)
-- [`startScreenCaptureByWindowId`](/api-ref/rtc/macos/API/toc_screencapture#startScreenCaptureByWindowId)
-- [`setScreenCaptureScenario`](/api-ref/rtc/macos/API/toc_screencapture#setScreenCaptureScenario)
-- [`updateScreenCaptureParameters`](/api-ref/rtc/macos/API/toc_screencapture#updateScreenCaptureParameters)
-- [`updateScreenCaptureRegion`](/api-ref/rtc/macos/API/toc_screencapture#updateScreenCaptureRegion)
-- [`stopScreenCapture`[1/2]](/api-ref/rtc/macos/API/toc_screencapture#stopScreenCapture%20[1/2])
+- [`getScreenCaptureSourcesWithThumbSize`](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_getscreencapturesources)
+- [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_startscreencapturebydisplayid)
+- [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/macos/video/screencapture#api_irtcengine_startscreencapturebywindowid)
+- [`setScreenCaptureScenario`](/zh-CN/api-reference/rtc/macos/video/screencapture#setscreencapturescenario)
+- [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/macos/video/screencapture#updatescreencaptureparameters)
+- [`updateScreenCaptureRegion`](/zh-CN/api-reference/rtc/macos/video/screencapture#updatescreencaptureregion)
+- [`stopScreenCapture`[1/2]](/zh-CN/api-reference/rtc/macos/video/screencapture#stopScreenCapture [1/2])
 
 </PlatformStructured>
 
@@ -1052,7 +1052,7 @@ Web SDK 仅支持在以下**桌面端**浏览器中进行屏幕共享：
 
 ## 实现原理
 
-Web 端屏幕共享，实际上是通过创建一个屏幕共享的视频轨道对象来实现的。你可以调用 [`createScreenVideoTrack`](/api-ref/rtc/javascript/interfaces/iagorartc.html#createscreenvideotrack) 方法创建一个用于屏幕共享的本地视频轨道对象。采集屏幕的过程中浏览器会询问需要共享哪些屏幕，根据终端用户的选择去获取屏幕信息。
+Web 端屏幕共享，实际上是通过创建一个屏幕共享的视频轨道对象来实现的。你可以调用 [`createScreenVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack) 方法创建一个用于屏幕共享的本地视频轨道对象。采集屏幕的过程中浏览器会询问需要共享哪些屏幕，根据终端用户的选择去获取屏幕信息。
 
 ## 实现方法
 
@@ -1565,13 +1565,13 @@ ret = m_rtcEngine->stopScreenCapture();
 
 ### API 参考
 
-- [`getScreenCaptureSourcesWithThumbSize`](/api-ref/rtc/windows/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-- [`startScreenCaptureByDisplayId`](/api-ref/rtc/windows/API/toc_screencapture#startScreenCaptureByDisplayId)
-- [`startScreenCaptureByWindowId`](/api-ref/rtc/windows/API/toc_screencapture#startScreenCaptureByWindowId)
-- [`setScreenCaptureScenario`](/api-ref/rtc/windows/API/toc_screencapture#setScreenCaptureScenario)
-- [`updateScreenCaptureParameters`](/api-ref/rtc/windows/API/toc_screencapture#updateScreenCaptureParameters)
-- [`updateScreenCaptureRegion`](/api-ref/rtc/windows/API/toc_screencapture#updateScreenCaptureRegion)
-- [`stopScreenCapture`[1/2]](/api-ref/rtc/windows/API/toc_screencapture#stopScreenCapture%20[1/2])
+- [`getScreenCaptureSourcesWithThumbSize`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_getscreencapturesources)
+- [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#startscreencapturebydisplayid)
+- [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#startscreencapturebywindowid)
+- [`setScreenCaptureScenario`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#setscreencapturescenario)
+- [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#updatescreencaptureparameters)
+- [`updateScreenCaptureRegion`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#updatescreencaptureregion)
+- [`stopScreenCapture`[1/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#stopscreencapture-12)
 
 </PlatformStructured>
 
@@ -1750,9 +1750,9 @@ this.rtcEngine?.stopScreenCapture();
 
 ### API 参考
 
-- [startScreenCapture](/api-ref/rtc/harmonyos/API/toc_screencapture#startScreenCapture)
-- [updateScreenCaptureParameters](/api-ref/rtc/harmonyos/API/toc_screencapture#updateScreenCaptureParameters)
-- [stopScreenCapture](/api-ref/rtc/harmonyos/API/toc_screencapture#stopScreenCapture)
+- [startScreenCapture](/zh-CN/api-reference/rtc/harmonyos/video/screencapture#startscreencapture)
+- [updateScreenCaptureParameters](/zh-CN/api-reference/rtc/harmonyos/video/screencapture#updatescreencaptureparameters)
+- [stopScreenCapture](/zh-CN/api-reference/rtc/harmonyos/video/screencapture#stopscreencapture)
 
 </PlatformStructured>
 
@@ -1843,7 +1843,7 @@ const sources = rtcEngine.getScreenCaptureSources(
 
 ### （可选）采集系统音频
 
-如果你想要同时采集并发布共享屏幕或窗口中播放的音频，可以调用 [`enableLoopbackRecording`](/api-ref/rtc/electron/API/toc_audio_capture#enableLoopbackRecording) 方法开启声卡采集，系统播放的音频会被合入到本地音频流中。
+如果你想要同时采集并发布共享屏幕或窗口中播放的音频，可以调用 [`enableLoopbackRecording`](/zh-CN/api-reference/rtc/electron/audio/audio-capture#enableloopbackrecording) 方法开启声卡采集，系统播放的音频会被合入到本地音频流中。
 
 :::warning[注意]
 调用该方法后，系统其他进程播放的音频也会被发布到远端，如果这并非你的预期，请再次调用该方法，关闭声卡采集。
@@ -1968,12 +1968,12 @@ const sources = rtcEngine.getScreenCaptureSources(
 
 ### API 参考
 
-- [`getScreenCaptureSources`](/api-ref/rtc/electron/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-- [`startScreenCaptureByDisplayId`](/api-ref/rtc/electron/API/toc_screencapture#api_irtcengine_startscreencapturebydisplayid)
-- [`startScreenCaptureByWindowId`](/api-ref/rtc/electron/API/toc_screencapture#api_irtcengine_startscreencapturebywindowid)
-- [`updateScreenCaptureParameters`](/api-ref/rtc/electron/API/toc_screencapture#api_irtcengine_updatescreencaptureparameters)
-- [`stopScreenCapture`](/api-ref/rtc/electron/API/toc_screencapture#api_irtcengine_stopscreencapture)
-- [`enableLoopbackRecording`](/api-ref/rtc/electron/API/toc_audio_capture#enableLoopbackRecording)
+- [`getScreenCaptureSources`](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_getscreencapturesources)
+- [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_startscreencapturebydisplayid)
+- [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_startscreencapturebywindowid)
+- [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_updatescreencaptureparameters)
+- [`stopScreenCapture`](/zh-CN/api-reference/rtc/electron/video/screencapture#api_irtcengine_stopscreencapture)
+- [`enableLoopbackRecording`](/zh-CN/api-reference/rtc/electron/audio/audio-capture#enableloopbackrecording)
 
 </PlatformStructured>
 
@@ -2043,9 +2043,9 @@ const sources = rtcEngine.getScreenCaptureSources(
 
 ### API 参考
 
-- [`StartScreenCapture`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_startscreencapture)
-- [`StopScreenCapture`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_stopscreencapture)
-- [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2)
+- [`StartScreenCapture`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_startscreencapture)
+- [`StopScreenCapture`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture)
+- [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2)
 
 ## iOS 平台
 
@@ -2151,9 +2151,9 @@ iOS 端的屏幕共享是通过在 Extension 中使用 iOS 原生的 ReplayKit �
 
 屏幕共享功能目前存在一些使用限制和注意事项，同时会产生费用，声网推荐你在调用 API 前先阅读如下 API 参考：
 
-- [`StartScreenCapture`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_startscreencapture)
-- [`StopScreenCapture`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_stopscreencapture)
-- [`UpdateScreenCaptureParameters`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_updatescreencaptureparameters)
+- [`StartScreenCapture`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_startscreencapture)
+- [`StopScreenCapture`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_stopscreencapture)
+- [`UpdateScreenCaptureParameters`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_updatescreencaptureparameters)
 
 ## macOS 平台/Windows 平台
 
@@ -2198,7 +2198,7 @@ Windows 或 macOS 系统为每个屏幕分配一个唯一的 Display ID，为每
 3. 加入频道并发布屏幕共享流。
 
    :::warning[信息]
-   - 如果你想在共享屏幕的同时共享屏幕采集的音频，你需要调用 [`EnableLoopbackRecording`](/api-ref/rtc/unity/API/toc_audio_capture#EnableLoopbackRecording) 开启声卡采集功能，将声卡播放的声音合并到本地音频流中。
+   - 如果你想在共享屏幕的同时共享屏幕采集的音频，你需要调用 [`EnableLoopbackRecording`](/zh-CN/api-reference/rtc/unity/audio/audio-capture#enableloopbackrecording) 开启声卡采集功能，将声卡播放的声音合并到本地音频流中。
       - 调用该方法后，系统其他进程播放的音频也会被发布到远端，如果这并非你的预期，请再次调用该方法，关闭声卡采集。
    :::
 
@@ -2334,16 +2334,16 @@ Windows 或 macOS 系统为每个屏幕分配一个唯一的 Display ID，为每
 
 ### API 参考
 
-- [`GetScreenCaptureSources`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-- [`StartScreenCaptureByDisplayId`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_startscreencapturebydisplayid)
-- [`StartScreenCaptureByWindowId`](/api-ref/rtc/unity/API/toc_screencapture#api_irtcengine_startscreencapturebywindowid)
-- [`EnableAudio`](/api-ref/rtc/unity/API/toc_audio_basic#api_irtcengine_enableaudio)
-- [`EnableVideo`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_enablevideo)
-- [`SetClientRole`](/api-ref/rtc/unity/API/toc_video_basic#api_irtcengine_setclientrole)
-- [`UpdateChannelMediaOptions`](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_updatechannelmediaoptions)
-- [`ChannelMediaOptions`](/api-ref/rtc/unity/API/class_channelmediaoptions.html)
-- [`JoinChannel`[2/2]](/api-ref/rtc/unity/API/toc_channel#api_irtcengine_joinchannel2)
-- [`JoinChannelEx`](/api-ref/rtc/unity/API/toc_channel#api_irtcengineex_joinchannelex)
+- [`GetScreenCaptureSources`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_getscreencapturesources)
+- [`StartScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_startscreencapturebydisplayid)
+- [`StartScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/unity/video/screencapture#api_irtcengine_startscreencapturebywindowid)
+- [`EnableAudio`](/zh-CN/api-reference/rtc/unity/audio/audio-basic#api_irtcengine_enableaudio)
+- [`EnableVideo`](/zh-CN/api-reference/rtc/unity/video/video-basic#api_irtcengine_enablevideo)
+- [`SetClientRole`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_setclientrole1)
+- [`UpdateChannelMediaOptions`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_updatechannelmediaoptions)
+- [`ChannelMediaOptions`](/zh-CN/api-reference/rtc/unity/class-channelmediaoptions)
+- [`JoinChannel`[2/2]](/zh-CN/api-reference/rtc/unity/channel#api_irtcengine_joinchannel2)
+- [`JoinChannelEx`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex)
 
 </PlatformStructured>
 
@@ -2867,19 +2867,19 @@ await _engine.stopScreenCapture();
 ### API 参考
 
 - Android, iOS
-  - [`startScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapture)
-  - [`stopScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_stopscreencapture)
-  - [`updateScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencapture)
+  - [`startScreenCapture`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapture)
+  - [`stopScreenCapture`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_stopscreencapture)
+  - [`updateScreenCapture`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_updatescreencapture)
 
 - Windows, macOS
-  - [`getScreenCaptureSources`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-  - [`startScreenCaptureByDisplayId`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapturebydisplayid)
-  - [`startScreenCaptureByWindowId`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_startscreencapturebywindowid)
-  - [`updateScreenCaptureParameters`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencaptureparameters)
-  - [`updateScreenCaptureRegion`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_updatescreencaptureregion)
-  - [`setScreenCaptureContentHint`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_setscreencapturecontenthint)
-  - [`setScreenCaptureScenario`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_setscreencapturescenario)
-  - [`stopScreenCapture`](/api-ref/rtc/flutter/API/toc_screencapture#api_irtcengine_stopscreencapture)
+  - [`getScreenCaptureSources`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_getscreencapturesources)
+  - [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebydisplayid)
+  - [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_startscreencapturebywindowid)
+  - [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_updatescreencaptureparameters)
+  - [`updateScreenCaptureRegion`](/zh-CN/api-reference/rtc/flutter/video/screencapture#updatescreencaptureregion)
+  - [`setScreenCaptureContentHint`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_setscreencapturecontenthint)
+  - [`setScreenCaptureScenario`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_setscreencapturescenario)
+  - [`stopScreenCapture`](/zh-CN/api-reference/rtc/flutter/video/screencapture#api_irtcengine_stopscreencapture)
 
 </PlatformStructured>
 
@@ -3121,9 +3121,9 @@ await _engine.stopScreenCapture();
 
 ### API 参考
 
-  - [`startScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_startscreencapture)
-  - [`stopScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_stopscreencapture)
-  - [`updateScreenCapture`](/api-ref/rtc/rn/API/toc_screencapture#api_irtcengine_updatescreencapture)
+  - [`startScreenCapture`](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_startscreencapture)
+  - [`stopScreenCapture`](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_stopscreencapture)
+  - [`updateScreenCapture`](/zh-CN/api-reference/rtc/react-native/video/screencapture#api_irtcengine_updatescreencapture)
 
 </PlatformStructured>
 
@@ -3419,13 +3419,13 @@ ret = m_rtcEngine->stopScreenCapture();
 
 ### API 参考
 
-- [`getScreenCaptureSourcesWithThumbSize`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-- [`startScreenCaptureByDisplayId`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#startScreenCaptureByDisplayId)
-- [`startScreenCaptureByWindowId`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#startScreenCaptureByWindowId)
-- [`setScreenCaptureScenario`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#setScreenCaptureScenario)
-- [`updateScreenCaptureParameters`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#updateScreenCaptureParameters)
-- [`updateScreenCaptureRegion`](/api-ref/rtc/unreal-cpp/API/toc_screencapture#updateScreenCaptureRegion)
-- [`stopScreenCapture`[1/2]](/api-ref/rtc/unreal-cpp/API/toc_screencapture#stopScreenCapture%20[1/2])
+- [`getScreenCaptureSourcesWithThumbSize`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#api_irtcengine_getscreencapturesources)
+- [`startScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#startscreencapturebydisplayid)
+- [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#startscreencapturebywindowid)
+- [`setScreenCaptureScenario`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#setscreencapturescenario)
+- [`updateScreenCaptureParameters`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#updatescreencaptureparameters)
+- [`updateScreenCaptureRegion`](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#updatescreencaptureregion)
+- [`stopScreenCapture`[1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/screencapture#stopscreencapture-12)
 
 </PlatformStructured>
 
@@ -3510,7 +3510,7 @@ API 的调用时序如下图所示：
 2. 创建并实现 **OnStartScreenShareClicked** 回调。当点击按钮触发该回调时，会执行以下流程：
 
     1. 调用 **Stop Screen Capture** 方法停止正在进行的屏幕共享进程。
-    2. 调用 **Start Screen Capture** 方法开始屏幕采集，并在 **Make ScreenCaptureParameters2** 中勾选 **Capture Audio** 和 **Capture Video** 采集系统音频和屏幕视频，其他参数详见 [`FScreenCaptureParameters2`](/api-ref/rtc/unreal-blueprint/API/class_screencaptureparameters2)。
+    2. 调用 **Start Screen Capture** 方法开始屏幕采集，并在 **Make ScreenCaptureParameters2** 中勾选 **Capture Audio** 和 **Capture Video** 采集系统音频和屏幕视频，其他参数详见 [`FScreenCaptureParameters2`](/zh-CN/api-reference/rtc/unreal-blueprint/class-screencaptureparameters2)。
     3. 调用 **Join Channel** 加入频道，并在 **Make ChannelMediaOptions** 配置以下参数将屏幕采集的视频流发布到频道中：
         - 设置 **Publish Camera Track** 为 **Agora False Value**，取消发布摄像头采集的视频流。
         - 设置 **Publish Screen Capture Video** 为 **Agora True Value**，发布屏幕采集的视频流。
@@ -3588,7 +3588,7 @@ API 的调用时序如下图所示：
 
 ### 配置屏幕共享参数
 
-在 **Init Default Screen Capture Config** 中，配置屏幕共享相关的参数，如 **Dimensions** (分辨率)、**Frame Rate** (帧率)、**Bitrate** (码率) 等，详见 [`FScreenCaptureParameters`](/api-ref/rtc/unreal-blueprint/API/class_screencaptureparameters)。其中你可以进行如下进阶配置：
+在 **Init Default Screen Capture Config** 中，配置屏幕共享相关的参数，如 **Dimensions** (分辨率)、**Frame Rate** (帧率)、**Bitrate** (码率) 等，详见 [`FScreenCaptureParameters`](/zh-CN/api-reference/rtc/unreal-blueprint/class-screencaptureparameters)。其中你可以进行如下进阶配置：
 
     - **屏幕描边**：勾选 **Enable Hight Light**，并设置 **High Light Width** 和 **High Light Color** 指定描边的宽度和颜色，SDK 会根据你的设置对共享的屏幕或窗口描边。
     - **屏蔽窗口**：将 **Exclude Window List** 设置为你想要屏蔽的窗口列表，后续调用 **Start Screen Capture by Display Id** 时，会通过该参数屏蔽指定的窗口。
@@ -3717,18 +3717,18 @@ API 的调用时序如下图所示：
 ### API 参考
 
 - Android, iOS
-  - [`StartScreenCapture`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_startscreencapture)
-  - [`StopScreenCapture`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_stopscreencapture)
-  - [`UpdateScreenCapture`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_updatescreencapture)
+  - [`StartScreenCapture`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_startscreencapture)
+  - [`StopScreenCapture`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture)
+  - [`UpdateScreenCapture`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_updatescreencapture)
 
 - Windows, macOS
-  - [`GetScreenCaptureSources`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_getscreencapturesources)
-  - [`StartScreenCaptureByDisplayId`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_startscreencapturebydisplayid)
-  - [`StartScreenCaptureByWindowId`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_startscreencapturebywindowid)
-  - [`UpdateScreenCaptureParameters`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_updatescreencaptureparameters)
-  - [`UpdateScreenCaptureRegion`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_updatescreencaptureregion)
-  - [`SetScreenCaptureContentHint`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_setscreencapturecontenthint)
-  - [`SetScreenCaptureScenario`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_setscreencapturescenario)
-  - [`StopScreenCapture`](/api-ref/rtc/unreal-blueprint/API/toc_screencapture#api_irtcengine_stopscreencapture)
+  - [`GetScreenCaptureSources`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_getscreencapturesources)
+  - [`StartScreenCaptureByDisplayId`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_startscreencapturebydisplayid)
+  - [`StartScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_startscreencapturebywindowid)
+  - [`UpdateScreenCaptureParameters`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_updatescreencaptureparameters)
+  - [`UpdateScreenCaptureRegion`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_updatescreencaptureregion)
+  - [`SetScreenCaptureContentHint`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_setscreencapturecontenthint)
+  - [`SetScreenCaptureScenario`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_setscreencapturescenario)
+  - [`StopScreenCapture`](/zh-CN/api-reference/rtc/unreal-blueprint/video/screencapture#api_irtcengine_stopscreencapture)
 
 </PlatformStructured>

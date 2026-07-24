@@ -24,13 +24,13 @@ description: "了解如何快速接入 Fastboard SDK，完成环境准备、参�
 
 - Android Studio 4.1.0 及以上版本
 - Android SDK API level ≥ 21
-- 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
 - 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 <a id="createroom"></a>
 ## 服务端实现
 ### 1. 创建房间
 
-调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 **请求示例**
 
@@ -81,7 +81,7 @@ request(options, function (error, response) {
 你可以通过以下方式在 App 服务端生成 Room Token：
 
 - 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
-- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
 
@@ -285,7 +285,7 @@ class MainActivity : AppCompatActivity() {
 ## 服务端实现
 ### 1. 创建房间
 
-调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 **请求示例**
 
@@ -336,7 +336,7 @@ request(options, function (error, response) {
 你可以通过以下方式在 App 服务端生成 Room Token：
 
 - 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
-- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
 
@@ -523,7 +523,7 @@ class ViewController: UIViewController {
 ## 前提条件
 
 - 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard#如何选择白板-sdk-和-fastboard-sdk)。
-- 有效的声网[开发者账号](https://docs.agora.io/cn/AgoraPlatform/sign_in_and_sign_up)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
 - 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 - [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
 
@@ -538,7 +538,7 @@ class ViewController: UIViewController {
 <a id="createroom"></a>
 ### 1. 创建房间
 
-调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-rooms)。
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
 
 **请求示例**
 
@@ -589,7 +589,7 @@ request(options, function (error, response) {
 你可以通过以下方式在 App 服务端生成 Room Token：
 
 - 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
-- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/doc/whiteboard/restful/fastboard-sdk/restful-wb/operations/post-v5-tokens-rooms-uuid)。
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
 
 下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
 
@@ -636,6 +636,8 @@ request(options, function (error, response) {
 - `package.json`: 安装并管理项目依赖。
 - `index.html`: 用于设计 Web 应用的用户界面。
 - `main.js`: 实现具体应用逻辑的代码。
+
+<a id="添加依赖项"></a>
 
 ### 1. 添加依赖项
 

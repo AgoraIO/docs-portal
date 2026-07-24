@@ -1,11 +1,10 @@
+import { mapOutsideFencedCode } from '../markdown-code.mjs';
 import { isLegacyDocsHref, rewriteLegacyHref } from './migration-framework.mjs';
 
 const MARKDOWN_LINK_PATTERN =
   /(?<!!)\[((?:[^[\]\n]|\[[^\]\n]*])*)]\(([^)\s]+)((?:\s+"[^"]*")?\s*)\)/g;
 const REFERENCE_LINK_PATTERN = /^(\s{0,3}\[[^\]\n]+]:\s*)(\S+)(.*)$/gm;
 const HREF_ATTRIBUTE_PATTERN = /(\bhref\s*=\s*)(["'])([^"']+)\2/gi;
-const CODE_FENCE_PATTERN =
-  /(^|\n)(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n\2[^\n]*(?=\n|$)/g;
 
 function isRewritableHref(href, sourceUrl, routeMap) {
   if (isLegacyDocsHref(href, sourceUrl)) return true;
@@ -54,7 +53,13 @@ export function findLegacyBodyLinks(source, { sourcePath = '' } = {}) {
 
 export function rewriteLegacyBodyLinks(
   source,
-  { routeMap, sourcePath = '', sourceUrl },
+  {
+    preserveHref = () => false,
+    preserveUnresolved = false,
+    routeMap,
+    sourcePath = '',
+    sourceUrl,
+  },
 ) {
   const { body, prefix } = splitRawFrontmatter(source);
   const changes = [];
@@ -63,6 +68,7 @@ export function rewriteLegacyBodyLinks(
     let output = segment.replace(
       MARKDOWN_LINK_PATTERN,
       (raw, label, href, suffix) => {
+        if (preserveHref(href)) return raw;
         if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (result.href) {
@@ -77,6 +83,15 @@ export function rewriteLegacyBodyLinks(
           });
           return `[${label}](${result.href}${suffix})`;
         }
+        if (preserveUnresolved) {
+          unresolved.push({
+            href,
+            reason: 'no-local-target',
+            source: 'markdown',
+            sourcePath,
+          });
+          return raw;
+        }
         changes.push({
           action: 'rendered-as-text',
           href,
@@ -90,6 +105,7 @@ export function rewriteLegacyBodyLinks(
     output = output.replace(
       REFERENCE_LINK_PATTERN,
       (raw, prefixValue, href, suffix) => {
+        if (preserveHref(href)) return raw;
         if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (!result.href) {
@@ -116,6 +132,7 @@ export function rewriteLegacyBodyLinks(
     output = output.replace(
       HREF_ATTRIBUTE_PATTERN,
       (raw, assignment, quote, href) => {
+        if (preserveHref(href)) return raw;
         if (!isRewritableHref(href, sourceUrl, routeMap)) return raw;
         const result = rewriteLegacyHref(href, { routeMap, sourceUrl });
         if (!result.href) {
@@ -175,6 +192,22 @@ export function reconcileMappedBodyLink(
       },
     );
     output = output.replace(
+      REFERENCE_LINK_PATTERN,
+      (raw, prefixValue, href, suffix) => {
+        if (href !== fromHref || !toHref) return raw;
+        changes.push({
+          action: toHref.startsWith('/')
+            ? 'rewritten-local'
+            : 'rewritten-external',
+          href: fromHref,
+          source: 'reference',
+          sourcePath,
+          targetHref: toHref,
+        });
+        return `${prefixValue}${toHref}${suffix}`;
+      },
+    );
+    output = output.replace(
       HREF_ATTRIBUTE_PATTERN,
       (raw, assignment, quote, href) => {
         if (href !== fromHref) return raw;
@@ -205,13 +238,5 @@ export function reconcileMappedBodyLink(
 }
 
 function mapOutsideCodeFences(source, transform) {
-  let cursor = 0;
-  let output = '';
-  for (const match of source.matchAll(CODE_FENCE_PATTERN)) {
-    output += transform(source.slice(cursor, match.index));
-    output += match[0];
-    cursor = match.index + match[0].length;
-  }
-  output += transform(source.slice(cursor));
-  return output;
+  return mapOutsideFencedCode(source, transform);
 }

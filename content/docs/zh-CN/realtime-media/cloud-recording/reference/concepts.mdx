@@ -56,10 +56,10 @@ description: "查看云端录制的核心概念，了解关键概念、参数说
 | 对比项 | 单流音频转码录制 | 单流音频不转码录制 |
 | --- | --- | --- |
 | 音频编码时是否转码 | 是 | 否 |
-| 音频原始数据 | 采样率、声道数和码率固定为 48 kHz、单声道和 48 Kbps | 码率、采样率和声道数由发流端的音频编码参数 [`AudioProfile`](/api-ref/rtc/windows/API/enum_audioprofiletype) 决定 |
-| 音频编码格式 | LC-AAC | 由发流端配置的 [`AudioProfile`](/api-ref/rtc/windows/API/enum_audioprofiletype) 决定 |
+| 音频原始数据 | 采样率、声道数和码率固定为 48 kHz、单声道和 48 Kbps | 码率、采样率和声道数由发流端的音频编码参数 [`AudioProfile`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioprofiletype) 决定 |
+| 音频编码格式 | LC-AAC | 由发流端配置的 [`AudioProfile`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioprofiletype) 决定 |
 | 录制生成文件 | 每个用户 ID 生成一个 M3U8 格式的音频文件和多个 TS 格式的音频文件。 | 同转码录制。如果用户通过 `muteLocalAudioStream`/`disable`/`leaveChannel` 停止发流后，立即停止音频录制，没有 15 秒的静音数据。 |
-| 播放器兼容性 | 支持 HLS 协议的主流播放器均可播放该录制文件 | 音频编码格式由发流端配置的 [`AudioProfile`](/api-ref/rtc/windows/API/enum_audioprofiletype) 决定，不同音频编码格式的播放器兼容性不同 |
+| 播放器兼容性 | 支持 HLS 协议的主流播放器均可播放该录制文件 | 音频编码格式由发流端配置的 [`AudioProfile`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioprofiletype) 决定，不同音频编码格式的播放器兼容性不同 |
 
 ## 切片
 

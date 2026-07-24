@@ -34,7 +34,7 @@ RtmResult<WhoNowResult> rtmClient.GetPresence().WhoNowAsync(
 |     参数      |     类型      | 是否必填 |       默认值        | 描述     |
 | ---------- | --------------- | ----- | ---- | ----------- |
 | `channelName` |    string     |   选填   |          -          | 频道名称。如果未填写该参数，则 `WhoNowAsync` 方法会返回符合 `RTM_CHANNEL_TYPE` 条件的所有频道的在线用户信息。 |
-| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#RTM_CHANNEL_TYPE)。        |
+| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#rtmchanneltype)。        |
 |   `options`   | `PresenceOptions`  |   选填   |          -          | 在线用户的信息选项。           |
 
 `PresenceOptions` 包含以下属性：
@@ -216,7 +216,7 @@ RtmResult<SetStateResult> rtmClient.GetPresence().SetStateAsync(
 |     参数      |     类型      | 是否必填 |       默认值        | 描述          |
 | ---------- | --------------- | ----- | ---- | ----------- |
 | `channelName` |    string     |   必填   |          -          | 频道名称      |
-| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#RTM_CHANNEL_TYPE)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#rtmchanneltype)。 |
 |    `items`    |   `StateItem[]`      |   选填   |          -          | 用户状态，类型为 `StateItem` 数组。            |
 
 `StateItem` 数据类型包含以下属性：
@@ -284,7 +284,7 @@ RtmResult<GetStateResult> rtmClient.GetPresence().GetStateAsync(
 | ---------- | --------------- | ----- | ---- | ----------- |
 |   `userId`    |    string     |   选填   |                       当前用户的 `userId`                       | 用户 ID。     |
 | `channelName` |     string     |   选填   |          -          | 频道名称。    |
-| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#RTM_CHANNEL_TYPE)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#rtmchanneltype)。 |
 
 ### 基本用法
 
@@ -361,7 +361,7 @@ RtmResult<RemoveStateResult> rtmClient.GetPresence().RemoveStateAsync(
 |     参数      |     类型      | 是否必填 |       默认值        | 描述          |
 | ---------- | --------------- | ----- | ---- | ----------- |
 | `channelName` |    string     |   必填   |          -          | 频道名称。    |
-| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#RTM_CHANNEL_TYPE)。 |
+| `channelType` | `RTM_CHANNEL_TYPE` |   必填   | `STREAM` | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#rtmchanneltype)。 |
 |    `keys`     |  string[]   |   选填   |          -          | 所需要删除的用户状态对应的键的列表。           |
 
 ### 基本用法

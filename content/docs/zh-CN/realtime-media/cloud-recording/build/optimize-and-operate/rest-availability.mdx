@@ -16,7 +16,7 @@ description: "了解如何在云端录制中保障 REST 服务高可用，包括
 
 1. 同时发起主任务和备份任务，实现对同一个频道进行多路录制。为此，你需要使用相同 `appId` 和 `cname`，以及不同的 `uid` 来发起多个录制任务。
 
-2. 发起后续录制任务时，你需要在 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 请求的 Body 中设置 `clientRequest.excludeResourceIds` 字段，将其设置为前一路或前几路录制任务的 `resourceId`，以排除后续录制任务使用此前录制任务所在区域的资源。当此前录制任务所在区域发生网络故障时，后续录制任务不会受到影响。
+2. 发起后续录制任务时，你需要在 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 请求的 Body 中设置 `clientRequest.excludeResourceIds` 字段，将其设置为前一路或前几路录制任务的 `resourceId`，以排除后续录制任务使用此前录制任务所在区域的资源。当此前录制任务所在区域发生网络故障时，后续录制任务不会受到影响。
 
 ## 切换域名
 
@@ -64,7 +64,7 @@ description: "了解如何在云端录制中保障 REST 服务高可用，包括
 
 当你发起录制请求的服务器所在地区和你指定的云存储区域 (`storageConfig.region`) 不同时，会影响录制文件上传到云存储的成功率和实时性。在这种跨区情况下，为加速录制文件上传，推荐你进行如下设置：
 
-- 设置 [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire) 请求 Body 中的 `regionAffinity` 字段为你的云存储区域。
+- 设置 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 请求 Body 中的 `regionAffinity` 字段为你的云存储区域。
 
 - 将所有请求 URL 中的 `https://api.sd-rtn.com/v1` 修改成 `https://api.sd-rtn.com/{region}/v1`。`region` 参数代表声网服务器所在地区，你需要将该参数设为你的云存储区域。`region` 支持如下取值：
     - `cn`: 中国大陆。

@@ -6,7 +6,7 @@ description: "了解云市场在不同平台上的集成商汤高级美颜和特
 
 ## 技术原理
 
-本文介绍如何在你的项目中集成和使用商汤高级美颜/特效系列插件。商汤高级美颜/特效系列插件是对商汤 SenseAR Effects SDK核心 API 的封装。通过[声网 SDK v4.x](/zh-CN/realtime-media/rtc) 提供的 [`setExtensionProperty`](/api-ref/rtc/android/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value` 参数，你可以快速集成商汤的美颜能力。
+本文介绍如何在你的项目中集成和使用商汤高级美颜/特效系列插件。商汤高级美颜/特效系列插件是对商汤 SenseAR Effects SDK核心 API 的封装。通过[声网 SDK v4.x](/zh-CN/realtime-media/rtc) 提供的 [`setExtensionProperty`](/zh-CN/api-reference/rtc/android/extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value` 参数，你可以快速集成商汤的美颜能力。
 
 `setExtensionProperty` 方法的 `key` 参数与商汤的 API 名称完全对应，`value` 参数以 JSON 格式包装该 API 的部分或全部参数。因此，调用该方法时只要传入指定的 `key` 和 `value`，就可以调用对应的商汤 API，实现美颜的有关功能。
 
@@ -82,7 +82,7 @@ Android 开发环境需满足以下要求：
 
 以下升级流程以**相芯美颜特效**插件为例：
 
-  1. 参考[集成插件](#13-集成插件-)章节下载所需平台最新版本的插件包和资源包。
+  1. 参考[集成插件](#13-集成插件)章节下载所需平台最新版本的插件包和资源包。
 
   2. 删除项目内旧版本的插件包及其资源包后，再将新版插件和资源包放入对应位置。或者直接在对应目录下用新版插件和资源包替换旧版。
 
@@ -176,7 +176,7 @@ private void setExtensionProperty(String key, String property) {
 <a id="ref"></a>
 ## API 参考
 
-- [声网 SDK 的插件相关方法和回调](/api-ref/rtc/android/API/toc_extension)
+- [声网 SDK 的插件相关方法和回调](/zh-CN/api-reference/rtc/android/extension#toc_extension)
 - [插件的 key-value 说明](/zh-CN/realtime-media/marketplace/reference/sensetime-ar-api)
 
 ## 相关文档
@@ -190,7 +190,7 @@ private void setExtensionProperty(String key, String property) {
 本文介绍如何在你的项目中集成和使用商汤高级美颜/特效系列插件。
 ## 技术原理
 
-商汤高级美颜/特效系列插件是对商汤 SenseAR Effects SDK核心 API 的封装。通过[声网 SDK v4.x](/zh-CN/realtime-media/rtc) 提供的 [`setExtensionPropertyWithVendor`](/api-ref/rtc/ios/API/toc_extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value` 参数，你可以快速集成商汤的美颜能力。
+商汤高级美颜/特效系列插件是对商汤 SenseAR Effects SDK核心 API 的封装。通过[声网 SDK v4.x](/zh-CN/realtime-media/rtc) 提供的 [`setExtensionPropertyWithVendor`](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproperty) 方法，传入指定的 `key` 和 `value` 参数，你可以快速集成商汤的美颜能力。
 
 `setExtensionPropertyWithVendor` 方法的 `key` 参数与商汤的 API 名称完全对应，`value` 参数以 JSON 格式包装该 API 的部分或全部参数。因此，调用该方法时只要传入指定的 `key` 和 `value`，就可以调用对应的商汤 API，实现美颜的有关功能。
 
@@ -263,7 +263,7 @@ iOS 开发环境需满足以下要求：
 
 以下升级流程以**相芯美颜特效**插件为例：
 
-  1. 参考[集成插件](#13-集成插件-)章节下载所需平台最新版本的插件包和资源包。
+  1. 参考[集成插件](#13-集成插件)章节下载所需平台最新版本的插件包和资源包。
 
   2. 删除项目内旧版本的插件包及其资源包后，再将新版插件和资源包放入对应位置。或者直接在对应目录下用新版插件和资源包替换旧版。
 
@@ -368,7 +368,7 @@ NSData *data = [NSJSONSerialization dataWithJSONObject:@{
 <a id="ref"></a>
 ## API 参考
 
-- [声网 SDK 的插件相关方法和回调](/api-ref/rtc/ios/API/toc_extension)
+- [声网 SDK 的插件相关方法和回调](/zh-CN/api-reference/rtc/ios/extension#toc_extension)
 - [插件的 key-value 说明](/zh-CN/realtime-media/marketplace/reference/sensetime-ar-api)
 
 ## 相关文档

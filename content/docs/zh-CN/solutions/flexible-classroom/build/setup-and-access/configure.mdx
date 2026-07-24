@@ -76,7 +76,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 2. 如果你需要在课堂里使用 PPT、DOC、PDF 等格式的课件，你还需要点击**进阶服务**下方的**前往配置**，来为灵动课堂开启并配置文档转网页、文档转图片、截图服务。操作步骤详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
-3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#注意事项)。
 
 4. 为保证最佳白板课件访问体验，我们推荐使用 CDN 加速 OSS 资源访问，以提升资源加载速度。具体操作步骤可以参考[阿里云 OSS CDN 加速文档](https://help.aliyun.com/zh/oss/user-guide/use-cdn-to-accelerate-access-to-oss?spm=a2c4g.11186623.0.0.3b7047dcNnoHQq)，并将文档转换的外链域名参数设置成 CDN 加速域名。
 
@@ -96,7 +96,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制配置
 
-传入 `recordingConfig` JSON 对象。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `recordingConfig` 的介绍。
+传入 `recordingConfig` JSON 对象。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `recordingConfig` 的介绍。
 
 `recordingConfig` JSON 对象示例：
 
@@ -110,7 +110,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制文件存储配置
 
-传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
+传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
   - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
@@ -308,7 +308,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 2. 如果你需要在课堂里使用 PPT、DOC、PDF 等格式的课件，你还需要点击**进阶服务**下方的**前往配置**，来为灵动课堂开启并配置文档转网页、文档转图片、截图服务。操作步骤详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
-3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#注意事项)。
 
 4. 为保证最佳白板课件访问体验，我们推荐使用 CDN 加速 OSS 资源访问，以提升资源加载速度。具体操作步骤可以参考[阿里云 OSS CDN 加速文档](https://help.aliyun.com/zh/oss/user-guide/use-cdn-to-accelerate-access-to-oss?spm=a2c4g.11186623.0.0.3b7047dcNnoHQq)，并将文档转换的外链域名参数设置成 CDN 加速域名。
 
@@ -328,7 +328,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制配置
 
-传入 `recordingConfig` JSON 对象。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `recordingConfig` 的介绍。
+传入 `recordingConfig` JSON 对象。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `recordingConfig` 的介绍。
 
 `recordingConfig` JSON 对象示例：
 
@@ -342,7 +342,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制文件存储配置
 
-传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
+传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
   - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
@@ -540,7 +540,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 2. 如果你需要在课堂里使用 PPT、DOC、PDF 等格式的课件，你还需要点击**进阶服务**下方的**前往配置**，来为灵动课堂开启并配置文档转网页、文档转图片、截图服务。操作步骤详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
-3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#注意事项)。
 
 4. 为保证最佳白板课件访问体验，我们推荐使用 CDN 加速 OSS 资源访问，以提升资源加载速度。具体操作步骤可以参考[阿里云 OSS CDN 加速文档](https://help.aliyun.com/zh/oss/user-guide/use-cdn-to-accelerate-access-to-oss?spm=a2c4g.11186623.0.0.3b7047dcNnoHQq)，并将文档转换的外链域名参数设置成 CDN 加速域名。
 
@@ -560,7 +560,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制配置
 
-传入 `recordingConfig` JSON 对象。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `recordingConfig` 的介绍。
+传入 `recordingConfig` JSON 对象。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `recordingConfig` 的介绍。
 
 `recordingConfig` JSON 对象示例：
 
@@ -574,7 +574,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制文件存储配置
 
-传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
+传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
   - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。
@@ -772,7 +772,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 2. 如果你需要在课堂里使用 PPT、DOC、PDF 等格式的课件，你还需要点击**进阶服务**下方的**前往配置**，来为灵动课堂开启并配置文档转网页、文档转图片、截图服务。操作步骤详见[开启互动白板配套服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#开启互动白板配套服务)。
 
-3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)。
+3. 为确保声网可以访问你的云存储空间，你的云存储账号中必须进行相关配置，详见[注意事项](#注意事项)。
 
 4. 为保证最佳白板课件访问体验，我们推荐使用 CDN 加速 OSS 资源访问，以提升资源加载速度。具体操作步骤可以参考[阿里云 OSS CDN 加速文档](https://help.aliyun.com/zh/oss/user-guide/use-cdn-to-accelerate-access-to-oss?spm=a2c4g.11186623.0.0.3b7047dcNnoHQq)，并将文档转换的外链域名参数设置成 CDN 加速域名。
 
@@ -792,7 +792,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制配置
 
-传入 `recordingConfig` JSON 对象。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `recordingConfig` 的介绍。
+传入 `recordingConfig` JSON 对象。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `recordingConfig` 的介绍。
 
 `recordingConfig` JSON 对象示例：
 
@@ -806,7 +806,7 @@ description: "了解灵动课堂在不同平台上的配置灵动课堂方式，
 
 ### 录制文件存储配置
 
-传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
+传入 `storageConfig` JSON 对象用于存储录制文件。参考 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 中 `storageConfig` 的介绍，请注意以下字段的设置：
 
   - `endpoint`: 一般是由 Bucket 名称和访问域名拼成的完整路径。例如，你的 Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 endpoint 字段需要设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。该字段会应用在[查询录制列表](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#查询录制列表)接口返回的 url 字段里的地址的域名。如果你的 OSS 配置了 CDN 加速，也可以直接将 endpoint 设置为 CDN 加速域名，最终录制页面的 URL 为 `https://agora-adc-artifacts.oss-accelerate.aliyuncs.com/xxxxx.mp4`。
   - `fileNamePrefix`:（选填）String 数组，指定录制文件在第三方云存储中的存储位置。前缀长度（包括斜杠）不得超过 128 个字符。字符串支持26 个大小写英文字母 a-z、A-Z、10 个数字 0-9，不得出现斜杠、下划线、括号等符号字符。你可使用变量来指定一个动态路径。你发起录制时，灵动课堂云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/api-reference/faq/integration/dynamic_storage_path)。

@@ -144,7 +144,7 @@ description: "查看灵动课堂的版本更新、问题修复、行为变更和
 
 ### API 变更
 
-修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore)。（Web/Electron）
+修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-media-index-edia-store)。（Web/Electron）
 
 ## 2.8.0 版
 
@@ -304,7 +304,7 @@ description: "查看灵动课堂的版本更新、问题修复、行为变更和
 - 提升 API 组合调用的灵活度。
 - 提供更多功能扩展接口，支持业务功能的灵活扩展。
 
-具体请查看 [2.0.0 Edu Context API 文档](/api-ref/flexible-classroom/android/API/edu_context_api_overview)。
+具体请查看 [2.0.0 Edu Context API 文档](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/edu-context-api-overview)。
 
 ### 新增特性
 
@@ -330,7 +330,7 @@ description: "查看灵动课堂的版本更新、问题修复、行为变更和
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%8E%AF%E4%BF%A1-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -365,7 +365,7 @@ description: "查看灵动课堂的版本更新、问题修复、行为变更和
 
 #### 课前设备检测和视频预览
 
-1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/api-ref/flexible-classroom/android/API/class_mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
+1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
 
 ### 改进
 
@@ -435,7 +435,7 @@ allprojects {
 
 #### 自定义课堂 UI
 
-自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/api-ref/flexible-classroom/android/API/edu_context_api_overview)。
+自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/edu-context-api-overview)。
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
@@ -451,7 +451,7 @@ allprojects {
 
 1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
 
-此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/api-ref/flexible-classroom/android/classroom-sdk)。
+此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)。
 
 #### 页面录制
 
@@ -613,7 +613,7 @@ allprojects {
 
 ### API 变更
 
-修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore)。（Web/Electron）
+修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-media-index-edia-store)。（Web/Electron）
 
 ## 2.8.0 版
 
@@ -773,7 +773,7 @@ allprojects {
 - 提升 API 组合调用的灵活度。
 - 提供更多功能扩展接口，支持业务功能的灵活扩展。
 
-具体请查看 [2.0.0 Edu Context API 文档](/api-ref/flexible-classroom/ios/API/edu_context_api_overview)。
+具体请查看 [2.0.0 Edu Context API 文档](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/edu-context-api-overview)。
 
 ### 新增特性
 
@@ -799,7 +799,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%8E%AF%E4%BF%A1-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -834,7 +834,7 @@ allprojects {
 
 #### 课前设备检测和视频预览
 
-1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/api-ref/flexible-classroom/ios/API/class_mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
+1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
 
 ### 改进
 
@@ -904,7 +904,7 @@ allprojects {
 
 #### 自定义课堂 UI
 
-自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/api-ref/flexible-classroom/ios/API/edu_context_api_overview)。
+自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/edu-context-api-overview)。
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
@@ -920,7 +920,7 @@ allprojects {
 
 1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
 
-此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/api-ref/flexible-classroom/ios/classroom-sdk)。
+此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk)。
 
 #### 页面录制
 
@@ -1066,7 +1066,7 @@ allprojects {
 
 - 在线课堂场景，并引入全新的 UI 样式和交互体验，更贴近教育用户使用习惯。相关链接可以参考：
 
-  - API 参考：[FcrUIScene API](/api-ref/flexible-classroom/javascript/fcr-ui-scene)
+  - API 参考：[FcrUIScene API](/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene)
   - 功能文档：[使用 FcrUIScene 自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new)
 
 - 一对一私聊功能。该功能暂不支持历史消息。
@@ -1126,7 +1126,7 @@ allprojects {
 
 :::warning[注意]
 - 部分移动端设备（包括三星平板，小米手机，Oppo 手机）的自带浏览器在 H5 应用中解码 RTC 视频流有部分局限性，建议使用 Google Chrome 浏览器，企业微信内置浏览器，或微信内置浏览器。
-- 部分移动端设备在 H5 应用中拉视频流时不支持解码视频，导致无法渲染视频。详见[移动端浏览器支持](https://docs.agora.io/cn/live-streaming-premium-legacy/web_sdk_compatibility?platform=Web#移动端)和[移动端如何使用 Web SDK？](/zh-CN/realtime-media/rtc/reference/browser-compatibility#mobile)。
+- 部分移动端设备在 H5 应用中拉视频流时不支持解码视频，导致无法渲染视频。详见[移动端浏览器支持](/zh-CN/realtime-media/rtc/reference/browser-compatibility)和[移动端如何使用 Web SDK？](/zh-CN/realtime-media/rtc/reference/browser-compatibility#mobile)。
 :::
 
 ## 2.8.20 版
@@ -1146,7 +1146,7 @@ allprojects {
 
 ### API 变更
 
-新增 API [updateExpandedScopeAndStreams](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_stream_index_treamStore.html#updateExpandedScopeAndStreams)。
+新增 API [updateExpandedScopeAndStreams](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateExpandedScopeAndStreams)。
 
 ## 2.8.13 版
 
@@ -1175,7 +1175,7 @@ allprojects {
 
 ### API 变更
 
-修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore#startScreenShareCapture)。（Web/Electron）
+修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-media-index-edia-store#startScreenShareCapture)。（Web/Electron）
 
 ## 2.8.0 版
 
@@ -1335,7 +1335,7 @@ allprojects {
 - 提升 API 组合调用的灵活度。
 - 提供更多功能扩展接口，支持业务功能的灵活扩展。
 
-具体请查看 [2.0.0 Edu Context API 文档](/api-ref/flexible-classroom/ios/API/class_mediacontext)。
+具体请查看 [2.0.0 Edu Context API 文档](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-mediacontext)。
 
 ### 新增特性
 
@@ -1361,7 +1361,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%8E%AF%E4%BF%A1-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -1396,7 +1396,7 @@ allprojects {
 
 #### 课前设备检测和视频预览
 
-1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/api-ref/flexible-classroom/ios/API/class_mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
+1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
 
 ### 改进
 
@@ -1466,7 +1466,7 @@ allprojects {
 
 #### 自定义课堂 UI
 
-自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/api-ref/flexible-classroom/android/API/edu_context_api_overview)。
+自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/edu-context-api-overview)。
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
@@ -1482,11 +1482,11 @@ allprojects {
 
 1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
 
-此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/api-ref/flexible-classroom/javascript/classroom-sdk)。
+此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)。
 
 #### 页面录制
 
-灵动课堂 1.1.0 支持[页面录制](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode?platform=RESTful)，能够将指定 URL 的页面内容和音频混合录制为一个 MP4 音视频文件，实现音视频内容、白板内容、课件内容同步录制。开发者可通过灵动课堂云服务 RESTful API 配置并发起页面录制，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording)。
+灵动课堂 1.1.0 支持[页面录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)，能够将指定 URL 的页面内容和音频混合录制为一个 MP4 音视频文件，实现音视频内容、白板内容、课件内容同步录制。开发者可通过灵动课堂云服务 RESTful API 配置并发起页面录制，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording)。
 
 #### 点名上台
 
@@ -1677,7 +1677,7 @@ allprojects {
 
 :::warning[注意]
 - 部分移动端设备（包括三星平板，小米手机，Oppo 手机）的自带浏览器在 H5 应用中解码 RTC 视频流有部分局限性，建议使用 Google Chrome 浏览器，企业微信内置浏览器，或微信内置浏览器。
-- 部分移动端设备在 H5 应用中拉视频流时不支持解码视频，导致无法渲染视频。详见[移动端浏览器支持](https://docs.agora.io/cn/live-streaming-premium-legacy/web_sdk_compatibility?platform=Web#移动端)和[移动端如何使用 Web SDK？](/zh-CN/realtime-media/rtc/reference/browser-compatibility#mobile)。
+- 部分移动端设备在 H5 应用中拉视频流时不支持解码视频，导致无法渲染视频。详见[移动端浏览器支持](/zh-CN/realtime-media/rtc/reference/browser-compatibility)和[移动端如何使用 Web SDK？](/zh-CN/realtime-media/rtc/reference/browser-compatibility#mobile)。
 :::
 
 ## 2.8.20 版
@@ -1697,7 +1697,7 @@ allprojects {
 
 ### API 变更
 
-新增 API [updateExpandedScopeAndStreams](/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_stream_index_treamStore.html#updateExpandedScopeAndStreams)。
+新增 API [updateExpandedScopeAndStreams](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-stream-index-tream-store#updateExpandedScopeAndStreams)。
 
 ## 2.8.13 版
 
@@ -1726,7 +1726,7 @@ allprojects {
 
 ### API 变更
 
-修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore#startScreenShareCapture)。（Web/Electron）
+修改`startScreenShareCapture` 方法，在 `startScreenShareCapture` 中新增参数 `audioDeviceName` 和 `withAudio`，使用方法详见 [API 参考](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-media-index-edia-store#startScreenShareCapture)。（Web/Electron）
 
 ## 2.8.0 版
 
@@ -1886,7 +1886,7 @@ allprojects {
 - 提升 API 组合调用的灵活度。
 - 提供更多功能扩展接口，支持业务功能的灵活扩展。
 
-具体请查看 [2.0.0 Edu Context API 文档](/api-ref/flexible-classroom/ios/API/class_mediacontext)。
+具体请查看 [2.0.0 Edu Context API 文档](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-mediacontext)。
 
 ### 新增特性
 
@@ -1912,7 +1912,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#%E9%85%8D%E7%BD%AE%E7%8E%AF%E4%BF%A1-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -1947,7 +1947,7 @@ allprojects {
 
 #### 课前设备检测和视频预览
 
-1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/api-ref/flexible-classroom/ios/API/class_mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
+1.1.5 新增课件设备检测和视频预览能力，开发者可通过新增的 [Media Context API](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/class-mediacontext)，自行开发课前检测模块，方便学生在上课前确认本地摄像头、麦克风设备是否工作以及预览本地音视频。
 
 ### 改进
 
@@ -2017,7 +2017,7 @@ allprojects {
 
 #### 自定义课堂 UI
 
-自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/api-ref/flexible-classroom/android/API/edu_context_api_overview)。
+自 1.1.0 起，声网 Classroom SDK 将灵动课堂的 UI 代码和核心业务逻辑隔离开来，独立成 UI Kit 和 Edu Core，并通过 Edu Context 为开发者提供实现灵动课堂业务功能的能力。不同 Context 代表灵动课堂中各个功能模块，详见[声网 Edu Context API 参考](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/edu-context-api-overview)。
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
@@ -2033,11 +2033,11 @@ allprojects {
 
 1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
 
-此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/api-ref/flexible-classroom/javascript/classroom-sdk)。
+此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)。
 
 #### 页面录制
 
-灵动课堂 1.1.0 支持[页面录制](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode?platform=RESTful)，能够将指定 URL 的页面内容和音频混合录制为一个 MP4 音视频文件，实现音视频内容、白板内容、课件内容同步录制。开发者可通过灵动课堂云服务 RESTful API 配置并发起页面录制，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording)。
+灵动课堂 1.1.0 支持[页面录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)，能够将指定 URL 的页面内容和音频混合录制为一个 MP4 音视频文件，实现音视频内容、白板内容、课件内容同步录制。开发者可通过灵动课堂云服务 RESTful API 配置并发起页面录制，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording)。
 
 #### 点名上台
 

@@ -63,7 +63,7 @@ SDK 包中的 `example` 路径下是完整的本地录制示例项目。你可�
 
 ### 初始化服务资源
 
-首先，你需要调用 [`createAgoraService`](/api-ref/recording/cpp/iagoraservice#createagoraservice) 创建服务实例，并使用 [`initialize`](/api-ref/recording/cpp/iagoraservice#initialize) 方法进行初始化，设置 App ID 和音视频相关的配置。
+首先，你需要调用 [`createAgoraService`](/zh-CN/api-reference/local-server-recording/cpp/iagoraservice.cpp#createagoraservice) 创建服务实例，并使用 [`initialize`](/zh-CN/api-reference/local-server-recording/cpp/iagoraservice.cpp#initialize) 方法进行初始化，设置 App ID 和音视频相关的配置。
 
 ```cpp
 // 初始化 Service 资源，设置 log
@@ -80,7 +80,7 @@ service->setLogFile("./io.agora.rtc_sdk/agorasdk.log", 1024*1024*5);
 
 ### 创建 Recorder
 
-调用 [`createAgoraMediaComponentFactory`](/api-ref/recording/cpp/iagoramediacomponentfactory#createagoramediacomponentfactory) 和 [`createMediaRtcRecorder`](/api-ref/recording/cpp/iagoramediacomponentfactory#createmediartcrecorder) 创建录制实例，然后使用 [`IAgoraMediaRtcRecorder::initialize`](/api-ref/recording/cpp/iagoramediartcrecorder#initialize) 方法初始化录制实例。
+调用 [`createAgoraMediaComponentFactory`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediacomponentfactory.cpp#createagoramediacomponentfactory) 和 [`createMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediacomponentfactory.cpp#createmediartcrecorder) 创建录制实例，然后使用 [`IAgoraMediaRtcRecorder::initialize`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#initialize) 方法初始化录制实例。
 
 ```cpp
 // 创建 recorder
@@ -97,7 +97,7 @@ recorder->initialize(service, isMix);
 
 ### 注册事件处理器
 
-使用 [`registerRecorderEventHandler`](/api-ref/recording/cpp/iagoramediartcrecorder#registerrecordereventhandle) 注册录制事件的回调处理器，以便接收和处理录制过程中的事件通知。
+使用 [`registerRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#registerrecordereventhandle) 注册录制事件的回调处理器，以便接收和处理录制过程中的事件通知。
 
 ```cpp
 // 注册回调
@@ -107,7 +107,7 @@ recorder->registerRecorderEventHandle(eventHandler.get());
 
 ### 订阅音视频流
 
-调用 [`subscribeAllAudio`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribeallaudio) 和 [`subscribeAllVideo`](/api-ref/recording/cpp/iagoramediartcrecorder#subscribeallvideo) 方法来订阅频道内的所有音频和视频流。
+调用 [`subscribeAllAudio`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#subscribeallaudio) 和 [`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#subscribeallvideo) 方法来订阅频道内的所有音频和视频流。
 
 ```cpp
 // 订阅流
@@ -117,7 +117,7 @@ recorder->subscribeAllVideo(options);
 
 ### 配置录制参数
 
-使用 [`setRecorderConfig`](/api-ref/recording/cpp/iagoramediartcrecorder#setrecorderconfig) 方法设置录制的相关配置，包括视频分辨率、帧率、存储路径等。
+使用 [`setRecorderConfig`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#setrecorderconfig) 方法设置录制的相关配置，包括视频分辨率、帧率、存储路径等。
 
 :::warning[注意]
 请确保你设置的录制文件存储路径 `storagePath` 存在。如果指定的目录不存在，会导致录制失败。
@@ -141,7 +141,7 @@ recorder->setRecorderConfig(recorder_config);
 
 ### 加入频道并开始录制
 
-调用 [`joinChannel`](/api-ref/recording/cpp/iagoramediartcrecorder#joinchannel) 加入指定的频道，然后使用 [`startRecording`](/api-ref/recording/cpp/iagoramediartcrecorder#startrecording) 开始录制。
+调用 [`joinChannel`](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#joinchannel) 加入指定的频道，然后使用 [`startRecording`](/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp#startrecording) 开始录制。
 
 ```cpp
 // 加入频道并开始录制
@@ -265,7 +265,7 @@ service->release();
 
 ### API 参考
 
-本文介绍实现一个极简的录制任务需要调用的核心 API。你可以参考[录制 API](/api-ref/recording/cpp/api-overview) 了解完整的功能列表和对应的 API。
+本文介绍实现一个极简的录制任务需要调用的核心 API。你可以参考[录制 API](/zh-CN/api-reference/local-server-recording/cpp/api-overview) 了解完整的功能列表和对应的 API。
 
 </PlatformStructured>
 
@@ -519,7 +519,7 @@ Maven 依赖包含了所需的 JAR 文件，但仍需手动处理 `.so` 库文�
 
 ### 初始化服务资源
 
-首先，你需要创建一个 `AgoraService` 服务实例，并使用 [`initialize`](/api-ref/recording/java/agoraservice#initialize) 方法进行初始化，设置 App ID 和音视频相关的配置。
+首先，你需要创建一个 `AgoraService` 服务实例，并使用 [`initialize`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#initialize) 方法进行初始化，设置 App ID 和音视频相关的配置。
 
 ```java
 // 初始化 Service 资源，设置 log
@@ -539,7 +539,7 @@ int ret = agoraService.initialize(config);
 
 ### 创建 Recorder
 
-调用 [`createMediaRtcRecorder`](/api-ref/recording/java/agoraservice#createmediartcrecorder) 创建录制实例，然后使用 [`AgoraMediaRtcRecorder.initialize`](/api-ref/recording/java/agoramediartcrecorder#initialize) 方法初始化录制实例。
+调用 [`createMediaRtcRecorder`](/zh-CN/api-reference/local-server-recording/java/agoraservice.java#createmediartcrecorder) 创建录制实例，然后使用 [`AgoraMediaRtcRecorder.initialize`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#initialize) 方法初始化录制实例。
 
 ```java
 // 创建 recorder
@@ -556,7 +556,7 @@ agoraMediaRtcRecorder.initialize(agoraService, enableMix);
 
 ### 注册事件处理器
 
-使用 [`registerRecorderEventHandler`](/api-ref/recording/java/agoramediartcrecorder#registerrecordereventhandler) 注册录制事件的回调处理器，以便接收和处理录制过程中的事件通知。
+使用 [`registerRecorderEventHandler`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#registerrecordereventhandler) 注册录制事件的回调处理器，以便接收和处理录制过程中的事件通知。
 
 ```java
 // 注册回调
@@ -577,7 +577,7 @@ agoraMediaRtcRecorder.registerRecorderEventHandler(eventHandler);
 
 ### 订阅音视频流
 
-调用 [`subscribeAllAudio`](/api-ref/recording/java/agoramediartcrecorder#subscribeallaudio) 和 [`subscribeAllVideo`](/api-ref/recording/java/agoramediartcrecorder#subscribeallvideo) 方法来订阅频道内的所有音频和视频流。
+调用 [`subscribeAllAudio`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeallaudio) 和 [`subscribeAllVideo`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#subscribeallvideo) 方法来订阅频道内的所有音频和视频流。
 
 ```java
 // 订阅流
@@ -590,7 +590,7 @@ agoraMediaRtcRecorder.subscribeAllVideo(options);
 
 ### 配置录制参数
 
-使用 [`setRecorderConfig`](/api-ref/recording/java/agoramediartcrecorder#setrecorderconfig) 方法设置录制的相关配置，包括视频分辨率、帧率、存储路径等。
+使用 [`setRecorderConfig`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#setrecorderconfig) 方法设置录制的相关配置，包括视频分辨率、帧率、存储路径等。
 
 :::warning[注意]
 请确保你设置的录制文件存储路径 `storagePath`
@@ -614,7 +614,7 @@ agoraMediaRtcRecorder.setRecorderConfig(mediaRecorderConfiguration);
 
 ### 加入频道并开始录制
 
-调用 [`joinChannel`](/api-ref/recording/java/agoramediartcrecorder#joinchannel) 加入指定的频道，然后使用 [`startRecording`](/api-ref/recording/java/agoramediartcrecorder#startrecording) 开始录制。
+调用 [`joinChannel`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#joinchannel) 加入指定的频道，然后使用 [`startRecording`](/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java#startrecording) 开始录制。
 
 ```java
 // 加入频道并开始录制
@@ -785,6 +785,6 @@ LD_LIBRARY_PATH="$LD_LIBRARY_PATH:libs/native/linux/x86_64" java -Dserver.port=1
 
 ### 相关文档
 
-本文介绍实现一个极简的录制任务需要调用的核心 API。你可以参考[录制 API](/api-ref/recording/java/api-overview) 了解完整的功能列表和对应的 API。
+本文介绍实现一个极简的录制任务需要调用的核心 API。你可以参考[录制 API](/zh-CN/api-reference/local-server-recording/java/api-overview) 了解完整的功能列表和对应的 API。
 
 </PlatformStructured>

@@ -1414,12 +1414,12 @@ override func viewDidLoad() {
 
 参考以下步骤实现纯语音互动的逻辑：
 
-1. 调用 [`createClient`](/api-ref/rtc/javascript/interfaces/iagorartc#createClient) 方法创建 `AgoraRTCClient` 对象。
-2. 调用 [`join`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#join) 方法加入一个 RTC 频道，你需要在该方法中传入 App ID、用户 ID、Token 和频道名。
-3. 先调用 [`createMicrophoneAudioTrack`](/api-ref/rtc/javascript/interfaces/iagorartc#createmicrophoneaudiotrack) 通过麦克风采集的音频创建本地音频轨道对象，然后调用 [`publish`](/api-ref/rtc/javascript/interfaces/iagorartcclient#publish) 方法，将这些本地音频轨道对象当作参数即可将音频发布到频道中。
+1. 调用 [`createClient`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createclient) 方法创建 `AgoraRTCClient` 对象。
+2. 调用 [`join`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 方法加入一个 RTC 频道，你需要在该方法中传入 App ID、用户 ID、Token 和频道名。
+3. 先调用 [`createMicrophoneAudioTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 通过麦克风采集的音频创建本地音频轨道对象，然后调用 [`publish`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#publish) 方法，将这些本地音频轨道对象当作参数即可将音频发布到频道中。
 4. 当一个远端用户加入频道并发布音频轨道时：
-   1. 监听 [client.on("user-published")](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#event_user_published) 事件。当 SDK 触发该事件时，在这个事件回调函数的参数中你可以获取远端用户 `AgoraRTCRemoteUser` 对象 。
-   2. 调用 [`subscribe`](/api-ref/rtc/javascript/interfaces/iagorartcclient.html#subscribe) 方法订阅远端用户 `AgoraRTCRemoteUser` 对象，获取远端用户的远端音频轨道 `RemoteAudioTrack` 对象。
+   1. 监听 [client.on("user-published")](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。当 SDK 触发该事件时，在这个事件回调函数的参数中你可以获取远端用户 `AgoraRTCRemoteUser` 对象 。
+   2. 调用 [`subscribe`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#subscribe) 方法订阅远端用户 `AgoraRTCRemoteUser` 对象，获取远端用户的远端音频轨道 `RemoteAudioTrack` 对象。
    3. 调用 `play` 方法播放远端音频轨道。
 
 下图展示了实现音频互动的 API 调用流程。注意图中的方法是对不同的对象调用的。
@@ -6065,7 +6065,7 @@ void UAgoraWidget::NativeDestruct()
 | 回调函数 | 描述 | 输入参数 |
 | --- | --- | --- |
 | `FOnJoinChannelSuccess` | 成功加入频道回调。 | <Slot name="audio-quick-start-6019-2-2" /> |
-| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/api-ref/rtc/unreal-blueprint/API/class_rtcstats)。 |
+| `FOnLeaveChannel` | 离开频道回调。 | `stats`: 通话的统计数据。详见 [`FRtcStats`](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。 |
 | `FOnUserJoined` | 远端用户加入当前频道回调。 | <Slot name="audio-quick-start-6019-4-2" /> |
 | `FOnUserOffline` | 远端用户离开当前频道回调。 | <Slot name="audio-quick-start-6019-5-2" /> |
 
@@ -6087,7 +6087,7 @@ void UAgoraWidget::NativeDestruct()
 <Slot for="audio-quick-start-6019-5-2">
 
 - `uid`: (Integer64) 离线用户的用户 ID。
-- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/api-ref/rtc/unreal-blueprint/API/enum_userofflinereasontype)。
+- `reason`: 离线原因。详见 [`EUSER_OFFLINE_REASON_TYPE`](/zh-CN/api-reference/rtc/unreal-blueprint/enum-userofflinereasontype)。
 
 </Slot>
 

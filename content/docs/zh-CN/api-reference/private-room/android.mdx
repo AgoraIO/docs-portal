@@ -3,7 +3,7 @@ title: "CallAPI Android API 参考"
 ---
 声网为 1v1 私密房解决方案提供 `CallAPI`，本文提供相应的 API 参考。
 
-除了 `CallAPI`，你还需要使用 RTC API 来实现初始化等功能。你可以参考 [RTC API](/api-ref/rtc/android/API/rtc_api_overview)来了解详细的 RTC API 用法。
+除了 `CallAPI`，你还需要使用 RTC API 来实现初始化等功能。你可以参考 [RTC API](/zh-CN/api-reference/rtc/android/rtc-api-overview)来了解详细的 RTC API 用法。
 
 ## 接口概述
 
@@ -55,7 +55,7 @@ fun deinitialize(completion: (() -> Unit))
 fun renewToken(rtcToken: String)
 ```
 
-在收到 [`tokenPrivilegeWillExpire`](#tokenPrivilegeWillExpire) 回调后，你需要生成新的 Token，然后调用该方法将新的 Token 传给 SDK。
+在收到 [`tokenPrivilegeWillExpire`](#tokenprivilegewillexpire) 回调后，你需要生成新的 Token，然后调用该方法将新的 Token 传给 SDK。
 
 | 参数        | 类型     | 含义                 |
 | ---------- | ------- | -------------------- |
@@ -651,7 +651,7 @@ RTC Token。
 | `JoinRTCSuccessed` | `5` | 加入 RTC 频道成功。 |
 | `RtmSetupSuccessed` | `7` | <Slot name="call-api-android-markdown-5-5-2" /> |
 | `StateMismatch` | `9` | 状态流转异常。 |
-| `JoinRTCStart` | `10` | 本地已经加入 RTC 频道，但是还未成功（调用了 [`joinChannelEx`](/api-ref/rtc/android/API/toc_channel#joinChannelEx)，但由于延迟还未收到成功回调）。v2.1.0 开始支持。 |
+| `JoinRTCStart` | `10` | 本地已经加入 RTC 频道，但是还未成功（调用了 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex)，但由于延迟还未收到成功回调）。v2.1.0 开始支持。 |
 | `RemoteUserRecvCall` | `99` | 主叫呼叫成功。 |
 | `LocalRejected` | `100` | 本地用户拒绝呼叫邀请。 |
 | `RemoteRejected` | `101` | 远端用户拒绝呼叫邀请。 |
@@ -661,7 +661,7 @@ RTC Token。
 | `LocalHangup` | `105` | 本地用户挂断。 |
 | `RemoteHangup` | `106` | 远端用户挂断。 |
 | `RemoteJoined` | `107` | 远端用户加入 RTC 频道。 |
-| `RemoteLeft` | `108` | 远端用户离开 RTC 频道。`eventReason` 可以参考 [`onUserOffline`](/api-ref/rtc/android/API/toc_channel#callback_irtcengineeventhandler_onuseroffline)。 |
+| `RemoteLeft` | `108` | 远端用户离开 RTC 频道。`eventReason` 可以参考 [`onUserOffline`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuseroffline)。 |
 | `LocalCancelled` | `109` | 本地用户取消呼叫。 |
 | `RemoteCancelled` | `110` | 远端用户取消呼叫。 |
 | `LocalJoined` | `111` | 本地用户加入 RTC 频道。 |

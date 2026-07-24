@@ -47,7 +47,7 @@ title: "如何处理无声问题？"
 4. 检查 `joinChannel [2/2]`/`joinChannelByToken [2/4]` 方法中的 `options` 参数，跟音频相关的设置是否符合预期：
     - `publishMicrophoneTrack` 已设置为 `true`
     - `enableAudioRecordingOrPlayout` 已设置为 `true`
-4. 通过 `onAudioRouteChanged`/`didAudioRouteChanged` 回调检查当前的音频路由是否符合预期。如果不符合预期，可参考[设置音频路由](/doc/rtc/android/advanced-features/audio-route)修改音频路由。
+4. 通过 `onAudioRouteChanged`/`didAudioRouteChanged` 回调检查当前的音频路由是否符合预期。如果不符合预期，可参考[设置音频路由](/zh-CN/realtime-media/rtc/build/audio/audio-route)修改音频路由。
 
 ### 检查 AVAudioSession 设置
 
@@ -66,4 +66,4 @@ iOS 系统中的 `AVAudioSession` 可能被其他 App 或本 App 内的其他模
 - 该频道内无法听到声音的用户 ID
 - 无法听到声音的时间段
 
-你可以使用声网控制台中的[水晶球](https://analytics-lab.shengwang.cn/analytics/call/search)功能对通话质量进行跟踪和反馈，详见[水晶球教程](/doc/analytics/general/overview/product-overview)。
+你可以使用声网控制台中的[水晶球](https://analytics-lab.shengwang.cn/analytics/call/search)功能对通话质量进行跟踪和反馈，详见[水晶球教程](/zh-CN/api-reference/analytics/general/overview/product-overview)。

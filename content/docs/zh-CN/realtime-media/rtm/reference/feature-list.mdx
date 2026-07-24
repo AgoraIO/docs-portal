@@ -8,23 +8,23 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`RtmClient create(RtmConfig config)`](/api-ref/rtm2/android/toc-configuration/configuration#create) |
-| 销毁实例 | [`RtmClient.release()`](/api-ref/rtm2/android/toc-configuration/configuration#release) |
-| Token 设置 | [`login`](/api-ref/rtm2/android/toc-configuration/configuration#login) 接口中的 `token` 参数 |
-| 端侧加密 | [`RtmEncryptionConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmEncryptionConfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
-| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`RtmLogConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmLogConfig) 中的 `level` 参数 |
-| Proxy 设置 | [`RtmProxyConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
-| 消息传输协议设置 | [`RtmConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmConfig) 中的 `protocolType` 参数 |
-| 私有化部署设置 | [`RtmPrivateConfig`](/api-ref/rtm2/android/toc-configuration/configuration#RtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 创建实例 | [`RtmClient create(RtmConfig config)`](/zh-CN/api-reference/rtm/android/configuration#create) |
+| 销毁实例 | [`RtmClient.release()`](/zh-CN/api-reference/rtm/android/configuration#release) |
+| Token 设置 | [`login`](/zh-CN/api-reference/rtm/android/configuration#login) 接口中的 `token` 参数 |
+| 端侧加密 | [`RtmEncryptionConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmencryptionconfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmLogConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmlogconfig) 中的 `level` 参数 |
+| Proxy 设置 | [`RtmProxyConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmproxyconfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmconfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`RtmPrivateConfig`](/zh-CN/api-reference/rtm/android/configuration#rtmprivateconfig) 中的 `serviceType`、`accessPointHosts` 参数 |
 | 事件监听 | <Slot name="feature-list-android-html-0-10-1" /> |
-| 登录服务 | [`void login(String token, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-configuration/configuration#login) |
-| 登出服务 | [`void logout(ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-configuration/configuration#logout) |
+| 登录服务 | [`void login(String token, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/configuration#login) |
+| 登出服务 | [`void logout(ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/configuration#logout) |
 
 <Slot for="feature-list-android-html-0-10-1">
 
-- [`void addEventListener(RtmEventListener listener)`](/api-ref/rtm2/android/toc-configuration/configuration#添加监听)
-    - [`void removeEventListener(RtmEventListener listener)`](/api-ref/rtm2/android/toc-configuration/configuration#删除监听)
+- [`void addEventListener(RtmEventListener listener)`](/zh-CN/api-reference/rtm/android/configuration#添加监听)
+    - [`void removeEventListener(RtmEventListener listener)`](/zh-CN/api-reference/rtm/android/configuration#删除监听)
 
 </Slot>
 
@@ -32,64 +32,64 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`void subscribe(String channelName, SubscribeOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#subscribe) |
-| 取消订阅频道 | [`void unsubscribe(String channelName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#unsubscribe) |
-| 创建 Stream Channel | [`StreamChannel createStreamChannel(String channelName)`](/api-ref/rtm2/android/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`void join(JoinChannelOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#join) |
-| 离开 Stream Channel | [`void leave(ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`streamChannel.release()`](/api-ref/rtm2/android/toc-channel/channel#release) |
+| 订阅频道 | [`void subscribe(String channelName, SubscribeOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/channel#subscribe) |
+| 取消订阅频道 | [`void unsubscribe(String channelName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/channel#unsubscribe) |
+| 创建 Stream Channel | [`StreamChannel createStreamChannel(String channelName)`](/zh-CN/api-reference/rtm/android/channel#createstreamchannel) |
+| 加入 Stream Channel | [`void join(JoinChannelOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/channel#join) |
+| 离开 Stream Channel | [`void leave(ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.release()`](/zh-CN/api-reference/rtm/android/channel#release) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`void joinTopic(String topicName, JoinTopicOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`void publishTopicMessage(String topicName, String message, TopicMessageOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`void leaveTopic(String topicName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`void subscribeTopic(String topicName, TopicOptions options, ResultCallback<SubscribeTopicResult> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`void unsubscribeTopic(String topicName, TopicOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`void joinTopic(String topicName, JoinTopicOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/topic#jointopic) |
+| 发送 Topic 消息 | [`void publishTopicMessage(String topicName, String message, TopicMessageOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/topic#publishtopicmessage) |
+| 离开 Topic | [`void leaveTopic(String topicName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/topic#leavetopic) |
+| 订阅 Topic | [`void subscribeTopic(String topicName, TopicOptions options, ResultCallback<SubscribeTopicResult> resultCallback)`](/zh-CN/api-reference/rtm/android/topic#subscribetopic) |
+| 取消订阅 Topic | [`void unsubscribeTopic(String topicName, TopicOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-message/message#publish) |
+| 发送消息 | [`void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`void whereNow(String userId, ResultCallback<ArrayList<ChannelInfo>> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`void setState(String channelName, RtmChannelType channelType, Map<String, String> items, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`void getState(String channelName, RtmChannelType channelType, String userId, ResultCallback<UserState> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`void removeState(String channelName, RtmChannelType channelType, ArrayList<String> keys, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`void whoNow(String channelName, RtmChannelType channelType, PresenceOptions options, ResultCallback<WhoNowResult> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#whonow) |
+| 查询用户所在频道 | [`void whereNow(String userId, ResultCallback<ArrayList<ChannelInfo>> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#wherenow) |
+| 设置用户临时状态 | [`void setState(String channelName, RtmChannelType channelType, Map<String, String> items, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#setstate) |
+| 查询用户临时状态 | [`void getState(String channelName, RtmChannelType channelType, String userId, ResultCallback<UserState> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#getstate) |
+| 删除用户临时状态 | [`void removeState(String channelName, RtmChannelType channelType, ArrayList<String> keys, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`void setChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`void getChannelMetadata(String channelName, RtmChannelType channelType, ResultCallback<Metadata> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`void removeChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`void updateChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`void setUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`void getUserMetadata(String userId, ResultCallback<Metadata> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`void removeUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`void updateUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#updateUserMetadata) |
-| 订阅用户属性 | [`void subscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`void unsubscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`void setChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#setchannelmetadata) |
+| 获取频道属性 | [`void getChannelMetadata(String channelName, RtmChannelType channelType, ResultCallback<Metadata> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#getchannelmetadata) |
+| 删除频道属性 | [`void removeChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#removechannelmetadata) |
+| 更新频道属性 | [`void updateChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#updatechannelmetadata) |
+| 设置用户属性 | [`void setUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#setusermetadata) |
+| 获取用户属性 | [`void getUserMetadata(String userId, ResultCallback<Metadata> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#getusermetadata) |
+| 删除用户属性 | [`void removeUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#removeusermetadata) |
+| 更新用户属性 | [`void updateUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#updateusermetadata) |
+| 订阅用户属性 | [`void subscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`void unsubscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`void setLock(String channelName, RtmChannelType channelType, String lockName, long ttl, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#setLock) |
-| 获取锁 | [`void acquireLock(String channelName, RtmChannelType channelType, String lockName, boolean retry, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#acquireLock) |
-| 释放锁 | [`void releaseLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#releaseLock) |
-| 收回锁 | [`void revokeLock(String channelName, RtmChannelType channelType, String lockName, String owner, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#revokeLock) |
-| 查询锁 | [`void getLocks(String channelName, RtmChannelType channelType, ResultCallback<ArrayList<LockDetail>> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#getLocks) |
-| 删除锁 | [`void removeLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/api-ref/rtm2/android/toc-lock/lock#removeLock) |
+| 设置锁 | [`void setLock(String channelName, RtmChannelType channelType, String lockName, long ttl, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#setlock) |
+| 获取锁 | [`void acquireLock(String channelName, RtmChannelType channelType, String lockName, boolean retry, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#acquirelock) |
+| 释放锁 | [`void releaseLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#releaselock) |
+| 收回锁 | [`void revokeLock(String channelName, RtmChannelType channelType, String lockName, String owner, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#revokelock) |
+| 查询锁 | [`void getLocks(String channelName, RtmChannelType channelType, ResultCallback<ArrayList<LockDetail>> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#getlocks) |
+| 删除锁 | [`void removeLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`](/zh-CN/api-reference/rtm/android/lock#removelock) |
 
 </PlatformStructured>
 
@@ -100,23 +100,23 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`initWithConfig:delegate:error`](/api-ref/rtm2/ios/toc-configuration/configuration#initWithConfig) |
-| 销毁实例 | [`[rtm destroy]`](/api-ref/rtm2/ios/toc-configuration/configuration#destroy) |
-| Token 设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `token` 参数 |
-| 端侧加密 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `encryptionConfig` 参数 |
-| Presence 超时设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`AgoraRtmLogConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmLogConfig) 中的 `level` 参数 |
-| Proxy 设置 | [`AgoraRtmProxyConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
-| 消息传输协议设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `protocolType` 参数 |
-| 私有化部署设置 | [`AgoraRtmPrivateConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 创建实例 | [`initWithConfig:delegate:error`](/zh-CN/api-reference/rtm/ios/configuration#initwithconfig) |
+| 销毁实例 | [`[rtm destroy]`](/zh-CN/api-reference/rtm/ios/configuration#destroy) |
+| Token 设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `token` 参数 |
+| 端侧加密 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `encryptionConfig` 参数 |
+| Presence 超时设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`AgoraRtmLogConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmlogconfig) 中的 `level` 参数 |
+| Proxy 设置 | [`AgoraRtmProxyConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmproxyconfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`AgoraRtmPrivateConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmprivateconfig) 中的 `serviceType`、`accessPointHosts` 参数 |
 | 事件监听 | <Slot name="feature-list-ios-html-0-10-1" /> |
-| 登录服务 | [`[rtm loginByToken:completion:]`](/api-ref/rtm2/ios/toc-configuration/configuration#loginByToken) |
-| 登出服务 | [`[rtm logout:completion]`](/api-ref/rtm2/ios/toc-configuration/configuration#logout) |
+| 登录服务 | [`[rtm loginByToken:completion:]`](/zh-CN/api-reference/rtm/ios/configuration#loginbytoken) |
+| 登出服务 | [`[rtm logout:completion]`](/zh-CN/api-reference/rtm/ios/configuration#logout) |
 
 <Slot for="feature-list-ios-html-0-10-1">
 
-- [`[rtm addDelegate:delegate]`](/api-ref/rtm2/ios/toc-configuration/configuration#添加监听)
-    - [`[rtm removeDelegate:delegate]`](/api-ref/rtm2/ios/toc-configuration/configuration#删除监听)
+- [`[rtm addDelegate:delegate]`](/zh-CN/api-reference/rtm/ios/configuration#添加监听)
+    - [`[rtm removeDelegate:delegate]`](/zh-CN/api-reference/rtm/ios/configuration#删除监听)
 
 </Slot>
 
@@ -124,64 +124,64 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`[rtm subscribeWithChannel:option:completion]`](/api-ref/rtm2/ios/toc-channel/channel#subscribeWithChannel) |
-| 取消订阅频道 | [`[rtm unsubscribeWithChannel:completion]`](/api-ref/rtm2/ios/toc-channel/channel#unsubscribeWithChannel) |
-| 创建 Stream Channel | [`[rtm createStreamChannel:error]`](/api-ref/rtm2/ios/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`[streamChannel joinWithOption:completion]`](/api-ref/rtm2/ios/toc-channel/channel#joinWithOption) |
-| 离开 Stream Channel | [`[streamChannel leave]`](/api-ref/rtm2/ios/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`[streamChannel destroy]`](/api-ref/rtm2/ios/toc-channel/channel#destroy) |
+| 订阅频道 | [`[rtm subscribeWithChannel:option:completion]`](/zh-CN/api-reference/rtm/ios/channel#subscribewithchannel) |
+| 取消订阅频道 | [`[rtm unsubscribeWithChannel:completion]`](/zh-CN/api-reference/rtm/ios/channel#unsubscribewithchannel) |
+| 创建 Stream Channel | [`[rtm createStreamChannel:error]`](/zh-CN/api-reference/rtm/ios/channel#createstreamchannel) |
+| 加入 Stream Channel | [`[streamChannel joinWithOption:completion]`](/zh-CN/api-reference/rtm/ios/channel#joinwithoption) |
+| 离开 Stream Channel | [`[streamChannel leave]`](/zh-CN/api-reference/rtm/ios/channel#leave) |
+| 销毁 Stream Channel | [`[streamChannel destroy]`](/zh-CN/api-reference/rtm/ios/channel#destroy) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`[streamChannel joinTopic:withOption:completion]`](/api-ref/rtm2/ios/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`[streamChannel publishTopicMessage:data:option:completion]`](/api-ref/rtm2/ios/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`[streamChannel leaveTopic:completion]`](/api-ref/rtm2/ios/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`[streamChannel subscribeTopic:withOption:completion]`](/api-ref/rtm2/ios/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`[streamChannel unsubscribeTopic:withOption:completion]`](/api-ref/rtm2/ios/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`[streamChannel joinTopic:withOption:completion]`](/zh-CN/api-reference/rtm/ios/topic#jointopic) |
+| 发送 Topic 消息 | [`[streamChannel publishTopicMessage:data:option:completion]`](/zh-CN/api-reference/rtm/ios/topic#publishtopicmessage) |
+| 离开 Topic | [`[streamChannel leaveTopic:completion]`](/zh-CN/api-reference/rtm/ios/topic#leavetopic) |
+| 订阅 Topic | [`[streamChannel subscribeTopic:withOption:completion]`](/zh-CN/api-reference/rtm/ios/topic#subscribetopic) |
+| 取消订阅 Topic | [`[streamChannel unsubscribeTopic:withOption:completion]`](/zh-CN/api-reference/rtm/ios/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`[rtm publish:message:option:completion]`](/api-ref/rtm2/ios/toc-message/message#publish) |
+| 发送消息 | [`[rtm publish:message:option:completion]`](/zh-CN/api-reference/rtm/ios/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`[[rtm getPresence] whoNow:channelType:options:completion]`](/api-ref/rtm2/ios/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`[[rtm getPresence] whereNow:completion]`](/api-ref/rtm2/ios/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`[[rtm getPresence] setState:channelType:items:completion]`](/api-ref/rtm2/ios/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`[[rtm getPresence] getState:channelType:userId:completion]`](/api-ref/rtm2/ios/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`[[rtm getPresence] removeState:channelType:keys:completion]`](/api-ref/rtm2/ios/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`[[rtm getPresence] whoNow:channelType:options:completion]`](/zh-CN/api-reference/rtm/ios/presence#whonow) |
+| 查询用户所在频道 | [`[[rtm getPresence] whereNow:completion]`](/zh-CN/api-reference/rtm/ios/presence#wherenow) |
+| 设置用户临时状态 | [`[[rtm getPresence] setState:channelType:items:completion]`](/zh-CN/api-reference/rtm/ios/presence#setstate) |
+| 查询用户临时状态 | [`[[rtm getPresence] getState:channelType:userId:completion]`](/zh-CN/api-reference/rtm/ios/presence#getstate) |
+| 删除用户临时状态 | [`[[rtm getPresence] removeState:channelType:keys:completion]`](/zh-CN/api-reference/rtm/ios/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`[[rtm getStorage] setChannelMetadata:channelType:data:options:lock:completion]`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`[[rtm getStorage] getChannelMetadata:channelType:completion]`](/api-ref/rtm2/ios/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`[[rtm getStorage] removeChannelMetadata:channelType:data:options:lock:completion]`](/api-ref/rtm2/ios/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`[[rtm getStorage] updateChannelMetadata:channelType:data:options:lock:completion]`](/api-ref/rtm2/ios/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`[[rtm getStorage] setUserMetadata:data:options:completion]`](/api-ref/rtm2/ios/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`[[rtm getStorage] getUserMetadata:completion]`](/api-ref/rtm2/ios/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`[[rtm getStorage] removeUserMetadata:data:options:completion]`](/api-ref/rtm2/ios/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`[[rtm getStorage] updateChannelMetadata:data:options:completion]`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
-| 订阅用户属性 | [`[[rtm getStorage] subscribeUserMetadata:completion]`](/api-ref/rtm2/ios/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`[[rtm getStorage] unsubscribeUserMetadata:completion]`](/api-ref/rtm2/ios/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`[[rtm getStorage] setChannelMetadata:channelType:data:options:lock:completion]`](/zh-CN/api-reference/rtm/ios/storage#setchannelmetadata) |
+| 获取频道属性 | [`[[rtm getStorage] getChannelMetadata:channelType:completion]`](/zh-CN/api-reference/rtm/ios/storage#getchannelmetadata) |
+| 删除频道属性 | [`[[rtm getStorage] removeChannelMetadata:channelType:data:options:lock:completion]`](/zh-CN/api-reference/rtm/ios/storage#removechannelmetadata) |
+| 更新频道属性 | [`[[rtm getStorage] updateChannelMetadata:channelType:data:options:lock:completion]`](/zh-CN/api-reference/rtm/ios/storage#updatechannelmetadata) |
+| 设置用户属性 | [`[[rtm getStorage] setUserMetadata:data:options:completion]`](/zh-CN/api-reference/rtm/ios/storage#setusermetadata) |
+| 获取用户属性 | [`[[rtm getStorage] getUserMetadata:completion]`](/zh-CN/api-reference/rtm/ios/storage#getusermetadata) |
+| 删除用户属性 | [`[[rtm getStorage] removeUserMetadata:data:options:completion]`](/zh-CN/api-reference/rtm/ios/storage#removeusermetadata) |
+| 更新用户属性 | [`[[rtm getStorage] updateChannelMetadata:data:options:completion]`](/zh-CN/api-reference/rtm/ios/storage#setchannelmetadata) |
+| 订阅用户属性 | [`[[rtm getStorage] subscribeUserMetadata:completion]`](/zh-CN/api-reference/rtm/ios/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`[[rtm getStorage] unsubscribeUserMetadata:completion]`](/zh-CN/api-reference/rtm/ios/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`[[rtm getLock] setLock:channelType:lockName:ttl:completion]`](/api-ref/rtm2/ios/toc-lock/lock#setLock) |
-| 获取锁 | [`[[rtm getLock] acquireLock:channelType:lockName:retry:completion]`](/api-ref/rtm2/ios/toc-lock/lock#acquireLock) |
-| 释放锁 | [`[[rtm getLock] releaseLock:channelType:lockName:completion]`](/api-ref/rtm2/ios/toc-lock/lock#releaseLock) |
-| 收回锁 | [`[[rtm getLock] revokeLock:channelType:lockName:userId:completion]`](/api-ref/rtm2/ios/toc-lock/lock#revokeLock) |
-| 查询锁 | [`[[rtm getLock] getLocks:channelType:completion]`](/api-ref/rtm2/ios/toc-lock/lock#getLocks) |
-| 删除锁 | [`[[rtm getLock] removeLock:channelType:lockName:completion]`](/api-ref/rtm2/ios/toc-lock/lock#removeLock) |
+| 设置锁 | [`[[rtm getLock] setLock:channelType:lockName:ttl:completion]`](/zh-CN/api-reference/rtm/ios/lock#setlock) |
+| 获取锁 | [`[[rtm getLock] acquireLock:channelType:lockName:retry:completion]`](/zh-CN/api-reference/rtm/ios/lock#acquirelock) |
+| 释放锁 | [`[[rtm getLock] releaseLock:channelType:lockName:completion]`](/zh-CN/api-reference/rtm/ios/lock#releaselock) |
+| 收回锁 | [`[[rtm getLock] revokeLock:channelType:lockName:userId:completion]`](/zh-CN/api-reference/rtm/ios/lock#revokelock) |
+| 查询锁 | [`[[rtm getLock] getLocks:channelType:completion]`](/zh-CN/api-reference/rtm/ios/lock#getlocks) |
+| 删除锁 | [`[[rtm getLock] removeLock:channelType:lockName:completion]`](/zh-CN/api-reference/rtm/ios/lock#removelock) |
 
 </PlatformStructured>
 
@@ -192,22 +192,22 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`new RTM()`](/api-ref/rtm2/javascript/toc-configuration/configuration#Init) |
-| Token 设置 | [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) 中的 `token` 参数 |
-| 端侧加密 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `encryptionMode`、`cipherKey`、`salt` 参数 |
-| Presence 超时设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `presenceTimeout` 参数 |
-| 日志上传 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `logUpload` 参数 |
-| 日志等级设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `logLevel` 参数 |
-| Cloud Proxy 设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `cloudProxy` 参数 |
-| 私有化部署设置 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) 中的 `privateConfig` 参数 |
+| 创建实例 | [`new RTM()`](/zh-CN/api-reference/rtm/web/configuration#Init) |
+| Token 设置 | [`login`](/zh-CN/api-reference/rtm/web/configuration#login) 中的 `token` 参数 |
+| 端侧加密 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `encryptionMode`、`cipherKey`、`salt` 参数 |
+| Presence 超时设置 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `presenceTimeout` 参数 |
+| 日志上传 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `logUpload` 参数 |
+| 日志等级设置 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `logLevel` 参数 |
+| Cloud Proxy 设置 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `cloudProxy` 参数 |
+| 私有化部署设置 | [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration#rtmconfig) 中的 `privateConfig` 参数 |
 | 事件监听 | <Slot name="feature-list-javascript-html-0-9-1" /> |
-| 登录服务 | [`rtm.login(...): Promise<LoginResponse>;`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) |
-| 登出服务 | [`rtm.logout(): Promise<LogoutResponse>;`](/api-ref/rtm2/javascript/toc-configuration/configuration#logout) |
+| 登录服务 | [`rtm.login(...): Promise<LoginResponse>;`](/zh-CN/api-reference/rtm/web/configuration#login) |
+| 登出服务 | [`rtm.logout(): Promise<LogoutResponse>;`](/zh-CN/api-reference/rtm/web/configuration#logout) |
 
 <Slot for="feature-list-javascript-html-0-9-1">
 
-- [`rtm.addEventListener("event", event => {});`](/api-ref/rtm2/javascript/toc-configuration/configuration#添加监听)
-    - [`rtm.removeEventListener("event", statusHandler);`](/api-ref/rtm2/javascript/toc-configuration/configuration#删除监听)
+- [`rtm.addEventListener("event", event => {});`](/zh-CN/api-reference/rtm/web/configuration#添加监听)
+    - [`rtm.removeEventListener("event", statusHandler);`](/zh-CN/api-reference/rtm/web/configuration#删除监听)
 
 </Slot>
 
@@ -215,63 +215,63 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`rtm.subscribe(...): Promise<SubscribeResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe) |
-| 取消订阅频道 | [`rtm.unsubscribe(...): Promise<UnsubscribeResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#unsubscribe) |
-| 创建 Stream Channel | [`rtm.createStreamChannel(...): RTMStreamChannel;`](/api-ref/rtm2/javascript/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`streamChannel.join(...): Promise<JoinChannelResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#join) |
-| 离开 Stream Channel | [`streamChannel.leave(...): Promise<LeaveChannelResponse>;`](/api-ref/rtm2/javascript/toc-channel/channel#leave) |
+| 订阅频道 | [`rtm.subscribe(...): Promise<SubscribeResponse>;`](/zh-CN/api-reference/rtm/web/channel#subscribe) |
+| 取消订阅频道 | [`rtm.unsubscribe(...): Promise<UnsubscribeResponse>;`](/zh-CN/api-reference/rtm/web/channel#unsubscribe) |
+| 创建 Stream Channel | [`rtm.createStreamChannel(...): RTMStreamChannel;`](/zh-CN/api-reference/rtm/web/channel#createstreamchannel) |
+| 加入 Stream Channel | [`streamChannel.join(...): Promise<JoinChannelResponse>;`](/zh-CN/api-reference/rtm/web/channel#join) |
+| 离开 Stream Channel | [`streamChannel.leave(...): Promise<LeaveChannelResponse>;`](/zh-CN/api-reference/rtm/web/channel#leave) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`streamChannel.joinTopic(...): Promise<JoinTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(...): Promise<PublishTopicMessageResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`streamChannel.leaveTopic(...): Promise<LeaveTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`streamChannel.subscribeTopic(...): Promise<SubscribeTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(...): Promise<UnsubscribeTopicResponse>;`](/api-ref/rtm2/javascript/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`streamChannel.joinTopic(...): Promise<JoinTopicResponse>;`](/zh-CN/api-reference/rtm/web/topic#jointopic) |
+| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(...): Promise<PublishTopicMessageResponse>;`](/zh-CN/api-reference/rtm/web/topic#publishtopicmessage) |
+| 离开 Topic | [`streamChannel.leaveTopic(...): Promise<LeaveTopicResponse>;`](/zh-CN/api-reference/rtm/web/topic#leavetopic) |
+| 订阅 Topic | [`streamChannel.subscribeTopic(...): Promise<SubscribeTopicResponse>;`](/zh-CN/api-reference/rtm/web/topic#subscribetopic) |
+| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(...): Promise<UnsubscribeTopicResponse>;`](/zh-CN/api-reference/rtm/web/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`rtm.publish(...): Promise<PublishResponse>;`](/api-ref/rtm2/javascript/toc-message/message#publish) |
+| 发送消息 | [`rtm.publish(...): Promise<PublishResponse>;`](/zh-CN/api-reference/rtm/web/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`rtm.presence.whoNow(...): Promise<WhoNowResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`rtm.presence.whereNow(...): Promise<WhereNowResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`rtm.presence.setState(...): Promise<SetStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`rtm.presence.getState(...): Promise<GetStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`rtm.presence.removeState(...): Promise<RemoveStateResponse>;`](/api-ref/rtm2/javascript/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`rtm.presence.whoNow(...): Promise<WhoNowResponse>;`](/zh-CN/api-reference/rtm/web/presence#whonow) |
+| 查询用户所在频道 | [`rtm.presence.whereNow(...): Promise<WhereNowResponse>;`](/zh-CN/api-reference/rtm/web/presence#wherenow) |
+| 设置用户临时状态 | [`rtm.presence.setState(...): Promise<SetStateResponse>;`](/zh-CN/api-reference/rtm/web/presence#setstate) |
+| 查询用户临时状态 | [`rtm.presence.getState(...): Promise<GetStateResponse>;`](/zh-CN/api-reference/rtm/web/presence#getstate) |
+| 删除用户临时状态 | [`rtm.presence.removeState(...): Promise<RemoveStateResponse>;`](/zh-CN/api-reference/rtm/web/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`rtm.storage.setChannelMetadata(...): Promise<SetChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`rtm.storage.getChannelMetadata(...): Promise<GetChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`rtm.storage.removeChannelMetadata(...): Promise<RemoveChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`rtm.storage.updateChannelMetadata(...): Promise<UpdateChannelMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`rtm.storage.setUserMetadata(...): Promise<SetUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`rtm.storage.getUserMetadata(...): Promise<GetUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`rtm.storage.removeUserMetadata(...): Promise<RemoveUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`rtm.storage.updateUserMetadata(...): Promise<UpdateUserMetadataResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#updateUserMetadata) |
-| 订阅用户属性 | [`rtm.storage.subscribeUserMetadata(...): Promise<SubscribeUserMetaResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`rtm.storage.unsubscribeUserMetadata(...): Promise<UnsubscribeUserMetaResponse>;`](/api-ref/rtm2/javascript/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`rtm.storage.setChannelMetadata(...): Promise<SetChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#setchannelmetadata) |
+| 获取频道属性 | [`rtm.storage.getChannelMetadata(...): Promise<GetChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#getchannelmetadata) |
+| 删除频道属性 | [`rtm.storage.removeChannelMetadata(...): Promise<RemoveChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#removechannelmetadata) |
+| 更新频道属性 | [`rtm.storage.updateChannelMetadata(...): Promise<UpdateChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#updatechannelmetadata) |
+| 设置用户属性 | [`rtm.storage.setUserMetadata(...): Promise<SetUserMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#setusermetadata) |
+| 获取用户属性 | [`rtm.storage.getUserMetadata(...): Promise<GetUserMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#getusermetadata) |
+| 删除用户属性 | [`rtm.storage.removeUserMetadata(...): Promise<RemoveUserMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#removeusermetadata) |
+| 更新用户属性 | [`rtm.storage.updateUserMetadata(...): Promise<UpdateUserMetadataResponse>;`](/zh-CN/api-reference/rtm/web/storage#updateusermetadata) |
+| 订阅用户属性 | [`rtm.storage.subscribeUserMetadata(...): Promise<SubscribeUserMetaResponse>;`](/zh-CN/api-reference/rtm/web/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`rtm.storage.unsubscribeUserMetadata(...): Promise<UnsubscribeUserMetaResponse>;`](/zh-CN/api-reference/rtm/web/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`rtm.lock.setLock(...): Promise<SetLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#setLock) |
-| 获取锁 | [`rtm.lock.acquireLock(...): Promise<AcquireLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#acquireLock) |
-| 释放锁 | [`rtm.lock.releaseLock(...): Promise<ReleaseLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#releaseLock) |
-| 收回锁 | [`rtm.lock.revokeLock(...): Promise<RevokeLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#revokeLock) |
-| 查询锁 | [`rtm.lock.getLock(...): Promise<GetLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#getLock) |
-| 删除锁 | [`rtm.lock.removeLock(...): Promise<RemoveLockResponse>;`](/api-ref/rtm2/javascript/toc-lock/lock#removeLock) |
+| 设置锁 | [`rtm.lock.setLock(...): Promise<SetLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#setlock) |
+| 获取锁 | [`rtm.lock.acquireLock(...): Promise<AcquireLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#acquirelock) |
+| 释放锁 | [`rtm.lock.releaseLock(...): Promise<ReleaseLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#releaselock) |
+| 收回锁 | [`rtm.lock.revokeLock(...): Promise<RevokeLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#revokelock) |
+| 查询锁 | [`rtm.lock.getLock(...): Promise<GetLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#getlock) |
+| 删除锁 | [`rtm.lock.removeLock(...): Promise<RemoveLockResponse>;`](/zh-CN/api-reference/rtm/web/lock#removelock) |
 
 </PlatformStructured>
 
@@ -282,22 +282,22 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`new RtmClient()`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#Init) |
-| 销毁实例 | [`rtmClient.release()`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#release) |
-| Token 设置 | [`login`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#login) 中的 `token` 参数 |
-| 端侧加密 | [`RtmConfig`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#RtmConfig) 中的 `encryptionMode`、`cipherKey`、`salt` 参数 |
-| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`RtmConfig`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#RtmConfig) 中的 `logLevel` 参数 |
-| Cloud Proxy 设置 | [`RtmConfig`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#RtmConfig) 中的 `cloudProxy` 参数 |
-| 私有化部署设置 | [`RtmConfig`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#RtmConfig) 中的 `privateConfig` 参数 |
+| 创建实例 | [`new RtmClient()`](/zh-CN/api-reference/rtm/harmonyos/configuration#Init) |
+| 销毁实例 | [`rtmClient.release()`](/zh-CN/api-reference/rtm/harmonyos/configuration#release) |
+| Token 设置 | [`login`](/zh-CN/api-reference/rtm/harmonyos/configuration#login) 中的 `token` 参数 |
+| 端侧加密 | [`RtmConfig`](/zh-CN/api-reference/rtm/harmonyos/configuration#rtmconfig) 中的 `encryptionMode`、`cipherKey`、`salt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/harmonyos/configuration#rtmconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/harmonyos/configuration#rtmconfig) 中的 `logLevel` 参数 |
+| Cloud Proxy 设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/harmonyos/configuration#rtmconfig) 中的 `cloudProxy` 参数 |
+| 私有化部署设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/harmonyos/configuration#rtmconfig) 中的 `privateConfig` 参数 |
 | 事件监听 | <Slot name="feature-list-harmonyos-html-0-9-1" /> |
-| 登录服务 | [`rtmClient.login(...): Promise<LoginResponse>;`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#login) |
-| 登出服务 | [`rtmClient.logout(): Promise<LogoutResponse>;`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#logout) |
+| 登录服务 | [`rtmClient.login(...): Promise<LoginResponse>;`](/zh-CN/api-reference/rtm/harmonyos/configuration#login) |
+| 登出服务 | [`rtmClient.logout(): Promise<LogoutResponse>;`](/zh-CN/api-reference/rtm/harmonyos/configuration#logout) |
 
 <Slot for="feature-list-harmonyos-html-0-9-1">
 
-- [`rtmClient.addEventListener("event", event => {});`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#添加监听)
-    - [`rtmClient.removeEventListener("event", statusHandler);`](/api-ref/rtm2/harmonyos/toc-configuration/configuration#删除监听)
+- [`rtmClient.addEventListener("event", event => {});`](/zh-CN/api-reference/rtm/harmonyos/configuration#添加监听)
+    - [`rtmClient.removeEventListener("event", statusHandler);`](/zh-CN/api-reference/rtm/harmonyos/configuration#删除监听)
 
 </Slot>
 
@@ -305,64 +305,64 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`rtmClient.subscribe(...): Promise<SubscribeResponse>;`](/api-ref/rtm2/harmonyos/toc-channel/channel#subscribe) |
-| 取消订阅频道 | [`rtmClient.unsubscribe(...): Promise<UnsubscribeResponse>;`](/api-ref/rtm2/harmonyos/toc-channel/channel#unsubscribe) |
-| 创建 Stream Channel | [`rtmClient.createStreamChannel(...): StreamChannel;`](/api-ref/rtm2/harmonyos/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`streamChannel.join(...): Promise<JoinChannelResponse>;`](/api-ref/rtm2/harmonyos/toc-channel/channel#join) |
-| 离开 Stream Channel | [`streamChannel.leave(...): Promise<LeaveChannelResponse>;`](/api-ref/rtm2/harmonyos/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`streamChannel.release()`](/api-ref/rtm2/harmonyos/toc-channel/channel#release) |
+| 订阅频道 | [`rtmClient.subscribe(...): Promise<SubscribeResponse>;`](/zh-CN/api-reference/rtm/harmonyos/channel#subscribe) |
+| 取消订阅频道 | [`rtmClient.unsubscribe(...): Promise<UnsubscribeResponse>;`](/zh-CN/api-reference/rtm/harmonyos/channel#unsubscribe) |
+| 创建 Stream Channel | [`rtmClient.createStreamChannel(...): StreamChannel;`](/zh-CN/api-reference/rtm/harmonyos/channel#createstreamchannel) |
+| 加入 Stream Channel | [`streamChannel.join(...): Promise<JoinChannelResponse>;`](/zh-CN/api-reference/rtm/harmonyos/channel#join) |
+| 离开 Stream Channel | [`streamChannel.leave(...): Promise<LeaveChannelResponse>;`](/zh-CN/api-reference/rtm/harmonyos/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.release()`](/zh-CN/api-reference/rtm/harmonyos/channel#release) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`streamChannel.joinTopic(...): Promise<JoinTopicResponse>;`](/api-ref/rtm2/harmonyos/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(...): Promise<PublishTopicMessageResponse>;`](/api-ref/rtm2/harmonyos/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`streamChannel.leaveTopic(...): Promise<LeaveTopicResponse>;`](/api-ref/rtm2/harmonyos/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`streamChannel.subscribeTopic(...): Promise<SubscribeTopicResponse>;`](/api-ref/rtm2/harmonyos/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(...): Promise<UnsubscribeTopicResponse>;`](/api-ref/rtm2/harmonyos/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`streamChannel.joinTopic(...): Promise<JoinTopicResponse>;`](/zh-CN/api-reference/rtm/harmonyos/topic#jointopic) |
+| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(...): Promise<PublishTopicMessageResponse>;`](/zh-CN/api-reference/rtm/harmonyos/topic#publishtopicmessage) |
+| 离开 Topic | [`streamChannel.leaveTopic(...): Promise<LeaveTopicResponse>;`](/zh-CN/api-reference/rtm/harmonyos/topic#leavetopic) |
+| 订阅 Topic | [`streamChannel.subscribeTopic(...): Promise<SubscribeTopicResponse>;`](/zh-CN/api-reference/rtm/harmonyos/topic#subscribetopic) |
+| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(...): Promise<UnsubscribeTopicResponse>;`](/zh-CN/api-reference/rtm/harmonyos/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`rtmClient.publish(...): Promise<PublishResponse>;`](/api-ref/rtm2/harmonyos/toc-message/message#publish) |
+| 发送消息 | [`rtmClient.publish(...): Promise<PublishResponse>;`](/zh-CN/api-reference/rtm/harmonyos/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`rtmClient.presence.whoNow(...): Promise<WhoNowResponse>;`](/api-ref/rtm2/harmonyos/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`rtmClient.presence.whereNow(...): Promise<WhereNowResponse>;`](/api-ref/rtm2/harmonyos/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`rtmClient.presence.setState(...): Promise<SetStateResponse>;`](/api-ref/rtm2/harmonyos/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`rtmClient.presence.getState(...): Promise<GetStateResponse>;`](/api-ref/rtm2/harmonyos/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`rtmClient.presence.removeState(...): Promise<RemoveStateResponse>;`](/api-ref/rtm2/harmonyos/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`rtmClient.presence.whoNow(...): Promise<WhoNowResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#whonow) |
+| 查询用户所在频道 | [`rtmClient.presence.whereNow(...): Promise<WhereNowResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#wherenow) |
+| 设置用户临时状态 | [`rtmClient.presence.setState(...): Promise<SetStateResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#setstate) |
+| 查询用户临时状态 | [`rtmClient.presence.getState(...): Promise<GetStateResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#getstate) |
+| 删除用户临时状态 | [`rtmClient.presence.removeState(...): Promise<RemoveStateResponse>;`](/zh-CN/api-reference/rtm/harmonyos/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`rtmClient.storage.setChannelMetadata(...): Promise<SetChannelMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`rtmClient.storage.getChannelMetadata(...): Promise<GetChannelMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`rtmClient.storage.removeChannelMetadata(...): Promise<RemoveChannelMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`rtmClient.storage.updateChannelMetadata(...): Promise<UpdateChannelMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`rtmClient.storage.setUserMetadata(...): Promise<SetUserMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`rtmClient.storage.getUserMetadata(...): Promise<GetUserMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`rtmClient.storage.removeUserMetadata(...): Promise<RemoveUserMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`rtmClient.storage.updateUserMetadata(...): Promise<UpdateUserMetadataResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#updateUserMetadata) |
-| 订阅用户属性 | [`rtmClient.storage.subscribeUserMetadata(...): Promise<SubscribeUserMetaResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`rtmClient.storage.unsubscribeUserMetadata(...): Promise<UnsubscribeUserMetaResponse>;`](/api-ref/rtm2/harmonyos/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`rtmClient.storage.setChannelMetadata(...): Promise<SetChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#setchannelmetadata) |
+| 获取频道属性 | [`rtmClient.storage.getChannelMetadata(...): Promise<GetChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#getchannelmetadata) |
+| 删除频道属性 | [`rtmClient.storage.removeChannelMetadata(...): Promise<RemoveChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#removechannelmetadata) |
+| 更新频道属性 | [`rtmClient.storage.updateChannelMetadata(...): Promise<UpdateChannelMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#updatechannelmetadata) |
+| 设置用户属性 | [`rtmClient.storage.setUserMetadata(...): Promise<SetUserMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#setusermetadata) |
+| 获取用户属性 | [`rtmClient.storage.getUserMetadata(...): Promise<GetUserMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#getusermetadata) |
+| 删除用户属性 | [`rtmClient.storage.removeUserMetadata(...): Promise<RemoveUserMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#removeusermetadata) |
+| 更新用户属性 | [`rtmClient.storage.updateUserMetadata(...): Promise<UpdateUserMetadataResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#updateusermetadata) |
+| 订阅用户属性 | [`rtmClient.storage.subscribeUserMetadata(...): Promise<SubscribeUserMetaResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`rtmClient.storage.unsubscribeUserMetadata(...): Promise<UnsubscribeUserMetaResponse>;`](/zh-CN/api-reference/rtm/harmonyos/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`rtmClient.lock.setLock(...): Promise<SetLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#setLock) |
-| 获取锁 | [`rtmClient.lock.acquireLock(...): Promise<AcquireLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#acquireLock) |
-| 释放锁 | [`rtmClient.lock.releaseLock(...): Promise<ReleaseLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#releaseLock) |
-| 收回锁 | [`rtmClient.lock.revokeLock(...): Promise<RevokeLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#revokeLock) |
-| 查询锁 | [`rtmClient.lock.getLock(...): Promise<GetLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#getLock) |
-| 删除锁 | [`rtmClient.lock.removeLock(...): Promise<RemoveLockResponse>;`](/api-ref/rtm2/harmonyos/toc-lock/lock#removeLock) |
+| 设置锁 | [`rtmClient.lock.setLock(...): Promise<SetLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#setlock) |
+| 获取锁 | [`rtmClient.lock.acquireLock(...): Promise<AcquireLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#acquirelock) |
+| 释放锁 | [`rtmClient.lock.releaseLock(...): Promise<ReleaseLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#releaselock) |
+| 收回锁 | [`rtmClient.lock.revokeLock(...): Promise<RevokeLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#revokelock) |
+| 查询锁 | [`rtmClient.lock.getLock(...): Promise<GetLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#getLock) |
+| 删除锁 | [`rtmClient.lock.removeLock(...): Promise<RemoveLockResponse>;`](/zh-CN/api-reference/rtm/harmonyos/lock#removelock) |
 
 </PlatformStructured>
 
@@ -373,23 +373,23 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`Future<(RtmStatus, RtmClient)> RTM(...)`](/api-ref/rtm2/flutter/toc-configuration/configuration#create) |
-| 销毁实例 | [`Future<RtmStatus> release()`](/api-ref/rtm2/flutter/toc-configuration/configuration#release) |
-| Token 设置 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/api-ref/rtm2/flutter/toc-configuration/configuration#login) 接口中的 `token` 参数 |
-| 端侧加密 | [`RtmEncryptionConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmEncryptionConfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
-| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`RtmLogConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmLogConfig) 中的 `level` 参数 |
-| Proxy 设置 | [`RtmProxyConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
-| 消息传输协议设置 | [`RtmConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmConfig) 中的 `protocolType` 参数 |
-| 私有化部署设置 | [`RtmPrivateConfig`](/api-ref/rtm2/flutter/toc-configuration/configuration#RtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 创建实例 | [`Future<(RtmStatus, RtmClient)> RTM(...)`](/zh-CN/api-reference/rtm/flutter/configuration#create) |
+| 销毁实例 | [`Future<RtmStatus> release()`](/zh-CN/api-reference/rtm/flutter/configuration#release) |
+| Token 设置 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/zh-CN/api-reference/rtm/flutter/configuration#login) 接口中的 `token` 参数 |
+| 端侧加密 | [`RtmEncryptionConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmencryptionconfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmLogConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmlogconfig) 中的 `level` 参数 |
+| Proxy 设置 | [`RtmProxyConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmproxyconfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmconfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`RtmPrivateConfig`](/zh-CN/api-reference/rtm/flutter/configuration#rtmprivateconfig) 中的 `serviceType`、`accessPointHosts` 参数 |
 | 事件监听 | <Slot name="feature-list-flutter-html-0-10-1" /> |
-| 登录服务 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/api-ref/rtm2/flutter/toc-configuration/configuration#login) |
-| 登出服务 | [`Future<(RtmStatus, LogoutResult?)> logout()`](/api-ref/rtm2/flutter/toc-configuration/configuration#logout) |
+| 登录服务 | [`Future<(RtmStatus, LoginResult?)> login(String token)`](/zh-CN/api-reference/rtm/flutter/configuration#login) |
+| 登出服务 | [`Future<(RtmStatus, LogoutResult?)> logout()`](/zh-CN/api-reference/rtm/flutter/configuration#logout) |
 
 <Slot for="feature-list-flutter-html-0-10-1">
 
-- [`rtmClient.addListener({...})`](/api-ref/rtm2/flutter/toc-configuration/configuration#添加监听)
-    - [`rtmClient.removeListener({...})`](/api-ref/rtm2/flutter/toc-configuration/configuration#删除监听)
+- [`rtmClient.addListener({...})`](/zh-CN/api-reference/rtm/flutter/configuration#添加监听)
+    - [`rtmClient.removeListener({...})`](/zh-CN/api-reference/rtm/flutter/configuration#删除监听)
 
 </Slot>
 
@@ -397,27 +397,27 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`Future<(RtmStatus, SubscribeResult?)> subscribe(...)`](/api-ref/rtm2/flutter/toc-channel/channel#subscribe) |
-| 取消订阅频道 | [`Future<(RtmStatus, UnsubscribeResult?)> unsubscribe(...)`](/api-ref/rtm2/flutter/toc-channel/channel#unsubscribe) |
-| 创建 Stream Channel | [`Future<(RtmStatus, StreamChannel?)> createStreamChannel(...)`](/api-ref/rtm2/flutter/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`Future<(RtmStatus, JoinResult?)> join(...)`](/api-ref/rtm2/flutter/toc-channel/channel#join) |
-| 离开 Stream Channel | [`Future<(RtmStatus, LeaveResult?)> leave()`](/api-ref/rtm2/flutter/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`Future<RtmStatus> release()`](/api-ref/rtm2/flutter/toc-channel/channel#release) |
+| 订阅频道 | [`Future<(RtmStatus, SubscribeResult?)> subscribe(...)`](/zh-CN/api-reference/rtm/flutter/channel#subscribe) |
+| 取消订阅频道 | [`Future<(RtmStatus, UnsubscribeResult?)> unsubscribe(...)`](/zh-CN/api-reference/rtm/flutter/channel#unsubscribe) |
+| 创建 Stream Channel | [`Future<(RtmStatus, StreamChannel?)> createStreamChannel(...)`](/zh-CN/api-reference/rtm/flutter/channel#createstreamchannel) |
+| 加入 Stream Channel | [`Future<(RtmStatus, JoinResult?)> join(...)`](/zh-CN/api-reference/rtm/flutter/channel#join) |
+| 离开 Stream Channel | [`Future<(RtmStatus, LeaveResult?)> leave()`](/zh-CN/api-reference/rtm/flutter/channel#leave) |
+| 销毁 Stream Channel | [`Future<RtmStatus> release()`](/zh-CN/api-reference/rtm/flutter/channel#release) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`Future<(RtmStatus, JoinTopicResult?)> joinTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#joinTopic) |
+| 加入 Topic | [`Future<(RtmStatus, JoinTopicResult?)> joinTopic(...)`](/zh-CN/api-reference/rtm/flutter/topic#jointopic) |
 | 发送 Topic 消息 | <Slot name="feature-list-flutter-html-2-2-1" /> |
-| 离开 Topic | [`Future<(RtmStatus, LeaveTopicResult?)> leaveTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`Future<(RtmStatus, SubscribeTopicResult?)> subscribeTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`Future<(RtmStatus, UnsubscribeTopicResult?)> unsubscribeTopic(...)`](/api-ref/rtm2/flutter/toc-topic/topic#unsubscribeTopic) |
+| 离开 Topic | [`Future<(RtmStatus, LeaveTopicResult?)> leaveTopic(...)`](/zh-CN/api-reference/rtm/flutter/topic#leavetopic) |
+| 订阅 Topic | [`Future<(RtmStatus, SubscribeTopicResult?)> subscribeTopic(...)`](/zh-CN/api-reference/rtm/flutter/topic#subscribetopic) |
+| 取消订阅 Topic | [`Future<(RtmStatus, UnsubscribeTopicResult?)> unsubscribeTopic(...)`](/zh-CN/api-reference/rtm/flutter/topic#unsubscribetopic) |
 
 <Slot for="feature-list-flutter-html-2-2-1">
 
-- [`Future<(RtmStatus, PublishTopicMessageResult?)> publishTextMessage(...)`](/api-ref/rtm2/flutter/toc-topic/topic#publishTopicMessage)
-    - [`Future<(RtmStatus, PublishTopicMessageResult?)> publishBinaryMessage(...)`](/api-ref/rtm2/flutter/toc-topic/topic#publishTopicMessage)
+- [`Future<(RtmStatus, PublishTopicMessageResult?)> publishTextMessage(...)`](/zh-CN/api-reference/rtm/flutter/topic#publishtextmessage)
+    - [`Future<(RtmStatus, PublishTopicMessageResult?)> publishBinaryMessage(...)`](/zh-CN/api-reference/rtm/flutter/topic#publishbinarymessage)
 
 </Slot>
 
@@ -429,8 +429,8 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 <Slot for="feature-list-flutter-html-3-1-1">
 
-- [`Future<(RtmStatus, PublishResult?)> publish(...)`](/api-ref/rtm2/flutter/toc-message/message#publish)
-    - [`Future<(RtmStatus, PublishResult?)> publishBinaryMessage(...)`](/api-ref/rtm2/flutter/toc-message/message#publish)
+- [`Future<(RtmStatus, PublishResult?)> publish(...)`](/zh-CN/api-reference/rtm/flutter/message#publish)
+    - [`Future<(RtmStatus, PublishResult?)> publishBinaryMessage(...)`](/zh-CN/api-reference/rtm/flutter/message#publish)
 
 </Slot>
 
@@ -438,37 +438,37 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`Future<(RtmStatus, WhoNowResult?)> whoNow(...)`](/api-ref/rtm2/flutter/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`Future<(RtmStatus, WhereNowResult?)> whereNow(...)`](/api-ref/rtm2/flutter/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`Future<(RtmStatus, SetStateResult?)> setState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`Future<(RtmStatus, GetStateResult?)> getState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`Future<(RtmStatus, RemoveStateResult?)> removeState(...)`](/api-ref/rtm2/flutter/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`Future<(RtmStatus, WhoNowResult?)> whoNow(...)`](/zh-CN/api-reference/rtm/flutter/presence#whonow) |
+| 查询用户所在频道 | [`Future<(RtmStatus, WhereNowResult?)> whereNow(...)`](/zh-CN/api-reference/rtm/flutter/presence#wherenow) |
+| 设置用户临时状态 | [`Future<(RtmStatus, SetStateResult?)> setState(...)`](/zh-CN/api-reference/rtm/flutter/presence#setstate) |
+| 查询用户临时状态 | [`Future<(RtmStatus, GetStateResult?)> getState(...)`](/zh-CN/api-reference/rtm/flutter/presence#getstate) |
+| 删除用户临时状态 | [`Future<(RtmStatus, RemoveStateResult?)> removeState(...)`](/zh-CN/api-reference/rtm/flutter/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`Future<(RtmStatus, RemoveChannelMetadataResult?)> removeChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`Future<(RtmStatus, GetUserMetadataResult?)> getUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#updateUserMetadata) |
-| 订阅用户属性 | [`Future<(RtmStatus, SubscribeUserMetadataResult?)> subscribeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`Future<(RtmStatus, UnsubscribeUserMetadataResult?)> unsubscribeUserMetadata(...)`](/api-ref/rtm2/flutter/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#setchannelmetadata) |
+| 获取频道属性 | [`Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#getchannelmetadata) |
+| 删除频道属性 | [`Future<(RtmStatus, RemoveChannelMetadataResult?)> removeChannelMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#removechannelmetadata) |
+| 更新频道属性 | [`Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#updatechannelmetadata) |
+| 设置用户属性 | [`Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#setusermetadata) |
+| 获取用户属性 | [`Future<(RtmStatus, GetUserMetadataResult?)> getUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#getusermetadata) |
+| 删除用户属性 | [`Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#removeusermetadata) |
+| 更新用户属性 | [`Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#updateusermetadata) |
+| 订阅用户属性 | [`Future<(RtmStatus, SubscribeUserMetadataResult?)> subscribeUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`Future<(RtmStatus, UnsubscribeUserMetadataResult?)> unsubscribeUserMetadata(...)`](/zh-CN/api-reference/rtm/flutter/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`Future<(RtmStatus, SetLockResult?)> setLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#setLock) |
-| 获取锁 | [`Future<(RtmStatus, AcquireLockResult?)> acquireLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#acquireLock) |
-| 释放锁 | [`Future<(RtmStatus, ReleaseLockResult?)> releaseLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#releaseLock) |
-| 收回锁 | [`Future<(RtmStatus, RevokeLockResult?)> revokeLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#revokeLock) |
-| 查询锁 | [`Future<(RtmStatus, GetLocksResult?)> getLocks(...)`](/api-ref/rtm2/flutter/toc-lock/lock#getLocks) |
-| 删除锁 | [`Future<(RtmStatus, RemoveLockResult?)> removeLock(...)`](/api-ref/rtm2/flutter/toc-lock/lock#removeLock) |
+| 设置锁 | [`Future<(RtmStatus, SetLockResult?)> setLock(...)`](/zh-CN/api-reference/rtm/flutter/lock#setlock) |
+| 获取锁 | [`Future<(RtmStatus, AcquireLockResult?)> acquireLock(...)`](/zh-CN/api-reference/rtm/flutter/lock#acquirelock) |
+| 释放锁 | [`Future<(RtmStatus, ReleaseLockResult?)> releaseLock(...)`](/zh-CN/api-reference/rtm/flutter/lock#releaselock) |
+| 收回锁 | [`Future<(RtmStatus, RevokeLockResult?)> revokeLock(...)`](/zh-CN/api-reference/rtm/flutter/lock#revokelock) |
+| 查询锁 | [`Future<(RtmStatus, GetLocksResult?)> getLocks(...)`](/zh-CN/api-reference/rtm/flutter/lock#getlocks) |
+| 删除锁 | [`Future<(RtmStatus, RemoveLockResult?)> removeLock(...)`](/zh-CN/api-reference/rtm/flutter/lock#removelock) |
 
 </PlatformStructured>
 
@@ -479,81 +479,81 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`IRtmClient* createAgoraRtmClient(const RtmConfig& config, int& errorCode)`](/api-ref/rtm2/cpp/toc-configuration/configuration#create) |
-| 销毁实例 | [`rtmClient.release()`](/api-ref/rtm2/cpp/toc-configuration/configuration#release) |
-| Token 设置 | [`void login(const char* token)`](/api-ref/rtm2/cpp/toc-configuration/configuration#login) 接口中的 `token` 参数 |
-| 端侧加密 | [`RtmEncryptionConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmEncryptionConfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
-| Presence 超时设置 | [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`RtmLogConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmLogConfig) 中的 `level` 参数 |
-| Proxy 设置 | [`RtmProxyConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
-| 消息传输协议设置 | [`RtmConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmConfig) 中的 `protocolType` 参数 |
-| 私有化部署设置 | [`RtmPrivateConfig`](/api-ref/rtm2/cpp/toc-configuration/configuration#RtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
-| 事件监听 | [`IRtmEventHandler`](/api-ref/rtm2/cpp/toc-configuration/configuration#添加监听) |
-| 登录服务 | [`void login(const char* token)`](/api-ref/rtm2/cpp/toc-configuration/configuration#login) |
-| 登出服务 | [`void logout()`](/api-ref/rtm2/cpp/toc-configuration/configuration#logout) |
+| 创建实例 | [`IRtmClient* createAgoraRtmClient(const RtmConfig& config, int& errorCode)`](/zh-CN/api-reference/rtm/cpp/configuration#create) |
+| 销毁实例 | [`rtmClient.release()`](/zh-CN/api-reference/rtm/cpp/configuration#release) |
+| Token 设置 | [`void login(const char* token)`](/zh-CN/api-reference/rtm/cpp/configuration#login) 接口中的 `token` 参数 |
+| 端侧加密 | [`RtmEncryptionConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmencryptionconfig) 中的 `encryptionMode`、`encryptionKey`、`encryptionSalt` 参数 |
+| Presence 超时设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`RtmLogConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmlogconfig) 中的 `level` 参数 |
+| Proxy 设置 | [`RtmProxyConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmproxyconfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmconfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`RtmPrivateConfig`](/zh-CN/api-reference/rtm/cpp/configuration#rtmprivateconfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 事件监听 | [`IRtmEventHandler`](/zh-CN/api-reference/rtm/cpp/configuration#添加监听) |
+| 登录服务 | [`void login(const char* token)`](/zh-CN/api-reference/rtm/cpp/configuration#login) |
+| 登出服务 | [`void logout()`](/zh-CN/api-reference/rtm/cpp/configuration#logout) |
 
 ## Channel
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`void subscribe(const char* channelName, const SubscribeOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-channel/channel#subscribe) |
-| 取消订阅频道 | [`void unsubscribe(const char* channelName)`](/api-ref/rtm2/cpp/toc-channel/channel#unsubscribe) |
-| 创建 Stream Channel | [`IStreamChannel* createStreamChannel(const char* channelName, int& errorCode)`](/api-ref/rtm2/cpp/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`void join(const JoinChannelOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-channel/channel#join) |
-| 离开 Stream Channel | [`void leave(uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`streamChannel.release()`](/api-ref/rtm2/cpp/toc-channel/channel#release) |
+| 订阅频道 | [`void subscribe(const char* channelName, const SubscribeOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/channel#subscribe) |
+| 取消订阅频道 | [`void unsubscribe(const char* channelName)`](/zh-CN/api-reference/rtm/cpp/channel#unsubscribe) |
+| 创建 Stream Channel | [`IStreamChannel* createStreamChannel(const char* channelName, int& errorCode)`](/zh-CN/api-reference/rtm/cpp/channel#createstreamchannel) |
+| 加入 Stream Channel | [`void join(const JoinChannelOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/channel#join) |
+| 离开 Stream Channel | [`void leave(uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.release()`](/zh-CN/api-reference/rtm/cpp/channel#release) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`void joinTopic(const char* topic, const JoinTopicOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`void publishTopicMessage(const char* topic, const char* message, size_t length, const TopicMessageOptions& option)`](/api-ref/rtm2/cpp/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`void leaveTopic(const char* topic, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`void subscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`void unsubscribeTopic(const char* topic, const TopicOptions& options)`](/api-ref/rtm2/cpp/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`void joinTopic(const char* topic, const JoinTopicOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/topic#jointopic) |
+| 发送 Topic 消息 | [`void publishTopicMessage(const char* topic, const char* message, size_t length, const TopicMessageOptions& option)`](/zh-CN/api-reference/rtm/cpp/topic#publishtopicmessage) |
+| 离开 Topic | [`void leaveTopic(const char* topic, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/topic#leavetopic) |
+| 订阅 Topic | [`void subscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/topic#subscribetopic) |
+| 取消订阅 Topic | [`void unsubscribeTopic(const char* topic, const TopicOptions& options)`](/zh-CN/api-reference/rtm/cpp/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`void publish(const char* channelName, const char* message, const size_t length, const PublishOptions& option, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-message/message#publish) |
+| 发送消息 | [`void publish(const char* channelName, const char* message, const size_t length, const PublishOptions& option, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`void whereNow(const char* userId, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* userId, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char** keys, size_t count, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`void whoNow(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#whonow) |
+| 查询用户所在频道 | [`void whereNow(const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#wherenow) |
+| 设置用户临时状态 | [`void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#setstate) |
+| 查询用户临时状态 | [`void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#getstate) |
+| 删除用户临时状态 | [`void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char** keys, size_t count, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`void setChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`void getChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`void removeChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`void updateChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`void setUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`void getUserMetadata(const char* userId, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`void removeUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`void updateUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#updateUserMetadata) |
-| 订阅用户属性 | [`void subscribeUserMetadata(const char* userId, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`void unsubscribeUserMetadata(const char* userId, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`void setChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#setchannelmetadata) |
+| 获取频道属性 | [`void getChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#getchannelmetadata) |
+| 删除频道属性 | [`void removeChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#removechannelmetadata) |
+| 更新频道属性 | [`void updateChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const Metadata& data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#updatechannelmetadata) |
+| 设置用户属性 | [`void setUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#setusermetadata) |
+| 获取用户属性 | [`void getUserMetadata(const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#getusermetadata) |
+| 删除用户属性 | [`void removeUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#removeusermetadata) |
+| 更新用户属性 | [`void updateUserMetadata(const char* userId, const Metadata& data, const MetadataOptions& options, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#updateusermetadata) |
+| 订阅用户属性 | [`void subscribeUserMetadata(const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`void unsubscribeUserMetadata(const char* userId, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`void setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint32_t ttl, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#setLock) |
-| 获取锁 | [`void acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, bool retry, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#acquireLock) |
-| 释放锁 | [`void releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#releaseLock) |
-| 收回锁 | [`void revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, const char* owner, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#revokeLock) |
-| 查询锁 | [`void getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#getLocks) |
-| 删除锁 | [`void removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)`](/api-ref/rtm2/cpp/toc-lock/lock#removeLock) |
+| 设置锁 | [`void setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint32_t ttl, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#setlock) |
+| 获取锁 | [`void acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, bool retry, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#acquirelock) |
+| 释放锁 | [`void releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#releaselock) |
+| 收回锁 | [`void revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, const char* owner, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#revokelock) |
+| 查询锁 | [`void getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#getlocks) |
+| 删除锁 | [`void removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)`](/zh-CN/api-reference/rtm/cpp/lock#removelock) |
 
 </PlatformStructured>
 
@@ -564,23 +564,23 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 创建实例 | [`AgoraRtmClientKit(_ config: AgoraRtmClientConfig, delegate: (any AgoraRtmClientDelegate)?)`](/api-ref/rtm2/ios/toc-configuration/configuration#initWithConfig) |
-| 销毁实例 | [`rtm.destroy() -> AgoraRtmErrorCode`](/api-ref/rtm2/ios/toc-configuration/configuration#destroy) |
-| Token 设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `token` 参数 |
-| 端侧加密 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `encryptionConfig` 参数 |
-| Presence 超时设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `presenceTimeout` 参数 |
-| 日志等级设置 | [`AgoraRtmLogConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmLogConfig) 中的 `level` 参数 |
-| Proxy 设置 | [`AgoraRtmProxyConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmProxyConfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
-| 消息传输协议设置 | [`AgoraRtmClientConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmClientConfig) 中的 `protocolType` 参数 |
-| 私有化部署设置 | [`AgoraRtmPrivateConfig`](/api-ref/rtm2/ios/toc-configuration/configuration#AgoraRtmPrivateConfig) 中的 `serviceType`、`accessPointHosts` 参数 |
+| 创建实例 | [`AgoraRtmClientKit(_ config: AgoraRtmClientConfig, delegate: (any AgoraRtmClientDelegate)?)`](/zh-CN/api-reference/rtm/ios/configuration#initwithconfig) |
+| 销毁实例 | [`rtm.destroy() -> AgoraRtmErrorCode`](/zh-CN/api-reference/rtm/ios/configuration#destroy) |
+| Token 设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `token` 参数 |
+| 端侧加密 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `encryptionConfig` 参数 |
+| Presence 超时设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `presenceTimeout` 参数 |
+| 日志等级设置 | [`AgoraRtmLogConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmlogconfig) 中的 `level` 参数 |
+| Proxy 设置 | [`AgoraRtmProxyConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmproxyconfig) 中的 `proxyType`、`server`、`port`、`account`、`password` 参数 |
+| 消息传输协议设置 | [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中的 `protocolType` 参数 |
+| 私有化部署设置 | [`AgoraRtmPrivateConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmprivateconfig) 中的 `serviceType`、`accessPointHosts` 参数 |
 | 事件监听 | <Slot name="feature-list-swift-html-0-10-1" /> |
-| 登录服务 | [`rtm.login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-configuration/configuration#loginByToken) |
-| 登出服务 | [`rtm.logout(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-configuration/configuration#logout) |
+| 登录服务 | [`rtm.login(_ token: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/configuration#loginbytoken) |
+| 登出服务 | [`rtm.logout(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/configuration#logout) |
 
 <Slot for="feature-list-swift-html-0-10-1">
 
-- [`rtm.addDelegate(_ delegate: any AgoraRtmClientDelegate)`](/api-ref/rtm2/ios/toc-configuration/configuration#添加监听)
-    - [`rtm.removeDelegate(_ delegate: any AgoraRtmClientDelegate)`](/api-ref/rtm2/ios/toc-configuration/configuration#删除监听)
+- [`rtm.addDelegate(_ delegate: any AgoraRtmClientDelegate)`](/zh-CN/api-reference/rtm/ios/configuration#添加监听)
+    - [`rtm.removeDelegate(_ delegate: any AgoraRtmClientDelegate)`](/zh-CN/api-reference/rtm/ios/configuration#删除监听)
 
 </Slot>
 
@@ -588,63 +588,63 @@ description: "查看实时消息 RTM 的特性列表，了解关键概念、参�
 
 | 功能 | API 接口 |
 | --- | --- |
-| 订阅频道 | [`rtm.subscribe(channelName: String, option subscribeOption: AgoraRtmSubscribeOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#subscribeWithChannel) |
-| 取消订阅频道 | [`rtm.unsubscribe(_ channelName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#unsubscribeWithChannel) |
-| 创建 Stream Channel | [`rtm.createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel`](/api-ref/rtm2/ios/toc-channel/channel#createStreamChannel) |
-| 加入 Stream Channel | [`streamChannel.join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#joinWithOption) |
-| 离开 Stream Channel | [`streamChannel.leave(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-channel/channel#leave) |
-| 销毁 Stream Channel | [`streamChannel.destroy() -> AgoraRtmErrorCode`](/api-ref/rtm2/ios/toc-channel/channel#destroy) |
+| 订阅频道 | [`rtm.subscribe(channelName: String, option subscribeOption: AgoraRtmSubscribeOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/channel#subscribewithchannel) |
+| 取消订阅频道 | [`rtm.unsubscribe(_ channelName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/channel#unsubscribewithchannel) |
+| 创建 Stream Channel | [`rtm.createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel`](/zh-CN/api-reference/rtm/ios/channel#createstreamchannel) |
+| 加入 Stream Channel | [`streamChannel.join(_ option: AgoraRtmJoinChannelOption, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/channel#joinwithoption) |
+| 离开 Stream Channel | [`streamChannel.leave(_ completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/channel#leave) |
+| 销毁 Stream Channel | [`streamChannel.destroy() -> AgoraRtmErrorCode`](/zh-CN/api-reference/rtm/ios/channel#destroy) |
 
 ## Topic
 
 | 功能 | API 接口 |
 | --- | --- |
-| 加入 Topic | [`streamChannel.joinTopic(_ topic: String, option: AgoraRtmJoinTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#joinTopic) |
-| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(topic: String, message: String, option options: AgoraRtmTopicMessageOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#publishTopicMessage) |
-| 离开 Topic | [`streamChannel.leaveTopic(_ topic: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#leaveTopic) |
-| 订阅 Topic | [`streamChannel.subscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmTopicSubscriptionBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#subscribeTopic) |
-| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-topic/topic#unsubscribeTopic) |
+| 加入 Topic | [`streamChannel.joinTopic(_ topic: String, option: AgoraRtmJoinTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/topic#jointopic) |
+| 发送 Topic 消息 | [`streamChannel.publishTopicMessage(topic: String, message: String, option options: AgoraRtmTopicMessageOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/topic#publishtopicmessage) |
+| 离开 Topic | [`streamChannel.leaveTopic(_ topic: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/topic#leavetopic) |
+| 订阅 Topic | [`streamChannel.subscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmTopicSubscriptionBlock? = nil)`](/zh-CN/api-reference/rtm/ios/topic#subscribetopic) |
+| 取消订阅 Topic | [`streamChannel.unsubscribeTopic(_ topic: String, option: AgoraRtmTopicOption?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/topic#unsubscribetopic) |
 
 ## Message
 
 | 功能 | API 接口 |
 | --- | --- |
-| 发送消息 | [`[rtm publish:message:option:completion]`](/api-ref/rtm2/ios/toc-message/message#publish) |
+| 发送消息 | [`[rtm publish:message:option:completion]`](/zh-CN/api-reference/rtm/ios/message#publish) |
 
 ## 在线状态
 
 | 功能 | API 接口 |
 | --- | --- |
-| 查询频道在线用户 | [`rtm.getPresence()?.whoNow(channelName: String, channelType: AgoraRtmChannelType, options: AgoraRtmPresenceOptions?, completion completionBlock: AgoraRtmWhoNowBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#whoNow) |
-| 查询用户所在频道 | [`rtm.getPresence()?.whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#whereNow) |
-| 设置用户临时状态 | [`rtm.getPresence()?.setState(channelName: String, channelType: AgoraRtmChannelType, items: [String: String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#setState) |
-| 查询用户临时状态 | [`rtm.getPresence()?.getState(channelName: String, channelType: AgoraRtmChannelType, userId: String, completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#getState) |
-| 删除用户临时状态 | [`rtm.getPresence()?.removeState(channelName: String, channelType: AgoraRtmChannelType, keys: [String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-presence/presence#removeState) |
+| 查询频道在线用户 | [`rtm.getPresence()?.whoNow(channelName: String, channelType: AgoraRtmChannelType, options: AgoraRtmPresenceOptions?, completion completionBlock: AgoraRtmWhoNowBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#whonow) |
+| 查询用户所在频道 | [`rtm.getPresence()?.whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#wherenow) |
+| 设置用户临时状态 | [`rtm.getPresence()?.setState(channelName: String, channelType: AgoraRtmChannelType, items: [String: String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#setstate) |
+| 查询用户临时状态 | [`rtm.getPresence()?.getState(channelName: String, channelType: AgoraRtmChannelType, userId: String, completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#getstate) |
+| 删除用户临时状态 | [`rtm.getPresence()?.removeState(channelName: String, channelType: AgoraRtmChannelType, keys: [String], completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/presence#removestate) |
 
 ## 存储
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置频道属性 | [`rtm.getStorage()?.setChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
-| 获取频道属性 | [`rtm.getStorage()?.getChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#getChannelMetadata) |
-| 删除频道属性 | [`rtm.getStorage()?.removeChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#removeChannelMetadata) |
-| 更新频道属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#updateChannelMetadata) |
-| 设置用户属性 | [`rtm.getStorage()?.setUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setUserMetadata) |
-| 获取用户属性 | [`rtm.getStorage()?.getUserMetadata(userId: String, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#getUserMetadata) |
-| 删除用户属性 | [`rtm.getStorage()?.removeUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#removeUserMetadata) |
-| 更新用户属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#setChannelMetadata) |
-| 订阅用户属性 | [`rtm.getStorage()?.subscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#subscribeUserMetadata) |
-| 取消订阅用户属性 | [`rtm.getStorage()?.unsubscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-storage/storage#unsubscribeUserMetadata) |
+| 设置频道属性 | [`rtm.getStorage()?.setChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#setchannelmetadata) |
+| 获取频道属性 | [`rtm.getStorage()?.getChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#getchannelmetadata) |
+| 删除频道属性 | [`rtm.getStorage()?.removeChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#removechannelmetadata) |
+| 更新频道属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#updatechannelmetadata) |
+| 设置用户属性 | [`rtm.getStorage()?.setUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#setusermetadata) |
+| 获取用户属性 | [`rtm.getStorage()?.getUserMetadata(userId: String, completion completionBlock: AgoraRtmGetMetadataBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#getusermetadata) |
+| 删除用户属性 | [`rtm.getStorage()?.removeUserMetadata(userId: String, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#removeusermetadata) |
+| 更新用户属性 | [`rtm.getStorage()?.updateChannelMetadata(channelName: String, channelType: AgoraRtmChannelType, data: AgoraRtmMetadata, options: AgoraRtmMetadataOptions?, lock: String?, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#setchannelmetadata) |
+| 订阅用户属性 | [`rtm.getStorage()?.subscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#subscribeusermetadata) |
+| 取消订阅用户属性 | [`rtm.getStorage()?.unsubscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/storage#unsubscribeusermetadata) |
 
 ## 锁
 
 | 功能 | API 接口 |
 | --- | --- |
-| 设置锁 | [`rtm.getLock()?.setLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, ttl: Int32, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#setLock) |
-| 获取锁 | [`rtm.getLock()?.acquireLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, retry: Bool, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#acquireLock) |
-| 释放锁 | [`rtm.getLock()?.releaseLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#releaseLock) |
-| 收回锁 | [`rtm.getLock()?.revokeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#revokeLock) |
-| 查询锁 | [`rtm.getLock()?.getLocks(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetLocksBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#getLocks) |
-| 删除锁 | [`rtm.getLock()?.removeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/api-ref/rtm2/ios/toc-lock/lock#removeLock) |
+| 设置锁 | [`rtm.getLock()?.setLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, ttl: Int32, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#setlock) |
+| 获取锁 | [`rtm.getLock()?.acquireLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, retry: Bool, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#acquirelock) |
+| 释放锁 | [`rtm.getLock()?.releaseLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#releaselock) |
+| 收回锁 | [`rtm.getLock()?.revokeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, userId: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#revokelock) |
+| 查询锁 | [`rtm.getLock()?.getLocks(channelName: String, channelType: AgoraRtmChannelType, completion completionBlock: AgoraRtmGetLocksBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#getlocks) |
+| 删除锁 | [`rtm.getLock()?.removeLock(channelName: String, channelType: AgoraRtmChannelType, lockName: String, completion completionBlock: AgoraRtmOperationBlock? = nil)`](/zh-CN/api-reference/rtm/ios/lock#removelock) |
 
 </PlatformStructured>

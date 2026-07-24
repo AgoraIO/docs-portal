@@ -42,7 +42,7 @@ async setChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：
@@ -131,7 +131,7 @@ async getChannelMetadata(
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
 | `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
-| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 
 ### 基本用法
 
@@ -187,7 +187,7 @@ async removeChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：
@@ -287,7 +287,7 @@ async updateChannelMetadata(
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
 | `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：
@@ -378,7 +378,7 @@ async setUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | string | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：
@@ -459,7 +459,7 @@ async getUserMetadata(userId: string): Promise<GetUserMetadataResponse>
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `userId` | string | 用户 ID。 |
-| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 
 ### 基本用法
 
@@ -508,7 +508,7 @@ async removeUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | string | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：
@@ -598,7 +598,7 @@ async updateUserMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `userId` | string | 必填 | - | 用户 ID。 |
-| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#Metadata)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
 
 `MetadataOptions` 数据类型包含以下属性：

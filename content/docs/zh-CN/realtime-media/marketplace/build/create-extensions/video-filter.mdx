@@ -87,6 +87,8 @@ virtual int start(agora::agora_refptr<Control> control) = 0;
 
 SDK 会在该方法中传递一个 `Control` 对象，方便插件和 SDK 的后续交互。你需要保留收到的 `Control` 对象，并根据场景需要实现该对象中的相关方法：
 
+<a id="delivervideoframe"></a>
+
 ```cpp
 class Control : public RefCountInterface {
     public:

@@ -10,7 +10,7 @@ description: "了解如何在旁路推流中调用推流 RESTful API，包括适
 
 ## 配置 URL
 
-以旁路推流为例，[更新指定 Converter ](/doc/media-push/restful/media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId)的请求 URL 示例如下：
+以旁路推流为例，[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的请求 URL 示例如下：
 
 ```text
 https://api.sd-rtn.com/{region}/v1/projects/{appId}/rtmp-converters/{converterId}
@@ -35,7 +35,7 @@ https://api.sd-rtn.com/{region}/v1/projects/{appId}/rtmp-converters/{converterId
 
 请求包括请求 Header 和请求 Body 两部分。在配置完 URL 后，你需要设置请求 Header 和请求 Body 信息，然后向服务器发送请求。
 
-以下是[更新指定 Converter ](/doc/media-push/restful/media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId)的请求示例：
+以下是[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的请求示例：
 
 ```shell
 curl --location --request PATCH 'https://api.sd-rtn.com/cn/v1/projects/<your_app_id>/rtmp-converters/<your_converter_id>' \
@@ -88,7 +88,7 @@ curl --location --request PATCH 'https://api.sd-rtn.com/cn/v1/projects/<your_app
 
 响应 Body 包含了服务器返回的数据。例如，更新指定 Converter 的响应 Body 包括 Converter 的 ID、创建时间戳、运行状态等信息。具体信息以 API 的返回值为准。
 
-以下是[更新指定 Converter ](/doc/media-push/restful/media-push/operations/patch-region-v1-projects-appId-rtmp-converters-converterId)的响应示例：
+以下是[更新指定 Converter ](/zh-CN/api-reference/api-ref/media-push/update)的响应示例：
 
 ```json
 {

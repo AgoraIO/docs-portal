@@ -16,7 +16,7 @@ description: "了解如何在云端录制中单流转码录制，包括适用场
 
 ### 开始录制
 
-调用 [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start) 方法开始云端录制。
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法开始云端录制。
 
 #### 请求示例
 
@@ -31,7 +31,7 @@ description: "了解如何在云端录制中单流转码录制，包括适用场
 
    | 字段                          | 配置内容                                                                         |
    | :---------------------------- | :------------------------------------------------------------------------------- |
-   | `recordingConfig.streamTypes` | 订阅媒体流类型，`2` 为订阅音频和视频。具体设置参见 [`streamTypes` 参数说明](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)。       |
+   | `recordingConfig.streamTypes` | 订阅媒体流类型，`2` 为订阅音频和视频。具体设置参见 [`streamTypes` 参数说明](/zh-CN/api-reference/api-ref/cloud-recording/start)。       |
    | `recordingConfig.streamMode`  | [媒体流输出模式](/zh-CN/realtime-media/cloud-recording/reference/api-reference#媒体流输出模式设置)，为获得能直接播放的 MP4 文件，建议设置为 `standard`（标准模式）或 `default`（默认模式）。 |
 
 3. 参照[快速开始](/zh-CN/realtime-media/cloud-recording/get-started/quick-start#开始录制)配置 `storageConfig` 相关参数。
@@ -106,7 +106,7 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<your_app_id>/clo
 
 ### 停止录制
 
-录制完成后，调用 [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
+录制完成后，调用 [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 方法离开频道，停止录制。录制停止后如需再次录制，必须再调用 `acquire` 方法请求一个新的 Resource ID。
 
 #### 请求示例
 
@@ -209,8 +209,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
 
     | 发流端类型  | 禁用视频轨道的方法                                           | 录制效果             |
     | :---------- | :----------------------------------------------------------- | :------------------- |
-    | Native 端 | 调用 [`muteLocalVideoStream`](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_mutelocalvideostream)  或 [`disableVideo`](/api-ref/rtc/android/API/toc_video_basic#api_irtcengine_disablevideo) 方法 |不继续生成视频切片文件，在本切片内用户画面显示最后一帧。       |
-    | Web 端 | 调用 [`setEnabled`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack#setEnabled) 方法 | 不继续生成视频切片文件，在本切片内用户画面显示最后一帧。 |
+    | Native 端 | 调用 [`muteLocalVideoStream`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalvideostream)  或 [`disableVideo`](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_disablevideo) 方法 |不继续生成视频切片文件，在本切片内用户画面显示最后一帧。       |
+    | Web 端 | 调用 [`setEnabled`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#setenabled) 方法 | 不继续生成视频切片文件，在本切片内用户画面显示最后一帧。 |
 
 ### 相关文档
 
@@ -225,9 +225,9 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
 
 你可以参考以下方法了解字段详情：
 
-- [`acquire`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-acquire)
-- [`start`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-mode-mode-start)
-- [`stop`](/doc/cloud-recording/restful/cloud-recording/operations/post-v1-apps-appid-cloud_recording-resourceid-resourceid-sid-sid-mode-mode-stop)
+- [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire)
+- [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start)
+- [`stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop)
 
 ### 常见问题
 

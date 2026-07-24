@@ -94,7 +94,7 @@ compileSdk 32
 
 ### 1. 创建 AIGCService 实例
 
-调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AIGCServiceConfig`](/api-ref/aigc/android/aigcservice#aigcserviceconfig) 对服务实例进行配置。
+调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AIGCServiceConfig`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#aigcserviceconfig) 对服务实例进行配置。
 
 ```java
 if (null == mAIGCService) {
@@ -182,12 +182,12 @@ public void onSpeechStateChange(SpeechState state) {
 
 该步骤允许用户根据场景需要，自定义 AIGC 服务的属性。具体步骤如下：
 
-1. 调用 `getRoles` 获取 SDK 支持的所有 [`AIRole`](/api-ref/aigc/android/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
+1. 调用 `getRoles` 获取 SDK 支持的所有 [`AIRole`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
 2. 调用 `setRole` 设置 SDK 使用的 `AIRole`。
 3. 调用 `getServiceVendors` 获取所有 AI 服务商的信息，包含三种类型：
-    - [`LLMVendor`](/api-ref/aigc/android/aigcservice#llmvendor)：大语言模型
-    - [`STTVendor`](/api-ref/aigc/android/aigcservice#sttvendor)：语音转文字模型
-    - [`TTSVendor`](/api-ref/aigc/android/aigcservice#ttsvendor)：文字转语音模型
+    - [`LLMVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#llmvendor)：大语言模型
+    - [`STTVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#sttvendor)：语音转文字模型
+    - [`TTSVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ttsvendor)：文字转语音模型
 4. 调用 `setServiceVendor` 设置所使用的 AI 服务商。
 
 ```java
@@ -239,7 +239,7 @@ mAIGCService.start()
 
 1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
 
-2. 获取到音频数据后，调用 [`pushSpeechDialogue`](/api-ref/aigc/android/aigcservice#pushspeechdialogue) 方法将数据发送给 `AIGCService`。
+2. 获取到音频数据后，调用 [`pushSpeechDialogue`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushspeechdialogue) 方法将数据发送给 `AIGCService`。
 
     ```java
     mAIGCService.pushSpeechDialogue(data, Vad.UNKNOWN, false);
@@ -249,7 +249,7 @@ mAIGCService.start()
 
 <TabsContent value="text">
 
-如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/api-ref/aigc/android/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLLM`](/api-ref/aigc/android/aigcservice#pushmessagestollm) 将数据发送给 `AIGCService`。
+如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLLM`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushmessagestollm) 将数据发送给 `AIGCService`。
 
 ```java
 // 仅支持推送单条文字消息
@@ -291,9 +291,9 @@ mAIGCService.pushMessagesToLLM("[{\n" +
 
 如果用户发送的是语音消息，需要监听如下回调：
 
-- [`onSpeech2TextResult`](/api-ref/aigc/android/aigcservice#onspeech2textresult)
-- [`onLLMResult`](/api-ref/aigc/android/aigcservice#onllmresult)
-- [`onText2SpeechResult`](/api-ref/aigc/android/aigcservice#ontext2speechresult)
+- [`onSpeech2TextResult`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onspeech2textresult)
+- [`onLLMResult`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onllmresult)
+- [`onText2SpeechResult`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ontext2speechresult)
 
 ```java
 // 接收语音转文字的处理结果
@@ -324,8 +324,8 @@ public HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int 
 
 如果用户发送的是文字消息，需要监听如下回调：
 
-- [`onLLMResult`](/api-ref/aigc/android/aigcservice#onllmresult)
-- [`onText2SpeechResult`](/api-ref/aigc/android/aigcservice#ontext2speechresult)
+- [`onLLMResult`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onllmresult)
+- [`onText2SpeechResult`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ontext2speechresult)
 
 ```java
 
@@ -391,7 +391,7 @@ AIGCService.destroy();
 开发过程中，你还可以参考如下文档：
 
 <Cards>
-  <Card title="API 参考" href="/api-ref/aigc/android/aigcservice" />
+  <Card title="API 参考" href="/zh-CN/api-reference/conversational-ai/aigc/aigcservice" />
 </Cards>
 
 如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：
@@ -464,7 +464,7 @@ AI 语音助手的实现流程如下图所示：
 
 ### 1. 创建 AIGCService 实例
 
-调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AgoraAIGCConfigure`](/api-ref/aigc/ios/aigcservice#aigcserviceconfig) 对服务实例进行配置。
+调用 `create` 和 `initialize` 方法创建并初始化 AIGC 服务示例。你需要在 `initialize` 方法中通过 [`AgoraAIGCConfigure`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#aigcserviceconfig) 对服务实例进行配置。
 
 ```swift
 service = AgoraAIGCService.create()
@@ -602,12 +602,12 @@ func onText2SpeechResult(withRoundId roundId: String,
 
 该步骤允许用户根据场景需要，自定义 AIGC 服务的属性。具体步骤如下：
 
-1. 调用 `getRoles` 获取 SDK 支持的所有 [`AgoraAIGCAIRole`](/api-ref/aigc/ios/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
+1. 调用 `getRoles` 获取 SDK 支持的所有 [`AgoraAIGCAIRole`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#airole)，包括 AI 服务的名称、职业、性别等。
 2. 调用 `setRoleWithId` 设置 SDK 使用的 `AgoraAIGCAIRole`。
 3. 调用 `getServiceVendors` 获取所有 AI 服务商的信息，包含三种类型：
-    - [`AgoraAIGCLLMVendor`](/api-ref/aigc/android/aigcservice#llmvendor)：大语言模型
-    - [`AgoraAIGCSTTVendor`](/api-ref/aigc/android/aigcservice#sttvendor)：语音转文字模型
-    - [`AgoraAIGCSTTVendor`](/api-ref/aigc/android/aigcservice#ttsvendor)：文字转语音模型
+    - [`AgoraAIGCLLMVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#llmvendor)：大语言模型
+    - [`AgoraAIGCSTTVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#sttvendor)：语音转文字模型
+    - [`AgoraAIGCSTTVendor`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ttsvendor)：文字转语音模型
 4. 调用 `setServiceVendor` 设置所使用的 AI 服务商。
 
 ```swift
@@ -666,7 +666,7 @@ service.start()
 
 1. 采集本地用户发送的音频数据。如果你选用的是声网 RTC SDK，可以参考[音频原始数据](/zh-CN/realtime-media/rtc/build/audio/raw-audio-data)，从 `onRecordAudioFrame` 回调中获取。
 
-2. 获取到音频数据后，调用 [`pushSpeechDialogueWithData`](/api-ref/aigc/ios/aigcservice#pushspeechdialogue) 方法将数据发送给 `AgoraAIGCService`。
+2. 获取到音频数据后，调用 [`pushSpeechDialogueWithData`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushspeechdialogue) 方法将数据发送给 `AgoraAIGCService`。
 
     ```swift
     service.pushSpeechDialogue(with: data, vad: .unknow, isLastFrame: false)
@@ -676,7 +676,7 @@ service.start()
 
 <TabsContent value="text">
 
-如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/api-ref/aigc/android/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLlm`](/api-ref/aigc/android/aigcservice#pushmessagestollm) 将数据发送给 `AgoraAIGCService`。
+如果用户发送的是文字消息，你可以直接调用 [`pushTxtDialogue`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushtxtdialogue) 或者 [`pushMessagesToLlm`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#pushmessagestollm) 将数据发送给 `AgoraAIGCService`。
 
 ```swift
 // 仅支持推送单条文字消息
@@ -703,9 +703,9 @@ service.pushMessages(toLlm: "json string", extraInfoJson: nil, roundId: nil)
 
 如果用户发送的是语音消息，需要监听如下回调：
 
-- [`onSpeech2TextWithRoundId`](/api-ref/aigc/ios/aigcservice#onspeech2textresult)
-- [`onLLMResultWithRoundId`](/api-ref/aigc/ios/aigcservice#onllmresult)
-- [`onText2SpeechResultWithRoundId`](/api-ref/aigc/ios/aigcservice#ontext2speechresult)
+- [`onSpeech2TextWithRoundId`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onspeech2textresult)
+- [`onLLMResultWithRoundId`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onllmresult)
+- [`onText2SpeechResultWithRoundId`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ontext2speechresult)
 
 ```swift
 // 接收语音转文字的处理结果
@@ -775,8 +775,8 @@ func onText2SpeechResult(withRoundId roundId: String,
 
 如果用户发送的是文字消息，需要监听如下回调：
 
-- [`onLLMResultWithRoundId`](/api-ref/aigc/ios/aigcservice#onllmresult)
-- [`onText2SpeechResultWithRoundId`](/api-ref/aigc/ios/aigcservice#ontext2speechresult)
+- [`onLLMResultWithRoundId`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#onllmresult)
+- [`onText2SpeechResultWithRoundId`](/zh-CN/api-reference/conversational-ai/aigc/aigcservice#ontext2speechresult)
 
 ```swift
 // 接收大语言模型的处理结果
@@ -868,7 +868,7 @@ AgoraAIGCService.destroy()
 开发过程中，你还可以参考如下文档：
 
 <Cards>
-  <Card title="API 参考" href="/api-ref/aigc/ios/aigcservice" />
+  <Card title="API 参考" href="/zh-CN/api-reference/conversational-ai/aigc/aigcservice" />
 </Cards>
 
 如果你选择使用声网的 RTC SDK 来实现原始音频数据采集和播放功能，也可以参考：

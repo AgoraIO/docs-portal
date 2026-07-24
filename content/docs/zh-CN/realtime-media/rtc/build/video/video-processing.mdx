@@ -24,10 +24,10 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 观测点对应的回调如下所示：
 
-- 观测点 1：通过 [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
-- 观测点 2：通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
-- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取编码后的数据。
-- 观测点 4：通过 [`onRenderVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
 
 :::info[信息]
 - 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
@@ -49,15 +49,15 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 参考如下步骤，获取 SDK 采集的原始数据并进行处理。
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/android/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
 
    ```java
    engine.registerVideoFrameObserver(iVideoFrameObserver);
    ```
 
-1. （可选）视频观测器默认的观测位置是 `VIDEO_MODULE_POSITION_POST_CAPTURER`（对应 [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调）和 `VIDEO_MODULE_POSITION_PRE_RENDERER`（对应 [`onRenderVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调），你可以在 [`getObservedFramePosition`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_getobservedframeposition) 回调的返回值中设置预期的视频观测位置。
+1. （可选）视频观测器默认的观测位置是 `VIDEO_MODULE_POSITION_POST_CAPTURER`（对应 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调）和 `VIDEO_MODULE_POSITION_PRE_RENDERER`（对应 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调），你可以在 [`getObservedFramePosition`](/zh-CN/api-reference/rtc/android/video/video-raw#getobservedframeposition) 回调的返回值中设置预期的视频观测位置。
 
-   以下示例代码以观测位置为 `VIDEO_MODULE_POSITION_PRE_ENCODER` 为例，对应 [`onPreEncodeVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。
+   以下示例代码以观测位置为 `VIDEO_MODULE_POSITION_PRE_ENCODER` 为例，对应 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。
 
    ```java
    @Override
@@ -66,7 +66,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    }
    ```
 
-1. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 [`getVideoFrameProcessMode`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_getvideoframeprocessmode) 回调中设置预期的视频处理模式为 `1`：
+1. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 [`getVideoFrameProcessMode`](/zh-CN/api-reference/rtc/android/video/video-raw#getvideoframeprocessmode) 回调中设置预期的视频处理模式为 `1`：
 
       - 0：（默认）只读模式，不需要将处理后的数据发回给 SDK。
       - 1：读写模式，需要将处理后的数据发回给 SDK。
@@ -78,7 +78,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    }
    ```
 
-1. （可选）SDK 默认提供的视频数据格式为 `I420Buffer` 或 `TextureBuffer`，如果你需要其他格式的视频数据，可在 [`getVideoFormatPreference`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_getvideoformatpreference) 回调的返回值中设置预期的数据格式：
+1. （可选）SDK 默认提供的视频数据格式为 `I420Buffer` 或 `TextureBuffer`，如果你需要其他格式的视频数据，可在 [`getVideoFormatPreference`](/zh-CN/api-reference/rtc/android/video/video-raw#getvideoformatpreference) 回调的返回值中设置预期的数据格式：
 
       - 0：（默认）原始视频像素格式
       - 1：I420 格式
@@ -92,7 +92,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    }
    ```
 
-1. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 [`getRotationApplied`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_getrotationapplied) 回调的返回值中设置视频数据按照 `rotation` 做旋转处理。
+1. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 [`getRotationApplied`](/zh-CN/api-reference/rtc/android/video/video-raw#getrotationapplied) 回调的返回值中设置视频数据按照 `rotation` 做旋转处理。
 
    :::warning[注意]
    该回调支持的视频数据格式有：I420、RGBA、Texture。
@@ -105,7 +105,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    }
    ```
 
-1. （可选）如果你希望获取镜像处理后的视频数据，可在 [`getMirrorApplied`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_getmirrorapplied) 回调的返回值中设置视频数据做镜像处理。
+1. （可选）如果你希望获取镜像处理后的视频数据，可在 [`getMirrorApplied`](/zh-CN/api-reference/rtc/android/video/video-raw#getmirrorapplied) 回调的返回值中设置视频数据做镜像处理。
 
    :::warning[注意]
    - 该回调和 `setVideoEncoderConfiguration` 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像不成功。
@@ -129,7 +129,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    int res = engine.joinChannel(token, channelId, 0, option);
    ```
 
-1. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 [`onCaptureVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调为例。
+1. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调为例。
 
    :::warning[注意]
    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
@@ -145,7 +145,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    }
    ```
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/android/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法，取消注册原始视频观测器 `IVideoFrameObserver`，即可停止观测视频数据。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法，取消注册原始视频观测器 `IVideoFrameObserver`，即可停止观测视频数据。
 
    ```java
    engine.registerVideoFrameObserver(null);
@@ -157,7 +157,7 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 参考如下步骤，获取 SDK 采集的已编码数据并进行处理。
 
-1. 调用 [`registerVideoEncodedFrameObserver`](/api-ref/rtc/android/API/toc_video_encoded#api_imediaengine_registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#onEncodedVideoFrameReceived)。
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived)。
 
    ```java
    engine.registerVideoEncodedFrameObserver(iVideoEncodedFrameObserver);
@@ -169,7 +169,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    int res = engine.joinChannel(token, channelId, 0, option);
    ```
 
-1. 通过 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取编码后的视频数据。
+1. 通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的视频数据。
 
    ```java
     @Override
@@ -196,7 +196,7 @@ SDK 中视频模块的数据处理流程如下图所示。
     }
    ```
 
-1. 调用 [`registerVideoEncodedFrameObserver`](/api-ref/rtc/android/API/toc_video_encoded#api_imediaengine_registervideoencodedframeobserver) 方法，取消注册视频观测器 `IVideoEncodedFrameObserver`，即可停止观测视频数据。
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法，取消注册视频观测器 `IVideoEncodedFrameObserver`，即可停止观测视频数据。
 
    ```java
    engine.registerVideoEncodedFrameObserver(null);
@@ -208,13 +208,13 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 如果你想同时获取远端用户的已编码数据（简称为 A 组）和渲染前视频数据（简称为 B 组），可参考如下步骤。
 
-1. 调用 [`registerVideoEncodedFrameObserver`](/api-ref/rtc/android/API/toc_video_encoded#api_imediaengine_registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#onEncodedVideoFrameReceived)。
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived)。
 
    ```java
    engine.registerVideoEncodedFrameObserver(iVideoEncodedFrameObserver);
    ```
 
-1. 调用 [`registerVideoFrameObserver`](/api-ref/rtc/android/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
 
    ```java
    engine.registerVideoFrameObserver(iVideoFrameObserver);
@@ -228,7 +228,7 @@ SDK 中视频模块的数据处理流程如下图所示。
    int res = engine.joinChannel(token, channelId, 0, option);
    ```
 
-1. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 [`setRemoteVideoSubscriptionOptions`](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法设置。
+1. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 [`setRemoteVideoSubscriptionOptions`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法设置。
 
    :::info[信息]
    SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
@@ -255,8 +255,8 @@ SDK 中视频模块的数据处理流程如下图所示。
    ```
 
 1. 通过相应的回调获取预期的数据：
-   - 可通过 `IVideoEncodedFrameObserver` 中的 [`onEncodedVideoFrameReceived`](/api-ref/rtc/android/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取用户已编码的视频数据。
-   - 可通过 `IVideoFrameObserver` 中的 [`onRenderVideoFrame`](/api-ref/rtc/android/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取用户渲染前的视频数据。
+   - 可通过 `IVideoEncodedFrameObserver` 中的 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取用户已编码的视频数据。
+   - 可通过 `IVideoFrameObserver` 中的 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取用户渲染前的视频数据。
 
    ```java
     @Override
@@ -305,7 +305,7 @@ SDK 中视频模块的数据处理流程如下图所示。
     }
    ```
 
-1. 分别调用 [`registerVideoEncodedFrameObserver`](/api-ref/rtc/android/API/toc_video_encoded#api_imediaengine_registervideoencodedframeobserver) 和 [`registerVideoFrameObserver`](/api-ref/rtc/android/API/toc_video_raw#api_imediaengine_registervideoframeobserver) 方法，取消注册视频观测器，即可停止观测视频数据。
+1. 分别调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 和 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法，取消注册视频观测器，即可停止观测视频数据。
 
    ```java
    // 取消注册已编码视频观测器
@@ -350,10 +350,10 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 观测点对应的回调如下所示：
 
-- 观测点 1：通过 [`onCaptureVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
-- 观测点 2：通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
-- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/api-ref/rtc/ios/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取编码后的数据。
-- 观测点 4：通过 [`onRenderVideoFrame`](/api-ref/rtc/ios/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
 
 :::info[信息]
 - 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
@@ -623,10 +623,10 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 观测点对应的回调如下所示：
 
-- 观测点 1：通过 [`onCaptureVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
-- 观测点 2：通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
-- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/api-ref/rtc/macos/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取编码后的数据。
-- 观测点 4：通过 [`onRenderVideoFrame`](/api-ref/rtc/macos/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/macos/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
 
 :::info[信息]
 - 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
@@ -896,10 +896,10 @@ SDK 中视频模块的数据处理流程如下图所示。
 
 观测点对应的回调如下所示：
 
-- 观测点 1：通过 [`onCaptureVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
-- 观测点 2：通过 [`onPreEncodeVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
-- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/api-ref/rtc/windows/API/toc_video_encoded#onEncodedVideoFrameReceived) 回调获取编码后的数据。
-- 观测点 4：通过 [`onRenderVideoFrame`](/api-ref/rtc/windows/API/toc_video_raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
 
 :::info[信息]
 - 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。

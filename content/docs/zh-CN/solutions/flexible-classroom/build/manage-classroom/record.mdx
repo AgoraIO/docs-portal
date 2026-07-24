@@ -32,8 +32,8 @@ description: "了解灵动课堂在不同平台上的课堂录制方式，包括
 
 无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
-- `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
-- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
+- `mode`: 设为 `web`，启用[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
+- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法时传入。
 - `retryTimeout`: 重试超时时间，单位为秒。最多重试两次。
 
 示例代码：
@@ -49,7 +49,7 @@ description: "了解灵动课堂在不同平台上的课堂录制方式，包括
 }
 ```
 
-设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
+设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
 
 - 接口原型
 
@@ -105,7 +105,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 - `4`: 超时待重试。
 - `5`: 重试次数达到上限后仍未成功，退出录制。
 
-同时，客户端的[录制状态](/api-ref/flexible-classroom/android/API/api_data_type#enum_fcrrecordingstate)中也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
+同时，客户端的[录制状态](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#enum_fcrrecordingstate)中也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
 
 ## 进阶设置
 
@@ -191,8 +191,8 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
-- `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
-- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
+- `mode`: 设为 `web`，启用[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
+- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法时传入。
 - `retryTimeout`: 重试超时时间，单位为秒。最多重试两次。
 
 示例代码：
@@ -208,7 +208,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 }
 ```
 
-设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
+设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
 
 - 接口原型
 
@@ -264,7 +264,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 - `4`: 超时待重试。
 - `5`: 重试次数达到上限后仍未成功，退出录制。
 
-同时，客户端的[录制状态](/api-ref/flexible-classroom/ios/API/api_data_type#enum_fcrrecordingstate)中也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
+同时，客户端的[录制状态](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#enum_fcrrecordingstate)中也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
 
 ## 进阶设置
 
@@ -350,8 +350,8 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
-- `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
-- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
+- `mode`: 设为 `web`，启用[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
+- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法时传入。
 - `retryTimeout`: 重试超时时间，单位为秒。最多重试两次。
 
 示例代码：
@@ -367,7 +367,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 }
 ```
 
-设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
+设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
 
 - 接口原型
 
@@ -423,7 +423,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 - `4`: 超时待重试。
 - `5`: 重试次数达到上限后仍未成功，退出录制。
 
-同时，客户端的[录制状态](/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore.html#recordStatus)也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
+同时，客户端的[录制状态](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordStatus)也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
 
 ## 进阶设置
 
@@ -509,8 +509,8 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 
 无论你是在客户端还是服务端启动课堂录制，本质都是调用灵动课堂服务端[设置录制状态接口](/zh-CN/api-reference/flexible-classroom/restful-api/api-recording#设置录制状态)。启动录制时，你需要关注以下参数：
 
-- `mode`: 设为 `web`，启用[页面录制模式](https://docs.agora.io/cn/cloud-recording/cloud_recording_webpage_mode)。
-- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法时传入。
+- `mode`: 设为 `web`，启用[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
+- `rootUrl`: 待录制页面的根地址。灵动课堂云服务会自动在该 URL 后拼接 `roomUuid`、`roomType` 等参数，而待录制页面需要提取这些信息在调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法时传入。
 - `retryTimeout`: 重试超时时间，单位为秒。最多重试两次。
 
 示例代码：
@@ -526,7 +526,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 }
 ```
 
-设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/api-ref/flexible-classroom/javascript/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
+设置 `retryTimeout` 后，你需要在录制页面调用 [launch](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法设置 `listener` 参数监听枚举值为 `1` 的事件，`1` 代表页面加载完成。监听到该事件后，你需要调用以下接口，告知灵动课堂云服务待录制页面已经加载完成。如果灵动课堂云服务没有在 `retryTimeout` 内收到这个请求，则会重试录制。
 
 - 接口原型
 
@@ -582,7 +582,7 @@ AgoraEduSDK.launch(document.querySelector(`#${this.elem.id}`), {
 - `4`: 超时待重试。
 - `5`: 重试次数达到上限后仍未成功，退出录制。
 
-同时，客户端的[录制状态](/api-ref/flexible-classroom/electron/classes/agora_edu_core_src_stores_domain_common_room_index_oomStore.html#recordStatus)也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
+同时，客户端的[录制状态](/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-stores-domain-common-room-index-oom-store#recordStatus)也会发生变更。你可以基于服务端和客户端这两种方式进行后续业务开发。
 
 ## 进阶设置
 

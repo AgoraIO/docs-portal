@@ -45,7 +45,7 @@ if (ret != 0) {
 
 ### 使用 User Account 加入频道
 
-调用 [`agora_rtc_create_connection`](/api-ref/rtsa/c/agora__rtc__api_8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection，然后调用 [`agora_rtc_join_channel_with_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a64a24029bfaa5408e987122261385013) 加入 Connection 对应的 RTC 频道。
+调用 [`agora_rtc_create_connection`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection，然后调用 [`agora_rtc_join_channel_with_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013) 加入 Connection 对应的 RTC 频道。
 
 ```c
 connection_id_t conn_id = 0;
@@ -69,7 +69,7 @@ if (ret != 0) {
 
 首次使用新的 User Account 加入频道时，可能会比使用 UID 加入频道略有延迟，因为 SDK 需要先请求服务端做 String 型 Uid 与 Int 型 UID 的映射。
 
-加入频道后，主播用户之间可以调用 [`agora_rtc_get_user_info_by_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a68efcfa431803942c8fdc733b00c30c1) 或 [`agora_rtc_get_user_info_by_uid`](/api-ref/rtsa/c/agora__rtc__api_8h#ad6b1be785d6c2b4fa8fb0eac90290194)，通过 User Account 或对应的 UID 获取对方的用户信息。
+加入频道后，主播用户之间可以调用 [`agora_rtc_get_user_info_by_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a68efcfa431803942c8fdc733b00c30c1) 或 [`agora_rtc_get_user_info_by_uid`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad6b1be785d6c2b4fa8fb0eac90290194)，通过 User Account 或对应的 UID 获取对方的用户信息。
 
 ### 监听相关事件回调
 
