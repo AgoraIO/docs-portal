@@ -61,7 +61,7 @@ import { getDocsSourceLinks } from './docs-source-links';
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
+  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 export const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY =
