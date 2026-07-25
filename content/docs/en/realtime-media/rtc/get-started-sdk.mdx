@@ -31,7 +31,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime Communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -171,7 +171,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -567,7 +567,7 @@ To access the media devices on Android devices, declare the necessary permission
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
     ```
 
-1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Video Calling. In your `MainActivity` file, add the following code:
+1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Realtime Communication. In your `MainActivity` file, add the following code:
 
     <Tabs defaultValue="java">
     <TabsList>
@@ -1285,7 +1285,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime Communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -1320,7 +1320,7 @@ Follow these steps to create a project in Xcode:
 </TabsContent>
 <TabsContent value="existing">
 
-Follow these steps to add Video Calling to your Xcode project:
+Follow these steps to add Realtime Communication to your Xcode project:
 
 1. Open your project in Xcode.
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
@@ -1349,7 +1349,7 @@ Use one of the following methods to install the Video SDK.
     ```
 
 3. Click **Add Package**, select the latest version, and click **Next**.
-4. For basic Video Calling, select **RtcBasic**.
+4. For basic Realtime Communication, select **RtcBasic**.
 
     If needed, also select:
     - **`SpatialAudio`** for spatial audio effects.
@@ -1408,7 +1408,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -1583,7 +1583,7 @@ func setupRemoteVideo(uid: UInt, view: UIView?) {
 ```
 
 ### Handle permissions
-To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
+To access the camera and microphone, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
 
 | Key | Type | Value |
 |:----|:-----|:------|
@@ -1599,11 +1599,11 @@ To access the camera and microphone on Video Calling devices, add the required p
 
 ### Start and close the app
 
-When the user launches the app, it joins the channel and starts Video Calling. When the user closes the app, it leaves the channel and ends Video Calling.
+When the user launches the app, it joins the channel and starts Realtime Communication. When the user closes the app, it leaves the channel and ends Realtime Communication.
 
 1. To start Video Calling, call the following methods:
 
-```swift
+    ```swift
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Start the local video preview
@@ -1814,7 +1814,7 @@ Take the following steps to test the sample code:
 
 1. If an untrusted developer prompt pops up on the device, click **Cancel** to close the prompt, then open **Settings > General > VPN and Device Management** on the iOS device, and choose to trust the developer in the **Developer APP**.
 
-1. On a second Video Calling device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
+1. On a second device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
@@ -1837,7 +1837,7 @@ Agora provides an open source sample project on [GitHub](https://github.com/Agor
 
 ### Add a privacy manifest file
 
-The Agora Video SDK for Video Calling provides the `PrivacyInfo.xcprivacy` file that contains the required reasons for the APIs used by the SDK. To add the privacy manifest to your app in Xcode, follow these steps:
+The RTC SDK provides the `PrivacyInfo.xcprivacy` file that contains the required reasons for the APIs used by the SDK. To add the privacy manifest to your app in Xcode, follow these steps:
 
 1. Create a privacy manifest in your app project:
 
@@ -1935,9 +1935,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -1948,7 +1946,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -1983,7 +1981,7 @@ Follow these steps to create a project in Xcode:
 </TabsContent>
 <TabsContent value="existing">
 
-Follow these steps to add Video Calling to your Xcode project:
+Follow these steps to add Realtime Communication to your Xcode project:
 
 1. Open your project in Xcode.
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
@@ -2012,7 +2010,7 @@ Use one of the following methods to install the Video SDK.
     ```
 
 3. Click **Add Package**, select the latest version, and click **Next**.
-4. For basic Video Calling, select **RtcBasic**.
+4. For basic Realtime Communication, select **RtcBasic**.
 
     If needed, also select:
     - **`SpatialAudio`** for spatial audio effects.
@@ -2066,7 +2064,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
 </Accordion>
 </Accordions>
 
@@ -2241,7 +2239,7 @@ func setupRemoteVideo(uid: UInt, view: UIView?) {
 ```
 
 ### Handle permissions
-To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
+To access the camera and microphone, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
 
 | Key | Type | Value |
 |:----|:-----|:------|
@@ -2286,11 +2284,11 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 
 ### Start and close the app
 
-When the user launches the app, it joins the channel and starts Video Calling. When the user closes the app, it leaves the channel and ends Video Calling.
+When the user launches the app, it joins the channel and starts Realtime Communication. When the user closes the app, it leaves the channel and ends Realtime Communication.
 
 1. To start Video Calling, call the following methods:
 
-```swift
+    ```swift
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Start the local video preview
@@ -2505,7 +2503,7 @@ Take the following steps to test the sample code:
 
 1. Allow the app to access the device's microphone and camera.
 
-1. On a second Video Calling device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
+1. On a second device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
@@ -2576,9 +2574,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -2589,7 +2585,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -2631,7 +2627,7 @@ To initialize a new Vite project, take the following steps:
 
 <TabsContent value="existing">
 
-To add Video Calling to your existing project, take the following steps:
+To add Realtime Communication to your existing project, take the following steps:
 
  1. Create a JavaScript file in your project's `src` folder to add `AgoraRTCClient` code that implements specific application logic.
 
@@ -2661,7 +2657,7 @@ This section guides you through the implementation of basic real-time audio and 
 The following figure illustrates the essential steps:
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-web.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-web.svg)
 </Accordion>
 </Accordions>
 
@@ -3202,9 +3198,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -3215,7 +3209,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -3295,7 +3289,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -3573,9 +3567,7 @@ m_rtcEngine = NULL;
 ```
 
 :::caution[Caution]
-
-After you call `Dispose`, you can no longer use any SDK methods or callbacks. To use real-time Video Calling again, you must create a new engine. For more information, see [Initialize the Engine](#initialize-the-engine).
-
+After you call `Dispose`, you can no longer use any SDK methods or callbacks. To use realtime communication again, you must create a new engine. For more information, see [Initialize the Engine](#initialize-the-engine).
 :::
 
 ### Complete sample code
@@ -4068,7 +4060,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -4200,7 +4192,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -4495,11 +4487,11 @@ Call this method when the client receives the `onUserJoined` callback.
 
 ### Start and close the app
 
-When a user launches your app, start Video Calling. When a user closes the app, stop Video Calling and release resources.
+When a user launches your app, start Realtime Communication. When a user closes the app, stop Realtime Communication and release resources.
 
-1. To start Video Calling, [initialize the engine](#initialize-the-engine), [display the local video](#display-the-local-video) and [join a channel](#join-a-channel).
+1. To start Realtime Communication, [initialize the engine](#initialize-the-engine), [display the local video](#display-the-local-video) and [join a channel](#join-a-channel).
 
-2. When Video Calling ends, leave the channel and clean up resources:
+2. When Realtime Communication ends, leave the channel and clean up resources:
 
     ```javascript
     // Stop the preview
@@ -4843,7 +4835,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -4875,7 +4867,7 @@ cd agora_project
 
 <TabsContent value="existing">
 
-To add Video Calling to your existing project:
+To add Realtime Communication to your existing project:
 
 1. Open your Flutter project and navigate to the `lib` folder.
 2. Add a new file to the `lib` folder and name it `agora_logic.dart`.
@@ -4926,7 +4918,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -5100,7 +5092,7 @@ Widget _remoteVideo() {
 
 ### Handle permissions
 
-Request microphone and camera permissions for Video Calling.
+Request microphone and camera permissions.
 
 ```dart
 Future<void> _requestPermissions() async {
@@ -5121,7 +5113,7 @@ If your target platform is iOS or macOS, add the microphone and camera permissio
 
 ### Start and close the app
 
-To start Video Calling, request microphone and camera permissions, initialize the Agora SDK instance, set up event handlers, join a channel, and display the local video.
+To start Realtime Communication, request microphone and camera permissions, initialize the Agora SDK instance, set up event handlers, join a channel, and display the local video.
 
 ```dart
 await _requestPermissions();
@@ -5131,7 +5123,7 @@ _setupEventHandlers();
 await _joinChannel();
   ```
 
-To stop Video Calling, leave the channel and release the engine instance.
+To stop Realtime Communication, leave the channel and release the engine instance.
 
 ```dart
 // Leaves the channel and releases resources
@@ -5143,7 +5135,7 @@ Future<void> _cleanupAgoraEngine() async {
 
 :::info[Note]
 
-After you call `release`, you no longer have access to the methods and callbacks of the SDK. To use Video Calling features again, create a new engine instance.
+After you call `release`, you no longer have access to the methods and callbacks of the SDK. To use Realtime Communication features again, create a new engine instance.
 
 :::
 
@@ -5479,7 +5471,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -5543,7 +5535,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -5772,7 +5764,7 @@ In Xcode, open the `info.plist` file and add the following content to the list o
 </Tabs>
 
 ### Leave the channel
-To exit a Video Calling channel, call `leaveChannel`.
+To exit a Realtime Communication channel, call `leaveChannel`.
 
 ```tsx
 const leave = () => {
@@ -6260,7 +6252,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 :::info[React SDK and Web SDK relationship]
 The React SDK is built on Web SDK 4.x and includes its APIs. For example, `useLocalMicrophoneTrack` calls the Web SDK `createMicrophoneAudioTrack` method.
@@ -6611,7 +6603,7 @@ export default RealtimeCommunication;
 
 ## Test the sample code
 
-Use [CodeSandbox](https://codesandbox.io/), to swiftly run the complete demo code and experience the Video Calling Video SDK functionality in just a few simple steps.
+Use [CodeSandbox](https://codesandbox.io/), to swiftly run the complete demo code and experience the RTC SDK functionality in just a few simple steps.
 
  <iframe src="https://codesandbox.io/embed/github/AgoraIO/quickstart-examples/tree/EN-docs/rtc/react-quickstart?codemirror=1&fontsize=14&hidenavigation=1&theme=dark&hidedevtools=1&module=/src/index.js"
   style={{ width: '100%', height: '500px', border: '0', borderRadius: '4px', overflow: 'hidden' }}
@@ -6683,9 +6675,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -6696,7 +6686,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -6762,7 +6752,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -7041,7 +7031,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
     }
     ```
 
-1. To start Video Calling, initialize the engine and set up the event handler.
+1. To start Realtime Communication, initialize the engine and set up the event handler.
 
     ```c#
     void Start()
@@ -7067,7 +7057,7 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
     :::info[Note]
 
-    After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Video Calling features again, create a new engine instance.
+    After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Realtime Communication features again, create a new engine instance.
 
     :::
 
@@ -7392,9 +7382,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -7405,7 +7393,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -7504,7 +7492,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 ### Install the SDK
 
-Take the following steps to add the Video Calling Video SDK to your project:
+Take the following steps to add the RTC SDK to your project:
 
 1. Download the latest version of Agora Unreal Video SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
 1. In your project root folder, create a `Plugins` folder.
@@ -7518,7 +7506,7 @@ The following figure illustrates the essential steps:
 
 <Accordions>
 <Accordion title="Quick start sequence">
-![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
 
@@ -8281,9 +8269,7 @@ To start a real-time session, implement the following steps in your app:
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
   :::info[Note]
-
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -8294,7 +8280,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
-![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
 ## Prerequisites
 
@@ -8351,7 +8337,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 ### Install the SDK
 
-Take the following steps to add the Video Calling Video SDK to your project:
+Take the following steps to add the RTC SDK to your project:
 
 1. Download the latest version of Agora Unreal Video SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
 1. In your project root folder, create a `Plugins` folder.
@@ -8370,7 +8356,7 @@ This section guides you through the implementation of basic real-time audio and 
     ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
 ### Implement basic processes
-In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Video Calling logic:
+In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Realtime Communication logic:
 
 ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-2.png)
 
