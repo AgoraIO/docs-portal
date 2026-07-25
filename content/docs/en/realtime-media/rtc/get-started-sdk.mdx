@@ -19,7 +19,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
   For the voice calling and video calling use cases, each user joins as a host.
   :::
 
@@ -32,7 +32,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -51,7 +50,6 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 1. Create a [new project](https://developer.android.com/studio/projects/create-project).
 
     1. Open Android Studio and select **File > New > New Project...**.
@@ -59,15 +57,13 @@ To start a real-time session, implement the following steps in your app:
     1. Set the project name and storage path.
     1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
 
-        :::caution[Note]
+        :::info[Note]
         After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
         :::
 
 </TabsContent>
 
 <TabsContent value="existing">
-
-
 
  1. Add a new activity to your project.
 
@@ -82,10 +78,7 @@ To start a real-time session, implement the following steps in your app:
 
 2. Add a layout file for your activity.
 
-
     Set up two container elements in your activity to display local and remote video streams. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
-
-
 
 ### Install the SDK
 
@@ -98,7 +91,6 @@ Use either of the following methods to add Video SDK to your project.
 </TabsList>
   <TabsContent value="maven">
 
-
     1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
         ```groovy
@@ -106,15 +98,13 @@ Use either of the following methods to add Video SDK to your project.
            mavenCentral()
         }
         ```
-        :::info
+        :::info[Note]
 
         If your Android project uses [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration), the method of adding the Maven Central dependency may differ.
 
         :::
 
-
     1. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
-
 
         - Groovy `build.gradle`
 
@@ -130,15 +120,13 @@ Use either of the following methods to add Video SDK to your project.
 
         Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
-        :::info
+        :::info[Note]
         To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
         :::
-
 
     1. Prevent code obfuscation
 
         Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
-
 
         ```java
         -keep class io.agora.** { *; }
@@ -147,7 +135,6 @@ Use either of the following methods to add Video SDK to your project.
 
 </TabsContent>
   <TabsContent value="manual">
-
 
     1. Download the latest version of Video SDK from the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
 
@@ -168,7 +155,6 @@ Use either of the following methods to add Video SDK to your project.
 
         Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
 
-
         ```java
         -keep class io.agora.** { *; }
         -dontwarn io.agora.**
@@ -176,7 +162,6 @@ Use either of the following methods to add Video SDK to your project.
 
 </TabsContent>
 </Tabs>
-
 
 ## Implement Realtime Communication
 
@@ -189,7 +174,6 @@ The following figure illustrates the essential steps:
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
 
@@ -241,7 +225,6 @@ For real-time communication, initialize an `RtcEngine` instance and set up event
 </TabsList>
 <TabsContent value="java">
 
-
 ```java
 // Fill in the app ID from Agora Console
 private String myAppId = "<Your app ID>";
@@ -283,7 +266,6 @@ private fun initializeRtcEngine() {
 }
 ```
 
-
 </TabsContent>
 </Tabs>
 
@@ -299,7 +281,6 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -309,12 +290,10 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according
 | Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
 | Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
 
-:::info
-
+:::info[Note]
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
 - The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
-
 :::
 
 The following example shows the configuration for interactive live streaming with the broadcaster role:
@@ -325,7 +304,6 @@ The following example shows the configuration for interactive live streaming wit
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
 </TabsList>
 <TabsContent value="java">
-
 
 ```java
 // Fill in the channel name
@@ -346,12 +324,9 @@ private void joinChannel() {
     mRtcEngine.joinChannel(token, channelName, 0, options);
 }
 ```
-
-
 </TabsContent>
 
 <TabsContent value="kotlin">
-
 
 ```kotlin
 // Fill in the channel name
@@ -374,22 +349,17 @@ private fun joinChannel() {
 }
 ```
 
-
 </TabsContent>
 
 </Tabs>
-
 
 ### Subscribe to Video SDK events
 
 The Video SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle.
 
-:::info
-
+:::info[Note]
 To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
-
 :::
-
 
 <Tabs defaultValue="java">
 <TabsList>
@@ -397,7 +367,6 @@ To ensure that you receive all Video SDK events, set the engine event handler be
   <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
 </TabsList>
 <TabsContent value="java">
-
 
 ```java
 private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
@@ -430,10 +399,8 @@ private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandl
 };
 ```
 
-
 </TabsContent>
 <TabsContent value="kotlin">
-
 
 ```kotlin
 private val mRtcEventHandler = object : IRtcEngineEventHandler() {
@@ -457,10 +424,8 @@ private val mRtcEventHandler = object : IRtcEngineEventHandler() {
 }
 ```
 
-
 </TabsContent>
 </Tabs>
-
 
 ### Enable the video module
 
@@ -476,7 +441,6 @@ Follow these steps to enable the video module:
 </TabsList>
 <TabsContent value="java">
 
-
 ```java
 private void enableVideo() {
     mRtcEngine.enableVideo();
@@ -484,10 +448,8 @@ private void enableVideo() {
 }
 ```
 
-
 </TabsContent>
 <TabsContent value="kotlin">
-
 
 ```kotlin
 private fun enableVideo() {
@@ -497,7 +459,6 @@ private fun enableVideo() {
     }
 }
 ```
-
 
 </TabsContent>
 </Tabs>
@@ -513,7 +474,6 @@ Call `setupLocalVideo` to initialize the local view and set the local video disp
 </TabsList>
 <TabsContent value="java">
 
-
 ```java
 private void setupLocalVideo() {
     FrameLayout container = findViewById(R.id.local_video_view_container);
@@ -523,11 +483,9 @@ private void setupLocalVideo() {
 }
 ```
 
-
 </TabsContent>
 
 <TabsContent value="kotlin">
-
 
 ```kotlin
 /**
@@ -542,10 +500,8 @@ private fun setupLocalVideo() {
 }
 ```
 
-
 </TabsContent>
 </Tabs>
-
 
 ### Display remote video
 
@@ -558,7 +514,6 @@ When a remote user joins the channel, call `setupRemoteVideo` and pass in the re
 </TabsList>
 <TabsContent value="java">
 
-
 ```java
 private void setupRemoteVideo(int uid) {
     FrameLayout container = findViewById(R.id.remote_video_view_container);
@@ -569,11 +524,9 @@ private void setupRemoteVideo(int uid) {
 }
 ```
 
-
 </TabsContent>
 
 <TabsContent value="kotlin">
-
 
 ```kotlin
 private fun setupRemoteVideo(uid: Int) {
@@ -586,20 +539,15 @@ private fun setupRemoteVideo(uid: Int) {
 }
 ```
 
-
 </TabsContent>
 
 </Tabs>
-
 
 ### Handle permissions
 
 To access the media devices on Android devices, declare the necessary permissions in the app's manifest and ensure that the user grants these permissions when the client starts.
 
 1. Open your project's `AndroidManifest.xml` file and add the following permissions before `<application>`:
-
-
-
 
     ```xml
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -619,33 +567,40 @@ To access the media devices on Android devices, declare the necessary permission
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
     ```
 
-
 1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Video Calling. In your `MainActivity` file, add the following code:
 
-<Tabs defaultValue="java">
-<TabsList>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
-</TabsList>
-<TabsContent value="java">
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
 
-
-
-
-```java
-private static final int PERMISSION_REQ_ID = 22;
-
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+    ```java
+    private static final int PERMISSION_REQ_ID = 22;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (checkPermissions()) {
+            startLiveStreaming();
+        } else {
+            requestPermissions();
+        }
     }
+
     private boolean checkPermissions() {
         for (String permission : getRequiredPermissions()) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
         return true;
     }
+
+    // Get the permissions required for real-time audio interaction experience
     private String[] getRequiredPermissions() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
             return new String[]{
@@ -660,33 +615,27 @@ private static final int PERMISSION_REQ_ID = 22;
                 Manifest.permission.CAMERA
             };
         }
+    }    
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
-            startVideoCalling();
+            startLiveStreaming();
         }
     }
-```
+    ```
 
+    </TabsContent>
 
+    <TabsContent value="kotlin">
 
-
-
-
-
-</TabsContent>
-
-<TabsContent value="kotlin">
-
-
-
-
-
-
-```kotlin
-private val PERMISSION_REQ_ID = 22
+    ```kotlin
+    private val PERMISSION_REQ_ID = 22
 
     private fun requestPermissions() {
         ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
@@ -724,18 +673,13 @@ private val PERMISSION_REQ_ID = 22
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
-            startVideoCalling()
+            startLiveStreaming()
         }
     }
-```
+    ```
 
-
-
-
-
-</TabsContent>
-
-</Tabs>
+    </TabsContent>
+    </Tabs>
 
 ### Start and close the app
 
@@ -743,119 +687,86 @@ When a user launches your client, start real-time interaction. When a user close
 
 1. In the `onCreate` callback, check whether the client has been granted the required permissions. If the permissions have not been granted, request the required permissions from the user. If permissions are granted, initialize `RtcEngine` and join a channel.
 
-<Tabs defaultValue="java">
-<TabsList>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
-</TabsList>
-<TabsContent value="java">
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
 
-
-
-
-```java
-@Override
+    ```java
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (checkPermissions()) {
-            startVideoCalling();
+            startLiveStreaming();
         } else {
             requestPermissions();
         }
     }
-```
+    ```
 
+    </TabsContent>
 
+    <TabsContent value="kotlin">
 
-
-
-
-
-</TabsContent>
-
-<TabsContent value="kotlin">
-
-
-
-
-
-```kotlin
-override fun onCreate(savedInstanceState: Bundle?) {
+    ```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (checkPermissions()) {
-            startVideoCalling()
+            startLiveStreaming()
         } else {
             requestPermissions()
         }
     }
-```
+    ```
 
+    </TabsContent>
+    </Tabs>
 
+1. When a user closes the client, or switches the client to the background, call `stopPreview` to stop the video preview and then call `leaveChannel` to leave the current channel and release all session-related resources.
 
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
 
-
-
-</TabsContent>
-
-</Tabs>
-
-
-
-2. When a user closes the client, or switches the client to the background, call `stopPreview` to stop the video preview and then call `leaveChannel` to leave the current channel and release all session-related resources.
-
-<Tabs defaultValue="java">
-<TabsList>
-  <TabsTrigger value="java">Java</TabsTrigger>
-  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
-</TabsList>
-<TabsContent value="java">
-
-
-
-```java
-private void cleanupAgoraEngine() {
-        if (mRtcEngine != null) {
-            mRtcEngine.stopPreview();
-            mRtcEngine.leaveChannel();
-            mRtcEngine = null;
+    ```java
+    private void cleanupAgoraEngine() {
+            if (mRtcEngine != null) {
+                mRtcEngine.stopPreview();
+                mRtcEngine.leaveChannel();
+                mRtcEngine = null;
+            }
         }
-    }
-```
+    ```
 
+    </TabsContent>
+    <TabsContent value="kotlin">
 
-
-</TabsContent>
-
-<TabsContent value="kotlin">
-
-
-
-```kotlin
-private fun cleanupAgoraEngine() {
-        mRtcEngine?.apply {
-            stopPreview()
-            leaveChannel()
+    ```kotlin
+    private fun cleanupAgoraEngine() {
+            mRtcEngine?.apply {
+                stopPreview()
+                leaveChannel()
+            }
+            mRtcEngine = null
         }
-        mRtcEngine = null
-    }
-```
+    ```
 
-
-
-</TabsContent>
-
-</Tabs>
-
+    </TabsContent>
+    </Tabs>
 
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 <Tabs defaultValue="java">
 <TabsList>
   <TabsTrigger value="java">Java</TabsTrigger>
@@ -863,9 +774,8 @@ A complete code sample demonstrating the basic process of real-time interaction 
 </TabsList>
 <TabsContent value="java">
 
-
 ```java
-package com.example.<projectname>;
+package com.example.<projectname>
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -886,12 +796,15 @@ import io.agora.rtc2.RtcEngine;
 import io.agora.rtc2.RtcEngineConfig;
 import io.agora.rtc2.video.VideoCanvas;
 
-
 public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_REQ_ID = 22;
+    // Fill in the app ID from Agora Console
     private String myAppId = "<Your app ID>";
+    // Fill in the channel name
     private String channelName = "<Your channel name>";
+    // Fill in the temporary token generated from Agora Console
     private String token = "<Your token>";
+
     private RtcEngine mRtcEngine;
 
     private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
@@ -901,6 +814,7 @@ public class MainActivity extends AppCompatActivity {
             super.onJoinChannelSuccess(channel, uid, elapsed);
             showToast("Joined channel " + channel);
         }
+
         // Callback when a remote user or host joins the current channel
         @Override
         public void onUserJoined(int uid, int elapsed) {
@@ -911,6 +825,7 @@ public class MainActivity extends AppCompatActivity {
                 showToast("User joined: " + uid); // Show toast for user joining
             });
         }
+
         // Callback when a remote user or host leaves the current channel
         @Override
         public void onUserOffline(int uid, int reason) {
@@ -926,7 +841,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (checkPermissions()) {
-            startVideoCalling();
+            startLiveStreaming();
         } else {
             requestPermissions();
         }
@@ -965,11 +880,11 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
-            startVideoCalling();
+            startLiveStreaming();
         }
     }
 
-    private void startVideoCalling() {
+    private void startLiveStreaming() {
         initializeAgoraVideoSDK();
         enableVideo();
         setupLocalVideo();
@@ -1001,13 +916,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void joinChannel() {
+        // Create an instance of ChannelMediaOptions and configure it
         ChannelMediaOptions options = new ChannelMediaOptions();
-        // Set the user role to BROADCASTER (host) or AUDIENCE according to your use case
+        // Set the user role to BROADCASTER or AUDIENCE according to the use-case
         options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
-        // Set the channel profile according to your use case (see the table in Join a channel)
+        // In the live broadcast use-case, set the channel profile to BROADCASTING (live broadcast use-case)
         options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
-        // Only takes effect when clientRoleType is CLIENT_ROLE_AUDIENCE
-        options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+        // If setting the client role to audience, uncomment the following line to configure the latency level
+        // options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY;
+        // Publish local media
         options.publishCameraTrack = true;
         options.publishMicrophoneTrack = true;
         mRtcEngine.joinChannel(token, channelName, 0, options);
@@ -1041,17 +958,16 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-
 </TabsContent>
 
 <TabsContent value="kotlin">
-
 
 ```kotlin
 package com.example.<projectname>
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.SurfaceView
 import android.widget.FrameLayout
@@ -1066,29 +982,25 @@ import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.video.VideoCanvas
 
-
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        private const val PERMISSION_REQ_ID = 22
-    }
-
+    private val PERMISSION_REQ_ID = 22
     private val myAppId = "<Your app ID>"
     private val channelName = "<Your channel name>"
     private val token = "<Your token>"
+
     private var mRtcEngine: RtcEngine? = null
 
     private val mRtcEventHandler = object : IRtcEngineEventHandler() {
         override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
             super.onJoinChannelSuccess(channel, uid, elapsed)
-            showToast("Joined channel $channel")
+            runOnUiThread {
+                showToast("Joined channel $channel")
+            }
         }
 
         override fun onUserJoined(uid: Int, elapsed: Int) {
-            super.onUserJoined(uid, elapsed)
             runOnUiThread {
                 setupRemoteVideo(uid)
-                showToast("User joined: $uid")
             }
         }
 
@@ -1103,9 +1015,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         if (checkPermissions()) {
-            startVideoCalling()
+            startLiveStreaming()
         } else {
             requestPermissions()
         }
@@ -1116,13 +1027,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions(): Boolean {
-        return getRequiredPermissions().all {
-            ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+        for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
         }
+        return true
     }
 
     private fun getRequiredPermissions(): Array<String> {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
                 Manifest.permission.RECORD_AUDIO,
                 Manifest.permission.CAMERA,
@@ -1144,11 +1058,11 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
-            startVideoCalling()
+            startLiveStreaming()
         }
     }
 
-    private fun startVideoCalling() {
+    private fun startLiveStreaming() {
         initializeAgoraVideoSDK()
         enableVideo()
         setupLocalVideo()
@@ -1176,20 +1090,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupLocalVideo() {
-        val container: FrameLayout = findViewById(R.id.local_video_view_container)
-        val surfaceView = SurfaceView(baseContext)
+        val container = findViewById<FrameLayout>(R.id.local_video_view_container)
+        val surfaceView = SurfaceView(this)
         container.addView(surfaceView)
         mRtcEngine?.setupLocalVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0))
     }
 
     private fun joinChannel() {
         val options = ChannelMediaOptions().apply {
-            // Set the user role to BROADCASTER (host) or AUDIENCE according to your use case
             clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
-            // Set the channel profile according to your use case (see the table in Join a channel)
             channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
-            // Only takes effect when clientRoleType is AUDIENCE
-            audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY
+            // If setting the client role to audience, uncomment the following line to configure the latency level
+            // audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY
             publishMicrophoneTrack = true
             publishCameraTrack = true
         }
@@ -1197,11 +1109,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRemoteVideo(uid: Int) {
-        val container: FrameLayout = findViewById(R.id.remote_video_view_container)
-        val surfaceView = SurfaceView(applicationContext).apply {
+        val container = findViewById<FrameLayout>(R.id.remote_video_view_container)
+        val surfaceView = SurfaceView(this).apply {
             setZOrderMediaOverlay(true)
-            container.addView(this)
         }
+        container.addView(surfaceView)
         mRtcEngine?.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
     }
 
@@ -1220,28 +1132,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun showToast(message: String) {
         runOnUiThread {
-            Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
 ```
-
 
 </TabsContent>
 </Tabs>
 </Accordion>
 </Accordions>
 
-
-:::info
+:::info[Note]
 
 For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
 
 :::
 
-
 ### Create a user interface
-
 
 To connect the sample code to your existing UI, ensure that your XML layout includes the container UI element IDs used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
 
@@ -1250,7 +1158,6 @@ Alternatively, use the following sample code to generate a basic user interface.
 ![UI design](https://assets-docs.agora.io/images/video-sdk/quickstart-ui-android-design.png)
 
 ### Sample code to create the user interface
-
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -1280,7 +1187,6 @@ Alternatively, use the following sample code to generate a basic user interface.
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -1289,20 +1195,16 @@ Take the following steps to test the sample code:
 
 1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
 
-1. In Android Studio, click ![](https://assets-docs.agora.io/images/video-sdk/icon_android_gradle_sync.png) **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+1. In Android Studio, click **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
 
-1. After synchronization is successful, click ![](https://assets-docs.agora.io/images/video-sdk/icon_android_run.png) **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
-
+1. After synchronization is successful, click **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
 
 5. Launch the App, grant recording and camera permissions. If you set the user role to host, you will see yourself in the local view.
 
-
 6. On a second Android device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
-
 
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
-
 
 ## Reference
 
@@ -1318,12 +1220,9 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Community/Agora-RTC-QuickStart/tree/main/Android/Agora-RTC-QuickStart-Android) project for a more detailed example.
 
-
 ### API reference
-
 
 - [`RtcEngineConfig`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_rtcengineconfig.html)
 
@@ -1340,7 +1239,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 - [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
 
 - [`IRtcEngineEventHandler`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#class_irtcengineeventhandler)
-
 
 ### Frequently asked questions
 
@@ -1375,7 +1273,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
   For the voice calling and video calling use cases, each user joins as a host.
   :::
 
@@ -1388,7 +1286,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -1408,12 +1305,11 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application**, select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-    :::info[Information]
+    :::info[Note]
     If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
     :::
 
@@ -1421,17 +1317,14 @@ Follow these steps to create a project in Xcode:
 3. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
-
 </TabsContent>
 <TabsContent value="existing">
-
 
 Follow these steps to add Video Calling to your Xcode project:
 
 1. Open your project in Xcode.
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
-
 
 </TabsContent>
 </Tabs>
@@ -1447,7 +1340,6 @@ Use one of the following methods to install the Video SDK.
   <TabsTrigger value="manual">Manual integration</TabsTrigger>
 </TabsList>
 <TabsContent value="spm">
-
 
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 2. In the search bar, paste the following URL:
@@ -1467,10 +1359,8 @@ Use one of the following methods to install the Video SDK.
 
     For more information, see [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-
 </TabsContent>
 <TabsContent value="cocoapods">
-
 
 1. Go to the project root directory in Terminal and run `pod init`. A text file named `Podfile` is generated in the project folder.
 2. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
@@ -1492,19 +1382,16 @@ Use one of the following methods to install the Video SDK.
 3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
 4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
 
-
 </TabsContent>
 <TabsContent value="manual">
-
 
 1. Download the latest version of the SDK from [SDKs download](/en/api-reference/sdks?platform=ios) and extract the contents.
 2. Copy the files in the `libs` folder of the SDK package to your project directory.
 3. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-    :::info[Information]
+    :::info[Note]
     Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), contact `support@agora.io`. The library provided by the SDK is a FAT image that includes simulator and device builds.
     :::
-
 
 </TabsContent>
 </Tabs>
@@ -1519,13 +1406,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-
 <Accordions>
 <Accordion title="Quick start sequence">
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -1542,7 +1427,6 @@ import AgoraRtcKit
 
 Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/rtc/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
-
 ```swift
 var agoraKit: AgoraRtcEngineKit!
 let appId = "YOUR_AGORA_APP_ID"
@@ -1552,7 +1436,6 @@ func initializeAgoraVideoSDK() {
     agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
 }
 ```
-
 
 ### Join a channel
 
@@ -1566,7 +1449,6 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -1576,7 +1458,7 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according
 | Interactive live streaming | `.liveBroadcasting` | `.broadcaster` or `.audience` | `.ultraLow` (default) |
 | Broadcast streaming | `.liveBroadcasting` | `.broadcaster` or `.audience` | `.low` |
 
-:::info
+:::info[Note]
 
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
@@ -1626,17 +1508,15 @@ options.audienceLatencyLevel = .low
 agoraKit.setClientRole(role, options: options)
 ```
 
-
 ### Subscribe to Video SDK events
 
 The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
 
-:::info
+:::info[Note]
 
 To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
 
 :::
-
 
 ```swift
 // Extension for handling Agora SDK callbacks
@@ -1658,9 +1538,7 @@ extension ViewController: AgoraRtcEngineDelegate {
 }
 ```
 
-
 To learn about the other SDK events, see [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate).
-
 
 ### Enable the video module
 
@@ -1675,7 +1553,6 @@ Follow the steps below to set up the video module.
    // Enable local video preview
    agoraKit.startPreview()
    ```
-
 
 ### Display the local video
 
@@ -1708,20 +1585,17 @@ func setupRemoteVideo(uid: UInt, view: UIView?) {
 ### Handle permissions
 To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
 
-
 | Key | Type | Value |
 |:----|:-----|:------|
 | Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
 | Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
 
-
-:::info
+:::info[Note]
 
 - If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
 - For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
 
 :::
-
 
 ### Start and close the app
 
@@ -1729,8 +1603,7 @@ When the user launches the app, it joins the channel and starts Video Calling. W
 
 1. To start Video Calling, call the following methods:
 
-
-    ```swift
+```swift
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Start the local video preview
@@ -1739,11 +1612,9 @@ When the user launches the app, it joins the channel and starts Video Calling. W
     joinChannel()
     ```
 
-
 1. To leave the channel and release SDK resources when the app is closed, call the following methods:
 
-
-    ```swift
+```swift
     // Stop local video preview
     agoraKit.stopPreview()
     // Leave the channel and release session-related resources
@@ -1752,20 +1623,16 @@ When the user launches the app, it joins the channel and starts Video Calling. W
     AgoraRtcEngineKit.destroy()
     ```
 
-
 :::caution[caution]
 After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
 :::
-
 
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
-
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```swift
 import UIKit
 import AgoraRtcKit
@@ -1892,17 +1759,13 @@ extension ViewController: AgoraRtcEngineDelegate {
 </Accordion>
 </Accordions>
 
-
 ### Create a user interface
-
 
 To connect the sample code to your existing UI, ensure that your `ViewController.swift` file includes the `UIView`s used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
 
 Alternatively, use the following sample code to generate a basic user interface. To use this interface, replace the contents of the `ViewController.swift` file with the following code:
 
-
 ### Sample code to create the user interface
-
 
 ```swift
 // ViewController.swift
@@ -1947,18 +1810,14 @@ Take the following steps to test the sample code:
 
 1. Click **Build** to run your project and wait a few seconds for the app installation to complete.
 
+1. Allow the app to access the device's microphone and camera.
 
-4. Allow the app to access the device's microphone and camera.
-
-
-5. If an untrusted developer prompt pops up on the device, click **Cancel** to close the prompt, then open **Settings > General > VPN and Device Management** on the iOS device, and choose to trust the developer in the **Developer APP**.
+1. If an untrusted developer prompt pops up on the device, click **Cancel** to close the prompt, then open **Settings > General > VPN and Device Management** on the iOS device, and choose to trust the developer in the **Developer APP**.
 
 1. On a second Video Calling device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
-
 
 ## Reference
 
@@ -2075,7 +1934,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -2090,7 +1949,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -2110,12 +1968,11 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 Follow these steps to create a project in Xcode:
 
 1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application**, select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
 
-    :::info[Information]
+    :::info[Note]
     If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
     :::
 
@@ -2123,17 +1980,14 @@ Follow these steps to create a project in Xcode:
 3. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 4. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
 
-
 </TabsContent>
 <TabsContent value="existing">
-
 
 Follow these steps to add Video Calling to your Xcode project:
 
 1. Open your project in Xcode.
 2. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
 3. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface) to create a bare-bones UI.
-
 
 </TabsContent>
 </Tabs>
@@ -2149,7 +2003,6 @@ Use one of the following methods to install the Video SDK.
   <TabsTrigger value="manual">Manual integration</TabsTrigger>
 </TabsList>
 <TabsContent value="spm">
-
 
 1. In Xcode, go to **File** > **Add Package Dependencies**.
 2. In the search bar, paste the following URL:
@@ -2169,10 +2022,8 @@ Use one of the following methods to install the Video SDK.
 
     For more information, see [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
 
-
 </TabsContent>
 <TabsContent value="cocoapods">
-
 
 1. Go to the project root directory in Terminal and run `pod init`. A text file named `Podfile` is generated in the project folder.
 2. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
@@ -2190,19 +2041,16 @@ Use one of the following methods to install the Video SDK.
 3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
 4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
 
-
 </TabsContent>
 <TabsContent value="manual">
-
 
 1. Download the latest version of the SDK from [SDKs download](/en/api-reference/sdks?platform=macos) and extract the contents.
 2. Copy the files in the `libs` folder of the SDK package to your project directory.
 3. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
 
-    :::info[Information]
+    :::info[Note]
     Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), contact `support@agora.io`. The library provided by the SDK is a FAT image that includes simulator and device builds.
     :::
-
 
 </TabsContent>
 </Tabs>
@@ -2216,13 +2064,11 @@ This section guides you through the implementation of basic real-time audio and 
 
 The following figure illustrates the essential steps:
 
-
 <Accordions>
 <Accordion title="Quick start sequence">
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-macos.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -2239,7 +2085,6 @@ import AgoraRtcKit
 
 Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/realtime-media/rtc/manage-agora-account#get-the-app-id) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-video-sdk-events).
 
-
 ```swift
 var agoraKit: AgoraRtcEngineKit!
 let appId = "YOUR_AGORA_APP_ID"
@@ -2249,7 +2094,6 @@ func initializeAgoraVideoSDK() {
     agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
 }
 ```
-
 
 ### Join a channel
 
@@ -2263,7 +2107,6 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -2273,7 +2116,7 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according
 | Interactive live streaming | `.liveBroadcasting` | `.broadcaster` or `.audience` | `.ultraLow` (default) |
 | Broadcast streaming | `.liveBroadcasting` | `.broadcaster` or `.audience` | `.low` |
 
-:::info
+:::info[Note]
 
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
@@ -2323,17 +2166,15 @@ options.audienceLatencyLevel = .low
 agoraKit.setClientRole(role, options: options)
 ```
 
-
 ### Subscribe to Video SDK events
 
 The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
 
-:::info
+:::info[Note]
 
 To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
 
 :::
-
 
 ```swift
 // Extension for handling Agora SDK callbacks
@@ -2355,9 +2196,7 @@ extension ViewController: AgoraRtcEngineDelegate {
 }
 ```
 
-
 To learn about the other SDK events, see [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate).
-
 
 ### Enable the video module
 
@@ -2372,7 +2211,6 @@ Follow the steps below to set up the video module.
    // Enable local video preview
    agoraKit.startPreview()
    ```
-
 
 ### Display the local video
 
@@ -2405,20 +2243,17 @@ func setupRemoteVideo(uid: UInt, view: UIView?) {
 ### Handle permissions
 To access the camera and microphone on Video Calling devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
 
-
 | Key | Type | Value |
 |:----|:-----|:------|
 | Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
 | Privacy - Camera Usage Description | String | For the purpose of using the camera. For example, for a call or live interactive streaming session. |
 
-
-:::info
+:::info[Note]
 
 - If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
 - For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
 
 :::
-
 
 Configure your macOS project settings by navigating to **TARGETS > Project Name > Signing & Capabilities**. Enable **App Sandbox and Hardened Runtime**, and add the necessary permissions as follows:
 
@@ -2449,15 +2284,13 @@ Configure your macOS project settings by navigating to **TARGETS > Project Name 
 
 </Slot>
 
-
 ### Start and close the app
 
 When the user launches the app, it joins the channel and starts Video Calling. When the user closes the app, it leaves the channel and ends Video Calling.
 
 1. To start Video Calling, call the following methods:
 
-
-    ```swift
+```swift
     // Initialize the Agora engine
     initializeAgoraVideoSDK()
     // Start the local video preview
@@ -2466,9 +2299,7 @@ When the user launches the app, it joins the channel and starts Video Calling. W
     joinChannel()
     ```
 
-
 1. To leave the channel and release SDK resources when the app is closed, call the following methods:
-
 
     ```swift
     // Stop local video preview
@@ -2479,20 +2310,16 @@ When the user launches the app, it joins the channel and starts Video Calling. W
     AgoraRtcEngineKit.destroy()
     ```
 
-
 :::caution[caution]
 After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine) for details.
 :::
-
 
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
 
-
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```swift
 import Cocoa
 import AgoraRtcKit
@@ -2551,7 +2378,6 @@ class ViewController: NSViewController {
         self.view.addSubview(localView)
         self.view.addSubview(remoteView)
     }
-
 
     // Configures and starts displaying the local video feed
     func setupLocalVideo() {
@@ -2625,17 +2451,13 @@ extension ViewController: AgoraRtcEngineDelegate {
 </Accordion>
 </Accordions>
 
-
 ### Create a user interface
-
 
 To connect the sample code to your existing UI, ensure that your `ViewController.swift` file includes the `UIView`s used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
 
 Alternatively, use the following sample code to generate a basic user interface. To use this interface, replace the contents of the `ViewController.swift` file with the following code:
 
-
 ### Sample code to create the user interface
-
 
 ```swift
 import Cocoa
@@ -2673,7 +2495,6 @@ class ViewController: NSViewController {
 }
 ```
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -2682,16 +2503,12 @@ Take the following steps to test the sample code:
 
 1. Click **Build** to run your project and wait a few seconds for the app installation to complete.
 
+1. Allow the app to access the device's microphone and camera.
 
-3. Allow the app to access the device's microphone and camera.
-
-
-4. On a second Video Calling device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
-
+1. On a second Video Calling device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
-
 
 ## Reference
 
@@ -2758,7 +2575,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -2773,7 +2590,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -2791,7 +2607,6 @@ To start a real-time session, implement the following steps in your app:
   <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
-
 
 To initialize a new Vite project, take the following steps:
 
@@ -2812,12 +2627,9 @@ To initialize a new Vite project, take the following steps:
 
   1. Create a user interface for your project. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones html layout.
 
-
-
 </TabsContent>
 
 <TabsContent value="existing">
-
 
 To add Video Calling to your existing project, take the following steps:
 
@@ -2827,15 +2639,12 @@ To add Video Calling to your existing project, take the following steps:
 
  1. Include the JavaScript file in your HTML file.
 
-
     ```html
     <script type="module" src="/src/main.js"></script>
     ```
 
-
 </TabsContent>
 </Tabs>
-
 
 ### Install the SDK
 
@@ -2844,7 +2653,6 @@ Add the Video SDK to your project:
 ```bash
 npm install agora-rtc-sdk-ng
 ```
-
 
 ## Implement Realtime Communication
 
@@ -2856,7 +2664,6 @@ The following figure illustrates the essential steps:
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence-web.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -2880,7 +2687,7 @@ Set the `mode`, `role`, and audience latency `level` according to your use case:
 | Interactive live streaming | `live` | `host` or `audience` | `2` (ultra-low, default) |
 | Broadcast streaming | `live` | `host` or `audience` | `1` (low) |
 
-:::info
+:::info[Note]
 
 - In `rtc` mode, every user can publish and subscribe. In `live` mode, you assign each user a role: hosts publish and subscribe, audience members only subscribe.
 - The latency `level` only applies to the audience role, set through `setClientRole`, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
@@ -2901,7 +2708,6 @@ function initializeClient() {
     setupEventListeners();
 }
 ```
-
 
 ### Join a channel
 
@@ -2926,7 +2732,6 @@ Set the channel profile, client role, and audience latency level according to yo
 | **Interactive live streaming** |  `"live"` | `"host"` or `"audience"` | `2`: Ultra low latency (default) |
 | **Broadcast streaming** | `"live"` | `"host"` or `"audience"` | `1`: Low latency |
 
-
 ```javascript
 // Join a channel and publish local media
 async function joinChannel() {
@@ -2944,7 +2749,6 @@ For the audience role in `live` mode, change the role and latency level after jo
 let clientRoleOptions = { level: 1 };
 client.setClientRole("audience", clientRoleOptions);
 ```
-
 
 ### Create local media tracks
 
@@ -2965,11 +2769,9 @@ async function createLocalMediaTracks() {
 }
 ```
 
-
 ### Publish local media tracks
 
 To make the created audio and video tracks available for other users in the channel, use the `publish` method.
-
 
 ```javascript
 async function publishLocalTracks() {
@@ -2977,13 +2779,11 @@ async function publishLocalTracks() {
 }
 ```
 
-
 See [Local audio and video tracks](#local-audio-and-video-tracks) to learn more about local tracks.
 
 ### Set up event listeners
 
 Use the `on` method to register event listeners for SDK events. The SDK triggers the `user-published` event when a user publishes an audio track in the channel. Similarly, it triggers the `user-unpublished` event when a user leaves the channel, goes offline, or unpublishes a media track.
-
 
 ```javascript
 // Handle client events
@@ -3013,16 +2813,11 @@ function setupEventListeners() {
 - If a remote user actively stops publishing, the local user receives the `user-unpublished` callback. Upon receiving this callback, the SDK automatically releases the corresponding `RemoteTrack` object, so you do not need to call `unsubscribe` again.
 - The `unsubscribe` method is asynchronous and should be used with `Promise` or `async/await`.
 
-
-:::info
-
+:::info[Note]
 To ensure that you receive all Video SDK events, set up event listeners before joining a channel.
-
 :::
 
-
 For more information about other `AgoraRTCClient` events, refer to the [API reference](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_channel_media_relay_event).
-
 
 ### Display the local video
 
@@ -3058,7 +2853,6 @@ function displayRemoteVideo(user) {
 }
 ```
 
-
 ### Leave the channel
 
 To exit the channel, close local audio and video tracks and call `leave`.
@@ -3080,15 +2874,12 @@ async function leaveChannel() {
 }
 ```
 
-
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided here for your reference. To use the sample, copy the following code to the JavaScript file in the project's `src` folder.
 
-
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```javascript
 import AgoraRTC from "agora-rtc-sdk-ng";
 
@@ -3214,16 +3005,11 @@ startBasicCall();
 </Accordion>
 </Accordions>
 
-
-
-
 ### Create a user interface
 
 Open `index.html` in the project's root folder and replace the contents with the following code to implement a basic client user interface:
 
-
 ### Sample code to create the user interface
-
 
 ```html
 <!DOCTYPE html>
@@ -3246,13 +3032,11 @@ Open `index.html` in the project's root folder and replace the contents with the
 </html>
 ```
 
-
 ## Test the sample code
 
 Take the following steps to run and test the sample code:
 
 1. In your `.js` file, update the values for `appId`, and `token` with values from Agora Console. Use the same `channel` name you used to generate the token.
-
 
 1. To start the development server, use the following command:
 
@@ -3264,28 +3048,17 @@ Take the following steps to run and test the sample code:
 
     You see the following page:
 
-
     ![](https://assets-docs.agora.io/images/video-sdk/quickstart-ui-web.png)
 
-
-
 1. On a second device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) or clone the [sample project on Github](https://github.com/AgoraIO/API-Examples-Web) to join the same channel and test the following use-cases:
-
 
     1. Click **Join** to join the channel.
     1. Enter the same app ID, channel name, and temporary token.
 
-
-
-
-
-        :::info[Information]
-
+        :::info[Note]
         - Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
         - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
-
         :::
-
 
 ## Reference
 
@@ -3305,7 +3078,6 @@ After implementing the quickstart sample, read the following documents to learn 
 
 - Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples-Web) for your reference. Download or view the [basicVideoCall](https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/basic/basicVideoCall) project for a more detailed example.
 
-
 ### API reference
 
 - [`AgoraRTC.createClient`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createclient)
@@ -3316,7 +3088,6 @@ After implementing the quickstart sample, read the following documents to learn 
 - [`createCameraVideoTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
 - [`publish`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#publish)
 - [AgoraRTCClient events](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_channel_media_relay_event)
-
 
 ### Channel modes
 
@@ -3332,7 +3103,6 @@ It is suitable for use-cases where all users in the channel need to communicate 
 #### Live broadcast use-case
 
 It is suitable for use-cases where there are few publishers but many subscribers. In this use-case, the SDK defines two user roles: audience (default) and host. Hosts can send and receive audio and video, but audience cannot send and may only receive audio and video. You can specify user roles by setting the parameters `createClient` of role, or you can call `setClientRole` to dynamically modify user roles.
-
 
 ### Video encoding formats
 
@@ -3354,20 +3124,16 @@ Support for these formats may vary across browsers and devices. The following ta
 | Safari < 12.1       | ✘   | ✔             | ✘                 |
 | AndroidChrome 58+   | ✔   | No clear information | ✔(Requires Chrome 68+) |
 
-:::info
-
+:::info[Note]
 - H.264 support on Firefox depends on the `OpenH264` video codec plug-in from Cisco Systems, Inc.
 - For Chrome, support for H.264 on Android devices varies based on device hardware compatibility with hardware codecs mandated by Chrome.
-
 :::
-
 
 ### Local audio and video tracks
 
 The SDK uses a hierarchy where all local track objects derive from the `LocalTrack` base class. This class defines the common behavior for all local tracks. Specific track types, such as `LocalAudioTrack` and `LocalVideoTrack` inherit from `LocalTrack` and extend its functionality.
 
 To publish a local track, you call the `publish` method of the client with the `LocalTrack` object as an input parameter. This approach makes publishing a track independent of how you create your local track.
-
 
 There are two main types of local tracks: `LocalAudioTrack` and `LocalVideoTrack` for publishing audio and video, respectively. Each type of `LocalTrack` comes with its own set of tools. For example, `LocalAudioTrack` lets you control the volume, while `LocalVideoTrack` has functions for customizing video.
 
@@ -3376,7 +3142,6 @@ The SDK includes more specific classes based on `LocalAudioTrack` and `LocalVide
 The following diagram shows the relationship between the `LocalTrack` classes:
 
 ![ILocalTrack](https://assets-docs.agora.io/images/video-sdk/ILocalTrack-web.png)
-
 
 ### Other integration methods
 
@@ -3436,7 +3201,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -3451,7 +3216,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -3470,25 +3234,21 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 The following steps outline the process to set up a new Visual Studio 2022 project on Windows 11 for implementing real-time audio and video interaction functions.
 
 1. In Visual Studio, select **File > New > Project** to create a new project. In the pop-up window, select **MFC application** as the project template, click **Next**, update the project name to `AgoraQuickStart`, set the project storage location, and then click **Create**.
 
 1. In the pop-up MFC application window, set the application type to **Dialog-based** , and set **Use MFC** to **Use MFC in a shared DLL**. Enter the generated class, set the generated class to **Dlg**, set the base class to **CDialog**, and click **Finish**.
 
-
 </TabsContent>
 
 <TabsContent value="existing">
-
 
 To integrate real-time audio and video interaction into your project:
 
 1. Launch Visual Studio 2022 and open your existing project by selecting **File > Open > Project/Solution**.
 
 1. Navigate to your project directory and open the `.sln` file.
-
 
 </TabsContent>
 </Tabs>
@@ -3501,9 +3261,6 @@ To integrate real-time audio and video interaction into your project:
     * A Picture Control for displaying remote video
     * An Edit Control for entering a channel name
     * Buttons to join and leave a channel
-
-
-
 
     Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
 
@@ -3530,7 +3287,6 @@ In the Solution Explorer window, right-click the project name and click **Proper
 1. Go to the **Build Events > Post-Build Events > Command Line** menu and enter `copy $(SolutionDir)sdk\x86_64\*.dll $(SolutionDir)$(Platform)\$(Configuration)`.
 1. Click **Apply** to save the configuration.
 
-
 ## Implement Realtime Communication
 
 This section guides you through the implementation of basic real-time audio and video interaction in your app.
@@ -3543,7 +3299,6 @@ The following figure illustrates the essential steps:
 </Accordion>
 </Accordions>
 
-
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
 ### Initialize the engine
@@ -3555,7 +3310,6 @@ For real-time communication, initialize an `IRtcEngine` instance and set up even
 IRtcEngine* m_rtcEngine = nullptr; // RTC engine instance
 CAgoraQuickStartRtcEngineEventHandler m_eventHandler; // IRtcEngineEventHandler
 ```
-
 
 ```cpp
 void CAgoraQuickStartDlg::initializeAgoraEngine() {
@@ -3580,7 +3334,6 @@ void CAgoraQuickStartDlg::initializeAgoraEngine() {
 }
 ```
 
-
 ### Join a channel
 
 To join a channel, call `joinChannel`[2/2] with the following parameters:
@@ -3593,7 +3346,6 @@ To join a channel, call `joinChannel`[2/2] with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -3603,7 +3355,7 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according
 | Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
 | Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
 
-:::info
+:::info[Note]
 
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
@@ -3635,17 +3387,13 @@ void CAgoraQuickStartDlg::joinChannel(const char* token, const char* channelName
 }
 ```
 
-
 ### Subscribe to Video SDK events
 
 The Video SDK provides an interface for subscribing to channel events. To use it, create a custom event handler class by inheriting from `IRtcEngineEventHandler` and override its methods to handle real-time interaction events. Add callbacks to receive notification of users joining and leaving the channel.
 
-:::info
-
+:::info[Note]
 To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
-
 :::
-
 
 ```cpp
 // Define the CAgoraQuickStartRtcEngineEventHandler class to handle callback events such as users joining and leaving the channel
@@ -3692,7 +3440,6 @@ class CAgoraQuickStartRtcEngineEventHandler
 
 Implement the callback functions.
 
-
 ```cpp
 LRESULT CAgoraQuickStartDlg::OnEIDJoinChannelSuccess(WPARAM wParam, LPARAM lParam) {
     // Join channel success callback
@@ -3731,7 +3478,6 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
 }
 ```
 
-
 ### Enable the video module
 
 Call the `enableVideo` method to enable the video module.
@@ -3740,7 +3486,6 @@ Call the `enableVideo` method to enable the video module.
 // Enable the video module
 m_rtcEngine->enableVideo();
 ```
-
 
 ### Display the local video
 
@@ -3792,17 +3537,14 @@ To display the remote user's video:
    }
    ```
 
-
 ### Leave the channel
 
 When a user ends a call, or closes the client call `leaveChannel` to exit the current channel.
-
 
 To stop the local video preview and clear the view:
 
 1. Call `stopPreview` to stop playing the local video.
 1. Call `setupLocalVideo`, passing an empty `VideoCanvas` to reset the view.
-
 
    ```cpp
    void CAgoraQuickStartDlg::LeaveChannel() {
@@ -3820,7 +3562,6 @@ To stop the local video preview and clear the view:
    }
    ```
 
-
 ### Release resources
 
 To destroy the engine instance, call `release` :
@@ -3837,16 +3578,14 @@ After you call `Dispose`, you can no longer use any SDK methods or callbacks. To
 
 :::
 
-
 ### Complete sample code
 
 A complete code sample that implements the basic process of real-time interaction is presented here for your reference. Copy the sample code into your project to quickly implement the basic functions of real-time interaction.
 
 ### AgoraQuickStartDlg.h
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```cpp
 #pragma once
 #include
@@ -3948,9 +3687,7 @@ class CAgoraQuickStartDlg : public CDialog
 };
 ```
 
-
 ### AgoraQuickStartDlg.cpp
-
 
 ```cpp
 #include "pch.h"
@@ -4072,7 +3809,6 @@ BOOL CAgoraQuickStartDlg::OnInitDialog() {
 
     return TRUE; // Unless focus is set to a control, return TRUE
 }
-
 
 void CAgoraQuickStartDlg::OnSysCommand(UINT nID, LPARAM lParam) {
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
@@ -4218,16 +3954,13 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
 </Accordion>
 </Accordions>
 
-
 ### Create a user interface
-
 
 To connect the sample code to your existing user interface, ensure that your UI includes the controls used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
 
 Alternatively, follow these steps to create a bare-bones UI for your project.
 
 ### Steps to create a minimalistic UI
-
 
 1. Switch the project to resource view in the right menu bar, and then open the `.Dialog` file.
 
@@ -4241,9 +3974,7 @@ Alternatively, follow these steps to create a bare-bones UI for your project.
 
     ![](https://assets-docs.agora.io/images/video-sdk/windows-quickstart-ui.png)
 
-
 Follow these steps to create a bare-bones UI for your project.
-
 
 ## Test the sample code
 
@@ -4253,16 +3984,12 @@ To test your app, follow these steps:
 
 1. Enter the name of the channel you want to join in the input box and click the **Join** button to join the channel.
 
-
     You see yourself in the local view.
-
 
 1. Use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
-
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
-
 
 ## Reference
 
@@ -4297,7 +4024,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 
 - [`release`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_release)
 
-
 ### Frequently asked questions
 
 * [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
@@ -4330,10 +4056,8 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
-
+  :::info[Note]
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -4345,7 +4069,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -4374,7 +4097,6 @@ To start a real-time session, implement the following steps in your app:
   <TabsTrigger value="manual">Manual Integration</TabsTrigger>
 </TabsList>
 <TabsContent value="new">
-
 
 Add the Video SDK to your project using `npm`:
 
@@ -4435,13 +4157,9 @@ Add the Video SDK to your project using `npm`:
         - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
         - `arch` (Optional): Target architecture. Defaults to your system architecture.
 
-
-    :::info
-
+    :::info[Note]
     Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
-
     :::
-
 
 1. To install the dependencies, open a terminal in your project root directory and run the following commands::
 
@@ -4457,27 +4175,22 @@ Add the Video SDK to your project using `npm`:
         npm install -D --arch=ia32 electron
         npm install
         ```
-:::info
 
-- On Windows, you must first install the 32-bit version of Electron by running `npm install -D --arch=ia32 electron`, and then run `npm install`. Otherwise, you may encounter the error: “Not a valid Win32 application.”
+        :::info[Note]
+        - On Windows, you must first install the 32-bit version of Electron by running `npm install -D --arch=ia32 electron`, and then run `npm install`. Otherwise, you may encounter the error: “Not a valid Win32 application.”
 
-- If a `node_modules` folder exists in the project root directory, delete it before running `npm install` to avoid potential errors.
-
-:::
-
+        - If a `node_modules` folder exists in the project root directory, delete it before running `npm install` to avoid potential errors.
+        :::
 
 </TabsContent>
 
 <TabsContent value="manual">
 
-
 Compile the latest SDK from the [Electron SDK repository](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/) and integrate it into your application.
-
 
 </TabsContent>
 
 </Tabs>
-
 
 ## Implement Realtime Communication
 
@@ -4490,7 +4203,6 @@ The following figure illustrates the essential steps:
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -4541,15 +4253,11 @@ app.on("window-all-closed", function () {
 });
 ```
 
-
 ### Handle permissions
-
 
 Perform this step only when the target platform is macOS. Starting with macOS v10.14, you must check and obtain permission before accessing the camera or microphone. Use Electron’s `askForMediaAccess` method to request these permissions from the user.
 
-
 Add the following code to the `main.js` file:
-
 
 ```js
 // Check and request device permissions
@@ -4574,11 +4282,9 @@ async function checkAndApplyDeviceAccessPrivilege() {
 checkAndApplyDeviceAccessPrivilege();
 ```
 
-
 ### Import dependencies
 
 Import the modules and functions required to build the app using Video SDK. Add the following code to `renderer.js`:
-
 
 ```js
 const {
@@ -4589,7 +4295,6 @@ const {
     VideoViewSetupMode
 } = require("agora-electron-sdk");
 ```
-
 
 ### Specify connection parameters
 
@@ -4626,7 +4331,6 @@ rtcEngine.initialize({
 });
 ```
 
-
 ### Enable the video module
 
 Call the `enableVideo` method to enable the video module, and then call `startPreview` to start the local video preview.
@@ -4637,7 +4341,6 @@ rtcEngine.enableVideo();
 // Start the local video preview
 rtcEngine.startPreview();
 ```
-
 
 ### Join a channel
 
@@ -4651,7 +4354,6 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevelType` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -4661,12 +4363,10 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevelType` accor
 | Interactive live streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelUltraLowLatency` (default) |
 | Broadcast streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelLowLatency` |
 
-:::info
-
+:::info[Note]
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
 - The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
-
 :::
 
 The following example shows the configuration for interactive live streaming with the broadcaster role:
@@ -4691,11 +4391,9 @@ rtcEngine.joinChannel(token, channel, uid, {
 });
 ```
 
-
 ### Register event handlers
 
 Call the `registerEventHandler` method to register the following callback events:
-
 
 - `onJoinChannelSuccess`: Triggered when the local user successfully joins a channel. After joining, call `setupLocalVideo` to configure the local video window.
 - `onUserJoined`: Triggered when a remote user joins the current channel. After the remote user joins, call `setupRemoteVideo` to configure the remote video window.
@@ -4749,13 +4447,9 @@ const EventHandles = {
 rtcEngine.registerEventHandler(EventHandles);
 ```
 
-
-:::info
-
+:::info[Note]
 To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
-
 :::
-
 
 ### Display the local video
 To display the local video:
@@ -4799,18 +4493,13 @@ rtcEngine.setupRemoteVideo(
 
 Call this method when the client receives the `onUserJoined` callback.
 
-
 ### Start and close the app
 
 When a user launches your app, start Video Calling. When a user closes the app, stop Video Calling and release resources.
 
-
 1. To start Video Calling, [initialize the engine](#initialize-the-engine), [display the local video](#display-the-local-video) and [join a channel](#join-a-channel).
 
-
 2. When Video Calling ends, leave the channel and clean up resources:
-
-
 
     ```javascript
     // Stop the preview
@@ -4818,9 +4507,6 @@ When a user launches your app, start Video Calling. When a user closes the app, 
     // Leave the channel
     rtcEngine.leaveChannel();
     ```
-
-
-
 
     When you no longer need to interact, unregister the event handler and call `release` to release engine resources.
 
@@ -4835,16 +4521,14 @@ When a user launches your app, start Video Calling. When a user closes the app, 
     After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine) for details.
     :::
 
-
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Replace the entire contents of the `main.js` and `renderer.js` with the following code samples:
 
 ### `main.js`
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```javascript
 const { app, BrowserWindow, systemPreferences } = require("electron");
 const path = require("path");
@@ -4911,9 +4595,7 @@ app.on("window-all-closed", function () {
 });
 ```
 
-
 ### `renderer.js`
-
 
 ```javascript
 const {
@@ -5026,26 +4708,20 @@ window.onload = () => {
 </Accordion>
 </Accordions>
 
-
-:::info[Information]
-
+:::info[Note]
 - In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
 - If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#set-up-the-main-process).
-
 :::
-
 
 To test the complete code, see [Test the sample code](#test-the-sample-code).
 
 ### Create a user interface
-
 
 To connect the sample code to your existing UI, ensure that your `index.html` file includes the HTML elements used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
 
 Alternatively, use the following sample to create a minimal interface. Add the following code to `index.html`:
 
 ### Sample code to create the user interface
-
 
 ```html
 <!DOCTYPE html>
@@ -5071,7 +4747,6 @@ Alternatively, use the following sample to create a minimal interface. Add the f
 </html>
 ```
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -5088,10 +4763,8 @@ Take the following steps to test the sample code:
 
 1. Invite a friend to run the demo app on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
-
     * If users on both devices join the channel as hosts, they can see and hear each other.
     * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
-
 
 ## Reference
 
@@ -5109,7 +4782,6 @@ After implementing the quickstart sample, read the following documents to learn 
 
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/example/src/renderer/examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx) project for a more detailed example.
 
-
 ### API Reference
 
 - [`createAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_createagorartcengine)
@@ -5123,7 +4795,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 - [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel2)
 
 - [`release`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_release)
-
 
 ### Frequently asked questions
 
@@ -5158,7 +4829,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -5173,7 +4844,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -5194,7 +4864,6 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 From the Terminal, run the following commands to create a new project named `agora_project`, or follow the [steps for your IDE](https://docs.flutter.dev/get-started/test-drive?tab=vscode#choose-your-ide):
 
 ```bash
@@ -5202,17 +4871,14 @@ flutter create agora_project
 cd agora_project
 ```
 
-
 </TabsContent>
 
 <TabsContent value="existing">
-
 
 To add Video Calling to your existing project:
 
 1. Open your Flutter project and navigate to the `lib` folder.
 2. Add a new file to the `lib` folder and name it `agora_logic.dart`.
-
 
 </TabsContent>
 </Tabs>
@@ -5252,7 +4918,6 @@ Install the Agora Video SDK and other dependencies.
     flutter pub get
     ```
 
-
 ## Implement Realtime Communication
 
 This section guides you through the implementation of basic real-time audio and video interaction in your app.
@@ -5264,7 +4929,6 @@ The following figure illustrates the essential steps:
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -5282,7 +4946,6 @@ import 'package:permission_handler/permission_handler.dart';
 ### Initialize the engine
 
 For real-time communication, initialize an `RtcEngine` instance. Use `RtcEngineContext` to specify the [App ID](/en/realtime-media/rtc/manage-agora-account#get-the-app-id), and other configuration parameters. In your dart file, add the following code:
-
 
 Unlike other platforms, Flutter sets the channel profile once, when you initialize the engine, instead of at join time. Set it according to your use case:
 
@@ -5305,12 +4968,10 @@ Future<void> _initializeAgoraVoiceSDK() async {
 }
 ```
 
-:::info
-
+:::info[Note]
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
 - The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
-
 :::
 
 ### Join a channel
@@ -5324,7 +4985,6 @@ To join a channel, call `joinChannel` with the following parameters:
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
-
 
 Set the `clientRoleType` and `audienceLatencyLevel` in `ChannelMediaOptions` according to your use case (see table above). The following example shows the configuration for interactive live streaming with the broadcaster role:
 
@@ -5349,13 +5009,11 @@ Future<void> _joinChannel() async {
 }
 ```
 
-
 ### Subscribe to Video SDK events
 
 The SDK provides the `RtcEngineEventHandler` for subscribing to channel events. To use it, pass an instance of `RtcEngineEventHandler` to `registerEventHandler` and implement the event methods you want to handle.
 
 Call `registerEventHandler` to bind the event handler to the SDK.
-
 
 ```dart
 // Register an event handler for Agora RTC
@@ -5381,13 +5039,11 @@ void _setupEventHandlers() {
 
 When a remote user joins the channel, the `onUserJoined` callback is triggered. Use the remote user's `uid` returned in the callback, to create an `AgoraVideoView` control for displaying the video stream from the remote user.
 
-
-:::info
+:::info[Note]
 
 To ensure that you receive all Video SDK events, register the event handler before joining a channel.
 
 :::
-
 
 ### Display the local video
 
@@ -5442,9 +5098,7 @@ Widget _remoteVideo() {
 }
 ```
 
-
 ### Handle permissions
-
 
 Request microphone and camera permissions for Video Calling.
 
@@ -5454,7 +5108,7 @@ Future<void> _requestPermissions() async {
 }
 ```
 
-:::info[Information]
+:::info[Note]
 
 If your target platform is iOS or macOS, add the microphone and camera permission declarations required for real-time interaction to [`Info.plist`](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6).
 
@@ -5463,13 +5117,9 @@ If your target platform is iOS or macOS, add the microphone and camera permissio
 | Microphone    | Privacy - Microphone Usage Description | for audio calls  |
 | Camera        | Privacy - Camera Usage Description     | for video calls  |
 
-
 :::
 
-
 ### Start and close the app
-
-
 
 To start Video Calling, request microphone and camera permissions, initialize the Agora SDK instance, set up event handlers, join a channel, and display the local video.
 
@@ -5481,7 +5131,6 @@ _setupEventHandlers();
 await _joinChannel();
   ```
 
-
 To stop Video Calling, leave the channel and release the engine instance.
 
 ```dart
@@ -5492,20 +5141,18 @@ Future<void> _cleanupAgoraEngine() async {
 }
 ```
 
-:::info[Warning]
+:::info[Note]
 
 After you call `release`, you no longer have access to the methods and callbacks of the SDK. To use Video Calling features again, create a new engine instance.
 
 :::
 
-
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following code to replace the entire contents of the `.dart` file in your project.
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```dart
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -5514,13 +5161,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(const MyApp());
 
-// Fill in the app ID obtained from Agora Console
+// Fill in the app ID obtained from Agora console
 const appId = "<-- Insert app Id -->";
 // Fill in the temporary token generated from Agora Console
 const token = "<-- Insert token -->";
 // Fill in the channel name you used to generate the token
 const channel = "<-- Insert channel name -->";
-
 
 // Main App Widget
 class MyApp extends StatelessWidget {
@@ -5529,20 +5175,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MainScreen(),
+      home: _MainScreen(),
     );
   }
 }
 
 // Video Call Screen Widget
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class _MainScreen extends StatefulWidget {
+  const _MainScreen({Key? key}) : super(key: key);
 
   @override
   _MainScreenScreenState createState() => _MainScreenScreenState();
 }
 
-class _MainScreenScreenState extends State<MainScreen> {
+class _MainScreenScreenState extends State<_MainScreen> {
   int? _remoteUid; // Stores remote user ID
   bool _localUserJoined = false; // Indicates if local user has joined the channel
   late RtcEngine _engine; // Stores Agora RTC Engine instance
@@ -5550,11 +5196,11 @@ class _MainScreenScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _startVideoCalling();
+    _startLiveStreaming();
   }
 
   // Initializes Agora SDK
-  Future<void> _startVideoCalling() async {
+  Future<void> _startLiveStreaming() async {
     await _requestPermissions();
     await _initializeAgoraVideoSDK();
     await _setupLocalVideo();
@@ -5572,7 +5218,6 @@ class _MainScreenScreenState extends State<MainScreen> {
     _engine = createAgoraRtcEngine();
     await _engine.initialize(const RtcEngineContext(
       appId: appId,
-      // Set the channel profile according to your use case (see the table in Join a channel)
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
   }
@@ -5613,10 +5258,9 @@ class _MainScreenScreenState extends State<MainScreen> {
         autoSubscribeAudio: true,
         publishCameraTrack: true,
         publishMicrophoneTrack: true,
-        // Use clientRoleBroadcaster to act as a host, or clientRoleAudience for audience
         clientRoleType: ClientRoleType.clientRoleBroadcaster,
-        // Only takes effect when clientRoleType is clientRoleAudience
-        audienceLatencyLevel: AudienceLatencyLevelType.audienceLatencyLevelLowLatency,
+        // If setting the client role to audience, uncomment the following line to configure the latency level
+        // audienceLatencyLevel: AudienceLatencyLevelType.audienceLatencyLevelUltraLowLatency,      
       ),
       uid: 0,
     );
@@ -5637,7 +5281,7 @@ class _MainScreenScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Agora Video Calling')),
+      appBar: AppBar(title: const Text('Agora| **Interactive live streaming** |')),
       body: Stack(
         children: [
           Center(child: _remoteVideo()),
@@ -5669,7 +5313,7 @@ class _MainScreenScreenState extends State<MainScreen> {
         ),
       ),
     );
-  }
+  } 
 
   // Displays remote video view
   Widget _remoteVideo() {
@@ -5693,11 +5337,9 @@ class _MainScreenScreenState extends State<MainScreen> {
 </Accordion>
 </Accordions>
 
-
-:::info[Information]
+:::info[Note]
 In the `appId` and `token` fields, enter the corresponding values you obtained from Agora Console. Use the same `channel` name you filled in when generating the temporary token.
 :::
-
 
 ### Create a user interface
 
@@ -5706,7 +5348,6 @@ To connect the sample code to your existing UI, ensure that your widget tree inc
 Alternatively, use the following sample code to generate a basic user interface:
 
 ### Sample code to create the user interface
-
 
 ```dart
 // Build UI to display local video and remote video
@@ -5735,7 +5376,6 @@ Widget build(BuildContext context) {
 }
 ```
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -5750,7 +5390,7 @@ Take the following steps to test the sample code:
     flutter run
     ```
 
-3. Launch the App, grant microphone and camera permissions. If you set the user role to host, you see yourself in the local view.
+1. Launch the App, grant microphone and camera permissions. If you set the user role to host, you see yourself in the local view.
 
 1. On a second target device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
@@ -5760,7 +5400,6 @@ Take the following steps to test the sample code:
     On an Android device, the app UI appears similar to the following:
 
     ![quickstart-ui-flutter.png](https://assets-docs.agora.io/images/video-sdk/quickstart-ui-flutter.png)
-
 
 ## Reference
 
@@ -5776,9 +5415,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples) for your reference. Download or view [join_channel_video.dart](https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example/lib/examples/basic/join_channel_video) for a more detailed example.
-
 
 ### API reference
 
@@ -5797,7 +5434,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 - [`joinChannel`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
 
 - [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_leavechannel2)
-
 
 ### Frequently asked questions
 
@@ -5831,10 +5467,8 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
-
+  :::info[Note]
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -5846,7 +5480,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -5875,22 +5508,17 @@ Download and add the Agora Video SDK to your React Native project. Choose either
 </TabsList>
 <TabsContent value="npm">
 
-
 In your project folder, execute the following command:
-
 
 ```bash
 npm i --save react-native-agora
 ```
 
-
 </TabsContent>
 
 <TabsContent value="yarn">
 
-
 In your project folder, execute the following commands:
-
 
 ```bash
 # Install yarn
@@ -5900,14 +5528,12 @@ npm install -g yarn
 yarn add react-native-agora
 ```
 
-
 </TabsContent>
 </Tabs>
 
-:::info[information]
+:::info[Note]
 React Native 0.60.0 and later support automatic linking of native modules. Manual linking is not recommended. See [Autolinking](https://github.com/react-native-community/cli/blob/master/docs/autolinking.md) for details
 :::
-
 
 ## Implement Realtime Communication
 
@@ -5921,13 +5547,11 @@ The following figure illustrates the essential steps:
 </Accordion>
 </Accordions>
 
-
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `App.tsx` file.
 
 ### Import dependencies
 
 Add the required Agora dependencies to your app.
-
 
 ```tsx
 import {
@@ -5941,10 +5565,8 @@ import {
 } from 'react-native-agora';
 ```
 
-
 ### Initialize the engine
 For real-time communication, call `createAgoraRtcEngine` to create an `RtcEngine` instance, and then `initialize` the engine using `RtcEngineContext` to specify the [App ID](/en/realtime-media/rtc/manage-agora-account#get-the-app-id).
-
 
 ```tsx
 const appId = '<-- Insert app ID -->';
@@ -5956,7 +5578,6 @@ const setupVideoSDKEngine = async () => {
     await agoraEngine.initialize({ appId: appId });
 };
 ```
-
 
 ### Join a channel
 
@@ -5970,7 +5591,6 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
-
 Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
 | Use case | Channel profile | Client role | Latency level |
@@ -5980,7 +5600,7 @@ Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according
 | Interactive live streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelUltraLowLatency` (default) |
 | Broadcast streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelLowLatency` |
 
-:::info
+:::info[Note]
 
 - Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
 - Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
@@ -6038,18 +5658,15 @@ const join = async () => {
 };
 ```
 
-
-:::info
+:::info[Note]
 
 Since the engine runs locally, reloading the app using the Metro bundler may cause the engine reference to be lost, preventing channel joining. To resolve this issue, restart the app.
 
 :::
 
-
 ### Subscribe to Video SDK events
 
 The Video SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle. Call `registerEventHandler` to register your custom event handler.
-
 
 ```tsx
 const [remoteUid, setRsemoteUid] = useState(0); // Uid of the remote user
@@ -6078,13 +5695,11 @@ const setupEventHandler = () => {
 };
 ```
 
-
-:::info
+:::info[Note]
 
 To ensure that you receive all Video SDK events, register the event handler before joining a channel.
 
 :::
-
 
 ### Enable the video module
 Call `enableVideo` to activate the video module, and use `startPreview` to enable the local video preview.
@@ -6105,7 +5720,6 @@ To display the local user's video stream, use the `RtcSurfaceView` component. Se
 </React.Fragment>
 ```
 
-
 ### Display remote video
 
 To display the remote user's video, use the `RtcSurfaceView` component. Pass the `remoteUid` of the remote user to the component and set the desired `style` for the video container.
@@ -6119,10 +5733,8 @@ To display the remote user's video, use the `RtcSurfaceView` component. Pass the
 </React.Fragment>
 ```
 
-
 ### Handle permissions
 To access the camera and microphone, ensure that the user grants the necessary permissions when the app starts.
-
 
 <Tabs defaultValue="android">
 <TabsList>
@@ -6131,9 +5743,7 @@ To access the camera and microphone, ensure that the user grants the necessary p
 </TabsList>
 <TabsContent value="android">
 
-
     On Android devices, pop up a prompt box to obtain permission to use the microphone and camera.
-
 
 ```tsx
 // Import components related to Android device permissions
@@ -6148,12 +5758,8 @@ const getPermission = async () => {
 };
 ```
 
-
-
-
 </TabsContent>
 <TabsContent value="ios">
-
 
 In Xcode, open the `info.plist` file and add the following content to the list on the right to obtain the corresponding device permissions:
 
@@ -6162,11 +5768,8 @@ In Xcode, open the `info.plist` file and add the following content to the list o
 | Privacy - Microphone Usage Description | String | The purpose of using the microphone, for example, for a call or live interactive streaming. |
 | Privacy - Camera Usage Description | String | The purpose of using the camera, for example, for a call or live interactive streaming. |
 
-
-
 </TabsContent>
 </Tabs>
-
 
 ### Leave the channel
 To exit a Video Calling channel, call `leaveChannel`.
@@ -6192,20 +5795,18 @@ const cleanupAgoraEngine = () => {
 };
 ```
 
-:::info
+:::info[Note]
 
 After calling `release,` methods and callbacks of the SDK are no longer available. To use the SDK functions again, create a new engine instance.
 
 :::
 
-
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the code into `ProjectName/App.tsx` to quickly implement the basic functionality.
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```tsx
 // Import React Hooks
 import React, { useRef, useState, useEffect } from 'react';
@@ -6234,7 +5835,6 @@ import {
     IRtcEngineEventHandler,
     VideoSourceType,
 } from 'react-native-agora';
-
 
 // Define basic information
 const appId = '<-- Insert App ID -->';
@@ -6448,15 +6048,11 @@ export default App;
 </Accordion>
 </Accordions>
 
-
 ### Create a user interface
-
 
 Design a user interface for your project based on your application use-case. A basic interface consists of two view frames to display local and remote videos. Add **Join channel** and **Leave channel** buttons to enable the user to join and leave a channel. To create such an interface, refer to the following code:
 
-
 ### Sample code to create the user interface
-
 
 ```jsx
 import React, { useState } from 'react';
@@ -6548,7 +6144,6 @@ const styles = StyleSheet.create({
 export default App;
 ```
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -6561,43 +6156,40 @@ Take the following steps to test the sample code:
     Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
     :::
 
+    <Tabs defaultValue="android">
+    <TabsList>
+    <TabsTrigger value="android">Android</TabsTrigger>
+    <TabsTrigger value="ios">iOS</TabsTrigger>
+    </TabsList>
+    <TabsContent value="android">
 
-<Tabs defaultValue="android">
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-</TabsList>
-<TabsContent value="android">
+    To run the client on an Android device:
 
-To run the client on an Android device:
+    1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
 
-1. Turn on the developer options of the Android device and connect the Android device to the computer through a USB cable.
+    1. In the project root directory, execute `npx react-native run-android`.
 
-1. In the project root directory, execute `npx react-native run-android`.
+    </TabsContent>
+    <TabsContent value="ios">
 
-</TabsContent>
-<TabsContent value="ios">
+    To run the client on an iOS device:
 
-To run the client on an iOS device:
+    1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
 
-1. Open the `ProjectName/ios/ProjectName.xcworkspace` folder using Xcode.
+    1. Connect the iOS device to your computer through a USB cable.
 
-1. Connect the iOS device to your computer through a USB cable.
+    1. In Xcode, click the **Build and Run** button.
 
-1. In Xcode, click the **Build and Run** button.
+    </TabsContent>
+    </Tabs>
 
-</TabsContent>
-</Tabs>
-
-:::info[Information]
-For detailed steps on running the app on a real Android or iOS device, refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
-:::
-
+    :::info[Note]
+    For detailed steps on running the app on a real Android or iOS device, refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
+    :::
 
 1. Launch the app and click the **Join channel** button to join a channel.
 
-4. Invite a friend to install and run the client on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel. Once your friend joins the channel, you can see and hear each other.
-
+1. Invite a friend to install and run the client on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel. Once your friend joins the channel, you can see and hear each other.
 
 ## Reference
 
@@ -6613,9 +6205,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelVideo) project for a more detailed example.
-
 
 ### API reference
 
@@ -6630,7 +6220,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 * [`joinChannel`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
 
 * [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel2)
-
 
 ### Frequently asked questions
 
@@ -6659,10 +6248,8 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
-
+  :::info[Note]
   For the voice calling and video calling use cases, each user joins as a host.
-
   :::
 
 - **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
@@ -6675,15 +6262,11 @@ To start a real-time session, implement the following steps in your app:
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
 
-
 :::info[React SDK and Web SDK relationship]
-
 The React SDK is built on Web SDK 4.x and includes its APIs. For example, `useLocalMicrophoneTrack` calls the Web SDK `createMicrophoneAudioTrack` method.
 
 Use the React SDK for basic real-time audio and video features. For advanced or complex scenarios, use the Web SDK. When a feature requires the Web SDK, the React SDK documentation links to the relevant Web SDK API pages.
-
 :::
-
 
 ## Prerequisites
 
@@ -6719,22 +6302,17 @@ Use one of the following methods to install the project dependencies:
 </TabsList>
 <TabsContent value="npm">
 
-
 Navigate to the project folder and run the following command to install the Video SDK:
-
 
 ```bash
 npm i agora-rtc-react
 ```
 
-
 </TabsContent>
 
 <TabsContent value="cdn">
 
-
 To integrate React JS dependencies and the Agora SDK using CDN, add the following code to your HTML file:
-
 
 ```html
 <!-- Include the React development libraries (must be introduced in this order) -->
@@ -6745,10 +6323,8 @@ To integrate React JS dependencies and the Agora SDK using CDN, add the followin
 <script src="https://download.agora.io/sdk/release/agora-rtc-react.2.3.0.js"></script>
 ```
 
-
 </TabsContent>
 </Tabs>
-
 
 ## Implement Realtime Communication
 
@@ -6759,7 +6335,6 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 ### Import Agora hooks and components
 
 To use Video SDK in your component, include the following imports:
-
 
 ```jsx
 import {
@@ -6776,25 +6351,50 @@ import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
 import { useState } from "react";
 ```
 
-
 ### Initialize the client
 
 Use the `createClient` method provided by the SDK to create a client object for the `<AgoraRTCProvider />` component. Wrap the `<Basics />` component with `<AgoraRTCProvider />` to enable state management and access operation-related hooks.
 
+Set the channel profile, client role, and audience latency level according to your use case.
 
-For Video Calling, set the `mode` property of `ClientConfig` to `"rtc"`.
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `"rtc"` | — | `2`: Ultra low latency (default) |
+| Video calling | `"rtc"` | — | `2`: Ultra low latency (default) |
+| Interactive live streaming | `"live"` | `"host"` or `"audience"` | `2`: Ultra low latency (default) |
+| Broadcast streaming | `"live"` | `"host"` or `"audience"` | `1`: Low latency |
+
+:::info[Note]
+- Only hosts can publish media. Audience members cannot publish until promoted to host.
+- Choose `rtc` mode for calls where every user publishes, typically fewer than 17 participants. Choose `live` mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+:::
+
+The following example shows a live-streaming audience configuration. Adjust the mode, role, and latency values according to your use case.
 
 ```jsx
-export const VideoCalling = () => {
-  const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-  return(
-      <AgoraRTCProvider client={client}>
+export const RealtimeCommunication = () => {
+  // Example: interactive live streaming as an audience member
+  const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
 
-      </AgoraRTCProvider>
+  client.setClientRole("audience", { level: 2 });
+
+  // For voice or video calling:
+  // use mode: "rtc" and do not set a client role
+
+  // For broadcast streaming:
+  // client.setClientRole("audience", { level: 1 });
+
+  // To join as a host:
+  // client.setClientRole("host");
+
+  return (
+    <AgoraRTCProvider client={client}>
+      <Basics />
+    </AgoraRTCProvider>
   );
-}
+};
 ```
-
 
 ### Join a channel
 
@@ -6819,7 +6419,6 @@ const [calling, setCalling] = useState(false);
 useJoin({appid: appId, channel: channel, token: token ? token : null}, calling);
 ```
 
-
 ### Create local audio and video tracks
 
 To create local audio and video tracks, use the `useLocalMicrophoneTrack` and `useLocalCameraTrack` hooks. Add the following to `Basics`:
@@ -6828,7 +6427,6 @@ To create local audio and video tracks, use the `useLocalMicrophoneTrack` and `u
 const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
 const { localCameraTrack } = useLocalCameraTrack(cameraOn);
 ```
-
 
 ### Publish tracks in the channel
 
@@ -6883,7 +6481,6 @@ To manage and display the list of remote users connected to a channel, use the `
     ))}
     ```
 
-
 ### Leave the channel
 
 To leave a channel, destroy the component, close the browser window, or refresh the browser tab. The `useJoin` hook automatically handles the destruction of the React component.
@@ -6892,9 +6489,8 @@ To leave a channel, destroy the component, close the browser window, or refresh 
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the complete sample, add the following to your `src/App.tsx` file.
 
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```jsx
 import {
   LocalUser,
@@ -6909,9 +6505,8 @@ import {
 import { useState } from "react";
 import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
 
-
-export const VideoCalling = () => {
-  const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+export const RealtimeCommunication = () => {
+  const client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
   return(
         <AgoraRTCProvider client={client}>
           <Basics />
@@ -6927,6 +6522,7 @@ const Basics = () => {
   const [token, setToken] = useState("<-- Insert Token -->");
   const [micOn, setMic] = useState(true);
   const [cameraOn, setCamera] = useState(true);
+  
   const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
   const { localCameraTrack } = useLocalCameraTrack(cameraOn);
 
@@ -6944,8 +6540,8 @@ const Basics = () => {
               <LocalUser
                 audioTrack={localMicrophoneTrack}
                 cameraOn={cameraOn}
+                playAudio={false} // Plays the local user's audio track. You use this to test your mic before joining a channel.
                 micOn={micOn}
-                playAudio={false} // Plays the local user's audio track. You use this to test your microphone before joining a channel.
                 videoTrack={localCameraTrack}
                 style={{width: '90%', height: 300 }}
               >
@@ -7007,12 +6603,11 @@ const Basics = () => {
     </>
   );
 };
-
-export default VideoCalling;
+  
+export default RealtimeCommunication;
 ```
 </Accordion>
 </Accordions>
-
 
 ## Test the sample code
 
@@ -7036,10 +6631,9 @@ To run the demo code in `CodeSandbox`:
 
 To experiment and learn more, modify the code directly in the editor on the left, and preview the runtime effect on the right.
 
-:::info
+:::info[Note]
 If `CodeSandbox` access is slow, try adjusting your network configuration.
 :::
-
 
 ## Reference
 
@@ -7055,7 +6649,6 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 Agora provides an open source [sample project on GitHub](https://github.com/AgoraIO-Extensions/agora-rtc-react) for your reference. The project demonstrates the use of each component and hook provided by the React SDK, as well as some advanced functions.
-
 
 ### API reference
 
@@ -7089,7 +6682,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -7104,7 +6697,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -7129,7 +6721,6 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project.
 
 1. Open Unity and click **New**.
@@ -7140,11 +6731,9 @@ Refer to the following steps or the [Official Unity documentation](https://docs.
 
 1. Click **Create project**.
 
-
 </TabsContent>
 
 <TabsContent value="existing">
-
 
 To open your existing project:
 
@@ -7154,17 +6743,16 @@ To open your existing project:
 
 1. Confirm your selection to add the project to the **Projects** window and open it in the Unity Editor.
 
-
 </TabsContent>
 </Tabs>
 
 ### Install the SDK
 
 1. Go to the [Download SDKs](/en/api-reference/sdks?platform=unity) page and download the latest version of the Unity SDK.
+
 1. In Unity Editor, navigate to **Assets** > **Import Package** > **Custom Package**, and select the unzipped SDK.
 
     All plugins are selected by default. Deselect any plugins you don't need, then click **Import**.
-
 
 ## Implement Realtime Communication
 
@@ -7178,13 +6766,11 @@ The following figure illustrates the essential steps:
 </Accordion>
 </Accordions>
 
-
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
 Before proceeding, create and set up a script to implement Video Calling and bind the script to the canvas.
 
 ### Steps to set up a script
-
 
 1. Create a new script and import the UI library.
 
@@ -7202,7 +6788,6 @@ Before proceeding, create and set up a script to implement Video Calling and bin
 
     In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
 
-
 ### Import Agora classes
 
 Import the `Agora.Rtc` namespace, which contains various classes and interfaces required to implement real-time audio and video functions.
@@ -7215,7 +6800,6 @@ using Agora.Rtc;
 
 For real-time communication, create an `IRtcEngine` instance using `RtcEngine.CreateAgoraRtcEngine()`. Then, configure it using `Initialize(context)` with an `RtcEngineContext`, specifying the application context, App ID, and channel profile. In your `JoinChannel.cs` file, add the following code:
 
-
 ```c#
 internal IRtcEngine RtcEngine;
 // Fill in your app ID
@@ -7227,13 +6811,12 @@ private void SetupVideoSDKEngine()
     RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
     RtcEngineContext context = new RtcEngineContext();
     context.appId = _appID;
-    context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+    context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
     context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
     // Initialize the instance
     RtcEngine.Initialize(context);
 }
 ```
-
 
 ### Join a channel
 
@@ -7247,8 +6830,24 @@ To join a channel, call `JoinChannel` with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
-For Video Calling, set the `channelProfile` to `CHANNEL_PROFILE_COMMUNICATION` and the `clientRoleType` to `CLIENT_ROLE_BROADCASTER`.
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Video calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
+
+:::info[Note]
+
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+
+:::
+
+The following example shows the configuration for interactive live streaming with the broadcaster role:
 
 ```c#
 // Fill in your channel name
@@ -7256,32 +6855,29 @@ private string _channelName = "";
 // Fill in a temporary token
 private string _token = "";
 
-public void Join()
-{
+public void Join() {
     // Set channel media options
     ChannelMediaOptions options = new ChannelMediaOptions();
-    // Publish the audio stream collected from the microphone
-    options.publishMicrophoneTrack.SetValue(true);
-    // Publish the video stream collected from the camera
-    options.publishCameraTrack.SetValue(true);
+    // Start video rendering
+    LocalView.SetEnable(true);
     // Automatically subscribe to all audio streams
     options.autoSubscribeAudio.SetValue(true);
     // Automatically subscribe to all video streams
     options.autoSubscribeVideo.SetValue(true);
-    // Set the channel profile to live broadcasting
-    options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION);
-    // Set the user role to broadcaster
+    // Set the channel profile to live broadcast
+    options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+    // Set the user role as host
     options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
-    // Join the channel
+    // If setting the client role to audience, uncomment the following line to configure the latency level
+    // options.audienceLatencyLevel.SetValue(AUDIENCE_LATENCY_LEVEL_TYPE.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY);
+    // Join a channel
     RtcEngine.JoinChannel(_token, _channelName, 0, options);
 }
 ```
 
-
 ### Subscribe to Video SDK events
 
 Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case.
-
 
 ```c#
 // Implement your own callback class by inheriting from the IRtcEngineEventHandler interface
@@ -7317,7 +6913,6 @@ internal class UserEventHandler : IRtcEngineEventHandler
 }
 ```
 
-
 Create an instance of the user callback class and call `InitEventHandler` to register the event handler.
 
 ```csharp
@@ -7328,12 +6923,9 @@ private void InitEventHandler()
 }
 ```
 
-:::info
-
+:::info[Note]
 To ensure that you receive all Video SDK events, register the event handler before joining a channel.
-
 :::
-
 
 ### Display the local video
 
@@ -7355,7 +6947,6 @@ private void PreviewSelf()
 }
 ```
 
-
 ###  Display remote video
 When a remote user joins the channel, the `OnUserJoined` callback is triggered. Call  `SetForUser` to set the remote video display and call `SetEnable(true)` to render the video.
 
@@ -7371,9 +6962,7 @@ public override void OnUserJoined(RtcConnection connection, uint uid, int elapse
 }
 ```
 
-
 ### Leave the channel
-
 
 Call `LeaveChannel` to leave the current channel.
 
@@ -7391,7 +6980,6 @@ Call `LeaveChannel` to leave the current channel.
     }
     ```
 
-
 ### Handle permissions
 
 To access the media devices, add device permissions to your project according to your target platform.
@@ -7402,7 +6990,6 @@ To access the media devices, add device permissions to your project according to
   <TabsTrigger value="apple">iOS/macOS</TabsTrigger>
 </TabsList>
 <TabsContent value="android">
-
 
 Since version 2018.3, Unity does not actively obtain device permissions from the user. Call `CheckPermission` to check for and obtain the necessary permissions.
 
@@ -7416,14 +7003,11 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 
 2. Create a list of permissions to be obtained.
 
-
     ```c#
     #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
     private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
     #endif
     ```
-
-
 
 3. Check if the required permissions have been granted. If not, prompt the user to grant the necessary permissions.
 
@@ -7439,17 +7023,13 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
     }
     ```
 
-
 </TabsContent>
 <TabsContent value="apple">
 
-
 For iOS and macOS platforms, the Video SDK includes a post-build script named `BL_BuildPostProcess.cs`. When you build and export your Unity project as an iOS project, this script automatically inserts camera and microphone permission entries into the `Info.plist` file, eliminating the need for manual updates.
-
 
 </TabsContent>
 </Tabs>
-
 
 ### Start and stop your client
 
@@ -7463,7 +7043,6 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
 
 1. To start Video Calling, initialize the engine and set up the event handler.
 
-
     ```c#
     void Start()
     {
@@ -7472,9 +7051,6 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
         PreviewSelf();
     }
     ```
-
-
-
 
 1. To clean up all session-related resources when a user exits the client, call the `Dispose` method of the `IRtcEngine`.
 
@@ -7489,23 +7065,20 @@ For iOS and macOS platforms, the Video SDK includes a post-build script named `B
     }
     ```
 
-    :::info
+    :::info[Note]
 
     After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Video Calling features again, create a new engine instance.
 
     :::
 
-
 ### Complete sample code
 
-A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To quickly implement the basic functions of real-time Video Calling, copy the following sample code into your project:
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To quickly implement the basic functions of Realtime Communication, copy the following sample code into your project:
 
-
-### Sample code to implement Video Calling in your client
-
+### Sample code to implement Realtime Communication in your client
 
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
 ```csharp
 using System.Collections;
 using System.Collections.Generic;
@@ -7689,19 +7262,15 @@ public class JoinChannelVideo : MonoBehaviour
 </Accordion>
 </Accordions>
 
-
 ### Create a user interface
 
 Follow these steps to set up a basic UI for your project or to integrate essential UI elements into your existing interface. A basic UI consists of the following components:
-
 
 * Local view window
 * Remote view window
 * Buttons to join and leave the channel
 
-
 ### Create a basic UI
-
 
 1. Create buttons to join and leave channel
 
@@ -7718,7 +7287,6 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
         * **Pos X**：`329`
         * **Pos Y**: `-172`
-
 
 2. Create local and remote view windows
 
@@ -7744,7 +7312,6 @@ At this point your UI looks similar to the following:
 
 ![](https://assets-docs.agora.io/images/video-sdk/video-call-ui-unity.png)
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -7759,9 +7326,7 @@ Take the following steps to test the sample code:
 
 1. Invite a friend to run the demo client on a second device. Use the same `_appID_`, `_token`, and `_channelName` to join. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
-
     After your friend joins successfully, you can hear and see each other.
-
 
 ## Reference
 
@@ -7777,9 +7342,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelVideo) project for a more detailed example.
-
 
 ### API reference
 
@@ -7796,7 +7359,6 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 - [`LeaveChannel`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
 
 - [`DisableVideo`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo)
-
 
 ### Frequently asked questions
 
@@ -7829,7 +7391,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -7844,7 +7406,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -7871,11 +7432,9 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
 
 1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
-
 
 2. Configure your project as follows:
 
@@ -7890,11 +7449,9 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     ![create-project-unreal](https://assets-docs.agora.io/images/video-sdk/create-project-unreal.jpg)
 
-
 </TabsContent>
 
 <TabsContent value="existing">
-
 
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
 
@@ -7953,7 +7510,6 @@ Take the following steps to add the Video Calling Video SDK to your project:
 1. In your project root folder, create a `Plugins` folder.
 1. Copy `AgoraPlugin` from the Unreal SDK folder to `Plugins`.
 
-
 ## Implement Realtime Communication
 
 This section guides you through the implementation of basic real-time audio and video interaction in your app.
@@ -7965,7 +7521,6 @@ The following figure illustrates the essential steps:
 ![Video Calling quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
 </Accordion>
 </Accordions>
-
 
 This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
 
@@ -8026,6 +7581,23 @@ To join a channel, call `joinChannel` with the following parameters:
 
 - **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
 
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
+
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Video calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
+
+:::info[Note]
+
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+
+:::
+
 Add the `Join` method declaration and implementation to the following files:
 
 * `AgoraWidget.h`
@@ -8044,11 +7616,7 @@ Add the `Join` method declaration and implementation to the following files:
 
 * `AgoraWidget.cpp`
 
-
-
-
-
-    For Video Calling, set the `channelProfile` to `CHANNEL_PROFILE_COMMUNICATION` and the user role to `CLIENT_ROLE_BROADCASTER`.
+    The following example shows the configuration for interactive live streaming with the broadcaster role:
 
     ```cpp
     void UAgoraWidget::Join()
@@ -8066,15 +7634,15 @@ Add the `Join` method declaration and implementation to the following files:
         // Publish audio captured by the microphone
         options.publishMicrophoneTrack = true;
         // Set the channel profile to live broadcasting
-        options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+        options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
         // Set the user role as host or audience
         options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+        // If setting the client role to audience, uncomment the following line to configure the latency level
+        // options.audienceLatencyLevel = agora::rtc::AUDIENCE_LATENCY_LEVEL_TYPE::AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY;
         // Join a channel
         RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName), 0, options);
     }
     ```
-
-
 
 ### Subscribe to Video SDK events
 
@@ -8097,8 +7665,6 @@ The Video SDK provides an interface for subscribing to channel events. To use it
     ```
 
 * `AgoraWidget.cpp`
-
-
 
     ```cpp
     // Implement the callback triggered after a remote user joins the channel
@@ -8160,8 +7726,6 @@ The Video SDK provides an interface for subscribing to channel events. To use it
     }
     ```
 
-
-
  ### Handle permissions
 
 To access the media devices, follow the steps for your target platform:
@@ -8173,11 +7737,9 @@ To access the media devices, follow the steps for your target platform:
 </TabsList>
 <TabsContent value="android">
 
-
 Add the `AndroidPermission` library to obtain device and network permissions:
 
 1. Add the following code to your header file:
-
 
    ```cpp
    #if PLATFORM_ANDROID
@@ -8185,9 +7747,7 @@ Add the `AndroidPermission` library to obtain device and network permissions:
       #endif
    ```
 
-
 1. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
-
 
    ```cpp
    if (Target.Platform == UnrealTargetPlatform.Android)
@@ -8196,11 +7756,9 @@ Add the `AndroidPermission` library to obtain device and network permissions:
       }
    ```
 
-
 1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
 
     * `AgoraWidget.h`
-
 
 ```cpp
 private:
@@ -8208,10 +7766,7 @@ private:
         void CheckAndroidPermission();
 ```
 
-
     * `AgoraWidget.cpp`
-
-
 
 ```cpp
 void UAgoraWidget::CheckAndroidPermission()
@@ -8241,20 +7796,13 @@ void UAgoraWidget::CheckAndroidPermission()
       }
 ```
 
-
-
-
-
-
 </TabsContent>
 
 <TabsContent value="apple">
 
-
 1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](/en/realtime-media/rtc/)
 
 1. In `Project/Source/Project.Target.cs`, add the following code:
-
 
    ```cpp
    public class unrealstartTarget : TargetRules
@@ -8273,10 +7821,8 @@ void UAgoraWidget::CheckAndroidPermission()
       }
    ```
 
-
 </TabsContent>
 </Tabs>
-
 
 ### Display the local video
 
@@ -8310,7 +7856,6 @@ connection.channelId = TCHAR_TO_ANSI(*_channelName);
 
 ((agora::rtc::IRtcEngineEx*)RtcEngineProxy)->setupRemoteVideoEx(videoCanvas, connection);
 ```
-
 
 ### Leave a channel
 
@@ -8364,11 +7909,11 @@ When the local user leaves the channel, or exits the client, release memory by c
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy each of the following code blocks and paste it in the corresponding file.
 
-### `Project/Source/Project/AgoraWidget.h`
-
-
 <Accordions>
-<Accordion title="Complete sample code for real-time Video Calling">
+<Accordion title="Complete sample code for Realtime Communication">
+
+`Project/Source/Project/AgoraWidget.h`
+
 ```cpp
 #pragma once
 
@@ -8437,11 +7982,7 @@ protected:
 };
 ```
 
-
-
-
-### `Project/Source/Project/AgoraWidget.cpp`
-
+`Project/Source/Project/AgoraWidget.cpp`
 
 ```cpp
 #include "AgoraWidget.h"
@@ -8481,7 +8022,7 @@ void UAgoraWidget::Join()
     options.autoSubscribeVideo = true;
     options.publishCameraTrack = true;
     options.publishMicrophoneTrack = true;
-    options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+    options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_LIVE_BROADCASTING;
     options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
     RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(_token), TCHAR_TO_ANSI(_channelName), 0, options);
 }
@@ -8554,11 +8095,7 @@ void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
 }
 ```
 
-
-
-
-### `Project/Source/Project/Project.Build.cs`
-
+`Project/Source/Project/Project.Build.cs`
 
 ```csharp
 using UnrealBuildTool;
@@ -8597,8 +8134,6 @@ public class UnrealLearning : ModuleRules
 ```
 </Accordion>
 </Accordions>
-
-
 
 ### Create a user interface
 
@@ -8679,9 +8214,7 @@ Take the following steps to test the sample code:
 
 1. Invite a friend to run the demo client on a second device. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel.
 
-
     After your friend joins successfully, you can hear and see each other.
-
 
 ## Reference
 
@@ -8697,9 +8230,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Sample project
 
-
 Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Basic/JoinChannelVideo) project for a more detailed example.
-
 
 To learn about Agora Unreal Blueprint development, refer to the [Unreal (Blueprint) Quickstart](/en/realtime-media/rtc/get-started-sdk?platform=blueprint).
 
@@ -8716,7 +8247,6 @@ To learn about Agora Unreal Blueprint development, refer to the [Unreal (Bluepri
 - [`LeaveChannel`](https://api-ref.agora.io/en/video-sdk/unreal/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
 
 - [`DisableVideo`](https://api-ref.agora.io/en/video-sdk/unreal/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo)
-
 
 ### Frequently asked questions
 
@@ -8750,7 +8280,7 @@ To start a real-time session, implement the following steps in your app:
 
   - **Join as audience**: Audience members can only subscribe to streams published by hosts.
 
-  :::info
+  :::info[Note]
 
   For the voice calling and video calling use cases, each user joins as a host.
 
@@ -8765,7 +8295,6 @@ To start a real-time session, implement the following steps in your app:
   - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
 
 ![Video calling workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
-
 
 ## Prerequisites
 
@@ -8792,7 +8321,6 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-
 Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
 
 1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
@@ -8808,23 +8336,18 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     Click **Create**.
 
-
     ![create-project-unreal](https://assets-docs.agora.io/images/video-sdk/create-project-unreal.jpg)
-
 
 </TabsContent>
 
 <TabsContent value="existing">
 
-
 1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
 
 1. Select the project and click **Open**.
 
-
 </TabsContent>
 </Tabs>
-
 
 ### Install the SDK
 
@@ -8833,7 +8356,6 @@ Take the following steps to add the Video Calling Video SDK to your project:
 1. Download the latest version of Agora Unreal Video SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
 1. In your project root folder, create a `Plugins` folder.
 1. Copy `AgoraPlugin` from the Unreal SDK folder to `Plugins`.
-
 
 ## Implement Realtime Communication
 
@@ -8847,15 +8369,12 @@ This section guides you through the implementation of basic real-time audio and 
 
     ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-1.png)
 
-
 ### Implement basic processes
 In the **My Blueprint** panel, double-click **Graphs > EventGraph** to open the event graph. You see two event nodes: **Event BeginPlay** (game starts) and **Event End Play** (game ends). Create event nodes with the corresponding functions and variables, and connect them as shown in the following figure to implement the Video Calling logic:
 
 ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-2.png)
 
-
 The following table lists the main nodes:
-
 
 | # | Node | Type | Description |
 |:--|:-----|:-----|:------------|
@@ -8891,7 +8410,7 @@ Set up the user interface:
 
 (Optional) Set whether to display the mouse cursor. Check to display it.
 
-:::info[Information]
+:::info[Note]
 - This node is available on Windows and macOS only.
 - If the node is not retrieved at creation time, uncheck **Context Sensitive**. ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-3.png)
 :::
@@ -8908,8 +8427,7 @@ If your target platform is Android, create this node to check system permissions
 
 </Slot>
 
-
-\* Native nodes are nodes that come with the blueprint and can be added and called directly.<br />
+\* Native nodes are nodes that come with the blueprint and can be added and called directly.  
 \** Custom nodes are not included in the blueprint. You create a custom function before you can add the corresponding node.
 
 ### Add channel-related variables
@@ -8929,15 +8447,13 @@ Add variables to create an engine instance and join a channel.
 
     ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
-    :::info[Information]
+    :::info[Note]
     If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
     :::
-
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
 
     ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-6.png)
-
 
   1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
 
@@ -8982,13 +8498,25 @@ Add variables to create an engine instance and join a channel.
 
             ![](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-7.png)
 
-    1. `IRtcEngine` initialization
+1. `IRtcEngine` initialization
 
         1. Call **Initialize** to initialize the RTC engine.
+        2. Connect to the **RtcEngineContext** configuration `IRtcEngine` instance.
 
-        2. Connect to the **RtcEngineContext** configuration `IRtcEngine` instance and select **Channel Profile** as `CHANNEL_PROFILE_COMMUNICATION`.
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
 
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Video calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
 
+:::info[Note]
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+:::
 
 ### Bind UI events
 
@@ -9008,9 +8536,6 @@ To bind UI events:
         - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE`, to set the user role to host or audience.
         - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
-
-
-
 1. Create and implement the `OnLeaveChannelClicked` event callback. When the event is triggered, call **Leave Channel** to leave the channel.
 
     ![Leave Channel Clicked](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-9.png)
@@ -9019,12 +8544,9 @@ To bind UI events:
 
     ![Bind Join Leave Callbacks](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-10.png)
 
-
-
-:::info[Information]
+:::info[Note]
 You can also bind UI events in Unreal Motion Graphics (UMG). This document only shows binding using the **Bind UIEvent Function**.
 :::
-
 
 ### Set up local and remote views
 
@@ -9044,7 +8566,6 @@ You can also bind UI events in Unreal Motion Graphics (UMG). This document only 
     1. Release the local view.
     1. Release the remote view.
 
-
 ### Implement callback function
 
 Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback functions as follows:
@@ -9053,23 +8574,17 @@ Configure the previously created `onJoinChannelSuccess`, `onLeaveChannel`, `onUs
 
     ![Join Channel Success Callback](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-13.png)
 
-
 2. After the local user leaves the channel, the `onLeaveChannel` callback is triggered which releases the local view:
 
     ![Leave Channel Callback](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-14.png)
 
-
-
-3. When a remote user joins the channel, the `onUserJoined` callback is triggeredd to create a remote view. `uid` is the uid sent from the remote end, and the video source type is `VIDEO_SOURCE_REMOTE` (remote video obtained from the network):
+3. When a remote user joins the channel, the `onUserJoined` callback is triggered to create a remote view. `uid` is the uid sent from the remote end, and the video source type is `VIDEO_SOURCE_REMOTE` (remote video obtained from the network):
 
     ![Remote User Join Channel Callback](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-15.png)
-
 
 4. When a remote user leaves the channel, the `onUserOffline` callback is triggered to release the remote view:
 
     ![Remote User Leave Channel Callback](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-16.png)
-
-
 
 ### Leave the channel and release resources
 
@@ -9083,7 +8598,6 @@ Refer to the figure below to implement the `UnInitRtcEngine` function:
 
 ![Leave Channel and Release Resources](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-17.png)
 
-
 ## Test the sample code
 
 Take the following steps to test the sample code:
@@ -9093,7 +8607,6 @@ Take the following steps to test the sample code:
 1. In the Unreal Editor, click Play to run your project. Click **JoinChannel** to join a channel.
 
 1. Invite a friend to run the demo client on a second device. Use the same app ID, channel name, and token to join. After your friend joins successfully, you can hear and see each other.
-
 
 ## Reference
 
