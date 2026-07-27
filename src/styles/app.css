@@ -508,13 +508,19 @@
     pointer-events: none;
   }
 
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child::before {
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    )::before {
     content: none;
   }
 
@@ -1586,7 +1592,7 @@
   [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
   .docs-body
-  > h2:first-child:not(:where(.not-prose, .not-prose *)) {
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
   margin-top: 0.75rem;
   padding-top: 0;
   border-top: 0;
@@ -1596,7 +1602,9 @@
   [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
   .docs-body
-  > h2:first-child:not(:where(.not-prose, .not-prose *))::before {
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
   content: none;
 }
 
@@ -1605,7 +1613,7 @@
   + [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
   .docs-body
-  > h2:first-child:not(:where(.not-prose, .not-prose *)) {
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
   margin-top: 1.25rem;
   padding-top: 0;
   border-top: 0;
@@ -1616,6 +1624,8 @@
   + [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
   .docs-body
-  > h2:first-child:not(:where(.not-prose, .not-prose *))::before {
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
   content: none;
 }
