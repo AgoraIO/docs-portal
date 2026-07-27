@@ -5099,22 +5099,22 @@ To start a Broadcast Streaming session, implement the following steps in your ap
 - Node 16 or later
 For your target platform, prepare the following:
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 - A machine running macOS, Windows, or Linux
 - [Java Development Kit (JDK) 11](https://openjdk.org/projects/jdk/11/) or later
 - Latest version of Android Studio
 - A physical or virtual mobile device running Android 5.0 or later
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - A machine running macOS
 - Xcode 10 or later
@@ -5122,9 +5122,9 @@ For your target platform, prepare the following:
 - A physical or virtual mobile device running iOS 9.0 or later.
   If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 - A camera and a microphone
 
@@ -5340,13 +5340,13 @@ To display the remote user's video, use the `RtcSurfaceView` component. Pass the
 ### Handle permissions
 To access the camera and microphone, ensure that the user grants the necessary permissions when the app starts.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 On Android devices, pop up a prompt box to obtain permission to use the camera and microphone.
 
@@ -5364,9 +5364,9 @@ if (Platform.OS === 'android') {
 };
 ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 In Xcode, open the `info.plist` file and add the following content to the list on the right to obtain the corresponding device permissions:
 
@@ -5375,9 +5375,9 @@ In Xcode, open the `info.plist` file and add the following content to the list o
 | Privacy - Microphone Usage Description | String | The purpose of using the microphone, for example, for a call or live interactive streaming. |
 | Privacy - Camera Usage Description | String | The purpose of using the camera, for example, for a call or live interactive streaming. |
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ### Leave the channel
 To exit a Broadcast Streaming channel, call `leaveChannel`.
@@ -5761,13 +5761,14 @@ Take the following steps to test the sample code:
 
     Some simulators may not support all the functions of this project. Best practice is to run the project on a physical device.
     :::
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
 
-<CodeBlockTab value="android">
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
 
 To run the app on an Android device:
 
@@ -5775,9 +5776,9 @@ To run the app on an Android device:
 
 1. In the project root directory, execute `npx react-native run-android`.
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 To run on the app on an iOS device:
 
@@ -5787,9 +5788,9 @@ To run on the app on an iOS device:
 
 1. In Xcode, click the **Build and Run** button.
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 :::note
 For detailed steps on running the app on a real Android or iOS device, please refer to [Running On Device](https://reactnative.dev/docs/running-on-device).
