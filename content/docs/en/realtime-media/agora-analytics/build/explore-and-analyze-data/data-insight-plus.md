@@ -26,7 +26,7 @@ To set up Agora Analytics for your account, take the following steps:
 
 2. **Open Data Insights Plus**
 
-    1. log in to [Agora Console](https://console.agora.io/v2).
+    1. log in to [Agora Console](https://console.agora.io/).
     2. In the left menu, click **Agora Analytics**
     3. Select **Data Insights Plus**
 

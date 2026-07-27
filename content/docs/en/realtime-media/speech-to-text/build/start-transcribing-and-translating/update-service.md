@@ -15,7 +15,7 @@ The `update` command scope includes the following:
 
 To follow this procedure, you must:
 
-- Have a valid [Agora Account](https://console.agora.io/v2).
+- Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
 server. For details, see [Agora account management](/en/realtime-media/voice/manage-agora-account).

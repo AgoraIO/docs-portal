@@ -21,7 +21,7 @@ Implement authentication on the server to mitigate the risk of data leakage.
 
 To generate a set of Customer ID and Customer Secret, do the following:
 
-1. In [Agora Console](https://console.agora.io/v2), click **Developer Toolkit** > **RESTful API**.
+1. In [Agora Console](https://console.agora.io/), click **Developer Toolkit** > **RESTful API**.
 
     ![RESTful API](https://assets-docs.agora.io/images/common/console-restful-api.png)
 
