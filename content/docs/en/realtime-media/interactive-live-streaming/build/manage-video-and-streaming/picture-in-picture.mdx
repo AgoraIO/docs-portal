@@ -366,13 +366,13 @@ Before implementing Picture-in-Picture, make sure you have the following:
 
 Before using PiP, complete the required configuration for each target platform.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 Declare that the current Activity supports PiP mode in your Android project:
 
@@ -401,9 +401,9 @@ The way PiP is triggered differs by Android version:
 When `MainActivity` extends `AgoraPIPActivity`, the SDK handles the relevant system callback adaptation.
 :::
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 Add the background playback capability to your app in Xcode:
 
@@ -418,8 +418,8 @@ Add the background playback capability to your app in Xcode:
 
     :::
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ## Implement Picture-in-Picture
 
@@ -456,13 +456,13 @@ const isPipAutoEnterSupported = pip.pipIsAutoEnterSupported();
  
 Call `pipSetup` to configure PiP options. Use [`AgoraPipOptions`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_agorapipoptions.html) to set platform-specific options for Android and iOS.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 Pass the measured bounds of the video view to `sourceRectHint` to improve the transition animation when entering PiP.
 
@@ -496,9 +496,9 @@ pip.pipSetup(options);
 `useExternalStateMonitor` defaults to `true`. The example above keeps this value explicit for clarity. Only set it to `false` if you have already extended `AgoraPIPActivity` and explicitly do not want polling-based state synchronization.
 :::
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 On iOS, you can configure the PiP window size, video stream layout, and system control style:
 
@@ -559,8 +559,8 @@ For standard React Native integrations, keep both `contentView` and `sourceConte
 
 :::
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ### Listen for PiP state changes
  
@@ -591,13 +591,13 @@ PiP-related calls operate at two lifecycle levels:
 
 After completing configuration, call `pipStart` to start PiP. Call `release` only when destroying the page or when the controller is no longer needed, to avoid redundant session-level calls during teardown.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 ```typescript
 // Session level: start PiP
@@ -614,9 +614,9 @@ pip.release();
 On Android, `pipStop` is not the standard path for exiting PiP and restoring the foreground page. If you no longer need the current PiP session, call `pipDispose` to release resources. Restoring full-screen view is typically handled by the user through the system PiP window controls.
 :::
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 Call `pipStop` to stop PiP and restore the app interface, then call `pipDispose` to release the session resources. Call `release` only when destroying the page or when the controller is no longer needed.
 
@@ -634,20 +634,20 @@ pip.pipDispose();
 pip.release();
 ```
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ### Development considerations
 
 This section covers platform-specific behavior and best practices to keep in mind when integrating PiP.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 - After entering PiP on Android, you typically need to update the app UI to match the PiP state. 
 - Android 12 and later support automatic PiP entry when the app moves to the background. On earlier versions, you must trigger PiP entry explicitly, for example by calling `pipStart` in response to a user action. Extending `AgoraPIPActivity` simplifies this adaptation.
@@ -655,9 +655,9 @@ This section covers platform-specific behavior and best practices to keep in min
 - On Android, `pipStop` moves the task to the background rather than exiting PiP and restoring the foreground page. Full-screen restoration is typically handled by the user through the system PiP window controls.
 - Distinguish between session-level and controller-level release: call `pipDispose` to end the current PiP session, and call `release` only when the page is destroyed or the controller is no longer needed.
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - PiP must be triggered by explicit user action only, such as tapping a button or swiping up to the home screen. Triggering PiP programmatically without a user action may result in App Store review rejection.
 - The PiP window is managed by the system and the SDK. Your app does not need to render a custom floating window.
@@ -665,8 +665,8 @@ This section covers platform-specific behavior and best practices to keep in min
 - [`AgoraPipOptions.controlStyle`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_agorapipoptions.html) accepts values `0` to `3`. Use `2` for video call scenarios, which hides the play/pause button and progress bar. Style `3` hides all controls, including the close and restore buttons.
 - Distinguish between session-level and controller-level release: call `pipStop` and `pipDispose` to end the current PiP session, and call `release` only when the page is destroyed or the controller is no longer needed.
 
-</CodeBlockTab>
-</CodeBlockTabs>
+</TabsContent>
+</Tabs>
 
 ## Reference
 
