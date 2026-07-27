@@ -1,6 +1,6 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import {
@@ -342,7 +342,7 @@ export async function loadDocsPagePayload(
 
   const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
-  const openApiPage = isOpenApiPageWithClientProps(page) ? page : null;
+  const openApiPage = isOpenApiPageWithProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
     isOpenApiPage && supportedLocale
@@ -425,7 +425,7 @@ export async function loadDocsPagePayload(
   const body = isOpenApiPage
     ? {
         kind: 'openapi' as const,
-        pageProps: await openApiPage.data.getClientAPIPageProps(),
+        pageProps: await openApiPage.data.getOpenAPIPageProps(),
       }
     : mdxBody;
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
@@ -1166,15 +1166,15 @@ function hasPageText(page: PageWithSource): page is PageWithSource & {
   return 'getText' in page.data && typeof page.data.getText === 'function';
 }
 
-function isOpenApiPageWithClientProps(
+function isOpenApiPageWithProps(
   page: PageWithSource,
 ): page is PageWithSource & {
-  data: { getClientAPIPageProps: () => Promise<ClientApiPageProps> };
+  data: { getOpenAPIPageProps: () => Promise<OpenAPIPageProps> };
 } {
   return (
     page.type === 'openapi' &&
-    'getClientAPIPageProps' in page.data &&
-    typeof page.data.getClientAPIPageProps === 'function'
+    'getOpenAPIPageProps' in page.data &&
+    typeof page.data.getOpenAPIPageProps === 'function'
   );
 }
 

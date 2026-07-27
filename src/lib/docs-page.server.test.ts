@@ -1126,7 +1126,7 @@ function createOpenApiPage(): PageWithSource {
         method: 'post',
       },
       description: 'Create and join a conversational AI agent.',
-      getClientAPIPageProps: vi.fn(async () => ({
+      getOpenAPIPageProps: vi.fn(async () => ({
         document: 'convoai-en',
         operations: [
           {

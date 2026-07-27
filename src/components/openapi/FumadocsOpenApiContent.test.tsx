@@ -5,13 +5,16 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import type { Document } from 'fumadocs-openapi';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
-type ClientApiOperation = NonNullable<ClientApiPageProps['operations']>[number];
+type Document = Extract<
+  OpenAPIPageProps,
+  { payload: unknown }
+>['payload']['bundled'];
+type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
@@ -1292,7 +1295,7 @@ describe('FumadocsOpenApiContent', () => {
               description: operationDescriptionMarkdown,
               method: 'post',
               path: '/v2/projects/{appid}/agents/{agentId}/instructions',
-            } as ClientApiOperation,
+            } as OpenApiOperationItem,
           ],
           showDescription: true,
           payload: {
