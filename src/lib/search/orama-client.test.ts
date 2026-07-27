@@ -27,6 +27,25 @@ describe('createOramaDocsClient', () => {
     ]);
   });
 
+  it('returns the page-tree breadcrumbs as the rendered result path', async () => {
+    const client = createOramaDocsClient({
+      pages: [
+        {
+          breadcrumbs: ['RTC', 'Voice Calling', 'Reference'],
+          content: 'Voice pricing details',
+          title: 'Pricing',
+          url: '/en/realtime-media/voice/reference/pricing',
+        },
+      ],
+    });
+
+    await expect(client.search('pricing')).resolves.toEqual([
+      expect.objectContaining({
+        path: ['RTC', 'Voice Calling', 'Reference'],
+      }),
+    ]);
+  });
+
   it('applies the same product and platform scope as the docs search UI', async () => {
     const client = createOramaDocsClient({
       pages: [

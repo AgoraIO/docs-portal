@@ -12,7 +12,7 @@ import {
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { getSourceSlugs } from './docs-routing';
-import { getSearchEntryMetadata } from './docs-search';
+import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -54,6 +54,7 @@ import {
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
   type source as docsSource,
@@ -505,7 +506,9 @@ export async function loadDocsPagePayload(
   };
 }
 
-export async function loadDocsSearchIndex(locale: string) {
+export async function loadDocsSearchIndex(
+  locale: string,
+): Promise<SearchEntry[]> {
   const supportedLocale = toSupportedLocale(locale);
 
   if (!supportedLocale || !isPublishedDocsLocale(supportedLocale)) {
@@ -513,27 +516,37 @@ export async function loadDocsSearchIndex(locale: string) {
   }
 
   const { source } = await import('./source.server');
+  const searchNavigation = buildDocsSearchNavigation(
+    getCanonicalPageTree(source, supportedLocale),
+  );
   const pages = await Promise.all(
-    getCanonicalSourcePages(source.getPages(locale)).map(async (item) => {
-      const content = await readSearchText(item);
+    getCanonicalSourcePages(source.getPages(locale))
+      .filter(
+        (item) => item.type !== 'openapi' && searchNavigation.has(item.url),
+      )
+      .map(async (item) => {
+        const content = await readSearchText(item);
 
-      return {
-        content,
-        description: item.data.description,
-        ...getSearchEntryMetadata(item.url, content),
-        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-        url: item.url,
-      };
-    }),
+        return {
+          breadcrumbs: searchNavigation.get(item.url) ?? [],
+          content,
+          description: item.data.description,
+          ...getSearchEntryMetadata(item.url, content),
+          title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+          url: item.url,
+        };
+      }),
   );
   const existingUrls = new Set(pages.map((page) => page.url));
   const openApiPages = (await getOpenApiMarkdownPages())
     .filter(
       (page) =>
         page.url.startsWith(`/${supportedLocale}/`) &&
-        !existingUrls.has(page.url),
+        !existingUrls.has(page.url) &&
+        searchNavigation.has(page.url),
     )
     .map((page) => ({
+      breadcrumbs: searchNavigation.get(page.url) ?? [],
       content: page.markdown,
       ...getSearchEntryMetadata(page.url, page.markdown, 'openapi'),
       title: page.title,
