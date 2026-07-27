@@ -1683,13 +1683,13 @@ Screen sharing modes are available on different platforms as follows:
 
 Set up your project according to your target platform.
 
-<CodeBlockTabs defaultValue="ios">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="macos-and-windows">macOS and Windows</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="ios">
+<TabsList>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos-and-windows">macOS and Windows</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
 
@@ -1755,9 +1755,9 @@ The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sur
      @end
      ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="macos-and-windows">
+<TabsContent value="macos-and-windows">
 
 Agora currently supports the following two screen sharing options on the macOS and Windows platforms:
 
@@ -1770,22 +1770,22 @@ The API calling sequence is shown in the figure below:
 
 ![API Calling Sequence](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-electron.svg)
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Implement screen sharing
 
 This section shows you how to implement screen sharing in your project. Choose the method for your target platform.
 
-<CodeBlockTabs defaultValue="ios">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="macos-and-windows">macOS and Windows</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="ios">
+<TabsList>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="macos-and-windows">macOS and Windows</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - Start screen sharing
 
@@ -1818,15 +1818,15 @@ This section shows you how to implement screen sharing in your project. Choose t
     await _engine.stopScreenCapture();
     ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the `screen_sharing.dart` file in the Agora Video SDK to implement screen sharing.
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="macos-and-windows">
+<TabsContent value="macos-and-windows">
 
 1. Get the screen ID or the window ID
 
@@ -1916,9 +1916,9 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
       ));
     ```
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ### Limitations
 
@@ -1926,27 +1926,27 @@ Be aware of the following limitations:
 
 - The video unit price for a screen sharing stream is based on the **video resolution** you set in `ScreenCaptureParameters`. If you do not pass dimensions in `ScreenCaptureParameters`, Agora bills you at the default resolution of 1920 x 1080 (2,073,600). See [Pricing](/en/realtime-media/video/reference/pricing) for details.
 
-<CodeBlockTabs defaultValue="ios">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="ios">
+<TabsList>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 - Before starting screen sharing, call the `setAudioScenario` method and set the **audio scenario** to `audioScenarioGameStreaming` (high sound quality scenario) to improve the success rate of capturing system audio during screen sharing.
 - Due to system limitations, screen sharing is only supported on iOS 12.0 and above.
 - This feature requires a high level of device performance. Agora recommends that you use an iPhone X or above.
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 - Before starting screen sharing, call the `setAudioScenario` method and set the **audio scenario** to `audioScenarioGameStreaming` (high sound quality scenario) to improve the success rate of capturing system audio during screen sharing.
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Reference
 
@@ -2022,19 +2022,19 @@ Since Apple does not support capturing the screen in the main process of the app
 
 This section introduces how to implement screen sharing in your project.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the [screen sharing sample project](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ScreenShare/ScreenShare.tsx) to implement screen sharing.
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then send the screen sharing stream to the main process.
 
@@ -2153,9 +2153,9 @@ Take the following steps to set up your screen sharing project:
 
 * The memory usage of **Broadcast Upload Extension** is limited to 50 MB. Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ### Limitations
 
@@ -2220,43 +2220,43 @@ Screen sharing modes are available on different platforms as follows:
 
 ## Set up your project
 
-<CodeBlockTabs defaultValue="ios">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="macos-and-windows">macOS and Windows</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="ios">
+<TabsList>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos-and-windows">macOS and Windows</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 You use the iOS native `ReplayKit` framework in the extension to record the screen, and then add the screen sharing stream to the channel as a user. Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream.
 
   ![Screen Sharing Unity Tech](https://assets-docs.agora.io/images/video-sdk/screen-sharing-flutter-unity-rn-blueprint.svg)
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="macos-and-windows">
+<TabsContent value="macos-and-windows">
 
 Windows or macOS systems assign a unique **Display ID** to each screen and a unique **Window ID** to each window. Agora currently supports the following two screen sharing options on the macOS, Windows platforms:
 
   - Share a specific screen or part of a specified screen: Call `GetScreenCaptureSources` to get the **Display ID** and then call `StartScreenCaptureByDisplayId` to start screen sharing.
   - Share a specific window or part of a specified window: Call `GetScreenCaptureSources` to get the **Window ID** and then call `StartScreenCaptureByWindowId` to start screen sharing.
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Implement screen sharing
 
 This section introduces how to implement screen sharing in your project.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="macos-and-windows">macOS and Windows</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="macos-and-windows">macOS and Windows</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 When enabling screen sharing on Android, call the `StartScreenCapture` method. Depending on the actual business use-case, choose either of the following methods to implement screen sharing:
 
@@ -2296,9 +2296,9 @@ When enabling screen sharing on Android, call the `StartScreenCapture` method. D
     RtcEngine.UpdateChannelMediaOptions(channelMediaOptions);
     ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios">
+<TabsContent value="ios">
 
 Since Apple does not support capturing the screen in the main process of the app, you create a separate extension for the screen sharing stream. You use the iOS native `ReplayKit` framework in the extension to record the screen, and then add the screen sharing stream to the channel as a user.
 
@@ -2396,9 +2396,9 @@ Take the following steps to set up your screen sharing project:
     <ul><li>Make sure your app and extension have the same **TARGETS/Deployment/iOS** version. The memory usage of **Broadcast Upload Extension** is limited to 50 MB. </li><li>Make sure that the memory usage of **Screen Sharing Extension** does not exceed 50 MB.</li></ul>
     :::
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="macos-and-windows">
+<TabsContent value="macos-and-windows">
 
 Windows and macOS systems assign a unique **Display ID** to each screen and a unique **Window ID** to each window. Agora currently supports the following screen sharing options for macOS and Windows:
 
@@ -2480,9 +2480,9 @@ Take the following steps to implement screen sharing on macOS and Windows:
      var ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, this.Uid2), options);
      ```
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ### Limitations
 

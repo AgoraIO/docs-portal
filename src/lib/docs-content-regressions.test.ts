@@ -2061,4 +2061,36 @@ describe('docs content regressions', () => {
       expect(source, relativePath).toContain('<TabsContent value="ios">');
     }
   });
+
+  it('keeps CodeBlockTab panels code-only', () => {
+    const violations: string[] = [];
+
+    for (const file of listMarkdownFiles(docsRoot)) {
+      const source = readFileSync(file, 'utf8');
+
+      for (const match of source.matchAll(
+        /<CodeBlockTab\b[^>]*>([\s\S]*?)<\/CodeBlockTab>/g,
+      )) {
+        const contentOutsideCodeFences = match[1]
+          .replace(/```[\s\S]*?```/g, '')
+          .replace(/~~~[\s\S]*?~~~/g, '')
+          .trim();
+
+        if (contentOutsideCodeFences.length === 0) {
+          continue;
+        }
+
+        const line = source.slice(0, match.index).split('\n').length;
+        const preview = contentOutsideCodeFences
+          .replace(/\s+/g, ' ')
+          .slice(0, 120);
+
+        violations.push(
+          `${relative(process.cwd(), file)}:${line} ${preview}`,
+        );
+      }
+    }
+
+    expect(violations).toEqual([]);
+  });
 });
