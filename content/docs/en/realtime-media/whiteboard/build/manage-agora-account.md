@@ -7,11 +7,11 @@ Before you build with Interactive Whiteboard, you need an Agora account, a proje
 
 ## Create an Agora account
 
-Sign up for an Agora account with your email address, phone number, or a supported third-party account, then sign in to [Agora Console](https://console.agora.io/v2).
+Sign up for an Agora account with your email address, phone number, or a supported third-party account, then sign in to [Agora Console](https://console.agora.io/).
 
 ## Create a project
 
-In [Agora Console](https://console.agora.io/v2/project-management):
+In [Agora Console](https://console.agora.io/legacy/project-management):
 
 1. Open **Projects**.
 2. Click **Create New**.

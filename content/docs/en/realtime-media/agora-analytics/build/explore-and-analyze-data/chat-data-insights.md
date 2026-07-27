@@ -23,7 +23,7 @@ After [enabling and configuring Chat Service](/en/realtime-media/im/get-started/
 
 Follow these steps to view the Chat Usage Insights page:
 
-1. Log in to [Agora Console](https://console.agora.io/v2), and click **Agora Analytics** > **Chat Usage Insights** in the left menu bar.
+1. Log in to [Agora Console](https://console.agora.io/), and click **Agora Analytics** > **Chat Usage Insights** in the left menu bar.
 2. In the upper left corner, select the project you want to view from the drop-down menu.
 3. Click the **Scale Statistics** or **Message Statistics** tab at the top of the page.
 
@@ -84,7 +84,7 @@ Taking uplink message trends of chat rooms as an example:
 
 Follow these steps to view Chat quality insights:
 
-1. Log in to [Agora Console](https://console.agora.io/v2), and click **Agora Analytics** > **Chat Quality Insights** in the left menu bar.
+1. Log in to [Agora Console](https://console.agora.io/), and click **Agora Analytics** > **Chat Quality Insights** in the left menu bar.
 2. In the upper left corner, select the project you want to view from the drop-down menu.
 3. In the upper right corner, select a unit and duration to view end-user and server-side API data. The default is the last 30 minutes by minute.
 4. Click the **End-user Data** or **Server API Data** tab at the top of the page.

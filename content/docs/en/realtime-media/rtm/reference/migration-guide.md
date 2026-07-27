@@ -19,9 +19,9 @@ For a seamless transition from Signaling `1.x` to `2.x`, refer to the following 
 
 To activate Signaling `2.x`, take the following steps:
 
-1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Log in to [Agora Console](https://console.agora.io/)
 1. Create a new Agora project or choose an existing project from the project list.
-1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Select the project on the [Project Management](https://console.agora.io/legacy/project-management) page and click the pencil icon to configure it.
 1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
 1. Go to **Subscriptions > Signaling** and subscribe to a plan.
 1. Copy the App ID for your project for use in your code.

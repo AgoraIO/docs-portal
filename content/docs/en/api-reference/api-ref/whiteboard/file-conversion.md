@@ -13,7 +13,7 @@ This page applies to the new version of file conversion. For the main difference
 
 Before calling the RESTful API for file conversion, ensure that you have:
 
-- You have enabled **Docs to Picture** or **Docs to Web** and configured storage settings in [Agora Console](https://console.agora.io/v2). See [Enable server-side supporting features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#enable-whiteboard-server-side-features).
+- You have enabled **Docs to Picture** or **Docs to Web** and configured storage settings in [Agora Console](https://console.agora.io/). See [Enable server-side supporting features](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard.md#enable-whiteboard-server-side-features).
 - You have generated a URL address for the file you want to convert, and the address is publicly accessible.
 
 ## Start file conversion

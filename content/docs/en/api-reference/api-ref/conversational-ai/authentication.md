@@ -19,7 +19,7 @@ Authorization: agora token=<your_token>
 
 ### Prerequisites
 
-Before you begin, get the following values from [Agora Console](https://console.agora.io/v2):
+Before you begin, get the following values from [Agora Console](https://console.agora.io/):
 
 - **App ID**: A unique string that identifies your project.
 - **App Certificate**: A string used to generate tokens.
@@ -181,7 +181,7 @@ Authorization: Basic <base64_credentials>
 
 To generate a set of Customer ID and Customer Secret, do the following:
 
-1. In [Agora Console](https://console.agora.io/v2), click **Developer Toolkit** > **RESTful API**.
+1. In [Agora Console](https://console.agora.io/), click **Developer Toolkit** > **RESTful API**.
 
     ![RESTful API](https://assets-docs.agora.io/images/common/console-restful-api.png)
 
