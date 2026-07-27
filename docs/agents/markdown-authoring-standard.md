@@ -144,7 +144,11 @@ Rules:
 - Keep blank lines inside `TabsContent` before nested Markdown blocks.
 - Keep the `Tabs`, `TabsList`, `TabsTrigger`, and `TabsContent` tags at column
   0.
-- Do not nest tabs inside lists, callouts, tables, or platform blocks.
+- Do not nest tabs inside lists, callouts, or tables.
+- Tabs inside a platform block are allowed only for subordinate variants, such
+  as the Android and iOS host operating systems of one React Native SDK page.
+  Give these tabs a distinct `groupId`; they must not reuse or replace the
+  page-level SDK platform preference.
 - Do not invent `PlatformTabs`, `CodeTabs`, or Docusaurus `TabItem` syntax.
 
 ## Platform Variants
