@@ -61,7 +61,7 @@ A Task Token is linked with a file-conversion task under a whiteboard project in
 
 You can generate a token for the Interactive Whiteboard through one of the following methods:
 
-- Use [Agora Console](https://console.agora.io/v2). See [Get security credentials for your whiteboard project](enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).
+- Use [Agora Console](https://console.agora.io/). See [Get security credentials for your whiteboard project](enable-whiteboard.md#get-security-credentials-for-your-whiteboard-project).
 
 This method can only generate a permanent `admin` SDK Token. Do not send this token to your app clients; otherwise, there may be a risk of exposure.
 

@@ -5,7 +5,7 @@ description: "Shows how to enable Media Push."
 
 Media Push enables you to stream audio and video from Agora channels to CDNs and other RTMP-based platforms. To enable Media Push in Agora Console:
 
-1. Log in to [Agora Console](https://console.agora.io/v2), and click **Projects** in the left navigation panel.
+1. Log in to [Agora Console](https://console.agora.io/), and click **Projects** in the left navigation panel.
 
 2. Under **My Projects**, find the project for which you want to enable the Media Push service, and click the edit icon.
 

@@ -25,7 +25,7 @@ Chat provides tokens with different privileges:
 To generate a token with user privileges, you need to provide unique information, including the App ID, App Certificate, `uuid`, and token expiration time.
 ![](https://web-cdn.agora.io/docs-files/1665213460331)
 
-Developers can enable the token authentication system (achieved by App Certificate) on [Agora Console](https://console.agora.io/v2). Once enabled, valid tokens are required for all users who want to log in to Chat.
+Developers can enable the token authentication system (achieved by App Certificate) on [Agora Console](https://console.agora.io/). Once enabled, valid tokens are required for all users who want to log in to Chat.
 ![](https://web-cdn.agora.io/docs-files/1665213588546)
 
 Please note that developers need to set a token expiration time (the default value is 24 hours) to ensure security. A token contains the timestamp of the expiration time prior to which a user is allowed users are allowed to access the Chat service.
@@ -58,7 +58,7 @@ Once selected, the data center cannot be changed. Chat does not support data mig
 ## Security best practice checklist
 Use this list to quickly check what protection measures you need to take to ensure the security of your app and users:
 
-1. Enable token authentication on [Agora Console](https://console.agora.io/v2).
+1. Enable token authentication on [Agora Console](https://console.agora.io/).
 2. Disable **No certificate** on your project management page so that your app authenticates users with tokens only.
 3. [Deploy a token server](/en/realtime-media/im/build/secure-access-and-authentication/authentication#deploy-a-token-server) in your backend services.
 4. Protect the token server by only allowing the app's backend server to connect to the token server.

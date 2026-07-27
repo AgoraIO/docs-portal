@@ -2038,4 +2038,27 @@ describe('docs content regressions', () => {
     expect(elevenLabsProcessed).toContain('Paid plan required');
   }, SOURCE_LOADER_TEST_TIMEOUT);
 
+  it('uses regular persisted tabs for React Native Picture-in-Picture host OS variants', () => {
+    const pictureInPictureDocs = [
+      'realtime-media/video/build/add-advanced-video-features/picture-in-picture.mdx',
+      'realtime-media/broadcast-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
+      'realtime-media/interactive-live-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
+    ];
+
+    for (const relativePath of pictureInPictureDocs) {
+      const source = readDoc(relativePath);
+      const hostOsTabs = source.match(
+        /<Tabs defaultValue="android" groupId="react-native-host-os" persist>/g,
+      );
+
+      expect(hostOsTabs, relativePath).toHaveLength(4);
+      expect(source, relativePath).not.toContain(
+        '<CodeBlockTabs defaultValue="android">',
+      );
+      expect(source, relativePath).toContain(
+        '<TabsContent value="android">',
+      );
+      expect(source, relativePath).toContain('<TabsContent value="ios">');
+    }
+  });
 });

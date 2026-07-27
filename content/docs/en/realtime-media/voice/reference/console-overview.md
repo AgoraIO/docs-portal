@@ -3,7 +3,7 @@ title: "Agora console overview"
 description: "Configure, manage, and purchase Agora products and services."
 ---
 
-[Agora Console](https://console.agora.io/v2) is the unified portal for you to configure, purchase, and manage Agora products and services. This page shows you how to use the new **beta** version of Agora Console to manage all aspects of your Agora account.
+[Agora Console](https://console.agora.io/) is the unified portal for you to configure, purchase, and manage Agora products and services. This page shows you how to use Agora Console to manage all aspects of your Agora account.
 
 ## Dashboard overview
 
@@ -57,7 +57,7 @@ This section shows how to view and edit the profile of your Agora account.
 
 To open the **Profile** page, follow these steps:
 
-1. Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io/).
 
 1. Click your account name in the top right corner, and select your account name from the dropdown menu.
 
@@ -101,7 +101,7 @@ This section shows how to create a project, view project information, and manage
 
 To create a project, do the following:
 
-1. Open the [Projects](https://console.agora.io/v2/project-management) page.
+1. Open the [Projects](https://console.agora.io/legacy/project-management) page.
 
 2. Click **Create New**.
 
@@ -199,7 +199,7 @@ This section explains how to check your usage of Agora products in Agora Console
 
 Follow these steps to check your usage:
 
-1. Enter the [Usage](https://console.agora.io/v2/usage) page in Agora Console.
+1. Enter the [Usage](https://console.agora.io/legacy/usage) page in Agora Console.
 
 2. (Optional) Add filters for the usage data, as follows:
 
@@ -221,7 +221,7 @@ Once you add members to your Agora account, you are assigned to the team of **Ad
 
 Follow these steps to add a member to your account:
 
-1. Log in to [Agora Console](https://console.agora.io/v2), click your account name in the top-right corner, and click **Settings** in the dropdown menu.
+1. Log in to [Agora Console](https://console.agora.io/), click your account name in the top-right corner, and click **Settings** in the dropdown menu.
 
 1. In the left navigation panel, click **Teams and members**, then select the **Members** tab.
 
@@ -233,7 +233,7 @@ Follow these steps to add a member to your account:
 
 ### Manage members
 
-On the [Teams and members](https://console.agora.io/v2/teams-members) page, **Members** tab, you can do the following:
+On the [Teams and members](https://console.agora.io/legacy/settings/teams-members) page, **Members** tab, you can do the following:
 
 -  Click the pencil icon to change the team that a member belongs to.
 
@@ -384,7 +384,7 @@ If your account has multiple members, only those assigned to the teams of **Admi
 
 ### Check account balance
 
-After logging in to [Agora Console](https://console.agora.io/v2), you can see your account balance in the **Billing** panel on the **Overview** page.
+After logging in to [Agora Console](https://console.agora.io/), you can see your account balance in the **Billing** panel on the **Overview** page.
 
 ### Add money to account
 
@@ -394,7 +394,7 @@ You can add money to your account either with a credit card or via bank transfer
 
 To add money to your account with a credit card, follow these steps:
 
-1. In [Billing](https://console.agora.io/v2/billing), select the **Credit Card** tab.
+1. In [Billing](https://console.agora.io/legacy/billing), select the **Credit Card** tab.
 
 2. (Optional) If you have not added a credit card to your account, follow these steps:
 
@@ -414,7 +414,7 @@ To add money to your account with a credit card, follow these steps:
 
 To add money to your account via bank transfer, follow these steps:
 
-1. In [Billing](https://console.agora.io/v2/billing), select the **Bank Transfer** tab.
+1. In [Billing](https://console.agora.io/legacy/billing), select the **Bank Transfer** tab.
 
     ![Bank transfer](https://assets-docs.agora.io/images/common/console-bank-transfer.png)
 
@@ -422,7 +422,7 @@ To add money to your account via bank transfer, follow these steps:
 
 ### View invoices and transactions
 
-In [Billing](https://console.agora.io/v2/billing), scroll down to see **Your Invoices** and **Your Transactions**, respectively.
+In [Billing](https://console.agora.io/legacy/billing), scroll down to see **Your Invoices** and **Your Transactions**, respectively.
 
 You can also click **View all** > **Export CSV** in the top right corner to export transactions and invoices as a CSV file.
 
@@ -430,7 +430,7 @@ You can also click **View all** > **Export CSV** in the top right corner to expo
 
 To ask Agora support a question, follow these steps:
 
-1. Log in to [Agora Console](https://console.agora.io/v2).
+1. Log in to [Agora Console](https://console.agora.io/).
 
 1. Click **Get Support** > **Create Support Ticket**
 
@@ -452,9 +452,9 @@ Before deleting your Agora account, ensure that the following requirements are m
 
 -  You are the creator of the account to be deleted.
 
--  The account to be deleted is an Agora account created in [Agora Console](https://console.agora.io/v2), not a reseller account created in [Agora Reseller Console](https://reseller.agora.io/).
+-  The account to be deleted is an Agora account created in [Agora Console](https://console.agora.io/), not a reseller account created in [Agora Reseller Console](https://reseller.agora.io/).
 
--  There are no active projects under your account. If there are any, go to the [Projects](https://console.agora.io/v2/project-management) page to disable all active projects.
+-  There are no active projects under your account. If there are any, go to the [Projects](https://console.agora.io/legacy/project-management) page to disable all active projects.
 
 -  Your account balance is zero. If your account balance is positive, request a withdrawal. If your account balance is negative, add money to your account.
 
@@ -470,13 +470,13 @@ Before deleting your Agora account, ensure that the following requirements are m
 
   -  Extensions Marketplace packages.
 
--  There are no members under your account. If there are any, go to the [Teams and Members](https://console.agora.io/v2/teams-members) page to delete all members.
+-  There are no members under your account. If there are any, go to the [Teams and Members](https://console.agora.io/legacy/settings/teams-members) page to delete all members.
 
 ### Procedure
 
 Follow these steps to delete your Agora account:
 
-1. Log in to [Agora Console](https://dashboard.agora.io/), click your account name in the top right corner and select **Settings** in the dropdown.
+1. Log in to [Agora Console](https://console.agora.io/), click your account name in the top right corner and select **Settings** in the dropdown.
 
 2. In the left navigation panel, click **Account**.
 
