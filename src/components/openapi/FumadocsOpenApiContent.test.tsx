@@ -69,6 +69,14 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole('tab', { name: 'cURL' })
+        .closest('.openapi-request-examples'),
+    ).not.toHaveAttribute('data-markdown-ignore');
+    expect(
+      screen.getByText('Response example').closest('.openapi-response-example'),
+    ).not.toHaveAttribute('data-markdown-ignore');
   });
 
   it('uses explicit x-codeSamples without adding default generated language tabs', async () => {
@@ -143,6 +151,7 @@ describe('FumadocsOpenApiContent', () => {
     const curlTab = await screen.findByRole('tab', { name: 'curl' });
     const requestExamples = curlTab.closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
+    expect(requestExamples).toHaveAttribute('data-markdown-ignore');
     const examplesScope = within(requestExamples as HTMLElement);
     expect(
       examplesScope.getByRole('tab', { name: 'curl' }),
@@ -2207,6 +2216,7 @@ describe('FumadocsOpenApiContent', () => {
     const [gutter, nameColumn] = Array.from(nameHeading.children);
 
     expect(nameHeading.textContent).not.toContain('\u00a0');
+    expect(nameHeading).not.toHaveAttribute('data-markdown-ignore');
     expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
     expect(gutter.textContent).toBe('');
     expect(gutter.querySelector('button')).toBeNull();

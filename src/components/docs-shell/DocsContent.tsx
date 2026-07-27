@@ -163,22 +163,14 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        'gap-6',
+        'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
-      <p
-        aria-hidden="true"
-        className="sr-only"
-        data-agent-docs-directive="true"
-      >
-        For AI agents: see the complete documentation index at{' '}
-        <a href="/llms.txt">/llms.txt</a>.
-      </p>
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-5',
+          platformTabs ? 'pb-0' : 'pb-4',
         )}
       >
         {articleReturnLink ? (
@@ -996,16 +988,16 @@ function TocLinks({
           <a
             aria-current={isPrimary ? 'location' : undefined}
             className={cn(
-              'text-sm leading-5 text-[color:var(--ink-3)] transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)]',
+              'leading-5 transition-colors hover:bg-[color:var(--docs-soft-fill)]',
               variant === 'rail'
-                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5'
-                : 'rounded-md px-2 py-2',
+                ? '-ml-px rounded-r-md border-l-2 border-transparent px-3 py-1.5 text-[12.5px] text-[color:var(--ink-4)] hover:text-[color:var(--ink-2)]'
+                : 'rounded-md px-2 py-2 text-sm text-[color:var(--ink-3)] hover:text-[color:var(--ink-1)]',
               isVisible &&
                 variant === 'rail' &&
-                'border-[color:var(--line-strong)] text-[color:var(--ink-2)]',
+                'border-[color:var(--line-strong)] text-[color:var(--ink-3)]',
               isPrimary &&
                 variant === 'rail' &&
-                'border-[color:var(--accent-brand)] text-[color:var(--ink-1)]',
+                'border-[color:var(--line-strong)] font-medium text-[color:var(--ink-2)]',
               isPrimary &&
                 variant === 'mobile' &&
                 'bg-[color:var(--docs-soft-fill)] text-[color:var(--ink-1)]',

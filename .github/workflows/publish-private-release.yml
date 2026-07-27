@@ -1,0 +1,154 @@
+name: Publish Private Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: Private branch to publish, for example releases/new-product
+        required: true
+        type: string
+      pr_title:
+        description: Title for the public pull request
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-private-release-${{ inputs.source_branch }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Export private docs to a public pull request
+    if: vars.DOCS_PORTAL_REPO_ROLE == 'private'
+    runs-on: ubuntu-latest
+    environment: private-docs-publish
+    steps:
+      - name: Checkout workflow source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: workflow-source
+          ref: main
+
+      - name: Validate source branch
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          node --input-type=module -e \
+            "import('./workflow-source/scripts/prepare-private-release.mjs').then(({ validateReleaseBranch }) => validateReleaseBranch(process.env.SOURCE_BRANCH))"
+
+      - name: Resolve private source branch
+        id: source-ref
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          source_sha="$(gh api \
+            "repos/$GITHUB_REPOSITORY/git/ref/heads/$SOURCE_BRANCH" \
+            --jq '.object.sha')"
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout private release
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: private-source
+          ref: ${{ steps.source-ref.outputs.source_sha }}
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+
+      - name: Checkout public main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: public-target
+          ref: main
+          repository: AgoraIO/docs-portal
+          token: ${{ secrets.DOCS_PORTAL_PUBLIC_TOKEN }}
+
+      - name: Prepare public content change
+        id: prepare
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_SHA: ${{ steps.source-ref.outputs.source_sha }}
+        run: |
+          node workflow-source/scripts/prepare-private-release.mjs \
+            --source-repo private-source \
+            --target-repo public-target \
+            --source-branch "$SOURCE_BRANCH" \
+            --source-ref HEAD
+          checked_out_sha="$(git -C private-source rev-parse HEAD)"
+          if [[ "$checked_out_sha" != "$SOURCE_SHA" ]]; then
+            echo "Private checkout does not match the resolved source branch SHA."
+            exit 1
+          fi
+          public_sha="$(git -C public-target rev-parse HEAD)"
+          publish_branch="publish/private-release-${SOURCE_SHA:0:12}"
+
+          echo "source_sha=$SOURCE_SHA" >> "$GITHUB_OUTPUT"
+          echo "public_sha=$public_sha" >> "$GITHUB_OUTPUT"
+          echo "publish_branch=$publish_branch" >> "$GITHUB_OUTPUT"
+
+      - name: Verify prepared change
+        run: |
+          git -C public-target diff --cached --check
+          if ! git -C public-target diff --cached --quiet -- . ':(exclude)content/docs/**'; then
+            echo "Prepared release contains disallowed paths:"
+            git -C public-target diff --cached --name-only -- . ':(exclude)content/docs/**'
+            exit 1
+          fi
+
+      - name: Verify public main has not advanced
+        env:
+          PUBLIC_SHA: ${{ steps.prepare.outputs.public_sha }}
+        run: |
+          git -C public-target fetch --no-tags origin main
+          latest_public_sha="$(git -C public-target rev-parse FETCH_HEAD)"
+          if [[ "$latest_public_sha" != "$PUBLIC_SHA" ]]; then
+            echo "Public main advanced during release preparation. Retry the workflow."
+            echo "Prepared base: $PUBLIC_SHA"
+            echo "Latest main: $latest_public_sha"
+            exit 1
+          fi
+
+      - name: Commit and push public branch
+        env:
+          PUBLISH_BRANCH: ${{ steps.prepare.outputs.publish_branch }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          git -C public-target config user.name "github-actions[bot]"
+          git -C public-target config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C public-target switch -c "$PUBLISH_BRANCH"
+          git -C public-target commit -m "docs: publish ${SOURCE_BRANCH#releases/}"
+          git -C public-target push origin "HEAD:refs/heads/$PUBLISH_BRANCH"
+
+      - name: Open public pull request
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_PORTAL_PUBLIC_TOKEN }}
+          PR_TITLE: ${{ inputs.pr_title }}
+          PUBLIC_SHA: ${{ steps.prepare.outputs.public_sha }}
+          PUBLISH_BRANCH: ${{ steps.prepare.outputs.publish_branch }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_SHA: ${{ steps.prepare.outputs.source_sha }}
+        run: |
+          body_file="$(mktemp)"
+          {
+            echo "## Private documentation release"
+            echo
+            echo "- Source branch: \`$SOURCE_BRANCH\`"
+            echo "- Source SHA: \`$SOURCE_SHA\`"
+            echo "- Public base SHA: \`$PUBLIC_SHA\`"
+            echo "- Allowed paths: \`content/docs/**\`"
+            echo
+            echo "The public commit was rebuilt from the allowed content diff; private commit history was not pushed."
+          } > "$body_file"
+
+          gh pr create \
+            --repo AgoraIO/docs-portal \
+            --base main \
+            --head "$PUBLISH_BRANCH" \
+            --title "$PR_TITLE" \
+            --body-file "$body_file"

@@ -55,6 +55,14 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
+        <p
+          aria-hidden="true"
+          className="sr-only"
+          data-agent-docs-directive="true"
+        >
+          For AI agents: see the complete documentation index at{' '}
+          <a href="/llms.txt">/llms.txt</a>.
+        </p>
         <AppProviders>
           <Outlet />
         </AppProviders>
