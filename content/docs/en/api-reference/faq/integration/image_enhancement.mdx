@@ -2,16 +2,16 @@
 title: "How can I enable image enhancement?"
 ---
 
-During a video call or live streaming, users often want to improve their on-screen appearance, which can help improve their confidence. The Agora Video SDK provides APIs to help you easily implement basic image enhancement. Users can enable this functionality and then adjust a number of image enhancement options including skin smoothing, acne removal, and a "rosy cheeks" effect to achieve natural-looking enhancements.
+During a video call or live streaming, users often want to improve their on-screen appearance, which can help improve their confidence. The Agora RTC SDK provides APIs to help you easily implement basic image enhancement. Users can enable this functionality and then adjust a number of image enhancement options including skin smoothing, acne removal, and a "rosy cheeks" effect to achieve natural-looking enhancements.
 
-If the basic image enhancement function provided by the Agora Video SDK does not meet your needs and scenarios, you can integrate a third-party image enhancement SDK with the Agora Video SDK to implement real-time video interaction with advanced image enhancement functions. Agora provides an open-source [sample project](https://github.com/AgoraIO/FaceUnity) for your reference.
+If the basic image enhancement function provided by the Agora RTC SDK does not meet your needs and scenarios, you can integrate a third-party image enhancement SDK with the Agora RTC SDK to implement real-time video interaction with advanced image enhancement functions. Agora provides an open-source [sample project](https://github.com/AgoraIO/FaceUnity) for your reference.
 
 ## Implementation
 
 1. Ensure that you have implemented basic real-time functions in your project. See the [RTC Quickstart](/en/realtime-media/rtc/get-started-sdk).
 2. Call `setBeautyEffectOptions` to enable image enhancement and set the image enhancement options.
 
-As of v3.6.0, the Agora Video SDK for Native platforms and third-party frameworks updates the Agora image enhancement algorithm, which improves the image enhancement effects and supports sharpness adjustment. If you want to experience the optimized image enhancement effects or set the sharpness, upgrade your SDK and make sure the following dynamic libraries are integrated before you call <code>setBeautyEffectOptions</code>:
+As of v3.6.0, the Agora RTC SDK for Native platforms and third-party frameworks updates the Agora image enhancement algorithm, which improves the image enhancement effects and supports sharpness adjustment. If you want to experience the optimized image enhancement effects or set the sharpness, upgrade your SDK and make sure the following dynamic libraries are integrated before you call <code>setBeautyEffectOptions</code>:
 - Android: <code>libagora_video_process_extension.so</code>
 - iOS: <code>AgoraVideoProcessExtension.xcframework</code>
 - macOS: <code>AgoraVideoProcessExtension.framework</code> or <code>AgoraVideoProcessExtension.xcframework</code>

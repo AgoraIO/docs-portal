@@ -10,7 +10,7 @@ Agora recommends default video capture for its stability, reliability, and ease 
 <PlatformStructured platform="android">
 ## Understand the tech
 
-Video SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
+RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
 
 The following figure illustrates the video data transmission process when custom video capture is implemented:
 
@@ -106,17 +106,17 @@ Take the following steps to implement this workflow:
 </CodeBlockTabs>
 3. Implement your self-capture module
 
-  Agora provides the [VideoFileReader](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/VideoFileReader.java) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
+  Agora provides the [VideoFileReader](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/utils/VideoFileReader.java) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using RTC SDK based on your business requirements.
 
 4. Push video data to the SDK
 
-  Before sending captured video frames to Video SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from Video SDK and pass it as the timestamp parameter in the `VideoFrame`.
+  Before sending captured video frames to RTC SDK, integrate your video module with the `VideoFrame`. To ensure audio-video synchronization, best practice is to obtain the current monotonic time from RTC SDK and pass it as the timestamp parameter in the `VideoFrame`.
 
 :::note
 To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current monotonic Time.
 
 :::
-  Call `pushExternalVideoFrameById` [2/2] to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
+  Call `pushExternalVideoFrameById` [2/2] to push the captured video frames through the video track to RTC SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
   The following code samples demonstrate pushing `I420`, `NV21`, `NV12`, and `Texture` format video data:
 
@@ -355,7 +355,7 @@ To ensure audio-video synchronization, set the timestamp parameter of `VideoFram
 
 </CodeBlockTabs>
 :::note
-If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the RTC SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
 5. Destroy custom video tracks
@@ -412,15 +412,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default Video SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the Video SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, Video SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
 
 ### Advantages
 
@@ -459,7 +459,7 @@ Agora provides the following open-source sample projects for your reference. Dow
 <PlatformStructured platform="ios">
 ## Understand the tech
 
-Video SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
+RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
 
 The following figure illustrates the video data transmission process when custom video capture is implemented:
 
@@ -519,7 +519,7 @@ Take the following steps to implement this workflow:
 3. Implement your self-capture module
 
   Agora provides the [
-CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
+CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using RTC SDK based on your business requirements.
 
 4. Push video data to the SDK
 
@@ -540,7 +540,7 @@ To ensure audio and video synchronization, Agora recommends setting the `time` (
 
 :::
 :::note
-If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the RTC SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
 5. Destroy custom video track
@@ -583,15 +583,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default Video SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the Video SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, Video SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
 
 ### Advantages
 
@@ -632,7 +632,7 @@ Agora provides the following open-source sample projects for your reference. Dow
 <PlatformStructured platform="macos">
 ## Understand the tech
 
-Video SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
+RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
 
 The following figure illustrates the video data transmission process when custom video capture is implemented:
 
@@ -692,7 +692,7 @@ Take the following steps to implement this workflow:
 3. Implement your self-capture module
 
   Agora provides the [
-CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
+CustomVideoSourcePushMulti](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Advanced/CustomVideoSourcePushMulti/CustomVideoSourcePushMulti.swift) demo project that shows you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using RTC SDK based on your business requirements.
 
 4. Push video data to the SDK
 
@@ -713,7 +713,7 @@ To ensure audio and video synchronization, Agora recommends setting the `time` (
 
 :::
 :::note
-If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the RTC SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
 5. Destroy custom video track
@@ -756,15 +756,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default Video SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the Video SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, Video SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
 
 ### Advantages
 
@@ -806,7 +806,7 @@ Try out the [online demo](https://webdemo-global.agora.io/index.html) for [Custo
 
 ## Understand the tech
 
-Video SDK provides support for creating local video tracks by passing in a [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) object to `createCustomVideoTrack`.
+RTC SDK provides support for creating local video tracks by passing in a [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack) object to `createCustomVideoTrack`.
 
 ## Prerequisites
 
@@ -818,7 +818,7 @@ This section shows you how to create and publish a custom video track from a med
 
 ### Create a custom video track a media stream
 
-You can implement custom video capture or preprocessing by obtaining a `MediaStreamTrack` object. For example, manually call the `getUserMedia` method to obtain a `MediaStreamTrack`, then use the `createCustomVideoTrack` method to create a local video track object for use in Video SDK.
+You can implement custom video capture or preprocessing by obtaining a `MediaStreamTrack` object. For example, manually call the `getUserMedia` method to obtain a `MediaStreamTrack`, then use the `createCustomVideoTrack` method to create a local video track object for use in RTC SDK.
 
 ```javascript
 async function createAndPublishCustomVideoTrack() {
@@ -928,7 +928,7 @@ This section contains content that completes the information on this page, or po
 <PlatformStructured platform="windows">
 ## Understand the tech
 
-Video SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
+RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
 
 The following figure illustrates the video data transmission process when custom video capture is implemented:
 
@@ -982,7 +982,7 @@ Take the following steps to implement this workflow:
 
 3. Implement self-capture module
 
-  Agora provides the [YUVReader.cpp](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/YUVReader.cpp) and [YUVReader.h](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/YUVReader.h) demo projects that show you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using Video SDK based on your business requirements.
+  Agora provides the [YUVReader.cpp](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/YUVReader.cpp) and [YUVReader.h](https://github.com/AgoraIO/API-Examples/blob/main/windows/APIExample/APIExample/YUVReader.h) demo projects that show you how to read `YUV` format video data from a local file. In a production environment, create a custom video module for your device using RTC SDK based on your business requirements.
 
   ```cpp
   // Use the custom YUVReader class to continuously read YUV-format video data in the YUVReader thread and pass the data to the OnYUVRead callback for further processing
@@ -992,7 +992,7 @@ Take the following steps to implement this workflow:
 
 4. Push video data to the SDK
 
-  Call `pushVideoFrame` to push the captured video frames through the video track to Video SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
+  Call `pushVideoFrame` to push the captured video frames through the video track to RTC SDK. Ensure that the `videoTrackId` matches the track ID you specified when joining the channel. Customize parameters like pixel format, data type, and timestamp in the `VideoFrame`.
 
 :::note
 To ensure audio-video synchronization, set the timestamp parameter of `VideoFrame` to the system's Monotonic Time. Use `getCurrentMonotonicTimeInMs` to obtain the current Monotonic Time.
@@ -1026,7 +1026,7 @@ The sample code demonstrates converting YUV format to raw video data in `I420` f
 
 :::
 :::note
-If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the Video SDK. This helps eliminate anomalies during internal data encoding processes.
+If the captured custom video format is Texture and remote users experience flickering or distortion in the captured video, it is recommended to first duplicate the video data and then send both the original and duplicated video data back to the RTC SDK. This helps eliminate anomalies during internal data encoding processes.
 
 :::
 5. Destroy custom video tracks
@@ -1068,15 +1068,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default Video SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the Video SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, Video SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
 
 ### Advantages
 
@@ -1115,7 +1115,7 @@ Agora provides the following open-source sample projects for your reference. Dow
 <PlatformStructured platform="unreal">
 ## Understand the tech
 
-Video SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
+RTC SDK provides a custom video track method for video self-collection. You can create and publish custom video tracks to one or more channels. You use the self-capture module to drive the capture device, and send the captured video frames to the SDK through the video track.
 
 The following figure illustrates the video data transmission process when custom video capture is implemented:
 
@@ -1329,15 +1329,15 @@ In video surveillance applications, detailed observation and analysis of scene d
 
 **Capture from specific video sources**
 
-Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default Video SDK capture may not meet your requirements, necessitating use of custom video capture.
+Industries such as IoT and live streaming often require the use of specific cameras, monitoring devices, or non-camera video sources, such as video capture cards or screen recording data. In such situations, default RTC SDK capture may not meet your requirements, necessitating use of custom video capture.
 
 **Seamless integration with specific devices or third-party applications**
 
-In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the Video SDK.
+In smart home or IoT applications, transmitting video from devices to users' smartphones or computers for monitoring and control may require the use of specific devices or applications for video capture. Custom video capture facilitates seamless integration of specific devices or applications with the RTC SDK.
 
 **Specific video encoding formats**
 
-In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, Video SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
+In certain live streaming use-cases, specific video encoding formats may be needed to meet business requirements. In such cases, RTC SDK default capture might not suffice, and custom video capture is required to capture and encode videos in specific formats.
 
 ### Advantages
 

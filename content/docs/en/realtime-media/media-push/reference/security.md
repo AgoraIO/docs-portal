@@ -476,7 +476,7 @@ The media encryption on Web SDK is done via WebRTC standard but the interoperabi
 
 ### Level 4 - Network geofencing
 
-To conform to the laws and regulations of different countries and regions, the Agora Video SDK and the Signaling SDK support network geofencing, which limits the transmission of data to within a specified region.
+To conform to the laws and regulations of different countries and regions, the Agora RTC SDK and the Signaling SDK support network geofencing, which limits the transmission of data to within a specified region.
 
 These SDKs support network geofencing in the following regions: global (default), North America, Europe, Asia (excluding Mainland China), Japan, India, and Mainland China. Once a customer specifies a region using geofencing, no audio, video, or message can access Agora servers outside that region.
 

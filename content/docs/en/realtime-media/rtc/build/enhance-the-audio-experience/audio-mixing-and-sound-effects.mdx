@@ -3,14 +3,14 @@ title: "Audio mixing and sound effects"
 description: "Play audio files and add sound effects to enhance the audio experience."
 ---
 
-Video SDK makes it simple for you to publish audio captured through the microphone to subscribers in a channel. In some real-time audio and video use-cases, such as games or karaoke, you need to play sound effects or mix in music files to enhance the atmosphere and add interest. Video SDK enables you to add sound effects and mix in pre-recorded audio.
+RTC SDK makes it simple for you to publish audio captured through the microphone to subscribers in a channel. In some real-time audio and video use-cases, such as games or karaoke, you need to play sound effects or mix in music files to enhance the atmosphere and add interest. RTC SDK enables you to add sound effects and mix in pre-recorded audio.
 
 <PlatformStructured platform="android">
 This page shows you how to implement audio mixing and playing sound effects in your app.
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -43,7 +43,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -318,7 +318,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -340,7 +340,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -485,7 +485,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -507,7 +507,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -656,7 +656,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -678,7 +678,7 @@ To implement audio mixing in your project, take the following steps:
 
 1. **Create a buffer source track**
 
-   Video SDK offers the `createBufferSourceAudioTrack` method that enables you to read a local or online audio file, and create a corresponding local audio track object `BufferSourceAudioTrack`:
+   RTC SDK offers the `createBufferSourceAudioTrack` method that enables you to read a local or online audio file, and create a corresponding local audio track object `BufferSourceAudioTrack`:
 
    ```javascript
    // Create an audio track using online music
@@ -705,7 +705,7 @@ To implement audio mixing in your project, take the following steps:
 
    2. **BufferSourceAudioTrack**
 
-      For audio files, the Video SDK does not collect audio data; instead, it achieves a similar effect by reading files, shown in the following figure.
+      For audio files, the RTC SDK does not collect audio data; instead, it achieves a similar effect by reading files, shown in the following figure.
 
       ![BufferSourceAudioTrack](https://assets-docs.agora.io/images/video-sdk/buffer-source-audio-track-web.svg)
 
@@ -720,7 +720,7 @@ To implement audio mixing in your project, take the following steps:
 
 1. **Enable audio mixing**
 
-   Video SDK supports publishing multiple audio tracks. You can mix audio by publishing `BufferSourceAudioTrack` together with the audio tracks created through the microphone. To enable audio mixing, refer to the following code:
+   RTC SDK supports publishing multiple audio tracks. You can mix audio by publishing `BufferSourceAudioTrack` together with the audio tracks created through the microphone. To enable audio mixing, refer to the following code:
 
    ```javascript
    // Create a microphone audio track
@@ -789,7 +789,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -811,7 +811,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and voice effects, Video SDK provides the following APIs:
+To manage audio mixing and voice effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -822,7 +822,7 @@ To manage audio mixing and voice effects, Video SDK provides the following APIs:
 
 ### Play sound effects
 
-Before joining a channel, call `preloadEffect` to preload the sound effect file. After joining the channel, call `playEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `playEffect` multiple times. After a sound effect is played, the Video SDK triggers the `onAudioEffectFinished` callback.
+Before joining a channel, call `preloadEffect` to preload the sound effect file. After joining the channel, call `playEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `playEffect` multiple times. After a sound effect is played, the RTC SDK triggers the `onAudioEffectFinished` callback.
 
 To implement this logic, refer to the following sample code:
 
@@ -980,7 +980,7 @@ void CAgoraEffectDlg::OnBnClickedButtonStopAllEffect2()
 
 ### Incorporate audio mixing
 
-To play a music file, call `startAudioMixing` before or after joining a channel. After you successfully call this method, Video SDK triggers the `onAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change.
+To play a music file, call `startAudioMixing` before or after joining a channel. After you successfully call this method, RTC SDK triggers the `onAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change.
 
 To implement this logic, refer to the following code:
 
@@ -1097,7 +1097,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -1121,7 +1121,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -1205,7 +1205,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -1229,7 +1229,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your app.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect | Audio mixing |
 |----------|--------------|-----------------------------|
@@ -1313,7 +1313,7 @@ This page shows you how to implement audio mixing and playing sound effects in y
 
 ## Understand the tech
 
-Video SDK provides APIs that enable you to implement:
+RTC SDK provides APIs that enable you to implement:
 
   * **Audio mixing**
 
@@ -1335,7 +1335,7 @@ Ensure that you have:
 
 This section shows you how to implement playing sound effects and add audio mixing in your game.
 
-To manage audio mixing and sound effects, Video SDK provides the following APIs:
+To manage audio mixing and sound effects, RTC SDK provides the following APIs:
 
 | Function | Sound effect                                                         | Audio mixing                                                                                                  |
 |----------|------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -1346,7 +1346,7 @@ To manage audio mixing and sound effects, Video SDK provides the following APIs:
 
 ### Play sound effects
 
-Before joining a channel, call `PreloadEffect` to preload the sound effect file. After joining the channel, call `PlayEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `PlayEffect` multiple times. After a sound effect is played, the Video SDK triggers the `OnAudioEffectFinished` callback.
+Before joining a channel, call `PreloadEffect` to preload the sound effect file. After joining the channel, call `PlayEffect` to play the specified sound effect file. To play multiple sound effect files simultaneously, set multiple sound effect IDs and call `PlayEffect` multiple times. After a sound effect is played, the RTC SDK triggers the `OnAudioEffectFinished` callback.
 
 To implement this logic, refer to the following sample code:
 
@@ -1370,7 +1370,7 @@ public override void OnAudioEffectFinished(int soundId)
 
 ### Incorporate audio mixing
 
-To play a music file, call `StartAudioMixing` before or after joining a channel. After you successfully call this method, Video SDK triggers the `OnAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change.
+To play a music file, call `StartAudioMixing` before or after joining a channel. After you successfully call this method, RTC SDK triggers the `OnAudioMixingStateChanged` callback when the mixing status changes. This callback also reports the reason for the state change.
 
 To implement this logic, refer to the following code:
 

@@ -6,7 +6,7 @@ When interacting with conversational AI in real time, you can enable live transc
 
 ## Understand the tech
 
-Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](/en/realtime-media/rtm) and [Agora Video SDK](../../realtime-media/rtc/get-started-sdk) to enable the following features:
+Agora provides a flexible, scalable, and standardized conversational AI engine toolkit. The toolkit supports **iOS**, **Android**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate the capabilities of the [Agora Signaling SDK](/en/realtime-media/rtm) and [Agora RTC SDK](../../realtime-media/rtc/get-started-sdk) to enable the following features:
 
 - [Interrupt agents](shape-the-conversation/interrupt-agent)
 - [Display live transcripts](transcripts)
@@ -34,7 +34,7 @@ The following diagram outlines the step-by-step process to integrate live transc
 Before you begin, ensure the following:
 
 - You have implemented the Conversational AI Engine [quickstart](../get-started/quickstart).
-- Your app integrates Agora Video SDK v4.5.1 or later and includes the [Video SDK quickstart](../../realtime-media/rtc/get-started-sdk).
+- Your app integrates Agora RTC SDK v4.5.1 or later and includes the [RTC SDK quickstart](../../realtime-media/rtc/get-started-sdk).
 - You have enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm/quickstart) for basic messaging.
 - You maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
 
@@ -57,7 +57,7 @@ This section describes how to receive transcript content from the transcript pro
 
 2. **Create a toolkit instance**
 
-   Create a configuration object with the Video SDK and Signaling engine instances. Set the transcript rendering mode, then use the configuration to create a toolkit instance.
+   Create a configuration object with the RTC SDK and Signaling engine instances. Set the transcript rendering mode, then use the configuration to create a toolkit instance.
 
    ```kotlin
    // Create configuration objects for the RTC and RTM instances
@@ -151,7 +151,7 @@ This section describes how to receive transcript content from the transcript pro
 
 2. **Create a toolkit instance**
 
-   Create a configuration object with the Video SDK and Signaling engine instances. Set the transcript rendering mode, then use the configuration to create a toolkit instance.
+   Create a configuration object with the RTC SDK and Signaling engine instances. Set the transcript rendering mode, then use the configuration to create a toolkit instance.
 
    ```swift
    // Create a configuration object for the RTC and RTM instances
@@ -250,7 +250,7 @@ This section describes how to receive transcript content from the transcript pro
 
 2. **Create a toolkit instance**
 
-   Before joining an RTC channel, create Video SDK and Signaling engine instances and pass them into the toolkit instance.
+   Before joining an RTC channel, create RTC SDK and Signaling engine instances and pass them into the toolkit instance.
 
    ```ts
    // Initialize the component

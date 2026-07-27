@@ -20,7 +20,7 @@ server. For details, see [Agora account management](/en/realtime-media/rtc/manag
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../../reference/firewall).
 
-- Join a Video SDK channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
+- Join an RTC channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
 
 - Make sure Real-Time STT is enabled for your app.
 

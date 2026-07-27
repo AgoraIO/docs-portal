@@ -10,7 +10,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -18,11 +18,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -36,7 +36,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -97,11 +97,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -293,7 +293,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -353,7 +353,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -361,11 +361,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -379,7 +379,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -442,11 +442,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -552,7 +552,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -612,7 +612,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -620,11 +620,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -638,7 +638,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -701,11 +701,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -811,7 +811,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -871,14 +871,14 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
 
 ## Implementation
 
-Video SDK provides two methods to set video properties:
+RTC SDK provides two methods to set video properties:
 
 1. **Setting video properties when creating the video track:** Use `encoderConfig` parameter in `AgoraRTC.createCameraVideoTrack`, `AgoraRTC.createScreenVideoTrack`, or `AgoraRTC.createCustomVideoTrack`.
 
@@ -1097,7 +1097,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -1105,11 +1105,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -1123,7 +1123,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -1184,11 +1184,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -1288,7 +1288,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -1347,7 +1347,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -1355,11 +1355,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -1373,7 +1373,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -1434,11 +1434,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -1532,7 +1532,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -1587,7 +1587,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -1595,11 +1595,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -1613,7 +1613,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -1674,11 +1674,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -1778,7 +1778,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -1834,7 +1834,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -1842,11 +1842,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -1860,7 +1860,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -1921,11 +1921,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -2019,7 +2019,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -2075,7 +2075,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -2083,11 +2083,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -2101,7 +2101,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -2162,11 +2162,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -2269,7 +2269,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -2329,7 +2329,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -2337,11 +2337,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -2355,7 +2355,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -2416,11 +2416,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -2520,7 +2520,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|
@@ -2580,7 +2580,7 @@ This page guides you on configuring the video encoder settings to ensure optimal
 
 ## Understand the tech
 
-In Video SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
+In RTC SDK you can set the video dimensions, framerate, bitrate, orientation mode, and mirror mode by specifying a video profile. You can also set the degradation preference to specify how video quality is degraded under suboptimal network conditions.
 
 #### Resolution, frame rate, and bitrate
 
@@ -2588,11 +2588,11 @@ In Video SDK you can set the video dimensions, framerate, bitrate, orientation m
 
 * **Frame rate**: Represents the number of frames encoded per second (FPS). The default value is `15` FPS. A higher frame rate contributes to smoother video playback. For use-cases demanding high video smoothness, consider setting this parameter to `20` or `25`. It is advised not to exceed a frame rate of `30`.
 
-* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the Video SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
+* **Bitrate**: Indicates the video encoding bitrate in Kbps. The default mode is set to *Standard Bitrate*. In this mode, the RTC SDK dynamically sets an appropriate bitrate based on the channel profile, resolution, and frame rate.
 
 * **Minimum bitrate**: Sets the minimum video encoding bitrate in Kbps. The SDK automatically adjusts bitrate based on network conditions. The default value for this parameter allows the SDK to determine the minimum bitrate automatically, which is recommended for most use cases. Setting this parameter higher than the default value forces the video encoder to maintain higher quality, but may increase packet loss and affect video playback smoothness.
 
-Video SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
+RTC SDK offers a variety of resolutions and frame rates to choose from. To specify your own configuration, refer to the [Video profiles table](#video-profiles-table).
 
 To achieve high video quality, it's crucial to maintain a balanced relationship between resolution, bitrate, and frame rate. Higher resolutions necessitate a higher bitrate. If the bitrate is fixed, an excessively high frame rate can reduce the resolution.
 
@@ -2606,7 +2606,7 @@ The way video is displayed on the playing device depends on `orientationMode` us
 
 * **Adaptive**
 
-  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, Video SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
+  In the this mode, the direction of the video output is consistent with the direction of the captured video. The receiving end rotates the video based on the received video rotation information. This mode is suitable for use-cases where the receiving end can adjust the video direction. No matter which mode you choose, RTC SDK ensures that the relative position of the video and the status bar is always consistent at the capturing end and playback end.
 
 * **Fixed Portrait**
 
@@ -2667,11 +2667,11 @@ The following images illustrate the orientation behavior:
 
 #### Degradation preference
 
-To enhance the video experience for users in low-bandwidth conditions, the Video SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
+To enhance the video experience for users in low-bandwidth conditions, the RTC SDK offers the `degradationPreference` parameter. This parameter determines how video adapts when bandwidth is limited: prioritize frame rate for smooth playback, prioritize resolution for visual clarity, balance both qualities, or let the SDK decide automatically based on the scenario.
 
 #### Mirror mode
 
-By default, Video SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
+By default, RTC SDK does not mirror the video during encoding. You use the `mirrorMode` parameter to decide whether to mirror the video that remote users see.
 
 ## Prerequisites
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) in your project.
@@ -2764,7 +2764,7 @@ This section contains related information and API references.
 
 ### Video profiles table
 
-Video SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
+RTC SDK provides a selection of video dimensions and frame rates to choose from. You can also customize the values according to the following table:
 
 | Resolution (width × height) | Frame rate (fps) |
 |------------------|------------------|

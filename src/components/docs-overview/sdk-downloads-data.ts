@@ -81,8 +81,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'voice-sdk-android',
-        label: 'Voice SDK',
-        info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
+        label: 'RTC Voice SDK',
+        info: 'Voice only SDK for Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
             id: '4.6.3-voice-sdk-android',
@@ -264,7 +264,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
       },
       {
         id: 'video-sdk-android',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -821,7 +821,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'voice-sdk-ios',
-        label: 'Voice SDK',
+        label: 'RTC Voice SDK',
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
@@ -980,7 +980,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
       },
       {
         id: 'video-sdk-ios',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -1426,280 +1426,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Web',
     core: [
       {
-        id: 'voice-sdk-web',
-        label: 'Voice SDK',
-        info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
-        versions: [
-          {
-            id: '4.24.6-voice-sdk-web',
-            label: 'Version 4.24.6 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
-          },
-          {
-            id: '4.24.5-voice-sdk-web',
-            label: 'Version 4.24.5',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
-          },
-          {
-            id: '4.24.4-voice-sdk-web',
-            label: 'Version 4.24.4',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_4_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.4',
-          },
-          {
-            id: '4.24.3-voice-sdk-web',
-            label: 'Version 4.24.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_3_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.3',
-          },
-          {
-            id: '4.24.2-voice-sdk-web',
-            label: 'Version 4.24.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_2_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.2',
-          },
-          {
-            id: '4.24.1-voice-sdk-web',
-            label: 'Version 4.24.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_1_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.1',
-          },
-          {
-            id: '4.24.0-voice-sdk-web',
-            label: 'Version 4.24.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.23.4-voice-sdk-web',
-            label: 'Version 4.23.4',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_23_4_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.23.3-voice-sdk-web',
-            label: 'Version 4.23.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_23_3_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.23.2-voice-sdk-web',
-            label: 'Version 4.23.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_23_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.23.1-voice-sdk-web',
-            label: 'Version 4.23.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_23_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.23.0-voice-sdk-web',
-            label: 'Version 4.23.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_23_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.22.2-voice-sdk-web',
-            label: 'Version 4.22.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_22_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.22.1-voice-sdk-web',
-            label: 'Version 4.22.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_22_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.22.0-voice-sdk-web',
-            label: 'Version 4.22.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_22_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.21.2-voice-sdk-web',
-            label: 'Version 4.21.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_21_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.20.2-voice-sdk-web',
-            label: 'Version 4.20.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_20_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.20.1-voice-sdk-web',
-            label: 'Version 4.20.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_20_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.20.0-voice-sdk-web',
-            label: 'Version 4.20.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_20_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.19.3-voice-sdk-web',
-            label: 'Version 4.19.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_19_3_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.19.2-voice-sdk-web',
-            label: 'Version 4.19.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_19_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.19.1-voice-sdk-web',
-            label: 'Version 4.19.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_19_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.19.0-voice-sdk-web',
-            label: 'Version 4.19.0 ',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_19_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.18.3-voice-sdk-web',
-            label: 'Version 4.18.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_18_3_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.18.2-voice-sdk-web',
-            label: 'Version 4.18.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_18_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.18.1-voice-sdk-web',
-            label: 'Version 4.18.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_18_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.18.0-voice-sdk-web',
-            label: 'Version 4.18.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_18_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.17.2-voice-sdk-web',
-            label: 'Version 4.17.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_17_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.17.1-voice-sdk-web',
-            label: 'Version 4.17.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_17_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.17.0-voice-sdk-web',
-            label: 'Version 4.17.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_17_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.16.1-voice-sdk-web',
-            label: 'Version 4.16.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_16_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.16.0-voice-sdk-web',
-            label: 'Version 4.16.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_16_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.15.1-voice-sdk-web',
-            label: 'Version 4.15.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_15_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.15.0-voice-sdk-web',
-            label: 'Version 4.15.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_15_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.14.2-voice-sdk-web',
-            label: 'Version 4.14.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_14_2_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.14.1-voice-sdk-web',
-            label: 'Version 4.14.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_14_1_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-          {
-            id: '4.14.0-voice-sdk-web',
-            label: 'Version 4.14.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_14_0_FULL.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-web',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -2186,167 +1914,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'macOS',
     core: [
       {
-        id: 'voice-sdk-macOS',
-        label: 'Voice SDK',
-        info: 'SDK for: Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
-        versions: [
-          {
-            id: '4.6.2-voice-sdk-macOS',
-            label: 'Version 4.6.2 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.6.2_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.6.0-voice-sdk-macOS',
-            label: 'Version 4.6.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.6.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.5.2-voice-sdk-macOS',
-            label: 'Version 4.5.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.5.2_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.5.1-voice-sdk-macOS',
-            label: 'Version 4.5.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.5.1_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.5.0-voice-sdk-macOS',
-            label: 'Version 4.5.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.5.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.4.0-voice-sdk-macOS',
-            label: 'Version 4.4.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.4.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.3.2-voice-sdk-macOS',
-            label: 'Version 4.3.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.3.2_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.3.1-voice-sdk-macOS',
-            label: 'Version 4.3.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.3.1_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.3.0-voice-sdk-macOS',
-            label: 'Version 4.3.0 ',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.3.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.2.6-voice-sdk-macOS',
-            label: 'Version 4.2.6',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.2.6_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.2.3-voice-sdk-macOS',
-            label: 'Version 4.2.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_rel.v4.2.3_46919_FULL_20231008_1745_279681.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.2.2-voice-sdk-macOS',
-            label: 'Version 4.2.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.2.2_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.2.1-voice-sdk-macOS',
-            label: 'Version 4.2.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.2.1_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.2.0-voice-sdk-macOS',
-            label: 'Version 4.2.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.2.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.1.1-voice-sdk-macOS',
-            label: 'Version 4.1.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.1.1_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.1.0-voice-sdk-macOS',
-            label: 'Version 4.1.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_V4.1.0_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS',
-          },
-          {
-            id: '4.0.1-voice-sdk-macOS',
-            label: 'Version 4.0.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.0.1_FULL.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraAudio_macOS',
-          },
-          {
-            id: '3.7.2-voice-sdk-macOS',
-            label: 'Version 3.7.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v3.7.2_VOICE.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraAudio_macOS',
-          },
-          {
-            id: '3.7.1-voice-sdk-macOS',
-            label: 'Version 3.7.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v3.7.1_VOICE.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraAudio_macOS',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-macOS',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -2631,7 +2200,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'video-sdk-react-native',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -2872,7 +2441,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'video-sdk-js',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -2929,58 +2498,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'voice-sdk-js',
-        label: 'Voice SDK',
-        info: 'SDK for: Voice Calling',
-        versions: [
-          {
-            id: '2.5.1-voice-sdk-react-js',
-            label: 'Version 2.5.1 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.5.1',
-          },
-          {
-            id: '2.5.0-voice-sdk-react-js',
-            label: 'Version 2.5.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/agora-rtc-react.2.5.0.js',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.5.0',
-          },
-          {
-            id: '2.4.0-voice-sdk-react-js',
-            label: 'Version 2.4.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/agora-rtc-react.2.4.0.js',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.4.0',
-          },
-          {
-            id: '2.3.0-voice-sdk-react-js',
-            label: 'Version 2.3.0',
-            downloadLink: 'https://unpkg.com/agora-rtc-react@2.3.0/dist/',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.3.0',
-          },
-          {
-            id: '2.2.0-voice-sdk-react-js',
-            label: 'Version 2.2.0 ',
-            downloadLink: 'https://unpkg.com/agora-rtc-react@2.2.0/dist/',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.2.0',
-          },
-          {
-            id: '2.1.0-voice-sdk-react-js',
-            label: 'Version 2.1.0',
-            downloadLink: 'https://unpkg.com/agora-rtc-react@2.1.0/dist/',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-react/v/2.1.0',
-          },
-        ],
-      },
     ],
   },
   {
@@ -2988,129 +2505,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Windows',
     core: [
       {
-        id: 'voice-sdk-windows',
-        label: 'Voice SDK',
-        info: 'SDK for: Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
-        versions: [
-          {
-            id: '4.6.2-voice-sdk-windows',
-            label: 'Version 4.6.2 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.2_FULL.zip',
-          },
-          {
-            id: '4.6.0-voice-sdk-windows',
-            label: 'Version 4.6.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.0_FULL.zip',
-          },
-          {
-            id: '4.5.2-voice-sdk-windows',
-            label: 'Version 4.5.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.5.2_FULL.zip',
-          },
-          {
-            id: '4.5.1-voice-sdk-windows',
-            label: 'Version 4.5.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.5.1_FULL.zip',
-          },
-          {
-            id: '4.5.0-voice-sdk-windows',
-            label: 'Version 4.5.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.5.0_FULL.zip',
-          },
-          {
-            id: '4.4.0-voice-sdk-windows',
-            label: 'Version 4.4.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.4.0_FULL.zip',
-          },
-          {
-            id: '4.3.2-voice-sdk-windows',
-            label: 'Version 4.3.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.3.2_FULL.zip',
-          },
-          {
-            id: '4.3.1-voice-sdk-windows',
-            label: 'Version 4.3.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.3.1_FULL.zip',
-          },
-          {
-            id: '4.3.0-voice-sdk-windows',
-            label: 'Version 4.3.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.3.0_FULL.zip',
-          },
-          {
-            id: '4.2.6-voice-sdk-windows',
-            label: 'Version 4.2.6',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.2.6_FULL.zip',
-          },
-          {
-            id: '4.2.3-voice-sdk-windows',
-            label: 'Version 4.2.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_rel.v4.2.3_22131_FULL_20231008_1750_279678.zip',
-          },
-          {
-            id: '4.2.2-voice-sdk-windows',
-            label: 'Version 4.2.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.2.2_FULL.zip',
-          },
-          {
-            id: '4.2.1-voice-sdk-windows',
-            label: 'Version 4.2.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.2.1_FULL.zip',
-          },
-          {
-            id: '4.2.0-voice-sdk-windows',
-            label: 'Version 4.2.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.2.0_FULL.zip',
-          },
-          {
-            id: '4.1.1-voice-sdk-windows',
-            label: 'Version 4.1.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.1.1_FULL.zip',
-          },
-          {
-            id: '4.1.0-voice-sdk-windows',
-            label: 'Version 4.1.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_V4.1.0_FULL.zip',
-          },
-          {
-            id: '4.0.1-voice-sdk-windows',
-            label: 'Version 4.0.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.0.1_FULL.zip',
-          },
-          {
-            id: 'windows-cpp-3.7.2-voice-sdk-windows',
-            label: 'Version 3.7.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_V3.7.2_VOICE.zip',
-          },
-          {
-            id: 'windows-cpp-3.7.1-voice-sdk-windows',
-            label: 'Version 3.7.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v3.7.1_VOICE.zip',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-windows',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -3360,103 +2756,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Flutter',
     core: [
       {
-        id: 'voice-sdk-flutter',
-        label: 'Voice SDK',
-        info: 'SDK for Voice Calling',
-        versions: [
-          {
-            id: '6.6.2-voice-sdk-flutter',
-            label: 'Version 6.6.2 (Latest)',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.6.2',
-          },
-          {
-            id: '6.5.2-voice-sdk-flutter',
-            label: 'Version 6.5.2',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.5.2',
-          },
-          {
-            id: '6.5.1-voice-sdk-flutter',
-            label: 'Version 6.5.1',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.5.1',
-          },
-          {
-            id: '6.5.0-voice-sdk-flutter',
-            label: 'Version 6.5.0',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.5.0',
-          },
-          {
-            id: '6.3.2-voice-sdk-flutter',
-            label: 'Version 6.3.2',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.3.2',
-          },
-          {
-            id: '6.3.1-voice-sdk-flutter',
-            label: 'Version 6.3.1',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.3.1',
-          },
-          {
-            id: '6.3.0-voice-sdk-flutter',
-            label: 'Version 6.3.0',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.3.0',
-          },
-          {
-            id: '6.2.6-voice-sdk-flutter',
-            label: 'Version 6.2.6',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.6',
-          },
-          {
-            id: '6.2.4-voice-sdk-flutter',
-            label: 'Version 6.2.4',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.4',
-          },
-          {
-            id: '6.2.3-voice-sdk-flutter',
-            label: 'Version 6.2.3',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.3',
-          },
-          {
-            id: '6.2.2-voice-sdk-flutter',
-            label: 'Version 6.2.2',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.2',
-          },
-          {
-            id: '6.2.1-voice-sdk-flutter',
-            label: 'Version 6.2.1',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.1',
-          },
-          {
-            id: '6.2.0-voice-sdk-flutter',
-            label: 'Version 6.2.0',
-            packageManager:
-              'https://pub.dev/packages/agora_rtc_engine/versions/6.2.0',
-          },
-          {
-            id: '6.1.0-voice-sdk-flutter',
-            label: 'Version 6.1.0',
-            packageManager: 'https://pub.dev/packages/agora_rtc_engine',
-          },
-          {
-            id: '6.0.0-voice-sdk-flutter',
-            label: 'Version 6.0.0',
-            packageManager: 'https://pub.dev/packages/agora_rtc_engine',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-flutter',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -3851,111 +3152,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Unity',
     core: [
       {
-        id: 'voice-sdk-unity',
-        label: 'Voice SDK',
-        info: 'SDK for: Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
-        versions: [
-          {
-            id: '4.6.2-voice-sdk-unity',
-            label: 'Version 4.6.2 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_VOICE_20260212_634_4.6.2-build.1.zip',
-          },
-          {
-            id: '4.5.1-voice-sdk-unity',
-            label: 'Version 4.5.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_4.5.1_VOICE_20250617_471_build.5.zip',
-          },
-          {
-            id: '4.5.0-voice-sdk-unity',
-            label: 'Version 4.5.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.5.0_VOICE.zip',
-          },
-          {
-            id: '4.4.0-voice-sdk-unity',
-            label: 'Version 4.4.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.4.0_VOICE.zip',
-          },
-          {
-            id: '4.3.2-voice-sdk-unity',
-            label: 'Version 4.3.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.3.2_VOICE.zip',
-          },
-          {
-            id: '4.3.1-voice-sdk-unity',
-            label: 'Version 4.3.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.3.1_VOICE.zip',
-          },
-          {
-            id: '4.3.0-voice-sdk-unity',
-            label: 'Version 4.3.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.3.0_VOICE.zip',
-          },
-          {
-            id: '4.2.6-voice-sdk-unity',
-            label: 'Version 4.2.6',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_4.2.6_VOICE.zip',
-          },
-          {
-            id: '4.2.4-voice-sdk-unity',
-            label: 'Version 4.2.4',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.2.4_VOICE.zip',
-          },
-          {
-            id: '4.2.3-voice-sdk-unity',
-            label: 'Version 4.2.3',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.2.3_VOICE.zip',
-          },
-          {
-            id: '4.2.2-voice-sdk-unity',
-            label: 'Version 4.2.2',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.2.2_VOICE.zip',
-          },
-          {
-            id: '4.2.1-voice-sdk-unity',
-            label: 'Version 4.2.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.2.1_VOICE.zip',
-          },
-          {
-            id: '4.2.0-voice-sdk-unity',
-            label: 'Version 4.2.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.2.0_VOICE.zip',
-          },
-          {
-            id: '4.1.0-voice-sdk-unity',
-            label: 'Version 4.1.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.1.0_VOICE.zip',
-          },
-          {
-            id: '4.0.0-voice-sdk-unity',
-            label: 'Version 4.0.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_v4.0.0_VOICE.zip',
-          },
-          {
-            id: '3.7.1-voice-sdk-unity',
-            label: 'Version 3.7.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTC_SDK_3.7.1_VOICE.zip',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-unity',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -4173,104 +3371,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Electron',
     core: [
       {
-        id: 'voice-sdk-electron',
-        label: 'Voice SDK',
-        info: 'SDK for: Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
-        versions: [
-          {
-            id: '4.6.2-voice-sdk-electron',
-            label: 'Version 4.6.2 (Latest)',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.6.2',
-          },
-          {
-            id: '4.5.2-voice-sdk-electron',
-            label: 'Version 4.5.2',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.5.2',
-          },
-          {
-            id: '4.5.0-voice-sdk-electron',
-            label: 'Version 4.5.0',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.5.0',
-          },
-          {
-            id: '4.4.0-voice-sdk-electron',
-            label: 'Version 4.4.0',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.4.0',
-          },
-          {
-            id: '4.3.2-voice-sdk-electron',
-            label: 'Version 4.3.2',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.3.2',
-          },
-          {
-            id: '4.3.1-voice-sdk-electron',
-            label: 'Version 4.3.1',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.3.1',
-          },
-          {
-            id: '4.3.0-voice-sdk-electron',
-            label: 'Version 4.3.0',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.3.0',
-          },
-          {
-            id: '4.2.6-voice-sdk-electron',
-            label: 'Version 4.2.6',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.6',
-          },
-          {
-            id: '4.2.4-voice-sdk-electron',
-            label: 'Version 4.2.4',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.4',
-          },
-          {
-            id: '4.2.3-voice-sdk-electron',
-            label: 'Version 4.2.3',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.3',
-          },
-          {
-            id: '4.2.2-voice-sdk-electron',
-            label: 'Version 4.2.2',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.2',
-          },
-          {
-            id: '4.2.1-voice-sdk-electron',
-            label: 'Version 4.2.1',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.1',
-          },
-          {
-            id: '4.2.0-voice-sdk-electron',
-            label: 'Version 4.2.0',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.2.0',
-          },
-          {
-            id: '4.1.0-voice-sdk-electron',
-            label: 'Version 4.1.0',
-            packageManager:
-              'https://www.npmjs.com/package/agora-electron-sdk/v/4.1.0',
-          },
-          {
-            id: '4.0.0-voice-sdk-electron',
-            label: 'Version 4.0.0',
-            packageManager: 'https://www.npmjs.com/package/agora-electron-sdk',
-          },
-        ],
-      },
-      {
         id: 'video-sdk-electron',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -4377,7 +3479,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'video-sdk-unreal-engine',
-        label: 'Video SDK',
+        label: 'RTC SDK',
         info: 'SDK for Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -4403,37 +3505,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 4.2.1',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_RTC_Full_SDK_4.2.1_Unreal.zip',
-          },
-        ],
-      },
-      {
-        id: 'voice-sdk-unreal-engine',
-        label: 'Voice SDK',
-        info: 'SDK for Voice Calling',
-        versions: [
-          {
-            id: '4.5.1-voice-sdk-unreal-engine',
-            label: 'Version 4.5.1 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.5.1_Unreal.zip',
-          },
-          {
-            id: '4.5.0-voice-sdk-unreal-engine',
-            label: 'Version 4.5.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.5.0_Unreal.zip',
-          },
-          {
-            id: '4.4.0-voice-sdk-unreal-engine',
-            label: 'Version 4.4.0',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.4.0_Unreal.zip',
-          },
-          {
-            id: '4.2.1-voice-sdk-unreal-engine',
-            label: 'Version 4.2.1',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_RTC_VOICE_SDK_4.2.1_Unreal.zip',
           },
         ],
       },

@@ -638,7 +638,7 @@ To test the code used in this page you need to have:
 * A computer with Internet access.
   Ensure that no firewall is blocking your network communication.
 
-* Same setup as the [Video SDK quickstart prerequisites](/en/realtime-media/rtc/get-started-sdk) for Video Calling.
+* Same setup as the [RTC SDK quickstart prerequisites](/en/realtime-media/rtc/get-started-sdk) for Video Calling.
 
 ## Project setup
 
@@ -677,9 +677,9 @@ You are now ready to integrate the extension in your app.
 
 ## Integrate the extension into your project
 
-Integrating an extension into your project involves a few important steps to ensure seamless interaction between the extension and Agora Video SDK. Each of these steps plays a crucial role to ensure that the extension works correctly and efficiently within your Agora project:
+Integrating an extension into your project involves a few important steps to ensure seamless interaction between the extension and Agora RTC SDK. Each of these steps plays a crucial role to ensure that the extension works correctly and efficiently within your Agora project:
 
-1. **Define variables to integrate an extension with Agora Video SDK**
+1. **Define variables to integrate an extension with Agora RTC SDK**
 
     In `AgoraImplementationDlg.h`, add the following declarations to the `CAgoraImplementationDlg` class before `setupVideoSDKEngine();`:
 
@@ -967,7 +967,7 @@ This section shows you how to implement the video filter extension in your app:
   ```
 4. **Implement the required callbacks to manage the extension**
 
-  Video SDK provides the following callbacks to manage an extension:
+  RTC SDK provides the following callbacks to manage an extension:
 
   * `onExtensionStarted`: Occurs when the extension is enabled.
   * `onExtensionError`: Occurs when the extension runs incorrectly.
@@ -1137,7 +1137,7 @@ This section presents the framework code you add to your Flutter project to inte
   ```
   If the extension uses the second camera to capture video, set the type parameter to `secondaryCameraSource`.
 
-  To enable multiple extensions, call `enableExtension` for each extension. The calls to `enableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from Video SDK before extension B.
+  To enable multiple extensions, call `enableExtension` for each extension. The calls to `enableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, extension A processes data from RTC SDK before extension B.
 
 3. **Set extension properties**
 
@@ -1526,7 +1526,7 @@ This section presents the framework code you add to your Unity project to integr
 Extensions marketplace hosts both third-party extensions as well as those developed by Agora. To use an Agora extension, you do not need to call EnableExtension.
 
 :::
-  To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, Video SDK processes data from extension A before extension B.
+  To enable multiple extensions, call `EnableExtension` for each extension. The calls to `EnableExtension` determines the order of each extension in the transmission pipeline. For example, if you enable extension A before extension B, RTC SDK processes data from extension A before extension B.
 
 3. **Set extension properties**
 

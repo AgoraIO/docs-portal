@@ -1,15 +1,15 @@
 ---
 title: 'Magic Leap'
-description: 'Integrate Video SDK for Unity into your Magic Leap app.'
+description: 'Integrate RTC SDK for Unity into your Magic Leap app.'
 ---
 
-Agora Video SDK for Magic Leap allows you to integrate real-time Video Calling features into your [Magic Leap](https://www.magicleap.com/) app. You can enhance the overall user experience and add new possibilities for collaboration and interaction within Magic Leap environments.
+Agora RTC SDK for Magic Leap allows you to integrate real-time Video Calling features into your [Magic Leap](https://www.magicleap.com/) app. You can enhance the overall user experience and add new possibilities for collaboration and interaction within Magic Leap environments.
 
-This page shows the minimum code you need to integrate high-quality, low-latency Video Calling features into your Magic Leap project using Video SDK.
+This page shows the minimum code you need to integrate high-quality, low-latency Video Calling features into your Magic Leap project using RTC SDK.
 
 ## Understand the tech
 
-This section explains how you can integrate Video Calling features into your Magic Leap project using Video SDK.
+This section explains how you can integrate Video Calling features into your Magic Leap project using RTC SDK.
 
 To start a session, implement the following steps in your app:
 
@@ -54,9 +54,9 @@ You are now ready to add Video Calling features to your Magic Leap project.
 
 When a user opens the app, you initialize the Agora Engine. When the user taps a button, the app joins or leaves a channel. When another user joins the same channel, their video and audio are rendered in the app. This simple workflow lets you focus on implementing Agora features instead of surrounding UI complexity.
 
-This section shows how to integrate the Video SDK to implement the Video Calling demo in your Magic Leap project:
+This section shows how to integrate the RTC SDK to implement the Video Calling demo in your Magic Leap project:
 
-1. [Download](/sdks) the latest version of Video SDK for Magic Leap to a local folder.
+1. [Download](/sdks) the latest version of RTC SDK for Magic Leap to a local folder.
 2. Double-click the downloaded package.
 
 The Import dialog opens automatically in Unity Editor.
@@ -84,7 +84,7 @@ Video from your ML2 is streamed to the channel and is visible in the web demo. Y
 
 ## Reference
 
-- [Manual install](/sdks) shows how to install Video SDK manually
+- [Manual install](/sdks) shows how to install RTC SDK manually
 - To ensure communication security in test or production environments, best practice is to use a token server. See [Use tokens](../build/authenticate-users/authentication-workflow.mdx)
 
 ### API reference

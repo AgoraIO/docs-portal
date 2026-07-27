@@ -5,14 +5,14 @@ description: "Information about changes in each release of Video Calling."
 
 <PlatformStructured platform="android">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [MetaKit extension](#metakit-extension)
 - [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 If your target platform is Android 12 or higher, add the `android.permission.BLUETOOTH_CONNECT` permission to the `AndroidManifest.xml` file of the Android project to enable the Bluetooth function of the Android system.
 
@@ -29,7 +29,7 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 On Android 14 devices such as the OnePlus 11, screen sharing might not be available when `targetSdkVersion` is set to `34`. For example, half of the shared screen might be black. Agora recommends setting `targetSdkVersion` to 34 or earlier. This can cause the screen sharing process to be interrupted when switching between portrait and landscape orientation. If the device asks whether to start recording the screen, confirm the prompt to resume screen sharing.
 
 :::warning[Library conflict]
-Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include the `libaosl.so` library. If you manually integrate Video SDK through a CDN and also use Signaling SDK, delete the earlier version of `libaosl.so` to avoid conflicts.
+Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include the `libaosl.so` library. If you manually integrate RTC SDK through a CDN and also use Signaling SDK, delete the earlier version of `libaosl.so` to avoid conflicts.
 :::
 
 </section>
@@ -297,7 +297,7 @@ Released on April 22, 2025.
 
 :::info[Note]
 
-The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
+The `libaosl.so` library version in RTC SDK v4.5.2 is 1.2.13.
 
 :::
 
@@ -333,7 +333,7 @@ Released on March 4, 2025.
 
 :::info[Note]
 
-The `libaosl.so` library version in Video SDK v4.5.1 is 1.2.13.
+The `libaosl.so` library version in RTC SDK v4.5.1 is 1.2.13.
 
 :::
 
@@ -370,7 +370,7 @@ Released on November 27, 2024.
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::caution[Note]
-As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.so` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `libaosl.so` library to avoid conflicts. The `libaosl.so` library version in Video SDK v4.5.0 is 1.2.13.
+As of v4.5.0, both RTC SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.so` library. If you manually integrate RTC SDK via CDN and also use Signaling SDK, delete the earlier version of the `libaosl.so` library to avoid conflicts. The `libaosl.so` library version in RTC SDK v4.5.0 is 1.2.13.
 :::
 
 
@@ -506,7 +506,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
    - Lite SDK supports manual integration or third-party repository integration.
    - For information on dynamic libraries included in the Lite SDK, see [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
    - For the list of APIs supported by Lite SDK, see [Lite SDK API](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_lite_api.html).
-   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
+   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora RTC SDK support?](/en/api-reference/faq/product/audio_format)
 
 1. **Alpha transparency effects**
 
@@ -1820,14 +1820,14 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="ios">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [MetaKit extension](#metakit-extension)
 - [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -1842,7 +1842,7 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 AirPods Pro does not support the A2DP protocol in communication audio mode, which can cause the Bluetooth connection to fail in that mode.
 
 :::warning[Library conflict]
-Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include the `aosl.xcframework` library. If you manually integrate Video SDK through a CDN and also use Signaling SDK, delete the earlier version of `aosl.xcframework` to avoid conflicts.
+Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include the `aosl.xcframework` library. If you manually integrate RTC SDK through a CDN and also use Signaling SDK, delete the earlier version of `aosl.xcframework` to avoid conflicts.
 :::
 
 </section>
@@ -2089,7 +2089,7 @@ v4.5.2 was released on April 22, 2025.
 
 :::info[Note]
 
-The `aosl.xcframework` library version in Video SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+The `aosl.xcframework` library version in RTC SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
 
 :::
 
@@ -2116,7 +2116,7 @@ v4.5.1 was released on March 4, 2025.
 
 :::info[Note]
 
-The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+The `aosl.xcframework` library version in RTC SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
 
 :::
 
@@ -2154,7 +2154,7 @@ v4.5.0 was released on November 27, 2024.
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::caution[Note]
-As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Video SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
+As of v4.5.0, both RTC SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate RTC SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in RTC SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
 :::
 
 
@@ -2273,7 +2273,7 @@ Starting with v4.4.0, the SDK uses native iOS APIs to manage the microphone. As 
    - Lite SDK supports manual integration or third-party repository integration.
    - For information on dynamic libraries included in the Lite SDK, see [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
    - For the list of APIs supported by Lite SDK, see [API reference](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartckit).
-   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora Video SDK support?](/en/api-reference/faq/product/audio_format)
+   - For the limitations and precautions when using the Lite SDK to play media files, refer to [Which audio file formats does the Agora RTC SDK support?](/en/api-reference/faq/product/audio_format)
 
 1. **Alpha transparency effects**
 
@@ -3972,12 +3972,12 @@ This release adds `voicePitch` in `AgoraRtcAudioVolumeInfo` of `reportAudioVolum
 
 <PlatformStructured platform="macos">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -3992,7 +3992,7 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 When the app path, including the app name, contains non-English characters such as Chinese characters, the compiled `Metal shader library` might not contain any methods, causing the app to crash. See [App fails to run on macOS 15 Beta](/en/api-reference/faq/other/macos_15_beta) for the workaround.
 
 :::warning[Library conflict]
-Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include the `aosl.xcframework` library. If you manually integrate Video SDK through a CDN and also use Signaling SDK, delete the earlier version of `aosl.xcframework` to avoid conflicts.
+Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include the `aosl.xcframework` library. If you manually integrate RTC SDK through a CDN and also use Signaling SDK, delete the earlier version of `aosl.xcframework` to avoid conflicts.
 :::
 
 </section>
@@ -4203,7 +4203,7 @@ v4.5.2 was released on April 22, 2025.
 
 :::info[Note]
 
-The `aosl.xcframework` library version in Video SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
+The `aosl.xcframework` library version in RTC SDK v4.5.2 is 1.2.13. You can check the version in the `Info.plist` file.
 
 :::
 
@@ -4228,7 +4228,7 @@ v4.5.1 was released on March 4, 2025.
 
 :::info[Note]
 
-The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
+The `aosl.xcframework` library version in RTC SDK v4.5.1 is 1.2.13. You can check the version in the `Info.plist` file.
 
 :::
 
@@ -4258,7 +4258,7 @@ v4.5.0 was released on November 27, 2024.
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::caution[Note]
-As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Video SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
+As of v4.5.0, both RTC SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate RTC SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in RTC SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
 :::
 
 
@@ -5566,9 +5566,9 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="web">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [AI Noise Suppression](#ai-noise-suppression)
 - [Virtual background](#virtual-background)
 - [Super Clarity extension](#super-clarity-extension)
@@ -5577,7 +5577,7 @@ This page provides the release notes for the Video SDK release streams used by V
 - [Beauty Effect extension](#beauty-effect-extension)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 Video Calling 4.x is a JavaScript and TypeScript library loaded by an HTML web page. The SDK library uses APIs in the web browser to establish connections and control the communication, Broadcast Streaming and Interactive Live Streaming services.
 
@@ -5601,7 +5601,7 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 - On all AMD-based and some Intel-based Windows devices, the video transmission bitrate may be lower than the configured value when Chrome uses the H.264 codec. **Solution:** Configure the browser to use VP9, or disable hardware acceleration.
 - Chrome 84 on macOS has a known issue where WebRTC frame rate can suddenly drop when using H.264. For details, see [Chromium issue 1203206](https://bugs.chromium.org/p/chromium/issues/detail?id=1203206&can=2&q=webrtc%20drop%20component%3ABlink%3EWebRTC%3EVideo) and [WebRTC issue 12704](https://bugs.chromium.org/p/webrtc/issues/detail?id=12704#c3). **Solution:** Use VP9 instead of H.264 on Chrome 84 and later on macOS.
 - Acoustic Echo Cancellation (AEC) can fail when extra processing, such as spatial audio, is applied to the received remote audio stream because AEC cannot get its reference signal. For details, see [Chromium issue 687574](https://bugs.chromium.org/p/chromium/issues/detail?id=687574). **Solution:** Agora recommends that users wear headphones. To use speakers in this scenario, contact [technical support](mailto:support@agora.io).
-- Chrome plans to deprecate and remove the Plan B dialect in WebRTC. For details, see the [Chrome feature description](https://www.chromestatus.com/feature/5823036655665152). If you use one of the following Video SDK versions, upgrade to the latest version:
+- Chrome plans to deprecate and remove the Plan B dialect in WebRTC. For details, see the [Chrome feature description](https://www.chromestatus.com/feature/5823036655665152). If you use one of the following RTC SDK versions, upgrade to the latest version:
 
   | Version | Impact |
   | --- | --- |
@@ -6656,7 +6656,7 @@ v4.18.2 was released on July 11, 2023.
 
 v4.18.2 fixes the following issues:
 
-- In certain circumstances, Video SDK for Web triggered microphone and camera device permission prompts after it
+- In certain circumstances, RTC SDK for Web triggered microphone and camera device permission prompts after it
   finished loading.
 
 ### v4.18.1
@@ -6901,7 +6901,7 @@ Video Calling v4.16.1 was released on February 7, 2023.
 
 This release fixes the following issue:
 
-- When using Video SDK for Web v4.16.0, the video freeze rate showed in Agora Analytics is much higher than the correct value.
+- When using RTC SDK for Web v4.16.0, the video freeze rate showed in Agora Analytics is much higher than the correct value.
 
 ### v4.16.0
 
@@ -6971,7 +6971,7 @@ To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
 ##### VP9 codec
 
-Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browsers:
+RTC SDK for Web v4.15.0 adds support for the VP9 codec in the following browsers:
 
 |         | Supported browsers<sup>①</sup>                               |
 | ------- | ------------------------------------------------------------ |
@@ -6984,11 +6984,11 @@ Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browse
 ① To ensure the best user experience, best practice is to use the latest version of the browsers listed above.
 
 :::
-To start a call using the VP9 codec, apps you connect to built using for Android, iOS, Windows, or macOS must use Video SDK v4.0.1 or greater.
+To start a call using the VP9 codec, apps you connect to built using for Android, iOS, Windows, or macOS must use RTC SDK v4.0.1 or greater.
 
 ##### CSP violation callback
 
-v4.15.0 adds the `AgoraRTC.onSecurityPolicyViolation` callback. When Agora fails to load a resource or send a request due to Content Security Policy(CSP) violations, the Video SDK triggers this callback. When you receive this callback, modify your CSP configuration to ensure that you can access Agora-related services.
+v4.15.0 adds the `AgoraRTC.onSecurityPolicyViolation` callback. When Agora fails to load a resource or send a request due to Content Security Policy(CSP) violations, the RTC SDK triggers this callback. When you receive this callback, modify your CSP configuration to ensure that you can access Agora-related services.
 
 #### Improvements
 
@@ -7005,7 +7005,7 @@ The SDK has the following improvements:
 
 #### Compatibility changes
 
-Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy).
+Cloud Proxy default mode has changed. In RTC SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, RTC SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy).
 
 ### v4.14.2
 
@@ -7849,19 +7849,19 @@ v4.0.0 fixed the following issues:
 
 <PlatformStructured platform="windows">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
 <section id="windows-sdk-known-issues">
 
 :::warning[Library conflict]
-Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include the `libaosl.dll` library. If you manually integrate Video SDK through a CDN and also use Signaling SDK, delete the earlier version of `libaosl.dll` to avoid conflicts. You can check the library version in the `libaosl.dll` file properties.
+Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include the `libaosl.dll` library. If you manually integrate RTC SDK through a CDN and also use Signaling SDK, delete the earlier version of `libaosl.dll` to avoid conflicts. You can check the library version in the `libaosl.dll` file properties.
 :::
 
 </section>
@@ -8089,7 +8089,7 @@ v4.5.2 was released on April 22, 2025.
 
 :::info[Note]
 
-The `aosl.dll` library version in Video SDK v4.5.2 is 1.2.13.
+The `aosl.dll` library version in RTC SDK v4.5.2 is 1.2.13.
 
 :::
 
@@ -8118,7 +8118,7 @@ v4.5.1 was released on March 4, 2025.
 
 :::info[Note]
 
-The `aosl.dll` library version in Video SDK v4.5.1 is 1.2.13.
+The `aosl.dll` library version in RTC SDK v4.5.1 is 1.2.13.
 
 :::
 
@@ -8148,7 +8148,7 @@ This version was released on November 27, 2024.
 This version includes optimizations to some features, including changes to SDK behavior, API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
 :::caution[Note]
-As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate Video SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in Video SDK v4.5.0 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
+As of v4.5.0, both RTC SDK and Signaling SDK (v2.2.0 and above) include the `aosl.dll` library. If you manually integrate RTC SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.dll` library to avoid conflicts. The `aosl.dll` library version in RTC SDK v4.5.0 is 1.2.13. You can check the version by viewing the `aosl.dll` file properties.
 :::
 
 
@@ -9628,12 +9628,12 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="electron">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -11192,12 +11192,12 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="flutter">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -13150,12 +13150,12 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="react-native">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -14726,12 +14726,12 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 <PlatformStructured platform="react-js">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### v2.5.1
 
@@ -14843,12 +14843,12 @@ This version fixed the issue that the SDK threw the error `CAN_NOT_PUBLISH_MULTI
 
 <PlatformStructured platform="unity">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -16823,12 +16823,12 @@ You can call the `SetRemoteDefaultVideoStreamType ` method to choose the video s
 
 <PlatformStructured platform="unreal">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -17153,12 +17153,12 @@ If you have already integrated the 3.x version of the SDK and wish to upgrade to
 
 <PlatformStructured platform="blueprint">
 
-This page provides the release notes for the Video SDK release streams used by Video Calling.
+This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [RTC SDK](#rtc-sdk)
 - [Notifications](#notifications)
 
-## Video SDK
+## RTC SDK
 
 ### Known issues
 
@@ -17440,15 +17440,15 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 
 This version was released on November 16, 2023.
 
-This the first release of Video SDK for Unreal Blueprint.
+This the first release of RTC SDK for Unreal Blueprint.
 
 #### New features
 
-Video SDK for Unreal Blueprint provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
+RTC SDK for Unreal Blueprint provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
 
-Video SDK for Unreal Blueprint offers a visual interface and a set of intuitive and easy-to-use nodes. This enables developers to effortlessly implement real-time interactive features in games or apps within the Unreal project. You don't need to know C++, just drag, connect, and configure nodes.
+RTC SDK for Unreal Blueprint offers a visual interface and a set of intuitive and easy-to-use nodes. This enables developers to effortlessly implement real-time interactive features in games or apps within the Unreal project. You don't need to know C++, just drag, connect, and configure nodes.
 
-To integrate real-time engagement functionality into your app using Video SDK for Unreal Engine, see:
+To integrate real-time engagement functionality into your app using RTC SDK for Unreal Engine, see:
 
 - [SDK quickstart](/en/realtime-media/rtc/get-started-sdk)
 - [API reference](/en/api-reference/api-ref/rtc?platform=blueprint)
@@ -17522,7 +17522,7 @@ For API details, see [AI Noise Suppression](/en/realtime-media/rtc/build/enhance
 
 This release brings the following changes:
 
-- AI Noise Suppression supports Agora Video SDK for Web v4.15.0 or later.
+- AI Noise Suppression supports Agora RTC SDK for Web v4.15.0 or later.
 - The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration. See [AI Noise Suppression](/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression) for details.
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
@@ -17659,7 +17659,7 @@ You can now specify the `fit` property when calling `setOptions`. This sets how 
 
 #### Compatibility changes
 
-Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
+Virtual Background supports Agora RTC SDK for Web v4.15.0 or later.
 
 ### v1.1.1
 
@@ -17806,7 +17806,7 @@ v1.2.0 was released on April 29, 2024.
 
 #### Improvements
 
-- Added support for Video SDK v4.3.x.
+- Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
 ### v1.0.0
@@ -17878,7 +17878,7 @@ v1.2.0 was released on April 29, 2024.
 
 #### Improvements
 
-- Added support for Video SDK v4.3.x.
+- Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
 ### v1.0.0

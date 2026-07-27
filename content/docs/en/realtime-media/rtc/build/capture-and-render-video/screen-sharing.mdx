@@ -3,7 +3,7 @@ title: "Screen sharing"
 description: "Implement key workflow steps required to develop a fully functional video calling app"
 ---
 
-During Video Calling sessions, hosts use the screen sharing feature in the Agora Video SDK to share their screen content with other users or viewers in the form of a video stream. Screen sharing is typically used in the following use-cases:
+During Video Calling sessions, hosts use the screen sharing feature in the Agora RTC SDK to share their screen content with other users or viewers in the form of a video stream. Screen sharing is typically used in the following use-cases:
 
 | Use-case | Description |
 |:---|:---------------|
@@ -68,7 +68,7 @@ The flow diagram and implementation steps in this article demonstrate the first 
 
 ### Integrate screen sharing plug-in
 
-Screen sharing in the Agora Video SDK is implemented through a plug-in. You can automatically integrate the plug-in through Maven Central or manual import of the **aar** file.
+Screen sharing in the Agora RTC SDK is implemented through a plug-in. You can automatically integrate the plug-in through Maven Central or manual import of the **aar** file.
 
 <Tabs defaultValue="automatic">
 <TabsList>
@@ -494,7 +494,7 @@ Take the following steps to set up your screen sharing project:
 
 ### Automatically integrate dynamic libraries
 
-When integrating the Agora Video SDK through CocoaPods, you need to add the following content in the `Podfile` file to specify the integration of the screen sharing dynamic library `AgoraReplayKitExtension.xcframework`. Refer to the following sample code:
+When integrating the Agora RTC SDK through CocoaPods, you need to add the following content in the `Podfile` file to specify the integration of the screen sharing dynamic library `AgoraReplayKitExtension.xcframework`. Refer to the following sample code:
 
 ```ruby
 platform :ios, '9.0'
@@ -966,7 +966,7 @@ Screen sharing modes are available on different platforms as follows:
 
 ## Prerequisites
 
-- The Agora Video SDK only supports screen sharing in the following desktop browsers:
+- The Agora RTC SDK only supports screen sharing in the following desktop browsers:
   - Chrome 58 or above.
   - Firefox 56 or above.
   - Edge 80 and above on Windows 10+ platform.
@@ -1026,7 +1026,7 @@ AgoraRTC.createScreenVideoTrack({
 
 ### Edge browser
 
-Video SDK for Web supports screen sharing on Edge 80 and higher on the Windows 10+ platform.
+RTC SDK for Web supports screen sharing on Edge 80 and higher on the Windows 10+ platform.
 
 To create a screen sharing track, call `createScreenVideoTrack` as follows:
 
@@ -1041,7 +1041,7 @@ AgoraRTC.createScreenVideoTrack({
 
 ### Firefox browser
 
-Video SDK for Web supports screen sharing on Firefox 56 and higher. For Firefox, you specify the type of screen sharing by setting `screenSourceType`.
+RTC SDK for Web supports screen sharing on Firefox 56 and higher. For Firefox, you specify the type of screen sharing by setting `screenSourceType`.
 
 Choose one of the following values for `screenSourceType`:
 
@@ -1059,7 +1059,7 @@ AgoraRTC.createScreenVideoTrack({
 
 ### Safari browser
 
-Video SDK for Web supports screen sharing on Safari 13 and higher on the macOS platform.
+RTC SDK for Web supports screen sharing on Safari 13 and higher on the macOS platform.
 
 To create a screen sharing track, call `createScreenVideoTrack` as follows:
 
@@ -1822,7 +1822,7 @@ This section shows you how to implement screen sharing in your project. Choose t
 
 <CodeBlockTab value="android">
 
-When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the `screen_sharing.dart` file in the Agora Video SDK to implement screen sharing.
+When enabling screen sharing on Android, you only need to call the `startScreenCapture` method. Refer to the `screen_sharing.dart` file in the Agora RTC SDK to implement screen sharing.
 
 </CodeBlockTab>
 

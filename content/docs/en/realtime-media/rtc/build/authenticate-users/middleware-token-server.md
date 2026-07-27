@@ -89,7 +89,7 @@ This section provides details about the middleware token generation API endpoint
 
 #### Generate Token
 
-Generates a Video SDK, Signaling, or Chat token based on the provided parameters.
+Generates a RTC SDK, Signaling, or Chat token based on the provided parameters.
 
 #### Endpoint
 

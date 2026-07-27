@@ -216,11 +216,11 @@ This section contains content that completes the information on this page, or po
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-Video SDK provides APIs for managing input and output devices. Use these APIs to switch devices dynamically during Video Calling and implement hot-swap logic when devices are added or removed.
+RTC SDK provides APIs for managing input and output devices. Use these APIs to switch devices dynamically during Video Calling and implement hot-swap logic when devices are added or removed.
 
 ## Understand the tech
 
-Managing audio and video devices involves selecting, switching, and handling changes in media input and output devices. The Video SDK provides APIs to:
+Managing audio and video devices involves selecting, switching, and handling changes in media input and output devices. The RTC SDK provides APIs to:
 
 * Change the default audio output route to a selected device.
 * List available devices, including microphones and cameras.
@@ -271,7 +271,7 @@ You can call `setDevice` to change the capture device even after publishing a tr
 :::
 ## Hot-swap capture devices
 
-Video SDK provides the `onMicrophoneChanged` and `onCameraChanged` callbacks to detect changes in the plug-in status of audio and video devices. Implement listeners for these callbacks and call `setDevice()` to switch to a newly connected device automatically.
+RTC SDK provides the `onMicrophoneChanged` and `onCameraChanged` callbacks to detect changes in the plug-in status of audio and video devices. Implement listeners for these callbacks and call `setDevice()` to switch to a newly connected device automatically.
 
 ```javascript
 AgoraRTC.onMicrophoneChanged = async (changedDevice) => {

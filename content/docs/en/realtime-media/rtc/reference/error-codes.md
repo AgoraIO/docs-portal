@@ -3,7 +3,7 @@ title: 'SDK error codes'
 description: 'List common Video Calling SDK error codes, their causes, and suggested resolutions.'
 ---
 
-When interacting with the Agora API, the Video SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
+When interacting with the Agora API, the RTC SDK may return an error code. Receiving an error code indicates that the SDK has encountered an unrecoverable error that requires intervention from your app.
 
 This page provides descriptions for common error codes, their causes, and suggested solutions. For error codes without predefined solutions, [contact technical support](https://agora-ticket.agora.io/).
 

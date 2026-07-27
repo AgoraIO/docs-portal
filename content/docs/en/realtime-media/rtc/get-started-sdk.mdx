@@ -82,7 +82,7 @@ To start a real-time session, implement the following steps in your app:
 
 ### Install the SDK
 
-Use either of the following methods to add Video SDK to your project.
+Use either of the following methods to add RTC SDK to your project.
 
 <Tabs defaultValue="maven">
 <TabsList>
@@ -104,7 +104,7 @@ Use either of the following methods to add Video SDK to your project.
 
         :::
 
-    1. To integrate the Video SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
+    1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
         - Groovy `build.gradle`
 
@@ -126,7 +126,7 @@ Use either of the following methods to add Video SDK to your project.
 
     1. Prevent code obfuscation
 
-        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
+        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
 
         ```java
         -keep class io.agora.** { *; }
@@ -136,7 +136,7 @@ Use either of the following methods to add Video SDK to your project.
 </TabsContent>
   <TabsContent value="manual">
 
-    1. Download the latest version of Video SDK from the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
+    1. Download the latest version of RTC SDK from the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
 
     1. Open the unzipped file and copy the following files or subfolders to your project path.
 
@@ -153,7 +153,7 @@ Use either of the following methods to add Video SDK to your project.
 
     1. Prevent code obfuscation
 
-        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the Video SDK code from being obfuscated:
+        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
 
         ```java
         -keep class io.agora.** { *; }
@@ -353,12 +353,12 @@ private fun joinChannel() {
 
 </Tabs>
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle.
+The RTC SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle.
 
 :::info[Note]
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
 :::
 
 <Tabs defaultValue="java">
@@ -560,7 +560,7 @@ To access the media devices on Android devices, declare the necessary permission
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <!-- For devices running Android 12 (API level 32) or higher and integrating Agora Video SDK version v4.1.0 or lower, you also need to add the following permissions -->
+    <!-- For devices running Android 12 (API level 32) or higher and integrating Agora RTC SDK version v4.1.0 or lower, you also need to add the following permissions -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
     <!-- For Android 12.0 or higher, the following permissions are also required -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -1331,7 +1331,7 @@ Follow these steps to add Realtime Communication to your Xcode project:
 
 ### Install the SDK
 
-Use one of the following methods to install the Video SDK.
+Use one of the following methods to install the RTC SDK.
 
 <Tabs defaultValue="spm">
 <TabsList>
@@ -1379,7 +1379,7 @@ Use one of the following methods to install the Video SDK.
 
     Get the latest version number from the [release notes](/en/realtime-media/rtc/reference/release-notes).
 
-3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
+3. Run `pod install` in Terminal to install the RTC SDK. After successful installation, Terminal shows **Pod installation complete!**.
 4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
 
 </TabsContent>
@@ -1508,13 +1508,13 @@ options.audienceLatencyLevel = .low
 agoraKit.setClientRole(role, options: options)
 ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
+The RTC SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
 
 :::info[Note]
 
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
 
 :::
 
@@ -1670,7 +1670,7 @@ class ViewController: UIViewController {
         AgoraRtcEngineKit.destroy()
     }
 
-    // Initializes the Video SDK instance
+    // Initializes the RTC SDK instance
     func initializeAgoraVideoSDK() {
         // Create an instance of AgoraRtcEngineKit and set the delegate
         agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
@@ -1992,7 +1992,7 @@ Follow these steps to add Realtime Communication to your Xcode project:
 
 ### Install the SDK
 
-Use one of the following methods to install the Video SDK.
+Use one of the following methods to install the RTC SDK.
 
 <Tabs defaultValue="spm">
 <TabsList>
@@ -2036,7 +2036,7 @@ Use one of the following methods to install the Video SDK.
 
     Get the latest version number from the [release notes](/en/realtime-media/rtc/reference/release-notes).
 
-3. Run `pod install` in Terminal to install the Video SDK. After successful installation, Terminal shows **Pod installation complete!**.
+3. Run `pod install` in Terminal to install the RTC SDK. After successful installation, Terminal shows **Pod installation complete!**.
 4. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file in Xcode for subsequent operations.
 
 </TabsContent>
@@ -2164,13 +2164,13 @@ options.audienceLatencyLevel = .low
 agoraKit.setClientRole(role, options: options)
 ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
+The RTC SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
 
 :::info[Note]
 
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
 
 :::
 
@@ -2357,7 +2357,7 @@ class ViewController: NSViewController {
         AgoraRtcEngineKit.destroy()
     }
 
-    // Initializes the Video SDK instance
+    // Initializes the RTC SDK instance
     func initializeAgoraVideoSDK() {
         // Create an instance of AgoraRtcEngineKit and set the delegate
         agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
@@ -2644,7 +2644,7 @@ To add Realtime Communication to your existing project, take the following steps
 
 ### Install the SDK
 
-Add the Video SDK to your project:
+Add the RTC SDK to your project:
 
 ```bash
 npm install agora-rtc-sdk-ng
@@ -2810,7 +2810,7 @@ function setupEventListeners() {
 - The `unsubscribe` method is asynchronous and should be used with `Promise` or `async/await`.
 
 :::info[Note]
-To ensure that you receive all Video SDK events, set up event listeners before joining a channel.
+To ensure that you receive all RTC SDK events, set up event listeners before joining a channel.
 :::
 
 For more information about other `AgoraRTCClient` events, refer to the [API reference](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_channel_media_relay_event).
@@ -3087,7 +3087,7 @@ After implementing the quickstart sample, read the following documents to learn 
 
 ### Channel modes
 
-The Video SDK supports the following channel modes:
+The RTC SDK supports the following channel modes:
 
 - `rtc`: Communication use-case
 - `live`: Live broadcast use-case
@@ -3151,7 +3151,7 @@ In addition to using `npm` to install the Web SDK, you can also use the followin
   <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
   ```
 
-* Download the Video SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
+* Download the RTC SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
 
   ```html
   <script src="./AgoraRTC_N-4.24.6.js"></script>
@@ -3260,7 +3260,7 @@ To integrate real-time audio and video interaction into your project:
 
 ### Install the SDK
 
-Install the Agora Video SDK:
+Install the Agora RTC SDK:
 
 1. Download the latest Windows [SDK](/en/api-reference/sdks).
 
@@ -3381,12 +3381,12 @@ void CAgoraQuickStartDlg::joinChannel(const char* token, const char* channelName
 }
 ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides an interface for subscribing to channel events. To use it, create a custom event handler class by inheriting from `IRtcEngineEventHandler` and override its methods to handle real-time interaction events. Add callbacks to receive notification of users joining and leaving the channel.
+The RTC SDK provides an interface for subscribing to channel events. To use it, create a custom event handler class by inheriting from `IRtcEngineEventHandler` and override its methods to handle real-time interaction events. Add callbacks to receive notification of users joining and leaving the channel.
 
 :::info[Note]
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
 :::
 
 ```cpp
@@ -4090,7 +4090,7 @@ To start a real-time session, implement the following steps in your app:
 </TabsList>
 <TabsContent value="new">
 
-Add the Video SDK to your project using `npm`:
+Add the RTC SDK to your project using `npm`:
 
 1. Configure `package.json`
 
@@ -4276,7 +4276,7 @@ checkAndApplyDeviceAccessPrivilege();
 
 ### Import dependencies
 
-Import the modules and functions required to build the app using Video SDK. Add the following code to `renderer.js`:
+Import the modules and functions required to build the app using RTC SDK. Add the following code to `renderer.js`:
 
 ```js
 const {
@@ -4440,7 +4440,7 @@ rtcEngine.registerEventHandler(EventHandles);
 ```
 
 :::info[Note]
-To ensure that you receive all Video SDK events, set the engine event handler before joining a channel.
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
 :::
 
 ### Display the local video
@@ -4877,9 +4877,9 @@ To add Realtime Communication to your existing project:
 
 ### Install the SDK
 
-Install the Agora Video SDK and other dependencies.
+Install the Agora RTC SDK and other dependencies.
 
-1. Add the [latest version](https://pub.dev/packages/agora_rtc_engine) of Agora Video SDK to your Flutter project:
+1. Add the [latest version](https://pub.dev/packages/agora_rtc_engine) of Agora RTC SDK to your Flutter project:
 
     ```bash
     flutter pub add agora_rtc_engine
@@ -5001,7 +5001,7 @@ Future<void> _joinChannel() async {
 }
 ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
 The SDK provides the `RtcEngineEventHandler` for subscribing to channel events. To use it, pass an instance of `RtcEngineEventHandler` to `registerEventHandler` and implement the event methods you want to handle.
 
@@ -5033,7 +5033,7 @@ When a remote user joins the channel, the `onUserJoined` callback is triggered. 
 
 :::info[Note]
 
-To ensure that you receive all Video SDK events, register the event handler before joining a channel.
+To ensure that you receive all RTC SDK events, register the event handler before joining a channel.
 
 :::
 
@@ -5491,7 +5491,7 @@ To create a new application using [React Native Community CLI](https://github.co
 
 ### Install the SDK
 
-Download and add the Agora Video SDK to your React Native project. Choose either of the following methods:
+Download and add the Agora RTC SDK to your React Native project. Choose either of the following methods:
 
 <Tabs defaultValue="npm">
 <TabsList>
@@ -5656,9 +5656,9 @@ Since the engine runs locally, reloading the app using the Metro bundler may cau
 
 :::
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle. Call `registerEventHandler` to register your custom event handler.
+The RTC SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle. Call `registerEventHandler` to register your custom event handler.
 
 ```tsx
 const [remoteUid, setRsemoteUid] = useState(0); // Uid of the remote user
@@ -5689,7 +5689,7 @@ const setupEventHandler = () => {
 
 :::info[Note]
 
-To ensure that you receive all Video SDK events, register the event handler before joining a channel.
+To ensure that you receive all RTC SDK events, register the event handler before joining a channel.
 
 :::
 
@@ -5955,7 +5955,7 @@ const App = () => {
     // Render user interface
     return (
         <SafeAreaView style={styles.main}>
-            <Text style={styles.head}>Agora Video SDK Quickstart</Text>
+            <Text style={styles.head}>Agora RTC SDK quickstart</Text>
             <View style={styles.btnContainer}>
                 <Text onPress={join} style={styles.button}>
                     Join Channel
@@ -6069,7 +6069,7 @@ const App = () => {
     // Render user interface
     return (
         <SafeAreaView style={styles.main}>
-            <Text style={styles.head}>Agora Video SDK Quickstart</Text>
+            <Text style={styles.head}>Agora RTC SDK quickstart</Text>
             <View style={styles.btnContainer}>
                 <Text onPress={join} style={styles.button}>
                     Join Channel
@@ -6294,7 +6294,7 @@ Use one of the following methods to install the project dependencies:
 </TabsList>
 <TabsContent value="npm">
 
-Navigate to the project folder and run the following command to install the Video SDK:
+Navigate to the project folder and run the following command to install the RTC SDK:
 
 ```bash
 npm i agora-rtc-react
@@ -6326,7 +6326,7 @@ This guide includes [complete sample code](#complete-sample-code) that demonstra
 
 ### Import Agora hooks and components
 
-To use Video SDK in your component, include the following imports:
+To use RTC SDK in your component, include the following imports:
 
 ```jsx
 import {
@@ -6865,7 +6865,7 @@ public void Join() {
 }
 ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
 Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case.
 
@@ -6914,7 +6914,7 @@ private void InitEventHandler()
 ```
 
 :::info[Note]
-To ensure that you receive all Video SDK events, register the event handler before joining a channel.
+To ensure that you receive all RTC SDK events, register the event handler before joining a channel.
 :::
 
 ### Display the local video
@@ -7016,7 +7016,7 @@ Since version 2018.3, Unity does not actively obtain device permissions from the
 </TabsContent>
 <TabsContent value="apple">
 
-For iOS and macOS platforms, the Video SDK includes a post-build script named `BL_BuildPostProcess.cs`. When you build and export your Unity project as an iOS project, this script automatically inserts camera and microphone permission entries into the `Info.plist` file, eliminating the need for manual updates.
+For iOS and macOS platforms, the RTC SDK includes a post-build script named `BL_BuildPostProcess.cs`. When you build and export your Unity project as an iOS project, this script automatically inserts camera and microphone permission entries into the `Info.plist` file, eliminating the need for manual updates.
 
 </TabsContent>
 </Tabs>
@@ -7494,7 +7494,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 Take the following steps to add the RTC SDK to your project:
 
-1. Download the latest version of Agora Unreal Video SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
+1. Download the latest version of Agora Unreal RTC SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
 1. In your project root folder, create a `Plugins` folder.
 1. Copy `AgoraPlugin` from the Unreal SDK folder to `Plugins`.
 
@@ -7632,9 +7632,9 @@ Add the `Join` method declaration and implementation to the following files:
     }
     ```
 
-### Subscribe to Video SDK events
+### Subscribe to RTC SDK events
 
-The Video SDK provides an interface for subscribing to channel events. To use it, inherit from the `IRtcEngineEventHandler` class and override the event handler methods for the events you want to process.
+The RTC SDK provides an interface for subscribing to channel events. To use it, inherit from the `IRtcEngineEventHandler` class and override the event handler methods for the events you want to process.
 
 * `AgoraWidget.h`
 
@@ -8339,7 +8339,7 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
 Take the following steps to add the RTC SDK to your project:
 
-1. Download the latest version of Agora Unreal Video SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
+1. Download the latest version of Agora Unreal RTC SDK from [Download SDKs](/en/api-reference/sdks) and unzip it.
 1. In your project root folder, create a `Plugins` folder.
 1. Copy `AgoraPlugin` from the Unreal SDK folder to `Plugins`.
 

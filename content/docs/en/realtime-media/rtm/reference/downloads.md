@@ -438,7 +438,7 @@ To manually install the Signaling SDK for Flutter:
     ```
 
 :::info
-To integrate Signaling SDK version 2.2.1 or above and Video SDK version 4.3.0 or above at the same time, refer to [Handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+To integrate Signaling SDK version 2.2.1 or above and RTC SDK version 4.3.0 or above at the same time, refer to [Handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 :::
 
 1. To install the dependencies, open the terminal and execute the following command in the project path:

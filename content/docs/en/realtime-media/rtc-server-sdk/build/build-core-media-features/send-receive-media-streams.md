@@ -1,6 +1,6 @@
 ---
 title: "Send and receive media streams"
-description: "How to use Server Gateway to send media streams to Video SDK clients and receive media streams from clients."
+description: "How to use Server Gateway to send media streams to RTC SDK clients and receive media streams from clients."
 ---
 
 This page introduces how to use Server Gateway to send media streams to the client and receive media streams from the client.
@@ -40,9 +40,9 @@ if (service->initialize(scfg) != agora::ERR_OK) {
 }
 ```
 
-### Connect to a Video SDK channel
+### Connect to an RTC SDK channel
 
-After initializing the SDK, connect to a Video SDK channel:
+After initializing the SDK, connect to an RTC channel:
 
 1. Create an `IRtcConnection` object:
 

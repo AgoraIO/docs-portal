@@ -3,7 +3,7 @@ title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption method to your app."
 ---
 
-Media stream encryption refers to encrypting audio and video streams in an app using a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by the app developer. Encryption ensures that only the authorized users in a channel see and hear each other. Video SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
+Media stream encryption refers to encrypting audio and video streams in an app using a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by the app developer. Encryption ensures that only the authorized users in a channel see and hear each other. RTC SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
 
 This article describes how to integrate Agora built-in media stream encryption into your app.
 
@@ -110,7 +110,7 @@ To add built-in media stream encryption to your app, refer to the following step
 
    1. To manually add the encryption library to your project:
 
-      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora Video SDK package to your project folder.
+      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora RTC SDK package to your project folder.
 
       1. Open Xcode, go to **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content**.
 
@@ -190,7 +190,7 @@ To add built-in media stream encryption to your app, refer to the following step
 
    1. To manually add the encryption library to your project:
 
-      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora Video SDK package to your project folder.
+      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora RTC SDK package to your project folder.
 
       1. Open Xcode, go to **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content**.
 
@@ -577,7 +577,7 @@ The media stream encryption feature is supported in both communication and live 
 <PlatformStructured platform="web">
 This section shows you how to add built-in media stream encryption to your app.
 
-Video SDK supports the following encryption modes:
+RTC SDK supports the following encryption modes:
 
 - `"aes-128-xts"`: 128-bit AES encryption, XTS mode.
 - `"aes-256-xts"`: 256-bit AES encryption, XTS mode.
@@ -618,9 +618,9 @@ To add built-in media stream encryption to your app, refer to the following step
 
   1. When you call `setEncryptionConfig`, the web client:
 
-     * Converts the key from Hex to ASCII, before passing it to the Video SDK.
+     * Converts the key from Hex to ASCII, before passing it to the RTC SDK.
 
-     * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
+     * Converts the salt from Base64 to Uint8Array, before passing it to the RTC SDK.
 
   :::note
   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.

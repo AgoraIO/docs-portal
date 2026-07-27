@@ -3,14 +3,14 @@ title: "Raw audio processing"
 description: "Pre and post-process captured video and audio data to achieve the desired playback effect."
 ---
 
-In some use-cases, raw audio captured through the microphone must be processed to enhance the user experience or achieve the desired functionality Video SDK enables you to pre-process and post-process the captured audio for implementation of custom playback effects.
+In some use-cases, raw audio captured through the microphone must be processed to enhance the user experience or achieve the desired functionality RTC SDK enables you to pre-process and post-process the captured audio for implementation of custom playback effects.
 
 <PlatformStructured platform="android">
 This article shows you how to pre-process and post-process collected raw audio data.
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your app, take the following steps.
 
@@ -147,7 +147,7 @@ engine.setPlaybackAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Const
 
 </CodeBlockTabs>
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 
@@ -178,7 +178,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your app, take the following steps.
 
@@ -254,7 +254,7 @@ class RawAudioDataMain: BaseViewController {
 ```
 
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 
@@ -285,7 +285,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your app, take the following steps.
 
@@ -363,7 +363,7 @@ class RawAudioDataMain: BaseViewController
 ```
 
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 
@@ -394,7 +394,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your app, take the following steps.
 
@@ -496,7 +496,7 @@ m_rtcEngine->setMixedAudioFrameParameters(44100, 2, 1024);
 ```
 
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 
@@ -528,7 +528,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with Agora Video SDK to enable raw audio data processing. The Web Audio API allows you to modify the captured audio signal before transmitting it to the channel.
+For use-cases that require self-processing of audio data, use the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with Agora RTC SDK to enable raw audio data processing. The Web Audio API allows you to modify the captured audio signal before transmitting it to the channel.
 
 The following figure shows the basic processing of raw audio data:
 
@@ -612,7 +612,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your game, take the following steps.
 
@@ -712,7 +712,7 @@ internal class AudioFrameObserver : IAudioFrameObserver
 ```
 
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 
@@ -744,7 +744,7 @@ This article shows you how to pre-process and post-process collected raw audio d
 
 ## Understand the tech
 
-For use-cases that require self-processing of audio data, Agora Video SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
+For use-cases that require self-processing of audio data, Agora RTC SDK provides raw data processing functionality. You can perform pre-processing to modify the captured audio signal before sending the data to the encoder, or post-process data to modify the received audio signal after sending the data to the decoder.
 
 To implement processing of raw audio data in your game, take the following steps.
 
@@ -941,7 +941,7 @@ Follow these steps to implement raw audio data processing functionality in your 
    ```
 
 :::info
-Video SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
+RTC SDK uses a synchronous callback mechanism for processing raw audio data. When you save or rewrite data using the callbacks, consider the following best practices:
   - To ensure continuity of the audio stream, do not block the SDK thread by processing data directly in the callback function. Instead, make a deep copy of the received audio data and transfer the copied data to another thread for processing.
   - If you choose to process the audio data synchronously within the callback function, you must strictly control the processing time. For example, if the callback function is triggered every 10 milliseconds, then the processing time within the callback must be less than 10 milliseconds to prevent delays or interruptions in the audio stream.
 

@@ -4,7 +4,7 @@ description: "Run microphone, speaker, camera, and last-mile network checks befo
 ---
 In video calling implementations that demand high communication quality, pre-call detection helps identify and troubleshoot issues beforehand, ensuring seamless real-time interaction.
 
-This page shows you how to use Video SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
+This page shows you how to use RTC SDK to run pre-call tests to identify and troubleshoot communication quality issues in your app.
 
 ## Understand the tech
 
@@ -1126,7 +1126,7 @@ void testVideoDevice() {
 
 ### Network quality analysis
 
-video sdk provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
+RTC SDK provides the `startLastmileProbeTest` method to probe the last-mile network quality before joining a channel. The method returns information about the network quality score and network statistics. Take the following steps to run a last-mile network quality probe test:
 
 1. Before joining a channel or switching user roles, call `startLastmileProbeTest` to start the network test. Set the probe configuration and the expected maximum bitrate in `LastmileProbeConfig`.
 

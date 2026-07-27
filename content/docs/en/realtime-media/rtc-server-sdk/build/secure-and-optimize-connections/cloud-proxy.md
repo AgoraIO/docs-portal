@@ -3,7 +3,7 @@ title: "Cloud proxy"
 description: "Shows the Cloud Proxy feature."
 ---
 
-Agora Cloud Proxy is a feature of Agora Voice and Video SDKs. It ensures reliable audio and video connectivity for end users when they connect from restricted network environments.
+Agora Cloud Proxy is a feature of Agora Voice and RTC SDKs. It ensures reliable audio and video connectivity for end users when they connect from restricted network environments.
 
 The following figure illustrates how Agora Cloud Proxy works:
 

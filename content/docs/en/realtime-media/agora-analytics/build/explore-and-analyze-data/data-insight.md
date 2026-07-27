@@ -157,7 +157,7 @@ Each user in a channel is identified by a unique [user ID](../../reference/gloss
 
 ### Calculating usage by the number of users vs. by the number of streams
 
-There are two different approaches to calculating Video SDK service minutes for a channel: by the number of users in the channel, and by the number of streams each user is subscribed to in the channel. Their difference is described in [How does Agora calculate service minutes](../../reference/billing-policies.md).
+There are two different approaches to calculating RTC SDK service minutes for a channel: by the number of users in the channel, and by the number of streams each user is subscribed to in the channel. Their difference is described in [How does Agora calculate service minutes](../../reference/billing-policies.md).
 
 ### Data sampling criteria
 

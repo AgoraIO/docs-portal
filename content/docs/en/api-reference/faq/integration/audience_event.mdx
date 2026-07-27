@@ -2,7 +2,7 @@
 title: "How can I listen for an audience joining or leaving an interactive live streaming channel?"
 ---
 
-The Agora Video SDK does not provide any callback events that listen for an audience joining or leaving an interactive live streaming channel. However, you can listen for these events using either of the following two approaches:
+The Agora RTC SDK does not provide any callback events that listen for an audience joining or leaving an interactive live streaming channel. However, you can listen for these events using either of the following two approaches:
 
 - By using the event notifications provided by Agora's message notification service.
 - By using the signaling service provided by the Agora Signaling SDK.
@@ -46,11 +46,11 @@ The Agora Signaling SDK aims at providing stable signaling services, such as mai
 
 ### Implementation
 
-By integrating both the Agora Video SDK and the Agora Signaling SDK, you can listen for the callback events of the Signaling SDK to detect the states of the audience in the Video SDK channel:
+By integrating both the Agora RTC SDK and the Agora Signaling SDK, you can listen for the callback events of the Signaling SDK to detect the states of the audience in the RTC SDK channel:
 
-- Let a user join both an Video SDK and a Signaling channel. Ensure that the Video SDK channel and the Signaling channel share the same channel name.
+- Let a user join both an RTC SDK and a Signaling channel. Ensure that the RTC SDK channel and the Signaling channel share the same channel name.
 - Bind the actions of joining both channels in your code logic.
-- As a result, the Signaling SDK reporting that a user has joined the Signaling channel means that the user has joined the Video SDK channel as well. The same applies to a user leaving the channel.
+- As a result, the Signaling SDK reporting that a user has joined the Signaling channel means that the user has joined the RTC SDK channel as well. The same applies to a user leaving the channel.
 
 ### Reference
 

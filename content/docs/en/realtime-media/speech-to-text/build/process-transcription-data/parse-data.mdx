@@ -20,7 +20,7 @@ server. For details, see [Agora account management](/en/realtime-media/rtc/manag
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../../reference/firewall).
 
-- Join a Video SDK channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
+- Join an RTC channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
 - Enable Real-Time STT for your app.
 - Install the [Protobuf compiler](https://github.com/protocolbuffers/protobuf#protobuf-compiler-installation) to generate code classes that process transcription text.
 
@@ -284,7 +284,7 @@ chmod +x generate_code.sh
 
 ### Deserialize transcription data
 
-When transcription text is available, your Video SDK event handler receives the stream message callback. Use the generated Protobuf class to deserialize the received data and convert it back into a data structure or object.
+When transcription text is available, your RTC SDK event handler receives the stream message callback. Use the generated Protobuf class to deserialize the received data and convert it back into a data structure or object.
 
 <Tabs items={["Java", "C#", "JavaScript", "Objective-C", "Swift"]}>
 <Tab>

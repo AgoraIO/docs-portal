@@ -6,7 +6,7 @@ This page shows you how to configure volume settings for audio recording, audio 
 
 ## Understand the tech
 
-Agora Video SDK supports adjusting the audio volume for both recording and playback to meet practical application use-cases. For example, during a two-person call, you can mute a remote user by adjusting the playback volume setting to 0.
+Agora RTC SDK supports adjusting the audio volume for both recording and playback to meet practical application use-cases. For example, during a two-person call, you can mute a remote user by adjusting the playback volume setting to 0.
 
 <PlatformStructured platform="android">
 The figure below shows the workflow of adjusting the volume.
@@ -366,7 +366,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 <Tabs defaultValue="java">
 <TabsList>
@@ -480,7 +480,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -553,7 +553,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -727,7 +727,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -925,7 +925,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use `reportAudioVolumeIndicationOfSpeakers` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -1038,7 +1038,7 @@ return (
 
 ### Get volume information of users
 
-The Video SDK provides the ability to monitor the volume level of users using the `useVolumeLevel` hook. To get the audio volume level, pass the respective audio track (local or remote) to the hook:
+The RTC SDK provides the ability to monitor the volume level of users using the `useVolumeLevel` hook. To get the audio volume level, pass the respective audio track (local or remote) to the hook:
 ```typescript
 // Component to track and display the local user's audio volume level
 const AudioVolumeTracker = ({ audioTrack }: { audioTrack?: IMicrophoneAudioTrack }) => {
@@ -1132,7 +1132,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `enableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -1201,7 +1201,7 @@ When configuring audio settings, it's essential to understand the default behavi
 * If the default recording device volume does not meet your requirements, adjust it by regulating the signal amplitude captured by the microphone or sound card.
 
 ### Get volume information of users
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `OnAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `OnAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 
 :::warning[Note]
 Call `EnableAudioVolumeIndication` to enable reporting of the users' volume in the callback.
@@ -1293,7 +1293,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 ```cpp
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.
@@ -1516,7 +1516,7 @@ When configuring audio settings, it's essential to understand the default behavi
 
 ### Get volume information of users
 
-Video SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
+RTC SDK enables you to obtain the user IDs and corresponding volumes of the three users with the highest instantaneous volumes in a channel during the process of audio recording, mixing, and playback. You use the `onAudioVolumeIndication` callback to obtain this information. A returned `uid` of `0` in the callback indicates the local user.
 ```cpp
 // Retrieve the user IDs of the three users with the highest instantaneous speaking volume,
 // their respective volumes, and determine whether the local user is speaking.

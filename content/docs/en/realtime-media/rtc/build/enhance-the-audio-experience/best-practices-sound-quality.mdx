@@ -68,7 +68,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -159,7 +159,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
 
 ```objc
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -205,7 +205,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
 
 ```objc
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -231,7 +231,7 @@ To improve the audio quality experience, consider the following:
 
 ### Using default audio encoding 
 
-Call [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack) and in `encoderConfig` pass `"high_quality_stereo"`, Video SDK's built-in audio encoding configuration. It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+Call [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack) and in `encoderConfig` pass `"high_quality_stereo"`, RTC SDK's built-in audio encoding configuration. It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
 
 ```javascript
 AgoraRTC.createMicrophoneAudioTrack({
@@ -259,7 +259,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable 3A by calling [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable 3A by calling [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack).
 
 ```javascript
 AgoraRTC.createMicrophoneAudioTrack({
@@ -299,7 +299,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 ```cpp
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -350,7 +350,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 ```typescript
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -398,7 +398,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 ```dart
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -449,7 +449,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 ```typescript
 setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
@@ -495,7 +495,7 @@ This section only applies to users using sound cards.
 
 ### Disable 3A
 
-Video SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`SetParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`SetParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
 
 ```cpp
 SetParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation

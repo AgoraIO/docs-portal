@@ -4,13 +4,13 @@ description: "Implement Agora Cloud Proxy feature for reliable audio and video c
 ---
 Large enterprises, hospitals, universities, banks, and other institutions commonly deploy firewalls to meet their stringent security requirements. To ensure uninterrupted access to its services for enterprise users behind firewalls, Agora offers firewall whitelist and Cloud proxy services.
 
-Admins enable users to use Video SDK in network-restricted environments by adding specific IP addresses and ports to the firewall whitelist. Users make API calls to configure the Cloud proxy service.
+Admins enable users to use RTC SDK in network-restricted environments by adding specific IP addresses and ports to the firewall whitelist. Users make API calls to configure the Cloud proxy service.
 
 ## Understand the tech
 
 Cloud proxy works as follows:
 
-1. Video SDK initiates a request to Cloud proxy.
+1. RTC SDK initiates a request to Cloud proxy.
 1. Cloud proxy returns the corresponding proxy information.
 1. Agora SDK sends data to Cloud proxy. Cloud proxy receives the data and transmits it to Agora SDRTN®.
 1. SDRTN® returns data to Cloud proxy. Cloud proxy receives the data and sends it to the SDK.
@@ -166,7 +166,7 @@ Call the `startProxyServer` method and set the `mode` parameter before joining t
 
 Test if you can initiate audio and video calls or live broadcasts normally.
 
-Video SDK provides a `client.on("is-using-cloud-proxy")` event that triggers the callback after the media stream is successfully published locally, to inform whether the current media stream is forwarded by the cloud proxy service.
+RTC SDK provides a `client.on("is-using-cloud-proxy")` event that triggers the callback after the media stream is successfully published locally, to inform whether the current media stream is forwarded by the cloud proxy service.
 
 ```javascript
 const client = AgoraRTC.createClient({mode: 'live',codec: 'vp8'});

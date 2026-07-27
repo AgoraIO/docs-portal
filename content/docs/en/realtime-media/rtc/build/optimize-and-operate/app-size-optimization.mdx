@@ -10,7 +10,7 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Use the Lite SDK
 
@@ -24,10 +24,10 @@ The Lite SDK includes only the following extensions:
 Other extensions and related functions in the [Extension list](#extension-list) are not supported.
 
 ### Use the Voice SDK
-Video SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
+RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 #### Remove extensions when integrating manually
 When integrating through the [Direct download](../../../sdks.md) link, manually delete the extension files that you do not need to use.
@@ -92,9 +92,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -102,7 +102,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -713,7 +713,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 When integrating the Android SDK through Maven Central, you can modify the `dependencies` field in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file to specify the dynamic libraries you need to integrate. The correspondence between each file and `implementation` field in the SDK is detailed in the table below:
 
-**Android Video SDK**
+**Android RTC SDK**
 | File | Category | `implementation` field |
 | :--- | :--- | :--- |
 | <Slot name="required" /> | Required | `io.agora.rtc:full-rtc-basic` |
@@ -796,7 +796,7 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -810,7 +810,7 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Use the Lite SDK
 
@@ -824,10 +824,10 @@ The Lite SDK includes only the following extensions:
 Other extensions and related functions in the [Extension list](#extension-list) are not supported.
 
 ### Use the Voice SDK
-Video SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
+RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 #### Delete extensions when integrating using CocoaPods
 
@@ -886,9 +886,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -896,7 +896,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -1504,7 +1504,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs` field in the Podfile to specify the dynamic libraries you need to integrate to exclude the extensions you don't need to use. The correspondence between dynamic libraries and `subspecs` fields is detailed in the following table:
 
-**iOS Video SDK**
+**iOS RTC SDK**
 | Dynamic Library | Category | `subspecs` field |
 | :--- | :--- | :--- |
 | <Slot name="required" /> | Required | `RtcBasic` |
@@ -1579,7 +1579,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -1593,10 +1593,10 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 #### Delete extensions when integrating using CocoaPods
 
@@ -1655,9 +1655,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -1665,7 +1665,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -2324,7 +2324,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -2338,7 +2338,7 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ## Reduce the app size
 
@@ -2346,9 +2346,9 @@ To reduce the app size, implement the following strategies:
 
 ### Use tree shaking
 
-In versions before v4.19.0, the `AgoraRTC` module is the entrance to all callable methods in the Web Video SDK. Even if you only use a part of the Video SDK's functionality, you still need to load the complete SDK, which may result in the app containing a lot of unused code.
+In versions before v4.19.0, the `AgoraRTC` module is the entrance to all callable methods in the Web RTC SDK. Even if you only use a part of the RTC SDK's functionality, you still need to load the complete SDK, which may result in the app containing a lot of unused code.
 
-Starting from version 4.19.0, the Video SDK for Web has integrated [tree shaking](https://webpack.js.org/guides/tree-shaking/) support. Using tree shaking has the following advantages:
+Starting from version 4.19.0, the RTC SDK for Web has integrated [tree shaking](https://webpack.js.org/guides/tree-shaking/) support. Using tree shaking has the following advantages:
 
 - Only load the SDK features you actually use, unreferenced code is removed during the build process.
 - Reduce redundancy between SDK dependencies and your app dependencies.
@@ -2450,7 +2450,7 @@ This section contains content that completes the information in this page, or po
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
@@ -2460,10 +2460,10 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 #### Remove unused extensions
 When integrating through the [Direct download](/en/api-reference/sdks) link, manually delete the extension files that you do not need to use.
@@ -2474,9 +2474,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -2484,7 +2484,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3090,7 +3090,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -3104,13 +3104,13 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Use the Voice SDK
-Video SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
+RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 #### Remove extensions when integrating manually
 When integrating through the [Direct download](../../../sdks.md) link, manually delete the extension files that you do not need to use.
@@ -3121,9 +3121,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -3131,7 +3131,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -3737,7 +3737,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -3751,10 +3751,10 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 <CodeBlockTabs defaultValue="android">
 <CodeBlockTabsList>
@@ -3847,9 +3847,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -3857,7 +3857,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -4463,7 +4463,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -4477,10 +4477,10 @@ Reducing the app size is of great significance in improving user experience. A s
 
 - The target user group of the app is located in underdeveloped areas. The poor network connectivity causes the app download time to be too long.
 
-This page shows you how to optimize the size of apps with integrated Video SDK.
+This page shows you how to optimize the size of apps with integrated RTC SDK.
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 <CodeBlockTabs defaultValue="android">
 <CodeBlockTabsList>
@@ -4573,9 +4573,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -4583,7 +4583,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -5189,7 +5189,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>
@@ -5203,13 +5203,13 @@ Reducing the game size is of great significance in improving user experience. A 
 
 - The target user group of the game is located in underdeveloped areas. The poor network connectivity causes the game download time to be too long.
 
-This page shows you how to optimize the size of games with integrated Video SDK.
+This page shows you how to optimize the size of games with integrated RTC SDK.
 
 ### Use the Voice SDK
-Video SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
+RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
 
 ### Remove unnecessary extensions
-Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
+RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
 Open the `Assets/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins` folder in Unity Editor. It contains dynamic libraries for iOS, macOS, Windows, and Android. As shown below:
 
@@ -5242,9 +5242,9 @@ This section contains content that completes the information in this page, or po
 
 ### Extension list
 
-Refer to the following information for an introduction to each Video SDK extension and the increase in the size of your app after integration.
+Refer to the following information for an introduction to each RTC SDK extension and the increase in the size of your app after integration.
 :::note
-The information in this section is based on version 4.4.0 of the Video SDK.
+The information in this section is based on version 4.4.0 of the RTC SDK.
 :::
 
 <Accordions>
@@ -5252,7 +5252,7 @@ The information in this section is based on version 4.4.0 of the Video SDK.
 <Accordion title="AI Noise Suppression">
 
 
-The Video SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
+The RTC SDK supports a new version of AI noise suppression, which provides better vocal fidelity, cleaner noise suppression, and adds de-reverberation capabilities. After integrating the AI noise reduction extension, call the `setAINSMode` method to enable the AI noise reduction function and select the noise reduction mode.
 
 The name of the extension for each platform and the increase in the size of your app after integration are as follows:
 
@@ -5858,7 +5858,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Frequently asked questions
 
-- [Why are dynamic libraries preferred over static libraries in the Video SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
+- [Why are dynamic libraries preferred over static libraries in the RTC SDK](/en/api-reference/faq/integration/dynamic_or_static_library)
 </Accordion>
 
 </Accordions>

@@ -1,16 +1,16 @@
 ---
-title: "Why are dynamic libraries preferred over static libraries in the Video SDK?"
+title: "Why are dynamic libraries preferred over static libraries in the RTC SDK?"
 ---
 
-Static libraries and Dynamic Link Libraries (DLL) are both used for organizing and sharing code in programming. In earlier versions, the Video SDK utilized static libraries on certain platforms. However, there are several drawbacks associated with static libraries:
+Static libraries and Dynamic Link Libraries (DLL) are both used for organizing and sharing code in programming. In earlier versions, the RTC SDK utilized static libraries on certain platforms. However, there are several drawbacks associated with static libraries:
 
 1. **Compilation Conflicts**: Static libraries can lead to symbol conflicts with third-party libraries used by your application. For instance, if your app and the Agora SDK both utilize the same `ffmpeg` library, conflicts may arise during compilation, resulting in build failures.
 
-2. **Compatibility Issues**: Inconsistent versions of third-party libraries between your application and the Video SDK may lead to compatibility issues and app crashes.
+2. **Compatibility Issues**: Inconsistent versions of third-party libraries between your application and the RTC SDK may lead to compatibility issues and app crashes.
 
-3. **Compliance Concerns**: The Video SDK incorporates open-source protocol libraries like `ffmpeg`. Distributing the SDK as a static library extends the open-source agreement to your application, potentially necessitating that your app also be open-source. To comply with open-source protocol specifications, dynamic libraries are preferred.
+3. **Compliance Concerns**: The RTC SDK incorporates open-source protocol libraries like `ffmpeg`. Distributing the SDK as a static library extends the open-source agreement to your application, potentially necessitating that your app also be open-source. To comply with open-source protocol specifications, dynamic libraries are preferred.
 
-To address these challenges and align with industry trends favoring dynamic libraries in the Real-Time Communication sector, the Video SDK platform now exclusively provides dynamic libraries.
+To address these challenges and align with industry trends favoring dynamic libraries in the Real-Time Communication sector, the RTC SDK platform now exclusively provides dynamic libraries.
 
 ## Reference
 The following table summarizes the differences between static and dynamic libraries:

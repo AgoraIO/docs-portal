@@ -9,7 +9,7 @@ This page explains how to implement multipath network transmission in your Video
 
 ## Understand the tech
 
-Starting with v4.6.0, Video SDK adds a network transmission feature called Multipath. This feature is designed for devices that support multiple network interfaces, including 5G, Wi-Fi, and LAN. Multipath helps reduce or even eliminate poor user experiences caused by weak network conditions. In lab tests, under weak network conditions with frequent bandwidth jitter, enabling Multipath reduces lag by more than 50% while maintaining image quality and latency.
+Starting with v4.6.0, RTC SDK adds a network transmission feature called Multipath. This feature is designed for devices that support multiple network interfaces, including 5G, Wi-Fi, and LAN. Multipath helps reduce or even eliminate poor user experiences caused by weak network conditions. In lab tests, under weak network conditions with frequent bandwidth jitter, enabling Multipath reduces lag by more than 50% while maintaining image quality and latency.
 
 Multipath improves real-time audio and video experiences that require stable transmission in poor network conditions, including video conferencing, online education, IoT parallel operations, and remote production and broadcasting.
 
@@ -49,7 +49,7 @@ Multipath requires permission to access and manage the device network state. Add
 
 ### Multipath APIs
 
-Video SDK supports enabling and configuring Multipath through the following `ChannelMediaOptions` fields:
+RTC SDK supports enabling and configuring Multipath through the following `ChannelMediaOptions` fields:
 
 ```java
 public class ChannelMediaOptions {
@@ -110,7 +110,7 @@ public void onMultipathStats(MultipathStats stats) {
 <PlatformStructured platform="ios">
 ### Multipath APIs
 
-Video SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
+RTC SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
 
 ```objc
 __attribute__((visibility("default"))) @interface AgoraRtcChannelMediaOptions : NSObject
@@ -168,7 +168,7 @@ func rtcEngine(_ engine: AgoraRtcEngineKit, multiPathStats stats: AgoraMultipath
 <PlatformStructured platform="macos">
 ### Multipath APIs
 
-Video SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
+RTC SDK supports enabling and configuring Multipath through the following `AgoraRtcChannelMediaOptions` fields:
 
 ```objc
 __attribute__((visibility("default"))) @interface AgoraRtcChannelMediaOptions : NSObject
@@ -222,7 +222,7 @@ channelMediaOption.downlinkMultipathMode = (selectModePicker.picker.indexOfSelec
 <PlatformStructured platform="windows">
 ### Multipath APIs
 
-Video SDK supports enabling and configuring Multipath through the following `ChannelMediaOptions` fields:
+RTC SDK supports enabling and configuring Multipath through the following `ChannelMediaOptions` fields:
 
 ```cpp
 struct ChannelMediaOptions {
