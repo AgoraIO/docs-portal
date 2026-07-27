@@ -162,8 +162,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/set-display-content',
     'restful-api/push-notification-management':
       '/en/realtime-media/im/build/notifications-and-event-handling/offline-push/configure-push-notifications',
-    'restful-api/restful-overview':
-      '/en/realtime-media/im/reference/error-codes',
+    'restful-api/restful-overview': '/en/api-reference/api-ref/im',
     'restful-api/global-mute':
       '/en/realtime-media/im/build/moderate-and-manage-client-behavior/moderation-mechanism',
     'restful-api/thread-management/create-delete-retrieve-threads':

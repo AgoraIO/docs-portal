@@ -23,6 +23,17 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it('redirects the legacy Chat RESTful overview to the API reference overview', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect(
+        '/en/agora-chat/restful-api/restful-overview',
+      ),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/api-reference/api-ref/im',
+    });
+  });
+
   it('prefers query-specific legacy rules before path fallback rules', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
