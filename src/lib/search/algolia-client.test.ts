@@ -29,7 +29,7 @@ describe('createAlgoliaDocsClient', () => {
                   value: '…enable <mark>VAD</mark> on Web for calls…',
                 },
               },
-              breadcrumbs: ['realtime-media', 'voice'],
+              breadcrumbs: ['RTC', 'Voice Calling'],
               content: 'Enable VAD on Web.',
               objectID: 'first-chunk',
               objectType: 'docs',
@@ -94,10 +94,10 @@ describe('createAlgoliaDocsClient', () => {
     });
     expect(results).toHaveLength(2);
     expect(results[0]).toMatchObject({
-      breadcrumbs: ['realtime-media', 'voice'],
+      breadcrumbs: ['RTC', 'Voice Calling'],
       id: 'first-chunk',
       objectType: 'docs',
-      path: ['Realtime Media', 'Voice'],
+      path: ['RTC', 'Voice Calling'],
       platform: ['web'],
       product: 'voice',
       section: 'Implement the logic',
@@ -192,6 +192,7 @@ describe('createAlgoliaDocsClient', () => {
                   value: 'Unrelated leading body text with no highlight…',
                 },
               },
+              breadcrumbs: ['API Reference', 'Speech-to-Text'],
               description: 'Create and start a real-time STT agent.',
               objectID: 'title-only',
               objectType: 'openapi',
@@ -217,8 +218,7 @@ describe('createAlgoliaDocsClient', () => {
       // Body snippet is ignored because content did not match; the clean
       // description is shown instead of an unrelated leading-body excerpt.
       snippet: 'Create and start a real-time STT agent.',
-      // Trailing page slug ("join") dropped; "api-ref" and "stt" uppercased.
-      path: ['API Reference', 'API Ref', 'Speech To Text'],
+      path: ['API Reference', 'Speech-to-Text'],
     });
   });
 });

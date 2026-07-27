@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import {
   ArrowLeftIcon,
   ChevronDownIcon,
@@ -669,7 +669,7 @@ export type DocsContentBodyPayload =
       };
       platforms: PlatformKey[];
     }
-  | { kind: 'openapi'; pageProps: ClientApiPageProps };
+  | { kind: 'openapi'; pageProps: OpenAPIPageProps };
 
 function DocsContentSkeleton() {
   return (

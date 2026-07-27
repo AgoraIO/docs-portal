@@ -1126,7 +1126,7 @@ function createOpenApiPage(): PageWithSource {
         method: 'post',
       },
       description: 'Create and join a conversational AI agent.',
-      getClientAPIPageProps: vi.fn(async () => ({
+      getOpenAPIPageProps: vi.fn(async () => ({
         document: 'convoai-en',
         operations: [
           {
@@ -1251,16 +1251,58 @@ describe('loadDocsTabIndex', () => {
 describe('loadDocsSearchIndex', () => {
   beforeEach(() => {
     mockedGetPages.mockReturnValue([createPage()]);
+    mockedGetPageTree.mockReturnValue({
+      children: [
+        {
+          children: [
+            {
+              children: [
+                {
+                  name: 'About Agora',
+                  type: 'page',
+                  url: '/en/introduction/about-agora',
+                },
+              ],
+              name: 'Introduction',
+              root: true,
+              type: 'folder',
+            },
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      name: 'Start a conversational AI agent',
+                      type: 'page',
+                      url: '/en/api-reference/api-ref/conversational-ai/join',
+                    },
+                  ],
+                  name: 'Conversational AI',
+                  type: 'folder',
+                },
+              ],
+              name: 'API Reference',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    });
   });
 
   it('returns locale page entries and generated OpenAPI endpoints for the static docs search index', async () => {
     const page = createPage();
 
-    mockedGetPages.mockReturnValue([page]);
+    mockedGetPages.mockReturnValue([page, createOpenApiPage()]);
 
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          breadcrumbs: ['Introduction'],
           content: expect.stringContaining('Why teams use it.'),
           description:
             'Build a working mental model of Agora by understanding what it is.',
@@ -1271,6 +1313,7 @@ describe('loadDocsSearchIndex', () => {
           url: '/en/introduction/about-agora',
         }),
         expect.objectContaining({
+          breadcrumbs: ['API Reference', 'Conversational AI'],
           content: expect.stringContaining('/v2/projects/{appid}/join'),
           objectType: 'openapi',
           tab: 'api-reference',
@@ -1282,6 +1325,29 @@ describe('loadDocsSearchIndex', () => {
     expect('getText' in page.data && page.data.getText).toHaveBeenCalledWith(
       'raw',
     );
+    const pages = await loadDocsSearchIndex('en');
+
+    expect(
+      pages.filter(
+        (item) =>
+          item.url === '/en/api-reference/api-ref/conversational-ai/join',
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('excludes source pages absent from the canonical page tree', async () => {
+    const hiddenPage = {
+      ...createPage(),
+      path: 'en/introduction/hidden.md',
+      slugs: ['en', 'introduction', 'hidden'],
+      url: '/en/introduction/hidden',
+    } as PageWithSource;
+
+    mockedGetPages.mockReturnValue([createPage(), hiddenPage]);
+
+    const pages = await loadDocsSearchIndex('en');
+
+    expect(pages.map((page) => page.url)).not.toContain(hiddenPage.url);
   });
 
   it('returns an empty index for unsupported locales', async () => {
@@ -1298,6 +1364,7 @@ describe('loadDocsSearchIndex', () => {
     const androidPage = createPlatformPanelPage('android');
 
     mockedGetPages.mockReturnValue([parentPage, iosPage, androidPage]);
+    mockedGetPageTree.mockReturnValue(platformGroupPageTree);
 
     await expect(loadDocsSearchIndex('en')).resolves.toEqual(
       expect.arrayContaining([
