@@ -107,7 +107,7 @@ To generate a token for other Agora products:
 
 5. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](../../broadcast-streaming/reference/console-overview).
+For more information on managing other aspects of your Agora account, see [Agora console overview](/en/introduction/console-setup).
 
 ## Enable Cloud Transcoding
 

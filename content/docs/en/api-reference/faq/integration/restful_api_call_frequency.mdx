@@ -7,7 +7,7 @@ When the request of an Agora Server RESTful API exceeds its call frequency limit
 ## Tips to avoid exceeding call frequency limits
 
 - Distribute your API requests evenly across time windows.
-  For example, if you want to call [`https://api.agora.io/dev/v1/channel/user/{appid}/{channelName}`](/en/video-calling/reference/channel-management-rest-api) to query the user list of 100 online channels, the default call frequency limit for this API is 20 times per second. To avoid exceeding the call frequency limit, you can set the query interval of a single channel to 5 seconds, and then query the user list of 20 channels per second.
+  For example, if you want to call [`https://api.agora.io/dev/v1/channel/user/{appid}/{channelName}`](/en/api-reference/api-ref/rtc/query-user-list) to query the user list of 100 online channels, the default call frequency limit for this API is 20 times per second. To avoid exceeding the call frequency limit, you can set the query interval of a single channel to 5 seconds, and then query the user list of 20 channels per second.
 - Do not directly call Agora Server RESTful APIs on your client; call these APIs on your application server instead.
   For example, when using the API for querying online channel statistics, you can configure your application server to periodically send requests to Agora and cache the returned results. When a client queries channel information, your server sends the latest locally cached data to the client.
 
@@ -15,7 +15,7 @@ If the default frequency limit still cannot meet your project needs after consid
 
 
 :::info
-The frequency of calling Agora server-side RESTful API is capped and high real-time performance is not guaranteed. In case of a large number of concurrent businesses, enable Agora Notifications and configure your business server to [Receive notifications about channel events](/en/video-calling/core-functionality/receive-notifications).
+The frequency of calling Agora server-side RESTful API is capped and high real-time performance is not guaranteed. In case of a large number of concurrent businesses, enable Agora Notifications and configure your business server to [Receive notifications about channel events](/en/realtime-media/rtc/build/optimize-and-operate/receive-notifications).
 :::
 
 
