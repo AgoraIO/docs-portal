@@ -227,7 +227,7 @@ describe('common MDX registry', () => {
     });
   });
 
-  it('uses Fumadocs MDX defaults except for repo-specific links and commands', () => {
+  it('uses Fumadocs MDX defaults except for repo-specific interactive components', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
@@ -249,8 +249,8 @@ describe('common MDX registry', () => {
     expect(components.CodeBlockTabsTrigger).toBe(defaults.CodeBlockTabsTrigger);
     expect(components.CodeBlockTab).not.toBe(defaults.CodeBlockTab);
     expect(components.h1).toBe(defaults.h1);
-    expect(components.h2).toBe(defaults.h2);
-    expect(components.h3).toBe(defaults.h3);
+    expect(components.h2).not.toBe(defaults.h2);
+    expect(components.h3).not.toBe(defaults.h3);
 
     expect(components.Tabs).not.toBe(fumadocsTabs.Tabs);
     expect(components.Tab).toBe(fumadocsTabs.Tab);
@@ -1302,6 +1302,84 @@ describe('common MDX registry', () => {
     expect(
       screen.getByRole('tab', { name: 'Windows PowerShell' }),
     ).toHaveAttribute('data-state', 'inactive');
+  });
+
+  it('adds hidden visible tab labels to section headings without changing anchor IDs', () => {
+    const components = getMDXComponents();
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsContent = components.TabsContent as TabsChildComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+    const Heading = components.h2 as ComponentType<{
+      children: ReactNode;
+      id?: string;
+    }>;
+
+    render(
+      <Tabs defaultValue="client-errors">
+        <TabsList>
+          <TabsTrigger value="client-errors">Client toolkit</TabsTrigger>
+          <TabsTrigger value="server-errors">Server REST API</TabsTrigger>
+        </TabsList>
+        <TabsContent value="client-errors">
+          <Heading id="project-setup">Project setup</Heading>
+        </TabsContent>
+        <TabsContent value="server-errors">
+          <Heading id="project-setup-1">Project setup</Heading>
+        </TabsContent>
+      </Tabs>,
+    );
+
+    const clientHeading = screen.getByRole('heading', {
+      name: 'Project setup (Client toolkit)',
+    });
+    const serverHeading = screen.getByRole('heading', {
+      hidden: true,
+      name: 'Project setup (Server REST API)',
+    });
+
+    expect(clientHeading).toHaveAttribute('id', 'project-setup');
+    expect(serverHeading).toHaveAttribute('id', 'project-setup-1');
+    expect(screen.getByText('(Client toolkit)')).toHaveClass('sr-only');
+    expect(screen.getByText('(Server REST API)')).toHaveClass('sr-only');
+  });
+
+  it('keeps nested tab labels scoped to their own tab group', () => {
+    const components = getMDXComponents();
+    const Tabs = components.Tabs as TabsComponent;
+    const TabsContent = components.TabsContent as TabsChildComponent;
+    const TabsList = components.TabsList as TabsComponent;
+    const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+    const Heading = components.h2 as ComponentType<{
+      children: ReactNode;
+      id?: string;
+    }>;
+
+    render(
+      <Tabs defaultValue="shared">
+        <TabsList>
+          <TabsTrigger value="shared">Outer platform</TabsTrigger>
+        </TabsList>
+        <TabsContent value="shared">
+          <Heading id="outer-heading">Outer heading</Heading>
+          <Tabs defaultValue="shared">
+            <TabsList>
+              <TabsTrigger value="shared">Inner language</TabsTrigger>
+            </TabsList>
+            <TabsContent value="shared">
+              <Heading id="inner-heading">Inner heading</Heading>
+            </TabsContent>
+          </Tabs>
+        </TabsContent>
+      </Tabs>,
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Outer heading (Outer platform)' }),
+    ).toHaveAttribute('id', 'outer-heading');
+    expect(
+      screen.getByRole('heading', { name: 'Inner heading (Inner language)' }),
+    ).toHaveAttribute('id', 'inner-heading');
   });
 
   it('falls back when a controlled normal tab value is stale', () => {

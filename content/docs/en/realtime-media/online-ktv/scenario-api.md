@@ -5,7 +5,7 @@ description: Scenario API is the fastest path for building common online KTV roo
 
 ## What it is
 
-The Scenario API path wraps lower-level realtime APIs into karaoke-specific flows so teams can build solo singing, chorus, relay singing, and competition-style KTV rooms faster.
+The Scenario API path wraps lower-level real-time APIs into karaoke-specific flows so teams can build solo singing, chorus, relay singing, and competition-style KTV rooms faster.
 
 ## Best fit
 

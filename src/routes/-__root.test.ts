@@ -5,6 +5,14 @@ import { rootHead } from './__root';
 
 const faviconPngPath = join(process.cwd(), 'public/favicon-32x32.png');
 const fallbackFaviconPath = join(process.cwd(), 'public/favicon.ico');
+const rootRouteSource = readFileSync(
+  join(process.cwd(), 'src/routes/__root.tsx'),
+  'utf8',
+);
+const docsContentSource = readFileSync(
+  join(process.cwd(), 'src/components/docs-shell/DocsContent.tsx'),
+  'utf8',
+);
 
 describe('root head favicon metadata', () => {
   it('configures the Agora favicon assets', () => {
@@ -31,6 +39,17 @@ describe('root head favicon metadata', () => {
     expectPngDimensions(readFileSync(faviconPngPath), 32, 32);
     expect(existsSync(fallbackFaviconPath)).toBe(true);
     expectPngDimensions(readFileSync(fallbackFaviconPath), 32, 32);
+  });
+
+  it('places the agent discovery directive at the start of the document body', () => {
+    const directivePosition = rootRouteSource.indexOf(
+      'data-agent-docs-directive="true"',
+    );
+    const appPosition = rootRouteSource.indexOf('<AppProviders>');
+
+    expect(directivePosition).toBeGreaterThan(-1);
+    expect(directivePosition).toBeLessThan(appPosition);
+    expect(docsContentSource).not.toContain('data-agent-docs-directive="true"');
   });
 });
 

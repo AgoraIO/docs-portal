@@ -1,11 +1,11 @@
 ---
 title: Overview
-description: Start here when you need to build, process, connect, or deliver realtime media experiences.
+description: Start here when you need to build, process, connect, or deliver real-time media experiences.
 ---
 
 Realtime & Media is the capability domain for products that need something to happen live. Use this section when you are deciding how people, devices, backend services, and media streams should connect, stay in sync, and keep working while a session is in progress.
 
-Instead of organizing docs around a single product story, this tab is organized around the functional layers most teams assemble when building a realtime experience: live interaction, session intelligence, media routing, large-scale delivery, and device or server participation.
+Instead of organizing docs around a single product story, this tab is organized around the functional layers most teams assemble when building a real-time experience: live interaction, session intelligence, media routing, large-scale delivery, and device or server participation.
 
 ## What you can build from this section
 
@@ -14,7 +14,7 @@ Instead of organizing docs around a single product story, this tab is organized 
 Use these docs when you are defining how users join a session, exchange media, coordinate actions, or collaborate in the same live space.
 
 - [Voice & Video](/en/realtime-media/rtc): calls, meetings, co-hosting, interactive live rooms, and media quality control
-- [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and realtime coordination
+- [Signaling](/en/realtime-media/rtm): channel messaging, presence, state sync, and real-time coordination
 - [Chat](/en/realtime-media/im): persistent and full-featured messaging systems beyond lightweight room coordination
 - [Whiteboard](/en/realtime-media/whiteboard): shared visual collaboration inside live sessions
 
@@ -26,12 +26,12 @@ Use these docs when media inside the session needs to become text, records, comp
 - [Cloud Recording](/en/realtime-media/cloud-recording): archive, replay, compliance, QA, and post-session review workflows
 - [Transcoding](/en/realtime-media/transcoding): mixing, layout composition, and output transformation
 
-### Bridge realtime sessions with external media systems
+### Bridge real-time sessions with external media systems
 
 Use these docs when your product must ingest outside streams, publish session media to other systems, or interoperate with existing streaming infrastructure.
 
 - [Media Push](/en/realtime-media/media-push): send RTC channel media to CDN pipelines or downstream media systems
-- [Media Pull](/en/realtime-media/media-pull): bring online media streams into an interactive realtime session
+- [Media Pull](/en/realtime-media/media-pull): bring online media streams into an interactive real-time session
 - [RTMP Gateway](/en/realtime-media/rtmp-gateway): connect RTMP-based devices and systems to Agora
 
 ### Deliver playback to larger audiences
@@ -52,7 +52,7 @@ Use these docs when participants are not just mobile or web clients, but also em
 - Start with [Voice & Video](/en/realtime-media/rtc), [Signaling](/en/realtime-media/rtm), [Chat](/en/realtime-media/im), or [Whiteboard](/en/realtime-media/whiteboard) when your main question is how users interact inside a live session.
 - Start with [Transcription & Translation](/en/realtime-media/speech-to-text), [Cloud Recording](/en/realtime-media/cloud-recording), or [Transcoding](/en/realtime-media/transcoding) when your main question is what should happen to the media during or after the session.
 - Start with [Media Push](/en/realtime-media/media-push), [Media Pull](/en/realtime-media/media-pull), [RTMP Gateway](/en/realtime-media/rtmp-gateway), or [Fusion CDN](/en/realtime-media/fusion-cdn) when your main question is how to move media across systems or out to larger audiences.
-- Start with [IoT & Edge](/en/realtime-media/rtsa) or [RTC Server SDK](/en/realtime-media/rtc-server-sdk) when your main question is how devices or backend services participate in the realtime workflow.
+- Start with [IoT & Edge](/en/realtime-media/rtsa) or [RTC Server SDK](/en/realtime-media/rtc-server-sdk) when your main question is how devices or backend services participate in the real-time workflow.
 
 ## Common reading paths
 

@@ -15,10 +15,12 @@ import {
   resolvePlatformGroupParentPage,
 } from './platforms/platform-group-pages';
 import {
+  buildCanonicalPlatformLLMText,
   buildPlatformLLMText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import { getPlatformLabel, type PlatformKey } from './platforms/registry';
+import { expandSdkCatalogMarkdown } from './sdk-catalog-markdown.server';
 import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
@@ -106,10 +108,13 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
+  const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
   const platformGroupText = await getPlatformGroupLLMText(page);
 
   if (platformGroupText) {
-    return platformGroupText;
+    return locale === 'en'
+      ? normalizeAgentMarkdownLinks(platformGroupText)
+      : platformGroupText;
   }
 
   const processed =
@@ -117,9 +122,19 @@ export async function getLLMText(page: InferPageType<typeof source>) {
       ? await page.data.getText('processed')
       : '';
 
-  return `# ${page.data.title} (${page.url})
+  if (locale !== 'en') {
+    return `# ${page.data.title} (${page.url})
 
 ${processed}`;
+  }
+
+  return normalizeAgentMarkdownLinks(
+    buildCanonicalPlatformLLMText({
+      pageTitle: page.data.title,
+      pageUrl: page.url,
+      processedText: expandSdkCatalogMarkdown(processed),
+    }),
+  );
 }
 
 export async function getPlatformLLMText(
@@ -151,9 +166,11 @@ export async function getPlatformLLMText(
         ? await panelPage.data.getText('processed')
         : '';
 
-    return `# ${page.data.title} (${page.url}/${platform})
+    const markdown = `# ${page.data.title} (${page.url}/${platform})
 
 ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
+
+    return locale === 'en' ? normalizeAgentMarkdownLinks(markdown) : markdown;
   }
 
   if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
@@ -167,12 +184,23 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
     return null;
   }
 
-  return buildPlatformLLMText({
+  const markdown = buildPlatformLLMText({
     pageTitle: page.data.title,
     pageUrl: page.url,
     platform,
     processedText,
+    preserveSourceFormatting: locale !== 'en',
   });
+
+  return locale === 'en' ? normalizeAgentMarkdownLinks(markdown) : markdown;
+}
+
+function normalizeAgentMarkdownLinks(markdown: string) {
+  return markdown.replace(
+    /(\]\()(https?:\/\/(?:\\.|[^\\)])+)(\))/g,
+    (_match, opening: string, destination: string, closing: string) =>
+      `${opening}${destination.replaceAll('\\(', '%28').replaceAll('\\)', '%29')}${closing}`,
+  );
 }
 
 export async function getPagePlatformKeys(page: InferPageType<typeof source>) {

@@ -4,8 +4,19 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - ".github/workflows/**"
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "content/**"
+      - "public/**"
+      - "package.json"
+      - "bun.lock"
+      - "source.config.ts"
+      - "tsconfig.json"
+      - "vite.config.ts"
+      - "vercel.json"
+      - "vercel.base.json"
+      - "vercel-legacy-redirects.json"
     types:
       - opened
       - synchronize
@@ -14,8 +25,19 @@ on:
   push:
     branches:
       - "**"
-    paths-ignore:
-      - ".github/workflows/**"
+    paths:
+      - "src/**"
+      - "scripts/**"
+      - "content/**"
+      - "public/**"
+      - "package.json"
+      - "bun.lock"
+      - "source.config.ts"
+      - "tsconfig.json"
+      - "vite.config.ts"
+      - "vercel.json"
+      - "vercel.base.json"
+      - "vercel-legacy-redirects.json"
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -47,9 +69,12 @@ jobs:
   deploy-preview:
     name: Deploy Preview to Vercel
     if: |
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'push' && github.ref_name != 'release/prod') ||
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
+      github.repository == 'AgoraIO/docs-portal' &&
+      (
+        github.event_name == 'pull_request' ||
+        (github.event_name == 'push' && github.ref_name != 'release/prod') ||
+        (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'preview')
+      )
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -253,8 +278,11 @@ jobs:
   deploy-production:
     name: Deploy Production to Vercel
     if: |
-      (github.event_name == 'push' && github.ref_name == 'release/prod') ||
-      (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
+      github.repository == 'AgoraIO/docs-portal' &&
+      (
+        (github.event_name == 'push' && github.ref_name == 'release/prod') ||
+        (github.event_name == 'workflow_dispatch' && inputs.deploy_target == 'production')
+      )
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

@@ -184,25 +184,11 @@ Call `setAINSMode` to enable AI Noise Suppression and select a noise suppression
 let result = agoraKit.setAINSMode(true, mode: 2)
 ```
 
-When AI Noise Suppression is enabled, if Video SDK detects that device performance is insufficient, it:
-
-- Disables AI Noise Suppression.
-- Enables traditional noise reduction.
-- Throws the `WARN_APM_AINS_CLOSED` (-1054) error code.
-
 ## Reference
-
-### Minimum device requirements
-
-- iPhone 6S
-- iPad Pro (2nd generation)
-- iPad mini (5th generation)
-- iPad Air (3rd generation)
-- MacBook Pro 2015
 
 ### API reference
 
-- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setainsmode(_:mode:))
+- [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setainsmode(_:mode:))
 
 </PlatformStructured>
 
@@ -578,6 +564,110 @@ const setAINSMode = () => {
 ### API reference
 
 - [`setAINSMode`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/api_irtcengine_setainsmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-js">
+AI Noise Suppression reduces the following types of noise:
+
+- Television
+- Kitchen
+- Street, such as birds chirping, traffic, and subway sounds
+- Machine, such as fans, air conditioners, vacuum cleaners, and copiers
+- Office, such as keyboard and mouse clicks
+- Household, such as doors opening, creaking chairs, crying babies, and house renovations
+- Constant knocking
+- Beeps and clapping
+- Music
+
+You can choose following noise reduction strategies:
+- Default: Reduces noise to a comfortable level without distorting human voice.
+- Custom: A more enhanced or customized noise reduction strategy for your business use-case. Contact [support@agora.io](mailto:support@agora.io) for details.
+
+Want to try out AI Noise Suppression? Use the <a href="https://webdemo.agora.io/aiDenoiser/index.html">online demo</a>.
+
+## Understand the tech
+
+In the pre-processing stage, AI Noise Suppression uses deep learning noise reduction algorithms to modify <audio src=""></audio> data in the extensions pipeline.
+
+**AI noise suppression**
+
+![image](https://assets-docs.agora.io/images/extensions-marketplace/ai-noise-suppression.svg)
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
+
+## Enable AI Noise Suppression
+
+This section shows you how to integrate AI Noise Suppression into your app.
+
+1. Configure the noise suppression extension
+
+   This code initializes the AI Noise Suppression extension, checks compatibility, and sets up a noise reduction processor for the local microphone track. It registers the extension, checks compatibility, and initializes the AI noise processor.
+
+   ```typescript
+   function AgoraExtensionComponent() {
+     const extension = useRef(new AIDenoiserExtension({assetsPath:'./node_modules/agora-extension-ai-denoiser/external'}));
+     const processor = useRef<IAIDenoiserProcessor>();
+
+     useEffect(() => {
+       const initializeAIDenoiserProcessor = async () => {
+           AgoraRTC.registerExtensions([extension.current]);
+           if (!extension.current.checkCompatibility()) {
+               console.error("Does not support AI Denoiser!");
+               return;
+           }
+           if (localMicrophoneTrack)
+           {
+               console.log("Initializing an ai noise processor...");
+               try {
+                   processor.current = extension.current.createProcessor();
+                   localMicrophoneTrack.pipe(processor.current).pipe(localMicrophoneTrack.processorDestination);
+                   await processor.current.enable();
+               } catch (error) {
+               console.error("Error applying noise reduction:", error);
+               }
+           }
+       };
+
+       void initializeAIDenoiserProcessor();
+
+       return () => {
+         const disableAIDenoiser = async () => {
+           processor.current?.unpipe();
+           localMicrophoneTrack?.unpipe();
+           await processor.current?.disable();
+         };
+         void disableAIDenoiser();
+       };
+     }, [localMicrophoneTrack]);
+   }
+   ```
+
+2. Change the noise reduction mode
+
+   This function changes the noise reduction mode based on the provided mode.
+
+   ```typescript
+   const changeNoiseReductionMode = (mode: AIDenoiserProcessorMode) => {
+       processor.current.setMode(mode)
+   }
+   ```
+
+3. Change the noise reduction level
+
+   This function changes the noise reduction level based on the provided level.
+
+   ```typescript
+   const changeNoiseReductionLevel = (level: AIDenoiserProcessorLevel) => {
+       processor.current.setLevel(level)
+   }
+   ```
+
+## Reference
+
+This section completes the information on this page, or points you to documentation that explains other aspects about this product.
 
 </PlatformStructured>
 

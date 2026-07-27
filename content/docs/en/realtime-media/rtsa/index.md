@@ -1,18 +1,18 @@
 ---
 title: IoT & Edge
-description: RTSA is the realtime media-stream and signaling capability for smart devices, edge endpoints, and device-oriented products.
+description: RTSA is the real-time media-stream and signaling capability for smart devices, edge endpoints, and device-oriented products.
 ---
 
 ## What this capability is
 
-RTSA provides high-quality realtime media streaming and signaling for hardware-oriented and terminal-style products that need low-latency connectivity.
+RTSA provides high-quality real-time media streaming and signaling for hardware-oriented and terminal-style products that need low-latency connectivity.
 
 ## Common scenarios
 
 - smart cameras
 - doorbells and wearables
 - device-to-device media interop
-- IoT realtime products
+- IoT real-time products
 
 ## What the existing Agora docs usually contain
 

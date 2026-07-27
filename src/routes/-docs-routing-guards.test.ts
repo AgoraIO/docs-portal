@@ -45,6 +45,7 @@ import {
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
+import { Route as LlmsSectionRoute } from './llms/$';
 import { Route as LlmsTextRoute } from './llms[.]txt';
 
 const REAL_DOCS_ROUTE_TIMEOUT = 300_000;
@@ -288,8 +289,13 @@ describe('docs route locale guards', () => {
         ),
       } as never)) as Response;
 
-      await expect(response.text()).resolves.toContain(
+      const markdown = await response.text();
+
+      expect(markdown).toContain(
         '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
+      );
+      expect(markdown).toContain(
+        '> For AI agents: see the complete documentation index at [llms.txt](/llms.txt).',
       );
       expect(response.headers.get('Content-Type')).toBe('text/markdown');
     },
@@ -386,9 +392,18 @@ describe('docs route locale guards', () => {
       } as never)) as Response;
 
       const indexText = await indexResponse.text();
+      const sectionPath = indexText.match(/\/llms\/([^)]+\.txt)/)?.[1];
 
-      expect(indexText).toContain('/en/');
+      expect(sectionPath).toBeTruthy();
       expect(indexText).not.toContain('/zh-CN/');
+
+      const sectionResponse = (await getGetHandler(LlmsSectionRoute)({
+        params: { _splat: sectionPath },
+      } as never)) as Response;
+      const sectionText = await sectionResponse.text();
+
+      expect(sectionText).toContain('/en/');
+      expect(sectionText).not.toContain('/zh-CN/');
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
