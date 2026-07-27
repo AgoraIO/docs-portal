@@ -2,6 +2,7 @@
 title: "Cloud Proxy migration guide"
 description: "Cloud Proxy IP migration list"
 ---
+
 Agora has updated IP whitelist configuration to enhance security and simplify management. This guide helps you update your cloud proxy settings to avoid service interruptions. Following are the key changes:
 
 * **Reduced IP ranges**: Narrower network segments improve security
@@ -9,11 +10,11 @@ Agora has updated IP whitelist configuration to enhance security and simplify ma
 * **Updated subnet masks**: Physical machines now use /28 instead of /26
 * **New access point IP list**: Introduced in SDK 3.4.0 for improved high availability
 
-:::info[Implementation notes]
+:::note[Implementation notes]
 * All IP addresses and network ranges have been technically verified.
 * Update your firewall rules according to the specified timeline.
 * Continue using your current configuration if you must configure before the new delivery dates.
-* Test your configuration thoroughly using the [validation steps](../reference/cloud-proxy-allowed-ips#validation-and-testing).
+* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
 :::
 
 ## Summary of changes
@@ -36,10 +37,9 @@ The following tables provide the essential information needed to migrate your Cl
 - **Required action**: The specific changes needed for each component
 
 Use these tables to identify the configurations applicable to your regions.
-
-:::info
+:::note
 When adding IP addresses:
-- If you use cloud proxy with [Restricted media zones](/en/realtime-media/video/build/manage-connection-and-quality/geofencing), add only the IP addresses dedicated to your specified region.
+- If you use cloud proxy with [Restricted media zones](../build/manage-connection-and-quality/geofencing.mdx), add only the IP addresses dedicated to your specified region.
 - If you do not restrict media zones, add all IP addresses to ensure connectivity.
 :::
 
@@ -92,18 +92,6 @@ When adding IP addresses:
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-
-<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
-
-</PlatformStructured>
-
-<PlatformStructured platform="unreal">
-
-<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
-
-</PlatformStructured>
-
-<PlatformStructured platform="blueprint">
 
 <include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
 

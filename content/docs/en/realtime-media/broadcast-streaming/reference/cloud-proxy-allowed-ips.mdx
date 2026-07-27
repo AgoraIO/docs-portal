@@ -2,12 +2,11 @@
 title: "IP addresses for Cloud Proxy"
 description: "If your app is running inside a restricted network, clear one of the following IP addresses for Cloud Proxy to work effectively."
 ---
+
 This guide provides configuration details you need to set up Agora Cloud Proxy services across all supported regions. Cloud Proxy enables secure communication through firewalls by using designated IP addresses and ports.
-
-:::info
-If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](/en/realtime-media/video/reference/cloud-proxy-migration-guide).
+:::note
+If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](cloud-proxy-migration-guide).
 :::
-
 ## Understand the tech
 
 Agora deploys dedicated servers to run the cloud proxy service. Agora owns the IP addresses and fully controls the traffic on these addresses. The following network infrastructure components support your deployment:
@@ -24,10 +23,10 @@ Follow these guidelines to configure cloud proxy settings.
 * **Check your SDK version**: Configuration requirements vary depending on the SDK version you're using.
 * **Configure regional IPs**: Add the correct IP addresses for your target regions.
 
-  :::info
+  :::note
   When adding IP addresses:
 
-  - If you use cloud proxy with [Restricted media zones](/en/realtime-media/video/build/manage-connection-and-quality/geofencing), add only the IP addresses dedicated to your specified region.
+  - If you use cloud proxy with [Restricted media zones](../build/secure-and-protect-channels/geofencing), add only the IP addresses dedicated to your specified region.
   - If you do not restrict media zones, add all IP addresses to ensure connectivity.
   :::
 
@@ -85,18 +84,6 @@ To use Agora Cloud Proxy, your end users must first configure their firewall to 
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-
-<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
-
-</PlatformStructured>
-
-<PlatformStructured platform="unreal">
-
-<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
-
-</PlatformStructured>
-
-<PlatformStructured platform="blueprint">
 
 <include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
 

@@ -1,0 +1,325 @@
+---
+title: "Supported platforms"
+description: "The platforms supported by this product."
+---
+This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
+
+<PlatformStructured platform="android">
+- *Platforms*:
+
+    | Target Platform | Operating system version | IDE version     |
+    |:-----------------|:-------|:-----|
+    | Android | <Slot name="video-supported-android-abis" /> | Android Studio 3.0 or later |
+
+    <Slot for="video-supported-android-abis">
+
+    Android 4.1 or later.  Video SDK supports the following ABIs.
+
+    - armeabi-v7a
+    - arm64-v8a
+    - x86
+    - x86-64
+
+    </Slot>
+
+- *Browsers supported on Android*:
+
+    |Browser or application |Receiving streams |Sending streams|
+    |:-----|:-----|:-----|
+    |The latest version of Chrome |Supported |Supported|
+    |The latest version of WeChat |Supported |Supported|
+
+- *MediaPlayer Kit*:
+
+    | Type of media       | Formats       |
+    | :--- | :---- |
+    |Local files |AVI, MP4, MP3, MKV, and FLV          |
+    |Online media streams |HTTP, HTTPS, RTMP and RTSP protocols |
+
+</PlatformStructured>
+<PlatformStructured platform="ios">
+- *Platforms*:
+
+    | Target Platform | Operating system version | IDE version     |
+    |:-----------------|:-------|:-----|
+    | iOS  | iOS 9.0 or later         | Xcode 9.0 or later         |
+
+- *Browsers supported on iOS*:
+
+    On iOS, all apps with built-in browsers use the system WebView. Support for Video SDK relies only on the iOS system version.
+
+    |Browsers and applications |Features |VP9 |H.264 |
+    |:-----|:-----|:-----|:-----|
+    |Applications with WebView, such as WeChat and Chrome |Receiving streams |iOS 12.2 and later |iOS 12.1.4 and later|
+    | |Sending streams |iOS 14.3 and later |iOS 14.3 and later|
+    |Safari |Sending and receiving streams |iOS 12.2 and later |iOS 11 and later|
+
+- *MediaPlayer Kit*:
+
+    | Type of media       | Formats       |
+    | :--- | :--- |
+    |Local files |AVI, MP4, MP3, MKV, and FLV          |
+    |Online media streams |HTTP, HTTPS, RTMP and RTSP protocols |
+
+</PlatformStructured>
+<PlatformStructured platform="macos">
+- *Platforms*:
+
+    | Target Platform | Operating system version | IDE version     |
+    |:-----------------|:-------|:-----|
+    | macOS | <Slot name="video-supported-macos-architectures" /> | Xcode 9.0 or later |
+
+    <Slot for="video-supported-macos-architectures">
+
+    macOS 10.11 or later. Video SDK supports the following:
+
+    - x86-64
+    - arm64
+
+    </Slot>
+
+- *MediaPlayer Kit*:
+
+    | Type of media       | Formats       |
+    | :--- | :--- |
+    |Local files |AVI, MP4, MP3, MKV, and FLV          |
+    |Online media streams |HTTP, HTTPS, RTMP and RTSP protocols |
+
+</PlatformStructured>
+<PlatformStructured platform="web">
+The Agora Web SDK is a real-time audio and video SDK built on WebRTC technology. Consequently, its compatibility depends on the browser’s support for WebRTC.
+
+### Desktop browsers
+Agora Web SDK is well supported on popular desktop browsers such as Chrome, Firefox, Edge, and Safari. To ensure the best user experience, best practice is to use the latest version of each browser on the latest version of the operating system.
+
+<CodeBlockTabs defaultValue="mac">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="mac">macOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="win">Windows</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="chromeOS">ChromeOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="mac">
+| Browser | Version requirements | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing     |
+|:------|:-----|:-------:|:----:|:-----:|
+| [Chrome](https://www.google.com/intl/en/chrome/)  | Version 65 or above  | ✔ |  ✔  | ✔  |
+| [Firefox](https://www.mozilla.org/firefox/new/) | Version 69 or above  | ✔ |  ✔  | ✔  |
+| [Safari](https://support.apple.com/en-us/HT201541)  | Version 11 or above  | ✔ |  ✔  | ✔ (Requires Safari 13 or above) |
+| [Edge](https://microsoft.com/edge)    | Not available  | ✔ |  ✔  | ✔  |
+
+</CodeBlockTab>
+
+<CodeBlockTab value="win">
+| Browser | Version requirements | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing     |
+|:------|:-----|:-------:|:----:|:-----:|
+| [Chrome](https://www.google.com/intl/en/chrome/)  | Version 65 or above  | ✔ |  ✔  | ✔  |
+| [Firefox](https://www.mozilla.org/firefox/new/) | Version 69 or above  | ✔ |  ✔  | ✔  |
+| [Edge](https://microsoft.com/edge)    | Version 80 or above  | ✔ |  ✔  | ✔  |
+
+</CodeBlockTab>
+
+<CodeBlockTab value="chromeOS">
+| Browser | Version requirements | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing     |
+|:------|:-----|:-------:|:----:|:-----:|
+| [Chrome](https://www.google.com/intl/en/chrome/)  | Version 89 or above  | ✔ |  ✔  | ✔  |
+
+</CodeBlockTab>
+</CodeBlockTabs>
+
+### Mobile browsers
+
+Since version 4.6.0, the Web SDK optimizes the experience on mobile browsers. To improve your experience on mobile devices, Agora strongly recommends upgrading to the latest version.
+
+<CodeBlockTabs defaultValue="android">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="ios">iOS</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="harmony">HarmonyOS</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="android">
+| Browser | Version requirements | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing     |
+|:------|:-----|:-------:|:----:|:-----:|
+| [Chrome](https://www.google.com/intl/en/chrome/)  | Version 78 or above  | ✔ |  ✔  | ✘  |
+| WeChat built-in browser | WeChat version 7.0.20 or above  | ✔ |  ✔  | ✘  |
+| WeChat Work built-in browser  | WeChat Work 3.1.6 or above  | ✔ |  ✔  | ✘ |
+
+</CodeBlockTab>
+
+<CodeBlockTab value="ios">
+iOS only supports the system WebView. Therefore, support for the Web SDK is only related to the iOS system version.
+
+- iOS version ≥ 12.2 and < 14.3
+
+    | Browser   | Version requirements   | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing |
+    |:------|:-----|:-------:|:----:|:-----:|
+    | Safari    | Corresponding to iOS system version    | ✔| ✔  | ✘      |
+    | Chrome    | No clear information   | ✔| ✘  | ✘      |
+    | WeChat built-in browser   | WeChat version 8.0.13 or above | ✔| ✘  | ✘      |
+    | WeChat Work built-in browser | WeChat Work 3.1.15 or above①      | ✔| ✘  | ✘      |
+
+- iOS version ≥ 14.3
+
+    | Browser    | Version requirements   | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing |
+    |:------|:-----|:-------:|:----:|:-----:|
+    | Safari     | Corresponding to iOS system version    | ✔ | ✔  | ✘      |
+    | Chrome     | Version 92 or above    | ✔ | ✔  | ✘      |
+    | WeChat built-in browser    | WeChat version 8.0.13 or above | ✔ | ✔  | ✘      |
+    | WeChat Work built-in browser | WeChat Work 3.1.15 or above①      | ✔ | ✔  | ✘      |
+
+</CodeBlockTab>
+
+<CodeBlockTab value="harmony">
+| Browser | Version requirements | Receiving audio and video Streams | Publishing audio and video streams | Screen sharing     |
+|:------|:-----|:-------:|:----:|:-----:|
+| Huawei Browser  | Not available  | ✔ |  ✔  | ✘  |
+
+</CodeBlockTab>
+</CodeBlockTabs>
+
+### Check browser compatibility
+
+The Agora Web SDK provides the `checkSystemRequirements` method to determine if the SDK can be used in the current browser.
+```js
+const result = AgoraRTC.checkSystemRequirements();
+// result is true for support, false for non-support
+console.log(result);
+```
+
+</PlatformStructured>
+<PlatformStructured platform="windows">
+- *Platforms*:
+    | Target Platform | Operating system version | IDE version     |
+    |:-----------------|:-------|:-----|
+    | Windows | <Slot name="video-supported-windows-architectures" /> | Microsoft Visual Studio 2017 or later |
+
+    <Slot for="video-supported-windows-architectures">
+
+    Windows 7 or later. Video SDK supports the following:
+
+    - x86
+    - x86-64
+
+    </Slot>
+
+- *MediaPlayer Kit*:
+
+    | Type of media       | Formats       |
+    | :--- | :--- |
+    |Local files |AVI, MP4, MP3, MKV, and FLV          |
+    |Online media streams |HTTP, HTTPS, RTMP and RTSP protocols |
+
+</PlatformStructured>
+<PlatformStructured platform="electron">
+- *Platforms*:
+
+    | Target Platform | Supported version |
+    |:----------------|:------------------|
+    | Electron | <Slot name="video-supported-electron-platforms" /> |
+
+    <Slot for="video-supported-electron-platforms">
+
+    Electron ≥ 1.8.3, < 25 - Windows (x86, x86-64)
+    - macOS
+
+    </Slot>
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+- [Flutter](https://docs.flutter.dev/get-started/install) 2.10.5 or later
+
+    If you are developing a desktop application for Windows, macOS or Linux, make sure your development device meets the [Flutter desktop development requirements](https://docs.flutter.dev/development/platform-integration/desktop).
+
+- *Platforms*:
+
+    | Target platform | Environment requirements |
+    |:----------------|:-------------------------|
+    | Android | <Slot name="video-supported-flutter-android" /> |
+    | iOS | <Slot name="video-supported-flutter-ios" /> |
+    | macOS | <Slot name="video-supported-flutter-macos" /> |
+    | Windows | <Slot name="video-supported-flutter-windows" /> |
+
+    <Slot for="video-supported-flutter-android">
+
+    - macOS 10.15 or later
+    - Windows 10 or higher
+    - Latest version of Android Studio
+    - Two Android devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-ios">
+
+    - macOS 10.15 or later
+    - Latest version of Xcode
+    - Two iOS devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-macos">
+
+    - macOS 10.15 or later
+    - Latest version of Xcode
+    - Two macOS devices
+
+    </Slot>
+
+    <Slot for="video-supported-flutter-windows">
+
+    - Windows 10 or higher
+    - Latest version of Visual Studio
+    - Two Windows devices
+
+    </Slot>
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+- *Platforms*:
+
+    | Target Platform | Operating system version |
+    |:-----------------|:-------|
+    | React Native    | React Native 0.59.10 or later. |
+
+</PlatformStructured>
+<PlatformStructured platform="javascript">
+To ensure the best user experience, best practice is to use the latest version of each browser on the latest version of the operating system. Download the latest versions of:
+
+- [Chrome](https://www.google.com/intl/en/chrome/)
+- [Firefox](https://www.mozilla.org/firefox/new/)
+- [Edge](https://microsoft.com/edge)
+- [Safari](https://support.apple.com/en-hk/HT201541)
+</PlatformStructured>
+<PlatformStructured platform="unity">
+- *Platforms*:
+    | Target Platform | Supported version |
+    |:-----------------|:-------|
+    | Unity | <Slot name="video-supported-unity-platforms" /> |
+
+    <Slot for="video-supported-unity-platforms">
+
+    Unity 2017 or later. Video SDK supports the following:
+
+    - Android (armeabi-v7a, arm64-v8a, x86)
+    - iOS
+    - Windows (x86, x86-64)
+    - macOS
+
+    </Slot>
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+| Platform | IDE  | OS | Architecture|Note|
+|:----|:----|:----|:----|:----|
+|  Android|  Android Studio 3.5.3 or later| see [the Unreal Engine Android Development Requirements.](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/)|arm64-v8a, arneabi-v7a|Real devices only (not working on emulators)  NDK version 21
+|iOS|XCode 11.0 or later|see [the Unreal Engine iOS and tvOS Development Requirements.](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/iOS/DeviceCompatibility/)| - |A valid Apple developer signature.
+|MacOS|XCode 11.0 or later|OS X 10.11 or later|Intel, M1|A valid Apple developer signature.
+|Windows (64bit)|Visual Studio 2019|Windows 7 SP1 or later|Intel|At least 1.65 GB of disk space after the IDE and relevant tools are installed.
+|Windows (32bit)|Visual Studio 2019|Windows 7 SP1 or later|Intel|Unreal Engine 5 (UE5) is not supported on 32-bit Windows. If you want to use Unreal Engine 4 (UE4) with 32-bit Windows, uncomment the code relating to Win32 in the *AgoraPluginLibrary.Build.cs* file.
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+| Platform | IDE  | OS | Architecture|Note|
+|:----|:----|:----|:----|:----|
+|  Android|  Android Studio 3.5.3 or later| see [the Unreal Engine Android Development Requirements.](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/)|arm64-v8a, arneabi-v7a|Real devices only (not working on emulators)  NDK version 21
+|iOS|XCode 11.0 or later|see [the Unreal Engine iOS and tvOS Development Requirements.](https://docs.unrealengine.com/4.27/en-US/SharingAndReleasing/Mobile/iOS/DeviceCompatibility/)| - |A valid Apple developer signature.
+|MacOS|XCode 11.0 or later|OS X 10.11 or later|Intel, M1|A valid Apple developer signature.
+|Windows (64bit)|Visual Studio 2019|Windows 7 SP1 or later|Intel|At least 1.65 GB of disk space after the IDE and relevant tools are installed.
+|Windows (32bit)|Visual Studio 2019|Windows 7 SP1 or later|Intel|Unreal Engine 5 (UE5) is not supported on 32-bit Windows. If you want to use Unreal Engine 4 (UE4) with 32-bit Windows, uncomment the code relating to Win32 in the *AgoraPluginLibrary.Build.cs* file.
+</PlatformStructured>

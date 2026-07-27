@@ -34,19 +34,19 @@ To start a session, implement the following steps in your app:
 In order to follow this procedure, you must have:
 
 To test the code used in this page you need to have:
-* An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
-* A computer with Internet access.
+
+- An Agora [account](../manage-agora-account.md) and [project](../manage-agora-account.md).
+- A computer with Internet access.
+
   Ensure that no firewall is blocking your network communication.
 
-* Implemented the [SDK quickstart](../index.mdx)
-
+- Implemented the [SDK quickstart](../index.mdx)
 - [Unity Hub](https://unity.com/download)
 - [Unity Editor 2017.X LTS or higher](https://unity.com/releases/editor/archive)
 - Microsoft Visual Studio 2017 or higher
-
-* Installed [ML Hub](https://developer-docs.magicleap.cloud/docs/guides/getting-started/install-the-tools)
-* Installed [Unity Hub](https://unity.com/download)
-* [Install and configure the Unity Editor required to develop for Magic Leap 2](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/install-the-tools)
+- Installed [ML Hub](https://developer-docs.magicleap.cloud/docs/guides/getting-started/install-the-tools)
+- Installed [Unity Hub](https://unity.com/download)
+- [Install and configure the Unity Editor required to develop for Magic Leap 2](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/install-the-tools)
 
 ## Project setup
 
@@ -54,19 +54,20 @@ To integrate Interactive Live Streaming into your Magic Leap project, do the fol
 
 1. **Create a Magic Leap project for Unity**
 
-  In Unity Editor:
-  - [Create a project](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/create-a-project)
- for your Agora Magic Leap app.
-  - [Configure your app settings](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/configure-unity-settings)
+   In Unity Editor:
 
-1. **Configure your project**
+   - [Create a project](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/create-a-project) for your Agora Magic Leap app.
+   - [Configure your app settings](https://developer-docs.magicleap.cloud/docs/guides/unity/getting-started/configure-unity-settings)
 
-  In Unity Editor:
-  1. Click **Edit** > **Project settings**.
-  1. In **XR Plug-in Management**, enable **Magic Leap**.
-  1. In **XR Plug-in Management** > **Magic Leap Settings**, enable **Use ML Audio**.
-  1. In **Player settings** > **Android** > **Publishing settings**, enable **Custom Main Manifest**.
-  1. In **Magic Leap** > **Permissions**, enable `android.permission.CAMERA` and `android.permission.RECORD_AUDIO`.
+2. **Configure your project**
+
+   In Unity Editor:
+
+   1. Click **Edit** > **Project settings**.
+   2. In **XR Plug-in Management**, enable **Magic Leap**.
+   3. In **XR Plug-in Management** > **Magic Leap Settings**, enable **Use ML Audio**.
+   4. In **Player settings** > **Android** > **Publishing settings**, enable **Custom Main Manifest**.
+   5. In **Magic Leap** > **Permissions**, enable `android.permission.CAMERA` and `android.permission.RECORD_AUDIO`.
 
 You are ready to add Interactive Live Streaming features to your Magic Leap project.
 
@@ -80,11 +81,11 @@ This section shows how to integrate the Video SDK to implement the Interactive L
 
 2. Double-click the download package.
 
-  The Import dialog opens automatically in Unity Editor.
+   The Import dialog opens automatically in Unity Editor.
 
 3. Click **Import**.
 
-  In **Project** > **Assets** you see `Agora-RTC-Plugin` and `Agora_MagicLeap2_Plugin`.
+   In **Project** > **Assets** you see `Agora-RTC-Plugin` and `Agora_MagicLeap2_Plugin`.
 
 You are ready to test the demo.
 
@@ -100,24 +101,21 @@ Agora recommends you run this project on a physical mobile device, as some simul
 
 4. In Unity Editor, double-click **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Demo**.
 
-  The demo scene opens.
+   The demo scene opens.
 
-5. In **Project**, open **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Scripts** > **Agora
- Controller**.
+5. In **Project**, open **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Scripts** > **Agora Controller**.
 
 6. Update `APP_ID`, `TOKEN`, and `CHANNEL_NAME` with the same values you used for the web demo.
 
 7. Connect an ML2 device, then click **Build and Run**.
 
-  The demo app opens.
+   The demo app opens.
 
 8. Click **Connect Camera**.
 
-  Video from your ML2 is streamed to the channel and is visible in the web demo. You see the video stream from the
- web demo.
+   Video from your ML2 is streamed to the channel and is visible in the web demo. You see the video stream from the web demo.
 
-Now you have tested the demo, best practice is to customize the demo source including the custom audio and video
- handling into your Magic Leap 2 project.
+Now you have tested the demo, best practice is to customize the demo source including the custom audio and video handling into your Magic Leap 2 project.
 
 ## Reference
 
