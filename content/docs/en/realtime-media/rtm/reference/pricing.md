@@ -130,13 +130,15 @@ Signaling 2.x is an enhanced version of 1.x with a wide range of new features an
 
 | Metric | Free | Lite | Starter | Pro | Business | Enterprise |
 | --- | --- | --- | --- | --- | --- | --- |
-| Message volume (Millions per month) | 1 | 18 | 30 | 150 | 500 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| Peak concurrent users (Maximum) | 20 | 300 | 500 | 2,500 | 5,000 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| Storage (GB) | 1 | 1.5 | 2 | 10 | 20 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| List Price/month | - | $42.75 | $67.50 | $337.50 | $975.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| Package Price/month | FREE | $39.00 | $59.00 | $279.00 | $749.00 | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| You save | - | 9% | 13% | 18% | 23% | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
-| Additional usage policy | Service suspension | Overage protection\* | Overage protection\* | Overage protection\* | Overage protection\* | Pay-as-you-go. [Contact Sales](https://www.agora.io/en/talk-to-us/) |
+| Message volume (Millions per month) | 1 | 18 | 30 | 150 | 500 | Pay-as-you-go |
+| Peak concurrent users (Maximum) | 20 | 300 | 500 | 2,500 | 5,000 | Pay-as-you-go |
+| Storage (GB) | 1 | 1.5 | 2 | 10 | 20 | Pay-as-you-go |
+| List Price/month | - | ~~$42.75~~ | ~~$67.50~~ | ~~$337.50~~ | ~~$975.00~~ | Pay-as-you-go |
+| Package Price/month | **FREE** | **$39.00** | **$59.00** | **$279.00** | **$749.00** | Pay-as-you-go |
+| You save | - | 9% | 13% | 18% | 23% | Pay-as-you-go |
+| Additional usage policy | Service suspension | Overage protection\* | Overage protection\* | Overage protection\* | Overage protection\* | Pay-as-you-go |
+
+The package price is the amount charged each month. The list price is a pre-discount reference price and is not charged separately. For Enterprise pricing, [contact Sales](https://www.agora.io/en/talk-to-us/).
 
 \* Overage protection keeps your service running seamlessly. Overage charges are billed weekly to your prepaid balance or card on file, unless your contract specifies a different billing cycle.
 
