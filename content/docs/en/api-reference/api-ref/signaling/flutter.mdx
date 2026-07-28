@@ -411,7 +411,7 @@ Storage event.
 | `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#enumvstoragetyp-e). |
 | `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#enumvstorageeventtyp-e). |
 | `target` | String | User ID or channel name. |
-| `data` | `IMetadata*` | Metadata item. See [`IMetadata`](../storage#IMetadata). |
+| `data` | `*` | Metadata item. See [``](../storage#IMetadata). |
 | `timestamp` | int | The timestamp when the event occurs. |
 
 ##### LockEvent
@@ -3166,11 +3166,11 @@ You can understand the error reason and find the corresponding solution by looki
 
 #### Description
 
-If you want to query the lock information such as lock total number, lock name, lock user, and time to live, you can call the `getLocks` method on the client.
+If you want to query the lock information such as lock total number, lock name, lock user, and time to live, you can call the `` method on the client.
 
 #### Method
 
-You can call the `getLocks` method as follows:
+You can call the `` method as follows:
 
 ```dart
 Future<(RtmStatus, GetLocksResult?)> getLocks(
