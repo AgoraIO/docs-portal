@@ -1925,7 +1925,7 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (isRecipesApiReferencePath(activePath)) {
+  if (isRecipesPath(activePath)) {
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
@@ -2450,10 +2450,10 @@ function getProductLegacyApiReferenceUrls(link: ProductApiReferenceLink) {
   }
 }
 
-function isRecipesApiReferencePath(path?: string) {
+function isRecipesPath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
-    path?.startsWith('/zh-CN/api-reference/recipes') ||
+    path?.startsWith('/zh-CN/reference/recipes') ||
     false
   );
 }

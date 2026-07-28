@@ -13,17 +13,17 @@ export const REFERENCE_CENTER_ENTRIES: readonly {
     label: 'API 参考',
   },
   {
-    href: '/zh-CN/api-reference/sdks',
+    href: '/zh-CN/reference/sdks',
     id: 'sdks',
     label: 'SDK 下载',
   },
   {
-    href: '/zh-CN/api-reference/recipes',
+    href: '/zh-CN/reference/recipes',
     id: 'recipes',
     label: 'Recipe',
   },
   {
-    href: '/zh-CN/api-reference/faq',
+    href: '/zh-CN/reference/faq',
     id: 'faq',
     label: '常见问题',
   },
@@ -42,18 +42,18 @@ export function getReferenceCenterContext(
   if (normalizedPath === '/zh-CN/api-reference/api') {
     return 'api';
   }
-  if (normalizedPath === '/zh-CN/api-reference/sdks') {
+  if (normalizedPath === '/zh-CN/reference/sdks') {
     return 'sdks';
   }
   if (
-    normalizedPath === '/zh-CN/api-reference/recipes' ||
-    normalizedPath.startsWith('/zh-CN/api-reference/recipes/')
+    normalizedPath === '/zh-CN/reference/recipes' ||
+    normalizedPath.startsWith('/zh-CN/reference/recipes/')
   ) {
     return 'recipes';
   }
   if (
-    normalizedPath === '/zh-CN/api-reference/faq' ||
-    normalizedPath.startsWith('/zh-CN/api-reference/faq/')
+    normalizedPath === '/zh-CN/reference/faq' ||
+    normalizedPath.startsWith('/zh-CN/reference/faq/')
   ) {
     return 'faq';
   }

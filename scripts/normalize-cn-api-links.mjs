@@ -68,7 +68,7 @@ const EXACT_FRAGMENT_ALIAS_TARGETS = new Map([
     'unsubscribe',
   ],
   [
-    'content/docs/zh-CN/api-reference/faq/integration/console_error_web.mdx#none-ice-candidate-not-alloweda-namecandidatea',
+    'content/docs/zh-CN/reference/faq/integration/console_error_web.mdx#none-ice-candidate-not-alloweda-namecandidatea',
     'none-ice-candidate-not-allowed',
   ],
   [
@@ -1136,6 +1136,7 @@ export function isApiRelatedMissingInternal(entry) {
   const target = entry.normalizedHref ?? entry.href ?? '';
   return (
     entry.sourcePath.startsWith('zh-CN/api-reference/') ||
+    entry.sourcePath.startsWith('zh-CN/reference/') ||
     (entry.sourcePath.startsWith('openapi/') &&
       /\.zh-CN\.ya?ml$/i.test(entry.sourcePath)) ||
     /\/(?:api-reference|api-ref)(?:\/|#|$)/i.test(target)

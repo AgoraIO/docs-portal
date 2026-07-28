@@ -48,7 +48,7 @@ App 证书 (App Certificate) 是声网控制台为开发项目生成的随机字
 - App ID 鉴权：在声网控制台中创建项目时，如果将鉴权机制设为**调试模式：App ID**，则该项目使用 App ID 鉴权。该机制下，在初始化 SDK 或加入频道时，用户需要传入 App ID。该方式安全性较低，适用于低安全需求场景，如项目测试阶段临时使用。
 - Token 鉴权：在声网控制台中创建项目时，如果将鉴权机制设为**安全模式：App ID + Token**，则该项目使用 Token 鉴权。该机制下，用户需要传入 App ID 和 Token 才能加入频道。该方式安全性较高，适用于高安全需求场景。
 
-如果你在创建项目时选择了**调试模式**，后续也可通过启用 App 证书来升级为 Token 鉴权。详见[如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)。
+如果你在创建项目时选择了**调试模式**，后续也可通过启用 App 证书来升级为 Token 鉴权。详见[如何升级到 Token 鉴权方案？](/zh-CN/reference/faq/integration/appid_to_token)。
 
 :::warning[注意]
 为提高项目的安全性，声网会逐步取消对 App ID 鉴权方案的支持，建议你将所有项目升级至使用 Token 鉴权。
@@ -95,7 +95,7 @@ App 证书 (App Certificate) 是声网控制台为开发项目生成的随机字
 - 一个频道内，两个及以上主播进行连麦互动。既可以是多个主播加入同一频道；也可以是频道内的观众申请上麦，切换用户角色成为连麦主播，与原有的主播进行互动。
 - 两个及以上频道内的主播进行连麦互动。声网 SDK 支持将某一频道中主播的媒体流转发至多个其他频道中，实现跨频道连麦。具体实现方式详见[跨频道媒体流转发](/zh-CN/realtime-media/rtc/build/advanced-channel/media-relay)。
 
-一个频道同一时间连麦主播的数量限制，详见[声网 SDK 最多支持多少人同时在线](/zh-CN/api-reference/faq/product/capacity)。如果连麦主播数量过多时，可能会出现音画不同步和信息丢失的问题。
+一个频道同一时间连麦主播的数量限制，详见[声网 SDK 最多支持多少人同时在线](/zh-CN/reference/faq/product/capacity)。如果连麦主播数量过多时，可能会出现音画不同步和信息丢失的问题。
 
 :::info[相关链接]
 - [上麦](#become-host)

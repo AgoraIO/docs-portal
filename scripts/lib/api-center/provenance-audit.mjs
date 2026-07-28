@@ -711,55 +711,33 @@ export async function auditApiCenterProvenance({
     });
   }
 
-  const preservedRootItems = [
+  const expectedRootItems = [
     'api',
-    'sdks',
-    '---指南---',
-    '[Recipe](/zh-CN/api-reference/recipes)',
-    'faq',
+    '[SDK 下载](/zh-CN/reference/sdks)',
+    '[Recipe](/zh-CN/reference/recipes)',
+    '[常见问题](/zh-CN/reference/faq)',
   ];
-  const baseRootRaw = await readBaseFile(
-    root,
-    baseRef,
-    'content/docs/zh-CN/api-reference/meta.json',
+  const currentRoot = JSON.parse(
+    await fs.readFile(
+      path.resolve(root, 'content/docs/zh-CN/api-reference/meta.json'),
+      'utf8',
+    ),
   );
-  const baseRoot = baseRootRaw ? JSON.parse(baseRootRaw) : null;
-  if (baseRoot) {
-    const currentRoot = JSON.parse(
-      await fs.readFile(
-        path.resolve(root, 'content/docs/zh-CN/api-reference/meta.json'),
-        'utf8',
+  const visibleRootItems = currentRoot.pages.filter(
+    (item) => typeof item === 'string',
+  );
+  if (
+    currentRoot.pages.includes('overview') ||
+    JSON.stringify(visibleRootItems) !== JSON.stringify(expectedRootItems)
+  ) {
+    errors.push({
+      ...issue(
+        'root-navigation-order-drift',
+        'The API Reference root must keep the API entry followed by links to the Reference resources.',
+        { targetPath: 'content/docs/zh-CN/api-reference/meta.json' },
       ),
-    );
-    for (const item of preservedRootItems) {
-      if (baseRoot.pages?.includes(item) && currentRoot.pages?.includes(item)) {
-        continue;
-      }
-      errors.push({
-        ...issue(
-          'root-navigation-copy-drift',
-          'Non-API Center root navigation copy must be preserved from the base branch.',
-          { targetPath: 'content/docs/zh-CN/api-reference/meta.json' },
-        ),
-        axis: 'source-provenance',
-      });
-    }
-    const visibleRootItems = currentRoot.pages.filter(
-      (item) => typeof item === 'string',
-    );
-    if (
-      currentRoot.pages.includes('overview') ||
-      JSON.stringify(visibleRootItems) !== JSON.stringify(preservedRootItems)
-    ) {
-      errors.push({
-        ...issue(
-          'root-navigation-order-drift',
-          'The Reference Center root must start with API Reference and omit the API Center entry.',
-          { targetPath: 'content/docs/zh-CN/api-reference/meta.json' },
-        ),
-        axis: 'source-provenance',
-      });
-    }
+      axis: 'source-provenance',
+    });
   }
 
   let generatorFallbackViolations = 0;
@@ -1076,7 +1054,7 @@ export async function auditApiCenterProvenance({
       preservedExistingOutsideScope,
       localLinksChecked: linkAudit.counts.links,
       openapiReachableOperations: openApiAudit.counts.reachableOperations,
-      preservedRootNavigationItems: baseRoot ? preservedRootItems.length : 0,
+      preservedRootNavigationItems: expectedRootItems.length,
       generatorFallbackViolations,
       generatedTextViolations,
       generatedHtmlDescriptionsChecked,
@@ -1156,7 +1134,7 @@ export async function auditApiCenterProvenance({
       },
       {
         id: 'preserved-root-navigation',
-        evidence: `${preservedRootItems.length} non-product root navigation items keep their exact base-branch labels and routes.`,
+        evidence: `${expectedRootItems.length} root navigation items keep the API entry followed by the Reference resource links.`,
       },
       {
         id: 'api-group-action-labels',

@@ -11,7 +11,7 @@ import { SdkDownloadProductNav } from './SdkDownloadProductNav';
 
 describe('SdkDownloadProductNav', () => {
   beforeEach(() => {
-    window.history.replaceState({}, '', '/zh-CN/api-reference/sdks');
+    window.history.replaceState({}, '', '/zh-CN/reference/sdks');
   });
 
   afterEach(() => {
@@ -49,7 +49,7 @@ describe('SdkDownloadProductNav', () => {
     window.history.replaceState(
       {},
       '',
-      '/zh-CN/api-reference/sdks?product=voice',
+      '/zh-CN/reference/sdks?product=voice',
     );
 
     render(

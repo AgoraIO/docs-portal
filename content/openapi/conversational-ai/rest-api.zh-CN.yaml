@@ -63,7 +63,7 @@ paths:
                     # agent_rtm_uid:
                     #   type: string
                     #   description: |-
-                    #     > 该字段已废弃，请参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
+                    #     > 该字段已废弃，请参考 [FAQ](/zh-CN/reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后改用 `agent_rtc_uid` 字段。
 
                     #     智能体在 RTM 频道内的用户 ID。仅在 `advanced_features.enable_rtm` 为 `true` 时生效。
                     enable_string_uid:
@@ -73,7 +73,7 @@ paths:
                         是否启用 String UID：
                         - `true`：智能体和订阅用户 ID 均使用 String UID。
                         - `false`：（默认）智能体和订阅用户 ID 均使用 Int UID。
-                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/api-reference/faq/integration/string_uid)。
+                        > 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/reference/faq/integration/string_uid)。
                     idle_timeout:
                       type: integer
                       minimum: 0
@@ -107,7 +107,7 @@ paths:
                           description: |-
                             是否启用实时消息 RTM 服务。启用后智能体会自动登录 RTM 并订阅 `channel` 中指定的频道，可结合 RTM 提供的能力实现一些进阶功能，例如[传递自定义信息](/zh-CN/ai/build/shape-the-conversation/custom-information)。
 
-                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](/zh-CN/api-reference/faq/integration/rtc_rtm_token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
+                            > 启用 RTM 服务前需要确保 Token 同时具备 RTC 和 RTM 权限。智能体加入 RTM 频道会复用 `token` 字段配置的 Token。你可以参考 [FAQ](/zh-CN/reference/faq/integration/rtc_rtm_token) 了解如何生成同时具备 RTC 和 RTM 权限的 Token。
                           default: false
                         enable_sal:
                           type: boolean

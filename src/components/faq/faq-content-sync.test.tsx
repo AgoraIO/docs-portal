@@ -8,7 +8,7 @@ import { FAQ_CATEGORY_FOLDER } from './faq-filter';
 const faqRoot = path.join(process.cwd(), 'content/docs/en/api-reference/faq');
 const zhCnFaqRoot = path.join(
   process.cwd(),
-  'content/docs/zh-CN/api-reference/faq',
+  'content/docs/zh-CN/reference/faq',
 );
 const zhCnDocsRoot = path.join(process.cwd(), 'content/docs/zh-CN');
 
@@ -17,7 +17,7 @@ const categoryIndexPages = Object.values(FAQ_CATEGORY_FOLDER).map(
   (folder) => `/en/api-reference/faq/${folder}/index`,
 );
 const zhCnCategoryIndexPages = Object.values(FAQ_CATEGORY_FOLDER).map(
-  (folder) => `/zh-CN/api-reference/faq/${folder}/index`,
+  (folder) => `/zh-CN/reference/faq/${folder}/index`,
 );
 
 function listFaqPages({
@@ -101,7 +101,7 @@ function listLegacyZhCnFaqLinks(): string[] {
   const legacyPatterns = [
     /https?:\/\/doc\.shengwang\.cn\/faq\b/g,
     /https?:\/\/docs\.agora\.io\/(?:cn|en)\/(?:[^\s)\]}>'"`]+\/)*faq\//g,
-    /(?<!zh-CN\/api-reference)(?<!en\/api-reference)\/faq\//g,
+    /(?<!zh-CN\/reference)(?<!en\/api-reference)\/faq\//g,
   ];
   const offenders: string[] = [];
 
@@ -121,7 +121,7 @@ function listLegacyZhCnFaqLinks(): string[] {
 function listBrokenZhCnFaqLinks(): string[] {
   const brokenLinks: string[] = [];
   const faqLinkPattern =
-    /\/zh-CN\/api-reference\/faq(?:\/[A-Za-z0-9_/-]+)?(?:#[^\s)\]}>'"`]+)?/g;
+    /\/zh-CN\/reference\/faq(?:\/[A-Za-z0-9_/-]+)?(?:#[^\s)\]}>'"`]+)?/g;
 
   for (const file of listMarkdownFiles(zhCnDocsRoot)) {
     const content = readFileSync(file, 'utf8');
@@ -167,7 +167,7 @@ describe('faq content integrity', () => {
 
   it('keeps zhCnFaqItems 1:1 with Chinese article pages', () => {
     const landingPages = new Set([
-      '/zh-CN/api-reference/faq/index',
+      '/zh-CN/reference/faq/index',
       ...zhCnCategoryIndexPages,
     ]);
     const articlePages = listFaqPages({

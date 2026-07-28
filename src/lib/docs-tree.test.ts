@@ -1760,7 +1760,7 @@ describe('docs tree helpers', () => {
             $id: 'faq-integration-index-child',
             name: '集成类',
             type: 'page',
-            url: '/zh-CN/api-reference/faq/integration',
+            url: '/zh-CN/reference/faq/integration',
           },
         ],
         name: '集成类',
@@ -1768,10 +1768,10 @@ describe('docs tree helpers', () => {
       }),
     ).toEqual([
       {
-        id: '/zh-CN/api-reference/faq/integration',
+        id: '/zh-CN/reference/faq/integration',
         title: '集成类',
         type: 'page',
-        url: '/zh-CN/api-reference/faq/integration',
+        url: '/zh-CN/reference/faq/integration',
       },
     ]);
   });

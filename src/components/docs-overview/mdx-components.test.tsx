@@ -295,13 +295,13 @@ describe('overview MDX components', () => {
         ]}
         knowledgeBase={[
           {
-            href: '/zh-CN/api-reference/faq/quality/video_blank',
+            href: '/zh-CN/reference/faq/quality/video_blank',
             label: '如何排查黑屏问题？',
           },
         ]}
         topics={[
           {
-            href: '/zh-CN/api-reference/faq/integration',
+            href: '/zh-CN/reference/faq/integration',
             label: '集成问题',
           },
         ]}

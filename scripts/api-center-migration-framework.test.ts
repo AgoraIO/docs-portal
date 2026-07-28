@@ -252,7 +252,7 @@ describe('API Center shared migration framework', () => {
         {
           sourceSlug: 'string-uid',
           targetPath:
-            'content/docs/zh-CN/api-reference/faq/integration/string_uid.mdx',
+            'content/docs/zh-CN/reference/faq/integration/string_uid.mdx',
         },
       ],
     );
@@ -267,7 +267,7 @@ describe('API Center shared migration framework', () => {
           routeMap,
         }),
       ).toEqual({
-        href: '/zh-CN/api-reference/faq/integration/string_uid',
+        href: '/zh-CN/reference/faq/integration/string_uid',
         warning: null,
       });
     }

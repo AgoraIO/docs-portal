@@ -73,7 +73,7 @@ const apiReferenceNodes: DocsSidebarNode[] = [
     id: 'sdk-downloads',
     title: 'SDK 下载',
     type: 'page',
-    url: '/zh-CN/api-reference/sdks',
+    url: '/zh-CN/reference/sdks',
   },
   {
     children: [],
@@ -193,8 +193,8 @@ describe('DocsSidebar', () => {
     ).toBeTruthy();
 
     rerenderSidebar({
-      activePath: '/zh-CN/api-reference/sdks',
-      resetKey: 'api-reference',
+      activePath: '/zh-CN/reference/sdks',
+      resetKey: 'reference',
     });
 
     expect(
@@ -203,8 +203,8 @@ describe('DocsSidebar', () => {
     expect(screen.getByTestId('sdk-download-product-nav')).toBeVisible();
 
     rerenderSidebar({
-      activePath: '/zh-CN/api-reference/recipes',
-      resetKey: 'api-reference',
+      activePath: '/zh-CN/reference/recipes',
+      resetKey: 'reference',
     });
 
     expect(
@@ -213,8 +213,8 @@ describe('DocsSidebar', () => {
     expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
 
     rerenderSidebar({
-      activePath: '/zh-CN/api-reference/faq/integration',
-      resetKey: 'api-reference',
+      activePath: '/zh-CN/reference/faq/integration',
+      resetKey: 'reference',
     });
 
     expect(screen.getByTestId('faq-category-nav')).toBeVisible();

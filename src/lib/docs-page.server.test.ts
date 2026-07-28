@@ -2198,7 +2198,7 @@ Web body
 
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: 'API 参考',
     });
 
     mockedGetNodeMeta.mockReturnValue(undefined);
@@ -2212,7 +2212,7 @@ Web body
 
     expect(unscopedPayload.sidebarHeader).toEqual({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考中心',
+      backLabel: 'API 参考',
       title: 'RESTful API',
     });
   });

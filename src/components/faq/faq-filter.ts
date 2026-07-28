@@ -31,7 +31,8 @@ export function categoryHref(
   category: FaqCategoryId,
   locale: 'en' | 'zh-CN' = 'en',
 ): string {
-  return `/${locale}/api-reference/faq/${FAQ_CATEGORY_FOLDER[category]}`;
+  const tab = locale === 'zh-CN' ? 'reference' : 'api-reference';
+  return `/${locale}/${tab}/faq/${FAQ_CATEGORY_FOLDER[category]}`;
 }
 
 function normalize(value: string): string {

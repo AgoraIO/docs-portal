@@ -60,7 +60,7 @@ describe('FaqCategory', () => {
     window.history.replaceState(
       null,
       '',
-      '/zh-CN/api-reference/faq/integration',
+      '/zh-CN/reference/faq/integration',
     );
 
     render(<FaqCategory category="integration-issues" locale="zh-CN" />);
@@ -75,7 +75,7 @@ describe('FaqCategory', () => {
       }),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/api-reference/faq/integration/allow_haptics',
+      '/zh-CN/reference/faq/integration/allow_haptics',
     );
   });
 });

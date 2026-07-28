@@ -13,7 +13,7 @@ describe('CN API link normalization', () => {
     expect(
       isApiRelatedMissingInternal({
         href: '/zh-CN/retired-product',
-        sourcePath: 'zh-CN/api-reference/faq/example.mdx',
+        sourcePath: 'zh-CN/reference/faq/example.mdx',
       }),
     ).toBe(true);
   });

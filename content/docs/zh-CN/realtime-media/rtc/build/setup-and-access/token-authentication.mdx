@@ -354,7 +354,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -435,7 +435,7 @@ class RtcEngineEventHandlerImpl extends IRtcEngineEventHandler {
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
@@ -928,7 +928,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -960,16 +960,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 
@@ -1331,7 +1331,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -1408,7 +1408,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
@@ -1901,7 +1901,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -1933,16 +1933,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 
@@ -2304,7 +2304,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -2381,7 +2381,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/macos/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
@@ -2874,7 +2874,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -2906,16 +2906,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 
@@ -3277,7 +3277,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -3339,7 +3339,7 @@ client.on("token-privilege-did-expire", async function () {
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 只有用户角色为主播时可以在频道内发流。调用 [`setClientRole`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法，将角色 role 设为 "host" （主播）。
 :::
 
@@ -3832,7 +3832,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)：（默认）用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -3864,14 +3864,14 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
 ### 相关文档
 
@@ -4232,7 +4232,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -4314,7 +4314,7 @@ public:
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
@@ -4808,7 +4808,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -4840,16 +4840,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 
@@ -5211,7 +5211,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -5290,7 +5290,7 @@ config.mEventHandler.onTokenPrivilegeWillExpire =async  (oldToken: string) => {
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/harmonyos/channel#setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannelWithOptions`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
@@ -5783,7 +5783,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位有符号整数，取值范围为 -231 - 1 到 231 - 1， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)：（默认）用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -5815,14 +5815,14 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
 ### 相关文档
 
@@ -6172,7 +6172,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -6330,7 +6330,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)：（默认）用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -6340,7 +6340,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 
 ### 相关文档
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
 </PlatformStructured>
 
@@ -6867,8 +6867,8 @@ static std::string BuildTokenWithUid(
 
 ## 相关文档
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
-- [如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
+- [如何升级到 Token 鉴权方案？](/zh-CN/reference/faq/integration/appid_to_token)
 - [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)
 
 </PlatformStructured>
@@ -7605,8 +7605,8 @@ static std::string BuildTokenWithUid(
 
 ## 相关文档
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
-- [如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
+- [如何升级到 Token 鉴权方案？](/zh-CN/reference/faq/integration/appid_to_token)
 - [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)
 
 </PlatformStructured>
@@ -8225,8 +8225,8 @@ static std::string BuildTokenWithUid(
 
 ## 相关文档
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
-- [如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
+- [如何升级到 Token 鉴权方案？](/zh-CN/reference/faq/integration/appid_to_token)
 - [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)
 
 </PlatformStructured>
@@ -8898,8 +8898,8 @@ static std::string BuildTokenWithUid(
 
 ## 相关文档
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
-- [如何升级到 Token 鉴权方案？](/zh-CN/api-reference/faq/integration/appid_to_token)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
+- [如何升级到 Token 鉴权方案？](/zh-CN/reference/faq/integration/appid_to_token)
 - [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)
 
 </PlatformStructured>
@@ -9252,7 +9252,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -9334,7 +9334,7 @@ public:
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
@@ -9828,7 +9828,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -9860,16 +9860,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 
@@ -10227,7 +10227,7 @@ if __name__ == "__main__":
 
 :::info[信息]
 - 以上示例代码中使用的是 `int` 型的用户 ID 来生成 Token。如果你需要使用 `string` 型的用户 ID 来生成 Token，请前往 [Token 生成器代码仓库](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey)查看对应语言的相关方法及示例代码。
-- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- 如果你需要生成同时具备 RTC 和 RTM 权限的 Token，请参考[如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 :::
 
 <a id="use"></a>
@@ -10309,7 +10309,7 @@ public:
 声网支持精细控制频道内用户发布不同流的权限，可确保频道内的发流用户都经过授权，从而防止黑客利用业务漏洞或盗取 Token 进行直播间炸房等行为。
 
 :::warning[注意]
-- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+- 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - 如需在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/unreal-blueprint/channel#setclientrole) 方法将用户角色设为主播（`BROADCASTER`），或是在调用 [`joinChannel`[2/2]](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道时通过 `options` 将 `clientRoleType` 设为 `CLIENT_ROLE_BROADCASTER`。
 :::
 
@@ -10803,7 +10803,7 @@ func BuildTokenWithUid(appId string, appCertificate string, channelName string, 
 - `uid`：待鉴权用户的用户 ID，32 位无符号整数，范围为 1 到 (2³² - 1)， 并保证唯一性。
 - `role`：用户权限，决定用户是否能在频道中发流。
   - `kRolePublisher`(1)（默认）：用户有发流权限，即用户可在频道中发流。
-  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
+  - `kRoleSubscriber`(2)：用户有接收权限，即用户可在频道中接收，但不可发流。该参数仅在开启连麦鉴权后才生效。详情参考[开启连麦鉴权](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)。
 - `tokenExpire`：Token 的有效时长（秒），最长有效期为 24 小时。
 - `privilegeExpire`：所有权限的有效时长（秒）。如设为 0（默认值），表示权限永不过期。
 
@@ -10835,16 +10835,16 @@ func BuildTokenWithUidAndPrivilege(appId string, appCertificate string, channelN
 :::warning[注意]
 - 上述不同权限的过期时间长度均从 Token 生成开始计算。
 - 声网建议将 Token 的过期时间与其他权限的过期时间设为**一致**。
-- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
+- 在频道中发布音视频流和数据流的权限仅在[开启连麦鉴权服务](/zh-CN/reference/faq/integration/token_cohost#3-开启连麦鉴权)后才生效。如果加入频道的权限过期时间早于发布音频流权限的过期时间，则在加入频道的权限过期后，用户会被踢出频道。
 :::
 
 ### 常见问题
 
-- [如何处理 Token 相关错误码？](/zh-CN/api-reference/faq/integration/token_related_issues)
+- [如何处理 Token 相关错误码？](/zh-CN/reference/faq/integration/token_related_issues)
 
-- [如何开启连麦鉴权？](/zh-CN/api-reference/faq/integration/token_cohost)
+- [如何开启连麦鉴权？](/zh-CN/reference/faq/integration/token_cohost)
 
-- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/api-reference/faq/integration/rtc_rtm_token)
+- [如何生成具备 RTC 和 RTM 权限的 Token？](/zh-CN/reference/faq/integration/rtc_rtm_token)
 
 ### 相关文档
 

@@ -82,7 +82,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
 
 - `triggerMode`：选择录制启动模式。
   - 0：（默认）自动模式，加入频道自动开始录制，离开频道自动停止录制。
-  - 1：手动模式，手动输入命令开始和结束录制。详见[当使用命令行录制时，如何控制录制进程？](/zh-CN/api-reference/faq/integration/cmd_control_record)。
+  - 1：手动模式，手动输入命令开始和结束录制。详见[当使用命令行录制时，如何控制录制进程？](/zh-CN/reference/faq/integration/cmd_control_record)。
 - `idle`：设置空闲频道超时退出时间，单位为秒，最小值为 3 秒，默认值为 300 秒。如果频道空闲的状态持续超过该时间，录制程序会自动退出。`idle` 的时间也会纳入计费。频道空闲包括以下情况：
   - 通信场景下频道内没有用户发布流。
   - 直播场景下频道内没有主播。
@@ -150,7 +150,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
   - `2`：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
   - `6`：音频和视频混合成一个文件，仅生成 TS 格式文件。
   - `7`：音频和视频混合成一个文件，同时生成 MP4 和 TS 格式文件。录制成功后 SDK 会删除 TS 格式文件。
- 具体的播放器支持请参考[录制生成的文件支持哪些播放器？](/zh-CN/api-reference/faq/integration/recording_player)。
+ 具体的播放器支持请参考[录制生成的文件支持哪些播放器？](/zh-CN/reference/faq/integration/recording_player)。
 
 - `layoutMode`：设置视频合流布局。详见[设置合流布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout)。
   - `0`：（默认）悬浮布局。第一个加入频道的用户在屏幕上会显示为大视窗，铺满整个画布，其他用户的视频画面会显示为小视窗，从下到上水平排列，最多 4 行，每行 4 个画面，最多支持共 17 个录制画面。
@@ -252,4 +252,4 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
 
 - 录制过程中，如果出现错误码或警告码，请参考[警告码](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-e-r-r-o-r-c-o-d-e-t-y-p-e)和[错误码](/zh-CN/api-reference/local-server-recording/java/legacy/enumio-1-1agora-1-1recording-1-1common-1-1-common-1-1-e-r-r-o-r-c-o-d-e-t-y-p-e)。
 
-- 如果录制文件或状态出现异常，你还可以参考[录制文件异常](/zh-CN/api-reference/faq/quality/record_file_issue)和[录制状态异常](/zh-CN/api-reference/faq/quality/record_status_error)定位和排查问题。
+- 如果录制文件或状态出现异常，你还可以参考[录制文件异常](/zh-CN/reference/faq/quality/record_file_issue)和[录制状态异常](/zh-CN/reference/faq/quality/record_status_error)定位和排查问题。

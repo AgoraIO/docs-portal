@@ -306,7 +306,7 @@ describe('SdksCatalog', () => {
     window.history.replaceState(
       null,
       '',
-      '/zh-CN/api-reference/sdks?product=signaling&platform=harmonyos',
+      '/zh-CN/reference/sdks?product=signaling&platform=harmonyos',
     );
 
     render(<SdksCatalog locale="zh-CN" />);
@@ -314,7 +314,7 @@ describe('SdksCatalog', () => {
     expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
     expect(screen.getByRole('link', { name: '查看全部 SDK' })).toHaveAttribute(
       'href',
-      '/zh-CN/api-reference/sdks',
+      '/zh-CN/reference/sdks',
     );
 
     const signalingCard = screen.getByRole('article', {
@@ -544,7 +544,7 @@ describe('SdksCatalog', () => {
     window.history.replaceState(
       null,
       '',
-      '/zh-CN/api-reference/sdks?product=video&platform=android',
+      '/zh-CN/reference/sdks?product=video&platform=android',
     );
 
     render(<SdksCatalog locale="zh-CN" />);

@@ -141,7 +141,7 @@ describe('openapi lanes', () => {
     });
     expect(getOpenApiReferenceBackLink('zh-CN')).toEqual({
       href: '/zh-CN/api-reference/api',
-      label: '参考文档',
+      label: 'API 参考',
     });
 
     for (const lane of getOpenApiLanes()) {
