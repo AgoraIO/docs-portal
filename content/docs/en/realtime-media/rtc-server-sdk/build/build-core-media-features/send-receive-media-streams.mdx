@@ -212,7 +212,7 @@ Before sending and receiving media streams, complete the following steps:
 
 Create an `AgoraService` instance and call `initialize`. The `AgoraService` object persists as long as the server app is running.
 
-The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../develop/stringuid).
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
 
 ```java
 // Import SDK, AgoraService, and AgoraServiceConfig classes for initialization
@@ -620,15 +620,17 @@ It is important to follow the sequence in the sample code to release resources p
 
 4. When your server app stops running, release the `AgoraService` object.
 
-```java
-// Destroy Agora Service
-service.destroy();
-```
+   ```java
+   // Destroy Agora Service
+   service.destroy();
+   ```
 
 :::info[Development considerations]
+
 - The methods mentioned on this page are all asynchronous and do not block the main thread.
-- When you use the [Agora Video SDK](../../reference/glossary#agora-video-sdk) to communicate with the Server Gateway, set the channel use-case of the Video SDK to `LIVE_BROADCASTING`.
+- When you use the [Agora Video SDK](../../reference/glossary#video-sdk) to communicate with the Server Gateway, set the channel use-case of the Video SDK to `LIVE_BROADCASTING`.
 - When sending audio data in AAC format, you cannot set the sampling rate to 44.1 Kbps.
+
 :::
 
 ## References
@@ -663,7 +665,7 @@ Before sending and receiving media streams, complete the following steps:
 
 Create an `AgoraService` instance and call `initialize`. The `AgoraService` object persists as long as the server app is running.
 
-The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../develop/stringuid).
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
 
 ```python
 agora_service = AgoraService()
@@ -1038,6 +1040,7 @@ Due to limitations of the Web Demo, follow these steps based on your use case:
 - **To test server-sent streams**: First, join the channel on the Web, then run the project on the server to send the streams.
 
 - **To test server-received streams**: Run the project on the server to connect to the channel first, then join the channel on the Web and send the streams.
+
 :::
 
 ## Sample project
@@ -1068,7 +1071,7 @@ Before sending and receiving media streams, complete the following steps:
 
 Import `agoraservice` and  call `initialize` to create and initialize an `agoraservice` object instance. The object persists as long as the server app is running.
 
-The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../develop/stringuid).
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
 
 ```go
 package main
@@ -1147,7 +1150,7 @@ After initializing the SDK, follow these steps to connect to a Video SDK channel
 
 3. Call `Connect` to establish a connection to an Video SDK channel. Provide the following parameters:
 
-   - `token`: The RTC token. If your project has an App Certificate enabled, provide the token (see [Get Temporary Token](../../reference/manage-agora-account?#generate-temporary-tokens)). If not, pass an empty string.
+   - `token`: The RTC token. If your project has an App Certificate enabled, provide the token (see [Get Temporary Token](../manage-agora-account.md#generate-temporary-tokens)). If not, pass an empty string.
    - `channelName`: A valid channel name.
    - `userId`: A numeric local user ID.
 
@@ -1458,6 +1461,7 @@ Due to limitations of the Web Demo, follow these steps based on your use case:
 - **To test server-sent streams**: First, join the channel on the Web, then run the project on the server to send the streams.
 
 - **To test server-received streams**: Run the project on the server to connect to the channel first, then join the channel on the Web and send the streams.
+
 :::
 
 ## Sample project

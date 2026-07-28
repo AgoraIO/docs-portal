@@ -38,6 +38,7 @@ The Fastboard class provides methods for creating `FastRoom` objects.
 ```java
 public FastRoom createFastRoom(FastRoomOptions roomOptions)
 ```
+
 Create a `FastRoom` object.
 
 **Note**
@@ -153,8 +154,6 @@ Data center, containing the following enumeration values:
 - `IN_MUM`: Mumbai, India, the service area covers India.
 
 - `EU`: London, UK, the service area covers Europe.
-
-<a id="fastuserpayload" />
 
 ### FastUserPayload
 
@@ -347,10 +346,12 @@ Registration supports two methods:
 2. **Remote package registration**: Uses a remote URL (may fail due to network issues)
 
 :::warning[Caution]
+
 - You must complete the registration before joining the room to ensure the application loads correctly.
 - Ensure that all clients use the same version of the application to avoid runtime issues.
 - Register the application before joining the room.
 - Registered applications can be added to the room using `getRoom().addApp()`.
+
 :::
 
 **Parameters**
@@ -979,9 +980,11 @@ Sets the range for the line width slider in the toolbox.
 This method configures the minimum and maximum values of the line width slider in the toolbox extension panel. Users can adjust the line width within this range when using drawing tools like pencils, rectangles, circles, etc. The default range is [1, 24].
 
 :::warning[Caution]
+
 - The line width slider will be restricted to the specified range.
 - If the current line width exceeds the new range, it will be constrained within the new range.
 - This setting affects all drawing tools that support line width adjustments.
+
 :::
 
 **Parameters**
@@ -1176,7 +1179,7 @@ public init(appIdentifier: String,
 
 - `region`: data center. See [`Region`](#region) for details.
 - `userUID`: String. The user's UID, that is, the user's unique identifier, in string format, cannot exceed 1024 bytes. Please ensure that each user in the same room has a unique UID.
-- `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload) for details.
+- `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload-ios) for details.
 
 <a id="region" />
 
@@ -1190,7 +1193,7 @@ Data center, containing the following enumerations:
 - `IN`: Mumbai, India, service area covers India.
 - `EU`: Europe (Frankfurt), service area covers Europe.
 
-<a id="fastuserpayload" />
+<a id="fastuserpayload-ios" />
 
 #### FastUserPayload
 
@@ -1764,7 +1767,7 @@ Sets the whiteboard tool currently in use.
 
 **Parameters**
 
-- `appliance`: The name of the whiteboard tool. See [`ApplianceNames`](#appliance).
+- `appliance`: The name of the whiteboard tool. See [`ApplianceNames`](#appliance-web).
 - `shape`: (Optional) The shape type. See [`ShapeType`](#shape). You can use this parameter to choose a shape when setting `appliance` as `shape`.
 
 ### setStrokeWidth
@@ -2127,7 +2130,7 @@ export interface FastboardOptions {
 
 `FastboardOptions` has the following properties:
 
-- `sdkConfig`: (Required) Object. Configurations for the [WhiteWebSdk](/en/api-reference/whiteboard/web) object, in which you must pass the following parameters:
+- `sdkConfig`: (Required) Object. Configurations for the [WhiteWebSdk](https://github.com/netless-io/fastboard/blob/main/packages/fastboard-core/docs/classes/WhiteWebSdk.md) object, in which you must pass the following parameters:
 
   - `appIdentifier`: String. The App Identifier of your Interactive Whiteboard project issued by Agora. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).
   - `region`: The data center, which must be the same as the data center you chose when [creating the whiteboard room](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post). The supported values are as follows:
@@ -2147,7 +2150,7 @@ export interface FastboardOptions {
     - Call the [Generate a room token (POST)](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post) RESTful API.
     - Build a token generator at your app server. See [Generate a Token at App Server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).
 
-  - `callbacks`: (Optional) Event callbacks for the whiteboard room. See [RoomCallbacks](/en/api-reference/whiteboard/web) for details.
+  - `callbacks`: (Optional) Event callbacks for the whiteboard room. See [RoomCallbacks](https://github.com/netless-io/fastboard/blob/main/packages/fastboard-core/docs/modules.md#roomcallbacks) for details.
 
 - `managerConfig`: (Optional) Object. Configuration options for [WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount).
 - `netlessApps`: (Optional) Object. Built-in Fastboard official apps or custom Fastboard apps. See [netless-app](https://github.com/netless-io/netless-app) for details about Fastboard official apps, and see [develop-apps](https://github.com/netless-io/window-manager/blob/master/docs/develop-app.md) for information on developing custom Fastboard apps.
@@ -2355,7 +2358,7 @@ export interface ToolbarConfig {
 - `width`: The width (px) of the rectangle area.
 - `height`: The height (px) of the rectangle area.
 
-<a id="appliance" />
+<a id="appliance-web" />
 
 ### ApplianceNames
 
