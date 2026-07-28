@@ -36,8 +36,12 @@ agent = (
     .with_avatar(GenericAvatar(
         api_key='<LEMONSLICE_API_KEY>',
         api_base_url='https://lemonslice.com/api/liveai/agora',
-        avatar_id='<LEMONSLICE_AVATAR_ID>',
+        avatar_id='lemonslice',
         agora_uid='<AGORA_UID>',
+        additional_params={
+            'agent_image_url': '<IMAGE_URL>',  # or agent_id, or agent_image_base64
+            'aspect_ratio': '2x3',
+        },
     ))
 )
 ```
@@ -57,8 +61,12 @@ const agent = new Agent({ client })
   .withAvatar(new GenericAvatar({
     apiKey: '<LEMONSLICE_API_KEY>',
     apiBaseUrl: 'https://lemonslice.com/api/liveai/agora',
-    avatarId: '<LEMONSLICE_AVATAR_ID>',
+    avatarId: 'lemonslice',
     agoraUid: '<AGORA_UID>',
+    additionalParams: {
+      agent_image_url: '<IMAGE_URL>', // or agent_id, or agent_image_base64
+      aspect_ratio: '2x3',
+    },
   }));
 ```
 
@@ -77,8 +85,12 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
     vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
         APIKey:     "<LEMONSLICE_API_KEY>",
         APIBaseURL: "https://lemonslice.com/api/liveai/agora",
-        AvatarID:   "<LEMONSLICE_AVATAR_ID>",
+        AvatarID:   "lemonslice",
         AgoraUID:   "<AGORA_UID>",
+        AdditionalParams: map[string]interface{}{
+            "agent_image_url": "<IMAGE_URL>", // or agent_id, or agent_image_base64
+            "aspect_ratio":    "2x3",
+        },
     }),
 )
 ```
@@ -95,9 +107,11 @@ Use the following `avatar` configuration in your request:
   "params": {
     "api_key": "<LEMONSLICE_API_KEY>",
     "api_base_url": "https://lemonslice.com/api/liveai/agora",
-    "avatar_id": "<LEMONSLICE_AVATAR_ID>",
+    "avatar_id": "lemonslice",
+    "agent_image_url": "<IMAGE_URL>",
     "agora_token": "<AGORA_TOKEN>",
-    "agora_uid": "<AGORA_UID>"
+    "agora_uid": "<AGORA_UID>",
+    "aspect_ratio": "2x3"
   }
 }
 ```
@@ -115,7 +129,19 @@ Use the following `avatar` configuration in your request:
   The base URL of the LemonSlice API endpoint. Set to `https://lemonslice.com/api/liveai/agora`.
   </Parameter>
   <Parameter name="avatar_id" type="string" required={true}>
-  The unique identifier for the LemonSlice avatar to use.
+  Fixed value that identifies the vendor integration. Always set to `lemonslice`.
+  </Parameter>
+  <Parameter name="agent_image_url" type="string" required={false}>
+  A publicly accessible URL to the avatar image. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`.
+  </Parameter>
+  <Parameter name="agent_id" type="string" required={false}>
+  The ID of a LemonSlice agent to use as the avatar. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`. If you provide `agent_id`, LemonSlice also uses that agent's configured settings as defaults for `agent_prompt` and `agent_idle_prompt`.
+  </Parameter>
+    <Parameter name="agent_image_base64" type="string" required={false}>
+  A base64-encoded avatar image. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`.
+  </Parameter>
+  <Parameter name="aspect_ratio" type="string" required={false}>
+  The output aspect ratio for the avatar video. One of `2x3`, `9x16`, or `1x1`. Defaults to `2x3`.
   </Parameter>
   <Parameter name="agora_token" type="string" required={false}>
   The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
@@ -125,4 +151,4 @@ Use the following `avatar` configuration in your request:
   </Parameter>
 </ParameterList>
 
-For advanced configuration options, refer to the [LemonSlice API documentation](https://lemonslice.com/docs/api-reference/create-self-managed-session).
+For advanced configuration options, refer to the [LemonSlice Agora integration](https://lemonslice.com/docs/agora) page or the [LemonSlice API documentation](https://lemonslice.com/docs/api-reference/create-self-managed-session).
