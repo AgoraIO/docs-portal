@@ -2860,7 +2860,7 @@ User Metadata 的设置、删除和更新都会触发 `storage` 事件通知，�
 Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
 - 通过 `majorRevision` 参数开启整组 Metadata 的版本号校验。
-- 通过 `` 中 `MetadataItem` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
+- 通过 `RtmMetadata` 中 `MetadataItem` 类的 `revision` 参数开启每个 Metadata Item 数组的版本号校验。
 
 设置、删除、更新 Channel Metadata 或 User Metadata 时，配合 `revision` 参数可以控制本次调用是否开启 Revision 校验，逻辑如下：
 
@@ -3554,7 +3554,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 初始配置（Setup）是初始化 RTM Client 时预先定义或配置的一些关键参数，影响其后续行为。同时，它还提供了登录、登出等功能。核心能力如下：
 
-- ``：创建一个 RTM Client 实例，并进行如下初始配置：
+- `createAgoraRtmClient`：创建一个 RTM Client 实例，并进行如下初始配置：
   - `appId`：设置 App ID。相同 App ID 的 App 间可以通信，不同 App ID 的 App 相互隔离。
   - `userId`：设置用户 ID，用以区分用户或设备。
   - `areaCode`：设置区域代码，用于 Geo-fencing 功能。

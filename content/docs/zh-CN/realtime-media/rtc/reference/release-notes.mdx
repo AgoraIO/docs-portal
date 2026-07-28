@@ -7537,7 +7537,7 @@ v4.0.0 修复了以下问题：
 
 - 同时加入两个及以上的频道，连续调用 [`takeSnapshotEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex)[1/2] 分别对频道中的本地视频流进行截图，在先调用的频道截图会失败。
 - 使用媒体播放器时，调用 [`pause`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_pause) 暂停播放后，调用 [`seek`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位到指定播放位置、然后调用 [`play`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 继续播放，播放时会先从暂停播放的位置播放，然后再从新的位置播放。
-- 使用媒体播放器时，调用 [`switchSrc`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc) 切换媒体资源后，调用 ``获取当前正在播放的媒体资源的路径没有变化。
+- 使用媒体播放器时，调用 [`switchSrc`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc) 切换媒体资源后，调用 [`getPlaySrc`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplaysrc_imediaplayer) 获取当前正在播放的媒体资源的路径没有变化。
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
@@ -11512,7 +11512,7 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 在 4.6.2 之前的版本中，通过屏幕 ID（`startScreenCaptureByDisplayId`）进行屏幕共享时，不支持在多屏场景下配置屏蔽窗口（[`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/unity/class-screencaptureparameters) 中的 `excludeWindowList`）。为提升屏幕共享体验，该版本新增支持该配置。
 
-同时，为便于识别屏幕共享过程中屏蔽窗口的状态，该版本在 [`LOCAL_VIDEO_STREAM_REASON`](/zh-CN/api-reference/rtc/unity/enum-localvideostreamreason)`，用于报告屏幕共享屏蔽窗口失败的情况。
+同时，为便于识别屏幕共享过程中屏蔽窗口的状态，该版本在 [`LOCAL_VIDEO_STREAM_REASON`](/zh-CN/api-reference/rtc/unity/enum-localvideostreamreason) 中新增枚举值 `LOCAL_VIDEO_STREAM_REASON_SCREEN_CAPTURE_EXCLUDE_WINDOW_FAILED (34)`，用于报告屏幕共享屏蔽窗口失败的情况。
 
 #### onVideoDeviceStateChanged 回调时机优化
 

@@ -303,19 +303,19 @@ getMessages(channelName: String,
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
 | `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
-| `options` | `` | 必填 | - | 查询选项。 |
+| `options` | `AgoraRtmGetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 | `completion` | `AgoraRtmGetHistoryMessagesBlock` | 选填 | - | <Slot name="message-swift-html-2-4-4" /> |
 
 <Slot for="message-swift-html-2-4-4">
 
 调用结果回调：
 
-    - 调用成功：在 `response` 参数中返回 `` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmGetHistoryMessagesResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
     - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
 
 </Slot>
 
-`` 数据类型包含以下属性：
+`AgoraRtmGetHistoryMessagesOptions` 数据类型包含以下属性：
 
 |     属性     |  类型  | 是否必填 | 默认值 | 描述          |
 | --------- | --- | ----- | --- | -------- |
@@ -332,14 +332,14 @@ RTM SDK 提供 `start` 和 `end` 参数，你可以根据实际需求进行设�
 - 如果你同时设置了 `start` 和 `end` 参数，则你会获得 `start` 和 `end` 时间戳（包含）之间的历史消息。
 :::
 
-`` 数据类型包含以下属性：
+`AgoraRtmGetHistoryMessagesResponse` 数据类型包含以下属性：
 
 |  属性  |  类型  | 描述      |
 | ---- | ----- | --------- |
 | `newStart`         |         unsigned long long         | 下一条历史消息的发送时间戳。如果该参数为 `0`，则表示没有下一条历史消息。               |
 | `messageList`    | `NSArray <AgoraRtmHistoryMessage *>`  | 历史消息列表。   |
 
-`` 数据类型包含以下属性：
+`AgoraRtmHistoryMessage` 数据类型包含以下属性：
 
 |  属性  |  类型  | 描述      |
 | ---- | ----- | --------- |
