@@ -535,6 +535,29 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('omits the recipe count when the gallery has no results', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesGallery =
+      components.RecipesGallery as RecipesCatalogComponent;
+
+    render(
+      <RecipesGallery
+        allCategoriesLabel="All recipe types"
+        allProductsLabel="All products"
+        allStacksLabel="All stacks"
+        categoryFilterLabel="Recipe type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No recipes match the current filters."
+        items={[]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search recipes"
+        stackFilterLabel="Stack"
+      />,
+    );
+
+    expect(screen.queryByText('0 recipes')).not.toBeInTheDocument();
+  });
+
   it('names recipe catalog filter groups and selected filter controls', () => {
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;

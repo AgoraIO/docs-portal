@@ -47,7 +47,7 @@ describe('API Center scoped sidebars', () => {
       node.title ? [node.title] : [],
     );
     expect(titles.filter((title) => title === 'API 参考')).toHaveLength(1);
-    expect(titles).toEqual(['API 参考', 'SDK 下载', '示例配方', '常见问题']);
+    expect(titles).toEqual(['API 参考', 'SDK 下载', 'Recipe', '常见问题']);
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
     expect(titles).not.toEqual(
@@ -62,7 +62,7 @@ describe('API Center scoped sidebars', () => {
     expect(rootTitles).toEqual([
       'API 参考',
       'SDK 下载',
-      '示例配方',
+      'Recipe',
       '常见问题',
     ]);
   });
@@ -76,11 +76,11 @@ describe('API Center scoped sidebars', () => {
 
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
-    expect(titles).toEqual(['API 参考', 'SDK 下载', '示例配方', '常见问题']);
+    expect(titles).toEqual(['API 参考', 'SDK 下载', 'Recipe', '常见问题']);
     expect(rootTitles).toEqual([
       'API 参考',
       'SDK 下载',
-      '示例配方',
+      'Recipe',
       '常见问题',
     ]);
   });

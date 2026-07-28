@@ -181,7 +181,7 @@ describe('DocsSidebar', () => {
     expect(screen.queryByTestId('docs-sidebar-tree')).not.toBeInTheDocument();
     expect(primaryNav).toHaveTextContent('API 参考');
     expect(primaryNav).toHaveTextContent('SDK 下载');
-    expect(primaryNav).toHaveTextContent('示例配方');
+    expect(primaryNav).toHaveTextContent('Recipe');
     expect(primaryNav).toHaveTextContent('常见问题');
     expect(screen.getByRole('link', { name: /API 参考/ })).toHaveAttribute(
       'aria-current',

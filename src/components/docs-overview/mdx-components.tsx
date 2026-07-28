@@ -1345,9 +1345,11 @@ export function RecipesGallery({
               {clearFiltersLabel}
             </Button>
           ) : null}
-          <span className="ml-auto self-end text-sm text-muted-foreground">
-            {filteredItems.length} recipes
-          </span>
+          {filteredItems.length > 0 ? (
+            <span className="ml-auto self-end text-sm text-muted-foreground">
+              {filteredItems.length} recipes
+            </span>
+          ) : null}
         </div>
       </div>
 

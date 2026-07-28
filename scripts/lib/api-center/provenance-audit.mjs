@@ -715,7 +715,7 @@ export async function auditApiCenterProvenance({
     'api',
     'sdks',
     '---指南---',
-    '[示例配方](/zh-CN/api-reference/recipes)',
+    '[Recipe](/zh-CN/api-reference/recipes)',
     'faq',
   ];
   const baseRootRaw = await readBaseFile(

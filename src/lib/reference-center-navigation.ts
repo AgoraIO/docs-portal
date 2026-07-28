@@ -20,7 +20,7 @@ export const REFERENCE_CENTER_ENTRIES: readonly {
   {
     href: '/zh-CN/api-reference/recipes',
     id: 'recipes',
-    label: '示例配方',
+    label: 'Recipe',
   },
   {
     href: '/zh-CN/api-reference/faq',
