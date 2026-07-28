@@ -1372,7 +1372,7 @@ Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/ios/
 
 - （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 - 调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#updatechannelwithmediaoptions) 更新 Token。
-- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/ios/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#joinChannelByToken [2/4]) 时传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/ios/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
@@ -1409,7 +1409,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#joinChannelByToken [2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/ios/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -2345,7 +2345,7 @@ Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/maco
 
 - （推荐）调用 [`renewToken`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 来传入新生成的 Token。
 - 调用 [`updateChannelWithMediaOptions`](/zh-CN/api-reference/rtc/macos/channel#updatechannelwithmediaoptions) 更新 Token。
-- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/macos/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#joinChannelByToken [2/4]) 时传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`[2/2]](/zh-CN/api-reference/rtc/macos/channel#leavechannel) 离开当前频道，然后在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 
@@ -2382,7 +2382,7 @@ extension JoinChannelVideoToken: AgoraRtcEngineDelegate {
 
 :::warning[注意]
 - 在设置前，请确保你已开启[连麦鉴权功能](/zh-CN/api-reference/faq/integration/token_cohost#3-开启连麦鉴权)。
-- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/macos/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#joinChannelByToken [2/4]) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
+- 如果你需要在频道内发流，请确保在加入频道前，已调用 [`setClientRole`](/zh-CN/api-reference/rtc/macos/channel#setclientrole) 方法将用户角色设为主播（`AgoraClientRoleBroadcaster`），或是在调用 [`joinChannelByToken`[2/4]](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 加入频道时通过 `mediaOptions` 将 `clientRoleType` 设为 `AgoraClientRoleBroadcaster`。
 :::
 
 声网提供 `BuildTokenWithUidAndPrivilege` 方法来设置下列权限的过期时间：
@@ -5256,7 +5256,7 @@ Token 过期时，SDK 会触发 [`onRequestToken`](/zh-CN/api-reference/rtc/harm
 
 - 调用 [`updateChannelMediaOptions`](/zh-CN/api-reference/rtc/harmonyos/channel#updatechannelmediaoptions) 更新 Token。
 
-- 调用 [`leaveChannel`](/zh-CN/api-reference/rtc/harmonyos/channel#leaveChannel [2/2]) 离开当前频道，然后在调用 [`joinChannel`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+- 调用 [`leaveChannel`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [`joinChannel`](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
 
 **多频道场景**
 

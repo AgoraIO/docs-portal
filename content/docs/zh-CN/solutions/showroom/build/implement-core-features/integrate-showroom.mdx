@@ -419,7 +419,7 @@ fileprivate(set) lazy var agoraKit: AgoraRtcEngineKit = {
 
 进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示加入频道的示例代码。
 
-调用 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#joinChannelExByToken [1/2]) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
+调用 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
 
 - 主播：可以发送和接收音视频流。直播间的房主即为主播。
 - 观众：只可以接收音视频流。
@@ -571,7 +571,7 @@ kShowLogBaseContext)
 房主跨直播间 PK 连麦意味着不同频道内的主播加入对方频道进行连麦。当房间内用户收到房主 PK 连麦的信令消息后，房间内用户的代码逻辑如下：
 
 - 房间 A：
-    - 房主 A 通过 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#joinChannelExByToken [1/2]) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 渲染频道 B 中主播的视频。
+    - 房主 A 通过 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 渲染频道 B 中主播的视频。
     - 观众通过 `joinChannelEx` 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 B 中主播的视频。
 - 房间 B：
     - 房主 B 通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
@@ -583,7 +583,7 @@ kShowLogBaseContext)
 为了加快 PK 连麦时视频出图速度，在发起 PK 连麦的过程中就让用户加入对方频道并设置远端视图，但此时无需订阅音频流。等 PK 连麦建立成功后，直接将远端视频显示出来并订阅对方主播的音频流。请注意，提前加入频道会产生额外的费用，因此建议你根据实际业务需要调整集成逻辑。
 :::
 
-结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/ios/channel#leaveChannelEx [1/2]) 离开对方频道。
+结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex) 离开对方频道。
 
 ![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-3.svg)
 

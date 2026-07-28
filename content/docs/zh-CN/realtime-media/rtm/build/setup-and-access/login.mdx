@@ -112,7 +112,7 @@ try {
 }
 ```
 
-你可以通过 `config.login` 的返回值或监听 `config.onlinkstateevent` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `enumv.linkstateconnecting`；登录成功后，其状态会更新为 `enumv.linkstateconnected` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `config.onlinkstateevent` 事件通知，详见[事件监听](/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener)。
+你可以通过 `config.login` 的返回值或监听 `config.onlinkstateevent` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `enumv.linkstateconnecting`；登录成功后，其状态会更新为 `enumv.linkstateconnected` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `config.onlinkstateevent` 事件通知，详见[事件监听](/zh-CN/realtime-media/rtm/build/setup-and-access/add-event-listener)。
 
 :::info[信息]
 用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。

@@ -31,7 +31,7 @@ description: "了解如何快速接入弹幕玩法，完成环境准备、参数
 
 ### 获取云游戏
 
-调用[获取云游戏列表](./../danmaku/operations/get-cloud-game-list)获取想开播的游戏编号 (`game_id`)，并[联系销售](https://www.shengwang.cn/contact-sales/)授权该游戏。以 cURL 为例：
+调用[获取云游戏列表](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-list)获取想开播的游戏编号 (`game_id`)，并[联系销售](https://www.shengwang.cn/contact-sales/)授权该游戏。以 cURL 为例：
 
 ```shell
 curl --location --request GET 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games?page_num=1&page_size=10' \
@@ -40,7 +40,7 @@ curl --location --request GET 'https://{domain}/v2/projects/{appid}/cloud-bullet
   --header 'Content-Type: application/json'
 ```
 
-之后使用 `game_id` 调用[获取云游戏详情](./../danmaku/operations/get-cloud-game-detail)以获取游戏支持的礼物列表和弹幕指令等信息。以 cURL 为例：
+之后使用 `game_id` 调用[获取云游戏详情](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-detail)以获取游戏支持的礼物列表和弹幕指令等信息。以 cURL 为例：
 
 ```shell
 curl --location --request GET 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games/pkzb' \
@@ -53,7 +53,7 @@ curl --location --request GET 'https://{domain}/v2/projects/{appid}/cloud-bullet
 
 每个弹幕玩法提供了不同价位的付费礼物，你需要分别做不同的礼物映射。
 
-每个游戏的礼物列表，可以从[获取云游戏详情](./../danmaku/operations/get-cloud-game-detail)获取。因礼物涉及计量计费，在礼物消息 (`live_gift`) 推送协议中，`gift_id`、`gift_num`、`gfit_value`，需要严格遵守礼物表中的对应关系。以胖可争霸为例，支持的礼物列表如下：
+每个游戏的礼物列表，可以从[获取云游戏详情](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-detail)获取。因礼物涉及计量计费，在礼物消息 (`live_gift`) 推送协议中，`gift_id`、`gift_num`、`gfit_value`，需要严格遵守礼物表中的对应关系。以胖可争霸为例，支持的礼物列表如下：
 
 | `gift_id` | `gift_price` | 礼物说明             |
 | ------- | ---------- | ---------------- |
@@ -78,7 +78,7 @@ curl --location --request GET 'https://{domain}/v2/projects/{appid}/cloud-bullet
 
 ### 开始直播
 
-主播开启直播后，App 加入 RTC 频道并拉取游戏视频流，之后在业务后台（即 App 服务端）调用[启动云游戏服务](./../danmaku/operations/start-cloud-game)。以 cURL 为例：
+主播开启直播后，App 加入 RTC 频道并拉取游戏视频流，之后在业务后台（即 App 服务端）调用[启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)。以 cURL 为例：
 
 ```shell
 curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:start' \
@@ -105,7 +105,7 @@ curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bulle
 
 ### 推送直播间消息
 
-根据直播间中获取到的礼物、评论和点赞消息，在业务后台调用[推送直播间消息](./../danmaku/operations/push-message)，将这些消息发送至声网云游戏服务平台。以 cURL 为例：
+根据直播间中获取到的礼物、评论和点赞消息，在业务后台调用[推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)，将这些消息发送至声网云游戏服务平台。以 cURL 为例：
 
 ```shell
 # 以推送礼物消息为例
@@ -131,7 +131,7 @@ curl --location --request POST 'https://{domain}/v2/projects/{appid}/bullet-game
 
 ### 结束直播
 
-主播下播后，调用[关闭云游戏服务](./../danmaku/operations/stop-cloud-game)。以 cURL 为例：
+主播下播后，调用[关闭云游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-cloud-game)。以 cURL 为例：
 
 ```shell
 curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:stop' \
@@ -145,7 +145,7 @@ curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bulle
 ```
 
 :::warning[注意]
-业务后台调用启动/关闭游戏服务 API 需要成对，否则会报错，即调用[启动云游戏服务](./../danmaku/operations/start-cloud-game)开启游戏房后需要主动调用[关闭云游戏服务](./../danmaku/operations/stop-cloud-game)以关闭游戏房，或者在启动云游戏服务时处理重复启动错误码。
+业务后台调用启动/关闭游戏服务 API 需要成对，否则会报错，即调用[启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)开启游戏房后需要主动调用[关闭云游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-cloud-game)以关闭游戏房，或者在启动云游戏服务时处理重复启动错误码。
 :::
 
 ## 参考信息
@@ -154,18 +154,18 @@ curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bulle
 
 - 协议字段中的 `msg_id`，`roomid` 和 `openid` 需要在声网侧保持全局唯一，建议格式为 `<appid>_xxxx` 的方式。对于 `msg_id`，由于同一时间可能存在多用户发送消息，可以通过自增保持唯一性。
 - `roomid` 在主播侧暴露存在安全风险，建议每次开播生成的 `room` 为不重复的随机值。
-- [启动云游戏服务](./../danmaku/operations/start-cloud-game)调用超时异常处理：
+- [启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)调用超时异常处理：
     1. 网络访问接口超时时间需要设置为 5～10 秒
     2. 网络超时异常后，需要用同样的参数重试调用接口。
 
 ### 相关文档
 
-- [获取云游戏列表](./../danmaku/operations/get-cloud-game-list)
-- [获取云游戏详情](./../danmaku/operations/get-cloud-game-detail)
-- [启动云游戏服务](./../danmaku/operations/start-cloud-game)
-- [关闭云游戏服务](./../danmaku/operations/stop-cloud-game)
-- [查询云游戏任务状态](./../danmaku/operations/get-cloud-game-status)
-- [更新云游戏推流 Token](./../danmaku/operations/renew-cloud-game-token)
-- [推送直播间消息](./../danmaku/operations/push-message)
+- [获取云游戏列表](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-list)
+- [获取云游戏详情](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-detail)
+- [启动云游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-cloud-game)
+- [关闭云游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-cloud-game)
+- [查询云游戏任务状态](/zh-CN/api-reference/api-ref/danmaku/get-cloud-game-status)
+- [更新云游戏推流 Token](/zh-CN/api-reference/api-ref/danmaku/renew-cloud-game-token)
+- [推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)
 - [响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)
 - [API 调用限制](/zh-CN/realtime-media/danmaku/reference/api-limits)

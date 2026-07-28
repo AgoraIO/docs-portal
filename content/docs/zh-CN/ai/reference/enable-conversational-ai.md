@@ -32,5 +32,4 @@ description: 为 Agora 项目开通对话式 AI，并准备接入所需的项目
 ## 相关页面
 
 - [启动和停止智能体](../build/start-stop-agent.mdx)
-- [使用预设](../build/presets.mdx)
 - [REST API 认证](../../api-reference/conversational-ai/rest-api/authentication.mdx)

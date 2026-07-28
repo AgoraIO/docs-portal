@@ -26,10 +26,10 @@ description: "了解如何在内容审核中网易易盾音频审核，包括适
 
 1. 注册声网开发者账号，创建项目并获取声网 App ID 和 RTC 临时 Token。详情请参考[快速开始](/zh-CN/realtime-media/content-moderation/enable-service)。
 
-2. [开通云端录制服务](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/enable-service#开通云端录制服务)。
+2. [开通云端录制服务](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#开通云端录制服务)。
 
    :::warning[注意]
-   第三方语音审核服务依赖于声网云端录制服务，除了第三方语音审核服务费用，还会产生声网云端录制费用。计费方式详见[云端录制计费说明](/zh-CN/realtime-media/recording/cloud-recording/reference/billing-strategy/billing)。
+   第三方语音审核服务依赖于声网云端录制服务，除了第三方语音审核服务费用，还会产生声网云端录制费用。计费方式详见[云端录制计费说明](/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing)。
    :::
 
 3. 联系声网技术支持，提供以下信息：
@@ -40,7 +40,7 @@ description: "了解如何在内容审核中网易易盾音频审核，包括适
 
 ### 通过 Basic HTTP 认证
 
-语音审核服务要求 Basic HTTP 认证。每次发送 HTTP 请求时，都必须在请求头部填入 `Authorization`字段。关于如何生成该字段的值，请参考 [HTTP 基本认证](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth)。
+语音审核服务要求 Basic HTTP 认证。每次发送 HTTP 请求时，都必须在请求头部填入 `Authorization`字段。关于如何生成该字段的值，请参考 [HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。
 
 ## 调用流程
 
@@ -227,7 +227,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 
 - 仅支持 HTTPS 协议。
 - 请求 Header 的 `Content-type` 为 `application/json;charset=utf-8`。
-- 请求 Header 的 `Authorization` 字段需要你自行生成，生成方法参考 [HTTP 基本认证](/zh-CN/realtime-media/recording/cloud-recording/build/setup-and-access/http-basic-auth)。
+- 请求 Header 的 `Authorization` 字段需要你自行生成，生成方法参考 [HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。
 
 #### 公共参数
 

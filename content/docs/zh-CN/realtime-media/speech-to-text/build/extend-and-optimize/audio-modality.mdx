@@ -9,7 +9,7 @@ description: "了解实时转录中音频模态输出相关内容的适用场景
 开始前，请确保你已经：
 
 - 参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑
-- 如果想实现输出音频的字幕功能，确保已阅读[实时字幕](/zh-CN/ai/user-guides/realtime-sub)文档完成配置
+- 如果想实现输出音频的字幕功能，确保已阅读[实时字幕](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/realtime-sub)文档完成配置
 
 ## 实现方式
 
@@ -22,7 +22,7 @@ description: "了解实时转录中音频模态输出相关内容的适用场景
 
 ### 按标准改造接口
 
-声网对话式 AI 引擎使用 [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的接口与大语言模型进行交互，但针对不同类型的响应（文本、音频、字幕、逐字字幕时间戳）做了汇总，并拓展了一个 `words` 字段用于实现实时字幕对齐。你可以参考[自定义大模型](/zh-CN/ai/user-guides/custom-llm#实现方式)改造你的大语言模型服务，使其兼容以下请求和响应格式。
+声网对话式 AI 引擎使用 [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的接口与大语言模型进行交互，但针对不同类型的响应（文本、音频、字幕、逐字字幕时间戳）做了汇总，并拓展了一个 `words` 字段用于实现实时字幕对齐。你可以参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm#实现方式)改造你的大语言模型服务，使其兼容以下请求和响应格式。
 
 #### 请求格式
 
@@ -145,7 +145,7 @@ description: "了解实时转录中音频模态输出相关内容的适用场景
 
 ### 字幕对齐
 
-参考[实时字幕](/zh-CN/ai/user-guides/realtime-sub)文档完成字幕渲染逻辑后，如果大模型的响应中包含 `audio.words` 字段，声网对话式 AI 引擎会根据 `audio.words` 字段中的 `start_ts` 和 `end_ts`/`duration` 字段对音频进行断句，并根据断句结果进行字幕对齐。
+参考[实时字幕](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/realtime-sub)文档完成字幕渲染逻辑后，如果大模型的响应中包含 `audio.words` 字段，声网对话式 AI 引擎会根据 `audio.words` 字段中的 `start_ts` 和 `end_ts`/`duration` 字段对音频进行断句，并根据断句结果进行字幕对齐。
 
 因此，如果你想让智能体在播报音频时，能够根据字幕内容进行断句，请确保大模型发送了 `audio.data` 和 `audio.words` 字段。
 
@@ -161,7 +161,7 @@ description: "了解实时转录中音频模态输出相关内容的适用场景
 > 信息
 > 以下智能体播报行为同样采取该协议：
 > - 智能体播报问候语 (`greeting_message`)、处理失败提示 (`failure_message`) 和静默提示 (`silence_message`) 时
-> - 调用 [POST 播报自定义消息](../operations/agent-speak.md)时
+> - 调用 [POST 播报自定义消息](/zh-CN/api-reference/api-ref/conversational-ai/speak)时
 
 ## 参考信息
 
