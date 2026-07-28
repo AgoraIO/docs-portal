@@ -2038,71 +2038,59 @@ describe('docs content regressions', () => {
     expect(elevenLabsProcessed).toContain('Paid plan required');
   }, SOURCE_LOADER_TEST_TIMEOUT);
 
-  it('renders IoT authentication code tabs as MDX components', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'realtime-media',
-        'iot',
-        'build',
-        'set-up-authentication-and-security',
-        'authentication-workflow',
-      ],
-      'en',
-    );
+  it('uses regular persisted tabs for React Native Picture-in-Picture host OS variants', () => {
+    const pictureInPictureDocs = [
+      'realtime-media/video/build/add-advanced-video-features/picture-in-picture.mdx',
+      'realtime-media/broadcast-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
+      'realtime-media/interactive-live-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
+    ];
 
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-    expect(page?.path).toBe(
-      'en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow.mdx',
-    );
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected IoT authentication page to expose processed markdown.',
+    for (const relativePath of pictureInPictureDocs) {
+      const source = readDoc(relativePath);
+      const hostOsTabs = source.match(
+        /<Tabs defaultValue="android" groupId="react-native-host-os" persist>/g,
       );
+
+      expect(hostOsTabs, relativePath).toHaveLength(4);
+      expect(source, relativePath).not.toContain(
+        '<CodeBlockTabs defaultValue="android">',
+      );
+      expect(source, relativePath).toContain(
+        '<TabsContent value="android">',
+      );
+      expect(source, relativePath).toContain('<TabsContent value="ios">');
+    }
+  });
+
+  it('keeps CodeBlockTab panels code-only', () => {
+    const violations: string[] = [];
+
+    for (const file of listMarkdownFiles(docsRoot)) {
+      const source = readFileSync(file, 'utf8');
+
+      for (const match of source.matchAll(
+        /<CodeBlockTab\b[^>]*>([\s\S]*?)<\/CodeBlockTab>/g,
+      )) {
+        const contentOutsideCodeFences = match[1]
+          .replace(/```[\s\S]*?```/g, '')
+          .replace(/~~~[\s\S]*?~~~/g, '')
+          .trim();
+
+        if (contentOutsideCodeFences.length === 0) {
+          continue;
+        }
+
+        const line = source.slice(0, match.index).split('\n').length;
+        const preview = contentOutsideCodeFences
+          .replace(/\s+/g, ' ')
+          .slice(0, 120);
+
+        violations.push(
+          `${relative(process.cwd(), file)}:${line} ${preview}`,
+        );
+      }
     }
 
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('<_PlatformTabsGroup');
-    expect(processed).toContain('<_PlatformPanel platform="java">');
-    expect(processed).toContain('<_PlatformPanel platform="kotlin">');
-    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
-    expect(processed).not.toContain('&lt;CodeBlockTab');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders stream channel code tabs as MDX components', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'realtime-media',
-        'rtm',
-        'build',
-        'work-with-channels',
-        'stream-channel',
-      ],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-    expect(page?.path).toBe(
-      'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx',
-    );
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected stream channel page to expose processed markdown.',
-      );
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
-    expect(processed).toContain('<CodeBlockTab value="java">');
-    expect(processed).toContain('<CodeBlockTab value="kotlin">');
-    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
-    expect(processed).not.toContain('&lt;CodeBlockTab');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+    expect(violations).toEqual([]);
+  });
 });

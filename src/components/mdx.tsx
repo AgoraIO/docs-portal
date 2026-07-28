@@ -632,6 +632,7 @@ function TabsContent({
           '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
           className,
         )}
+        forceMount
         {...props}
       >
         {children}

@@ -1,6 +1,5 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
-import { SUPPORTED_LOCALES } from '../i18n/i18n-config';
 import type { DocsSearchScope } from './search-provider';
 
 export type AlgoliaSearchFilters = {
@@ -10,31 +9,6 @@ export type AlgoliaSearchFilters = {
 type AlgoliaDocsHit = Record<string, unknown> & {
   objectID: string;
 };
-
-const LOCALE_SEGMENTS = new Set<string>(SUPPORTED_LOCALES);
-
-// Segments that read better fully capitalised than title-cased.
-const ACRONYM_SEGMENTS = new Set([
-  'ai',
-  'api',
-  'asr',
-  'cli',
-  'faq',
-  'im',
-  'ios',
-  'ip',
-  'llm',
-  'mcp',
-  'mllm',
-  'rtc',
-  'rtm',
-  'sdk',
-  'stt',
-  'tts',
-  'ui',
-  'url',
-  'vad',
-]);
 
 export function createAlgoliaDocsClient({
   appId,
@@ -126,7 +100,7 @@ export function createAlgoliaDocsClient({
           content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
           id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
           objectType: getString(hit.objectType),
-          path: buildPathSegments(url),
+          path: getStringArray(hit.breadcrumbs) ?? [],
           platform: getStringArray(hit.platform),
           product: getString(hit.product),
           section: getHighlight(hit, 'section') ?? section,
@@ -171,41 +145,6 @@ function buildFilters({
   ]
     .filter(Boolean)
     .join(' AND ');
-}
-
-// Turn a doc URL into a readable breadcrumb of its parent sections, e.g.
-// "/en/realtime-media/voice/vad" -> ["Realtime Media", "Voice"]. The trailing
-// segment is dropped because the page title already conveys it.
-function buildPathSegments(url: string): string[] {
-  const segments = url.split('#')[0].split('/').filter(Boolean);
-
-  if (segments.length > 0 && LOCALE_SEGMENTS.has(segments[0])) {
-    segments.shift();
-  }
-
-  if (segments.length > 1) {
-    segments.pop();
-  }
-
-  const humanized = segments.map(humanizeSegment);
-
-  return humanized.filter(
-    (segment, index) =>
-      index === 0 ||
-      segment.toLowerCase() !== humanized[index - 1].toLowerCase(),
-  );
-}
-
-function humanizeSegment(segment: string) {
-  return segment
-    .split(/[-_]/)
-    .filter(Boolean)
-    .map((word) =>
-      ACRONYM_SEGMENTS.has(word.toLowerCase())
-        ? word.toUpperCase()
-        : word.charAt(0).toUpperCase() + word.slice(1),
-    )
-    .join(' ');
 }
 
 function isMatched(hit: Record<string, unknown>, key: string) {

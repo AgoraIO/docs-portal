@@ -58,7 +58,7 @@ describe('fumadocs openapi source', () => {
       throw new Error('Missing English OpenAPI join page');
     }
 
-    const props = await englishJoin.data.getClientAPIPageProps();
+    const props = await englishJoin.data.getOpenAPIPageProps();
 
     expect(props.operations).toEqual([
       {
@@ -84,7 +84,7 @@ describe('fumadocs openapi source', () => {
       throw new Error('Missing English Cloud Recording acquire page');
     }
 
-    const props = await acquirePage.data.getClientAPIPageProps();
+    const props = await acquirePage.data.getOpenAPIPageProps();
     const acquireOperation =
       props.payload.bundled.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
         ?.post;
@@ -220,7 +220,7 @@ describe('fumadocs openapi source', () => {
         continue;
       }
 
-      const props = await page.data.getClientAPIPageProps();
+      const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
         const pathItem = props.payload.bundled.paths?.[operation.path];
         const method = operation.method.toLowerCase();
@@ -296,7 +296,7 @@ describe('fumadocs openapi source', () => {
         throw new Error(`Missing OpenAPI page ${pagePath}`);
       }
 
-      const props = await page.data.getClientAPIPageProps();
+      const props = await page.data.getOpenAPIPageProps();
       const operation = props.operations?.[0];
 
       expect(operation).toBeDefined();
@@ -350,7 +350,7 @@ describe('fumadocs openapi source', () => {
         continue;
       }
 
-      const props = await page.data.getClientAPIPageProps();
+      const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
         const pathItem = props.payload.bundled.paths?.[operation.path];
         const method = operation.method.toLowerCase();

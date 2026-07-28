@@ -89,6 +89,19 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects the legacy Chat RESTful overview to the API reference overview in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/agora-chat/restful-api/restful-overview',
+      ),
+    ).toEqual({
+      destination: '/en/api-reference/api-ref/im',
+      preserveQueryParams: true,
+      source: '/en/agora-chat/restful-api/restful-overview',
+      statusCode: 301,
+    });
+  });
+
   it('redirects locale-less conversational AI model overview links before app routing', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([

@@ -1,0 +1,125 @@
+---
+title: "Cloud Proxy migration guide"
+description: "Cloud Proxy IP migration list"
+---
+
+Agora has updated IP whitelist configuration to enhance security and simplify management. This guide helps you update your cloud proxy settings to avoid service interruptions. Following are the key changes:
+
+* **Reduced IP ranges**: Narrower network segments improve security
+* **Single IP addressing**: Cloud machines now use single-point IPs
+* **Updated subnet masks**: Physical machines now use /28 instead of /26
+* **New access point IP list**: Introduced in SDK 3.4.0 for improved high availability
+
+:::note[Implementation notes]
+* All IP addresses and network ranges have been technically verified.
+* Update your firewall rules according to the specified timeline.
+* Continue using your current configuration if you must configure before the new delivery dates.
+* Test your configuration thoroughly using the [validation steps](cloud-proxy-allowed-ips.md).
+:::
+
+## Summary of changes
+Following are the key changes:
+
+- Access Point IPs have been updated with additional regional support
+- Some Signaling service IPs have been replaced or expanded
+- All media service network segments remain the same
+- Port configurations remain unchanged
+
+## Whitelist migration
+
+The following tables provide the essential information needed to migrate your Cloud Proxy configurations to the new network architecture. Each table outlines:
+
+- **Service type**: The Agora service you want to access
+- **Current IP addresses**: Your existing setup that needs to be updated
+- **New IP addresses**: The specific IP addresses, ports, and network segments to implement
+- **Protocol**: The supported transport protocol(s) used to connect to the service
+- **Port**: The network port number used for establishing the connection
+- **Required action**: The specific changes needed for each component
+
+Use these tables to identify the configurations applicable to your regions.
+:::note
+When adding IP addresses:
+- If you use cloud proxy with [Restricted media zones](../build/manage-connection-and-quality/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+- If you do not restrict media zones, add all IP addresses to ensure connectivity.
+:::
+
+<PlatformStructured platform="android">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+<include cwd>content/includes/en/cloud-proxy-migration-web.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+<include cwd>content/includes/en/cloud-proxy-migration-native.mdx</include>
+
+</PlatformStructured>
+
+## Implementation and validation
+Use the following approach to successfully migrate your Cloud Proxy configuration without service disruption.
+
+### Implement migration
+Once you've completed testing, use a phased approach to implement the new Cloud Proxy configuration:
+
+- Begin with non-production environments
+- Update firewall rules based on your region
+
+### Post-migration validation
+
+After implementing the changes, verify your new configuration and check the connectivity.
+
+1. **Test connectivity**
+
+   Configure your client to use UDP Cloud Proxy mode and enable connectivity testing.
+
+1. **Prepare fallback strategy**
+
+   - Maintain complete documentation of original configuration
+   - Create rollback procedures for quickly reverting changes if needed
+   - Keep support contact information readily available
+
+### Get support
+
+For implementation assistance, contact [support@agora.io](mailto:support@agora.io) with your specific SDK version and region requirements.

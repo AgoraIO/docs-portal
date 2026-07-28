@@ -3,7 +3,7 @@ title: "Enable whiteboard"
 description: "Enable and configure Interactive Whiteboard and its server-side features in Agora Console."
 ---
 
-To use Interactive Whiteboard, you need to enable and configure it in [Agora Console](https://console.agora.io/v2).
+To use Interactive Whiteboard, you need to enable and configure it in [Agora Console](https://console.agora.io/).
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Before enabling the whiteboard feature, ensure that you meet the following requi
 
 Follow these steps to enable the Interactive Whiteboard in Agora Console:
 
-1. Log in to [Agora Console](https://console.agora.io/v2), and click the **Projects** in the navigation panel.
+1. Log in to [Agora Console](https://console.agora.io/), and click the **Projects** in the navigation panel.
 
 2. On the **My Projects** page, click the **Edit** ✎ icon against the project for which you want to enable Interactive Whiteboard.
     ![](https://assets-docs.agora.io/images/common/console-configure-project.png)

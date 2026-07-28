@@ -23,6 +23,7 @@ export function createOramaDocsClient({
   scope?: DocsSearchScope;
 }): SearchClient {
   let database: ReturnType<typeof createOramaDocsDatabase> | undefined;
+  const pagesByUrl = new Map(pages.map((page) => [page.url, page]));
 
   return {
     deps: [pages],
@@ -48,6 +49,7 @@ export function createOramaDocsClient({
         content: document.title,
         id: document.url,
         objectType: document.objectType,
+        path: pagesByUrl.get(document.url)?.breadcrumbs ?? [],
         platform: document.platform,
         product: document.product,
         tab: document.tab,

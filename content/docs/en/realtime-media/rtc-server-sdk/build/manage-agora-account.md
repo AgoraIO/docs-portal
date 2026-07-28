@@ -7,7 +7,7 @@ This page shows you how to sign up for an Agora account, create a new project, a
 
 ## Get started with Agora
 
-To join a Server Gateway session, you need an Agora App ID. This section shows you how to set up an Agora account, create an Agora project and get the required information from [Agora Console](https://console.agora.io/v2).
+To join a Server Gateway session, you need an Agora App ID. This section shows you how to set up an Agora account, create an Agora project and get the required information from [Agora Console](https://console.agora.io/).
 
 ### Sign up for an Agora account
 
@@ -27,7 +27,7 @@ To use Agora products and services, create an Agora account with your email, pho
 6. Follow the on-screen instructions to provide your name, company name, and phone number, set a password, and click **Continue**.
 
 **Sign up with a third-party account**
-1. On the [Agora Console](https://console.agora.io/v2) login page, select the third-party account you want to use.
+1. On the [Agora Console](https://console.agora.io/) login page, select the third-party account you want to use.
 
 2. Follow the on-screen instructions to complete verification.
 
@@ -39,13 +39,13 @@ To use Agora products and services, create an Agora account with your email, pho
 
 Once you sign up successfully, your account is automatically logged in. Follow the on-screen instructions to create your first project and test out real-time communications.
 
-For later visits, log in to [Agora Console](https://console.agora.io/v2) with your phone number, email address, or linked third-party account.
+For later visits, log in to [Agora Console](https://console.agora.io/) with your phone number, email address, or linked third-party account.
 
 ### Create an Agora project
 
 To create an Agora project, do the following:
 
-1. In [Agora Console](https://console.agora.io/v2), open the [Projects](https://console.agora.io/v2/project-management) page.
+1. In [Agora Console](https://console.agora.io/), open the [Projects](https://console.agora.io/legacy/project-management) page.
 
 2. Click **Create New**.
 
@@ -59,7 +59,7 @@ To create an Agora project, do the following:
 
 Agora automatically assigns a unique identifier to each project, called an App ID.
 
-To copy this App ID, find your project on the [Projects](https://console.agora.io/v2/project-management) page in Agora Console, and click the copy icon in the **App ID** column.
+To copy this App ID, find your project on the [Projects](https://console.agora.io/legacy/project-management) page in Agora Console, and click the copy icon in the **App ID** column.
 
 ![configure_project](https://assets-docs.agora.io/images/signaling/app-id.png)
 
@@ -73,7 +73,7 @@ When generating an authentication token on your app server, you need an App Cert
 
 To get an App Certificate, do the following:
 
-1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon to edit the project you want to use.
+1. On the [Projects](https://console.agora.io/legacy/project-management) page, click the pencil icon to edit the project you want to use.
 
     ![Console project management page](https://assets-docs.agora.io/images/common/console-project-management-page.png)
 
@@ -87,7 +87,7 @@ To ensure communication security, best practice is to use tokens to authenticate
 
 To generate a temporary RTC token for use in your Video SDK projects:
 
-1. On the [Projects](https://console.agora.io/v2/project-management) page, click the pencil icon next to your project.
+1. On the [Projects](https://console.agora.io/legacy/project-management) page, click the pencil icon next to your project.
 
 2. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box and click **Generate**. Copy the generated RTC token for use in your Server Gateway projects.
 

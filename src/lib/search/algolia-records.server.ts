@@ -16,6 +16,7 @@ import {
 import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 import { getPublishedDocsLocales } from '../site-region';
+import { getAlgoliaSearchNavigation } from './algolia-search-source.server';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
 // match almost any query; legacy/deprecated pages are rarely the intent. Both
@@ -35,6 +36,13 @@ type AlgoliaExtraData = {
 
 export type AlgoliaDocsRecord = DocumentRecord & {
   extra_data: AlgoliaExtraData;
+};
+
+type AlgoliaContentDocsPage = {
+  content: string;
+  description?: string;
+  title?: string;
+  url: string;
 };
 
 const MAX_CHUNK_LENGTH = 4500;
@@ -69,21 +77,41 @@ const STRUCTURE_CONTENT_TYPES = [
 ];
 
 export async function getAlgoliaDocsRecords(): Promise<AlgoliaDocsRecord[]> {
+  const [pages, navigationByLocale] = await Promise.all([
+    getContentDocsPages(),
+    getAlgoliaSearchNavigation(),
+  ]);
   const [docsRecords, openApiRecords] = await Promise.all([
-    getContentDocsRecords(),
-    getOpenApiRecords(),
+    buildAlgoliaContentDocsRecords(pages, navigationByLocale),
+    getOpenApiRecords(navigationByLocale),
   ]);
 
   return [...docsRecords, ...openApiRecords];
 }
 
-async function getContentDocsRecords() {
-  const pages = await getContentDocsPages();
+export async function getAlgoliaContentDocsRecords() {
+  const [pages, navigationByLocale] = await Promise.all([
+    getContentDocsPages(),
+    getAlgoliaSearchNavigation(),
+  ]);
 
+  return buildAlgoliaContentDocsRecords(pages, navigationByLocale);
+}
+
+export function buildAlgoliaContentDocsRecords(
+  pages: AlgoliaContentDocsPage[],
+  navigationByLocale: ReadonlyMap<string, ReadonlyMap<string, string[]>>,
+) {
   return pages.flatMap((page): AlgoliaDocsRecord[] => {
     const route = parseDocsUrl(page.url);
 
     if (!route) {
+      return [];
+    }
+
+    const breadcrumbs = navigationByLocale.get(route.locale)?.get(page.url);
+
+    if (!breadcrumbs) {
       return [];
     }
 
@@ -98,7 +126,7 @@ async function getContentDocsRecords() {
     return [
       {
         _id: `docs:${page.url}`,
-        breadcrumbs: route.slugSegments,
+        breadcrumbs,
         description: page.description,
         extra_data: {
           category: classifySearchCategory(page.url),
@@ -114,6 +142,58 @@ async function getContentDocsRecords() {
       },
     ];
   });
+}
+
+export function buildAlgoliaOpenApiRecord({
+  breadcrumbs,
+  content,
+  laneId,
+  locale,
+  method,
+  operationId,
+  path: operationPath,
+  tab,
+  title,
+  url,
+}: {
+  breadcrumbs: string[];
+  content: string;
+  laneId: string;
+  locale: AppLocale;
+  method: string;
+  operationId: string;
+  path: string;
+  tab: string;
+  title: string;
+  url: string;
+}): AlgoliaDocsRecord {
+  const metadata = getSearchEntryMetadata(url, content, 'openapi');
+
+  return {
+    _id: `openapi:${url}`,
+    breadcrumbs,
+    extra_data: {
+      category: classifySearchCategory(url),
+      locale,
+      ...metadata,
+      product: laneId,
+      tab,
+    },
+    structured: {
+      contents: chunkText(content, MAX_CHUNK_LENGTH).map((chunk) => ({
+        content: chunk,
+        heading: operationId,
+      })),
+      headings: [
+        {
+          content: `${method.toUpperCase()} ${operationPath}`,
+          id: operationId,
+        },
+      ],
+    },
+    title,
+    url,
+  };
 }
 
 /**
@@ -253,7 +333,9 @@ function parseFrontmatter(raw: string) {
   };
 }
 
-async function getOpenApiRecords() {
+async function getOpenApiRecords(
+  navigationByLocale: ReadonlyMap<string, ReadonlyMap<string, string[]>>,
+) {
   const lanePages = await Promise.all(
     getOpenApiLanes().flatMap((lane) =>
       getOpenApiLaneLocales(lane)
@@ -278,6 +360,12 @@ async function getOpenApiRecords() {
 
       const title = lane.operations[operationId].title[locale];
       const url = getOpenApiEndpointUrl(lane, locale, operationId);
+      const breadcrumbs = navigationByLocale.get(locale)?.get(url);
+
+      if (!breadcrumbs) {
+        return [];
+      }
+
       const content = [
         title,
         operation.operationId,
@@ -302,34 +390,19 @@ async function getOpenApiRecords() {
         .filter(Boolean)
         .map((part) => toPlainText(String(part)))
         .join('\n');
-      const metadata = getSearchEntryMetadata(url, content, 'openapi');
-
       return [
-        {
-          _id: `openapi:${url}`,
-          breadcrumbs: [locale === 'zh-CN' ? 'API 参考' : 'API Reference'],
-          extra_data: {
-            category: classifySearchCategory(url),
-            locale,
-            ...metadata,
-            product: lane.id,
-            tab: lane.tab,
-          },
-          structured: {
-            contents: chunkText(content, MAX_CHUNK_LENGTH).map((chunk) => ({
-              content: chunk,
-              heading: operation.operationId,
-            })),
-            headings: [
-              {
-                content: `${operation.method.toUpperCase()} ${operation.path}`,
-                id: operation.operationId,
-              },
-            ],
-          },
+        buildAlgoliaOpenApiRecord({
+          breadcrumbs,
+          content,
+          laneId: lane.id,
+          locale,
+          method: operation.method,
+          operationId: operation.operationId,
+          path: operation.path,
+          tab: lane.tab,
           title,
           url,
-        } satisfies AlgoliaDocsRecord,
+        }),
       ];
     }),
   );
