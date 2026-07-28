@@ -318,6 +318,143 @@ Ensure that you have integrated the Signaling SDK in your project and implemente
 
 This section explains how to set up and customize various features when you initialize a Signaling client instance.
 
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "yourUserId")
+config.areaCode = [.CN, .NA]
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_cfg.areaCode = AgoraRtmAreaCodeNA;
+```
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let privateConfig = AgoraRtmPrivateConfig()
+privateConfig.accessPointHosts = ["your_private_server"]
+privateConfig.serviceType = [.stream, .message]
+
+rtmConfig.privateConfig = privateConfig
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmPrivateConfig* private_config = [[AgoraRtmPrivateConfig alloc] init];
+private_config.accessPointHosts = @[@"your_private_server"];
+private_config.serviceType = AgoraRtmServiceTypeStream | AgoraRtmServiceTypeMessage;
+```
+
+:::info[Info]
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each channel (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols respectively. This design ensures that network issues in one link do not affect transmission performance. Compared to other WebSocket-based message transmission solutions, RTM's redundant link design maximizes transmission stability and message arrival rates.
+
+In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design functions effectively, the SDK allows users to configure both links to use the TCP protocol by setting the `protocolType` field in the `AgoraRtmClientConfig`. Here is an example of configuring both links to use the TCP protocol:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+rtmConfig.protocolType = .tcpOnly
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_config.protocolType = AgoraRtmProtocolTypeTcpOnly;
+```
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable SDK log output and configure the log level and file size when initializing the Signaling client instance.
+
+#### Swift
+
+```swift
+do {
+    let logConfig = AgoraRtmLogConfig()
+    logConfig.level = .error
+    logConfig.filePath = "your_path"
+    logConfig.fileSizeInKB = 512
+
+    let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+    rtmConfig.logConfig = logConfig
+    // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \\(error)")
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `none`    | `0x0000`: Do not output any logs. |
+| `info`    | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
+| `warn`    | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`.|
+| `error`   | `0x0004`: Only output logs of levels `fatal` and `error`.       |
+| `fatal`   | `0x0008`: Only output logs at the `fatal` level. |
+
+:::info
+When you release your app to production, set the log level to `info`.
+:::
+
+#### Objective-C
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// set log config
+AgoraRtmLogConfig* log_cfg = [[AgoraRtmLogConfig alloc] init];
+log_cfg.level= AgoraRtmLogLevelError;
+log_cfg.filePath= @"your_path";
+log_cfg.fileSizeInKB = 512;
+
+rtm_cfg.logConfig = log_cfg;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+if (rtm != nil) {
+    NSLog(@"init rtm success!!");
+} else {
+    NSLog(@"init rtm failed!!");
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `AgoraRtmLogLevelNone`    | `0x0000`: Do not output any logs. |
+| `AgoraRtmLogLevelInfo`    | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `AgoraRtmLogLevelWarn`    | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.|
+| `AgoraRtmLogLevelError`   | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.       |
+| `AgoraRtmLogLevelFatal`   | `0x0008`: Only output logs at the `FATAL` level. |
+
+:::info
+When your app is released to production, set the log level to `AgoraRtmLogLevelInfo`.
+:::
+
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
@@ -352,6 +489,143 @@ Ensure that you have integrated the Signaling SDK in your project and implemente
 ## Configure the client instance
 
 This section explains how to set up and customize various features when you initialize a Signaling client instance.
+
+### Geographical area configuration
+
+To specify a geographical area for Agora SDRTN® connections, refer to the following code:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "yourUserId")
+config.areaCode = [.CN, .NA]
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_cfg.areaCode = AgoraRtmAreaCodeNA;
+```
+
+### Private deployment configuration
+
+Agora is committed to offering its customers flexible, secure, and customizable solutions. Since version `2.2.0`, Signaling supports private deployments. This feature enables you to deploy and manage the Signaling environment yourself, giving you more control over your data and systems.
+
+Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let privateConfig = AgoraRtmPrivateConfig()
+privateConfig.accessPointHosts = ["your_private_server"]
+privateConfig.serviceType = [.stream, .message]
+
+rtmConfig.privateConfig = privateConfig
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmPrivateConfig* private_config = [[AgoraRtmPrivateConfig alloc] init];
+private_config.accessPointHosts = @[@"your_private_server"];
+private_config.serviceType = AgoraRtmServiceTypeStream | AgoraRtmServiceTypeMessage;
+```
+
+:::info[Info]
+To deploy a private environment, you need to set up the backend service. For assistance, please contact [technical support](mailto:support@agora.io).
+:::
+
+### Connection protocol
+
+To ensure connection stability and continuous service availability, the RTM client establishes two transmission links for each channel (`MESSAGE` service and `STREAM` service) when connecting to the edge server. By default, these links use the TCP and UDP protocols respectively. This design ensures that network issues in one link do not affect transmission performance. Compared to other WebSocket-based message transmission solutions, RTM's redundant link design maximizes transmission stability and message arrival rates.
+
+In some cases, users may find that their network does not support UDP port transmission, either temporarily or permanently. To ensure the dual-link design functions effectively, the SDK allows users to configure both links to use the TCP protocol by setting the `protocolType` field in the `AgoraRtmClientConfig`. Here is an example of configuring both links to use the TCP protocol:
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+rtmConfig.protocolType = .tcpOnly
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_config.protocolType = AgoraRtmProtocolTypeTcpOnly;
+```
+
+:::info[Info]
+The SDK does not support configuring both links to use the UDP protocol simultaneously.
+:::
+
+### Log configuration
+
+In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable SDK log output and configure the log level and file size when initializing the Signaling client instance.
+
+#### Swift
+
+```swift
+do {
+    let logConfig = AgoraRtmLogConfig()
+    logConfig.level = .error
+    logConfig.filePath = "your_path"
+    logConfig.fileSizeInKB = 512
+
+    let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+    rtmConfig.logConfig = logConfig
+    // Initializing the RTM client
+    let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \\(error)")
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `none`    | `0x0000`: Do not output any logs. |
+| `info`    | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
+| `warn`    | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`.|
+| `error`   | `0x0004`: Only output logs of levels `fatal` and `error`.       |
+| `fatal`   | `0x0008`: Only output logs at the `fatal` level. |
+
+:::info
+When you release your app to production, set the log level to `info`.
+:::
+
+#### Objective-C
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// set log config
+AgoraRtmLogConfig* log_cfg = [[AgoraRtmLogConfig alloc] init];
+log_cfg.level= AgoraRtmLogLevelError;
+log_cfg.filePath= @"your_path";
+log_cfg.fileSizeInKB = 512;
+
+rtm_cfg.logConfig = log_cfg;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+if (rtm != nil) {
+    NSLog(@"init rtm success!!");
+} else {
+    NSLog(@"init rtm failed!!");
+}
+```
+
+Choose the log level from the following:
+
+| Enumeration value | Description   |
+|----------|------------------------|
+| `AgoraRtmLogLevelNone`    | `0x0000`: Do not output any logs. |
+| `AgoraRtmLogLevelInfo`    | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
+| `AgoraRtmLogLevelWarn`    | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.|
+| `AgoraRtmLogLevelError`   | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.       |
+| `AgoraRtmLogLevelFatal`   | `0x0008`: Only output logs at the `FATAL` level. |
+
+:::info
+When your app is released to production, set the log level to `AgoraRtmLogLevelInfo`.
+:::
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
