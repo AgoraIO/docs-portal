@@ -199,7 +199,7 @@ try {
 #### DescriptionRtmEventListener
 Signaling event notifications.
 
-Signaling has a total of 8 types of event notifications, as shown in the following table:
+Signaling has a total of 7 types of event notifications, as shown in the following table:
 
 | Event Type | Description |
 |:----------:|------------------------------|
@@ -208,7 +208,6 @@ Signaling has a total of 8 types of event notifications, as shown in the followi
 | `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#configtopiceven-t) |
 | `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#configstorageeven-t) |
 | `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#configlockeven-t) |
-| `onConnectionStateChanged` | (Deprecated) Receive event notifications when client connection status changes. For details, see [`RtmConnectionState`](#enumvconnectionstat-e) and [`RtmConnectionChangeReason`](#enumvconnectionreaso-n). |
 | `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#configlinkstateeven-t). |
 | `onTokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
@@ -229,42 +228,37 @@ When initializing the Signaling client instance using the `create` method, you c
 rtmConfig.eventListener = new RtmEventListener {
     @Override
     public void onMessageEvent(MessageEvent event) {
- // Your message event handler
+    // Your message event handler
     }
 
     @Override
     public void onPresenceEvent(PresenceEvent event) {
- // Your presence event handler
+    // Your presence event handler
     }
 
     @Override
     public void onTopicEvent(TopicEvent event) {
- // Your topic event handler
+    // Your topic event handler
     }
 
     @Override
     public void onLockEvent(LockEvent event) {
- // Your lock event handler
+    // Your lock event handler
     }
 
     @Override
     public void onStorageEvent(StorageEvent event) {
- // Your storage event handler
-    }
-
-    @Override
-    public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
- // Your connection state change event handler
+    // Your storage event handler
     }
 
     @Override
     public void onLinkStateEvent(LinkStateEvent event) {
- // Your link state change event handler
+    // Your link state change event handler
     }
 
     @Override
     public void onTokenPrivilegeWillExpire(String channelName) {
- // Your token privilege will expire event handler
+    // Your token privilege will expire event handler
     }
 }
 ```
@@ -344,6 +338,7 @@ rtmClient.removeEventListener(listener);
 | `leaveUserList` | `ArrayList&lt;String&gt;` | List of users who left the channel in the previous cycle. |
 | `timeoutUserList` | `ArrayList&lt;String&gt;` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `ArrayList&lt;UserState&gt;` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+| `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value indicates the number of all online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may have a short delay. |
 
 `SnapshotInfo` contains the following properties:
 
