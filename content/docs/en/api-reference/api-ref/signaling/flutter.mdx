@@ -3311,53 +3311,6 @@ Channel types.
 | `stream` | `2`: Stream channel. |
 | `user` | `3`: User Channel. |
 
-#### RtmConnectionChangeReason
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `connecting` | `0`: The SDK is connecting with the server. |
-| `joinSuccess` | `1`: The SDK has joined the channel successfully. |
-| `interrupted` | `2`: The connection between the SDK and the server is interrupted. |
-| `bannedByServer` | `3`: The connection between the SDK and the server is banned by the server. |
-| `joinFailed` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `leaveChannel` | `5`: The SDK has left the channel. |
-| `invalidAppId` | `6`: The connection failed because the App ID is not valid. |
-| `invalidChannelName` | `7`: The connection failed because the channel name is not valid. |
-| `invalidToken` | `8`: The connection failed because the token is not valid. |
-| `tokenExpired` | `9`: The connection failed because the token is expired. |
-| `rejectedByServer` | `10`: The connection is rejected by server. |
-| `settingProxyServer` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `renewToken` | `12`: The connection state changed because the token is renewed. |
-| `clientIpAddressChanged` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `keepAliveTimeout` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `rejoinSuccess` | `15`: The user has rejoined the channel successfully. |
-| `lost` | `16`: The connection between the SDK and the server is lost. |
-| `echoTest` | `17`: The connection state changes due to the echo test. |
-| `clientIpAddressChangedByUser` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `sameUidLogin` | `19`: The user joined the same channel from different devices with the same UID. |
-| `tooManyBroadcasters` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `licenseValidationFailure` | `21`: The license validation failed. |
-| `certificationVerifyFailure` | `22`: The server certificate validation failed. |
-| `streamChannelNotAvailable` | `23`: The stream channel does not exist. |
-| `inconsistentAppid` | `24`: The App ID does not match the token. |
-| `loginSuccess` | `10001`: The SDK logs in to the Signaling system. |
-| `logout` | `10002`: The SDK logs out from the Signaling system. |
-| `presenceNotReady` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### RtmConnectionState
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `disconnected` | `1`: The SDK has disconnected with the server. |
-| `connecting` | `2`: The SDK is connecting with the server. |
-| `connected` | `3`: The SDK has connected with the server. |
-| `reconnecting` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `failed` | `5`: The SDK failed to connect with the server. |
-
 #### RtmLinkStateChangeReason
 
 | Value | Description |

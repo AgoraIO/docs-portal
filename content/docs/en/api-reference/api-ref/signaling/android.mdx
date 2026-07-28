@@ -277,7 +277,7 @@ RtmEventListener listener = new RtmEventListener() {
     }
 
     @Override
-    public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
+    public void onLinkStateEvent(LinkStateEvent event) {
     }
 };
 
@@ -338,7 +338,7 @@ rtmClient.removeEventListener(listener);
 | `leaveUserList` | `ArrayList&lt;String&gt;` | List of users who left the channel in the previous cycle. |
 | `timeoutUserList` | `ArrayList&lt;String&gt;` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `ArrayList&lt;UserState&gt;` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
-| `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value indicates the number of all online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may have a short delay. |
+| `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 `SnapshotInfo` contains the following properties:
 
@@ -1421,7 +1421,7 @@ Signaling provides event notifications for messages, states, and event changes. 
         }
 
         @Override
-        public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
+        public void onLinkStateEvent(LinkStateEvent event) {
         }
     };
 
@@ -2644,53 +2644,6 @@ Channel types.
 | `MESSAGE` | `1`: Message channel. |
 | `STREAM` | `2`: Stream channel. |
 | `USER` | `3`: User Channel. |
-
-#### RtmConnectionChangeReason
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `CONNECTING` | `0`: The SDK is connecting with the server. |
-| `JOIN_SUCCESS` | `1`: The SDK has joined the channel successfully. |
-| `INTERRUPTED` | `2`: The connection between the SDK and the server is interrupted. |
-| `BANNED_BY_SERVER` | `3`: The connection between the SDK and the server is banned by the server. |
-| `JOIN_FAILED` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `LEAVE_CHANNEL` | `5`: The SDK has left the channel. |
-| `INVALID_APP_ID` | `6`: The connection failed because the App ID is not valid. |
-| `INVALID_CHANNEL_NAME` | `7`: The connection failed because the channel name is not valid. |
-| `INVALID_TOKEN` | `8`: The connection failed because the token is not valid. |
-| `TOKEN_EXPIRED` | `9`: The connection failed because the token is expired. |
-| `REJECTED_BY_SERVER` | `10`: The connection is rejected by server. |
-| `SETTING_PROXY_SERVER` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `RENEW_TOKEN` | `12`: The connection state changed because the token is renewed. |
-| `CLIENT_IP_ADDRESS_CHANGED` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `KEEP_ALIVE_TIMEOUT` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `REJOIN_SUCCESS` | `15`: The user has rejoined the channel successfully. |
-| `LOST` | `16`: The connection between the SDK and the server is lost. |
-| `ECHO_TEST` | `17`: The connection state changes due to the echo test. |
-| `CLIENT_IP_ADDRESS_CHANGED_BY_USER` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `SAME_UID_LOGIN` | `19`: The user joined the same channel from different devices with the same UID. |
-| `TOO_MANY_BROADCASTERS` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `LICENSE_VALIDATION_FAILURE` | `21`: License validation failure. |
-| `CERTIFICATION_VERIFY_FAILURE` | `22`: The server certificate verification has encountered an error. |
-| `STREAM_CHANNEL_NOT_AVAILABLE` | `23`: The stream channel does not exist. |
-| `INCONSISTENT_APPID` | `24`: The App ID does not match the token. |
-| `LOGIN_SUCCESS` | `10001`: The SDK logs in to the Signaling system. |
-| `LOGOUT` | `10002`: The SDK logs out from the Signaling system. |
-| `PRESENCE_NOT_READY` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### RtmConnectionState
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `DISCONNECTED` | `1`: The SDK has disconnected with the server. |
-| `CONNECTING` | `2`: The SDK is connecting with the server. |
-| `CONNECTED` | `3`: The SDK has connected with the server. |
-| `RECONNECTING` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `FAILED` | `5`: The SDK failed to connect with the server. |
 
 #### RtmEncryptionMode
 
