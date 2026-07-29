@@ -838,7 +838,7 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
+  it('renders copy page menu actions as a compact ordered list', async () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
@@ -853,7 +853,22 @@ describe('DocsContent', () => {
       { button: 0 },
     );
 
-    expect(await screen.findByText('AI tools')).toBeInTheDocument();
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
+    expect(
+      screen
+        .getAllByRole('menuitem')
+        .map((item) => item.textContent?.replace(/\s+/g, ' ').trim()),
+    ).toEqual([
+      'View as Markdown',
+      'Open in ChatGPT',
+      'Open in Claude',
+      'Copy MCP config',
+      'Copy MCP command',
+    ]);
+
+    expect(
+      screen.getByRole('menuitem', { name: 'View as Markdown' }),
+    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
     expect(
       screen.getByRole('menuitem', { name: 'Open in ChatGPT' }),
     ).toHaveAttribute(
@@ -866,15 +881,34 @@ describe('DocsContent', () => {
       'href',
       expect.stringContaining('https://claude.ai/new?q='),
     );
+    expect(screen.queryByText('AI tools')).not.toBeInTheDocument();
+    expect(screen.queryByText('MCP')).not.toBeInTheDocument();
+    expect(screen.queryByText('Other')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'Connect to Cursor' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
+      screen.queryByRole('menuitem', { name: 'Connect to Cursor' }),
+    ).not.toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'Connect to VS Code' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
-    expect(
-      screen.getByRole('menuitem', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
+      screen.queryByRole('menuitem', { name: 'Connect to VS Code' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not lock page scrolling when opening the copy page menu', async () => {
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="en"
+        markdownUrl="/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+      />,
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: 'Copy Page more actions' }),
+      { button: 0 },
+    );
+
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
+    expect(document.body).not.toHaveAttribute('data-scroll-locked');
   });
 
   it('copies MCP config and command from the copy page menu', async () => {
@@ -896,7 +930,7 @@ describe('DocsContent', () => {
     );
 
     fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Config' }),
+      await screen.findByRole('menuitem', { name: 'Copy MCP config' }),
     );
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenCalledWith(`{
@@ -913,7 +947,7 @@ describe('DocsContent', () => {
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Command' }),
+      await screen.findByRole('menuitem', { name: 'Copy MCP command' }),
     );
     await waitFor(() => {
       expect(clipboardWriteText).toHaveBeenLastCalledWith(

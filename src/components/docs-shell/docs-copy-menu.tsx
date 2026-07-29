@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router';
 import {
   BotIcon,
   CheckIcon,
@@ -14,20 +13,12 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
 
 const AGORA_DOCS_MCP_URL = 'https://mcp.agora.io';
 const AGORA_DOCS_MCP_NAME = 'agora-docs';
-const AGORA_MCP_DOC_ROUTE = '/$locale/$tab/$';
-const AGORA_MCP_DOC_PARAMS = {
-  _splat: 'agora-mcp',
-  locale: 'en',
-  tab: 'introduction',
-};
 const CHATGPT_BASE_URL = 'https://chatgpt.com/';
 const CLAUDE_BASE_URL = 'https://claude.ai/new';
 const COPY_STATE_MS = 2500;
@@ -143,7 +134,7 @@ export function DocsCopyMenu({
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <div
         className={cn(
           'inline-flex items-stretch rounded-md border border-[color:var(--line-soft)] bg-card',
@@ -186,8 +177,13 @@ export function DocsCopyMenu({
         aria-label={t('docs.copyPage')}
         className="w-64 rounded-lg p-1"
       >
-        <DropdownMenuLabel>{t('docs.copyMenuAiTools')}</DropdownMenuLabel>
         <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <a href={markdownUrl} rel="noreferrer" target="_blank">
+              {t('docs.viewAsMarkdown')}
+              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+            </a>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <a
               href={buildChatGptUrl({
@@ -216,22 +212,6 @@ export function DocsCopyMenu({
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </a>
           </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
-              {t('docs.connectToCursor')}
-              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link params={AGORA_MCP_DOC_PARAMS} to={AGORA_MCP_DOC_ROUTE}>
-              {t('docs.connectToVsCode')}
-              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </Link>
-          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => void copy('config', getCursorMcpConfig())}
           >
@@ -255,16 +235,6 @@ export function DocsCopyMenu({
             {copiedAction === 'command'
               ? t('docs.copied')
               : t('docs.copyMcpCommand')}
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuLabel>{t('docs.copyMenuOther')}</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <a href={markdownUrl} rel="noreferrer" target="_blank">
-              {t('docs.viewAsMarkdown')}
-              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </a>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
