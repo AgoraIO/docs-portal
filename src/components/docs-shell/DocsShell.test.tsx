@@ -929,6 +929,35 @@ describe('DocsShell', () => {
     );
   });
 
+  it('resets helpfulness feedback after docs pager navigation', async () => {
+    const { router } = renderRealtimeMediaDocsShell();
+    const feedback = await screen.findByTestId('docs-feedback');
+    const yesButton = within(feedback).getByRole('button', { name: 'Yes' });
+
+    fireEvent.click(yesButton);
+    expect(yesButton).toHaveAttribute('aria-pressed', 'true');
+
+    fireEvent.click(
+      screen.getByRole('link', {
+        name: 'Next Presence',
+      }),
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(
+        '/en/realtime-media/rtm/build/presence',
+      );
+    });
+
+    const destinationFeedback = screen.getByTestId('docs-feedback');
+    expect(
+      within(destinationFeedback).getByRole('button', { name: 'Yes' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(
+      within(destinationFeedback).getByRole('button', { name: 'No' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+  });
+
   it('shows docs scrollbars transiently while a sidebar region is scrolling', async () => {
     renderDocsShell();
 

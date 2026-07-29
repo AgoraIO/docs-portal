@@ -1874,11 +1874,12 @@ describe('DocsTocRail', () => {
 });
 
 describe('DocsPageFeedback placement', () => {
-  it('captures helpfulness feedback without changing the local pressed state', async () => {
+  it('captures helpfulness feedback with a prominent reversible selection', async () => {
     renderWithRouter(
       <DocsMainColumn locale="en">
         <article>Body</article>
       </DocsMainColumn>,
+      '/en/introduction/about-agora',
     );
 
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
@@ -1889,6 +1890,8 @@ describe('DocsPageFeedback placement', () => {
     fireEvent.click(yesButton);
 
     expect(yesButton).toHaveAttribute('aria-pressed', 'true');
+    expect(yesButton).toHaveAttribute('data-variant', 'default');
+    expect(noButton).toHaveAttribute('data-variant', 'outline');
     expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
       locale: 'en',
       value: 'yes',
@@ -1897,7 +1900,9 @@ describe('DocsPageFeedback placement', () => {
     fireEvent.click(noButton);
 
     expect(yesButton).toHaveAttribute('aria-pressed', 'false');
+    expect(yesButton).toHaveAttribute('data-variant', 'outline');
     expect(noButton).toHaveAttribute('aria-pressed', 'true');
+    expect(noButton).toHaveAttribute('data-variant', 'default');
     expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
       locale: 'en',
       value: 'no',
