@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Separator } from '@/components/ui/separator';
 import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
@@ -10,11 +9,10 @@ import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import type { AppLocale } from '@/lib/i18n/i18n-config';
-import { getReferenceCenterContext } from '@/lib/reference-center-navigation';
+import { getDocsSidebarMode } from '@/lib/reference-center-navigation';
+import { ApiReferenceProductNav } from './ApiReferenceProductNav';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
-import { ReferenceCenterPrimaryNav } from './ReferenceCenterPrimaryNav';
-import { ReferenceCenterSecondaryNav } from './ReferenceCenterSecondaryNav';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsSidebar({
@@ -34,9 +32,9 @@ export function DocsSidebar({
 }) {
   const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
     useTransientScrollbar<HTMLDivElement>();
-  const referenceCenterContext = getReferenceCenterContext(activePath, locale);
-  const hasReferenceCenterSecondaryNav =
-    referenceCenterContext !== null && referenceCenterContext !== 'recipes';
+  const sidebarMode = getDocsSidebarMode(activePath, locale);
+  const hasPrimaryResourceLinks = sidebarMode === 'reference';
+  const hasApiProductNav = sidebarMode === 'api';
 
   useEffect(() => {
     void resetKey;
@@ -59,12 +57,8 @@ export function DocsSidebar({
       <SidebarContent
         className={cn(
           'h-full min-h-0',
-          referenceCenterContext
-            ? 'overflow-y-hidden'
-            : 'docs-scrollbar overflow-y-auto',
-          !referenceCenterContext &&
-            isScrollbarVisible &&
-            'docs-scrollbar-visible',
+          sidebarMode ? 'overflow-y-hidden' : 'docs-scrollbar overflow-y-auto',
+          !sidebarMode && isScrollbarVisible && 'docs-scrollbar-visible',
         )}
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
@@ -72,29 +66,21 @@ export function DocsSidebar({
         <div
           className={cn(
             'pr-3',
-            referenceCenterContext
-              ? 'flex h-full min-h-0 flex-col pt-4'
-              : 'py-4 pb-8',
+            sidebarMode ? 'flex h-full min-h-0 flex-col pt-4' : 'py-4 pb-8',
           )}
         >
-          {referenceCenterContext ? (
+          {sidebarMode ? (
             <>
-              <div className="shrink-0 px-2">
-                <ReferenceCenterPrimaryNav
-                  activePath={activePath}
-                  onSelectPath={onSelectPath}
-                />
-              </div>
-              {hasReferenceCenterSecondaryNav ? (
-                <>
-                  <Separator className="my-3" />
-                  <ReferenceCenterSecondaryNav
+              {hasPrimaryResourceLinks ? (
+                <div className="shrink-0">
+                  <DocsSidebarTree
                     activePath={activePath}
-                    context={referenceCenterContext}
+                    nodes={nodes}
                     onSelectPath={onSelectPath}
                   />
-                </>
+                </div>
               ) : null}
+              {hasApiProductNav ? <ApiReferenceProductNav /> : null}
             </>
           ) : (
             <div>
