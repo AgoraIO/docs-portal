@@ -10,7 +10,10 @@ import {
   createMachineReadableDocsIndexes,
   validateMachineReadableDocsArtifacts,
 } from '../src/lib/llms-index.ts';
-import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
+import {
+  createMachineReadableEntryArtifact,
+  MACHINE_READABLE_LOCALE,
+} from '../src/lib/machine-readable-docs.ts';
 import { getOpenApiPrerenderPaths } from '../src/lib/openapi/lanes.ts';
 import {
   getOpenApiMarkdownByContentPath,
@@ -308,6 +311,16 @@ async function generateStaticMachineReadableDocs({
       page,
       platformKeysByPageUrl.get(page.url),
     );
+  }
+
+  const entryArtifact = await createMachineReadableEntryArtifact({
+    pages,
+    renderMarkdown: async (page) =>
+      withAgentDocsDirective(await getStaticLLMText(page)),
+  });
+  if (entryArtifact) {
+    await writePublicRouteFile(entryArtifact.path, entryArtifact.content);
+    generated += 1;
   }
 
   for (const page of openApiPages) {
