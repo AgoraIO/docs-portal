@@ -87,7 +87,7 @@ export function DocsPageFeedback({
           className="h-8 rounded-md px-3 text-xs"
           onClick={() => submitHelpfulnessFeedback('yes')}
           size="sm"
-          variant={feedback === 'yes' ? 'secondary' : 'outline'}
+          variant={feedback === 'yes' ? 'default' : 'outline'}
         >
           <ThumbsUpIcon data-icon="inline-start" />
           {t('docs.feedbackYes')}
@@ -97,7 +97,7 @@ export function DocsPageFeedback({
           className="h-8 rounded-md px-3 text-xs"
           onClick={() => submitHelpfulnessFeedback('no')}
           size="sm"
-          variant={feedback === 'no' ? 'secondary' : 'outline'}
+          variant={feedback === 'no' ? 'default' : 'outline'}
         >
           <ThumbsDownIcon data-icon="inline-start" />
           {t('docs.feedbackNo')}

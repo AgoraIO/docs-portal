@@ -49,6 +49,7 @@ export function DocsMainColumn({
           <DocsPageFooter
             contentFillsWidth={contentFillsWidth}
             includeFeedback
+            key={resetKey}
             layoutMode={layoutMode}
             locale={locale}
             next={next}
