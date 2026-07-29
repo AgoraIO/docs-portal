@@ -41,6 +41,17 @@
   ],
   "routes": [
     {
+      "src": "^/(?:en/?)?$",
+      "dest": "/en.md",
+      "has": [
+        {
+          "type": "header",
+          "key": "Accept",
+          "value": ".*text/markdown.*"
+        }
+      ]
+    },
+    {
       "src": "^/en/((?!.*\\.md/?$).+?)/?$",
       "dest": "/en/$1.md",
       "has": [
