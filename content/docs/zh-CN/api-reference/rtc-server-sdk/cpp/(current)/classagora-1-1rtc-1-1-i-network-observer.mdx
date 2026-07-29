@@ -1,0 +1,75 @@
+---
+title: agora::rtc::INetworkObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_network_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_network_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[INetworkObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-network-observer) 对象。
+
+## 构造及析构函数说明
+
+<a id="aaedbf57275bf1728a3e6f3202c0c0d91"></a>
+
+### ~INetworkObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::INetworkObserver::~INetworkObserver()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a86a88e2e5afec47ebef26252b0ac70a2"></a>
+
+### onUplinkNetworkInfoUpdated()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::INetworkObserver::onUplinkNetworkInfoUpdated(const [UplinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-uplink-network-info) & *info*)
+
+</ApiSignature>
+
+上行网络信息更新时触发。
+
+你可以通过该回调根据目标码率调节发送节奏。
+
+<ParameterList title="参数">
+<Parameter name="info">
+
+上行网络信息： [UplinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-uplink-network-info) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a4d8f6fa3628c0d9b59be671de36851be"></a>
+
+### onDownlinkNetworkInfoUpdated()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::INetworkObserver::onDownlinkNetworkInfoUpdated(const [DownlinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-downlink-network-info) & *info*)
+
+</ApiSignature>
+
+下行网络信息更新时触发。
+
+你可以通过该回调根据目标码率调节发送节奏。
+
+<ParameterList title="参数">
+<Parameter name="info">
+
+下行网络信息： [DownlinkNetworkInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-downlink-network-info) 。
+
+</Parameter>
+</ParameterList>

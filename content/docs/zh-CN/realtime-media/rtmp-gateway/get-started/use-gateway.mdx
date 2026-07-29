@@ -1,0 +1,134 @@
+---
+title: "使用 RTMP 网关"
+description: "了解如何快速接入实时消息 RTM，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+声网 RTMP 网关（RTMP Gateway）服务能够把使用标准推流协议的内容推到声网 SD-RTN™，并以主播身份将这些内容发布到对应的频道内。在实时互动场景下，凭借 RTMP 网关，你可以把在线媒体流作为直播视频源输入到声网频道内，构建出更丰富好玩的场景。
+
+在使用 RTMP 网关服务前，你需要在推流软件中配置服务器的域名和推流码。本文以使用 OBS 推流软件输入 RTMP 协议的媒体流为例，介绍如何获取并配置服务器的域名和推流码。
+
+![](https://web-cdn.agora.io/docs-files/1687156698789)
+
+## 前提条件
+
+开始前请确保如下条件：
+
+- 有一个实现了[实时互动](/zh-CN/realtime-media/rtc)功能的项目。
+- 参考[开通服务](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service)获取了该项目的 App ID、App 证书、客户证书和密钥，并开通了 RTMP 网关服务。
+- 调用 RTMP 网关 RESTful API 需要通过 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth)。
+
+## 获取服务器域名
+
+在服务器一栏填写推流域名，格式为 `{推流域名}/live`。可以使用声网统一域名，也可以绑定自己的域名。
+
+- 如果使用声网的域名，则需要填入 `rtls-ingress-prod-{region}.agoramdn.com/live`，其中的 `{region}` 字段需要根据实际区域填写，支持的区域如下：
+    - `cn`：中国大陆
+    - `ap`：除中国大陆以外的亚洲区域
+    - `na`：北美
+    - `eu`：欧洲
+
+- 如果使用自己的域名，请[联系声网技术支持](https://ticket.shengwang.cn)进行配置，配置成功后方可使用。
+
+## 获取推流码
+
+推流码的生成方式取决于你使用声网域名还是自己的域名。
+
+- 如果使用声网的域名，则需要调用 RTMP 网关 API 来生成推流码。
+- 如果使用自己的域名，则既可以通过调用 API 来生成推流码，也可以在本地生成推流码。
+
+### 调用 API 生成推流码
+
+你可以通过调用[创建推流码 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key) 创建并获取推流码。
+
+### 本地生成推流码
+
+本节介绍如何在本地生成推流码。
+
+:::warning[注意]
+开始前请确保已[联系技术支持](https://ticket.shengwang.cn)成功绑定用户域名。
+:::
+
+在生成推流码过程中，你需要用到以下信息：
+
+- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取-app-id)。
+- 声网项目对应的 App 证书，详见[获取 App 证书](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取-app-证书)。
+- 声网频道名称 `channelName`。
+- 声网频道内主播的 `uid`。
+- 推流码的有效时长 `expiresAfter`（秒）。
+- （可选）关联的流配置模板 `template`，详见[流配置模板 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template)。
+
+以下的 Node.js 示例代码，演示了如何本地生成推流码：
+
+:::warning[注意]
+以下示例代码依赖 `msgpack-lite` 模块。如果你还没有安装，可在项目根目录执行 `npm install msgpack-lite`，然后运行 `node app.js`。
+:::
+
+```javascript
+const crypto = require('crypto');
+const msgpack = require('msgpack-lite');
+ 
+// 你的声网项目的 App ID 对应的 App 证书
+appcert = ""
+// 声网频道名称
+channel = "";
+// 声网频道内的主播 uid
+uid = "";
+// 推流码的有效时长（秒）
+expiresAfter = 86400;
+// 关联的流配置模板，如果不确定有什么用，请保持注释状态
+// templateId = "720p";
+ 
+const expiresAt = Math.floor(Date.now() / 1000) + expiresAfter;
+ 
+const rtcInfo = {
+  C: channel,
+  U: uid,
+  E: expiresAt,
+  // 如果不确定要不要用流配置模板，请保持注释状态
+  // T: templateId,
+};
+ 
+// 使用 msgpack 序列化
+const data = msgpack.encode(rtcInfo);
+ 
+// 随机生成一个初始化向量（IV）
+const iv = crypto.randomBytes(16);
+ 
+// 使用 App 证书作为加密密钥
+const key = Buffer.from(appcert, 'hex');
+ 
+// 创建一个 AES-128 的 CTR 加密器
+const encrypter = crypto.createCipheriv('aes-128-ctr', key, iv);
+ 
+// 对数据进行加密
+const encrypted = Buffer.concat([iv, encrypter.update(data), encrypter.final()]);
+ 
+// base64 转换，并保证 URL 安全
+const streamkey = encrypted.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+
+console.log(`streamkey is ${streamkey}`);
+```
+
+## 与 Web 端互通推荐配置
+
+在和 Web 端互通的场景中，默认不开启转码的情况下，为保证 Web 端观众有最好的体验，请确保推流软件使用如下编码参数：
+
+- 关键帧间隔（GOP）：`2s`
+- 视频配置（Profile）：`baseline`
+- x264 选项：`threads=4`
+- 帧率（FPS）：1080P 分辨率时，帧率不超过 30；1080P 以下分辨率时，帧率不超过 60（如无必要，配置 30 即可）。
+
+以 OBS 推流软件为例，请按照下图进行配置：
+
+1. 在**设置** > **输出** > **直播**页面，配置视频 Profile、关键帧间隔和 x264 选项。
+
+![OBS 输出设置示意图](https://web-cdn.agora.io/doc-cms/uploads/1725420793319-obs-thread4.png)
+
+2. 在**设置** > **视频**页面，配置常用帧率。
+
+![OBS 视频帧率设置示意图](https://web-cdn.agora.io/docs-portal/img/rtmp-gateway/obs-2.png)
+
+## 下一步
+
+完成配置后，你就可以将 RTMP 或 SRT 协议的流推到声网频道中，这些流会以主播的身份被发布到对应的频道内。
+
+默认情况下，RTMP 网关收到推送过来的流后，不会对其中的视频流做转码处理，而是直接发布到声网频道内。如果你希望网关对流做转码处理，可以使用[流配置模板 API](/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template) 来实现相关功能。

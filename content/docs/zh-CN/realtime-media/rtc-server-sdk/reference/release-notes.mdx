@@ -1,0 +1,572 @@
+---
+title: "发版说明"
+description: "查看 RTC 服务端 SDK 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
+---
+<PlatformStructured platform="cpp">
+
+## 4.4.32 版
+
+该版本于 2025 年 4 月 28 日发布。
+
+### 改进
+
+- 提高了 SDK 在收发 PCM 音频流时的并发性能。
+
+### 问题修复
+
+- 修复了特定场景下可能出现的色差问题。
+- 修复了偶现的 App 崩溃和内存泄漏问题。
+
+## 4.4.30 版
+
+该版本于 2024 年 10 月 24 日发布。
+
+### 升级必看
+
+#### 日志加密行为变更
+
+出于安全性和性能考虑，自该版本起，SDK 对日志进行加密，并且不再支持通过控制台打印明文日志。针对不同的需求，请参考以下解决方案：
+
+- 如果需要得知 API 的调用情况，请查看 API 的日志并自行打印 SDK 回调日志。
+- 如有其他特殊需求，请[联系技术支持](https://ticket.shengwang.cn/)并附上对应的加密日志。
+
+### 新增特性
+
+#### 设置音频发送缓冲区
+
+在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，该版本在 `ILocalAudioTrack` 类中新增了设置音频发送缓冲区的方法：
+
+- [`setMaxBufferedAudioFrameNumber`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a0f1adbf17ef048ba5c10d5dbbb4f8631)：设置音频发送缓冲区的最大容量。
+- [`ClearSenderBuffer`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a8e1c4f96b49e21c972e15344642453ec)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
+- [`setAudioFrameSendDelayMs`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track#a6f315590feb863960f7959ec7946890d)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
+
+#### 添加音频标记
+
+该版本新增了音频标记能力 (`AudioLabel`)。通过添加音频标记，你可以直观地获取到用户的音频能量、基频、语音类型等，方便对音频进行后处理。联系 sales@shengwang.cn 开通并使用该功能。
+
+#### 支持 22050 Hz 音频发送采样率
+
+该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`sendAudioPcmData`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender#a4d9b47199892e4f9d06abf7673f1fd12) 方法发送原始音频数据时设置。
+
+#### 设置 SDK 全局定制化参数
+
+该版本在 `IAgoraService` 类中新增了 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service#a97df07f6f57f0d5b00e52a70065f1804) 方法。该方法和 `IRtcConnection` 类中的 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#af6f657c7f744cac441f1a5518b84ce42) 方法的区别是：
+
+- `IAgoraService::getAgoraParameter` 对 SDK 全局有效。
+- `IRtcConnection::getAgoraParameter` 仅对当前 Connection 有效。
+
+### 改进
+
+该版本降低了多频道场景下的 CPU 功耗。
+
+### 问题修复
+
+该版本修复了 `onPlaybackAudioFrameBeforeMixing` 回调中 `channelId` 指针为 `null` 导致的问题。
+
+## 4.2.32 版
+
+该版本于 2024 年 8 月 29 日发布。
+
+### 改进
+
+该版本提升了 FFmpeg 库在解码 H.264 和 H.265 视频数据时的效率和性能，改善用户观看体验。
+
+### 问题修复
+
+该版本修复了 socket 文件描述符泄漏的问题，确保网络连接资源能够被正确管理。
+
+## 4.2.31 版
+
+该版本于 2024 年 3 月 28 日发布。
+
+### 新增特性
+
+该版本新增音频多声道编解码功能，你可以至多设置 8 声道，获得更丰富、更立体的音频效果。联系 sales@shengwang.cn 开通并使用该功能。
+
+## 4.2.30 版
+
+该版本于 2024 年 2 月 4 日发布。
+
+### 新增特性
+
+#### 多路径网络传输
+
+该版本新增多路径（Multipath）网络传输功能，能够同时使用多条网络路径传输音视频流。例如，当你在设备端插入两张物联网卡时，SDK 可以同时使用两张物联网卡传输音视频流，从而提升音视频传输的稳定性和可靠性。联系 sales@shengwang.cn 开通并使用该功能。
+
+#### 硬件编码加速
+
+该版本具备与 NVIDIA GPU 协同工作的能力，可以利用 GPU 的硬件加速功能来执行视频编码任务，从而减轻 CPU 的负担、提高硬件编码的效率和性能。联系 sales@shengwang.cn 开通并使用该功能。
+
+#### 本地代理设置
+
+该版本新增 `SetLocalAccessPoint` 方法，用于在成功部署声网混合云、私有化平台后，指定 Local Access Point 来设置本地代理。你可以联系 sales@shengwang.cn 了解和部署声网混合云或声网私有化平台。
+
+### 改进
+
+#### 音频发送时间戳
+
+该版本在 `sendAudioPcmData` 方法中新增 `presentation_ms` 参数，用于设置音频数据的发送时间戳。在视频会议、远程协作等场景中，你可以通过该参数提升音画同步的准确性。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 接收 H.264 视频裸数据导致的 App 内存增长。
+- 同时使用 String 型用户 ID 和数据流功能的情况下，接收到的数据流出现乱码。
+
+## 4.0.1 版
+
+该版本于 2022 年 12 月 27 日发布。
+
+### 新增特性
+
+#### 直推 CDN
+
+该版本新增直推 CDN 功能，能将主播的音视频流由声网私有协议转换为 RTMP 标准协议，然后推到 CDN；CDN 观众点击对应的 URL 即可观看直播。该版本提供 `IRtmpConnection` 类和 `IRtmpLocalUser` 类，你可以建立 SDK 与 CDN 的连接、设置音视频流的编码属性并推流到 CDN。如需了解 SDK 与 CDN 的连接状态、音视频流的推送状态，你还可以注册 `IRtmpConnectionObserver` 和 `IRtmpLocalUserObserver` 对象，监听相关回调。
+
+#### 流消息
+
+为支持在数字人等数字化场景中收发消息，该版本新增流消息功能。发送端可以先后调用 `createDataStream` 和 `sendStreamMessage` 方法创建数据流并发送数据流消息；接收端可以通过 `onStreamMessage` 回调获取已接收的数据。
+
+### 改进
+
+#### 自渲染视频背景
+
+为增添音视频互动的趣味性，本地用户有时会想要将远端用户的背景修改为符合自己喜好的背景。为满足这类需求，该版本在 `ExternalVideoFrame` 类中增加了 `alphaBuffer` 参数，在自定义视频渲染场景下，该参数可帮助用户将视频背景在本地渲染为各种效果，例如：透明、纯色、图片、视频等等。对同一远端用户，不同用户可以在本地渲染不同的视频背景，互不影响。
+
+:::info[信息]
+如需使用该功能，[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+#### 监测音频体验质量
+
+该版本在 `RemoteAudioTrackStats` 中新增 `qoe_quality` 和 `quality_changed_reason` 参数，可以监测本地用户在接收远端音频时的主观体验质量以及造成主观体验质量较差的原因。
+
+#### 会议场景
+
+为提升多人会议的音频体验，该版本在 `AUDIO_SCENARIO_TYPE` 中新增 `AUDIO_SCENARIO_MEETING(8)`。
+
+#### 物联网卡域名限制
+
+有些对安全性要求高的场景会使用定向物联网卡，并限制物联网卡可以访问的网络域名。该版本在 `AgoraServiceConfiguration` 中新增 `domainLimit` 参数，你可以通过该参数开启域名限制，使 SDK 仅访问指定域名的网络，从而保证使用定向物联网卡的设备与其他设备互通。
+
+:::info[信息]
+如需使用该功能，[联系技术支持](https://ticket.shengwang.cn)。
+:::
+
+## 3.8.202.20 版
+
+该版本于 2022 年 6 月 27 日发布。
+
+### 新增特性
+
+#### 合图
+
+你可以通过 `IVideoMixerSource` 类实现合图功能。详见[合图](/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/mix-video)。
+
+#### 加密
+
+媒体流加密新增以下模式：
+
+- AES_128_ECB
+- AES_128_XTS
+- AES_256_XTS
+- AES-128-GCM
+- AES-256-GCM
+- AES-128-GCM2（推荐）
+- AES-256-GCM2（推荐）
+
+详见[媒体流加密](/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/encryption)。
+
+#### 云代理
+
+云代理新增了 Force UDP 云代理模式和 Force TCP 云代理模式。详见[云代理](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/cloud-proxy)。
+
+## 3.7.200.20 版
+
+该版本于 2022 年 4 月 26 日发布。
+
+### 改进
+
+- 根据产品定位对 API 进行了精简，剔除了无用接口。
+- 支持 128 人功能，即单个频道可支持最多 128 位主播同时在线并同时发布音视频流。
+- 优化了 SDK 性能。
+- 修复了一些问题。
+- 提高了接收视频裸数据 API 的易用性。
+- 优化了快速开始等开发者指南文档。
+- 新增关于区域访问限制、 String 型用户 ID 等开发者指南文档 。
+
+## 3.4.236 版
+
+该版本于 2021 年 12 月 17 日发布。主要提升了 SDK 的稳定性。
+
+## 3.4.217 版
+
+该版本于 2021 年 8 月 11 日发布。
+
+### 改进
+
+- 优化了使用云代理进行多频道推流时的稳定性。
+- 优化特定的 iOS（iPhone）设备端硬编码 h264 推流的体验。
+
+## 3.4.211 版
+
+该版本于 2021 年 7 月 9 日发布。
+
+### 新增特性
+
+#### 支持发送 YUV 视频
+
+支持使用 Intel、NVIDIA 硬件编码，提升编码性能。具体的 API 调用请参考 `sample_send_yuv_hw.cpp`。
+
+相关 API 为：
+
+- `agoraParameter->setString(KEY_RTC_VIDEO_ENABLED_HW_ENCODER, "true");`
+- `agoraParameter->setString(KEY_RTC_VIDEO_HW_ENCODER_PROVIDER, "your provider");`
+
+```shell tab="NVIDIA" tabGroup="codec"
+sudo apt update
+sudo ubuntu-drivers devices
+sudo ubuntu-drivers install
+sudo reboot
+sudo nvidia-smi
+```
+
+```shell tab="Intel" tabGroup="codec"
+wget https://github.com/Intel-Media-SDK/MediaSDK/releases/download/intel-mediasdk-21.1.3/MediaStack.tar.gz
+
+tar -zxf MediaStack.tar.gz
+chmod +x ./MediaStack/install_media.sh
+./MediaStack/install_media.sh
+```
+
+#### 支持 IPv6
+
+该版本新增支持 IPv6。
+
+### API 变更
+
+- 新增如下枚举值用以设置 PCM 数据的位宽。
+
+  ```cpp
+  enum BYTES_PER_SAMPLE {
+    /**
+    * two bytes per sample
+    */
+    TWO_BYTES_PER_SAMPLE = 2,
+  };
+  ```
+
+- 新增如下回调函数，用于获取返回远端视频流的状态。
+
+  ```cpp
+  ILocalUserObserver::onRemoteVideoStreamInfoUpdated(const agora::rtc::RemoteVideoStreamInfo& info)
+  ```
+
+## 3.3.206 版
+
+该版本于 2021 年 4 月 2 日发布。
+
+### 新增特性
+
+该版本新增支持区域访问限制。通过在 `AgoraServiceConfiguration` 结构体中增加 `areaCode` 字段实现。具体的配置方法可以查看 `AgoraBase.h` 文件中的 `AREA_CODE` 枚举类。
+
+### 问题修复
+
+该版本修复了发送 H.264 格式的视频数据时，水晶球中显示的分辨率不准确的问题。
+
+## 3.3.201 版
+
+该版本于 2021 年 1 月 8 日发布。
+
+### 新增特性
+
+新增支持媒体附属信息（metadata）接口。
+
+## 3.3.200 版
+
+该版本于 2020 年 12 月 25 日发布。本次发版为声网服务端 SDK 的第一次发版，主要包括以下功能:
+
+- 发送和接收多种格式的音视频数据。
+- 可同时发送和接收媒体流、仅发送或仅接收媒体流、音频和视频的发送和接收相互独立。
+- 同时针对多个频道发送或接收媒体流。
+- 支持使用 string 型 UID 加入频道。
+- 支持接收频道内指定 UID 的流。
+- 支持将接收的多路音频流进行混音。
+- 支持 128 位国密 SM4 加密，ECB 模式。
+- 支持云代理服务。用户只需要在防火墙上将特定的 IP 及端口列入白名单，就可以实现内网访问声网服务。
+
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+## 4.4.32 版
+
+该版本于 2025 年 5 月 28 日发布。
+
+### 新增特性
+
+#### 音频 Metadata 数据
+
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`sendAudioMetadata`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#a10bb7ca5b7d12999f0e3f4bb6b3e9d61) 方法进行发送，远端用户会在 [`onAudioMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-local-user-observer#a84c4706b0f30c43b6274b480ceaa9638) 回调中接收到发送的信息。
+
+#### 原始音频数据支持 VAD
+
+为支持获取原始音频数据中的 VAD 信息，该版本新增重载的 [`registerAudioFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#registerAudioFrameObserver()%20[2/2]) 方法，支持通过 `enableVad` 参数开启 VAD 监测功能。
+
+开启后，你可以通过 [`onPlaybackAudioFrameBeforeMixing`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-frame-observer#a8a44837f2c54f22fe35aeaaf5d4f50f8) 回调中的 `vadResult` 参数获取 VAD 状态信息。
+
+#### 接收编码后的音频数据
+
+该版本新增支持接收编码后的音频数据。相关接口如下：
+
+- [`registerAudioEncodedFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-user#aef2cc197030fcd418c10d35a692fd5a6)：注册编码后的音频数据观测器
+- [`IAudioEncodedFrameObserver`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer)：编码后的音频数据接口类。你可以在该接口类中，通过 [`onEncodedAudioFrameReceived`](/zh-CN/api-reference/rtc-server-sdk/java/interfaceio-1-1agora-1-1rtc-1-1-i-audio-encoded-frame-observer#a15dd0f01400dc3b630df2820dba6715b) 回调接收编码后的音频数据。
+
+#### 外部视频源支持自定义颜色空间
+
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-external-video-frame) 中增加 `colorSpace` 属性，支持对外部采集到的视频数据自定义颜色空间。
+
+#### 支持域名管理
+
+该版本在 [`AgoraServiceConfig`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service-config) 中增加 `domainLimit` 参数，支持对连接的域名进行设置和管理。
+
+### 改进
+
+#### 音视频数据发送模块接口易用性改进
+
+为提升音视频数据发送模块的易用性，该版本对如下接口和方法进行了优化：
+
+- `AgoraAudioPcmDataSender` 中，废弃了原来的 `send` 方法，新增 [`sendAudioPcmData`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#a1a109d7059fdffdfebfa9dc476957ab4) 进行取代。
+- `AgoraAudioEncodedFrameSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedAudioFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-encoded-frame-sender#a96ab51c07987dcf9adf7c1bc1a05c1e2) 进行取代。
+- `AgoraVideoEncodedImageSender` 中，删除了原来的 `send` 方法，新增 [`sendEncodedVideoImage`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-encoded-image-sender#ab9073bfd03dab3922d1594ce4bc507c8) 进行取代。
+- `AgoraVideoFrameSender` 中，移除 `send` 方法，新增 [`sendVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-video-frame-sender#a6cff413f3767180045f5bf3c9b2d1a04) 进行取代。
+
+#### 新增 sendStreamMessage 重载
+
+该版本新增了 [`sendStreamMessage`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a1286a74a33789cc9777bf58a04f777c0) 的重载方法。和已有的 `sendStreamMessage` 相比，该方法删除了 `length` 参数，并将 `message` 的数据类型由 `String` 改为 `byte[]`。
+
+### 问题修复
+
+- 修复了 `VideoFrame` 中 `alphaBuffer` 和 `metadataBuffer` 的处理问题
+- 修复了 `destroy` 方法可能导致的崩溃问题
+- 修复了多处内存泄露和多线程问题，提高了系统稳定性
+
+## 4.4.30 版
+
+该版本于 2024 年 10 月 24 日发布。
+
+### 升级必看
+
+#### 日志加密行为变更
+
+出于安全性和性能考虑，自该版本起，SDK 对日志进行加密，并且不再支持通过控制台打印明文日志。针对不同的需求，请参考以下解决方案：
+
+- 如果需要得知 API 的调用情况，请查看 API 的日志并自行打印 SDK 回调日志。
+- 如有其他特殊需求，请[联系技术支持](https://ticket.shengwang.cn/)并附上对应的加密日志。
+
+#### Maven 库名变更
+
+该版本将 Maven 库名由 `linux-sdk` 变更为 `linux-java-sdk`，集成时请将项目的 XML 文件代码进行如下修改：
+
+- v4.0.1 版本
+
+    ```xml
+    <dependencies>
+        <dependency>
+        <groupId>io.agora.rtc</groupId>
+        // highlight-start
+        <artifactId>linux-sdk</artifactId>
+        // highlight-end
+        <version>4.0.1</version>
+        </dependency>
+    </dependencies>
+    ```
+
+- v4.4.30 及以上版本
+
+    ```xml
+    <dependencies>
+        <dependency>
+        <groupId>io.agora.rtc</groupId>
+        // highlight-start
+        <artifactId>linux-java-sdk</artifactId>
+        <version>4.4.30</version>
+        // highlight-end
+        </dependency>
+    </dependencies>
+    ```
+
+### 新增特性
+
+#### 设置音频发送缓冲区
+
+在 AI 交互等应用场景中，发送端发送音频帧的频率可能不均匀。如果 SDK 按照实际的发送频率去发送给声网服务器，则接收端可能会有卡顿、丢帧等不良体验。为优化音频传输性能，该版本在 `AgoraLocalAudioTrack` 类中新增了设置音频发送缓冲区的方法：
+
+- [`setMaxBufferedAudioFrameNumber`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a3e4526e6402becdd5f25573513ce6a36)：设置音频发送缓冲区的最大容量。
+- [`clearSenderBuffer`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#a90054e0f30419b0ee2eea512db67f535)：清除当前音频发送缓冲区，用于人机对话场景中的音频打断。
+- [`setSendDelayMs`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-local-audio-track#ac16dee95915656c401981f1107183370)：设置音频发送缓冲区允许发送的最小数据时长，用于精确控制音频传输时延。
+
+#### 添加音频标记
+
+该版本新增了音频标记能力 (`AudioLabel`)。通过添加音频标记，你可以直观地获取到用户的音频能量、基频、语音类型等，方便对音频进行后处理。联系 sales@shengwang.cn 开通并使用该功能。
+
+#### 支持 22050 Hz 音频发送采样率
+
+该版本支持 22050 Hz 音频发送采样率，你可以在调用 [`AgoraAudioPcmDataSender.send`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-audio-pcm-data-sender#acc86f76c61b53307024b3d768bdc8c13) 方法发送原始音频数据时设置。
+
+#### 设置 SDK 全局定制化参数
+
+该版本在 `AgoraService` 类中新增了 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-service#af776ee9767ecb895b3e7aec2e38d1c0c) 方法。该方法和 `AgoraRtcConn` 类中的 [`getAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-agora-rtc-conn#a4887841b3c2232730440ad6ca3d74570) 方法的区别是：
+
+- `AgoraService.getAgoraParameter` 对 SDK 全局有效。
+- `AgoraRtcConn.getAgoraParameter` 仅对当前 Connection 有效。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 降低了多频道场景下的 CPU 功耗。
+- 优化了音频帧回调函数 `onPlaybackAudioFrameBeforeMixing`、`onRecordAudioFrame`、`onPlaybackAudioFrame`、`onMixedAudioFrame` 的内存管理机制，提升了 `AudioFrame` 处理的效率和稳定性。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- `onPlaybackAudioFrameBeforeMixing` 回调中 `channelId` 指针为 `null` 导致的问题。
+- `onRemoteAudioTrackStatistics`、`onUserAudioTrackSubscribed`、`onUserAudioTrackStateChanged`、`onUserVideoTrackSubscribed`、`onUserVideoTrackStateChanged`、`onRemoteVideoTrackStatistics` 回调偶现的崩溃。
+
+## 4.0.1 版
+
+该版本于 2023 年 1 月 13 日发布。
+
+### 新增特性
+
+#### 流消息
+
+为支持在数字人等数字化场景中收发消息，该版本新增流消息功能。发送端可以先后调用 `createDataStream` 和 `sendStreamMessage` 方法创建数据流并发送数据流消息；接收端可以通过 `onStreamMessage` 回调获取已接收的数据。
+
+## 3.7.200.21 版
+
+该版本于 2022 年 8 月 1 日发布，支持以下功能：
+
+- 发送和接收不同格式的音视频数据。
+- 相互独立的音视频收发流程。
+- 在单进程中运行多个 SDK 实例。
+- String 型用户 ID。
+- 混音。
+- 媒体流加密。
+- 云代理。
+- 地理区域限制。
+
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+
+## 2.2.4 版
+
+该版本于 2025 年 5 月 28 日发布。
+
+### 新增特性
+
+#### 音频 Metadata 数据
+
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`send_audio_metadata`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuser.python#sendaudiometadata) 方法进行发送，远端用户会在 [`on_audio_meta_data_received`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onaudiometadatareceived) 回调中接收到发送的信息。
+
+#### 外部视频源能力扩展
+
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#externalvideoframe) 中增加了如下字段：
+
+- `fill_alpha_buffer` 和 `alpha_buffer`，支持 Alpha 数据通道。
+- `color_space`，支持对外部采集到的视频数据自定义颜色空间。
+
+#### 数据流加密
+
+该版本新增 [`enable_encryption`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`on_encryption_error`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onencryptionerror) 得知。
+
+## 2.1.0 版
+
+该版本于 2024 年 10 月 24 日发布。这是 Python SDK 的第一个版本。
+
+### 新增特性
+
+#### 发送和接收音视频数据
+
+支持多种音视频编码格式，例如，H.264、H.265、VP8 等视频编码格式，OPUS、G722、PCMA 等音频编码格式。你可以发送和接收多种音频和视频数据，无需受限于音视频设备。
+
+#### 发送和接收数据流
+
+支持发送和接收数据流消息，适用于需要消息传输的场景。例如，一个聊天应用可以通过该功能实现用户之间的即时消息传递。
+
+#### 管理多频道
+
+支持同时在多个频道发送或接收媒体流，适用于需要同时管理多个频道的场景。例如，一个在线教育平台可以同时进行多个班级的直播课程，每个班级的音视频数据互不干扰。
+
+#### 订阅指定用户
+
+可通过用户 ID 选择性地订阅指定用户的媒体流。例如，在一个大型会议中，观众可以只订阅主讲人的媒体流，而不需要订阅其他参会者的媒体流，从而节省带宽和提高会议效率。
+
+#### 混音
+
+支持将多路音频流混音，适用于多个用户/设备同时发流的场景。例如，一个在线音乐会可以将吉他、鼓和人声的音频流混合成一个高质量的音频流，提供给观众。
+
+#### 使用云代理
+
+在防火墙上将特定 IP 和端口列入白名单，即可在内网中访问声网服务。适用于大型企业、医院、高校、银行等安全需求较高的机构，确保安全和稳定的连接。
+
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
+## 2.2.4 版
+
+该版本于 2025 年 5 月 28 日发布。
+
+### 新增特性
+
+#### 音频 Metadata 数据
+
+该版本新增发送和接收音频 Metadata 数据功能。在需要发送音频附属信息，如播放进度等的场景下，你可以调用 [`SendAudioMetadata`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuser.go#sendaudiometadata) 方法进行发送，远端用户会在 [`OnAudioMetadataReceived`](/zh-CN/api-reference/rtc-server-sdk/go-api/localuserobserver.go#onaudiometadatareceived) 回调中接收到发送的信息。
+
+#### 外部视频源能力扩展
+
+该版本在 [`ExternalVideoFrame`](/zh-CN/api-reference/rtc-server-sdk/go-api/apidatatype.go#externalvideoframe) 中增加了如下字段：
+
+- `FillAlphaBuffer` 和 `AlphaMode`，支持 Alpha 数据通道。
+- `ColorSpace`，支持对外部采集到的视频数据自定义颜色空间。
+
+#### 数据流加密
+
+该版本新增 [`EnableEncryption`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnection.go#enableencryption) 方法，支持在发送和接收数据流时开启加密功能。如果在加密和解密过程中遇到问题导致失败，你可以通过 [`OnEncryptionError`](/zh-CN/api-reference/rtc-server-sdk/go-api/rtcconnectionobserver.go#onencryptionerror) 得知。
+
+## 2.1.0 版
+
+该版本于 2024 年 10 月 24 日发布。这是 Go SDK 的第一个版本。
+
+### 新增特性
+
+#### 发送和接收音视频数据
+
+支持多种音视频编码格式，例如，H.264、H.265、VP8 等视频编码格式，OPUS、G722、PCMA 等音频编码格式。你可以发送和接收多种音频和视频数据，无需受限于音视频设备。
+
+#### 发送和接收数据流
+
+支持发送和接收数据流消息，适用于需要消息传输的场景。例如，一个聊天应用可以通过该功能实现用户之间的即时消息传递。
+
+#### 管理多频道
+
+支持同时在多个频道发送或接收媒体流，适用于需要同时管理多个频道的场景。例如，一个在线教育平台可以同时进行多个班级的直播课程，每个班级的音视频数据互不干扰。
+
+#### 订阅指定用户
+
+可通过用户 ID 选择性地订阅指定用户的媒体流。例如，在一个大型会议中，观众可以只订阅主讲人的媒体流，而不需要订阅其他参会者的媒体流，从而节省带宽和提高会议效率。
+
+#### 混音
+
+支持将多路音频流混音，适用于多个用户/设备同时发流的场景。例如，一个在线音乐会可以将吉他、鼓和人声的音频流混合成一个高质量的音频流，提供给观众。
+
+#### 使用云代理
+
+在防火墙上将特定 IP 和端口列入白名单，即可在内网中访问声网服务。适用于大型企业、医院、高校、银行等安全需求较高的机构，确保安全和稳定的连接。
+
+</PlatformStructured>

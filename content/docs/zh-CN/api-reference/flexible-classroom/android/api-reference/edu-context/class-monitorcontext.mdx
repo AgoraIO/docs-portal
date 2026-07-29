@@ -1,0 +1,56 @@
+---
+title: "MonitorContext"
+description: "MonitorContext 类。"
+---
+<a id="class_monitorcontext"></a>
+
+MonitorContext 类。
+
+<a id="class_monitorcontext__detailed_desc"></a>
+
+### 详情
+
+MonitorContext 类提供的方法用于：
+
+- 监控 SDK 状态。
+- 向声网服务端上报状态信息。
+
+<a id="api_uploadlog"></a>
+
+## uploadLog
+
+上传日志。
+
+<a id="api_uploadlog__prototype"></a>
+
+```kotlin
+abstract fun uploadLog(callback: EduContextCallback<String>? = null)
+```
+
+<a id="api_uploadlog__detailed_desc"></a>
+
+<a id="api_uploadlog__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-callback) 异步获取调用结果。
+
+<a id="api_getsynctimestamp"></a>
+
+## getSyncTimestamp
+
+获取与服务器校对后的时间戳。
+
+<a id="api_getsynctimestamp__prototype"></a>
+
+```kotlin
+abstract fun getSyncTimestamp(): Long
+```
+
+<a id="api_getsynctimestamp__return_values"></a>
+
+### 返回值
+
+时间戳。

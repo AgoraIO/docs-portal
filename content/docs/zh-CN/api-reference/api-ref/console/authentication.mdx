@@ -1,0 +1,21 @@
+---
+title: RESTful API 鉴权
+description: 配置控制台 RESTful API 请求所需的 HTTP 基本认证。
+---
+
+控制台 RESTful API 使用 HTTP 基本认证。发送请求时，使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并将凭证填入 `Authorization` 请求头。
+
+```text
+Authorization: Basic <base64_credentials>
+```
+
+你可以在声网控制台的 **开发者工具** > **RESTful API** 中生成客户 ID 和客户密钥。
+
+:::warning
+请在服务端保存客户 ID 和客户密钥，避免在客户端代码或公开仓库中暴露凭证。
+:::
+
+## 相关页面
+
+- [控制台 RESTful API 概览](index)
+- [创建项目](create-project)

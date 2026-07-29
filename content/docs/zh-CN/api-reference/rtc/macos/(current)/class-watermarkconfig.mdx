@@ -1,0 +1,70 @@
+---
+title: WatermarkConfig
+description: 配置水印相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_watermarkconfig
+  sourcePath: html-docs/rtc/macOS/API/class_watermarkconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkconfig__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface WatermarkConfig : NSObject
+@property(copy, nonatomic) NSString* _Nonnull id;
+@property(assign, nonatomic) WatermarkType type;
+@property(strong, nonatomic) WatermarkBuffer* _Nullable buffer;
+@property(strong, nonatomic) NSURL *_Nullable imageUrl;
+@property(strong, nonatomic) WatermarkOptions* _Nonnull options;
+@end
+```
+
+<a id="class_watermarkconfig__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+:::note
+注： 设置水印类型时，`type` 需与实际提供的数据字段相匹配，不可同时传入多种类型的水印：若 `type` 为 `buffer`，则仅支持设置 `buffer` 字段；若 `type` 为 `image`，则仅支持设置 `imageUrl` 字段。
+:::
+
+<a id="class_watermarkconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
+
+水印的唯一标识符。
+
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
+
+水印的类型，详见 [WatermarkType](/zh-CN/api-reference/rtc/macos/enum-watermarksourcetype)。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+水印图像的缓冲数据。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/macos/class-watermarkbuffer)。
+
+</Parameter>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
+
+水印图像的 URL。
+
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
+
+水印的显示选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/macos/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>

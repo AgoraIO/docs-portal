@@ -1,0 +1,72 @@
+---
+title: EnableVoiceAITuner
+description: 开启或关闭 AI 调音器功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengine_enablevoiceaituner
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_enablevoiceaituner.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="api_irtcengine_enablevoiceaituner__prototype"></a>
+
+```text
+public abstract int EnableVoiceAITuner(bool enabled, VOICE_AI_TUNER_TYPE type);
+```
+
+<a id="api_irtcengine_enablevoiceaituner__detailed_desc"></a>
+
+AI 调音器功能支持美化音质，调整音色风格。
+
+<a id="api_irtcengine_enablevoiceaituner__scenario"></a>
+
+## 适用场景
+
+在线 K 歌、在线播客、秀场直播等对音质有较高要求的社交娱乐场景。
+
+<a id="api_irtcengine_enablevoiceaituner__timing"></a>
+
+## 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_irtcengine_enablevoiceaituner__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengine_enablevoiceaituner__parameters"></a>
+
+## 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否开启 AI 调音器功能：
+
+- `true`：开启 AI 调音器功能。
+- `false`：（默认）关闭 AI 调音器功能。
+
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
+
+AI 调音器音效类型，详见 [VOICE_AI_TUNER_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-voiceaitunertype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablevoiceaituner__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengine)

@@ -1,0 +1,209 @@
+---
+title: "MixRecording 类"
+---
+<a id="acquire"></a>
+## Acquire
+
+```go
+func (m *MixRecording) Acquire(ctx context.Context, cname string, uid string, clientRequest *req.AcquireMixRecodingClientRequest) (*api.AcquireResp, error)
+```
+
+获取合流云端录制的资源 ID。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+获取资源 ID 后，需调用 [`Start`](/zh-CN/api-reference/cloud-recording/go-api/mixrecording.go#start) 方法启动云端录制。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `cname` | `string` | 待录制的频道名。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识录制服务。 |
+| `clientRequest` | `*AcquireMixRecodingClientRequest` | 请求体参数，详见 [`AcquireMixRecodingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquiremixrecodingclientrequest)。 |
+
+#### 返回值
+
+- `*AcquireResp`：方法调用成功时返回的响应，详见 [`AcquireResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#acquireresp)。
+- `error`：方法调用失败时返回的错误信息，成功时为 `nil`。
+
+<a id="start"></a>
+## Start
+
+```go
+func (m *MixRecording) Start(ctx context.Context, resourceId string, cname string, uid string, clientRequest *req.StartMixRecordingClientRequest) (*api.StartResp, error)
+```
+
+启动合流云端录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+该方法通过指定频道名、用户 ID 和录制参数来发起录制请求。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 用户 ID。 |
+| `clientRequest` | `*StartMixRecordingClientRequest` | 请求体参数，详见 [`StartMixRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startmixrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*StartResp`：方法调用成功时返回的响应对象，详见 [`StartResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#startresp)。
+- `error`：方法调用失败时返回的错误信息，成功时返回 `nil`。
+
+<a id="queryhls"></a>
+## QueryHLS
+
+```go
+func (m *MixRecording) QueryHLS(ctx context.Context, resourceId string, sid string) (*resp.QueryMixRecordingHLSResp, error)
+```
+
+查询视频文件格式为 HLS 时的合流录制状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryMixRecordingHLSResp`：方法调用成功时返回响应，详见 [`QueryMixRecordingHLSResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#querymixrecordinghlsresp)。
+- `error`：方法调用失败时返回错误信息，详见 `error`。
+
+<a id="queryhlsandmp4"></a>
+## QueryHLSAndMP4
+
+```go
+func (m *MixRecording) QueryHLSAndMP4(ctx context.Context, resourceId string, sid string) (*resp.QueryMixRecordingHLSAndMP4Resp, error)
+```
+
+查询 HLS 和 MP4 格式的合流云端录制状态。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+
+#### 返回值
+
+- `*QueryMixRecordingHLSAndMP4Resp`：方法调用成功时返回的响应对象，详见 [`QueryMixRecordingHLSAndMP4Resp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#querymixrecordinghlsandmp4resp)。
+- `error`：方法调用失败时返回的错误信息，成功时为 `nil`。
+
+<a id="update"></a>
+## Update
+
+```go
+func (m *MixRecording) Update(ctx context.Context, resourceId string, sid string, cname string, uid string, clientRequest *req.UpdateMixRecordingClientRequest) (*api.UpdateResp, error)
+```
+
+更新合流录制配置。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 待录制的频道名。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `clientRequest` | `*UpdateMixRecordingClientRequest` | 请求体，详见 [`UpdateMixRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updatemixrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*UpdateResp`：方法调用成功时返回的响应，详见 [`UpdateResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updateresp)。
+- `error`：状态或错误信息，详见 `error`。方法调用失败时返回错误对象。
+
+<a id="updatelayout"></a>
+## UpdateLayout
+
+```go
+func (m *MixRecording) UpdateLayout(ctx context.Context, resourceId string, sid string, cname string, uid string, clientRequest *req.UpdateLayoutUpdateMixRecordingClientRequest) (*api.UpdateLayoutResp, error)
+```
+
+更新合流云端录制布局。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文对象。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 频道名。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `clientRequest` | `UpdateLayoutUpdateMixRecordingClientRequest` | 请求体，详见 [`UpdateLayoutUpdateMixRecordingClientRequest`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updatelayoutupdatemixrecordingclientrequest)。 |
+
+#### 返回值
+
+- `*UpdateLayoutResp`：方法调用成功时返回响应，详见 [`UpdateLayoutResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#updatelayoutresp)。
+- `error`：方法调用失败时返回错误信息，成功时返回 `nil`。
+
+<a id="stop"></a>
+## Stop
+
+```go
+func (m *MixRecording) Stop(ctx context.Context, resourceId string, sid string, cname string, uid string, asyncStop bool) (*api.StopResp, error)
+```
+
+停止合流云端录制。
+
+:::info[信息]
+自 v0.8.0 版本新增。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `ctx` | `Context` | 用于控制请求生命周期的上下文。 |
+| `resourceId` | `string` | 资源 ID。 |
+| `sid` | `string` | 录制 ID，用于标识一次录制周期。 |
+| `cname` | `string` | 待录制频道的名称。 |
+| `uid` | `string` | 云端录制服务在 RTC 频道中使用的用户 ID，用于标识频道中的录制服务。 |
+| `asyncStop` | `bool` | <Slot name="mixrecording-go-html-6-6-2" /> |
+
+<Slot for="mixrecording-go-html-6-6-2">
+
+是否异步停止录制：
+
+    - `true`：异步停止录制。
+    - `false`：同步停止录制。
+
+</Slot>
+
+#### 返回值
+
+- `*StopResp`：方法调用成功时返回响应，详见 [`StopResp`](/zh-CN/api-reference/cloud-recording/go-api/struct.go#stopresp)。
+- `error`：方法调用失败时返回错误对象，包含错误信息；调用成功时返回 `nil`。

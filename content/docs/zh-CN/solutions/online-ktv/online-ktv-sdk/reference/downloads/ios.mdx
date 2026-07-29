@@ -1,0 +1,49 @@
+## 通过 CocoaPods 集成 SDK
+
+```ruby tab="视频 SDK" tabGroup="integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    pod 'AgoraRtcEngine_iOS', '4.4.0'
+    pod 'AgoraRtcEngine_iOS', '4.4.0', :subspecs => ['RtcBasic', 'AINS', 'ClearVision']
+end
+```
+
+```ruby tab="音频 SDK" tabGroup="integrate-sdk"
+platform :ios, '9.0'
+target 'Your App' do
+    pod 'AgoraAudio_iOS', '4.4.0'
+    pod 'AgoraAudio_iOS', '4.4.0', :subspecs => ['RtcBasic', 'AINS', 'AudioBeauty']
+end
+```
+
+## 通过 SPM 集成 SDK
+
+```text tab="视频 SDK" tabGroup="integrate-sdk"
+https://github.com/AgoraIO/AgoraRtcEngine_iOS.git
+```
+
+```text tab="音频 SDK" tabGroup="integrate-sdk"
+https://github.com/AgoraIO/AgoraAudio_iOS.git
+```
+
+## 下载 SDK
+
+:::info[信息]
+- 各版本 SDK 的发版详情请参考[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+- 如何使用 SDK 实现各种音视频互动功能请参考[实现音视频互动](/zh-CN/solutions/online-ktv/online-ktv-sdk/get-started/karaoke)。
+:::
+
+<Tabs defaultValue="video" groupId="online-ktv-ios-sdk" persist>
+<TabsList>
+  <TabsTrigger value="video">视频 SDK</TabsTrigger>
+  <TabsTrigger value="audio">音频 SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="video">
+<SdksCatalog locale="zh-CN" product="video" platform="ios" />
+</TabsContent>
+
+<TabsContent value="audio">
+<SdksCatalog locale="zh-CN" product="voice" platform="ios" />
+</TabsContent>
+</Tabs>

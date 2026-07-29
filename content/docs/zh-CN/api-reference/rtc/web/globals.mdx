@@ -1,0 +1,642 @@
+---
+title: Agora Web SDK API Reference v4.24.1
+description: SDK 预设的 AudioEncoderConfiguration 配置。
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/globals
+  sourcePath: html-docs/rtc/Web/globals.html
+  generator: typedoc
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/apptype.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/audiocodec.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/videocodec.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/audiotrackinitconfig.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/imagetypeddata.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/rtmconfiguration.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/visiblehiddenresult.html.
+---
+
+## Index
+
+### Enumerations
+
+- [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)
+- AppType
+- [AudienceLatencyLevelType](/zh-CN/api-reference/rtc/web/enums/audiencelatencyleveltype)
+- AudioCodec
+- [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channelmediarelayerror)
+- [ChannelMediaRelayEvent](/zh-CN/api-reference/rtc/web/enums/channelmediarelayevent)
+- [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate)
+- [ConnectionDisconnectedReason](/zh-CN/api-reference/rtc/web/enums/connectiondisconnectedreason)
+- [ImageModerationConnectionState](/zh-CN/api-reference/rtc/web/enums/imagemoderationconnectionstate)
+- [InspectState](/zh-CN/api-reference/rtc/web/enums/inspectstate)
+- [RemoteStreamFallbackType](/zh-CN/api-reference/rtc/web/enums/remotestreamfallbacktype)
+- [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)
+- [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode)
+- [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
+- VideoCodec
+- [VideoState](/zh-CN/api-reference/rtc/web/enums/videostate)
+
+### Classes
+
+- EventEmitter
+
+### Interfaces
+
+- [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
+- [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+- [AudioSourceOptions](/zh-CN/api-reference/rtc/web/interfaces/audiosourceoptions)
+- AudioTrackInitConfig
+- [BufferSourceAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/buffersourceaudiotrackinitconfig)
+- [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/cameravideotrackinitconfig)
+- [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)
+- [ClientConfig](/zh-CN/api-reference/rtc/web/interfaces/clientconfig)
+- [ClientRoleOptions](/zh-CN/api-reference/rtc/web/interfaces/clientroleoptions)
+- [ConstrainLong](/zh-CN/api-reference/rtc/web/interfaces/constrainlong)
+- [CustomAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customaudiotrackinitconfig)
+- [CustomVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/customvideotrackinitconfig)
+- [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)
+- [ElectronDesktopCapturerSource](/zh-CN/api-reference/rtc/web/interfaces/electrondesktopcapturersource)
+- [EventCustomReportParams](/zh-CN/api-reference/rtc/web/interfaces/eventcustomreportparams)
+- [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
+- [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
+- [IAgoraRTCRemoteUser](/zh-CN/api-reference/rtc/web/interfaces/iagorartcremoteuser)
+- [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack)
+- [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack)
+- [IChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/web/interfaces/ichannelmediarelayconfiguration)
+- [IJoinOptions](/zh-CN/api-reference/rtc/web/interfaces/ijoinoptions)
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack)
+- [ILocalTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack)
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack)
+- [IMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack)
+- [IRemoteAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack)
+- [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)
+- [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)
+- [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)
+- ImageTypedData
+- [InspectConfiguration](/zh-CN/api-reference/rtc/web/interfaces/inspectconfiguration)
+- [LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)
+- [LiveStreamingTranscodingConfig](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig)
+- [LiveStreamingTranscodingImage](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingimage)
+- [LiveStreamingTranscodingUser](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser)
+- [LocalAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localaudiotrackstats)
+- [LocalVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/localvideotrackstats)
+- [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)
+- [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig)
+- [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
+- RTMConfiguration
+- [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteaudiotrackstats)
+- [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remotevideotrackstats)
+- [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig)
+- [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)
+- [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)
+- VisibleHiddenResult
+
+### Type aliases
+
+- [AudioEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#audioencoderconfigurationpreset)
+- [AudioSourceState](/zh-CN/api-reference/rtc/web/globals#audiosourcestate)
+- [CheckVideoVisibleResult](/zh-CN/api-reference/rtc/web/globals#checkvideovisibleresult)
+- [ClientRole](/zh-CN/api-reference/rtc/web/globals#clientrole)
+- [ConnectionState](/zh-CN/api-reference/rtc/web/globals#connectionstate)
+- [DeviceState](/zh-CN/api-reference/rtc/web/globals#devicestate)
+- [EncryptionMode](/zh-CN/api-reference/rtc/web/globals#encryptionmode)
+- [LocalAccessPointConfig](/zh-CN/api-reference/rtc/web/globals#localaccesspointconfig)
+- [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimizationmode)
+- [RequiredOnlyOneOf](/zh-CN/api-reference/rtc/web/globals#requiredonlyoneof)
+- [SDK_CODEC](/zh-CN/api-reference/rtc/web/globals#sdk_codec)
+- [SDK_MODE](/zh-CN/api-reference/rtc/web/globals#sdk_mode)
+- [ScreenAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/globals#screenaudiotrackinitconfig)
+- [ScreenEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#screenencoderconfigurationpreset)
+- [ScreenSourceType](/zh-CN/api-reference/rtc/web/globals#screensourcetype)
+- [UID](/zh-CN/api-reference/rtc/web/globals#uid)
+- [VideoEncoderConfigurationPreset](/zh-CN/api-reference/rtc/web/globals#videoencoderconfigurationpreset)
+
+### Events
+
+- [track-updated](/zh-CN/api-reference/rtc/web/globals#event_track_updated)
+
+### Variables
+
+- [AUDIO_ENCODER_CONFIG_SETTINGS](/zh-CN/api-reference/rtc/web/globals#audio_encoder_config_settings)
+- [AgoraRTC](/zh-CN/api-reference/rtc/web/globals#agorartc)
+- [SUPPORT_SCREEN_ENCODER_CONFIG_LIST](/zh-CN/api-reference/rtc/web/globals#support_screen_encoder_config_list)
+- [SUPPORT_SVC_CONFIG_LIST](/zh-CN/api-reference/rtc/web/globals#support_svc_config_list)
+- [SUPPORT_VIDEO_ENCODER_CONFIG_LIST](/zh-CN/api-reference/rtc/web/globals#support_video_encoder_config_list)
+
+## Type aliases
+
+<a id="audioencoderconfigurationpreset"></a>
+
+### AudioEncoderConfigurationPreset
+
+AudioEncoderConfigurationPreset: keyof typeof AUDIO_ENCODER_CONFIG_SETTINGS
+
+你可以在以下方法中传入预设值来控制本地音频的编码配置：
+
+- [AgoraRTC.createCustomAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomaudiotrack)
+- [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack)
+- [AgoraRTC.createBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createbuffersourceaudiotrack)
+
+下表列出了 SDK 所有内置的音频属性配置，SDK 默认使用 `"music_standard"`。
+
+| 音频属性 | 配置 |
+| --- | --- |
+| `"speech_low_quality"` | 16 kHz 采样率，单声道，编码码率约 24 Kbps |
+| `"speech_standard"` | 32 kHz 采样率，单声道，编码码率约 24 Kbps |
+| `"music_standard"` | 48 kHz 采样率，单声道，编码码率约 32 Kbps |
+| `"standard_stereo"` | 48 kHz 采样率，双声道，编码码率约 64 Kbps |
+| `"high_quality"` | 48 kHz 采样率，单声道， 编码码率约 128 Kbps |
+| `"high_quality_stereo"` | 48 kHz 采样率，双声道，编码码率约 192 Kbps |
+
+<a id="audiosourcestate"></a>
+
+### AudioSourceState
+
+AudioSourceState: "stopped"|"playing"|"paused"
+
+音频源数据处理状态，通过 [BufferSourceAudioTrack.on("source-state-change")](/zh-CN/api-reference/rtc/web/interfaces/ibuffersourceaudiotrack#event_source_state_change) 获取。
+
+- `"stopped"`: 音频源数据处理停止。可能是因为数据处理完毕，也可能是手动触发了停止。
+- `"playing"`: 音频源数据正在处理。
+- `"paused"`: 音频源数据暂停处理。
+
+<a id="checkvideovisibleresult"></a>
+
+### CheckVideoVisibleResult
+
+CheckVideoVisibleResult: CheckVisibleResult
+
+`<video>` 标签的可见状态信息。
+
+可通过以下方法或事件获取：
+
+- [localVideoTrack.on("video-element-visible-status")](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#event_video_element_visible_status)
+- [localVideoTrack.getVideoElementVisibleStatus](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#getvideoelementvisiblestatus)
+- [remoteVideoTrack.on("video-element-visible-status")](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#event_video_element_visible_status_2)
+- [remoteVideoTrack.getVideoElementVisibleStatus](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#getvideoelementvisiblestatus)
+
+包含以下字段：
+
+- `visible`: Boolean 型，`<video>` 标签是否可见。
+- `reason`: 仅当 `visible` 为 `false` 时有效，不可见原因：
+
+  - `"SIZE"`: `<video>` 尺寸太小，导致 `<video>` 完全不可见或很难看到。
+  - `"STYLE"`: `<video>` 或其祖先元素的 CSS 样式导致 `<video>` 不可见、颜色暗淡或模糊不清。
+  - `"POSITION"`: `<video>` 或其祖先元素被定位到视口区域外，导致 `<video>` 只有小面积区域在视口内或全部不在视口内。
+  - `"COVERED"`: `<video>` 被其他元素遮挡。
+
+<a id="clientrole"></a>
+
+### ClientRole
+
+ClientRole: "audience"|"host"
+
+用户角色。
+
+- `"host"`: 直播场景中的主播，可以发布和订阅音视频轨道。
+- `"audience"`: 直播场景中的观众，只能订阅，不能发布音视频轨道。
+
+<a id="connectionstate"></a>
+
+### ConnectionState
+
+ConnectionState: "DISCONNECTED"|"CONNECTING"|"RECONNECTING"|"CONNECTED"|"DISCONNECTING"
+
+SDK 和声网服务器的连接状态，可以通过 [connectionState](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#connectionstate) 获取。
+
+SDK 和服务器有以下 5 种连接状态:
+
+- `"DISCONNECTED"`: 连接断开。该状态表示用户处于以下任一阶段：
+
+  - 尚未通过 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 加入频道。
+  - 已经通过 [leave](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#leave) 离开频道。
+  - 被踢出频道或者连接失败等异常情况。
+- `"CONNECTING"`: 正在连接中。当调用 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 时为此状态。
+- `"CONNECTED"`: 已连接。该状态表示用户已经加入频道，可以在频道内发布或订阅媒体流。
+- `"RECONNECTING"`: 正在重连中。因网络断开或切换而导致 SDK 与服务器的连接中断，SDK 会自动重连，此时连接状态变为 `"RECONNECTING"`。
+- `"DISCONNECTING"`: 正在断开连接。在调用 [leave](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#leave) 的时候为此状态。
+
+<a id="devicestate"></a>
+
+### DeviceState
+
+DeviceState: "ACTIVE"|"INACTIVE"
+
+采集设备当前的插拔状态。
+
+- `"ACTIVE"`: 该设备已经插入。
+- `"INACTIVE"`: 该设备已经被拔出。
+
+<a id="encryptionmode"></a>
+
+### EncryptionMode
+
+EncryptionMode: "aes-128-xts"|"aes-256-xts"|"aes-128-ecb"|"sm4-128-ecb"|"aes-128-gcm"|"aes-256-gcm"|"aes-128-gcm2"|"aes-256-gcm2"|"none"
+
+加密方案，在调用 [setEncryptionConfig](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setencryptionconfig) 时使用。包含以下几种：
+
+- `"aes-128-xts"`: 128 位 AES 加密，XTS 模式。
+- `"aes-256-xts"`: 256 位 AES 加密，XTS 模式。
+- `"aes-128-gcm"`: 128 位 AES 加密，GCM 模式。
+- `"aes-256-gcm"`: 256 位 AES 加密，GCM 模式。
+- `"aes-128-gcm2"`: 128 位 AES 加密，GCM 模式，加盐。
+- `"aes-256-gcm2"`: 256 位 AES 加密，GCM 模式，加盐。
+- `"aes-128-ecb"`: 128 位 AES 加密，ECB 模式。
+- `"sm4-128-ecb"`: 128 位 SM4 加密，ECB 模式。
+- `"none"`: 不加密。
+
+<a id="localaccesspointconfig"></a>
+
+### LocalAccessPointConfig
+
+LocalAccessPointConfig: object&object
+
+混合云/私有化平台的配置参数。用于 [setLocalAccessPointsV2](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setlocalaccesspointsv2) 方法。
+
+- `accessPoints`：访问节点，包含以下属性：
+
+  - `serverList`：IP 地址列表或 hostname（主机名，用于指定 SDK 访问的 Agora SD-RTN™ 边缘节点）列表。
+  - `domain`：域名。如果传入的 `serverList` 为 IP 地址列表，SDK 会拼接传入的 IP 地址和 `domain` 生成 hostname 列表。此时 `domain` 用于指定 SDK 接入 Agora SD-RTN™ 的网关。
+  - `port`：（可选）端口号。如果传入，端口号会和 hostname 拼在一起。
+- `log`：（可选）日志上传服务。包含可选属性 `hostname` 和 `port`。如果要设置日志上传服务，请确保你已经调用 [enableLogUpload](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#enablelogupload) 开启 SDK 的日志上传功能。
+- `report`：（可选）事件上报服务。默认关闭。包含可选属性 `hostname` 和 `port`。
+- `cds`：预留参数，暂不支持。
+
+可选属性如果不填，将使用对应的默认值：
+
+| 属性 | 默认值 |
+| --- | --- |
+| `log.hostname` | `accessPoints` 所包含的 hostname 列表中的第一个 |
+| `log.port` | 6444 |
+| `report.hostname` | `accessPoints` 所包含的 hostname 列表中的前两个 |
+| `report.port` | 6443 |
+| `accessPoints.port` | 443 |
+
+```javascript
+client.setLocalAccessPointsV2({
+  accessPoints: {
+    serverList:["192.168.1.1","192.168.2.2"],
+    domain: 'test.agora.io'
+  },
+  // 必须先调用 enableLogUpload，下面的日志服务设置才生效
+  log:{
+    hostname:["abc.com"],
+    port: 3000
+  },
+  // 开启事件上报服务并配置参数
+  report:{
+    hostname:["example.com"],
+    port: 8080
+  }
+})
+```
+
+<a id="optimizationmode"></a>
+
+### OptimizationMode
+
+OptimizationMode: "motion"|"detail"|"balanced"
+
+视频传输优化模式：
+
+- `"detail"`: 清晰优先。
+
+  - 浏览器会自动根据你的采集分辨率和帧率设定一个最小码率。即使遭遇网络波动，发送码率也不会低于这个值，从而确保清晰的视频画面。
+  - 大部分情况下，浏览器不会降低发送分辨率，但是可能会降低帧率。
+- `"motion"`: 自 4.21.0 开始，浏览器默认开启流畅优先模式。
+
+  - 浏览器不会启用最小码率策略。遭遇网络波动时，发送端会降低码率来确保接收端的视频画面不会出现中断和卡顿。
+  - 大部分情况下，浏览器不会降低帧率，但是可能会降低发送分辨率。
+- `"balanced"`: 默认的传输优化模式。
+
+  - 对于屏幕共享视频流，SDK 默认的优化策略为清晰优先。
+  - 对于其他视频流，SDK 默认的优化策略为坚固清晰合流畅，弱网条件下，帧率和分辨率都会被调整。
+
+<a id="requiredonlyoneof"></a>
+
+### RequiredOnlyOneOf
+
+RequiredOnlyOneOf&lt;T, K&gt;: object[K] extends infer O? object: never
+
+<ParameterList title="Type parameters">
+<Parameter name="T" />
+<Parameter name="K" type="keyof T" />
+</ParameterList>
+
+<a id="sdk_codec"></a>
+
+### SDK_CODEC
+
+SDK_CODEC: keyof typeof VideoCodec
+
+浏览器使用的编码格式，有以下选择：
+
+- `"vp8"`: 浏览器使用 VP8 编码。
+- `"h264"`: 浏览器使用 H.264 编码。
+- `"vp9"`: (Beta) 浏览器使用 VP9 编码。
+- `"av1"`: (Beta) 浏览器使用 AV1 编码。
+- `"h265"`: 浏览器使用 H.265 编码。如果频道内有客户端不支持使用 H.265 编码，则会回退到现有编码格式。
+
+各编码格式在浏览器上的支持限制如下：
+
+- VP8 编码在 Safari 12.1 及之前版本不支持
+- H.265 编码在如下浏览器支持：
+
+  - macOS/Windows/Android 端 Chrome 136 及以上版本
+  - macOS 端 Safari 18 及以上版本
+  - iOS 端 Safari 18 及以上版本
+- H.265 编码在如下浏览器不支持：
+
+  - macOS/Windows 端 Firefox 浏览器
+  - Windows 端 Edge 浏览器
+
+> 如果使用 H.265 编码，请确保参与互通的 Native SDK 版本为 v4.6.0 以上，否则 Native 端会收不到 H265 的流。
+
+<a id="sdk_mode"></a>
+
+### SDK_MODE
+
+SDK_MODE: "live"|"rtc"
+
+频道场景。
+
+Agora Web SDK 需知道 app 的使用场景（例如通信模式或直播模式），从而使用不同的优化手段。
+
+声网频道支持以下场景:
+
+- `"live"`: 直播场景，有主播和观众两种用户角色，可以通过 [setClientRole](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#setclientrole) 方法设置主播和观众的角色。主播可以收发音视频流，而观众只能接收音视频流，无法发送。
+- `"rtc"`: 通信场景，用于常见的一对一通话或群聊，频道中的任何用户可以自由说话。
+
+<a id="screenaudiotrackinitconfig"></a>
+
+### ScreenAudioTrackInitConfig
+
+ScreenAudioTrackInitConfig: object
+
+创建屏幕共享音频轨道时的配置参数。当使用 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack) 创建屏幕共享视频轨道时，可以通过此配置共享音频轨道。
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="AEC" type="boolean" optional>
+
+是否开启回声消除：
+
+- `true`: 开启回声消除。
+- `false`: 不开启回声消除。
+
+</Parameter>
+<Parameter name="AGC" type="boolean" optional>
+
+是否开启自动增益：
+
+- `true`: 开启自动增益。
+- `false`: 不开启自动增益。
+
+</Parameter>
+<Parameter name="ANS" type="boolean" optional>
+
+是否开启噪声抑制：
+
+- `true`: 开启噪声抑制。
+- `false`: 不开启噪声抑制。
+
+</Parameter>
+<Parameter name="restrictOwnAudio" type="boolean" optional>
+
+:::info[自从]
+*4.24.1*
+
+是否禁止本地页面声音采集。
+
+- `true`：禁止本地页面声音采集。
+- `false`：(默认) 允许本地页面声音采集。
+  详见 [restrictOwnAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/restrictOwnAudio)。
+
+> 该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
+:::
+
+</Parameter>
+<Parameter name="suppressLocalAudioPlayback" type="boolean" optional>
+
+:::info[自从]
+*4.24.1*
+
+是否禁止本地播放音频。
+
+- `true`：禁止本地播放音频。
+- `false`：(默认) 允许本地播放音频。
+
+详见 [suppressLocalAudioPlayback](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)。
+
+> 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
+:::
+
+</Parameter>
+</ParameterList>
+
+<a id="screenencoderconfigurationpreset"></a>
+
+### ScreenEncoderConfigurationPreset
+
+ScreenEncoderConfigurationPreset: keyof typeof SUPPORT_SCREEN_ENCODER_CONFIG_LIST
+
+SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 配置。
+
+你可以在 [AgoraRTC.createScreenVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack) 方法中传入以下预设值来控制屏幕共享视频编码配置。
+
+下表列出了 SDK 所有预设的屏幕共享视频属性配置。
+
+| 视频属性 | 分辨率（宽×高） | 帧率（fps） |
+| --- | --- | --- |
+| "480p" | 640 × 480 | 5 |
+| "480p_1" | 640 × 480 | 5 |
+| "480p_2" | 640 × 480 | 30 |
+| "480p_3" | 640 × 480 | 15 |
+| "720p" | 1280 × 720 | 5 |
+| "720p_1" | 1280 × 720 | 5 |
+| "720p_2" | 1280 × 720 | 30 |
+| "720p_3" | 1280 × 720 | 15 |
+| "720p_auto" ① | 1280 × 720 | 30 |
+| "1080p" | 1920 × 1080 | 5 |
+| "1080p_1" | 1920 × 1080 | 5 |
+| "1080p_2" | 1920 × 1080 | 30 |
+| "1080p_3" | 1920 × 1080 | 15 |
+
+> ① `"720p_auto"` 仅推荐在 Safari 上设置，用于确保能够动态调整编码分辨率，详见[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)。
+
+<a id="screensourcetype"></a>
+
+### ScreenSourceType
+
+ScreenSourceType: "screen"|"window"|"application"
+
+屏幕共享源的类型。
+
+- `"screen"`: 共享屏幕。
+- `"application"`: 共享某一个 app 的所有窗口。
+- `"window"`: 共享某一个 app 的某一个窗口。
+
+<a id="uid"></a>
+
+### UID
+
+UID: number|string
+
+用于标识用户的 ID。同一频道中每个用户都具有唯一的 ID，且数据类型相同。
+
+为保证最佳的用户体验，声网强烈建议你不要使用字符串作为用户 ID。详见 [join](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join) 方法中的说明。
+
+<a id="videoencoderconfigurationpreset"></a>
+
+### VideoEncoderConfigurationPreset
+
+VideoEncoderConfigurationPreset: keyof typeof SUPPORT_VIDEO_ENCODER_CONFIG_LIST
+
+SDK 预设的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration) 配置。
+
+你可以在 [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 方法中传入预设的视频编码配置。
+
+SDK 支持预设的视频属性，以及在各浏览器上的支持情况，请参考[设置视频编码属性](/zh-CN/realtime-media/rtc/build/video/video-profile)。
+
+## Events
+
+<a id="event_track_updated"></a>
+
+### track-updated
+
+<ApiSignature>
+
+track-updated(track: MediaStreamTrack): void
+
+</ApiSignature>
+
+媒体轨道有更新时触发。
+
+<ParameterList title="Parameters">
+<Parameter name="track" type="MediaStreamTrack" required>
+
+媒体轨道。详见 [MediaStreamTrack](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack)。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Variables
+
+<a id="audio_encoder_config_settings"></a>
+
+### Const AUDIO_ENCODER_CONFIG_SETTINGS
+
+AUDIO_ENCODER_CONFIG_SETTINGS: object
+
+#### Type declaration
+
+<ParameterList title="Type declaration">
+<Parameter name="high_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="high_quality_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="music_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_low_quality" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="speech_standard" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="standard_stereo" required>
+
+<ParameterType>
+
+[AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<a id="agorartc"></a>
+
+### Const AgoraRTC
+
+AgoraRTC: [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
+
+<a id="support_screen_encoder_config_list"></a>
+
+### Const SUPPORT_SCREEN_ENCODER_CONFIG_LIST
+
+SUPPORT_SCREEN_ENCODER_CONFIG_LIST: Record&lt;string,[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)&gt;
+
+<a id="support_svc_config_list"></a>
+
+### Const SUPPORT_SVC_CONFIG_LIST
+
+SUPPORT_SVC_CONFIG_LIST: Record&lt;string,SVCConfiguration&gt;
+
+<a id="support_video_encoder_config_list"></a>
+
+### Const SUPPORT_VIDEO_ENCODER_CONFIG_LIST
+
+SUPPORT_VIDEO_ENCODER_CONFIG_LIST: Record&lt;string,[VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)&gt;

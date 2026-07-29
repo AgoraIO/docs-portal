@@ -1,0 +1,63 @@
+---
+title: AdvanceOptions
+description: 视频编码的高级选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_advanceoptions
+  sourcePath: html-docs/rtc/Flutter/API/class_advanceoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_advanceoptions__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class AdvanceOptions {
+  const AdvanceOptions(
+      {this.encodingPreference, this.compressionPreference, this.encodeAlpha});
+
+  @JsonKey(name: 'encodingPreference')
+  final EncodingPreference? encodingPreference;
+
+  @JsonKey(name: 'compressionPreference')
+  final CompressionPreference? compressionPreference;
+
+  @JsonKey(name: 'encodeAlpha')
+  final bool? encodeAlpha;
+
+  factory AdvanceOptions.fromJson(Map<String, dynamic> json) =>
+      _$AdvanceOptionsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AdvanceOptionsToJson(this);
+}
+```
+
+<a id="class_advanceoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="encodingpreference"></a>
+<Parameter name="encodingPreference">
+
+视频编码器偏好。详见 [EncodingPreference](/zh-CN/api-reference/rtc/flutter/enum-encodingpreference)。
+
+</Parameter>
+<a id="compressionpreference"></a>
+<Parameter name="compressionPreference">
+
+视频编码的压缩偏好。详见 [CompressionPreference](/zh-CN/api-reference/rtc/flutter/enum-compressionpreference)。
+
+</Parameter>
+<a id="encodealpha"></a>
+<Parameter name="encodeAlpha">
+
+当视频帧包含 Alpha 通道数据时，设置是否将 Alpha 数据编码并发送至远端：
+
+- true：对 Alpha 数据进行编码发送。
+- false：（默认）不对 Alpha 数据进行编码发送。
+
+</Parameter>
+</ParameterList>

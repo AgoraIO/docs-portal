@@ -1,0 +1,112 @@
+---
+title: "优化游戏语音音频体验"
+description: "了解如何在游戏语音中优化游戏语音音频体验，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 设置最佳音频属性
+
+本文介绍如何优化游戏语音场景下的音频体验。
+
+为展示最佳的音频表现，推荐你针对用户音频设备的使用场景，为音频编码属性（Audio Profile）和音频应用场景（Audio Scenario）参数设置如下值：
+
+|音频场景|Audio Profile|Audio Scenario|
+|---|---|---|
+|外放|`AUDIO_PROFILE_DEFAULT`|`AUDIO_SCENARIO_CHATROOM`|
+|有线和蓝牙耳机|`AUDIO_PROFILE_DEFAULT`|`AUDIO_SCENARIO_GAME_STREAMING`|
+
+参数的设置方法如下：
+
+- 音频编码属性（Audio Profile）：在加入频道前或后调用 `SetAudioProfile` 并通过 `profile` 参数设置。
+
+- 音频应用场景（Audio Scenario）：任选如下一种方案设置。
+
+    - 调用 `Initialize` 初始化 `IRtcEngine` 时，通过 `RtcEngineContext.audioScenario` 字段设置。
+    - 在加入频道前或后调用 `SetAudioScenario` 并通过 `scenario` 参数设置。
+
+## 优化音量控制
+
+在游戏环境中，开启或关闭麦克风时，系统音量会自动在媒体音量和通话音量之间切换，可能导致音量剧烈变化。为避免用户在开启或关闭麦克风时出现声音突变等问题，你需要了解声网 RTC SDK 在不同场景下使用媒体音量还是通话音量。
+
+- **媒体音量**：播放背景音乐、视频、音效的音量。在游戏语音场景中，常用于游戏背景音乐。
+- **通话音量**：进行语音、视频通话时的音量。在游戏语音场景中，常用于用户实时语音。
+
+| 对比维度 | 通话音量 | 媒体音量 |
+|---|---|---|
+| 音质 | 较低 | 较高，对音频有较好的表现力 |
+| 音量 | 无法被调整为 0 | 可以被调整为 0 |
+| 回声消除效果| 使用设备的系统回声消除算法，可完全消除用户设备产生的回声（含第三方 App 产生的回声），但可能会造成音乐或歌声的丢失 | 使用声网 RTC SDK 的回声消除算法，对音乐和歌声有较好的表现力，但可能无法完全消除用户设备产生的回声（例如第三方 App 产生的回声）|
+
+以 Android 设备为例，展示音量类型：
+
+![音量类型](https://web-cdn.agora.io/docs-portal/img/game-voice/media-volume.png)
+
+设备系统音量是指在设备上可以调整的音量，由声网 RTC SDK 控制。假设 SDK 使用的是通话音量，那么调整系统音量就意味着调整通话音量。你可以根据下表查询 SDK 使用的具体音量类型：
+
+| 运行平台 | AUDIO SCENARIO | 用户角色 | 有线耳机 | 扬声器 | 听筒 | 蓝牙耳机 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Android | `AUDIO_SCENARIO_GAME_STREAMING` | 多主播 | 媒体音量 | 媒体音量 | 通话音量 | 通话音量 |
+| 单主播 | 媒体音量 | 媒体音量 | 通话音量 | 通话音量 |  |  |
+| 观众 | 媒体音量 | 媒体音量 | 通话音量 | 媒体音量 |  |  |
+| `AUDIO_SCENARIO_CHATROOM` | 多主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |
+| 单主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |  |
+| 观众 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |  |
+| iOS | `AgoraAudioScenarioGameStreaming` | 多主播 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |
+| 单主播 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |  |  |
+| 观众 | 媒体音量 | 媒体音量 | 媒体音量 | 媒体音量 |  |  |
+| `AgoraAudioScenarioChatRoom` | 多主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |
+| 单主播 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |  |
+| 观众 | 媒体音量 | 通话音量 | 通话音量 | 通话音量 |  |  |
+
+## 设置蓝牙协议
+
+用户使用蓝牙耳机时，根据游戏类型使用推荐的蓝牙协议。
+
+蓝牙协议分为两种：
+
+- **HFP（Hands-Free Profile）协议**：用于语音通话的蓝牙协议，提供单声道音频和音频采集功能。音质比 A2DP 协议差。
+- **A2DP（Advanced Audio Distribution Profile）协议**：用于高质量立体声音乐传输的蓝牙协议，只支持音频播放，不支持音频采集。因此，蓝牙耳机使用 A2DP 协议时，你需要通过其他设备（例如手机或者电脑内置的麦克风）采集语音。
+
+下表展示不同蓝牙协议的方案说明：
+
+| 方案类型 | 方案说明 | 方案优缺点 |
+| --- | --- | --- |
+| 方案一：仅使用 HFP 协议 | <Slot name="audio-experience-optimization-html-1-1-1" /> | <Slot name="audio-experience-optimization-html-1-1-2" /> |
+| 方案二：仅使用 A2DP 协议 | <Slot name="audio-experience-optimization-html-1-2-1" /> | <Slot name="audio-experience-optimization-html-1-2-2" /> |
+
+<Slot for="audio-experience-optimization-html-1-1-1">
+
+- 用户开麦：角色变为主播，使用 HFP 协议
+
+    - 用户关麦：角色变为观众，使用 HFP 协议
+
+</Slot>
+
+<Slot for="audio-experience-optimization-html-1-1-2">
+
+- 优点：无明显优点
+
+    - 缺点：音质差
+
+</Slot>
+
+<Slot for="audio-experience-optimization-html-1-2-1">
+
+- 用户开麦：角色变为主播，使用 A2DP 协议，且使用手机内置麦克风采集音频
+
+    - 用户关麦：角色变为观众，使用 A2DP 协议
+
+</Slot>
+
+<Slot for="audio-experience-optimization-html-1-2-2">
+
+- 优点：音质较好，人声和背景音乐效果都更佳
+
+    - 缺点：开麦后需使用手机麦克风，因此收音会受到握姿和距离变化影响
+
+</Slot>
+
+针对不同的游戏类型，推荐你使用如下方案：
+
+- 手游：推荐使用方案二（仅使用 A2DP 协议）。手游用户和手机距离较近，手机内置麦克风的收音效果较好，并且 A2DP 协议能提供音质更好的人声和背景音乐。
+- 端游、页游等：根据用户场景，结合两种方案的优缺点进行选择。
+
+声网 RTC SDK 默认使用 HFP 协议。如需切换到 A2DP 协议，[联系技术支持](https://ticket.shengwang.cn/)。

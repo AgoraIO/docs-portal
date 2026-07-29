@@ -1,0 +1,536 @@
+---
+title: "响应状态码"
+description: "查询云端录制的响应状态码、错误码含义、常见原因和处理建议。"
+---
+本文介绍你在调用云端录制 API 过程中可能会收到的错误码及其含义。
+
+在调用云端录制 RESTful API 过程中，你可能收到如下 HTTP 状态码：
+
+- 如果 HTTP 状态码为 200，则请求成功。
+
+- 如果 HTTP 状态码不为 200，则请求失败。你可以根据对应的响应 Body 中可能出现的如下字段排查问题：
+
+  - `message`
+  - `code` 和 `reason`
+例如，请求失败时，你可能收到如下响应：
+
+```json
+# 401 Unauthorized
+# 仅有 message
+{
+  "message": "Invalid authentication credentials"
+}
+```
+
+```json
+# 400 Bad Request
+# 仅有 code 和 reason
+{
+  "code": 2,
+  "reason": "Acquire: invalid resourceExpiredHour value!"
+}
+```
+
+本文介绍你在调用云端录制 API 过程中可能会收到的错误码及其含义。你可以根据文档进行问题定位和排障。
+
+## 通用状态码
+
+| 状态码 | `message` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `400 Bad Request` | <Slot name="response-code-html-0-1-1" /> | 使用了非法的 App ID。 | 服务未开通，请先[开通云端录制服务](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service)再调用 API。 |
+| `401 Unauthorized` | <Slot name="response-code-html-0-2-1" /> | Authorization 缺失。 | 没有进行 HTTP 基本认证。在调用 API 时请确保[使用 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)获取 Authorization 的值。 |
+| `401 Unauthorized` | <Slot name="response-code-html-0-3-1" /> | 非法的 Authorization。 | <Slot name="response-code-html-0-3-3" /> |
+| `404 Not Found` | <Slot name="response-code-html-0-4-1" /> | 请求路由错误。 | 请检查发送请求的接口和 URL 是否正确 |
+| `429 Too Many Requests` | <Slot name="response-code-html-0-5-1" /> | 被限流了。 | 请求太快被限制，可以[联系技术支持](https://ticket.shengwang.cn) 申请提高 API 配额，或者稍后进行重试，同时检查集成避免过多的 API 调用。 |
+
+<Slot for="response-code-html-0-1-1">
+
+```json
+    {
+      "message": "appid is invalid"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-0-2-1">
+
+```json
+    {
+      "message": "Unauthorized"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-0-3-1">
+
+```json
+    {
+      "message": "Invalid authentication credentials"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-0-3-3">
+
+填入的 Authorization 非法。请检查：
+
+    - 客户 ID 和客户密钥是否正确
+    - Authorization 生成算法是否正确
+    - 客户 ID 和客户密钥与 App ID 是否匹配
+
+</Slot>
+
+<Slot for="response-code-html-0-4-1">
+
+```json
+    {
+      "message": "no Route matched with those values"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-0-5-1">
+
+```json
+    {
+      "message": "API rate limit exceeded"
+    }
+    ```
+
+</Slot>
+
+
+
+## API 调用返回状态码
+
+### Acquire
+
+在调用 [`Acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 后，响应中可能返回的状态码及报错信息如下：
+
+
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `400 Bad Request` | <Slot name="response-code-html-1-1-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `400 Bad Request` | <Slot name="response-code-html-1-2-1" /> | 使用了非法的 App ID。 | 服务未开通，请先[开通云端录制服务](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service)再调用 API。 |
+| `400 Bad Request` | <Slot name="response-code-html-1-3-1" /> | 使用了非法的频道名。 | 请求 Body 中的 `cname` 字段包含非字符，请检查集成。`cname` 支持的字符集可以参考 [RTC 频道名的参数填写](/zh-CN/api-reference/rtc/android/channel#api_irtcengine_joinchannel2)。 |
+| `400 Bad Request` | <Slot name="response-code-html-1-4-1" /> | App 状态异常。 | App 服务异常，可能是由于欠费停机，请自行检查。 |
+| `400 Bad Request` | <Slot name="response-code-html-1-5-1" /> | 配额受限。 | 并发任务数量限制，可以[联系技术支持](https://ticket.shengwang.cn) 申请提高 API 配额，或者稍后进行重试，同时检查集成避免任务泄漏。 |
+| `500 Internal Server Error` | <Slot name="response-code-html-1-6-1" /> | 内部错误。 | 服务端错误，进行退避重试。 |
+| `500 Internal Server Error` | <Slot name="response-code-html-1-7-1" /> | 无资源可用。 | 服务端错误，进行退避重试。 |
+| `500 Internal Server Error` | <Slot name="response-code-html-1-8-1" /> | 请求超时。 | 服务端错误，进行退避重试。 |
+
+<Slot for="response-code-html-1-1-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-2-1">
+
+```json
+    {
+      "code": 400,
+      "reason": "invalid_appid"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-3-1">
+
+```json
+    {
+      "code": 401,
+      "reason": "invalid_channel_name"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-4-1">
+
+```json
+    {
+      "code": 405,
+      "reason": "no_active_status"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-5-1">
+
+```json
+    {
+      "code": 406,
+      "reason": "vendor_over_load"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-6-1">
+
+```json
+    {
+      "code": 500,
+      "reason": "internal_error"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-7-1">
+
+```json
+    {
+      "code": 501,
+      "reason": "no_worker_manager_available"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-1-8-1">
+
+```json
+    {
+      "code": 504,
+      "reason": "allocate_timeout"
+    }
+    ```
+
+</Slot>
+
+### Start
+
+在调用 [`Start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 后，响应中可能返回的状态码及报错信息如下：
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `201 Created` | <Slot name="response-code-html-2-1-1" /> | 任务已经启动了，重复调用 `Start` 方法。 |  |
+| `206 Partial Content` | <Slot name="response-code-html-2-2-1" /> | 请求未完成。 | 请求已发送到后端，但是响应超时，建议进行重试。如果重试失败，建议重新调用 `Acquire` + `Start` 启动另外一路任务。 |
+| `400 Bad Request` | <Slot name="response-code-html-2-3-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `400 Bad Request` | <Slot name="response-code-html-2-4-1" /> | 重复启动，已经存在相同的 `cname` + `uid` 的任务。 | 检查集成避免该问题，或者更换 `cname` + `uid` 重新调用 `Acquire` + `Start` 启动任务。 |
+| `500 Internal Server Error` | <Slot name="response-code-html-2-5-1" /> | 无资源可用。 | 建议重新调用 `Acquire` + `Start` 启动另外一路任务。 |
+| `500 Internal Server Error` | <Slot name="response-code-html-2-6-1" /> | 请求超时。 | 后端服务暂时不可用，建议进行重试。\n如果重试失败，建议重新调用 `Acquire` + `Start` 启动另外一路任务。 |
+
+<Slot for="response-code-html-2-1-1">
+
+```json
+    {
+      "code": 7,
+      "reason": "already started"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-2-2-1">
+
+```json
+    {
+      "code": 65,
+      "reason": "request not completed"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-2-3-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-2-4-1">
+
+```json
+    {
+      "code": 53,
+      "reason": "task conflict"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-2-5-1">
+
+```json
+    {
+      "code": 502,
+      "reason": "Failed to allocate worker"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-2-6-1">
+
+```json
+    {
+      "code": 62,
+      "reason": "request timeout"
+    }
+    ```
+
+</Slot>
+
+### Update
+
+在调用 [`Update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 后，响应中可能返回的状态码及报错信息如下：
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `206 Partial Content` | <Slot name="response-code-html-3-1-1" /> | 请求未完成。 | 请求已发送到后端，但是响应超时，建议进行重试。 |
+| `400 Bad Request` | <Slot name="response-code-html-3-2-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `404 Not Found` | <Slot name="response-code-html-3-3-1" /> | 任务不存在。 | 任务不存在，可能是任务已经退出，请结合自身业务逻辑判断是否需要处理。 |
+| `504 Gateway Timeout` | <Slot name="response-code-html-3-4-1" /> | 请求超时。 | 后端服务暂时不可用，建议进行重试。 |
+
+<Slot for="response-code-html-3-1-1">
+
+```json
+    {
+      "code": 65,
+      "reason": "request not completed"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-3-2-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-3-3-1">
+
+```json
+    {
+      "code": 404,
+      "reason": "failed to find worker"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-3-4-1">
+
+```json
+    {
+      "code": 62,
+      "reason": "request timeout"
+    }
+    ```
+
+</Slot>
+
+### UpdateLayout
+
+在调用 [`UpdateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 后，响应中可能返回的状态码及报错信息如下：
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `206 Partial Content` | <Slot name="response-code-html-4-1-1" /> | 请求未完成。 | 请求已发送到后端，但是响应超时，建议进行重试。 |
+| `400 Bad Request` | <Slot name="response-code-html-4-2-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `404 Not Found` | <Slot name="response-code-html-4-3-1" /> | 任务不存在。 | 任务不存在，可能是任务已经退出，请结合自身业务逻辑判断是否需要处理。 |
+| `504 Gateway Timeout` | <Slot name="response-code-html-4-4-1" /> | 请求超时。 | 后端服务暂时不可用，建议进行重试。 |
+
+<Slot for="response-code-html-4-1-1">
+
+```json
+    {
+      "code": 65,
+      "reason": "request not completed"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-4-2-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-4-3-1">
+
+```json
+    {
+      "code": 404,
+      "reason": "failed to find worker"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-4-4-1">
+
+```json
+    {
+      "code": 62,
+      "reason": "request timeout"
+    }
+    ```
+
+</Slot>
+
+### Query
+
+在调用 [`Query`](/zh-CN/api-reference/api-ref/cloud-recording/query) 后，响应中可能返回的状态码及报错信息如下：
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `206 Partial Content` | <Slot name="response-code-html-5-1-1" /> | 请求未完成。 | 请求已发送到后端，但是响应超时，建议进行重试。 |
+| `400 Bad Request` | <Slot name="response-code-html-5-2-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `404 Not Found` | <Slot name="response-code-html-5-3-1" /> | 任务不存在。 | 任务不存在，可能是任务已经退出，请结合自身业务逻辑判断是否需要处理。 |
+| `504 Gateway Timeout` | <Slot name="response-code-html-5-4-1" /> | 请求超时。 | 后端服务暂时不可用，建议进行重试。 |
+
+<Slot for="response-code-html-5-1-1">
+
+```json
+    {
+      "code": 65,
+      "reason": "request not completed"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-5-2-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-5-3-1">
+
+```json
+    {
+      "code": 404,
+      "reason": "failed to find worker"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-5-4-1">
+
+```json
+    {
+      "code": 62,
+      "reason": "request timeout"
+    }
+    ```
+
+</Slot>
+
+### Stop
+
+在调用 [`Stop`](/zh-CN/api-reference/api-ref/cloud-recording/stop) 后，响应中可能返回的状态码及报错信息如下：
+
+| 状态码 | `code` 和 `reason` 字段 | 错误说明 | 解决方法 |
+| --- | --- | --- | --- |
+| `206 Partial Content` | <Slot name="response-code-html-6-1-1" /> | 请求未完成。 | 请求已发送到后端，但是响应超时，建议进行重试。 |
+| `206 Partial Content` | <Slot name="response-code-html-6-2-1" /> | 没有录制文件生成。 | 频道内没有用户发流，没有生成录制文件，请检查是否符合业务逻辑。 |
+| `400 Bad Request` | <Slot name="response-code-html-6-3-1" /> | 请求参数错误。 | 请求 Header、接口、URL 或请求 Body 错误，请检查集成。具体原因可以参考 `reason` 字段的内容。 |
+| `400 Bad Request` | <Slot name="response-code-html-6-4-1" /> | 非法操作。 | 任务正在退出，不能进行当前操作，可能是重复调用 `Stop` 或者其他原因导致任务正在退出。常见的有录制机器人被剔出房间，或者没有用户发流触发 `maxIdleTime` 逻辑自动停止任务。 |
+| `404 Not Found` | <Slot name="response-code-html-6-5-1" /> | 任务不存在。 | 任务不存在，可能是任务已经退出，请结合自身业务逻辑判断是否需要处理。 |
+| `504 Gateway Timeout` | <Slot name="response-code-html-6-6-1" /> | 请求超时。 | 后端服务暂时不可用，建议进行重试。 |
+
+<Slot for="response-code-html-6-1-1">
+
+```json
+    {
+      "code": 65,
+      "reason": "request not completed"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-6-2-1">
+
+```json
+    {
+      "code": 435,
+      "reason": "no recorded data"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-6-3-1">
+
+```json
+    {
+      "code": 2,
+      "reason": "xxx"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-6-4-1">
+
+```json
+    {
+      "code": 49,
+      "reason": "invalid operation"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-6-5-1">
+
+```json
+    {
+      "code": 404,
+      "reason": "failed to find worker"
+    }
+    ```
+
+</Slot>
+
+<Slot for="response-code-html-6-6-1">
+
+```json
+    {
+      "code": 62,
+      "reason": "request timeout"
+    }
+    ```
+
+</Slot>

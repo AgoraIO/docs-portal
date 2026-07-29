@@ -1,0 +1,2640 @@
+---
+title: "错误排查"
+description: "了解实时消息 RTM 在不同平台上的错误排查方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```java showLineNumbers
+RtmConfig rtmConfig = new RtmConfig();
+
+rtmConfig.userId = "your_userid";
+rtmConfig.appId = "your_appid";
+
+RtmLogConfig logConfig = new RtmLogConfig();
+logConfig.level = RtmLogLevel.INFO;
+logConfig.filePath = "your_path";
+logConfig.fileSizeInKB = 10*1024;
+
+rtmConfig.logConfig = logConfig;
+```
+
+`level` 字段可以设置为 `INFO`、`WARN`、`ERROR`、`FATAL`、`NONE` 五个等级之一，其中 `INFO` 输出最详细的日志信息，`NONE` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `INFO`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+在调用 RTM Java API 时，如果发生错误，SDK 会执行 `onFailure` 方法并且返回一个 `ErrorInfo` 类型的 `errorInfo` 返回值：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ------ | --------- |
+| `errorCode` | `RtmErrorCode` | 本次操作错误码。 |
+| `reason` | String | 本次操作出错原因。 |
+| `operation` | String | 本次操作类型。 |
+
+其中，`errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `OK` | 正确调用。 |
+| `-10001` | `NOT_INITIALIZED` | SDK 未初始化。请在调用 `create` 方法初始化 RTM 实例后再执行其他操作。 |
+| `-10002` | `NOT_LOGIN` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `INVALID_APP_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` | `INVALID_TOKEN` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `INVALID_USER_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` | `INIT_SERVICE_FAILED` | SDK 初始化失败。请重新调用 `create` 方法进行初始化。 |
+| `-10008` | `INVALID_CHANNEL_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` | `TOKEN_EXPIRED` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `LOGIN_NO_SERVER_RESOURCES` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `LOGIN_TIMEOUT` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `LOGIN_REJECTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` | `LOGIN_ABORTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` | `INVALID_PARAMETER` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `LOGIN_NOT_AUTHORIZED` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `INCONSISTENT_APPID` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `DUPLICATE_OPERATION` | 重复操作。 |
+| `-10018` | `INSTANCE_ALREADY_RELEASED` | 重复调用 `release` 方法释放 `RtmClient` 实例或重复调用 `release` 释放 `StreamChannel` 实例。 |
+| `-10019` | `INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` | `INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `LOGIN_CANCELED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-10024` | `INVALID_PRIVATE_CONFIG` | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` | `NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-11001` | `CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
+| `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
+| `-11008` | `CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
+| `-11009` | `CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2" /> |
+| `-11011` | `CHANNEL_INVALID_USER_LIST` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2" /> |
+| `-11012` | `CHANNEL_NOT_AVAILABLE` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `CHANNEL_TOPIC_NOT_SUBSCRIBED` | 未订阅该 Topic。 |
+| `-11014` | `CHANNEL_EXCEED_TOPIC_LIMITATION` | Topic 数量超出限制。 |
+| `-11015` | `CHANNEL_JOIN_TOPIC_FAILED` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `CHANNEL_TOPIC_NOT_JOINED` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `CHANNEL_TOPIC_NOT_EXIST` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `CHANNEL_INVALID_TOPIC_META` | Topic 中的 `topicMeta` 参数无效。检查 `topicMeta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `CHANNEL_SUBSCRIBE_TIMEOUT` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `CHANNEL_SUBSCRIBE_TOO_FREQUENT` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `CHANNEL_SUBSCRIBE_FAILED` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `CHANNEL_UNSUBSCRIBE_FAILED` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `CHANNEL_ENCRYPT_MESSAGE_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2" /> |
+| `-11024` | `CHANNEL_PUBLISH_MESSAGE_FAILED` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `CHANNEL_NOT_CONNECTED` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `CHANNEL_LEAVE_FAILED` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `CHANNEL_UNSUPPORTED_MESSAGE_TYPE` | 消息类型不支持。 |
+| `-11032` | `CHANNEL_PRESENCE_NOT_READY` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` | `CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2" /> |
+| `-11034` | `CHANNEL_JOIN_CANCELED` | 加入频道操作已取消。调用 `join` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-11035` | `CHANNEL_RECEIVER_OFFLINE_BUT_STORE_SUCCEEDED` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
+| `-11036` | `CHANNEL_RECEIVER_OFFLINE_AND_STORE_FAILED` | 接收端已下线，但历史消息存储失败。 |
+| `-11037` | `CHANNEL_MESSAGE_DELIVERED_BUT_STORE_FAILED` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-12001` | `STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
+| `-12002` | `STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
+| `-12004` | `STORAGE_INVALID_ARGUMENT` | 无效参数。 |
+| `-12005` | `STORAGE_INVALID_REVISION` | 无效 Revision 参数。 |
+| `-12006` | `STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata 长度溢出。 |
+| `-12007` | `STORAGE_INVALID_LOCK_NAME` | 无效 Lock 名称。 |
+| `-12008` | `STORAGE_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-12009` | `STORAGE_INVALID_KEY` | 无效 Metadata 键。 |
+| `-12010` | `STORAGE_INVALID_VALUE` | 无效 Metadata 值。 |
+| `-12011` | `STORAGE_KEY_LENGTH_OVERFLOW` | Metadata 键长度溢出。 |
+| `-12012` | `STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata 值长度溢出。 |
+| `-12013` | `STORAGE_DUPLICATE_KEY` | 重复的 Metadata Item 键。 |
+| `-12014` | `STORAGE_OUTDATED_REVISION` | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` | `STORAGE_NOT_SUBSCRIBE` | 未订阅该频道。 |
+| `-12016` | `STORAGE_INVALID_METADATA_INSTANCE` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `STORAGE_OPERATION_TIMEOUT` | Storage 操作超时。 |
+| `-12019` | `STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
+| `-13001` | `PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
+| `-13002` | `PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
+| `-13003` | `PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
+| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
+| `-13007` | `PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
+| `-13008` | `PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
+| `-13009` | `PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | 状态值长度溢出 |
+| `-13010` | `PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
+| `-13011` | `PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-14001` | `LOCK_OPERATION_FAILED` | Lock 操作失败。 |
+| `-14002` | `LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
+| `-14003` | `LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
+| `-14004` | `LOCK_ALREADY_EXIST` | Lock 已存在。 |
+| `-14005` | `LOCK_INVALID_NAME` | 无效 Lock 名。 |
+| `-14006` | `LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-14007` | `LOCK_ACQUIRE_FAILED` | 获取该 Lock 失败。 |
+| `-14008` | `LOCK_NOT_EXIST` | 该 Lock 不存在。 |
+| `-14009` | `LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
+| `-15001` | `HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
+| `-15002` | `HISTORY_INVALID_TIMESTAMP` | 历史消息的时间戳无效。 |
+| `-15003` | `HISTORY_OPERATION_TIMEOUT` | 历史消息的操作超时。 |
+| `-15004` | `HISTORY_OPERATION_NOT_PERMITTED` | 没有权限进行历史消息的操作。 |
+| `-15005` | `HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+
+    - `USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `AgoraRtmClientConfig` 中的 `AgoraRtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```objc showLineNumbers
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+
+AgoraRtmLogConfig* log_cfg = [[AgoraRtmLogConfig alloc] init];
+log_cfg.level= AgoraRtmLogLevelError;
+log_cfg.filePath= @"your_path";
+log_cfg.fileSizeInKB = 512;
+
+rtm_cfg.logConfig = log_cfg;
+```
+
+`level` 字段可以设置为 `AgoraRtmLogLevelInfo`、`AgoraRtmLogLevelWarn`、`AgoraRtmLogLevelError`、`AgoraRtmLogLevelFatal`、`AgoraRtmLogLevelNone` 五个等级之一，其中 `AgoraRtmLogLevelInfo` 输出最详细的日志信息，`AgoraRtmLogLevelNone` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `AgoraRtmLogLevelInfo`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+在调用 RTM iOS/Swift API 时，如果发生错误，SDK 会执行 `completion` 回调并且返回一个 `AgoraRtmErrorInfo` 类型的 `errorInfo` 返回值：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ------- | --------- |
+| `errorCode` | `AgoraRtmErrorCode` | 本次操作错误码。 |
+| `reason` | NSString | 本次操作出错原因。 |
+| `operation` | NSString | 本次操作类型。 |
+
+其中，`errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `AgoraRtmErrorOk` | 正确调用。 |
+| `-10001` | `AgoraRtmErrorNotInitialized` | SDK 未初始化。请在调用 `initWithConfig` 方法初始化 RTM 实例后再执行其他操作。 |
+| `-10002` | `AgoraRtmErrorNotLogin` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `AgoraRtmErrorInvalidAppId` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` | `AgoraRtmErrorInvalidToken` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `AgoraRtmErrorInvalidUserId` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` | `AgoraRtmErrorInitServiceFailed` | SDK 初始化失败。请重新调用 `initWithConfig` 方法进行初始化。 |
+| `-10008` | `AgoraRtmErrorInvalidChannelName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` | `AgoraRtmErrorTokenExpired` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `AgoraRtmErrorLoginNoServerResources` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `AgoraRtmErrorLoginTimeout` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `AgoraRtmErrorLoginRejected` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` | `AgoraRtmErrorLoginAborted` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` | `AgoraRtmErrorInvalidParameter` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `AgoraRtmErrorLoginNotAuthorized` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `AgoraRtmErrorLoginInconsistentAppId` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `AgoraRtmErrorDuplicateOperation` | 重复操作。 |
+| `-10018` | `AgoraRtmErrorInstanceAlreadyReleased` | 重复调用 `destroy` 方法释放 `AgoraRtmClientKit` 实例或重复调用 `destroy` 释放 `AgoraRtmStreamChannel` 实例。 |
+| `-10019` | `AgoraRtmErrorInvalidChannelType` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` | `AgoraRtmErrorInvalidEncryptionParameter` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` | `AgoraRtmErrorOperationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `AgoraRtmErrorServiceNotSupport` | 服务类型不支持。请检查你在 `AgoraRtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `AgoraRtmErrorLoginCanceled` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-10024` | `AgoraRtmErrorInvalidPrivateConfig` | 私有化部署参数设置无效。请检查你在 `AgoraRtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` | `AgoraRtmErrorNotConnected` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `AgoraRtmErrorRenewTokenTimeout` | 更新 Token 超时。 |
+| `-11001` | `AgoraRtmErrorChannelNotJoined` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
+| `-11002` | `AgoraRtmErrorChannelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11003` | `AgoraRtmErrorChannelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `AgoraRtmErrorChannelReused` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `AgoraRtmErrorChannelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `AgoraRtmErrorChannelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `AgoraRtmErrorChannelJoinFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
+| `-11008` | `AgoraRtmErrorChannelInvalidTopicName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
+| `-11009` | `AgoraRtmErrorChannelInvalidMessage` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `AgoraRtmErrorChannelMessageLengthExceedLimitation` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2" /> |
+| `-11011` | `AgoraRtmErrorChannelInvalidUserList` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2" /> |
+| `-11012` | `AgoraRtmErrorChannelNotAvailable` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `AgoraRtmErrorChannelTopicNotSubscribed` | 未订阅该 Topic。 |
+| `-11014` | `AgoraRtmErrorChannelExceedTopicLimitation` | Topic 数量超出限制。 |
+| `-11015` | `AgoraRtmErrorChannelJoinTopicFailed` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `AgoraRtmErrorChannelTopicNotJoined` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `AgoraRtmErrorChannelTopicNotExist` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `AgoraRtmErrorChannelInvalidTopicMeta` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `AgoraRtmErrorChannelSubscribeTimeout` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `AgoraRtmErrorChannelSubscribeTooFrequent` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `AgoraRtmErrorChannelSubscribeFailed` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `AgoraRtmErrorChannelUnsubscribeFailed` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `AgoraRtmErrorChannelEncryptMessageFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2" /> |
+| `-11024` | `AgoraRtmErrorChannelPublishMessageFailed` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `AgoraRtmErrorChannelPublishMessageTimeout` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `AgoraRtmErrorChannelNotConnected` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `AgoraRtmErrorChannelLeaveFailed` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `AgoraRtmErrorChannelCustomTypeLengthOverflow` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `AgoraRtmErrorChannelInvalidCustomType` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `AgoraRtmErrorChannelUnsupportedMessageType` | 消息类型不支持。 |
+| `-11032` | `AgoraRtmErrorChannelPresenceNotReady` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` | `AgoraRtmErrorChannelReceiverOffline` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2" /> |
+| `-11034` | `AgoraRtmErrorChannelJoinCanceled` | 加入频道操作已取消。调用 `joinWithOption` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-11035` | `AgoraRtmErrorChannelReceiverOfflineButMessageStoreSucceeded` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
+| `-11036` | `AgoraRtmErrorChannelReceiverOfflineAndMessageStoreFailed` | 接收端已下线，但历史消息存储失败。 |
+| `-11037` | `AgoraRtmErrorChannelMessageDeliveredButStoreFailed` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-12001` | `AgoraRtmErrorStorageOperationFailed` | Storage 操作失败。 |
+| `-12002` | `AgoraRtmErrorStorageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `AgoraRtmErrorStorageInvalidMetadataItem` | 无效 Metadata Item。 |
+| `-12004` | `AgoraRtmErrorStorageInvalidArgument` | 无效参数。 |
+| `-12005` | `AgoraRtmErrorStorageInvalidRevision` | 无效 Revision 参数。 |
+| `-12006` | `AgoraRtmErrorStorageMetadataLengthOverflow` | Metadata 长度溢出。 |
+| `-12007` | `AgoraRtmErrorStorageInvalidLockName` | 无效 Lock 名称。 |
+| `-12008` | `AgoraRtmErrorStorageLockNotAcquired` | 未获取该 Lock。 |
+| `-12009` | `AgoraRtmErrorStorageInvalidKey` | 无效 Metadata 键。 |
+| `-12010` | `AgoraRtmErrorStorageInvalidValue` | 无效 Metadata 值。 |
+| `-12011` | `AgoraRtmErrorStorageKeyLengthOverflow` | Metadata 键长度溢出。 |
+| `-12012` | `AgoraRtmErrorStorageValueLengthOverflow` | Metadata 值长度溢出。 |
+| `-12013` | `AgoraRtmErrorStorageDuplicateKey` | 重复的 Metadata Item 键。 |
+| `-12014` | `AgoraRtmErrorStorageOutdatedRevision` | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` | `AgoraRtmErrorStorageNotSubscribe` | 未订阅该频道。 |
+| `-12016` | `AgoraRtmErrorStorageInvalidMetadataInstance` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `AgoraRtmErrorStorageSubscribeUserExceedLimitation` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `AgoraRtmErrorStorageOperationTimeout` | Storage 操作超时。 |
+| `-12019` | `AgoraRtmErrorStorageNotAvailable` | Storage 服务不可用。 |
+| `-13001` | `AgoraRtmErrorPresenceNotConnected` | 用户未连接到系统。 |
+| `-13002` | `AgoraRtmErrorPresenceNotWritable` | Presence 服务不可用。 |
+| `-13003` | `AgoraRtmErrorPresenceInvalidArgument` | 无效参数。 |
+| `-13004` | `AgoraRtmErrorPresenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `AgoraRtmErrorPresenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `AgoraRtmErrorPresenceInvalidStateKey` | 无效状态键。 |
+| `-13007` | `AgoraRtmErrorPresenceInvalidStateValue` | 无效状态值。 |
+| `-13008` | `AgoraRtmErrorPresenceStateKeySizeOverflow` | 状态键长度溢出。 |
+| `-13009` | `AgoraRtmErrorPresenceStateValueSizeOverflow` | 状态值长度溢出 |
+| `-13010` | `AgoraRtmErrorPresenceStateDuplicateKey` | 重复的状态键。 |
+| `-13011` | `AgoraRtmErrorPresenceUserNotExist` | 该用户不存在。 |
+| `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | Presence 操作超时。 |
+| `-13013` | `AgoraRtmErrorPresenceOperationFailed` | Presence 操作失败。 |
+| `-14001` | `AgoraRtmErrorLockOperationFailed` | Lock 操作失败。 |
+| `-14002` | `AgoraRtmErrorLockOperationTimeout` | Lock 操作超时。 |
+| `-14003` | `AgoraRtmErrorLockOperationPerforming` | Lock 操作进行中。 |
+| `-14004` | `AgoraRtmErrorLockAlreadyExist` | Lock 已存在。 |
+| `-14005` | `AgoraRtmErrorLockInvalidName` | 无效 Lock 名。 |
+| `-14006` | `AgoraRtmErrorLockNotAcquired` | 未获取该 Lock。 |
+| `-14007` | `AgoraRtmErrorLockAcquireFailed` | 获取该 Lock 失败。 |
+| `-14008` | `AgoraRtmErrorLockNotExist` | 该 Lock 不存在。 |
+| `-14009` | `AgoraRtmErrorLockNotAvailable` | Lock 服务不可用。 |
+| `-15001` | `AgoraRtmErrorHistoryOperationFailed` | 历史消息的操作失败。 |
+| `-15002` | `AgoraRtmErrorHistoryInvalidTimestamp` | 历史消息的时间戳无效。 |
+| `-15003` | `AgoraRtmErrorHistoryOperationTimeout` | 历史消息的操作超时。 |
+| `-15004` | `AgoraRtmErrorHistoryOperationNotPermitted` | 没有权限进行历史消息的操作。 |
+| `-15005` | `AgoraRtmErrorHistoryNotAvailable` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `AgoraRtmChannelTypeMessage`: Message Channel
+    - `AgoraRtmChannelTypeStream`: Stream Channel
+
+    - `AgoraRtmChannelTypeUser`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `loginByToken` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RTMConfig` 中的 `LogConfig` 来开启日志输出并设置日志信息等级，之后即可在浏览器的控制台中查看日志信息。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const rtmConfig = { logLevel : 'debug' };
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+`logLevel` 字段可以设置为 `debug`、`info`、`warn`、`error`、`none` 五个等级之一，其中 `debug` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `info`。
+:::
+
+## 开启日志上传
+
+当你遇到在本地调试无法解决的错误时，可以联系声网技术支持协助你排查问题。此时，你需要开启日志上传功能，声网技术支持会根据你的日志信息来定位错误原因。你需要在初始化 RTM 实例的时候通过设置 `rtmConfig` 参数中的 `logUpload` 参数开启日志上传功能。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const rtmConfig = {
+    logLevel : "debug",
+    logUpload : true
+    };
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+:::info[信息]
+为避免产生不必要的存储计费，你需要在故障解决后及时关闭日志上传功能。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+RTM JavaScript SDK 支持并推荐你使用 Async/Await 编程模式，以便在业务中处理 JavaScript 异步操作。在调用 RTM JavaScript API 时，如果发生错误，SDK 会抛出一个 `ErrorInfo` 类型的错误对象，你需要使用 `try...catch` 捕获该对象。`ErrorInfo` 包含以下属性：
+
+```javascript showLineNumbers
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+如果 API 调用失败，则 SDK 会通过 `ErrorInfo` 的 `errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `RTM_ERROR_OK` | 正确调用。 |
+| `-10002` | `RTM_ERROR_NOT_LOGIN` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `RTM_ERROR_INVALID_APP_ID` | <Slot name="error-codes-javascript-html-0-3-2" /> |
+| `-10005` | `RTM_ERROR_INVALID_TOKEN` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `RTM_ERROR_INVALID_USER_ID` | <Slot name="error-codes-javascript-html-0-5-2" /> |
+| `-10008` | `RTM_ERROR_INVALID_CHANNEL_NAME` | <Slot name="error-codes-javascript-html-0-6-2" /> |
+| `-10009` | `RTM_ERROR_TOKEN_EXPIRED` | Token 过期失效。你需要先调用 `logout` 方法登出 RTM 系统，然后使用新的 Token 创建 RTM 实例，再调用 `login` 方法重新登录 RTM 系统。 |
+| `-10010` | `RTM_ERROR_LOGIN_NO_SERVER_RESOURCES` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `RTM_ERROR_LOGIN_TIMEOUT` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `RTM_ERROR_LOGIN_REJECTED` | <Slot name="error-codes-javascript-html-0-10-2" /> |
+| `-10013` | `RTM_ERROR_LOGIN_ABORTED` | <Slot name="error-codes-javascript-html-0-11-2" /> |
+| `-10015` | `RTM_ERROR_LOGIN_NOT_AUTHORIZED` | <Slot name="error-codes-javascript-html-0-12-2" /> |
+| `-10017` | `RTM_ERROR_DUPLICATE_OPERATION` | 重复操作。 |
+| `-10018` | `RTM_ERROR_INSTANCE_ALREADY_RELEASED` | 重复释放 `rtm` 实例或 `RTMStreamChannel` 实例。 |
+| `-10019` | `RTM_ERROR_INVALID_CHANNEL_TYPE` | <Slot name="error-codes-javascript-html-0-15-2" /> |
+| `-10020` | `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-javascript-html-0-16-2" /> |
+| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `RTM_ERROR_SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `ServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-javascript-html-0-19-2" /> |
+| `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-javascript-html-0-22-2" /> |
+| `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-javascript-html-0-23-2" /> |
+| `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
+| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | <Slot name="error-codes-javascript-html-0-27-2" /> |
+| `-11008` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-javascript-html-0-28-2" /> |
+| `-11009` | `RTM_ERROR_CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `RTM_ERROR_CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | <Slot name="error-codes-javascript-html-0-30-2" /> |
+| `-11012` | `RTM_ERROR_CHANNEL_NOT_AVAILABLE` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `RTM_ERROR_CHANNEL_TOPIC_NOT_SUBSCRIBED` | 未订阅该 Topic。 |
+| `-11014` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_LIMITATION` | Topic 数量超出限制。 |
+| `-11015` | `RTM_ERROR_CHANNEL_JOIN_TOPIC_FAILED` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `RTM_ERROR_CHANNEL_TOPIC_NOT_JOINED` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `RTM_ERROR_CHANNEL_TOPIC_NOT_EXIST` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_META` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TIMEOUT` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TOO_FREQUENT` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `RTM_ERROR_CHANNEL_SUBSCRIBE_FAILED` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11023` | `RTM_ERROR_CHANNEL_ENCRYPT_MESSAGE_FAILED` | <Slot name="error-codes-javascript-html-0-41-2" /> |
+| `-11024` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_FAILED` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | 消息发布超时。检查连接是否断开。 |
+| `-11028` | `RTM_ERROR_CHANNEL_LEAVE_FAILED` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-javascript-html-0-47-2" /> |
+| `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
+| `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
+| `-12004` | `RTM_ERROR_STORAGE_INVALID_ARGUMENT` | 无效参数。 |
+| `-12005` | `RTM_ERROR_STORAGE_INVALID_REVISION` | 无效 Revision 参数。 |
+| `-12006` | `RTM_ERROR_STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata 长度溢出。 |
+| `-12007` | `RTM_ERROR_STORAGE_INVALID_LOCK_NAME` | 无效 Lock 名称。 |
+| `-12008` | `RTM_ERROR_STORAGE_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-12009` | `RTM_ERROR_STORAGE_INVALID_KEY` | 无效 Metadata 键。 |
+| `-12010` | `RTM_ERROR_STORAGE_INVALID_VALUE` | 无效 Metadata 值。 |
+| `-12011` | `RTM_ERROR_STORAGE_KEY_LENGTH_OVERFLOW` | Metadata 键长度溢出。 |
+| `-12012` | `RTM_ERROR_STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata 值长度溢出。 |
+| `-12014` | `RTM_ERROR_STORAGE_OUTDATED_REVISION` | 过时的 Revision 参数。 |
+| `-12015` | `RTM_ERROR_STORAGE_NOT_SUBSCRIBE` | 未订阅该频道。 |
+| `-12017` | `RTM_ERROR_STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `RTM_ERROR_STORAGE_OPERATION_TIMEOUT` | Storage 操作超时。 |
+| `-12019` | `RTM_ERROR_STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
+| `-13001` | `RTM_ERROR_PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
+| `-13003` | `RTM_ERROR_PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
+| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `RTM_ERROR_PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
+| `-13008` | `RTM_ERROR_PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
+| `-13010` | `RTM_ERROR_PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
+| `-13009` | `RTM_ERROR_PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | 状态值长度溢出 |
+| `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
+| `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock 操作失败。 |
+| `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
+| `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
+| `-14004` | `RTM_ERROR_LOCK_ALREADY_EXIST` | Lock 已存在。 |
+| `-14005` | `RTM_ERROR_LOCK_INVALID_NAME` | 无效 Lock 名。 |
+| `-14006` | `RTM_ERROR_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-14007` | `RTM_ERROR_LOCK_ACQUIRE_FAILED` | 获取该 Lock 失败。 |
+| `-14008` | `RTM_ERROR_LOCK_NOT_EXIST` | 该 Lock 不存在。 |
+| `-14009` | `RTM_ERROR_LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
+| `-15001` | `RTM_ERROR_HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
+| `-15003` | `RTM_ERROR_HISTORY_OPERATION_TIMEOUT` | 历史消息操作过时。 |
+| `-15005` | `RTM_ERROR_HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-javascript-html-0-3-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-5-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-6-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-10-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-11-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-12-2">
+
+没有 RTM 服务权限。可能的原因有：
+
+    - 未在控制台启用 RTM 服务。
+    - 服务已欠费。
+    - 账号被封停。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-15-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+    - `USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-16-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为 String 型。
+    - 检查生成的加密盐是否为 Uint8Array 型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-19-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-22-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-23-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-27-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-28-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-30-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-41-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-javascript-html-0-47-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```typescript
+import { RtmClient, RtmConfig, RtmLogConfig, RtmLogLevel } from '@shengwang/rtm-full';
+
+// Configure log settings
+const logConfig: RtmLogConfig = {
+  filePath: 'your_log_path',
+  fileSizeInKB: 10240, // 10MB
+  level: RtmLogLevel.INFO
+};
+
+// Create RTM configuration
+const config: RtmConfig = {
+  appId: 'your_appid',
+  userId: 'your_userid',
+  logConfig: logConfig
+};
+
+try {
+  const rtmClient = new RtmClient(config);
+  console.log('RTM Client initialized successfully');
+} catch (error) {
+  console.error('Failed to create RTM client:', error);
+}
+```
+
+`level` 字段可以设置为 `RtmLogLevel.INFO`、`RtmLogLevel.WARN`、`RtmLogLevel.ERROR`、`RtmLogLevel.FATAL`、`RtmLogLevel.NONE` 五个等级之一，其中 `RtmLogLevel.INFO` 输出最详细的日志信息，`RtmLogLevel.NONE` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `INFO`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` |  | 正确调用。 |
+| `-10001` |  | SDK 未初始化。请在调用 `RtmClient` 方法初始化 RTM 实例后再执行其他操作。 |
+| `-10002` |  | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` |  | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` |  | SDK 初始化失败。请重新调用 `RtmClient` 方法进行初始化。 |
+| `-10008` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` |  | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` |  | 服务器资源受限。建议重新登录。 |
+| `-10011` |  | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` |  | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` |  | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` |  | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` |  | 重复操作。 |
+| `-10018` |  | 重复调用 `release` 方法释放 `RtmClient` 实例或重复调用 `release` 释放 `StreamChannel` 实例。 |
+| `-10019` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` |  | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` |  | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-10024` |  | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` |  | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` |  | 更新 Token 超时。 |
+| `-11001` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
+| `-11002` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11003` |  | 订阅该 Topic 人数超出限制。 |
+| `-11004` |  | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` |  | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` |  | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
+| `-11008` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
+| `-11009` |  | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2" /> |
+| `-11011` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2" /> |
+| `-11012` |  | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` |  | 未订阅该 Topic。 |
+| `-11014` |  | Topic 数量超出限制。 |
+| `-11015` |  | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` |  | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` |  | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` |  | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` |  | 频道订阅超时。检查连接是否断开。 |
+| `-11020` |  | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` |  | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` |  | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2" /> |
+| `-11024` |  | 消息发布失败。检查连接是否断开。 |
+| `-11026` |  | 消息发布超时。检查连接是否断开。 |
+| `-11027` |  | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` |  | 离开频道失败。检查连接是否断开。 |
+| `-11029` |  | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` |  | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` |  | 消息类型不支持。 |
+| `-11032` |  | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` |  | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2" /> |
+| `-11034` |  | 加入频道操作已取消。调用 `join` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-11035` |  | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
+| `-11036` |  | 接收端已下线，但历史消息存储失败。 |
+| `-11037` |  | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-12001` |  | Storage 操作失败。 |
+| `-12002` |  | Storage Metadata Item 数量超出限制。 |
+| `-12003` |  | 无效 Metadata Item。 |
+| `-12004` |  | 无效参数。 |
+| `-12005` |  | 无效 Revision 参数。 |
+| `-12006` |  | Metadata 长度溢出。 |
+| `-12007` |  | 无效 Lock 名称。 |
+| `-12008` |  | 未获取该 Lock。 |
+| `-12009` |  | 无效 Metadata 键。 |
+| `-12010` |  | 无效 Metadata 值。 |
+| `-12011` |  | Metadata 键长度溢出。 |
+| `-12012` |  | Metadata 值长度溢出。 |
+| `-12013` |  | 重复的 Metadata Item 键。 |
+| `-12014` |  | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` |  | 未订阅该频道。 |
+| `-12016` |  | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` |  | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` |  | Storage 操作超时。 |
+| `-12019` |  | Storage 服务不可用。 |
+| `-13001` |  | 用户未连接到系统。 |
+| `-13002` |  | Presence 服务不可用。 |
+| `-13003` |  | 无效参数。 |
+| `-13004` |  | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` |  | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` |  | 无效状态键。 |
+| `-13007` |  | 无效状态值。 |
+| `-13008` |  | 状态键长度溢出。 |
+| `-13009` |  | 状态值长度溢出 |
+| `-13010` |  | 重复的状态键。 |
+| `-13011` |  | 该用户不存在。 |
+| `-13012` |  | Presence 操作超时。 |
+| `-13013` |  | Presence 操作失败。 |
+| `-14001` |  | Lock 操作失败。 |
+| `-14002` |  | Lock 操作超时。 |
+| `-14003` |  | Lock 操作进行中。 |
+| `-14004` |  | Lock 已存在。 |
+| `-14005` |  | 无效 Lock 名。 |
+| `-14006` |  | 未获取该 Lock。 |
+| `-14007` |  | 获取该 Lock 失败。 |
+| `-14008` |  | 该 Lock 不存在。 |
+| `-14009` |  | Lock 服务不可用。 |
+| `-15001` |  | 历史消息的操作失败。 |
+| `-15002` |  | 历史消息的时间戳无效。 |
+| `-15003` |  | 历史消息的操作超时。 |
+| `-15004` |  | 没有权限进行历史消息的操作。 |
+| `-15005` |  | 历史消息服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+
+    - `USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```csharp showLineNumbers
+using Agora.Rtm;
+private IRtmClient rtmClient;
+LogConfig logConfig = new LogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+RtmConfig config = new RtmConfig();
+// initialize logconfig.
+config.logConfig = logConfig;
+config.appId = "your_appId";
+config.userId = "your_userId";
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+`level` 字段可以设置为 `debug`、`info`、`warn`、`error`、`none` 五个等级之一，其中 `debug` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `INFO`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `OK` | 正确调用。 |
+| `-10001` | `NOT_INITIALIZED` | SDK 未初始化。请在调用 `CreateAgoraRtmClient` 方法初始化 RTM 实例后再执行其他操作。 |
+| `-10002` | `NOT_LOGIN` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `INVALID_APP_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` | `INVALID_TOKEN` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `INVALID_USER_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` | `INIT_SERVICE_FAILED` | SDK 初始化失败。请重新调用 `CreateAgoraRtmClient` 方法进行初始化。 |
+| `-10008` | `INVALID_CHANNEL_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` | `TOKEN_EXPIRED` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `LOGIN_NO_SERVER_RESOURCES` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `LOGIN_TIMEOUT` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `LOGIN_REJECTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` | `LOGIN_ABORTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` | `INVALID_PARAMETER` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `LOGIN_NOT_AUTHORIZED` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `INCONSISTENT_APPID` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `DUPLICATE_OPERATION` | 重复操作。 |
+| `-10018` | `INSTANCE_ALREADY_RELEASED` | 重复调用 `Dispose` 方法释放 `IRtmClient` 实例或重复调用 `Dispose` 释放 `IStreamChannel` 实例。 |
+| `-10019` | `INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` | `INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` | `OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-11001` | `CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-22-2" /> |
+| `-11002` | `CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-11003` | `CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11008` | `CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-29-2" /> |
+| `-11009` | `CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-31-2" /> |
+| `-11011` | `CHANNEL_INVALID_USER_LIST` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-32-2" /> |
+| `-11012` | `CHANNEL_NOT_AVAILABLE` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `CHANNEL_TOPIC_NOT_SUBSCRIBED` | 未订阅该 Topic。 |
+| `-11014` | `CHANNEL_EXCEED_TOPIC_LIMITATION` | Topic 数量超出限制。 |
+| `-11015` | `CHANNEL_JOIN_TOPIC_FAILED` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `CHANNEL_TOPIC_NOT_JOINED` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `CHANNEL_TOPIC_NOT_EXIST` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `CHANNEL_INVALID_TOPIC_META` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `CHANNEL_SUBSCRIBE_TIMEOUT` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `CHANNEL_SUBSCRIBE_TOO_FREQUENT` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `CHANNEL_SUBSCRIBE_FAILED` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `CHANNEL_UNSUBSCRIBE_FAILED` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `CHANNEL_ENCRYPT_MESSAGE_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-44-2" /> |
+| `-11024` | `CHANNEL_PUBLISH_MESSAGE_FAILED` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `CHANNEL_NOT_CONNECTED` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `CHANNEL_LEAVE_FAILED` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `CHANNEL_UNSUPPORTED_MESSAGE_TYPE` | 消息类型不支持。 |
+| `-11032` | `CHANNEL_PRESENCE_NOT_READY` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` | `CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-53-2" /> |
+| `-12001` | `STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
+| `-12002` | `STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
+| `-12004` | `STORAGE_INVALID_ARGUMENT` | 无效参数。 |
+| `-12005` | `STORAGE_INVALID_REVISION` | 无效 Revision 参数。 |
+| `-12006` | `STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata 长度溢出。 |
+| `-12007` | `STORAGE_INVALID_LOCK_NAME` | 无效 Lock 名称。 |
+| `-12008` | `STORAGE_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-12009` | `STORAGE_INVALID_KEY` | 无效 Metadata 键。 |
+| `-12010` | `STORAGE_INVALID_VALUE` | 无效 Metadata 值。 |
+| `-12011` | `STORAGE_KEY_LENGTH_OVERFLOW` | Metadata 键长度溢出。 |
+| `-12012` | `STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata 值长度溢出。 |
+| `-12013` | `STORAGE_DUPLICATE_KEY` | 重复的 Metadata Item 键。 |
+| `-12014` | `STORAGE_OUTDATED_REVISION` | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` | `STORAGE_NOT_SUBSCRIBE` | 未订阅该频道。 |
+| `-12016` | `STORAGE_INVALID_METADATA_INSTANCE` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `STORAGE_OPERATION_TIMEOUT` | Storage 操作超时。 |
+| `-12019` | `STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
+| `-13001` | `PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
+| `-13002` | `PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
+| `-13003` | `PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
+| `-13004` | `PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
+| `-13007` | `PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
+| `-13008` | `PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
+| `-13009` | `PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | 状态值长度溢出 |
+| `-13010` | `PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
+| `-13011` | `PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
+| `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-14001` | `LOCK_OPERATION_FAILED` | Lock 操作失败。 |
+| `-14002` | `LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
+| `-14003` | `LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
+| `-14004` | `LOCK_ALREADY_EXIST` | Lock 已存在。 |
+| `-14005` | `LOCK_INVALID_NAME` | 无效 Lock 名。 |
+| `-14006` | `LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-14007` | `LOCK_ACQUIRE_FAILED` | 获取该 Lock 失败。 |
+| `-14008` | `LOCK_NOT_EXIST` | 该 Lock 不存在。 |
+| `-14009` | `LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-22-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-29-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-31-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-32-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-44-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-53-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在浏览器的控制台中查看日志信息。
+
+```dart
+const logConfig = RtmLogConfig(
+    filePath: './rtm_logfile/',
+    fileSizeInKB: 1024,
+    level: warn );
+
+const rtmConfig = RtmConfig( logConfig:logConfig );
+```
+
+`level` 字段可以设置为 `info`、`warn`、`error`、`fatal`、`none` 五个等级之一，其中 `info` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `info`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `ok` | 正确调用。 |
+| `-10001` | `notInitialized` | SDK 未初始化。请初始化 RTM 实例后再执行其他操作。 |
+| `-10002` | `notLogin` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `invalidAppId` | <Slot name="error-codes-flutter-html-0-4-2" /> |
+| `-10005` | `invalidToken` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `invalidUserId` | <Slot name="error-codes-flutter-html-0-6-2" /> |
+| `-10007` | `initServiceFailed` | SDK 初始化失败。请重新初始化 RTM 实例。 |
+| `-10008` | `invalidChannelName` | <Slot name="error-codes-flutter-html-0-8-2" /> |
+| `-10009` | `tokenExpired` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `loginNoServerResources` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `loginTimeout` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `loginRejected` | <Slot name="error-codes-flutter-html-0-12-2" /> |
+| `-10013` | `loginAborted` | <Slot name="error-codes-flutter-html-0-13-2" /> |
+| `-10014` | `invalidParameter` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `loginNotAuthorized` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `inconsistentAppid` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `duplicateOperation` | 重复操作。 |
+| `-10018` | `instanceAlreadyReleased` | 重复调用 `release` 方法释放 `RtmClient` 实例或重复调用 `release` 释放 `StreamChannel` 实例。 |
+| `-10019` | `invalidChannelType` | <Slot name="error-codes-flutter-html-0-19-2" /> |
+| `-10020` | `invalidEncryptionParameter` | <Slot name="error-codes-flutter-html-0-20-2" /> |
+| `-10021` | `operationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `serviceNotSupported` | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `loginCanceled` | <Slot name="error-codes-flutter-html-0-23-2" /> |
+| `-10024` | `invalidPrivateConfig` | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` | `notConnected` | 未连接 RTM 服务器。 |
+| `-10026` | `renewTokenTimeout` | 更新 Token 超时。 |
+| `-11001` | `channelNotJoined` | <Slot name="error-codes-flutter-html-0-27-2" /> |
+| `-11002` | `channelNotSubscribed` | <Slot name="error-codes-flutter-html-0-28-2" /> |
+| `-11003` | `channelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `channelInReuse` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `channelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel/User Channel。 |
+| `-11007` | `channelJoinFailed` | <Slot name="error-codes-flutter-html-0-33-2" /> |
+| `-11008` | `channelInvalidTopicName` | <Slot name="error-codes-flutter-html-0-34-2" /> |
+| `-11009` | `channelInvalidMessage` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `channelMessageLengthExceedLimitation` | <Slot name="error-codes-flutter-html-0-36-2" /> |
+| `-11011` | `channelInvalidUserList` | <Slot name="error-codes-flutter-html-0-37-2" /> |
+| `-11012` | `channelNotAvailable` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `channelTopicNotSubscribed` | 未订阅该 Topic。 |
+| `-11014` | `channelExceedTopicLimitation` | Topic 数量超出限制。 |
+| `-11015` | `channelJoinTopicFailed` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `channelTopicNotJoined` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `channelTopicNotExist` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `channelInvalidTopicMeta` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `channelSubscribeTimeout` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `channelSubscribeTooFrequent` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `channelSubscribeFailed` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `channelUnsubscribeFailed` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `channelEncryptMessageFailed` | <Slot name="error-codes-flutter-html-0-49-2" /> |
+| `-11024` | `channelPublishMessageFailed` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `channelPublishMessageTimeout` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `channelNotConnected` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `channelLeaveFailed` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `channelCustomTypeLengthOverflow` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `channelInvalidCustomType` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `channelUnsupportedMessageType` | 消息类型不支持。 |
+| `-11032` | `channelPresenceNotReady` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel/User Channel。 |
+| `-11033` | `channelReceiverOffline` | <Slot name="error-codes-flutter-html-0-58-2" /> |
+| `-11034` | `channelJoinCanceled` | 加入频道操作已取消。调用 `join` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-12001` | `storageOperationFailed` | Storage 操作失败。 |
+| `-12002` | `storageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `storageInvalidMetadataItem` | 无效 Metadata Item。 |
+| `-12004` | `storageInvalidArgument` | 无效参数。 |
+| `-12005` | `storageInvalidRevision` | 无效 Revision 参数。 |
+| `-12006` | `storageMetadataLengthOverflow` | Metadata 长度溢出。 |
+| `-12007` | `storageInvalidLockName` | 无效 Lock 名称。 |
+| `-12008` | `storageLockNotAcquired` | 未获取该 Lock。 |
+| `-12009` | `storageInvalidKey` | 无效 Metadata 键。 |
+| `-12010` | `storageInvalidValue` | 无效 Metadata 值。 |
+| `-12011` | `storageKeyLengthOverflow` | Metadata 键长度溢出。 |
+| `-12012` | `storageValueLengthOverflow` | Metadata 值长度溢出。 |
+| `-12013` | `storageDuplicateKey` | 重复的 Metadata Item 键。 |
+| `-12014` | `storageOutdatedRevision` | 过时的 Revision 参数。 |
+| `-12015` | `storageNotSubscribe` | 未订阅该频道。 |
+| `-12016` | `storageInvalidMetadataInstance` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `storageSubscribeUserExceedLimitation` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `storageOperationTimeout` | Storage 操作超时。 |
+| `-12019` | `storageNotAvailable` | Storage 服务不可用。 |
+| `-13001` | `presenceNotConnected` | 用户未连接到系统。 |
+| `-13002` | `presenceNotWritable` | Presence 服务不可用。 |
+| `-13003` | `presenceInvalidArgument` | 无效参数。 |
+| `-13004` | `presenceCachedTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `presenceInvalidStateKey` | 无效状态键。 |
+| `-13007` | `presenceInvalidStateValue` | 无效状态值。 |
+| `-13008` | `presenceStateKeySizeOverflow` | 状态键长度溢出。 |
+| `-13009` | `presenceStateValueSizeOverflow` | 状态值长度溢出 |
+| `-13010` | `presenceStateDuplicateKey` | 重复的状态键。 |
+| `-13011` | `presenceUserNotExist` | 该用户不存在。 |
+| `-13012` | `presenceOperationTimeout` | Presence 操作超时。 |
+| `-13013` | `presenceOperationFailed` | Presence 操作失败。 |
+| `-14001` | `lockOperationFailed` | Lock 操作失败。 |
+| `-14002` | `lockOperationTimeout` | Lock 操作超时。 |
+| `-14003` | `lockOperationPerforming` | Lock 操作进行中。 |
+| `-14004` | `lockAlreadyExist` | Lock 已存在。 |
+| `-14005` | `lockInvalidName` | 无效 Lock 名。 |
+| `-14006` | `lockNotAcquired` | 未获取该 Lock。 |
+| `-14007` | `lockAcquireFailed` | 获取该 Lock 失败。 |
+| `-14008` | `lockNotExist` | 该 Lock 不存在。 |
+| `-14009` | `lockNotAvailable` | Lock 服务不可用。 |
+| `-15001` | `historyOperationFailed` | 历史消息的操作失败。 |
+| `-15002` | `historyInvalidTimestamp` | 历史消息的时间戳无效。 |
+| `-15003` | `historyOperationTimeout` | 历史消息的操作超时。 |
+| `-15004` | `historyOperationNotPermitted` | 没有权限进行历史消息的操作。 |
+| `-15005` | `historyNotAvailable` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-flutter-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户名是否为空。
+    - 检查用户名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `message`: Message Channel
+    - `stream`: Stream Channel
+
+    - `user`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 和 User Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-flutter-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `RtmConfig` 中的 `RtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```cpp
+RtmConfig config;
+config.appId = "your_appid"
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+config.logConfig.level = RTM_LOG_LEVEL_INFO;
+config.logConfig.filePath = "your_path";
+config.logConfig.fileSizeInKB = 10 * 1024;
+
+int errorCode = 0;
+rtmClient_ = createAgoraRtmClient(config, errorCode);
+if (!rtmClient_ || errorCode != 0) {
+    std::cout << RED <<"error creating rtm service!" << std::endl;
+    exit(0);
+}
+```
+
+`level` 字段可以设置为 `debug`、`info`、`warn`、`error`、`none` 五个等级之一，其中 `debug` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `RTM_LOG_LEVEL_INFO`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `RTM_ERROR_OK` | 正确调用。 |
+| `-10001` | `RTM_ERROR_NOT_INITIALIZED` | SDK 未初始化。请在调用 `createAgoraRtmClient` 方法初始化 RTM 实例后再执行其他操作。 |
+| `-10002` | `RTM_ERROR_NOT_LOGIN` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `RTM_ERROR_INVALID_APP_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` | `RTM_ERROR_INVALID_TOKEN` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `RTM_ERROR_INVALID_USER_ID` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` | `RTM_ERROR_INIT_SERVICE_FAILED` | SDK 初始化失败。请重新调用 `createAgoraRtmClient` 方法进行初始化。 |
+| `-10008` | `RTM_ERROR_INVALID_CHANNEL_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` | `RTM_ERROR_TOKEN_EXPIRED` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `RTM_ERROR_LOGIN_NO_SERVER_RESOURCES` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `RTM_ERROR_LOGIN_TIMEOUT` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `RTM_ERROR_LOGIN_REJECTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` | `RTM_ERROR_LOGIN_ABORTED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` | `RTM_ERROR_INVALID_PARAMETER` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `RTM_ERROR_LOGIN_NOT_AUTHORIZED` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `RTM_ERROR_INCONSISTENT_APPID` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `RTM_ERROR_DUPLICATE_OPERATION` | 重复操作。 |
+| `-10018` | `RTM_ERROR_INSTANCE_ALREADY_RELEASED` | 重复调用 `release` 方法释放 `IRtmClient` 实例或重复调用 `release` 释放 `IStreamChannel` 实例。 |
+| `-10019` | `RTM_ERROR_INVALID_CHANNEL_TYPE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` | `RTM_ERROR_INVALID_ENCRYPTION_PARAMETER` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` | `RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `RTM_ERROR_SERVICE_NOT_SUPPORTED` | 服务类型不支持。请检查你在 `RTM_SERVICE_TYPE` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-10024` | `RTM_ERROR_INVALID_PRIVATE_CONFIG` | 私有化部署参数设置无效。请检查你在 `RtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
+| `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `RTM_ERROR_CHANNEL_IN_REUSE` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
+| `-11008` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_NAME` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
+| `-11009` | `RTM_ERROR_CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `RTM_ERROR_CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2" /> |
+| `-11011` | `RTM_ERROR_CHANNEL_INVALID_USER_LIST` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2" /> |
+| `-11012` | `RTM_ERROR_CHANNEL_NOT_AVAILABLE` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `RTM_ERROR_CHANNEL_TOPIC_NOT_SUBSCRIBED` | 未订阅该 Topic。 |
+| `-11014` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_LIMITATION` | Topic 数量超出限制。 |
+| `-11015` | `RTM_ERROR_CHANNEL_JOIN_TOPIC_FAILED` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `RTM_ERROR_CHANNEL_TOPIC_NOT_JOINED` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `RTM_ERROR_CHANNEL_TOPIC_NOT_EXIST` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `RTM_ERROR_CHANNEL_INVALID_TOPIC_META` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TIMEOUT` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `RTM_ERROR_CHANNEL_SUBSCRIBE_TOO_FREQUENT` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `RTM_ERROR_CHANNEL_SUBSCRIBE_FAILED` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `RTM_ERROR_CHANNEL_UNSUBSCRIBE_FAILED` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `RTM_ERROR_CHANNEL_ENCRYPT_MESSAGE_FAILED` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2" /> |
+| `-11024` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_FAILED` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `RTM_ERROR_CHANNEL_PUBLISH_MESSAGE_TIMEOUT` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `RTM_ERROR_CHANNEL_NOT_CONNECTED` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `RTM_ERROR_CHANNEL_LEAVE_FAILED` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `RTM_ERROR_CHANNEL_UNSUPPORTED_MESSAGE_TYPE` | 消息类型不支持。 |
+| `-11032` | `RTM_ERROR_CHANNEL_PRESENCE_NOT_READY` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2" /> |
+| `-11034` | `RTM_ERROR_CHANNEL_JOIN_CANCELED` | 加入频道操作已取消。调用 `join` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-11035` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_BUT_STORE_SUCCEEDED` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
+| `-11036` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_AND_STORE_FAILED` | 接收端已下线，但历史消息存储失败。 |
+| `-11037` | `RTM_ERROR_CHANNEL_MESSAGE_DELIVERED_BUT_STORE_FAILED` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
+| `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
+| `-12004` | `RTM_ERROR_STORAGE_INVALID_ARGUMENT` | 无效参数。 |
+| `-12005` | `RTM_ERROR_STORAGE_INVALID_REVISION` | 无效 Revision 参数。 |
+| `-12006` | `RTM_ERROR_STORAGE_METADATA_LENGTH_OVERFLOW` | Metadata 长度溢出。 |
+| `-12007` | `RTM_ERROR_STORAGE_INVALID_LOCK_NAME` | 无效 Lock 名称。 |
+| `-12008` | `RTM_ERROR_STORAGE_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-12009` | `RTM_ERROR_STORAGE_INVALID_KEY` | 无效 Metadata 键。 |
+| `-12010` | `RTM_ERROR_STORAGE_INVALID_VALUE` | 无效 Metadata 值。 |
+| `-12011` | `RTM_ERROR_STORAGE_KEY_LENGTH_OVERFLOW` | Metadata 键长度溢出。 |
+| `-12012` | `RTM_ERROR_STORAGE_VALUE_LENGTH_OVERFLOW` | Metadata 值长度溢出。 |
+| `-12013` | `RTM_ERROR_STORAGE_DUPLICATE_KEY` | 重复的 Metadata Item 键。 |
+| `-12014` | `RTM_ERROR_STORAGE_OUTDATED_REVISION` | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` | `RTM_ERROR_STORAGE_NOT_SUBSCRIBE` | 未订阅该频道。 |
+| `-12016` | `RTM_ERROR_STORAGE_INVALID_METADATA_INSTANCE` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `RTM_ERROR_STORAGE_SUBSCRIBE_USER_EXCEED_LIMITATION` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `RTM_ERROR_STORAGE_OPERATION_TIMEOUT` | Storage 操作超时。 |
+| `-12019` | `RTM_ERROR_STORAGE_NOT_AVAILABLE` | Storage 服务不可用。 |
+| `-13001` | `RTM_ERROR_PRESENCE_NOT_CONNECTED` | 用户未连接到系统。 |
+| `-13002` | `RTM_ERROR_PRESENCE_NOT_WRITABLE` | Presence 服务不可用。 |
+| `-13003` | `RTM_ERROR_PRESENCE_INVALID_ARGUMENT` | 无效参数。 |
+| `-13004` | `RTM_ERROR_PRESENCE_CACHED_TOO_MANY_STATES` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `RTM_ERROR_PRESENCE_STATE_COUNT_OVERFLOW` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `RTM_ERROR_PRESENCE_INVALID_STATE_KEY` | 无效状态键。 |
+| `-13007` | `RTM_ERROR_PRESENCE_INVALID_STATE_VALUE` | 无效状态值。 |
+| `-13008` | `RTM_ERROR_PRESENCE_STATE_KEY_SIZE_OVERFLOW` | 状态键长度溢出。 |
+| `-13009` | `RTM_ERROR_PRESENCE_STATE_VALUE_SIZE_OVERFLOW` | 状态值长度溢出 |
+| `-13010` | `RTM_ERROR_PRESENCE_STATE_DUPLICATE_KEY` | 重复的状态键。 |
+| `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
+| `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
+| `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock 操作失败。 |
+| `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
+| `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
+| `-14004` | `RTM_ERROR_LOCK_ALREADY_EXIST` | Lock 已存在。 |
+| `-14005` | `RTM_ERROR_LOCK_INVALID_NAME` | 无效 Lock 名。 |
+| `-14006` | `RTM_ERROR_LOCK_NOT_ACQUIRED` | 未获取该 Lock。 |
+| `-14007` | `RTM_ERROR_LOCK_ACQUIRE_FAILED` | 获取该 Lock 失败。 |
+| `-14008` | `RTM_ERROR_LOCK_NOT_EXIST` | 该 Lock 不存在。 |
+| `-14009` | `RTM_ERROR_LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
+| `-15001` | `RTM_ERROR_HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
+| `-15002` | `RTM_ERROR_HISTORY_INVALID_TIMESTAMP` | 历史消息的时间戳无效。 |
+| `-15003` | `RTM_ERROR_HISTORY_OPERATION_TIMEOUT` | 历史消息的操作超时。 |
+| `-15004` | `RTM_ERROR_HISTORY_OPERATION_NOT_PERMITTED` | 没有权限进行历史消息的操作。 |
+| `-15005` | `RTM_ERROR_HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `RTM_CHANNEL_TYPE_MESSAGE`: Message Channel
+    - `RTM_CHANNEL_TYPE_STREAM`: Stream Channel
+
+    - `RTM_CHANNEL_TYPE_USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+## 开启本地日志
+
+当你的应用处于开发、测试阶段时，你可能需要 SDK 输出更详细的信息来定位并修复问题。你可以在初始化 RTM 实例的时候通过设置 `AgoraRtmClientConfig` 中的 `AgoraRtmLogConfig` 来开启日志输出并设置日志信息等级，之后即可在 IDE 中查看日志信息。
+
+```swift
+let config = AgoraRtmClientConfig(appId: "yourAppId", userId: "uniqueUserId")
+config.logConfig = AgoraRtmLogConfig();
+config.logConfig?.filePath = "your path"
+config.logConfig?.fileSizeInKB = 512
+config.logConfig?.level = .error
+```
+
+`level` 字段可以设置为 `info`、`warn`、`error`、`fatal`、`none` 五个等级之一，其中 `info` 输出最详细的日志信息，`none` 不输出日志信息。
+
+:::info[信息]
+当你的应用上线时，请将日志信息等级设置为 `info`。
+:::
+
+<a id="errorcode"></a>
+## 错误码对照表
+
+在调用 RTM iOS/Swift API 时，如果发生错误，SDK 会执行 `completion` 回调并且返回一个 `AgoraRtmErrorInfo` 类型的 `errorInfo` 返回值：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ------- | --------- |
+| `errorCode` | `AgoraRtmErrorCode` | 本次操作错误码。 |
+| `reason` | NSString | 本次操作出错原因。 |
+| `operation` | NSString | 本次操作类型。 |
+
+其中，`errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `ok` | 正确调用。 |
+| `-10001` | `notInitialized` | SDK 未初始化。请创建 `AgoraRtmClientKit` 实例后再执行其他操作。 |
+| `-10002` | `notLogin` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `invalidAppId` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2" /> |
+| `-10005` | `invalidToken` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `invalidUserId` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2" /> |
+| `-10007` | `initServiceFailed` | SDK 初始化失败。请重新创建 `AgoraRtmClientKit` 实例。 |
+| `-10008` | `invalidChannelName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2" /> |
+| `-10009` | `tokenExpired` | Token 过期失效。你需要调用 `renewToken` 重新获取 Token。 |
+| `-10010` | `loginNoServerResources` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `loginTimeout` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口，详见[防火墙白名单设置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#防火墙白名单设置)。 |
+| `-10012` | `loginRejected` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2" /> |
+| `-10013` | `loginAborted` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2" /> |
+| `-10014` | `invalidParameter` | 参数无效。检查你填写的参数是否正确。 |
+| `-10015` | `loginNotAuthorized` | 没有 RTM 服务权限。检查控制台是否开通 RTM 服务。 |
+| `-10016` | `loginInconsistentAppId` | App ID 不一致。检查初始化、登录、加入频道的 App ID 是否一致。 |
+| `-10017` | `duplicateOperation` | 重复操作。 |
+| `-10018` | `instanceAlreadyReleased` | 重复调用 `destroy` 方法释放 `AgoraRtmClientKit` 实例或重复调用 `destroy` 释放 `AgoraRtmStreamChannel` 实例。 |
+| `-10019` | `invalidChannelType` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2" /> |
+| `-10020` | `invalidEncryptionParameter` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2" /> |
+| `-10021` | `operationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `serviceNotSupport` | 服务类型不支持。请检查你在 `AgoraRtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `loginCanceled` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2" /> |
+| `-10024` | `invalidPrivateConfig` | 私有化部署参数设置无效。请检查你在 `AgoraRtmPrivateConfig` 中设置的服务类型和服务器地址是否有效。 |
+| `-10025` | `notConnected` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `renewTokenTimeout` | 更新 Token 超时。 |
+| `-11001` | `channelNotJoined` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2" /> |
+| `-11002` | `channelNotSubscribed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2" /> |
+| `-11003` | `channelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
+| `-11004` | `channelReused` | 共频道模式下，RTM 释放了 Stream Channel。 |
+| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-11006` | `channelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `channelJoinFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2" /> |
+| `-11008` | `channelInvalidTopicName` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2" /> |
+| `-11009` | `channelInvalidMessage` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `channelMessageLengthExceedLimitation` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2" /> |
+| `-11011` | `channelInvalidUserList` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2" /> |
+| `-11012` | `channelNotAvailable` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `channelTopicNotSubscribed` | 未订阅该 Topic。 |
+| `-11014` | `channelExceedTopicLimitation` | Topic 数量超出限制。 |
+| `-11015` | `channelJoinTopicFailed` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `channelTopicNotJoined` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `channelTopicNotExist` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `channelInvalidTopicMeta` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `channelSubscribeTimeout` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `channelSubscribeTooFrequent` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `channelSubscribeFailed` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11022` | `channelUnsubscribeFailed` | 取消频道订阅失败。检查连接是否断开。 |
+| `-11023` | `channelEncryptMessageFailed` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2" /> |
+| `-11024` | `channelPublishMessageFailed` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `channelPublishMessageTimeout` | 消息发布超时。检查连接是否断开。 |
+| `-11027` | `channelNotConnected` | SDK 与 RTM 服务器断开连接。请重新登录。 |
+| `-11028` | `channelLeaveFailed` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `channelCustomTypeLengthOverflow` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `channelInvalidCustomType` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11031` | `channelUnsupportedMessageType` | 消息类型不支持。 |
+| `-11032` | `channelPresenceNotReady` | Presence 服务未就绪。请重新加入 Stream Channel 或重新订阅 Message Channel。 |
+| `-11033` | `channelReceiverOffline` | <Slot name="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2" /> |
+| `-11034` | `channelJoinCanceled` | 加入频道操作已取消。调用 `join` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。 |
+| `-11035` | `channelReceiverOfflineButMessageStoreSucceeded` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
+| `-11036` | `channelReceiverOfflineAndMessageStoreFailed` | 接收端已下线，但历史消息存储失败。 |
+| `-11037` | `channelMessageDeliveredButStoreFailed` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-12001` | `storageOperationFailed` | Storage 操作失败。 |
+| `-12002` | `storageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `storageInvalidMetadataItem` | 无效 Metadata Item。 |
+| `-12004` | `storageInvalidArgument` | 无效参数。 |
+| `-12005` | `storageInvalidRevision` | 无效 Revision 参数。 |
+| `-12006` | `storageMetadataLengthOverflow` | Metadata 长度溢出。 |
+| `-12007` | `storageInvalidLockName` | 无效 Lock 名称。 |
+| `-12008` | `storageLockNotAcquired` | 未获取该 Lock。 |
+| `-12009` | `storageInvalidKey` | 无效 Metadata 键。 |
+| `-12010` | `storageInvalidValue` | 无效 Metadata 值。 |
+| `-12011` | `storageKeyLengthOverflow` | Metadata 键长度溢出。 |
+| `-12012` | `storageValueLengthOverflow` | Metadata 值长度溢出。 |
+| `-12013` | `storageDuplicateKey` | 重复的 Metadata Item 键。 |
+| `-12014` | `storageOutdatedRevision` | Metadata Item 中的 Revision 过时或 Key 不存在。 |
+| `-12015` | `storageNotSubscribe` | 未订阅该频道。 |
+| `-12016` | `storageInvalidMetadataInstance` | Metadata 实例不存在。请创建 Metadata 实例。 |
+| `-12017` | `storageSubscribeUserExceedLimitation` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `storageOperationTimeout` | Storage 操作超时。 |
+| `-12019` | `storageNotAvailable` | Storage 服务不可用。 |
+| `-13001` | `presenceNotConnected` | 用户未连接到系统。 |
+| `-13002` | `presenceNotWritable` | Presence 服务不可用。 |
+| `-13003` | `presenceInvalidArgument` | 无效参数。 |
+| `-13004` | `presenceCacheTooManyStates` | 加入频道前缓存的临时用户状态超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。 |
+| `-13006` | `presenceInvalidStateKey` | 无效状态键。 |
+| `-13007` | `presenceInvalidStateValue` | 无效状态值。 |
+| `-13008` | `presenceStateKeySizeOverflow` | 状态键长度溢出。 |
+| `-13009` | `presenceStateValueSizeOverflow` | 状态值长度溢出 |
+| `-13010` | `presenceStateDuplicateKey` | 重复的状态键。 |
+| `-13011` | `presenceUserNotExist` | 该用户不存在。 |
+| `-13012` | `presenceOperationTimeout` | Presence 操作超时。 |
+| `-13013` | `presenceOperationFailed` | Presence 操作失败。 |
+| `-14001` | `lockOperationFailed` | Lock 操作失败。 |
+| `-14002` | `lockOperationTimeout` | Lock 操作超时。 |
+| `-14003` | `lockOperationPerforming` | Lock 操作进行中。 |
+| `-14004` | `lockAlreadyExist` | Lock 已存在。 |
+| `-14005` | `lockInvalidName` | 无效 Lock 名。 |
+| `-14006` | `lockNotAcquired` | 未获取该 Lock。 |
+| `-14007` | `lockAcquireFailed` | 获取该 Lock 失败。 |
+| `-14008` | `lockNotExist` | 该 Lock 不存在。 |
+| `-14009` | `lockNotAvailable` | Lock 服务不可用。 |
+| `-15001` | `historyOperationFailed` | 历史消息的操作失败。 |
+| `-15002` | `historyInvalidTimestamp` | 历史消息的时间戳无效。 |
+| `-15003` | `historyOperationTimeout` | 历史消息的操作超时。 |
+| `-15004` | `historyOperationNotPermitted` | 没有权限进行历史消息的操作。 |
+| `-15005` | `historyNotAvailable` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-4-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户 ID 是否为空。
+    - 检查用户 ID 是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-8-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-12-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-13-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-19-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `message`: Message Channel
+    - `stream`: Stream Channel
+
+    - `user`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-20-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为字符串类型。
+    - 检查生成的加密盐是否为字节数组类型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-23-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-27-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-28-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-33-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-34-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-36-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-37-2">
+
+无效用户列表：
+
+    - 检查用户列表是否为空
+    - 检查用户列表是否包含非法项。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-49-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-android-ios-swift-cpp-unity-harmonyos-html-0-58-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+## 联系我们
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+在调用 RTM React Native API 时，如果发生错误，SDK 会抛出一个 `ErrorInfo` 类型数据，包含以下属性：
+
+```typescript
+type ErrorInfo = {
+    error: boolean;        // 本次操作是否出错
+    reason: string;        // 本次操作的 API 名称
+    operation: string;     // 错误码
+    errorCode: number;     // 错误描述
+};
+```
+
+其中，`errorCode` 和 `reason` 属性分别报告错误码和错误描述，你可以在下面的表格中寻找解决方法：
+
+| 错误码 | 错误描述 | 原因及解决方法 |
+| --- | --- | --- |
+| `0` | `ok` | 正确调用。 |
+| `-10002` | `notLogin` | 用户未登录 RTM 系统、掉线超时或者主动退出登录后调用 API。请先登录 RTM 系统。 |
+| `-10003` | `invalidAppId` | <Slot name="error-codes-rn-html-0-3-2" /> |
+| `-10004` | `invalidEventHandler` | 无效的 Event Handler。 |
+| `-10005` | `invalidToken` | 无效 Token。检查 Token Provider 是否生成 RTM Token。 |
+| `-10006` | `invalidUserId` | <Slot name="error-codes-rn-html-0-6-2" /> |
+| `-10008` | `invalidChannelName` | <Slot name="error-codes-rn-html-0-7-2" /> |
+| `-10009` | `tokenExpired` | Token 过期失效。你需要先调用 `logout` 方法登出 RTM 系统，然后使用新的 Token 创建 RTM 实例，再调用 `login` 方法重新登录 RTM 系统。 |
+| `-10010` | `loginNoServerResources` | 服务器资源受限。建议重新登录。 |
+| `-10011` | `loginTimeout` | 登录超时。你需要检查当前网络是否稳定并切换到稳定网络环境中。如果你的网络处于内网环境，请检查你的防火墙是否配置了正确的域名和端口。 |
+| `-10012` | l`oginRejected` | <Slot name="error-codes-rn-html-0-11-2" /> |
+| `-10013` | `loginAborted` | <Slot name="error-codes-rn-html-0-12-2" /> |
+| `-10015` | `loginNotAuthorized` | <Slot name="error-codes-rn-html-0-13-2" /> |
+| `-10016` | `inconsistentAppid` | 登录或加入频道时使用的 App ID 不一致。 |
+| `-10017` | `duplicateOperation` | 重复操作。 |
+| `-10018` | `instanceAlreadyReleased` | 重复释放 `RTMClient` 实例或 `RTMStreamChannel` 实例。 |
+| `-10019` | `invalidChannelType` | <Slot name="error-codes-rn-html-0-17-2" /> |
+| `-10020` | `invalidEncryptionParameter` | <Slot name="error-codes-rn-html-0-18-2" /> |
+| `-10021` | `operationRateExceedLimitation` | Channel Metadata 或 User Metadata 相关 API 的调用频率超限。请控制调用频率在 10 次/秒之内。 |
+| `-10022` | `serviceNotSupported` | 服务类型不支持。请检查你在 `RtmServiceType` 中设置的服务类型是否正确。该错误码仅适用于私有化部署功能。 |
+| `-10023` | `loginCanceled` | <Slot name="error-codes-rn-html-0-21-2" /> |
+| `-10025` | `notConnected` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
+| `-10026` | `renewTokenTimeout` | 更新 Token 超时。 |
+| `-11001` | `channelNotJoined` | <Slot name="error-codes-rn-html-0-24-2" /> |
+| `-11002` | `channelNotSubscribed` | <Slot name="error-codes-rn-html-0-25-2" /> |
+| `-11003` | `channelExceedTopicUserLimitation` | 订阅该 Topic 人数超出限制。 |
+| `-11005` | `channelInstanceExceedLimitation` | 创建的频道数量或订阅的频道数量超出限制。 |
+| `-11006` | `channelInErrorState` | 频道不可用。请重新创建 Stream Channel 或重新订阅 Message Channel。 |
+| `-11007` | `channelJoinFailed` | <Slot name="error-codes-rn-html-0-29-2" /> |
+| `-11008` | `channelInvalidTopicName` | <Slot name="error-codes-rn-html-0-30-2" /> |
+| `-11009` | `channelInvalidMessage` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
+| `-11010` | `channelMessageLengthExceedLimitation` | <Slot name="error-codes-rn-html-0-32-2" /> |
+| `-11012` | `channelNotAvailable` | Stream Channel 功能未开通，当前不可用。检查控制台是否已开启 Stream Channel 功能。 |
+| `-11013` | `channelTopicNotSubscribed` | 未订阅该 Topic。 |
+| `-11014` | `channelExceedTopicLimitation` | Topic 数量超出限制。 |
+| `-11015` | `channelJoinTopicFailed` | 加入该 Topic 失败。检查已加入 Topic 数量是否超出限制。 |
+| `-11016` | `channelTopicNotJoined` | 未加入该 Topic。未加入 Topic 就发送消息，你需要先加入 Topic。 |
+| `-11017` | `channelTopicNotExist` | 该 Topic 不存在。检查 Topic 名是否错误。 |
+| `-11018` | `channelInvalidTopicMeta` | Topic 中的 `meta` 参数无效。检查 `meta` 参数是否超出 256 字节的限制。 |
+| `-11019` | `channelSubscribeTimeout` | 频道订阅超时。检查连接是否断开。 |
+| `-11020` | `channelSubscribeTooFrequent` | 频道订阅操作太频繁。请确保 5 秒内对同一频道的订阅操作不超过 2 次。 |
+| `-11021` | `channelSubscribeFailed` | 频道订阅失败。检查已订阅频道数量是否超出限制。 |
+| `-11023` | `channelEncryptMessageFailed` | <Slot name="error-codes-rn-html-0-43-2" /> |
+| `-11024` | `channelPublishMessageFailed` | 消息发布失败。检查连接是否断开。 |
+| `-11026` | `channelPublishMessageTimeout` | 消息发布超时。检查连接是否断开。 |
+| `-11028` | `channelLeaveFailed` | 离开频道失败。检查连接是否断开。 |
+| `-11029` | `channelCustomTypeLengthOverflow` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
+| `-11030` | `channelInvalidCustomType` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
+| `-11033` | `channelReceiverOffline` | <Slot name="error-codes-rn-html-0-49-2" /> |
+| `-12001` | `storageOperationFailed` | Storage 操作失败。 |
+| `-12002` | `storageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
+| `-12003` | `storageInvalidMetadataItem` | 无效 Metadata Item。 |
+| `-12004` | `storageInvalidArgument` | 无效参数。 |
+| `-12005` | `storageInvalidRevision` | 无效 Revision 参数。 |
+| `-12006` | `storageMetadataLengthOverflow` | Metadata 长度溢出。 |
+| `-12007` | `storageInvalidLockName` | 无效 Lock 名称。 |
+| `-12008` | `storageLockNotAcquired` | 未获取该 Lock。 |
+| `-12009` | `storageInvalidKey` | 无效 Metadata 键。 |
+| `-12010` | `storageInvalidValue` | 无效 Metadata 值。 |
+| `-12011` | `storageKeyLengthOverflow` | Metadata 键长度溢出。 |
+| `-12012` | `storageValueLengthOverflow` | Metadata 值长度溢出。 |
+| `-12014` | `storageOutdatedRevision` | 过时的 Revision 参数。 |
+| `-12015` | `storageNotSubscribe` | 未订阅该频道。 |
+| `-12017` | `storageSubscribeUserExceedLimitation` | 订阅用户 Metadata 数量超出限制。 |
+| `-12018` | `storageOperationTimeout` | Storage 操作超时。 |
+| `-12019` | `storageNotAvailable` | Storage 服务不可用。 |
+| `-13001` | `presenceNotConnected` | 用户未连接到系统。 |
+| `-13003` | `presenceInvalidArgument` | 无效参数。 |
+| `-13004` | `presenceCachedTooManyStates` | 加入频道前缓存的临时用户状态超出限制。 |
+| `-13005` | `presenceStateCountOverflow` | 临时用户状态键/值对数量超出限制。 |
+| `-13006` | `presenceInvalidStateKey` | 无效状态键。 |
+| `-13008` | `presenceStateKeySizeOverflow` | 状态键长度溢出。 |
+| `-13010` | `presenceStateDuplicateKey` | 重复的状态键。 |
+| `-13009` | `presenceStateValueSizeOverflow` | 状态值长度溢出 |
+| `-13011` | `presenceUserNotExist` | 该用户不存在。 |
+| `-13012` | `presenceOperationTimeout` | Presence 操作超时。 |
+| `-13013` | `presenceOperationFailed` | Presence 操作失败。 |
+| `-14001` | `lockOperationFailed` | Lock 操作失败。 |
+| `-14002` | `lockOperationTimeout` | Lock 操作超时。 |
+| `-14003` | `lockOperationPerforming` | Lock 操作进行中。 |
+| `-14004` | `lockAlreadyExist` | Lock 已存在。 |
+| `-14005` | `lockInvalidName` | 无效 Lock 名。 |
+| `-14006` | `lockNotAcquired` | 未获取该 Lock。 |
+| `-14007` | `lockAcquireFailed` | 获取该 Lock 失败。 |
+| `-14008` | `lockNotExist` | 该 Lock 不存在。 |
+| `-14009` | `lockNotAvailable` | Lock 服务不可用。 |
+| `-15001` | `historyOperationFailed` | 历史消息的操作失败。 |
+| `-15003` | historyOperationTimeout | 历史消息操作过时。 |
+| `-15005` | `historyNotAvailable` | 历史消息服务不可用。 |
+
+<Slot for="error-codes-rn-html-0-3-2">
+
+无效 App ID：
+
+    - 检查 App ID 是否错误。
+    - 检查 App ID 是否开通了 RTM 服务。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-6-2">
+
+无效用户 ID：
+
+    - 检查用户名是否为空。
+    - 检查用户名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-7-2">
+
+无效频道名称：
+
+    - 检查频道名是否为空。
+    - 检查频道名是否包含非法字符。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-11-2">
+
+SDK 被服务器拒绝登录：
+
+    - 检查 App ID 是否开通 RTM 服务。
+    - 检查 Token 或 `userId` 是否被封禁。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-12-2">
+
+由于未知问题 SDK 登录中断：
+
+    - 检查当前网络是否稳定，切换到稳定网络环境中。
+    - 当前 `userId` 在其他端登录。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-13-2">
+
+没有 RTM 服务权限。可能的原因有：
+
+    - 未在控制台启用 RTM 服务。
+    - 服务已欠费。
+    - 账号被封停。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-17-2">
+
+频道类型无效。SDK 仅支持如下频道类型，请填写正确的值：
+
+    - `MESSAGE`: Message Channel
+    - `STREAM`: Stream Channel
+    - `USER`: User Channel
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-18-2">
+
+消息加密参数无效。
+
+    - 检查生成的加密密钥是否为 String 型。
+    - 检查生成的加密盐是否为 Uint8Array 型，长度是否为 32 字节。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-21-2">
+
+登录操作已取消。可能原因如下：
+
+    - 调用 `login` 方法后，如果你在收到调用结果之前再次调用该方法，则前一次的调用操作会被取消，SDK 会执行后一次的调用。
+    - 还未成功登录就调用 `logout` 方法登出。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-24-2">
+
+用户未加入该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-25-2">
+
+用户未订阅该频道：
+
+    - 用户不在线、已离线或未加入该频道
+    - 检查 `userId` 是否拼写错误。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-29-2">
+
+加入该频道失败：
+
+    - 检查已加入频道数量是否超限。
+    - 检查频道名是否非法。
+    - 检查网络是否断开连接。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-30-2">
+
+无效 Topic 名：
+
+    - 检查 Topic 名是否包含非法字符。
+    - 检查 Topic 名是否为空。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-32-2">
+
+消息长度超出限制。检查消息负载大小是否超限：
+
+    - Message Channel 单个消息包小于 32 KB。
+    - Stream Channel 单个消息包小于 1 KB。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-43-2">
+
+消息加密失败：
+
+    - 检查加密密钥是否有效。
+    - 检查加密盐是否有效。
+    - 检查加密方式与加密密钥、加密盐是否匹配。
+
+</Slot>
+
+<Slot for="error-codes-rn-html-0-49-2">
+
+发送用户消息时，远端用户不在线:
+
+    - 检查在调用方法时设置的用户 ID 是否正确。
+    - 检查远端用户是否登录系统并处于在线状态。
+
+</Slot>
+
+如果以上措施都为未能解决你的故障，或者你需要解决方案的支持，请将你的需求整理出来并通过邮箱发送到：rtm-support@agora.io。我们会在收到邮件的第一时间与你取得联系。
+
+</PlatformStructured>

@@ -1,0 +1,171 @@
+---
+title: "agora_iot_device_manager.h"
+---
+本页提供声网灵隼设备端 SDK 的 `agora_iot_device_manager.h` 文件的 API 参考。
+
+## 引用文件
+
+无
+
+<a id="agoraiotregisterandbind"></a>
+## 函数
+### agora_iot_register_and_bind
+
+```c
+int agora_iot_register_and_bind(const char *host_url, const char *product_key, const char *device_id,
+                                const char *user_id, const char *device_nickname, agora_iot_device_info_t *info);
+```
+
+注册设备并将设备与用户绑定。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `device_id` | <Slot name="device-manager-html-0-3-1" /> |
+| [in] `user_id` | 你的用户 ID。 |
+| [in] `device_nickname` | 设备昵称。客户端 SDK 的设备绑定列表会显示该昵称。你可以任意指定，通常建议与产品名称一致（请使用 UTF-8 编码设置中文名称）。如果使用了绑定功能，该名称将显示在客户端。你也可以在客户端为设备重新命名。 |
+| [out] `info` | 注册绑定完成后返回的设备信息。详见 [agora_iot_device_info_t](#agoraiotdeviceinfot)。 |
+
+<Slot for="device-manager-html-0-3-1">
+
+你的设备 ID。你需要自行设置。每个设备的设备 ID 必须是唯一的。长度为 1 ~ 128 个字符。字符集支持：
+
+      - 26 个大写英文字母和小写英文字母。
+      - 阿拉伯数字： 0-9。
+      - 特殊符号：`":"`、`"_"`、`"-"`。
+
+      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/license)获取免费或商业 License。
+
+</Slot>
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agoraiotqueryuser"></a>
+### agora_iot_query_user
+
+```c
+int agora_iot_query_user(const char *host_url,  const char *product_key, const char *device_id, char *user_id);
+```
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `host_url` | SDK 使用的 AWS OpenAPI 服务的主机域名。你可以在声网灵隼控制台的**应用配置&gt;&gt;开发者选项&gt;&gt;呼叫服务&gt;&gt;Master Server URL** 处获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `device_id` | <Slot name="device-manager-html-1-3-1" /> |
+| [out] `user_id` | 与设备绑定的的用户 ID。 |
+
+<Slot for="device-manager-html-1-3-1">
+
+你的设备 ID。你需要自行设置。每个设备的设备 ID 必须是唯一的。长度为 1 ~ 128 个字符。字符集支持：
+
+      - 26 个大写英文字母和小写英文字母。
+      - 阿拉伯数字： 0-9。
+      - 特殊符号：`":"`、`"_"`、`"-"`。
+
+      设备 ID 与 License 绑定。参考 [开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)获取免费或商业 License。
+
+</Slot>
+
+查询设备绑定的用户。
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+<a id="agora_license_activate"></a>
+
+<a id="agoraiotlicenseactivate"></a>
+### agora_iot_license_activate
+
+```c
+int agora_iot_license_activate(const char *appid, const char *key, const char *secret,
+                              const char *product_key, const char *device_id, const char *pid, char **cert);
+```
+
+激活 License 并生成证书。每次激活将消耗一个 License 额度。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `appid` | 你的声网 App ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `key` | 你的 Restful API Customer ID。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `secret` | 你的 Restful API Customer Secret。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `product_key` | 你的 Product Key。可以从声网灵隼控制台的**应用配置**页面的**开发者选项**选项卡中获取。详见 [开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `device_id` | <Slot name="device-manager-html-2-5-1" /> |
+| [in] `pid` | 你的 PID。可以从声网灵隼控制台的用量查看页面中获取。 |
+| [out] `cert` | 激活成功后生成的证书。License 激活成功后，接口将返回获取到的 License 检验证书，用于 SDK 初始化的授权凭证，你需要保存证书到配置文件或 Flash 中，下次运行时从文件或 Flash 中获取证书。 |
+
+<Slot for="device-manager-html-2-5-1">
+
+你的设备 ID。你需要自行设置。每个设备的设备 ID 必须是唯一的。长度为 1 ~ 128 个字符。字符集支持：
+
+      - 26 个大写英文字母和小写英文字母。
+      - 阿拉伯数字： 0-9。
+      - 特殊符号：`":"`、`"_"`、`"-"`。
+
+      设备 ID 与 License 绑定。参考[开通并配置声网灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/license)获取免费或商业 License。
+
+</Slot>
+
+#### 返回
+
+- 0：方法调用成功。
+- < 0：方法调用失败。
+
+## 常量
+
+### AGORA_IOT_CERTIFICATE_MAX_LEN
+
+```c
+#define AGORA_IOT_CERTIFICATE_MAX_LEN 2048
+```
+
+证书最大长度。
+
+### AGORA_IOT_PRIVATE_KEY_MAX_LEN
+
+```c
+#define AGORA_IOT_PRIVATE_KEY_MAX_LEN 2048
+```
+
+私钥最大长度。
+
+### AGORA_IOT_DOMAIN_MAX_LEN
+
+```c
+#define AGORA_IOT_DOMAIN_MAX_LEN 256
+```
+
+域名最大长度。
+
+<a id="agoraiotdeviceinfot"></a>
+## 类型定义
+### agora_iot_device_info_t
+
+```c
+typedef struct agora_iot_device_info {
+  char certificate[AGORA_IOT_CERTIFICATE_MAX_LEN];
+  char private_key[AGORA_IOT_PRIVATE_KEY_MAX_LEN];
+  char domain[AGORA_IOT_DOMAIN_MAX_LEN];
+  char client_id[AGORA_IOT_CLIENT_ID_MAX_LEN];
+} agora_iot_device_info_t;
+```
+
+设备信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `certificate[AGORA_IOT_CERTIFICATE_MAX_LEN]` | 设备证书。 |
+| `private_key[AGORA_IOT_PRIVATE_KEY_MAX_LEN]` | 设备私钥。 |
+| `domain[AGORA_IOT_DOMAIN_MAX_LEN]` | 域名。 |
+| `client_id[AGORA_IOT_CLIENT_ID_MAX_LEN]` | Client ID。用于呼叫。 |

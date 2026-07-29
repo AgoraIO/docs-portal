@@ -10,7 +10,6 @@ import {
   BlocksIcon,
   BotIcon,
   CaptionsIcon,
-  ChevronDownIcon,
   CloudIcon,
   Code2Icon,
   CpuIcon,
@@ -21,11 +20,11 @@ import {
   MessagesSquareIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
+  NewspaperIcon,
   PhoneIcon,
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
-  SearchIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
   TerminalSquareIcon,
@@ -42,11 +41,23 @@ import {
   useMemo,
   useState,
 } from 'react';
+import {
+  ReferenceFilterSelect,
+  ReferenceFilterToggleGroup,
+  ReferenceSearchInput,
+} from '@/components/reference-center/ReferenceFilterControls';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 
 const SdksCatalog = lazy(() =>
   import('./SdksCatalog').then((module) => ({
     default: module.SdksCatalog,
+  })),
+);
+
+const ApiReferenceCards = lazy(() =>
+  import('./ApiReferenceCards').then((module) => ({
+    default: module.ApiReferenceCards,
   })),
 );
 
@@ -64,6 +75,7 @@ const FaqCategory = lazy(() =>
 
 export function getOverviewMDXComponents(): MDXComponents {
   return {
+    ApiReferenceCards,
     CardGrid,
     FeatureCard,
     FaqLanding,
@@ -152,7 +164,7 @@ type HelpHubCard = {
   cta: string;
   description: string;
   href: string;
-  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+  icon: 'blog' | 'discord' | 'stack-overflow' | 'status' | 'ticket';
   title: string;
 };
 
@@ -164,19 +176,36 @@ type HelpHubLink = {
 function HelpHub({
   cards,
   knowledgeBase,
+  locale = 'en',
   topics,
 }: {
   cards: HelpHubCard[];
   knowledgeBase: HelpHubLink[];
+  locale?: 'en' | 'zh-CN';
   topics: HelpHubLink[];
 }) {
+  const copy =
+    locale === 'zh-CN'
+      ? {
+          browseByTopic: '按主题浏览',
+          intro: '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+          popularKnowledgeBase: '热门知识库',
+          quickAnswers: '快速解答',
+        }
+      : {
+          browseByTopic: 'Browse By Topic',
+          intro:
+            'Choose the fastest path for product questions, service health, and community support.',
+          popularKnowledgeBase: 'Popular Knowledge Base',
+          quickAnswers: 'Quick answers',
+        };
+
   return (
     <section className="not-prose my-8 space-y-5">
       <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
         <div className="max-w-2xl">
           <p className="text-sm leading-6 text-muted-foreground">
-            Choose the fastest path for product questions, service health, and
-            community support.
+            {copy.intro}
           </p>
         </div>
 
@@ -215,10 +244,10 @@ function HelpHub({
         <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Popular Knowledge Base
+              {copy.popularKnowledgeBase}
             </h4>
             <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-              Quick answers
+              {copy.quickAnswers}
             </span>
           </div>
           <ul className="mt-4 space-y-2">
@@ -244,7 +273,7 @@ function HelpHub({
 
         <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Browse By Topic
+            {copy.browseByTopic}
           </h4>
           <div className="mt-4 space-y-2">
             {topics.map((item) => (
@@ -271,6 +300,10 @@ function HelpHub({
 function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
+  }
+
+  if (kind === 'blog') {
+    return <NewspaperIcon className="size-4" />;
   }
 
   if (kind === 'stack-overflow') {
@@ -566,7 +599,7 @@ function SolutionCardGrid({
   return (
     <section
       className={cn(
-        'not-prose my-8 grid gap-4',
+        'not-prose my-8 grid w-[var(--content-max)] max-w-full gap-4',
         size === 'small'
           ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
           : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
@@ -633,6 +666,8 @@ function SolutionCard({
   description,
   href,
   icon,
+  imageAlt,
+  imageSrc,
   size = 'large',
   showDescription = true,
   tags = [],
@@ -643,6 +678,8 @@ function SolutionCard({
   description: string;
   href?: string;
   icon?: SolutionCardIconKind;
+  imageAlt?: string;
+  imageSrc?: string;
   size?: 'large' | 'small';
   showDescription?: boolean;
   tags?: string[];
@@ -650,31 +687,48 @@ function SolutionCard({
   tone?: SolutionCardTone;
 }) {
   const cardClasses = cn(
-    'group flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    'group relative flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
     size === 'small' && 'min-h-32 p-4',
   );
 
   const content = (
     <>
-      <div className="flex items-start justify-between gap-3">
-        {icon ? (
-          <span
-            className={cn(
-              'flex size-10 items-center justify-center rounded-lg',
-              getSolutionToneClasses(tone),
-              size === 'small' && 'size-9',
-            )}
-          >
-            <SolutionCardIcon kind={icon} />
-          </span>
-        ) : (
-          <span />
-        )}
-        {href ? (
-          <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-        ) : null}
-      </div>
-      <div className="mt-4 flex-1">
+      {imageSrc ? (
+        <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
+          <img
+            alt={imageAlt ?? title}
+            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+            loading="lazy"
+            src={imageSrc}
+          />
+        </div>
+      ) : null}
+      {imageSrc && href ? (
+        <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
+          <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+        </span>
+      ) : null}
+      {imageSrc ? null : (
+        <div className="flex items-start justify-between gap-3">
+          {icon ? (
+            <span
+              className={cn(
+                'flex size-10 items-center justify-center rounded-lg',
+                getSolutionToneClasses(tone),
+                size === 'small' && 'size-9',
+              )}
+            >
+              <SolutionCardIcon kind={icon} />
+            </span>
+          ) : (
+            <span />
+          )}
+          {href ? (
+            <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          ) : null}
+        </div>
+      )}
+      <div className={cn('mt-4 flex-1', imageSrc && 'mt-0')}>
         <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
         {showDescription && description ? (
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -688,7 +742,7 @@ function SolutionCard({
             <a
               className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               href={action.href}
-              key={action.href}
+              key={`${action.href}\u001f${action.label}`}
               rel={
                 action.href.startsWith('http')
                   ? 'noreferrer noopener'
@@ -1084,27 +1138,16 @@ function RecipeGallerySelect({
   options: string[];
   value: string;
 }) {
-  const id = `recipe-filter-${label.toLowerCase().replace(/\s+/g, '-')}`;
-
   return (
-    <span className="relative shrink-0">
-      <label className="sr-only" htmlFor={id}>
-        {label}
-      </label>
-      <select
-        className="h-9 appearance-none rounded-md border border-border bg-background pr-9 pl-3 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-        id={id}
-        onChange={(event) => onChange(event.target.value)}
-        value={value}
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option === allLabel ? `${label}: All` : option}
-          </option>
-        ))}
-      </select>
-      <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground" />
-    </span>
+    <ReferenceFilterSelect
+      label={label}
+      onChange={onChange}
+      options={options.map((option) => ({
+        label: option === allLabel ? allLabel : option,
+        value: option,
+      }))}
+      value={value}
+    />
   );
 }
 
@@ -1256,46 +1299,22 @@ export function RecipesGallery({
 
   return (
     <section className="not-prose my-8 flex flex-col gap-6">
-      <label className="relative block">
-        <span className="sr-only">{searchPlaceholder}</span>
-        <SearchIcon className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground" />
-        <input
-          className="h-11 w-full rounded-lg border border-input bg-background px-9 text-sm text-foreground shadow-xs outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-          onChange={(event) => setQuery(event.target.value)}
+      <div className="flex flex-col gap-4 border-border border-b pb-5">
+        <ReferenceSearchInput
+          onChange={setQuery}
           placeholder={searchPlaceholder}
-          type="search"
           value={query}
         />
-      </label>
-
-      <div className="flex flex-col gap-4">
-        <div
-          aria-label={categoryFilterLabel}
-          className="flex flex-wrap gap-1 border-border border-b"
-          role="tablist"
-        >
-          {categories.map((category) => {
-            const active = category === activeCategory;
-            return (
-              <button
-                aria-selected={active}
-                className={cn(
-                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
-                  active
-                    ? 'border-primary font-semibold text-foreground'
-                    : 'border-transparent text-muted-foreground hover:text-foreground',
-                )}
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                role="tab"
-                type="button"
-              >
-                {category === allCategoriesLabel ? 'All' : category}
-              </button>
-            );
-          })}
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-end gap-3">
+          <ReferenceFilterToggleGroup
+            label={categoryFilterLabel}
+            onChange={setActiveCategory}
+            options={categories.map((category) => ({
+              label: category,
+              value: category,
+            }))}
+            value={activeCategory}
+          />
           {products.length > 2 ? (
             <RecipeGallerySelect
               allLabel={allProductsLabel}
@@ -1322,17 +1341,15 @@ export function RecipesGallery({
             />
           ) : null}
           {hasActiveFilters ? (
-            <button
-              className="h-9 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              onClick={resetFilters}
-              type="button"
-            >
+            <Button onClick={resetFilters} type="button" variant="ghost">
               {clearFiltersLabel}
-            </button>
+            </Button>
           ) : null}
-          <span className="ml-auto text-sm text-muted-foreground">
-            {filteredItems.length} recipes
-          </span>
+          {filteredItems.length > 0 ? (
+            <span className="ml-auto self-end text-sm text-muted-foreground">
+              {filteredItems.length} recipes
+            </span>
+          ) : null}
         </div>
       </div>
 

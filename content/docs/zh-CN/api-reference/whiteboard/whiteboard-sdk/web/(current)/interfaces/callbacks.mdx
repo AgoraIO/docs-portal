@@ -1,0 +1,204 @@
+---
+title: Interface Callbacks<CALLBACKS>
+description: 回调。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/callbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/callbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+### Type parameters
+
+<ParameterList>
+<Parameter name="CALLBACKS" type="\&#123;\&#125;" />
+</ParameterList>
+
+### Hierarchy
+
+- Callbacks
+
+  - [ScenesCallbacksNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/scenescallbacksnode)
+
+## Index
+
+### Methods
+
+- [forwardTo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#forwardto)
+- [off](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#off)
+- [on](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#on)
+- [once](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks#once)
+
+## Methods
+
+<a id="forwardto"></a>
+
+### forwardTo
+
+<ApiSignature>
+
+forwardTo&lt;NAME&gt;(name: NAME, toCallbacks: [Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks)&lt;CALLBACKS&gt;): any
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:963](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L963)
+
+将注册的回调转到另一个 `Callbacks` 对象。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+注册回调的名称。
+
+</Parameter>
+<Parameter name="toCallbacks" required>
+
+<ParameterType>
+
+[Callbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/callbacks) & lt;CALLBACKS & gt;
+
+</ParameterType>
+
+转到的 `Callbacks` 对象。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+any
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off&lt;NAME&gt;(name?: NAME, listener?: any): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:956](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L956)
+
+注销回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" optional>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" optional>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="on"></a>
+
+### on
+
+<ApiSignature>
+
+on&lt;NAME&gt;(name: NAME, listener: any): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:942](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L942)
+
+注册一个回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" required>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="once"></a>
+
+### once
+
+<ApiSignature>
+
+once&lt;NAME&gt;(name: NAME, listener: any): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:949](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L949)
+
+注册只使用一次的回调。
+
+<ParameterList title="Type parameters">
+<Parameter name="NAME" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="name" type="NAME" required>
+
+回调名。
+
+</Parameter>
+<Parameter name="listener" type="any" required>
+
+回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

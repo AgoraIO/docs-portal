@@ -1,0 +1,54 @@
+---
+title: ImageTrackOptions
+description: 图像配置参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_imagetrackoptions
+  sourcePath: html-docs/rtc/Android/API/class_imagetrackoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_imagetrackoptions__prototype"></a>
+
+```text
+public class ImageTrackOptions {
+  private String imageUrl;
+  private int fps;
+  private VideoEncoderConfiguration.MIRROR_MODE_TYPE mirrorMode;
+}
+```
+
+<a id="class_imagetrackoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
+
+图像的 URL。支持的图像格式包括 JPEG、JPG、PNG 和 GIF。支持通过本地绝对路径或相对路径添加图像。
+
+:::note
+注： 在 Android 平台上，不支持从 `/assets/` 添加图像。
+:::
+
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
+
+当前发布的视频流的帧率。取值范围为 [1, 30]，默认值为 1。
+
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
+
+镜像模式：
+
+- `VIDEO_MIRROR_MODE_AUTO (0)`：SDK 决定是否启用镜像模式，默认关闭。
+- `VIDEO_MIRROR_MODE_ENABLED (1)`：开启远端镜像。
+- `VIDEO_MIRROR_MODE_DISABLED (2)`：关闭远端镜像。
+
+</Parameter>
+</ParameterList>

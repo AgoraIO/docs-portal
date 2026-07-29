@@ -1,0 +1,79 @@
+---
+title: FLastmileProbeResult
+description: 上下行 Last mile 网络质量探测结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_lastmileproberesult
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_lastmileproberesult.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileproberesult__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FLastmileProbeResult {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeResult")
+	ELASTMILE_PROBE_RESULT_STATE state = ELASTMILE_PROBE_RESULT_STATE::LASTMILE_PROBE_RESULT_UNAVAILABLE;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeResult")
+	FLastmileProbeOneWayResult uplinkReport = FLastmileProbeOneWayResult();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeResult")
+	FLastmileProbeOneWayResult downlinkReport = FLastmileProbeOneWayResult();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeResult")
+	int64 rtt = 0;
+	FLastmileProbeResult(){}
+	FLastmileProbeResult(const agora::rtc::LastmileProbeResult & AgoraData){
+		state = static_cast<ELASTMILE_PROBE_RESULT_STATE>(AgoraData.state);
+		uplinkReport = FLastmileProbeOneWayResult(AgoraData.uplinkReport);
+		downlinkReport = FLastmileProbeOneWayResult(AgoraData.downlinkReport);
+		rtt = AgoraData.rtt;
+	}
+	agora::rtc::LastmileProbeResult CreateAgoraData() const {
+		agora::rtc::LastmileProbeResult AgoraData;
+		AgoraData.state = static_cast<agora::rtc::LASTMILE_PROBE_RESULT_STATE>(state);
+		AgoraData.uplinkReport = uplinkReport.CreateAgoraData();
+		AgoraData.downlinkReport = downlinkReport.CreateAgoraData();
+		AgoraData.rtt = rtt;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LastmileProbeResult & AgoraData) const {
+		uplinkReport.FreeAgoraData(AgoraData.uplinkReport);
+		downlinkReport.FreeAgoraData(AgoraData.downlinkReport);
+	}
+};
+```
+
+<a id="class_lastmileproberesult__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+Last mile 质量探测结果的状态。详见: [ELASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-lastmileproberesultstate)。
+
+</Parameter>
+<a id="uplinkreport"></a>
+<Parameter name="uplinkReport">
+
+上行网络质量报告。详见 [FLastmileProbeOneWayResult](/zh-CN/api-reference/rtc/unreal-blueprint/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="downlinkreport"></a>
+<Parameter name="downlinkReport">
+
+下行网络质量报告。详见 [FLastmileProbeOneWayResult](/zh-CN/api-reference/rtc/unreal-blueprint/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="rtt"></a>
+<Parameter name="rtt">
+
+往返时延 (ms)。
+
+</Parameter>
+</ParameterList>

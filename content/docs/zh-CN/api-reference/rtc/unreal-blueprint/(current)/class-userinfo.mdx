@@ -1,0 +1,58 @@
+---
+title: FUserInfo
+description: 用户的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_userinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_userinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_userinfo__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FUserInfo
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UserInfo")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UserInfo")
+	FString userAccount = "";
+	FUserInfo(){}
+	FUserInfo(const agora::rtc::UserInfo & AgoraData){
+		uid = AgoraData.uid;
+		userAccount = UTF8_TO_TCHAR(AgoraData.userAccount);
+	}
+	agora::rtc::UserInfo CreateAgoraData() const {
+		agora::rtc::UserInfo AgoraData;
+		AgoraData.uid = uid;
+		SET_UABT_FSTRING_TO_CHAR_ARRAY(AgoraData.userAccount,this->userAccount,agora::rtc::MAX_USER_ACCOUNT_LENGTH)
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::UserInfo & AgoraData) const {
+	}
+};
+```
+
+<a id="class_userinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
+
+用户 Account。
+
+</Parameter>
+</ParameterList>

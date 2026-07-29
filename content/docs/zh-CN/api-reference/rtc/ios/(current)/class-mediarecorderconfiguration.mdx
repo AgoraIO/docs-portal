@@ -1,0 +1,133 @@
+---
+title: AgoraMediaRecorderConfiguration
+description: 音视频录制参数配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/iOS/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_mediarecorderconfiguration__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraMediaRecorderConfiguration : NSObject
+@property(copy, nonatomic) NSString* _Nonnull storagePath;
+@property(assign, nonatomic) AgoraMediaRecorderContainerFormat containerFormat;
+@property(assign, nonatomic) AgoraMediaRecorderStreamType streamType;
+@property(assign, nonatomic) NSUInteger maxDurationMs;
+@property(assign, nonatomic) NSUInteger recorderInfoUpdateInterval;
+@property(assign, nonatomic) NSUInteger width;
+@property(assign, nonatomic) NSUInteger height;
+@property(assign, nonatomic) NSUInteger fps;
+@property(assign, nonatomic) NSUInteger sample_rate;
+@property(assign, nonatomic) NSUInteger channel_num;
+@property(assign, nonatomic) AgoraVideoSourceType videoSourceType;
+@end
+```
+
+<a id="class_mediarecorderconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
+
+本地录制文件的绝对路径。路径必须包含文件名和扩展名。例如：iOS：`/App Sandbox/Library/Caches/example.mp4`，macOS：`/Library/Logs/example.mp4`。
+
+:::note
+注： 请确保指定路径存在且可写。
+:::
+
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
+
+录制文件的封装格式。详见 [AgoraMediaRecorderContainerFormat](/zh-CN/api-reference/rtc/ios/enum-mediarecordercontainerformat)。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+录制内容类型。详见 [AgoraMediaRecorderStreamType](/zh-CN/api-reference/rtc/ios/enum-mediarecorderstreamtype)。
+
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
+
+录制的最大时长，单位为毫秒。默认值为 120000。
+
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
+
+录制信息更新的时间间隔，单位为毫秒。取值范围为 [1000, 10000]。SDK 会根据该设置触发 [mediaRecorder\:informationDidUpdated\:uid\:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调以报告录制信息更新。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+录制视频的宽度（单位：px）。
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。宽度 × 高度的最大值不能超过 3840 × 2160。
+:::
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+录制视频的高度（单位：px）。
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。宽度 × 高度的最大值不能超过 3840 × 2160。
+:::
+
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
+
+录制视频的帧率，最大值为 30。例如：5、10、15、24、30 等。
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
+:::
+
+</Parameter>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
+
+录制音频的采样率（单位：Hz）。可设置为 16000、32000、44100 或 48000。
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
+:::
+
+</Parameter>
+<a id="channel_num"></a>
+<Parameter name="channel_num">
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
+:::
+
+录制音频的声道数：
+
+- 1：单声道。
+- 2：双声道。
+
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
+
+录制使用的视频源类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
+
+:::note
+注： 仅在调用 `createMediaRecorder` 且在 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo) 中将 `type` 设置为 `AgoraRecorderStreamTypePreview` 时需要设置该参数。
+:::
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,258 @@
+---
+title: "使用音频模态输出"
+description: "了解对话式 AI 引擎中音频模态输出相关内容的适用场景、配置步骤、实现要点和注意事项。"
+---
+声网对话式 AI 引擎以音频模态输出。
+
+你可以阅读本文了解如何配置智能体以音频模态输出，并做好接口改造，进而实现上下文管理、字幕对齐、智能体播报等功能。
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑
+- 如果想实现输出音频的字幕功能，确保已阅读[实时字幕](/zh-CN/ai/build/transcripts)文档完成配置
+
+## 实现方式
+
+### 选择输出模态
+
+要使用音频模态输出，你可以在调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口时将 `llm.output_modalities` 设置为以下值：
+
+- `["audio"]`：以纯音频模态输出。该场景下，你无需配置文本转语音 (TTS) 模块，自定义大模型返回的音频会直接由智能体播放。本文主要介绍该配置下如何使用音频模态。
+- `["text", "audio"]`：以文本和音频模态输出。该场景下会同时存在两种音频，一种是 TTS 模块生成的音频，另一种是自定义大模型发送给智能体的音频。
+
+如果你通过 Agents SDK 接入自定义大模型，可以直接在 `CustomLLM` 上设置输出模态。以下示例展示纯音频输出（`["audio"]`）场景；如果你需要同时输出文本和音频，只需将 `output_modalities` / `outputModalities` 改为 `["text", "audio"]` 即可。
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+from agora_agent import Agent, Agora, Area, CustomLLM
+
+client = Agora(
+    area=Area.CN,
+    app_id="your-app-id",
+    app_certificate="your-app-certificate",
+)
+
+agent = Agent(client=client).with_llm(
+    CustomLLM(
+        api_key="your-llm-api-key",
+        base_url="https://your-custom-llm-service/audio/chat/completions",
+        model="your-model-name",
+        input_modalities=["text"],
+        output_modalities=["audio"],
+        params={
+            "audio": {
+                "voice": "alloy",
+                "format": "wav",
+            },
+        },
+    )
+)
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+import { AgoraClient, Agent, Area, CustomLLM } from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.CN,
+  appId: 'your-app-id',
+  appCertificate: 'your-app-certificate',
+});
+
+const agent = new Agent({ client }).withLlm(new CustomLLM({
+  apiKey: 'your-llm-api-key',
+  url: 'https://your-custom-llm-service/audio/chat/completions',
+  model: 'your-model-name',
+  inputModalities: ['text'],
+  outputModalities: ['audio'],
+  params: {
+    audio: {
+      voice: 'alloy',
+      format: 'wav',
+    },
+  },
+}));
+```
+
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+import (
+    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+    vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+client := agentkit.NewAgoraClient(agentkit.ClientOptions{
+    AppID:          "your-app-id",
+    AppCertificate: "your-app-certificate",
+})
+
+agent := agentkit.NewAgent(client).WithLlm(
+    vendors.NewCustomLLM(vendors.CustomLLMOptions{
+        APIKey:           "your-llm-api-key",
+        BaseURL:          "https://your-custom-llm-service/audio/chat/completions",
+        Model:            "your-model-name",
+        InputModalities:  []string{"text"},
+        OutputModalities: []string{"audio"},
+        Params: map[string]interface{}{
+            "audio": map[string]interface{}{
+                "voice":  "alloy",
+                "format": "wav",
+            },
+        },
+    }),
+)
+```
+
+### 按标准改造接口
+
+声网对话式 AI 引擎使用 [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat) 兼容的接口与大语言模型进行交互，但针对不同类型的响应（文本、音频、字幕、逐字字幕时间戳）做了汇总，并拓展了一个 `words` 字段用于实现实时字幕对齐。你可以参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm#实现方式)改造你的大语言模型服务，使其兼容以下请求和响应格式。
+
+#### 请求格式
+
+相比文本请求，音频请求的请求 Body 中多了指定输出模态的 `modalities` 字段，以及用于指定输出音色和格式的 `audio` 字段。
+
+这两个参数为可选参数，如有需要，可以在 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口的 `llm.params` 字段中传入。
+
+以下为生成音频的对话请求格式：
+
+```json
+{
+  "model": "gpt-4o-audio-preview",
+  "modalities": ["audio"],
+  "audio": { "voice": "alloy", "format": "wav" },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Is a golden retriever a good family dog?"
+    }
+  ]
+}
+```
+
+#### 响应格式
+
+音频响应内容 (`audio`) 包含三种类型，均可独立发送至智能体处理：
+
+| `audio` 类型 | 解释 | 来源 | 智能体处理 |
+| --- | --- | --- | --- |
+| 音频数据 (`data`) | 经过 Base64 编码的 PCM 字节流数组 | <Slot name="audio-modality-html-0-1-2" /> | 直接播放音频 |
+| 转录内容 (`transcript`) | 音频对应的完整文字内容 | LLM 生成 | 存入短期记忆（上下文） |
+| 逐字字幕 (`words`) | 含逐字（词）时间戳的字幕内容 | 支持逐字输出的 LLM 生成 | 处理为逐字的实时字幕 |
+
+<Slot for="audio-modality-html-0-1-2">
+
+- 具备音频处理能力的 LLM 生成
+    - 自定义音频处理服务生成
+
+</Slot>
+
+具体数据结构如下（流式响应）：
+
+```json
+{"choices":[{"index":0,"delta":{"role":"assistant","audio":{"data": ""}},"logprobs":null,"finish_reason":null}]}
+ 
+/// 音频数据
+{"choices":[{"index":0,"delta":{"audio":{"data": "base64 encoded pcm data"}},"logprobs":null,"finish_reason":null}]}
+ 
+/// 转录字幕
+{"choices":[{"index":0,"delta":{"audio":{"transcript": "Hello world!", "words":[{"text":"Hello", "start_ts":100, "end_ts":140, "duration":40}]}},"logprobs":null,"finish_reason":null}]}
+
+/// 逐字（词）字幕
+{"choices":[{"index":0,"delta":{"audio":{"words":[{"text":"world", "start_ts":150, "end_ts":190, "duration":40}, {"text":"!", "start_ts":190, "end_ts":200, "duration":10}]}},"logprobs":null,"finish_reason":null}]}
+    
+....
+ 
+{"choices":[{"index":0,"delta":{},"logprobs":null,"finish_reason":"stop"}]}
+```
+
+声网对话式 AI 引擎会对不同类型响应按以下格式进行汇总：
+
+```json
+{
+    "choices": [
+        {
+            "delta": {
+                "audio": {
+                    "data": "base64 encoded pcm data",
+                    "transcript": "Hello world!",
+                    "words": [
+                        {
+                            "text": "Hello",
+                            "start_ts": 100,
+                            "end_ts": 140,
+                            "duration": 40
+                        },
+                        {
+                            "text": "world",
+                            "start_ts": 150,
+                            "end_ts": 190,
+                            "duration": 40
+                        },
+                        {
+                            "text": "!",
+                            "start_ts": 190,
+                            "end_ts": 200,
+                            "duration": 10
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
+
+`audio` 字段中各字段含义如下：
+
+- `data`：音频数据，为经过 Base64 编码的 PCM 字节流。
+- `transcript`：音频对应的字幕内容。
+- `words`：字幕对应的逐字（词）时间戳。要求大模型支持逐字输出。
+    - `text`：具体的字（词）。
+    - `start_ts`：相对本次请求音频 PCM 数据开始时间的毫秒数。
+    - `end_ts`：相对本次请求音频 PCM 数据结束时间的毫秒数。
+    - `duration`：对应字（词）实际播放时长。
+
+根据你的应用场景，可以让你的自定义大模型选择性处理并发送以上字段，例如：
+
+- 纯音频输出：仅 `data` 字段必选。
+- 纯字幕输出：仅 `transcript` 字段必选。单纯发送字幕内容，且该字幕不会通过 TTS 模块播报。
+- 音频＋逐字字幕输出：`data` 和 `words` 字段必选。其中，`words` 字段中必选发送 `text` 和 `start_ts` 字段，`end_ts` 字段和 `duration` 字段可二选一。
+
+## 进阶功能
+
+### 上下文管理
+
+响应中包含 `audio.transcript` 字段时，其中的字幕内容会自动存入智能体的上下文管理器中，并用于后续的上下文管理。如果没有收到 `audio.transcript` 字段，则不会存入上下文管理器中。
+
+如果你想让智能体的短期记忆中包含音频模态输出的内容，请确保响应中包含 `audio.transcript` 字段。
+
+### 字幕对齐
+
+参考[实时字幕](/zh-CN/ai/build/transcripts)文档完成字幕渲染逻辑后，如果大模型的响应中包含 `audio.words` 字段，声网对话式 AI 引擎会根据 `audio.words` 字段中的 `start_ts` 和 `end_ts`/`duration` 字段对音频进行断句，并根据断句结果进行字幕对齐。
+
+因此，如果你想让智能体在播报音频时，能够根据字幕内容进行断句，请确保大模型发送了 `audio.data` 和 `audio.words` 字段。
+
+### 智能体播报消息
+
+如果你创建的智能体没有配置 TTS 模块，但配置了音频模态输出（`output_modalities` 为 `["audio"]`），为了让智能体语音播报自定义消息，你可以按以下规则适配你的自定义大模型：
+
+智能体接收并发送给自定义大模型的消息列表 `messages` 中，期望大模型根据最后一条消息的 `role` 进行以下处理：
+
+- `role` 为 `assistant`：大模型视为该条消息无需思考，你可以自行转换为音频并发送给智能体，智能体收到后将直接播报该音频。
+- `role` 为 `user`：大模型视为该条消息需要经过思考，智能体将根据思考后返回的响应内容是否包含音频决定是否播报该条消息。对应用户和智能体对话问答的常规场景。
+
+:::info[信息]
+以下智能体播报行为同样采取该协议：
+
+- 智能体播报问候语 (`greeting_message`)、处理失败提示 (`failure_message`) 和静默提示 (`silence_message`) 时
+- 调用 [POST 播报自定义消息](/zh-CN/api-reference/api-ref/conversational-ai/speak)时
+:::
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Conversational-AI-Server-Sample" href="https://github.com/Shengwang-Community/Conversational-AI-Server-Sample" />
+</Cards>

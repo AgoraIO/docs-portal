@@ -1,0 +1,3823 @@
+---
+title: 初始配置
+_migration:
+  type: manual-mdx
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtm2/android/toc-configuration/configuration
+  sourcePath: docs-api-reference/rtm2/toc-configuration/configuration.android.mdx
+  generator: legacy-mdx
+  sourceUrls:
+    - https://doc.shengwang.cn/api-ref/rtm2/android/toc-configuration/configuration
+    - https://doc.shengwang.cn/api-ref/rtm2/flutter/toc-configuration/configuration
+    - https://doc.shengwang.cn/api-ref/rtm2/harmonyos/toc-configuration/configuration
+    - https://doc.shengwang.cn/api-ref/rtm2/ios/toc-configuration/configuration
+    - https://doc.shengwang.cn/api-ref/rtm2/javascript/toc-configuration/configuration
+    - https://doc.shengwang.cn/api-ref/rtm2/unity/toc-configuration/configuration
+  sourcePaths:
+    - docs-api-reference/rtm2/toc-configuration/configuration.android.mdx
+    - docs-api-reference/rtm2/toc-configuration/configuration.flutter.mdx
+    - docs-api-reference/rtm2/toc-configuration/configuration.harmonyos.mdx
+    - docs-api-reference/rtm2/toc-configuration/configuration.ios.mdx
+    - docs-api-reference/rtm2/toc-configuration/configuration.javascript.mdx
+    - docs-api-reference/rtm2/toc-configuration/configuration.unity.mdx
+  platforms:
+    - android
+    - flutter
+    - harmonyos
+    - ios
+    - javascript
+    - unity
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 24 legacy MDX syntax signal(s).
+    - code: manual-platform-merge
+      severity: info
+      message: >-
+        Merged 6 platform-specific MDX sources for
+        content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx.
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 42 legacy fragment link(s) to stable local anchors.
+    - code: unresolved-fragment
+      severity: warning
+      message: >-
+        Removed 4 fragment(s) that could not be mapped uniquely while preserving their local page
+        links.
+---
+
+<PlatformStructured platform="android">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+## RtmConfig
+
+### 接口描述
+
+`RtmConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RtmConfig` 实例：
+
+```java
+RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
+    .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
+    .eventListener(eventListener)
+    .protocolType(protocolType)
+    .presenceTimeout(300)
+    .heartbeatInterval(5)
+    .reconnectTimeout(60)
+    .useStringUserId(true)
+    .ispPolicyEnabled(false)
+    .proxyConfig(proxyConfig)
+    .logConfig(logConfig)
+    .encryptionConfig(encryptionConfig)
+    .privateConfig(privateConfig)
+    .build();
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | String | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
+| `userId` | String | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `EnumSet<RtmAreaCode>` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.android#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.android#protocoltype)。 |
+| `presenceTimeout` | int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
+| `heartbeatInterval` | int | 选填 | `5` | <Slot name="configuration-android-html-0-6-4" /> |
+| `reconnectTimeout` | int | 选填 | `0` | <Slot name="configuration-android-html-0-7-4" /> |
+| `useStringUserId` | boolean | 选填 | `true` | <Slot name="configuration-android-html-0-8-4" /> |
+| `ispPolicyEnabled` | boolean | 选填 | `false` | <Slot name="configuration-android-html-0-9-4" /> |
+| `logConfig` | `RtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `eventListener` | `RtmEventListener` | 必填 | - | RTM 事件通知监听函数设置。详见[事件监听](#事件监听)。 |
+| `proxyConfig` | `RtmProxyConfig` | 选填 | - | 当使用 RTM 的 Proxy 功能时，需要配置此参数。 |
+| `encryptionConfig` | `RtmEncryptionConfig` | 选填 | - | 当使用 RTM 端侧加密功能时，需要配置此项参数。 |
+| `privateConfig` | `RtmPrivateConfig` | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+
+<Slot for="configuration-android-html-0-6-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+<Slot for="configuration-android-html-0-7-4">
+
+SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
+
+    该参数对初次登录 RTM 服务和断线重连均有效：
+
+    - 如果初次登录超时，SDK 会触发 `onFailure` 回调，其中 `errorInfo` 为 `LOGIN_TIMEOUT`；同时触发 `onLinkStateChanged` 回调，其中 `currentState` 为 `FAILED`，`reason` 为 `LOGIN_TIMEOUT`；
+    - 如果断线重连超时，SDK 会触发 `onLinkStateChanged` 回调，其中 `currentState` 为 `FAILED`，`reason` 为 `RECONNECT_TIMEOUT`。
+
+</Slot>
+
+<Slot for="configuration-android-html-0-8-4">
+
+是否使用 `String` 类型的用户 ID：
+
+      - `true`: 使用 String 类型的用户 ID。
+      - `false`: 使用 Uint 类型的用户 ID，SDK 会自动将 `String` 类型的 `userId` 属性转换为 `Uint` 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+      当同时使用声网 RTC 和 RTM 产品时，需要确保 `userId` 一致。
+
+</Slot>
+
+<Slot for="configuration-android-html-0-9-4">
+
+是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
+
+      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+
+</Slot>
+
+#### RtmLogConfig
+
+`RtmLogConfig` 实例用来设置和存储本地日志文件 `agora.log`。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`RtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | String | 选填 | - | 日志存储路径。 |
+| `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-android-html-1-2-4" /> |
+| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.android#loglevel)。 |
+
+<Slot for="configuration-android-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### RtmProxyConfig
+
+`RtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`RtmProxyConfig` 包含以下属性：
+
+| 属性  | 类型             |  是否必填  |  默认值  | 描述  |
+|-----------|----------------|--------|-------| ----------- |
+| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.android#proxytype)。 |
+| `server`    | String           |  选填  | -             | Proxy 服务器域名或 IP 地址。                |
+| `port`      | int              |  选填  | -             | Proxy 监听端口。   |
+| `account`   | String           |  选填  | -            | Proxy 登录账号。   |
+| `password`  | String           |  选填  | -            | Proxy 登录密码。   |
+
+#### RtmEncryptionConfig
+
+`RtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`RtmEncryptionConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
+|-----|-------|--------|------------| -------------- |
+| `encryptionMode`    | `RtmEncryptionMode` |  选填  |`NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.android#encryptionmode)。 |
+| `encryptionKey`     | String                |  选填  |     -                       | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。       |
+| `encryptionKdfSalt` | byte[]              |  选填  | `null`                       | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。    |
+
+#### RtmPrivateConfig
+
+`RtmPrivateConfig` 实例用来设置私有化部署所需要的属性。
+
+`RtmPrivateConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述              |
+|-----|-------|--------|------------| ------- |
+| `serviceType`    | `EnumSet<RtmServiceType>` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.android#rtmservicetype)。 |
+| `accessPointHosts`    | `ArrayList<String>` |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
+
+### 基本用法
+
+```java
+RtmProxyConfig proxyConfig = new RtmProxyConfig();
+proxyConfig.setProxyType(RtmProxyType.HTTP);
+proxyConfig.setServer("x.x.x.x"); // your proxy server ip
+proxyConfig.setPort(8080); // your server port
+proxyConfig.setAccount("user_name");
+proxyConfig.setPassword("pass_word");
+
+RtmLogConfig logConfig = new RtmLogConfig();
+logConfig.setFilePath(""); // your log path
+logConfig.setFileSize(10*1024); // log file size
+logConfig.setLevel(RtmLogLevel.INFO);
+
+byte[] salt = {1, 2, 3, 4, 5};
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig();
+encryptionConfig.setEncryptionMode(RtmEncryptionMode.AES_256_GCM);
+encryptionConfig.setEncryptionKey("your_encryption_key");
+encryptionConfig.setEncryptionSalt(salt);
+
+ArrayList<String> hosts = new ArrayList<>();
+hosts.add("x.x.x.x"); // your access point hosts list.
+RtmPrivateConfig privateConfig = new RtmPrivateConfig();
+privateConfig.serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING);
+privateConfig.accessPointHosts = hosts;
+
+RtmConfig rtmConfig = new RtmConfig.Builder("yourAppId", "Tony")
+    .areaCode(EnumSet.of(RtmAreaCode.GLOB))
+    .eventListener(eventListener)
+    .protocolType(RtmProtocolType.TCP_UDP)
+    .presenceTimeout(300)
+    .heartbeatInterval(5)
+    .useStringUserId(true)
+    .proxyConfig(proxyConfig)
+    .logConfig(logConfig)
+    .encryptionConfig(encryptionConfig)
+    .privateConfig(privateConfig)
+    .build();
+```
+
+## create
+
+### 接口描述
+
+调用 `create` 方法创建并初始化 RTM Client 实例。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```java
+RtmClient create(RtmConfig config) throws Exception;
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述           |
+| ------ | --------- | ------ | ---- | ---- |
+| `config` | `RtmConfig` |   必填   |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。 |
+
+### 基本用法
+
+```java
+RtmConfig rtmConfig = new RtmConfig.Builder("yourAppId", "Tony")
+    .eventListener(eventListener)
+    .build();
+
+try {
+    rtmClient = RtmClient.create(rtmConfig);
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+### 返回值
+
+- 方法调用成功：一个 RTM 客户端实例，用以在后续调用 RTM 其他 API。
+- 方法调用失败：`Exception`。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+RtmEventListener
+
+RTM 总共有 8 种事件通知类型，如下表所示：
+
+|                事件类型   | 描述         |
+| ---- | ------ |
+|     <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="onMessageEvent">onMessageEvent</code>      | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span>               |
+|    <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="onPresenceEvent">onPresenceEvent</code>    | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span>                  |
+|        <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code>         | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>                      |
+|     <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code>      | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span>       |
+|          <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code>          | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>    |
+|        <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code>         | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/ios/enumv.android#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/ios/enumv.android#connectionreason)。</span> |
+|        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="onTokenPrivilegeWillExpire">onTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>    |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以在初始化时添加一个事件监听对象，也可以在 App 生命周期的任意时间调用 `addEventListener` 方法添加一个或多个事件监听对象。
+
+#### 初始化时添加
+
+调用 `create` 方法初始化 RTM Client 实例时，你可以参考以下示例代码添加一个事件监听对象：
+
+```java
+// Add the message event listener
+// Only need override the event which you want to receive
+rtmConfig.eventListener = new RtmEventListener {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        // Your message event handler
+    }
+
+    @Override
+    public void onPresenceEvent(PresenceEvent event) {
+        // Your presence event handler
+    }
+
+    @Override
+    public void onTopicEvent(TopicEvent event) {
+        // Your topic event handler
+    }
+
+    @Override
+    public void onLockEvent(LockEvent event) {
+        // Your lock event handler
+    }
+
+    @Override
+    public void onStorageEvent(StorageEvent event) {
+        // Your storage event handler
+    }
+
+    @Override
+    public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
+        // Your connection state change event handler
+    }
+
+    @Override
+    public void onLinkStateEvent(LinkStateEvent event) {
+        // Your link state change event handler
+    }
+
+    @Override
+    public void onTokenPrivilegeWillExpire(String channelName) {
+        // Your token privilege will expire event handler
+    }
+}
+```
+
+#### 任意时间添加
+
+addEventListener
+
+在 App 生命周期的任意时间中，如需添加多个事件监听对象，你可以多次调用 `addEventListener` 方法。
+
+```java
+// create event listener
+// only need to override the event which you want to receive
+RtmEventListener listener = new RtmEventListener() {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+    }
+
+    @Override
+    public void onLinkStateEvent(LinkStateEvent event) {
+    }
+};
+
+// add listener
+rtmClient.addEventListener(listener);
+// ...
+```
+
+### 删除监听
+
+removeEventListener
+
+如果你不再需要关注某个事件监听对象，但仍需关注其他事件监听对象，你可以调用 `removeEventListener` 方法删除指定的事件监听对象。
+
+```java
+rtmClient.removeEventListener(listener);
+```
+
+#### MessageEvent
+
+消息事件。
+
+`MessageEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述           |
+|----|-----| -------------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。   |
+| `channelName`            | String                |  频道名称。   |
+| `topicName`           | String                |  Topic 名称。   |
+| `message`                | `RtmMessage`                |  消息。   |
+| `publisher`              | String                |  消息发布者 ID。   |
+| `customType` | String | 用户自定义字段。仅支持 String 型。                |
+| `timestamp` | long | 事件发生的时间戳。                |
+
+`RtmMessage` 包含以下属性：
+
+| 属性        |  类型  |   描述     |
+|----|-----| -------------- |
+| `message`              |        String         |  String 型消息。   |
+| `data`              |       byte[]          |  Byte 型消息。   |
+| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.android#messagetype)。   |
+
+#### PresenceEvent
+
+用户 Presence 事件。
+
+`PresenceEvent` 包含以下属性：
+
+| 属性       |  类型  |   描述           |
+|----|-----| ----------- |
+| `type`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/zh-CN/api-reference/rtm/android/enumv#presencetype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。   |
+| `channelName`            | String                |  事件发生的频道名称。   |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `stateItems`            | `HashMap<String, String>`    |  标识用户临时状态的键值对。  |
+| `interval`            | `IntervalInfo`               |  Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。  |
+| `snapshot`              | `SnapshotInfo`               |  当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。   |
+| `timestamp` | long | 事件发生的时间戳。                |
+
+`IntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `joinUserList`         |         `ArrayList<String>`        | 在上一个周期内加入频道的用户列表。    |
+| `leaveUserList` | `ArrayList<String>` | 在上一个周期内离开频道的用户列表。 |
+| `timeoutUserList` | `ArrayList<String>` | 在上一个周期内加入频道超时的用户列表。 |
+| `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`SnapshotInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `userStateList` | `ArrayList<UserState>` | 用户第一次加入频道时的快照信息，包含用户 ID 和状态键值对。 |
+
+`UserState` 数据类型包含如下属性：
+
+| 属性     |          类型          | 描述              |
+| ------- | ------ | ----------- |
+| `userId` |         String         | 用户 ID。         |
+| `states` | `HashMap<String, String>` | 用户临时状态数组。 |
+
+#### TopicEvent
+
+Topic 事件。
+
+`TopicEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述  |
+|----|-----| --------- |
+| `type`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/zh-CN/api-reference/rtm/android/enumv#topictype)。  |
+| `channelName`            | String                |  事件发生的频道名称。   |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `topicInfos`            | `ArrayList<TopicInfo>`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
+| `timestamp` | long | 事件发生的时间戳。                |
+
+`TopicInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述        |
+|----|-----| ---- |
+| `topicName`            | String    |  Topic 名称。  |
+| `publishers`            | `ArrayList<PublisherInfo>`                |  消息发布者数组。   |
+
+`PublisherInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述                       |
+|----|-----| --------------- |
+| `publisherUserId`            | String    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | String                |  消息发布者的元数据。   |
+
+#### StorageEvent
+
+Storage 事件。
+
+`StorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述                 |
+|----|-----| --------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。   |
+| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/zh-CN/api-reference/rtm/android/enumv#storagetype)。  |
+| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/zh-CN/api-reference/rtm/android/enumv#storageeventtype)。  |
+| `target`              | String                |  用户 ID 或频道名称。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/android/storage#metadata)。   |
+| `timestamp` | long | 事件发生的时间戳。                |
+
+#### LockEvent
+
+Lock 事件。
+
+`LockEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述                     |
+|----|-----| --------------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。   |
+| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.android#locktype)。    |
+| `channelName`              | String                |  频道名称。   |
+| `lockDetailList`            | `ArrayList<LockDetail>`               |  Lock 的详情。   |
+| `timestamp` | long | 事件发生的时间戳。                |
+
+`LockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | ------- |
+| `lockName`         |         String         | Lock 的名称。               |
+| `lockOwner`    | String  | 拥有锁的用户 ID。   |
+| `ttl`    | int | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RELEASED` 事件。      |
+
+#### LinkStateEvent
+
+SDK 连接状态事件。
+
+`LinkStateEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述        |
+|----|-----| ----------------- |
+| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/android/enumv#linkstate)。   |
+| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/android/enumv#linkstate)。   |
+| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/android/enumv#rtmservicetype)。 |
+| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/android/enumv#linkoperation)。 |
+| `reasonCode`    | `RtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/android/enumv#linkstatechangereason)。 |
+| `reason`    | String | 本次状态迁移的原因。该参数未来会废弃，请使用 `reasonCode` 参数替代。 |
+| `affectedChannels`    | `ArrayList<String>` | 本次状态迁移影响的频道。 |
+| `unrestoredChannels`    | `ArrayList<String>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
+| `isResumed`    | boolean | 在连接断开的 2 分钟内，是否从 `DISCONNECTED` 状态恢复成 `CONNECTED` 状态。`true` 表示已恢复。 |
+| `timestamp`    | long | 本次事件通知发送的时间戳。 |
+
+RtmClient
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```java
+void login(String token, ResultCallback<Void> resultCallback);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 必填 | - | <Slot name="configuration-android-html-2-1-4" /> |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="configuration-android-html-2-2-4" /> |
+
+<Slot for="configuration-android-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication.android)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+<Slot for="configuration-android-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+调用 RTM Java SDK 的绝大部分 API 接口后，都会执行一个 `resultCallback` 回调。根据不同的调用结果，SDK 会在 `resultCallback` 回调中执行不同的方法：
+
+- 调用成功，则会执行 `onSuccess` 方法。
+- 调用失败，则会执行 `onFailure` 方法并且 `onFailure` 方法会返回一个 `ErrorInfo` 类型的 `errorInfo` 返回值，其中包含本次调用错误码、错误原因及 API 操作名称，如下表所示：
+
+  |  属性  |  类型  | 描述      |
+  | ---- | ------ | --------- |
+  | `errorCode` | `RtmErrorCode` | 本次操作错误码。 |
+  | `reason` | String | 本次操作出错原因。 |
+  | `operation` | String | 本次操作类型。 |
+
+  你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.android)了解错误原因，并找到对应的解决方法。
+
+### 基本用法
+
+```java
+rtmClient.login(token, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+    }
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+    }
+});
+```
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```java
+void logout(ResultCallback<Void> resultCallback);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="configuration-android-html-3-1-4" /> |
+
+<Slot for="configuration-android-html-3-1-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+rtmClient.logout(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+    }
+});
+```
+
+## release
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `RtmClient` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `RtmClient` 实例：
+
+```java
+void release();
+```
+
+### 基本用法
+
+```java
+rtmClient.release();
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+## RtmConfig
+
+### 接口描述
+
+`RtmConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RtmConfig` 实例：
+
+```dart
+RtmConfig({
+    int heartbeatInterval,
+    int presenceTimeout,
+    int reconnectTimeout,
+    bool useStringUserId,
+    bool ispPolicyEnabled,
+    RtmProtocolType protocolType,
+    RtmLogConfig logConfig,
+    RtmProxyConfig proxyConfig,
+    RtmEncryptionConfig encryptionConfig,
+    RtmPrivateConfig privateConfig,
+    Set<RtmAreaCode> areaCode
+})
+```
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `areaCode` | `RtmAreaCode` | 选填 | `glob` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.flutter#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `tcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#protocoltype)。 |
+| `presenceTimeout` | int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `remoteTimeout` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `remoteTimeout` 事件通知，也不会删除该用户的临时用户数据。 |
+| `heartbeatInterval` | int | 选填 | `5` | <Slot name="configuration-flutter-html-0-4-4" /> |
+| `reconnectTimeout` | int | 选填 | `0` | <Slot name="configuration-flutter-html-0-5-4" /> |
+| `useStringUserId` | bool | 选填 | `true` | <Slot name="configuration-flutter-html-0-6-4" /> |
+| `ispPolicyEnabled` | bool | 选填 | `false` | <Slot name="configuration-flutter-html-0-7-4" /> |
+| `logConfig` | `RtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `RtmProxyConfig` | 选填 | - | 当使用 RTM 的 Proxy 功能时，需要配置此参数。 |
+| `encryptionConfig` | `RtmEncryptionConfig` | 选填 | - | 当使用 RTM 端侧加密功能时，需要配置此项参数。 |
+| `privateConfig` | `RtmPrivateConfig` | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+
+<Slot for="configuration-flutter-html-0-4-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+<Slot for="configuration-flutter-html-0-5-4">
+
+SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
+
+    该参数对初次登录 RTM 服务和断线重连均有效：
+
+    - 如果初次登录超时，SDK 在返回的 `RtmStatus` 中会报告 `errorCode` 为 `loginTimeout`；同时触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `loginTimeout`；
+    - 如果断线重连超时，SDK 会触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `reconnectTimeout`。
+
+</Slot>
+
+<Slot for="configuration-flutter-html-0-6-4">
+
+是否使用 String 类型的用户 ID：
+
+      - `true`: 使用 String 类型的用户 ID。
+      - `false`: 使用 Int 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 Int 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+      当同时使用声网 RTC 和 RTM 产品时，需要确保 `userId` 一致。
+
+</Slot>
+
+<Slot for="configuration-flutter-html-0-7-4">
+
+是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
+
+      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+
+</Slot>
+
+#### RtmLogConfig
+
+```dart
+RtmLogConfig({
+    String filePath,
+    int fileSizeInKB,
+    RtmLogLevel level
+})
+```
+
+`RtmLogConfig` 实例用来设置和存储本地日志文件 `agora.log`。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`RtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | String | 选填 | - | 日志存储路径。 |
+| `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-flutter-html-1-2-4" /> |
+| `level` | `RtmLogLevel` | 选填 | `info` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.flutter#loglevel)。 |
+
+<Slot for="configuration-flutter-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### RtmProxyConfig
+
+<span className="index-desc-proxy">`RtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。</span>
+
+```dart
+RtmProxyConfig({
+    RtmProxyType proxyType,
+    String server,
+    int port,
+    String account,
+    String password
+})
+```
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`RtmProxyConfig` 包含以下属性：
+
+| 属性        | 类型                 | 必填 |     默认值      | 描述      |
+| ---------- | --------------- | ------ | ---- | ----------- |
+| `proxyType` | `RtmProxyType` |   选填   | `none` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#proxytype)。 |
+| `server`    | String               |   选填   |        -        | Proxy 服务器域名或 IP 地址。    |
+| `port`      | int                  |   选填   |        -        | Proxy 监听端口。                |
+| `account`   | String               |   选填   |        -        | Proxy 登录账号。                |
+| `password`  | String               |   选填   |        -        | Proxy 登录密码。                |
+
+#### RtmEncryptionConfig
+
+`RtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+```dart
+RtmEncryptionConfig({
+    RtmEncryptionMode encryptionMode,
+    String encryptionKey,
+    Uint8List encryptionSalt
+})
+```
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`RtmEncryptionConfig` 包含以下属性：
+
+| 属性                | 类型  | 必填 |        默认值        | 描述          |
+| ---- | ------ | -- | ------ | --------------- |
+| `encryptionMode`    | `RtmEncryptionMode` | 选填 | `none` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.flutter#encryptionmode)。 |
+| `encryptionKey`     | String     | 选填 |    -   | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。                     |
+| `encryptionKdfSalt` | Uint8List  | 选填 | `null`  | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。        |
+
+#### RtmPrivateConfig
+
+`RtmPrivateConfig` 实例用来设置私有化部署所需要的属性。
+
+```dart
+RtmPrivateConfig({
+    Set<RtmServiceType> serviceType,
+    List<String> accessPointHosts
+})
+```
+
+`RtmPrivateConfig` 包含以下属性：
+
+|        属性        |       类型       | 必填 | 默认值 | 描述          |
+| ---------------- | ----- | ------ | ---- | --------------- |
+|   `serviceType`    | `Set<RtmServiceType>` |   选填   |   -    | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#rtmservicetype)。 |
+| `accessPointHosts` |  `List<String>`  |   选填   |   -    | 服务器的地址数组，数组中支持填写域名或 IP 地址。             |
+
+### 基本用法
+
+```dart
+final proxyConfig = RtmProxyConfig(
+      protocolType : RtmProxyType.http,
+      server : "x.x.x.x",
+      port : 8080,
+      account : "Tony",
+      password : "pwd" );
+
+final logConfig = RtmLogConfig(
+      filePath : "xxxx",
+      fileSizeInKB : 1024;
+      leave : RtmLogLevel.info );
+
+final encryptionConfig = RtmEncryptionConfig(
+      encryptionMode : RtmEncryptionMode.aes256Gcm,
+      encryptionKey : "XXXXX",
+      encryptionSalt : [1,2,3,4,5]);
+
+final rtmConfig = RtmConfig(
+      heartbeatInterval : 10,
+      presenceTimeout : 5,
+      proxyConfig : proxyConfig,
+      logConfig : logConfig,
+      areaCode : {RtmAreaCode.cn, RtmAreaCode.na},
+      encryptionConfig : encryptionConfig );
+
+```
+
+<a id="初始化"></a>
+## 初始化
+
+### 接口描述
+
+调用 `RTM()` 方法创建并初始化 RTM Client 实例。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```dart
+Future<(RtmStatus,RtmClient)> RTM(
+    String appId,
+    String userId,
+    {
+        RtmConfig rtmConfig
+    }
+)
+```
+
+| 参数        | 类型            | 必填 | 默认值 | 描述          |
+| ---------- | ---------- | -- | ---- | --------------- |
+| `appId`     | String          |  是  |   -    | 你在声网控制台创建项目时获得的 App ID。                      |
+| `userId`    | String          |  是  |   -    | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `rtmConfig` | `RtmConfig` | 选填 |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。       |
+
+### 基本用法
+
+```dart
+final proxyConfig = RtmProxyConfig(
+      protocolType : RtmProxyType.http,
+      server : "x.x.x.x",
+      port : 8080,
+      account : "Tony",
+      password : "pwd" );
+
+final logConfig = RtmLogConfig(
+      filePath : "xxxx",
+      fileSizeInKB : 1024,
+      leave : RtmLogLevel.info );
+
+final encryptionConfig = RtmEncryptionConfig(
+      encryptionMode : RtmEncryptionMode.aes256gcm,
+      encryptionKey : "XXXXX",
+      encryptionSalt : [1,2,3,4,5]);
+
+final rtmConfig = RtmConfig(
+      heartbeatInterval : 10,
+      presenceTimeout : 5,
+      proxyConfig : proxyConfig,
+      logConfig : logConfig,
+      areaCode : {RtmAreaCode.cn, RtmAreaCode.na},
+      encryptionConfig : encryptionConfig );
+
+var (status,rtmClient) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus,RtmClient)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+  ```dart
+  class RtmStatus {
+      bool error;                   // 本次操作是否出错。
+      String errorCode;             // 本次操作错误码。
+      String operation;             // 本次操作的 API。
+      String reason;                // 本次操作错误原因简述。
+  }
+  ```
+
+  你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 RTM 客户端实例，用以后续调用其他 API。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+RTM 总共有 7 种事件通知类型，如下表所示：
+
+| 事件类型                 | 描述       |
+| ------- | ------- |
+| <code className="index-api-onmessageevent" id="message">message</code>          | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span>            |
+| <code className="index-api-onpresenceevent" id="presence">presence</code>       | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span>        |
+| <code className="index-api-ontopicevent" id="topic">topic</code>                | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>                       |
+| <code className="index-api-onstorageevent" id="storage">storage</code>          | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
+| <code className="index-api-onlockevent" id="lock">lock</code>                   | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>    |
+| <code className="index-api-onlinkstateevent" id="linkState">linkState</code>    | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span>       |
+| <code className="index-api-ontokenwillexpire" id="token">token</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>    |
+
+<a id="添加监听"></a>
+### 添加监听
+
+addListener
+
+你可以在 App 生命周期的任意时间调用 `addListener` 方法添加一个或多个事件监听对象。
+
+```dart
+rtmClient.addListener({
+    Function(MessageEvent event)? message = null,
+    Function(PresenceEvent event)? presence = null,
+    Function(TopicEvent event)? topic = null,
+    Function(StorageEvent event)? storage = null,
+    Function(LockEvent event)? lock = null,
+    Function(LinkStateEvent event)? linkState = null,
+    Function(TokenEvent event)? token = null,
+})
+```
+
+<a id="删除监听"></a>
+### 删除监听
+
+removeListener
+
+如果你不再需要关注某个事件监听对象，但仍需关注其他时间监听对象，你可以调用 `removeListener` 方法删除指定的事件监听对象。
+
+```dart
+rtmClient.removeListener({
+    Function(MessageEvent event) message = null,
+})
+```
+
+#### MessageEvent
+
+消息事件。
+
+`MessageEvent` 包含以下属性：
+
+| 属性            | 类型                   | 描述    |
+| -------------- | ----------------- | --------- |
+| `channelType`   | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `messageType`   | `RtmMessageType` | 消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#messagetype)。 |
+| `channelName`   | String                 | 频道名称。                    |
+| `channelTopic`  | String                 | Topic 名称。                  |
+| `message`       | Uint8List              | 消息。  |
+| `messageLength` | int                    | 消息长度。                    |
+| `publisher`     | String                 | 消息发布者 ID。               |
+| `customType`    | String                 | 用户自定义字段。仅支持 String 型。                     |
+| `timestamp`     | int                    | 事件发生的时间戳。            |
+
+#### PresenceEvent
+
+用户 Presence 事件。
+
+`PresenceEvent` 包含以下属性：
+
+| 属性       |  类型  |   描述                                                                                                                         |
+|-------|--------| ---------- |
+| `type`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/zh-CN/api-reference/rtm/flutter/enumv#presencetype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。   |
+| `channelName`            | String                |  事件发生的频道名称。   |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `stateItems`            | `List<StateItem>`    |  标识用户临时状态的键值对。  |
+| `interval`            | `IntervalInfo`               |  Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。  |
+| `snapshot`              | `SnapshotInfo`               |  当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。   |
+| `timestamp` | int | 事件发生的时间戳。                |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ------ | ------- | ------ |
+| `key`         |         String        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | String | 用户状态的值。 |
+
+`IntervalInfo` 数据类型包含以下属性：
+
+| 属性              | 类型              | 描述  |
+| ---------------- | ---------------- | ------ |
+| `joinUserList`    | `UserList`        | 在上一个周期内加入频道的用户列表。     |
+| `leaveUserList`   | `UserList`        | 在上一个周期内离开频道的用户列表。     |
+| `timeoutUserList` | `UserList`        | 在上一个周期内加入频道超时的用户列表。                       |
+| `userStateList`   | `List<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`SnapshotInfo` 数据类型包含以下属性：
+
+| 属性            | 类型              | 描述                    |
+| -------------- | ---------------- | ---- |
+| `userStateList` | `List<UserState>` | 用户第一次加入频道时的快照信息，包含用户 ID 和状态键值对。 |
+
+`UserList` 数据类型包含以下属性：
+
+| 属性    | 类型           |    描述    |
+| ------ | ------------- | -------- |
+| `users` | `List<String>` | 用户列表。 |
+
+`UserState` 数据类型包含以下属性：
+
+| 属性     | 类型              |                描述                |
+| ------- | ---------------- | ---- |
+| `userId` | String            |             用户 ID。              |
+| `states` | `List<StateItem>` | 频道在线用户及其临时状态信息列表。 |
+
+#### TopicEvent
+
+Topic 事件。
+
+`TopicEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述               |
+|-----|------| ---------- |
+| `type`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/zh-CN/api-reference/rtm/flutter/enumv#topictype)。  |
+| `channelName`            | String                |  事件发生的频道名称。   |
+| `publisher`              | String                |  触发此事件的用户 ID。   |
+| `topicInfos`            | `List<TopicInfo>`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
+| `timestamp` | int | 事件发生的时间戳。                |
+
+`TopicInfo` 数据类型包含以下属性：
+
+| 属性         | 类型                  | 描述             |
+| ----------- | ------ | ---------------- |
+| `topic`      | String                | Topic 名称。     |
+| `publishers` | `List<PublisherInfo>` | 消息发布者数组。 |
+
+`PublisherInfo` 数据类型包含以下属性：
+
+| 属性              | 类型   | 描述                  |
+| ---------------- | ----- | ------- |
+| `publisherUserId` | String | 消息发布者的用户 ID。 |
+| `publisherMeta`   | String | 消息发布者的元数据。  |
+
+#### StorageEvent
+
+Storage 事件。
+
+`StorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述                  |
+|-----|------| ---------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。   |
+| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/zh-CN/api-reference/rtm/flutter/enumv#storagetype)。  |
+| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/zh-CN/api-reference/rtm/flutter/enumv#storageeventtype)。  |
+| `target`              | String                |  用户 ID 或频道名称。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/flutter/storage)。   |
+| `timestamp` | int | 事件发生的时间戳。                |
+
+#### LockEvent
+
+Lock 事件。
+
+`LockEvent` 包含以下属性：
+
+| 属性             | 类型                   | 描述    |
+| --------------- | ----------------- | --------- |
+| `channelType`    | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `eventType`      | `RtmLockEventType`    | Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#locktype)。  |
+| `channelName`    | String                 | 频道名称。                    |
+| `lockDetailList` | `List<LockDetail>`     | Lock 的详情。                 |
+| `timestamp`      | int                    | 事件发生的时间戳。            |
+
+`LockDetail` 数据类型包含以下属性：
+
+| 属性       | 类型   | 描述               |
+| --------- | ----- | ---------- |
+| `lockName` | String | Lock 的名称。      |
+| `owner`    | String | 拥有锁的用户 ID。  |
+| `ttl`      | int    | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `lock` 事件通知的用户会收到 `lockReleased` 事件。 |
+
+#### LinkStateEvent
+
+SDK 连接状态事件。
+
+`LinkStateEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述               |
+|-----|------| ---------- |
+| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/flutter/enumv#linkstate)。   |
+| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/flutter/enumv#linkstate)。   |
+| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/flutter/enumv#rtmservicetype)。 |
+| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/flutter/enumv#linkoperation)。 |
+| `reason`    | String | 本次状态迁移的原因。 详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/ios/enumv.flutter#linkstatechangereason)。 |
+| `affectedChannels`    | `List<String>` | 本次状态迁移影响的频道。 |
+| `unrestoredChannels`    | `List<String>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
+| `isResumed`    | bool | 在连接断开的 2 分钟内，是否从 `rtmLinkStateDisconnected` 状态恢复成 `rtmLinkStateConnected` 状态。`true` 表示已恢复。 |
+| `timestamp`    | int | 本次事件通知发送的时间戳。 |
+
+RtmClient
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```dart
+Future<(RtmStatus, LoginResult?)> login(String token);
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 必填 | - | <Slot name="configuration-flutter-html-2-1-4" /> |
+
+<Slot for="configuration-flutter-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication.flutter)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.login('your_token');
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用该方法，会返回 `Future<(RtmStatus, LoginResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+  ```dart
+  class RtmStatus {
+      bool error;                   // 本次操作是否出错。
+      String errorCode;             // 本次操作错误码。
+      String operation;             // 本次操作的 API。
+      String reason;                // 本次操作错误原因简述。
+  }
+  ```
+
+  你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `LoginResult` 类型的数据，当前不包含任何字段。
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```dart
+Future<(RtmStatus, LogoutResult?)> logout();
+```
+
+### 基本用法
+
+```dart
+var (status,response) = await rtmClient.logout();
+if (status.error == true) {
+    print(status);
+} else {
+    print(response);
+}
+```
+
+### 返回值
+
+调用此方法，会返回 `Future<(RtmStatus, LogoutResult?)>` 类型的元组数据。
+
+- 无论该方法是否调用成功，元组的第一项都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+  ```dart
+  class RtmStatus {
+      bool error;                   // 本次操作是否出错。
+      String errorCode;             // 本次操作错误码。
+      String operation;             // 本次操作的 API。
+      String reason;                // 本次操作错误原因简述。
+  }
+  ```
+
+  你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+- 如果该方法调用成功，元组的第二项将返回一个 `LogoutResult` 类型的数据，当前不包含任何字段。
+
+## release
+
+### 接口描述
+
+一旦不再需要 RTM 服务，最好销毁 `RtmClient` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `RtmClient` 实例：
+
+```dart
+Future<RtmStatus> release();
+```
+
+### 基本用法
+
+```dart
+var status = await rtmClient.release();
+```
+
+### 返回值
+
+无论该方法是否调用成功，都会返回一个 `RtmStatus` 类型的数据，其中字段定义如下：
+
+```dart
+class RtmStatus {
+    bool error;                   // 本次操作是否出错。
+    String errorCode;             // 本次操作错误码。
+    String operation;             // 本次操作的 API。
+    String reason;                // 本次操作错误原因简述。
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、异步回调、基本用法示例代码和返回值。
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+## RtmConfig
+
+### 接口描述
+
+`RtmConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RtmConfig` 实例：
+
+```typescript
+import { RtmConfig, RtmAreaCode, RtmProtocolType, RtmLogLevel } from '@shengwang/rtm-full';
+
+const config: RtmConfig = {
+  appId: 'your_appid',
+  userId: 'your_userid',
+  areaCode: RtmAreaCode.CN | RtmAreaCode.AS,
+  protocolType: RtmProtocolType.TCP_UDP,
+  presenceTimeout: 300,
+  heartbeatInterval: 5,
+  useStringUserId: true,
+  ispPolicyEnabled: false,
+};
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | string | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
+| `userId` | string | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `RtmAreaCode` | 选填 | `GLOBAL` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#protocoltype)。 |
+| `presenceTimeout` | number | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
+| `heartbeatInterval` | number | 选填 | `5` | <Slot name="configuration-harmonyos-html-0-6-4" /> |
+| `reconnectTimeout` | number | 选填 | `0` | <Slot name="configuration-harmonyos-html-0-7-4" /> |
+| `useStringUserId` | boolean | 选填 | `true` | <Slot name="configuration-harmonyos-html-0-8-4" /> |
+| `multipath` | boolean | 选填 | `false` | 是否开启多路径传输。从 2.2.0 版本引入，目前仅对 Stream Channel 生效。 |
+| `ispPolicyEnabled` | boolean | 选填 | `false` | <Slot name="configuration-harmonyos-html-0-10-4" /> |
+| `logConfig` | `RtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `RtmProxyConfig` | 选填 | - | 当使用 RTM 的 Proxy 功能时，需要配置此参数。 |
+| `encryptionConfig` | `RtmEncryptionConfig` | 选填 | - | 当使用 RTM 端侧加密功能时，需要配置此项参数。 |
+| `privateConfig` | `RtmPrivateConfig` | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+
+<Slot for="configuration-harmonyos-html-0-6-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+<Slot for="configuration-harmonyos-html-0-7-4">
+
+SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
+
+    该参数对初次登录 RTM 服务和断线重连均有效：
+
+    - 如果初次登录超时，SDK 会触发 `login` 方法返回的 Promise reject，错误码为 `RTM_ERROR_LOGIN_TIMEOUT`；同时触发 `onLinkStateChanged` 事件，其中 `currentState` 为 `RTM_LINK_STATE_FAILED`，`reasonCode` 为 `RTM_LINK_CHANGE_REASON_LOGIN_TIMEOUT`；
+    - 如果断线重连超时，SDK 会触发 `onLinkStateChanged` 事件，其中 `currentState` 为 `RTM_LINK_STATE_FAILED`，`reasonCode` 为 `RTM_LINK_CHANGE_REASON_RECONNECT_TIMEOUT`。
+
+</Slot>
+
+<Slot for="configuration-harmonyos-html-0-8-4">
+
+是否使用字符串类型的用户 ID：
+
+      - `true`: 使用 String 类型的用户 ID。
+      - `false`: 使用 Uint 类型的用户 ID，SDK 会自动将字符串类型的 `userId` 属性转换为 `Uint` 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+      当同时使用声网 RTC 和 RTM 产品时，需要确保 `userId` 一致。
+
+</Slot>
+
+<Slot for="configuration-harmonyos-html-0-10-4">
+
+是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
+
+      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+
+</Slot>
+
+#### RtmLogConfig
+
+`RtmLogConfig` 实例用来设置和存储本地日志文件 `agora.log`。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`RtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | string | 选填 | `''` | 日志存储路径。HarmonyOS 推荐使用应用沙箱路径，例如：`/data/app/el2/100/base/your_application/files/rtm_logs`。 |
+| `fileSizeInKB` | number | 选填 | `1024` | <Slot name="configuration-harmonyos-html-1-2-4" /> |
+| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#loglevel)。 |
+
+<Slot for="configuration-harmonyos-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,20480]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 20480，则 SDK 按照 20480 设置。
+
+</Slot>
+
+#### RtmProxyConfig
+
+`RtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`RtmProxyConfig` 包含以下属性：
+
+| 属性  | 类型             |  是否必填  |  默认值  | 描述  |
+|-----------|----------------|--------|-------| ----------- |
+| `server`    | string           |  必填  | -             | Proxy 服务器域名或 IP 地址。                |
+| `account`   | string           |  必填  | -            | Proxy 登录账号。   |
+| `password`  | string           |  必填  | -            | Proxy 登录密码。   |
+| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#proxytype)。 |
+| `port`      | number              |  选填  | `0`             | Proxy 监听端口。   |
+
+#### RtmEncryptionConfig
+
+`RtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`RtmEncryptionConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `encryptionMode` | `RtmEncryptionMode` | 选填 | `NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#encryptionmode)。 |
+| `encryptionKey` | string | 选填 | `''` | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。 |
+| `encryptionSalt` | Uint8Array | 选填 | - | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。 |
+
+#### RtmPrivateConfig
+
+`RtmPrivateConfig` 实例用来设置私有化部署所需要的属性。
+
+`RtmPrivateConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述                      |
+|-----|-------|--------|------------| ---------------- |
+| `serviceType`    | `RtmServiceType` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#rtmservicetype)。 |
+| `accessPointHosts`    | string[] |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
+
+### 基本用法
+
+```typescript
+import {
+  RtmConfig,
+  RtmLogLevel,
+  RtmProxyType,
+  RtmEncryptionMode,
+  RtmServiceType
+} from '@shengwang/rtm-full';
+
+// Create configuration with all options
+const config: RtmConfig = {
+  appId: 'your_appid',
+  userId: 'your_userid',
+
+  // Log configuration
+  logConfig: {
+    level: RtmLogLevel.INFO,
+    filePath: '/data/app/el2/100/base/your_application/files/rtm_logs',
+    fileSizeInKB: 10240
+  },
+
+  // Proxy configuration
+  proxyConfig: {
+    proxyType: RtmProxyType.HTTP,
+    server: 'your_server_address',
+    port: 8080,
+    account: 'your_account',
+    password: 'your_password'
+  },
+
+  // Encryption configuration
+  encryptionConfig: {
+    encryptionKey: 'your_encryption_key',
+    encryptionMode: RtmEncryptionMode.AES_256_GCM,
+    encryptionSalt: new Uint8Array([1, 2, 3, 4, 5, /* ... 32 bytes total */])
+  },
+
+  // Private deployment configuration
+  privateConfig: {
+    accessPointHosts: ['host1.example.com', 'host2.example.com'],
+    serviceType: RtmServiceType.MESSAGE | RtmServiceType.STREAM
+  }
+};
+```
+
+## RtmClient
+
+### 接口描述
+
+调用 `RtmClient` 构造函数创建并初始化 RTM Client 实例。
+
+:::info[信息]
+- 该方法需要在 RTM 的其他 API 之前调用。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+- RTM Client 采用单例模式，多次创建会返回同一个实例。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建实例：
+
+```typescript
+constructor(config: RtmConfig)
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述          |
+| ------ | --------- | ------ | ---- | -------------- |
+| `config` | `RtmConfig` |   必填   |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmConfig } from '@shengwang/rtm-full';
+
+const config: RtmConfig = {
+  appId: 'your_appid',
+  userId: 'your_userid'
+};
+
+try {
+  const rtmClient = new RtmClient(config);
+  console.log('RTM Client created successfully');
+} catch (error) {
+  console.error('Failed to create RTM client:', error);
+}
+```
+
+### 返回值
+
+- 方法调用成功：一个 `RtmClient` 对象实例。
+- 方法调用失败：抛出异常。
+
+IRtmClient
+
+## 事件监听
+
+### 接口描述
+
+addEventListener
+
+RTM 总共有 8 种事件通知类型，如下表所示：
+
+| 事件类型 | 描述 |
+| --- | --- |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="message">message</code> | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="presence">presence</code> | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="topic">topic</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="storage">storage</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="lock">lock</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="linkState">linkState</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontokenevent" id="token">token</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 相关的事件通知。详见 [`TokenEvent`](#tokenevent)。</span> |
+
+### 添加监听
+
+你可以通过以下方式来监听事件通知：
+
+```typescript
+import { RtmClient, LinkStateEvent, MessageEvent, TokenEvent, PresenceEvent, StorageEvent, LockEvent, TopicEvent, RtmMessageType, RtmTokenEventType, RtmPresenceEventType } from '@shengwang/rtm-full';
+
+// Listen to link state changes
+rtmClient.addEventListener('linkState', (event: object) => {
+  const linkEvent = event as LinkStateEvent;
+  console.log('Link state changed:', linkEvent.currentState);
+  console.log('Previous state:', linkEvent.previousState);
+  console.log('Reason:', linkEvent.reasonCode);
+});
+
+// Listen to incoming messages
+rtmClient.addEventListener('message', (event: object) => {
+  const msgEvent = event as MessageEvent;
+  console.log('Received message from:', msgEvent.publisher);
+  console.log('Channel:', msgEvent.channelName);
+
+  if (msgEvent.messageType === RtmMessageType.STRING) {
+    console.log('Text message:', msgEvent.message);
+  } else {
+    console.log('Binary message length:', (msgEvent.message as Uint8Array).length);
+  }
+});
+
+// Listen to token events
+rtmClient.addEventListener('token', (event: object) => {
+  const tokenEvent = event as TokenEvent;
+  if (tokenEvent.eventType === RtmTokenEventType.WILL_EXPIRE) {
+    console.log('Token will expire, renewing...');
+    rtmClient.renewToken('new_token_string');
+  }
+});
+
+// Listen to presence events
+rtmClient.addEventListener('presence', (event: object) => {
+  const presenceEvent = event as PresenceEvent;
+  console.log('Presence event:', presenceEvent.eventType);
+  console.log('Channel:', presenceEvent.channelName);
+});
+
+// Listen to storage events
+rtmClient.addEventListener('storage', (event: object) => {
+  const storageEvent = event as StorageEvent;
+  console.log('Storage event:', storageEvent.eventType);
+  console.log('Target:', storageEvent.target);
+});
+
+// Listen to lock events
+rtmClient.addEventListener('lock', (event: object) => {
+  const lockEvent = event as LockEvent;
+  console.log('Lock event:', lockEvent.eventType);
+  console.log('Channel:', lockEvent.channelName);
+});
+
+// Listen to topic events
+rtmClient.addEventListener('topic', (event: object) => {
+  const topicEvent = event as TopicEvent;
+  console.log('Topic event:', topicEvent.eventType);
+  console.log('Channel:', topicEvent.channelName);
+});
+```
+
+### 删除监听
+
+当你不再需要接收某个事件通知时，可以通过 `removeEventListener` 方法删除对应的监听器。
+
+```typescript
+removeEventListener(eventName: string, callback?: (event: object) => void): void
+```
+
+| 参数 | 类型 | 是否必填 | 描述 |
+|------|------|----------|------|
+| `eventName` | string | 必填 | 事件名称，如 `'linkState'`、`'message'`、`'token'` 等 |
+| `callback` | `(event: object) => void` | 选填 | 要删除的回调函数。如果不提供，则删除该事件的所有监听器 |
+
+你可以通过以下方式删除事件监听：
+
+```typescript
+import { RtmClient, MessageEvent } from '@shengwang/rtm-full';
+
+// 定义一个回调函数
+const messageHandler = (event: object) => {
+  const msgEvent = event as MessageEvent;
+  console.log('Received message:', msgEvent.message);
+};
+
+// 添加监听
+rtmClient.addEventListener('message', messageHandler);
+
+// 删除特定的监听器
+rtmClient.removeEventListener('message', messageHandler);
+
+// 或者删除该事件的所有监听器
+rtmClient.removeEventListener('message');
+
+// 删除其他事件的监听器
+rtmClient.removeEventListener('linkState');
+rtmClient.removeEventListener('presence');
+rtmClient.removeEventListener('storage');
+```
+
+:::info[信息]
+- 如果提供了 `callback` 参数，只会删除与该回调函数完全匹配的监听器。
+- 如果不提供 `callback` 参数，会删除该事件名称下的所有监听器。
+- 建议在组件销毁或不再需要监听时及时删除监听器，以避免内存泄漏。
+:::
+
+#### MessageEvent
+
+消息事件。
+
+`MessageEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述     |
+|----|-----| ----------------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。   |
+| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#messagetype)。   |
+| `channelName`            | string                |  频道名称。   |
+| `channelTopic`           | string                |  Topic 名称。   |
+| `message`                | string \| Uint8Array                |  消息内容。根据 `messageType` 的值，可能是字符串或二进制数据。   |
+| `publisher`              | string                |  消息发布者 ID。   |
+| `customType` | string | 用户自定义字段。仅支持 String 型。                |
+| `timestamp` | number | 事件发生的时间戳。                |
+
+#### PresenceEvent
+
+用户 Presence 事件。
+
+`PresenceEvent` 包含以下属性：
+
+| 属性       |  类型  |   描述       |
+|----|-----| ----------- |
+| `eventType`            | `RtmPresenceEventType`    |   Presence 事件类型。详见 [`RtmPresenceEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#presencetype)。  |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
+| `channelName`            | string                |  事件发生的频道名称。  |
+| `publisher`              | string                |  触发此事件的用户 ID。   |
+| `stateChanged`            | `StateItem[]`    |  状态变更的键值对数组。仅当 `eventType` 为 `REMOTE_STATE_CHANGED` 时有效。  |
+| `interval`            | `IntervalInfo \| null`               |  Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。仅当 `eventType` 为 `INTERVAL` 时非空。  |
+| `snapshot`              | `UserState[] \| null`               |  当前频道的内所有用户及其状态的快照数据。仅当 `eventType` 为 `SNAPSHOT` 时非空。   |
+| `timestamp` | number | 事件发生的时间戳。                |
+
+`IntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `join`         |         string[]        | 在上一个周期内加入频道的用户 ID 列表。    |
+| `leave` | string[] | 在上一个周期内离开频道的用户 ID 列表。 |
+| `timeout` | string[] | 在上一个周期内加入频道超时的用户 ID 列表。 |
+| `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`UserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | -------- |
+| `userId`         |  string  |  用户 ID。     |
+| `states`         |    `StateItem[]`      | 用户的临时状态信息列表。        |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ------ | ------- | ------ |
+| `key`         |         string        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | string | 用户状态的值。 |
+
+#### TopicEvent
+
+Topic 事件。
+
+`TopicEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述   |
+|----|-----| ------ |
+| `eventType`            | `RtmTopicEventType`    |  Topic 事件类型。详见 [`RtmTopicEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#topictype)。  |
+| `channelName`            | string                |  事件发生的频道名称。   |
+| `publisher`              | string                |  触发此事件的用户 ID。   |
+| `topicInfos`            | `TopicInfo[]`               |  Topic 的详细信息，包含 Topic 名称、Topic 发布者等信息。   |
+| `timestamp` | number | 事件发生的时间戳。                |
+
+`TopicInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述   |
+|----|-----| --------- |
+| `topic`            | string    |  Topic 名称。  |
+| `publishers`            | `PublisherInfo[]`                |  消息发布者数组。   |
+
+`PublisherInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述          |
+|----|-----| --------------- |
+| `publisherUserId`            | string    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | string                |  消息发布者的元数据。   |
+
+#### StorageEvent
+
+Storage 事件。
+
+`StorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述      |
+|----|-----| ------- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
+| `storageType`            | `RtmStorageType`    |  Storage 类型。详见 [`RtmStorageType`](/zh-CN/api-reference/rtm/harmonyos/enumv#storagetype)。  |
+| `eventType`            | `RtmStorageEventType`    |  Storage 事件类型。详见 [`RtmStorageEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#storageeventtype)。  |
+| `target`              | string                |  用户 ID 或频道名称。   |
+| `data`            | `Metadata`               |   Metadata Item。详见 [`Metadata`](/zh-CN/api-reference/rtm/harmonyos/storage#setchannelmetadata)。   |
+| `timestamp` | number | 事件发生的时间戳。                |
+
+#### LockEvent
+
+Lock 事件。
+
+`LockEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述                |
+|----|-----| ----- |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。   |
+| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#locktype)。    |
+| `channelName`              | string                |  频道名称。   |
+| `lockDetails`            | `LockDetail[]`               |  Lock 的详情。   |
+| `timestamp` | number | 事件发生的时间戳。                |
+
+`LockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------| --------- |
+| `lockName`         |         string         | Lock 的名称。               |
+| `owner`    | string  | 拥有锁的用户 ID。   |
+| `ttl`    | number | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `lock` 事件通知的用户会收到 `LOCK_RELEASED` 事件。      |
+
+#### LinkStateEvent
+
+SDK 连接状态事件。
+
+`LinkStateEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述            |
+|----|-----| ------------- |
+| `currentState`            | `RtmLinkState`    |  当前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstate)。   |
+| `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstate)。   |
+| `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/harmonyos/enumv#rtmservicetype)。 |
+| `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkoperation)。 |
+| `reasonCode`    | `RtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/harmonyos/enumv#linkstatechangereason)。 |
+| `reason`    | string | 本次状态迁移的原因描述。 |
+| `affectedChannels`    | string[] | 本次状态迁移影响的频道。 |
+| `unrestoredChannels`    | `UnrestoredChannelInfo[]` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
+| `isResumed`    | boolean | 在连接断开的 2 分钟内，是否从 `RTM_LINK_STATE_DISCONNECTED` 状态恢复成 `RTM_LINK_STATE_CONNECTED` 状态。`true` 表示已恢复。 |
+| `timestamp`    | number | 本次事件通知发送的时间戳。 |
+
+#### TokenEvent
+
+Token 事件。
+
+`TokenEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述            |
+|----|-----| ------------- |
+| `eventType`            | `RtmTokenEventType`    |  Token 事件类型。详见 [`RtmTokenEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv)。   |
+| `reason`            | string    |  Token 事件的详细描述，提供事件触发原因的可读说明。   |
+| `affectedResources`    | `AffectedResources` | 受此 Token 事件影响的资源，包含受影响的频道列表等信息。 |
+| `timestamp`    | number | 事件发生的时间戳。 |
+
+`AffectedResources` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------| --------- |
+| `messageChannels`         |         string[]         | 受事件影响的 Message Channel 名称列表。               |
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```typescript
+async login(token?: string): Promise<LoginResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 选填 | `""` | <Slot name="configuration-harmonyos-html-4-1-4" /> |
+
+<Slot for="configuration-harmonyos-html-4-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication.harmonyos)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 返回值
+
+该方法返回一个 Promise：
+
+- Promise resolve：返回 `LoginResponse` 对象。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.harmonyos)。
+
+`LoginResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.login('your_token');
+  console.log('Login successful, timestamp:', response.timestamp);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Login failed:', error.errorCode, error.reason);
+  }
+}
+
+// Login with empty token (if token authentication is not enabled)
+try {
+  const response = await rtmClient.login();
+  console.log('Login successful');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Login failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```typescript
+async logout(): Promise<LogoutResponse>
+```
+
+### 返回值
+
+该方法返回一个 Promise：
+
+- Promise resolve：返回 `LogoutResponse` 对象。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.harmonyos)。
+
+`LogoutResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+### 基本用法
+
+```typescript
+import { RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.logout();
+  console.log('Logout successful, timestamp:', response.timestamp);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Logout failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## release
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `RtmClient` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`release` 是同步方法，调用后会立即清理资源。请确保不要在回调线程里，执行该方法。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `RtmClient` 实例：
+
+```typescript
+release(): void
+```
+
+### 基本用法
+
+```typescript
+// Release the RTM client instance
+rtmClient.release();
+console.log('RTM client released');
+
+// After release, you need to create a new instance to use RTM again
+```
+
+### 返回值
+
+无返回值。该方法是同步的，调用后立即生效。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+## AgoraRtmClientConfig
+
+### 接口描述
+
+`AgoraRtmClientConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `AgoraRtmClientConfig` 实例：
+
+```objc
+__attribute__((visibility("default"))) @interface AgoraRtmClientConfig: NSObject
+
+- (instancetype _Nullable)init NS_UNAVAILABLE;
+
+- (instancetype _Nonnull) initWithAppId:(NSString * _Nonnull)appId
+                                 userId:(NSString * _Nonnull)userId;
+
+@property (nonatomic, assign) AgoraRtmAreaCode areaCode;
+@property (nonatomic, assign)  AgoraRtmProtocolType protocolType;
+@property (nonatomic, assign) unsigned int presenceTimeout;
+@property (nonatomic, assign) unsigned int heartbeatInterval;
+@property (nonatomic, assign) unsigned int reconnectTimeout;
+@property (nonatomic, copy, nonnull) NSString *appId;
+@property (nonatomic, copy, nonnull) NSString *userId;
+@property (nonatomic, assign) BOOL useStringUserId;
+@property (nonatomic, assign) BOOL multipath;
+@property (nonatomic, assign) BOOL ispPolicyEnabled;
+@property (nonatomic, copy, nullable) AgoraRtmLogConfig * logConfig;
+@property (nonatomic, copy, nullable) AgoraRtmProxyConfig * proxyConfig;
+@property (nonatomic, copy, nullable) AgoraRtmEncryptionConfig * encryptionConfig;
+@property (nonatomic, copy, nullable) AgoraRtmPrivateConfig * privateConfig;
+@property (nonatomic, strong, nullable) dispatch_queue_t callbackQueue;
+@end
+```
+
+| 方法 |  描述 |
+| --------------- |  -------- |
+| `init`             | 禁止不填参数就初始化 `AgoraRtmClientConfig` 实例。 |
+| `initWithAppId`             | 初始化 `AgoraRtmClientConfig` 实例时必须填入 `appId` 和 `userId` 参数。 |
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | NSString | 必填 | - | 你在声网控制台创建项目时获得的 App ID。 |
+| `userId` | NSString | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `AgoraRtmAreaCode` | 选填 | `AgoraRtmAreaCodeGLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`AgoraRtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.ios#areacode)。 |
+| `protocolType` | `AgoraRtmProtocolType` | 选填 | `AgoraRtmProtocolTypeTcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`AgoraRtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.ios#protocoltype)。 |
+| `presenceTimeout` | unsigned int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` 事件通知，也不会删除该用户的临时用户数据。 |
+| `heartbeatInterval` | unsigned int | 选填 | `5` | <Slot name="configuration-ios-html-0-6-4" /> |
+| `reconnectTimeout` | uint32_t | 选填 | `0` | <Slot name="configuration-ios-html-0-7-4" /> |
+| `useStringUserId` | BOOL | 选填 | `true` | <Slot name="configuration-ios-html-0-8-4" /> |
+| `ispPolicyEnabled` | BOOL | 选填 | `false` | <Slot name="configuration-ios-html-0-9-4" /> |
+| `logConfig` | `AgoraRtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `AgoraRtmProxyConfig` | 选填 | - | 如需使用 RTM 的 Proxy 功能，则需配置此参数。 |
+| `encryptionConfig` | `AgoraRtmEncryptionConfig` | 选填 | - | 如需使用 RTM 端侧加密功能，则需配置此参数。 |
+| `privateConfig` | `AgoraRtmPrivateConfig` | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+| `callbackQueue` | dispatch_queue_t | 选填 | - | <Slot name="configuration-ios-html-0-14-4" /> |
+
+<Slot for="configuration-ios-html-0-6-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+<Slot for="configuration-ios-html-0-7-4">
+
+SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
+
+    该参数对初次登录 RTM 服务和断线重连均有效：
+
+    - 如果初次登录超时，SDK 会在 `completion` 回调中报告 `errorInfo` 为 `AgoraRtmErrorLoginTimeout`；同时触发 `didReceiveLinkStateEvent` 回调，其中 `currentState` 为 `AgoraRtmLinkStateFailed`，`reasonCode` 为 `AgoraRtmLinkStateChangeReasonLoginTimeout`；
+    - 如果断线重连超时，SDK 会触发 `didReceiveLinkStateEvent` 回调，其中 `currentState` 为 `AgoraRtmLinkStateFailed`，`reasonCode` 为 `AgoraRtmLinkStateChangeReasonReconnectTimeout`。
+
+</Slot>
+
+<Slot for="configuration-ios-html-0-8-4">
+
+是否使用 `String` 类型的用户 ID：
+
+    - `true`: 使用 `String` 类型的用户 ID。
+    - `false`: 使用 `Uint` 类型的用户 ID，SDK 会自动将 `String` 类型的 `userId` 属性转换为 `Uint` 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+    当同时使用声网 RTC 和 RTM 产品时，需要确保 userId 一致。
+
+</Slot>
+
+<Slot for="configuration-ios-html-0-9-4">
+
+是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
+
+      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+
+</Slot>
+
+<Slot for="configuration-ios-html-0-14-4">
+
+回调队列：
+
+    - 如果设为 `nil`，则回调会在主线程中被调用。
+    - 如果不是 `nil`，则回调会在指定队列中被调用。
+
+</Slot>
+
+#### AgoraRtmLogConfig
+
+`AgoraRtmLogConfig` 实例用来设置和存储本地日志文件 agora.log。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`AgoraRtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | NSString | 选填 | - | 日志存储路径。 |
+| `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-ios-html-1-2-4" /> |
+| `level` | `AgoraRtmLogLevel` | 选填 | `AgoraRtmLogLevelInfo` | 日志信息的输出等级，详见 [`AgoraRtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.ios#loglevel)。 |
+
+<Slot for="configuration-ios-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### AgoraRtmProxyConfig
+
+`AgoraRtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`AgoraRtmProxyConfig` 包含以下方法和属性：
+
+| 方法 |  描述 |
+| --------------- |  -------- |
+| `init`             | 禁止不填参数就初始化 `AgoraRtmProxyConfig` 实例。 |
+| `initWithServer`             | 初始化 `AgoraRtmProxyConfig` 实例时必须填入 `server`、`port` 和 `proxyType` 参数。 |
+
+| 属性  | 类型             |  是否必填  |  默认值  | 描述  |
+|-----------|----------------|--------|-------| ----------- |
+| `proxyType` | `AgoraRtmProxyType` |  选填  | `AgoraRtmProxyTypeNone` | Proxy 协议类型。详见 [`AgoraRtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.ios#proxytype)。 |
+| `server`    | NSString           |  必填  | -             | Proxy 服务器域名或 IP 地址。                |
+| `port`      | unsigned short              |  选填  | -             | Proxy 监听端口。   |
+| `account`   | NSString           |  选填  | -            | Proxy 登录账号。   |
+| `password`  | NSString           |  选填  | -            | Proxy 登录密码。   |
+
+#### AgoraRtmEncryptionConfig
+
+`AgoraRtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`AgoraRtmEncryptionConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
+|-----|-------|--------|------------| ------ |
+| `encryptionMode`    | `AgoraRtmEncryptionMode` |  选填  |`AgoraRtmEncryptionNone` | 加密方式。详见 [`AgoraRtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.ios#encryptionmode)。 |
+| `encryptionKey`     | NSString                |  选填  |     -                       | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。              |
+| `encryptionKdfSalt` | NSData              |  选填  | -                       | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。    |
+
+#### AgoraRtmPrivateConfig
+
+`AgoraRtmPrivateConfig` 实例用来设置私有化部署所需要的属性。
+
+`AgoraRtmPrivateConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
+|-----|-------|--------|------------| ------ |
+| `serviceType`    | `AgoraRtmServiceType` |  选填  | - | 服务类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.ios#rtmservicetype)。 |
+| `accessPointHosts`    | `NSArray<NSString *>` |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
+
+### 接口方法
+
+```objc
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmEncryptionConfig* encryptionConfig = [[AgoraRtmEncryptionConfig alloc] init];
+encryptionConfig.encryptionKey = @"you_encryption_key";
+encryptionConfig.encryptionMode = AgoraRtmEncryptionAES256GCM;
+unsigned char bytes[32] = { /*your salt values */ };
+encryptionConfig.encryptionSalt = [NSData dataWithBytes:bytes length:32];
+
+AgoraRtmLogConfig* log_config = [[AgoraRtmLogConfig alloc] init];
+log_config.level= AgoraRtmLogLevelError;
+log_config.filePath= @"your_path";
+log_config.fileSizeInKB = 512;
+
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] initWithServer:@"your_proxy_server" port:8080 proxyType:AgoraRtmProxyTypeHttp];
+proxy_config.account = @"username";
+proxy_config.password = @"password";
+
+AgoraRtmPrivateConfig* private_config = [[AgoraRtmPrivateConfig alloc] init];
+private_config.accessPointHosts = @[@"your_private_server"];
+private_config.serviceType = AgoraRtmServiceTypeStream | AgoraRtmServiceTypeMessage;
+
+rtm_config.privateConfig = private_config;
+rtm_config.proxyConfig = proxy_config;
+rtm_config.logConfig = log_config;
+rtm_config.encryptionConfig = encryptionConfig;
+rtm_config.useStringUserId = true;
+rtm_config.heartbeatInterval = 5;
+rtm_config.protocolType = AgoraRtmProtocolTypeTcpUdp;
+rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
+rtm_config.presenceTimeout = 300;
+```
+
+## initWithConfig
+
+### 接口描述
+
+调用 `initWithConfig` 方法创建并初始化 RTM Client 实例。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```objc
+- (instancetype _Nullable) initWithConfig: (AgoraRtmClientConfig * _Nonnull)config
+           delegate: (id <AgoraRtmClientDelegate> _Nullable)delegate;
+              error: (NSError**)error NS_SWIFT_NAME(init(_:delegate:));
+```
+
+| 参数 |  类型  |  是否必填  |  默认值  | 描述           |
+|----------|---------|--------|-------| ----- |
+| `config`   | `AgoraRtmClientConfig` |  必填 |     -    | 初始化 RTM Client 的配置参数。详见 `AgoraRtmClientConfig`。 |
+| `delegate`   | `id <AgoraRtmClientDelegate>` |  选填 |     -    |  RTM 事件通知监听函数设置。详见[事件监听](#事件监听)。 |
+| `error`   | NSError |  必填 |     -    |  （输出参数）错误描述。 |
+
+### 基本用法
+
+```objc
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+### 返回值
+
+- 方法调用成功，返回一个 RTM 客户端实例，用以在后续调用 RTM 其他 API。
+- `nil`：方法调用失败。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+AgoraRtmClientDelegate
+
+RTM 总共有 8 种事件通知类型，如下表所示：
+
+| 事件类型   | 描述                      |
+|--------------| ---------- |
+| <code className="index-group-item-rtmeventlistener index-api-onmessageevent" id="didReceiveMessageEvent">didReceiveMessageEvent</code>             | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`AgoraRtmMessageEvent`](#agorartmmessageevent)。</span>                  |
+| <code className="index-group-item-rtmeventlistener index-api-onpresenceevent" id="didReceivePresenceEvent">didReceivePresenceEvent</code>            | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`AgoraRtmPresenceEvent`](#agorartmpresenceevent)。</span>            |
+| <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="didReceiveTopicEvent">didReceiveTopicEvent</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`AgoraRtmTopicEvent`](#agorartmtopicevent)。</span>                |
+| <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="didReceiveStorageEvent">didReceiveStorageEvent</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`AgoraRtmStorageEvent`](#agorartmstorageevent)。</span>  |
+| <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="didReceiveLockEvent">didReceiveLockEvent</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`AgoraRtmLockEvent`](#agorartmlockevent)。</span>   |
+| <code className="index-group-item-rtmeventlistener index-api-onconnection" id="connectionChangedToState">connectionChangedToState</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmClientConnectionState`](/zh-CN/api-reference/rtm/ios/enumv.ios#connectionstate) 和 [`AgoraRtmClientConnectionChangeReason`](/zh-CN/api-reference/rtm/ios/enumv.ios#connectionreason)。</span>              |
+|        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="didReceiveLinkStateEvent">didReceiveLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmLinkStateEvent`](#agorartmlinkstateevent)。</span> |
+| <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以在初始化时添加一个事件监听对象，也可以在 App 生命周期的任意时间调用 `addDelegate` 方法添加一个或多个事件监听对象。
+
+#### 初始化时添加
+
+调用 `initWithConfig` 方法初始化 RTM Client 实例时，你可以参考以下示例代码添加一个事件监听对象：
+
+```objc
+@interface RtmListener : NSObject <AgoraRtmClientDelegate>
+
+@end
+
+@implementation RtmListener
+
+// triggered when received message from remote
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {}
+
+// triggered when channel lock info changed
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLockEvent:(AgoraRtmLockEvent *)event {}
+
+// triggered when prensence info changed
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceivePresenceEvent:(AgoraRtmPresenceEvent *)event {}
+
+// triggered when subscribed strorage changed
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveStorageEvent:(AgoraRtmStorageEvent *)event {}
+
+// triggered when token will expire
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit tokenPrivilegeWillExpire:(NSString *)channel {}
+
+// triggered when connection state changed
+-(void) rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {}
+
+// triggered when link state changed
+- (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLinkStateEvent:(AgoraRtmLinkStateEvent *)event {}
+@end
+
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// add event listener
+RtmListener* handler =  [[RtmListener alloc] init];
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+#### 任意时间添加
+
+addDelegate
+
+在 App 生命周期的任意时间中，如需添加多个事件监听对象，你可以调用 `addDelegate` 方法。
+
+```objc
+@interface RtmListenerEx : NSObject <AgoraRtmClientDelegate>
+// your listener code
+@end
+
+@implementation RtmListenerEx
+// your listener code
+@end
+RtmListenerEx* handlerEx =  [[RtmListenerEx alloc] init];
+
+[rtm addDelegate:handlerEx];
+```
+
+<a id="删除监听"></a>
+### 删除监听
+
+removeDelegate
+
+如果你不再需要关注某个事件监听对象，但仍需关注其他事件监听对象，你可以调用 `removeDelegate` 方法删除指定的事件监听对象。
+
+```objc
+[rtm removeDelegate:handlerEx];
+```
+
+#### AgoraRtmMessageEvent
+
+消息事件。
+
+`AgoraRtmMessageEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。   |
+| `channelName`            | NSString                |  频道名称。   |
+| `channelTopic`           | NSString                |  Topic 名称。   |
+| `message`                | `AgoraRtmMessage`                |  消息。    |
+| `publisher`              | NSString                |  消息发布者 ID。   |
+| `customType` | NSString | 用户自定义字段。仅支持 NSString 型。                |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+`AgoraRtmMessage` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述                     |
+|----|-----| ------ |
+| `rawData`            | NSData    |  二进制消息。   |
+| `stringData`            | NSString    |  字符串消息。   |
+
+#### AgoraRtmPresenceEvent
+
+用户 Presence 事件。
+
+`AgoraRtmPresenceEvent` 包含以下属性：
+
+| 属性       |  类型  |   描述      |
+|-------|--------| ---------- |
+| `type`            | `AgoraRtmPresenceEventType`    |   Presence 事件类型。详见 [`AgoraRtmPresenceEventType`](/zh-CN/api-reference/rtm/ios/enumv#presencetype)。  |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
+| `channelName`            | NSString                |  事件发生的频道名称。  |
+| `publisher`              | NSString                |  触发此事件的用户 ID。   |
+| `states`            | NSDictionary    |  标识用户临时状态的键值对。  |
+| `interval`            | `AgoraRtmPresenceIntervalInfo`               |  Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。  |
+| `snapshot`              | `NSArray<AgoraRtmUserState *>`               |  当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。   |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+`AgoraRtmPresenceIntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `joinUserList`         |         `NSArray<NSString *>`        | 在上一个周期内加入频道的用户列表。    |
+| `leaveUserList` | `NSArray<NSString *>` | 在上一个周期内离开频道的用户列表。 |
+| `timeoutUserList` | `NSArray<NSString *>` | 在上一个周期内加入频道超时的用户列表。 |
+| `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `userId`         |  NSString  |  用户 ID。     |
+| `states`         |    NSDictionary      | 频道在线用户及其临时状态信息列表。        |
+
+#### AgoraRtmTopicEvent
+
+Topic 事件。
+
+`AgoraRtmTopicEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述                 |
+|-----|------| ---------- |
+| `type`            | `AgoraRtmTopicEventType`    |  Topic 事件类型。详见 [`AgoraRtmTopicEventType`](/zh-CN/api-reference/rtm/ios/enumv#topictype)。  |
+| `channelName`            | NSString                |  事件发生的频道名称。   |
+| `publisher`              | NSString                |  触发此事件的用户 ID。   |
+| `topicInfos`            | `NSArray<AgoraRtmTopicInfo *>`               |  Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。   |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+`AgoraRtmTopicInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述                  |
+|----|-----| ------ |
+| `topic`            | NSString    |  Topic 名称。  |
+| `publishers`            | `NSArray<AgoraRtmPublisherInfo *>`                |  消息发布者数组。   |
+
+`AgoraRtmPublisherInfo` 数据类型包含以下属性：
+
+| 属性        |  类型  |   描述                |
+|----|-----| ------ |
+| `publisherUserId`            | NSString    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | NSString                |  消息发布者的元数据。   |
+
+#### AgoraRtmStorageEvent
+
+Storage 事件。
+
+`AgoraRtmStorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述             |
+|-----|------| ---------- |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
+| `storageType`            | `AgoraRtmStorageType`   |  Storage 类型。详见 [`AgoraRtmStorageType`](/zh-CN/api-reference/rtm/ios/enumv#storagetype)。  |
+| `eventType`            | `AgoraRtmStorageEventType`    |  Storage 事件类型。详见 [`AgoraRtmStorageEventType`](/zh-CN/api-reference/rtm/ios/enumv#storageeventtype)。  |
+| `target`              | NSString                |  用户 ID 或频道名称。   |
+| `data`            | `AgoraRtmMetadata`               |   Metadata Item。详见 [`AgoraRtmMetadata`](/zh-CN/api-reference/rtm/ios/storage#agorartmmetadata)。   |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+#### AgoraRtmLockEvent
+
+Lock 事件。
+
+`AgoraRtmLockEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述                |
+|----|-----| ------ |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。   |
+| `eventType`            | `AgoraRtmLockEventType`    |  Lock 事件类型。详见 [`AgoraRtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.ios#locktype)。    |
+| `channelName`              | NSString                |  频道名称。   |
+| `lockDetailList`            | `ArrayList<LockDetail>`               |  Lock 的详情。   |
+| `timestamp` | unsigned long long | 事件发生的时间戳。                |
+
+`AgoraRtmLockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `lockName`         |         NSString         | Lock 的名称。               |
+| `owner`    | NSString  | 拥有锁的用户 ID。   |
+| `ttl`    | int | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `AgoraRtmLockEventTypeLockReleased` 事件。      |
+
+#### AgoraRtmLinkStateEvent
+
+SDK 连接状态事件。
+
+`AgoraRtmLinkStateEvent` 包含以下属性：
+
+| 属性        |  类型  |   描述                   |
+|-----|------| ---------- |
+| `currentState`            | `AgoraRtmLinkState`    |  当前的连接状态。详见 [`AgoraRtmLinkState`](/zh-CN/api-reference/rtm/ios/enumv#linkstate)。   |
+| `previousState`            | `AgoraRtmLinkState`    |  之前的连接状态。详见 [`AgoraRtmLinkState`](/zh-CN/api-reference/rtm/ios/enumv#linkstate)。   |
+| `serviceType`    | `AgoraRtmServiceType` | 网络连接类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv#rtmservicetype)。 |
+| `operation`    | `AgoraRtmLinkOperation` | 触发本次状态迁移的操作。详见 [`AgoraRtmLinkOperation`](/zh-CN/api-reference/rtm/ios/enumv#linkoperation)。 |
+| `reasonCode`    | `AgoraRtmLinkStateChangeReason` | 本次状态迁移的原因。详见 [`AgoraRtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/ios/enumv#linkstatechangereason)。 |
+| `reason`    | NSString | 本次状态迁移的原因。该参数未来会废弃，请使用 `reasonCode` 参数替代。 |
+| `affectedChannels`    | `NSArray<NSString *>` | 本次状态迁移影响的频道。 |
+| `unrestoredChannels`    | `NSArray<NSString *>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
+| `isResumed`    | BOOL | 在连接断开的 2 分钟内，是否从 `AgoraRtmLinkStateDisconnected` 状态恢复成 `AgoraRtmLinkStateConnected` 状态。`true` 表示已恢复。 |
+| `timestamp`    | unsigned long long | 本次事件通知发送的时间戳。 |
+
+AgoraRtmClientKit
+
+RTM 客户端实例
+
+## loginByToken
+
+### 接口描述
+
+<span className="index-desc-login">创建并初始化 RTM 实例之后，你需要执行 `loginByToken` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。</span>
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```objc
+- (void) loginByToken: (NSString* _Nullable)token
+           completion: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | NSString | 选填 | - | <Slot name="configuration-ios-html-2-1-4" /> |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="configuration-ios-html-2-2-4" /> |
+
+<Slot for="configuration-ios-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication.ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+<Slot for="configuration-ios-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+调用 RTM Objective-C SDK 的绝大部分 API 接口后，都会执行一个 `completion` 回调，包含 `response` 和 `errorInfo` 两个参数。根据不同的调用结果，SDK 会返回不同的参数值：
+
+- 调用成功，则会在 `response` 参数中返回对应数据，在 `errorInfo` 参数中返回 `nil`。
+- 调用失败，则会在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+`AgoraRtmErrorInfo` 类型的 `errorInfo` 返回值中包含本次调用错误码、错误原因及 API 操作名称，如下表所示：
+
+|  属性  |  类型  | 描述      |
+| ------ | ------- | --- |
+| `errorCode` | `AgoraRtmErrorCode` | 本次操作错误码。 |
+| `reason` | NSString | 本次操作出错原因。 |
+| `operation` | NSString | 本次操作类型。 |
+
+你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.ios)了解错误原因，并找到对应的解决方法。
+
+### 基本用法
+
+```objc
+[rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"login success!!");
+    } else {
+        NSLog(@"login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```objc
+- (void) logout: (AgoraRtmOperationBlock _Nullable)completionBlock;
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="configuration-ios-html-3-1-4" /> |
+
+<Slot for="configuration-ios-html-3-1-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```objc
+[rtm logout:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"logout success!!");
+    } else {
+        NSLog(@"logout failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+## destroy
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `AgoraRtmClientKit` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`destroy` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `AgoraRtmClientKit` 实例：
+
+```objc
+- (AgoraRtmErrorCode) destroy;
+```
+
+### 基本用法
+
+```objc
+[rtm destroy];
+```
+
+### 返回值
+
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.ios)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="javascript">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+在初始化 RTM 客户端实例之前，你需要首先在代码中引入 RTM Javascript SDK：
+
+#### 方式一：使用 CDN 添加 SDK
+
+[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
+
+```javascript
+// 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
+// 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.2
+// 可通过发版说明获取最新版本号
+<script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
+```
+
+#### 方式二：使用包管理器引入 SDK
+
+1. 根据你的应用场景和开发需要，选择一种方式和工具安装 SDK。
+
+   **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtm
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtm
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+yarn add agora-rtm
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+    **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
+
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+```shell
+npm install agora-rtm
+```
+
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+```shell
+pnpm add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+pnpm update agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```shell
+yarn add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+yarn upgrade agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+</Tabs>
+
+    **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtx
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtx --shamefully-hoist
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+# 若版本为 2.2.0
+# yarn add agora-rtx
+# yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+
+# 2.2.0 及之后版本
+yarn add agora-rtx
+```
+
+2. 完成安装后，在你的 `app.js` 中引入 RTM：
+
+    ```javascript
+    // 如果安装的是 agora-rtm
+    import AgoraRTM from 'agora-rtm';
+
+    // 如果安装的是融合版 agora-rtx
+    // import AgoraRTM from 'agora-rtx';
+    // import AgoraRTC from 'agora-rtc-sdk-ng';
+    ```
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+<a id="Init"></a>
+## Initialization
+
+### 接口描述
+
+创建并初始化 RTM 客户端实例，初始化实例的时候你需要提供 `appId` 和 `userId` 等参数，你可以在声网控制台创建项目并获得 App ID。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```javascript
+class RTM(
+    constructor(
+        appId: string,
+        userId: string,
+        rtmConfig?: {
+            encryptionMode: string,
+            cipherKey: string,
+            salt: Uint8Array,
+            useStringUserId: boolean,
+            presenceTimeout: number,
+            logUpload: boolean,
+            logLevel: string,
+            cloudProxy: boolean
+        }
+    );
+)
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 | 描述                     |
+| --------- | --------- | ------ | ---- | --------- |
+|   `appId`   |  string    |   必填   |   -    | 你在声网控制台创建项目时获得的 App ID。      |
+|  `userId`   |  string    |   必填   |   -    | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。                |
+| `rtmConfig` | `RTMConfig` |   选填   |   -    | 其它初始化的配置参数，详见 [`RTMConfig`](#rtmconfig)。 |
+
+### 基本用法
+
+```javascript
+const { RTM } = AgoraRTM;
+const rtm = new RTM("yourAppId", "Tony");
+```
+
+### 返回值
+
+一个 RTM 客户端实例，用以在后续调用 RTM 其他 API。
+
+## RTMConfig
+
+### 接口描述
+
+`RTMConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RTMConfig` 实例：
+
+```javascript
+const { RTMConfig } = AgoraRTM;
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `encryptionMode` | string | 选填 | - | 端侧消息加密模式。如果不设置或设置为 `NONE`，则表示不启用端侧加密功能。支持的取值见[端侧加密模式](/zh-CN/api-reference/rtm/web/enumv#端侧加密模式)。 |
+| `salt` | Uint8Array | 选填 | - | 加密需要用到的盐，必须为 32 字节的二进制数组。 |
+| `cipherKey` | string | 选填 | - | 加解密需要用到的密钥。如果启用了加密功能，此属性必须设置。 |
+| `presenceTimeout` | number | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
+| `logUpload` | boolean | 选填 | `false` | <Slot name="configuration-javascript-html-0-5-4" /> |
+| `cloudProxy` | boolean | 选填 | `false` | <Slot name="configuration-javascript-html-0-6-4" /> |
+| `useStringUserId` | boolean | 选填 | `true` | <Slot name="configuration-javascript-html-0-7-4" /> |
+| `logLevel` | string | 选填 | - | 开启及设置 SDK 的输出日志输出等级。支持的取值见[日志输出等级](/zh-CN/api-reference/rtm/web/enumv#日志输出等级)。 |
+| `heartbeatInterval` | number | 选填 | `5` | <Slot name="configuration-javascript-html-0-9-4" /> |
+| `privateConfig` | object | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+
+<Slot for="configuration-javascript-html-0-5-4">
+
+是否上传日志：
+
+    - `true`: 启用日志上传
+    - `false`: 关闭日志上传。
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-6-4">
+
+是否开启云代理:
+
+    - `true`: 开启。
+    - `false`: 关闭。
+
+    :::info[信息]
+    该功能仅适用于 Message Channel。
+    :::
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-7-4">
+
+是否使用 string 类型的用户 ID：
+
+    - `true`: 使用 string 类型的用户 ID。
+    - `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-9-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+`privateConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `serviceType` | string[] | 选填 | - | 服务类型。支持的取值见[服务类型](/zh-CN/api-reference/rtm/web/enumv)。 |
+| `accessPointHosts` | string[] | 选填 | - | 使用 RTM 服务的服务器列表。仅支持填入域名。 |
+| `eventUploadHosts` | string[] | 选填 | - | 使用事件上报的服务器列表。仅支持填入域名。 |
+| `logUploadHosts` | string[] | 选填 | - | 使用日志上传的服务器列表。仅支持填入域名。 |
+| `originDomains` | string[] | 选填 | - | 连接 RTM 基础服务时使用的后缀域名列表。仅支持填入域名。 |
+| `domainMode` | number | 选填 | `1` | <Slot name="configuration-javascript-html-1-6-4" /> |
+
+<Slot for="configuration-javascript-html-1-6-4">
+
+RTM 私有化场景下 SDK 边缘节点服务器的域名格式。支持以下取值：
+
+      - `1`：(默认) 自定义格式，例如 `ip.**`。
+      - `2`：老版本私有化格式，例如 `ip.edge.**`。
+
+</Slot>
+
+:::warning[注意]
+如果你需要升级私有化部署的 RTM WEB SDK 至 2.2.4 及以后版本，为保证兼容性，需要将 `domainMode` 设置为 `2`。如果省略该参数或使用默认值 `1`，可能无法连接到 RTM 服务器。
+:::
+
+### 基本用法
+
+```javascript
+const { RTM, EncryptionMode } = AgoraRTM;
+const rtmConfig = {
+    encryptionMode : EncryptionMode.AES_256_GCM,
+    salt : yourSalt,
+    cipherKey : "yourCipherKey",
+    presenceTimeout : 300,
+    logUpload : true,
+    logLevel : "debug",
+    cloudProxy : false,
+    useStringUserId : false,
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"],
+        domainMode: 2
+    },
+    heartbeatInterval: 5
+};
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+RTM 总共有 8 种事件通知类型，如下表所示：
+
+| 事件类型   | 描述               |
+|--------------| ---------- |
+| <code className="index-api-onmessageevent" id="message">message</code>             | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。</span>                  |
+| <code className="index-api-onpresenceevent" id="presence">presence</code>            | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。</span>            |
+| <code className="index-api-ontopicevent" id="topic">topic</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。</span>                |
+| <code className="index-api-onstorageevent" id="storage">storage</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。</span>  |
+| <code className="index-api-onlockevent" id="lock">lock</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。</span>   |
+| <code className="index-api-onconnection" id="status">status</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。</span> |
+|        <code className="index-api-onlinkstateevent" id="linkState">linkState</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。</span> |
+| <code className="index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以调用 `addEventListener` 方法监听指定的事件通知。示例代码如下：
+
+```javascript
+// add the message event listener
+
+// Message
+rtm.addEventListener("message", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this message come from
+    const topic = event.topicName;              // Which Topic does this message come from, it is valid when the channelType is "STREAM".
+    const messageType = event.messageType;      // Which message type it is, Should be "STRING" or "BINARY" .
+    const customType = event.customType;        // User defined type
+    const publisher = event.publisher;          // Message publisher
+    const message = event.message;              // Message payload
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Presence
+rtm.addEventListener("presence", event => {
+    const action = event.eventType;             // Which action it is ,should be one of 'SNAPSHOT'、'INTERVAL'、'JOIN'、'LEAVE'、'TIMEOUT、'STATE_CHANGED'、'OUT_OF_SERVICE'.
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const states = event.stateChanged;          // User state payload, only for stateChanged event
+    const interval = event.interval;            // Interval payload, only for interval event
+    const snapshot = event.snapshot;            // Snapshot payload, only for snapshot event
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Topic
+rtm.addEventListener("topic", event => {
+    const action = event.evenType;              // Which action it is ,should be one of 'SNAPSHOT'、'JOIN'、'LEAVE'.
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.userId;             // Who trigger this event
+    const topicInfos = event.topicInfos;        // Topic information payload
+    const totalTopics = event.totalTopics;      // How many topics
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Storage
+rtm.addEventListener("storage", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const storageType = event.storageType;      // Which category the event is, should be 'USER'、'CHANNEL'
+    const action = event.eventType;             // Which action it is ,should be one of "SNAPSHOT"、"SET"、"REMOVE"、"UPDATE" or "NONE"
+    const data = event.data;                    // 'USER_METADATA' or 'CHANNEL_METADATA' payload
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Lock
+rtm.addEventListener("lock", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const action = event.evenType;              // Which action it is ,should be one of 'SET'、'REMOVED'、'ACQUIRED'、'RELEASED'、'EXPIRED'、'SNAPSHOT'
+    const lockName = event.lockName;            // Which lock it effect
+    const ttl = event.ttl;                      // The ttl of this lock
+    const snapshot = event.snapshot;            // Snapshot payload
+    const owner = event.owner;                  // The owner of this lock
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Connection State Change
+rtm.addEventListener("status", event => {
+    const currentState = event.state;                // Which connection state right now
+    const changeReason = event.reason;                // Why trigger this event
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Link State Change
+rtm.addEventListener('linkState', event => {
+    const currentState = event.currentState;
+    const previousState = event.previousState;
+    const serviceType = event.serviceType;
+    const operation = event.operation;
+    const reason = event.reason;
+    const reasonCode = event.reasonCode;
+    const affectedChannels = event.affectedChannels;
+    const unrestoredChannels = event.unrestoredChannels;
+    const timestamp = event.timestamp;
+    const isResumed = event.isResumed;
+});
+// Token Privilege Will Expire
+rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
+    const channelName = channelName;            // Which Channel Token Will Expire
+});
+```
+
+<a id="删除监听"></a>
+### 删除监听
+
+你可以调用 `{config. removedelegate["javascript"]}` 方法删除指定的事件监听。示例代码如下：
+
+```javascript
+rtm.removeEventListener("status", statusHandler);
+```
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```javascript
+rtm.login(options?: object): Promise<LoginResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 |       描述       |
+| --------- | ---- | ------ | ---- | ----- |
+|  `options`  | object |   选填   |   -    | 登录选项。 |
+
+`options` 对象包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 选填 | - | <Slot name="configuration-javascript-html-2-1-4" /> |
+
+<Slot for="configuration-javascript-html-2-1-4">
+
+初始化 RTM 客户端的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.login({ token: "your_token" });
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `LoginResponse` 类型数据：
+
+```javascript
+type LoginResponse = {
+    timestamp: number          // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```javascript
+rtm.logout(): Promise<LogoutResponse>;
+```
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.logout();
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `LogoutResponse` 类型数据：
+
+```javascript
+type LoginResponse = {
+    timestamp: number               // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+在初始化 RTM 客户端实例之前，你需要首先在代码中引入 RTM Unity SDK:
+
+1. 下载最新 RTM Uinty SDK。
+2. 在你的 Unity 项目中依次点击 **Assets** > **Import Package** > **Custom Package**，导入 SDK。
+3. 在你的代码中添加以下代码行：
+
+  ```csharp
+  using Agora.Rtm;
+  ```
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+## CreateAgoraRtmClient
+
+### 接口描述
+
+创建并初始化 RTM 客户端实例，初始化实例的时候你需要提供 `appId` 和 `userId` 等参数，你可以在声网控制台创建项目并获得 App ID。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `CreateAgoraRtmClient` 方法：
+
+```csharp
+IRtmClient CreateAgoraRtmClient(RtmConfig config);
+```
+
+|   参数   |  类型  | 是否必填 | 默认值 | 描述    |
+| ------ | --------- | ------ | ---- | ----------------- |
+| `config` | `RtmConfig` |   必填   |   -    | 初始化 RTM Client 的配置参数。详见 `RtmConfig`。 |
+
+### 基本用法
+
+```cs
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation, e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+### 返回值
+
+返回一个 `IRtmClient` 类型的 Client 实例，用于后续调用 RTM 其他 API。
+
+## RtmConfig
+
+### 接口描述
+
+`RtmConfig` 实例用来设置 RTM Client 的配置参数，这些配置参数会在整个 RTM Client 的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RtmConfig` 实例：
+
+```csharp
+new RtmConfig()
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `appId` | string | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
+| `userId` | string | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
+| `areaCode` | `RTM_AREA_CODE` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RTM_AREA_CODE`](/zh-CN/api-reference/rtm/unity/enumv#areacode)。 |
+| `presenceTimeout` | UInt32 | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [10,300]。 |
+| `useStringUserId` | Bool | 选填 | `true` | <Slot name="configuration-unity-html-0-5-4" /> |
+| `RtmLogConfig` | `RtmLogConfig` | 选填 | - | 本地日志存储的大小、位置和日志等级等配置属性。 |
+| `proxyConfig` | `RtmProxyConfig` | 选填 | - | 如需使用 RTM 的 Proxy 功能，则需配置此参数。 |
+| `encryptionConfig` | `RtmEncryptionConfig` | 选填 | - | 如需使用 RTM 端侧加密功能，则需配置此参数。 |
+
+<Slot for="configuration-unity-html-0-5-4">
+
+是否使用 String 类型的用户 ID：
+
+    - `true`: 使用 String 类型的用户 ID。
+    - `false`: 使用 Uint 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 Uint 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+
+    请确保你在 RTC 频道和 RTM 频道使用的 User ID 同为 String 型或同为 Int 型。
+
+</Slot>
+
+#### RtmLogConfig
+
+`RtmLogConfig` 实例用来设置和存储本地日志文件 `agora.log`。在调试阶段，通过日志保存和跟踪 App 运行状态，你可以极大的提升效率。如果遇到复杂问题并需要声网技术人员协助调查，你需要提供该日志信息。`RtmLogConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `filePath` | string | 选填 | - | 日志和存储路径。 |
+| `fileSizeInKB` | uint | 选填 | `1024` | <Slot name="configuration-unity-html-1-2-4" /> |
+| `level` | `RTM_LOG_LEVEL` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RTM_LOG_LEVEL`](/zh-CN/api-reference/rtm/unity/enumv#loglevel)。 |
+
+<Slot for="configuration-unity-html-1-2-4">
+
+日志文件大小，单位为 KB，取值范围为 [128,1024]。
+
+    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
+    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+
+</Slot>
+
+#### RtmProxyConfig
+
+`RtmProxyConfig` 实例用来设置客户端 Proxy 服务代理等相关属性。在一些网络服务受限的环境下，你可能需要使用此功能。
+
+:::info[信息]
+你需要妥善保管好你的 Proxy 用户名和密码。RTM 不会以任何方式解析、存储、转发你的用户名和密码。此外，如果你在 App 运行过程中修改 Proxy 的设置，该设置要重启 RTM Client 后才能生效。
+:::
+
+`RtmProxyConfig` 包含以下属性：
+
+| 属性  | 类型             |  是否必填  |  默认值  | 描述  |
+|-----------|----------------|--------|-------| ----------- |
+| `proxyType` | `RTM_PROXY_TYPE` |  选填  | `NONE` | Proxy 协议类型。详见 [`RTM_PROXY_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#proxytype)。 |
+| `server`    | string           |  选填  | -             | Proxy 服务器域名或 IP 地址。                |
+| `port`      | UInt16              |  选填  | -             | Proxy 监听端口。   |
+| `account`   | string           |  选填  | -            | Proxy 登录账号。   |
+| `password`  | string           |  选填  | -            | Proxy 登录密码。   |
+
+#### RtmEncryptionConfig
+
+`RtmEncryptionConfig` 实例用来设置客户端加密所需要的属性。成功设置加密方式、加密密钥等属性后，用户发送的所有消息或者设置的所有状态都会在客户端自动加密和解密。
+
+:::info[信息]
+一旦设置了加密，所有用户必须使用相同的加密模式和密钥，否则数据无法互通。
+:::
+
+`RtmEncryptionConfig` 包含以下属性：
+
+| 属性          | 类型                  |  是否必填  |  默认值  | 描述      |
+|-----|-------|--------|------------| ------ |
+| `encryptionMode`    | `RTM_ENCRYPTION_MODE` |  选填  |`NONE` | 加密方式。详见 [`RTM_ENCRYPTION_MODE`](/zh-CN/api-reference/rtm/unity/enumv#encryptionmode)。 |
+| `encryptionKey`     | string                |  选填  |     -      | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。              |
+| `encryptionKdfSalt` | byte[32]              |  选填  | `null`     | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。  |
+
+### 基本用法
+
+```csharp
+// Create an RtmConfig instance
+RtmConfig config = new RtmConfig();
+// get the appId from your Agora console
+config.appId = "my_appId";
+// user ID to be used as a device identifier
+config.userId ="Tony";
+// set Presence Timeout
+config.presenceTimeout = 30;
+
+// Create a LogConfig instance.
+LogConfig logConfig = new LogConfig()
+// set log file path.
+logConfig.filePath = "./logfile/";
+// set agore.log file size.
+logConfig.fileSizeInKB = 512;
+// set log report level.
+logConfig.level = LOG_LEVEL.INFO;
+// initialize logconfig
+config.logConfig = logConfig;
+
+// Create an RtmProxyConfig instance.
+RtmProxyConfig proxyConfig = new RtmProxyConfig()
+// set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// set your Proxy Server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "Tony";
+// set your proxy password
+proxyConfig.password = "my_password"
+// initialize proxyConfig
+config.proxy = proxyConfig;
+
+// Create an RtmEncryptionConfig instance.
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig()
+// set encryption Mode as RTM_ENCRYPTION_MODE_AES_128_GCM.
+encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_128_GCM;
+// set your cipherKey, you must keep your cipherKey safety.
+encryptionConfig.encryptionKey = "your_cerpherKey";
+// set your Salt.
+encryptionConfig.encryptionKdfSalt = "yourSalt";
+// when you set the config.encryptionConfig  parameter. the end-to-end encryption will be turned on automatically
+config.encryptionConfig = encryptionConfig;
+
+// it is recommended to use the Try-catch pattern to catch initialization errors
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode : {1}, due to: {2}", e.Status.Operation, e.Status.ErrorCode, e.Status.Reason));
+}
+
+```
+
+### 返回值
+
+返回一个 `RtmConfig` 实例。
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+IRtmClient
+
+RTM 总共有 7 种事件通知类型，如下表所示：
+
+| 事件类型           | 描述      |
+| ------ | ----- |
+|     <code className="index-group-item-irtmclient index-api-onmessageevent" id="OnMessageEvent">OnMessageEvent</code>      | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。详见 [`MessageEvent`](#messageevent)。</span>      |
+|    <code className="index-group-item-irtmclient index-api-onpresenceevent" id="OnPresenceEvent">OnPresenceEvent</code>    | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。详见 [`PresenceEvent`](#presenceevent)。</span>      |
+|        <code className="index-group-item-irtmclient index-api-ontopicevent" id="OnTopicEvent">OnTopicEvent</code>         | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>             |
+|     <code className="index-group-item-irtmclient index-api-onstorageevent" id="OnStorageEvent">OnStorageEvent</code>      | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span>       |
+|          <code className="index-group-item-irtmclient index-api-onlockevent" id="OnLockEvent">OnLockEvent</code>          | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>              |
+|        <code className="index-group-item-irtmclient index-api-onconnection" id="OnConnectionStateChanged">OnConnectionStateChanged</code>         | <span className="index-desc-onconnection">接收客户端网路连接状态变更的事件通知。详见 [`RTM_CONNECTION_STATE`](/zh-CN/api-reference/rtm/unity/enumv#connectionstate) 和 [`RTM_CONNECTION_CHANGE_REASON`](/zh-CN/api-reference/rtm/unity/enumv#connectionreason)。</span> |
+| <code className="index-group-item-irtmclient index-api-ontokenwillexpire" id="OnTokenPrivilegeWillExpire">OnTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 token 将要过期的事件通知。</span>                 |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以通过以下方式来监听事件通知：
+
+```csharp
+// add message event listener
+rtmClient.OnMessageEvent += ( MessageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var topic = event.channelTopic;
+    var publisher = event.publiser;
+    var messageType = event.messageType;
+    var message = event.message;
+    var customType = event.customType;
+    Debug.Log(string.Format("Received Message {0} from userId:{1} at channel:{2} with channel type of {3}. ", message, publisher, channelName, channelType));
+    if (message != null)
+    {
+        // your logic
+    }
+};
+
+// add presence event listener
+rtmClient.OnPresenceEvent += ( PresenceEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var publisher = event.publiser;
+    var stateItems = event.stateItems;
+    var interval = event.interval;
+    var snapshot = event.snapshot;
+    Debug.Log(string.Format("Received presence Event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+}
+
+// add topic event listener
+rtmClient.OnTopicEvent += ( TopicEvent event ) =>
+{
+    var channelName = event.channelName;
+    var eventType = event.type;
+    var publisher = event.publisher;
+    var topicInfos = event.topicInfos;
+    Debug.Log(string.Format("Received topic event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+    if (topicInfos != null)
+    {
+        // your logic
+    }
+}
+
+// add storage event listener
+rtmClient.OnStorageEvent += ( StorageEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.eventType;
+    var category = event.target;
+    var data = event.data;
+    Debug.Log(string.Format("Received storage event {0} at channel:{1} with channel type of {2}. ", category, channelName, channelType));
+    if (data != null)
+    {
+        // your logic
+    }
+}
+
+// add lock event listener
+rtmClient.OnLockEvent += ( LockEvent event ) =>
+{
+    var channelName = event.channelName;
+    var channelType = event.channelType;
+    var eventType = event.type;
+    var LockDetail = event.lockDetailList;
+    Debug.Log(string.Format("Received lock event {0} at channel:{2} with channel type of {3}. ", eventType, publisher, channelName, channelType));
+    if( LockDetail != null )
+    {
+        // your logic
+    }
+}
+
+// add OnConnectionStateChanged event listener
+rtmClient.OnConnectionStateChanged += ( string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason ) =>
+{
+    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason);
+}
+
+// add OnTokenPrivilegeWillExpire event listener
+rtmClient.OnTokenPrivilegeWillExpire += ( string channelName ) =>
+{
+    Debug.Log(string.Format("OnTokenPrivilegeWillExpire channelName {0}", channelName));
+}
+```
+
+#### MessageEvent
+
+消息事件通知。
+
+`MessageEvent` 包含以下属性：
+
+|      属性      |     类型      | 描述    |
+| ------------ | ---------------- | --------- |
+| `channelType`  |                    `RTM_CHANNEL_TYPE`                     | 频道类型。                    |
+| `messageType`  | `RTM_MESSAGE_TYPE` | 消息类型。详见 [`RTM_MESSAGE_TYPE`](/zh-CN/api-reference/rtm/unity/enumv)。 |
+| `channelName`  |    string     | 频道名称。                    |
+| `channelTopic` |    string     | Topic 名称。                  |
+|   `message`    |                       `IRtmMessage`                       | 消息负载。  |
+|  `publisher`   |    string     | 消息发布者 ID。               |
+|  `customType`  |    string     | 用户自定义字段。              |
+
+#### PresenceEvent
+
+Presence 事件通知。
+
+`PresenceEvent` 包含以下属性：
+
+|     属性      |      类型      | 描述       |
+| ----------- | ---| ------- |
+|    `type`     | `RTM_PRESENCE_EVENT_TYPE` | Presence 事件类型。详见 [`RTM_PRESENCE_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#presencetype)。 |
+| `channelType` |                     `RTM_CHANNEL_TYPE`                     | 频道类型。详见 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#channeltype)。 |
+| `channelName` |     string     | 事件发生的频道名称。                    |
+|  `publisher`  |     string     | 触发此事件的用户 ID。                |
+| `stateItems`  |  `StateItem[]`  | 标识用户临时状态的键值对。         |
+|  `interval`   |  `IntervalInfo`   | Interval 状态下，当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。    |
+|  `snapshot`   |    `SnapshotInfo`   | 当前频道的内所有用户及其状态的快照数据。只要用户在频道内，该事件可能会多次触发。        |
+
+`IntervalInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `joinUserList`         |         string[]        | 在上一个周期内加入频道的用户列表。    |
+| `leaveUserList` | string[] | 在上一个周期内离开频道的用户列表。 |
+| `timeoutUserList` | string[] | 在上一个周期内加入频道超时的用户列表。 |
+| `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+
+`SnapshotInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `userStateList` | `UserState[]` | 用户第一次加入频道时的快照信息，包含用户 ID 和状态键值对。 |
+
+#### TopicEvent
+
+Topic 事件通知。
+
+`TopicEvent` 包含以下属性：
+
+|     属性      |    类型     | 描述                  |
+| --------- | ------ | --------- |
+|    `type`     | `RTM_TOPIC_EVENT_TYPE` | Topic 事件类型。详见 [`RTM_TOPIC_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#topictype)。 |
+| `channelName` |   string    | 事件发生的频道名称。            |
+|  `publisher`  |   string    | 触发此事件的用户 ID。             |
+| `topicInfos`  |                      `TopicInfo[]`                      | Topic 的详细信息数组，包含 Topic 名称、Topic 发布者等信息。          |
+
+`TopicInfo[]` 中包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `topic`            | string    |  Topic 名称。  |
+| `publishers`            | `PublisherInfo[]`                |  消息发布者数组。   |
+
+`PublisherInfo[]` 中包含以下属性：
+
+| 属性        |  类型  |   描述      |
+|----|-----| ------ |
+| `publisherUserId`            | string    |  消息发布者的用户 ID。  |
+| `publisherMeta`            | string                |  消息发布者的元数据。   |
+
+#### StorageEvent
+
+Storage 事件通知。
+
+`StorageEvent` 包含以下属性：
+
+| 属性         |  类型  |   描述           |
+|-----|------| ---------- |
+| `channelType`            | `RTM_CHANNEL_TYPE`    |  频道类型。   |
+| `storageType`            | `RTM_STORAGE_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#storagetype)。  |
+| `eventType`            | `RTM_STORAGE_EVENT_TYPE`    |  Storage 事件类型。详见 [`RTM_STORAGE_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#storageeventtype)。  |
+| `target`              | string                |  用户 ID 或频道名称。   |
+| `data`            | `RtmMetadata`               |   Metadata Item 数组。   |
+
+#### LockEvent
+
+Lock 事件通知。
+
+`LockEvent` 包含以下属性：
+
+|       属性       |    类型    | 描述   |
+| -------------- | ------------- | -------- |
+|  `channelType`   |                   `RTM_CHANNEL_TYPE`                   | 频道类型。                   |
+|   `eventType`    | `RTM_LOCK_EVENT_TYPE` | Lock 事件类型。详见 [`RTM_LOCK_EVENT_TYPE`](/zh-CN/api-reference/rtm/unity/enumv#locktype)。 |
+|  `channelName`   |   string   | 频道名称。                   |
+| `lockDetailList` |                     `LockDetail[]`                     | Lock 的详情。                |
+
+`LockDetail` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ------ | --------- |
+| `lockName`         |         string         | Lock 的名称。               |
+| `owner`    | string  | 拥有锁的用户 ID。   |
+| `ttl`    | uint | 锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `OnLockEvent` 事件通知的用户会收到 `RELEASED` 事件。      |
+
+<a id="删除监听"></a>
+### 删除监听
+
+如果你不再需要使用事件处理程序，声网推荐你注销监听过的事件，从而避免内存泄漏、错误或异常。
+
+```csharp
+private void AddEventsListener()
+{
+    rtmClient.OnMessageEvent += OnMessageEvent;
+    rtmClient.OnPresenceEvent += OnPresenceEvent;
+    rtmClient.OnTopicEvent += OnTopicEvent;
+    rtmClient.OnStorageEvent += OnStorageEvent;
+    rtmClient.OnLockEvent += OnLockEvent;
+    rtmClient.OnConnectionStateChanged += OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire += OnTokenPrivilegeWillExpire;
+}
+
+private void RemoveEventsListener()
+{
+    rtmClient.OnMessageEvent -= OnMessageEvent;
+    rtmClient.OnPresenceEvent -= OnPresenceEvent;
+    rtmClient.OnTopicEvent -= OnTopicEvent;
+    rtmClient.OnStorageEvent -= OnStorageEvent;
+    rtmClient.OnLockEvent -= OnLockEvent;
+    rtmClient.OnConnectionStateChanged -= OnConnectionStateChanged;
+    rtmClient.OnTokenPrivilegeWillExpire -= OnTokenPrivilegeWillExpire;
+}
+
+private void OnMessageEvent( MessageEvent Event)
+{
+    // your logic
+ };
+
+private void OnPresenceEvent( PresenceEvent Event)
+{
+    // your logic
+};
+
+private void OnTopicEvent( TopicEvent Event)
+{
+    // your logic
+};
+
+...
+```
+
+## LoginAsync
+
+### 接口描述
+
+创建并初始化 `IRtmClient` 实例之后，你需要执行 `LoginAsync` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```csharp
+RtmResult<LoginResult> LoginAsync(string token);
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 必填 | - | <Slot name="configuration-unity-html-2-1-4" /> |
+
+<Slot for="configuration-unity-html-2-1-4">
+
+登录 RTM 系统的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```csharp
+var ( status,response ) = await rtmClient.LoginAsync(token);
+if (status.Error)
+{
+   Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+   Debug.Log("Login Successfully")
+}
+```
+
+### 返回值
+
+`LoginAsync` 操作会返回一个 `RtmResult<LoginResult>` 类型的数据结构，里面包含：
+
+|    属性    |      类型      | 描述     |
+| -------- | ----------------- | ---------- |
+|  `Status`  |  `RtmStatus`  | 返回一个 `RtmStatus` 类型的数据结构，其中包含本次操作的状态       |
+| `Response` | `LoginResult` | 返回一个 `LoginResult` 类型的数据结构，其中包含本次操作的执行结果 |
+
+`RtmStatus` 包含以下属性：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+
+## LogoutAsync
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```csharp
+RtmResult<LogoutResult> LogoutAsync();
+```
+
+### 基本用法
+
+```csharp
+var (status,response) = await rtmClient.LogoutAsync();
+```
+
+### 返回值
+
+`LogoutAsync` 操作会返回一个 `RtmStatus` 数据结构。
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+
+## Dispose
+
+### 接口描述
+
+一旦不再需要 RTM 服务，推荐销毁 `IRtmClient` 实例。这样做将使你免受内存泄漏甚至错误和异常引起的性能下降的影响。
+
+:::info[信息]
+`Dispose` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方法销毁 `IRtmClient` 实例：
+
+```csharp
+RtmStatus Dispose();
+```
+
+### 基本用法
+
+```csharp
+var status = Dispose();
+```
+
+### 返回值
+
+`Dispose` 操作会返回一个 `RtmStatus` 数据结构：
+
+|    属性     |  类型  | 描述               |
+| ------- | -- | ------- |
+|   `Error`   |  bool  | 本次操作是否出错。 |
+| `ErrorCode` | string | 错误码             |
+| `Operation` | string | 本次操作类型。     |
+|  `Reason`   | string | 本次操作出错原因。 |
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+
+</PlatformStructured>

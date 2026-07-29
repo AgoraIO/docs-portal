@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon, ExternalLinkIcon } from 'lucide-react';
 import {
   type AnchorHTMLAttributes,
   forwardRef,
@@ -113,6 +113,7 @@ function SidebarNodeRenderer({
       linked={node.linked}
       method={node.method}
       onSelectPath={onSelectPath}
+      search={node.search}
       title={node.title}
       url={node.url}
     />
@@ -259,9 +260,12 @@ function SidebarSection({
                     external={child.external}
                     href={child.href}
                     onSelectPath={onSelectPath}
+                    search={child.search}
                     url={child.url}
                   >
                     <SidebarPageLabel
+                      external={child.external}
+                      linked={child.linked}
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -364,9 +368,12 @@ function SidebarLinkedSection({
                     external={child.external}
                     href={child.href}
                     onSelectPath={onSelectPath}
+                    search={child.search}
                     url={child.url}
                   >
                     <SidebarPageLabel
+                      external={child.external}
+                      linked={child.linked}
                       method={child.method}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
@@ -443,6 +450,8 @@ function SidebarQuickstartGroup({
                   to={child.url}
                 >
                   <SidebarPageLabel
+                    external={child.external}
+                    linked={child.linked}
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
@@ -522,9 +531,11 @@ function SidebarNestedSection({
                   external={child.external}
                   href={child.href}
                   onSelectPath={onSelectPath}
+                  search={child.search}
                   url={child.url}
                 >
                   <SidebarPageLabel
+                    linked={child.linked}
                     method={child.method}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
@@ -673,12 +684,54 @@ function normalizeRootSections(
   // Linked sections (those with a url) manage their own collapsible state, so
   // don't force them always-open here — only plain root sections are flattened.
   return nodes.map((node) =>
-    node.type === 'section' && !node.url
+    node.type === 'section' &&
+    !node.url &&
+    !shouldKeepRootSectionCollapsible(node)
       ? {
           ...node,
           collapsible: false,
         }
       : node,
+  );
+}
+
+function shouldKeepRootSectionCollapsible(
+  node: DocsSidebarNode | RenderableSidebarSectionNode,
+): boolean {
+  if (
+    node.type !== 'section' ||
+    (node.title !== '计费与限制' && node.title !== '计费说明')
+  ) {
+    return false;
+  }
+
+  return node.children.some((child) =>
+    isNodeUnderOneOfProducts(child, [
+      'rtc',
+      'rtm',
+      'cloud-recording',
+      'local-server-recording',
+      'media-push',
+      'media-pull',
+      'rtmp-gateway',
+      'whiteboard/fastboard-sdk',
+      'whiteboard/whiteboard-sdk',
+    ]),
+  );
+}
+
+function isNodeUnderOneOfProducts(
+  node: DocsSidebarNode,
+  products: string[],
+): boolean {
+  if (node.type === 'page') {
+    return products.some((product) =>
+      node.url.includes(`/realtime-media/${product}/`),
+    );
+  }
+
+  return node.children.some((child) =>
+    isNodeUnderOneOfProducts(child, products),
   );
 }
 
@@ -689,6 +742,7 @@ function SidebarPageLink({
   linked,
   method,
   onSelectPath,
+  search,
   title,
   url,
 }: {
@@ -698,6 +752,7 @@ function SidebarPageLink({
   linked?: boolean;
   method?: string;
   onSelectPath: () => void;
+  search?: Record<string, string>;
   title: string;
   url: string;
 }) {
@@ -715,9 +770,11 @@ function SidebarPageLink({
           external={external}
           href={href}
           onSelectPath={onSelectPath}
+          search={search}
           url={url}
         >
           <SidebarPageLabel
+            external={external}
             linked={linked}
             method={method}
             title={getSidebarDisplayTitle(title, url)}
@@ -733,6 +790,7 @@ type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   external?: boolean;
   href?: string;
   onSelectPath: () => void;
+  search?: Record<string, string>;
   url: string;
 };
 
@@ -745,6 +803,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       onClick,
       onSelectPath,
       rel,
+      search,
       target,
       url,
       ...props
@@ -780,7 +839,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
-        search={{}}
+        search={search ?? {}}
         to={url}
       >
         {children}
@@ -796,10 +855,12 @@ function sidebarEndpointButtonClassName(method?: string) {
 }
 
 function SidebarPageLabel({
+  external,
   linked,
   method,
   title,
 }: {
+  external?: boolean;
   linked?: boolean;
   method?: string;
   title: string;
@@ -818,14 +879,18 @@ function SidebarPageLabel({
         <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
           {method}
         </span>
-      ) : linked ? (
-        <ChevronDownIcon className="ml-auto size-4 shrink-0 -rotate-90 text-[color:var(--ink-4)]" />
+      ) : external || linked ? (
+        <ExternalLinkIcon className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]" />
       ) : null}
     </>
   );
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
+  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
+    return '概览';
+  }
+
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;
@@ -833,4 +898,12 @@ function getSidebarDisplayTitle(title: string, url: string) {
   }
 
   return title;
+}
+
+function isZhCnProductOverviewUrl(url: string): boolean {
+  if (url.endsWith('/overview')) {
+    return false;
+  }
+
+  return /^\/zh-CN\/(?:realtime-media|solutions)\/.+$/.test(url);
 }

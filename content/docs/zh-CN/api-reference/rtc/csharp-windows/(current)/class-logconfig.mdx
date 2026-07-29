@@ -1,0 +1,74 @@
+---
+title: LogConfig
+description: SDK 日志文件的配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_logconfig
+  sourcePath: html-docs/rtc/Csharp/API/class_logconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_logconfig__prototype"></a>
+
+```text
+public class LogConfig
+    {
+        public LogConfig()
+        {
+            filePath = "";
+            fileSizeInKB = 0;
+            level = LOG_LEVEL.LOG_LEVEL_INFO;
+        }
+
+        public LogConfig(string filePath, uint fileSize = 1024, LOG_LEVEL level = LOG_LEVEL.LOG_LEVEL_INFO)
+        {
+            this.filePath = filePath;
+            this.fileSizeInKB = 0;
+            this.level = level;
+        }
+        public string filePath { set; get; }
+        public uint fileSizeInKB { set; get; }
+        public LOG_LEVEL level { set; get; }
+    };
+```
+
+<a id="class_logconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+日志文件的完整路径。声网建议你使用默认的日志路径。如果你需要修改默认的日志路径，请确保你指定的路径存在且可写。
+
+默认路径为：
+
+- Windows：C:\\Users\\&lt;user_name&gt;\\AppData\\Local\\Agora\\&lt;process_name&gt;\\agorasdk.log。
+
+</Parameter>
+<a id="filesizeinkb"></a>
+<Parameter name="fileSizeInKB">
+
+单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 2,048 KB。如果你将 `fileSizeInKByte` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSizeInKByte` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+<a id="class_logconfig__note_vwq_yfm_kqb"></a>
+
+:::caution
+注意：
+
+该方法仅用于设置 `agorasdk.log` 文件的大小，对 `agoraapi.log` 不生效。
+:::
+
+</Parameter>
+<a id="level"></a>
+<Parameter name="level">
+
+SDK 的日志输出等级，详见 [LOG_LEVEL](/zh-CN/api-reference/rtc/csharp-windows/enum-loglevel)。
+
+例如，如果你选择 WARN 级别，就可以看到在 FATAL、ERROR 和 WARN 级别上的所有日志信息。
+
+</Parameter>
+</ParameterList>

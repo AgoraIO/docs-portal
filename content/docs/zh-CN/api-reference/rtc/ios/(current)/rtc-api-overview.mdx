@@ -1,0 +1,882 @@
+---
+title: API 概览
+description: 声网通过全球部署的 SD-RTN™，提供可以灵活搭配的 API 组合，实现质量可靠的实时音视频通信。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/rtc_api_overview
+  sourcePath: html-docs/rtc/iOS/API/rtc_api_overview.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="rtc_api_overview__toc_initialize"></a>
+
+## 初始化相关
+
+| API | 描述 |
+| --- | --- |
+| [sharedEngineWithAppId\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_create) | 创建并初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。 |
+| [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) | 创建并初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。 |
+| [destroy:](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_destroy1) | 销毁 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例并释放相关资源。 |
+| [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) | 释放 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。 |
+
+<a id="rtc_api_overview__toc_channel"></a>
+
+## 频道相关
+
+| API | 描述 |
+| --- | --- |
+| [setChannelProfile:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setchannelprofile) | 设置频道场景。 |
+| [joinChannelByToken\:channelId\:info\:uid\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel1) | 加入一个频道。 |
+| [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) | 加入频道并设置媒体选项。 |
+| [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) | 使用 token 加入频道并设置媒体选项。 |
+| [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) | 加入频道后更新频道媒体选项。 |
+| [updateChannelExWithMediaOptions\:connection:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_updatechannelmediaoptionsex) | 加入频道后更新频道媒体选项。 |
+| [leaveChannel:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel) | 离开频道并释放资源。 |
+| [leaveChannel\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) | 设置频道选项并离开频道。 |
+| [leaveChannelEx\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex) | 离开频道并释放与会话相关的所有资源。 |
+| [leaveChannelEx\:options\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex2) | 设置频道选项并离开频道。 |
+| [preloadChannelByToken\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_preloadchannel) | 预加载指定频道。 |
+| [updatePreloadChannelToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatepreloadchanneltoken) | 更新预加载频道的通配 Token。 |
+| [renewToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) | 更新 Token。 |
+| [setClientRole:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole1) | 设置用户角色。 |
+| [setClientRole\:options:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole2) | 设置直播场景中的用户角色和观众延迟等级。 |
+| [delegate](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_delegate) | 设置并获取 [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)。 |
+| [getUserInfoByUidEx\:connection\:withError:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_getuserinfobyuidex) | 通过传入用户 ID 获取用户信息。 |
+| [rtcEngine\:didClientRoleChanged\:newRole\:newRoleOptions:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onclientrolechanged) | 用户角色或观众延迟等级发生变化时触发的回调。 |
+| [rtcEngine\:didClientRoleChangeFailed\:currentRole:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onclientrolechangefailed) | 当切换用户角色失败时触发的回调。 |
+| [rtcEngine\:didOccurError:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onerror) | 报告 SDK 运行时发生的错误回调。 |
+| [rtcEngine\:didJoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) | 本地用户成功加入频道回调。 |
+| [rtcEngine\:didLeaveChannelWithStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onleavechannel) | 用户离开频道时的回调。 |
+| [rtcEngine\:didRejoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) | [rtcEngine\:didRejoinChannel\:withUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。当用户重新加入频道时触发。 |
+| [rtcEngine\:renewTokenResult\:code:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrenewtokenresult) | [renewToken:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_renewtoken) 方法调用结果的回调。 |
+| [rtcEngineRequestToken:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrequesttoken) | 当 Token 过期时触发的回调。 |
+| [rtcEngine\:reportRtcStats:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onrtcstats) | 报告当前通话的统计信息。 |
+| [rtcEngine\:tokenPrivilegeWillExpire:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) | 当 Token 在 30 秒后过期时触发的回调。 |
+| [rtcEngine\:didJoinedOfUid\:elapsed:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuserjoined) | 远端用户或主播加入频道回调。 |
+| [rtcEngine\:didOfflineOfUid\:reason:](/zh-CN/api-reference/rtc/ios/channel#callback_irtcengineeventhandler_onuseroffline) | 远端用户或主播离开频道时的回调。 |
+
+<a id="rtc_api_overview__toc_publishnsubscribe"></a>
+
+## 发布和订阅
+
+| API | 描述 |
+| --- | --- |
+| [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteAllRemoteAudioStreamsEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteallremoteaudiostreamsex) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteAllRemoteVideoStreams:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteallremotevideostreams) | 停止或恢复订阅所有远端用户的视频流。 |
+| [muteAllRemoteVideoStreamsEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteallremotevideostreamsex) | 停止或恢复订阅所有远端用户的视频流。 |
+| [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalaudiostream) | 停止或恢复发布本地音频流。 |
+| [muteLocalAudioStreamEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_mutelocalaudiostreamex) | 停止或恢复发布本地音频流。 |
+| [muteLocalVideoStream:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_mutelocalvideostream) | 控制是否发布本地采集的视频流。 |
+| [muteLocalVideoStreamEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_mutelocalvideostreamex) | 停止或恢复发布本地视频流。 |
+| [muteRemoteAudioStream\:mute:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteremoteaudiostream) | 停止或恢复订阅指定用户的音频流。 |
+| [muteRemoteAudioStreamEx\:mute\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteremoteaudiostreamex) | 停止或恢复接收指定用户的音频流。 |
+| [muteRemoteVideoStream\:mute:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_muteremotevideostream) | 停止或恢复订阅指定用户的视频流。 |
+| [muteRemoteVideoStreamEx\:mute\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_muteremotevideostreamex) | 停止或恢复接收指定用户的视频流。 |
+| [setDualStreamMode:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode) | 设置发送端的不同质量层级的视频流模式。 |
+| [setDualStreamMode\:streamConfig:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode2) | 设置发送端的不同质量层级的视频流模式配置。 |
+| [setDualStreamModeEx\:streamConfig\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setdualstreammodeex) | 设置发送端的不同质量层级的视频流模式。 |
+| [setRemoteDefaultVideoStreamType:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) | 设置默认订阅的视频流类型。 |
+| [setRemoteVideoStream\:type:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideostreamtype) | 设置你要订阅的视频流类型。 |
+| [setRemoteVideoStreamEx\:type\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setremotevideostreamtypeex) | 设置你要订阅的视频流类型。 |
+| [setRemoteVideoSubscriptionOptions\:options:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) | 设置订阅远端视频流的选项。 |
+| [setRemoteVideoSubscriptionOptionsEx\:options\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setremotevideosubscriptionoptionsex) | 设置订阅远端视频流的选项。 |
+| [setSubscribeAudioAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioallowlist) | 设置音频流订阅的白名单。 |
+| [setSubscribeAudioAllowlistEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribeaudioallowlistex) | 设置音频流订阅的白名单。 |
+| [setSubscribeAudioBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribeaudioblocklist) | 设置音频流订阅的黑名单。 |
+| [setSubscribeAudioBlocklistEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribeaudioblocklistex) | 设置音频流订阅的黑名单。 |
+| [setSubscribeVideoAllowlist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoallowlist) | 设置视频流订阅的白名单。 |
+| [setSubscribeVideoAllowlistEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribevideoallowlistex) | 设置视频流订阅的白名单。 |
+| [setSubscribeVideoBlocklist:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setsubscribevideoblocklist) | 设置不订阅的视频流用户的 blocklist。 |
+| [setSubscribeVideoBlocklistEx\:connection:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengineex_setsubscribevideoblocklistex) | 设置视频流订阅的阻止名单。 |
+| [rtcEngine\:didAudioPublishStateChange\:oldState\:newState\:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiopublishstatechanged) | 音频发布状态发生变化回调。 |
+| [rtcEngine\:didAudioSubscribeStateChange\:uid\:oldState\:newState\:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onaudiosubscribestatechanged) | 音频订阅状态发生变化回调。 |
+| [rtcEngine\:didVideoSubscribeStateChange\:uid\:oldState\:newState\:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#callback_irtcengineeventhandler_onvideosubscribestatechanged) | 远端视频订阅状态发生变化回调。 |
+
+<a id="rtc_api_overview__toc_audio_basic"></a>
+
+## 音频基础功能
+
+| API | 描述 |
+| --- | --- |
+| [adjustPlaybackSignalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_adjustplaybacksignalvolume) | 调节所有远端用户的播放信号音量。 |
+| [adjustUserPlaybackSignalVolume\:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_adjustuserplaybacksignalvolume) | 调整指定远端用户的播放音量。 |
+| [adjustUserPlaybackSignalVolumeEx\:volume\:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengineex_adjustuserplaybacksignalvolumeex) | 调节指定远端用户的播放信号音量。 |
+| [disableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_disableaudio) | 禁用音频模块。 |
+| [enableAudio](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudio) | 启用音频模块。 |
+| [enableAudioVolumeIndication\:smooth\:reportVad:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) | 启用用户音量提示的上报功能。 |
+| [enableAudioVolumeIndicationEx\:smooth\:reportVad\:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengineex_enableaudiovolumeindicationex) | 启用用户音量提示的上报功能。 |
+| [setAudioProfile:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioprofile2) | 设置音频配置。 |
+| [setAudioScenario:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) | 设置音频场景。 |
+| [setAudioSessionOperationRestriction:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudiosessionoperationrestriction) | 设置 SDK 对音频会话的操作权限。 |
+| [rtcEngine\:activeSpeaker:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onactivespeaker) | 检测到最活跃的远端说话人时触发的回调。 |
+| [rtcEngine\:reportAudioVolumeIndicationOfSpeakers\:totalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) | 报告用户音量信息的回调。 |
+| [rtcEngine\:firstLocalAudioFramePublished:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstlocalaudioframepublished) | 本地音频首帧发布回调。 |
+| [rtcEngine\:firstRemoteAudioFrameOfUid\:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe) | 远端用户的第一帧音频被接收并解码时触发。 |
+| [rtcEngine\:localAudioStateChanged\:reason:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) | 本地音频流状态发生变化时的回调。 |
+| [rtcEngine\:localAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostats) | 上报本地音频流的统计信息。 |
+| [rtcEngine\:remoteAudioStateChangedOfUid\:state\:reason\:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | 远端音频状态发生变化回调。 |
+| [rtcEngine\:remoteAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | 上报每个远端音频流的传输层统计信息。 |
+| [rtcEngine\:didAudioMuted\:byUid:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) | 当远端用户或主播停止或恢复发送音频流时触发。 |
+
+<a id="rtc_api_overview__toc_audio_capture"></a>
+
+## 音频采集
+
+| API | 描述 |
+| --- | --- |
+| [adjustRecordingSignalVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_adjustrecordingsignalvolume) | 调节采集音量。 |
+| [enableInEarMonitoring:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring) | 启用或关闭耳返监听功能。 |
+| [enableInEarMonitoring\:includeAudioFilters:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enableinearmonitoring2) | 启用或关闭耳返监听功能。 |
+| [enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio) | 启用或关闭本地音频采集功能。 |
+| [muteRecordingSignal:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_muterecordingsignal) | 设置是否静音录制信号。 |
+| [setInEarMonitoringVolume:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_setinearmonitoringvolume) | 设置耳返音量。 |
+
+<a id="rtc_api_overview__toc_audio_effect"></a>
+
+## 人声音效
+
+| API | 描述 |
+| --- | --- |
+| [enableVoiceAITuner\:type:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_enablevoiceaituner) | 启用或关闭语音 AI 调音器。 |
+| [setAdvancedAudioOptions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setadvancedaudiooptions) | 设置音频高级选项。 |
+| [setAINSMode\:mode:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setainsmode) | 设置是否启用 AI 降噪功能并设置降噪模式。 |
+| [setAudioEffectParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectparameters) | 设置 SDK 预设音效的参数。 |
+| [setAudioEffectPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset) | 设置 SDK 预设的音效效果。 |
+| [setLocalVoiceEqualizationOfBandFrequency\:withGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization) | 设置本地语音的均衡效果。 |
+| [setLocalVoiceFormant:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceformant) | 设置共振峰比例以改变人声音色。 |
+| [setLocalVoicePitch:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch) | 改变本地语音的音调。 |
+| [setLocalVoiceReverbOfType\:withValue:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb) | 设置本地语音的混响效果。 |
+| [setVoiceBeautifierParameters\:param1\:param2:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierparameters) | 设置预设美声特效的参数。 |
+| [setVoiceBeautifierPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset) | 设置预设的美声特效。 |
+| [setVoiceConversionPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audio-effect#api_irtcengine_setvoiceconversionpreset) | 设置预设的变声效果。 |
+
+<a id="rtc_api_overview__toc_sound_position"></a>
+
+## 听声辨位
+
+| API | 描述 |
+| --- | --- |
+| [enableSoundPositionIndication:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) | 启用或关闭远端用户的立体声声像功能。 |
+| [setRemoteVoicePosition\:pan\:gain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) | 设置远端用户语音的二维位置和音量。 |
+| [setRemoteVoicePositionEx\:pan\:gain\:connection:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/sound-position#api_irtcengineex_setremotevoicepositionex) | 设置远端用户语音的二维位置和音量。 |
+
+<a id="rtc_api_overview__toc_spatial_audio"></a>
+
+## 空间音频
+
+| API | 描述 |
+| --- | --- |
+| [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) | 初始化 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 实例。 |
+| [clearRemotePositions:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_clearremotepositions) | 移除所有远端用户的空间位置。 |
+| [enableSpatialAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) | 启用或关闭空间音效。 |
+| [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) | 停止或恢复订阅所有远端用户的音频流。 |
+| [muteLocalAudioStream:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine) | 停止或恢复发布本地音频流。 |
+| [muteRemoteAudioStream\:mute:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) | 停止或恢复订阅指定用户的音频流。 |
+| [destroy](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) | 销毁 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_ilocalspatialaudioengine) 实例。 |
+| [removeRemotePosition:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_removeremoteposition) | 移除指定远端用户的空间位置。 |
+| [setAudioRecvRange:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setaudiorecvrange) | 设置你可接收的音频范围。 |
+| [setDistanceUnit:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setdistanceunit) | 设置游戏引擎中每个单位距离对应的米数。 |
+| [setHeadphoneEQParameters\:highGain:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqparameters) | 设置耳机均衡器的低频和高频参数。 |
+| [setHeadphoneEQPreset:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) | 设置预设的耳机均衡效果。 |
+| [setMaxAudioRecvCount:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) | 设置你在指定音频接收范围内可接收的最大音频流数量。 |
+| [setPlayerAttenuation\:playerId\:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) | 设置媒体播放器的声音衰减属性。 |
+| [setRemoteAudioAttenuation\:uid\:forceSet:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_setremoteaudioattenuation) | 设置指定用户的声音衰减效果。 |
+| [setRemoteUserSpatialAudioParams\:params:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) | 设置远端用户的空间音效参数。 |
+| [setSpatialAudioParams:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_imediaplayer_setspatialaudioparams) | 启用或关闭媒体播放器的空间音效。 |
+| [setZones:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setzones) | 设置声源隔音区域。 |
+| [updatePlayerPositionInfo\:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateplayerpositioninfo) | 更新媒体播放器的空间位置。 |
+| [updateRemotePosition\:positionInfo:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) | 更新指定远端用户的空间位置。 |
+| [updateSelfPosition\:axisForward\:axisRight\:axisUp:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselfposition) | 更新本地用户的空间位置。 |
+| [updateSelfTransform:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_updateselftransform) | 更新坐标转换。 |
+
+<a id="rtc_api_overview__toc_audiomixer"></a>
+
+## 本地音频合流
+
+| API | 描述 |
+| --- | --- |
+| [startLocalAudioMixer:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_startlocalaudiomixer) | 开始本地混音。 |
+| [stopLocalAudioMixer](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_stoplocalaudiomixer) | 停止本地混音。 |
+| [updateLocalAudioMixerConfiguration:](/zh-CN/api-reference/rtc/ios/audio/audio-prenpost/audiomixer#api_irtcengine_updatelocalaudiomixerconfiguration) | 更新本地混音配置。 |
+
+<a id="rtc_api_overview__toc_audio_raw"></a>
+
+## 原始音频数据
+
+| API | 描述 |
+| --- | --- |
+| [getEarMonitoringAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getearmonitoringaudioparams) | 设置 [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) 回调的音频格式。 |
+| [getMixedAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getmixedaudioparams) | 设置 [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) 回调的音频格式。 |
+| [getObservedAudioFramePosition](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getobservedaudioframeposition) | 设置音频数据观察位置。 |
+| [getPlaybackAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getplaybackaudioparams) | 设置 [onPlaybackAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) 回调的音频格式。 |
+| [getRecordAudioParams](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_iaudioframeobserver_getrecordaudioparams) | 设置 [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) 回调的音频格式。 |
+| [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_registeraudioframeobserver) | 注册音频帧观察者对象。 |
+| [setEarMonitoringAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) | 设置耳返原始音频数据的格式。 |
+| [setMixedAudioFrameParametersWithSampleRate\:channel\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) | 设置用于音频采集和播放的混音后原始音频数据格式。 |
+| [setPlaybackAudioFrameBeforeMixingParametersWithSampleRate\:channel:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters) | 设置混音前原始音频播放数据的格式。 |
+| [setPlaybackAudioFrameBeforeMixingParametersWithSampleRate\:channel\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframebeforemixingparameters1) | 设置 [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调中音频数据的格式。 |
+| [setPlaybackAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) | 设置原始音频播放数据的格式。 |
+| [setRecordingAudioFrameParametersWithSampleRate\:channel\:mode\:samplesPerCall:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) | 设置采集的原始音频数据格式。 |
+| [onEarMonitoringAudioFrame:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onearmonitoringaudioframe) | 获取耳返音频帧回调。 |
+| [onMixedAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onmixedaudioframe) | 获取混合后的采集和播放音频帧回调。 |
+| [onPlaybackAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframe) | 获取用于播放的原始音频帧回调。 |
+| [onPlaybackAudioFrameBeforeMixing\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) | 获取已订阅远端用户在混音前的音频帧。 |
+| [onRecordAudioFrame\:channelId:](/zh-CN/api-reference/rtc/ios/audio/audio-raw#callback_iaudioframeobserver_onrecordaudioframe) | 采集到音频帧时触发的回调。 |
+
+<a id="rtc_api_overview__toc_audio_encoded"></a>
+
+## 已编码音频数据
+
+| API | 描述 |
+| --- | --- |
+| [setAudioEncodedFrameDelegate\:config:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#api_irtcengine_registeraudioencodedframeobserver) | 注册编码音频数据的观察者。 |
+| [onMixedEncodedAudioFrame\:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onmixedaudioencodedframe) | 获取本地和所有远端用户的混音编码音频数据回调。 |
+| [onPlaybackEncodedAudioFrame\:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onplaybackaudioencodedframe) | 获取所有远端用户的编码音频数据回调。 |
+| [onRecordEncodedAudioFrame\:info:](/zh-CN/api-reference/rtc/ios/audio/audio-encoded#callback_iaudioencodedframeobserver_onrecordaudioencodedframe) | 获取本地用户的编码音频数据回调。 |
+
+<a id="rtc_api_overview__toc_audio_custom_capturenrendering"></a>
+
+## 自定义音频采集和渲染
+
+| API | 描述 |
+| --- | --- |
+| [adjustCustomAudioPlayoutVolume\:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) | 调节本地播放的自定义音频轨道的音量。 |
+| [adjustCustomAudioPublishVolume\:volume:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudiopublishvolume) | 调节远端播放的自定义音频轨道的音量。 |
+| [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) | 创建一个自定义音频轨道。 |
+| [destroyCustomAudioTrack:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_destroycustomaudiotrack) | 销毁指定的音频轨道。 |
+| [enableCustomAudioLocalPlayback\:enabled:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_enablecustomaudiolocalplayback) | 设置是否启用外部音频源的本地播放。 |
+| [pullPlaybackAudioFrameRawData\:lengthInByte:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) | 拉取远端音频数据。 |
+| [pullPlaybackAudioFrameSampleBufferByLengthInByte:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte) | 拉取 `SampleBuffer` 格式的远端音频数据。 |
+| [pushExternalAudioFrameRawData\:samples\:sampleRate\:channels\:trackId\:timestamp:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) | 将外部音频帧推送到 SDK。 |
+| [pushExternalAudioFrameSampleBuffer\:sampleRate\:channels\:trackId:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2) | 通过自定义音频轨道将外部 `CMSampleBuffer` 音频帧推送到频道中。 |
+| [enableExternalAudioSink\:sampleRate\:channels:](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) | 设置外部音频渲染。 |
+
+<a id="rtc_api_overview__toc_audio_spectrum"></a>
+
+## 音频频谱
+
+| API | 描述 |
+| --- | --- |
+| [disableAudioSpectrumMonitor](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_disableaudiospectrummonitor) | 禁用音频频谱监测。 |
+| [enableAudioSpectrumMonitor:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_enableaudiospectrummonitor) | 开启音频频谱监测。 |
+| [registerAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_registeraudiospectrumobserver) | 注册音频频谱观察者。 |
+| [unregisterAudioSpectrumDelegate:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#api_irtcengine_unregisteraudiospectrumobserver) | 取消注册音频频谱观察者。 |
+| [onLocalAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onlocalaudiospectrum) | 获取本地音频频谱数据。 |
+| [onRemoteAudioSpectrum:](/zh-CN/api-reference/rtc/ios/audio/audio-spectrum#callback_iaudiospectrumobserver_onremoteaudiospectrum) | 获取远端音频频谱信息回调。 |
+
+<a id="rtc_api_overview__toc_video_basic"></a>
+
+## 视频基础功能
+
+| API | 描述 |
+| --- | --- |
+| [disableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_disablevideo) | 禁用视频模块。 |
+| [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo) | 启用或关闭本地视频采集。 |
+| [enableVideo](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablevideo) | 启用视频模块。 |
+| [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoencoderconfiguration) | 设置本地视频的编码配置。 |
+| [setVideoEncoderConfigurationEx\:connection:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) | 设置视频编码器配置。 |
+| [setVideoScenario:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoscenario) | 设置视频应用场景。 |
+| [startPreview](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview) | 启用本地视频预览。 |
+| [startPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_startpreview2) | 启用本地视频预览并指定预览的视频源。 |
+| [stopPreview](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_stoppreview) | 停止你本地的视频预览和视频。 |
+| [stopPreview:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_stoppreview2) | 停止本地视频预览。 |
+| [rtcEngine\:firstLocalVideoFrameWithSize\:elapsed\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframe) | 本地视频视图显示首帧本地视频画面时触发的回调。 |
+| [rtcEngine\:firstLocalVideoFramePublishedWithElapsed\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstlocalvideoframepublished) | 当首帧本地视频发布时触发。 |
+| [rtcEngine\:firstRemoteVideoFrameOfUid\:size\:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onfirstremotevideoframe) | 远端视频首帧渲染回调。 |
+| [rtcEngine\:localVideoStateChangedOfState\:reason\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) | 当本地视频流状态发生变化时触发的回调。 |
+| [rtcEngine\:localVideoStats\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) | 本地视频流统计信息回调。 |
+| [rtcEngine\:remoteVideoStateChangedOfUid\:state\:reason\:elapsed:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) | 远端视频状态发生改变回调。 |
+| [rtcEngine\:remoteVideoStats:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) | 报告每位远端用户发送的视频流的统计信息。 |
+| [rtcEngine\:didVideoEnabled\:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) | 远端用户启用或关闭视频模块回调。 |
+| [rtcEngine\:didVideoMuted\:byUid:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onusermutevideo) | 远端用户停止或恢复发布视频流时触发的回调。 |
+| [rtcEngine\:didVideoPublishStateChange\:sourceType\:oldState\:newState\:elapseSinceLastState:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) | 视频发布状态发生变化回调。 |
+| [rtcEngine\:videoSizeChangedOfSourceType\:uid\:size\:rotation:](/zh-CN/api-reference/rtc/ios/video/video-basic#callback_irtcengineeventhandler_onvideosizechanged) | 当指定用户的视频尺寸或旋转信息发生变化时触发。 |
+
+<a id="rtc_api_overview__toc_camera_capture"></a>
+
+## 摄像头采集
+
+| API | 描述 |
+| --- | --- |
+| [setCameraStabilizationMode:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_setcamerastabilizationmode) | 设置摄像头防抖模式。 |
+| [startCameraCapture\:config:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_startcameracapture) | 开始视频采集。 |
+| [stopCameraCapture:](/zh-CN/api-reference/rtc/ios/video/camera-capture#api_irtcengine_stopcameracapture) | 停止视频采集。 |
+
+<a id="rtc_api_overview__toc_screencapture"></a>
+
+## 屏幕采集
+
+| API | 描述 |
+| --- | --- |
+| [queryScreenCaptureCapability](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_queryscreencapturecapability) | 查询设备在屏幕共享时支持的最高帧率。 |
+| [setScreenCaptureScenario:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_setscreencapturescenario) | 设置屏幕共享场景。 |
+| [startScreenCapture:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_startscreencapture) | 开始屏幕采集。 |
+| [stopScreenCapture](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_stopscreencapture) | 停止屏幕采集。 |
+| [updateScreenCapture:](/zh-CN/api-reference/rtc/ios/video/screencapture#api_irtcengine_updatescreencapture) | 更新屏幕共享配置。 |
+
+<a id="rtc_api_overview__toc_snapshot"></a>
+
+## 本地截图上传
+
+| API | 描述 |
+| --- | --- |
+| [enableContentInspect\:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_enablecontentinspect) | 启用或关闭本地截图上传功能。 |
+| [enableContentInspectEx\:config\:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_enablecontentinspectex) | 启用或关闭本地截图上传功能。 |
+| [takeSnapshot\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot) | 截取视频流快照并保存为 JPG 图像。 |
+| [takeSnapshotWithConfig\:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengine_takesnapshot2) | 截取指定用户视频的截图并保存为 JPG 文件。 |
+| [takeSnapshotEx\:uid\:filePath:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex) | 使用连接 ID 对视频流进行截图。 |
+| [takeSnapshotExWithConfig\:uid\:config:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#api_irtcengineex_takesnapshotex2) | 获取指定用户视频流的截图。 |
+| [rtcEngine\:snapshotTaken\:filePath\:width\:height\:errCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/snapshot#callback_irtcengineeventhandler_onsnapshottaken) | 报告视频截图的结果。 |
+
+<a id="rtc_api_overview__toc_virtualbackground"></a>
+
+## 虚拟背景
+
+| API | 描述 |
+| --- | --- |
+| [enableVirtualBackground\:backData\:segData:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground) | 启用或关闭虚拟背景功能。 |
+| [enableVirtualBackground\:backData\:segData\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/virtualbackground#api_irtcengine_enablevirtualbackground2) | 启用虚拟背景并指定媒体源，或关闭虚拟背景。 |
+
+<a id="rtc_api_overview__toc_local_transcoder"></a>
+
+## 本地合图
+
+| API | 描述 |
+| --- | --- |
+| [startLocalVideoTranscoder:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_startlocalvideotranscoder) | 开始本地合图。 |
+| [stopLocalVideoTranscoder](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_stoplocalvideotranscoder) | 停止本地合图。 |
+| [updateLocalTranscoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#api_irtcengine_updatelocaltranscoderconfiguration) | 更新本地合图配置。 |
+| [rtcEngine\:didLocalVideoTranscoderErrorWithStream\:errorCode:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/local-transcoder#callback_irtcengineeventhandler_onlocalvideotranscodererror) | 本地合图过程中发生错误时触发的回调。 |
+
+<a id="rtc_api_overview__toc_video_enhance_option"></a>
+
+## 视频增强
+
+| API | 描述 |
+| --- | --- |
+| [addOrUpdateVideoEffectWithNodeId\:templateName:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_addorupdatevideoeffect) | 添加或更新指定节点 ID 和模板的视频特效。 |
+| [createVideoEffectObjectWithBundlePath\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_createvideoeffectobject) | 创建一个视频特效对象。 |
+| [destroyVideoEffectObject:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_destroyvideoeffectobject) | 销毁一个视频特效对象。 |
+| [getFaceShapeAreaOptions\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapeareaoptions) | 获取美型区域的选项。 |
+| [getFaceShapeAreaOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapeareaoptions2) | 获取当前的美颜特效设置。 |
+| [getFaceShapeBeautyOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions) | 获取美颜特效选项。 |
+| [getFaceShapeBeautyOptions](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_getfaceshapebeautyoptions2) | 获取当前的美颜特效设置。 |
+| [getVideoEffectBoolParamWithOption\:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam) | 获取视频特效中的布尔参数。 |
+| [getVideoEffectFloatParamWithOption\:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam) | 获取视频特效中的 `float` 类型参数。 |
+| [getVideoEffectIntParamWithOption\:key:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam) | 获取视频特效中的整数类型参数。 |
+| [performVideoEffectActionWithNodeId\:actionId:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_performvideoeffectaction) | 对指定的视频特效节点执行操作。 |
+| [removeVideoEffectWithNodeId:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_removevideoeffect) | 移除指定节点 ID 的视频特效。 |
+| [setBeautyEffectOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions) | 设置美颜特效选项。 |
+| [setBeautyEffectOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setbeautyeffectoptions2) | 设置美颜特效选项并指定媒体源。 |
+| [setColorEnhanceOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions) | 设置色彩增强效果。 |
+| [setColorEnhanceOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setcolorenhanceoptions2) | 设置色彩增强选项并指定媒体源。 |
+| [setFaceShapeAreaOptions\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapeareaoptions) | 设置美颜增强的面部区域选项。 |
+| [setFaceShapeAreaOptions:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapeareaoptions2) | 设置美颜增强的面部区域选项。 |
+| [setFaceShapeBeautyOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions) | 设置美型选项并指定媒体源。 |
+| [setFaceShapeBeautyOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfaceshapebeautyoptions2) | 设置美型选项。 |
+| [setFilterEffectOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfiltereffectoptions) | 设置滤镜特效参数并指定媒体源。 |
+| [setFilterEffectOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setfiltereffectoptions2) | 设置滤镜特效选项。 |
+| [setLowlightEnhanceOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions) | 设置暗光增强功能。 |
+| [setLowlightEnhanceOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setlowlightenhanceoptions2) | 设置低光增强选项并指定媒体源。 |
+| [setVideoDenoiserOptions\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions) | 设置视频降噪功能。 |
+| [setVideoDenoiserOptions\:options\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_irtcengine_setvideodenoiseroptions2) | 设置视频降噪并指定媒体源。 |
+| [setVideoEffectBoolParamWithOption\:key\:boolValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectboolparam) | 设置视频特效的布尔参数。 |
+| [setVideoEffectFloatParamWithOption\:key\:floatValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectfloatparam) | 设置视频特效的浮点参数。 |
+| [setVideoEffectIntParamWithOption\:key\:intValue:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_setvideoeffectintparam) | 设置视频特效的整数参数。 |
+
+<a id="rtc_api_overview__toc_face_detection"></a>
+
+## 人脸检测
+
+| API | 描述 |
+| --- | --- |
+| [enableFaceDetection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#api_irtcengine_enablefacedetection) | 启用或关闭本地用户的人脸检测功能。 |
+| [rtcEngine\:facePositionDidChangeWidth\:previewHeight\:faces:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/face-detection#callback_irtcengineeventhandler_onfacepositionchanged) | 上报本地用户的人脸检测结果。 |
+
+<a id="rtc_api_overview__toc_center_stage"></a>
+
+## 人像锁定
+
+| API | 描述 |
+| --- | --- |
+| [enableCameraCenterStage:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_enablecameracenterstage) | 开启或关闭人像锁定功能。 |
+| [isCameraCenterStageSupported](/zh-CN/api-reference/rtc/ios/video/video-prenpro/center-stage#api_irtcengine_iscameracenterstagesupported) | 检查当前摄像头是否支持人像锁定。 |
+
+<a id="rtc_api_overview__toc_watermark"></a>
+
+## 直播水印
+
+| API | 描述 |
+| --- | --- |
+| [addVideoWatermarkWithConfig:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3) | 向本地视频添加水印图像。 |
+| [addVideoWatermarkEx\:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex1) | 向本地视频添加水印图像。 |
+| [clearVideoWatermarkEx:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_clearvideowatermarkex) | 从视频流中移除水印图像。 |
+| [clearVideoWatermarks](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_clearvideowatermarks) | 从视频流中移除水印图像。 |
+| [removeVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_removevideowatermark) | 从本地视频中移除水印图像。 |
+| [removeVideoWatermarkEx\:connection:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengineex_removevideowatermarkex) | 从本地或远端视频流中移除指定的水印图像。 |
+
+<a id="rtc_api_overview__toc_image_source"></a>
+
+## 垫片推流
+
+| API | 描述 |
+| --- | --- |
+| [enableVideoImageSource\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) | 设置在发布视频流时是否用图片替代当前视频画面。 |
+
+<a id="rtc_api_overview__toc_video_rendering"></a>
+
+## 视频渲染
+
+| API | 描述 |
+| --- | --- |
+| [enableInstantMediaRendering](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_enableinstantmediarendering) | 启用音视频帧的极速渲染。 |
+| [setLocalRenderMode\:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendermode2) | 更新本地视频视图的显示模式。 |
+| [setLocalRenderTargetFps\:targetFps:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setlocalrendertargetfps) | 设置本地视频渲染的最大帧率。 |
+| [setRemoteRenderMode\:mode\:mirror:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setremoterendermode2) | 更新远端用户视频视图的显示模式。 |
+| [setRemoteRenderModeEx\:mode\:mirror\:connection:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setremoterendermodeex) | 设置指定远端用户的视频显示模式。 |
+| [setRemoteRenderTargetFps:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setremoterendertargetfps) | 设置远端视频渲染的最大帧率。 |
+| [setRenderMode:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_imediaplayer_setrendermode) | 设置媒体播放器的渲染模式。 |
+| [setupLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setuplocalvideo) | 初始化本地视频画面。 |
+| [setupRemoteVideo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_setupremotevideo) | 初始化远端用户的视频视图。 |
+| [setupRemoteVideoEx\:connection:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) | 初始化远端用户的视频视图。 |
+| [startMediaRenderingTracing](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_startmediarenderingtracing) | 启用视频帧渲染过程的追踪功能。 |
+| [startMediaRenderingTracingEx:](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_startmediarenderingtracingex) | 启用视频帧渲染过程的追踪。 |
+| [rtcEngine\:didTranscodedStreamLayoutInfoUpdatedWithUserId\:videoLayoutInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_ontranscodedstreamlayoutinfo) | 当本地用户接收到携带视频合流布局信息的合图视频时触发。 |
+| [rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:](/zh-CN/api-reference/rtc/ios/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) | 视频帧渲染事件的回调。 |
+
+<a id="rtc_api_overview__toc_video_raw"></a>
+
+## 原始视频数据
+
+| API | 描述 |
+| --- | --- |
+| [getMirrorApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getmirrorapplied) | 设置是否镜像采集的视频。 |
+| [getObservedFramePosition](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getobservedframeposition) | 设置视频观察器的帧位置。 |
+| [getRotationApplied](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getrotationapplied) | 每次 SDK 接收到视频帧时触发，并提示你是否旋转采集的视频。 |
+| [getVideoFormatPreference](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getvideoformatpreference) | 设置 SDK 输出的原始视频数据格式。 |
+| [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) | [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/ios/video/video-raw#api_ivideoframeobserver_getvideoframeprocessmode) 回调。每次 SDK 接收到视频帧时触发，并提示你设置视频帧的处理模式。 |
+| [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver) | 注册原始视频帧观察者对象。 |
+| [onCaptureVideoFrame\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) | 每次 SDK 接收到本地设备采集的视频帧时触发。 |
+| [onPreEncodeVideoFrame\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) | 每次 SDK 接收到编码前视频帧时触发。 |
+| [onRenderVideoFrame\:uid\:channelId:](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) | 每次 SDK 接收到远端用户发送的视频帧时触发。 |
+
+<a id="rtc_api_overview__toc_video_encoded"></a>
+
+## 已编码视频数据
+
+| API | 描述 |
+| --- | --- |
+| [setEncodedVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/video/video-encoded#api_irtcengine_registervideoencodedframeobserver) | 注册一个用于接收编码后视频图像的对象。 |
+| [onEncodedVideoFrameReceived\:length\:info\:channelId\:uid:](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) | 本地回调远端发送的待解码视频帧信息。 |
+
+<a id="rtc_api_overview__toc_video_custom_capturenrendering"></a>
+
+## 自定义视频采集和渲染
+
+| API | 描述 |
+| --- | --- |
+| [createCustomVideoTrack](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) | 创建一个自定义视频轨道。 |
+| [destroyCustomVideoTrack:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) | 销毁指定的视频轨道。 |
+| [pushExternalVideoFrame\:videoTrackId:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_pushvideoframe) | 通过视频轨道将外部原始视频帧推送到 SDK。 |
+| [setExternalVideoSource\:useTexture\:sourceType:](/zh-CN/api-reference/rtc/ios/video/video-custom-capturenrendering#api_irtcengine_setexternalvideosource) | 配置外部视频源。 |
+
+<a id="rtc_api_overview__toc_audio_mixing"></a>
+
+## 音乐文件播放
+
+| API | 描述 |
+| --- | --- |
+| [adjustAudioMixingPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingplayoutvolume) | 调整本地播放的混音音量。 |
+| [adjustAudioMixingPublishVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingpublishvolume) | 调节用于发布的混音音量。 |
+| [adjustAudioMixingVolume:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_adjustaudiomixingvolume) | 调节混音时的音量。 |
+| [getAudioMixingCurrentPosition](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingcurrentposition) | 获取当前混音的播放位置（毫秒）。 |
+| [getAudioMixingDuration](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingduration) | 获取音频文件的混音时长（毫秒）。 |
+| [getAudioMixingPlayoutVolume](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingplayoutvolume) | 获取本地播放的混音音量。 |
+| [getAudioMixingPublishVolume](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiomixingpublishvolume) | 获取用于发布的混音音量。 |
+| [getAudioTrackCount](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_getaudiotrackcount) | 获取当前音乐文件的音轨索引。 |
+| [pauseAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_pauseaudiomixing) | 暂停播放和混音音乐文件。 |
+| [resumeAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_resumeaudiomixing) | 恢复播放并混音音乐文件。 |
+| [selectAudioTrack:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_selectaudiotrack) | 选择用于播放的音轨。 |
+| [selectMultiAudioTrack\:publishTrackIndex:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) | 分别选择要在本地设备播放和发布到频道的音轨。 |
+| [setAudioMixingDualMonoMode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingdualmonomode) | 设置当前音频文件的声道模式。 |
+| [setAudioMixingPitch:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingpitch) | 设置本地音乐文件的音调。 |
+| [setAudioMixingPlaybackSpeed:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed) | 设置当前音频文件的播放速度。 |
+| [setAudioMixingPosition:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_setaudiomixingposition) | 设置混音的播放位置。 |
+| [startAudioMixing\:loopback\:cycle:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing) | 开始播放音乐文件。 |
+| [startAudioMixing\:loopback\:cycle\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing2) | 开始播放音乐文件。 |
+| [stopAudioMixing](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_stopaudiomixing) | 停止播放音乐文件。 |
+| [rtcEngine\:audioMixingPositionChanged:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingpositionchanged) | 报告音乐文件的播放进度。 |
+| [rtcEngine\:audioMixingStateChanged\:reasonCode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | 音乐文件播放状态发生变化回调。 |
+
+<a id="rtc_api_overview__toc_audio_effect_file"></a>
+
+## 音效文件播放
+
+| API | 描述 |
+| --- | --- |
+| [getEffectCurrentPosition:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectcurrentposition) | 获取音效文件的播放位置。 |
+| [getEffectDuration:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectduration) | 获取音效文件的时长。 |
+| [getEffectsVolume](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_geteffectsvolume) | 获取音效的音量。 |
+| [getVolumeOfEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_getvolumeofeffect) | 获取指定音效文件的音量。 |
+| [pauseAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pausealleffects) | 暂停所有音效。 |
+| [pauseEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_pauseeffect) | 暂停指定的音效文件。 |
+| [playAllEffectsWithLoopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playalleffects) | 播放所有音效。 |
+| [playEffect\:filePath\:loopCount\:pitch\:pan\:gain:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect1) | 播放指定的本地或在线音效文件。 |
+| [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect2) | 播放指定的本地或在线音效文件。 |
+| [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) | 播放指定的本地或在线音效文件。 |
+| [playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex) | 在频道中播放指定的音效。 |
+| [playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex2) | 在频道中播放指定的音效。 |
+| [playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex3) | 在频道中播放指定的音效。 |
+| [playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_playeffectex4) | 在频道中播放指定的音效。 |
+| [preloadEffect\:filePath\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect) | 预加载指定的音效文件。 |
+| [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_preloadeffect2) | 将指定的音效文件预加载到内存中。 |
+| [preloadEffectEx\:soundId\:filePath\:startPos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_preloadeffectex) | 预加载指定的音效文件到频道中。 |
+| [preloadEffectEx\:soundId\:filePath:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengineex_preloadeffectex2) | 预加载指定的音效文件到频道中。 |
+| [resumeAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_resumealleffects) | 恢复播放所有音效文件。 |
+| [resumeEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_resumeeffect) | 恢复播放指定的音效。 |
+| [setEffectPosition\:pos:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_seteffectposition) | 设置音效文件的播放位置。 |
+| [setEffectsVolume:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_seteffectsvolume) | 设置音效的播放音量。 |
+| [setVolumeOfEffect\:withVolume:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_setvolumeofeffect) | 设置指定音效文件的播放音量。 |
+| [stopAllEffects](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_stopalleffects) | 停止播放所有音效。 |
+| [stopEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_stopeffect) | 停止播放指定的音效。 |
+| [unloadEffect:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_unloadeffect) | 释放指定的预加载音效文件。 |
+| [rtcEngineDidAudioEffectFinish\:soundId:](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) | 本地音效文件播放完成时的回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_initialize"></a>
+
+## 初始化
+
+| API | 描述 |
+| --- | --- |
+| [createMediaPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_irtcengine_createmediaplayer) | 创建一个媒体播放器实例。 |
+| [destroyMediaPlayer:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_irtcengine_destroymediaplayer) | 销毁媒体播放器实例。 |
+| [createMediaPlayerCacheManager](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayercachemanager_getmediaplayercachemanager) | 创建一个 [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
+| [setVideoFrameDelegate:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_imediaplayer_setvideoframedelegate) | 注册媒体播放器的视频帧观察者对象。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_open"></a>
+
+## 媒体资源打开
+
+| API | 描述 |
+| --- | --- |
+| [open\:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) | 打开媒体资源。 |
+| [openWithMediaSource:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) | 打开媒体文件并配置播放场景。 |
+| [preloadSrc\:startPos:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_preloadsrc) | 预加载媒体资源。 |
+| [switchSrc\:syncPts:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_switchsrc) | 切换正在播放的媒体资源。 |
+| [unloadSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-open#api_imediaplayer_unloadsrc) | 卸载你预加载的媒体资源。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_playnrender"></a>
+
+## 媒体资源播放和渲染
+
+| API | 描述 |
+| --- | --- |
+| [selectAudioTrack:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_selectaudiotrack_imediaplayer) | 选择播放过程中使用的音轨。 |
+| [setAudioDualMonoMode:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiodualmonomode) | 设置当前音频文件的声道模式。 |
+| [setAudioPitch:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setaudiopitch) | 设置当前媒体资源的音调。 |
+| [setLoopCount:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setloopcount) | 设置循环播放次数。 |
+| [setPlaybackSpeed:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplaybackspeed) | 设置当前音频文件的播放速度。 |
+| [setPlayerOption\:value:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption) | 设置媒体播放器选项。 |
+| [setPlayerOptionString\:value:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setplayeroption2) | 设置媒体播放器的选项。 |
+| [setView:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-playnrender#api_imediaplayer_setview) | 设置渲染视图。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_control"></a>
+
+## 播放器控制
+
+| API | 描述 |
+| --- | --- |
+| [adjustPlayoutVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustplayoutvolume) | 调整本地播放音量。 |
+| [adjustPublishSignalVolume:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_adjustpublishsignalvolume) | 调节用于发布的媒体文件音量。 |
+| [mute:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_mute) | 设置是否静音媒体文件。 |
+| [pause](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_pause) | 暂停播放。 |
+| [play](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) | 播放媒体文件。 |
+| [playPreloadedSrc:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_playpreloadedsrc) | 播放已预加载的媒体资源。 |
+| [resume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_resume) | 恢复播放媒体文件。 |
+| [seekToPosition:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) | 跳转到新的播放位置。 |
+| [stop:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-control#api_imediaplayer_stop) | 停止播放媒体轨道。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_info"></a>
+
+## 播放信息获取
+
+| API | 描述 |
+| --- | --- |
+| [getAudioBufferDelay](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getaudiobufferdelay) | 获取你播放媒体文件时的音频缓冲延迟。 |
+| [getDuration](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getduration) | 获取媒体资源的时长。 |
+| [getMediaPlayerId](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) | 获取媒体播放器的 ID。 |
+| [getMute](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmute) | 报告媒体资源是否被静音。 |
+| [getPlayoutVolume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayoutvolume) | 获取本地播放音量。 |
+| [getPosition](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplayposition) | 获取当前本地播放进度。 |
+| [getPlaySrc](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getplaysrc_imediaplayer) | 获取正在播放的媒体资源路径。 |
+| [getPublishSignalVolume](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getpublishsignalvolume) | 获取用于发布的媒体文件音量。 |
+| [getPlayerState](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstate) | 获取当前播放状态。 |
+| [getStreamCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) | 获取媒体资源中的流的数量。 |
+| [getStreamByIndex:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreaminfo) | 获取媒体流的详细信息。 |
+| [AgoraRtcMediaPlayer\:playbackStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-info#callback_imediaplayersourceobserver_onplayerplaybackstats) | 播放媒体文件的统计信息回调。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_observer"></a>
+
+## 音视频观测器
+
+| API | 描述 |
+| --- | --- |
+| [AgoraRtcMediaPlayerGetVideoPixelFormat](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_agorartcmediaplayergetvideopixelformat) | 设置原始视频数据的格式。 |
+| [AgoraRtcMediaPlayer\:didReceivePixelBuffer:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivepixelbuffer) | 媒体播放器接收到视频源的像素缓冲区时触发的回调。 |
+| [AgoraRtcMediaPlayer\:didReceiveVideoFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#api_agorartcmediaplayervideoframedelegate_didreceivevideoframe) | 每次播放器接收到视频帧时触发的回调。 |
+| [AgoraRtcMediaPlayer\:volumeIndicationDidReceive:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver) | 报告媒体播放器的音量。 |
+| [AgoraRtcMediaPlayer\:didReceiveAudioFrame:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_iaudiopcmframesink_onframe_iaudiopcmframesink) | 每次播放器接收到音频帧时触发的回调。 |
+| [AgoraRtcMediaPlayer\:didReceiveData\:length:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onmetadata) | 接收到媒体元数据时触发的回调。 |
+| [AgoraRtcMediaPlayer\:didPlayBufferUpdated:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplaybufferupdated) | 报告缓冲数据可支持的播放时长。 |
+| [AgoraRtcMediaPlayer\:didOccurEvent\:elapsedTime\:message:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerevent) | 上报播放器事件。 |
+| [AgoraRtcMediaPlayer\:infoUpdated:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayerinfoupdated) | 媒体播放器相关信息发生变化时的回调。 |
+| [AgoraRtcMediaPlayer\:didChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) | 播放状态发生变化时触发的回调。 |
+| [AgoraRtcMediaPlayer\:playerSrcInfoDidChange\:from:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersrcinfochanged) | 媒体文件播放源信息变化回调。 |
+| [AgoraRtcMediaPlayer\:didChangedToPosition\:atTimestamp:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpositionchanged) | 播放进度回调。 |
+| [AgoraRtcMediaPlayer\:didPreloadEvent:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onpreloadevent) | 上报预加载媒体资源的事件。 |
+
+<a id="rtc_api_overview__toc_mediaplayer_cache"></a>
+
+## 媒体播放器缓存
+
+| API | 描述 |
+| --- | --- |
+| [enableAutoRemoveCache:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_enableautoremovecache) | 设置是否自动删除缓存的媒体文件。 |
+| [cacheDir](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachedir) | 获取缓存媒体文件的存储路径。 |
+| [cacheFileCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getcachefilecount) | 获取已缓存的媒体文件数量。 |
+| [maxCacheFileCount](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilecount) | 获取可缓存的媒体文件的最大数量。 |
+| [maxCacheFileSize](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_getmaxcachefilesize) | 获取缓存媒体文件的聚合存储空间的最大大小。 |
+| [removeAllCaches](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeallcaches) | 删除媒体播放器中所有缓存的媒体文件。 |
+| [removeCacheByUri:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removecachebyuri) | 删除缓存的媒体文件。 |
+| [removeOldCache](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_removeoldcache) | 删除最少使用的缓存媒体文件。 |
+| [setCacheDir:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setcachedir) | 设置要缓存的媒体文件的存储路径。 |
+| [setMaxCacheFileCount:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilecount) | 设置可缓存的媒体文件数量上限。 |
+| [setMaxCacheFileSize:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_setmaxcachefilesize) | 设置用于缓存媒体文件的聚合存储空间的最大大小。 |
+| [sharedInstance](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#api_imediaplayercachemanager_sharedinstance) | 获取 [AgoraRtcMediaPlayerCacheManagerProtocol](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaplayercachemanager) 实例。 |
+| [AgoraRtcMediaPlayer\:cacheStats:](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-cache#callback_imediaplayersourceobserver_onplayercachestats) | 上报正在缓存的媒体文件的统计信息。 |
+
+<a id="rtc_api_overview__toc_drm"></a>
+
+## 版权音乐
+
+| API | 描述 |
+| --- | --- |
+| [createMusicPlayerWithDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_createmusicplayer) | 创建一个音乐播放器。 |
+| [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) | 销毁 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter) 实例。 |
+| [destroyMusicPlayer:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroymusicplayer) | 销毁音乐播放器对象。 |
+| [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_enablemainqueuedispatch_imusiccontentcenter) | 设置是否将回调方法派发到主线程。 |
+| [getCaches](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getcaches) | 获取缓存音乐资源的信息。 |
+| [getInternalSongCode\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getinternalsongcode) | 创建音乐资源副歌片段的内部 ID。 |
+| [getLyricWithSongCode\:lyricType:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getlyric) | 获取音乐资源歌词的下载链接。 |
+| [getMusicCharts](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccharts) | 获取所有音乐排行榜。 |
+| [getMusicCollectionWithMusicChartId\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getmusiccollectionbymusicchartid) | 获取指定音乐榜单中的音乐资源列表。 |
+| [getSongSimpleInfoWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_getsongsimpleinfo) | 获取指定音乐资源的详细信息。 |
+| [sharedContentCenterWithConfig:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_initialize_imusiccontentcenter) | 初始化 [AgoraMusicContentCenter](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imusiccontentcenter)。 |
+| [isPreloadedWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_ispreloaded) | 检查音乐资源是否已预加载。 |
+| [openMediaWithSongCode\:startPos:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_open_imusicplayer) | 通过资源 ID 打开音乐资源。 |
+| [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) | 预加载音乐资源。 |
+| [registerEventDelegate:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_registereventhandler_imusiccontentcenter) | 注册版权音乐内容中心的回调事件。 |
+| [removeCacheWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_removecache) | 删除已缓存的音乐资源。 |
+| [renewToken:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_renewtoken_imusiccontentcenter) | 更新用于鉴权的 Token。 |
+| [searchMusicWithKeyWord\:page\:pageSize\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_searchmusic) | 搜索音乐资源。 |
+| [setPlayMode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusicplayer_setplaymode) | 设置音乐资源的播放模式。 |
+| [onLyricResult\:songCode\:lyricUrl\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onlyricresult) | 歌词下载链接的回调。 |
+| [onMusicChartsResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusicchartsresult) | 获取音乐排行榜结果的回调。 |
+| [onMusicCollectionResult\:result\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onmusiccollectionresult) | 获取音乐内容列表的回调。 |
+| [onPreLoadEvent\:songCode\:percent\:lyricUrl\:state\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onpreloadevent_imusiccontentcentereventhandler) | 上报预加载音乐资源的事件。 |
+| [onSongSimpleInfoResult\:songCode\:simpleInfo\:reason:](/zh-CN/api-reference/rtc/ios/play/drm#callback_imusiccontentcentereventhandler_onsongsimpleinforesult) | 获取音乐资源详细信息的回调。 |
+
+<a id="rtc_api_overview__toc_recording"></a>
+
+## 音视频录制
+
+| API | 描述 |
+| --- | --- |
+| [createMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_createmediarecorder) | 创建一个媒体录制器实例。 |
+| [destroyMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_destroymediarecorder) | 销毁音视频录制器实例。 |
+| [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_enablemainqueuedispatch_imediarecorder) | 设置是否将回调方法派发到主线程。 |
+| [setMediaRecorderDelegate:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_setmediarecorderobserver) | 注册 [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver) 观察者。 |
+| [startAudioRecording\:quality:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_startaudiorecording1) | 开始客户端录音。 |
+| [startAudioRecordingWithConfig:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_startaudiorecording3) | 开始客户端录制并配置录制设置。 |
+| [startRecording:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_startrecording) | 开始录制音视频流。 |
+| [stopAudioRecording](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_stopaudiorecording) | 停止客户端录制音频。 |
+| [stopRecording](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_stoprecording) | 停止录制音视频流。 |
+| [mediaRecorder\:informationDidUpdated\:uid\:info:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderinfoupdated) | 录制信息更新回调。 |
+| [mediaRecorder\:stateDidChanged\:uid\:state\:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged) | 录制状态发生变化时的回调。 |
+
+<a id="rtc_api_overview__toc_channel_media_relay"></a>
+
+## 跨频道媒体流转发
+
+| API | 描述 |
+| --- | --- |
+| [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) | 暂停向所有目标频道的跨频道媒体流转发。 |
+| [pauseAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) | 暂停向所有目标频道的跨频道媒体流转发。 |
+| [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) | 恢复向所有目标频道的跨频道媒体流转发。 |
+| [resumeAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_resumeallchannelmediarelayex) | 恢复向所有目标频道的跨频道媒体流转发。 |
+| [startOrUpdateChannelMediaRelay:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) | 开始或更新跨频道媒体流转发。 |
+| [startOrUpdateChannelMediaRelayEx\:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_startorupdatechannelmediarelayex) | 开始或更新跨频道媒体流转发。 |
+| [stopChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_stopchannelmediarelay) | 停止跨频道媒体流转发。 |
+| [stopChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_stopchannelmediarelayex) | 停止跨频道媒体流转发。 |
+| [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) | 跨频道媒体流转发状态发生变化回调。 |
+
+<a id="rtc_api_overview__toc_media_push"></a>
+
+## 旁路推流
+
+| API | 描述 |
+| --- | --- |
+| [startRtmpStreamWithoutTranscoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithouttranscoding) | 开始向 CDN 推流（不进行转码）。 |
+| [startRtmpStreamWithoutTranscodingEx\:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithouttranscodingex) | 开始向 CDN 推送未经转码的媒体流。 |
+| [startRtmpStreamWithTranscoding\:transcoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) | 开始旁路推流并设置转码配置。 |
+| [startRtmpStreamWithTranscodingEx\:transcoding\:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_startrtmpstreamwithtranscodingex) | 开始旁路推流并设置转码配置。 |
+| [stopRtmpStream:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) | 停止向 CDN 推送媒体流。 |
+| [stopRtmpStreamEx\:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_stoprtmpstreamex) | 停止向指定 CDN 地址推送媒体流。 |
+| [updateRtmpTranscoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_updatertmptranscoding) | 更新旁路推流的转码配置。 |
+| [updateRtmpTranscodingEx\:connection:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengineex_updatertmptranscodingex) | 更新旁路推流的转码配置。 |
+| [rtcEngine\:rtmpStreamingEventWithUrl\:eventCode:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingevent) | 报告旁路推流过程中的事件。 |
+| [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) | RTMP 或 RTMPS 推流状态发生变化时触发的回调。 |
+| [rtcEngineTranscodingUpdated:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_ontranscodingupdated) | 发布端的云端转码设置更新时触发的回调。 |
+
+<a id="rtc_api_overview__toc_datastream"></a>
+
+## 数据流 Datastream
+
+| API | 描述 |
+| --- | --- |
+| [createDataStream\:reliable\:ordered:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream1) | 创建数据流。 |
+| [createDataStream\:config:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_createdatastream2) | 创建一个数据流。 |
+| [createDataStreamEx\:config\:connection:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengineex_createdatastreamex2) | 创建一个数据流。 |
+| [sendStreamMessage\:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#api_irtcengine_sendstreammessage) | 发送数据流消息。 |
+| [rtcEngine\:receiveStreamMessageFromUid\:streamId\:data:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessage) | 当本地用户收到远端用户发送的数据流时触发。 |
+| [rtcEngine\:didOccurStreamMessageErrorFromUid\:streamId\:error\:missed\:cached:](/zh-CN/api-reference/rtc/ios/metadata/datastream#callback_irtcengineeventhandler_onstreammessageerror) | 当本地用户未收到远端用户发送的数据流时触发的回调。 |
+
+<a id="rtc_api_overview__toc_metadata_observer"></a>
+
+## 媒体流附属信息分发
+
+| API | 描述 |
+| --- | --- |
+| [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) | 当 SDK 请求元数据的最大大小时触发。 |
+| [readyToSendMetadataAtTimestamp\:sourceType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_readytosendmetadataattimestamp) | 当 SDK 准备好发送元数据时触发回调。 |
+| [setMediaMetadataDelegate\:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_registermediametadataobserver) | 注册元数据观察者。 |
+| [setMediaMetadataDataSource\:withType:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_irtcengine_setmediametadatadatasource) | 设置元数据的数据源。 |
+| [didMetadataReceived:](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#callback_imetadataobserver_onmetadatareceived) | 当本地用户接收到元数据时触发。 |
+
+<a id="rtc_api_overview__toc_audio_route"></a>
+
+## 音频路由
+
+| API | 描述 |
+| --- | --- |
+| [isSpeakerphoneEnabled](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_isspeakerphoneenabled) | 检查是否启用扬声器播放音频。 |
+| [setDefaultAudioRouteToSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) | 设置默认音频播放路由。 |
+| [setEnableSpeakerphone:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#api_irtcengine_setenablespeakerphone) | 设置是否将音频路由到扬声器。 |
+| [rtcEngine\:didAudioRouteChanged:](/zh-CN/api-reference/rtc/ios/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) | 本地音频路由发生变化时的回调。 |
+
+<a id="rtc_api_overview__toc_video_device"></a>
+
+## 视频设备管理
+
+| API | 描述 |
+| --- | --- |
+| [enableMultiCamera\:config:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_enablemulticamera) | 启用或关闭多摄像头采集模式。 |
+| [cameraMaxZoomFactor](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_getcameramaxzoomfactor) | 获取摄像头支持的最大变焦倍数。 |
+| [isCameraAutoExposureFaceModeSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraautoexposurefacemodesupported) | 检查设备是否支持自动曝光。 |
+| [isCameraAutoFocusFaceModeSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraautofocusfacemodesupported) | 检查设备是否支持人脸自动对焦功能。 |
+| [isCameraExposurePositionSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraexposurepositionsupported) | 检查设备是否支持手动曝光。 |
+| [isCameraExposureSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameraexposuresupported) | 查询当前摄像头是否支持调节曝光值。 |
+| [isCameraFocusPositionInPreviewSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscamerafocussupported) | 检查设备是否支持手动对焦功能。 |
+| [isCameraTorchSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscameratorchsupported) | 检查设备是否支持相机闪光灯。 |
+| [isCameraZoomSupported](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_iscamerazoomsupported) | 检查设备是否支持摄像头变焦。 |
+| [queryCameraFocalLengthCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) | 查询摄像头支持的焦距能力。 |
+| [queryCodecCapability](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_querycodeccapability) | 查询设备支持的视频编解码能力。 |
+| [setCameraAutoExposureFaceModeEnabled:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraautoexposurefacemodeenabled) | 设置是否启用自动曝光。 |
+| [setCameraAutoFocusFaceModeEnabled:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraautofocusfacemodeenabled) | 启用或关闭摄像头人像自动对焦功能。 |
+| [setCameraCapturerConfiguration:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameracapturerconfiguration) | 设置视频采集配置。 |
+| [setCameraExposureFactor:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposurefactor) | 设置摄像头曝光值。 |
+| [setCameraExposurePosition:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameraexposureposition) | 设置摄像头曝光位置。 |
+| [setCameraFocusPositionInPreview:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerafocuspositioninpreview) | 设置摄像头的手动对焦位置。 |
+| [setCameraTorchOn:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcameratorchon) | 启用摄像头闪光灯。 |
+| [setCameraZoomFactor:](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_setcamerazoomfactor) | 设置摄像头的缩放因子。 |
+| [switchCamera](/zh-CN/api-reference/rtc/ios/device-management/video-device#api_irtcengine_switchcamera) | 切换前后摄像头。 |
+| [rtcEngine\:cameraExposureDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncameraexposureareachanged) | 摄像头曝光区域发生变化回调。 |
+| [rtcEngine\:cameraFocusDidChangedToRect:](/zh-CN/api-reference/rtc/ios/device-management/video-device#callback_irtcengineeventhandler_oncamerafocusareachanged) | 摄像头对焦区域发生变化时的回调。 |
+
+<a id="rtc_api_overview__toc_audio_device"></a>
+
+## 音频设备管理
+
+| API | 描述 |
+| --- | --- |
+| [startPlaybackDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startplaybackdevicetest) | 启动本地音频播放设备测试。 |
+| [startRecordingDeviceTest:](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_startrecordingdevicetest) | 启动音频采集设备测试。 |
+| [stopPlaybackDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stopplaybackdevicetest) | 停止音频播放设备测试。 |
+| [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/ios/device-management/audio-device#api_irtcengine_stoprecordingdevicetest) | 停止音频采集设备测试。 |
+
+<a id="rtc_api_overview__toc_extension"></a>
+
+## 插件
+
+| API | 描述 |
+| --- | --- |
+| [enableExtensionWithVendor\:extension\:enabled\:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) | 启用或禁用扩展功能。 |
+| [getExtensionPropertyWithVendor\:extension\:key:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_getextensionproperty) | 获取扩展组件的详细信息。 |
+| [getExtensionPropertyWithVendor\:extension\:key\:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_getextensionproperty2) | 获取扩展的详细信息。 |
+| [registerExtensionWithVendor\:extension\:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_registerextension) | 注册一个扩展。 |
+| [setExtensionPropertyWithVendor\:extension\:key\:value:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproperty) | 设置扩展属性。 |
+| [setExtensionProviderPropertyWithVendor\:key\:value:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_setextensionproviderproperty) | 设置扩展提供方的属性。 |
+| [onExtensionErrorWithContext\:error\:message:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionerrorwithcontext) | 当扩展运行异常时触发的回调。 |
+| [onEventWithContext\:key\:value:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensioneventwithcontext) | 扩展的事件回调。 |
+| [onExtensionStartedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstartedwithcontext) | 扩展启用成功时触发的回调。 |
+| [onExtensionStoppedWithContext:](/zh-CN/api-reference/rtc/ios/extension#callback_irtcengineeventhandler_onextensionstoppedwithcontext) | 当扩展被禁用时触发的回调。 |
+
+<a id="rtc_api_overview__toc_network"></a>
+
+## 网络及其他
+
+| API | 描述 |
+| --- | --- |
+| [complain\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) | 允许你在通话结束后投诉通话质量。 |
+| [enableEncryption\:encryptionConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enableencryption) | 启用或关闭内置加密。 |
+| [enableEncryptionEx\:encryptionConfig\:connection:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_enableencryptionex) | 启用或关闭内置加密。 |
+| [enableMainQueueDispatch:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_enablemainqueuedispatch) | 启用或禁用将回调方法派发到主线程。 |
+| [getCallId](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcallid) | 获取当前通话 ID。 |
+| [getCallIdEx:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_getcallidex) | 获取与连接 ID 对应的通话 ID。 |
+| [getConnectionState](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getconnectionstate) | 获取当前 SDK 的连接状态。 |
+| [getConnectionStateEx:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_getconnectionstateex) | 获取 SDK 当前的连接状态。 |
+| [getCurrentMonotonicTimeInMs](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getcurrentmonotonictimeinms) | 获取 SDK 当前的单调时间。 |
+| [getErrorDescription:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_geterrordescription) | 获取警告或错误描述信息。 |
+| [getNativeHandle](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getnativehandle) | 获取 Native SDK 的 C++ 句柄。 |
+| [getNetworkType](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getnetworktype) | 获取本地网络连接类型。 |
+| [getNtpWallTimeInMs](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getntpwalltimeinms) | 获取当前的 NTP（网络时间协议）时间。 |
+| [getSdkVersion](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_getversion) | 获取 SDK 的版本号。 |
+| [isFeatureAvailableOnDevice:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_isfeatureavailableondevice) | 检查当前设备是否支持指定的高级功能。 |
+| [queryDeviceScore](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_querydevicescore) | 查询设备评分。 |
+| [rate\:rating\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) | 允许你在通话结束后对通话进行评分。 |
+| [sendCustomReportMessage\:category\:event\:label\:value:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_sendcustomreportmessage) | 上报自定义消息。 |
+| [sendCustomReportMessageEx\:category\:event\:label\:value\:connection:](/zh-CN/api-reference/rtc/ios/network#api_irtcengineex_sendcustomreportmessageex) | 支持上报和分析自定义消息。 |
+| [setAVSyncSource\:uid:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setavsyncsource) | 设置发布端的音视频同步。 |
+| [setCloudProxy:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setcloudproxy) | 设置云代理服务。 |
+| [setLocalAccessPoint:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setlocalaccesspoint) | 配置连接到声网私有媒体服务器接入模块。 |
+| [setParameters:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) | 通过配置 JSON 选项为 SDK 提供技术预览功能或特殊定制。 |
+| [setRemoteSubscribeFallbackOption:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setremotesubscribefallbackoption) | 设置订阅端视频流的回退选项。 |
+| [startEchoTestWithConfig:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startechotest3) | 启动音视频设备回路测试。 |
+| [startLastmileProbeTest:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_startlastmileprobetest) | 启动 Last mile 网络探测测试。 |
+| [stopEchoTest](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_stopechotest) | 停止音频通话测试。 |
+| [stopLastmileProbeTest](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_stoplastmileprobetest) | 停止 Last-mile 网络探测测试。 |
+| [rtcEngineConnectionDidLost:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionlost) | 连接中断 10 秒后仍无法重连时触发的回调。 |
+| [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) | 网络连接状态发生变化时的回调。 |
+| [rtcEngine\:didOccurEncryptionError:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onencryptionerror) | 内置加密错误回调。 |
+| [rtcEngine\:lastmileProbeTestResult:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmileproberesult) | 报告 Last-mile 网络探测结果。 |
+| [rtcEngine\:lastmileQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onlastmilequality) | 上报本地用户的 Last-mile 网络质量。 |
+| [rtcEngine\:multiPathStats:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onmultipathstats) | 上报多路径传输统计信息。 |
+| [rtcEngine\:networkQuality\:txQuality\:rxQuality:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworkquality) | 报告频道中每个用户的 Last-mile 网络质量。 |
+| [rtcEngine\:networkTypeChanged:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onnetworktypechanged) | 本地网络类型发生变化回调。 |
+| [rtcEngine\:permissionError:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onpermissionerror) | 当 SDK 无法获取设备权限时触发的回调。 |
+| [rtcEngine\:didProxyConnected\:withUid\:proxyType\:localProxyIp\:elapsed:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onproxyconnected) | 代理连接状态回调。 |
+| [rtcEngine\:didRemoteSubscribeFallbackToAudioOnly\:byUid:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) | 远端媒体流因网络变化在音频流与视频流之间切换时触发的回调。 |
+| [rtcEngine\:uplinkNetworkInfoUpdate:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onuplinknetworkinfoupdated) | 当上行网络信息发生变化时触发该回调。 |

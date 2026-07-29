@@ -1,0 +1,103 @@
+---
+title: CameraCapturerConfiguration
+description: 配置摄像头采集偏好。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_cameracapturerconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_cameracapturerconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_cameracapturerconfiguration__prototype"></a>
+
+```text
+struct CameraCapturerConfiguration {
+#if defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IOS) || defined(__OHOS__)
+  Optional<CAMERA_DIRECTION> cameraDirection;
+  Optional<CAMERA_FOCAL_LENGTH_TYPE> cameraFocalLengthType;
+#else
+  Optional<const char *> deviceId;
+#endif
+#if defined(__ANDROID__)
+  Optional<const char *> cameraId;
+#endif
+  Optional<bool> followEncodeDimensionRatio;
+  VideoFormat format;
+};
+```
+
+<a id="class_cameracapturerconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="cameradirection"></a>
+<Parameter name="cameraDirection">
+
+（可选）摄像头方向，详见 [CAMERA_DIRECTION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-cameradirection)。
+
+:::note
+注： 该参数仅适用于 Android 和 iOS 平台。
+:::
+
+</Parameter>
+<a id="camerafocallengthtype"></a>
+<Parameter name="cameraFocalLengthType">
+
+（可选）摄像头焦距类型，详见 [CAMERA_FOCAL_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-camerafocallengthtype)。
+
+:::note
+注： 该参数仅适用于 Android 和 iOS 平台。
+
+- 设置摄像头焦距类型时，仅支持通过 `cameraDirection` 指定摄像头，不支持通过 `cameraId` 指定。
+- 对于配备多镜头后置摄像头的 iOS 设备（如双摄：广角和超广角，或三摄：广角、超广角和长焦），可通过以下方式实现超广角视角的视频采集：
+
+  - 方法一：将该参数设置为 `CAMERA_FOCAL_LENGTH_ULTRA_WIDE`（2）（超广角镜头）。
+  - 方法二：将该参数设置为 `CAMERA_FOCAL_LENGTH_DEFAULT`（0）（标准镜头），然后调用 [setCameraZoomFactor](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/video-device#api_irtcengine_setcamerazoomfactor) 将摄像头变焦因子设置为小于 1.0 的值，最小为 0.5。
+
+两种方法的区别在于，方法一的超广角尺寸不可调节，而方法二支持自由调节变焦因子。
+:::
+
+</Parameter>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
+
+摄像头 ID，最大长度为 [MAX_DEVICE_ID_LENGTH_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-maxdeviceidlengthtype)。
+
+:::note
+注： 该参数仅适用于 Windows 和 macOS 平台。
+:::
+
+</Parameter>
+<a id="cameraid"></a>
+<Parameter name="cameraId">
+
+（可选）摄像头 ID。
+
+:::note
+注： 该参数仅适用于 Android 平台。
+
+- 该参数与 `cameraDirection` 互斥，二者只能选其一。
+- 使用 `cameraDirection` 指定摄像头更为简便，仅需指定摄像头方向（前置或后置），SDK 会通过 Android 原生 API 获取并确认实际摄像头 ID。
+- 使用 `cameraId` 可更精确地指定某个摄像头，适用于多摄像头设备中 `cameraDirection` 无法识别或访问所有摄像头的场景，建议直接使用 `cameraId` 指定目标摄像头。
+:::
+
+</Parameter>
+<a id="followencodedimensionratio"></a>
+<Parameter name="followEncodeDimensionRatio">
+
+（可选）是否遵循 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中设置的视频宽高比：
+
+- true：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频宽高比裁剪采集的视频，并同步更新本地预览画面以及 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 中的视频帧。
+- false：不遵循设置的视频宽高比。SDK 不会更改采集视频帧的宽高比。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+（可选）视频帧的格式，详见 [VideoFormat](/zh-CN/api-reference/rtc/cpp-all-platforms/class-videoformat)。
+
+</Parameter>
+</ParameterList>

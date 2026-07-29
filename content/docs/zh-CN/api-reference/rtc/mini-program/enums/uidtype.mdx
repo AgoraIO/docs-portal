@@ -1,0 +1,42 @@
+---
+title: Enumeration UidType
+description: 用户 ID 的类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/mini-program/enums/uidtype
+  sourcePath: html-docs/rtc/mini-program/enums/uidtype.html
+  generator: typedoc
+  warnings: []
+---
+
+### note
+
+- 如果设置为整数，则建议的设置范围是 0 到 (232-1)
+- 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本或 Web SDK 互通。请确保 Native SDK 使用 User Account 加入频道。详见[如何使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
+- 一个频道内的所有用户必须使用同样类型的 uid，即必须都为整数或都为字符串。
+
+## Index
+
+### Enumeration members
+
+- [INT](/zh-CN/api-reference/rtc/mini-program/enums/uidtype#int)
+- [STRING](/zh-CN/api-reference/rtc/mini-program/enums/uidtype#string)
+
+## Enumeration members
+
+<a id="int"></a>
+
+### INT
+
+INT:
+
+（默认）32 位无符号整数。默认值为 0。
+
+<a id="string"></a>
+
+### STRING
+
+STRING:
+
+字符串，长度不超过 255 个字符。

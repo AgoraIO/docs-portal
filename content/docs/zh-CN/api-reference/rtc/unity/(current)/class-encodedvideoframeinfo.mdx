@@ -1,0 +1,124 @@
+---
+title: EncodedVideoFrameInfo
+description: 外部编码视频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_encodedvideoframeinfo
+  sourcePath: html-docs/rtc/Unity/API/class_encodedvideoframeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```text
+public class EncodedVideoFrameInfo
+    {
+        public EncodedVideoFrameInfo()
+        {
+            codecType = VIDEO_CODEC_TYPE.VIDEO_CODEC_H264;
+            width = 0;
+            height = 0;
+            framesPerSecond = 0;
+            frameType = VIDEO_FRAME_TYPE_NATIVE.VIDEO_FRAME_TYPE_BLANK_FRAME;
+            rotation = VIDEO_ORIENTATION.VIDEO_ORIENTATION_0;
+            trackId = 0;
+            captureTimeMs = 0;
+            streamType = VIDEO_STREAM_TYPE.VIDEO_STREAM_HIGH;
+        }
+
+        public EncodedVideoFrameInfo(ref EncodedVideoFrameInfo rhs)
+        {
+            codecType = rhs.codecType;
+            width = rhs.width;
+            height = rhs.width;
+            framesPerSecond = rhs.framesPerSecond;
+            frameType = rhs.frameType;
+            rotation = rhs.rotation;
+            trackId = rhs.trackId;
+            captureTimeMs = rhs.captureTimeMs;
+            streamType = rhs.streamType;
+        }
+
+        public VIDEO_CODEC_TYPE codecType { set; get; }
+
+        public int width { set; get; }
+
+        public int height { set; get; }
+
+        public int framesPerSecond { set; get; }
+
+        public VIDEO_FRAME_TYPE_NATIVE frameType { set; get; }
+
+        public VIDEO_ORIENTATION rotation { set; get; }
+
+        public int trackId { set; get; }
+
+        public int64_t captureTimeMs { set; get; }
+
+        public VIDEO_STREAM_TYPE streamType { set; get; }
+    };
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
+
+视频编码类型，详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/unity/enum-videocodectype)。默认值为 `VIDEO_CODEC_H264 (2)`。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+视频帧的宽度 (px)。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+视频帧的高度 (px)。
+
+</Parameter>
+<a id="framespersecond"></a>
+<Parameter name="framesPerSecond">
+
+每秒的视频帧数。
+当该参数不为 `0` 时，你可以用它计算外部编码视频帧的 Unix 时间戳。
+
+</Parameter>
+<a id="frametype"></a>
+<Parameter name="frameType">
+
+视频帧的类型，详见 [VIDEO_FRAME_TYPE](/zh-CN/api-reference/rtc/unity/enum-videoframetype)。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+视频帧的旋转信息，详见 [VIDEO_ORIENTATION](/zh-CN/api-reference/rtc/unity/enum-videoorientation)。
+
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+预留参数。
+
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+视频流类型。详见 [VIDEO_STREAM_TYPE](/zh-CN/api-reference/rtc/unity/enum-videostreamtype)。
+
+</Parameter>
+</ParameterList>

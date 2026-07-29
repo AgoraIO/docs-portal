@@ -1,0 +1,284 @@
+---
+title: 参考信息
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/cloud-recording/restful/api/reference
+  sourcePath: docs/cloud-recording/api/reference.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 2 legacy MDX syntax signal(s).
+---
+
+## 第三方云存储地区说明
+
+使用自定义录制和自定义截图功能时，你可以通过 `StorageConfig` 进行录制文件和截图文件的第三方云存储配置，其中 `vendor` 字段（第三方云存储平台）的取值决定了 `region` 字段（第三方云存储地区）的取值。
+
+本文介绍 `vendor` 的不同取值下，`region` 字段可以配置的值。
+
+<Tabs defaultValue="1" groupId="vendor" persist>
+<TabsList>
+  <TabsTrigger value="1">1</TabsTrigger>
+  <TabsTrigger value="2">2</TabsTrigger>
+  <TabsTrigger value="3">3</TabsTrigger>
+  <TabsTrigger value="5">5</TabsTrigger>
+  <TabsTrigger value="6">6</TabsTrigger>
+  <TabsTrigger value="7">7</TabsTrigger>
+  <TabsTrigger value="8">8</TabsTrigger>
+  <TabsTrigger value="11">11</TabsTrigger>
+</TabsList>
+
+<TabsContent value="1">
+
+当 `vendor` = 1，即第三方云存储为 Amazon S3 时，`region` 可取如下值：
+
+- `0`：US_EAST_1
+- `1`：US_EAST_2
+- `2`：US_WEST_1
+- `3`：US_WEST_2
+- `4`：EU_WEST_1
+- `5`：EU_WEST_2
+- `6`：EU_WEST_3
+- `7`：EU_CENTRAL_1
+- `8`：AP_SOUTHEAST_1
+- `9`：AP_SOUTHEAST_2
+- `10`：AP_NORTHEAST_1
+- `11`：AP_NORTHEAST_2
+- `12`：SA_EAST_1
+- `13`：CA_CENTRAL_1
+- `14`：AP_SOUTH_1
+- `15`：CN_NORTH_1
+- `16`：CN_NORTHWEST_1
+- `18`：AF_SOUTH_1
+- `19`：AP_EAST_1
+- `20`：AP_NORTHEAST_3
+- `21`：EU_NORTH_1
+- `22`：ME_SOUTH_1
+- `24`：AP_SOUTHEAST_3
+- `25`：EU_SOUTH_1
+
+</TabsContent>
+
+<TabsContent value="2">
+
+当 `vendor` = 2，即第三方云存储为阿里云时，`region` 可取如下值：
+
+- `0`：CN_Hangzhou
+- `1`：CN_Shanghai
+- `2`：CN_Qingdao
+- `3`：CN_Beijing
+- `4`：CN_Zhangjiakou
+- `5`：CN_Huhehaote
+- `6`：CN_Shenzhen
+- `7`：CN_Hongkong
+- `8`：US_West_1
+- `9`：US_East_1
+- `10`：AP_Southeast_1
+- `11`：AP_Southeast_2
+- `12`：AP_Southeast_3
+- `13`：AP_Southeast_5
+- `14`：AP_Northeast_1
+- `15`：AP_South_1
+- `16`：EU_Central_1
+- `17`：EU_West_1
+- `18`：EU_East_1
+- `19`：AP_Southeast_6
+- `20`：CN_Heyuan
+- `21`：CN_Guangzhou
+- `22`：CN_Chengdu
+- `23`：CN_Nanjing
+- `24`：CN_Fuzhou
+- `25`：CN_Wulanchabu
+- `26`：AP_Northeast_2
+- `27`：AP_Southeast_7
+
+详见[阿里云参考文档](https://help.aliyun.com/document_detail/31837.html)。
+
+</TabsContent>
+
+<TabsContent value="3">
+
+当 `vendor` = 3，即第三方云存储为腾讯云时，`region` 可取如下值：
+
+- `0`：AP_Beijing_1
+- `1`：AP_Beijing
+- `2`：AP_Shanghai
+- `3`：AP_Guangzhou
+- `4`：AP_Chengdu
+- `5`：AP_Chongqing
+- `6`：AP_Shenzhen_FSI
+- `7`：AP_Shanghai_FSI
+- `8`：AP_Beijing_FSI
+- `9`：AP_Hongkong
+- `10`：AP_Singapore
+- `11`：AP_Mumbai
+- `12`：AP_Seoul
+- `13`：AP_Bangkok
+- `14`：AP_Tokyo
+- `15`：NA_Siliconvalley
+- `16`：NA_Ashburn
+- `17`：NA_Toronto
+- `18`：EU_Frankfurt
+- `19`：EU_Moscow
+
+</TabsContent>
+
+<TabsContent value="5">
+
+当 `vendor` = 5，即第三方云存储为 Microsoft Azure 时，无需设置 `region` 字段，即使设置也不生效。
+
+</TabsContent>
+
+<TabsContent value="6">
+
+当 `vendor` = 6，即第三方云存储为谷歌云时，无需设置 `region` 字段，即使设置也不生效。
+
+</TabsContent>
+
+<TabsContent value="7">
+
+当 `vendor` = 7，即第三方云存储为华为云时，`region` 可取如下值：
+
+- `0`：CN_North_1
+- `1`：CN_North_4
+- `2`：CN_East_2
+- `3`：CN_East_3
+- `4`：CN_South_1
+- `5`：CN_Southwest_2
+- `6`：AP_Southeast_1
+- `7`：AP_Southeast_2
+- `8`：AP_Southeast_3
+- `9`：AF_South_1
+- `10`：SA_Argentina_1
+- `11`：SA_Peru_1
+- `12`：NA_Mexico_1
+- `13`：SA_Brazil_1
+- `14`：LA_South_2
+- `15`：SA_Chile_1
+
+</TabsContent>
+
+<TabsContent value="8">
+
+当 `vendor` = 8，即第三方云存储为百度智能云时，`region` 可取如下值：
+
+- `1`：Baoding
+- `2`：Suzhou
+- `3`：Guangzhou
+- `4`：Hongkong
+- `5`：Singapore
+- `6`：Wuhan
+- `7`：Shanghai
+
+</TabsContent>
+
+<TabsContent value="11">
+
+当 `vendor` = 11，即第三方云存储为其他 S3 协议云存储时，无需设置 `region` 字段，即使设置也不生效。
+
+</TabsContent>
+</Tabs>
+
+## 媒体流输出模式设置
+
+本节介绍媒体流输出模式。
+
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 开启单流录制时，你可以在 `clientRequest` 字段中的 `recordingConfig.streamMode` 字段设置媒体流的输出模式。`streamMode` 的支持取值和各模式对比如下：
+
+| streamMode | 描述 | 生成索引文件 | 生成切片文件 | 视频编码 | 音频编码 | 支持的功能 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `default` | 默认模式 | 每个 UID 生成一个 M3U8 音频索引文件和一个 M3U8 视频索引文件。 | 每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。如果在 Web 端使用 VP8 编码，则生成多个 TS 音频切片文件和多个 WebM 格式的视频切片文件。 | 不转码 | 转码 | 单流录制、云端截图。 |
+| `standard` | 标准模式 | 每个 UID 生成一个 M3U8 音频索引文件、一个 M3U8 视频索引文件和一个合并的 M3U8 音视频索引文件。如果在 Web 端使用 VP8 编码，则生成一个合并的 MPD 音视频索引文件。 | 每个 UID 生成多个 TS 音频切片文件和多个 TS 视频切片文件。 如果在 Web 端使用 VP8 编码，则生成多个 WebM 格式的音频文件和多个 WebM 格式的视频文件。 | 不转码 | 转码 | 单流录制、云端截图。 |
+| `original` | 原始模式。仅订阅音频时（`streamTypes` 为 `0`）时该字段生效。 | 每个 UID 生成一个 M3U8 音频索引文件。 | 每个 UID 生成多个 TS 音频切片文件。 | 无 | 不转码 | 单流音频不转码录制。 |
+
+## 常用视频属性
+
+单流录制模式下，录制输出的视频属性（分辨率、帧率、码率等）与用户的原始视频属性一致，无法修改。
+
+合流录制模式下，你可以通过 `transcodingConfig` 字段设置录制输出的视频属性。声网推荐你使用默认值。你也可以参考下表设值。如果设置的码率超出合理范围，声网服务器会在合理区间内自动调整码率。
+
+| 分辨率（宽 × 高） | 帧率 (fps) | 通信场景下码率 (Kbps) | 直播场景下码率 (Kbps) |
+| --------------- | -------- | ------------------------- | ------------------------- |
+| 160 × 120         | 15         | 65      | 130      |
+| 120 × 120         | 15         | 50      | 100      |
+| 320 × 180         | 15         | 140     | 280      |
+| 180 × 180         | 15         | 100     | 200      |
+| 240 × 180         | 15         | 120     | 240      |
+| 320 × 240         | 15         | 200     | 400      |
+| 240 × 240         | 15         | 140     | 280      |
+| 424 × 240         | 15         | 220     | 440      |
+| 640 × 360         | 15         | 400     | 800      |
+| 360 × 360         | 15         | 260     | 520      |
+| 640 × 360         | 30         | 600     | 1200     |
+| 360 × 360         | 30         | 400     | 800      |
+| 480 × 360         | 15         | 320     | 640      |
+| 480 × 360         | 30         | 490     | 980      |
+| 640 × 480         | 15         | 500     | 1000     |
+| 480 × 480         | 15         | 400     | 800      |
+| 640 × 480         | 30         | 750     | 1500     |
+| 480 × 480         | 30         | 600     | 1200     |
+| 848 × 480         | 15         | 610     | 1220     |
+| 848 × 480         | 30         | 930     | 1860     |
+| 640 × 480         | 10         | 400     | 800      |
+| 1280 × 720        | 15         | 1130    | 2260     |
+| 1280 × 720        | 30         | 1710    | 3420     |
+| 960 × 720         | 15         | 910     | 1820     |
+| 960 × 720         | 30         | 1380    | 2760     |
+| 1920 × 1080       | 15         | 2080    | 4160     |
+| 1920 × 1080       | 30         | 3150    | 6300     |
+
+## 订阅名单设置
+
+默认情况下，云端录制会订阅频道内所有发布的音视频流。你也可以使用 API 进行灵活的用户 ID 订阅。此外，你还可以分别设置音频和视频的订阅白名单或黑名单，并在录制过程中更新订阅名单：
+
+- 在开始录制时：你可以通过 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的相关字段设置订阅的黑白名单。
+
+- 在录制过程中：你可以通过 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法中的 `streamSubscribe` 字段更新订阅名单。
+
+### 音频订阅名单
+
+云端录制提供了如下字段用来设置音频订阅名单。你可以根据场景需要**选择其中一个字段**进行设置。
+
+- `subscribeAudioUids`：通过用户 ID 指定要订阅的音频流，即音频订阅白名单。
+- `unSubscribeAudioUids`：指定不订阅的音频流，即音频订阅黑名单。
+
+:::warning[注意]
+`subscribeAudioUids` 和 `unSubscribeAudioUids` 不可以同时设置。
+:::
+
+### 视频订阅名单
+
+云端录制提供了如下字段用来设置视频订阅名单。你可以根据场景需要**选择其中一个字段**进行设置。
+
+- `subscribeVideoUids`：通过用户 ID 指定要订阅的视频流，即视频订阅白名单。
+- `unSubscribeVideoUids`：指定不订阅的视频流，即视频订阅黑名单。
+
+:::warning[注意]
+`subscribeVideoUids` 和 `unSubscribeVideoUids` 不可以同时设置。
+:::
+
+### 示例说明
+
+假设录制开始时，频道内共有 `111`、`222`、`333`、`444` 四个用户，中途又进入两个用户 ID 未知的其他用户。下表列出了几种常见的订阅方式以及推荐的字段设置。
+
+| 订阅方式                                   | 推荐字段设置                                                 |
+| :----------------------------------------- | :----------------------------------------------------------- |
+| 订阅全部音频流和视频流                     | 无需设置订阅相关字段。                                       |
+| 订阅全部音频流，只订阅 `111` 和 `222` 的视频流 | `subscribeAudioUids`: `["#allstream#"]` `subscribeVideoUids: ["111","222"]` |
+| 订阅全部音频流，不订阅 `111` 和 `222` 的视频流 | `subscribeAudioUids: ["#allstream#"]` `unSubscribeVideoUids: ["111","222"]`。云端录制会订阅全部音频流以及 `333`、`444` 和两个用户 ID 未知的其他用户的视频流。 |
+| 订阅全部音频流，不订阅视频流               | `subscribeAudioUids: ["#allstream#"]`。将 `streamTypes` 设置为 `0`，也可达到同样的效果。 |
+| 不订阅 `222` 的音频流，只订阅 `111` 的视频流   | `unSubscribeAudioUids: ["222"]` `subscribeVideoUids: ["111"]`。云端录制会订阅 `111`、`333`、`444` 和两个用户 ID 未知的其他用户的音频流，以及 `111` 的视频流。 |
+
+:::info[信息]
+上述示例中的 `["#allstream#"]` 为通配符，指频道内所有用户 ID。
+:::
+
+### 开发注意事项
+
+在设置订阅名单时，你还需要关注如下注意事项：
+
+- 音频和视频订阅需要的单独设置。如果你仅设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。
+- 如果 `recordingConfig` 中的 `streamTypes` 为 `0`（只订阅音频），则不可设置视频订阅名单； 如果 `recordingConfig` 中的 `streamTypes` 为 `1`（只订阅视频），则不可设置音频订阅名单。
+- 当订阅的用户 ID 超过 17 人时，云端录制会按用户 ID 加入频道的时间顺序，订阅前 17 个用户 ID 的视频。当某个订阅的用户 ID 离开频道，云端录制会自动订阅第 18 个加入频道的用户 ID，以此类推。

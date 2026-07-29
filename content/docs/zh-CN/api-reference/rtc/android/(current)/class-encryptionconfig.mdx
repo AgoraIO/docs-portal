@@ -1,0 +1,64 @@
+---
+title: EncryptionConfig
+description: 用于配置内置加密。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_encryptionconfig
+  sourcePath: html-docs/rtc/Android/API/class_encryptionconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_encryptionconfig__prototype"></a>
+
+```text
+public class EncryptionConfig {
+  public EncryptionMode encryptionMode;
+  public String encryptionKey;
+  public final byte[] encryptionKdfSalt = new byte[32];
+  public boolean datastreamEncryptionEnabled;
+}
+```
+
+<a id="class_encryptionconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="encryptionmode"></a>
+<Parameter name="encryptionMode">
+
+内置加密模式。声网建议使用 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式，这两种模式支持使用加密盐值以提升安全性。详见 [EncryptionMode](/zh-CN/api-reference/rtc/android/enum-encryptionmode)。
+
+</Parameter>
+<a id="encryptionkey"></a>
+<Parameter name="encryptionKey">
+
+加密密钥，类型为字符串，长度无限制。声网建议使用 32 字节长度的密钥。
+
+:::note
+注： 如果未设置加密密钥或将其设置为 `null`，则无法使用内置加密，且 SDK 返回值为 `-2`。
+:::
+
+</Parameter>
+<a id="encryptionkdfsalt"></a>
+<Parameter name="encryptionKdfSalt">
+
+用于加密的盐值，长度为 32 字节。声网建议在服务器端使用 OpenSSL 生成该盐值。详见 Media Stream Encryption。
+
+:::note
+注： 该参数仅在 `AES_128_GCM2` 或 `AES_256_GCM2` 加密模式下生效。在此情况下，请确保该参数值不为 0。
+:::
+
+</Parameter>
+<a id="datastreamencryptionenabled"></a>
+<Parameter name="datastreamEncryptionEnabled">
+
+是否启用数据流加密：
+
+- true：启用数据流加密。
+- false：（默认）不启用数据流加密。
+
+</Parameter>
+</ParameterList>

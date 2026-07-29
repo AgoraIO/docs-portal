@@ -1,0 +1,704 @@
+---
+title: "发版说明"
+description: "查看 Fastboard SDK 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
+---
+<PlatformStructured platform="android">
+
+声网 Fastboard SDK 是为帮助开发人员快速构建白板应用推出的新一代互动白板 SDK。Fastboard SDK 基于互动白板 SDK 开发，对复杂的 API 进行封装，简化了接口调用逻辑，并提供核心功能的实现和默认 UI；此外，Fastboard SDK 还集成窗口管理器（[Window Manager](https://github.com/netless-io/window-manager)）和常用插件，帮助开发者轻松扩展白板应用的功能。使用 Fastboard SDK，你无需深入学习互动白板复杂的概念，只需几行代码即可加入白板房间，并立即使用丰富的工具体验实时互动协作。
+
+## 1.7.2 版
+
+该版本于 2025 年 7 月 11 日发布。
+
+### 新增特性
+
+#### 注册第三方窗口应用
+
+该版本在 `FastRoom` 类下新增 [`registerApp`](/zh-CN/api-reference/whiteboard/fastboard/android#registerapp) 方法，用于向白板房间注册第三方窗口应用。该方法允许你注册可以在白板内作为独立窗口运行的外部应用，支持两种注册方式：
+
+- **本地脚本注册**：使用本地 JavaScript 代码（推荐方式，可靠性高）
+- **远程包注册**：使用远程 URL（可能因网络原因失败）
+
+同时新增 [`FastRegisterAppParams`](/zh-CN/api-reference/whiteboard/fastboard/android#fastregisterappparams) 类，用于配置注册参数，包含应用名称、脚本代码、URL 地址等配置选项。
+
+:::warning[注意]
+- 注册必须在加入房间前完成，以确保应用能够正常加载。
+- 确保所有客户端使用一致的应用版本，避免运行时问题。
+:::
+
+#### 设置画笔粗细范围
+
+该版本在 `FastUiSettings` 类下新增 [`setStrokeRange`](/zh-CN/api-reference/whiteboard/fastboard/android#setstrokerange) 方法，用于设置工具箱中线条宽度滑块的范围。该方法配置工具箱扩展面板中线条宽度滑块的最小值和最大值，用户在使用铅笔、矩形、圆形等绘图工具时，可以在此范围内调整线条宽度。默认范围为 1 到 24。
+
+### 问题修复
+
+- 调用 [`setToolboxEdgeMargin`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolboxedgemargin) 时，如果未指定 Toolbox Gravity，则该方法无效。
+- 首次调用 [`setResource`](/zh-CN/api-reference/whiteboard/fastboard/android#setresource) UI 更新不生效。
+- 调用 [`setToolsColors`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolscolors) 设置了自定义颜色列表后，初次进入房间时的画笔颜色不在这组颜色里，不符合预期。
+
+### API 变更
+
+#### 新增
+
+- [`registerApp`](/zh-CN/api-reference/whiteboard/fastboard/android#registerapp)
+- [`FastRegisterAppParams`](/zh-CN/api-reference/whiteboard/fastboard/android#fastregisterappparams)
+- [`setStrokeRange`](/zh-CN/api-reference/whiteboard/fastboard/android#setstrokerange)
+
+## 1.6.2 版
+
+该版本于 2024 年 9 月 14 日发布。
+
+### 新增特性
+
+#### 手动加载白板视图
+
+该版本新增 [`preloadWhiteboardView`](/zh-CN/api-reference/whiteboard/fastboard/android#preloadwhiteboardview) 方法，用于手动执行一次白板视图预加载，提升下次加入房间的速度。使用该功能前需要确保 [`FastboardConfig`](/zh-CN/api-reference/whiteboard/fastboard/android#fastboardconfig) 中的 `autoPreload` 为 `false`。
+
+### API 变更
+
+#### 新增
+
+- `preloadWhiteboardView`
+- `FastboardConfig` 新增 `autoPreload`
+
+## 1.6.0 版
+
+该版本于 2024 年 2 月 4 日发布。
+
+### 新增特性
+
+#### 插入文档
+
+`FastRoom` 类新增 [`insertStaticDoc`](/zh-CN/api-reference/whiteboard/fastboard/android#insertstaticdoc) 和 [`insertPptx`](/zh-CN/api-reference/whiteboard/fastboard/android#insertpptx) 方法，分别用于插入转换后的 PDF 等静态文档和 PPTX 动态文档。
+
+#### 白板预加载
+
+新增 [`FastboardConfig`](/zh-CN/api-reference/whiteboard/fastboard/android#fastboardconfig) 类用于 `Fastboard` 对象的辅助配置，可通过调用 `setConfig` 方法修改配置。其中，`FastboardConfig.enablePreload` 和 `FastboardConfig.preloadCount` 分别用于开关白板预加载功能和指定预加载的 WebView 数量，配置后可提升白板加载速度。
+
+#### 新白板教具
+
+该版本新增了以下白板教具：
+
+- 新增铅笔橡皮工具 `FastAppliance.PENCIL_ERASER`，用于擦除局部铅笔笔迹。
+- 新增抓手工具 `FastAppliance.HAND`，用于移动视图。
+
+#### 白板日志记录
+
+该版本新增 [`FastLogger`](/zh-CN/api-reference/whiteboard/fastboard/android#fastlogger) 类，提供了一个灵活的白板运行日志记录工具，可以方便地记录 `debug`、`info`、`warn`、`error` 共四种不同级别的日志信息。你既可以调用 `setLogger` 方法自定义日志记录器，以适应不同的日志记录需求，也可以使用系统的 `Log` 类进行日志记录。
+
+### 优化
+
+- 调用 `FastRoom.insertImage` 方法插入图片，默认将图片置于当前视图的中心。
+- 禁用了房间加入成功后的全量房间状态回调 `roomState`，客户端需要通过 `Room.getRoomState()` 来获取完整的 `RoomState`。
+
+### API 变更
+
+#### 新增
+
+- `insertStaticDoc`
+- `insertPptx`
+- `DocPage`
+- `setConfig`
+- `FastboardConfig`
+- `FastAppliance` 下新增：
+  - `PENCIL_ERASER`
+  - `HAND`
+- `FastLogger`
+  - `setLogger`
+  - `Logger`
+  - `warn`
+  - `debug`
+  - `info`
+  - `error`
+
+#### 废弃
+
+- `insertDocs`
+
+## 1.3.4 版
+
+该版本于 2023 年 4 月 25 日发布。
+
+### 新增特性
+
+#### 修改白板底色
+
+该版本在 `FastRoom` 类下新增 [`setResource`](/zh-CN/api-reference/whiteboard/fastboard/android#setresource) 方法，用于修改白板的相关颜色资源。你可以通过重写 [`FastResource`](/zh-CN/api-reference/whiteboard/fastboard/android#fastresource) 类中的方法来自定义颜色。
+
+#### 设置窗口比例
+
+该版本在 [`FastRoomOptions`](/zh-CN/api-reference/whiteboard/fastboard/android#fastroomoptions) 类中新增 `containerSizeRatio` 属性，用于修改本地显示窗口中内容的高宽比。
+
+#### 显示用户光标
+
+该版本在 [`FastRoomOptions`](/zh-CN/api-reference/whiteboard/fastboard/android#fastroomoptions) 类中新增 `userPayload` 属性，用于在白板房间中同步其他用户的光标位置并显示对应昵称和头像。
+
+#### 设置房间读写权限
+
+该版本在 `FastRoom` 类下新增了以下方法：
+
+- [`setWritable [1/2]`](/zh-CN/api-reference/whiteboard/fastboard/android#setwritable1) 和 [`setWritable [2/2]`](/zh-CN/api-reference/whiteboard/fastboard/android#setwritable2)：设置用户在房间中为具有读写权限的**互动模式**或只有只读权限的**订阅模式**，其中，`setWritable [2/2]` 支持通过回调函数异步处理调用结果。
+- [`isWritable`](/zh-CN/api-reference/whiteboard/fastboard/android#iswritable)：获取本地用户在当前互动白板实时房间是否为互动模式。
+
+:::tip[提示]
+在用户数量较多的房间中，限制房间中处于互动模式的用户数量可以有效提高白板房间连接的稳定性和房间可承载人数上限。
+:::
+
+#### 调整工具条边距
+
+该版本在 `FastUiSettings` 类下新增 [`setToolboxEdgeMargin`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolboxedgemargin) 方法，用于设置工具条和白板侧边的边距。
+
+### 改进
+
+该版本优化了用户界面，并调整了白板工具图标样式和白板工具条的默认边距。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 使用文字工具时偶现失焦。
+- `FastUiSettings` 类下的 `hideRoomController` 在启动阶段偶现失效。
+
+## 1.2.3 版
+
+该版本于 2022 年 10 月 28 日发布。
+
+### 升级必看
+
+#### API 更名
+
+`FastRoom` 类下的 `setStokeWidth` 更名为 `setStrokeWidth`，详见 [`setStrokeWidth`](/zh-CN/api-reference/whiteboard/fastboard/android#setstrokewidth)。
+
+### 新增特性
+
+#### 新版文档转换服务支持
+
+该版本在 [`FastInsertDocParams`](/zh-CN/api-reference/whiteboard/fastboard/android#insertdocs) 类中新增以下属性以支持新版文档转换服务：
+
+- `dynamicDoc`: Boolean。文档转换任务类型是否为动态转换。
+
+- `converterType`：枚举。文档转换服务版本，取值如下：
+  - `Projector`：新版。详见[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
+  - `WhiteboardConverter`：旧版（默认值）。旧版文档转换服务当前已不再维护。
+
+### 问题修复
+
+该版本修复了 `FastInsertDocParams` 中的参数顺序错误。
+
+## 1.2.0 版
+
+该版本于 2022 年 5 月 27 日发布。
+
+### 新增特性
+
+#### 白板用户界面的控件配置
+
+为支持自定义白板用户界面，该版本在 `FastUiSettings` 类中新增如下方法，用于设置白板用户界面上的控件：
+
+- [`showRoomController`](/zh-CN/api-reference/whiteboard/fastboard/android#showroomcontroller)：展示白板用户界面上的控件。
+- [`hideRoomController`](/zh-CN/api-reference/whiteboard/fastboard/android#hideroomcontroller)：隐藏白板用户界面上的控件。
+- [`setToolsExpandAppliances`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolsexpandappliances)：设置展开模式下工具条包含的工具集
+- [`setToolsCollapseAppliances`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolscollapseappliances)：设置折叠模式下工具条包含的工具集。
+- [`setToolsColors`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolscolors)：设置白板工具的颜色。
+- [`setToolboxGravity`](/zh-CN/api-reference/whiteboard/fastboard/android#settoolboxgravity)：设置工具条在白板上的位置。
+
+#### 白板用户界面的样式配置
+
+该版本在 `FastRoom` 类中新增 [`setFastStyle`](/zh-CN/api-reference/whiteboard/fastboard/android#setfaststyle) 方法，用于设置白板用户界面的样式。通过该方法，你可以修改白板用户界面的主题色彩和主题模式。
+
+## 1.0.0 版
+
+该版本于 2022 年 3 月 16 日发布，是 Fastboard SDK 首个版本。
+
+### 功能特性
+
+#### 白板核心功能的默认实现和 UI
+
+该版本直接实现了互动白板的核心基础功能，并提供默认的 UI。集成 Fastboard SDK 并调用 `join` 方法加入白板房间后，即可使用这些功能。该版本实现的核心功能如下：
+
+- 白板工具栏，包括铅笔、文本编辑、图形工具等所有白板基础编辑工具，并支持设置线条粗细、字体大小和颜色。
+- 页面管理，包括新增页面、页面跳转、页面缩放。
+- 撤销、重做
+
+尽管 Fastboard SDK 提供了上述功能的默认实现，但也提供了如下 API，方便你根据需要自行开发：
+
+- `setAppliance`
+- `setStrokeWidth`
+- `setStrokeColor`
+- `undo`
+- `redo`
+
+#### 展示文件
+
+Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如，PNG、JPG 格式的图片，MP3、MP4 格式的音视频，以及 PPT、PPTX、DOC、DOCX、PDF 等格式的文档。具体实现步骤参考[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文提供声网 Fastboard SDK for iOS 的发版说明。
+声网 Fastboard SDK 是为帮助开发人员快速构建白板应用推出的新一代互动白板 SDK。Fastboard SDK 基于互动白板 SDK 开发，对复杂的 API 进行封装，简化了接口调用逻辑，并提供核心功能的实现和默认 UI；此外，Fastboard SDK 还集成窗口管理器（[Window Manager](https://github.com/netless-io/window-manager)）和常用插件，帮助开发者轻松扩展白板应用的功能。使用 Fastboard SDK，你无需深入学习互动白板复杂的概念，只需几行代码即可加入白板房间，并立即使用丰富的工具体验实时互动协作。
+
+## 1.4.2 版
+
+该版本于 2024 年 9 月 14 日发布。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 在某些高版本 iOS 设备上设置 `drawOnlyApplePencil` 不生效。
+- 使用 CocoaPods 安装 SDK 时出现 `warning: duplicate UUIDs`，不符合预期。
+
+## 1.4.0 版
+
+该版本于 2024 年 2 月 4 日发布。
+
+### 改进
+
+自该版本起，集成 SDK 时不再区分 YYModel 和 YYKit。之前使用 `pod 'Fastboard/core-YYKit'` 集成 SDK 的用户可以切换成 `pod 'Fastboard'` 集成。
+
+## 1.2.2 版
+
+该版本于 2023 年 4 月 25 日发布。
+
+### 新增特性
+
+#### 显示用户光标
+
+该版本在 [`FastRoomConfiguration`](/zh-CN/api-reference/whiteboard/fastboard/ios#fastroomconfiguration) 类中新增 `userPayload` 属性，用于在白板房间中同步其他用户的光标位置并显示对应昵称和头像。自该版本起，SDK 将默认显示用户光标。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 系统版本低于 iOS 14 的设备上设置 `drawOnlyApplePencil` 可能会造成崩溃。
+- 初始化形状工具时，形状工具的样式可能显示错误。
+
+## 1.1.2 版
+
+该版本于 2022 年 10 月 28 日发布。
+
+### 新增特性
+
+该版本新增了如下特性：
+
+#### 插入动态文档
+
+该版本新增 [`insertPptx`](/zh-CN/api-reference/whiteboard/fastboard/ios#insertpptx) 方法，用于在白板子窗口中插入并展示动态文档。
+
+#### 丰富自定义主题样式
+
+该版本新增白板按钮和控制条的可选样式，分别在以下类中设置：
+
+- `FastRoomPanelItemAsset`：
+  - `selectedBackgroundCornerradius`：选中状态的背景圆角。
+  - `selectedBackgroundEdgeinset`：选中状态的背景内边距。
+
+:::warning[注意]
+从 1.1.0 版及以前迁移过来的用户可以将 `selectedBackgroundCornerradius` 设置为 `0`，将 `selectedBackgroundEdgeinset` 设置为 `UIEdgeInsetsZero`。
+:::
+
+- `FastRoomControlBarAssets`：
+  - `backgroundColor`：控制条的背景色。
+  - `borderColor`：控制条边框的颜色。
+  - `effectStyle`：毛玻璃效果。详见 [UIBlurEffect](https://developer.apple.com/documentation/uikit/uiblureffect)。
+
+### 改进
+
+该版本修改了橡皮擦默认擦除行为，现在默认不能擦除图片。
+
+### 问题修复
+
+该版本修复了 iOS 13 以前设置教具背景色显示错误。
+
+## 1.0.6 版
+
+该版本于 2022 年 6 月 6 日发布。
+
+### 新增特性
+
+#### 修改白板用户界面的主题
+
+该版本在 `FastRoomThemeManager` 类中新增 [`apply`](/zh-CN/api-reference/whiteboard/fastboard/ios#apply) 方法，用于修改白板用户界面的主题。通过该方法，你可以将白板用户界面的主题设置为 SDK 提供的预定义主题，或设置为自定义主题。
+
+#### 修改调色盘的颜色集
+
+该版本在 `FastRoomDefaultOperationItem` 类中提供 [`defaultColors`](/zh-CN/api-reference/whiteboard/fastboard/ios#defaultcolors) 属性，支持修改白板工具调色盘的颜色集合。
+
+#### 启用/禁用 Apple Pencil 的系统默认功能
+
+该版本在 `FastRoom` 类中提供 [`followSystemPencilBehavior`](/zh-CN/api-reference/whiteboard/fastboard/ios#followsystempencilbehavior) 属性，用于在白板应用中启用/禁用 Apple Pencil 的系统默认功能。当 `followSystemPencilBehavior` 设为 `YES`，表示使用白板应用时，Apple Pencil 的行为跟随系统设置，用户可以使用 Apple Pencil 的系统默认功能操作白板，例如，双击切换当前工具为橡皮擦，双击显示调色板，使用 Apple Pencil 涂鸦等。当 `followSystemPencilBehavior` 设为 `NO`，表示使用白板应用时，Apple Pencil 的行为不跟随系统设置，即 Apple Pencil 的系统默认功能不可用。
+
+## 1.0.3 版
+
+该版本于 2022 年 3 月 25 日发布，是 Fastboard SDK 首个版本。
+
+### 功能特性
+
+#### 白板核心功能的默认实现和 UI
+
+该版本直接实现了互动白板的核心基础功能，并提供默认的 UI。集成 Fastboard SDK 并调用 `joinRoom` 方法加入白板房间后，即可使用这些功能。该版本实现的核心功能如下：
+
+- 白板工具栏，包括铅笔、文本编辑、图形工具等所有白板基础编辑工具，并支持设置线条粗细、字体大小和颜色。
+- 页面管理，包括新增页面、页面跳转、页面缩放。
+- 撤销、重做
+
+#### 展示文件
+
+Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如，PNG、JPG 格式的图片，MP3、MP4 格式的音视频，以及 PPT、PPTX、DOC、DOCX、PDF 等格式的文档。具体实现步骤参考[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文提供声网 Fastboard SDK for Web 的发版说明。
+## 1.1.0 版
+
+该版本于 2025 年 7 月 11 日发布。
+
+### 新增特性
+
+#### 主视图管理小窗应用
+
+[`FastboardOptions`](/zh-CN/api-reference/whiteboard/fastboard/web#fastboardoptions) 新增 `enableAppInMainViewPlugin` 配置项，用于启用 [`@netless/app-in-mainview-plugin`](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) 插件，支持在白板主视图管理[小窗应用](/zh-CN/realtime-media/whiteboard/concepts#小窗应用)。该插件基于 [`@netless/window-manager`](https://www.npmjs.com/package/@netless/window-manager) 的多窗口模式，把 App 窗口（课件、插件）集成到主窗口中，App 窗口可以随着主白板的页面切换而隐藏或显示，详见 [`appInMainView`](https://github.com/netless-io/appInMainView)。
+
+#### 激光铅笔
+
+启用 `appliance-plugin` 插件后，Fastboard UI 新增激光铅笔工具 `laserPen`。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 使用全打包方式引用时，声明文件 `full.d.ts` 丢失。
+- 悬浮条为 `false` 时，工具栏无法显示。
+
+## 1.0.0 版
+
+该版本于 2024 年 12 月 12 日发布。
+
+### 新增特性
+
+#### 激光铅笔
+
+启用 v1.1.1 及以上版本的 `appliance-plugin` 插件后，可以使用 Fastboard UI 新增的激光铅笔工具 `laserPen`，使用方式详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md#%E6%96%B0%E5%8A%9F%E8%83%BD)。
+
+### 改进
+
+该版本将 @netless/window-manager 更新至 v1.0.0。
+
+## 0.3.22 版
+
+该版本于 2024 年 11 月 28 日发布。
+
+### 新增特性
+
+#### 全打包方式引用
+
+自该版本起，Fastboard SDK 新增全打包文件 `@netless/fastboard/full` 和 `@netless/fastboard-react/full`，用于解决内外依赖冲突问题。使用全打包方式引用时，无需再安装 `@netless/window-manager` 和 `white-web-sdk` 等依赖。
+
+:::warning[注意]
+使用全打包方式引用时，你需要在项目中移除 `@netless/window-manager`、`white-web-sdk` 和 `jspdf` 依赖。
+:::
+
+```javascript tab="JavaScript 中引用" tabGroup="preq"
+// 全打包方式引用
+import { createFastboard, createUI } from "@netless/fastboard/full";
+
+// 分包方式引用
+import { createFastboard, createUI } from "@netless/fastboard";
+```
+
+```jsx tab="React 中引用" tabGroup="preq"
+// 全打包方式引用
+import { useFastboard, Fastboard } from "@netless/fastboard-react/full";
+// 分包方式引用
+import { useFastboard, Fastboard } from "@netless/fastboard-react";
+```
+
+更多全打包方式和分包方式引用的信息，详见 [Fastboard 安装与使用](https://github.com/netless-io/fastboard/blob/main/README-zh.md#install)。
+
+#### 高性能白板绘制工具
+
+该版本新增 `appliance-plugin` 插件，实现了一套高性能的白板绘制工具，且支持在多窗口模式下使用。安装 `@netless/appliance-plugin` 后，你可以通过 `FastboardOptions.enableAppliancePlugin` 和 `managerConfig.supportAppliancePlugin` 配置项启用该插件。详见[`appliance-plugin`](https://github.com/netless-io/fastboard/blob/main/docs/zh/appliance-plugin.md)。
+
+:::warning[注意]
+- `@netless/appliance-plugin` 为必需外部依赖，不包含在全打包文件中，需要单独安装。
+- 为确保笔迹正常显示，请在所有终端（Web、Android 和 iOS）上都开启 `appliance-plugin` 插件。如果某个终端未开启，其他终端使用 `appliance-plugin` 绘制的笔迹将无法在该终端显示。
+- 开启 `appliance-plugin` 插件后，白板上的历史内容仍会显示，但无法对其进行操作或升级。为避免影响使用体验，建议在全新的白板上使用该插件。关闭插件后，使用该插件绘制的内容将会丢失。
+- 浏览器需完整支持 Web API [`OffscreenCanvas`](https://developer.mozilla.org/zh-CN/docs/Web/API/OffscreenCanvas)，才能获得最佳性能和完整的教具功能体验。
+:::
+
+你可以参考以下示例代码启用 `appliance-plugin` 插件：
+
+<Accordions>
+<Accordion title="示例代码">
+
+```javascript
+// 直接通过raw-loader引入
+import fullWorkerString from '@netless/appliance-plugin/dist/fullWorker.js?raw';
+import subWorkerString from '@netless/appliance-plugin/dist/subWorker.js?raw';
+const fullWorkerBlob = new Blob([fullWorkerString], {type: 'text/javascript'});
+const fullWorkerUrl = URL.createObjectURL(fullWorkerBlob);
+const subWorkerBlob = new Blob([subWorkerString], {type: 'text/javascript'});
+const subWorkerUrl = URL.createObjectURL(subWorkerBlob);
+
+// CDN 引入, 需要部署到自己的CDN服务器上, 它必须遵守 同源策略 。
+const subWorkerUrl = "https://cdn.jsdelivr.net/npm/@netless/appliance-plugin@latest/dist/subWorker.js";
+const fullWorkerUrl = "https://cdn.jsdelivr.net/npm/@netless/appliance-plugin@latest/dist/fullWorker.js";
+
+function App() {
+  const fastboard = useFastboard(() => ({
+    sdkConfig: {
+      ...
+    },
+    joinRoom: {
+      ...
+    },
+    //  开启 appliance-plugin 插件, 和windowManager 配置
+    managerConfig: {
+      supportAppliancePlugin: true
+    },
+    //  开启 appliance-plugin 插件
+    enableAppliancePlugin: {
+        cdn: {
+            fullWorkerUrl,
+            subWorkerUrl,
+        }
+    }
+  }));
+  ....
+}
+```
+
+</Accordion>
+</Accordions>
+
+### 改进
+
+#### 自定义 UI 组件颜色
+
+`ToolbarConfig` 接口新增 `colors` 属性，用于设置 UI 组件的颜色。自该版本起，默认情况下，工具条 (toolbar) 和悬浮条 (floatbar) 的颜色保持一致，应用统一的颜色集合。你也可以通过 [`joinRoomParams.floatbarOptions.colors`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#floatbaroptions) 或 [`ToolbarConfig.colors`](/zh-CN/api-reference/whiteboard/fastboard/web#toolbarconfig) 分别设置两者的颜色集合。
+
+### API 变更
+
+#### 新增
+
+- [`FastboardOptions.enableAppliancePlugin`](/zh-CN/api-reference/whiteboard/fastboard/web#fastboardoptions)
+- [`ToolbarConfig.colors`](/zh-CN/api-reference/whiteboard/fastboard/web#toolbarconfig)
+
+## 0.3.16 版
+
+该版本于 2024 年 9 月 14 日发布。
+
+### 新增特性
+
+#### 获取房间是否可操作
+
+新增 `canOperate` 方法，用于获取房间是否处于可操作状态，即获取当前房间是否处于互动模式 (`writable`) 且房间连接状态为已连接 (`connected`)。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 多窗口模式下，插入的小窗应用支持拖动窗口右上角以调整窗口大小。
+- 支持在调用 `destroy` 销毁状态后访问状态的值 (`state.value`)。
+- `insertDocs` 方法支持传入带 `prefix` 字段的静态转换的响应包体。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 使用 `insertDocs` 插入静态转换后的文档无法返回 `appId`。
+- 当 `FastboardUIConfig` 更新为 `{ toolbar: undefined }` 时出错。
+- 监听部分状态（例如 `camera.value`）时返回的不是最新值。
+- 房间连接状态 (`room.phase`) 为未连接时，部分组件失效。
+
+### API 变更
+
+#### 新增
+
+- `canOperate`
+
+## 0.3.10 版
+
+该版本于 2024 年 2 月 4 日发布。
+
+### 新增特性
+
+#### 白板教具新特性
+
+该版本为以下白板教具添加了新特性：
+
+- 铅笔工具：新增 [`toggleDottedLine`](/zh-CN/api-reference/whiteboard/fastboard/web#toggledottedline) 方法，用于切换铅笔工具的画线样式。
+- 铅笔橡皮工具：新增 [`setPencilEraserSize`](/zh-CN/api-reference/whiteboard/fastboard/web#setpencilerasersize) 方法，用于修改铅笔橡皮的大小。
+
+### 改进
+
+该版本进行了如下改进：
+
+- [`insertImage`](/zh-CN/api-reference/whiteboard/fastboard/web#insertimage) 方法新增参数 `crossOrigin`，用于设置是否对插入的图片启用跨域资源共享 (CORS, Cross-Origin Resource Sharing) 。
+- 新增 [`jumpPage`](/zh-CN/api-reference/whiteboard/fastboard/web#jumppage) 方法，用于跳转至指定白板页。相比之前修改 `FastboardApp` 的 `sceneIndex` 属性的方式更加便捷。
+
+### 问题修复
+
+该版本修复了重新连接白板房间后偶现 `FastboardApp.camera` 控件显示的白板画布缩放比例无法随实际情况变化的问题。
+
+### API 变更
+
+#### 新增
+
+- `toggleDottedLine`
+- `setPencilEraserSize`
+- `insertImage` 新增参数 `crossOrigin`
+- `jumpPage`
+
+## 0.3.8 版
+
+该版本于 2023 年 8 月 17 日发布。
+
+### 新增特性
+
+#### 快速插入文档
+
+新增 `insertDocs [1/2]` 方法，用于快速插入[新版文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)转换后的 PDF/PPTX 文档。
+
+#### 操作 PDF/PPTX 文档
+
+新增 `dispatchDocsEvent` 方法，用于向插入白板的 PDF/PPTX 文档发送事件，实现控制文档翻页、页面跳转和幻灯片动画播放。
+
+### 问题修复
+
+该版本修复了使用旧版本打包器时偶现的打包失败问题。
+
+### API 变更
+
+#### 新增
+
+- [`insertDocs [1/2]`](/zh-CN/api-reference/whiteboard/fastboard/web#insertdocs1)
+- [`dispatchDocsEvent`](/zh-CN/api-reference/whiteboard/fastboard/web#dispatchdocsevent)
+- [`DocsEventOptions`](/zh-CN/api-reference/whiteboard/fastboard/web#docseventoptions)
+
+## 0.3.6 版
+
+该版本于 2022 年 10 月 28 日发布。
+
+### 新增特性
+
+#### 注册 Fastboard 插件
+
+该版本在 [`FastboardOptions`](/zh-CN/api-reference/whiteboard/fastboard/web#fastboardoptions) 接口中新增可选属性 `netlessApps`，用于注册 Fastboard 官方内置或由你自定义的 Fastboard 插件，详见[注册和使用 app](https://github.com/netless-io/fastboard/blob/main/README-zh.md#注册与使用-apps)。
+
+#### 创建 UI 组件
+
+该版本新增了 [`createUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createui) 和 [`createReplayUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createreplayui) 方法分别用于创建 Fastboard 内置的一套 UI 组件和回放模式的一套 UI 组件。
+
+#### 删除白板页
+
+该版本新增了 [`removePage`](/zh-CN/api-reference/whiteboard/fastboard/web#removepage) 方法用于删除指定白板页。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 点击插件按钮后自动隐藏插件菜单。
+- 向白板日志提交 Fastboard 信息。
+- 优化 UI 在 React 下使用时的性能。
+
+### 问题修复
+
+该版本修复了如下问题：
+
+- 白板在某些设备上可能失焦。
+- 用户自定义热键的 UI 显示错误。
+
+### API 变更
+
+#### 新增
+
+- [`removePage`](/zh-CN/api-reference/whiteboard/fastboard/web#removepage)
+- [`createUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createui)
+- [`createReplayUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createreplayui)
+
+#### 废弃
+
+- `insertCodeEditor`：改用 `fastboard.manager.addApp({ kind: 'Monaco' })` 实现。
+- `insertCountdown`：改用 `fastboard.manager.addApp({ kind: 'Countdown' })` 实现。
+- `insertGeoGebra`：改用 `fastboard.manager.addApp({ kind: 'GeoGebra' })` 实现。
+- [`mount`](/zh-CN/api-reference/whiteboard/fastboard/web#mount)：现在推荐用 [`createUI`](/zh-CN/api-reference/whiteboard/fastboard/web#createui)。
+
+## 0.3.2 版
+
+该版本于 2022 年 4 月 29 日发布。
+
+### 升级必看
+
+该版本替换了构建白板用户界面使用的框架。集成该版本的 Fastboard SDK，无需再添加 `react` 和 `react-dom` 依赖项。详见[添加依赖项](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb#添加依赖项)。
+
+### 新增特性
+
+#### 白板用户界面配置
+
+该版本在 [`mount`](/zh-CN/api-reference/whiteboard/fastboard/web#mount) 方法中新增 `options` 参数，用于配置白板用户界面。你可以通过该参数设置白板用户界面的主题、语言和每个组件的显示状态等。
+
+同时，该版本还将调用 `mount` 方法后返回的 `update` 方法的 `theme` 和 `language` 变更为 `props` 参数。通过 `props` 参数可以更新白板用户界面的主题、语言和每个组件的显示状态等。
+
+#### 字体设置
+
+该版本在 `FastboardApp` 类中新增 [`setTextColor`](/zh-CN/api-reference/whiteboard/fastboard/web#settextcolor) 和 [`setTextSize`](/zh-CN/api-reference/whiteboard/fastboard/web#settextsize) 方法，用于设置字体的颜色和大小，方便你自行开发文本编辑功能。
+
+#### 管理插件按钮
+
+该版本新增 `AppsInToolbar` 类，提供管理工具条上插件按钮方法，具体如下：
+
+- [`push`](/zh-CN/api-reference/whiteboard/fastboard/web#push)：在插件中心的末尾添加插件按钮。
+- [`insert`](/zh-CN/api-reference/whiteboard/fastboard/web#insert)：在指定位置添加一个插件按钮。
+- [`delete`](/zh-CN/api-reference/whiteboard/fastboard/web#delete)：删除指定的插件按钮。
+- [`clear`](/zh-CN/api-reference/whiteboard/fastboard/web#clear)：删除所有插件按钮。
+
+### 改进
+
+该版本进行了如下改进：
+
+- 优化了用户界面的样式。
+- 当用户以只读模式加入白板房间时，SDK 自动隐藏用户界面上的所有组件，以避免用户点击却不生效。
+
+## 0.2.8 版
+
+该版本于 2022 年 3 月 7 日发布，是 Fastboard SDK 首个版本。
+
+### 功能特性
+
+#### 白板核心功能的默认实现和 UI
+
+该版本直接实现了互动白板的核心基础功能，并提供默认的 UI。集成 Fastboard SDK 并调用 `createFastboard` 方法加入白板房间后，即可使用如下功能：
+
+- 白板工具栏，包括铅笔、文本编辑、图形工具等所有白板基础编辑工具，并支持设置线条粗细、字体大小和颜色。
+- 页面管理，包括新增页面和页面跳转。
+- 视角管理，包括页面缩放和视角调整。
+- 撤销、重做
+
+同时，Fastboard SDK 还提供了如下 API，方便你自行开发这些功能并自定义 UI：
+
+- `setAppliance`
+- `setStrokeWidth`
+- `setStrokeColor`
+- `moveCamera`
+- `moveCameraToContain`
+- `undo`
+- `redo`
+
+#### 添加和使用插件
+
+Fastboard SDK 集成了窗口管理器（[Window Manager](https://github.com/netless-io/window-manager)）和插件中心（[Netless App](https://github.com/netless-io/netless-app)），用于在白板应用中快速添加和使用插件，扩展白板的功能。该版本默认提供代码编辑器（Code Editor）、计时器（Countdown）、数学计算器（GeoGebra）插件，加入房间即可使用。此外，你还可以根据业务需求开发并添加自定义插件。
+
+:::warning[注意]
+GeoGebra 数学计算器仅作为示例插件，如需商用，请联系 GeoGebra 获取许可。
+:::
+
+#### 展示文件
+
+Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如，PNG、JPG 格式的图片，MP3、MP4 格式的音视频，以及 PPT、PPTX、DOC、DOCX、PDF 等格式的文档。具体实现步骤参考[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>

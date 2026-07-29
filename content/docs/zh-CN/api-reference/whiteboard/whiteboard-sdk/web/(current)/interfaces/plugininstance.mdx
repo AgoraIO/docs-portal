@@ -1,0 +1,334 @@
+---
+title: Interface PluginInstance<C, A>
+description: 组件插件对象的接口。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/plugininstance.html
+  sourcePath: html-docs/whiteboard/Web/interfaces/plugininstance.html
+  generator: typedoc
+  warnings: []
+---
+
+### Type parameters
+
+<ParameterList>
+<Parameter name="C" />
+<Parameter name="A" />
+</ParameterList>
+
+### Hierarchy
+
+- PluginInstance
+
+## Index
+
+### Properties
+
+- [attributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#attributes)
+- [context](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#context)
+- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#height)
+- [identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#identifier)
+- [isDraging](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#isdraging)
+- [isPlaying](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#isplaying)
+- [isResizing](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#isresizing)
+- [kind](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#kind)
+- [originX](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#originx)
+- [originY](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#originy)
+- [playbackSpeed](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#playbackspeed)
+- [playerTimestamp](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#playertimestamp)
+- [selectable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#selectable)
+- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#width)
+
+### Methods
+
+- [putAttributes](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#putattributes)
+- [remove](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#remove)
+- [removeAttributeKeys](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#removeattributekeys)
+- [update](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/plugininstance#update)
+
+## Properties
+
+<a id="attributes"></a>
+
+### attributes
+
+attributes: A
+
+- Defined in [index-zh.d.ts\:3409](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3409)
+
+组件插件对象的属性。
+
+<a id="context"></a>
+
+### context
+
+context: C
+
+- Defined in [index-zh.d.ts\:3345](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3345)
+
+自定义的组件插件上下文。
+
+<a id="height"></a>
+
+### height
+
+height: number
+
+- Defined in [index-zh.d.ts\:3365](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3365)
+
+组件插件对象的高。
+
+<a id="identifier"></a>
+
+### identifier
+
+identifier: [Identifier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#identifier)
+
+- Defined in [index-zh.d.ts\:3340](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3340)
+
+组件插件对象在房间内的唯一标识符。
+
+<a id="isdraging"></a>
+
+### isDraging
+
+isDraging: boolean
+
+- Defined in [index-zh.d.ts\:3380](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3380)
+
+是否正在拖拽组件插件对象。
+
+- `true`：在拖拽。
+- `false`：不在拖拽。
+
+<a id="isplaying"></a>
+
+### isPlaying
+
+isPlaying: boolean
+
+- Defined in [index-zh.d.ts\:3394](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3394)
+
+是否正在播放组件插件对象。
+
+- `true`：在播放。在白板实时房间内，取值一直为 `true`。
+- `false`：不在播放。
+
+<a id="isresizing"></a>
+
+### isResizing
+
+isResizing: boolean
+
+- Defined in [index-zh.d.ts\:3387](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3387)
+
+是否正在改变组件插件对象的大小。
+
+- `true`：在改变。
+- `false`：不在改变。
+
+<a id="kind"></a>
+
+### kind
+
+kind: string
+
+- Defined in [index-zh.d.ts\:3335](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3335)
+
+组件插件的类型，是组件插件的唯一标识符。
+
+<a id="originx"></a>
+
+### originX
+
+originX: number
+
+- Defined in [index-zh.d.ts\:3350](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3350)
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 X 轴坐标。
+
+<a id="originy"></a>
+
+### originY
+
+originY: number
+
+- Defined in [index-zh.d.ts\:3355](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3355)
+
+组件插件对象的左上角在世界坐标系（以白板初始化时的中心点为原点的坐标系）中的 Y 轴坐标。
+
+<a id="playbackspeed"></a>
+
+### playbackSpeed
+
+playbackSpeed: number
+
+- Defined in [index-zh.d.ts\:3404](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3404)
+
+组件插件对象当前的播放速率倍率（若为实时房间，则恒为 `1.0`）。
+
+<a id="playertimestamp"></a>
+
+### playerTimestamp
+
+playerTimestamp: number
+
+- Defined in [index-zh.d.ts\:3399](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3399)
+
+组件插件对象当前播放位置的 Unix 时间戳（若为实时房间，则恒为 0）。
+
+<a id="selectable"></a>
+
+### selectable
+
+selectable: boolean
+
+- Defined in [index-zh.d.ts\:3372](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3372)
+
+能否选中组件插件对象：
+
+- `true`：能选中组件插件对象。
+- `false`：不能选中组件插件对象。
+
+<a id="width"></a>
+
+### width
+
+width: number
+
+- Defined in [index-zh.d.ts\:3360](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3360)
+
+组件插件对象的宽。
+
+## Methods
+
+<a id="putattributes"></a>
+
+### putAttributes
+
+<ApiSignature>
+
+putAttributes(attributes: Partial&lt;A&gt;): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:3415](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3415)
+
+修改组件插件属性中的部分字段。
+
+<ParameterList title="Parameters">
+<Parameter name="attributes" type="Partial &amp; lt;A &amp; gt;" required>
+
+要修改的字段。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="remove"></a>
+
+### remove
+
+<ApiSignature>
+
+remove(): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:3432](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3432)
+
+删除组件插件对象。
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeattributekeys"></a>
+
+### removeAttributeKeys
+
+<ApiSignature>
+
+removeAttributeKeys&lt;K&gt;(...keys: K[]): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:3421](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3421)
+
+删除组件插件属性中的部分字段。
+
+<ParameterList title="Type parameters">
+<Parameter name="K" type="string" />
+</ParameterList>
+
+<ParameterList title="Parameters">
+<Parameter name="...keys" type="K[]" required>
+
+要删除的字段。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="update"></a>
+
+### update
+
+<ApiSignature>
+
+update(description: [PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription)&lt;A&gt;): void
+
+</ApiSignature>
+
+- Defined in [index-zh.d.ts\:3427](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L3427)
+
+修改组件插件对象的描述。
+
+<ParameterList title="Parameters">
+<Parameter name="description" required>
+
+<ParameterType>
+
+[PluginDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#plugindescription) & lt;A & gt;
+
+</ParameterType>
+
+要修改的描述。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

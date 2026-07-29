@@ -1,0 +1,43 @@
+---
+title: AudioSpectrumData
+description: 音频频谱数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_audiospectrumdata
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_audiospectrumdata.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiospectrumdata__prototype"></a>
+
+```text
+struct AudioSpectrumData {
+  const float *audioSpectrumData;
+  int dataLength;
+
+  AudioSpectrumData() : audioSpectrumData(NULL), dataLength(0) {}
+  AudioSpectrumData(const float *data, int length) :
+    audioSpectrumData(data), dataLength(length) {}
+};
+```
+
+<a id="class_audiospectrumdata__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="audiospectrumdata"></a>
+<Parameter name="audioSpectrumData">
+
+音频频谱数据。声网将声音频率分为 256 个频域，通过该参数报告各频域的能量值，每个能量值的取值范围为 [-300,1]，单位为 dBFS。
+
+</Parameter>
+<a id="datalength"></a>
+<Parameter name="dataLength">
+
+音频频谱数据长度为 256。
+
+</Parameter>
+</ParameterList>

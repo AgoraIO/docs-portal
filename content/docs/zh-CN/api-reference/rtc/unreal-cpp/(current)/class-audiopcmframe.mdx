@@ -1,0 +1,79 @@
+---
+title: AudioPcmFrame
+description: 外部 PCM 格式音频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_audiopcmframe
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_audiopcmframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiopcmframe__prototype"></a>
+
+```text
+struct AudioPcmFrame {
+                OPTIONAL_ENUM_SIZE_T {
+                  kMaxDataSizeSamples = 3840,
+                  kMaxDataSizeBytes = kMaxDataSizeSamples * sizeof(int16_t),
+                };
+
+                uint32_t capture_timestamp;
+                size_t samples_per_channel_;
+                int sample_rate_hz_;
+                size_t num_channels_;
+                rtc::BYTES_PER_SAMPLE bytes_per_sample;
+                int16_t data_[kMaxDataSizeSamples];
+              };
+
+```
+
+<a id="class_audiopcmframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="optional_enum_size_t"></a>
+<Parameter name="OPTIONAL_ENUM_SIZE_T">
+
+PCM 格式音频帧缓冲大小。初始值为 3840。
+
+</Parameter>
+<a id="capture_timestamp"></a>
+<Parameter name="capture_timestamp">
+
+音频帧的时间戳 (ms)。
+
+</Parameter>
+<a id="samples_per_channel_"></a>
+<Parameter name="samples_per_channel_">
+
+每个声道的采样点数。
+
+</Parameter>
+<a id="sample_rate_hz_"></a>
+<Parameter name="sample_rate_hz_">
+
+音频采样率 (Hz)。
+
+</Parameter>
+<a id="num_channels_"></a>
+<Parameter name="num_channels_">
+
+音频声道数。
+
+</Parameter>
+<a id="bytes_per_sample"></a>
+<Parameter name="bytes_per_sample">
+
+音频数据的字节数。
+
+</Parameter>
+<a id="data_"></a>
+<Parameter name="data_">
+
+音频帧数据。
+
+</Parameter>
+</ParameterList>

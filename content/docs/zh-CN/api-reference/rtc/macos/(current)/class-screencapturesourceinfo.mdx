@@ -1,0 +1,91 @@
+---
+title: AgoraScreenCaptureSourceInfo
+description: 用于描述指定可共享窗口或屏幕的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_screencapturesourceinfo
+  sourcePath: html-docs/rtc/macOS/API/class_screencapturesourceinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraScreenCaptureSourceInfo : NSObject
+@property(assign, nonatomic) AgoraScreenCaptureSourceType type;
+@property(assign, nonatomic) CGWindowID sourceId;
+@property(copy, nonatomic) NSString* _Nonnull sourceName;
+@property(strong, nonatomic) NSImage* _Nonnull thumbImage;
+@property(strong, nonatomic) NSImage* _Nullable iconImage;
+@property(copy, nonatomic) NSString* _Nonnull processPath;
+@property(copy, nonatomic) NSString* _Nonnull sourceTitle;
+@property(assign, nonatomic) CGRect position;
+@property(assign, nonatomic) BOOL primaryMonitor;
+@end
+```
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+共享目标的类型，详见 [AgoraScreenCaptureSourceType](/zh-CN/api-reference/rtc/macos/enum-screencapturesourcetype)。
+
+</Parameter>
+<a id="sourceid"></a>
+<Parameter name="sourceId">
+
+窗口的 ID 或屏幕的显示 ID。
+
+</Parameter>
+<a id="sourcename"></a>
+<Parameter name="sourceName">
+
+窗口或屏幕的名称，采用 UTF-8 编码。
+
+</Parameter>
+<a id="thumbimage"></a>
+<Parameter name="thumbImage">
+
+缩略图的图像内容。详见 `NSImage`。
+
+</Parameter>
+<a id="iconimage"></a>
+<Parameter name="iconImage">
+
+图标的图像内容。详见 `NSImage`。
+
+</Parameter>
+<a id="processpath"></a>
+<Parameter name="processPath">
+
+窗口所属进程的路径，采用 UTF-8 编码。
+
+</Parameter>
+<a id="sourcetitle"></a>
+<Parameter name="sourceTitle">
+
+窗口的标题，采用 UTF-8 编码。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+窗口相对于整个屏幕空间（包括所有可共享屏幕）的位置。
+
+</Parameter>
+<a id="primarymonitor"></a>
+<Parameter name="primaryMonitor">
+
+是否为主显示屏：
+
+- YES：是主显示屏。
+- NO：不是主显示屏。
+
+</Parameter>
+</ParameterList>

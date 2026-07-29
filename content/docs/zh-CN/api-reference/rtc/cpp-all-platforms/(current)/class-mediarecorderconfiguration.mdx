@@ -1,0 +1,122 @@
+---
+title: MediaRecorderConfiguration
+description: 用于配置音视频流的录制参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_mediarecorderconfiguration__prototype"></a>
+
+```text
+struct MediaRecorderConfiguration {
+  const char* storagePath;
+  MediaRecorderContainerFormat containerFormat;
+  MediaRecorderStreamType streamType;
+  int maxDurationMs;
+  int recorderInfoUpdateInterval;
+  int width;
+  int height;
+  int fps;
+  int sample_rate;
+  int channel_num;
+  agora::rtc::VIDEO_SOURCE_TYPE videoSourceType;
+};
+```
+
+<a id="class_mediarecorderconfiguration__detailed_desc"></a>
+
+:::info[自从]
+自 v3.5.2 版本新增。
+:::
+
+<a id="class_mediarecorderconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
+
+:::note
+注： 请确保指定路径存在且可写。
+:::
+
+本地保存录制文件的绝对路径，包括文件名和格式。例如：
+
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.mp4`
+- iOS: `/App Sandbox/Library/Caches/example.mp4`
+- macOS: `/Library/Logs/example.mp4`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.mp4`
+
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
+
+录制文件的格式。详见 [MediaRecorderContainerFormat](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediarecordercontainerformat)。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+录制的内容类型。详见 [MediaRecorderStreamType](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-mediarecorderstreamtype)。
+
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
+
+最大录制时长，单位为毫秒。默认值为 120000。
+
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
+
+录制信息更新的时间间隔，单位为毫秒。有效范围为 [1000, 10000]。SDK 会根据该值触发 [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调以报告录制信息更新。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+录制视频的宽度（像素）。宽度 × 高度的最大值不能超过 3840 × 2160。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+录制视频的高度（像素）。宽度 × 高度的最大值不能超过 3840 × 2160。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
+
+录制视频的帧率。最大值为 30，例如：5、10、15、24、30。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+<a id="sample_rate"></a>
+<Parameter name="sample_rate">
+
+录制音频的采样率（Hz）。支持的值包括：16000、32000、44100 或 48000。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+<a id="channel_num"></a>
+<Parameter name="channel_num">
+
+录制音频的声道数：
+
+- 1：单声道。
+- 2：立体声。
+
+仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
+
+录制的视频源类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videosourcetype)。仅当调用 [createMediaRecorder](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_irtcengine_createmediarecorder) 且在 [RecorderStreamInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-recorderstreaminfo) 中将 `type` 设置为 `PREVIEW` 时需要设置该参数。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,1203 @@
+---
+title: "跑通 API 示例项目"
+description: "了解如何快速接入实时互动 RTC，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+<PlatformStructured platform="android">
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android" />
+</Cards>
+
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文介绍如何快速跑通 Android 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Android Studio](https://developer.android.com/studio/) 4.2 及以上。
+- Android API 级别 21 及以上。
+- 两台运行 Android 5.0 及以上版本的移动设备。
+
+    :::warning[注意]
+    声网推荐使用真机运行项目。部分模拟机可能存在功能缺失或者性能问题。
+    :::
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的 App。
+    - (可选) App 证书：声网提供的 App 证书，用于在服务器部署并生成 Token 或使用控制台生成临时的 Token。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO/API-Examples.git
+    ```
+
+2. 该仓库中包含声网 RTC SDK 所有 Native 平台的示例项目，其中 Android 平台的 API 使用示例位于 `/Android` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/Android/APIExample`      | 声网**视频** SDK 的 API 使用示例。 |
+    | `/Android/APIExample-Audio`| 声网**音频** SDK 的 API 使用示例。 |
+
+### 配置示例项目
+
+:::info[信息]
+本文以视频示例项目为例。如需跑通音频示例项目，参考以下步骤在音频文件夹下操作即可。
+:::
+
+1. 集成 SDK 并安装依赖
+
+    `/APIExample/app/build.gradle` 文件中已添加集成 SDK 及安装依赖所需的代码，SDK 会在同步 Gradle 后自动完成集成。
+
+2. 设置 App ID 和 App 证书
+
+    在项目根目录下的 `local.properties` 文件中添加以下配置项，并将示例值替换为你从声网控制台获取的 App ID 和 App 证书。
+
+    ```properties
+    # 声网 App ID
+    AGORA_APP_ID=YOUR APP ID
+    # 声网 App 证书。如果项目未开启证书鉴权，请将该参数留空。
+    AGORA_APP_CERT=YOUR APP CERTIFICATE
+    ```
+
+### 编译并运行示例项目
+
+1. 用 Android Studio 打开 `/API-Examples/Android/APIExample` 文件夹。
+
+2. 开启 Android 设备的开发者选项，打开 USB 调试，通过 USB 连接线将 Android 设备接入电脑，并在 Android 设备选项中勾选你的 Android 设备。
+
+![](https://web-cdn.agora.io/docs-files/1690450282833)
+
+3. 在 Android Studio 中，点击 ![](https://web-cdn.agora.io/docs-files/1689672727614) (**Sync Project with Gradle Files**) 进行 Gradle 同步。
+
+4. 待同步成功后，点击 ![](https://web-cdn.agora.io/docs-files/1687670569781) (**Run 'app'**) 开始编译。
+
+5. 编译成功后，你的 Android 设备上会出现 ![](https://web-cdn.agora.io/docs-files/1690450345873) (**Agora API Example**) 应用。
+
+6. 打开 **Agora API Example** 应用后，你可以任意选择你想体验的场景。以 **视频互动直播** 为例，输入频道名（如 `test`），并点击**加入频道**。
+
+![](https://web-cdn.agora.io/docs-files/1690450380432)
+
+7. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保 App ID 不变）。以 **视频互动直播** 为例，你们输入相同的频道名并加入频道后，你们会看到彼此，并听到彼此的声音。
+
+![](https://web-cdn.agora.io/docs-files/1690450398617)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网提供开源示例项目演示 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文以跑通视频通话示例项目为例，帮助你快速体验声网视频通话效果。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample" />
+</Cards>
+
+## 前提条件
+
+- 可以访问互联网的计算机。请确保你的网络环境未部署防火墙，否则可能无法正常使用声网服务。
+- Xcode 13.0 或以上版本。
+- 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
+- 两台 iOS 14.0 以上版本的设备。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了**允许仅 App ID 加入**，则不需要获取该字段。
+- Apple 开发者账号。
+
+## 操作步骤
+
+### 获取示例项目
+
+你可以从如下两种方式中任选一种获取示例项目：
+
+- 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 iOS 视频 SDK，然后解压。
+- 前往声网在 GitHub 上提供的[示例项目](https://github.com/Shengwang-Community/API-Examples/tree/main)，然后运行以下命令将仓库克隆至本地。
+
+  ```shell
+  git clone git@github.com:AgoraIO/API-Examples.git
+  ```
+
+  :::info[信息]
+  声网在仓库中为 iOS 平台提供了视频示例项目和音频示例项目，分别位于 `/iOS/APIExample` 和 `/iOS/APIExample-Audio` 路径下。
+  :::
+
+### 配置示例项目
+
+1. 打开示例项目文件夹，在 `samples/APIExample/APIExample/Common/KeyCenter.swift` 文件中填写你从声网控制台获取到的 App ID 和 App 证书（如果项目启用了**允许仅 App ID 加入**，则 `Certificate` 字段留空）。
+
+    ```swift
+    class KeyCenter: NSObject {
+        // 把 <#Your App ID#> 替换成你的 App ID，并加引号，如 "xxxxxx"
+        static let AppId: String = <#Your App ID#>
+        // 把 #YOUR Certificate# 替换成你的 App 证书，并加引号，如 "xxxxxx"；该字段可为空
+        static let Certificate: String? = <#YOUR Certificate#>
+      }
+    ```
+
+2. 打开终端，在 `samples/API-Example` 目录下运行 `pod install` 安装 SDK 或相关依赖。安装完成后，终端会显示 `Pod installation complete!`。按照如下提示，使用 Xcode 打开项目文件夹下新生成的 `APIExample.xcworkspace` 文件。
+
+    ```ruby
+    [!] Please close any current Xcode sessions and use `APIExample.xcworkspace` for this project from now on.
+    Pod installation complete! There are 4 dependencies from the Podfile and 4 total pods installed.
+    ```
+
+### 编译并运行示例项目
+
+1. 将 iOS 设备连接至电脑，在设备上打开 **设备 > 隐私与安全性 > 安全性**，打开**开发者模式**。
+2. 在 Xcode 界面顶部的 **iOS Device** 选项中勾选你的 iOS 设备。
+
+![](https://web-cdn.agora.io/docs-files/1690165346541)
+
+1. 在项目 **TARGETS** 下的 **Signing & Capabilities** 界面勾选 **Automatically manage signing**，然后在每一个 Target 下配置你的苹果开发者账号和 **Bundle Identifier**。
+
+![bundle 设置](https://web-cdn.agora.io/docs-portal/img/rtc/iosdemo-bundle-setting.png)
+
+2. 点击 ![开始图标](https://web-cdn.agora.io/docs-files/1690171362896) 开始编译。
+
+3. 编译成功后，你的 iOS 设备上会出现 ![APIExample](https://web-cdn.agora.io/docs-files/1690171050099) App 图标。
+4. （可选）如果设备上弹出**不受信任的开发者**提示，则首先点击**取消**关闭该提示，然后在 iOS设备上打开**设置 > 通用 > VPN 与设备管理**，在**开发者 APP** 中选择信任该开发者。
+
+5. 打开 **API Example**，选择一个你想要尝试的场景，然后输入频道名（如 `test`），并点击**加入频道**按钮。
+
+![示例项目](https://web-cdn.agora.io/docs-portal/img/rtc/iosdemo-example-list.png)
+
+6. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保 `samples/APIExample/APIExample/Common/KeyCenter.swift` 中的 App ID 和 App 证书不变）。当你们输入相同的频道名加入频道后，即可在同一频道中体验各种互动场景。
+
+![频道内互动](https://web-cdn.agora.io/docs-portal/img/rtc/iosdemo-inchannel.png)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+声网提供开源示例项目演示 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文以跑通视频通话示例项目为例，帮助你快速体验声网视频通话效果。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample" />
+</Cards>
+
+## 前提条件
+
+- 可以访问互联网的计算机。请确保你的网络环境未部署防火墙，否则可能无法正常使用声网服务。
+- Xcode 13.0 或以上版本。
+- 已安装 Cocoapods。如尚未安装 Cocoapods，参考 [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 安装说明。
+- 两台 macOS 10.10 或以上版本的设备。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了**允许仅 App ID 加入**，则不需要获取该字段。
+- Apple 开发者账号。
+
+## 操作步骤
+
+### 获取示例项目
+
+你可以从如下两种方式中任选一种获取示例项目：
+
+- 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)，获取最新版的 macOS 视频 SDK，然后解压。
+
+- 前往声网在 GitHub 上提供的[示例项目](https://github.com/Shengwang-Community/API-Examples/tree/main)，然后运行以下命令克隆仓库到本地：
+
+  ```shell
+  git clone git@github.com:AgoraIO/API-Examples.git
+  ```
+
+  该仓库中包含声网实时音视频 SDK 的 Native 平台示例项目，其中 macOS 平台的 API 使用示例位于 `/macOS` 路径下。
+
+### 配置示例项目
+
+1. 打开示例项目文件夹，在 `KeyCenter.swift` 文件中填写你从声网控制台获取到的 App ID 和 App 证书（如果项目启用了**允许仅 App ID 加入**，则 `Certificate` 字段留空）。
+
+   ```swift
+   struct KeyCenter {
+   	// 把 <#Your App ID#> 替换成你的 App ID 并加引号，如 "xxxxxx"
+       static let AppId: String = <#YOUR AppId#>
+       // 如果你的项目启用了 App 证书，把 <#YOUR Certificate#> 替换成你的 App 证书并加引号，如 "xxxxxx"；如未启用该字段为空
+       static let Certificate: String? = <#YOUR Certificate#>
+   }
+   ```
+
+2. 打开终端，在 `/macOS` 目录下运行 `pod install` 安装项目依赖。安装完成后，终端会显示 `Pod installation complete!`，此时项目文件夹下会生成一个 `APIExample.xcworkspace` 文件，使用 Xcode 打开该文件。
+
+### 编译并运行示例项目
+
+1. 在 Xcode 中打开 `APIExample.xcworkspace` 文件后，在项目 **TARGETS** 下的 **Signing & Capabilities** 界面勾选 **Automatically manage signing**，然后在每一个 Target 下配置你的苹果开发者账号和 **Bundle Identifier**。
+   ![Signing & Capabilities 配置界面](https://web-cdn.agora.io/docs-files/1690515719254)
+
+2. 点击 ![开始图标](https://web-cdn.agora.io/docs-files/1690171362896) 开始编译。
+
+3. 编译成功后，示例项目的 App 会在你的窗口中弹出。
+
+4. 选择一个你想要尝试的场景，输入频道名，然后点击**加入频道**。
+
+![选择场景并加入频道界面](https://web-cdn.agora.io/docs-files/1690515752444)
+
+5. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保与 `KeyCenter.swift` 中的 App ID 一致）。当你们输入相同的频道名加入频道后，即可在同一频道中体验各种互动场景。
+
+![运行示例项目效果界面](https://web-cdn.agora.io/docs-files/1690515855575)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+声网提供了开源示例项目，演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="RTC Web 示例项目" href="https://gitee.com/agoraio-community/API-Examples-Web" />
+  <Card title="RTC Web 示例项目" href="https://github.com/AgoraIO/API-Examples-Web" />
+</Cards>
+
+本文介绍如何快速跑通 Web 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+开始前请确保开发环境满足如下要求：
+
+- Windows 或 macOS 计算机，并且：
+
+  - 下载声网 Web SDK [支持的浏览器](/zh-CN/realtime-media/rtc/reference/browser-compatibility)。声网强烈推荐使用[最新稳定版 Google Chrome 浏览器](https://www.google.com/chrome/)。
+
+  - 具备物理音视频采集设备。
+
+  - 可连接到互联网。如果你的网络环境部署了防火墙，请参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+
+  - 搭载 2.2 GHz Intel 第二代 i3/i5/i7 处理器或同等性能的其他处理器。
+
+- 安装 [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在声网控制台完成注册登录、创建项目，并获取项目的 App ID 和 App 证书。
+
+## 操作步骤
+
+### 获取示例项目
+
+运行以下命令克隆仓库到本地：
+
+```shell
+# 从 Gitee 克隆
+git clone https://gitee.com/agoraio-community/API-Examples-Web.git
+
+# 从 GitHub 克隆
+# git clone https://github.com/AgoraIO/API-Examples-Web.git
+```
+
+### 配置示例项目
+
+1. 安装依赖项。使用命令行进入克隆下来的 `/API-Examples-Web` 路径，运行以下命令安装依赖项：
+
+    ```shell
+    npm install
+    ```
+
+2. 启动项目。继续在项目根目录下，运行以下命令启动示例项目：
+
+    ```shell
+    npm run dev
+    ```
+
+    执行完成后，终端会打印如下行：
+
+    ```shell
+    please visit: http://localhost:3001/index.html
+    ```
+
+    使用浏览器打开 `http://localhost:3001/index.html` 页面，你可以看到如下界面：
+
+![web demo 启动页](https://web-cdn.agora.io/docs-portal/img/rtc/run-web-demo.png)
+
+3. 在界面中填入你从控制台获取的 **App ID** 和 **App 证书**，然后点击**设置**，完成初始化设置。
+
+    :::info[信息]
+    如果项目开启了**允许仅 App ID 加入**，则 App 证书字段留空。
+    :::
+
+### 运行示例项目
+
+在左侧栏中选择你想体验的功能或场景，设置 **Channel**，即频道名，然后根据界面步骤指引，即可加入频道进行体验。
+
+![运行项目](https://web-cdn.agora.io/docs-portal/img/rtc/run-web-demo2.png)
+
+以体验**屏幕共享**为例，具体步骤如下：
+
+1. 从左侧栏中点击**进阶示例**下的**屏幕共享**。
+
+2. 在右侧的 **Channel** 区域填入频道名，如 `testchannel`。
+
+3. 点击 **Join as host** 以主播身份加入频道，然后选择你想要共享的标签页、窗口或屏幕。成功共享后，你会在 **local stream** 区域内看到自己共享的内容。
+
+4. 邀请一位朋友使用另一台设备运行该示例项目，输入相同的 App ID、App 证书和频道名，然后点击 **Join as audience** 以观众身份加入频道。加入频道后，你的朋友就可以在 **remote stream** 区域中看到你共享的标签页、窗口或屏幕。
+
+![web 屏幕共享示例](https://web-cdn.agora.io/docs-portal/img/rtc/run-web-demo3.png)
+
+## 示例项目源码路径
+
+Web API Example 项目中包含有丰富的功能模块，你可以参考如下路径查看源码：
+
+| 路径 | 描述 |
+| --- | --- |
+| `/src/example/basic` | 快速开始示例 |
+| `/src/example/advanced` | 进阶示例 |
+| `/src/example/plugin` | 插件示例 |
+| `/src/example/others` | 其他示例 |
+| `/src/example/framework/vue` | Vue 框架示例 |
+| `/src/example/framework/react` | React 框架示例 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample" />
+  <Card title="API-Examples" href="https://github.com/Shengwang-Community/API-Examples/tree/main" />
+</Cards>
+
+本文介绍如何快速跑通 Windows 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com/) 2017 及以上。
+
+  :::warning[注意]
+  该示例项目基于 MFC。在运行项目前，请确保你的 Visual Studio 已安装**适用于最新 v142 生成工具的 C++ MFC (x86 和 x64)** 组件。
+  :::
+
+- 两台运行 Windows 7 及以上版本的设备。
+
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)创建有效的声网账户和声网项目，并从声网控制台获取以下信息：
+
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+  - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+   ```shell
+   git clone git@github.com:AgoraIO/API-Examples.git
+   ```
+
+2. 该仓库中包含声网实时音视频 SDK 所有 Native 平台的示例项目，其中 Windows 平台的 API 使用示例位于 `/windows` 路径下。
+
+### 配置示例项目
+
+1. 集成 SDK 并安装依赖
+
+   运行 `/APIExample/installThirdParty.bat` 即可自动集成 SDK、下载依赖并配置环境。
+
+2. 设置 App ID 和 Token
+
+   打开 `/APIExample/APIExample/stdafx.h` 文件，在 `enter your App id` 和 `enter your temporary token` 中填入你从声网控制台获取的 App ID 和临时 Token。
+
+   ```cpp
+   #define APP_ID     "enter your App id"
+   #define APP_TOKEN  "enter your temporary token"
+   ```
+
+### 编译并运行示例项目
+
+1. 用 Visual Studio 打开 `/APIExample/APIExample.sln` 文件。
+
+2. 点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690875789361) 开始编译。
+
+3. 编译成功后，你的 Windows 设备上会弹出以下窗口：
+   ![Windows 示例项目启动界面](https://web-cdn.agora.io/docs-files/1690875828817)
+
+4. 你可以任意选择你想体验的场景。以 **Basic Scene** 中的 **LiveBroadcasting** 直播场景为例，在 **Channel Name** 中输入生成临时 Token 时指定的频道名，并点击 **JoinChannel** 加入频道。
+
+5. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。
+   ![双端加入同一频道后的通话效果](https://web-cdn.agora.io/docs-files/1690875862097)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+声网提供开源示例项目演示 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文介绍如何快速跑通 HarmonyOS NEXT 示例项目，体验实时音视频功能。
+
+<Cards>
+  <Card title="HarmonyOS_NEXT" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
+  <Card title="HarmonyOS_NEXT" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
+</Cards>
+
+## 前提条件
+
+- DevEco Studio NEXT Beta1 及以上版本。
+- API Version 11 的 HarmonyOS NEXT SDK 及以上版本。
+- API Version 11 的 HarmonyOS NEXT 2.0.0.59 操作系统及以上版本。
+- 已通过授权的华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
+- 两台支持鸿蒙 NEXT 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
+- 可以访问互联网的计算机。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - App 证书（可选）：用于生成 Token 的字符串。如果你的项目启用了允许仅 App ID 加入，则不需要获取该字段。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令，将 Gitee 或 GitHub 示例项目仓库克隆至本地，然后切换至 `HarmonyOS_NEXT-main` 分支。
+
+    ```shell
+    # 克隆 Gitee 仓库
+    git clone git@gitee.com:agoraio-community/API-Examples.git
+
+    # 克隆 Github 仓库
+    git clone git@github.com:AgoraIO/API-Examples.git
+    ```
+
+2. 该仓库中包含声网 RTC SDK 所有 Native 平台的示例项目，其中鸿蒙 NEXT 平台的 API 使用示例位于 `/HarmonyOS_NEXT` 路径下。
+
+### 配置示例项目
+
+1. 用 DevEco Studio 打开 `/API-Examples-dev-HarmonyOS_NEXT/HarmonyOS_NEXT/APIExample` 文件夹。
+2. 为你的项目设置自动签名。
+
+    点击 **File** > **Project Structure...** > **Project** > **SigningConfigs**，在窗口中勾选 **Support HarmonyOS** 和 **Automatically generate signature**。点击界面提示的 **Sign In** 并使用华为帐号登录。等待自动签名完成后，点击 **OK** 即可。
+
+![配置个性签名](https://web-cdn.agora.io/docs-portal/img/rtc/harmony-signing.png)
+
+2. 设置 App ID 和 App 证书
+
+    打开 `HarmonyOS_NEXT/APIExample/entry/src/main/ets/common/KeyCenter.ets` 文件，在 `YOUR APP ID` 和 `YOUR APP CERTIFICATE` 中填入你从声网控制台获取的 App ID 和 App 证书。
+
+    ```arkts
+    // 把 <#Your App ID#> 替换成你的 App ID，并加引号，如 "xxxxxx"
+    export const AppID: string = YOUR APP ID
+
+    // 把 #YOUR Certificate# 替换成你的 App 证书，并加引号，如 "xxxxxx"；该字段可为空
+    export const AppCertificate: string = YOUR APP CERTIFICATE
+    ```
+
+### 编译并运行示例项目
+
+1. 开启鸿蒙设备的开发者选项，打开 USB 调试选项，通过 USB 连接线将鸿蒙设备接入电脑，并在顶部菜单栏中勾选你的设备。
+
+![选择设备](https://web-cdn.agora.io/docs-portal/img/rtc/harmony-select-device.png)
+
+2. 点击 ![](https://web-cdn.agora.io/docs-portal/img/rtc/harmony-run-button.png) 按钮，开始编译。
+3. 编译成功后，你的设备上会出现 **APIExample** App。
+
+4. 打开 **APIExample** App，选择你想体验的场景。以**视频互动直播**为例，输入频道名（如 `09666`），并点击 **Join** 加入频道。
+
+![demo 界面](https://web-cdn.agora.io/docs-portal/img/rtc/harmonydemo1.png)
+
+5. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保 App ID 不变）。以**视频互动直播**为例，你们输入相同的频道名并加入频道后，你们会看到彼此，并听到彼此的声音。
+
+![视频互动直播](https://web-cdn.agora.io/docs-portal/img/rtc/harmonydemo2.png)
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+声网在 GitHub 上提供一个开源的小程序实时音视频示例项目。在搭建自己的小程序项目前，你可以下载体验或参考源代码。本文介绍如何配置环境并跑通该示例项目。
+
+<Cards>
+  <Card title="Agora-Miniapp-Tutorial" href="https://github.com/AgoraIO/Agora-Miniapp-Tutorial" />
+</Cards>
+
+## 前提条件
+
+开始前，请确保你的开发环境满足如下条件：
+
+- 一个经过企业认证的微信小程序账号。在调试小程序示例项目过程中，需要使用 live-pusher 和 live-player 组件。只有特定行业的认证企业账号才可以使用这两个组件。详见[小程序官网文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
+- 下载并安装最新版本的[微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)。
+- 参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)在控制台创建项目、获取 App ID 和临时 Token，并开启小程序服务。
+
+  :::warning[注意]
+  临时 Token 的有效期是 24 小时。Token 过期会引起项目编译失败。
+  :::
+
+- 至少一台安装有微信 App 的移动设备。
+
+## 操作步骤
+
+### 1. 获取小程序组件权限
+
+在[微信公众平台](https://mp.weixin.qq.com/)的小程序**开发**选项中，切换到**接口设置**页签，打开**实时播放音视频流**和**实时录制音视频流**的开关。
+
+![打开音视频开关](https://web-cdn.agora.io/docs-files/1605069073929)
+
+<a id="add-ip"></a>
+### 2. 配置服务器域名
+
+在小程序的开发设置里，将如下域名配到服务器域名里，其中 **request 合法域名**区域填入以 https 开头的域名；**socket 合法域名**区域填入以 `wss` 开头的域名。
+
+如果你使用的 SDK 为 **v2.5.3** 或更高版本，你需要在 **request 合法域名**及 **socket 合法域名**中添加以下域名：
+
+ ```shell
+wss://miniapp.agoraio.cn
+https://uap-ap-web-1.agora.io
+https://uap-ap-web-2.agoraio.cn
+https://uap-ap-web-3.agora.io
+https://uap-ap-web-4.agoraio.cn
+https://report-ad.agoralab.co
+https://rest-argus-ad.agoralab.co
+https://uni-webcollector.agora.io
+```
+
+
+![添加域名](https://web-cdn.agora.io/docs-files/1638759333663)
+
+
+如果你使用的 SDK 为 v2.4.6 或更低版本，你需要在 request 合法域名及 socket 合法域名中添加以下域名：
+
+```shell
+https://uni-webcollector.agora.io
+wss://miniapp.agoraio.cn
+https://miniapp-1.agoraio.cn
+https://miniapp-2.agoraio.cn
+https://miniapp-3.agoraio.cn
+https://miniapp-4.agoraio.cn
+```
+
+### 3. 获取示例项目并集成小程序 SDK
+
+参考如下步骤获取小程序示例项目，并将小程序 SDK 集成到示例项目中。
+
+1. 下载 [Agora-Miniapp-Tutorial](https://github.com/AgoraIO/Agora-Miniapp-Tutorial) 仓库。
+2. 下载最新版[微信小程序 SDK](/zh-CN/realtime-media/rtc/reference/downloads) 并解压。
+3. 将解压后的 SDK 包更名为 **mini-app-sdk-production.js**，然后将其复制到 `Agora-Miniapp-Tutorial-master/lib` 路径下。
+4. 打开 `Agora-Miniapp-Tutorial-master/utils/config.js` 文件，然后在 `const APPID` 行后添加你获取到的声网项目 App ID。
+5. 打开 `Agora-Miniapp-Tutorial-master/pages/meeting/meeting.js` 文件，将 `client.join` 和 `client.rejoin` 方法中的 `undefined` 参数修改为你获取到的临时 Token，确保使用双引号（""）包裹该参数值。
+
+### 4. 运行示例项目
+
+参考如下步骤在微信开发者工具中运行小程序示例项目。
+
+1. 打开**微信开发者工具**，点击小程序界面的 **+**。
+2. 在弹出的界面中选择导入项目页签，然后在目录一栏中选中小程序示例项目在本地的存储路径，填入你**微信小程序的 App ID**，然后点击**导入**。
+
+![导入小程序](https://web-cdn.agora.io/docs-files/1605070114544)
+
+3. 加载成功后，微信开发者工具上会出现小程序示例项目的界面。为保证体验效果，我们建议选择**真机调试**。点击右上角的真机调试，工具界面会出现一个真机调试的二维码。
+
+![真机调试](https://web-cdn.agora.io/docs-files/1605070164900)
+
+4. 使用移动端微信 App 扫描二维码，进入手机调试界面。填入**房间名**，然后点击**加入房间**。在弹出的对话框中点击**确定**，表示作为主播加入频道。稍等片刻，就可以在小程序的界面看到本地的视频画面。请确保此处填入的房间名，和生成临时 Token 时填入的频道名是一致的。
+
+## 常见问题
+
+通常客户端初始化失败，会伴随错误码 901 或 903。我们建议你检查确认如下项：
+
+- 填入 `config.js` 文件中的 App ID，确认已在控制台开启了小程序服务。
+- 你的微信小程序账号需要在开发界面配置域名，且打开了**实时播放音视频流**和**实时录制音视频流**的开关。
+- 生成临时 Token 时使用的频道名，需要和运行小程序时填入的频道名一致。
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/example" />
+</Cards>
+
+本文介绍如何快速跑通 Electron 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Node.js](https://nodejs.org/en/download/) 14 或更高版本
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- Python 3.11.x
+- 可以访问互联网的 Windows 或 macOS 电脑。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 从以下两种方式中任选一种获取示例项目：
+    - 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 Electron 视频 SDK。
+    - 运行以下命令将 Electron SDK 克隆至本地。
+
+        ```shell
+        git clone git@github.com:AgoraIO-Extensions/Electron-SDK.git
+        ```
+
+2. Electron SDK 的 API 使用示例位于 `/example/` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/example/src/renderer/examples/basic`      | 基础功能。 |
+    | `/example/src/renderer/examples/advanced`   | 进阶功能。 |
+    | `/example/src/renderer/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+
+### 配置示例项目
+
+切换至 `/example` 目录下，运行以下命令集成 SDK 并安装依赖项：
+
+```shell
+yarn
+```
+
+### 运行示例项目
+
+1. 在 `/example/` 目录使用以下命令运行 Electron 示例项目。
+
+    ```shell
+    yarn start
+    ```
+
+2. 以 Windows 为例，运行完成后，你的电脑上会弹出以下应用。
+
+![Electron Demo](https://web-cdn.agora.io/docs-portal/img/rtc/electron-run-demo.png)
+
+3. 在 **Setting** 页面填入你从控制台获取的 App ID、临时 Token 和生成临时 Token 时指定的频道名，之后点击 **Save** 保存设置。
+
+4. 你可以在左侧目录任意选择你想体验的功能或场景。以 **Basic** 中的 **JoinChannelVideo** 为例，点击 **join channel** 加入频道。
+
+4. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+声网提供了开源的 SDK 示例项目，展示了各种基础和进阶的场景。本文以跑通视频通话示例项目为例，帮助你快速体验声网视频通话效果。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity" />
+</Cards>
+
+## 前提条件
+
+- 已下载 [Unity Hub](https://unity.com/download)。
+
+- Unity 2018.4.0 或以上版本。
+
+- 一个 Unity 项目，你可以参考 [Unity 官方文档](https://docs.unity3d.com/2018.2/Documentation/Manual/GettingStarted.html)来创建一个项目。
+
+- 操作系统与编译器要求：
+
+  | 开发平台 | 操作系统版本       | 编译器版本                          |
+  | :------- | :----------------- | :---------------------------------- |
+  | Android  | Android 4.1 或以上 | Android Studio 3.0 或以上           |
+  | iOS      | iOS 9.0 或以上     | Xcode 9.0 或以上                    |
+  | macOS    | macOS 10.10 或以上 | Xcode 9.0 或以上                    |
+  | Windows  | Windows 7 或以上   | Microsoft Visual Studio 2017 或以上 |
+
+- 计算机可以访问互联网。请确保你的网络环境未部署防火墙，否则可能无法正常使用声网服务。
+
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+
+  - App ID：声网随机生成的字符串，用于识别你的项目。
+  - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+  - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 Unity 视频 SDK，下载完成后你会看到一个 `.unitypackage` 文件。
+
+   :::info[信息]
+   你也可以直接将上文提到的 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity) 示例项目克隆到你的项目路径下，以获取示例项目。
+   :::
+
+2. 点击 `.unitypackage` 文件，会弹出一个 **Import Unity Package** 窗口，点击右下角的 **Import** 按钮把 Unity SDK 导入到你的 Unity 项目中。导入完成后，你可以在 **Project** 面板看到 `Agora-RTC-PLUGIN` 文件夹。
+
+   ![导入 Unity SDK 到项目的界面](https://web-cdn.agora.io/docs-files/1691052920319)
+
+### 配置示例项目
+
+在 `Agora-RTC-PLUGIN/API-Example/AppIdInput.asset` 中，填入你从声网控制台获取到的 App ID、临时 Token 和频道名。
+
+![在 AppIdInput.asset 中填写 App ID、临时 Token 和频道名的界面](https://web-cdn.agora.io/docs-files/1692327313057)
+
+### 编译并运行示例项目
+
+1. `API-Example` 文件夹下包含 `Basic` 和 `Advanced` 两个文件，分别包含了声网 Unity SDK 的基础和进阶场景的使用示例（如下图所示）。选择一个你想要尝试的场景，点击 **Play** 进行编译。
+
+![](https://web-cdn.agora.io/docs-files/1691054049527)
+
+2. 以视频通话为例，编译成功后你可以看到自己本地的视频预览。
+
+   ![本地视频预览效果](https://web-cdn.agora.io/docs-files/1690958780301)
+
+3. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目（需确保 App ID、临时 Token 和频道名与你配置示例项目时填入的一致）。当你们输入相同的频道名加入频道后，即可在同一频道中体验各种互动场景。
+
+   ![双端加入同一频道后的通话效果](https://web-cdn.agora.io/docs-files/1690958810176)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/Agora-Flutter-SDK/tree/main/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/Agora-Flutter-SDK/tree/main/example" />
+</Cards>
+
+本文介绍如何快速跑通 Flutter 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- Flutter 2.10.5 或更高版本
+- Dart 2.14.0 或更高版本
+- 根据你的目标平台，准备对应的开发和运行环境：
+    | 目标平台 | 环境要求 |
+    | --- | --- |
+    | iOS | <Slot name="run-demo-flutter-markdown-0-1-1" /> |
+    | Android | <Slot name="run-demo-flutter-markdown-0-2-1" /> |
+    | macOS | <Slot name="run-demo-flutter-markdown-0-3-1" /> |
+    | Windows | <Slot name="run-demo-flutter-markdown-0-4-1" /> |
+
+    <Slot for="run-demo-flutter-markdown-0-1-1">
+
+    - macOS 10.15 或更高版本
+    - 最新版本的 Xcode
+    - 两台 iOS 设备
+
+    </Slot>
+
+    <Slot for="run-demo-flutter-markdown-0-2-1">
+
+    - macOS 10.15 或更高版本
+    - Windows 10 或更高版本
+    - 最新版本的 Android Studio
+    - 两台 Android 设备
+
+    </Slot>
+
+    <Slot for="run-demo-flutter-markdown-0-3-1">
+
+    - macOS 10.15 或更高版本
+    - 最新版本的 Xcode
+    - 两台 macOS 设备
+
+    </Slot>
+
+    <Slot for="run-demo-flutter-markdown-0-4-1">
+
+    - Windows 10 或更高版本
+    - 最新版本的 Visual Studio
+    - 两台 Windows 设备
+
+    </Slot>
+
+    :::info[信息]
+    - 更多环境要求细节，详见 [Install Flutter](https://docs.flutter.dev/get-started/install)。
+    - 你可以运行 `flutter doctor` 命令检查开发和运行环境是否达到要求。
+    :::
+
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Extensions/Agora-Flutter-SDK.git
+    ```
+
+2. 声网实时音视频 Flutter SDK 的 API 使用示例位于 `/example` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/example/lib/examples/basic`      | 基础功能。 |
+    | `/example/lib/examples/advanced`   | 进阶功能。 |
+
+### 配置示例项目
+
+1. 集成 SDK 并安装依赖
+
+    在仓库的本地目录下，运行以下命令集成 SDK 并安装依赖项：
+
+    ```shell
+    flutter pub get
+    ```
+
+2. 设置 App ID 和临时 Token
+
+    打开 `/example/lib/config/agora.config.dart` 文件，将 `<TEST_APP_ID>`、`<TEST_TOKEN>` 和 `<TEST_CHANNEL_ID>` 分别替换为你从控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名。
+
+    ```dart
+    String get appId {
+      return '<TEST_APP_ID>';
+    }
+
+    String get token {
+      return '<TEST_TOKEN>';
+    }
+
+    String get channelId {
+      return '<TEST_CHANNEL_ID>';
+    }
+    ```
+
+### 编译并运行示例项目
+
+1. 将目标设备连接到电脑。
+
+2. 打开终端，导航到 `/examples` 目录。
+
+3. 运行以下命令在可用设备上运行 Flutter 示例项目。
+
+    ```shell
+    flutter run
+    ```
+
+4. 以 macOS 为例，编译完成后，你的设备上会弹出以下应用。
+
+![](https://web-cdn.agora.io/docs-files/1692001262062)
+
+5. 你可以任意选择你想体验的场景。以 **Basic** 中的 **JoinChannelVideo** 为例，在 **Channel ID** 中输入生成临时 Token 时指定的频道名，并点击 **Join channel** 加入频道。
+
+6. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。
+
+![](https://web-cdn.agora.io/docs-files/1692001319323)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+声网提供开源示例项目演示声网 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title="API-Examples" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example" />
+  <Card title="API-Examples" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/example" />
+</Cards>
+
+本文介绍如何快速跑通 React Native 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+<Tabs defaultValue="android" groupId="preq" persist>
+<TabsList>
+  <TabsTrigger value="android">目标平台为 Android</TabsTrigger>
+  <TabsTrigger value="ios">目标平台为 iOS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- macOS、Windows 或 Linux 操作系统
+- Node 16 或以上
+- [Java Development Kit (JDK)](https://openjdk.org/projects/jdk/11/) 11 或以上
+- 最新版本的 Android Studio
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- Android 5.0 或以上设备
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- macOS 操作系统
+- Node 16 或以上
+- Xcode
+- [Yarn](https://yarnpkg.com/getting-started) 包管理工具
+- [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) 1.12 及以上版本
+- iOS 12.4 或以上设备
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 有效的声网账户和声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)，从声网控制台获取以下信息：
+   - App ID：声网随机生成的字符串，用于识别你的 App。
+   - 临时 Token：你的 App 客户端加入频道时会使用 Token 对用户进行鉴权。临时 Token 的有效期为 24 小时。
+
+</TabsContent>
+</Tabs>
+
+关于搭建开发环境的更多注意事项，详见[搭建开发环境](https://reactnative.dev/docs/environment-setup)。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 从以下两种方式中任选一种获取示例项目：
+    - 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版的 React Native 视频 SDK。
+    - 运行以下命令将 React Native SDK 克隆至本地。
+
+        ```shell
+        git clone git@github.com:AgoraIO-Extensions/react-native-agora.git
+        ```
+
+2. React Native SDK 的 API 使用示例位于 `/example/` 路径下。
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/example/src/examples/basic`      | 基础功能。 |
+    | `/example/src/examples/advanced`   | 进阶功能。 |
+    | `/example/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+
+### 配置示例项目
+
+1. 安装依赖项
+
+    在项目根目录下，运行以下命令集成 SDK 并安装依赖项：
+
+    ```shell
+    yarn
+    ```
+
+    :::warning[注意]
+    由于 `react-native-agora` 项目依赖于 Yarn 工作区，你无法使用 npm 安装依赖。
+    :::
+
+2. 设置 App ID 和临时 Token
+
+    打开 `/example/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
+
+    ```typescript
+    // 填入 App ID
+    let localAppId = '';
+    try {
+    localAppId = require('./appID').default;
+    console.log('appID', localAppId);
+    } catch (error) {
+    console.warn(error);
+    }
+
+    const config = {
+    appId: localAppId,
+    // 填入临时 Token
+    token: '',
+    // 填入生成临时 Token 时使用的频道名
+    channelId: 'testdcg',
+    uid: 0,
+    logFilePath: '',
+    };
+
+    export default config;
+    ```
+
+### 运行示例项目
+
+1. 在项目根目录使用以下命令运行 React Native 示例项目。
+
+    ```shell
+    // 目标平台为 Android
+    yarn example android
+
+    // 目标平台为 iOS
+    yarn example ios
+    ```
+
+2. 以 Android 为例，运行完成后，你的电脑上会弹出以下应用。
+
+![React Native Demo](https://web-cdn.agora.io/docs-portal/img/rtc/rn-run-demo1.png)
+
+3. 你可以任意选择你想体验的功能或场景。以 **Basic** 中的 **JoinChannelVideo** 为例，点击 **join channel** 加入频道。
+
+![React Native Demo](https://web-cdn.agora.io/docs-portal/img/rtc/rn-run-demo2.png)
+
+4. 为更好地体验各种音视频互动场景，你可以邀请一位朋友使用另一台设备运行该示例项目，使用相同的 App ID、Token 和频道名加入频道，你们会看到并听到彼此。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+
+声网在 GitHub 上提供开源示例项目 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) 演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+本文介绍如何快速跑通 Unreal C++ 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
+- 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
+  | 开发平台 | 参考文档  | 备注    |
+  | :--- | :------ | :------------------------------ |
+  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
+    ```
+
+2. 声网实时互动 Unreal SDK 的 API C++ 使用示例位于 `/Agora-Unreal-SDK-CPP-Example` 路径下，其中包含：
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/Agora-Unreal-SDK-CPP-Example/Content/API-Example/Basic`     | 基础功能 API 示例。 |
+    | `/Agora-Unreal-SDK-CPP-Example/Content/API-Example/Advance`   | 进阶功能 API 示例。 |
+
+### 配置示例项目
+
+参考以下步骤集成声网实时互动 Unreal SDK：
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)下载最新版本的 Unreal 视频 SDK，并解压缩。
+2. 在 `/Agora-Unreal-SDK-CPP-Example` 路径下，创建名为 `Plugins` 的文件夹。
+3. 将 Unreal SDK 文件夹中的 `AgoraPlugin` 拷贝到 `Plugins` 中。
+
+### 编译并运行示例项目
+
+在 **Unreal Editor** 中，你可以在主关卡或任意子关卡中编译并运行示例项目。
+
+<Tabs defaultValue="mainlevel" groupId="operating-systems" persist>
+<TabsList>
+  <TabsTrigger value="mainlevel">主关卡</TabsTrigger>
+  <TabsTrigger value="sublevel">子关卡</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mainlevel">
+
+1. 在 C++ API 示例的路径下，双击 `AgoraExample.uproject` 打开项目。
+
+2. 双击 **MainLevel**，然后点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 编译并运行示例项目。
+
+3. 以 Windows 为例，运行成功后，你会看到如下界面，在文本框中填入你从控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名。
+
+![运行界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-cpp-demo-main-level-01.png)
+
+4. 此时，你可以点击左侧按钮，从主关卡导航到 API 示例的子关卡，体验指定的场景。以 **BasicVideoCallScene** 为例，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-cpp-demo-main-level-02.png)
+
+5. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+
+<TabsContent value="sublevel">
+
+1. 在 C++ API 示例的路径下，双击 `AgoraExample.uproject` 打开项目。
+
+2. 以 **BasicVideoCallScene** 为例，在 **Content Browser** 中双击子关卡，在 **World Outliner** 面板中点击蓝图 **BP_AgoraActor**，然后在 **Details** 面板的 **APP ID**、**TOKEN** 和 **CHANNEL NAME** 字段分别填入你的项目的 App ID、临时 Token 以及频道名。
+
+![配置 App ID、临时 Token 和频道名的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-cpp-demo-sub-level-01.png)
+
+3. 点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 在编译并运行示例项目。
+
+4. 编译成功过后，你会看到如下界面，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-cpp-demo-main-level-02.png)
+
+5. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>
+
+<PlatformStructured platform="blueprint">
+
+声网在 GitHub 上提供开源示例项目 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) 演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+本文介绍如何快速跑通 Unreal Blueprint 示例项目，体验实时音视频功能。
+
+## 前提条件
+
+- [Unreal Engine](https://www.unrealengine.com/zh-CN/download) 4.27 及以上版本
+- 两台设备，不可使用虚拟机。参考下方列出的 Unreal Engine 官方文档，根据你的目标平台和引擎版本准备开发环境：
+  | 开发平台 | 参考文档  | 备注    |
+  | :--- | :------ | :------------------------------ |
+  | Android  | [Android 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/android-development-requirements?application_version=4.27) | 无    |
+  | iOS | [iOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/ios-and-tvos-development-requirements?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | macOS | [macOS 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 有效的 Apple 开发者签名。  |
+  | Windows | [Windows 开发环境要求](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/hardware-and-software-specifications?application_version=4.27) | 32 位 Windows 仅支持 Unreal Engine 4 及以下版本，你需要在 `AgoraPluginLibrary.Build.cs` 文件中将 Windows 32 相关的代码取消注释。 |
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 一个有效的声网账号以及声网项目。请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
+    - 频道名：用于标识频道的字符串。
+
+## 操作步骤
+
+### 获取示例项目
+
+1. 运行以下命令克隆仓库到本地：
+
+    ```shell
+    git clone git@github.com:AgoraIO-Extensions/Agora-Unreal-RTC-SDK.git
+    ```
+
+2. 声网实时互动 Unreal SDK 的 Blueprint 使用示例位于 `/Agora-Unreal-SDK-Blueprint-Example` 路径下，其中包含：
+
+    | 路径                        | 描述                           |
+    |:---------------------------|:-------------------------------|
+    | `/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Basic`     | 基础功能 API 示例。 |
+    | `/Agora-Unreal-SDK-Blueprint-Example/Content/API-Example/Advance`   | 进阶功能 API 示例。 |
+
+### 配置示例项目
+
+参考以下步骤集成声网实时互动 Unreal SDK：
+
+1. 前往[下载](/zh-CN/realtime-media/rtc/reference/downloads)页面，下载最新版本的 Unreal 视频 SDK，并解压缩。
+2. 在 `/Agora-Unreal-SDK-Blueprint-Example` 路径下，创建名为 `Plugins` 的文件夹。
+3. 将 Unreal SDK 文件夹中的 `AgoraPlugin` 拷贝到 `Plugins` 中。
+
+### 编译并运行示例项目
+
+在 **Unreal Editor** 中，你可以在主关卡或任意子关卡中编译并运行示例项目。
+
+<Tabs defaultValue="mainlevel" groupId="operating-systems" persist>
+<TabsList>
+  <TabsTrigger value="mainlevel">主关卡</TabsTrigger>
+  <TabsTrigger value="sublevel">子关卡</TabsTrigger>
+</TabsList>
+
+<TabsContent value="mainlevel">
+
+1. 在 Blueprint 使用示例的路径下，双击 `AgoraBPExample.uproject` 打开项目。
+
+2. 双击 **MainLevel**，然后点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 编译并运行示例项目。
+
+3. 以 Windows 为例，运行成功后，你会看到如下界面，在文本框中填入你从控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名。
+
+![运行界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-bp-demo-main-level-01.png)
+
+4. 此时，你可以点击左侧按钮，从主关卡导航到 API 示例的子关卡体验指定场景。以 **BasicVideoCallScene** 为例，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-bp-demo-main-level-02.png)
+
+5. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+
+<TabsContent value="sublevel">
+
+1. 在 Blueprint 使用示例的路径下，双击 `AgoraBPExample.uproject` 打开项目。
+
+2. 以 **BasicVideoCallScene** 为例，在 **Content Browser** 中双击子关卡，点击编辑器上方的 **Blueprints > Open Level Blueprint** 打开对应的关卡蓝图。
+
+![蓝图界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-bp-demo-sub-level-01.png)
+
+3. 在 **Appid**、**ChannelId** 和 **Token** 变量的 **Default Value** 字段分别填入你项目的 App ID、频道名以及临时 Token。
+
+![配置 App ID、频道名和临时 Token 的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-bp-demo-sub-level-02.png)
+
+4. 点击 ![编译按钮](https://web-cdn.agora.io/docs-files/1690867946685) 在子关卡编译并运行示例项目。
+
+5. 编译成功过后，你会看到如下界面，点击 **JoinChannel** 加入频道，你会在本地视图中看到自己。
+
+![加入频道后的界面](https://web-cdn.agora.io/docs-portal/img/rtc/unreal-bp-demo-main-level-02.png)
+
+6. 邀请一位朋友通过另一台设备来使用相同的 App ID、频道名和 Token 加入频道。你们会看到彼此，并听到彼此的声音。
+
+</TabsContent>
+</Tabs>
+
+</PlatformStructured>

@@ -1,0 +1,561 @@
+---
+title: 原始视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_video_raw
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_video_raw.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_video_raw"></a>
+
+<a id="callback_ivideoframeobserver_getmirrorapplied"></a>
+
+<a id="ariaid-title2"></a>
+
+## getMirrorApplied
+
+设置视频数据镜像。
+
+<a id="callback_ivideoframeobserver_getmirrorapplied__prototype"></a>
+
+```text
+virtual bool getMirrorApplied() { return false; }
+```
+
+<a id="callback_ivideoframeobserver_getmirrorapplied__detailed_desc"></a>
+
+### 详情
+
+如果你希望获取的视频数据为原始视频的镜像，需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置是否对原始视频数据作镜像处理。
+
+:::caution
+注意：
+
+- 在 Android 平台上，该回调支持的视频数据格式有：I420、RGBA 和 Texture。
+- 在 Windows 平台上，该回调支持的视频数据格式有：I420、RGBA 和 TextureBuffer。
+- 在 iOS 平台上，该回调支持的视频数据格式有：I420、RGBA 和 CVPixelBuffer。
+- 在 macOS 平台上，该回调支持的视频数据格式有：I420 和 RGBA。
+- 该方法和 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像失败。
+:::
+
+<a id="callback_ivideoframeobserver_getmirrorapplied__return_values"></a>
+
+### 返回值
+
+设置 SDK 输出视频数据时是否作镜像处理：
+
+- `true`: 镜像。
+- `false`: （默认）不镜像。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_getobservedframeposition"></a>
+
+<a id="ariaid-title3"></a>
+
+## getObservedFramePosition
+
+设置视频观测位置。
+
+<a id="callback_ivideoframeobserver_getobservedframeposition__prototype"></a>
+
+```text
+virtual uint32_t getObservedFramePosition() {
+                return base::POSITION_POST_CAPTURER | base::POSITION_PRE_RENDERER;
+                }
+```
+
+<a id="callback_ivideoframeobserver_getobservedframeposition__detailed_desc"></a>
+
+### 详情
+
+成功注册视频数据观测器后，SDK 会在每个特定的视频帧处理节点通过该回调来判断是否触发 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)、 [onRenderVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调，供你观测本地采集视频数据、远端发送的视频数据以及编码前的视频数据。你可以根据场景需求，通过修改该方法的返回值，设置你需要观测的某个或多个位置：
+
+- POSITION_POST_CAPTURER(1 &lt;&lt; 0)，本地采集视频数据后的位置，对应 onCaptureVideoFrame 回调。
+- POSITION_PRE_RENDERER(1 &lt;&lt; 1)，接收远端发送的视频在渲染前的位置，对应 onRenderVideoFrame 回调。
+- POSITION_PRE_ENCODER(1 &lt;&lt; 2)，本地视频编码前的位置，对应 onPreEncodeVideoFrame 回调。
+
+:::caution
+注意：
+
+- 观测多个位置时，需要使用 '|' （或）运算符。
+- 该回调默认观测 POSITION_POST_CAPTURER(1 &lt;&lt; 0)和 POSITION_PRE_RENDERER(1 &lt;&lt; 1)。
+- 为降低设备耗能，你可以根据实际需求适当减少观测位置。
+- 当视频处理模式为 PROCESS_MODE_READ_WRITE、并且设置观测点为 POSITION_PRE_ENCODER | POSITION_POST_CAPTURER 时，会造成 [getMirrorApplied](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getmirrorapplied) 不生效，需要修改视频处理模式或观测点的位置。
+:::
+
+<a id="callback_ivideoframeobserver_getobservedframeposition__return_values"></a>
+
+### 返回值
+
+设置观测位置的 bit mask。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/unreal-cpp/enum-videomoduleposition)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_getrotationapplied"></a>
+
+<a id="ariaid-title4"></a>
+
+## getRotationApplied
+
+设置视频数据旋转。
+
+<a id="callback_ivideoframeobserver_getrotationapplied__prototype"></a>
+
+```text
+virtual bool getRotationApplied() { return false; }
+```
+
+<a id="callback_ivideoframeobserver_getrotationapplied__detailed_desc"></a>
+
+### 详情
+
+如果你希望获取的视频数据已根据 VideoFrame 中的旋转信息 rotation 进行旋转，需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置是否对采集到的视频数据进行旋转。
+
+<a id="callback_ivideoframeobserver_getrotationapplied__note1"></a>
+
+:::caution
+注意：
+
+- 在 Android 平台上，该回调支持的视频数据格式有：I420、RGBA 和 Texture。
+- 在 Windows 平台上，该回调支持的视频数据格式有：I420、RGBA 和 TextureBuffer。
+- 在 iOS 平台上，该回调支持的视频数据格式有：I420、RGBA 和 CVPixelBuffer。
+- 在 macOS 平台上，该回调支持的视频数据格式有：I420 和 RGBA。
+:::
+
+<a id="callback_ivideoframeobserver_getrotationapplied__return_values"></a>
+
+### 返回值
+
+设置 SDK 输出视频数据时是否作旋转处理：
+
+- `true`: 旋转。
+- `false`: （默认）不旋转。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_getvideoformatpreference"></a>
+
+<a id="ariaid-title5"></a>
+
+## getVideoFormatPreference
+
+设置 SDK 输出的原始视频数据格式。
+
+<a id="callback_ivideoframeobserver_getvideoformatpreference__prototype"></a>
+
+```text
+virtual VIDEO_PIXEL_FORMAT getVideoFormatPreference() { return VIDEO_PIXEL_DEFAULT; }
+```
+
+<a id="callback_ivideoframeobserver_getvideoformatpreference__detailed_desc"></a>
+
+### 详情
+
+你需要在调用 [registerVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#api_imediaengine_registervideoframeobserver) 方法时注册该回调。成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调，你需要在该回调的返回值中设置期望的视频数据格式。
+
+:::note
+注： 在默认情况下，原始视频像素格式 (VIDEO_PIXEL_DEFAULT) 存在以下类型：
+
+- 在 Android 平台上，默认的视频帧类型可能为 I420Buffer 或 TextureBuffer。TextureBuffer 类型的纹理格式可能为 OES 格式或者 RGB 格式。如果 getVideoFormatPreference 返回的视频帧类型为 VIDEO_PIXEL_DEFAULT，你需要在处理视频数据时增加对 I420Buffer 或 TextureBuffer 的适配。视频帧类型固定为 I420Buffer 的情况包括但不限于：
+
+  - 特定机型，例如：LG G5 SE (H848)，Google Pixel 4a，Samsung Galaxy A7 或 Xiaomi Mi Max。
+  - 已集成视频增强插件并开启视频降噪或暗光增强功能。
+- 在 iOS 和 macOS 平台上，默认的视频帧类型可能为 I420 或 CVPixelBufferRef。
+- 在 Windows 平台上，默认为 YUV420。
+:::
+
+<a id="callback_ivideoframeobserver_getvideoformatpreference__return_values"></a>
+
+### 返回值
+
+设置 SDK 输出的原始数据格式。详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/unreal-cpp/enum-videopixelformat)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_getvideoframeprocessmode"></a>
+
+<a id="ariaid-title6"></a>
+
+## getVideoFrameProcessMode
+
+设置视频处理模式。
+
+<a id="callback_ivideoframeobserver_getvideoframeprocessmode__prototype"></a>
+
+```text
+virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() {
+  return PROCESS_MODE_READ_ONLY;
+}
+```
+
+<a id="callback_ivideoframeobserver_getvideoframeprocessmode__detailed_desc"></a>
+
+### 详情
+
+成功注册视频观测器后，SDK 会触发一次该回调。你需要在该回调的返回值中设置期望的视频处理模式。
+
+<a id="callback_ivideoframeobserver_getvideoframeprocessmode__return_values"></a>
+
+### 返回值
+
+详见 [VIDEO_FRAME_PROCESS_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoframeprocessmode)。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="api_imediaengine_registervideoframeobserver"></a>
+
+<a id="ariaid-title7"></a>
+
+## registerVideoFrameObserver
+
+注册原始视频观测器对象。
+
+<a id="api_imediaengine_registervideoframeobserver__prototype"></a>
+
+```text
+virtual int registerVideoFrameObserver(IVideoFrameObserver* observer) = 0;
+```
+
+<a id="api_imediaengine_registervideoframeobserver__detailed_desc"></a>
+
+如果你想要观测原始视频帧 (如 YUV 或 RGBA 格式)，声网推荐你通过该方法注册一个 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver) 类。
+
+调用该方法注册视频观测器时，你可以根据需要注册 IVideoFrameObserver 类中的回调。在成功注册视频观测器后，SDK 会在捕捉到每个视频帧时，触发你所注册的上述回调。
+
+<a id="api_imediaengine_registervideoframeobserver__scenario"></a>
+
+### 适用场景
+
+注册原始视频观测器后，你可以将获取到的原始视频数据应用于各种视频前处理场景，例如自行实现虚拟背景、美颜等场景。
+
+<a id="api_imediaengine_registervideoframeobserver__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_registervideoframeobserver__restriction"></a>
+
+### 调用限制
+
+在处理回调时，你需要考虑视频帧中 width 和 height 参数的变化，因为观测得到的视频帧可能会随以下情况变化：
+
+- 当网络状况差时，分辨率会阶梯式下降。
+- 当用户自行调整分辨率时，回调中报告的分辨率也会变化。
+
+<a id="api_imediaengine_registervideoframeobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
+
+接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_registervideoframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_imediaengine)
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
+
+<a id="ariaid-title8"></a>
+
+## onCaptureVideoFrame
+
+获取本地设备采集到的视频数据。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__prototype"></a>
+
+```text
+virtual bool onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame& videoFrame) = 0;
+```
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__detailed_desc"></a>
+
+你可以在回调中获取本地设备采集到的原始视频数据，并可根据需要进行前处理。完成前处理后，你可以在该回调中直接修改 videoFrame，并将返回值设置为 `true`，即可将修改后的视频数据发送给 SDK。
+
+如果你需要将处理后的数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) 方法，将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE）。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__scenario"></a>
+
+### 适用场景
+
+- 在本地采集的视频数据被 SDK 处理之前对其进行前处理。例如：通过该回调中获取视频数据，并对其进行滤镜、水印、裁剪、旋转等处理。
+- 获取本地采集的视频数据被 SDK 处理之前的信息。例如：视频帧的原始宽度、高度、帧率等。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
+
+### 触发时机
+
+成功注册视频数据观测器后，SDK 捕捉到每个视频帧时。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__restriction"></a>
+
+### 使用限制
+
+- 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
+- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
+
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
+
+- Android：I420 或 RGB (GLES20.GL_TEXTURE_2D)
+- iOS：I420 或 CVPixelBufferRef
+- macOS：I420 或 CVPixelBufferRef
+- Windows：YUV420
+:::
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
+
+### 返回值
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__return"></a>
+
+- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+
+  - `true`：无实际含义。
+  - `false`：无实际含义。
+- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+
+  - `true`：设置 SDK 接收视频帧。
+  - `false`：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_onframe"></a>
+
+<a id="ariaid-title9"></a>
+
+## onFrame
+
+已获取视频帧回调。
+
+<a id="callback_ivideoframeobserver_onframe__prototype"></a>
+
+```text
+virtual void onFrame(const VideoFrame* frame) = 0;
+```
+
+<a id="callback_ivideoframeobserver_onframe__detailed_desc"></a>
+
+### 详情
+
+注册视频数据观测器后，每次接收到一帧视频帧时，都会触发该回调，报告视频帧信息。
+
+<a id="callback_ivideoframeobserver_onframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
+
+视频帧信息。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
+
+<a id="ariaid-title10"></a>
+
+## onPreEncodeVideoFrame
+
+获取本地视频编码前的视频数据。
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__prototype"></a>
+
+```text
+virtual bool onPreEncodeVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame& videoFrame) = 0;
+```
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__detailed_desc"></a>
+
+### 详情
+
+成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
+
+完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
+
+:::caution
+注意：
+
+- 如果你需要将处理后的数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) 方法，将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE）。
+- 你需要通过 [getObservedFramePosition](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getobservedframeposition) 设置观测 POSITION_PRE_ENCODER(1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+- 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
+- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+:::
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
+
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
+
+- Android：I420 或 RGB (GLES20.GL_TEXTURE_2D)
+- iOS：I420 或 CVPixelBufferRef
+- macOS：I420 或 CVPixelBufferRef
+- Windows：YUV420
+:::
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
+
+### 返回值
+
+- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+
+  - `true`：无实际含义。
+  - `false`：无实际含义。
+- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+
+  - `true`：设置 SDK 接收视频帧。
+  - `false`：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_onrendervideoframe"></a>
+
+<a id="ariaid-title11"></a>
+
+## onRenderVideoFrame
+
+获取远端发送的视频数据。
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__prototype"></a>
+
+```text
+virtual bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, VideoFrame& videoFrame) = 0;
+```
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__detailed_desc"></a>
+
+### 详情
+
+成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
+
+:::caution
+注意：
+
+- 如果你需要将处理后的数据发送给 SDK，需要先调用 [getVideoFrameProcessMode](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getvideoframeprocessmode) 方法，将视频处理模式设置为读写模式（PROCESS_MODE_READ_WRITE）。
+- 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
+- 建议你在修改 videoFrame 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+:::
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
+
+发送该帧视频的远端用户 ID。
+
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/class-videoframe)。
+
+:::note
+注： 通过该回调获取的视频帧数据格式默认值如下：
+
+- Android：I420 或 RGB (GLES20.GL_TEXTURE_2D)
+- iOS：I420 或 CVPixelBufferRef
+- macOS：I420 或 CVPixelBufferRef
+- Windows：YUV420
+:::
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
+
+### 返回值
+
+- 当视频处理模式为 PROCESS_MODE_READ_ONLY 时：
+
+  - `true`：无实际含义。
+  - `false`：无实际含义。
+- 当视频处理模式为 PROCESS_MODE_READ_WRITE 时：
+
+  - `true`：设置 SDK 接收视频帧。
+  - `false`：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_ivideoframeobserver)

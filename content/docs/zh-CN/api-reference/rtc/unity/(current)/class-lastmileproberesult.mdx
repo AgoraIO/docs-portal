@@ -1,0 +1,68 @@
+---
+title: LastmileProbeResult
+description: 上下行 Last mile 网络质量探测结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_lastmileproberesult
+  sourcePath: html-docs/rtc/Unity/API/class_lastmileproberesult.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileproberesult__prototype"></a>
+
+```text
+public class LastmileProbeResult
+    {
+        public LastmileProbeResult()
+        {
+            state = LASTMILE_PROBE_RESULT_STATE.LASTMILE_PROBE_RESULT_UNAVAILABLE;
+            rtt = 0;
+        }
+
+        public LastmileProbeResult(LASTMILE_PROBE_RESULT_STATE state, LastmileProbeOneWayResult uplinkReport,
+            LastmileProbeOneWayResult downlinkReport, uint rtt)
+        {
+            this.state = state;
+            this.uplinkReport = uplinkReport;
+            this.downlinkReport = downlinkReport;
+            this.rtt = rtt;
+        }
+        public LASTMILE_PROBE_RESULT_STATE state { set; get; }
+        public LastmileProbeOneWayResult uplinkReport { set; get; }
+        public LastmileProbeOneWayResult downlinkReport { set; get; }
+        public uint rtt { set; get; }
+    }
+```
+
+<a id="class_lastmileproberesult__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+Last mile 质量探测结果的状态。详见: [LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc/unity/enum-lastmileproberesultstate) 。
+
+</Parameter>
+<a id="uplinkreport"></a>
+<Parameter name="uplinkReport">
+
+上行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/unity/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="downlinkreport"></a>
+<Parameter name="downlinkReport">
+
+下行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/unity/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="rtt"></a>
+<Parameter name="rtt">
+
+往返时延 (ms)。
+
+</Parameter>
+</ParameterList>

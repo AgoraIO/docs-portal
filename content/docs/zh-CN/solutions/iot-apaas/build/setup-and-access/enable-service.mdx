@@ -1,0 +1,250 @@
+---
+title: "开通并配置声网灵隼物联网服务"
+description: "了解如何在声网控制台开通灵隼物联网云平台，并获取接入所需的项目配置、凭据和服务权限。"
+---
+你需要在控制台中开通并配置灵隼物联网服务。
+
+## 介绍视频
+
+声网推荐你通过视频了解灵隼物联网服务的开通和使用流程：
+
+<video src="https://web-cdn.agora.io/docs-files/1662370770348" controls width="100%" height="auto"></video>
+
+详细设置见下文。
+
+## 开通与配置步骤
+
+参考以下步骤开通并配置灵隼物联网服务。
+
+### 1. 创建声网项目
+
+参考以下步骤创建一个声网项目并进入项目详情页面。你也可以使用已创建的声网项目，但鉴权模式必须是 **安全模式：APP ID + Token**。
+
+1. 进入声网控制台的[项目管理](https://console.shengwang.cn/)页面。
+2. 在**项目管理**页面，点击**创建项目**按钮。
+3. 在弹出的对话框内输入项目名称，选择使用的产品/场景，然后选择鉴权模式为**安全模式：APP ID + Token（推荐）**。
+4. 点击**创建项目**按钮。新建的项目会显示在**项目管理**页面中。你可以在**项目管理**页面查看项目基本信息，包括 App ID、项目阶段、项目名称、创建日期。
+6. 点击**配置**，可以进入项目详情页面，查看和修改 App 证书、项目状态、扩展能力的启用情况等。
+
+![控制台项目管理页面](https://web-cdn.agora.io/docs-files/1678268526648)
+
+### 2. 开通灵隼物联网服务
+
+在**项目配置**页面，参考以下步骤开通灵隼物联网服务：
+
+1. 选择**服务配置**栏，找到**灵隼物联网**，点击**启用**开通灵隼服务。
+
+![开通灵隼服务](https://web-cdn.agora.io/docs-files/1678270896717)
+
+2. 根据产品发行地区选择合适的服务节点，点击**启用**。
+
+![选择服务节点](https://web-cdn.agora.io/docs-files/1678270857945)
+
+:::info
+考虑到不同国家区域的政策法规要求，你的所有数据将会存储在选定的服务节点。服务开启后服务节点不可再更改。
+:::
+
+### 3. 创建灵隼物联网产品
+
+开通灵隼服务后，控制台会自动跳转到**灵隼物联网 - 产品列表**页面。参考以下步骤创建灵隼物联网产品：
+
+1. 点击**产品开发**菜单下的**产品列表**，在右侧找到**创建新产品**按钮并点击。
+
+![创建新产品](https://web-cdn.agora.io/docs-files/1678270910095)
+
+2. 点击**创建新产品**，输入产品名称、型号、品类、联网方式等信息。点击**提交**创建产品。
+
+![设置产品信息](https://web-cdn.agora.io/docs-files/1678270924077)
+
+3. 在产品列表中会出现你创建的产品。每个产品有一个独有的产品 ID，即 Product Key。
+
+### 4. 选择开发方案
+
+在产品列表中，点击**继续开发**进入方案选型页面。
+
+![方案选型](https://web-cdn.agora.io/docs-files/1656308435693)
+
+页面包括以下方案：
+
+- **官方适配智能化方案**：一站式解决方案。你可以基于声网灵隼提供的示例项目，专属设备端 SDK 和客户端 SDK 快速实现所需场景。目前声网灵隼支持针对乐鑫 ESP32-S3 模组和 SigmaStar SSC333E 模组的智能门铃解决方案。详见[智能门铃](/zh-CN/solutions/smart-doorbell)。
+- **自定义开发**：自定义开发模式。你可以使用声网提供的通用 SDK 自行实现所需场景，并按需接入声网灵隼云平台的相关服务。你可以根据自己的业务需求选择不同版本的 SDK。自定义开发分为以下方案：
+  - 全功能方案：使用全功能版本设备端 SDK 和客户端 SDK。
+    - 全功能版本设备端 SDK：包含呼叫、实时音视频、设备管理、连接认证、上下行消息收发等服务。如果你没有自研的设备管理等模块，声网建议你使用全功能版本 SDK。
+    - 全功能版本客户端示例项目：用户注册/登录、绑定/解绑设备、Wi-Fi 二维码配网、呼叫、实时音视频等功能。如果你没有自研的设备管理等模块，声网建议你使用全功能版本示例项目。
+  - 纯呼叫方案：使用纯呼叫版本设备端 SDK 和客户端 SDK。
+    - 纯呼叫版本设备端 SDK：包含呼叫、实时音视频等服务。你需要自行实现账号管理和设备管理相关逻辑。如果你已有自研的设备管理等模块，声网建议你使用纯呼叫版本 SDK。
+    - 纯呼叫版本客户端示例项目：呼叫、实时音视频等功能。你需要自行实现账号管理和设备管理相关逻辑。如果你已有自研的设备管理等模块，声网建议你使用纯呼叫版本示例项目。
+
+![方案差异](https://web-cdn.agora.io/docs-files/1659073591052)
+
+### 5. 配置开发方案
+
+对于**官方适配智能化方案**，你可以点击具体的硬件型号，并根据界面提示，购买开发板、获取方案详情并查看示例项目。
+
+对于**自定义开发**，你可以选择 **x86 平台方案**或**其他平台方案**：
+
+- 对于 x86 平台方案，你可以在控制台获取 SDK 的下载链接和参考文档链接。
+- 对于其他平台方案，你可以按照控制台的说明联系我们获取相关 SDK 包。
+
+### 6. 定义属性
+
+:::info[信息]
+纯呼叫方案不支持属性。如果你使用**纯呼叫方案**进行开发，可以直接跳过该步骤。
+:::
+
+1. 点击下一步进入**属性定义**页面。
+
+![属性定义](https://web-cdn.agora.io/docs-files/1656308492684)
+
+2. 点击**新增属性**，填入以下字段：
+
+    - 属性名称
+    - 标识符
+    - 读写权限
+    - 数据类型
+
+3. 完成后，点击**提交**新增一个属性点。你需要根据产品设计增加相应的属性列表，并在设备端和客户端分别同步实现相应属性值的上报和解析操作。具体可以分别参考设备端和客户端的示例项目。
+4. 点击下一步进入**应用配置**页面。
+
+### 7. 获取客户端 Demo
+
+在**应用配置**页面中选择**应用开发**选项卡，扫码获取客户端 Demo。该 Demo 仅用于灵隼物联网平台能力展示，可以与**步骤 5** 中下载的 SDK 中的设备端示例项目配套测试。
+
+:::warning[注意]
+二维码展示的是全功能版本的 Demo，不包括纯呼叫版本。
+:::
+
+该 Demo 使用了声网测试专用项目 App ID，目前只支持固定的低功耗门铃设备，你需要在自助开发中选择对应端侧的实现文档，并根据文档指引完成自定义客户端应用开发工作。
+
+### 8. 配置开发参数
+
+在**应用配置**页面中选择**开发者选项**，该页面提供了双向呼叫、云录云存、离线消息推送等服务。选择你需要的灵隼服务并配置相关参数。
+
+![配置参数](https://web-cdn.agora.io/docs-files/1656309251795)
+
+#### 配置呼叫服务字段
+
+参考以下步骤配置呼叫服务字段。
+
+1. 在 **App Certificate** 字段填入你的 App 证书。获取方法如下：
+创建好项目后，你可以参考如下步骤获取项目的 App 证书。
+
+在声网控制台**总览**页面的**项目信息**栏，点击**主要证书**/**次要证书**下面的复制图标，即可获取项目的主次 App 证书。
+
+2. 在 **RESTful API Customer ID** 和 **RESTful API Customer Secret** 字段填入你的客户 ID 和客户密钥。
+3. 点击**保存**。
+
+#### 配置消息推送字段
+
+根据你需要覆盖的移动端平台，参考以下步骤配置消息推送字段。
+
+<Tabs defaultValue="google" groupId="hardware" persist>
+<TabsList>
+  <TabsTrigger value="google">Google</TabsTrigger>
+  <TabsTrigger value="apple">Apple</TabsTrigger>
+  <TabsTrigger value="huawei">华为</TabsTrigger>
+  <TabsTrigger value="xiaomi">小米</TabsTrigger>
+  <TabsTrigger value="oppo">OPPO</TabsTrigger>
+  <TabsTrigger value="vivo">vivo</TabsTrigger>
+</TabsList>
+
+<TabsContent value="google">
+
+1. 启用 [FCM 推送服务](https://firebase.google.com/docs/cloud-messaging) 。
+2. 配置以下字段：
+    - FCM SenderID：FCM 推送服务的 sender ID。详见 [About FCM messages](https://firebase.google.com/docs/cloud-messaging/concept-options#senderid)。
+    - FCM Server Key：FCM 推送服务的 Server Key。详见 [About FCM messages](https://firebase.google.com/docs/cloud-messaging/concept-options#credentials)。
+
+</TabsContent>
+
+<TabsContent value="apple">
+
+1. 生成 [APNs 客户端 TLS 证书](https://help.apple.com/developer-account/?lang=zh-cn#/dev82a71386a?sub=dev3255f4fb6)。
+2. [导出客户端 TLS 身份证书](https://help.apple.com/developer-account/?lang=zh-cn#/dev82a71386a?sub=deveece40199)，获得 `.p12` 身份证书文件。你也可以[创建用于访问服务的私钥
+](https://help.apple.com/developer-account/?lang=zh-cn#/devcdfbb56a3) 获得 `.p8` 秘钥文件。 两者择一即可。
+
+3. 对于 `.p12` 证书文件，配置以下字段：
+    - **Certificate Name**：证书名称。
+    - **Certificate Secret**：证书秘钥。
+    - **上传证书**：`.p12` 证书文件。
+    - **Certificate Type**：证书类型。
+    - **Bundle ID**：Apple 应用的 bundle ID。
+
+4. 对于`.p8` 秘钥文件，配置以下字段：
+    - **Certificate Name**：秘钥名称。
+    - **上传证书**：`.p8` 密钥文件。
+    - **Key ID**：密钥标识符。
+    - **Team ID**: Apple 应用的 team ID。
+    - **Certificate Type**：密钥类型。
+    - **Bundle ID**：Apple 应用的 bundle ID。
+
+5. 点击**保存**。
+
+</TabsContent>
+
+<TabsContent value="huawei">
+
+1. 启用[华为推送服务](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-config-agc-0000001050170137#section9471122085218)。
+2. 配置以下字段：
+    - **App ID**：在华为应用市场创建应用对应的 APP ID。
+    - **App Secret**：在华为应用市场创建应用对应的 APP Secret。
+    - **App Package Name**：Android 应用的包名。
+
+</TabsContent>
+
+<TabsContent value="xiaomi">
+
+1. 启用[小米消息推送服务](https://dev.mi.com/console/doc/detail?pId=68)。
+2. 配置以下字段：
+    - **App ID**：在小米开放平台创建应用对应的 APP ID。
+    - **App Secret**：在小米开放平台创建应用对应的 APP Secret。
+    - **App Package Name**：Android 应用的包名。
+
+</TabsContent>
+
+<TabsContent value="oppo">
+
+1. 启用 [OPPO 推送服务](https://open.oppomobile.com/new/developmentDoc/info?id=10195)。
+2. 配置以下字段：
+    - **App Key**：在 OPPO 开放平台创建应用的 AppKey。
+    - **Master Secret**：在 OPPO 开放平台创建应用的 MasterSecret。
+    - **App Package Name**：Android 应用的包名。
+
+</TabsContent>
+
+<TabsContent value="vivo">
+
+1. 启用 [vivo 推送服务](https://dev.vivo.com.cn/documentCenter/doc/281)。
+2. 配置以下字段：
+    - **App Key**：在 vivo 开放平台创建应用的 App Key。详见 [vivo 推送使用指南](https://dev.vivo.com.cn/documentCenter/doc/151)。
+    - **App Secret**：在 vivo 开放平台创建应用对应的 APP Secret。详见 [vivo 推送使用指南](https://dev.vivo.com.cn/documentCenter/doc/151)。
+    - **App Package Name**：Android 应用的包名。
+
+</TabsContent>
+</Tabs>
+
+控制台配置完成后，你就可以根据选择的开发方案开发你的设备端与客户端 App。
+
+## 发布产品
+
+如果你已经完成了设备端和客户端的开发和测试工作，就可以在**产品发布**页面点击**发布产品**将产品发布到生产环境。
+
+:::warning[注意]
+产品发布后将被冻结，无法再修改相关参数，但不影响功能使用。因此，请在点击发布按钮前，确认产品已经达到发布状态。如需继续开发和调试，请保持未发布状态。
+:::
+
+### 获取产品信息二维码
+
+:::info[信息]
+如果你使用纯呼叫方案进行开发，则无需获取产品信息二维码。
+:::
+
+产品信息二维码用于印刷在产品说明书或者产品设备机身上。产品用户通过扫描二维码添加设备。
+
+点击**下载二维码按钮**可以下载高清版本二维码图案，以便复制或者印刷。
+
+### 申请许可证
+
+设备端 SDK 通过 License 对设备鉴权。License 与设备绑定，一个 License 在同一时间只能绑定一个设备。
+
+为方便你测试和体验，灵隼示例项目中默认携带了一个有效期 3 个月的测试 License，且该 License 仅在声网测试 App ID 下有效。License 失效后示例项目将无法使用。如需延长试用时间或使用你自己的 App ID 开发设备端 App，你需要联系 sales@shengwang.cn 申请新的 License。详见[申请和使用 License](/zh-CN/solutions/iot-apaas/build/setup-and-access/license)。

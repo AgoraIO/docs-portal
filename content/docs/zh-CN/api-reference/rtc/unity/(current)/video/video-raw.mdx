@@ -1,0 +1,295 @@
+---
+title: 原始视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_video_raw
+  sourcePath: html-docs/rtc/Unity/API/toc_video_raw.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_video_raw"></a>
+
+<a id="api_imediaengine_registervideoframeobserver"></a>
+
+<a id="ariaid-title2"></a>
+
+## RegisterVideoFrameObserver
+
+注册原始视频观测器对象。
+
+<a id="api_imediaengine_registervideoframeobserver__prototype"></a>
+
+```text
+public abstract int RegisterVideoFrameObserver(IVideoFrameObserver videoFrameObserver, VIDEO_OBSERVER_FRAME_TYPE formatPreference, VIDEO_OBSERVER_POSITION position, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
+```
+
+<a id="api_imediaengine_registervideoframeobserver__detailed_desc"></a>
+
+如果你想要观测原始视频帧 (如 YUV 或 RGBA 格式)，声网推荐你通过该方法注册一个 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver) 类。
+调用该方法注册视频观测器时，你可以根据需要注册 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver) 类中的回调。在成功注册视频观测器后，SDK 会在捕捉到每个视频帧时，触发你所注册的上述回调。
+
+:::note
+注： 在处理回调时，你需要考虑视频帧中 `width` 和 `height` 参数的变化，因为观测得到的视频帧可能会随以下情况变化：
+
+- 当网络状况差时，分辨率会阶梯式下降。
+- 当用户自行调整分辨率时，回调中报告的分辨率也会变化。
+:::
+
+<a id="api_imediaengine_registervideoframeobserver__scenario"></a>
+
+### 适用场景
+
+注册原始视频观测器后，你可以将获取到的原始视频数据应用于各种视频前处理场景，例如自行实现虚拟背景、美颜等场景。
+
+<a id="api_imediaengine_registervideoframeobserver__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_registervideoframeobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="videoframeobserver"></a>
+<Parameter name="videoFrameObserver">
+
+接口对象实例。详见 [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)。如果传入 NULL，则取消注册。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/unity/enum-observermode)。
+
+</Parameter>
+<a id="formatpreference"></a>
+<Parameter name="formatPreference">
+
+视频数据类型，详见 [VIDEO_OBSERVER_FRAME_TYPE](/zh-CN/api-reference/rtc/unity/enum-videoobserverframetype)。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+视频观测位置的 bit mask。详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/unity/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_registervideoframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_unregistervideoframeobserver_imediaengine"></a>
+
+<a id="ariaid-title3"></a>
+
+## UnregisterVideoFrameObserver
+
+取消注册视频帧观测器。
+
+<a id="api_imediaengine_unregistervideoframeobserver_imediaengine__prototype"></a>
+
+```text
+public abstract int UnRegisterVideoFrameObserver();
+```
+
+<a id="api_imediaengine_unregistervideoframeobserver_imediaengine__detailed_desc"></a>
+
+<a id="api_imediaengine_unregistervideoframeobserver_imediaengine__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe"></a>
+
+<a id="ariaid-title4"></a>
+
+## OnCaptureVideoFrame
+
+获取本地设备采集到的视频数据。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__prototype"></a>
+
+```text
+public virtual bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame)
+```
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__detailed_desc"></a>
+
+你可以在回调中获取本地设备采集到的原始视频数据，并可根据需要进行前处理。完成前处理后，你可以在该回调中直接修改 `videoFrame`，并将返回值设置为 true，即可将修改后的视频数据发送给 SDK。
+
+:::note
+注：
+
+- 如果你获取到的视频数据类型为 RGBA，SDK 不支持对 Alpha 通道的值进行处理。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+:::
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__timing"></a>
+
+### 触发时机
+
+成功注册视频数据观测器后，SDK 捕捉到每个视频帧时。
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+视频源类型，可能的视频源包括：摄像头、屏幕或媒体播放器。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
+
+</Parameter>
+<a id="videoframe"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_oncapturevideoframe__return_values"></a>
+
+### 返回值
+
+- true：设置 SDK 接收视频帧。
+- false：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe"></a>
+
+<a id="ariaid-title5"></a>
+
+## OnPreEncodeVideoFrame
+
+获取本地视频编码前的视频数据。
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__prototype"></a>
+
+```text
+public virtual bool OnPreEncodeVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame)
+```
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__detailed_desc"></a>
+
+成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取编码前的视频数据，然后根据场景需要，对视频数据进行处理。
+完成处理后，你可以在该回调中，传入处理后的视频数据将其发送回 SDK。
+
+:::note
+注：
+
+- 你需要通过 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video/video-raw#api_imediaengine_registervideoframeobserver) 的 `position` 参数设置观测 `POSITION_PRE_ENCODER`(1 &lt;&lt; 2) 后，才能使用该回调获取本地视频编码前的视频数据。
+- 此处获取的视频数据已经过前处理，如裁剪、旋转和美颜等。
+- 建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+:::
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unity/enum-videosourcetype)。
+
+</Parameter>
+<a id="videoframe-1"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_onpreencodevideoframe__return_values"></a>
+
+### 返回值
+
+- true：设置 SDK 接收视频帧。
+- false：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)
+
+<a id="callback_ivideoframeobserver_onrendervideoframe"></a>
+
+<a id="ariaid-title6"></a>
+
+## OnRenderVideoFrame
+
+获取远端发送的视频数据。
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__prototype"></a>
+
+```text
+public virtual bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame)
+```
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__detailed_desc"></a>
+
+成功注册视频数据观测器后，SDK 会在捕捉到每个视频帧时触发该回调。你可以在回调中获取远端发送的渲染前的视频数据，然后根据场景需要，对视频数据进行处理。
+
+:::note
+注： Unity 仅支持将 YUV 格式的视频数据发回 SDK。请确保调用 [RegisterVideoFrameObserver](/zh-CN/api-reference/rtc/unity/video/video-raw#api_imediaengine_registervideoframeobserver) 方法注册原始视频帧观测器时，将 `mode` 设置为 `INTPTR`。
+:::
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="remoteuid"></a>
+<Parameter name="remoteUid">
+
+发送该帧视频的远端用户 ID。
+
+</Parameter>
+<a id="videoframe-2"></a>
+<Parameter name="videoFrame">
+
+视频帧数据。详见 [VideoFrame](/zh-CN/api-reference/rtc/unity/class-videoframe)。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoframeobserver_onrendervideoframe__return_values"></a>
+
+### 返回值
+
+- true：设置 SDK 接收视频帧。
+- false：设置 SDK 丢弃视频帧。
+
+### 所属接口类
+
+- [IVideoFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoframeobserver)

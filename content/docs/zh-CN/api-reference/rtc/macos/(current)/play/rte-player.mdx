@@ -1,0 +1,3083 @@
+---
+title: URL 拉流播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_rte_player
+  sourcePath: html-docs/rtc/macOS/API/toc_rte_player.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_rte_player"></a>
+
+<a id="api_canvas_addview"></a>
+
+<a id="ariaid-title2"></a>
+
+## addView\:config\:error:
+
+添加一个渲染视图。
+
+<a id="api_canvas_addview__prototype"></a>
+
+```text
+- (BOOL)addView:(AgoraRteView * _Nonnull)view config:(AgoraRteViewConfig* _Nullable)config error:(AgoraRteError* _Nullable)error;
+```
+
+<a id="api_canvas_addview__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以调用该方法将视图添加到视频渲染器中，以显示视频内容。
+
+:::note
+注： 当前仅支持一个视图。
+:::
+
+<a id="api_canvas_addview__scenario"></a>
+
+### 适用场景
+
+当你需要使用播放器播放视频时，可以调用此方法将视图添加到视频渲染器中，以显示视频内容。
+
+<a id="api_canvas_addview__timing"></a>
+
+### 调用时机
+
+你必须在调用 [setCanvas\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_setcanvas) 之前调用此方法。
+
+<a id="api_canvas_addview__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="view"></a>
+<Parameter name="view">
+
+视图对象的指针。
+
+- iOS：一个 `UIView` 对象。
+- macOS：一个 `NSView` 对象。
+
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
+
+视图对象的配置。当前请传入 nil。
+
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvas_addview__return_values"></a>
+
+### 返回值
+
+- YES：添加视图成功。
+- NO：添加视图失败。
+
+### 所属接口类
+
+- [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)
+
+<a id="api_canvas_canvas_canvas"></a>
+
+<a id="ariaid-title3"></a>
+
+## initWithRte\:initialConfig:
+
+构造一个 [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas) 对象。
+
+<a id="api_canvas_canvas_canvas__prototype"></a>
+
+```text
+- (instancetype _Nonnull)initWithRte:(AgoraRte* _Nonnull)rte initialConfig:(AgoraRteCanvasInitialConfig * _Nullable)config;
+```
+
+<a id="api_canvas_canvas_canvas__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvas_canvas_canvas__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="rte"></a>
+<Parameter name="rte">
+
+用于构造 [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas) 的 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte) 对象。详见 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)。
+
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
+
+用于初始化的配置对象。你可以传入 nil。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)
+
+<a id="api_error_code"></a>
+
+<a id="ariaid-title4"></a>
+
+## code
+
+获取 API 调用返回的错误码。
+
+<a id="api_error_code__prototype"></a>
+
+```text
+- (AgoraRteErrorCode)code;
+```
+
+<a id="api_error_code__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+当 API 调用失败时，你可以调用该方法获取错误码。
+
+<a id="api_error_code__timing"></a>
+
+### 调用时机
+
+当 API 调用失败时，你可以调用该方法获取错误码。
+
+<a id="api_error_code__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回错误码，详见 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/macos/enum-rteerrorcode)。
+
+### 所属接口类
+
+- [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)
+
+<a id="api_rte_destroy_rte"></a>
+
+<a id="ariaid-title5"></a>
+
+## destroy:
+
+销毁 `RTE` 对象。
+
+<a id="api_rte_destroy_rte__prototype"></a>
+
+```text
+- (BOOL)destroy:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_rte_destroy_rte__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+该方法会释放 `RTE` 对象使用的所有资源。
+
+<a id="api_rte_destroy_rte__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-1"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_destroy_rte__return_values"></a>
+
+### 返回值
+
+- YES：销毁成功。
+- NO：销毁失败。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_playerconfig_getabrfallbacklayer"></a>
+
+<a id="ariaid-title6"></a>
+
+## abrFallbackLayer:
+
+获取已配置的视频流分层回退选项。
+
+<a id="api_playerconfig_getabrfallbacklayer__prototype"></a>
+
+```text
+- (AgoraRteAbrFallbackLayer)abrFallbackLayer:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getabrfallbacklayer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_playerconfig_getabrfallbacklayer__timing"></a>
+
+### 调用时机
+
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+
+<a id="api_playerconfig_getabrfallbacklayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-2"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getabrfallbacklayer__return_values"></a>
+
+### 返回值
+
+已配置的视频流分层回退选项，详见 [AgoraRteAbrFallbackLayer](/zh-CN/api-reference/rtc/macos/enum-rteabrfallbacklayer)。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_getabrsubscriptionlayer"></a>
+
+<a id="ariaid-title7"></a>
+
+## abrSubscriptionLayer:
+
+获取订阅端视频流的质量层级。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__prototype"></a>
+
+```text
+- (AgoraRteAbrSubscriptionLayer)abrSubscriptionLayer:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getabrsubscriptionlayer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_playerconfig_getabrsubscriptionlayer__timing"></a>
+
+### 调用时机
+
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+
+<a id="api_playerconfig_getabrsubscriptionlayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-3"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getabrsubscriptionlayer__return_values"></a>
+
+### 返回值
+
+当前设置的视频质量层级，详见 [AgoraRteAbrSubscriptionLayer](/zh-CN/api-reference/rtc/macos/enum-rteabrsubscriptionlayer)。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_config_getappid"></a>
+
+<a id="ariaid-title8"></a>
+
+## appId:
+
+获取你已设置的声网 App ID。
+
+<a id="api_config_getappid__prototype"></a>
+
+```text
+- (NSString* _Nullable)appId:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_config_getappid__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_config_getappid__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-4"></a>
+<Parameter name="error">
+
+错误信息对象，可能返回以下错误码，详见 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/macos/enum-rteerrorcode)：
+
+- `AgoraRteOk`：调用成功。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_config_getappid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回你已设置的声网 App ID。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+
+- [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)
+
+<a id="api_playerconfig_getautoplay"></a>
+
+<a id="ariaid-title9"></a>
+
+## autoPlay:
+
+获取媒体播放器的自动播放设置。
+
+<a id="api_playerconfig_getautoplay__prototype"></a>
+
+```text
+- (BOOL)autoPlay:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getautoplay__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以调用此方法获取媒体播放器当前的自动播放设置。
+
+:::note
+注： 必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
+:::
+
+<a id="api_playerconfig_getautoplay__timing"></a>
+
+### 调用时机
+
+必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 方法之后调用。
+
+<a id="api_playerconfig_getautoplay__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-5"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getautoplay__return_values"></a>
+
+### 返回值
+
+是否成功获取自动播放设置：
+
+- YES：获取成功。
+- NO：获取失败。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvas_getconfigs_canvas"></a>
+
+<a id="ariaid-title10"></a>
+
+## getConfigs\:error:
+
+获取当前播放器的视频渲染配置。
+
+<a id="api_canvas_getconfigs_canvas__prototype"></a>
+
+```text
+- (BOOL)getConfigs:(AgoraRteCanvasConfig* _Nonnull)config error:(AgoraRteError* _Nullable)error;
+```
+
+<a id="api_canvas_getconfigs_canvas__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvas_getconfigs_canvas__timing"></a>
+
+### 调用时机
+
+你需要在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_canvas_canvas) 方法之后调用该方法。
+
+<a id="api_canvas_getconfigs_canvas__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
+
+视频画布配置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)。
+
+</Parameter>
+<a id="error-6"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvas_getconfigs_canvas__return_values"></a>
+
+### 返回值
+
+- YES：获取成功。
+- NO：获取失败。
+
+### 所属接口类
+
+- [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)
+
+<a id="api_player_getconfigs_player"></a>
+
+<a id="ariaid-title11"></a>
+
+## getConfigs\:error:
+
+获取当前媒体播放器配置选项。
+
+<a id="api_player_getconfigs_player__prototype"></a>
+
+```text
+- (BOOL)getConfigs:(AgoraRtePlayerConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_getconfigs_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_player_getconfigs_player__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后调用此方法。
+
+<a id="api_player_getconfigs_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
+
+媒体播放器配置选项，详见 [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)。
+
+</Parameter>
+<a id="error-7"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_getconfigs_player__return_values"></a>
+
+### 返回值
+
+- YES：获取成功。
+- NO：获取失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_rte_getconfigs_rte"></a>
+
+<a id="ariaid-title12"></a>
+
+## getConfigs\:error:
+
+获取 RTE 对象的配置信息。
+
+<a id="api_rte_getconfigs_rte__prototype"></a>
+
+```text
+- (BOOL)getConfigs:(AgoraRteConfig *_Nonnull)config error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_rte_getconfigs_rte__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_rte_getconfigs_rte__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initWithInitialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_rte_rte) 之后调用该方法。
+
+<a id="api_rte_getconfigs_rte__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
+
+RTE 对象的配置信息。详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)。
+
+</Parameter>
+<a id="error-8"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_getconfigs_rte__return_values"></a>
+
+### 返回值
+
+- YES：获取成功。
+- NO：获取失败。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_rte_getfrombridge"></a>
+
+<a id="ariaid-title13"></a>
+
+## getFromBridge:
+
+桥接一个来自 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 的 `RTE` 对象。
+
+<a id="api_rte_getfrombridge__prototype"></a>
+
+```text
++ (instancetype _Nonnull)getFromBridge:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_rte_getfrombridge__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+通过调用此方法创建的 `RTE` 对象无需通过 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 进行初始化。如果你尚未创建并初始化 RTC 引擎，可以先调用 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte) 创建一个 `RTE` 对象，然后使用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 进行初始化。
+
+<a id="api_rte_getfrombridge__timing"></a>
+
+### 调用时机
+
+在调用此方法之前，请确保你已通过调用 [sharedEngineWithConfig\:delegate:](/zh-CN/api-reference/rtc/macos/initialize#api_irtcengine_initialize) 初始化 RTC 引擎。
+
+<a id="api_rte_getfrombridge__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-9"></a>
+<Parameter name="error">
+
+用于接收状态和错误码的指针，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_getfrombridge__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回一个 `RTE` 对象，详见 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_player_getinfo"></a>
+
+<a id="ariaid-title14"></a>
+
+## getInfo\:error:
+
+获取播放器播放和媒体流相关的信息。
+
+<a id="api_player_getinfo__prototype"></a>
+
+```text
+- (BOOL)getInfo:(AgoraRtePlayerInfo * _Nonnull)info error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_getinfo__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以使用该方法获取播放器和媒体流相关的信息，例如音频采样率和视频帧尺寸。
+
+:::note
+注： 你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后调用此方法。
+:::
+
+<a id="api_player_getinfo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
+
+播放器和媒体流相关的信息。详见 [AgoraRtePlayerInfo](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rteplayerinfo)。
+
+</Parameter>
+<a id="error-10"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_getinfo__return_values"></a>
+
+### 返回值
+
+- YES：成功获取信息。
+- NO：获取信息失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_config_getjsonparameter_config"></a>
+
+<a id="ariaid-title15"></a>
+
+## jsonParameter:
+
+获取当前配置的 RTE 私有参数。
+
+<a id="api_config_getjsonparameter_config__prototype"></a>
+
+```text
+- (NSString * _Nullable)jsonParameter:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_config_getjsonparameter_config__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_config_getjsonparameter_config__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-11"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+- `AgoraRteOk`：调用成功。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_config_getjsonparameter_config__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回已设置的 JSON 格式参数集。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+
+- [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)
+
+<a id="api_playerconfig_getloopcount"></a>
+
+<a id="ariaid-title16"></a>
+
+## loopCount:
+
+获取媒体文件的循环次数参数。
+
+<a id="api_playerconfig_getloopcount__prototype"></a>
+
+```text
+- (int32_t)loopCount:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getloopcount__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+<a id="api_playerconfig_getloopcount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-12"></a>
+<Parameter name="error">
+
+输出参数，用于指示错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getloopcount__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回媒体文件的循环次数。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_getmirrormode"></a>
+
+<a id="ariaid-title17"></a>
+
+## videoMirrorMode:
+
+获取当前设置的镜像模式。
+
+<a id="api_canvasconfig_getmirrormode__prototype"></a>
+
+```text
+- (AgoraRteVideoMirrorMode)videoMirrorMode:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_canvasconfig_getmirrormode__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvasconfig_getmirrormode__timing"></a>
+
+### 调用时机
+
+你必须在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+
+<a id="api_canvasconfig_getmirrormode__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-13"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvasconfig_getmirrormode__return_values"></a>
+
+### 返回值
+
+当前设置的镜像模式，详见 [AgoraRteVideoMirrorMode](/zh-CN/api-reference/rtc/macos/enum-rtevideomirrormode)。
+
+### 所属接口类
+
+- [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)
+
+<a id="api_playerconfig_getplaybackspeed"></a>
+
+<a id="ariaid-title18"></a>
+
+## playbackSpeed:
+
+获取播放速度参数。
+
+<a id="api_playerconfig_getplaybackspeed__prototype"></a>
+
+```text
+- (int32_t)playbackSpeed:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getplaybackspeed__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+<a id="api_playerconfig_getplaybackspeed__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-14"></a>
+<Parameter name="error">
+
+输出参数，用于指示错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getplaybackspeed__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回播放速度的值。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_getplayoutvolume"></a>
+
+<a id="ariaid-title19"></a>
+
+## playoutVolume:
+
+获取媒体播放器的播放音量。
+
+<a id="api_playerconfig_getplayoutvolume__prototype"></a>
+
+```text
+- (int32_t)playoutVolume:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_getplayoutvolume__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+<a id="api_playerconfig_getplayoutvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-15"></a>
+<Parameter name="error">
+
+输出参数，用于返回错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_playerconfig_getplayoutvolume__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回媒体播放器的播放音量。
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_player_getposition"></a>
+
+<a id="ariaid-title20"></a>
+
+## getPosition:
+
+获取当前播放位置。
+
+<a id="api_player_getposition__prototype"></a>
+
+```text
+- (uint64_t)getPosition:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_getposition__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+该方法用于获取当前播放的时间位置，单位为毫秒。
+
+<a id="api_player_getposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-16"></a>
+<Parameter name="error">
+
+输出参数，用于指示错误信息。可能的返回值包括：
+
+- `AgoraRteOk`：调用成功。
+- `AgoraRteErrorInvalidOperation`：
+
+  - 对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player) 对象已被销毁或无效。
+  - 打开的 URL 是 RTE URL，不支持调用 [getPosition:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_getposition)。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_getposition__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回当前播放位置，单位为毫秒。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_canvasconfig_getrendermode"></a>
+
+<a id="ariaid-title21"></a>
+
+## videoRenderMode:
+
+获取当前设置的视频渲染模式。
+
+<a id="api_canvasconfig_getrendermode__prototype"></a>
+
+```text
+- (AgoraRteVideoRenderMode)videoRenderMode:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_canvasconfig_getrendermode__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvasconfig_getrendermode__timing"></a>
+
+### 调用时机
+
+你需要在调用 [getConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_getconfigs_canvas) 之后调用此方法。
+
+<a id="api_canvasconfig_getrendermode__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-17"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvasconfig_getrendermode__return_values"></a>
+
+### 返回值
+
+当前设置的视频渲染模式。详见 [AgoraRteVideoRenderMode](/zh-CN/api-reference/rtc/macos/enum-rtevideorendermode)。
+
+### 所属接口类
+
+- [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)
+
+<a id="api_player_getstats"></a>
+
+<a id="ariaid-title22"></a>
+
+## getStats:
+
+获取播放器当前播放媒体资源的统计信息。
+
+<a id="api_player_getstats__prototype"></a>
+
+```text
+- (void)getStats:(void (^_Nonnull)(AgoraRtePlayerStats* _Nonnull stats, AgoraRteError* _Nullable err))cb;
+```
+
+<a id="api_player_getstats__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+该方法用于获取播放器的统计信息，并通过回调函数异步返回结果。统计信息包括解码和渲染帧率、音视频码率等。
+
+:::note
+注： 你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 方法之后再调用此方法。
+:::
+
+<a id="api_player_getstats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="cb"></a>
+<Parameter name="cb">
+
+一个异步回调函数，用于通知你播放器媒体资源统计信息的获取结果以及任何错误信息。该函数包含以下参数：
+
+- `stats`：播放器当前播放媒体资源的统计信息，详见 [AgoraRtePlayerStats](/zh-CN/api-reference/rtc/macos/class-rteplayerstats)。
+- `err`：错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_rte_initmediaengine"></a>
+
+<a id="ariaid-title23"></a>
+
+## initMediaEngine\:error:
+
+初始化 `RTE` 引擎。
+
+<a id="api_rte_initmediaengine__prototype"></a>
+
+```text
+- (BOOL)initMediaEngine:(void (^ _Nullable)(AgoraRteError* _Nullable err) )cb error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_rte_initmediaengine__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+该方法为异步方法，通过回调函数返回初始化结果。你需要在创建 `RTE` 对象并设置 App ID 后调用该方法。
+
+:::note
+注： 该返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化是否成功。
+:::
+
+<a id="api_rte_initmediaengine__timing"></a>
+
+### 调用时机
+
+你需要在创建 `RTE` 对象并设置 App ID 后调用该方法。
+
+<a id="api_rte_initmediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="cb-1"></a>
+<Parameter name="cb">
+
+用于返回引擎初始化结果的异步回调函数。你可以通过该回调的 `err` 参数判断引擎初始化的结果或错误码。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+<a id="error-18"></a>
+<Parameter name="error">
+
+初始化过程中发生的错误信息。当调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 方法进行初始化时，如果发生可立即检测的错误（如参数无效或资源不足），SDK 会通过该参数同步返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_initmediaengine__return_values"></a>
+
+### 返回值
+
+- YES：异步操作成功加入队列。
+- NO：异步操作未能加入队列。
+
+该返回值仅表示初始化操作是否已成功加入异步任务队列，并不表示初始化是否成功。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_error_message"></a>
+
+<a id="ariaid-title24"></a>
+
+## message
+
+获取详细错误信息。
+
+<a id="api_error_message__prototype"></a>
+
+```text
+- (NSString * _Nullable)message;
+```
+
+<a id="api_error_message__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_error_message__timing"></a>
+
+### 调用时机
+
+当 API 调用失败时，你可以调用此方法获取错误信息，以帮助排查问题。
+
+<a id="api_error_message__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回错误信息字符串。
+- 方法调用失败时，返回空字符串。
+
+### 所属接口类
+
+- [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)
+
+<a id="api_player_muteaudio"></a>
+
+<a id="ariaid-title25"></a>
+
+## muteAudio\:error:
+
+开始或停止接收音频流。
+
+<a id="api_player_muteaudio__prototype"></a>
+
+```text
+- (BOOL)muteAudio:(BOOL)mute error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_muteaudio__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_player_muteaudio__timing"></a>
+
+### 调用时机
+
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之后调用此方法。
+
+<a id="api_player_muteaudio__related"></a>
+
+### 相关回调
+
+调用该方法成功后，会触发 [onPlayerInfoUpdated:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onplayerinfoupdated_playerobserver) 回调以上报最新的播放器和媒体流信息。
+
+<a id="api_player_muteaudio__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
+
+是否接收音频流：
+
+- YES：不接收音频流。
+- NO：接收音频流。
+
+</Parameter>
+<a id="error-19"></a>
+<Parameter name="error">
+
+输出参数，状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_muteaudio__return_values"></a>
+
+### 返回值
+
+- YES：操作成功。
+- NO：操作失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_mutevideo"></a>
+
+<a id="ariaid-title26"></a>
+
+## muteVideo\:error:
+
+开始或停止接收远端视频流。
+
+<a id="api_player_mutevideo__prototype"></a>
+
+```text
+- (BOOL)muteVideo:(BOOL)mute error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_mutevideo__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_player_mutevideo__timing"></a>
+
+### 调用时机
+
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之后调用此方法。
+
+<a id="api_player_mutevideo__related"></a>
+
+### 相关回调
+
+调用该方法成功后，会触发 [onPlayerInfoUpdated:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onplayerinfoupdated_playerobserver) 回调以上报最新的播放器和媒体流信息。
+
+<a id="api_player_mutevideo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
+
+是否接收远端视频流：
+
+- YES：不接收远端视频流。
+- NO：接收远端视频流。
+
+</Parameter>
+<a id="error-20"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_mutevideo__return_values"></a>
+
+### 返回值
+
+- YES：操作成功。
+- NO：操作失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_openwithurl"></a>
+
+<a id="ariaid-title27"></a>
+
+## openWithUrl\:startTime\:cb:
+
+打开一个 URL 资源。
+
+<a id="api_player_openwithurl__prototype"></a>
+
+```text
+- (void)openWithUrl:(NSString * _Nonnull)url startTime:(uint64_t)startTime cb:(void (^_Nullable)(AgoraRteError* _Nullable err))cb;
+```
+
+<a id="api_player_openwithurl__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+该方法支持通过 URL 打开实时流媒体资源。若希望加快打开 URL 资源的速度，可以在调用该方法前先调用 [preloadWithUrl\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_preloadwithurl) 预加载资源。
+
+:::note
+注： 该方法目前仅支持打开以 `rte://` 开头的 URL、CDN 推流 URL 和本地媒体文件。
+:::
+
+<a id="api_player_openwithurl__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后调用。
+
+<a id="api_player_openwithurl__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onstatechanged) 回调报告播放器连接状态为 `AgoraRtePlayerStateOpening`，表示正在打开 URL。打开成功后，播放器连接状态会报告为 `AgoraRtePlayerStateOpenCompleted`。如果资源打开失败，会收到 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onstatechanged) 回调，报告连接状态为 `AgoraRtePlayerStateFailed`。此时需先调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player)，再调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 重新打开 URL 资源。如果已关闭自动播放，可在资源打开后调用 [play:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_play_player) 开始播放。
+
+<a id="api_player_openwithurl__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
+
+要打开的 URL，可以是 CDN 推流 URL、本地媒体文件，或以 `rte://` 为前缀的 URL。关于 RTE URL 各字段的详细信息，详见 `观众端 URL 拉流`。
+
+</Parameter>
+<a id="starttime"></a>
+<Parameter name="startTime">
+
+起始播放位置，单位为毫秒。
+
+</Parameter>
+<a id="cb-2"></a>
+<Parameter name="cb">
+
+异步通知打开 URL 资源结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_pause_player"></a>
+
+<a id="ariaid-title28"></a>
+
+## pause:
+
+暂停播放。
+
+<a id="api_player_pause_player__prototype"></a>
+
+```text
+- (BOOL)pause:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_pause_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+调用 [play:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_play_player) 播放 URL 资源后，如果你希望暂停播放，可以调用该方法。如果你希望停止播放，请调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player)。你必须在调用 [play:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_play_player) 之后调用该方法。
+
+<a id="api_player_pause_player__timing"></a>
+
+### 调用时机
+
+你必须在调用 [play:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_play_player) 之后调用该方法。
+
+<a id="api_player_pause_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-21"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_pause_player__return_values"></a>
+
+### 返回值
+
+- YES：暂停播放成功。
+- NO：暂停播放失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_play_player"></a>
+
+<a id="ariaid-title29"></a>
+
+## play:
+
+播放一个以 `rte://` 开头的 URL 资源。
+
+<a id="api_player_play_player__prototype"></a>
+
+```text
+- (BOOL)play:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_play_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你已关闭自动播放，在使用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 成功打开直播流后，可以调用此方法开始播放。
+
+<a id="api_player_play_player__timing"></a>
+
+### 调用时机
+
+仅在收到 [onStateChanged\:newState\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onstatechanged) 回调并报告状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
+
+<a id="api_player_play_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-22"></a>
+<Parameter name="error">
+
+连接状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_play_player__return_values"></a>
+
+### 返回值
+
+- YES：播放成功。
+- NO：播放失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_player_player"></a>
+
+<a id="ariaid-title30"></a>
+
+## initWithRte\:initialConfig:
+
+构造一个播放器对象。
+
+<a id="api_player_player_player__prototype"></a>
+
+```text
+- (instancetype _Nonnull)initWithRte:(AgoraRte * _Nonnull)rte initialConfig:(AgoraRtePlayerInitialConfig * _Nullable)config;
+```
+
+<a id="api_player_player_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_player_player_player__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 之后调用此方法。
+
+<a id="api_player_player_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="rte-1"></a>
+<Parameter name="rte">
+
+一个 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte) 对象，详见 [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)。
+
+</Parameter>
+<a id="config-5"></a>
+<Parameter name="config">
+
+播放器对象的初始化设置。你可以传入 nil。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_preloadwithurl"></a>
+
+<a id="ariaid-title31"></a>
+
+## preloadWithUrl\:error:
+
+预加载 URL 资源。
+
+<a id="api_player_preloadwithurl__prototype"></a>
+
+```text
++ (BOOL)preloadWithUrl:(NSString * _Nonnull)url error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_preloadwithurl__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之前调用该方法，成功预加载 URL 资源后，可以更快地通过 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 打开该资源，从而减少等待时间，提升视听体验的流畅度。
+
+:::note
+注： 该方法当前仅对以 `rte://` 为前缀的 URL 生效。最多可预加载 20 个 URL，若超过限制，最新预加载的 URL 会替换最早的 URL。
+:::
+
+<a id="api_player_preloadwithurl__scenario"></a>
+
+### 适用场景
+
+在打开媒体资源前预加载，可以减少用户等待时间，提供更流畅的视听体验。
+
+<a id="api_player_preloadwithurl__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-1"></a>
+<Parameter name="url">
+
+以 `rte://` 为前缀的 URL。
+
+</Parameter>
+<a id="error-23"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_preloadwithurl__return_values"></a>
+
+### 返回值
+
+- YES：预加载成功。
+- NO：预加载失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_registerobserver_player"></a>
+
+<a id="ariaid-title32"></a>
+
+## registerObserver\:error:
+
+注册一个播放器观察者对象。
+
+<a id="api_player_registerobserver_player__prototype"></a>
+
+```text
+- (BOOL)registerObserver:(AgoraRtePlayerObserver *_Nonnull)observer error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_registerobserver_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+在调用此方法之前，你需要实现一个继承自 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver) 的接口类。你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后再调用此方法。
+
+<a id="api_player_registerobserver_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
+
+接口对象实例，详见 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)。
+
+</Parameter>
+<a id="error-24"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_registerobserver_player__return_values"></a>
+
+### 返回值
+
+- YES：注册成功。
+- NO：注册失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_canvas_removeview"></a>
+
+<a id="ariaid-title33"></a>
+
+## removeView\:config\:error:
+
+移除一个渲染视图。
+
+<a id="api_canvas_removeview__prototype"></a>
+
+```text
+- (BOOL)removeView:(AgoraRteView * _Nonnull)view config:(AgoraRteViewConfig* _Nullable)config error:(AgoraRteError* _Nullable)error;
+```
+
+<a id="api_canvas_removeview__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+调用 [addView\:config\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_addview) 方法添加视图后，可以调用该方法移除渲染视图。
+
+:::note
+注： 每次只能移除一个视图。
+:::
+
+<a id="api_canvas_removeview__timing"></a>
+
+### 调用时机
+
+必须在调用 [addView\:config\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_addview) 方法之后调用。
+
+<a id="api_canvas_removeview__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="view-1"></a>
+<Parameter name="view">
+
+要移除的视图对象，详见 `AgoraRteView`。
+
+</Parameter>
+<a id="config-6"></a>
+<Parameter name="config">
+
+视图对象的配置。目前传入 nil。
+
+</Parameter>
+<a id="error-25"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvas_removeview__return_values"></a>
+
+### 返回值
+
+- YES：视图移除成功。
+- NO：视图移除失败。
+
+### 所属接口类
+
+- [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)
+
+<a id="api_rte_rte_rte"></a>
+
+<a id="ariaid-title34"></a>
+
+## initWithInitialConfig:
+
+构造一个 `RTE` 对象。
+
+<a id="api_rte_rte_rte__prototype"></a>
+
+```text
+- (instancetype _Nonnull)initWithInitialConfig:(AgoraRteInitialConfig * _Nullable)config;
+```
+
+<a id="api_rte_rte_rte__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+`RTE` 对象用于组织和管理 `RTE` 的内部资源。你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
+
+<a id="api_rte_rte_rte__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 方法之前调用此方法。
+
+<a id="api_rte_rte_rte__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-7"></a>
+<Parameter name="config">
+
+初始化设置。你可以传入 nil。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_rte_rte__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 `RTE` 对象。
+- 方法调用失败，返回 nil。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_player_seek"></a>
+
+<a id="ariaid-title35"></a>
+
+## seek\:error:
+
+跳转到指定的播放位置。
+
+<a id="api_player_seek__prototype"></a>
+
+```text
+- (BOOL)seek:(uint64_t)newTime error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_seek__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+<a id="api_player_seek__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="newtime"></a>
+<Parameter name="newTime">
+
+要跳转到的播放位置。
+
+</Parameter>
+<a id="error-26"></a>
+<Parameter name="error">
+
+输出参数，用于在跳转操作失败时返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_seek__return_values"></a>
+
+### 返回值
+
+- YES：跳转成功。
+- NO：跳转失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_playerconfig_setabrfallbacklayer"></a>
+
+<a id="ariaid-title36"></a>
+
+## setAbrFallbackLayer\:error:
+
+设置已订阅远端视频流的分层推流回退选项。
+
+<a id="api_playerconfig_setabrfallbacklayer__prototype"></a>
+
+```text
+- (void)setAbrFallbackLayer:(AgoraRteAbrFallbackLayer)layer error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setabrfallbacklayer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+在网络条件较差时，实时音视频通信的质量可能会下降。调用该方法后，SDK 会在网络变差时将远端视频流的分辨率回退到指定的视频质量层级。每个视频质量层级对应特定的分辨率和码率。SDK 会持续监测网络质量，在网络改善时恢复到原始订阅的视频质量层级。
+
+默认情况下，调用该方法后只能选择回退到 `AgoraRteAbrFallbackLow` 或 `AgoraRteAbrFallbackAudioOnly`。如果你对视频体验有更高要求，可以[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可以回退到所有视频质量层级，并自定义每个层级的分辨率。
+
+:::note
+注： 如果未开启 ABR 功能，远端视频流的回退质量层级只能设置为 `AgoraRteAbrFallbackLow` 或 `AgoraRteAbrFallbackAudioOnly`。
+:::
+
+<a id="api_playerconfig_setabrfallbacklayer__scenario"></a>
+
+### 适用场景
+
+一般场景下，可调用该方法并将回退质量层设置为 `kRteAbrFallbackLow` 或 `kRteAbrFallbackAudioOnly`。当网络较差时，SDK 会回退为视频小流或仅接收音频流。
+如果对回退视频流的分辨率有更高要求，可[联系技术支持](https://ticket.shengwang.cn/)开启 ABR 功能。开启后，可自定义每一层的分辨率。SDK 会以你指定的最低质量层的分辨率为下限，并根据网络状况在该范围内动态调整分辨率。
+
+<a id="api_playerconfig_setabrfallbacklayer__timing"></a>
+
+### 调用时机
+
+必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
+
+<a id="api_playerconfig_setabrfallbacklayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="layer"></a>
+<Parameter name="layer">
+
+回退的视频质量层级。可选值详见 [AgoraRteAbrFallbackLayer](/zh-CN/api-reference/rtc/macos/enum-rteabrfallbacklayer)。当自定义 `AgoraRteAbrFallbackLayer1` 到 `AgoraRteAbrFallbackLayer6` 的分辨率时，可参考下表或根据实际需求定义：
+
+:::note
+注： 自定义分辨率时，必须按从高到低的分辨率顺序排列视频质量层级。如果两个层级的分辨率相同，则按帧率从高到低排序。
+:::
+
+| 视频质量层级 | 分辨率 |
+| --- | --- |
+| `AgoraRteAbrSubscriptionLayer1` | 2160p (4K) |
+| `AgoraRteAbrSubscriptionLayer2` | 1440p (2K) |
+| `AgoraRteAbrSubscriptionLayer3` | 1080p (HD) |
+| `AgoraRteAbrSubscriptionLayer4` | 720p (HD) |
+| `AgoraRteAbrSubscriptionLayer5` | 540p (SD) |
+| `AgoraRteAbrSubscriptionLayer6` | 480p (SD) |
+
+自定义分辨率时，必须按从高到低的分辨率顺序排列视频质量层级。如果两个层级的分辨率相同，则按帧率从高到低排序。详见 `AgoraRteAbrFallbackLayer`。
+
+</Parameter>
+<a id="error-27"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_setabrsubscriptionlayer"></a>
+
+<a id="ariaid-title37"></a>
+
+## setAbrSubscriptionLayer\:error:
+
+设置订阅端媒体流的视频质量层级。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__prototype"></a>
+
+```text
+- (void)setAbrSubscriptionLayer:(AgoraRteAbrSubscriptionLayer)layer error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setabrsubscriptionlayer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以根据实际的网络状况，在多质量层级视频流中切换不同的视频质量层级，每个层级对应不同的分辨率。默认情况下，调用该方法后，观众只能在高、低两个视频流之间切换，即 `AgoraRteAbrSubscriptionHigh` 和 `AgoraRteAbrSubscriptionLow`。如果你需要更高级的分辨率切换功能，可以[联系技术支持](https://ticket.shengwang.cn/)开启 ABR（自适应码率）功能。开启后，你可以自定义每个视频质量层级的分辨率，观众可以根据需要在所有可用的视频质量层级之间切换。
+
+:::note
+注： 如果在调用该方法时未开启 ABR 功能，订阅的视频质量层级只能设置为 `AgoraRteAbrSubscriptionHigh` 或 `AgoraRteAbrSubscriptionLow`。
+:::
+
+<a id="api_playerconfig_setabrsubscriptionlayer__scenario"></a>
+
+### 适用场景
+
+在网络环境不稳定的场景中，订阅端可根据实际网络状况选择合适的视频质量层级，以保障流畅的观看体验。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__timing"></a>
+
+### 调用时机
+
+你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_setconfigs_canvas) 之前调用该方法。
+
+<a id="api_playerconfig_setabrsubscriptionlayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="layer-1"></a>
+<Parameter name="layer">
+
+要订阅的视频质量层级。你可以自定义 `AgoraRteAbrSubscriptionLayer1` 到 `AgoraRteAbrSubscriptionLayer6` 的分辨率，参考如下建议，或根据实际需求定义：
+
+注意：自定义分辨率时，请确保视频质量层级按分辨率从高到低排序；如果分辨率相同，则按帧率从高到低排序。
+
+| 视频质量层级 | 分辨率 |
+| --- | --- |
+| `AgoraRteAbrSubscriptionLayer1` | 2160p (4K) |
+| `AgoraRteAbrSubscriptionLayer2` | 1440p (2K) |
+| `AgoraRteAbrSubscriptionLayer3` | 1080p (HD) |
+| `AgoraRteAbrSubscriptionLayer4` | 720p (HD) |
+| `AgoraRteAbrSubscriptionLayer5` | 540p (SD) |
+| `AgoraRteAbrSubscriptionLayer6` | 480p (SD) |
+
+详见 `AgoraRteAbrSubscriptionLayer`。
+
+</Parameter>
+<a id="error-28"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_config_setappid"></a>
+
+<a id="ariaid-title38"></a>
+
+## setAppId\:error:
+
+设置声网 App ID。
+
+<a id="api_config_setappid__prototype"></a>
+
+```text
+- (void)setAppId:(NSString * _Nullable)appId error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_config_setappid__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_config_setappid__timing"></a>
+
+### 调用时机
+
+你必须在调用 [initMediaEngine\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_initmediaengine) 之前调用此方法。
+
+<a id="api_config_setappid__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
+
+项目的声网 App ID，可从控制台获取。
+
+</Parameter>
+<a id="error-29"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)
+
+<a id="api_playerconfig_setautoplay"></a>
+
+<a id="ariaid-title39"></a>
+
+## setAutoPlay\:error:
+
+设置是否启用自动播放。
+
+<a id="api_playerconfig_setautoplay__prototype"></a>
+
+```text
+- (void)setAutoPlay:(BOOL)autoPlay error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setautoplay__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之前调用此方法设置是否启用自动播放。如果未设置，默认启用自动播放。
+
+:::note
+注： 该方法必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之前调用。
+:::
+
+<a id="api_playerconfig_setautoplay__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之前调用。
+
+<a id="api_playerconfig_setautoplay__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
+
+是否启用自动播放：
+
+- YES：（默认）启用自动播放。
+- NO：不启用自动播放。
+
+</Parameter>
+<a id="error-30"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_player_setcanvas"></a>
+
+<a id="ariaid-title40"></a>
+
+## setCanvas\:error:
+
+设置用于显示视频的视图窗口。
+
+<a id="api_player_setcanvas__prototype"></a>
+
+```text
+- (BOOL)setCanvas:(AgoraRteCanvas *_Nonnull)canvas error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_setcanvas__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+该方法用于设置用于显示视频的视图窗口。在视频流成功开始播放后，视频将渲染在指定的 `canvas` 上。
+
+:::note
+注： 你必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后调用此方法。
+:::
+
+<a id="api_player_setcanvas__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="canvas"></a>
+<Parameter name="canvas">
+
+用于渲染视频帧的视图窗口。详见 [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)。
+
+</Parameter>
+<a id="error-31"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_setcanvas__return_values"></a>
+
+### 返回值
+
+- YES：设置成功。
+- NO：设置失败。你可以通过 `error` 参数返回的错误码获取详细信息。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_canvas_setconfigs_canvas"></a>
+
+<a id="ariaid-title41"></a>
+
+## setConfigs\:error:
+
+设置播放器的视频渲染配置。
+
+<a id="api_canvas_setconfigs_canvas__prototype"></a>
+
+```text
+- (BOOL)setConfigs:(AgoraRteCanvasConfig* _Nonnull)config error:(AgoraRteError* _Nullable)error;
+```
+
+<a id="api_canvas_setconfigs_canvas__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvas_setconfigs_canvas__timing"></a>
+
+### 调用时机
+
+你必须在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 之前调用此方法。
+
+<a id="api_canvas_setconfigs_canvas__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-8"></a>
+<Parameter name="config">
+
+Canvas 对象的设置，详见 [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)。
+
+</Parameter>
+<a id="error-32"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_canvas_setconfigs_canvas__return_values"></a>
+
+### 返回值
+
+- YES：配置成功。
+- NO：配置失败。
+
+### 所属接口类
+
+- [AgoraRteCanvas](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvas)
+
+<a id="api_player_setconfigs_player"></a>
+
+<a id="ariaid-title42"></a>
+
+## setConfigs\:error:
+
+配置播放器参数。
+
+<a id="api_player_setconfigs_player__prototype"></a>
+
+```text
+- (BOOL)setConfigs:(AgoraRtePlayerConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_setconfigs_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以调用此方法配置播放器，例如启用自动播放、订阅不同分辨率和码率的视频流。
+
+:::note
+注： 必须在调用 [initWithRte\:initialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_player_player) 之后调用此方法。
+:::
+
+<a id="api_player_setconfigs_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-9"></a>
+<Parameter name="config">
+
+播放器配置对象。详见 [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)。
+
+</Parameter>
+<a id="error-33"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_setconfigs_player__return_values"></a>
+
+### 返回值
+
+- YES：配置成功。
+- NO：配置失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_rte_setconfigs_rte"></a>
+
+<a id="ariaid-title43"></a>
+
+## setConfigs\:error:
+
+配置 RTE 对象的信息。
+
+<a id="api_rte_setconfigs_rte__prototype"></a>
+
+```text
+- (BOOL)setConfigs:(AgoraRteConfig * _Nonnull)config error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_rte_setconfigs_rte__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+你可以调用此方法设置如 App ID 等信息。
+
+:::note
+注： 必须在调用 [initWithInitialConfig:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_rte_rte_rte) 之后调用此方法。
+:::
+
+<a id="api_rte_setconfigs_rte__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-10"></a>
+<Parameter name="config">
+
+RTE 对象的设置信息，详见 [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)。
+
+</Parameter>
+<a id="error-34"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_rte_setconfigs_rte__return_values"></a>
+
+### 返回值
+
+- YES：配置成功。
+- NO：配置失败。
+
+### 所属接口类
+
+- [AgoraRte](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rte)
+
+<a id="api_config_setjsonparameter_config"></a>
+
+<a id="ariaid-title44"></a>
+
+## setJsonParameter\:error:
+
+通过 JSON 配置 SDK 提供的技术预览或定制功能。
+
+<a id="api_config_setjsonparameter_config__prototype"></a>
+
+```text
+- (void)setJsonParameter:(NSString * _Nullable)jsonParameter error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_config_setjsonparameter_config__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+当你需要设置私有参数或使用定制功能时，可以调用此方法。
+
+:::note
+注： 你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
+:::
+
+<a id="api_config_setjsonparameter_config__scenario"></a>
+
+### 适用场景
+
+当你需要设置私有参数或使用定制化功能时，可以调用此方法。
+
+<a id="api_config_setjsonparameter_config__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="jsonparameter"></a>
+<Parameter name="jsonParameter">
+
+以 JSON 字符串形式传入的参数。
+
+</Parameter>
+<a id="error-35"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRteConfig](/zh-CN/api-reference/rtc/macos/class-config)
+
+<a id="api_playerconfig_setloopcount"></a>
+
+<a id="ariaid-title45"></a>
+
+## setLoopCount\:error:
+
+设置播放媒体文件的循环次数。
+
+<a id="api_playerconfig_setloopcount__prototype"></a>
+
+```text
+- (void)setLoopCount:(int32_t)count error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setloopcount__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+<a id="api_playerconfig_setloopcount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
+
+媒体文件的播放次数：
+
+- `1`：播放一次。
+- `2`：播放两次。
+- `-1`：无限循环播放，直到调用 [pause:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_pause_player)。
+
+</Parameter>
+<a id="error-36"></a>
+<Parameter name="error">
+
+输出参数，表示状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+- `AgoraRteOk`：调用成功。
+- `AgoraRteErrorInvalidArgument`：`count` 参数设置为无效值。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_setmirrormode"></a>
+
+<a id="ariaid-title46"></a>
+
+## setVideoMirrorMode\:error:
+
+设置视频镜像模式。
+
+<a id="api_canvasconfig_setmirrormode__prototype"></a>
+
+```text
+- (void)setVideoMirrorMode:(AgoraRteVideoMirrorMode)mode error:(AgoraRteError* _Nullable)error;
+```
+
+<a id="api_canvasconfig_setmirrormode__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvasconfig_setmirrormode__timing"></a>
+
+### 调用时机
+
+你必须在调用 [setConfigs\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_canvas_setconfigs_canvas) 之前调用此方法。
+
+<a id="api_canvasconfig_setmirrormode__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mode"></a>
+<Parameter name="mode">
+
+镜像模式，详见 [AgoraRteVideoMirrorMode](/zh-CN/api-reference/rtc/macos/enum-rtevideomirrormode)。默认值为 `AgoraRteVideoMirrorModeAuto`，表示由 SDK 自动决定镜像模式。默认情况下，远端用户的视频镜像模式为关闭状态。
+
+</Parameter>
+<a id="error-37"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)
+
+<a id="api_playerconfig_setplaybackspeed"></a>
+
+<a id="ariaid-title47"></a>
+
+## setPlaybackSpeed\:error:
+
+设置播放速度参数。
+
+<a id="api_playerconfig_setplaybackspeed__prototype"></a>
+
+```text
+- (void)setPlaybackSpeed:(int32_t)speed error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setplaybackspeed__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+:::note
+注： 你可以在调用 [openWithUrl\:startTime\:cb:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_openwithurl) 方法之后调用此方法。
+:::
+
+<a id="api_playerconfig_setplaybackspeed__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="speed"></a>
+<Parameter name="speed">
+
+播放速度，取值范围为 [50, 400]。
+
+</Parameter>
+<a id="error-38"></a>
+<Parameter name="error">
+
+用于返回错误信息的输出参数。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_playerconfig_setplayoutvolume"></a>
+
+<a id="ariaid-title48"></a>
+
+## setPlayoutVolume\:error:
+
+设置播放音量参数。
+
+<a id="api_playerconfig_setplayoutvolume__prototype"></a>
+
+```text
+- (void)setPlayoutVolume:(int32_t)volume error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_playerconfig_setplayoutvolume__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+你可以使用该方法设置播放音量。有效范围为 [0, 400]。
+
+<a id="api_playerconfig_setplayoutvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
+
+要设置的播放音量。有效范围为 [0, 400]。
+
+</Parameter>
+<a id="error-39"></a>
+<Parameter name="error">
+
+输出参数，返回错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+- `AgoraRteOk`：设置成功。
+- `AgoraRteErrorInvalidArgument`：音量参数无效。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerconfig)
+
+<a id="api_canvasconfig_setrendermode_canvasconfig"></a>
+
+<a id="ariaid-title49"></a>
+
+## setVideoRenderMode\:error:
+
+设置视频渲染模式。
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__prototype"></a>
+
+```text
+- (void)setVideoRenderMode:(AgoraRteVideoRenderMode)mode error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_canvasconfig_setrendermode_canvasconfig__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mode-1"></a>
+<Parameter name="mode">
+
+要设置的视频渲染模式，详见 [AgoraRteVideoRenderMode](/zh-CN/api-reference/rtc/macos/enum-rtevideorendermode)。默认值为 `AgoraRteVideoRenderModeHidden`。
+
+</Parameter>
+<a id="error-40"></a>
+<Parameter name="error">
+
+状态或错误信息。
+
+- `AgoraRteOk`：成功。
+- `AgoraRteErrorInvalidArgument`：`mode` 参数设置为非法值。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRteCanvasConfig](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_canvasconfig)
+
+<a id="api_player_stop_player"></a>
+
+<a id="ariaid-title50"></a>
+
+## stop:
+
+停止播放。
+
+<a id="api_player_stop_player__prototype"></a>
+
+```text
+- (BOOL)stop:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_stop_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="api_player_stop_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error-41"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。可能返回以下 [AgoraRteErrorCode](/zh-CN/api-reference/rtc/macos/enum-rteerrorcode)：
+
+- `AgoraRteOk`：成功。
+- `AgoraRteErrorInvalidOperation`：对应的内部 [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player) 对象已被销毁或无效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_stop_player__return_values"></a>
+
+### 返回值
+
+- YES：停止成功。
+- NO：停止失败。你可以通过 `error` 参数查看具体错误信息。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_switchwithurl"></a>
+
+<a id="ariaid-title51"></a>
+
+## switchWithUrl\:syncPts\:cb:
+
+在播放过程中切换到新的 URL。
+
+<a id="api_player_switchwithurl__prototype"></a>
+
+```text
+- (void)switchWithUrl:(NSString * _Nonnull)url syncPts:(BOOL)syncPts cb:(void (^_Nullable)(AgoraRteError* _Nullable err))cb;
+```
+
+<a id="api_player_switchwithurl__detailed_desc"></a>
+
+:::info[自从]
+自 v4.5.1 版本新增。
+:::
+
+:::note
+注： 该方法仅在使用非 RTE URL 打开播放器时有效。你必须在 SDK 返回播放器状态为 `AgoraRtePlayerStateOpenCompleted` 后调用此方法。
+:::
+
+<a id="api_player_switchwithurl__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-2"></a>
+<Parameter name="url">
+
+要切换到的目标 URL。
+
+</Parameter>
+<a id="syncpts"></a>
+<Parameter name="syncPts">
+
+是否在切换后同步播放位置（单位为毫秒）：
+
+- YES：同步播放位置。
+- NO：（默认）不同步播放位置。
+
+</Parameter>
+<a id="cb-3"></a>
+<Parameter name="cb">
+
+异步通知切换操作结果的回调。你可以通过该回调的 `err` 参数得知操作的结果或错误码信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="api_player_unregisterobserver_player"></a>
+
+<a id="ariaid-title52"></a>
+
+## unregisterObserver\:error:
+
+取消注册媒体播放器事件观察者对象。
+
+<a id="api_player_unregisterobserver_player__prototype"></a>
+
+```text
+- (BOOL)unregisterObserver:(AgoraRtePlayerObserver * _Nullable)observer error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="api_player_unregisterobserver_player__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 注册媒体播放器事件观察者对象后，如需取消注册该观察者对象，可以调用此方法。
+
+:::note
+注： 该方法必须在调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 之后调用。
+:::
+
+<a id="api_player_unregisterobserver_player__timing"></a>
+
+### 调用时机
+
+该方法必须在调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 之后调用。
+
+<a id="api_player_unregisterobserver_player__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
+
+媒体播放器事件观察者对象。详见 [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)。
+
+</Parameter>
+<a id="error-42"></a>
+<Parameter name="error">
+
+状态或错误信息。详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_player_unregisterobserver_player__return_values"></a>
+
+### 返回值
+
+- YES：取消注册成功。
+- NO：取消注册失败。
+
+### 所属接口类
+
+- [AgoraRtePlayer](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_player)
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver"></a>
+
+<a id="ariaid-title53"></a>
+
+## onAudioVolumeIndication:
+
+播放器音量提示回调。
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__prototype"></a>
+
+```text
+- (void)onAudioVolumeIndication:(int32_t)volume;
+```
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__timing"></a>
+
+### 触发时机
+
+当播放器音量发生变化时，SDK 会触发该回调。
+
+<a id="callback_playerobserver_onaudiovolumeindication_playerobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+播放器当前的音量，取值范围为 [0,225]。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onevent"></a>
+
+<a id="ariaid-title54"></a>
+
+## onEvent:
+
+播放器事件回调。
+
+<a id="callback_playerobserver_onevent__prototype"></a>
+
+```text
+- (void)onEvent:(AgoraRtePlayerEvent)event;
+```
+
+<a id="callback_playerobserver_onevent__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你需要监听播放器事件，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+
+<a id="callback_playerobserver_onevent__timing"></a>
+
+### 触发时机
+
+该回调在播放器事件发生变化时被触发。
+
+<a id="callback_playerobserver_onevent__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="event"></a>
+<Parameter name="event">
+
+播放器事件，详见 [AgoraRtePlayerEvent](/zh-CN/api-reference/rtc/macos/enum-rteplayerevent)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onmetadata_playerobserver"></a>
+
+<a id="ariaid-title55"></a>
+
+## onMetadata\:data:
+
+接收媒体元数据的回调。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__prototype"></a>
+
+```text
+- (void)onMetadata:(AgoraRtePlayerMetadataType)type data:(NSData * _Nonnull)data;
+```
+
+<a id="callback_playerobserver_onmetadata_playerobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你需要从输入在线媒体流中获取元数据，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 注册一个播放器观察者对象。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在 SDK 从输入在线媒体流中解析出元数据后触发，用于上报数据的类型和内容。
+
+<a id="callback_playerobserver_onmetadata_playerobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+元数据的类型，详见 [AgoraRtePlayerMetadataType](/zh-CN/api-reference/rtc/macos/enum-rteplayermetadatatype)。
+
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
+
+解析后的元数据内容。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver"></a>
+
+<a id="ariaid-title56"></a>
+
+## onPlayerInfoUpdated:
+
+播放器或媒体流信息发生变化时触发的回调。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__prototype"></a>
+
+```text
+- (void)onPlayerInfoUpdated:(AgoraRtePlayerInfo * _Nonnull)info;
+```
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你希望获取播放器或媒体流的信息，需要先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。你也可以直接使用 [getInfo\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_getinfo) 方法获取信息。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__timing"></a>
+
+### 触发时机
+
+当播放器或媒体流信息发生变化时，SDK 会触发该回调。
+
+<a id="callback_playerobserver_onplayerinfoupdated_playerobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="info-1"></a>
+<Parameter name="info">
+
+关于播放器和媒体流的信息，详见 [AgoraRtePlayerInfo](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_rteplayerinfo)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver"></a>
+
+<a id="ariaid-title57"></a>
+
+## onPositionChanged\:utcTime:
+
+[onPositionChanged\:utcTime:](/zh-CN/api-reference/rtc/macos/play/rte-player#callback_playerobserver_onpositionchanged_playerobserver) 回调。报告媒体资源的当前播放进度。
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__prototype"></a>
+
+```text
+- (void)onPositionChanged:(uint64_t)currentTime utcTime:(uint64_t)utcTime;
+```
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__timing"></a>
+
+### 触发时机
+
+该回调在媒体资源播放过程中每秒触发一次。
+
+<a id="callback_playerobserver_onpositionchanged_playerobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="currenttime"></a>
+<Parameter name="currentTime">
+
+当前播放进度，单位为毫秒。
+
+</Parameter>
+<a id="utctime"></a>
+<Parameter name="utcTime">
+
+当前的 NTP（网络时间协议）时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onresolutionchanged"></a>
+
+<a id="ariaid-title58"></a>
+
+## onResolutionChanged\:height:
+
+视频分辨率变化的回调。
+
+<a id="callback_playerobserver_onresolutionchanged__prototype"></a>
+
+```text
+- (void)onResolutionChanged:(int)width height:(int)height;
+```
+
+<a id="callback_playerobserver_onresolutionchanged__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你需要监控播放器正在播放的视频流的分辨率变化，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+
+<a id="callback_playerobserver_onresolutionchanged__timing"></a>
+
+### 触发时机
+
+该回调在视频流的分辨率发生变化时被触发，报告当前视频的宽度和高度。
+
+<a id="callback_playerobserver_onresolutionchanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="width"></a>
+<Parameter name="width">
+
+视频帧的宽度（像素）。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+视频帧的高度（像素）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)
+
+<a id="callback_playerobserver_onstatechanged"></a>
+
+<a id="ariaid-title59"></a>
+
+## onStateChanged\:newState\:error:
+
+播放器状态发生变化回调。
+
+<a id="callback_playerobserver_onstatechanged__prototype"></a>
+
+```text
+- (void)onStateChanged:(AgoraRtePlayerState)oldState newState:(AgoraRtePlayerState)newState error:(AgoraRteError * _Nullable)error;
+```
+
+<a id="callback_playerobserver_onstatechanged__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+如果你需要监听播放器状态的变化，必须先调用 [registerObserver\:error:](/zh-CN/api-reference/rtc/macos/play/rte-player#api_player_registerobserver_player) 方法注册播放器观察者对象。
+
+<a id="callback_playerobserver_onstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在播放器状态发生变化时被触发，用于报告当前状态和之前的状态。
+
+<a id="callback_playerobserver_onstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="oldstate"></a>
+<Parameter name="oldState">
+
+变更前的播放器状态，详见 [AgoraRtePlayerState](/zh-CN/api-reference/rtc/macos/enum-rteplayerstate)。
+
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
+
+当前的播放器状态，详见 [AgoraRtePlayerState](/zh-CN/api-reference/rtc/macos/enum-rteplayerstate)。如果当前状态为 `AgoraRtePlayerStateFailed`，你可以通过 `error` 参数获取详细的错误信息。
+
+</Parameter>
+<a id="error-43"></a>
+<Parameter name="error">
+
+状态或错误信息，详见 [AgoraRteError](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_error)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtePlayerObserver](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_playerobserver)

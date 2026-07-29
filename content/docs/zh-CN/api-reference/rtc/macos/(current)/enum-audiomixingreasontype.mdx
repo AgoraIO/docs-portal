@@ -1,0 +1,70 @@
+---
+title: AgoraAudioMixingReasonCode
+description: 音乐文件播放状态变化的原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/enum_audiomixingreasontype
+  sourcePath: html-docs/rtc/macOS/API/enum_audiomixingreasontype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audiomixingreasontype__detailed_desc"></a>
+
+在 `audioMixingStateChanged` 回调中报告。
+
+<a id="enum_audiomixingreasontype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="agoraaudiomixingreasoncannotopen"></a>
+<Parameter name="AgoraAudioMixingReasonCanNotOpen">
+
+（701）：SDK 无法打开音乐文件。例如，本地音乐文件不存在、SDK 不支持该文件格式，或无法访问音乐文件的 URL。
+
+</Parameter>
+<a id="agoraaudiomixingreasontoofrequentlycall"></a>
+<Parameter name="AgoraAudioMixingReasonTooFrequentlyCall">
+
+（702）：SDK 打开音乐文件过于频繁。如果需要多次调用 `startAudioMixing`，请确保调用间隔大于 500 毫秒。
+
+</Parameter>
+<a id="agoraaudiomixingreasoninterruptedeof"></a>
+<Parameter name="AgoraAudioMixingReasonInterruptedEOF">
+
+（703）：音乐文件播放被中断。
+
+</Parameter>
+<a id="agoraaudiomixingreasononeloopcompleted"></a>
+<Parameter name="AgoraAudioMixingReasonOneLoopCompleted">
+
+（721）：音乐文件完成一次循环播放。
+
+</Parameter>
+<a id="agoraaudiomixingreasonallloopscompleted"></a>
+<Parameter name="AgoraAudioMixingReasonAllLoopsCompleted">
+
+（723）：音乐文件完成所有循环播放。
+
+</Parameter>
+<a id="agoraaudiomixingreasonstoppedbyuser"></a>
+<Parameter name="AgoraAudioMixingReasonStoppedByUser">
+
+（724）：调用 [stopAudioMixing](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_stopaudiomixing) 成功，停止播放音乐文件。
+
+</Parameter>
+<a id="agoraaudiomixingreasonresumedbyuser"></a>
+<Parameter name="AgoraAudioMixingReasonResumedByUser">
+
+（726）：音频混音播放已由用户恢复。
+
+</Parameter>
+<a id="agoraaudiomixingreasontypeok"></a>
+<Parameter name="AgoraAudioMixingReasonTypeOk">
+
+（0）：SDK 成功打开音乐文件。
+
+</Parameter>
+</ParameterList>

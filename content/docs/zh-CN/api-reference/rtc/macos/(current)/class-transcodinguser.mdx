@@ -1,0 +1,89 @@
+---
+title: AgoraLiveTranscodingUser
+description: 每位主播的转码配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_transcodinguser
+  sourcePath: html-docs/rtc/macOS/API/class_transcodinguser.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_transcodinguser__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraLiveTranscodingUser : NSObject
+@property(assign, nonatomic) NSUInteger uid;
+@property(assign, nonatomic) CGRect rect;
+@property(assign, nonatomic) NSInteger zOrder;
+@property(assign, nonatomic) double alpha;
+@property(assign, nonatomic) NSInteger audioChannel;
+@end
+```
+
+<a id="class_transcodinguser__detailed_desc"></a>
+
+用于设置每位主播在合流转码中的视频位置、图层顺序、透明度以及音频通道。
+
+<a id="class_transcodinguser__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+主播的用户 ID。
+
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
+
+主播视频在输出画面中的位置和大小。
+
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
+
+:::note
+注：
+
+- 如果取值小于 0 或大于 100，会返回 `AgoraErrorCodeInvalidArgument` 错误。
+- 支持将 `zOrder` 设置为 0。
+:::
+
+主播视频的图层索引，取值范围为 [0, 100]。
+
+- 0：（默认）主播视频处于底层。
+- 100：主播视频处于顶层。
+
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
+
+主播视频的透明度，取值范围为 [0.0, 1.0]。
+
+- 0.0：完全透明。
+- 1.0：（默认）不透明。
+
+</Parameter>
+<a id="audiochannel"></a>
+<Parameter name="audioChannel">
+
+:::note
+注： 如果该值不为 `0`，需要使用特殊播放器。
+:::
+
+主播音频在输出音频中使用的音频通道。默认值为 0，取值范围为 [0, 5]。
+
+- 0：（推荐）默认设置，最多支持双通道，取决于主播的上行音频。
+- 1：使用 FL 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
+- 2：使用 FC 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
+- 3：使用 FR 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
+- 4：使用 BL 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
+- 5：使用 BR 音频通道，若主播上行使用多通道，声网服务器会先混合为单声道。
+- 0xFF 或大于 5 的值：静音该主播音频，声网服务器会移除该主播音频。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,52 @@
+---
+title: VideoDenoiserOptions
+description: 视频降噪选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_videodenoiseroptions
+  sourcePath: html-docs/rtc/Unity/API/class_videodenoiseroptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videodenoiseroptions__prototype"></a>
+
+```text
+public class VideoDenoiserOptions
+    {
+        public VIDEO_DENOISER_MODE mode { set; get; }
+        public VIDEO_DENOISER_LEVEL level { set; get; }
+
+        public VideoDenoiserOptions(VIDEO_DENOISER_MODE denoiserMode, VIDEO_DENOISER_LEVEL denoiserLevel)
+        {
+            mode = denoiserMode;
+            level = denoiserLevel;
+        }
+
+        public VideoDenoiserOptions()
+        {
+            mode = VIDEO_DENOISER_MODE.VIDEO_DENOISER_AUTO;
+            level = VIDEO_DENOISER_LEVEL.VIDEO_DENOISER_LEVEL_HIGH_QUALITY;
+        }
+    };
+```
+
+<a id="class_videodenoiseroptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="level"></a>
+<Parameter name="level">
+
+视频降噪等级。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+视频降噪模式。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,132 @@
+---
+title: FVideoLayout
+description: 某一路合图子视频流的布局信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_videolayout
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_videolayout.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videolayout__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FVideoLayout
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	FString channelId = "";
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 uid = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	FString strUid = "";
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 x = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 y = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 width = 0;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 height = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FVideoLayout")
+	int64 videoState = 0;
+	FVideoLayout(){}
+	FVideoLayout(const agora::VideoLayout & AgoraData){
+		channelId = UTF8_TO_TCHAR(AgoraData.channelId);
+		uid = AgoraData.uid;
+		strUid = UTF8_TO_TCHAR(AgoraData.strUid);
+		x = AgoraData.x;
+		y = AgoraData.y;
+		width = AgoraData.width;
+		height = AgoraData.height;
+		videoState = AgoraData.videoState;
+	}
+	agora::VideoLayout CreateAgoraData() const {
+		agora::VideoLayout AgoraData;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.channelId, channelId)
+		AgoraData.uid = uid;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.strUid, strUid)
+		AgoraData.x = x;
+		AgoraData.y = y;
+		AgoraData.width = width;
+		AgoraData.height = height;
+		AgoraData.videoState = videoState;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::VideoLayout & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.channelId)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.strUid)
+	}
+};
+```
+
+<a id="class_videolayout__detailed_desc"></a>
+
+<a id="class_videolayout__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+合图子视频流所属的频道名。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+发布该合图子视频流的用户 ID。
+
+</Parameter>
+<a id="struid"></a>
+<Parameter name="strUid">
+
+预留参数。
+
+</Parameter>
+<a id="x"></a>
+<Parameter name="x">
+
+合图子视频在合图画布上的 x 坐标 (px)。即合图子视频的左上角相对于合图画布左上角（原点）的横向位移。
+
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
+
+合图子视频在合图画布上的 y 坐标 (px)。即合图子视频的左上角相对于合图画布左上角（原点）的纵向位移。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+合图子视频流的宽度 (px)。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+合图子视频流的高度 (px)
+
+</Parameter>
+<a id="videostate"></a>
+<Parameter name="videoState">
+
+合图子视频流在合图画布上的状态。
+
+- 0：正常。该视频流已被渲染到合图画布。
+- 1：占位图。该视频流无视频画面，在合图画布中显示为占位符。
+- 2：黑色图片。该视频流被黑色图片替代。
+
+</Parameter>
+</ParameterList>

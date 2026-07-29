@@ -1,0 +1,14 @@
+---
+title: "如何在 Android 设备上跨平台调用 C++ API？"
+---
+## 问题描述
+
+直接通过 `System.loadLibrary` 加载 `.so` 文件以跨平台调用 C++ API 时，可能会遇到 App 启动报错或运行期间崩溃的问题。
+
+## 问题原因
+
+随 SDK 版本升级，`.so` 文件可能会发生变化。如果采用 `System.loadLibrary` 的方式加载库文件，则需对每个版本的库加载逻辑进行调整，以确保兼容性。
+
+## 解决方案
+
+避免直接使用 Java 原生的 `System.loadLibrary` 加载库文件，改用声网提供的 `RtcEngineImpl.initializeNativeLibs()` 方法。该方法可以自动加载所有当前版本所必需的 `.so` 文件，从而确保无论 `.so` 文件如何变化或版本如何更新，App 都能正确加载所需的库文件。

@@ -1,0 +1,49 @@
+---
+title: STREAM_PUBLISH_STATE
+description: 发布状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/enum_streampublishstate
+  sourcePath: html-docs/rtc/Unreal-cpp/API/enum_streampublishstate.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_streampublishstate__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="pub_state_idle"></a>
+<Parameter name="PUB_STATE_IDLE">
+
+0: 加入频道后的初始发布状态。
+
+</Parameter>
+<a id="pub_state_no_published"></a>
+<Parameter name="PUB_STATE_NO_PUBLISHED">
+
+1: 发布失败。可能是因为：
+
+<a id="enum_streampublishstate__ul_yvl_nwk_p4b"></a>
+
+- 本地用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalaudiostream)(`true`) 或 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream)(`true`) 停止发送本地媒体流。
+- 本地用户调用 [disableAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-basic#api_irtcengine_disableaudio) 或 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo) 关闭本地音频或视频模块。
+- 本地用户调用 [enableLocalAudio](/zh-CN/api-reference/rtc/unreal-cpp/audio/audio-capture#api_irtcengine_enablelocalaudio)(`false`) 或 [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo)(`false`) 关闭本地音频或视频采集。
+- 本地用户角色为观众。
+
+</Parameter>
+<a id="pub_state_publishing"></a>
+<Parameter name="PUB_STATE_PUBLISHING">
+
+2: 正在发布。
+
+</Parameter>
+<a id="pub_state_published"></a>
+<Parameter name="PUB_STATE_PUBLISHED">
+
+3: 发布成功。
+
+</Parameter>
+</ParameterList>

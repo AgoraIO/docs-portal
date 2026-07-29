@@ -1,0 +1,159 @@
+---
+title: 已编码视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_video_encoded
+  sourcePath: html-docs/rtc/Unity/API/toc_video_encoded.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_video_encoded"></a>
+
+<a id="api_imediaengine_registervideoencodedframeobserver"></a>
+
+<a id="ariaid-title2"></a>
+
+## RegisterVideoEncodedFrameObserver
+
+为编码后的视频图像注册视频帧接收观测器。
+
+<a id="api_imediaengine_registervideoencodedframeobserver__prototype"></a>
+
+```text
+public abstract int RegisterVideoEncodedFrameObserver(IVideoEncodedFrameObserver videoEncodedImageReceiver, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
+```
+
+<a id="api_imediaengine_registervideoencodedframeobserver__detailed_desc"></a>
+
+如果你只想要观测编码后的视频帧 (如 H.264 格式)，而不需要对视频进行解码和渲染，声网推荐你通过该方法注册一个 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoencodedframeobserver) 类。
+
+:::note
+注： 该方法需要在加入频道前调用。
+:::
+
+<a id="api_imediaengine_registervideoencodedframeobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="videoencodedimagereceiver"></a>
+<Parameter name="videoEncodedImageReceiver">
+
+视频帧接收观测器，详见 [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+视频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/unity/enum-observermode)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_registervideoencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_unregistervideoencodedframeobserver"></a>
+
+<a id="ariaid-title3"></a>
+
+## UnregisterVideoEncodedFrameObserver
+
+为编码后的视频图像取消注册视频帧接收观测器。
+
+<a id="api_imediaengine_unregistervideoencodedframeobserver__prototype"></a>
+
+```text
+public abstract int UnRegisterVideoEncodedFrameObserver();
+```
+
+<a id="api_imediaengine_unregistervideoencodedframeobserver__detailed_desc"></a>
+
+<a id="api_imediaengine_unregistervideoencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+<a id="ariaid-title4"></a>
+
+## OnEncodedVideoFrameReceived
+
+报告接收端已收到远端发送的待解码视频帧。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
+
+```text
+public virtual bool OnEncodedVideoFrameReceived(string channelId, uint uid, IntPtr imageBufferPtr, UInt64 length, EncodedVideoFrameInfo videoEncodedFrameInfo)
+        {
+            return true;
+        }
+```
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc"></a>
+
+调用 [SetRemoteVideoSubscriptionOptions](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法并将 `encodedFrameOnly` 设置为 true 时，SDK 会在本地触发该回调，上报接收到的编码后视频帧信息。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="imagebufferptr"></a>
+<Parameter name="imageBufferPtr">
+
+视频图像 buffer。
+
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
+
+视频图像的数据长度。
+
+</Parameter>
+<a id="videoencodedframeinfo"></a>
+<Parameter name="videoEncodedFrameInfo">
+
+编码后的视频帧信息，详见 [EncodedVideoFrameInfo](/zh-CN/api-reference/rtc/unity/class-encodedvideoframeinfo)。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IVideoEncodedFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_ivideoencodedframeobserver)

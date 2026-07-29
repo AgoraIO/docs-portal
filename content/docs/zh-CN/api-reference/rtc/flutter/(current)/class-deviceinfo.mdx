@@ -1,0 +1,47 @@
+---
+title: DeviceInfo
+description: 音频设备信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_deviceinfo
+  sourcePath: html-docs/rtc/Flutter/API/class_deviceinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_deviceinfo__prototype"></a>
+
+```text
+class DeviceInfo {
+  const DeviceInfo({this.isLowLatencyAudioSupported});
+
+  @JsonKey(name: 'isLowLatencyAudioSupported')
+  final bool? isLowLatencyAudioSupported;
+  factory DeviceInfo.fromJson(Map<String, dynamic> json) =>
+      _$DeviceInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$DeviceInfoToJson(this);
+}
+```
+
+<a id="class_deviceinfo__detailed_desc"></a>
+
+:::note
+注： 该类仅适用于 Android 平台。
+:::
+
+<a id="class_deviceinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="islowlatencyaudiosupported"></a>
+<Parameter name="isLowLatencyAudioSupported">
+
+是否支持极低延时音频采集和播放：
+
+- true: 支持
+- false: 不支持
+
+</Parameter>
+</ParameterList>

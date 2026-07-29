@@ -21,11 +21,14 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtc/query-channel-list.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
+    );
+    expect(pagePaths).not.toContain(
+      'zh-CN/api-reference/api-ref/signaling/peer-to-peer-message.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/cloud-recording/acquire.mdx',
@@ -36,13 +39,16 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
-    expect(pagePaths).not.toContain(
+    expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key.mdx',
     );
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).toContain(
+      'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
+    );
+    expect(pagePaths).toHaveLength(232);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -69,6 +75,36 @@ describe('fumadocs openapi source', () => {
     expect(props.payload.bundled.info?.title).toBe(
       'Conversational AI RESTful API',
     );
+  });
+
+  it('omits empty request bodies from generated whiteboard GET operation payloads', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const page = source.files.find(
+      (file) =>
+        file.type === 'page' &&
+        file.path ===
+          'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
+    );
+
+    expect(page?.type).toBe('page');
+    if (page?.type !== 'page') {
+      throw new Error('Missing Chinese Whiteboard get-room page');
+    }
+
+    const props = await page.data.getClientAPIPageProps();
+    const operation = props.payload.bundled.paths?.['/v5/rooms/{uuid}']?.get as
+      | { requestBody?: unknown; responses?: unknown }
+      | undefined;
+
+    expect(operation).toBeDefined();
+    expect(operation?.requestBody).toBeUndefined();
+    expect(operation?.responses).toMatchObject({
+      '200': {
+        content: {
+          'application/json': expect.any(Object),
+        },
+      },
+    });
   });
 
   it('keeps Cloud Recording legacy-visible prose in generated endpoint payloads', async () => {
@@ -148,9 +184,7 @@ describe('fumadocs openapi source', () => {
       ]),
     );
     expect(updateLayoutRecord['x-docs-callouts']).toBeUndefined();
-    expect(
-      schemas?.['updateLayout-clientRequest']?.properties,
-    ).toMatchObject({
+    expect(schemas?.['updateLayout-clientRequest']?.properties).toMatchObject({
       maxResolutionUid: expect.objectContaining({
         description: expect.stringContaining('from 1 to (2³²−1)'),
       }),
@@ -202,6 +236,80 @@ describe('fumadocs openapi source', () => {
         }),
       ]),
     );
+  });
+
+  it('keeps localized Cloud Recording operation descriptions short and moves zh-CN prose into renderable sections', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const acquirePage = source.files.find(
+      (file) =>
+        file.type === 'page' &&
+        file.path === 'zh-CN/api-reference/api-ref/cloud-recording/acquire.mdx',
+    );
+
+    expect(acquirePage?.type).toBe('page');
+    if (acquirePage?.type !== 'page') {
+      throw new Error('Missing Chinese Cloud Recording acquire page');
+    }
+
+    const props = await acquirePage.data.getClientAPIPageProps();
+    const acquireOperation =
+      props.payload.bundled.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
+        ?.post;
+    const acquireRecord = acquireOperation as Record<string, unknown>;
+
+    expect(acquireOperation?.summary).toBe('获取云端录制资源');
+    expect(acquireOperation?.description).toBe(
+      '获取用于云端录制任务的 Resource ID。',
+    );
+    expect(acquireOperation?.description).not.toContain('`acquire`');
+    expect(acquireRecord['x-docs-sections']).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          position: 'after-description',
+          markdown: expect.stringContaining(
+            '在开始云端录制之前，你需要调用 `acquire` 方法获取一个 Resource ID。',
+          ),
+        }),
+      ]),
+    );
+    expect(acquireRecord['x-docs-callouts']).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          position: 'after-description',
+          markdown: expect.stringContaining(
+            '在每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](start) 请求。',
+          ),
+        }),
+      ]),
+    );
+
+    const shortDescriptions: Record<string, string> = {
+      'acquire-cloud-recording-resource':
+        '获取用于云端录制任务的 Resource ID。',
+      'start-cloud-recording': '开始一个云端录制任务。',
+      'update-cloud-recording': '更新进行中的云端录制任务设置。',
+      'update-cloud-recording-layout': '更新进行中的合流录制任务布局。',
+      'query-cloud-recording': '查询云端录制任务的当前状态。',
+      'stop-cloud-recording': '停止一个云端录制任务。',
+      'get-ncs-ip': '查询消息通知服务器的 IP 地址。',
+    };
+
+    for (const pathItem of Object.values(props.payload.bundled.paths ?? {})) {
+      for (const operation of Object.values(pathItem ?? {})) {
+        const operationObject = operation as
+          | { description?: unknown; operationId?: unknown }
+          | undefined;
+        const operationId = String(operationObject?.operationId ?? '');
+        const expected = shortDescriptions[operationId];
+
+        if (!expected) {
+          continue;
+        }
+
+        expect(operationObject?.description).toBe(expected);
+        expect(operationObject?.description).not.toMatch(/[`[\]\n>]/);
+      }
+    }
   });
 
   it('keeps English operation descriptions as short page summaries', async () => {
@@ -267,7 +375,8 @@ describe('fumadocs openapi source', () => {
         'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
         {
           description: '停止实时转录翻译任务并离开频道。',
-          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+          prose:
+            '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
         },
       ],
       [

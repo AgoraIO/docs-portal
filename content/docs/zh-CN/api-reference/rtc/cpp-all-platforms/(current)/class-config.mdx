@@ -1,0 +1,74 @@
+---
+title: Config
+description: 用于配置 RTE 对象。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_config
+  sourcePath: html-docs/rtc/Cpp/API/class_config.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_config__prototype"></a>
+
+```text
+class Config {
+ public:
+    RteConfigSetAppId(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetLogFolder(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetCloudProxy(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+    RteConfigSetJsonParameter(&c_rte_config, str.get_underlying_impl(), err != nullptr ? err->get_underlying_impl() : nullptr);
+
+ private:
+  ::RteConfig* get_underlying_impl() { return &c_rte_config; }
+
+ private:
+  friend class Rte;
+  ::RteConfig c_rte_config;
+};
+```
+
+<a id="class_config__detailed_desc"></a>
+
+:::info[自从]
+自 v4.4.0 版本新增。
+:::
+
+<a id="class_config__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="rteconfigsetappid"></a>
+<Parameter name="RteConfigSetAppId">
+
+设置 App ID，用于标识应用。
+
+</Parameter>
+<a id="rteconfigsetlogfolder"></a>
+<Parameter name="RteConfigSetLogFolder">
+
+设置日志文件的存储目录。
+
+</Parameter>
+<a id="rteconfigsetcloudproxy"></a>
+<Parameter name="RteConfigSetCloudProxy">
+
+设置云代理地址。
+
+</Parameter>
+<a id="rteconfigsetjsonparameter"></a>
+<Parameter name="RteConfigSetJsonParameter">
+
+设置 JSON 格式的自定义参数。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [GetAppId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_config_getappid)
+- [GetJsonParameter](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_config_getjsonparameter_config)
+- [SetAppId](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_config_setappid)
+- [SetJsonParameter](/zh-CN/api-reference/rtc/cpp-all-platforms/play/rte-player#api_config_setjsonparameter_config)

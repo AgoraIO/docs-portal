@@ -1,0 +1,96 @@
+---
+title: io.agora.rtc.AgoraAudioEncodedFrameSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_encoded_frame_sender
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_audio_encoded_frame_sender.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_audio_encoded_frame_sender_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraAudioEncodedFrameSender 类。
+
+在涉及自定义音频源的场景中，你可以使用该类直接向音频轨道发送编码后的音频数据。如果音频轨道未启用， 发送的音频数据会自动被丢弃。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a38d7ad3f92a5aa2fb72df3eb28e62c8b"></a>
+
+### AgoraAudioEncodedFrameSender()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraAudioEncodedFrameSender.AgoraAudioEncodedFrameSender(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="ac2421acabcd44bdb1c779004ea3b4f91"></a>
+
+### destroy()
+
+<ApiSignature>
+
+synchronized void io.agora.rtc.AgoraAudioEncodedFrameSender.destroy()
+
+</ApiSignature>
+
+销毁编码后的音频数据发送器。
+
+<a id="a96ab51c07987dcf9adf7c1bc1a05c1e2"></a>
+
+### sendEncodedAudioFrame()
+
+<ApiSignature>
+
+int io.agora.rtc.AgoraAudioEncodedFrameSender.sendEncodedAudioFrame(byte[] *payloadData*, [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-info) *info*)
+
+</ApiSignature>
+
+将编码后的音频数据发至服务器。
+
+<ParameterList title="参数">
+<Parameter name="payloadData">
+
+编码后的音频数据。
+
+</Parameter>
+<Parameter name="info">
+
+编码后的音频数据信息：[EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/java/classio-1-1agora-1-1rtc-1-1-encoded-audio-frame-info)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+发送编码后的音频数据的结果。
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraAudioEncodedFrameSender.java

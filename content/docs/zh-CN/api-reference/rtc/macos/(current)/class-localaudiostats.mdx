@@ -1,0 +1,88 @@
+---
+title: AgoraRtcLocalAudioStats
+description: 本地音频统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_localaudiostats
+  sourcePath: html-docs/rtc/macOS/API/class_localaudiostats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_localaudiostats__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraRtcLocalAudioStats : NSObject
+@property(assign, nonatomic) NSUInteger numChannels;
+@property(assign, nonatomic) NSUInteger sentSampleRate;
+@property(assign, nonatomic) NSUInteger sentBitrate;
+@property(assign, nonatomic) NSUInteger internalCodec;
+@property(assign, nonatomic) NSUInteger txPacketLossRate;
+@property(assign, nonatomic) NSUInteger audioDeviceDelay;
+@property(assign, nonatomic) NSUInteger audioPlayoutDelay;
+@property(assign, nonatomic) NSUInteger earMonitorDelay;
+@property(assign, nonatomic) NSUInteger aecEstimatedDelay;
+@end
+```
+
+<a id="class_localaudiostats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="numchannels"></a>
+<Parameter name="numChannels">
+
+音频通道数。
+
+</Parameter>
+<a id="sentsamplerate"></a>
+<Parameter name="sentSampleRate">
+
+本地用户发送音频流的采样率（Hz）。
+
+</Parameter>
+<a id="sentbitrate"></a>
+<Parameter name="sentBitrate">
+
+本地用户发送音频流的平均码率（Kbps）。
+
+</Parameter>
+<a id="internalcodec"></a>
+<Parameter name="internalCodec">
+
+内部负载编解码器。
+
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
+
+应用抗丢包策略前，从本地客户端到声网服务器的音频丢包率（%）。
+
+</Parameter>
+<a id="audiodevicedelay"></a>
+<Parameter name="audioDeviceDelay">
+
+播放或录制音频时的音频设备模块延迟（毫秒）。
+
+</Parameter>
+<a id="audioplayoutdelay"></a>
+<Parameter name="audioPlayoutDelay">
+
+设备的音频播放延迟（毫秒）。
+
+</Parameter>
+<a id="earmonitordelay"></a>
+<Parameter name="earMonitorDelay">
+
+耳返延迟（毫秒），即从麦克风输入到耳机输出的延迟。
+
+</Parameter>
+<a id="aecestimateddelay"></a>
+<Parameter name="aecEstimatedDelay">
+
+声学回声消除（AEC）模块估算的延迟（毫秒），即本地播放音频到本地采集之间的信号延迟。
+
+</Parameter>
+</ParameterList>

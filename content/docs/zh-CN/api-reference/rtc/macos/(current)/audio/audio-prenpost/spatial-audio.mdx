@@ -1,0 +1,1027 @@
+---
+title: 空间音频
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_spatial_audio
+  sourcePath: html-docs/rtc/macOS/API/toc_spatial_audio.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_spatial_audio"></a>
+
+<a id="api_ibasespatialaudioengine_clearremotepositions"></a>
+
+<a id="ariaid-title2"></a>
+
+## clearRemotePositions:
+
+移除所有远端用户的空间位置。
+
+<a id="api_ibasespatialaudioengine_clearremotepositions__prototype"></a>
+
+```text
+- (int)clearRemotePositions NS_SWIFT_NAME(clearRemotePositions());
+```
+
+<a id="api_ibasespatialaudioengine_clearremotepositions__detailed_desc"></a>
+
+调用该方法后，你将无法再听到任何远端用户的声音。离开频道后，为避免资源浪费，也可以调用该方法。
+
+<a id="api_ibasespatialaudioengine_clearremotepositions__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_irtcengine_enablespatialaudio"></a>
+
+<a id="ariaid-title3"></a>
+
+## enableSpatialAudio:
+
+启用或关闭空间音效。
+
+<a id="api_irtcengine_enablespatialaudio__prototype"></a>
+
+```text
+- (int)enableSpatialAudio:(BOOL)enabled NS_SWIFT_NAME(enableSpatialAudio(_:));
+```
+
+<a id="api_irtcengine_enablespatialaudio__detailed_desc"></a>
+
+你可以在加入频道前或加入频道后调用该方法。启用空间音效后，可以调用 [setRemoteUserSpatialAudioParams\:params:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_irtcengine_setremoteuserspatialaudioparams) 设置远端用户的空间音效参数。
+
+:::note
+注：
+
+- 该方法依赖空间音效动态库 `AgoraSpatialAudioExtension.xcframework`（iOS）或 AgoraSpatialAudioExtension.framework（macOS）。如果该动态库被删除，该功能将无法正常启用。
+:::
+
+<a id="api_irtcengine_enablespatialaudio__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否启用空间音效：
+
+- YES：启用空间音效。
+- NO：关闭空间音效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablespatialaudio__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine"></a>
+
+<a id="ariaid-title4"></a>
+
+## sharedLocalSpatialAudioWithConfig:
+
+初始化 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__prototype"></a>
+
+```text
++ (instancetype _Nonnull)sharedLocalSpatialAudioWithConfig:(AgoraLocalSpatialAudioConfig*)config NS_SWIFT_NAME(sharedLocalSpatialAudio(with:));
+```
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__detailed_desc"></a>
+
+:::note
+注： 在调用 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 的其他方法前，你必须先调用 [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 方法初始化 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
+
+- 每个 App 仅支持创建一个 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
+:::
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+[AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 的配置。详见 [AgoraLocalSpatialAudioConfig](/zh-CN/api-reference/rtc/macos/class-localspatialaudioconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title5"></a>
+
+## muteAllRemoteAudioStreams:
+
+停止或恢复订阅所有远端用户的音频流。
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__prototype"></a>
+
+```text
+- (int)muteAllRemoteAudioStreams:(BOOL)mute NS_SWIFT_NAME(muteAllRemoteAudioStreams(_:));
+```
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__detailed_desc"></a>
+
+调用该方法后，你将停止或恢复订阅所有远端用户的音频流，包括后续加入频道的用户。
+
+:::note
+注：
+
+- 请在调用 `joinChannelByToken` 方法后再调用此方法。
+- 使用空间音效时，如需设置是否停止订阅所有远端用户的音频流，声网建议调用此方法，而非 [muteAllRemoteAudioStreams:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine) 方法。
+- 调用此方法后，你需要调用 `updateSelfPosition` 和 `updateRemotePosition` 方法更新本地用户和远端用户的空间位置，否则该方法的设置不会生效。
+:::
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
+
+是否停止订阅所有远端用户的音频流：
+
+- YES：停止订阅所有远端用户的音频流。
+- NO：订阅所有远端用户的音频流。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_muteallremoteaudiostreams_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title6"></a>
+
+## muteLocalAudioStream:
+
+停止或恢复发布本地音频流。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__prototype"></a>
+
+```text
+- (int)muteLocalAudioStream:(BOOL)mute NS_SWIFT_NAME(muteLocalAudioStream(_:));
+```
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__detailed_desc"></a>
+
+你可以通过该方法停止或恢复发布本地音频流。
+
+该方法不会影响任何正在进行的音频录制，因为它不会禁用音频采集设备。
+使用空间音效时，如果你需要设置是否停止订阅指定用户的音频流，声网推荐你调用该方法，而不是 `AgoraRtcEngine` 下的同名方法。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__related"></a>
+
+### 相关回调
+
+该方法成功调用后会触发远端的 [rtcEngine\:didAudioMuted\:byUid:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onusermuteaudio) 和 [rtcEngine\:remoteAudioStateChangedOfUid\:state\:reason\:elapsed:](/zh-CN/api-reference/rtc/macos/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调。
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
+
+是否停止发布本地音频流：
+
+- YES：停止发布本地音频流。
+- NO：发布本地音频流。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_mutelocalaudiostream_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine"></a>
+
+<a id="ariaid-title7"></a>
+
+## muteRemoteAudioStream\:mute:
+
+停止或恢复订阅指定用户的音频流。
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__prototype"></a>
+
+```text
+- (int)muteRemoteAudioStream:(NSUInteger)uid mute:(BOOL)mute NS_SWIFT_NAME(muteRemoteAudioStream(_:mute:));
+```
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__detailed_desc"></a>
+
+:::note
+注： 调用该方法需在 [joinChannelByToken\:channelId\:info\:uid\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel1) 或 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 方法之后进行。使用空间音效时，如需设置是否停止订阅指定用户的音频流，声网建议使用此方法，而非 [muteRemoteAudioStream\:mute:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine) 方法。
+:::
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。该参数必须与用户加入频道时传入的用户 ID 相同。
+
+</Parameter>
+<a id="mute-2"></a>
+<Parameter name="mute">
+
+是否订阅指定远端用户的音频流。
+
+- YES：停止订阅指定用户的音频流。
+- NO（默认）：订阅指定用户的音频流。SDK 会根据本地用户与远端用户之间的距离决定是否订阅。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_muteremoteaudiostream_ibasespatialaudioengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine"></a>
+
+<a id="ariaid-title8"></a>
+
+## destroy
+
+销毁 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
+
+<a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine__prototype"></a>
+
+```text
++ (void)destroy NS_SWIFT_NAME(destroy());
+```
+
+<a id="api_ilocalspatialaudioengine_release_ilocalspatialaudioengine__detailed_desc"></a>
+
+该方法会释放 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 下的所有资源。当你不再需要使用空间音效时，可以调用该方法释放资源。调用该方法后，将无法再使用 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 下的任何 API。如需再次使用空间音效，需等待 [destroy](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法执行完成后，再调用 [sharedLocalSpatialAudioWithConfig:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_initialize_ilocalspatialaudioengine) 创建新的 [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine) 实例。
+
+:::note
+注： 请在调用 [destroy](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_release_ilocalspatialaudioengine) 方法之前调用此方法。
+:::
+
+### 所属接口类
+
+- [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition"></a>
+
+<a id="ariaid-title9"></a>
+
+## removeRemotePosition:
+
+移除指定远端用户的空间位置。
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__prototype"></a>
+
+```text
+- (int)removeRemotePosition:(NSUInteger)uid NS_SWIFT_NAME(removeRemotePosition(_:));
+```
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__detailed_desc"></a>
+
+调用该方法后，你将不再听到该远端用户的声音。离开频道后，为避免浪费计算资源，建议调用该方法删除指定远端用户的空间位置信息。否则，该用户的空间位置信息将持续保留。当远端用户数量超过通过 [setMaxAudioRecvCount:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setmaxaudiorecvcount) 设置的可接收音频流数量时，系统会根据相对距离自动取消订阅距离最远用户的音频流。
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+`uid`。该参数必须与用户加入频道时传入的用户 ID 相同。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ilocalspatialaudioengine_removeremoteposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange"></a>
+
+<a id="ariaid-title10"></a>
+
+## setAudioRecvRange:
+
+设置你可接收的音频范围。
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__prototype"></a>
+
+```text
+- (int)setAudioRecvRange:(float)range NS_SWIFT_NAME(setAudioRecvRange(_:));
+```
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__detailed_desc"></a>
+
+设置成功后，你只能听到在设定范围内或与你属于同一队伍的远端用户的音频。你可以在任意时刻调用该方法以更新音频接收范围。
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="range"></a>
+<Parameter name="range">
+
+最大音频接收范围，单位为米。该参数的值必须大于 0，默认值为 20。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_setaudiorecvrange__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setdistanceunit"></a>
+
+<a id="ariaid-title11"></a>
+
+## setDistanceUnit:
+
+设置游戏引擎中每个单位距离对应的米数。
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__prototype"></a>
+
+```text
+- (int)setDistanceUnit:(float)unit NS_SWIFT_NAME(setDistanceUnit(_:));
+```
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__detailed_desc"></a>
+
+声网的空间音效算法中，距离以米为单位进行测量。SDK 默认将游戏引擎中的每个单位距离转换为 1 米。你可以调用 [setDistanceUnit:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setdistanceunit) 方法将游戏引擎中的每个单位距离转换为指定的米数。
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="unit"></a>
+<Parameter name="unit">
+
+游戏引擎中每个单位距离对应的米数。该参数的值必须大于 0.00，默认值为 1.00（默认）。例如，将 `unit` 设置为 2.00 表示游戏引擎中每个单位距离等于 2 米。值越大，当远端用户远离你时，你听到的声音衰减得越快。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_setdistanceunit__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_irtcengine_setheadphoneeqparameters"></a>
+
+<a id="ariaid-title12"></a>
+
+## setHeadphoneEQParameters\:highGain:
+
+设置耳机均衡器的低频和高频参数。
+
+<a id="api_irtcengine_setheadphoneeqparameters__prototype"></a>
+
+```text
+- (int)setHeadphoneEQParameters:(int)lowGain highGain:(int)highGain NS_SWIFT_NAME(setHeadphoneEQParameters(_:highGain:));
+```
+
+<a id="api_irtcengine_setheadphoneeqparameters__detailed_desc"></a>
+
+如果你调用 [setHeadphoneEQPreset:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_irtcengine_setheadphoneeqpreset) 方法后未达到预设的耳机均衡效果，可以通过调用该方法进一步调整耳机均衡效果。
+
+<a id="api_irtcengine_setheadphoneeqparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="lowgain"></a>
+<Parameter name="lowGain">
+
+耳机均衡器的低频参数。取值范围为 [-10, 10]。值越大，声音越浑厚。
+
+</Parameter>
+<a id="highgain"></a>
+<Parameter name="highGain">
+
+耳机均衡器的高频参数。取值范围为 [-10, 10]。值越大，声音越清晰。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setheadphoneeqparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：发生通用错误（无明确原因）。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setheadphoneeqpreset"></a>
+
+<a id="ariaid-title13"></a>
+
+## setHeadphoneEQPreset:
+
+设置预设的耳机均衡效果。
+
+<a id="api_irtcengine_setheadphoneeqpreset__prototype"></a>
+
+```text
+- (int)setHeadphoneEQPreset:(AgoraHeadphoneEQPreset)preset NS_SWIFT_NAME(setHeadphoneEQPreset(_:));
+```
+
+<a id="api_irtcengine_setheadphoneeqpreset__detailed_desc"></a>
+
+该方法主要用于空间音效场景。你可以选择预设的耳机均衡器来聆听音频，以实现预期的音频体验。
+
+:::note
+注： 如果你使用的耳机本身已经具有良好的均衡效果，调用该方法可能不会带来显著提升，甚至可能降低体验。
+:::
+
+<a id="api_irtcengine_setheadphoneeqpreset__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="preset"></a>
+<Parameter name="preset">
+
+预设的耳机均衡效果，详见 [AgoraHeadphoneEQPreset](/zh-CN/api-reference/rtc/macos/enum-headphoneequalizerpreset)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setheadphoneeqpreset__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：发生通用错误（无具体原因）。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount"></a>
+
+<a id="ariaid-title14"></a>
+
+## setMaxAudioRecvCount:
+
+设置你在指定音频接收范围内可接收的最大音频流数量。
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__prototype"></a>
+
+```text
+- (int)setMaxAudioRecvCount:(NSUInteger)maxCount NS_SWIFT_NAME(setMaxAudioRecvCount(_:));
+```
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__detailed_desc"></a>
+
+如果可接收的音频流数量超过该设置值，你将接收距离你最近的 `maxCount` 条音频流。
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="maxcount"></a>
+<Parameter name="maxCount">
+
+你在指定音频接收范围内可接收的最大音频流数量。该值应小于或等于 16，默认值为 10。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_setmaxaudiorecvcount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation"></a>
+
+<a id="ariaid-title15"></a>
+
+## setPlayerAttenuation\:playerId\:forceSet:
+
+设置媒体播放器的声音衰减属性。
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__prototype"></a>
+
+```text
+- (int)setPlayerAttenuation:(double)attenuation playerId:(NSUInteger)playerId forceSet:(BOOL)forceSet NS_SWIFT_NAME(setPlayerAttenuation(_:playerId:forceSet:));
+```
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__detailed_desc"></a>
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="attenuation"></a>
+<Parameter name="attenuation">
+
+远端用户或媒体播放器的声音衰减系数，取值范围为 [0,1]。具体取值说明如下：
+
+- 0：广播模式，音量和音色不会随距离衰减，听到的音量和音色不会因距离变化而变化。
+- (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
+- (0.5, 1]：强衰减模式，音量和音色在传播过程中迅速衰减。
+
+</Parameter>
+<a id="playerid"></a>
+<Parameter name="playerId">
+
+媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取设备 ID。
+
+</Parameter>
+<a id="forceset"></a>
+<Parameter name="forceSet">
+
+是否强制设置媒体播放器的声音衰减效果：
+
+- YES：强制使用 `attenuation` 设置媒体播放器的衰减效果，此时在 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中通过 `audioAttenuation` 设置的隔音区衰减系数对媒体播放器无效。
+- NO：不强制使用 `attenuation` 设置媒体播放器的声音衰减效果，具体如下：
+
+  - 如果声源和听众分别位于隔音区内外，声音衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中的 `audioAttenuation` 决定。
+  - 如果声源和听众位于同一隔音区内，或都在隔音区外，声音衰减效果由本方法中的 `attenuation` 参数决定。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_setplayerattenuation__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation"></a>
+
+<a id="ariaid-title16"></a>
+
+## setRemoteAudioAttenuation\:uid\:forceSet:
+
+设置指定用户的声音衰减效果。
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__prototype"></a>
+
+```text
+- (int)setRemoteAudioAttenuation:(double)attenuation uid:(NSUInteger)uid forceSet:(BOOL)forceSet NS_SWIFT_NAME(setRemoteAudioAttenuation(_:uid:forceSet:));
+```
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__detailed_desc"></a>
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="attenuation-1"></a>
+<Parameter name="attenuation">
+
+用户的声音衰减系数，取值范围为 [0,1]。具体取值说明如下：
+
+- 0：广播模式，音量和音色不会随距离衰减，你听到的音量和音色不会因距离变化而变化。
+- (0, 0.5)：弱衰减模式，音量和音色在传播过程中仅有轻微衰减，声音传播距离比真实环境更远。
+- 0.5：（默认）模拟真实环境中的音量衰减效果，等效于未设置 `speaker_attenuation` 参数。
+- (0.5, 1]：强衰减模式，音量和音色在传播过程中快速衰减。
+
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
+
+用户 ID。该参数必须与你加入频道时传入的用户 ID 相同。
+
+</Parameter>
+<a id="forceset-1"></a>
+<Parameter name="forceSet">
+
+是否强制设置该用户的声音衰减效果：
+
+- YES：强制使用 `attenuation` 设置该用户的声音衰减效果，此时 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中 `audioAttenuation` 设置的隔音区衰减系数对该用户无效。
+- NO：不强制使用 `attenuation` 设置该用户的声音衰减效果，具体如下：
+
+  - 若声源和接收者分别位于隔音区内外，衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中的 `audioAttenuation` 决定；
+  - 若声源和接收者位于同一隔音区内或同一隔音区外，衰减效果由本方法中的 `attenuation` 决定。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ilocalspatialaudioengine_setremoteaudioattenuation__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams"></a>
+
+<a id="ariaid-title17"></a>
+
+## setRemoteUserSpatialAudioParams\:params:
+
+设置远端用户的空间音效参数。
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__prototype"></a>
+
+```text
+- (int)setRemoteUserSpatialAudioParams:(NSUInteger)uid
+                                  params:(AgoraSpatialAudioParams* _Nonnull)params NS_SWIFT_NAME(setRemoteUserSpatialAudioParams(_:params:));
+```
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__detailed_desc"></a>
+
+调用 [enableSpatialAudio:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_irtcengine_enablespatialaudio) 方法后，使用该方法设置远端用户的空间音效参数。成功设置后，你可以听到具有空间感的远端用户的声音。
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
+
+用户 ID。该参数必须与用户加入频道时传入的用户 ID 相同。
+
+</Parameter>
+<a id="params"></a>
+<Parameter name="params">
+
+空间音效参数。详见 [AgoraSpatialAudioParams](/zh-CN/api-reference/rtc/macos/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setremoteuserspatialaudioparams__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaplayer_setspatialaudioparams"></a>
+
+<a id="ariaid-title18"></a>
+
+## setSpatialAudioParams:
+
+启用或关闭媒体播放器的空间音效。
+
+<a id="api_imediaplayer_setspatialaudioparams__prototype"></a>
+
+```text
+- (int)setSpatialAudioParams:(AgoraSpatialAudioParams* _Nonnull)params NS_SWIFT_NAME(setSpatialAudioParams(_:));
+```
+
+<a id="api_imediaplayer_setspatialaudioparams__detailed_desc"></a>
+
+成功设置媒体播放器的空间音效参数后，SDK 会为媒体播放器启用空间音效。若需关闭媒体播放器的空间音效，请将 `params` 参数设为 nil。
+
+<a id="api_imediaplayer_setspatialaudioparams__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="params-1"></a>
+<Parameter name="params">
+
+媒体播放器的空间音效参数。详见 [AgoraSpatialAudioParams](/zh-CN/api-reference/rtc/macos/class-spatialaudioparams)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_setspatialaudioparams__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcMediaPlayerProtocol](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_imediaplayer)
+
+<a id="api_ibasespatialaudioengine_setzones"></a>
+
+<a id="ariaid-title19"></a>
+
+## setZones:
+
+设置声源隔音区域。
+
+<a id="api_ibasespatialaudioengine_setzones__prototype"></a>
+
+```text
+- (int)setZones:(NSArray<AgoraSpatialAudioZone*> * _Nullable)zones NS_SWIFT_NAME(setZones(_:));
+```
+
+<a id="api_ibasespatialaudioengine_setzones__detailed_desc"></a>
+
+在虚拟互动场景中，你可以使用此方法设置隔音区域和声音衰减系数。
+
+- 当声源（可以是用户或媒体播放器）和接收者分别处于隔音区域的内外部时，声音的衰减效果由 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 中的声音衰减系数决定。
+- 如果用户或媒体播放器处于同一个隔音区域内，则不受 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone) 的影响，声音衰减效果由 [setPlayerAttenuation\:playerId\:forceSet:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ibasespatialaudioengine_setplayerattenuation) 或 `setRemoteAudioAttenuation:userId:forceSet:` 中的 `attenuation` 参数决定。如果你未调用上述方法，SDK 默认的声音衰减系数为 0.5，用于模拟真实环境中的声音衰减。
+- 如果声源和接收者分别处于两个不同的隔音区域内，接收者将无法听到声源的声音。
+
+:::note
+注： 如果多次调用该方法，以最后一次设置的隔音区域为准。
+:::
+
+<a id="api_ibasespatialaudioengine_setzones__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="zones"></a>
+<Parameter name="zones">
+
+隔音区域设置。当该参数设置为 nil 时，表示清除所有隔音区域。详见 [AgoraSpatialAudioZone](/zh-CN/api-reference/rtc/macos/class-spatialaudiozone)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_setzones__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo"></a>
+
+<a id="ariaid-title20"></a>
+
+## updatePlayerPositionInfo\:positionInfo:
+
+更新媒体播放器的空间位置。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__prototype"></a>
+
+```text
+- (int)updatePlayerPositionInfo:(NSInteger)playerId positionInfo:(AgoraRemoteVoicePositionInfo* _Nonnull)positionInfo NS_SWIFT_NAME(updatePlayerPositionInfo(_:positionInfo:));
+```
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__detailed_desc"></a>
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用该方法。
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="playerid-1"></a>
+<Parameter name="playerId">
+
+媒体播放器的 ID。你可以通过调用 [getMediaPlayerId](/zh-CN/api-reference/rtc/macos/play/mediaplayer/mediaplayer-info#api_imediaplayer_getmediaplayerid) 获取设备 ID。
+
+</Parameter>
+<a id="positioninfo"></a>
+<Parameter name="positionInfo">
+
+媒体播放器的空间位置信息，详见 [AgoraRemoteVoicePositionInfo](/zh-CN/api-reference/rtc/macos/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_updateplayerpositioninfo__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition"></a>
+
+<a id="ariaid-title21"></a>
+
+## updateRemotePosition\:positionInfo:
+
+更新指定远端用户的空间位置。
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__prototype"></a>
+
+```text
+- (int)updateRemotePosition:(NSUInteger)uid positionInfo:(AgoraRemoteVoicePositionInfo*)posInfo NS_SWIFT_NAME(updateRemotePosition(_:positionInfo:));
+```
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__detailed_desc"></a>
+
+成功调用该方法后，SDK 会根据本地用户与远端用户之间的相对位置计算空间音效参数。
+
+:::note
+注： 请在调用 `joinChannelByToken` 方法后再调用此方法。
+:::
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
+
+远端用户 ID。该参数必须与用户加入频道时传入的用户 ID 相同。
+
+</Parameter>
+<a id="posinfo"></a>
+<Parameter name="posInfo">
+
+远端用户的空间位置。详见 [AgoraRemoteVoicePositionInfo](/zh-CN/api-reference/rtc/macos/class-remotevoicepositioninfo)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ilocalspatialaudioengine_updateremoteposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraLocalSpatialAudioKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ilocalspatialaudioengine)
+
+<a id="api_ibasespatialaudioengine_updateselfposition"></a>
+
+<a id="ariaid-title22"></a>
+
+## updateSelfPosition\:axisForward\:axisRight\:axisUp:
+
+更新本地用户的空间位置。
+
+<a id="api_ibasespatialaudioengine_updateselfposition__prototype"></a>
+
+```text
+- (int)updateSelfPosition:(simd_float3)position axisForward:(simd_float3)axisForward axisRight:(simd_float3)axisRight axisUp:(simd_float3)axisUp NS_SWIFT_NAME(updateSelfPosition(_:axisForward:axisRight:axisUp:));
+```
+
+<a id="api_ibasespatialaudioengine_updateselfposition__detailed_desc"></a>
+
+你需要将该方法与 [updateRemotePosition\:positionInfo:](/zh-CN/api-reference/rtc/macos/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_updateremoteposition) 方法配合使用。SDK 会根据这两个方法中的参数设置计算本地用户与远端用户之间的相对位置，并据此计算空间音效参数。
+
+<a id="api_ibasespatialaudioengine_updateselfposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
+
+世界坐标系中的坐标。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
+
+</Parameter>
+<a id="axisforward"></a>
+<Parameter name="axisForward">
+
+坐标系中 x 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
+
+</Parameter>
+<a id="axisright"></a>
+<Parameter name="axisRight">
+
+坐标系中 y 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
+
+</Parameter>
+<a id="axisup"></a>
+<Parameter name="axisUp">
+
+坐标系中 z 轴的单位向量。该参数为长度为 3 的数组，三个值依次表示前、右、上的坐标。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ibasespatialaudioengine_updateselfposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraSpatialAudioKitBase](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ibasespatialaudioengine)

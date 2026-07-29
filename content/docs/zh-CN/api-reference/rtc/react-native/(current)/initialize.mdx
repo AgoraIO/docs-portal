@@ -1,0 +1,397 @@
+---
+title: 初始化相关
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_initialize
+  sourcePath: html-docs/rtc/RN/API/toc_initialize.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_initialize"></a>
+
+<a id="api_irtcengine_addhandler"></a>
+
+<a id="ariaid-title2"></a>
+
+## registerEventHandler
+
+添加主回调事件。
+
+<a id="api_irtcengine_addhandler__prototype"></a>
+
+```text
+abstract registerEventHandler(eventHandler: IRtcEngineEventHandler): boolean;
+```
+
+<a id="api_irtcengine_addhandler__detailed_desc"></a>
+
+接口类 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler) 用于 SDK 向 App 发送回调事件通知，App 通过继承该接口类的方法获取 SDK 的事件通知。
+接口类的所有方法都有缺省（空）实现，App 可以根据需要只继承关心的事件。在回调方法中，App 不应该做耗时或者调用可能会引起阻塞的 API（如 [sendStreamMessage](/zh-CN/api-reference/rtc/react-native/metadata/datastream#api_irtcengine_sendstreammessage)），
+否则可能影响 SDK 的运行。
+
+<a id="api_irtcengine_addhandler__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
+
+待添加的回调事件，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_addhandler__return_values"></a>
+
+### 返回值
+
+- true：方法调用成功。
+- false：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_addlistener"></a>
+
+<a id="ariaid-title3"></a>
+
+## addListener
+
+添加一个 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent) 监听器。
+
+<a id="api_irtcengine_addlistener__prototype"></a>
+
+```text
+addListener?<EventType extends keyof IRtcEngineEvent>(
+      eventType: EventType,
+      listener: IRtcEngineEvent[EventType]
+    ): void;
+```
+
+<a id="api_irtcengine_addlistener__detailed_desc"></a>
+
+成功调用该方法后，你可以通过 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent) 监听对应 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象的事件、获取数据。根据业务需要，你可以为同一事件添加多个监听器。
+
+<a id="api_irtcengine_addlistener__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventtype"></a>
+<Parameter name="eventType">
+
+需要监听的目标事件名。详见 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent)。
+
+</Parameter>
+<a id="listener"></a>
+<Parameter name="listener">
+
+`eventType` 对应的回调函数。以添加 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/react-native/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 为例：
+
+```text
+const onJoinChannelSuccess = (connection: RtcConnection, elapsed: number) => {};
+engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
+```
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_createagorartcengine"></a>
+
+<a id="ariaid-title4"></a>
+
+## createAgoraRtcEngine
+
+创建 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
+
+<a id="api_irtcengine_createagorartcengine__prototype"></a>
+
+```text
+export function createAgoraRtcEngine(): IRtcEngine {
+  return instance;
+}
+```
+
+<a id="api_irtcengine_createagorartcengine__detailed_desc"></a>
+
+目前 RTC SDK v4.x 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
+
+<a id="api_irtcengine_createagorartcengine__return_values"></a>
+
+### 返回值
+
+[IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getmediaengine"></a>
+
+<a id="ariaid-title5"></a>
+
+## getMediaEngine
+
+获取 [IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine) 对象。
+
+<a id="api_irtcengine_getmediaengine__prototype"></a>
+
+```text
+abstract getMediaEngine(): IMediaEngine;
+```
+
+<a id="api_irtcengine_getmediaengine__detailed_desc"></a>
+
+:::note
+注： 该方法需要在初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象后调用。
+:::
+
+<a id="api_irtcengine_getmediaengine__return_values"></a>
+
+### 返回值
+
+[IMediaEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imediaengine) 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_initialize"></a>
+
+<a id="ariaid-title6"></a>
+
+## initialize
+
+创建并初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)。
+
+<a id="api_irtcengine_initialize__prototype"></a>
+
+```text
+abstract initialize(context: RtcEngineContext): number;
+```
+
+<a id="api_irtcengine_initialize__detailed_desc"></a>
+
+:::note
+注： [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 类的所有接口函数，如无特殊说明，都是异步调用，对接口的调用建议在同一个线程进行。
+SDK 只支持每个 App 创建一个 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 实例。
+:::
+
+<a id="api_irtcengine_initialize__timing"></a>
+
+### 调用时机
+
+请确保在调用其他 API 前先调用 [createAgoraRtcEngine](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_createagorartcengine) 和 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 创建并初始化 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)。
+
+<a id="api_irtcengine_initialize__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
+
+[IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 实例的配置。详见 [RtcEngineContext](/zh-CN/api-reference/rtc/react-native/class-rtcengineconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_initialize__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 设置了无效的参数。
+  - -7: SDK 初始化失败。
+  - -22: 资源申请失败。当 App 占用资源过多，或系统资源耗尽时，SDK 分配资源失败，会返回该错误。
+  - -101: App ID 无效。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_release"></a>
+
+<a id="ariaid-title7"></a>
+
+## release
+
+销毁 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
+
+<a id="api_irtcengine_release__prototype"></a>
+
+```text
+abstract release(sync?: boolean): void;
+```
+
+<a id="api_irtcengine_release__detailed_desc"></a>
+
+该方法释放 SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，不需要时则将资源释放出来用于其他操作，该方法适用于此类情况。
+调用该方法后，你将无法再使用 SDK 的其它方法和回调。如需再次使用实时音视频通信功能， 你必须依次重新调用 [createAgoraRtcEngine](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_createagorartcengine) 和 [initialize](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_initialize) 方法创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象。
+
+:::note
+注：
+
+- 该方法为同步调用。需要等待 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 资源释放后才能执行其他操作（例如：创建一个新的 [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine) 对象），因此建议在子线程中调用该方法，避免主线程阻塞。
+- 不建议在 SDK 的回调中调用 [release](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_release)，否则由于 SDK 要等待回调返回才能回收相关的对象资源，会造成死锁。
+:::
+
+<a id="api_irtcengine_release__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sync"></a>
+<Parameter name="sync">
+
+该方法是否为同步调用：
+
+- true\:该方法为同步调用。
+- false\:该方法为异步调用。目前该方法仅支持同步调用，请不要将该参数设置为该值。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_removealllisteners"></a>
+
+<a id="ariaid-title8"></a>
+
+## removeAllListeners
+
+移除指定事件类型的所有监听器。
+
+<a id="api_irtcengine_removealllisteners__prototype"></a>
+
+```text
+removeAllListeners?<EventType extends keyof IMediaEngineEvent>(
+      eventType?: EventType
+    ): void;
+```
+
+<a id="api_irtcengine_removealllisteners__detailed_desc"></a>
+
+<a id="api_irtcengine_removealllisteners__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventtype-1"></a>
+<Parameter name="eventType">
+
+需要监听的目标事件名。详见 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_removehandler"></a>
+
+<a id="ariaid-title9"></a>
+
+## unregisterEventHandler
+
+删除指定的回调事件。
+
+<a id="api_irtcengine_removehandler__prototype"></a>
+
+```text
+abstract unregisterEventHandler(
+                eventHandler: IRtcEngineEventHandler
+              ): boolean;
+```
+
+<a id="api_irtcengine_removehandler__detailed_desc"></a>
+
+该方法用于删除已添加的所有回调事件。
+
+<a id="api_irtcengine_removehandler__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventhandler-1"></a>
+<Parameter name="eventHandler">
+
+待删除的回调事件。详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_removehandler__return_values"></a>
+
+### 返回值
+
+- true: 方法调用成功。
+- false: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_removelistener"></a>
+
+<a id="ariaid-title10"></a>
+
+## removeListener
+
+移除指定的 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent) 监听器。
+
+<a id="api_irtcengine_removelistener__prototype"></a>
+
+```text
+removeListener?<EventType extends keyof IRtcEngineEvent>(
+      eventType: EventType,
+      listener: IRtcEngineEvent[EventType]
+    ): void;
+```
+
+<a id="api_irtcengine_removelistener__detailed_desc"></a>
+
+对于某些已监听的回调函数，如果你在收到相应回调事件后无需再次接收回调消息，可以调用该方法移除对应的监听器。
+
+<a id="api_irtcengine_removelistener__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventtype-2"></a>
+<Parameter name="eventType">
+
+需要监听的目标事件名。详见 [IRtcEngineEvent](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineevent)。
+
+</Parameter>
+<a id="listener-1"></a>
+<Parameter name="listener">
+
+`eventType` 对应的回调函数。必须传入 [addListener](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_addlistener) 中传入的同一个函数对象。以取消监听 [onJoinChannelSuccess](/zh-CN/api-reference/rtc/react-native/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 为例：
+
+```text
+const onJoinChannelSuccess = (connection: RtcConnection, elapsed: number) => {};
+engine.addListener('onJoinChannelSuccess', onJoinChannelSuccess);
+engine.removeListener('onJoinChannelSuccess', onJoinChannelSuccess);
+```
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)

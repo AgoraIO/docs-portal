@@ -1,0 +1,28 @@
+---
+title: "AudioEncodedFrameSender 类"
+---
+<span className="index-desc-audioencodedframesender">`AudioEncodedFrameSender` 类</span>
+
+<a id="audioencodedframesender"></a>
+
+<a id="sendencodedaudioframe"></a>
+## send_encoded_audio_frame
+
+```python
+def send_encoded_audio_frame(self, buffer_ptr:int, buffer_size:int, frame:EncodedAudioFrame)
+```
+
+<span className="index-desc-sendencodedaudioframe">将已编码的音频帧发送到本地音频轨道。</span>
+
+#### 参数
+
+| 参数              | 描述                                                                 |
+|------------------|----------------------------------------------------------------------|
+| `buffer_ptr`   | 要发送的编码音频数据。                                               |
+| `buffer_size` | 数据大小（字节）。   |
+| `frame` | 音频帧信息，详见 [`EncodedAudioFrame`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#encodedaudioframe)。   |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

@@ -45,6 +45,7 @@ export type DocsSidebarPageNode = {
   id: string;
   linked?: boolean;
   method?: string;
+  search?: Record<string, string>;
   title: string;
   type: 'page';
   url: string;
@@ -73,11 +74,11 @@ export type DocsBreadcrumbItem = {
 
 export type DocsSidebarGroupMetadata = {
   collapsible?: boolean;
+  sidebarHidden?: boolean;
   title: string;
 };
 
-const HIDDEN_TAB_IDS = new Set(['best-practices']);
-const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat)\}$/;
+const STRUCTURED_GROUP_FLAG_PATTERN = /\{(dropdown|flat|hidden)\}$/;
 
 // Tabs whose second-level folders are genuine products (Voice, Video, …) and so
 // expand into per-product search scopes. Other tabs are offered as a single
@@ -88,11 +89,7 @@ const NON_SCOPE_TAB_IDS = new Set(['introduction', 'best-practices']);
 export function getProductScopes(root: Root): ProductScope[] {
   return getTabNodes(root).flatMap((node): ProductScope[] => {
     const item = getTabIndex(node);
-    if (!item) {
-      return [];
-    }
-
-    const tabId = getTabIdFromUrl(item.url);
+    const tabId = getTabIdFromNode(node);
     if (!tabId || NON_SCOPE_TAB_IDS.has(tabId)) {
       return [];
     }
@@ -100,7 +97,7 @@ export function getProductScopes(root: Root): ProductScope[] {
     const tabLabel =
       node.type === 'folder'
         ? normalizeLabel(node.name, tabId)
-        : normalizeLabel(item.name, tabId);
+        : normalizeLabel(item?.name, tabId);
 
     if (PRODUCT_SCOPE_TAB_IDS.has(tabId) && node.type === 'folder') {
       return node.children.flatMap((child): ProductScope[] => {
@@ -138,7 +135,7 @@ export function getProductScopes(root: Root): ProductScope[] {
       scope: { field: 'tab', value: tabId },
     };
 
-    if (typeof item.description === 'string') {
+    if (typeof item?.description === 'string') {
       scope.description = item.description;
     }
 
@@ -149,13 +146,15 @@ export function getProductScopes(root: Root): ProductScope[] {
 export function getTabSummaries(root: Root): TabSummary[] {
   return getTabNodes(root).flatMap((node) => {
     const item = getTabIndex(node);
-
-    if (!item) {
+    const id = getTabIdFromNode(node);
+    if (!id) {
       return [];
     }
 
-    const id = getTabIdFromUrl(item.url);
-    if (!id || HIDDEN_TAB_IDS.has(id)) {
+    const url =
+      item?.url ??
+      (node.type === 'folder' ? getFirstDescendantPageUrl(node) : null);
+    if (!url) {
       return [];
     }
 
@@ -164,11 +163,11 @@ export function getTabSummaries(root: Root): TabSummary[] {
       title:
         node.type === 'folder'
           ? normalizeLabel(node.name, id)
-          : normalizeLabel(item.name, id),
-      url: item.url,
+          : normalizeLabel(item?.name, id),
+      url,
     };
 
-    if (typeof item.description === 'string') {
+    if (typeof item?.description === 'string') {
       summary.description = item.description;
     }
 
@@ -207,7 +206,19 @@ export function getSidebarEntries(
     entries.push(pageTreeItemToSidebarEntry(indexItem, activeTab));
   }
 
+  let hideCurrentGroup = false;
   for (const node of tabNode.children) {
+    if (node.type === 'separator') {
+      hideCurrentGroup =
+        parseSidebarGroupMetadata(node.name).sidebarHidden === true;
+    } else if (hideCurrentGroup) {
+      continue;
+    }
+
+    if (hideCurrentGroup) {
+      continue;
+    }
+
     entries.push(
       ...flattenSidebarNode(node).filter(
         (entry) => entry.type !== 'page' || entry.url !== indexUrl,
@@ -248,14 +259,16 @@ export function getSidebarNodes(
   }
 
   let currentSection: DocsSidebarSectionNode | null = null;
+  let hideCurrentGroup = false;
 
   for (const child of tabNode.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -268,6 +281,10 @@ export function getSidebarNodes(
         nodes.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -381,13 +398,20 @@ export function mapSidebarEntriesToTree(
   return nodes;
 }
 
-export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
+export function pageTreeNodeToSidebarNodes(
+  node: Node,
+  sidebarLabels: Record<string, string> = {},
+): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
   }
 
   if (node.type === 'page') {
-    return [pageTreeItemToSidebarPageNode(node)];
+    return [
+      pageTreeItemToSidebarPageNode(node, undefined, {
+        title: sidebarLabels[node.url],
+      }),
+    ];
   }
 
   if (node.type !== 'folder') {
@@ -407,10 +431,13 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     node.index &&
     !shouldHideFolderIndexInSidebar(node.index, node.name, node.children)
       ? pageTreeItemToSidebarPageNode(node.index, undefined, {
-          title: getFolderIndexTitle(node.index, node.name),
+          title:
+            sidebarLabels[node.index.url] ??
+            getFolderIndexTitle(node.index, node.name),
         })
       : null;
   let currentSection: DocsSidebarSectionNode | null = null;
+  let hideCurrentGroup = false;
 
   // A folder's own index can also appear in its `children` (e.g. when meta lists
   // `pages: ["index"]`). Skip that duplicate so the index is only represented once
@@ -423,9 +450,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   // An index-only folder whose index is exposed as its single page child (Fumadocs
   // does this for `pages: ["index"]`) collapses to one leaf link carrying the
   // folder's title — e.g. an FAQ category folder becomes a flat "Integration" link.
-  // The child is the folder's own index (not a deeper sub-page) only when its last
-  // URL segment matches the folder slug, so a folder holding a single unrelated
-  // sub-page is left as a section.
+  // The child is the folder's own index (not a deeper sub-page) when its last URL
+  // segment matches the folder slug, or when localized titles hide the canonical
+  // URL slug but the child title still matches the folder title.
   const nonSeparatorChildren = visibleChildren.filter(
     (child) => child.type !== 'separator',
   );
@@ -434,11 +461,13 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
     !node.index &&
     nonSeparatorChildren.length === 1 &&
     onlyChild.type === 'page' &&
-    lastUrlSegment(onlyChild.url) === folderSlug(node.name)
+    isExposedFolderIndexChild(onlyChild, node.name)
   ) {
     return [
       pageTreeItemToSidebarPageNode(onlyChild, undefined, {
-        title: normalizeLabel(node.name, onlyChild.url),
+        title:
+          sidebarLabels[onlyChild.url] ??
+          normalizeLabel(node.name, onlyChild.url),
       }),
     ];
   }
@@ -448,8 +477,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -465,7 +495,14 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       continue;
     }
 
-    for (const sidebarNode of pageTreeNodeToSidebarNodes(child)) {
+    if (hideCurrentGroup) {
+      continue;
+    }
+
+    for (const sidebarNode of pageTreeNodeToSidebarNodes(
+      child,
+      sidebarLabels,
+    )) {
       if (pendingIndexNode) {
         if (currentSection) {
           currentSection.children.push(pendingIndexNode);
@@ -490,7 +527,9 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
   if (!hasRealChildren && node.index) {
     return [
       pageTreeItemToSidebarPageNode(node.index, undefined, {
-        title: normalizeLabel(node.name, node.index.url),
+        title:
+          sidebarLabels[node.index.url] ??
+          normalizeLabel(node.name, node.index.url),
       }),
     ];
   }
@@ -516,26 +555,48 @@ export function pageTreeNodeToSidebarNodes(node: Node): DocsSidebarNode[] {
       // Rule: a folder whose index matches its title links the header to it.
       ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),
       id: `folder-${String(node.$id ?? node.name ?? 'folder')}`,
-      title: normalizeLabel(node.name, node.index?.url ?? 'Folder'),
+      title:
+        (node.index ? sidebarLabels[node.index.url] : undefined) ??
+        normalizeLabel(node.name, node.index?.url ?? 'Folder'),
       type: 'section',
     },
   ];
 }
 
-export function getPrevNextLinks(root: Root, currentUrl: string) {
-  const neighbours = findNeighbour(root, currentUrl);
+type PageUrlPredicate = (url: string) => boolean;
+
+export function getPrevNextLinks(
+  root: Root,
+  currentUrl: string,
+  isValidPageUrl?: PageUrlPredicate,
+) {
+  if (!isValidPageUrl) {
+    const neighbours = findNeighbour(root, currentUrl);
+
+    return {
+      next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
+      previous: neighbours.previous
+        ? mapPageLink(neighbours.previous)
+        : undefined,
+    };
+  }
+
+  const pages = collectPageTreeItems(root, isValidPageUrl);
+  const index = pages.findIndex((item) => item.url === currentUrl);
+
+  const next = index >= 0 ? pages[index + 1] : undefined;
+  const previous = index >= 0 ? pages[index - 1] : undefined;
 
   return {
-    next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
-    previous: neighbours.previous
-      ? mapPageLink(neighbours.previous)
-      : undefined,
+    next: next ? mapPageLink(next) : undefined,
+    previous: previous ? mapPageLink(previous) : undefined,
   };
 }
 
 export function getPrevNextLinksFromNode(
   node: Folder | Root,
   currentUrl: string,
+  isValidPageUrl?: PageUrlPredicate,
 ) {
   if (node.type === 'folder') {
     return getPrevNextLinks(
@@ -544,10 +605,36 @@ export function getPrevNextLinksFromNode(
         name: 'Scoped root',
       },
       currentUrl,
+      isValidPageUrl,
     );
   }
 
-  return getPrevNextLinks(node, currentUrl);
+  return getPrevNextLinks(node, currentUrl, isValidPageUrl);
+}
+
+function collectPageTreeItems(
+  node: Node | Root,
+  isValidPageUrl: PageUrlPredicate,
+): Item[] {
+  if ('type' in node && node.type === 'page') {
+    return isValidPageUrl(node.url) ? [node] : [];
+  }
+
+  if ('type' in node && node.type !== 'folder') {
+    return [];
+  }
+
+  const items: Item[] = [];
+
+  if ('index' in node && node.index && isValidPageUrl(node.index.url)) {
+    items.push(node.index);
+  }
+
+  for (const child of node.children) {
+    items.push(...collectPageTreeItems(child, isValidPageUrl));
+  }
+
+  return items;
 }
 
 export function getSidebarBreadcrumb(
@@ -618,12 +705,7 @@ function getTabIndex(node: Node): Item | undefined {
 
 function findTabNode(root: Root, activeTab: string): Node | undefined {
   return getTabNodes(root).find((node) => {
-    const item = getTabIndex(node);
-    if (!item) {
-      return false;
-    }
-
-    return getTabIdFromUrl(item.url) === activeTab;
+    return getTabIdFromNode(node) === activeTab;
   });
 }
 
@@ -706,7 +788,19 @@ function flattenSidebarNode(node: Node, prefix = ''): SidebarEntry[] {
 
   const childEntries: SidebarEntry[] = [];
 
+  let hideCurrentGroup = false;
   for (const child of node.children) {
+    if (child.type === 'separator') {
+      hideCurrentGroup =
+        parseSidebarGroupMetadata(child.name).sidebarHidden === true;
+    } else if (hideCurrentGroup) {
+      continue;
+    }
+
+    if (hideCurrentGroup) {
+      continue;
+    }
+
     childEntries.push(
       ...flattenSidebarNode(child, `${node.$id ?? node.name}-`),
     );
@@ -824,6 +918,60 @@ function getTabIdFromUrl(url: string) {
   return segments[1];
 }
 
+const KNOWN_ROOT_TAB_IDS = [
+  'api-reference',
+  'best-practices',
+  'realtime-media',
+  'introduction',
+  'solutions',
+  'sdks',
+  'ai',
+] as const;
+
+const ROOT_TAB_IDS_BY_TITLE: Record<
+  string,
+  (typeof KNOWN_ROOT_TAB_IDS)[number]
+> = {
+  'API 参考': 'api-reference',
+  AI: 'ai',
+  介绍: 'introduction',
+  实时互动: 'realtime-media',
+  解决方案: 'solutions',
+};
+
+function getTabIdFromNode(node: Node) {
+  const item = getTabIndex(node);
+  const urlTabId = item ? getTabIdFromUrl(item.url) : undefined;
+
+  if (urlTabId) {
+    return urlTabId;
+  }
+
+  if (node.type !== 'folder') {
+    return undefined;
+  }
+
+  const nodeId = typeof node.$id === 'string' ? node.$id : '';
+  const idTab = KNOWN_ROOT_TAB_IDS.find(
+    (tabId) =>
+      nodeId === tabId ||
+      nodeId === `${tabId}-folder` ||
+      nodeId.endsWith(`-${tabId}`) ||
+      nodeId.endsWith(`-${tabId}-folder`),
+  );
+
+  if (idTab) {
+    return idTab;
+  }
+
+  if (typeof node.name === 'string' && ROOT_TAB_IDS_BY_TITLE[node.name]) {
+    return ROOT_TAB_IDS_BY_TITLE[node.name];
+  }
+
+  const nameSlug = folderSlug(node.name);
+  return /^[a-z0-9-]+$/.test(nameSlug) ? nameSlug : undefined;
+}
+
 function getTabNodes(root: Root): Node[] {
   const localeFolder = root.children.find(
     (node): node is Folder =>
@@ -865,6 +1013,16 @@ function lastUrlSegment(url: string): string {
 
 function folderSlug(name: ReactNode): string {
   return normalizeLabel(name, '').toLowerCase().replace(/\s+/g, '-');
+}
+
+function isExposedFolderIndexChild(child: Item, folderName: ReactNode) {
+  const childTitle = normalizeLabel(child.name, child.url);
+  const normalizedFolderName = normalizeLabel(folderName, childTitle);
+
+  return (
+    lastUrlSegment(child.url) === folderSlug(folderName) ||
+    childTitle === normalizedFolderName
+  );
 }
 
 export function getConfiguredIconName(node: Node, fallback?: Item) {
@@ -909,7 +1067,9 @@ export function parseSidebarGroupMetadata(
   }
 
   return {
-    collapsible: flagMatch[1] === 'dropdown',
+    ...(flagMatch[1] === 'hidden'
+      ? { sidebarHidden: true }
+      : { collapsible: flagMatch[1] === 'dropdown' }),
     title: value.slice(0, flagMatch.index).trimEnd(),
   };
 }

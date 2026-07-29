@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
+import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
 
@@ -22,6 +23,7 @@ const rawDocSchema = z.object({
   hidePlatformTabs: z.boolean().optional(),
   hideToc: z.boolean().optional(),
   layout: z.enum(['platform-group']).optional(),
+  tocMaxDepth: z.number().int().min(1).max(6).optional(),
   platforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
   _openapi: z.looseObject({}).optional(),
@@ -91,6 +93,7 @@ export const docs = defineDocs({
             types: directiveCalloutTypes,
           },
         ],
+        remarkNormalizeLegacyHeadingAnchors,
         remarkPlatformContent,
         remarkTableSlots,
         ...plugins,

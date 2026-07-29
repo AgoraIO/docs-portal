@@ -44,6 +44,54 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('links the RTC client API entry to the filtered API reference page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: 'rtc-client-api-reference',
+            linked: true,
+            search: {
+              apiType: 'client',
+              product: 'rtc',
+            },
+            title: '客户端 API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            id: 'rtc-rest-api',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/rtc',
+          },
+        ],
+        id: 'rtc-reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/realtime-media/rtc');
+
+    const clientApiLink = await screen.findByRole('link', {
+      name: '客户端 API',
+    });
+    const clientApiUrl = new URL(
+      clientApiLink.getAttribute('href') ?? '',
+      window.location.origin,
+    );
+
+    expect(clientApiUrl.pathname).toBe('/zh-CN/api-reference/api');
+    expect(clientApiUrl.searchParams.get('product')).toBe('rtc');
+    expect(clientApiUrl.searchParams.get('apiType')).toBe('client');
+    expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/rtc',
+    );
+  });
+
   it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -305,6 +353,7 @@ describe('DocsSidebarTree', () => {
     expect(link).toHaveAttribute('href', 'https://example.com/resources');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
+    expect(link.querySelector('.lucide-external-link')).toBeInTheDocument();
   });
 
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
@@ -458,6 +507,57 @@ describe('DocsSidebarTree', () => {
     );
   });
 
+  it.each([
+    ['rtc', '计费与限制', 'reference/billing-strategy', '计费策略'],
+    ['rtm', '计费说明', 'reference/billing/billing-strategy', '计费说明'],
+    [
+      'cloud-recording',
+      '计费说明',
+      'reference/billing-strategy/billing',
+      '单流和合流录制',
+    ],
+    ['local-server-recording', '计费说明', 'reference/billing', '计费说明'],
+    ['media-push', '计费说明', 'reference/billing', '计费说明'],
+    ['media-pull', '计费说明', 'reference/billing', '计费说明'],
+    ['rtmp-gateway', '计费说明', 'reference/billing', '计费说明'],
+    ['whiteboard/fastboard-sdk', '计费说明', 'reference/billing', '计费说明'],
+    ['whiteboard/whiteboard-sdk', '计费说明', 'reference/billing', '计费说明'],
+  ])('keeps the %s billing root section collapsible', async (product, title, pagePath, pageTitle) => {
+    const url = `/zh-CN/realtime-media/${product}/${pagePath}`;
+
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: url,
+            title: pageTitle,
+            type: 'page',
+            url,
+          },
+        ],
+        collapsible: true,
+        id: `separator-${title}`,
+        title,
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, `/zh-CN/realtime-media/${product}`);
+
+    const toggle = await screen.findByRole('button', {
+      name: title,
+    });
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: '计费说明' })).toBeNull();
+
+    fireEvent.click(toggle);
+
+    expect(
+      await screen.findByRole('link', { name: pageTitle }),
+    ).toBeInTheDocument();
+  });
+
   it('renders linked collapsed sections as navigation entries', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -488,6 +588,50 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.queryByRole('button', { name: /Voice & Video/i }),
     ).not.toBeInTheDocument();
+  });
+
+  it('renders linked page indicators inside expanded sections', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: '/zh-CN/api-reference/api-ref/conversational-ai',
+            linked: true,
+            title: 'RESTful API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api-ref/conversational-ai',
+          },
+          {
+            id: '/zh-CN/ai/reference/pricing',
+            title: '计费说明',
+            type: 'page',
+            url: '/zh-CN/ai/reference/pricing',
+          },
+        ],
+        collapsible: true,
+        id: 'folder-zh-CN:ai/reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    const { container } = renderSidebarTree(
+      tree,
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+
+    const link = await screen.findByRole('link', { name: 'RESTful API' });
+
+    expect(link).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+    expect(link.querySelector('.lucide-external-link')).toBeInTheDocument();
+    expect(
+      container
+        .querySelector('a[href="/zh-CN/ai/reference/pricing"]')
+        ?.querySelector('.lucide-external-link'),
+    ).toBeNull();
   });
 
   it('renders reference product sections as always-expanded headings', async () => {

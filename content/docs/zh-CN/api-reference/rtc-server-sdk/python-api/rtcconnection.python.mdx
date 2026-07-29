@@ -1,0 +1,276 @@
+---
+title: "RTCConnection 类"
+---
+<span className="index-desc-rtcconnection">`RtcConnection` 类，用于管理 SDK 与 RTC 频道之间的连接。连接完成之后，你可以通过 `LocalUser` 对象在 RTC 频道中发送和接收媒体流。连接频道是异步操作，你可以通过 [`IRtcConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python) 对象监听连接状态变化和事件。`RtcConnection` 还可以监控频道中的远端用户是否加入或离开频道。</span>
+
+<a id="connect"></a>
+## connect
+
+```python
+def connect(self, token: str, chan_id: str, user_id: str) -> int
+```
+
+<span className="index-desc-connect">连接 RTC 频道。</span>
+
+方法成功时，连接状态由 `1` 变更为 `2`。
+
+根据连接是否成功，连接状态会变更为 `3` 或 `5`。SDK 会触发 [`on_connected`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#onconnected) 或 [`on_disconnected`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ondisconnected) 提醒连接状态变更。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `token` | RTC Token。详见 [使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。 |
+| `chan_id` | <Slot name="rtcconnection-python-html-0-2-1" /> |
+| `user_id` | <Slot name="rtcconnection-python-html-0-3-1" /> |
+
+<Slot for="rtcconnection-python-html-0-2-1">
+
+频道名。必须为字符串且长度不超过 64 字节。支持的字符类型包括：
+
+    - 全部小写字母：a to z
+    - 全部大写字母：A to Z
+    - 全部阿拉伯数字：0 to 9
+    - 空格
+    - 标点符号和其他特殊符号：`!`、`#`、`$`、`%`、`&`、`(`、`)`、`+`、`-`、`:`、`;`、`<`、`=`、`.`、`>`、`?`、`@`、`[`、`]`、`^`、`_`、` {`、`}`、`|`、`~`、`,`
+
+</Slot>
+
+<Slot for="rtcconnection-python-html-0-3-1">
+
+本地用户 ID。长度不超过 64 字节。如果你不设置用户 ID 或设为 None，SDK 在 `on_connected` 回调中自动返回一个 user ID。你必须自行记录并管理此 ID。根据你在 [`initialize`](/zh-CN/api-reference/rtc-server-sdk/python-api/agoraservice.python#initialize) 方法中选择的用户 ID 类型，该参数支持的字符集也不同：
+
+    - int 型用户 ID 支持的字符集包括：
+      - 10 个数字 0-9
+    - String 型用户 ID 支持的字符集包括：
+      - 26 个小写英文字母 a-z
+      - 26 个大写英文字母 A-Z
+      - 10 个数字 0-9
+      - 空格
+      - `!`、`#`、`$`、`%`、`&`、`(`、`)`、`+`、`-`、`:`、`;`、`<`、`=`、`.`、`>`、`?`、`@`、`[`、`]`、`^`、`_`、` {`、`}`、`|`、`~`、`,`
+
+</Slot>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+  - `-2`: 参数无效。
+  - `-8`: 当前连接状态不是 `1`。
+
+<a id="disconnect"></a>
+## disconnect
+
+```python
+def disconnect(self) -> int
+```
+
+<span className="index-desc-disconnect">与 RTC 频道断开连接。SDK 与频道断开连接时，连接状态变更为 `1`。你还可以通过 [`on_disconnected`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ondisconnected) 回调得知。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="renewtoken"></a>
+## renew_token
+
+```python
+def renew_token(self, token: str) -> int
+```
+
+<span className="index-desc-renewtoken">更新 Token。Token 会在一定时间后过期。当收到 [`on_token_privilege_will_expire`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python#ontokenprivilegewillexpire) 回调时，你必须从服务端生成一个新的 Token，并使用该方法更新 Token。否则，SDK 会与频道断开连接。</span>
+
+#### 参数
+
+| 参数       | 描述   |
+|------------|------------|
+| `token`    | 新 Token。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="registerobserver"></a>
+## register_observer
+
+```python
+def register_observer(self, conn_observer: IRTCConnectionObserver) -> int
+```
+
+<span className="index-desc-registerobserver">注册 RTC 连接 observer。</span>
+
+#### 参数
+
+| 参数           | 描述   |
+|----------------|------------|
+| `conn_observer`| [`IRTCConnectionObserver`](/zh-CN/api-reference/rtc-server-sdk/python-api/irtcconnectionobserver.python) 对象。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="unregisterobserver"></a>
+## unregister_observer
+
+```python
+def unregister_observer(self) -> int
+```
+
+<span className="index-desc-unregisterobserver">销毁 RTC 连接 observer。</span>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="createdatastream"></a>
+## create_data_stream
+
+```python
+def create_data_stream(self, reliable: bool, ordered: bool) -> int
+```
+
+<span className="index-desc-createdatastream">创建数据流。</span>
+
+每个用户在每个频道中最多只能创建 5 个数据流。
+
+:::warning[注意]
+- 声网不支持你将 `reliable` 设为 `1` 且 `ordered` 设为 `0`。
+- 当需要数据包立刻到达接收端时，不能将 `ordered` 参数设置为 `1`。
+:::
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `reliable` | <Slot name="rtcconnection-python-html-1-1-1" /> |
+| `ordered` | <Slot name="rtcconnection-python-html-1-2-1" /> |
+
+<Slot for="rtcconnection-python-html-1-1-1">
+
+该数据流是否可靠：
+
+    - `1`: 接收方 5 秒内会收到发送方所发送的数据。
+    - `0`: 接收方不保证收到，就算数据丢失也不会报错。
+
+</Slot>
+
+<Slot for="rtcconnection-python-html-1-2-1">
+
+该数据流是否有序：
+
+    - `1`: 接收方会按照发送方发送的顺序收到数据包。
+    - `0`: 接收方不保证按照发送方发送的顺序收到数据包。
+
+</Slot>
+
+#### 返回值
+
+- `stream_id`：方法调用成功，返回数据流 ID。
+- `None`：方法调用失败。
+
+<a id="sendstreammessage"></a>
+## send_stream_message
+
+```python
+def send_stream_message(self, stream_id: int, data: str) -> int
+```
+
+<span className="index-desc-sendstreammessage">发送数据流消息。</span>
+
+该方法发送数据流消息到频道内所有用户。SDK 对该方法的实现进行了如下限制：
+
+- 频道内每秒最多能发送 30 个包，且每个包最大为 1 KB。
+- 每个客户端每秒最多能发送 6 KB 数据。
+- 频道内每人最多能同时有 5 个数据通道。
+
+成功调用该方法后，远端会触发 [`on_stream_message`](/zh-CN/api-reference/rtc-server-sdk/python-api/localuserobserver.python#onstreammessage) 回调，远端用户可以在该回调中获取接收到的流消息。
+
+:::warning[注意]
+- 请确保在调用该方法前，已调用 [`create_data_stream`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python) 创建了数据通道。
+- 直播场景下，该方法仅适用于主播用户。
+:::
+
+#### 参数
+
+| 参数        | 描述   |
+|-------------|------------|
+| `stream_id` | 数据流 ID。可以通过 [`create_data_stream`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python) 获取。|
+| `data`      | 待发送的数据。|
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="getagoraparameter"></a>
+## get_agora_parameter
+
+```python
+def get_agora_parameter(self)
+```
+
+<span className="index-desc-getagoraparameter">获取 `AgoraParameter` 对象。</span>
+
+#### 返回值
+
+- `AgoraParameter` 对象：方法调用成功。
+- `None`：方法调用失败。
+
+<a id="getlocaluser"></a>
+## get_local_user
+
+```python
+def get_local_user(self)
+```
+
+<span className="index-desc-getlocaluser">获取 `LocalUser` 对象。每个连接仅对应一个本地用户。</span>
+
+#### 返回值
+
+- `LocalUser` 对象：方法调用成功。
+- `None`：方法调用失败。
+
+<a id="release"></a>
+## release
+
+```python
+def release(self)
+```
+
+<span className="index-desc-release">释放 RTC 连接。</span>
+
+<a id="enableencryption"></a>
+## enable_encryption
+
+```python
+def enable_encryption(self, enabled: int, config: EncryptionConfig)
+```
+
+开启加密功能。
+
+该方法需要在 [`connect`](/zh-CN/api-reference/rtc-server-sdk/python-api/rtcconnection.python#connect) 之前调用。你需要在该方法中设置加密模式和具体的加密配置。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `enabled` | <Slot name="rtcconnection-python-html-2-1-1" /> |
+| `config` | 具体的加密配置项：[`EncryptionConfig`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#encryptionconfig)。 |
+
+<Slot for="rtcconnection-python-html-2-1-1">
+
+是否开启加密功能。
+
+    - `1`：开启
+    - `0`：不开启
+
+</Slot>
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

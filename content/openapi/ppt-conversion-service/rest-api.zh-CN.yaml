@@ -1,0 +1,668 @@
+openapi: 3.1.0
+info:
+  version: ''
+  title: PPT 转码服务 RESTful API
+  description: 使用 PPT 转码服务 RESTful API 生成 Token、发起 PPT 转码并管理转码任务。
+servers:
+- url: https://api.netless.link
+  description: ''
+paths:
+  /v5/tokens/teams:
+    post:
+      tags:
+      - 生成 Token
+      summary: 生成 SDK Token
+      description: 生成一个 SDK Token。
+      operationId: post-v5-tokens-teams
+      parameters:
+      - $ref: '#/components/parameters/region'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessKey:
+                  $ref: '#/components/schemas/ak'
+                secretAccessKey:
+                  $ref: '#/components/schemas/sk'
+                lifespan:
+                  $ref: '#/components/schemas/lifespan'
+                role:
+                  $ref: '#/components/schemas/role'
+              required:
+              - accessKey
+              - secretAccessKey
+              - lifespan
+              - role
+            examples:
+              Example 1:
+                value:
+                  accessKey: BUxxxxxxrc
+                  secretAccessKey: CxxxxxxxauY3
+                  lifespan: 3600000
+                  role: admin
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/tokens/tasks/{uuid}:
+    post:
+      tags:
+      - 生成 Token
+      summary: 生成 Task Token
+      description: 生成一个 Task Token。
+      operationId: post-v5-tokens-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/uuid-convert'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                role:
+                  $ref: '#/components/schemas/role'
+                lifespan:
+                  $ref: '#/components/schemas/lifespan'
+                ak:
+                  $ref: '#/components/schemas/ak'
+              required:
+              - role
+              - lifespan
+      responses:
+        '201':
+          $ref: '#/components/responses/201'
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/projector/tasks:
+    post:
+      tags:
+      - PPT 转码
+      summary: 发起 PPT 转码
+      description: 发起一个 PPT 转码任务。
+      operationId: post-v5-projector-tasks
+      parameters:
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resource:
+                  $ref: '#/components/schemas/resource'
+                type:
+                  $ref: '#/components/schemas/type'
+                preview:
+                  $ref: '#/components/schemas/preview'
+                scale:
+                  $ref: '#/components/schemas/scale'
+                outputFormat:
+                  $ref: '#/components/schemas/outputFormat'
+                webhookEndpoint:
+                  $ref: '#/components/schemas/webhookEndpoint'
+                webhookRetry:
+                  $ref: '#/components/schemas/webhookRetry'
+                imageCompressionLevel:
+                  $ref: '#/components/schemas/imageCompressionLevel'
+              required:
+              - resource
+              x-examples:
+                Example 1:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: dynamic
+                  preview: true
+                  webhookEndpoint: https://example.com/agoracallback
+                  webhookRetry: 1
+            examples:
+              Example 1:
+                value:
+                  resource: https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+                  type: dynamic
+                  preview: true
+                  webhookEndpoint: https://example.com/agoracallback
+                  webhookRetry: 3
+                  imageCompressionLevel: 0
+      responses:
+        '201':
+          description: |-
+            若返回的状态码为 `201` 则表示请求成功。响应包体中包含本次请求的结果。
+
+            若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  type:
+                    $ref: '#/components/schemas/type-response'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                x-examples:
+                  Example 1:
+                    uuid: 2fd2dxxxxx367e
+                    status: Waiting
+              examples:
+                不传入 webhookEndpoint 时:
+                  value:
+                    uuid: 2fd2dxxxxx367e
+                    status: Waiting
+                传入 webhookEndpoint 时:
+                  value:
+                    code: 0
+                    message: success
+                    data:
+                      taskId: da4c1b9ae************92af4ef22b8
+                      taskType: dynamic_conversion
+                      prefixUrl: https://xxxx.com/dynamicConvert
+                      pageCount: 10
+                      previews:
+                        '1': https://xxxx.xx.xx/1.png
+                        '2': https://xxxx.xx.xx/2.png
+                      note: https://xxx.xx.xx/note.json
+                      images:
+                        '1':
+                          width: 720
+                          height: 1080
+                          url: https://xxxx.xx.xx/1.xxx
+                        '2':
+                          width: 720
+                          height: 1080
+                          url: https://xxxx.xx.xx/2.xxx
+                      noticeTimestamp: 1231369699739
+      servers:
+      - url: https://api.netless.link
+        description: ''
+      x-extension-1: null
+    get:
+      tags:
+      - PPT 转码
+      summary: 查询待转码任务
+      description: 列出未完成转换的所有任务。
+      operationId: get-v5-projector-tasks
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    taskId:
+                      $ref: '#/components/schemas/taskId'
+                    status:
+                      type: number
+                      description: |-
+                        转换任务的状态：
+
+                        - `1`：任务进行中。
+                        - `0`：任务正在排队。
+              examples:
+                Example 1:
+                  value:
+                  - taskId: xxx
+                    status: 1
+                  - taskId: xxx
+                    status: 0
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/projector/tasks/{uuid}:
+    get:
+      tags:
+      - PPT 转码
+      summary: 查询转码任务进度
+      description: 查询七天内创建的 PPT 转码任务的进度。
+      operationId: get-v5-projector-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/taskToken'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid-convert'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  status:
+                    $ref: '#/components/schemas/status-convert'
+                  type:
+                    $ref: '#/components/schemas/type'
+                  convertedPercentage:
+                    $ref: '#/components/schemas/convertedPercentage'
+                  prefix:
+                    $ref: '#/components/schemas/prefix'
+                  pageCount:
+                    $ref: '#/components/schemas/pageCount'
+                  previews:
+                    $ref: '#/components/schemas/previews'
+                  note:
+                    $ref: '#/components/schemas/note'
+                  images:
+                    $ref: '#/components/schemas/images'
+                  errorCode:
+                    $ref: '#/components/schemas/errorCode'
+                  errorMessage:
+                    $ref: '#/components/schemas/errorMessage'
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fdxxxx7e
+                    status: Finished
+                    type: dynamic
+                    convertedPercentage: 100
+                    prefix: https://xxxx.com/dynamicConvert
+                    pageCount: 10
+                    previews:
+                      '1': https://xxxx.xx.xx/1.png
+                      '2': https://xxxx.xx.xx/2.png
+                    note: https://xxx.xx.xx/note.json
+                    images:
+                      '1':
+                        width: 720
+                        height: 1080
+                        url: https://xxxx.xx.xx/1.xxx
+                      '2':
+                        width: 720
+                        height: 1080
+                        url: https://xxxx.xx.xx/2.xxx
+                    errorCode: 20xxxxx
+                    errorMessage: xxx
+      servers:
+      - url: https://api.netless.link
+        description: ''
+    delete:
+      tags:
+      - PPT 转码
+      summary: 取消指定的转码任务
+      description: 取消指定的文档转换任务。
+      operationId: delete-v5-projector-tasks-uuid
+      parameters:
+      - $ref: '#/components/parameters/uuid-convert'
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  taskId:
+                    $ref: '#/components/schemas/taskId'
+                  success:
+                    type: boolean
+                    description: |-
+                      是否成功取消转换任务：
+
+                      - `true`：取消成功。
+                      - `false`：取消失败。
+      servers:
+      - url: https://api.netless.link
+        description: ''
+  /v5/projector/tasks/{uuid}/priority:
+    put:
+      tags:
+      - PPT 转码
+      summary: 设置任务优先级
+      description: 将待进行的指定任务移动至任务队列最前面或最后面。
+      operationId: put-v5-projector-tasks-uuid-priority
+      parameters:
+      - $ref: '#/components/parameters/token'
+      - $ref: '#/components/parameters/region'
+      - $ref: '#/components/parameters/uuid-convert'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                priority:
+                  type: string
+                  description: |-
+                    设定优先级，取值如下：
+
+                    - `highest`：最高，即移动至任务队列最前。
+                    - `lowest`：最低，即移动至任务队列末尾。
+              required:
+              - priority
+      responses:
+        '200':
+          description: |-
+            若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。
+
+            若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    $ref: '#/components/schemas/uuid-convert'
+                  success:
+                    type: boolean
+                    description: |-
+                      是否成功设置优先级：
+
+                      - `true`：设置成功。
+                      - `false`：设置失败。
+              examples:
+                Example 1:
+                  value:
+                    uuid: 2fd2dxxxxx367e"
+                    success: true
+      servers:
+      - url: https://api.netless.link
+        description: ''
+tags:
+- name: 生成 Token
+- name: PPT 转码
+components:
+  parameters:
+    beginUUID:
+      name: beginUUID
+      in: query
+      description: 查询的起始房间的 UUID。
+      required: false
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      description: 返回的房间列表的最大长度，取值范围为 (0,1000]。如果不填，则最多返回 100 条房间信息。
+      required: false
+      schema:
+        type: string
+        default: '100'
+    sceneDir:
+      name: sceneDir
+      in: query
+      description: 场景组的路径地址，以 `/` 开头。如果填入该参数，则返回指定场景组下的场景地址列表；如果不填，则返回当前所在场景组下的场景地址列表。
+      required: false
+      allowEmptyValue: true
+      schema:
+        type: string
+    uuid:
+      name: uuid
+      in: path
+      description: 房间的 UUID，即房间的全局唯一标识符。
+      required: true
+      schema:
+        type: string
+    uuid-convert:
+      name: uuid
+      in: path
+      description: 转换任务的 UUID，即转换任务的唯一标识符，可通过调用[发起 PPT 转码 API](start-conversion) 获取。
+      required: true
+      schema:
+        type: string
+        examples:
+        - 2fxxxxxx367e
+    region:
+      name: region
+      in: header
+      description: |-
+        指定处理该请求的数据中心，取值如下：
+
+        - `cn-hz`：中国杭州，服务区覆盖中国大陆地区及其他数据中心未覆盖的区域。
+        - `us-sv`：美国硅谷，服务区覆盖北美洲、南美洲。
+        - `sg`：新加坡，服务区覆盖新加坡、东亚、东南亚。
+        - `in-mum`：印度孟买，服务区覆盖印度。
+        - `eu`：欧洲（法兰克福），服务区覆盖欧洲。
+      required: true
+      schema:
+        type: string
+        enum:
+        - cn-hz
+        - us-sv
+        - sg
+        - in-mum
+        - eu
+    token:
+      name: token
+      in: header
+      description: |-
+        SDK Token，可以通过以下方式获取：
+
+        - 在声网控制台生成用于测试的 SDK Token，详见[获取安全密钥](/zh-CN/solutions/ppt-transcoding/build/setup-and-access/enable-service#2-获取安全密钥)。
+        - 调用服务端 RESTful API， 详见[生成 SDK Token](generate-sdk-token)。
+        - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+      required: true
+      schema:
+        type: string
+        examples:
+        - NETLESSSDK_YWs9xxxxxxM2MjRi
+    taskToken:
+      name: token
+      in: header
+      description: |-
+        Task Token，可通过以下方式获取：
+
+        - 调用服务端 RESTful API， 详见[生成 Task Token](generate-task-token)。
+        - 在 app 服务端用代码生成，详见[在 app 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: |-
+        若返回的状态码为 `200` 则表示请求成功。响应包体中包含本次请求的结果。
+
+        若返回的状态码不为 `200` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+    '201':
+      description: |-
+        若返回的状态码为 `201` 则表示请求成功。响应包体中包含本次请求的结果。
+
+        若返回的状态码不为 `201` 则表示请求失败。你可以参考[响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)了解可能的原因。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+  schemas:
+    ak:
+      type: string
+      title: ak
+      description: 访问密钥 Access Key (AK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+    sk:
+      type: string
+      title: sk
+      description: 私有访问密钥 Secret Access Key (SK)，可在声网控制台获取，详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+    lifespan:
+      type: integer
+      title: lifespan
+      description: Token 的有效时间（ms）。设为 `0` 表示永久有效。
+      examples:
+      - 36000
+    role:
+      type: string
+      title: role
+      description: |-
+        权限角色，取值如下：
+
+        - `admin`
+        - `writer`
+        - `reader`
+        详见 [Token 的类型与权限](/zh-CN/realtime-media/whiteboard/concepts#token)。
+    resource:
+      type: string
+      title: resource
+      description: 待转换的源文件 URL。
+      examples:
+      - https://docs-test-xx.oss-cn-hangzhou.aliyuncs.com/xxx
+    type:
+      type: string
+      title: type
+      description: |-
+        转换任务类型，取值如下：
+
+        - `dynamic`：动态文档转换，即文档转网页。
+        - `static`：静态文档转换，即文档转图片。
+      default: dynamic
+    preview:
+      type: boolean
+      title: preview
+      description: |-
+        是否需要生成预览图：
+
+        - `true`：是。
+        - `false`：否。
+        该参数仅在 `type` 设为 `dynamic` 时生效。
+    scale:
+      type: number
+      title: scale
+      description: 图片缩放比例。数值越大，图片越清晰。该参数仅在 `type` 设为 `static` 时生效。
+      minimum: 0.1
+      maximum: 3
+      default: 1.2
+    outputFormat:
+      type: string
+      title: outputFormat
+      description: |-
+        输出图片格式，取值如下：
+
+        - `png`：PNG 格式。
+        - `jpg`：JPG 格式。
+        - `jpeg`：JPEG 格式。
+        - `qpdf`：QPDF 格式。仅 PDF 文件支持转换为 QPDF 格式。你可以使用 [`@netless-app-pdfjs`](https://github.com/netless-io/netless-app-pdfjs) 插件展示到基于 Fastboard SDK 的互动白板 App 中。
+        该参数仅在 `type` 设为 `static` 时生效。
+      default: png
+    webhookEndpoint:
+      type: string
+      title: webhookEndpoint
+      description: |-
+        Webhook 回调地址，一般为 app 服务端地址，用于接收服务端发送的转换任务进度等信息。传入该参数即可激活 Webhook 回调，接收来自服务端的文档转换进度和运行状态信息。
+        > Webhook 回调有一定概率重复回调，为保证 app 服务端在接到相同响应时的处理方式保持一致，需要做好幂等处理。
+      examples:
+      - https://example.com/agoracallback
+    webhookRetry:
+      type: number
+      title: webhookRetry
+      description: Webhook 回调失败时的重试次数。
+      maximum: 10
+      default: 3
+    imageCompressionLevel:
+      type: number
+      title: imageCompressionLevel
+      description: |-
+        动态转换输出图片的压缩等级，仅能传入以下值：
+
+        - `0`：（默认）输出原图。
+        - `1`：输出图片使用的最大颜色数量限制为 256。
+        - `2`：输出图片使用的最大颜色数量限制为 192。
+        - `3`：输出图片使用的最大颜色数量限制为 128。
+        - `4`：输出图片使用的最大颜色数量限制为 64。
+        该参数仅在 `type` 设为 `dynamic` 时生效。
+        > 通常，在保证画质不受明显影响的前提下，输出图片的体积最高可以压缩至原图的 10%。压缩图片体积可在弱网环境下改善转换后 PPT 的首次加载时间。
+      default: 0
+    uuid-convert:
+      type: string
+      title: uuid
+      description: 转换任务的 UUID，即转换任务的唯一标识符。
+      examples:
+      - 2fd2dxxxxx367e"
+    type-response:
+      type: string
+      title: type
+      description: |-
+        转换任务类型，取值如下：
+
+        - `dynamic`：动态文档转换，即文档转网页。
+        - `static`：静态文档转换，即文档转图片。
+    status-convert:
+      type: string
+      title: status
+      description: |-
+        转换任务的状态：
+
+        - `Waiting`：等待转换。
+        - `Converting`：转换中。
+        - `Finished`：已完成。
+        - `Fail`：失败。
+    taskId:
+      type: string
+      title: taskId
+      description: 转换任务的 UUID，即转换任务的唯一标识符。
+    convertedPercentage:
+      type: number
+      title: convertedPercentage
+      description: 转换进度百分比。
+    prefix:
+      type: string
+      title: prefix
+      description: 转换结果文件地址前缀路径。
+      examples:
+      - https://xxxx.com/dynamicConvert
+    pageCount:
+      type: number
+      title: pageCount
+      description: 文档页数，转换任务失败时没有该字段。
+    previews:
+      type: object
+      title: previews
+      description: 转换后的文档预览图地址，每页对应一个预览图地址。该参数仅在[发起文档转换](start-conversion)时，请求包体中的 `preview` 设为 `true `，且 `type` 设为 `dynamic` 时才生效。
+      properties:
+        id:
+          type: string
+          examples:
+          - https://xxxx.xx.xx/id.png
+      examples: []
+    note:
+      type: string
+      title: note
+      description: 从文档中提取出的备注内容，只包含有备注的页面。
+    images:
+      type: object
+      title: images
+      description: 文档转图片结果的地址，每页对应一张图片。该参数仅在[发起文档转换](start-conversion)时，请求包体中的 `type` 设为 `static` 时才生效。
+      properties:
+        id:
+          type: string
+          examples:
+          - https://xxxx.xx.xx/id.xxx
+    errorCode:
+      type: string
+      title: errorCode
+      description: 错误码。仅在转换任务失败时，才会返回该字段。所有可能的错误码详见[文档转换错误码](/zh-CN/solutions/ppt-transcoding/reference/response-code)。
+    errorMessage:
+      type: string
+      title: errorMessage
+      description: 错误码对应的错误消息，描述出错的原因。仅在转换任务失败时，才会返回该字段。

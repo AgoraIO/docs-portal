@@ -1,0 +1,93 @@
+---
+title: "跑通基于 C API 的 Linux 示例项目"
+---
+声网提供了一个简单的示例项目 `hello_rtsa.c` 和 `hello_rtm.c` 用于演示推流、拉流和信令发送接收的基本功能。该示例项目位于 RTSA SDK 包 `example` 目录中。
+
+你可以先编译并运行示例项目体验功能，初步了解 RTSA SDK 的 API 调用，以便后续能够更高效地将 RTSA SDK 集成到你自己的应用程序中。
+
+:::info[信息]
+示例项目自带的 License 仅供测试，试用时效为 90 天且存在 10 路并发限制。如果你需要在生产环境中使用 RTSA SDK，请联系 sales@shengwang.cn 购买商业 License。详见[申请和使用 License](/zh-CN/realtime-media/rtsa/build/setup-and-access/license)。
+:::
+
+## 前提条件
+
+开始前，请确保你的开发环境满足如下条件：
+
+- 一台开发机，可以是电脑或嵌入式设备。环境要求见[平台兼容](/zh-CN/realtime-media/rtsa/reference/supported-platforms)。本文以安装 Ubuntu 18.04 系统的电脑为例。
+- 参考[开通服务](/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service)获取 App ID、RTC 和 RTM 临时 Token。
+
+## 获取 SDK
+
+本文以 x86_64 的 SDK 包为例。你可以点击[下载](/zh-CN/realtime-media/rtsa/reference/downloads)获取其他平台的 SDK 包。
+
+```shell
+# 将 x.y.z 替换为具体的 SDK 版本号，如 1.9.1
+# 可通过发版说明获取最新版本号
+# 获取 SDK
+wget https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmAcAjCP-x86_64-linux-gnu-vx.y.z.tgz
+# 解压缩
+tar xvf Agora-RTSALite-RmAcAjCP-x86_64-linux-gnu-vx.y.z.tgz
+```
+
+## 编译示例项目
+
+在 SDK 包 `example` 目录下运行以下命令编译示例项目：
+
+```shell
+# 切换到示例项目目录
+cd agora_rtc_sdk/example
+# 构建示例项目
+./build-x86_64.sh
+```
+
+:::info[信息]
+如果你需要在设备端（通常是 ARM Linux 系统）运行 `hello_rtsa`，请先参考 SDK 包中的移植指南（`PORTING.md` 文件）。
+:::
+
+编译完成后，会在当前目录下生成以下可执行文件：
+
+-  `hello_rtsa`
+-  `hello_rtm`
+
+<a id="run-demo"></a>
+## 运行媒体流示例项目
+
+### 开始发送 H.264 视频和 PCM 音频
+
+将以下命令行的 `YOUR_APP_ID` 替换成你获取的 App ID、`YOUR_RTC_TOKEN` 替换成你获取的 RTC 临时 Token 并运行命令。你就会加入名为 `demo_channel` 的频道，并且用默认参数开始发送 H.264 视频和 PCM 音频。音视频源默认为 SDK 包自带的 `send_audio_16k_1ch.pcm` 和 `send_video.h264` 文件。
+
+```shell
+cd out/x86_64
+./hello_rtsa -i YOUR_APP_ID -c demo_channel --token YOUR_RTC_TOKEN
+```
+
+### 验证推流效果
+
+运行媒体流示例项目之后，你可以按如下步骤进行验证：
+
+1. 打开 [Web Demo](https://webdemo.agora.io/index.html)，选择一个项目，然后填入 App ID 和 App 证书，完成初始化设置。
+2. 点击左侧**快速开始**下的**音视频通话**。
+3. 输入频道名 `Channel`、任意用户名 `User ID` 和 Token，点击 **Join**。成功加入频道后，你就可以看到和听到实时音视频流了。
+
+![RTSA 和 Web 互通效果](/img/rtsa/run-example.png)
+
+<a id="run-rtm-demo"></a>
+## 运行信令示例项目
+
+打开两个命令行工具，分别在两个命令行工具中输入如下命令，实现在两个命令行工具之间互相发送消息。
+
+- 把 `YOUR_APP_ID` 替换成你在第一步中获取到的 App ID。
+- 把 `RTM_TOKEN_1` 替换成你为 `user1` 获取的 RTM 临时 Token。
+- 把 `RTM_TOKEN_2` 替换成你为 `user2` 获取的 RTM 临时 Token。
+
+```shell tab="命令行工具 1"
+# 命令行工具 1
+cd out/x86_64
+./hello_rtm --appId YOUR_APP_ID --rtmUid user1 --peerUid user2 --token RTM_TOKEN_1
+```
+
+```shell tab="命令行工具 2"
+# 命令行工具 2
+cd out/x86_64
+./hello_rtm --appId YOUR_APP_ID --rtmUid user2 --peerUid user1 --token RTM_TOKEN_2
+```

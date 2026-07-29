@@ -1,0 +1,800 @@
+---
+title: 自定义音频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_audio_custom_capturenrendering
+  sourcePath: html-docs/rtc/macOS/API/toc_audio_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_custom_capturenrendering"></a>
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
+
+## adjustCustomAudioPlayoutVolume\:volume:
+
+调节本地播放的自定义音频轨道的音量。
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
+
+```text
+- (int)adjustCustomAudioPlayoutVolume:(NSInteger)trackId volume:(NSInteger)volume NS_SWIFT_NAME(adjustCustomAudioPlayoutVolume(_:volume:));
+```
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__detailed_desc"></a>
+
+如果你想更改本地播放的音频音量，需要再次调用该方法。
+
+:::note
+注： 请确保在调用该方法前已调用 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。请设置为 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
+
+音频源的音量。取值范围为 0 到 100。
+
+- 0：静音。
+- 100：原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
+
+<a id="ariaid-title3"></a>
+
+## adjustCustomAudioPublishVolume\:volume:
+
+调节远端播放的自定义音频轨道的音量。
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
+
+```text
+- (int)adjustCustomAudioPublishVolume:(NSInteger)trackId volume:(NSInteger)volume NS_SWIFT_NAME(adjustCustomAudioPublishVolume(_:volume:));
+```
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__detailed_desc"></a>
+
+如果你想更改远端播放的音频音量，需要再次调用此方法。
+
+:::note
+注： 请确保在调用此方法前已调用 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。请设置为 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+音频源的音量。取值范围为 0 到 100。
+
+- 0：静音。
+- 100：原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_createcustomaudiotrack"></a>
+
+<a id="ariaid-title4"></a>
+
+## createCustomAudioTrack\:config:
+
+创建一个自定义音频轨道。
+
+<a id="api_irtcengine_createcustomaudiotrack__prototype"></a>
+
+```text
+- (int)createCustomAudioTrack:(AgoraAudioTrackType)trackType
+                       config:(AgoraAudioTrackConfig* _Nonnull)config;
+```
+
+<a id="api_irtcengine_createcustomaudiotrack__detailed_desc"></a>
+
+要发布自定义音频源，请按照以下步骤操作：
+
+1. 调用该方法创建一个自定义音频轨道并获取音频轨道 ID。
+2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你想要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 YES。
+3. 调用 `pushExternalAudioFrameRawData`，并将 `trackId` 设置为第 2 步中设置的音频轨道 ID，即可在频道中发布相应的自定义音频源。
+
+:::note
+注： 请在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_createcustomaudiotrack__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
+
+自定义音频轨道的类型，详见 [AgoraAudioTrackType](/zh-CN/api-reference/rtc/macos/enum-audiotracktype)。
+
+- 如果该参数设置为 `AgoraAudioTrackTypeDirect`，你必须在调用 `joinChannelByToken` 加入频道时，将 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 NO，否则加入频道会失败并返回错误码 -2。
+
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
+
+自定义音频轨道的配置，详见 [AgoraAudioTrackConfig](/zh-CN/api-reference/rtc/macos/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_createcustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识符。
+- 方法调用失败，返回 0xffffffff。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroycustomaudiotrack"></a>
+
+<a id="ariaid-title5"></a>
+
+## destroyCustomAudioTrack:
+
+销毁指定的音频轨道。
+
+<a id="api_irtcengine_destroycustomaudiotrack__prototype"></a>
+
+```text
+- (int)destroyCustomAudioTrack:(NSInteger)trackId;
+```
+
+<a id="api_irtcengine_destroycustomaudiotrack__detailed_desc"></a>
+
+<a id="api_irtcengine_destroycustomaudiotrack__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
+
+调用 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 时返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_destroycustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
+
+<a id="ariaid-title6"></a>
+
+## enableCustomAudioLocalPlayback\:enabled:
+
+设置是否启用外部音频源的本地播放。
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
+
+```text
+- (int)enableCustomAudioLocalPlayback:(NSInteger)trackId enabled:(BOOL)enabled NS_SWIFT_NAME(enableCustomAudioLocalPlayback(_:enabled:));
+```
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__detailed_desc"></a>
+
+调用该方法启用外部音频源的本地播放后，如需停止本地播放，可再次调用该方法并将 `enabled` 设置为 NO。你可以调用 [adjustCustomAudioPlayoutVolume\:volume:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 方法调整自定义音频轨道的本地播放音量。
+
+:::note
+注： 请确保在调用该方法前已通过 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。该参数需设置为 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否播放外部音频源：
+
+- YES：播放外部音频源。
+- NO：（默认）不播放外部音频源。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pullaudioframe"></a>
+
+<a id="ariaid-title7"></a>
+
+## pullPlaybackAudioFrameRawData\:lengthInByte:
+
+拉取远端音频数据。
+
+<a id="api_irtcengine_pullaudioframe__prototype"></a>
+
+```text
+- (BOOL)pullPlaybackAudioFrameRawData:(void * _Nonnull)data
+                              lengthInByte:(NSUInteger)lengthInByte NS_SWIFT_NAME(pullPlaybackAudioFrameRawData(_:lengthInByte:));
+```
+
+<a id="api_irtcengine_pullaudioframe__detailed_desc"></a>
+
+调用该方法成功后，你可以拉取解码并混音后的远端音频数据用于播放。调用该方法前，请先调用 [enableExternalAudioSink\:sampleRate\:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink)（`enabled: YES`）以开启并设置外部音频渲染。
+
+:::note
+注： [pullPlaybackAudioFrameRawData\:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法和 `onPlaybackAudioFrame:` 回调都可用于获取远端混音后的音频数据。调用 [enableExternalAudioSink\:sampleRate\:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 开启外部音频渲染后，将无法再通过 `onPlaybackAudioFrame:` 回调获取数据。请根据实际业务需求选择使用该方法或 `onPlaybackAudioFrame:` 回调。两者的具体区别如下：
+
+- 调用 [pullPlaybackAudioFrameRawData\:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法后，你会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区以帮助你处理延迟，有效避免音频播放卡顿。
+- 注册 `onPlaybackAudioFrame:` 回调后，SDK 会通过回调将音频数据发送给你。若处理音频帧存在延迟，可能会导致音频卡顿。
+
+该方法仅用于获取远端混音后的音频数据。如需获取采集、播放等其他音频处理阶段的数据，可通过调用 [setAudioFrameDelegate:](/zh-CN/api-reference/rtc/macos/audio/audio-raw#api_irtcengine_registeraudioframeobserver) 注册相应的回调。
+:::
+
+<a id="api_irtcengine_pullaudioframe__timing"></a>
+
+### 调用时机
+
+在加入频道后调用该方法。
+
+<a id="api_irtcengine_pullaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
+
+输出参数，要拉取的远端音频数据。数据类型为 `byte[]`。
+
+</Parameter>
+<a id="lengthinbyte"></a>
+<Parameter name="lengthInByte">
+
+数据长度（字节）。该参数的值与音频时长，以及在 [enableExternalAudioSink\:sampleRate\:channels:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_setexternalaudiosink) 中设置的 `sampleRate` 和 `channels` 参数有关。`lengthInByte` = `sampleRate` / 1000 × 2 × `channels` × 音频时长（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pullaudioframe__return_values"></a>
+
+### 返回值
+
+- YES：调用成功。
+- NO：调用失败。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte"></a>
+
+<a id="ariaid-title8"></a>
+
+## pullPlaybackAudioFrameSampleBufferByLengthInByte:
+
+拉取 `SampleBuffer` 格式的远端音频数据。
+
+<a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte__prototype"></a>
+
+```text
+- (CMSampleBufferRef _Nullable)pullPlaybackAudioFrameSampleBufferByLengthInByte:(NSUInteger)lengthInByte NS_SWIFT_NAME(pullPlaybackAudioFrameSampleBufferBy(lengthInByte:));
+```
+
+<a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte__detailed_desc"></a>
+
+调用该方法后，你可以拉取解码并混音后的音频数据用于播放。
+
+<a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="lengthinbyte-1"></a>
+<Parameter name="lengthInByte">
+
+数据长度（字节）。该参数的值与你设置的音频时长、`sampleRate` 和 `channels` 参数有关。`lengthInByte = sampleRate / 1000 × 2 × channels × 音频时长（毫秒）`。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pullplaybackaudioframesamplebufferbylengthinbyte__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 `CMSampleBufferRef` 对象；失败时返回 nil。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pushaudioframe2"></a>
+
+<a id="ariaid-title9"></a>
+
+## pushExternalAudioFrameRawData\:samples\:sampleRate\:channels\:trackId\:timestamp:
+
+将外部音频帧推送到 SDK。
+
+<a id="api_irtcengine_pushaudioframe2__prototype"></a>
+
+```text
+- (int)pushExternalAudioFrameRawData:(void* _Nonnull)data
+                             samples:(NSInteger)samples
+                          sampleRate:(NSInteger)sampleRate
+                            channels:(NSInteger)channels
+                            trackId:(NSInteger)trackId
+                           timestamp:(NSTimeInterval)timestamp NS_SWIFT_NAME(pushExternalAudioFrameRawData(_:samples:sampleRate:channels:trackId:timestamp:));
+```
+
+<a id="api_irtcengine_pushaudioframe2__detailed_desc"></a>
+
+你可以调用该方法通过音频轨道向 SDK 推送外部音频帧。
+调用该方法前，请先完成以下操作：
+
+1. 调用 `createCustomAudioTrack` 创建自定义音频轨道，并获取音频轨道 ID。
+2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 YES。
+
+<a id="api_irtcengine_pushaudioframe2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="data-1"></a>
+<Parameter name="data">
+
+外部音频数据。
+
+</Parameter>
+<a id="samples"></a>
+<Parameter name="samples">
+
+采样点数量。
+
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
+
+外部音频源的声道数，可设置为 1（单声道）或 2（立体声）。
+
+</Parameter>
+<a id="trackid-4"></a>
+<Parameter name="trackId">
+
+音频轨道 ID，需设置为调用 `createCustomAudioTrack` 返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
+
+外部音频帧的时间戳（毫秒）。该参数为必填项，可用于还原采集音频帧的顺序，或在涉及视频的场景中（包括使用自定义视频源的场景）实现音视频同步。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pushaudioframe2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer1"></a>
+
+<a id="ariaid-title10"></a>
+
+## pushExternalAudioFrameSampleBuffer:
+
+推送外部 `CMSampleBuffer` 音频帧。
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer1__prototype"></a>
+
+```text
+- (int)pushExternalAudioFrameSampleBuffer:(CMSampleBufferRef _Nonnull)sampleBuffer NS_SWIFT_NAME(pushExternalAudioFrameSampleBuffer(_:)) __deprecated_msg("use pushExternalAudioFrameSampleBuffer:sampleRate:channels:trackId: instead.");
+```
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer1__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [pushExternalAudioFrameSampleBuffer\:sampleRate\:channels\:trackId:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pushexternalaudioframesamplebuffer2)。
+:::
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer1__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplebuffer"></a>
+<Parameter name="sampleBuffer">
+
+音频帧的 sample buffer，类型为 `CMSampleBufferRef`。详见 `CMSampleBufferRef`。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer1__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer2"></a>
+
+<a id="ariaid-title11"></a>
+
+## pushExternalAudioFrameSampleBuffer\:sampleRate\:channels\:trackId:
+
+通过自定义音频轨道将外部 `CMSampleBuffer` 音频帧推送到频道中。
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer2__prototype"></a>
+
+```text
+- (int)pushExternalAudioFrameSampleBuffer:(CMSampleBufferRef _Nonnull)sampleBuffer
+                               sampleRate:(NSInteger)sampleRate
+                                 channels:(NSInteger)channels
+                                  trackId:(NSInteger)trackId NS_SWIFT_NAME(pushExternalAudioFrameSampleBuffer(_:sampleRate:channels:trackId:));
+```
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer2__detailed_desc"></a>
+
+在调用该方法推送外部音频数据之前，你需要完成以下操作：
+
+1. 调用 `createCustomAudioTrack` 创建自定义音频轨道，并获取音频轨道 ID。
+2. 调用 `joinChannelByToken` 加入频道。在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 YES。
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplebuffer-1"></a>
+<Parameter name="sampleBuffer">
+
+采样缓冲区。详见 `CMSampleBufferRef`。
+
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
+
+外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
+
+外部音频源的声道数，可设置为 1（单声道）或 2（立体声）。
+
+</Parameter>
+<a id="trackid-5"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。你需要将该参数设置为 `createCustomAudioTrack` 返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pushexternalaudioframesamplebuffer2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setexternalaudiosink"></a>
+
+<a id="ariaid-title12"></a>
+
+## enableExternalAudioSink\:sampleRate\:channels:
+
+设置外部音频渲染。
+
+<a id="api_irtcengine_setexternalaudiosink__prototype"></a>
+
+```text
+- (void)enableExternalAudioSink:(BOOL)enabled
+                     sampleRate:(NSUInteger)sampleRate
+                       channels:(NSUInteger)channels NS_SWIFT_NAME(enableExternalAudioSink(_:sampleRate:channels:));
+```
+
+<a id="api_irtcengine_setexternalaudiosink__detailed_desc"></a>
+
+启用外部音频渲染后，你可以调用 [pullPlaybackAudioFrameRawData\:lengthInByte:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_pullaudioframe) 方法拉取远端音频帧，应用程序可以处理远端音频，并使用期望的音效进行播放。
+
+:::note
+注： 启用外部音频渲染后，应用程序将无法从 `onPlaybackAudioFrame:` 回调中获取任何音频数据。
+:::
+
+<a id="api_irtcengine_setexternalaudiosink__scenario"></a>
+
+### 适用场景
+
+适用于需要使用外部音频数据进行播放的场景。
+
+<a id="api_irtcengine_setexternalaudiosink__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setexternalaudiosink__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
+
+是否启用外部音频渲染：
+
+- YES：启用外部音频渲染。
+- NO：（默认）不启用外部音频渲染。
+
+</Parameter>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
+
+外部音频渲染的采样率（Hz），可设置为 16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels-2"></a>
+<Parameter name="channels">
+
+外部音频渲染的声道数：
+
+- 1：单声道。
+- 2：双声道。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setexternalaudiosource"></a>
+
+<a id="ariaid-title13"></a>
+
+## setExternalAudioSource\:sampleRate\:channels:
+
+设置外部音频源。
+
+<a id="api_irtcengine_setexternalaudiosource__prototype"></a>
+
+```text
+- (int)setExternalAudioSource:(BOOL)enabled
+                   sampleRate:(NSInteger)sampleRate
+                     channels:(NSInteger)channels NS_SWIFT_NAME(setExternalAudioSource(_:sampleRate:channels:)) __deprecated_msg("use createCustomAudioTrack:config: instead.");
+```
+
+<a id="api_irtcengine_setexternalaudiosource__detailed_desc"></a>
+
+<a id="废弃-1"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
+:::
+
+在调用 `joinChannelByToken` 和 [startPreview](/zh-CN/api-reference/rtc/macos/video/video-basic#api_irtcengine_startpreview) 之前调用该方法。
+
+<a id="api_irtcengine_setexternalaudiosource__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
+
+- YES：启用外部音频源。
+- NO：（默认）禁用外部音频源。
+
+</Parameter>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
+
+外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels-3"></a>
+<Parameter name="channels">
+
+外部音频源的声道数：
+
+- 1：单声道。
+- 2：立体声。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setexternalaudiosource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setexternalaudiosource2"></a>
+
+<a id="ariaid-title14"></a>
+
+## setExternalAudioSource\:sampleRate\:channels\:localPlayback\:publish:
+
+设置外部音频源参数。
+
+<a id="api_irtcengine_setexternalaudiosource2__prototype"></a>
+
+```text
+- (int)setExternalAudioSource:(BOOL)enabled
+                   sampleRate:(NSInteger)sampleRate
+                     channels:(NSInteger)channels
+                localPlayback:(BOOL)localPlayback
+                      publish:(BOOL)publish NS_SWIFT_NAME(setExternalAudioSource(_:sampleRate:channels:localPlayback:publish:)) __deprecated_msg("use createCustomAudioTrack:config: instead.");
+```
+
+<a id="api_irtcengine_setexternalaudiosource2__detailed_desc"></a>
+
+<a id="废弃-2"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [createCustomAudioTrack\:config:](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#api_irtcengine_createcustomaudiotrack)。
+:::
+
+<a id="api_irtcengine_setexternalaudiosource2__timing"></a>
+
+### 调用时机
+
+请你在加入频道前调用该方法。
+
+<a id="api_irtcengine_setexternalaudiosource2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-3"></a>
+<Parameter name="enabled">
+
+是否启用外部音频源：
+
+- YES：启用外部音频源。
+- NO：（默认）不启用外部音频源。
+
+</Parameter>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
+
+外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels-4"></a>
+<Parameter name="channels">
+
+外部音频源的声道数，可设置为 1（单声道）或 2（立体声）。
+
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
+
+是否播放外部音频源：
+
+- YES：播放外部音频源。
+- NO：（默认）不播放外部音频源。
+
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
+
+是否向远端用户发布音频：
+
+- YES：（默认）发布音频到远端用户。
+- NO：不发布音频到远端用户。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setexternalaudiosource2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)

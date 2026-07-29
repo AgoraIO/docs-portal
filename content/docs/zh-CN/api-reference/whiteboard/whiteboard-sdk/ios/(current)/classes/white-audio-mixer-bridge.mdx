@@ -1,0 +1,114 @@
+---
+title: WhiteAudioMixerBridge Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteAudioMixerBridge
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteAudioMixerBridge.html
+  generator: appledoc
+  warnings: []
+---
+
+| Inherits from | NSObject |
+| --- | --- |
+| Declared in | WhiteAudioMixerBridge.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用于桥接声网 RTC SDK 的混音方法和白板 SDK。
+
+当用户同时使用音视频功能和互动白板，且在互动白板中展示的动态 PPT 包含音频文件时，可能遇到以下问题：
+
+- 播放 PPT 内的音频时声音很小。
+- 播放 PPT 内的音频时有回声。
+
+为解决上述问题，你可以使用该类以调用 RTC SDK 的混音方法播放动态 PPT 中的音频文件。
+
+**Note:**
+
+该类基于声网 RTC SDK 的混音方法设计，如果你使用的实时音视频 SDK 不是声网 RTC SDK，但也具有混音接口和混音状态回调，你也可以调用该类。
+
+<a id="tasks"></a>
+
+<a id="//api/name/initWithBridge:deletegate:"></a>
+
+### `– initWithBridge:deletegate:`
+
+初始化 `WhiteAudioMixerBridge` 对象。
+
+<ApiSignature>
+
+\- (instancetype)initWithBridge:(WhiteBoardView *)*bridge* deletegate:(id&lt;WhiteAudioMixerBridgeDelegate&gt;)*delegate*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="bridge">
+
+白板界面。详见 [WhiteBoardView](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-board-view)。
+
+</Parameter>
+<Parameter name="delegate">
+
+用 RTC SDK 的混音方法播放动态 PPT 中的音频文件。详见 [WhiteAudioMixerBridgeDelegate](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-audio-mixer-bridge-delegate)。
+
+</Parameter>
+</ParameterList>
+
+#### Return Value
+
+初始化的 `WhiteAudioMixerBridge` 对象。
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`
+
+<a id="//api/name/setMediaState:errorCode:"></a>
+
+### `– setMediaState:errorCode:`
+
+设置音乐文件播放状态。
+
+<ApiSignature>
+
+\- (void)setMediaState:(NSInteger)*stateCode* errorCode:(NSInteger)*errorCode*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="stateCode">
+
+音乐文件播放状态：
+
+- 710: RTC SDK 成功调用 `startAudioMixing` 播放音乐文件或 `resumeAudioMixing` 恢复播放音乐文件。
+- 711: RTC SDK 成功调用 `pauseAudioMixing` 暂停播放音乐文件。
+- 713: RTC SDK 成功调用 `stopAudioMixing` 停止播放音乐文件。
+- 714: 音乐文件播放失败。SDK 会在 `errorCode` 参数中返回具体的报错原因。
+
+</Parameter>
+<Parameter name="errorCode">
+
+音乐文件播放失败的原因：
+
+- 701：音乐文件打开出错。
+- 702：音乐文件打开太频繁。
+- 703：音乐文件播放异常中断。
+
+</Parameter>
+</ParameterList>
+
+#### Discussion
+
+你需要在声网 RTC SDK 触发的 `localAudioMixingStateDidChanged` 回调中调用该方法，将音乐文件播放状态传递给白板中的 PPT。
+
+PPT 根据收到的音频播放状态判断是否显示画面，以确保音画同步。
+
+**Note:**
+
+如果你使用的实时音视频 SDK 没有混音状态回调方法，会导致播放的 PPT 音画不同步。
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`

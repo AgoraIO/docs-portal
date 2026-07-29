@@ -1,0 +1,67 @@
+---
+title: FLastmileProbeOneWayResult
+description: 上行或下行 Last mile 网络质量探测结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_lastmileprobeonewayresult
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_lastmileprobeonewayresult.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileprobeonewayresult__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FLastmileProbeOneWayResult {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 packetLossRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 jitter = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeOneWayResult")
+	int64 availableBandwidth = 0;
+	FLastmileProbeOneWayResult(){}
+	FLastmileProbeOneWayResult(const agora::rtc::LastmileProbeOneWayResult & AgoraData){
+		packetLossRate = AgoraData.packetLossRate;
+		jitter = AgoraData.jitter;
+		availableBandwidth = AgoraData.availableBandwidth;
+	}
+	agora::rtc::LastmileProbeOneWayResult CreateAgoraData() const {
+		agora::rtc::LastmileProbeOneWayResult AgoraData;
+		AgoraData.packetLossRate = packetLossRate;
+		AgoraData.jitter = jitter;
+		AgoraData.availableBandwidth = availableBandwidth;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LastmileProbeOneWayResult & AgoraData) const {
+	}
+};
+```
+
+<a id="class_lastmileprobeonewayresult__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="packetlossrate"></a>
+<Parameter name="packetLossRate">
+
+丢包率。
+
+</Parameter>
+<a id="jitter"></a>
+<Parameter name="jitter">
+
+网络抖动 (ms)。
+
+</Parameter>
+<a id="availablebandwidth"></a>
+<Parameter name="availableBandwidth">
+
+可用网络带宽预估 (bps)。
+
+</Parameter>
+</ParameterList>

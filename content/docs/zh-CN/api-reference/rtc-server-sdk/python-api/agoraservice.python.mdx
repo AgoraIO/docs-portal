@@ -1,0 +1,204 @@
+---
+title: "AgoraService 类"
+---
+<span className="index-desc-agoraservice">`AgoraService` 类。作为 SDK 的入口类，你可以通过 `AgoraService` 类创建媒体轨道和连接。</span>
+
+<a id="initialize"></a>
+## initialize
+
+```python
+def initialize(self, config: AgoraServiceConfig)
+```
+
+<span className="index-desc-initialize">初始化 `AgoraService` 对象。</span>
+
+#### 参数
+
+| 参数    | 描述                                                                 |
+|---------|----------------------------------------------------------------------|
+| `config` | 初始化配置。详见 [`AgoraServiceConfig`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#agoraserviceconfig)。    |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。
+
+<a id="release"></a>
+## release
+
+```python
+def release(self)
+```
+
+<span className="index-desc-release">释放 `AgoraService` 对象。</span>
+
+:::warning[注意]
+`release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+<a id="creatertcconnection"></a>
+## create_rtc_connection
+
+```python
+def create_rtc_connection(self, con_config: RTCConnConfig)
+```
+
+<span className="index-desc-creatertcconnection">创建一个 RTC 连接对象。</span>
+
+:::warning[注意]
+如需创建多个 Connection，声网推荐使用多进程的方式，以避免内存泄露等问题。
+:::
+
+#### 参数
+
+| 参数          | 描述                                                                 |
+|---------------|----------------------------------------------------------------------|
+| `con_config` | RTC 连接配置。详见 [`RTCConnConfig`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#rtcconnconfig)。    |
+
+#### 返回值
+
+- `RTCConnection` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createcustomaudiotrackpcm"></a>
+## create_custom_audio_track_pcm
+
+```python
+def create_custom_audio_track_pcm(self, audio_pcm_data_sender: AudioPcmDataSender)
+```
+
+<span className="index-desc-createcustomaudiotrackpcm">创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。该轨道对象可用于发送来 PCM 格式的音频数据。</span>
+
+#### 参数
+
+| 参数                  | 描述                                                                 |
+|-----------------------|----------------------------------------------------------------------|
+| `audio_pcm_data_sender` | PCM 格式的音频数据源。详见 [`AudioPcmDataSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/audiopcmdatasender.python#audiopcmdatasender)。    |
+
+#### 返回值
+
+- `LocalAudioTrack` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createcustomaudiotrackencoded"></a>
+## create_custom_audio_track_encoded
+
+```python
+def create_custom_audio_track_encoded(self, audio_encoded_frame_sender: AudioEncodedFrameSender, mix_mode: int)
+```
+
+<span className="index-desc-createcustomaudiotrackencoded">创建本地音频轨道对象，包含一个发送编码音频数据的音频源。该轨道对象可用于发送已编码的音频数据，例如 Opus 格式的编码数据。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| `audio_encoded_frame_sender` | 发送编码音频数据的音频源。详见 [`AudioEncodedFrameSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/audioencodedframesender.python#audioencodedframesender)。 |
+| `mix_mode` | <Slot name="agoraservice-python-html-0-2-1" /> |
+
+<Slot for="agoraservice-python-html-0-2-1">
+
+已编码的音频在频道中的混音模式。
+
+    - `0`：对频道中的所有音频轨道进行混音。
+    - `1`：不进行混音。
+
+</Slot>
+
+#### 返回值
+
+- `LocalAudioTrack` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createmedianodefactory"></a>
+## create_media_node_factory
+
+```python
+def create_media_node_factory(self)
+```
+
+<span className="index-desc-createmedianodefactory">创建一个媒体节点工厂对象。</span>
+
+#### 返回值
+
+- `MediaNodeFactory` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createcustomvideotrackframe"></a>
+## create_custom_video_track_frame
+
+```python
+def create_custom_video_track_frame(self, video_frame_sender: VideoFrameSender)
+```
+
+<span className="index-desc-createcustomvideotrackframe">创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。该轨道对象可用于发送 YUV 格式视频数据。</span>
+
+#### 参数
+
+| 参数                | 描述                                                                 |
+|---------------------|----------------------------------------------------------------------|
+| `video_frame_sender` | YUV 格式视频源对象。详见 [`VideoFrameSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/videoframesender.python#videoframesender)。    |
+
+#### 返回值
+
+- `LocalVideoTrack` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="createcustomvideotrackencoded"></a>
+## create_custom_video_track_encoded
+
+```python
+def create_custom_video_track_encoded(self, video_encoded_frame_sender: VideoEncodedImageSender, options: SenderOptions)
+```
+
+<span className="index-desc-createcustomvideotrackencoded">创建本地视频轨道对象，包含一个发送编码视频数据的视频源。该轨道对象可用于发送已编码的视频数据，例如 H.264 或 VP8 格式的编码数据。</span>
+
+#### 参数
+
+| 参数                       | 描述                                                                 |
+|----------------------------|----------------------------------------------------------------------|
+| `video_encoded_frame_sender` | 发送编码视频数据的视频源。详见 [`VideoEncodedImageSender`](/zh-CN/api-reference/rtc-server-sdk/python-api/videoencodedimagesender.python)。    |
+| `options`                  | 视频轨道设置。详见 [`SenderOptions`](/zh-CN/api-reference/rtc-server-sdk/python-api/apidatatype.python#senderoptions)。              |
+
+#### 返回值
+
+- `LocalVideoTrack` 对象: 方法调用成功。
+- `None`: 方法调用失败。
+
+<a id="setlogfile"></a>
+## set_log_file
+
+```python
+def set_log_file(self, log_path: str, log_size: int = 512 * 1024)
+```
+
+<span className="index-desc-setlogfile">设置 SDK 日志文件的路径和大小。</span>
+
+SDK 默认生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+
+- SDK 日志文件的名称分别为：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log`、`agorasdk.4.log`。
+- API 调用日志文件的名称分别为：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log`、`agoraapi.4.log`。
+- 每个 SDK 日志文件的默认大小为 1,024 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
+- 最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。
+
+当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+
+- 删除 `agorasdk.4.log` 文件（如有）。
+- 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+- 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+- 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+- 新建 `agorasdk.log` 文件。
+
+`agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+#### 参数
+
+| 参数         | 描述                                                                                             |
+|--------------|--------------------------------------------------------------------------------------------------|
+| `log_path`  | 日志文件的完整路径。该日志文件为 UTF-8 编码。                                                     |
+| `log_size`  | 单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 1,024 KB。 如果你将 `file_size` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `file_size` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。 |
+
+#### 返回值
+
+- 0: 方法调用成功。
+- < 0: 方法调用失败。

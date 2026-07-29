@@ -1,0 +1,43 @@
+---
+title: SnapshotConfig
+description: 用于配置截图功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_snapshotconfig
+  sourcePath: html-docs/rtc/Android/API/class_snapshotconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_snapshotconfig__prototype"></a>
+
+```text
+public class SnapshotConfig {
+  public String filePath = null;
+  public Constants.VideoModulePosition position = Constants.VideoModulePosition.VIDEO_MODULE_POSITION_PRE_ENCODER;
+}
+```
+
+<a id="class_snapshotconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+截图文件的本地路径（包括文件扩展名）。例如：Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`。
+
+:::note
+注： 请确保指定路径存在且具有可写权限。
+:::
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+截图视频帧在视频处理链中的位置，详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

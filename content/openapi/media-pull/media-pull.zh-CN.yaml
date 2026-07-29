@@ -1,0 +1,999 @@
+openapi: 3.1.0
+x-stoplight:
+  id: mzhszaddaibd8
+info:
+  version: ''
+  title: API 概述
+  description: '输入一路在线媒体流至声网频道内播放相当于创建了一个云端播放器（cloud player）。用户可以通过 RESTful API 控制云端播放器，实现对该媒体流的控制：
+
+
+    - [`Create`](create)：在项目中创建一个云端播放器。
+
+    - [`Update`](update)：更新指定的云端播放器。
+
+    - [`List`](list)：分页列出该项目中所有云端播放器。
+
+    - [`Delete`](delete)：在项目中销毁一个云端播放器。
+
+
+    > 请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
+
+
+    为方便你监听云端播放器的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-pull/build/monitor-events/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
+
+
+    - [云端播放器创建成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
+
+    - [云端播放器运行状态改变](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
+
+    - [云端播放器销毁成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
+
+
+    因为声网会动态调整消息通知服务器的 IP 地址，为不影响你接收事件，你需要定期[查询 IP 地址](get-ncs-ip)并更新防火墙白名单配置。'
+  contact:
+    name: 声网技术支持
+    url: https://agoraio.zendesk.com/hc/zh-cn
+servers:
+- url: https://api.sd-rtn.com
+paths:
+  /{region}/v1/projects/{appId}/cloud-player/players:
+    post:
+      summary: 创建云端播放器
+      description: 创建一个云端播放器，用于将在线媒体流输入到声网频道。
+      operationId: get-region-v1-projects-appId-cloud-player-players
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/Request-ID'
+      - $ref: '#/components/parameters/streamIp'
+      - $ref: '#/components/parameters/region-create'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                player:
+                  type: object
+                  properties:
+                    channelName:
+                      $ref: '#/components/schemas/channelName'
+                    uid:
+                      $ref: '#/components/schemas/uid'
+                    account:
+                      $ref: '#/components/schemas/account'
+                    token:
+                      $ref: '#/components/schemas/token'
+                    name:
+                      $ref: '#/components/schemas/name'
+                    audioOptions:
+                      $ref: '#/components/schemas/audioOptions'
+                    videoOptions:
+                      $ref: '#/components/schemas/videoOptions'
+                    streamUrl:
+                      $ref: '#/components/schemas/streamUrl'
+                    playTs:
+                      $ref: '#/components/schemas/playTs'
+                    idleTimeout:
+                      $ref: '#/components/schemas/idleTimeout'
+                    encryptMode:
+                      $ref: '#/components/schemas/encryptMode'
+                    encryptKey:
+                      $ref: '#/components/schemas/encryptKey'
+                    encryptKdfSalt:
+                      $ref: '#/components/schemas/encryptKdfSalt'
+                    repeatTime:
+                      $ref: '#/components/schemas/repeatTime'
+                    seekPosition:
+                      $ref: '#/components/schemas/seekPosition'
+                    dataStreamOptions:
+                      $ref: '#/components/schemas/dataStreamOptions'
+                    tempo:
+                      $ref: '#/components/schemas/tempo'
+                  required:
+                  - channelName
+                  - streamUrl
+            examples:
+              自定义音频和视频转码配置:
+                value:
+                  player:
+                    audioOptions:
+                      profile: 1
+                    videoOptions:
+                      width: 1920
+                      height: 1080
+                      frameRate: 15
+                      bitrate: 400
+                      codec: H.264
+                      gop: 2
+                      fillMode: fill
+                    streamUrl: rtmp://example.agora.io/live/class32/101
+                    channelName: class32
+                    token: 2a78446***
+                    uid: 101
+                    idleTimeout: 300
+                    name: test
+      responses:
+        '200':
+          description: 如果状态码为 2XX，请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  player:
+                    type: object
+                    properties:
+                      uid:
+                        $ref: '#/components/schemas/uid-r'
+                      id:
+                        $ref: '#/components/schemas/id-r'
+                      createTs:
+                        $ref: '#/components/schemas/createTs-r'
+                      status:
+                        $ref: '#/components/schemas/status-r'
+                  fields:
+                    $ref: '#/components/schemas/fields-r'
+              examples:
+                Example 1:
+                  value:
+                    player:
+                      uid: 101
+                      id: 2a784467d647bb87b60b719f6fa56317
+                      createTs: 1575508644
+                      status: running
+                    fields: player.uid,player.id,player.createTs,player.status
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。
+            X-Resource-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求创建的云端播放器的 ID。
+        非 2XX:
+          $ref: '#/components/responses/failure'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: px26au6yq0hk4
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Create` 方法用于在项目中创建一个云端播放器。'
+      x-docs-callouts:
+      - position: after-description
+        markdown: 为确保请求成功，请不要将必填字段设为空，例如 `null` 或 `""`。
+  /{region}/v1/projects/{appId}/cloud-player/players/{playerid}:
+    patch:
+      summary: 更新云端播放器
+      description: 更新指定云端播放器的可变配置。
+      operationId: patch-region-v1-projects-appId-cloud-player-players-playerid
+      parameters:
+      - $ref: '#/components/parameters/Request-ID'
+      - name: sequence
+        in: query
+        description: 'Update 请求的序列号。取值需要大于或等于 0。请确保后一次 Update 请求的序列号大于前一次 Update 请求的序列号。序列号可以确保声网服务器按照你指定的最新配置来更新云端播放器。
+
+
+          **推荐用法**：声网推荐你在第一次调用 Update 时，将 `sequence` 填 `0`。在第二次调用 Update 时，将 `sequence` 填 `1`。在第三次调用 Update 时，将 `sequence` 填 `2`。依次类推。声网服务器会按照最新 Update 请求（即最大的序列号）更新云端播放器。'
+        required: true
+        schema:
+          type: number
+      - $ref: '#/components/parameters/region-change'
+      - $ref: '#/components/parameters/appId'
+      - name: playerid
+        in: path
+        description: 云端播放器的 ID。
+        required: true
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                player:
+                  type: object
+                  properties:
+                    audioOptions:
+                      $ref: '#/components/schemas/audioOptions'
+                    isPause:
+                      $ref: '#/components/schemas/isPause'
+                    streamUrl:
+                      $ref: '#/components/schemas/streamUrl'
+                    seekPosition:
+                      $ref: '#/components/schemas/seekPosition'
+                    tempo:
+                      $ref: '#/components/schemas/tempo'
+            examples:
+              Example 1:
+                value:
+                  player:
+                    audioOptions:
+                      volume: 10
+                    isPause: false
+                    streamUrl: http://example
+                    seekPosition: 40
+      responses:
+        '200':
+          $ref: '#/components/responses/success-with-body'
+        非 2XX:
+          $ref: '#/components/responses/failure-with-reason'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 5fw2jjhn182fd
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Update` 方法用于更新指定的云端播放器。
+
+
+          声网目前仅支持更新如下字段：
+
+
+          - `audioOptions`：更新音频转码配置。请求 Body 中需要传入音量和音频场景字段。
+
+          - `audioOptions.volume`：仅更新音量，不更新音频场景。请求 Body 中不需要传入音频场景字段。
+
+          - `isPause`：控制播放的暂停和恢复。
+
+          - `streamUrl`：更新在线媒体流地址。
+
+          - `seekPosition`：更新点播文件的播放位置。
+
+          - `tempo`：播放倍速。'
+  /v1/projects/{appId}/cloud-player/players:
+    get:
+      summary: 查询所有云端播放器
+      description: 分页查询指定项目下的云端播放器。
+      operationId: get-v1-projects-appId-cloud-player-players
+      parameters:
+      - $ref: '#/components/parameters/Request-ID'
+      - name: filter
+        in: query
+        description: '指定过滤条件。声网服务器只列出该项目下符合过滤条件的云端播放器。目前的过滤条件为用户创建播放器时传入的 `channelName`。
+
+
+          假设用户频道名为 `class32`，则将 URL 示例中 `filter={filter}` 改写为 `filter=channelName eq class32`；假设用户频道名为 `bigclass`，则将 URL 示例中 `filter={filter}` 改写为 `filter=channelName eq bigclass`。**eq** 前后有空格，空格需按照 URL 规范进行编码。'
+        schema:
+          type: string
+      - name: pageSize
+        in: query
+        description: 指定分页大小。取值范围为 1 到 500。默认值为 200，即如果不设值，声网服务器将列出单页内至多 200 个云端播放器。
+        schema:
+          type: number
+      - name: pageToken
+        in: query
+        description: '指定页码，标明该页的次序。如果不设值，声网服务器将返回第一页。
+
+
+          **推荐用法**：首次使用 List 时，不向该参数传值，得到首页的查询结果和声网服务器返回的 `nextPageToken` 值。下一次使用 List 时，将 `nextPageToken` 值传入 `pageToken` 查询下一页的云端播放器。使用以上字段后，声网服务器会从指定项目中过滤出符合条件的云端播放器，根据指定的分页大小进行分页并返回结果，直到 `nextPageToken` 为 0，表示已查到一个项目下所有云端播放器。云端播放器根据创建时间（`createTs`）升序排列。'
+        schema:
+          type: string
+      - $ref: '#/components/parameters/appId'
+      responses:
+        '200':
+          description: 如果状态码为 2XX，则请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalSize:
+                    $ref: '#/components/schemas/totalSize-r'
+                  players:
+                    type: array
+                    description: '> 个别 `player` 可能暂时只包含 `id`，`name`，`createTs` 三个字段，你的程序需要能够处理这种情况。'
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          $ref: '#/components/schemas/name-r'
+                        streamUrl:
+                          $ref: '#/components/schemas/streamUrl-r'
+                        channelName:
+                          $ref: '#/components/schemas/channelName-r'
+                        uid:
+                          $ref: '#/components/schemas/uid-r'
+                        account:
+                          $ref: '#/components/schemas/account-r'
+                        id:
+                          $ref: '#/components/schemas/id-r'
+                        createTs:
+                          $ref: '#/components/schemas/createTs-r'
+                        status:
+                          $ref: '#/components/schemas/status-r'
+                  fields:
+                    $ref: '#/components/schemas/fields-r'
+                  nextPageToken:
+                    $ref: '#/components/schemas/nextPageToken-r'
+              examples:
+                Example 1:
+                  value:
+                    totalSize: 10
+                    players:
+                    - name: class32_101
+                      streamUrl: rtmp://example.agora.io/live/class32/101
+                      channelName: class32
+                      uid: 101
+                      id: 2a784467d647bb87b60b719f6fa56317
+                      createTs: 1575508644
+                      status: running
+                    - name: class68_422
+                      streamUrl: rtmp://example.agora.io/live/class68/422
+                      channelName: class68
+                      uid: 422
+                      id: 0b719f6fa563172a784467d647bb87b6
+                      createTs: 1575588644
+                      status: connecting
+                    fields: player.name,player.streamUrl,player.channelName,player.uid,player.id,player.createTs,player.status
+                    nextPageToken: 7b60b7***
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应 Header 中无该字段。
+        非 2XX:
+          description: 如果状态码不为 2XX，请求失败。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    $ref: '#/components/schemas/message-r'
+              examples:
+                Example 1:
+                  value:
+                    message: Invalid authentication credentials.
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码为 `401(Unauthorized)`，那么响应 Header 中无该字段。
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 82rc1jhfx6i5h
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`List` 方法用于分页列出该项目中所有云端播放器。'
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 使用 `Create` 或 `Delete` 方法创建或销毁云端播放器，且响应状态码为 `504 Gateway Timeout` 时，为防止产生不受管理的云端播放器，声网建议你通过 `List` 方法查询该云端播放器的真实状况。
+
+          - 使用 `Create` 方法创建云端播放器并收到请求成功的响应报文后，如需调用 `List` 方法查询云端播放器，建议你等待约 10 秒再使用 `List`，以防出现查询不到任何信息的情况。'
+  /{region}/v1/projects/{appId}/cloud-player/players/{id}:
+    delete:
+      summary: 销毁云端播放器
+      description: 销毁指定云端播放器。
+      operationId: delete-region-v1-projects-appId-cloud-player-players-id
+      parameters:
+      - $ref: '#/components/parameters/Request-ID'
+      - $ref: '#/components/parameters/region-change'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/success-with-body'
+        非 2XX:
+          $ref: '#/components/responses/failure'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 8p85xfkyvsn31
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Delete` 方法用于在项目中销毁一个云端播放器。'
+      x-docs-callouts:
+      - position: after-description
+        markdown: 通过 `Delete` 销毁一个已经销毁过的云端播放器时，响应状态码也为 2XX。
+  /v1/ncs/ip:
+    get:
+      summary: 查询消息通知服务器 IP
+      description: 查询消息通知服务器的 IP 地址或 IP 地址列表。
+      operationId: get-v1-ncs-ip
+      responses:
+        '200':
+          description: '如果返回的 HTTP 状态码为 200，表示请求成功。
+
+
+            你只需关心响应 Body 中的 `PrimaryIP` 字段，无需关心响应 Header 以及响应 Body 中的其他字段。'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: 声网消息通知服务器的 IP 地址。
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      service:
+                        hosts:
+                        - primaryIP: xxx.xxx.xxx.xxx
+                        - primaryIP: xxx.xxx.xxx.xxx
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: j19lt4cy9lq4d
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '开通消息通知服务后，声网消息通知服务可以将输入在线媒体流业务中的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP 地址，周期为 24 小时。
+
+
+          你可以通过本方法查询 IP 地址。查询后，你需要将 IP 地址或 IP 地址列表添加到白名单中。'
+      x-docs-callouts:
+      - position: after-description
+        markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙白名单。
+components:
+  parameters:
+    streamIp:
+      name: streamIp
+      in: query
+      description: '媒体流源站 IP 地址。必须使用有效的 IPv4 地址。
+
+
+        该参数可以保障媒体流的传输质量。如果源媒体流只在 `region` 区域内的部分区域提供服务，请使用该参数。如果源媒体流可在 `region` 区域内的广泛的区域提供服务，请忽略该参数。'
+      required: false
+      schema:
+        type: string
+    appId:
+      name: appId
+      in: path
+      description: 声网为每个开发者提供的 **App ID**。在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。
+      required: true
+      schema:
+        type: string
+    id:
+      name: id
+      in: path
+      description: 云端播放器的 ID。
+      required: true
+      schema:
+        type: string
+    region-change:
+      name: region
+      in: path
+      description: 云端播放器所在的区域，必须与创建云端播放器设置的 `region` 一致。
+      required: true
+      schema:
+        type: string
+    region-create:
+      name: region
+      in: path
+      description: '云端播放器的区域。声网支持分区域创建云端播放器，目前支持以下区域：
+
+        - `cn`：中国大陆。- `ap`：除中国大陆以外的亚洲区域。- `na`：北美。- `eu`：欧洲。**注意**：请确保设置的 `region` 与你的媒体流源站在同一个区域，且 `region` 值为小写。'
+      required: true
+      schema:
+        type: string
+        examples:
+        - cn
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: '`application/json`'
+      required: true
+      schema:
+        type: string
+    Request-ID:
+      name: X-Request-ID
+      in: header
+      description: UUID（通用唯一识别码），标识本次请求。传入该字段后，声网服务器会在响应 Header 中返回该字段。声网推荐你对 `X-Request-ID` 赋值。如果不赋值，声网服务器会自动生成一个 UUID 传入。
+      required: false
+      schema:
+        type: string
+  securitySchemes:
+    Basic Auth:
+      type: http
+      description: 声网输入在线媒体流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/api-reference/api-ref/media-pull/restful-authentication)。
+      scheme: basic
+  responses:
+    failure:
+      description: 如果状态码不为 2XX，请求失败。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 描述请求失败的具体原因。
+          examples:
+            Example 1:
+              value:
+                message: Invalid authentication credentials.
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求操作的云端播放器的 ID。请求失败时，该字段可能为空。
+    success-with-body:
+      description: 如果状态码为 2XX，则请求成功。
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求销毁的云端播放器的 ID。
+    failure-with-reason:
+      description: 如果状态码不为 2XX，请求失败。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              reason:
+                type: string
+                description: 描述请求失败的具体原因。
+          examples:
+            Example 1:
+              value:
+                reason: Resource is not found and destroyed.
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求。该值为本次请求 Header 中 `X-Request-ID`。如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+        X-Resource-ID:
+          schema:
+            type: string
+          description: UUID（通用唯一识别码），标识本次请求操作的云端播放器的 ID。请求失败时，该字段可能为空。
+  schemas:
+    channelName:
+      type: string
+      title: channelName
+      description: '声网频道名称。字符串长度必须在 64 字节以内，支持以下字符集（共 89 个字符）：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - 空格
+
+        - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","'
+      x-stoplight:
+        id: lzas18akaqhxc
+    uid:
+      type: number
+      title: uid
+      description: '云端播放器在声网频道内的用户 UID。取值范围为 0 到（2 的 32 次方-1）。取值 0 时，声网服务器自动为 player 分配一个 UID。
+
+        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。> - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。'
+      x-stoplight:
+        id: zoe1m2qgzp0ed
+    account:
+      type: string
+      title: account
+      description: '云端播放器在声网频道内的用户 Account。使用该字段前请先阅读[如何使用 String 型用户名](/zh-CN/reference/faq/integration/string_uid)。该字段不能超过 255 字节，也不能为空字符串。支持的字符集范围（共 89 个字符）如下：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - 空格
+
+        - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "\|", "~", ","
+
+        > - `uid` 和 `account` 字段二选一必填。如果不设置用户名（UID 或 Account），该云端播放器不能创建，声网服务器会返回 `400(Bad Request)` 的状态码。请确保该值与频道内其他用户、云端播放器的 UID 都不同，否则影响播放质量。
+
+        > - 如果你需要在同一个频道内有多个云端播放器，请确保每个云端播放器的用户名（UID 或 Account）都是唯一的。'
+      x-stoplight:
+        id: vgfcnx7eu4mlc
+    token:
+      type: string
+      title: token
+      description: '云端播放器在声网频道内使用的动态密钥。如在声网控制台未启用 App 证书，则不需要向 `token` 传值；如在声网控制台已启用 App 证书，则必须传入 `token`：
+
+        - 安全性要求一般时，可使用声网控制台生成的[临时 Token](/zh-CN/introduction/quickstart#获取开发参数)。
+
+        - 安全性要求高时，使用用户服务器生成的[正式 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+        **注意**：生成正式 Token 时，使用的 `uid` 或 `account` 必须和云端播放器的 `uid` 或 `account` 取值一致。'
+      x-stoplight:
+        id: xkxicq5j6o8fb
+    name:
+      type: string
+      title: name
+      description: '云端播放器的名字。长度必须在 64 个字符以内，支持的字符集范围为：
+
+        - 所有小写英文字母（a-z）
+
+        - 所有大写英文字母（A-Z）
+
+        - 数字 0-9
+
+        - "-", "_"
+
+        > - 不传值时，`name` 为空。同一时间，一个项目下可以有多个 `name` 为空的云端播放器。
+
+        > - 同一时间，一个项目下不允许出现重名的云端播放器，用户尝试创建同名的云端播放器时会收到响应状态码 `409(Conflict)`。
+
+        > - 如果你需要在同一个频道内仅有一个云端播放器，请你务必使用 `name` 字段。'
+      maxLength: 64
+      x-stoplight:
+        id: 2df59cjxak1sl
+    audioOptions:
+      type: object
+      title: audioOptions
+      description: 云端播放器的音频转码配置。
+      properties:
+        volume:
+          $ref: '#/components/schemas/volume'
+        profile:
+          $ref: '#/components/schemas/profile'
+      x-stoplight:
+        id: q38cvhldzymno
+    volume:
+      type: number
+      title: volume
+      description: 云端播放器的的音量大小。取值范围 [0,200]。默认值为 100，表示原始音量。
+      minimum: 0
+      maximum: 200
+      default: 100
+      x-stoplight:
+        id: vlre1f27ilsak
+    profile:
+      type: number
+      title: Profile
+      description: "音频场景。用于设置音频采样率、码率、编码模式和声道数。\n- `0`：默认设置：\n  - 通信场景下，该选项代表指定 32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。\n  - 直播场景下，该选项代表指定 48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。\n- `1`：SPEECH_STANDARD。指定 32 kHz 采样率，语音编码, 单声道，编码码率最大值为 18 Kbps。\n- `2`：MUSIC_STANDARD。指定 48 kHz 采样率，音乐编码, 单声道，编码码率最大值为 64 Kbps。\n- `4`：MUSIC_HIGH_QUALITY。指定 48 kHz 采样率，音乐编码, 单声道，编码码率最大值为 96 Kbps。"
+      default: 0
+      x-stoplight:
+        id: 8omddutm4z7at
+    videoOptions:
+      type: object
+      title: videoOptions
+      description: 云端播放器的视频转码配置。
+      properties:
+        width:
+          $ref: '#/components/schemas/width'
+        height:
+          $ref: '#/components/schemas/height'
+        widthHeightAdaption:
+          $ref: '#/components/schemas/widthHeightAdaption'
+        frameRate:
+          $ref: '#/components/schemas/frameRate'
+        bitrate:
+          $ref: '#/components/schemas/bitrate'
+        gop:
+          $ref: '#/components/schemas/gop'
+        codec:
+          $ref: '#/components/schemas/codec'
+        fillMode:
+          $ref: '#/components/schemas/fillMode'
+      x-stoplight:
+        id: tzll1p4fd2otc
+    width:
+      type: number
+      title: width
+      description: 输出视频宽度 (pixel)。取值范围为 [66,1920]。默认值为源媒体流的视频宽度。
+      minimum: 66
+      maximum: 1920
+      default: 源文件视频宽度
+      x-stoplight:
+        id: twzx7tao9a5tr
+    height:
+      type: number
+      title: height
+      description: 输出视频高度 (pixel)。取值范围为 [66,1080]。默认值为源媒体流的高度宽度。
+      minimum: 66
+      maximum: 1080
+      default: 源文件视频高度
+      x-stoplight:
+        id: lwp3jdd88s2d0
+    widthHeightAdaption:
+      type: boolean
+      title: widthHeightAdaption
+      description: '是否开启横竖屏自适应模式：
+
+        - `true`：开启横竖屏自适应模式。成功开启后，如果源媒体流为横屏模式，则输出视频宽度和高度为 1280 × 720；如果源媒体流为竖屏模式，则输出视频宽度和高度为 720 × 1280。
+
+        - `false`：（默认）不开启横竖屏自适应模式。'
+      default: false
+      x-stoplight:
+        id: vvkbhvq1uxa6u
+    frameRate:
+      type: number
+      title: frameRate
+      description: 输出视频的编码帧率 (fps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。
+      minimum: 5
+      maximum: 30
+      default: 15
+      x-stoplight:
+        id: y3lzaqkj6nit8
+    bitrate:
+      type: number
+      title: bitrate
+      description: 输出视频的编码码率 (Kbps)。详见[输出视频参考表](/zh-CN/realtime-media/rtc/build/video/video-profile#分辨率帧率和码率)。默认值为标准码率，即声网依据当前频道场景、分辨率、帧率为你设置的最合适的码率。
+      minimum: 1
+      maximum: 10000
+      default: 标准码率
+      x-stoplight:
+        id: mxtg3jqbszldb
+    gop:
+      type: number
+      title: gop
+      description: GOP (Group of Pictures) 为关键帧帧间隔时间，单位为秒。
+      minimum: 1
+      maximum: 10
+      default: 2
+      x-stoplight:
+        id: 691n0srpb03e7
+    codec:
+      type: string
+      title: codec
+      description: 输出视频的编码格式，目前仅支持标准 H.264 格式。默认值为 `"H.264"`。如果设置为其他值，则依然为 H.264。
+      default: H.264
+      x-stoplight:
+        id: 4bqzi70nysnyc
+    fillMode:
+      type: string
+      title: fillMode
+      description: '视频画面的显示方式：
+
+        - `"fit"`：（默认）等比缩放视频，直到画面在视窗内完整显示。
+
+        - `"fill"`：等比缩放视频，直至充满视窗。'
+      default: fit
+      x-stoplight:
+        id: fbd23dtr05gim
+    streamUrl:
+      type: string
+      title: streamUrl
+      description: '在线媒体流 URL 地址。必须为有效的 HTTP/HTTPS/RTMP/HLS 地址，且长度在 1024 个字符以内。
+
+
+        **注意**：如需发布图片到声网频道，则设置 `streamUrl` 为你需要发布的图片 URL，云端播放器会将图片转换为视频，并发布到声网频道。目前支持 JPEG 和 PNG 格式的图片。你可以通过 `videoOptions` 设置视频转码相关参数。'
+      maxLength: 1024
+      x-stoplight:
+        id: 2x8lkag6d14br
+    playTs:
+      type: number
+      title: playTs
+      description: '云端播放器开始播放在线媒体流时的 Unix 时间戳（秒）。假设云端播放器创建时的 Unix 时间戳是 T，那么 `playTs` 的取值范围为 [T - 86400,T + 300]。默认值为 0，代表云端播放器在创建成功时自动播放在线媒体流。假设 `playTs` 取值为 S：
+
+        - 当 S = T 或 0 时，云端播放器在创建成功时自动播放在线媒体流。
+
+        - 当 S > T 时，云端播放器会在 S 时刻开始播放在线媒体流。这种取值方式适用于定时播放。
+
+        - 当 S < T 时，如果在线媒体流是直播流，云端播放器在创建成功时直接播放直播流；如果在线媒体流是点播流，云端播放器会从 T - S 时刻（秒）的位置开始播放点播流。这种取值方式适用于应对云端播放器运行出错的场景。举例来说，如果云端播放器 A 在运行中出错，你可以重新创建一个云端播放器 B 并将 `playTs` 字段设为云端播放器 A 开始播放在线媒体流时的 Unix 时间戳。'
+      x-stoplight:
+        id: g2du9a608px1u
+    idleTimeout:
+      type: number
+      title: idleTimeout
+      description: 云端播放器处于空闲状态的最大时长（秒），即媒体流为非播放状态的最大时长。空闲状态超过设置的 `idleTimeout` 后，该播放器会自动销毁。取值范围为 5 到 600。默认值为 300。如果取值小于 5，声网服务器会自动调整为 5；如果取值大于 600，声网服务器会自动调整为 600。
+      minimum: 5
+      maximum: 600
+      default: 300
+      x-stoplight:
+        id: 9vp8wvlgqe7ad
+    encryptMode:
+      type: string
+      title: encryptMode
+      description: '内置加密模式，可设为如下值：
+
+        - `"aes-128-xts"`：128 位 AES 加密，XTS 模式。
+
+        - `"aes-256-xts"`：256 位 AES 加密，XTS 模式。
+
+        - `"aes-128-ecb"`：128 位 AES 加密，ECB 模式。
+
+        - `"sm4-128-ecb"`：128 位 SM4 加密，ECB 模式。
+
+        - `"aes-128-gcm"`：128 位 AES 加密，GCM 模式。
+
+        - `"aes-256-gcm"`：256 位 AES 加密，GCM 模式。
+
+        - `"aes-128-gcm2"`：**推荐设置**。128 位 AES 加密，GCM 模式。 相比于 `aes-128-gcm` 加密模式，`aes-128-gcm2` 加密模式安全性更高且需要设置盐（`encryptKdfSalt`）。
+
+        - `"aes-256-gcm2"`：**推荐设置**。256 位 AES 加密，GCM 模式。相比于 `aes-256-gcm` 加密模式，`aes-256-gcm2` 加密模式安全性更高且需要设置盐（`encryptKdfSalt`）。'
+      x-stoplight:
+        id: npa4v9buliqzj
+    encryptKey:
+      type: string
+      title: encryptKey
+      description: '内置加密密钥。字符串长度无限制。声网推荐使用 32 字节的密钥。
+
+
+        **注意**：如果该字段为空，则无法启用内置加密。'
+      x-stoplight:
+        id: gw1ruhpamems4
+    encryptKdfSalt:
+      type: string
+      title: encryptKdfSalt
+      description: '盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 随机生成 Base64 编码的盐，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption)。
+
+
+        **注意**：该字段仅在 `aes-128-gcm2` 或 `aes-256-gcm2` 加密模式下生效。'
+      x-stoplight:
+        id: gmk1oc5jxy5hl
+    repeatTime:
+      type: number
+      title: repeatTime
+      description: '播放媒体流次数。该参数仅适用于点播流。可设为如下值：
+
+        - `1`：（默认）播放媒体流一次。
+
+        - `-1`：循环播放媒体流。
+
+        - `n`：自定义播放媒体流次数。整型，不可设置为 0。'
+      x-stoplight:
+        id: z1fxe4ihnblww
+    seekPosition:
+      type: number
+      title: seekPosition
+      description: 指定点播文件的播放位置（秒）。默认值为 0，表示从点播文件起始位置播放。必须小于音视频时长。
+      default: 0
+      x-stoplight:
+        id: 8tf0k27wm7z1a
+    dataStreamOptions:
+      type: object
+      title: dataStreamOptions
+      description: 数据流配置，用于展示当前 Cloud Player 对应的 UID 的点播流总时长，可以用来展示实时播放进度。
+      properties:
+        enable:
+          $ref: '#/components/schemas/enable'
+      x-stoplight:
+        id: akae79gnbion7
+    enable:
+      type: boolean
+      title: enable
+      description: "设置是否通过 Data stream 展示点播流总时长：\n- `true`：展示。\n- `false`：（默认）不展示。\n\n如果通过 Data stream 展示点播流总时长，发出的 Data stream 需要使用 Protobuf 解析，而不能用 ASCII 码直接解析。\n\nProtobuf（全称 [Protocol Buffers](https://protobuf.dev/)）是由 Google 开发的一种高效的、跨语言的序列化数据格式。Protobuf 解析步骤如下：\n\n1. 将如下代码保存到一个 proto 文件中，例如 `PlayerMessage.proto`：\n\n    ```json\n    syntax = \"proto3\";\n\n    message PositionData {\n      int32 duration = 1;\n      int32 position = 2;\n      int32 uid = 3;\n    }\n    ```\n\n2. 使用 protoc 生成源代码\n3. 对接收到的数据进行反序列化"
+      default: false
+      x-stoplight:
+        id: ty90l2ntrtwf2
+    tempo:
+      type: number
+      title: tempo
+      description: '播放倍速，支持如下取值：
+
+        - 0.5
+
+        - 0.75
+
+        - 1.0（默认）
+
+        - 1.25
+
+        - 1.5
+
+        - 1.75
+
+        - 2.0'
+      format: float
+      default: 1
+      x-stoplight:
+        id: 8h59anecufgkt
+    uid-r:
+      type: number
+      title: uid
+      description: 云端播放器在声网频道内的用户 UID。
+      x-stoplight:
+        id: h2q0z5b0zvmw5
+    id-r:
+      type: string
+      title: id
+      description: 云端播放器的 ID。它是声网服务器生成的一个 UUID（通用唯一识别码），标识已创建的一个云端播放器。
+      x-stoplight:
+        id: fmv3ir1s1du2c
+    createTs-r:
+      type: number
+      title: createTs
+      description: 云端播放器创建的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: ri01njytox1nw
+    status-r:
+      type: string
+      title: status
+      description: '云端播放器的运行状态：
+
+        - `"idle"`：播放未开始。
+
+        - `"connecting"`：声网服务器正在连接媒体流地址或正在探测音视频数据。
+
+        - `"running"`：正在播放。
+
+        - `"failed"`：声网服务器无法连接媒体流地址或该媒体流无法播放。'
+      x-stoplight:
+        id: s4g63ae463rlg
+    fields-r:
+      type: string
+      title: fields
+      description: JSON 编码方式的字段掩码，详见[谷歌 protobuf FieldMask 文档](https://googleapis.dev/nodejs/pubsub/latest/google.protobuf.html#.FieldMask)。用于指定返回 `players` 数组中每个 player 中的字段子集。在使用 `uid` 的示例中，`fields` 指定声网服务器返回 `players` 数组中每个 player 中的 `name`,`streamUrl`,`channelName`,`uid`,`id`,`createTs` 和 `status` 字段子集。
+      x-stoplight:
+        id: j48p1wwt6lqhq
+    isPause:
+      type: boolean
+      title: isPause
+      description: '是否暂停播放媒体流源文件：
+
+        - `true`：暂停播放媒体流源文件。
+
+        - `false`：（默认）播放媒体流源文件。
+
+        > 在暂停状态下，不会触发 `idelTimeout` 倒计时销毁播放器，因此暂停时也会正常计费。如果不再需要输入在线媒体流，可直接调用[销毁云端播放器](delete)结束播放任务，不要停留在暂停状态，否则会一直产生费用。'
+      default: false
+      x-stoplight:
+        id: i67jtefedndnc
+    totalSize-r:
+      type: number
+      title: totalSize
+      description: 符合查询条件的云端播放器数量。
+      x-stoplight:
+        id: o8hvvkxp1w5oi
+    name-r:
+      type: string
+      title: name
+      description: 云端播放器的名字。
+      x-stoplight:
+        id: 701hceazjtp6c
+    streamUrl-r:
+      type: string
+      title: streamUrl
+      description: 在线媒体流 URL 地址。
+      x-stoplight:
+        id: clndy284hpg9f
+    channelName-r:
+      type: string
+      title: channelName
+      description: 声网频道名称。
+      x-stoplight:
+        id: 2d5i0t1fhre6b
+    account-r:
+      type: string
+      title: account
+      description: 云端播放器在声网频道内的用户 Account。
+      x-stoplight:
+        id: rqra9xn44uwjy
+    nextPageToken-r:
+      type: string
+      title: nextPageToken
+      description: 本次查询页面的**下一页页码**，方便用户下一次调用 `List` 方法继续查询。如果返回的该字段为空字符串，则本次请求已查询到最后一页。
+      x-stoplight:
+        id: nzo1papb2g3k5
+    message-r:
+      type: string
+      title: message
+      description: 描述请求失败的具体原因。
+      x-stoplight:
+        id: ws92ycv7k74dv
+security:
+- Basic Auth: []

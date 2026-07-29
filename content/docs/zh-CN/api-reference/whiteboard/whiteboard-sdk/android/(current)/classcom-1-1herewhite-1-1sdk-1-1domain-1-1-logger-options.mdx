@@ -1,0 +1,245 @@
+---
+title: com.herewhite.sdk.domain.LoggerOptions类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.domain.LoggerOptions类 参考 图示".
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/whiteboard/android/deprecated.html#_deprecated000007 as local text.
+---
+
+类 com.herewhite.sdk.domain.LoggerOptions 继承关系图:
+
+![com.herewhite.sdk.domain.LoggerOptions类 参考 图示](/img/api-center-generated/c4093db11ead-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_logger_options.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+输出日志选项。
+
+## 成员函数说明
+
+<a id="af09e1868436ced86f5ddc6d5ba8b60aa"></a>
+
+### getDisableReportLog()
+
+<ApiSignature>
+
+Boolean com.herewhite.sdk.domain.LoggerOptions.getDisableReportLog()
+
+</ApiSignature>
+
+获取是否关闭日志上报。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+是否关闭日志上报：
+
+- `true`：关闭。
+- `false`：开启。
+
+<a id="a4a9491c143ef2892dbe257e84db17d34"></a>
+
+### setDisableReportLog()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.LoggerOptions.setDisableReportLog(Boolean *disableReportLog*)
+
+</ApiSignature>
+
+开启/关闭日志上报。
+
+<a id="弃用"></a>
+
+:::error[弃用:]
+该方法已废弃。请使用 [`getReportDebugLogMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options#a143b6ad44528e0b5b31e37aa1882871d)、 [`getReportQualityMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options#a659d34d959e73afd931c0580e9c5a149) 和 [`getReportLevelMask`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options#a91862659e1634e21adb0a07734378f28)。
+:::
+
+<ParameterList title="参数">
+<Parameter name="disableReportLog">
+
+是否关闭日志上报；
+
+- `true`：关闭。
+- `false`：（默认）开启日志上报。
+
+</Parameter>
+</ParameterList>
+
+<a id="a0ed013795410c184ac5cdd3742493bfa"></a>
+
+### getPrintLevelMask()
+
+<ApiSignature>
+
+[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level) com.herewhite.sdk.domain.LoggerOptions.getPrintLevelMask()
+
+</ApiSignature>
+
+获取日志打印等级。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+日志打印等级。详见 [`Level`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level)。
+
+<a id="a803997680fcec6a36ac3f75d2f668f90"></a>
+
+### setPrintLevelMask()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.LoggerOptions.setPrintLevelMask([Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level) *printLevelMask*)
+
+</ApiSignature>
+
+设置日志打印等级。
+
+:::info[自从]
+2.11.10
+:::
+
+<ParameterList title="参数">
+<Parameter name="printLevelMask">
+
+日志打印等级，详见 [`Level`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level)。默认等级为 `info`。
+
+</Parameter>
+</ParameterList>
+
+<a id="a91862659e1634e21adb0a07734378f28"></a>
+
+### getReportLevelMask()
+
+<ApiSignature>
+
+[Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level) com.herewhite.sdk.domain.LoggerOptions.getReportLevelMask()
+
+</ApiSignature>
+
+获取 SDK 的日志上报等级。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+日志上报等级，详见 [`Level`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level)。
+
+<a id="aa6ded549dfb125f4d2c80c83df3e2470"></a>
+
+### setReportLevelMask()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.LoggerOptions.setReportLevelMask([Level](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level) *reportLevelMask*)
+
+</ApiSignature>
+
+设置 SDK 上报的日志等级。
+
+:::info[自从]
+2.11.10
+:::
+
+<ParameterList title="参数">
+<Parameter name="reportLevelMask">
+
+日志上报等级，详见 [`Level`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-level)。默认等级为 `info`。
+
+</Parameter>
+</ParameterList>
+
+<a id="a143b6ad44528e0b5b31e37aa1882871d"></a>
+
+### getReportDebugLogMode()
+
+<ApiSignature>
+
+[ReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode) com.herewhite.sdk.domain.LoggerOptions.getReportDebugLogMode()
+
+</ApiSignature>
+
+获取 SDK 上报日志信息的模式。
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+上报模式，详见 [`ReportMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode)。
+
+<a id="aeeb793170e811419825f334721fd6ec5"></a>
+
+### setReportDebugLogMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.LoggerOptions.setReportDebugLogMode([ReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode) *reportDebugLogMode*)
+
+</ApiSignature>
+
+设置 SDK 上报 `debug` 等级日志的模式。
+
+:::info[自从]
+2.11.10
+:::
+
+<ParameterList title="参数">
+<Parameter name="reportDebugLogMode">
+
+上报模式，详见 [`ReportMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode)。默认为总是上报。
+
+</Parameter>
+</ParameterList>
+
+<a id="a659d34d959e73afd931c0580e9c5a149"></a>
+
+### getReportQualityMode()
+
+<ApiSignature>
+
+[ReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode) com.herewhite.sdk.domain.LoggerOptions.getReportQualityMode()
+
+</ApiSignature>
+
+获取 SDK 上报连接质量数据的模式。
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+SDK 上报连接质量数据的模式。
+
+<a id="abadf1a242ae59a08b4ef3ad2fa16e381"></a>
+
+### setReportQualityMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.LoggerOptions.setReportQualityMode([ReportMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode) *reportQualityMode*)
+
+</ApiSignature>
+
+设置 SDK 上报连接质量数据的模式。
+
+:::info[自从]
+2.11.10
+:::
+
+连接质量数据包括连接时长和连接稳定性等。
+
+<ParameterList title="参数">
+<Parameter name="reportQualityMode">
+
+上报模式，详见 [`ReportMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-logger-options-1-1-report-mode)。默认为总是上报。
+
+</Parameter>
+</ParameterList>

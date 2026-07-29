@@ -1,0 +1,65 @@
+---
+title: FFocalLengthInfo
+description: 摄像头支持的焦距信息，包含摄像头的方向以及焦距类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_focallengthinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_focallengthinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_focallengthinfo__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FFocalLengthInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FFocalLengthInfo")
+	int cameraDirection = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FFocalLengthInfo")
+	ECAMERA_FOCAL_LENGTH_TYPE focalLengthType = ECAMERA_FOCAL_LENGTH_TYPE::CAMERA_FOCAL_LENGTH_DEFAULT;
+	FFocalLengthInfo(){}
+	FFocalLengthInfo(const agora::rtc::FocalLengthInfo & AgoraData){
+		cameraDirection = AgoraData.cameraDirection;
+		focalLengthType = static_cast<ECAMERA_FOCAL_LENGTH_TYPE>(AgoraData.focalLengthType);
+	}
+	agora::rtc::FocalLengthInfo CreateAgoraData() const {
+		agora::rtc::FocalLengthInfo AgoraData;
+		AgoraData.cameraDirection = cameraDirection;
+		AgoraData.focalLengthType = static_cast<agora::rtc::CAMERA_FOCAL_LENGTH_TYPE>(focalLengthType);
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::FocalLengthInfo& AgoraData) const {
+	}
+};
+```
+
+<a id="class_focallengthinfo__detailed_desc"></a>
+
+### 详情
+
+:::caution
+注意： 仅适用于 Android 和 iOS。
+:::
+
+<a id="class_focallengthinfo__parameters"></a>
+
+## 参数
+
+<ParameterList>
+<a id="cameradirection"></a>
+<Parameter name="cameraDirection">
+
+摄像头方向。详见 [ECAMERA_DIRECTION](/zh-CN/api-reference/rtc/unreal-blueprint/enum-cameradirection)。
+
+</Parameter>
+<a id="focallengthtype"></a>
+<Parameter name="focalLengthType">
+
+焦距类型。详见 [ECAMERA_FOCAL_LENGTH_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-camerafocallengthtype)。
+
+</Parameter>
+</ParameterList>

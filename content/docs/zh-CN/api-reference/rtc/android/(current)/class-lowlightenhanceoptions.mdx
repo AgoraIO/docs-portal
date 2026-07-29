@@ -1,0 +1,79 @@
+---
+title: LowLightEnhanceOptions
+description: 用于配置弱光增强功能。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_lowlightenhanceoptions
+  sourcePath: html-docs/rtc/Android/API/class_lowlightenhanceoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lowlightenhanceoptions__prototype"></a>
+
+```text
+public class LowLightEnhanceOptions {
+  public static final int LOW_LIGHT_ENHANCE_AUTO = 0;
+  public static final int LOW_LIGHT_ENHANCE_MANUAL = 1;
+  public static final int LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY = 0;
+  public static final int LOW_LIGHT_ENHANCE_LEVEL_FAST = 1;
+  public int lowlightEnhanceMode;
+  public int lowlightEnhanceLevel;
+}
+```
+
+<a id="class_lowlightenhanceoptions__detailed_desc"></a>
+
+:::info[自从]
+自 v3.6.2 版本新增。
+:::
+
+<a id="class_lowlightenhanceoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="low_light_enhance_auto"></a>
+<Parameter name="LOW_LIGHT_ENHANCE_AUTO">
+
+`0`：（默认）自动模式。SDK 会根据环境光线自动启用或关闭弱光增强功能，以补偿亮度或防止过曝。
+
+</Parameter>
+<a id="low_light_enhance_manual"></a>
+<Parameter name="LOW_LIGHT_ENHANCE_MANUAL">
+
+`1`：手动模式。你需要手动启用或关闭弱光增强功能。
+
+</Parameter>
+<a id="low_light_enhance_level_high_quality"></a>
+<Parameter name="LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY">
+
+`0`：（默认）优先保证弱光增强期间的视频质量。处理图像的亮度、细节和噪声，性能开销适中，处理速度适中，整体画质最佳。
+
+</Parameter>
+<a id="low_light_enhance_level_fast"></a>
+<Parameter name="LOW_LIGHT_ENHANCE_LEVEL_FAST">
+
+`1`：优先保证弱光增强期间的性能。处理图像的亮度和细节，处理速度更快。
+
+</Parameter>
+<a id="lowlightenhancemode"></a>
+<Parameter name="lowlightEnhanceMode">
+
+弱光增强的工作模式。
+
+- `LOW_LIGHT_ENHANCE_AUTO (0)`：（默认）自动模式。SDK 会根据环境光线自动启用或关闭弱光增强功能，以补偿亮度或防止过曝。
+- `LOW_LIGHT_ENHANCE_MANUAL (1)`：手动模式。你需要手动启用或关闭弱光增强功能。
+
+</Parameter>
+<a id="lowlightenhancelevel"></a>
+<Parameter name="lowlightEnhanceLevel">
+
+弱光增强的强度等级。
+
+- `LOW_LIGHT_ENHANCE_LEVEL_HIGH_QUALITY (0)`：（默认）优先保证弱光增强期间的视频质量。处理亮度、细节及噪声，性能开销适中，处理速度适中，整体画质最佳。
+- `LOW_LIGHT_ENHANCE_LEVEL_FAST (1)`：优先保证弱光增强期间的性能。处理亮度和细节，处理速度更快。
+
+</Parameter>
+</ParameterList>

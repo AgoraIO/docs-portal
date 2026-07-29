@@ -1,0 +1,232 @@
+---
+title: com.herewhite.sdk.CommonCallback接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/interfacecom_1_1herewhite_1_1sdk_1_1_common_callback
+  sourcePath: html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.png has no meaningful
+        alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.CommonCallback接口 参考 图示".
+---
+
+类 com.herewhite.sdk.CommonCallback 继承关系图:
+
+![com.herewhite.sdk.CommonCallback接口 参考 图示](/img/api-center-generated/b3b5af5f6e2e-interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`CommonCallback`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback)，用于 SDK 向 app 发送回调事件通知。
+
+实时房间和回放房间都可以继承该接口下的回调方法。
+
+:::info[自从]
+2.9.13
+:::
+
+## 成员函数说明
+
+<a id="a721b4489c52b2740f233a1742f555916"></a>
+
+### throwError()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.throwError(Object *args*)
+
+</ApiSignature>
+
+SDK 出现未捕获的全局错误回调。
+
+<ParameterList title="参数">
+<Parameter name="args">
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#aaceb1faaeaa59ec93dce1c88bcd8e7f6) 内被实现.
+
+<a id="a28839222c6e4b44a001da833300991d4"></a>
+
+### urlInterrupter()
+
+<ApiSignature>
+
+default String com.herewhite.sdk.CommonCallback.urlInterrupter(String *sourceUrl*)
+
+</ApiSignature>
+
+图片拦截回调。
+
+:::info[自从]
+2.9.14
+:::
+
+该回调默认禁用。你可以在初始化白板 SDK 时，通过 [`setEnableInterrupterAPI`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa2e118f6e449997fbd487a5d5357745b)(true) 方法开启。
+
+开启后，在白板中插入图片时，SDK 会触发该回调，报告图片的原 URL 地址。你可以在该回调中将原 URL 地址替换成指定的 URL 地址。
+
+:::info[注解]
+开启后，SDK 会频繁触发该回调，因此 Agora 不推荐开启该回调；在 Android 平台，你可以使用 WebView 的拦截功能进行图片拦截。
+:::
+
+<ParameterList title="参数">
+<Parameter name="sourceUrl">
+
+原 URL 地址。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+替换后的图片地址。请确保在返回值中进行传参。
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a1a80dee592bc7f609526d317506bc563) 内被实现.
+
+<a id="a695dc7abd40851cd0ffe0e573566e8f1"></a>
+
+### onPPTMediaPlay()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.onPPTMediaPlay()
+
+</ApiSignature>
+
+播放动态 PPT 中的音视频回调。
+
+:::info[自从]
+2.9.13
+:::
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a21ecfcd612e98811d2a9adfc20c6564b) 内被实现.
+
+<a id="a9967d9cd3eb16c0db3024f7a6a8c7d64"></a>
+
+### onPPTMediaPause()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.onPPTMediaPause()
+
+</ApiSignature>
+
+暂停播放动态 PPT 中的音视频回调。
+
+:::info[自从]
+2.9.13
+:::
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a104dc982d2a8267f3d7f63e1692bc8c9) 内被实现.
+
+<a id="a2a843f00164c64d248143d2194beecae"></a>
+
+### onMessage()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.onMessage(JSONObject *object*)
+
+</ApiSignature>
+
+接收到网页发送的消息回调。
+
+:::info[自从]
+2.11.4
+:::
+
+当本地用户收到了网页（如 iframe 插件、动态 PPT）发送的消息时会触发该回调。
+
+:::info[注解]
+不保证所有用户都能接收到该回调。
+:::
+
+<ParameterList title="参数">
+<Parameter name="object">
+
+JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收到。
+
+</Parameter>
+</ParameterList>
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a569de82a2548a7fb84c80845cae67767) 内被实现.
+
+<a id="a0a988489c8559923f178eef3ba322704"></a>
+
+### sdkSetupFail()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.sdkSetupFail(SDKError *error*)
+
+</ApiSignature>
+
+SDK 初始化失败回调。
+
+:::info[自从]
+2.9.14
+:::
+
+如果 SDK 初始化失败，调用加入实时房间或回放房间时会处于一直无响应状态，需要重新初始化 SDK。 SDK 初始化失败可能由以下原因导致：
+
+- 初始化 SDK 时候，网络异常，导致获取配置信息失败。
+- 传入了不合法的 App Identifier。
+
+<ParameterList title="参数">
+<Parameter name="error">
+
+错误信息。
+
+</Parameter>
+</ParameterList>
+
+在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#abbcf9b3946c0bf5ff20f1d3ba9cebdce) 内被实现.
+
+<a id="a9ccc2cfa4bf7288dd894347454eaead7"></a>
+
+### onLogger()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.CommonCallback.onLogger(JSONObject *object*)
+
+</ApiSignature>
+
+获取 SDK 输出的本地调试日志。
+
+:::info[自从]
+2.13.22
+:::
+
+成功调用 [`setLog`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#af29676180672f3e54d050d591707312c)(true) 后，SDK 会触发该回调，向你发送本地调试日志。
+
+如果你需要关闭该回调，可以设置 `setLog(false)`。
+
+:::info[注解]
+设置 `setLog(false)` 后，SDK 会停止通过 `onLogger` 回调发送本地调试日志，但仍然会通过该回调发送 [`video-js-plugin`](https://www.npmjs.com/package/@netless/video-js-plugin) 插件的日志信息。
+:::
+
+<ParameterList title="参数">
+<Parameter name="object">
+
+JSON 对象格式的日志消息，每条日志消息包含以下 key：
+
+- `funName`：功能名称。
+- `params`：具体的参数设置。
+
+</Parameter>
+</ParameterList>
+
+例如，`{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。

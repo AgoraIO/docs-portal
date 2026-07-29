@@ -1,0 +1,146 @@
+---
+title: MediaSource
+description: 需播放的媒体文件的相关信息及播放设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_mediasource
+  sourcePath: html-docs/rtc/Flutter/API/class_mediasource.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_mediasource__prototype"></a>
+
+```text
+class MediaSource {
+  const MediaSource(
+      {this.url,
+      this.uri,
+      this.startPos,
+      this.autoPlay,
+      this.enableCache,
+      this.isAgoraSource,
+      this.isLiveSource});
+
+  @JsonKey(name: 'url')
+  final String? url;
+
+  @JsonKey(name: 'uri')
+  final String? uri;
+
+  @JsonKey(name: 'startPos')
+  final int? startPos;
+
+  @JsonKey(name: 'autoPlay')
+  final bool? autoPlay;
+
+  @JsonKey(name: 'enableCache')
+  final bool? enableCache;
+
+  @JsonKey(name: 'isAgoraSource')
+  final bool? isAgoraSource;
+
+  @JsonKey(name: 'isLiveSource')
+  final bool? isLiveSource;
+
+  factory MediaSource.fromJson(Map<String, dynamic> json) =>
+      _$MediaSourceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MediaSourceToJson(this);
+}
+```
+
+<a id="class_mediasource__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
+
+需要播放的媒体资源的 URL。
+
+</Parameter>
+<a id="uri"></a>
+<Parameter name="uri">
+
+媒体文件的 URI（Uniform Resource Identifier），可用于标识媒体文件。
+
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
+
+设置起始播放位置 (毫秒)，默认值为 0。
+
+</Parameter>
+<a id="autoplay"></a>
+<Parameter name="autoPlay">
+
+:::note
+注： 如果你设置关闭自动播放，打开媒体文件后，请调用 [play](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_play) 方法来播放媒体文件。
+:::
+
+打开媒体文件后，是否开启自动播放：
+
+- true：（默认）开启自动播放。
+- false：关闭自动播放。
+
+</Parameter>
+<a id="enablecache"></a>
+<Parameter name="enableCache">
+
+:::note
+注：
+
+- SDK 目前仅支持缓存点播流，但不支持缓存通过 HLS 协议传输的点播流。
+- 缓存前，请向 `uri` 传值，否则播放器会以媒体文件的 `url` 作为缓存索引。
+- 开启实时缓存后，播放器会预先缓存当前正在播放的媒体文件的部分数据到本地，当你下次播放该文件时播放器会直接从缓存中加载数据，可节省网络流量。当前缓存的媒体文件的相关统计数据会在媒体文件开始播放后每秒更新一次，详见 [CacheStatistics](/zh-CN/api-reference/rtc/flutter/class-cachestatistics)。
+:::
+
+此次播放是否开启实时缓存功能：
+
+- true：开启实时缓存。
+- false：（默认）关闭实时缓存。
+
+</Parameter>
+<a id="enablemultiaudiotrack"></a>
+<Parameter name="enableMultiAudioTrack">
+
+此次播放是否允许选择不同音轨：
+
+- true：允许选择不同音轨。
+- false：（默认）不允许选择不同音轨。
+
+如果你在本地播放和发布音频至远端时，需要设置不同的音轨，你需要将该参数设为 true，然后再调用 [selectMultiAudioTrack](/zh-CN/api-reference/rtc/flutter/play/audio-mixing#api_imediaplayer_selectmultiaudiotrack) 方法来设置音轨。
+
+</Parameter>
+<a id="isagorasource"></a>
+<Parameter name="isAgoraSource">
+
+:::note
+注： 如果你需要打开的媒体资源为声网融合 CDN 分发的直播流或点播流，请向 `url` 传入直播或点播流的 URL 并将 `isAgoraSource` 设置为 true，否则无需设置 `isAgoraSource`。
+:::
+
+打开的媒体资源是否为通过声网融合 CDN 分发的直播或点播流：
+
+- true：打开的媒体资源是声网融合 CDN 分发的直播或点播流。
+- false：（默认）打开的媒体资源不是声网融合 CDN 分发的直播或点播流。
+
+</Parameter>
+<a id="islivesource"></a>
+<Parameter name="isLiveSource">
+
+:::note
+注： 仅当打开的媒体资源为直播流时，将 `isLiveSource` 设置为 true 后才可加快媒体资源的打开速度。
+:::
+
+打开的媒体资源是否为直播流：
+
+- true：直播流。
+- false：（默认）非直播流。
+
+如果你打开的媒体资源为直播流，建议你将该参数设置为 true，可加快打开直播流的速度。
+
+</Parameter>
+</ParameterList>

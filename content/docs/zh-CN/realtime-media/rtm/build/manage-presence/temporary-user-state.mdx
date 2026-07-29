@@ -1,0 +1,435 @@
+---
+title: "临时用户状态"
+description: "了解如何在实时消息 RTM 中临时用户状态，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+你可以在每个频道中为自己设置自定义的临时状态信息，并以事件通知的方式通知频道中其他的在线用户。此功能在需要用户状态提示的场景中非常有用，例如可以实时同步用户的麦位状态、心情、个性签名、得分、消息输入状态等。
+
+RTM 不会永久保存临时状态数据。当用户取消订阅频道、掉线超时或退出频道时，该数据会被删除。如果你想长久保存此数据，你可以使用 RTM 的 User Metadata 功能。
+
+当用户临时状态发生变更时，RTM 会实时触发 `enumv.presencetypechange` 事件通知，加入频道时设置了 `features = AgoraRtmJoinChannelFeaturePresence``withPresence = true` 的用户会收到事件通知。
+
+## 设置临时用户状态
+
+Presence 功能只能为当前用户设置临时用户状态。你可以在订阅或加入频道之前设置状态，但此时数据只是被缓存在客户端，并不会生效。当你订阅或加入指定频道后，数据会立即生效，并触发相应的事件通知。`presence.setstate` 方法对于 Message Channel 和 Stream Channel 都适用，你需要使用 `channelType` 参数进行区分。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-temporary-user-state-1" showLineNumbers
+StateItem[] myStates = new StateItem[]
+{
+    new StateItem("Mode","Happy"),
+    new StateItem("Mic","False"),
+    new StateItem("Score","100"),
+};
+var (status,response) = await rtmClient.GetPresence().SetStateAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, myStates);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed!", status.Operation));
+    Debug.Log(string.Format("Error code : {0}", status.ErrorCode));
+    Debug.Log(string.Format("Due to: {0}", status.Reason));
+}
+else
+{
+    Debug.Log("Set State Success!");
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-temporary-user-state-1"
+const channelName = "test_channel";
+const channelType = "MESSAGE";
+const states = {
+    "Mode": "Happy",
+    "Mic": "False",
+};
+try {
+    const result = await rtmClient.presence.setState(channelName, channelType, states);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-presence-temporary-user-state-1"
+HashMap<String, String> items = new HashMap<String, String>();
+items.put("Mode", "Happy");
+items.put("Mic", "False");
+mRtmClient.getPresence().setState("channel_name", RtmChannelType.MESSAGE, items, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "set state success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-temporary-user-state-1"
+let states: [String: String] = ["key1": "value1", "key2": "value2"]
+
+rtm.getPresence()?.setState(channelName: "your_channel", channelType: .message, items: states) { response, errorInfo in
+    if errorInfo == nil {
+        print("setState success!!")
+    } else {
+        print("setState failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-temporary-user-state-1"
+NSDictionary *states = @{@"key1": @"value1", @"key2": @"value2"};
+
+[[rtm getPresence] setState:@"your_channel" channelType:AgoraRtmChannelTypeMessage items:states completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setState success!!");
+    } else {
+        NSLog(@"setState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-1"
+std::vector<StateItem> items;
+StateItem item;
+item.key = "Mode";
+item.value = "Happy";
+items.emplace_back(item);
+
+uint64_t requestId;
+rtm_client->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_MESSAGE, items.data(), items.size(), requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpresencesetstateresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-2"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPresenceSetStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SetState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SetState success\n");
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-temporary-user-state-2"
+var states = {
+    'Mode': 'Happy',
+    'Mic': 'False',
+};
+final channelName = 'chat_room';
+try {
+    var (status,response) = await rtmClient.getPresence.setState(
+        channelName,
+        RtmChannelType.message,
+        states);
+    if (status == true){
+        print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
+    } esle {
+        print('set states success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-temporary-user-state-2"
+import { RtmChannelType, StateItem } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const states: StateItem[] = [
+  { key: "Mode", value: "Happy" },
+  { key: "Mic", value: "False" }
+];
+
+try {
+  await rtmClient.presence.setState(channelName, RtmChannelType.MESSAGE, states);
+  console.log("User state set successfully");
+} catch (error) {
+  console.error("setState failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`setState failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+使用 `presence.setstate` 方法设置临时用户状态时，如果指定的键已经存在，则该键的值会被新值覆盖。如果指定的键不存在，则会新增一个键/值对。
+
+## 获取临时用户状态
+
+你可能需要获取某个用户在指定频道中设置的临时用户状态。当你作为 App 管理员时，此功能就显得非常有用。此时，你可以使用 `presence.getstate` 方法来实现。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-temporary-user-state-3" showLineNumbers
+var (status,response) = await rtmClient.GetPresence().GetStateAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "Tony");
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed!}", status.Operation));
+    Debug.Log(string.Format("Error code : {0}", status.ErrorCode));
+    Debug.Log(string.Format("Due to: {0}", status.Reason));
+}
+else
+{
+    var userState = response.State;
+    Debug.Log(string.Format("User:{0}, have stateCount:{1} states",userState.userId, userState.statesCount));
+    foreach(StateItem stateItem in userstate.states)
+    {
+        Debug.Log(string.Format("State Key: {0}, State Value:{1}", stateItem.key,stateItem.value));
+    }
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-temporary-user-state-3"
+const channelName = "Chat_room";
+const channelType = "MESSAGE";
+const userId = "Tony";
+try {
+    const result = await rtmClient.presence.getState(userId, channelName, channelType);
+    const { states, userId, statesCount } = result; // Tony 的临时状态
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-presence-temporary-user-state-3"
+String userId = "Tony";
+mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, new ResultCallback<UserState>() {
+    @Override
+    public void onSuccess(UserState state) {
+        log(CALLBACK, "get users(" + state.getUserId() + ") state success, " + state.toString());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-temporary-user-state-3"
+rtm.getPresence()?.getState(channelName: "Chat_room", channelType: .message, userId: "userid") { response, errorInfo in
+    if errorInfo == nil {
+        print("getState success!!")
+
+        if let state = response?.state {
+            // process state
+        }
+    } else {
+        print("getState failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-temporary-user-state-3"
+[[rtm getPresence] getState:@"Chat_room" channelType:AgoraRtmChannelTypeMessage userId:@"userid" completion:^(AgoraRtmPresenceGetStateResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getState success!!");
+        AgoraRtmUserState* state = response.state;
+    } else {
+        NSLog(@"getState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-3"
+uint64_t requestId;
+rtm_client->getPresence()->getState("channelName", RTM_CHANNEL_TYPE_MESSAGE, "tony", requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpresencegetstateresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-4"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPresenceGetStateResult(const uint64_t requestId, const UserState &state, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("GetState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("GetState user id: %s success\n", state.userId);
+            for (int i = 0; i < state.statesCount; i++) {
+                printf("key: %s, value: %s\n", state.states[i].key, state.states[i].value);
+            }
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-temporary-user-state-4"
+final channelName = 'chat_room';
+try {
+    var (status,response) = await rtmClient.getPresence.getState(
+        channelName,
+        RtmChannelType.message,
+        'Tony');
+    if (status == true){
+        print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
+    } esle {
+        var userState = response.state;
+        print('States for ${userState.userId}: ${userState.states}');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-temporary-user-state-4"
+import { RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const userId = "Tony";
+
+try {
+  const result = await rtmClient.presence.getState(channelName, RtmChannelType.MESSAGE, userId);
+  console.log(`User: ${result.userState.userId}`);
+  
+  result.userState.states.forEach(state => {
+    console.log(`${state.key}: ${state.value}`);
+  });
+} catch (error) {
+  console.error("getState failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`getState failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+使用 `presence.getstate` 方法可以获取频道中其他在线用户的临时状态数据，如果用户不在当前的频道（退出频道或掉线超时），则返错误提示 `code.usernotexist`。
+
+## 删除临时用户状态
+
+每个用户在一个频道中至多可以设置 32 个键/值对。对于不再需要的键/值对，调用 `presence.removestate` 方法并提供键的列表即可删除。`presence.removestate` 方法只能删除当前用户的临时用户状态数据。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+string[] keys = new string[] { "mode","Score" };
+var (status,response) = await rtmClient.GetPresence().RemoveStateAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, keys);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed!}", status.Operation));
+    Debug.Log(string.Format("Error code : {0}", status.ErrorCode));
+    Debug.Log(string.Format("Due to: {0}", status.Reason));
+}
+else
+{
+    Debug.Log("Remove State Success!");
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+const channelName = "Chat_room";
+const channelType = "MESSAGE";
+const removeKeys = ["Mode", "Mic"];
+const options = {
+    states: removeKeys,
+}
+try {
+    const result = await rtmClient.presence.removeState(channelName, channelType, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+ArrayList<String> keys = new ArrayList<>(Arrays.asList("Mode", "Mic"));
+mRtmClient.getPresence().removeState("Chat_room", RtmChannelType.MESSAGE, keys, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "remove state success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+let keys: [String] = ["key1", "key2"]
+
+rtm.getPresence()?.removeState("your_channel", channelType: .message, keys: keys) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeState success!!")
+    } else {
+        print("removeState failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+ NSArray<NSString*>* keys = @[@"key1", @"key2"];
+[[rtm getPresence] removeState:@"your_channel" channelType:AgoraRtmChannelTypeMessage keys:keys completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"removeState success!!");
+    } else {
+        NSLog(@"removeState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-5"
+std::vector<const char*> keys;
+keys.push_back("Mode");
+keys.push_back("Mic");
+
+uint64_t requestId;
+rtmClient->getPresence()->removeState("channelName", RTM_CHANNEL_TYPE_MESSAGE, keys.data(), keys.size(), requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpresenceremovestateresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-presence-temporary-user-state-6"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+void onPresenceRemoveStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+    if (errorCode != RTM_ERROR_OK) {
+        printf("RemoveState failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+    } else {
+        printf("RemoveState success\n");
+    }
+}
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-presence-temporary-user-state-6"
+final channelName = 'chat_room';
+final states = ['Mode','Mic'];
+try {
+    var (status,response) = await rtmClient.getPresence.removeState(
+        channelName,
+        RtmChannelType.message,
+        states: states);
+    if (status == true){
+        print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
+    } esle {
+        var userState = response.state;
+        print('remove states success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-temporary-user-state-6"
+import { RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const keys = ["Mode", "Mic"];
+
+try {
+  await rtmClient.presence.removeState(channelName, RtmChannelType.MESSAGE, keys);
+  console.log("States removed successfully");
+} catch (error) {
+  console.error("removeState failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`removeState failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+`presence.setstate` 方法和 `presence.removestate` 方法都会触发 `enumv.presencetypechange` 事件通知，加入频道时设置了 `features = AgoraRtmJoinChannelFeaturePresence``withPresence = true` 的用户会收到事件通知，其中包含了当前用户临时状态的全量数据。

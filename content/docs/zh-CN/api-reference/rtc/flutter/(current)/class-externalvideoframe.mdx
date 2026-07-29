@@ -1,0 +1,276 @@
+---
+title: ExternalVideoFrame
+description: 外部视频帧。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_externalvideoframe
+  sourcePath: html-docs/rtc/Flutter/API/class_externalvideoframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_externalvideoframe__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class ExternalVideoFrame {
+  const ExternalVideoFrame(
+      {this.type,
+      this.format,
+      this.buffer,
+      this.stride,
+      this.height,
+      this.cropLeft,
+      this.cropTop,
+      this.cropRight,
+      this.cropBottom,
+      this.rotation,
+      this.timestamp,
+      this.eglType,
+      this.textureId,
+      this.matrix,
+      this.metadataBuffer,
+      this.metadataSize,
+      this.alphaBuffer,
+      this.fillAlphaBuffer,
+      this.alphaStitchMode,
+      this.d3d11Texture2d,
+      this.textureSliceIndex,
+      this.colorSpace});
+
+  @JsonKey(name: 'type')
+  final VideoBufferType? type;
+
+  @JsonKey(name: 'format')
+  final VideoPixelFormat? format;
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+
+  @JsonKey(name: 'stride')
+  final int? stride;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'cropLeft')
+  final int? cropLeft;
+
+  @JsonKey(name: 'cropTop')
+  final int? cropTop;
+
+  @JsonKey(name: 'cropRight')
+  final int? cropRight;
+
+  @JsonKey(name: 'cropBottom')
+  final int? cropBottom;
+
+  @JsonKey(name: 'rotation')
+  final int? rotation;
+
+  @JsonKey(name: 'timestamp')
+  final int? timestamp;
+
+  @JsonKey(name: 'eglType')
+  final EglContextType? eglType;
+
+  @JsonKey(name: 'textureId')
+  final int? textureId;
+
+  @JsonKey(name: 'matrix')
+  final List<double>? matrix;
+
+  @JsonKey(name: 'metadataBuffer', ignore: true)
+  final Uint8List? metadataBuffer;
+
+  @JsonKey(name: 'metadataSize')
+  final int? metadataSize;
+
+  @JsonKey(name: 'alphaBuffer', ignore: true)
+  final Uint8List? alphaBuffer;
+
+  @JsonKey(name: 'fillAlphaBuffer')
+  final bool? fillAlphaBuffer;
+
+  @JsonKey(name: 'alphaStitchMode')
+  final AlphaStitchMode? alphaStitchMode;
+
+  @JsonKey(name: 'd3d11Texture2d', readValue: readIntPtr)
+  final int? d3d11Texture2d;
+
+  @JsonKey(name: 'textureSliceIndex')
+  final int? textureSliceIndex;
+
+  @JsonKey(name: 'colorSpace')
+  final ColorSpace? colorSpace;
+
+  factory ExternalVideoFrame.fromJson(Map<String, dynamic> json) =>
+      _$ExternalVideoFrameFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ExternalVideoFrameToJson(this);
+}
+```
+
+<a id="class_externalvideoframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+视频类型。详见 [VideoBufferType](/zh-CN/api-reference/rtc/flutter/enum-videobuffertype)。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+像素格式。详见 [VideoPixelFormat](/zh-CN/api-reference/rtc/flutter/enum-videopixelformat)。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+视频缓冲区。
+
+</Parameter>
+<a id="stride"></a>
+<Parameter name="stride">
+
+传入视频帧的行间距，单位为像素而不是字节。对于 Texture，该值指的是 Texture 的宽度。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+传入视频帧的高度。
+
+</Parameter>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
+
+该参数仅适用于 Texture 格式的视频数据。
+
+- 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*) 时，需要将 eglContext 设置给这个字段。
+- 当使用 Android 定义的 OpenGL 接口 (android.opengl.*) 时，需要将 eglContext 设置给这个字段。
+
+</Parameter>
+<a id="egltype"></a>
+<Parameter name="eglType">
+
+该参数仅适用于 Texture 格式的视频数据。指该视频帧的 Texture ID。
+
+</Parameter>
+<a id="textureid"></a>
+<Parameter name="textureId">
+
+该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。
+
+</Parameter>
+<a id="matrix"></a>
+<Parameter name="matrix">
+
+该参数仅适用于 Texture 格式的视频数据。为一个输入的 4x4 变换矩阵，典型值为一个单位矩阵。
+
+</Parameter>
+<a id="metadatabuffer"></a>
+<Parameter name="metadataBuffer">
+
+该参数仅适用于 Texture 格式的视频数据。指 MetaData 的数据缓冲区，默认值为 `NULL`。
+
+</Parameter>
+<a id="metadatasize"></a>
+<Parameter name="metadataSize">
+
+该参数仅适用于 Texture 格式的视频数据。指 MetaData 的大小，默认值为 `0`。
+
+</Parameter>
+<a id="d3d11texture2d"></a>
+<Parameter name="d3d11Texture2d">
+
+该参数仅适用于 Windows Texture 格式的视频数据。表示一个指向 `ID3D11Texture2D` 类型对象的指针，该类型对象被视频帧所使用。
+
+</Parameter>
+<a id="alphabuffer"></a>
+<Parameter name="alphaBuffer">
+
+采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
+
+:::note
+注： 在自定义视频渲染场景下，需确保传入的视频帧和 `alphaBuffer` 均为 Full Range 类型；其他类型可能导致 Alpha 数据渲染不正常。
+:::
+
+</Parameter>
+<a id="fillalphabuffer"></a>
+<Parameter name="fillAlphaBuffer">
+
+:::note
+注： 对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
+
+- 通过将该参数设置为 true 自动填写。
+- 通过 `alphaBuffer` 参数设置。
+:::
+
+该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置是否提取视频帧中的 Alpha 通道数据并自动填入到 `alphaBuffer` 中：
+
+- true：提取并填充 Alpha 通道数据。
+- false：（默认）不提取填充 Alpha 通道数据。
+
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
+
+当视频帧中包含 Alpha 通道数据时，设置 `alphaBuffer` 和视频帧的相对位置。详见 [AlphaStitchMode](/zh-CN/api-reference/rtc/flutter/enum-alphastitchmode)。
+
+</Parameter>
+<a id="texturesliceindex"></a>
+<Parameter name="textureSliceIndex">
+
+该参数仅适用于 Windows Texture 格式的视频数据。表示在 `ID3D11Texture2D` 数组中，被视频帧使用的某一个 `ID3D11Texture2D` 纹理对象的索引。
+
+</Parameter>
+<a id="cropleft"></a>
+<Parameter name="cropLeft">
+
+该参数仅适用于原始视频数据。
+
+</Parameter>
+<a id="croptop"></a>
+<Parameter name="cropTop">
+
+该参数仅适用于原始视频数据。
+
+</Parameter>
+<a id="cropright"></a>
+<Parameter name="cropRight">
+
+该参数仅适用于原始视频数据。
+
+</Parameter>
+<a id="cropbottom"></a>
+<Parameter name="cropBottom">
+
+该参数仅适用于原始视频数据。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+原始数据相关字段。指定是否对传入的视频组做顺时针旋转操作，可选值为 0， 90， 180， 270。默认为 0。
+
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
+
+传入的视频帧的时间戳，以毫秒为单位。不正确的时间戳会导致丢帧或者音视频不同步。
+
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
+
+视频帧的色彩空间属性，默认情况下会应用 Full Range 和 BT.709 标准配置。你可以根据自定义采集、自定义渲染的业务需求进行自定义设置，详见 [VideoColorSpace](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,15 @@
+---
+title: "如何判断一个通话是语音通话还是视频通话？"
+---
+在实时音视频通话场景中，你可以通过声网 RTC SDK 判断一个即将开始或正在进行的通话是语音通话还是视频通话。
+
+## 通话中判断
+
+如果需要在通话中进行判断并将通话类型发送给接收端，请确保你的项目中已经集成了 RTC SDK。具体的集成文档请参考：
+
+- [实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)
+
+在通话中，接收端可以直接通过以下方法判断通话类型：
+
+- 如果收到了 [`onRemoteVideoStateChanged`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调，则可判断当前通话为视频通话。
+- 如果未收到 [`onRemoteVideoStateChanged`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调，且收到了 [`onRemoteAudioStateChanged`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) 回调，则可判断当前通话为音频通话。

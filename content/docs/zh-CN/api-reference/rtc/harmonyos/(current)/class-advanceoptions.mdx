@@ -1,0 +1,52 @@
+---
+title: AdvanceOptions
+description: 视频编码的高级选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_advanceoptions
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_advanceoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_advanceoptions__prototype"></a>
+
+```text
+export class AdvanceOptions {
+  public encodingPreference:EncodingPrefence = EncodingPrefence.PREFER_AUTO;
+  public compressionPreference:CompressionPrefence = CompressionPrefence.PREFER_LOW_LATENCY;
+  constructor() {
+  }
+}
+```
+
+<a id="class_advanceoptions__detailed_desc"></a>
+
+<a id="class_advanceoptions__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="encodingpreference"></a>
+<Parameter name="encodingPreference">
+
+视频编码器偏好。详见 [DegradationPreference](/zh-CN/api-reference/rtc/harmonyos/enum-encodingpreference)。
+
+</Parameter>
+<a id="compressionpreference"></a>
+<Parameter name="compressionPreference">
+
+视频编码的压缩偏好。详见 [CompressionPrefence](/zh-CN/api-reference/rtc/harmonyos/enum-compressionpreference)。
+
+</Parameter>
+<a id="encodealpha"></a>
+<Parameter name="encodeAlpha">
+
+当视频帧包含 Alpha 通道数据时，设置是否将 Alpha 数据编码并发送至远端：
+
+- `true`：对 Alpha 数据进行编码发送。
+- `false`：（默认）不对 Alpha 数据进行编码发送。
+
+</Parameter>
+</ParameterList>

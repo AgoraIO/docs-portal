@@ -1,0 +1,102 @@
+---
+title: AgoraVideoRenderingTracingInfo
+description: 视频帧渲染过程中的指标信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_videorenderingtracinginfo
+  sourcePath: html-docs/rtc/macOS/API/class_videorenderingtracinginfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videorenderingtracinginfo__prototype"></a>
+
+```text
+NS_SWIFT_NAME(AgoraVideoRenderingTracingInfo) __attribute__((visibility("default"))) @interface AgoraVideoRenderingTracingInfo : NSObject
+@property (assign, nonatomic) NSInteger elapsedTime NS_SWIFT_NAME(elapsedTime);
+@property (assign, nonatomic) NSInteger start2JoinChannel NS_SWIFT_NAME(start2JoinChannel);
+@property (assign, nonatomic) NSInteger join2JoinSuccess NS_SWIFT_NAME(join2JoinSuccess);
+@property (assign, nonatomic) NSInteger joinSuccess2RemoteJoined NS_SWIFT_NAME(joinSuccess2RemoteJoined);
+@property (assign, nonatomic) NSInteger remoteJoined2SetView NS_SWIFT_NAME(remoteJoined2SetView);
+@property (assign, nonatomic) NSInteger remoteJoined2UnmuteVideo NS_SWIFT_NAME(remoteJoined2UnmuteVideo);
+@property (assign, nonatomic) NSInteger remoteJoined2PacketReceived NS_SWIFT_NAME(remoteJoined2PacketReceived);
+@end
+```
+
+<a id="class_videorenderingtracinginfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到 SDK 触发 [rtcEngine\:videoRenderingTracingResultOfUid\:currentEvent\:tracingInfo:](/zh-CN/api-reference/rtc/macos/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔（毫秒）。
+
+</Parameter>
+<a id="start2joinchannel"></a>
+<Parameter name="start2JoinChannel">
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 `joinChannelByToken` 的时间间隔（毫秒）。如果该值为负数，表示在调用加入频道方法之后才调用了 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
+
+</Parameter>
+<a id="join2joinsuccess"></a>
+<Parameter name="join2JoinSuccess">
+
+从调用 `joinChannelByToken` 到成功加入频道的时间间隔（毫秒）。
+
+</Parameter>
+<a id="joinsuccess2remotejoined"></a>
+<Parameter name="joinSuccess2RemoteJoined">
+
+该值表示从本地用户成功加入频道到远端用户加入频道的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔，取决于调用时机。
+
+:::note
+注：
+
+- 如果本地用户在远端用户加入频道后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无意义。
+- 为减少远端用户首帧渲染时间，声网建议本地用户在远端用户已在频道中时再加入频道，以减小该值。
+:::
+
+</Parameter>
+<a id="remotejoined2setview"></a>
+<Parameter name="remoteJoined2SetView">
+
+该值表示从远端用户加入频道到本地用户设置远端视图的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔，取决于调用时机。
+
+:::note
+注：
+
+- 如果本地用户在设置远端视图后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。
+- 为减少远端用户首帧渲染时间，声网建议本地用户在远端用户加入频道前设置远端视图，或在远端用户加入频道后立即设置远端视图，以减小该值。
+:::
+
+</Parameter>
+<a id="remotejoined2unmutevideo"></a>
+<Parameter name="remoteJoined2UnmuteVideo">
+
+该值表示从远端用户加入频道到本地用户订阅远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔，取决于调用时机。
+
+:::note
+注：
+
+- 如果本地用户在订阅远端视频流后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。
+- 为减少远端用户首帧渲染时间，声网建议远端用户加入频道后，本地用户立即订阅远端视频流，以减小该值。
+:::
+
+</Parameter>
+<a id="remotejoined2packetreceived"></a>
+<Parameter name="remoteJoined2PacketReceived">
+
+该值表示从远端用户加入频道到本地用户接收到远端视频流的时间间隔（毫秒），或从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收远端视频流的时间间隔，取决于调用时机。
+
+:::note
+注：
+
+- 如果本地用户在接收远端视频流后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。
+- 为减少远端用户首帧渲染时间，声网建议远端用户在加入频道后立即发布视频流，本地用户也应立即订阅远端视频流，以减小该值。
+:::
+
+</Parameter>
+</ParameterList>

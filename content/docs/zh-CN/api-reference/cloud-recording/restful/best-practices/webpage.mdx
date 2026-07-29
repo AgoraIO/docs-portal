@@ -1,0 +1,130 @@
+---
+title: 保障页面录制可靠性
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/cloud-recording/restful/best-practices/webpage
+  sourcePath: docs/cloud-recording/best-practices/webpage.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 6 legacy MDX syntax signal(s).
+---
+
+页面录制场景下，网络异常等偶然因素可能会造成以下问题：
+
+- 无法正常访问待录制页面，如页面加载失败或时间过长，无法获知真正开始有效录制的时间点，可能会丢录重要内容。
+- 可以正常访问待录制页面，但未能正确加载页面中的 HTML 元素。
+- 录制过程中未能正常加载页面中发生变化的 HTML 元素，从而导致录制内容与预期不一致。
+- 未能正常播放待录制页面中的音视频。
+- 页面录制异常停止。
+- 网页使用的静态资源无法保证 100% 一次性加载成功。如加载失败，你需要自行检测并处理。
+
+为了确保页面录制的内容与预期一致，声网建议你按照以下方案来提高页面录制的可靠性。
+
+:::info[信息]
+使用该功能需要[开启消息通知服务](/zh-CN/api-reference/cloud-recording/restful/webhook/enable-ncs)，以便接收服务端事件回调。
+:::
+
+## 录制启动时的保障
+
+建议你通过如下步骤确认录制服务已成功启动：
+
+1. 每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。`acquire` 和 `start` 的请求需配对调用。Resource ID 在获取到的 5 分钟内有效，需尽快使用。超时需要重新申请 Resource ID。
+
+2. 确认 `start` 请求成功，即成功获得 `sid`（录制 ID）。如果 `start` 请求失败，需要根据状态码采取相应措施：
+   - 如果返回的 HTTP 状态码为 `40x`，则表示请求参数错误，需要进行排查。
+   - 如果返回的 HTTP 状态码为 `50x`，可使用相同的参数重试多次，直到成功返回 `sid` 为止。建议使用退避策略，如第一次等待 3 秒后重试、第二次等待 6 秒后重试、第三次等待 9 秒后重试，以免超过 QPS 限制导致失败。如果三次重试均失败，建议更换用户 ID，再次调用 `acquire`，获得新的 Resource ID，并用该 Resource ID 再次调用 `start` 方法。
+   - 如果收到错误码 `65`，需要使用相同的参数再次调用 `start`。建议使用退避策略重试两次，如第一次等待 3 秒后重试、第二次等待 6 秒后重试。
+3. 获得 `sid` 5 秒后，使用退避策略调用 `query` 方法，例如依次间隔 5 秒、10 秒、15 秒调用。如果 `query` 请求成功，且 `serverResponse` 中的 `status` 字段值为 `4` 或 `5`，则表示录制服务已成功启动。如果在获得 `sid` 90 秒后，`status` 仍非 `4` 或 `5`，则可以认为录制未启动或启动后超时退出。
+
+## 录制页面加载时的保障
+
+### 检测页面加载超时
+
+页面录制支持页面加载超时检测。开始页面录制后，你需要自行调用接口通知浏览器页面加载完成，实现以下功能：
+
+- 若在设定的时间内，浏览器收到页面加载完成的通知，则录制正常进行。
+- 若在设定的时间内，浏览器未收到页面加载完成的通知，则浏览器自动重新加载页面，并以事件消息的方式及时通知开发者。如果页面再次加载超时，则录制服务停止，避免录制错误内容。
+
+你需要通过如下两个步骤实现页面加载超时检测。
+
+#### 1. 设置页面加载超时时间
+
+调用 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法时通过 `readyTimeout` 字段设置页面加载超时的时间限制。
+
+`readyTimeout`：Number 类型，单位为秒，取值范围 [0,60]：
+
+- `0` 或不设置，表示不检测页面加载状态
+- `≥ 1`，表示页面加载超时时间
+- `< 0` 或非整数，表示设置错误，会收到错误码 `2`
+
+#### 2. 判断加载是否完成并通知浏览器
+
+你需要自行判断页面是否加载完成，然后实现后续逻辑。
+
+<Tabs defaultValue="complete" groupId="timeout" persist>
+<TabsList>
+  <TabsTrigger value="complete">页面加载完成</TabsTrigger>
+  <TabsTrigger value="timeout">页面加载超时</TabsTrigger>
+</TabsList>
+
+<TabsContent value="complete">
+
+如果页面加载完成，则在设定的 `readyTimeout` 时间内调用 `notifyReady` 方法通知浏览器页面加载成功。如下图所示：
+
+![未超时逻辑](/img/api-center-generated/47e2bcf8743e-webpage-load.svg)
+
+`notifyReady` 的调用示例如下：
+
+```javascript
+<script>
+function notifyReady() {
+    if (typeof window.navigator.notifyReady === 'function')
+        window.navigator.notifyReady();
+}
+</script>
+```
+
+:::info[信息]
+如果还需要录制其他页面，则需要在待录制页面中再次设置 `notifyReady` 接口的逻辑。
+:::
+
+</TabsContent>
+
+<TabsContent value="timeout">
+
+如果页面加载超时，即在设定的 `readyTimeout` 时间内未调用 `notifyReady` 方法通知浏览器，则浏览器自动重新加载页面。你会收到 [`web_recorder_reload`](/zh-CN/api-reference/cloud-recording/restful/webhook/webpage#73) 事件回调，其中 `reason` 字段为 `page_load_timeout`。
+
+- 如果重新加载成功，则参考页面加载完成的逻辑，调用 `notifyReady` 方法通知浏览器。
+- 如果页面加载再次超时，则表示页面重新加载失败，录制服务停止。你会收到 [`web_recorder_stopped`](/zh-CN/api-reference/cloud-recording/restful/webhook/webpage#71) 事件回调，其中 `code` 为 `4`，`message` 为 `page_load_timeout`。
+
+工作原理如下图所示：
+
+![超时逻辑](/img/api-center-generated/8403c9ce0ea5-webpage-load-timeout.svg)
+
+</TabsContent>
+</Tabs>
+
+### 定时检测待录制页面是否加载成功
+
+开始页面录制前，你需要自行完成待录制页面的检测逻辑，以实现以下方案：
+
+1. 调用 `start` 开始页面录制时，页面录制浏览器访问并加载待录制页面。
+2. 页面录制服务执行待录制页面 JavaScript 的页面检测逻辑，当页面元素加载符合你的预期时，页面录制服务回调 `sid`（录制周期的唯一标识）通知业务服务端录制服务启动成功。
+3. 待录制页面定期上报状态，通知业务服务端页面内容变化。
+
+![定时检测](/img/api-center-generated/61229bda338a-webpage-load-success.svg)
+
+### 待录制页面加载失败的处理措施
+
+在实现待录制页面检测逻辑的前提下，当待录制页面加载失败、业务服务端未收到回调时，声网推荐你重新发起录制请求。
+
+![失败检测](/img/api-center-generated/f0792a4635cf-webpage-load-fail.svg)
+
+## 录制异常停止的保障
+
+开通消息通知服务并订阅 [`71 web_recorder_stopped`](/zh-CN/api-reference/cloud-recording/restful/webhook/webpage#71) 回调事件，当业务服务器收到 `web_recorder_stopped` 回调，且 `code` 不为 `0`，表示页面录制异常停止，声网推荐你重新发起新的录制。
+
+![停止检测](/img/api-center-generated/2475115353c3-webpage-load-stop.svg)

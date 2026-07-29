@@ -1,0 +1,47 @@
+---
+title: FUplinkNetworkInfo
+description: 上行网络信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_uplinknetworkinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_uplinknetworkinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_uplinknetworkinfo__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FUplinkNetworkInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|UplinkNetworkInfo")
+	int video_encoder_target_bitrate_bps = 0;
+	FUplinkNetworkInfo(){}
+	FUplinkNetworkInfo(const agora::rtc::UplinkNetworkInfo & AgoraData){
+		video_encoder_target_bitrate_bps = AgoraData.video_encoder_target_bitrate_bps;
+	}
+	agora::rtc::UplinkNetworkInfo CreateAgoraData() const {
+		agora::rtc::UplinkNetworkInfo AgoraData;
+		AgoraData.video_encoder_target_bitrate_bps = video_encoder_target_bitrate_bps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::UplinkNetworkInfo & AgoraData) const {
+	}
+};
+```
+
+<a id="class_uplinknetworkinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="video_encoder_target_bitrate_bps"></a>
+<Parameter name="video_encoder_target_bitrate_bps">
+
+目标视频编码器的码率 (bps)。
+
+</Parameter>
+</ParameterList>

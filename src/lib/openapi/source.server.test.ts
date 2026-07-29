@@ -2,12 +2,19 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { getOpenApiOperationIds, OPENAPI_LANES } from './lanes';
+import {
+  getOpenApiLaneLocales,
+  getOpenApiOperationIds,
+  OPENAPI_LANES,
+} from './lanes';
 import { getOpenApiOperation, getOpenApiOperations } from './source.server';
 
 describe('openapi source loader', () => {
   const lane = OPENAPI_LANES[0];
   const rtcLane = OPENAPI_LANES.find((item) => item.id === 'rtc-rest');
+  const cloudRecordingLane = OPENAPI_LANES.find(
+    (item) => item.id === 'cloud-recording-rest',
+  );
 
   it('loads lane operations by operationId', async () => {
     const operations = await getOpenApiOperations(lane);
@@ -100,24 +107,57 @@ describe('openapi source loader', () => {
     });
   });
 
-  it.each(
-    OPENAPI_LANES,
-  )('keeps registry operation IDs in sync with YAML for $id', async (openApiLane) => {
-    const operations = await getOpenApiOperations(openApiLane);
-    const fromYaml = operations
-      .map((operation) => operation.operationId)
-      .sort();
-    const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
+  it.each(OPENAPI_LANES)(
+    'keeps registry operation IDs in sync with YAML for $id',
+    async (openApiLane) => {
+      const fromRegistry = getOpenApiOperationIds(openApiLane).sort();
 
-    expect(fromRegistry).toEqual(fromYaml);
-  });
+      for (const locale of getOpenApiLaneLocales(openApiLane)) {
+        const operations = await getOpenApiOperations(openApiLane, locale);
+        const fromYaml = operations
+          .map((operation) => operation.operationId)
+          .sort();
+
+        expect(fromRegistry).toEqual(fromYaml);
+      }
+    },
+  );
 
   it('loads localized operation summaries from locale-specific YAML', async () => {
     const english = await getOpenApiOperation(lane, 'start-agent', 'en');
     const chinese = await getOpenApiOperation(lane, 'start-agent', 'zh-CN');
 
     expect(english.summary).toBe('Start a conversational AI agent');
-    expect(chinese.summary).toBe('Start a conversational AI agent');
+    expect(chinese.summary).toBe('创建对话式智能体');
+    expect(chinese.servers).toEqual([
+      {
+        url: 'https://api.agora.io/cn/api/conversational-ai-agent',
+      },
+    ]);
+  });
+
+  it('loads localized Cloud Recording summaries from the Chinese YAML', async () => {
+    expect(cloudRecordingLane).toBeDefined();
+
+    const english = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'en',
+    );
+    const chinese = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'acquire-cloud-recording-resource',
+      'zh-CN',
+    );
+    const ncsIp = await getOpenApiOperation(
+      cloudRecordingLane!,
+      'get-ncs-ip',
+      'zh-CN',
+    );
+
+    expect(english.summary).toBe('Acquire a resource ID');
+    expect(chinese.summary).toBe('获取云端录制资源');
+    expect(ncsIp.path).toBe('/v2/ncs/ip');
   });
 
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {

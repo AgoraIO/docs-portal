@@ -1,0 +1,74 @@
+---
+title: agora::rtc::IAudioEncodedFrameSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_encoded_frame_sender
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_encoded_frame_sender.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: >-
+        No local target route for
+        /api-ref/rtc-server-sdk/cpp/classagora_1_1_ref_count_interface.html.
+---
+
+继承自 agora::RefCountInterface.
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IAudioEncodedFrameSender`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender) 类。
+
+## 构造及析构函数说明
+
+<a id="a4002c6dc29c4dc93ea173ac4cd5bf3fe"></a>
+
+### ~IAudioEncodedFrameSender()
+
+<ApiSignature labels="inline protected">
+
+agora::rtc::IAudioEncodedFrameSender::~IAudioEncodedFrameSender()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="ad2f3121c77b2d0095ec9030e9fa68c4c"></a>
+
+### sendEncodedAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IAudioEncodedFrameSender::sendEncodedAudioFrame(const uint8_t * *payload_data*, size_t *payload_size*, const [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) & *audioFrameInfo*)
+
+</ApiSignature>
+
+将已编码的音频帧发送到本地音频轨道。
+
+<ParameterList title="参数">
+<Parameter name="payload_data">
+
+要发送的编码音频数据。
+
+</Parameter>
+<Parameter name="payload_size">
+
+数据大小（字节）。
+
+</Parameter>
+<Parameter name="audioFrameInfo">
+
+音频帧信息： [EncodedAudioFrameInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-encoded-audio-frame-info) 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。

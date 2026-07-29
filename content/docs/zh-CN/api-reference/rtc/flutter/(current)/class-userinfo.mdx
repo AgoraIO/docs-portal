@@ -1,0 +1,46 @@
+---
+title: UserInfo
+description: 用户的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_userinfo
+  sourcePath: html-docs/rtc/Flutter/API/class_userinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_userinfo__prototype"></a>
+
+```text
+class UserInfo {
+  const UserInfo({this.uid, this.userAccount});
+
+  @JsonKey(name: 'uid')
+  final int? uid;
+  @JsonKey(name: 'userAccount')
+  final String? userAccount;
+  factory UserInfo.fromJson(Map<String, dynamic> json) =>
+      _$UserInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$UserInfoToJson(this);
+}
+```
+
+<a id="class_userinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
+
+用户 Account。长度限制为[MaxUserAccountLengthType](/zh-CN/api-reference/rtc/flutter/enum-maxuseraccountlengthtype)。
+
+</Parameter>
+</ParameterList>

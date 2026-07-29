@@ -508,32 +508,26 @@
     pointer-events: none;
   }
 
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
-    margin-top: 0.5rem;
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child::before {
-    content: none;
-  }
-
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(:where(.not-prose, .not-prose *)) {
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(
-      :where(.not-prose, .not-prose *)
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
     )::before {
     content: none;
+  }
+
+  .prose[data-platform-header-tabs="true"]
+    [data-platform-group-shell]
+    > .docs-body:empty {
+    display: none;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
@@ -1592,4 +1586,46 @@
   .docs-search-overlay[data-state="open"] {
     animation: none;
   }
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
 }

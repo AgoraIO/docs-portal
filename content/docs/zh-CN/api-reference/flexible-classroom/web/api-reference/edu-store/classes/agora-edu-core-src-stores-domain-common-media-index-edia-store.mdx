@@ -1,0 +1,1602 @@
+---
+title: Class MediaStore
+description: MediaStore 类用于媒体数据处理。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_edu_core_src_stores_domain_common_media_index_ediaStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Properties
+
+<a id="audioPlaybackDevices"></a>
+
+### audioPlaybackDevices
+
+audioPlaybackDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+音频播放设备
+
+<a id="audioRecordingDevices"></a>
+
+### audioRecordingDevices
+
+audioRecordingDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+音频采集设备
+
+<a id="cameraDeviceId"></a>
+
+### Optional cameraDeviceId
+
+cameraDeviceId?: string
+
+当前视频采集设备 ID
+
+<a id="currentScreenShareDevice"></a>
+
+### Optional currentScreenShareDevice
+
+currentScreenShareDevice?: [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)
+
+当前采集屏幕设备
+
+<a id="isMirror"></a>
+
+### isMirror
+
+isMirror: boolean
+
+视频是否镜像
+
+<a id="localCameraTrackState"></a>
+
+### localCameraTrackState
+
+localCameraTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地视频采集设备状态
+
+<a id="localLoopbackDeviceState"></a>
+
+### localLoopbackDeviceState
+
+localLoopbackDeviceState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地声卡采集设备状态
+
+<a id="localMicAudioVolume"></a>
+
+### localMicAudioVolume
+
+localMicAudioVolume: number
+
+本地音频设备音量
+Range from [0,1]
+
+<a id="localMicTrackState"></a>
+
+### localMicTrackState
+
+localMicTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地音频采集设备状态
+
+<a id="localPlaybackTestVolume"></a>
+
+### localPlaybackTestVolume
+
+localPlaybackTestVolume: number
+
+本地扬声器音量
+Range from [0,1]
+
+<a id="localPreviewCameraTrackState"></a>
+
+### localPreviewCameraTrackState
+
+localPreviewCameraTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地预览视频采集设备状态
+
+<a id="localPreviewMicAudioVolume"></a>
+
+### localPreviewMicAudioVolume
+
+localPreviewMicAudioVolume: number
+
+本地预览音频设备音量
+range from [0,1]
+
+<a id="localPreviewMicTrackState"></a>
+
+### localPreviewMicTrackState
+
+localPreviewMicTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地预览音频采集设备状态
+
+<a id="localScreenShareAudioTrackState"></a>
+
+### localScreenShareAudioTrackState
+
+localScreenShareAudioTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+屏幕共享声音采集设备状态
+
+<a id="localScreenShareTrackState"></a>
+
+### localScreenShareTrackState
+
+localScreenShareTrackState: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+本地屏幕采集设备状态
+
+<a id="playbackDeviceId"></a>
+
+### Optional playbackDeviceId
+
+playbackDeviceId?: string
+
+当前视频播放设备 ID
+
+<a id="recordingDeviceId"></a>
+
+### Optional recordingDeviceId
+
+recordingDeviceId?: string
+
+当前音频采集设备 ID
+
+<a id="videoCameraDevices"></a>
+
+### videoCameraDevices
+
+videoCameraDevices: [AGRtcDeviceInfo](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-grtc-device-info)[]
+
+视频采集设备
+
+## Methods
+
+<a id="addAudioRawDataObserver"></a>
+
+### addAudioRawDataObserver
+
+<ApiSignature>
+
+addAudioRawDataObserver(observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+增加一个音频裸数据观察者
+
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addCameraProcessors"></a>
+
+### addCameraProcessors
+
+<ApiSignature>
+
+addCameraProcessors(processors: IBaseProcessor[]): void
+
+</ApiSignature>
+
+增加摄像头视频流前处理器
+
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required>
+
+视频采集前处理器
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addMicrophoneProcessors"></a>
+
+### addMicrophoneProcessors
+
+<ApiSignature>
+
+addMicrophoneProcessors(processors: IBaseProcessor[]): void
+
+</ApiSignature>
+
+增加麦克风音频流前处理器
+
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required>
+
+音频采集前处理器
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addPreviewCameraProcessors"></a>
+
+### addPreviewCameraProcessors
+
+<ApiSignature>
+
+addPreviewCameraProcessors(processors: IBaseProcessor[]): void
+
+</ApiSignature>
+
+增加摄像头视频流前处理器(预览)
+
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addPreviewMicrophoneProcessors"></a>
+
+### addPreviewMicrophoneProcessors
+
+<ApiSignature>
+
+addPreviewMicrophoneProcessors(processors: IBaseProcessor[]): void
+
+</ApiSignature>
+
+增加麦克风音频流前处理器(预览)
+
+<ParameterList title="Parameters">
+<Parameter name="processors" type="IBaseProcessor[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="addRawDataListener"></a>
+
+### addRawDataListener
+
+<ApiSignature>
+
+addRawDataListener(cb: (buffer: AudioBuffer) =&gt; void): void
+
+</ApiSignature>
+
+### deprecated
+
+增加一个本地音频裸数据观察者，使用 addAudioRawDataObserver 替代此方法
+
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(buffer: AudioBuffer)= &amp; gt; void" required>
+
+订阅者
+
+<ApiSignature>
+
+(buffer: AudioBuffer): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="buffer" type="AudioBuffer" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="enableDualStream"></a>
+
+### enableDualStream
+
+<ApiSignature>
+
+enableDualStream(enable: boolean, connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): Promise&lt;void&gt;
+
+</ApiSignature>
+
+开启双流
+
+<ParameterList title="Parameters">
+<Parameter name="enable" type="boolean" required>
+
+是否开启
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+RTC 连接
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="enableLocalAudio"></a>
+
+### enableLocalAudio
+
+<ApiSignature>
+
+enableLocalAudio(value: boolean): void
+
+</ApiSignature>
+
+开启或关闭本地音频
+
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required>
+
+boolean
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="enableLocalPlayback"></a>
+
+### enableLocalPlayback
+
+<ApiSignature>
+
+enableLocalPlayback(value: boolean): void
+
+</ApiSignature>
+
+开启或关闭本地所有音频播放
+
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="enableLocalVideo"></a>
+
+### enableLocalVideo
+
+<ApiSignature>
+
+enableLocalVideo(value: boolean): void
+
+</ApiSignature>
+
+开启或关闭本地视频
+
+<ParameterList title="Parameters">
+<Parameter name="value" type="boolean" required>
+
+boolean
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="getDisplayDevices"></a>
+
+### getDisplayDevices
+
+<ApiSignature>
+
+getDisplayDevices(): Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+
+</ApiSignature>
+
+获取可采集的屏幕列表
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+
+</ApiReturnType>
+
+屏幕列表
+
+</ApiReturns>
+
+<a id="getMediaTrackPlayer"></a>
+
+### getMediaTrackPlayer
+
+<ApiSignature>
+
+getMediaTrackPlayer(streamUrl: string): undefined | StreamMediaPlayer
+
+</ApiSignature>
+
+通过 URL 获取流媒体播放器
+
+<ParameterList title="Parameters">
+<Parameter name="streamUrl" type="string" required>
+
+要播放的视频流地址
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | StreamMediaPlayer
+
+</ApiReturnType>
+
+视频播放器对象，用于控制音视频播放
+
+</ApiReturns>
+
+<a id="getSnapshot"></a>
+
+### getSnapshot
+
+<ApiSignature>
+
+getSnapshot(channel: string, streamUuid: number, filePath: string): Promise&lt;void | AGSnapshotInfo&gt;
+
+</ApiSignature>
+
+视频截图（此接口仅 Electron 支持）。
+截取指定房间内的指定视频流，生成 JPG 图片保存到本地。
+
+<ParameterList title="Parameters">
+<Parameter name="channel" type="string" required>
+
+RTC 频道名称，使用 roomUuid。
+
+</Parameter>
+<Parameter name="streamUuid" type="number" required>
+
+流 ID。
+
+</Parameter>
+<Parameter name="filePath" type="string" required>
+
+保存图片的本地绝对路径。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void | AGSnapshotInfo&gt;
+
+</ApiReturnType>
+
+截图信息
+
+</ApiReturns>
+
+<a id="getSnapshotRgba"></a>
+
+### getSnapshotRgba
+
+<ApiSignature>
+
+getSnapshotRgba(channel: string, streamUuid: number): undefined | ImageData
+
+</ApiSignature>
+
+视频截图（此接口仅 Web 支持）。
+截取指定房间内的指定视频流。此方法返回携带 RGBA 信息的 [ImageData](https://developer.mozilla.org/zh-CN/docs/Web/API/ImageData) 数据。
+
+<ParameterList title="Parameters">
+<Parameter name="channel" type="string" required>
+
+RTC 频道名称，可使用 roomUuid。
+
+</Parameter>
+<Parameter name="streamUuid" type="number" required>
+
+流 ID。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | ImageData
+
+</ApiReturnType>
+
+截图信息
+
+</ApiReturns>
+
+<a id="getWindowDevices"></a>
+
+### getWindowDevices
+
+<ApiSignature>
+
+getWindowDevices(): Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+
+</ApiSignature>
+
+获取可采集应用窗口列表
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)[]&gt;
+
+</ApiReturnType>
+
+应用窗口列表
+
+</ApiReturns>
+
+<a id="hasScreenSharePermission"></a>
+
+### hasScreenSharePermission
+
+<ApiSignature>
+
+hasScreenSharePermission(): boolean
+
+</ApiSignature>
+
+检测是否有屏幕采集权限
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否有屏幕采集的权限
+
+</ApiReturns>
+
+<a id="isScreenDeviceEnumerateSupported"></a>
+
+### isScreenDeviceEnumerateSupported
+
+<ApiSignature>
+
+isScreenDeviceEnumerateSupported(): boolean
+
+</ApiSignature>
+
+检测是否可以获取到屏幕采集设备列表
+
+<ApiReturns>
+
+<ApiReturnType>
+
+boolean
+
+</ApiReturnType>
+
+是否可获取到屏幕采集设备列表
+
+</ApiReturns>
+
+<a id="removeAudioRawDataObserver"></a>
+
+### removeAudioRawDataObserver
+
+<ApiSignature>
+
+removeAudioRawDataObserver(observer: [AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+删除音频裸数据数据观察者
+
+<ParameterList title="Parameters">
+<Parameter name="observer" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataObserver](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-media-type#AgoraRteAudioRawDataObserver)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeCameraProcessors"></a>
+
+### removeCameraProcessors
+
+<ApiSignature>
+
+removeCameraProcessors(): void
+
+</ApiSignature>
+
+移除摄像头视频流处理器
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeMicrophoneProcessors"></a>
+
+### removeMicrophoneProcessors
+
+<ApiSignature>
+
+removeMicrophoneProcessors(): void
+
+</ApiSignature>
+
+移除麦克风音频流处理器
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removePreviewCameraProcessors"></a>
+
+### removePreviewCameraProcessors
+
+<ApiSignature>
+
+removePreviewCameraProcessors(): void
+
+</ApiSignature>
+
+移除摄像头视频流处理器(预览)
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removePreviewMicrophoneProcessors"></a>
+
+### removePreviewMicrophoneProcessors
+
+<ApiSignature>
+
+removePreviewMicrophoneProcessors(): void
+
+</ApiSignature>
+
+移除麦克风音频流处理器(预览)
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removeRawDataListener"></a>
+
+### removeRawDataListener
+
+<ApiSignature>
+
+removeRawDataListener(cb: (buffer: AudioBuffer) =&gt; void): void
+
+</ApiSignature>
+
+### deprecated
+
+删除一个本地音频裸数据数据观察者，使用 removeAudioRawDataObserver 替代此方法
+
+<ParameterList title="Parameters">
+<Parameter name="cb" type="(buffer: AudioBuffer)= &amp; gt; void" required>
+
+<ApiSignature>
+
+(buffer: AudioBuffer): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="buffer" type="AudioBuffer" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setAudioRawDataConfig"></a>
+
+### setAudioRawDataConfig
+
+<ApiSignature>
+
+setAudioRawDataConfig(config: [AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config), position: [AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)): void
+
+</ApiSignature>
+
+设置音频裸数据回调参数
+需要在加入教室前调用
+
+<ParameterList title="Parameters">
+<Parameter name="config" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataConfig](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-config)
+
+</ParameterType>
+
+配置
+
+</Parameter>
+<Parameter name="position" required>
+
+<ParameterType>
+
+[AgoraRteAudioRawDataPosition](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-media-type-gora-rte-audio-raw-data-position)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setCameraDevice"></a>
+
+### setCameraDevice
+
+<ApiSignature>
+
+setCameraDevice(id: string): void
+
+</ApiSignature>
+
+设置视频设备 ID
+
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
+
+设备 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setCurrentScreenShareDevice"></a>
+
+### setCurrentScreenShareDevice
+
+<ApiSignature>
+
+setCurrentScreenShareDevice(device: [AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)): void
+
+</ApiSignature>
+
+设置当前正在屏幕共享的设备
+
+<ParameterList title="Parameters">
+<Parameter name="device" required>
+
+<ParameterType>
+
+[AGScreenShareDevice](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/interfaces/agora-rte-sdk-src-core-rtc-type-gscreen-share-device)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setLowStreamParameter"></a>
+
+### setLowStreamParameter
+
+<ApiSignature>
+
+setLowStreamParameter(setLowStreamParameter: [AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter), connectionType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type), fromScene?: [AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)): void
+
+</ApiSignature>
+
+设置小流分辨率及码率
+
+<ParameterList title="Parameters">
+<Parameter name="setLowStreamParameter" required>
+
+<ParameterType>
+
+[AGLowStreamParameter](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/modules/agora-rte-sdk-src-core-rtc-type#AGLowStreamParameter)
+
+</ParameterType>
+
+要设置的小流参数
+
+</Parameter>
+<Parameter name="connectionType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+RTC 连接
+
+</Parameter>
+<Parameter name="fromScene" optional>
+
+<ParameterType>
+
+[AgoraRteScene](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-scene-index-gora-rte-scene)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setMirror"></a>
+
+### setMirror
+
+<ApiSignature>
+
+setMirror(v: boolean): void
+
+</ApiSignature>
+
+镜像开关
+
+<ParameterList title="Parameters">
+<Parameter name="v" type="boolean" required>
+
+开启或关闭
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setPlaybackDevice"></a>
+
+### setPlaybackDevice
+
+<ApiSignature>
+
+setPlaybackDevice(id: string): void
+
+</ApiSignature>
+
+设置扬声器设备 ID
+
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
+
+设备 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRecordingDevice"></a>
+
+### setRecordingDevice
+
+<ApiSignature>
+
+setRecordingDevice(id: string): void
+
+</ApiSignature>
+
+设置音频设备 ID
+
+<ParameterList title="Parameters">
+<Parameter name="id" type="string" required>
+
+设备 ID
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setupLocalScreenShare"></a>
+
+### setupLocalScreenShare
+
+<ApiSignature>
+
+setupLocalScreenShare(dom: HTMLElement): void
+
+</ApiSignature>
+
+为屏幕共享设置显示区域
+
+<ParameterList title="Parameters">
+<Parameter name="dom" type="HTMLElement" required>
+
+渲染节点
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setupLocalVideo"></a>
+
+### setupLocalVideo
+
+<ApiSignature>
+
+setupLocalVideo(dom: HTMLElement, mirror: boolean, renderMode?: [AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)): void
+
+</ApiSignature>
+
+为视频设置显示区域
+
+<ParameterList title="Parameters">
+<Parameter name="dom" type="HTMLElement" required>
+
+渲染节点
+
+</Parameter>
+<Parameter name="mirror" type="boolean" required>
+
+是否开启镜像
+
+</Parameter>
+<Parameter name="renderMode" optional>
+
+<ParameterType>
+
+[AGRenderMode](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-grender-mode)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setupMediaStream"></a>
+
+### setupMediaStream
+
+<ApiSignature>
+
+setupMediaStream(streamUrl: string, dom: HTMLElement, mirror: boolean, playVideo: boolean, playAudio: boolean): void
+
+</ApiSignature>
+
+播放流媒体
+
+<ParameterList title="Parameters">
+<Parameter name="streamUrl" type="string" required>
+
+hls url
+
+</Parameter>
+<Parameter name="dom" type="HTMLElement" required />
+<Parameter name="mirror" type="boolean" required />
+<Parameter name="playVideo" type="boolean" required />
+<Parameter name="playAudio" type="boolean" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startLoopbackRecording"></a>
+
+### startLoopbackRecording
+
+<ApiSignature>
+
+startLoopbackRecording(params?: \{ audioDeviceName?: string; connType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type) \}): void
+
+</ApiSignature>
+
+启动声卡采集
+
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
+
+<ParameterType>
+
+\{ audioDeviceName?: string; connType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type) \}
+
+</ParameterType>
+
+可选参数对象，包括音频设备名称和连接类型
+
+<ParameterList>
+<Parameter name="audioDeviceName" type="string" optional />
+<Parameter name="connType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startPlaybackDeviceTest"></a>
+
+### startPlaybackDeviceTest
+
+<ApiSignature>
+
+startPlaybackDeviceTest(url: string): void
+
+</ApiSignature>
+
+开启扬声器测试
+Electron 端不支持 Base64 格式的音频数据
+
+<ParameterList title="Parameters">
+<Parameter name="url" type="string" required>
+
+资源地址
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startRecordingDeviceTest"></a>
+
+### startRecordingDeviceTest
+
+<ApiSignature>
+
+startRecordingDeviceTest(indicateInterval: number): void
+
+</ApiSignature>
+
+开启音频设备测试
+
+<ParameterList title="Parameters">
+<Parameter name="indicateInterval" type="number" required>
+
+探测频率（毫秒）
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="startScreenShareCapture"></a>
+
+### startScreenShareCapture
+
+<ApiSignature>
+
+startScreenShareCapture(params?: \{ audioDeviceName?: string; id?: string; type?: [AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type); withAudio?: boolean \}): void
+
+</ApiSignature>
+
+开始屏幕共享
+
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
+
+<ParameterType>
+
+\{ audioDeviceName?: string; id?: string; type?: [AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type); withAudio?: boolean \}
+
+</ParameterType>
+
+<ParameterList>
+<Parameter name="audioDeviceName" type="string" optional />
+<Parameter name="id" type="string" optional />
+<Parameter name="type" optional>
+
+<ParameterType>
+
+[AGScreenShareType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gscreen-share-type)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopLoopbackRecording"></a>
+
+### stopLoopbackRecording
+
+<ApiSignature>
+
+stopLoopbackRecording(params?: \{ connType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type) \}): void
+
+</ApiSignature>
+
+停止声卡采集
+
+<ParameterList title="Parameters">
+<Parameter name="params" optional>
+
+<ParameterType>
+
+\{ connType?: [AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type) \}
+
+</ParameterType>
+
+可选参数对象，包括连接类型
+
+<ParameterList>
+<Parameter name="connType" optional>
+
+<ParameterType>
+
+[AGRtcConnectionType](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-channel-grtc-connection-type)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopPlaybackDeviceTest"></a>
+
+### stopPlaybackDeviceTest
+
+<ApiSignature>
+
+stopPlaybackDeviceTest(): void
+
+</ApiSignature>
+
+停止扬声器测试
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopRecordingDeviceTest"></a>
+
+### stopRecordingDeviceTest
+
+<ApiSignature>
+
+stopRecordingDeviceTest(): void
+
+</ApiSignature>
+
+停止音频设备测试
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="stopScreenShareCapture"></a>
+
+### stopScreenShareCapture
+
+<ApiSignature>
+
+stopScreenShareCapture(params?: \{ withAudio?: boolean \}): void
+
+</ApiSignature>
+
+停止屏幕共享
+withAudio: 是否同时关闭声卡采集，默认: True
+
+<ParameterList title="Parameters">
+<Parameter name="params" type="\&#123; withAudio?: boolean \&#125;" optional>
+
+<ParameterList>
+<Parameter name="withAudio" type="boolean" optional />
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="updateLocalMediaState"></a>
+
+### updateLocalMediaState
+
+<ApiSignature>
+
+updateLocalMediaState(param0: \{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}): Promise&lt;void&gt;
+
+</ApiSignature>
+
+更新本地媒体状态
+
+<ParameterList title="Parameters">
+<Parameter name="param0" required>
+
+<ParameterType>
+
+\{ audioSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state); videoSourceState?: [AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state) \}
+
+</ParameterType>
+
+视频状态和音频状态
+
+<ParameterList>
+<Parameter name="audioSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+<Parameter name="videoSourceState" optional>
+
+<ParameterType>
+
+[AgoraRteMediaSourceState](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/enums/agora-rte-sdk-src-core-rtc-type-gora-rte-media-source-state)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Promise&lt;void&gt;
+
+</ApiReturnType>
+
+</ApiReturns>

@@ -1,0 +1,1141 @@
+---
+title: "自定义视频数据处理"
+description: "了解实时互动 RTC 在不同平台上的自定义视频数据处理方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+在实时互动过程中，你可能需要对 SDK 采集到的原始视频数据进行处理，也可能需要获取 SDK 采集并编码的视频数据。本文介绍如何通过不同类型的视频观测器获取 SDK 采集到的视频数据，并对其进行处理。
+
+## 适用场景
+
+自定义视频数据处理适用于以下场景。
+
+- **自定义美颜处理**：拉取本地采集的原始视频流，并使用第三方美颜处理工具进行处理。处理后的视频流可以再次推送到频道中，供观看者实时观看。
+- **自定义视频编辑**：在视频处理链路的不同阶段对视频流进行编辑处理，如添加水印、裁剪、剪辑、特效等。用户可以根据需求对视频流进行灵活编辑，编辑后的视频流可用于直播或存储。
+- **拉流预览或监控**：在视频处理链路的不同阶段拉取视频流进行本地或云端的监控和预览。用户可以实时查看视频流的质量、内容和状态，确保视频流的正常传输和播放。
+
+## 技术原理
+
+SDK 中视频模块的数据处理流程如下图所示。
+
+![技术原理](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/tech.png)
+
+根据上图所示，在不同的模式下，观测点对应的回调触发时机也有所不同。SDK 默认采用只读模式，你可以根据自己的需求设置读写模式（详见[实现方法](#实现方法)中的相应步骤）。
+
+观测点对应的回调如下所示：
+
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+
+:::info[信息]
+- 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
+- 编码前处理：位于本地预览默认位置和视频帧的抽帧或缩放处理之后。
+- 视频后处理：在视频解码之后，对视频帧进行超分辨率、超级画质处理等处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+根据你的实际业务需求，在以下方案中选择实现视频数据处理的方法。
+
+### 观测原始数据
+
+![观测原始数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data1.svg)
+
+参考如下步骤，获取 SDK 采集的原始数据并进行处理。
+
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+
+   ```java
+   engine.registerVideoFrameObserver(iVideoFrameObserver);
+   ```
+
+1. （可选）视频观测器默认的观测位置是 `VIDEO_MODULE_POSITION_POST_CAPTURER`（对应 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调）和 `VIDEO_MODULE_POSITION_PRE_RENDERER`（对应 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调），你可以在 [`getObservedFramePosition`](/zh-CN/api-reference/rtc/android/video/video-raw#getobservedframeposition) 回调的返回值中设置预期的视频观测位置。
+
+   以下示例代码以观测位置为 `VIDEO_MODULE_POSITION_PRE_ENCODER` 为例，对应 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调。
+
+   ```java
+   @Override
+   public int getObservedFramePosition() {
+       return IVideoFrameObserver.VIDEO_MODULE_POSITION_PRE_ENCODER;
+   }
+   ```
+
+1. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 [`getVideoFrameProcessMode`](/zh-CN/api-reference/rtc/android/video/video-raw#getvideoframeprocessmode) 回调中设置预期的视频处理模式为 `1`：
+
+      - 0：（默认）只读模式，不需要将处理后的数据发回给 SDK。
+      - 1：读写模式，需要将处理后的数据发回给 SDK。
+
+   ```java
+   @Override
+   public int getVideoFrameProcessMode() {
+       return IVideoFrameObserver.PROCESS_MODE_READ_WRITE;
+   }
+   ```
+
+1. （可选）SDK 默认提供的视频数据格式为 `I420Buffer` 或 `TextureBuffer`，如果你需要其他格式的视频数据，可在 [`getVideoFormatPreference`](/zh-CN/api-reference/rtc/android/video/video-raw#getvideoformatpreference) 回调的返回值中设置预期的数据格式：
+
+      - 0：（默认）原始视频像素格式
+      - 1：I420 格式
+      - 4：RGBA 格式
+      - 16：I422 格式
+
+   ```java
+   @Override
+   public int getVideoFormatPreference() {
+       return IVideoFrameObserver.VIDEO_PIXEL_DEFAULT;
+   }
+   ```
+
+1. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 [`getRotationApplied`](/zh-CN/api-reference/rtc/android/video/video-raw#getrotationapplied) 回调的返回值中设置视频数据按照 `rotation` 做旋转处理。
+
+   :::warning[注意]
+   该回调支持的视频数据格式有：I420、RGBA、Texture。
+   :::
+
+   ```java
+   @Override
+   public boolean getRotationApplied() {
+      return true;
+   }
+   ```
+
+1. （可选）如果你希望获取镜像处理后的视频数据，可在 [`getMirrorApplied`](/zh-CN/api-reference/rtc/android/video/video-raw#getmirrorapplied) 回调的返回值中设置视频数据做镜像处理。
+
+   :::warning[注意]
+   - 该回调和 `setVideoEncoderConfiguration` 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像不成功。
+      - 该回调支持的视频数据格式有：I420、RGBA、Texture。
+   :::
+
+   ```java
+   @Override
+   public boolean getMirrorApplied() {
+      return true;
+   }
+   ```
+
+1. 调用 `joinChannel`[2/2] 方法加入频道，SDK 会在你设置好的观测位置回调相应的视频数据。
+
+   :::info[信息]
+   你不需要加入频道，也可以获取到本地采集的原始视频数据。
+   :::
+
+   ```java
+   int res = engine.joinChannel(token, channelId, 0, option);
+   ```
+
+1. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调为例。
+
+   :::warning[注意]
+   建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+   :::
+
+   ```java
+   @Override
+   public boolean onCaptureVideoFrame(int sourceType, VideoFrame videoFrame) {
+      ...
+      //将修改后的视频数据传回 SDK
+      videoFrame.replaceBuffer(new NV21Buffer(nv21, width, height, null), videoFrame.getRotation(), videoFrame.getTimestampNs());
+      return true;
+   }
+   ```
+
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法，取消注册原始视频观测器 `IVideoFrameObserver`，即可停止观测视频数据。
+
+   ```java
+   engine.registerVideoFrameObserver(null);
+   ```
+
+### 观测已编码数据
+
+![观测已编码数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data2.svg)
+
+参考如下步骤，获取 SDK 采集的已编码数据并进行处理。
+
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived)。
+
+   ```java
+   engine.registerVideoEncodedFrameObserver(iVideoEncodedFrameObserver);
+   ```
+
+1. 调用 `joinChannel`[2/2] 方法加入频道。
+
+   ```java
+   int res = engine.joinChannel(token, channelId, 0, option);
+   ```
+
+1. 通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的视频数据。
+
+   ```java
+    @Override
+    public boolean onEncodedVideoFrameReceived(ByteBuffer buffer, EncodedVideoFrameInfo info) {
+        if (isWrite && info.frameType == VIDEO_FRAME_TYPE_KEY_FRAME) {
+            Log.i(TAG, "OnEncodedVideoImageReceived  uid:" + info.uid + "   widht:" + info.width + "  height:" + info.height +"  codecType:" + info.codecType + "  frameType:" + info.frameType);
+            isWrite = false;
+            File cacheDir = getContext().getExternalCacheDir();
+            if (cacheDir == null) {
+                cacheDir = getContext().getCacheDir();
+            }
+            // 导出一个关键帧数据到本地存储，可以通过`ffplay -i videodata`来查看画面
+            File file = new File(cacheDir, "videodata");
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                byte[] bytes = new byte[buffer.remaining()];
+                buffer.get(bytes);
+                fos.write(bytes);
+                Log.i(TAG, "write success");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+   ```
+
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法，取消注册视频观测器 `IVideoEncodedFrameObserver`，即可停止观测视频数据。
+
+   ```java
+   engine.registerVideoEncodedFrameObserver(null);
+   ```
+
+### 同时观测已编码数据和渲染前数据
+
+![同时观测已编码数据和渲染前数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data3.svg)
+
+如果你想同时获取远端用户的已编码数据（简称为 A 组）和渲染前视频数据（简称为 B 组），可参考如下步骤。
+
+1. 调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived)。
+
+   ```java
+   engine.registerVideoEncodedFrameObserver(iVideoEncodedFrameObserver);
+   ```
+
+1. 调用 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+
+   ```java
+   engine.registerVideoFrameObserver(iVideoFrameObserver);
+   ```
+
+1. 调用 `joinChannel`[2/2] 方法加入频道，并设置 `autoSubscribeVideo` 为 `false`（不自动订阅任何视频流）。
+
+   ```java
+   ChannelMediaOptions option = new ChannelMediaOptions();
+   option.autoSubscribeVideo = false;
+   int res = engine.joinChannel(token, channelId, 0, option);
+   ```
+
+1. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 [`setRemoteVideoSubscriptionOptions`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_setremotevideosubscriptionoptions) 方法设置。
+
+   :::info[信息]
+   SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
+
+         - 如果注册的是 `IVideoFrameObserver` 观测器，则默认订阅原始数据和编码后的数据。
+         - 如果注册的是 `IVideoEncodedFrameObserver` 观测器，则默认仅订阅编码后的数据。
+         - 如果注册了两种观测器，则默认跟随后注册的视频观测器。在本场景中，由于后注册的是 `IVideoFrameObserver` 观测器，所以默认订阅原始数据和编码后的数据，且 A 组和 B 组数据都可以按照预期被观测到。
+   :::
+
+   ```java
+   @Override
+   public void onUserJoined(int uid, int elapsed) {
+       VideoSubscriptionOptions options = new VideoSubscriptionOptions();
+       options.streamType = REMOTE_VIDEO_STREAM_LOW;
+       options.encodedFrameOnly = true;
+       engine.setRemoteVideoSubscriptionOptions(uid, options);
+   }
+   ```
+
+1. 调用 `muteRemoteVideoStream` 方法，并将 `muted` 设置为 `false`（订阅远端用户的视频流），开始接收远端用户的视频流。此时：
+
+   ```java
+   engine.muteRemoteVideoStream(uid, false);
+   ```
+
+1. 通过相应的回调获取预期的数据：
+   - 可通过 `IVideoEncodedFrameObserver` 中的 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived) 回调获取用户已编码的视频数据。
+   - 可通过 `IVideoFrameObserver` 中的 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取用户渲染前的视频数据。
+
+   ```java
+    @Override
+    public boolean onEncodedVideoFrameReceived(ByteBuffer buffer, EncodedVideoFrameInfo info) {
+        if (isWrite && info.frameType == VIDEO_FRAME_TYPE_KEY_FRAME) {
+            Log.i(TAG, "OnEncodedVideoImageReceived  uid:" + info.uid + "   widht:" + info.width + "  height:" + info.height +"  codecType:" + info.codecType + "  frameType:" + info.frameType);
+            isWrite = false;
+            File cacheDir = getContext().getExternalCacheDir();
+            if (cacheDir == null) {
+                cacheDir = getContext().getCacheDir();
+            }
+            // 导出一个关键帧数据到本地存储，可以通过`ffplay -i videodata`来查看画面
+            File file = new File(cacheDir, "videodata");
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                byte[] bytes = new byte[buffer.remaining()];
+                buffer.get(bytes);
+                fos.write(bytes);
+                Log.i(TAG, "write success");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onRenderVideoFrame(String s, int i, VideoFrame videoFrame) {
+        // 自定义渲染远端用户的画面
+        if (mSurfaceView != null && videoFrame != lastI420Frame) {
+            Log.d(TAG, "onRenderVideoFrame: " + i + "   connection: " + s + "  buffer: " + videoFrame.getBuffer());
+            lastI420Frame = videoFrame;
+            textureBufferHelper.invoke(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    if (lastI420Frame.getBuffer() instanceof VideoFrame.I420Buffer) {
+                        final VideoFrame.I420Buffer i420Buffer = (VideoFrame.I420Buffer) lastI420Frame.getBuffer();
+                        GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
+                        yuvUploader.uploadFromBuffer(i420Buffer);
+                    }
+                    return null;
+                }
+            });
+            mSurfaceView.requestRender();
+        }
+        return false;
+    }
+   ```
+
+1. 分别调用 [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver) 和 [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-raw#registervideoframeobserver) 方法，取消注册视频观测器，即可停止观测视频数据。
+
+   ```java
+   // 取消注册已编码视频观测器
+   engine.registerVideoEncodedFrameObserver(null);
+   // 取消注册原始视频观测器
+   engine.registerVideoFrameObserver(null);
+
+   ```
+
+## 示例项目
+
+声网提供了开源的原始视频数据示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ProcessRawData" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ProcessRawData.java" />
+  <Card title="CustomRemoteVideoRender" href="https://gitee.com/agoraio-community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java" />
+  <Card title="ProcessRawData" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ProcessRawData.java" />
+  <Card title="CustomRemoteVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在实时互动过程中，你可能需要对 SDK 采集到的原始视频数据进行处理，也可能需要获取 SDK 采集并编码的视频数据。本文介绍如何通过不同类型的视频观测器获取 SDK 采集到的视频数据，并对其进行处理。
+
+## 适用场景
+
+自定义视频数据处理适用于以下场景。
+
+- **自定义美颜处理**：拉取本地采集的原始视频流，并使用第三方美颜处理工具进行处理。处理后的视频流可以再次推送到频道中，供观看者实时观看。
+- **自定义视频编辑**：在视频处理链路的不同阶段对视频流进行编辑处理，如添加水印、裁剪、剪辑、特效等。用户可以根据需求对视频流进行灵活编辑，编辑后的视频流可用于直播或存储。
+- **拉流预览或监控**：在视频处理链路的不同阶段拉取视频流进行本地或云端的监控和预览。用户可以实时查看视频流的质量、内容和状态，确保视频流的正常传输和播放。
+
+## 技术原理
+
+SDK 中视频模块的数据处理流程如下图所示。
+
+![技术原理](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/tech.png)
+
+根据上图所示，在不同的模式下，观测点对应的回调触发时机也有所不同。SDK 默认采用只读模式，你可以根据自己的需求设置读写模式（详见[实现方法](#实现方法)中的相应步骤）。
+
+观测点对应的回调如下所示：
+
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/ios/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+
+:::info[信息]
+- 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
+- 编码前处理：位于本地预览默认位置和视频帧的抽帧或缩放处理之后。
+- 视频后处理：在视频解码之后，对视频帧进行超分辨率、超级画质处理等处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+根据你的实际业务需求，在以下方案中选择实现视频数据处理的方法。
+
+### 观测原始数据
+
+![观测原始数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data1.svg)
+
+参考如下步骤，获取 SDK 采集的原始数据并进行处理。
+
+1. 调用 `setVideoFrameDelegate` 方法注册视频观测器 `AgoraVideoFrameDelegate`，同时注册相应的回调。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(self)
+    ```
+
+2. （可选）视频观测器默认的观测位置是 `AgoraVideoModulePositionPostCapture` 和 `AgoraVideoModulePositionPreRenderer`，你可以在 `getObservedFramePosition` 回调中返回预期的视频观测位置。以下示例代码以观测位置为 `AgoraVideoModulePositionPreEncoder` 为例。
+
+    ```swift
+    func getObservedFramePosition() -> AgoraVideoFramePosition {
+            .preEncoder
+    }
+    ```
+
+3. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 `getVideoFrameProcessMode` 回调中返回预期的视频处理模式为 `AgoraVideoFrameProcessModeReadWrite`：
+      - 0：（默认）只读模式，不需要将处理后的数据发回给 SDK。
+      - 1：读写模式，需要将处理后的数据发回给 SDK。
+
+    ```swift
+    func getVideoFrameProcessMode() -> AgoraVideoFrameProcessMode {
+            .readWrite
+        }
+    ```
+
+4. （可选）SDK 默认提供的视频数据格式为 `I420` 或 `CVPixelBufferRef`，如果你需要其他格式的视频数据，可在 `getVideoFormatPreference` 回调中返回预期的数据格式：
+
+      - 0：（默认）原始视频像素格式
+      - 1：I420 格式
+      - 4：RGBA 格式
+      - 12：CVPixelBufferRef NV12 格式
+      - 13：CVPixelBufferRef I420 格式
+      - 14：CVPixelBufferRef BGRA 格式
+      - 16：I422 格式
+
+      :::warning[注意]
+      SDK 目前不支持 Alpha 通道。传入的 Alpha 值将被丢弃。
+      :::
+
+    ```swift
+    func getVideoFormatPreference() -> AgoraVideoFormat {
+        .cvPixelBGRA
+    }
+    ```
+
+5. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 `getRotationApplied` 回调中返回 `true`，设置视频数据按照 `rotation` 做旋转处理。
+   :::warning[注意]
+   该回调支持的视频数据格式有：I420、RGBA、CVPixelBuffer。
+   :::
+
+    ```swift
+    func getRotationApplied() -> Bool {
+            true
+        }
+    ```
+
+6. （可选）如果你希望获取镜像处理后的视频数据，可在 `getMirrorApplied` 回调中返回 `true`，设置视频数据做镜像处理。
+   :::warning[注意]
+   - 该回调和 `setVideoEncoderConfiguration` 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像不成功。
+
+        - 该回调支持的视频数据格式有：I420、RGBA、CVPixelBuffer。
+   :::
+
+    ```swift
+    func getMirrorApplied() -> Bool {
+        true
+    }
+    ```
+
+7. 调用 `joinChannelbyToken` 方法加入频道，SDK 会在你设置好的观测位置回调相应的视频数据。
+
+   :::info[信息]
+   你不需要加入频道，也可以获取到本地采集的原始视频数据。
+   :::
+
+    ```swift
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelId, uid: 0, mediaOptions: option, joinSuccess: nil)
+    ```
+
+8. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 `onCaptureVideoFrame` 回调为例。
+
+   :::warning[注意]
+   建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+   :::
+
+    ```swift
+    func onCapture(_ videoFrame: AgoraOutputVideoFrame,
+                   sourceType: AgoraVideoSourceType) -> Bool {
+        // 将修改后的视频数据传回 SDK
+        videoFrame.pixelBuffer = modifiedBuffer
+        return true
+    }
+    ```
+
+9. 调用 `setVideoFrameDelegate` 方法，取消注册视频观测器 `AgoraVideoFrameDelegate`，即可停止观测视频数据。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(nil)
+    ```
+
+### 观测已编码数据
+
+![观测已编码数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data2.svg)
+
+参考如下步骤，获取 SDK 采集的已编码数据并进行处理。
+
+1. 调用 `setEncodedVideoFrameDelegate` 方法注册视频编码观测器 `AgoraEncodedVideoFrameDelegate`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(self)
+    ```
+
+2. 调用 `joinChannelbyToken` 方法加入频道。
+
+    ```swift
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: option)
+    ```
+
+3. 通过 `onEncodedVideoFrameReceived` 回调获取编码后的视频数据。
+
+    ```swift
+    func onEncodedVideoFrameReceived(_ videoData: Data, length: Int, info videoFrameInfo: AgoraEncodedVideoFrameInfo) -> Bool {
+        if videoFrameInfo.frameType == .keyFrame {
+            // 处理关键帧数据
+            let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("videodata")
+            try? videoData.write(to: fileURL)
+            print("write success")
+        }
+        return true
+    }
+    ```
+
+4. 调用 `setVideoEncodedFrameDelegate` 方法，取消注册视频观测器 `AgoraEncodedVideoFrameDelegate`，即可停止观测视频数据。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(nil)
+    ```
+
+### 同时观测已编码数据和渲染前数据
+
+![同时观测已编码数据和渲染前数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data3.svg)
+
+如果你想同时获取远端用户的已编码数据（简称为 A 组）和渲染前视频数据（简称为 B 组），可参考如下步骤。
+
+1. 调用 `setVideoEncodedFrameDelegate` 方法注册视频编码观测器 `AgoraEncodedVideoFrameDelegate`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(self)
+    ```
+
+2. 调用 `setVideoFrameDelegate` 方法注册视频观测器 `AgoraVideoFrameDelegate`，同时注册相应的回调。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(self)
+    ```
+
+3. 调用 `joinChannelbyToken` 方法加入频道，并设置 `autoSubscribeVideo` 为 `false`（不自动订阅任何视频流）。
+
+    ```swift
+    let options = AgoraRtcChannelMediaOptions()
+    options.autoSubscribeVideo = false
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: options)
+    ```
+
+4. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 `setRemoteVideoSubscriptionOptions` 方法设置。
+
+    ```swift
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        let options = AgoraVideoSubscriptionOptions()
+        options.type = .low
+        options.encodedFrameOnly = true
+        agoraKit.setRemoteVideoSubscriptionOptions(uid, options: options)
+    }
+    ```
+
+5. 调用 `muteRemoteVideoStream` 方法，并将 `mute` 设置为 `false`（订阅远端用户的视频流），开始接收远端用户的视频流。
+
+    ```swift
+    agoraKit.muteRemoteVideoStream(uid, mute: false)
+    ```
+
+6. 通过相应的回调获取预期的数据：
+    - 可通过 `AgoraEncodedVideoFrameDelegate` 中的 `onEncodedVideoFrameReceived` 回调获取用户已编码的视频数据。
+    - 可通过 `AgoraVideoFrameDelegate` 中的 `onRenderVideoFrame` 回调获取用户渲染前的视频数据。
+
+    ```swift
+    func onEncodedVideoFrameReceived(_ videoData: Data, length: Int, info videoFrameInfo: AgoraEncodedVideoFrameInfo) -> Bool {
+        if videoFrameInfo.frameType == .keyFrame {
+            // 处理关键帧数据
+            let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("videodata")
+            try? videoData.write(to: fileURL)
+            print("write success")
+        }
+        return true
+    }
+
+    func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+        // 自定义渲染远端用户的画面
+        if let pixelBuffer = videoFrame.pixelBuffer {
+            // 处理 pixelBuffer
+        }
+        return true
+    }
+    ```
+
+7. 分别调用 `setVideoEncodedFrameDelegate` 和 `setVideoFrameDelegate` 方法，取消注册视频观测器，即可停止观测视频数据。
+
+    ```swift
+    // 取消注册已编码视频观测器
+    agoraKit.setEncodedVideoFrameDelegate(nil)
+    // 取消注册原始视频观测器
+    agoraKit.setVideoFrameDelegate(nil)
+    ```
+
+## 示例项目
+
+声网提供了开源的原始视频数据示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="RawVideoData" href="https://gitee.com/agoraio-community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData/RawVideoData.swift" />
+  <Card title="CustomRemoteVideoRender" href="https://gitee.com/agoraio-community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+  <Card title="RawVideoData" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData/RawVideoData.swift" />
+  <Card title="CustomRemoteVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+在实时互动过程中，你可能需要对 SDK 采集到的原始视频数据进行处理，也可能需要获取 SDK 采集并编码的视频数据。本文介绍如何通过不同类型的视频观测器获取 SDK 采集到的视频数据，并对其进行处理。
+
+## 适用场景
+
+自定义视频数据处理适用于以下场景。
+
+- **自定义美颜处理**：拉取本地采集的原始视频流，并使用第三方美颜处理工具进行处理。处理后的视频流可以再次推送到频道中，供观看者实时观看。
+- **自定义视频编辑**：在视频处理链路的不同阶段对视频流进行编辑处理，如添加水印、裁剪、剪辑、特效等。用户可以根据需求对视频流进行灵活编辑，编辑后的视频流可用于直播或存储。
+- **拉流预览或监控**：在视频处理链路的不同阶段拉取视频流进行本地或云端的监控和预览。用户可以实时查看视频流的质量、内容和状态，确保视频流的正常传输和播放。
+
+## 技术原理
+
+SDK 中视频模块的数据处理流程如下图所示。
+
+![技术原理](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/tech.png)
+
+根据上图所示，在不同的模式下，观测点对应的回调触发时机也有所不同。SDK 默认采用只读模式，你可以根据自己的需求设置读写模式（详见[实现方法](#实现方法)中的相应步骤）。
+
+观测点对应的回调如下所示：
+
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/macos/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/macos/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+
+:::info[信息]
+- 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
+- 编码前处理：位于本地预览默认位置和视频帧的抽帧或缩放处理之后。
+- 视频后处理：在视频解码之后，对视频帧进行超分辨率、超级画质处理等处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+根据你的实际业务需求，在以下方案中选择实现视频数据处理的方法。
+
+### 观测原始数据
+
+![观测原始数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data1.svg)
+
+参考如下步骤，获取 SDK 采集的原始数据并进行处理。
+
+1. 调用 `setVideoFrameDelegate` 方法注册视频观测器 `AgoraVideoFrameDelegate`，同时注册相应的回调。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(self)
+    ```
+
+2. （可选）视频观测器默认的观测位置是 `AgoraVideoModulePositionPostCapture` 和 `AgoraVideoModulePositionPreRenderer`，你可以在 `getObservedFramePosition` 回调中返回预期的视频观测位置。以下示例代码以观测位置为 `AgoraVideoModulePositionPreEncoder` 为例。
+
+    ```swift
+    func getObservedFramePosition() -> AgoraVideoFramePosition {
+            .preEncoder
+    }
+    ```
+
+3. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 `getVideoFrameProcessMode` 回调中返回预期的视频处理模式为 `AgoraVideoFrameProcessModeReadWrite`：
+      - 0：（默认）只读模式，不需要将处理后的数据发回给 SDK。
+      - 1：读写模式，需要将处理后的数据发回给 SDK。
+
+    ```swift
+    func getVideoFrameProcessMode() -> AgoraVideoFrameProcessMode {
+            .readWrite
+        }
+    ```
+
+4. （可选）SDK 默认提供的视频数据格式为 `I420` 或 `CVPixelBufferRef`，如果你需要其他格式的视频数据，可在 `getVideoFormatPreference` 回调中返回预期的数据格式：
+
+      - 0：（默认）原始视频像素格式
+      - 1：I420 格式
+      - 4：RGBA 格式
+      - 12：CVPixelBufferRef NV12 格式
+      - 13：CVPixelBufferRef I420 格式
+      - 14：CVPixelBufferRef BGRA 格式
+      - 16：I422 格式
+
+      :::warning[注意]
+      SDK 目前不支持 Alpha 通道。传入的 Alpha 值将被丢弃。
+      :::
+
+    ```swift
+    func getVideoFormatPreference() -> AgoraVideoFormat {
+        .cvPixelBGRA
+    }
+    ```
+
+5. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 `getRotationApplied` 回调中返回 `true`，设置视频数据按照 `rotation` 做旋转处理。
+   :::warning[注意]
+   该回调支持的视频数据格式有：I420 和 RGBA。
+   :::
+
+    ```swift
+    func getRotationApplied() -> Bool {
+            true
+        }
+    ```
+
+6. （可选）如果你希望获取镜像处理后的视频数据，可在 `getMirrorApplied` 回调中返回 `true`，设置视频数据做镜像处理。
+   :::warning[注意]
+   - 该回调和 `setVideoEncoderConfiguration` 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像不成功。
+
+        - 该回调支持的视频数据格式有：I420 和 RGBA。
+   :::
+
+    ```swift
+    func getMirrorApplied() -> Bool {
+        true
+    }
+    ```
+
+7. 调用 `joinChannelbyToken` 方法加入频道，SDK 会在你设置好的观测位置回调相应的视频数据。
+
+   :::info[信息]
+   你不需要加入频道，也可以获取到本地采集的原始视频数据。
+   :::
+
+    ```swift
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelId, uid: 0, mediaOptions: option, joinSuccess: nil)
+    ```
+
+8. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 `onCaptureVideoFrame` 回调为例。
+
+   :::warning[注意]
+   建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+   :::
+
+    ```swift
+    func onCapture(_ videoFrame: AgoraOutputVideoFrame,
+                   sourceType: AgoraVideoSourceType) -> Bool {
+        // 将修改后的视频数据传回 SDK
+        videoFrame.pixelBuffer = modifiedBuffer
+        return true
+    }
+    ```
+
+9. 调用 `setVideoFrameDelegate` 方法，取消注册视频观测器 `AgoraVideoFrameDelegate`，即可停止观测视频数据。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(nil)
+    ```
+
+### 观测已编码数据
+
+![观测已编码数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data2.svg)
+
+参考如下步骤，获取 SDK 采集的已编码数据并进行处理。
+
+1. 调用 `setEncodedVideoFrameDelegate` 方法注册视频编码观测器 `AgoraEncodedVideoFrameDelegate`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(self)
+    ```
+
+2. 调用 `joinChannelbyToken` 方法加入频道。
+
+    ```swift
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: option)
+    ```
+
+3. 通过 `onEncodedVideoFrameReceived` 回调获取编码后的视频数据。
+
+    ```swift
+    func onEncodedVideoFrameReceived(_ videoData: Data, length: Int, info videoFrameInfo: AgoraEncodedVideoFrameInfo) -> Bool {
+        if videoFrameInfo.frameType == .keyFrame {
+            // 处理关键帧数据
+            let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("videodata")
+            try? videoData.write(to: fileURL)
+            print("write success")
+        }
+        return true
+    }
+    ```
+
+4. 调用 `setVideoEncodedFrameDelegate` 方法，取消注册视频观测器 `AgoraEncodedVideoFrameDelegate`，即可停止观测视频数据。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(nil)
+    ```
+
+### 同时观测已编码数据和渲染前数据
+
+![同时观测已编码数据和渲染前数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data3.svg)
+
+如果你想同时获取远端用户的已编码数据（简称为 A 组）和渲染前视频数据（简称为 B 组），可参考如下步骤。
+
+1. 调用 `setVideoEncodedFrameDelegate` 方法注册视频编码观测器 `AgoraEncodedVideoFrameDelegate`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```swift
+    agoraKit.setVideoEncodedFrameDelegate(self)
+    ```
+
+2. 调用 `setVideoFrameDelegate` 方法注册视频观测器 `AgoraVideoFrameDelegate`，同时注册相应的回调。
+
+    ```swift
+    agoraKit.setVideoFrameDelegate(self)
+    ```
+
+3. 调用 `joinChannelbyToken` 方法加入频道，并设置 `autoSubscribeVideo` 为 `false`（不自动订阅任何视频流）。
+
+    ```swift
+    let options = AgoraRtcChannelMediaOptions()
+    options.autoSubscribeVideo = false
+    let result = self.agoraKit.joinChannel(byToken: token, channelId: channelName, uid: 0, mediaOptions: options)
+    ```
+
+4. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 `setRemoteVideoSubscriptionOptions` 方法设置。
+
+    ```swift
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        let options = AgoraVideoSubscriptionOptions()
+        options.type = .low
+        options.encodedFrameOnly = true
+        agoraKit.setRemoteVideoSubscriptionOptions(uid, options: options)
+    }
+    ```
+
+5. 调用 `muteRemoteVideoStream` 方法，并将 `mute` 设置为 `false`（订阅远端用户的视频流），开始接收远端用户的视频流。
+
+    ```swift
+    agoraKit.muteRemoteVideoStream(uid, mute: false)
+    ```
+
+6. 通过相应的回调获取预期的数据：
+    - 可通过 `AgoraEncodedVideoFrameDelegate` 中的 `onEncodedVideoFrameReceived` 回调获取用户已编码的视频数据。
+    - 可通过 `AgoraVideoFrameDelegate` 中的 `onRenderVideoFrame` 回调获取用户渲染前的视频数据。
+
+    ```swift
+    func onEncodedVideoFrameReceived(_ videoData: Data, length: Int, info videoFrameInfo: AgoraEncodedVideoFrameInfo) -> Bool {
+        if videoFrameInfo.frameType == .keyFrame {
+            // 处理关键帧数据
+            let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent("videodata")
+            try? videoData.write(to: fileURL)
+            print("write success")
+        }
+        return true
+    }
+
+    func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+        // 自定义渲染远端用户的画面
+        if let pixelBuffer = videoFrame.pixelBuffer {
+            // 处理 pixelBuffer
+        }
+        return true
+    }
+    ```
+
+7. 分别调用 `setVideoEncodedFrameDelegate` 和 `setVideoFrameDelegate` 方法，取消注册视频观测器，即可停止观测视频数据。
+
+    ```swift
+    // 取消注册已编码视频观测器
+    agoraKit.setEncodedVideoFrameDelegate(nil)
+    // 取消注册原始视频观测器
+    agoraKit.setVideoFrameDelegate(nil)
+    ```
+
+## 示例项目
+
+声网提供了开源的原始视频数据示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="RawVideoData" href="https://gitee.com/agoraio-community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData/RawVideoData.swift" />
+  <Card title="CustomRemoteVideoRender" href="https://gitee.com/agoraio-community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+  <Card title="RawVideoData" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData/RawVideoData.swift" />
+  <Card title="CustomRemoteVideoRender" href="https://github.com/Shengwang-Community/API-Examples/blob/main/iOS/APIExample/APIExample/Examples/Advanced/CustomVideoRender/CustomVideoRender.swift" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+在实时互动过程中，你可能需要对 SDK 采集到的原始视频数据进行处理，也可能需要获取 SDK 采集并编码的视频数据。本文介绍如何通过不同类型的视频观测器获取 SDK 采集到的视频数据，并对其进行处理。
+
+## 适用场景
+
+自定义视频数据处理适用于以下场景。
+
+- **自定义美颜处理**：拉取本地采集的原始视频流，并使用第三方美颜处理工具进行处理。处理后的视频流可以再次推送到频道中，供观看者实时观看。
+- **自定义视频编辑**：在视频处理链路的不同阶段对视频流进行编辑处理，如添加水印、裁剪、剪辑、特效等。用户可以根据需求对视频流进行灵活编辑，编辑后的视频流可用于直播或存储。
+- **拉流预览或监控**：在视频处理链路的不同阶段拉取视频流进行本地或云端的监控和预览。用户可以实时查看视频流的质量、内容和状态，确保视频流的正常传输和播放。
+
+## 技术原理
+
+SDK 中视频模块的数据处理流程如下图所示。
+
+![技术原理](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/tech.png)
+
+根据上图所示，在不同的模式下，观测点对应的回调触发时机也有所不同。SDK 默认采用只读模式，你可以根据自己的需求设置读写模式（详见[实现方法](#实现方法)中的相应步骤）。
+
+观测点对应的回调如下所示：
+
+- 观测点 1：通过 [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 回调获取未经过缩放的数据。
+- 观测点 2：通过 [`onPreEncodeVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 回调获取编码前的数据。
+- 观测点 3：通过 [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-encoded#onencodedvideoframereceived) 回调获取编码后的数据。
+- 观测点 4：通过 [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe) 回调获取渲染前的数据。
+
+:::info[信息]
+- 视频前处理：位于视频前处理插件（包括 SDK 内置插件以及拓展插件）的默认加载位置、本地预览默认位置和视频帧的抽帧或缩放处理之前。
+- 编码前处理：位于本地预览默认位置和视频帧的抽帧或缩放处理之后。
+- 视频后处理：在视频解码之后，对视频帧进行超分辨率、超级画质处理等处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+根据你的实际业务需求，在以下方案中选择实现视频数据处理的方法。
+
+### 观测原始数据
+
+参考如下步骤，获取 SDK 采集的原始数据并进行处理。
+
+1. 调用 `registerVideoFrameObserver` 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+
+    ```cpp
+    m_rtcEngine->registerVideoFrameObserver(videoFrameObserver);
+    ```
+
+1. （可选）视频观测器默认的观测位置是 `POSITION_POST_CAPTURER`（对应 `onCaptureVideoFrame` 回调）和 `POSITION_PRE_RENDERER`（对应 `onRenderVideoFrame` 回调），你可以在 `getObservedFramePosition` 回调的返回值中设置预期的视频观测位置。
+
+    以下示例代码以观测位置为 `POSITION_PRE_ENCODER` 为例，对应 `onPreEncodeVideoFrame` 回调。
+
+    ```cpp
+    virtual uint32_t getObservedFramePosition() override{
+    	return agora::media::base::POSITION_PRE_ENCODER;
+    }
+    ```
+
+1. （可选）SDK 默认不接收经过处理后的视频数据，如果你要修改此行为，可在 `getVideoFrameProcessMode` 回调中设置预期的视频处理模式为 `1`：
+      - 0：（默认）只读模式，不需要将处理后的数据发回给 SDK。
+      - 1：读写模式，需要将处理后的数据发回给 SDK。
+
+    ```cpp
+    virtual VIDEO_FRAME_PROCESS_MODE getVideoFrameProcessMode() override{
+    	return VIDEO_FRAME_PROCESS_MODE::PROCESS_MODE_READ_WRITE;
+    }
+    ```
+
+1. （可选）SDK 默认提供的视频数据格式为 YUV420，如果你需要其他格式的视频数据，可在 `getVideoFormatPreference` 回调的返回值中设置预期的数据格式：
+    - 0：（默认）原始视频像素格式
+    - 1：I420 格式
+    - 4：RGBA 格式
+    - 16：I422 格式
+
+    ```cpp
+    virtual agora::media::base::VIDEO_PIXEL_FORMAT getVideoFormatPreference() override {
+    	return agora::media::base::VIDEO_PIXEL_I420;
+    }
+    ```
+
+1. （可选）如果采集到视频帧中设置了旋转信息 `rotation`，你可以在 `getRotationApplied` 回调的返回值中设置视频数据按照 `rotation` 做旋转处理。
+   :::warning[注意]
+   该回调支持的视频数据格式有：I420、RGBA、TextureBuffer。
+   :::
+
+    ```cpp
+    virtual bool getRotationApplied() override {
+        return true;
+    }
+    ```
+
+1. （可选）如果你希望获取镜像处理后的视频数据，可在 `getMirrorApplied` 回调的返回值中设置视频数据做镜像处理。
+   :::warning[注意]
+   - 该回调和 `setVideoEncoderConfiguration` 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像不成功。
+      - 该回调支持的视频数据格式有：I420、RGBA。
+   :::
+
+    ```cpp
+    virtual bool getMirrorApplied()  override {
+        return true;
+    }
+    ```
+
+1. 调用 `joinChannel` 方法加入频道，SDK 会在你设置好的观测位置回调相应的视频数据。
+
+   :::info[信息]
+   你不需要加入频道，也可以获取到本地采集的原始视频数据。
+   :::
+
+    ```cpp
+    m_rtcEngine->joinChannel(token, channelId, 0， options);
+    ```
+
+1. （可选）如果需要将处理后的视频数据传回给 SDK，则在相应回调中传入处理后的视频数据，并将回调的返回值设置为 `true`（设置 SDK 接收视频帧）。以下示例代码以 `onCaptureVideoFrame` 回调为例。
+   :::warning[注意]
+   建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+   :::
+
+    ```cpp
+    virtual bool onCaptureVideoFrame(VideoFrame& videoFrame) override {
+        // 将修改后的视频数据传回 SDK
+        videoFrame.yBuffer = modifiedBuffer;
+        return true;
+     }
+     ```
+
+1. 调用 `registerVideoFrameObserver` 方法，取消注册原始视频观测器 `IVideoFrameObserver`，即可停止观测视频数据。
+
+    ```cpp
+    m_rtcEngine->registerVideoFrameObserver(nullptr);
+    ```
+
+### 观测已编码数据
+
+参考如下步骤，获取 SDK 采集的已编码数据并进行处理。
+
+1. 调用 `registerVideoEncodedFrameObserver` 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```cpp
+    m_rtcEngine->registerVideoEncodedFrameObserver(videoEncodedFrameObserver);
+    ```
+
+1. 调用 `joinChannel` 方法加入频道。
+
+    ```cpp
+    m_rtcEngine->joinChannel(token, channelId, 0， options);
+    ```
+
+1. 通过 `onEncodedVideoFrameReceived` 回调获取编码后的视频数据。
+
+    ```cpp
+    virtual bool onEncodedVideoFrameReceived(rtc::uid_t uid, const uint8_t *imageBuffer, size_t length, const rtc::EncodedVideoFrameInfo &videoEncodedFrameInfo) override
+    {
+     // 可以获取编码数据，根据业务逻辑自行处理，此处只是简单打印
+        VIDEO_CODEC_TYPE codecType = videoEncodedFrameInfo.codecType;
+        VIDEO_FRAME_TYPE frameType = videoEncodedFrameInfo.frameType;
+        CString str;
+        str.Format(TEXT("codecType=%d  frameType=%d"),codecType,frameType);
+        TRACE(str);
+    }
+    ```
+
+1. 调用 `registerVideoEncodedFrameObserver` 方法，取消注册视频观测器 `IVideoEncodedFrameObserver`，即可停止观测视频数据。
+
+    ```cpp
+    engine->registerVideoEncodedFrameObserver(nullptr);
+    ```
+
+### 同时观测已编码数据和渲染前数据
+
+![同时观测已编码数据和渲染前数据](https://web-cdn.agora.io/docs-portal/img/rtc/video-processing/video-data3.svg)
+
+如果你想同时获取远端用户的已编码数据（简称为 A 组）和渲染前视频数据（简称为 B 组），可参考如下步骤。
+
+1. 调用 `registerVideoEncodedFrameObserver` 方法注册视频编码观测器 `IVideoEncodedFrameObserver`，同时注册回调 `onEncodedVideoFrameReceived`。
+
+    ```cpp
+    m_rtcEngine->registerVideoEncodedFrameObserver(videoEncodedFrameObserver);
+    ```
+
+1. 调用 `registerVideoFrameObserver` 方法注册原始视频观测器 `IVideoFrameObserver`，同时注册相应的回调。
+
+    ```cpp
+    m_rtcEngine->registerVideoFrameObserver(videoFrameObserver);
+    ```
+
+1. 调用 `joinChannel` 方法加入频道，并设置 `autoSubscribeVideo` 为 `false`（不自动订阅任何视频流）。
+
+    ```cpp
+    ChannelMediaOptions options;
+    options.autoSubscribeVideo = false;
+    m_rtcEngine->joinChannel(token, channelId, 0, options);
+    ```
+
+1. （可选）SDK 默认订阅所有远端原始数据和编码后的数据（即 `encodedFrameOnly` 为 `false`）和视频大流，如果你想针对不同 `uid` 设置不同的订阅选项，可调用 `setRemoteVideoSubscriptionOptions` 方法设置。
+   :::info[信息]
+   SDK 对远端视频流的默认订阅行为取决于注册的视频观测器类型：
+
+         - 如果注册的是 `IVideoFrameObserver` 观测器，则默认订阅原始数据和编码后的数据。
+         - 如果注册的是 `IVideoEncodedFrameObserver` 观测器，则默认仅订阅编码后的数据。
+         - 如果注册了两种观测器，则默认跟随后注册的视频观测器。在本场景中，由于后注册的是 `IVideoFrameObserver` 观测器，所以默认订阅原始数据和编码后的数据，且 A 组和 B 组数据都可以按照预期被观测到。
+   :::
+
+    ```cpp
+    void onUserJoined(uid_t uid, int elapsed) override {
+       VideoSubscriptionOptions options;
+       options.type = VIDEO_STREAM_LOW;
+       options.encodedFrameOnly = true;
+       m_rtcEngine->setRemoteVideoSubscriptionOptions(uid, options);
+    }
+     ```
+
+1. 调用 `muteRemoteVideoStream` 方法，并将 `muted` 设置为 `false`（订阅远端用户的视频流），开始接收远端用户的视频流。
+
+    ```cpp
+    m_rtcEngine->muteRemoteVideoStream(uid, false);
+    ```
+
+1. 通过相应的回调获取预期的数据：
+    - 可通过 `IVideoEncodedFrameObserver` 中的 `onEncodedVideoFrameReceived` 回调获取用户已编码的视频数据。
+    - 可通过 `IVideoFrameObserver` 中的 `onRenderVideoFrame` 回调获取用户渲染前的视频数据。
+
+    ```cpp
+    virtual bool onEncodedVideoFrameReceived(rtc::uid_t uid, const uint8_t *imageBuffer, size_t length, const rtc::EncodedVideoFrameInfo &videoEncodedFrameInfo) override
+    {
+     // 可以获取编码数据，根据业务逻辑自行处理，此处只是简单打印
+        VIDEO_CODEC_TYPE codecType = videoEncodedFrameInfo.codecType;
+        VIDEO_FRAME_TYPE frameType = videoEncodedFrameInfo.frameType;
+        CString str;
+        str.Format(TEXT("codecType=%d  frameType=%d"),codecType,frameType);
+        TRACE(str);
+    }
+
+    bool onRenderVideoFrame(const char* channelId, rtc::uid_t remoteUid, VideoFrame& videoFrame)
+    {
+        // 可以获取远端指定用户的视频帧数据，根据业务逻辑自行处理，此处只是简单打印
+    	CString str;
+    	str.Format(TEXT("channelId=%s  remoteUid=%d"),channelId,remoteUid);
+    	TRACE(str);
+    	return true;
+    }
+    ```
+
+1. 分别调用 `registerVideoEncodedFrameObserver` 和 `registerVideoFrameObserver` 方法，取消注册视频观测器，即可停止观测视频数据。
+
+    ```cpp
+    // 取消注册已编码视频观测器
+    m_rtcEngine->registerVideoEncodedFrameObserver(nullptr);
+    // 取消注册原始视频观测器
+    m_rtcEngine->registerVideoFrameObserver(nullptr);
+    ```
+
+## 示例项目
+
+声网提供了开源的原始视频数据示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="OriginalVideo" href="https://gitee.com/agoraio-community/API-Examples/blob/main/windows/APIExample/APIExample/Advanced/OriginalVideo" />
+  <Card title="OriginalVideo" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/OriginalVideo" />
+</Cards>
+
+</PlatformStructured>

@@ -1,0 +1,547 @@
+---
+title: "频道事件类型"
+description: "查看实时互动 RTC 的频道事件类型，了解关键概念、参数说明、使用限制和接入注意事项。"
+---
+开通声网消息通知后，声网通知服务器以 HTTPS POST 请求方法向你的服务器发送频道事件通知回调。
+
+数据格式为 JSON，字符编码为 UTF-8，签名算法为 HMAC/SHA1 或 HMAC/SHA256。
+
+本页介绍频道事件回调中返回的各事件类型及含义。
+
+## 请求的 Header
+
+消息通知回调的请求 Header 中包含以下字段：
+
+| 字段名               | 值                                                           |
+| :------------------- | :----------------------------------------------------------- |
+| `Content-Type`       | application/json                                             |
+| `Agora-Signature`    | 声网用客户密钥和 HMAC/SHA1 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook#验证签名)。 |
+| `Agora-Signature-V2` | 声网用客户密钥和 HMAC/SHA256 算法生成的签名值。你需要使用客户密钥和 HMAC/SHA256 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook#验证签名)。 |
+
+## 请求的 Body
+
+消息通知回调的请求 Body 包含以下字段：
+
+| 字段        | 类型        | 描述                                                         |
+| :---------- | :---------- | :----------------------------------------------------------- |
+| `noticeId`  | String      | 通知 ID，标识来自声网业务服务器的一次事件通知。           |
+| `productId` | Number      | 业务 ID。值为 `1` 表示实时通信业务。                         |
+| `eventType` | Number      | 通知的事件类型。详见[频道事件类型](/zh-CN/realtime-media/rtc/reference/events)。 |
+| `notifyMs`  | Number      | 声网消息服务器向你的服务器发送事件通知的 Unix 时间戳 (ms)。通知**重试**时该值会更新。 |
+| `sid`  | String    | 会话 ID。 |
+| `payload`   | JSON Object | 通知事件的具体内容。`payload` 因 `eventType` 而异，详见[频道事件类型](/zh-CN/realtime-media/rtc/reference/events)。 |
+
+消息通知回调的请求包体示例：
+
+```json
+{
+    "sid": "C866467GVJJ54687",
+    "noticeId": "2000001428:4330:107",
+    "productId": 1,
+    "eventType": 101,
+    "notifyMs": 1611566412672,
+    "payload": {...}
+}
+```
+
+<a id="eventtype"></a>
+## 频道事件类型
+
+声网消息通知服务可以通知实时音视频（RTC）业务中的以下频道事件：
+
+| `eventType`                                                    | `event_name`                                 | 事件描述                           |
+| :----------------------------------------------------------- | :----------------------------------------- | :--------------------------------- |
+| [101](/zh-CN/realtime-media/rtc/reference/events) | `channel create`                             | 创建频道。                         |
+| [102](/zh-CN/realtime-media/rtc/reference/events)  | `channel destroy`                            | 销毁频道。                         |
+| [103](/zh-CN/realtime-media/rtc/reference/events)  | `broadcaster join channel`                   | 直播场景下，主播加入频道。         |
+| [104](/zh-CN/realtime-media/rtc/reference/events)  | `broadcaster leave channel`                  | 直播场景下，主播离开频道。         |
+| [105](/zh-CN/realtime-media/rtc/reference/events)  | `audience join channel`                      | 直播场景下，观众加入频道。         |
+| [106](/zh-CN/realtime-media/rtc/reference/events)  | `audience leave channel`                     | 直播场景下，观众离开频道。         |
+| [107](/zh-CN/realtime-media/rtc/reference/events)  | `user join channel with communication mode` | 通信场景下，用户加入频道。 |
+| [108](/zh-CN/realtime-media/rtc/reference/events)  | `user leave channel with communication mode` | 通信场景下，用户离开频道。 |
+| [111](/zh-CN/realtime-media/rtc/reference/events)| `client role change to broadcaster`          | 观众将角色切换为主播。 |
+| [112](/zh-CN/realtime-media/rtc/reference/events) | `client role change to audience`             | 主播将角色切换为观众。 |
+
+<a id="101"></a>
+### 101 channel create
+
+`eventType` 为 `101` 表示创建频道（第一个用户加入频道），`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                                |
+| :------------ | :------- | :-------------------------------------------------- |
+| `channelName` | String   | 频道名。                                            |
+| `ts`          | Number   | 该事件在声网业务服务器上发生的 Unix 时间戳 (s)。 |
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "ts": 1560396834
+}
+```
+
+<a id="102"></a>
+### 102 channel destroy
+
+`eventType` 为 102 表示最后一个用户离开频道且频道销毁，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `ts` | Number | 该事件在声网业务服务器上发生的 Unix 时间戳 (s)。 |
+| `lastUid` | Number | <Slot name="events-html-0-3-2" /> |
+
+<Slot for="events-html-0-3-2">
+
+最后一个离开频道的用户 ID。
+     :::info[信息]
+     如果频道中有多人同时最后离开，则声网消息通知可能返回不同的 `lastUid`，此时任选其一即可。
+     :::
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "ts": 1560399999,
+    "lastUid": 12121212 
+}
+```
+
+<a id="103"></a>
+### 103 broadcaster join channel
+
+`eventType` 为 `103` 表示直播场景下主播加入频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 主播在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-1-3-2" /> |
+| `clientType` | Number | <Slot name="events-html-1-4-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `account` | string | String 类型的用户 ID。 |
+
+<Slot for="events-html-1-3-2">
+
+主播设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+<Slot for="events-html-1-4-2">
+
+:::info[信息]
+该字段仅在 `platform` 为 `6` 时返回。
+:::
+
+        Linux 平台的主播端使用的业务类型，常见的返回值包括：
+
+        - `3`：本地服务端录制
+        - `8`：小程序
+        - `10`：云录制
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051030746,
+    "ts": 1560396843,
+    "account": "test"
+}
+```
+
+<a id="104"></a>
+### 104 broadcaster leave channel
+
+`eventType` 为 `104` 表示直播场景下主播离开频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 主播在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-2-3-2" /> |
+| `clientType` | Number | <Slot name="events-html-2-4-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `reason` | Number | <Slot name="events-html-2-6-2" /> |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `duration` | Number | 主播在频道内的时长 (s)。 |
+| `account` | string | String 类型的用户 ID。 |
+
+<Slot for="events-html-2-3-2">
+
+主播设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+<Slot for="events-html-2-4-2">
+
+:::info[信息]
+该字段仅在 `platform` 为 `6` 时返回。
+:::
+
+        Linux 平台的主播端使用的业务类型，常见的返回值包括：
+
+        - `3`：本地服务端录制
+        - `8`：小程序
+        - `10`：云录制
+
+</Slot>
+
+<Slot for="events-html-2-6-2">
+
+主播离开频道的原因：
+
+        - `1`：主播正常离开频道。
+        - `2`：客户端与声网业务服务器连接超时。判断标准为声网 SD-RTN™ 超过 10 秒未收到该主播的任何数据包，或连接单台服务器 4 秒超时并在 1 秒内没有完成重连。
+        - `3`：权限问题。如被运营人员通过踢人 RESTful API 踢出频道。
+        - `4`：声网业务服务器因负载调整，主动与客户端短暂断开连接，之后会重新连接。
+        - `5`：主播切换新设备，迫使旧设备下线。
+        - `9`：由于客户端有多个 IP 地址，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查用户是否存在多个公网 IP 或使用了 VPN。
+        - `10`：由于网络连接问题，例如 SDK 超过 4 秒未收到来自声网业务服务器的任何数据包或 socket 连接错误，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查网络连接状态。
+        - `12`：Token 错误或者过期。
+        - `99`：SDK 因未知的网络问题与声网业务服务器断开连接，通常情况下 SDK 会尝试重新连接。
+        - `999`：异常用户。例如，用户短时间内频繁登录登出频道会被判定为异常用户。
+
+          :::info[信息]
+          你的 App 服务端需要在收到 `reason` 为 `999` 的 `104` 事件 60 秒后调用[踢人 API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将该用户踢出频道。否则，该用户再次加入频道后，可能无法收到相关事件通知。
+          :::
+
+        - `0`：其他原因。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051030789,
+    "reason": 1,
+    "ts": 1560396943,
+    "duration": 600,
+    "account": "test"
+}
+```
+
+<a id="105"></a>
+### 105 audience join channel
+
+`eventType` 为 `105` 表示直播场景下观众加入频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 观众在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-3-3-2" /> |
+| `clientType` | Number | <Slot name="events-html-3-4-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `account` | String | String 类型的用户 ID。 |
+
+<Slot for="events-html-3-3-2">
+
+观众设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+<Slot for="events-html-3-4-2">
+
+:::info[信息]
+该字段仅在 `platform` 为 `6` 时返回。
+:::
+
+        Linux 平台的观众端使用的业务类型，常见的返回值包括：
+
+        - `3`：本地服务端录制
+        - `8`：小程序
+        - `10`：云录制
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051035346,
+    "ts": 1560396843,
+    "account": "test"
+}
+```
+
+<a id="106"></a>
+### 106 audience leave channel
+
+`eventType` 为 `106` 表示直播场景下观众离开频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 观众在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-4-3-2" /> |
+| `clientType` | Number | <Slot name="events-html-4-4-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `reason` | Number | <Slot name="events-html-4-6-2" /> |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `duration` | Number | 观众在频道内的时长 (s)。 |
+| `account` | string | String 类型的用户 ID。 |
+
+<Slot for="events-html-4-3-2">
+
+观众设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+<Slot for="events-html-4-4-2">
+
+:::info[信息]
+该字段仅在 `platform` 为 `6` 时返回。
+:::
+
+        Linux 平台的观众端使用的业务类型，常见的返回值包括：
+
+        - `3`：本地服务端录制
+        - `8`：小程序
+        - `10`：云录制
+
+</Slot>
+
+<Slot for="events-html-4-6-2">
+
+观众离开频道的原因：
+
+        - `1`：观众正常离开频道。
+        - `2`：客户端与声网业务服务器连接超时。判断标准为声网 SD-RTN™ 超过 10 秒未收到该主播的任何数据包，或连接单台服务器 4 秒超时并在 1 秒内没有完成重连。
+        - `3`：权限问题。如被运营人员通过踢人 RESTful API 踢出频道。
+        - `4`：声网业务服务器因负载调整，主动与客户端短暂断开连接，之后会重新连接。
+        - `5`：主播切换新设备，迫使旧设备下线。
+        - `9`：由于客户端有多个 IP 地址，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查用户是否存在多个公网 IP 或使用了 VPN。
+        - `10`：由于网络连接问题，例如 SDK 超过 4 秒未收到来自声网业务服务器的任何数据包或 socket 连接错误，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查网络连接状态。
+        - `12`：Token 错误或者过期。
+        - `99`：SDK 因未知的网络问题与声网业务服务器断开连接，通常情况下 SDK 会尝试重新连接。
+        - `999`：异常用户。例如，用户短时间内频繁登录登出频道会被判定为异常用户。
+
+          :::info[信息]
+          你的 App 服务端需要在收到 `reason` 为 `999` 的 `104` 事件 60 秒后调用[踢人 API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule) 将该用户踢出频道。否则，该用户再次加入频道后，可能无法收到相关事件通知。
+          :::
+
+        - `0`：其他原因。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051035390,
+    "reason": 1,
+    "ts": 1560396943,
+    "duration": 600,
+    "account": "test"
+}
+```
+
+<a id="107"></a>
+### 107 user join channel with communication mode
+
+`eventType` 为 `107` 表示通信场景下用户加入频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 用户在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-5-3-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `account` | string | String 类型的用户 ID。 |
+
+<Slot for="events-html-5-3-2">
+
+用户设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051035369,
+    "ts": 1560396834,
+    "account": "test"
+}
+```
+
+<a id="108"></a>
+### 108 user leave channel with communication mode
+
+`eventType` 为 `108` 表示通信场景下用户离开频道，`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| --- | --- | --- |
+| `channelName` | String | 频道名。 |
+| `uid` | Number | 用户在频道内的用户 ID。 |
+| `platform` | Number | <Slot name="events-html-6-3-2" /> |
+| `clientSeq` | Number | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。 |
+| `reason` | Number | <Slot name="events-html-6-5-2" /> |
+| `ts` | Number | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `duration` | Number | 用户在频道内的时长 (s)。 |
+| `account` | string | String 类型的用户 ID。 |
+
+<Slot for="events-html-6-3-2">
+
+用户设备所属平台：
+
+        - `1`：Android
+        - `2`：iOS
+        - `5`：Windows
+        - `6`：Linux
+        - `7`：Web
+        - `8`：macOS
+        - `10`：HarmonyOS
+        - `0`：其他平台
+
+</Slot>
+
+<Slot for="events-html-6-5-2">
+
+主播离开频道的原因：
+
+        - `1`：用户正常离开频道。
+        - `2`：客户端与声网业务服务器连接超时。判断标准为声网 SD-RTN™ 超过 10 秒未收到该主播的任何数据包，或连接单台服务器 4 秒超时并在 1 秒内没有完成重连。
+        - `3`：权限问题。如被运营人员通过踢人 RESTful API 踢出频道。
+        - `4`：声网业务服务器因负载调整，主动与客户端短暂断开连接，之后会重新连接。
+        - `5`：用户切换新设备，迫使旧设备下线。
+        - `9`：由于客户端有多个 IP 地址，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查用户是否存在多个公网 IP 或使用了 VPN。
+        - `10`：由于网络连接问题，例如 SDK 超过 4 秒未收到来自声网业务服务器的任何数据包或 socket 连接错误，SDK 主动与声网业务服务器断开连接并重连。此过程用户无感知。请检查网络连接状态。
+        - `0`：其他原因。
+
+</Slot>
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "platform": 1,
+    "clientSeq": 1625051037369,
+    "reason": 1,
+    "ts": 1560496834,
+    "duration": 600,
+    "account": "test"
+}
+```
+
+<a id="111"></a>
+### 111 client role change to broadcaster
+
+`eventType` 为 `111` 表示直播场景下观众上麦，即调用 `setClientRole` 将用户角色从观众切换为主播，`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                         |
+| :------------ | :------- | :------------------------------------------- |
+| `channelName` | String   | 频道名。                                     |
+| `uid`         | Number   | 用户在频道内的用户 ID。                      |
+| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。|
+| `ts`          | Number   | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `account`          | String   | String 类型的用户 ID。                 |
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "clientSeq": 1625051035469,
+    "ts": 1560396834,
+    "account": "test"
+}
+```
+
+<a id="112"></a>
+### 112 client role change to audience
+
+`eventType` 为 `112` 表示直播场景下主播下麦，即调用 `setClientRole` 将用户角色从主播切换为观众，`payload` 中包含以下字段：
+
+| 字段          | 数据类型 | 含义                                         |
+| :------------ | :------- | :------------------------------------------- |
+| `channelName` | String   | 频道名。                                     |
+| `uid`         | Number   | 用户在频道内的用户 ID。                      |
+| `clientSeq`  | Number   | 序列号，标识该事件在 App 客户端上发生的顺序，可用于对同一用户的事件进行排序。详见[维护用户在线状态](/zh-CN/realtime-media/rtc/build/optimize-and-operate/online-user-status)。|
+| `ts`          | Number   | 该事件在业务服务器上发生的 Unix 时间戳 (s)。 |
+| `account`          | String   | String 类型的用户 ID。                 |
+
+`payload` 示例：
+
+```json
+{
+    "channelName": "test_webhook",
+    "uid": 12121212,
+    "clientSeq": 16250510358369,
+    "ts": 1560496834,
+    "account": "test"
+}
+```

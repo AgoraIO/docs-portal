@@ -1,0 +1,56 @@
+---
+title: AgoraApplicationScenarioType
+description: 视频应用场景类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_videoapplicationscenariotype
+  sourcePath: html-docs/rtc/iOS/API/enum_videoapplicationscenariotype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_videoapplicationscenariotype__detailed_desc"></a>
+
+:::info[自从]
+自 v4.2.0 版本新增。
+:::
+
+<a id="enum_videoapplicationscenariotype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="agoraapplicationgeneralscenario"></a>
+<Parameter name="AgoraApplicationGeneralScenario">
+
+（0）：通用场景（默认）。
+
+</Parameter>
+<a id="agoraapplicationmeetingscenario"></a>
+<Parameter name="AgoraApplicationMeetingScenario">
+
+（1）：会议场景。SDK 会自动启用多项策略：在需要视频小流具备高码率的场景中，SDK 启用多种抗网络拥塞技术，提升低质量流性能，确保订阅端流畅接收；实时监控视频大流的订阅人数并动态调整配置：若无人订阅，高质量流的码率和帧率将自动降低以节省上行带宽；若有人订阅，则恢复为最近一次调用 [setVideoEncoderConfiguration:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置的 [AgoraVideoEncoderConfiguration](/zh-CN/api-reference/rtc/ios/class-videoencoderconfiguration) 配置，若未设置，则默认参数为：iOS：分辨率 960 × 540，帧率 15 fps，码率 1000 Kbps；macOS：分辨率 1280 × 720，帧率 15 fps，码率 1600 Kbps。SDK 也会实时监控视频小流的订阅人数并动态启用或禁用该流：若无人订阅，自动禁用以节省带宽；若有人订阅，则启用并恢复为最近一次调用 [setDualStreamMode\:streamConfig:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode2) 设置的 [AgoraSimulcastStreamConfig](/zh-CN/api-reference/rtc/ios/class-simulcaststreamconfig) 配置，若未设置，则默认参数为：分辨率 480 × 272，帧率 15 fps，码率 500 Kbps。
+
+:::note
+注： 如果调用了 [setDualStreamMode\:streamConfig:](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setdualstreammode2) 并设置为从不发送视频小流（`AgoraDisableSimulcastStream`），则会议场景下低质量流的动态调整不生效。
+:::
+
+</Parameter>
+<a id="agoraapplication1v1scenario"></a>
+<Parameter name="AgoraApplication1V1Scenario">
+
+（2）：一对一直播场景。为满足低延迟和高质量视频的需求，SDK 优化了策略，提升了视频质量、首帧渲染速度、中低端设备的延迟表现以及弱网下的流畅性。
+
+:::note
+注： 该枚举值仅适用于主播对主播的场景。
+:::
+
+</Parameter>
+<a id="agoraapplicationliveshowscenario"></a>
+<Parameter name="AgoraApplicationLiveShowScenario">
+
+（3）：Show Room 场景。该场景对快速渲染和高画质要求较高。SDK 进行了多项优化，包括自动启用音视频帧加速渲染以最小化首帧延迟（无需调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengine_enableinstantmediarendering)），启用 B 帧编码以提升图像质量和带宽效率，即使在弱网或低端设备上也能提供更好的视频质量和播放流畅性。
+
+</Parameter>
+</ParameterList>

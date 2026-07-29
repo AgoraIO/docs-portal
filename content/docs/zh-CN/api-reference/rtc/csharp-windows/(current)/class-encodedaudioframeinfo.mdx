@@ -1,0 +1,92 @@
+---
+title: EncodedAudioFrameInfo
+description: 编码后音频的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_encodedaudioframeinfo
+  sourcePath: html-docs/rtc/Csharp/API/class_encodedaudioframeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_encodedaudioframeinfo__prototype"></a>
+
+```text
+public class EncodedAudioFrameInfo
+    {
+        public EncodedAudioFrameInfo()
+        {
+            codec = AUDIO_CODEC_TYPE.AUDIO_CODEC_AACLC;
+            sampleRateHz = 0;
+            samplesPerChannel = 0;
+            numberOfChannels = 0;
+            captureTimeMs = 0;
+        }
+
+        public EncodedAudioFrameInfo(ref EncodedAudioFrameInfo rhs)
+        {
+            codec = rhs.codec;
+            sampleRateHz = rhs.sampleRateHz;
+            samplesPerChannel = rhs.samplesPerChannel;
+            numberOfChannels = rhs.numberOfChannels;
+            advancedSettings = rhs.advancedSettings;
+            captureTimeMs = rhs.captureTimeMs;
+        }
+
+        public AUDIO_CODEC_TYPE codec { set; get; }
+
+        public int sampleRateHz { set; get; }
+
+        public int samplesPerChannel { set; get; }
+
+        public int numberOfChannels { set; get; }
+
+        public EncodedAudioFrameAdvancedSettings advancedSettings { set; get; }
+
+        public int64_t captureTimeMs;
+    };
+```
+
+<a id="class_encodedaudioframeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="codec"></a>
+<Parameter name="codec">
+
+音频编码规格: [AUDIO_CODEC_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiocodectype)。
+
+</Parameter>
+<a id="sampleratehz"></a>
+<Parameter name="sampleRateHz">
+
+音频采样率 (Hz)。
+
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
+
+每个声道的音频采样数。
+
+</Parameter>
+<a id="numberofchannels"></a>
+<Parameter name="numberOfChannels">
+
+声道数。
+
+</Parameter>
+<a id="advancedsettings"></a>
+<Parameter name="advancedSettings">
+
+该功能暂不支持。
+
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。
+
+</Parameter>
+</ParameterList>

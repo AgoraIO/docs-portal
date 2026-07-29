@@ -1,0 +1,80 @@
+---
+title: "实时调整发送码率"
+---
+为提升数据传输量和避免网络拥塞，RTSA SDK 会根据网络带宽状况的变化建议开发者实时调整发送码率。
+
+## 实现方法
+
+开发者可根据自己的实际带宽和码率需要，在加入 RTC 频道前调用 `agora_rtc_set_bwe_param` 方法配置 BWE (BandWidth Estimation)，设置发送码率的最小值、最大值和起始值。
+
+:::warning[注意]
+你必须在调用 `agora_rtc_join_channel` 加入频道之前调用 `agora_rtc_set_bwe_param` 方法配置 BWE (BandWidth Estimation)，否则调用无效。
+:::
+
+码流传输过程中，当网络带宽状况发生变化时，SDK 会触发 `on_target_bitrate_changed` 回调，提示应用程序实时调整发送码率。回调返回的码率是视频编码器的最大建议编码码率。
+
+以网络摄像头的不同清晰度档位为例：
+
+| 档位   | 分辨率    | 帧率 | 码率范围（kbps） |
+|--------|-----------|------|------------------|
+| 标清   | L1: 640\*360   | 15   |    400 ~ 800              |
+| 高清   | L2: 1280\*720  | 15   |   1130 ~ 2260               |
+| 超高清 | L3: 1920\*1080 | 15   |     1130 ~ 4160             |
+
+如上表中配置情况，可设置最小值 400 kbps，最大值 4200 kbps。初始值是带宽探测的初始回调值，实际设置介于最小值和最大值中间，一般设置为正常情况编码的码率。如果初始编码档位为上表的标清档，初始值可设为 500 kbps。
+
+发端会持续探测可用带宽，通过 `on_target_bitrate_changed` 回调告知应用当前可用带宽，应用编码需要做码率跟随，避免超码率发送，引起卡顿等问题。
+
+示例代码如下：
+
+```c
+// 配置 BWE
+uint32_t min_bps = 400000;
+uint32_t max_bps = 4200000;
+uint32_t start_bps = 500000;
+agora_rtc_set_bwe_param(min_bps,  max_bps,  start_bps);
+
+// 实时调整发送码率
+static void __on_target_bitrate_changed(const char *channel, uint32_t target_bps)
+{
+    // 当前码率按照 100 K 分档，向下取整
+    curTargetBitrate = target_bps/100000 * 100;
+    diffTargetBitrate = abs(curTargetBitRate - lastTargetBitrate);
+
+    // 如果探测带宽与设置的编码码率相差 100 K 以上，则重写调整编码参数
+    if ( (diffTargetBitrate >= 100 ) && (lowBitrateL1 < curTargetBitrate < highBitrateL3) )
+    {
+        if (lowBitrateL1 < curTargetBitrate < highBitrateL1)
+        {
+            curResolutionLevel = L1;
+        }
+        else if (lowBitrateL2 < curTargetBitrate < highBitrateL2)
+        {
+            curResolutionLevel = L3;
+        }
+        else
+        {}
+        // 调整编码分辨率
+        if (curResolutionLevel != lastResolutionLevel)
+        {
+            setEncodeResolution(curResolutionLevel);
+        }
+        // 设置编码码率
+        setEncodeBitrate(curTargetBitrate);
+
+        lastResolutionLevel = curResolutionLevel;
+        lastTargetBitrate = curTargetBitrate;
+    }
+}
+```
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+- [`agora_rtc_set_bwe_param`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ae274291aadd1afb9974a4672ed6c2bb8)
+- [`on_target_bitrate_changed`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3ef06a16cd4cf3aa585dd6ad13ada0b)
+
+## 开发注意事项
+
+`on_target_bitrate_changed` 回调返回的是 bps，不要和 kbps 及 Bps 混淆。

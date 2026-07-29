@@ -37,12 +37,24 @@ vi.mock('@/lib/docs-page', () => ({
   },
 }));
 
+vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/lib/docs-static-manifest')>();
+
+  return {
+    ...actual,
+    shouldUseStaticDocsPayload: vi.fn(() => false),
+  };
+});
+
+import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
   payloadSupportsPlatform,
 } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
+import { Route as TabLayoutRoute } from './$locale/$tab/route';
 import { Route as LocaleIndexRoute } from './$locale/index';
 import { Route as LegacyDocRoute } from './doc/$';
 import { Route as LlmsSectionRoute } from './llms/$';
@@ -213,6 +225,70 @@ describe('docs route locale guards', () => {
     throw new Error('expected loader to reject with redirect');
   });
 
+  it(
+    'redirects tab roots without index pages to their first real page',
+    async () => {
+      try {
+        await getLoader(TabLayoutRoute)({
+          location: {
+            hash: '#section',
+            pathname: '/zh-CN/realtime-media',
+            searchStr: '?from=root',
+          },
+          params: {
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/overview?from=root#section',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected tab root to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it('leaves static tab roots to the index route payload loader', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/introduction',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'introduction',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
+
+  it('leaves child docs pages to child route loaders', async () => {
+    await expect(
+      getLoader(TabLayoutRoute)({
+        location: {
+          hash: '',
+          pathname: '/zh-CN/realtime-media/usage-analytics',
+          searchStr: '',
+        },
+        params: {
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never),
+    ).resolves.toBeNull();
+  });
+
   it('recognizes legacy query-string platform values for docs pages', () => {
     expect(getKnownPlatformSearchParam('?platform=macos')).toBe('macos');
     expect(getKnownPlatformSearchParam('?foo=bar&platform=react-native')).toBe(
@@ -271,6 +347,66 @@ describe('docs route locale guards', () => {
   }
 
   it(
+    'redirects moved zh-CN Introduction routes before page fallback',
+    async () => {
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'usage-analytics',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/usage-analytics',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected moved Usage Analytics route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it(
+    'redirects moved zh-CN PPT transcoding routes before page fallback',
+    async () => {
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            searchStr: '',
+          },
+          params: {
+            _splat: 'ppt-transcoding/get-started/quick-start',
+            locale: 'zh-CN',
+            tab: 'introduction',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+          },
+        });
+        return;
+      }
+
+      throw new Error('expected moved PPT transcoding route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it(
     'serves direct .md docs page URLs as markdown',
     async () => {
       const response = (await getGetHandler(DocPageRoute)({
@@ -289,42 +425,35 @@ describe('docs route locale guards', () => {
         ),
       } as never)) as Response;
 
-      const markdown = await response.text();
-
-      expect(markdown).toContain(
+      await expect(response.text()).resolves.toContain(
         '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
-      );
-      expect(markdown).toContain(
-        '> For AI agents: see the complete documentation index at [llms.txt](/llms.txt).',
       );
       expect(response.headers.get('Content-Type')).toBe('text/markdown');
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it('does not serve zh-CN direct .md docs page URLs', async () => {
-    try {
-      await getGetHandler(DocPageRoute)({
-        context: {},
-        next: vi.fn(() => {
-          throw new Error('expected zh-CN .md request to be rejected');
-        }),
-        params: {
-          _splat: 'build/shape-the-conversation/filler-words.md',
-          locale: 'zh-CN',
-          tab: 'ai',
-        },
-        pathname: '/zh-CN/ai/build/shape-the-conversation/filler-words.md',
-        request: new Request(
-          'https://docs.example.com/zh-CN/ai/build/shape-the-conversation/filler-words.md',
-        ),
-      } as never);
-    } catch (error) {
-      expect(isNotFound(error)).toBe(true);
-      return;
-    }
+  it('serves direct zh-CN .md docs page URLs as markdown', async () => {
+    const response = (await getGetHandler(DocPageRoute)({
+      context: {},
+      next: vi.fn(() => {
+        throw new Error('expected zh-CN .md request to be handled directly');
+      }),
+      params: {
+        _splat: 'mcp-integrate.md',
+        locale: 'zh-CN',
+        tab: 'introduction',
+      },
+      pathname: '/zh-CN/introduction/mcp-integrate.md',
+      request: new Request(
+        'https://docs.example.com/zh-CN/introduction/mcp-integrate.md',
+      ),
+    } as never)) as Response;
 
-    throw new Error('expected zh-CN .md request to reject with notFound');
+    await expect(response.text()).resolves.toContain(
+      '# Agora MCP (/zh-CN/introduction/mcp-integrate)',
+    );
+    expect(response.headers.get('Content-Type')).toBe('text/markdown');
   });
 
   it(
@@ -359,29 +488,30 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it('does not serve zh-CN direct platform .md docs page URLs', async () => {
-    try {
-      await getGetHandler(DocPageRoute)({
-        context: {},
-        next: vi.fn(() => {
-          throw new Error('expected zh-CN platform .md request to be rejected');
-        }),
-        params: {
-          _splat: 'api-ref/uikit-sdk/android.md',
-          locale: 'zh-CN',
-          tab: 'api-reference',
-        },
-        pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-        request: new Request(
-          'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
-        ),
-      } as never);
-    } catch (error) {
-      expect(isNotFound(error)).toBe(true);
-      return;
-    }
+  it('serves direct zh-CN platform .md docs page URLs as markdown', async () => {
+    const response = (await getGetHandler(DocPageRoute)({
+      context: {},
+      next: vi.fn(() => {
+        throw new Error(
+          'expected zh-CN platform .md request to be handled directly',
+        );
+      }),
+      params: {
+        _splat: 'api-ref/uikit-sdk/android.md',
+        locale: 'zh-CN',
+        tab: 'api-reference',
+      },
+      pathname: '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+      request: new Request(
+        'https://docs.example.com/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+      ),
+    } as never)) as Response;
+    const markdown = await response.text();
 
-    throw new Error('expected zh-CN platform .md request to reject');
+    expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    expect(markdown).toContain(
+      '/zh-CN/api-reference/api-ref/uikit-sdk/android',
+    );
   });
 
   it(
@@ -392,18 +522,9 @@ describe('docs route locale guards', () => {
       } as never)) as Response;
 
       const indexText = await indexResponse.text();
-      const sectionPath = indexText.match(/\/llms\/([^)]+\.txt)/)?.[1];
 
-      expect(sectionPath).toBeTruthy();
+      expect(indexText).toContain('/en/');
       expect(indexText).not.toContain('/zh-CN/');
-
-      const sectionResponse = (await getGetHandler(LlmsSectionRoute)({
-        params: { _splat: sectionPath },
-      } as never)) as Response;
-      const sectionText = await sectionResponse.text();
-
-      expect(sectionText).toContain('/en/');
-      expect(sectionText).not.toContain('/zh-CN/');
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );

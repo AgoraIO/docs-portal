@@ -1,0 +1,25 @@
+---
+title: "确保转码器创建成功"
+description: "了解如何在旁路推流中确保转码器创建成功，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+通过 [`Create`](/zh-CN/api-reference/api-ref/media-push/create) 请求创建一个 Converter 时，你需要关注以下注意事项，以确保创建成功：
+
+- 你需要通过 `region` 参数分区域创建 Converter：
+
+  - 设置的 `region` 与你的 CDN 源站在同一个区域。
+  - 传入 `region` 的值为小写。
+  - 确保本地服务器所在区域支持旁路推流服务。
+
+- 声网推荐你对请求 Header 中的 `X-Request-ID` 字段赋值，声网服务器会在响应 Header 中返回一个 `X-Custom-Request-ID` 字段，以用于问题排查。
+
+- 为避免重复创建多个 Converter 导致重复推流，使用 `name` 字段管理指定项目下的 Converter：
+
+  - 同一时间，一个项目下不允许出现重名的 Converter，否则在尝试创建同名的 Converter 时会收到响应状态码 `409 (Conflict)`。
+  - 声网推荐你以频道名和 Converter 特性组合来为 `name` 赋值。例如 `show68_horizontal` 和 `show68_vertical`，分别代表在频道 `show68` 中创建的用户画面为水平布局和垂直布局的 Converter。
+
+- 纯音频流或纯视频流场景下 `audioOptions` 和 `videoOptions` 设置如下：
+  - 在纯视频流（无音频）场景中，无需设置 `audioOptions` 及其相关字段。
+  - 在纯音频流（无视频）场景中，默认情况下无需设置 `videoOptions` 及其相关字段。特殊情况请参考[纯音频场景中输出 SEI](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei#特例纯音频场景设置输出-sei)。
+  - 在音视频场景中，`videoOptions` 为必填字段，不可设置为空；`audioOptions` 为必填字段，可以设置为空。
+
+- 请设置合理的 `idleTimeout` 参数值，推荐使用默认值 300 秒，表示当频道内所有订阅主播都离开频道 300 秒后 Converter 自动销毁，旁路推流停止。

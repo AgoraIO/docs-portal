@@ -1,0 +1,94 @@
+---
+title: VideoCanvas
+description: 视频画布对象的属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_videocanvas
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_videocanvas.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videocanvas__prototype"></a>
+
+```text
+export class VideoCanvas{
+  public static readonly RENDER_MODE_HIDDEN = 1;
+  public static readonly RENDER_MODE_FIT = 2;
+  public static readonly VIDEO_MIRROR_MODE_ENABLED = 1;
+  public static readonly VIDEO_MIRROR_MODE_DISABLED = 2;
+
+  public xcomponentId:string = '';
+  public uid:number = 0;
+  public renderMode:number = VideoCanvas.RENDER_MODE_HIDDEN;
+  public mirrorMode:number = 0;
+  public sourceType:Constants.VideoSourceType = Constants.VideoSourceType.CAMERA_PRIMARY;
+  constructor(componentId:string) {
+    this.xcomponentId = componentId;
+  }
+}
+```
+
+<a id="class_videocanvas__detailed_desc"></a>
+
+<a id="class_videocanvas__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+发布视频源的用户 ID。
+
+</Parameter>
+<a id="view"></a>
+<Parameter name="view">
+
+视频显示窗口。
+
+:::caution
+注意： 在一个 VideoCanvas 中，你只能选择 view 或 surfaceTexture 其中一个进行设置，如果同时设置，只有 view 中的设置会生效。
+:::
+
+</Parameter>
+<a id="surfacetexture"></a>
+<Parameter name="surfaceTexture">
+
+提供视频图像的容器，当你使用该成员时，需要自行实现 OPENGL 中的纹理绘制。详见 SurfaceTexture。
+
+:::caution
+注意： 在一个 VideoCanvas 中，你只能选择 view 或 surfaceTexture 其中一个进行设置，如果同时设置，只有 view 中的设置会生效。
+:::
+
+</Parameter>
+<a id="rendermode"></a>
+<Parameter name="renderMode">
+
+- RENDER_MODE_HIDDEN (1)：优先保证视窗被填满。视频尺寸等比缩放，直至整个视窗被视频填满。如果视频长宽与显示窗口不同，多出的视频将被截掉。
+- RENDER_MODE_FIT (2)：优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频长宽与显示窗口不同，视窗上未被填满的区域将被涂黑。
+
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
+
+- VIDEO_MIRROR_MODE_AUTO (0)：SDK 决定镜像模式。如果你使用前置摄像头，默认启动本地视图镜像模式；如果你启用后置摄像头，默认关闭本地视图镜像模式。
+- VIDEO_MIRROR_MODE_ENABLED (1)：开启本地视图的镜像模式。
+- VIDEO_MIRROR_MODE_DISABLED (2)：关闭本地视图的镜像模式。
+
+:::caution
+注意：
+
+- 本地视图镜像模式：如果你使用前置摄像头，默认启动本地视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+- 远端用户视图镜像模式：默认关闭远端用户的镜像模式。
+:::
+
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>

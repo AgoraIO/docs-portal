@@ -1,0 +1,58 @@
+---
+title: VideoFormat
+description: 视频帧格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_videoformat
+  sourcePath: html-docs/rtc/Csharp/API/class_videoformat.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videoformat__prototype"></a>
+
+```text
+public VideoFormat()
+        {
+            width = (int)FRAME_WIDTH.FRAME_WIDTH_640;
+            height = (int)FRAME_HEIGHT.FRAME_HEIGHT_360;
+            fps = (int)FRAME_RATE.FRAME_RATE_FPS_15;
+        }
+
+        public VideoFormat(int w, int h, int f)
+        {
+            this.width = w;
+            this.height = h;
+            this.fps = f;
+        }
+        public int width { set; get; }
+        public int height { set; get; }
+        public int fps { set; get; }
+    };
+```
+
+<a id="class_videoformat__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="width"></a>
+<Parameter name="width">
+
+视频帧的宽度（px）。默认值为 960。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+视频帧的高度（px）。默认值为 540.
+
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
+
+视频帧的帧率。默认值为 15。
+
+</Parameter>
+</ParameterList>

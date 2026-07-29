@@ -1,0 +1,98 @@
+---
+title: VirtualBackgroundSource
+description: 自定义的背景。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_virtualbackgroundsource
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_virtualbackgroundsource.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_virtualbackgroundsource__prototype"></a>
+
+```text
+export class VirtualBackgroundSource {
+
+  public static readonly   BACKGROUND_NONE:number = 0;
+
+  public static readonly  BACKGROUND_COLOR:number = 1;
+
+  public static readonly  BACKGROUND_IMG:number = 2;
+
+  public static readonly  BACKGROUND_BLUR:number = 3;
+
+  public static readonly BACKGROUND_VIDEO:number = 4;
+
+  public static readonly BLUR_DEGREE_LOW:number = 1;
+
+  public static readonly BLUR_DEGREE_MEDIUM:number = 2;
+
+  public static readonly BLUR_DEGREE_HIGH:number = 3;
+
+  public backgroundSourceType:number = VirtualBackgroundSource.BACKGROUND_COLOR;
+
+  public color:number = 0xffffff;
+
+  public source?:string;
+
+  public blurDegree:number = VirtualBackgroundSource.BLUR_DEGREE_HIGH;
+}
+```
+
+<a id="class_virtualbackgroundsource__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="backgroundsourcetype"></a>
+<Parameter name="backgroundSourceType">
+
+自定义的背景。
+
+- NONE(0)：将背景处理为 Alpha 数据，不进行替换，仅分割人像和背景。设置后，你可以调用 [startLocalVideoTranscoder](/zh-CN/api-reference/rtc/harmonyos/video/video-codec/local-transcoder#api_irtcengine_startlocalvideotranscoder)，实现人像画中画的效果。
+- COLOR(1)：（默认）背景为纯色。
+- IMG(2)：背景为 PNG、JPG 格式的图片。
+- BLUR(3)：背景为虚化处理后的背景。
+- VIDEO(4)：背景为 MP4、AVI、MKV、FLV 等格式的本地视频。
+
+</Parameter>
+<a id="color"></a>
+<Parameter name="color">
+
+自定义的背景图颜色。格式为 RGB 定义下的十六进制整数，不带 # 号，如 0xFFB6C1 表示浅粉色。 默认值为 0xFFFFFF，表示白色。 取值范围为 [0x000000，0xffffff]。如果取值非法，SDK 会用白色背景图替换原背景图。
+
+:::caution
+注意： 该参数仅在自定义背景为以下类型时生效，具体效果如下：
+
+- COLOR：背景图为该参数传入颜色的纯色图片。
+- IMG：如果 source 中的图片使用了透明背景，则会使用该参数传入的颜色填充透明背景。
+:::
+
+</Parameter>
+<a id="source"></a>
+<Parameter name="source">
+
+自定义背景的本地绝对路径。支持 PNG、JPG、MP4、 AVI、 MKV 和 FLV 格式。如果路径无效，SDK 会使用原背景图或 color 指定的纯色背景。
+
+:::caution
+注意： 该参数仅在自定义背景图类型为 IMG 或 VIDEO 时生效。
+:::
+
+</Parameter>
+<a id="blurdegree"></a>
+<Parameter name="blurDegree">
+
+自定义背景图的模糊程度。
+
+- LOW(1)：自定义背景图的虚化程度为低。用户差不多能看清背景。
+- MEDIUM(2)：自定义背景图的虚化程度为中。用户较难看清背景。
+- HIGH(3)：（默认）自定义背景图的虚化程度为高。用户很难看清背景。
+
+:::caution
+注意： 该参数仅在自定义背景图类型为 BLUR 时生效。
+:::
+
+</Parameter>
+</ParameterList>

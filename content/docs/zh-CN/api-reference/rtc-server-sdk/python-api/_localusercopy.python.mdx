@@ -1,0 +1,1117 @@
+---
+title: "LocalUser 类"
+---
+26
+
+<a id="setuserrole"></a>
+### `set_user_role`
+## set_user_role
+
+```python
+def set_user_role(self, role) -> int:
+```
+
+<span className="index-desc-setuserrole">设置用户角色。你可以在用户连接频道前或连接频道后调用该方法。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `role` | 用户角色。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="getuserrole"></a>
+### `get_user_role`
+## get_user_role
+
+```python
+def get_user_role(self) -> int:
+```
+
+<span className="index-desc-getuserrole">获取用户角色。</span>
+
+#### 返回值
+
+- `int`: 用户角色。
+
+---
+
+<a id="setaudioencoderconfiguration"></a>
+### `set_audio_encoder_configuration`
+## set_audio_encoder_configuration
+
+```python
+def set_audio_encoder_configuration(self, config) -> int:
+```
+
+<span className="index-desc-setaudioencoderconfiguration">设置音频编码。SDK 会将配置应用于全部发送的音频轨道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `config` | 音频编码配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="publishaudio"></a>
+### `publish_audio`
+## publish_audio
+
+```python
+def publish_audio(self, agora_local_audio_track: LocalAudioTrack) -> int:
+```
+
+<span className="index-desc-publishaudio">将本地音频轨道发送到频道。默认情况下，所有发布的音频轨道都会进行混音。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_audio_track` | 需要发布的本地音频轨道。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unpublishaudio"></a>
+### `unpublish_audio`
+## unpublish_audio
+
+```python
+def unpublish_audio(self, agora_local_audio_track: LocalAudioTrack) -> int:
+```
+
+<span className="index-desc-unpublishaudio">停止将本地音频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_audio_track` | 需要停止发布的本地音频轨道。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="publishvideo"></a>
+### `publish_video`
+## publish_video
+
+```python
+def publish_video(self, agora_local_video_track: LocalVideoTrack) -> int:
+```
+
+<span className="index-desc-publishvideo">将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_video_track` | 需要发布的本地视频轨道。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unpublishvideo"></a>
+### `unpublish_video`
+## unpublish_video
+
+```python
+def unpublish_video(self, agora_local_video_track: LocalVideoTrack) -> int:
+```
+
+<span className="index-desc-unpublishvideo">停止将本地视频轨道发送到频道。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_local_video_track` | 需要停止发布的本地视频轨道。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="subscribeaudio"></a>
+### `subscribe_audio`
+## subscribe_audio
+
+```python
+def subscribe_audio(self, user_id: str) -> int:
+```
+
+<span className="index-desc-subscribeaudio">订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的 ID。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="subscribeallaudio"></a>
+### `subscribe_all_audio`
+## subscribe_all_audio
+
+```python
+def subscribe_all_audio(self) -> int:
+```
+
+<span className="index-desc-subscribeallaudio">订阅频道中全部远端用户发送的音频流。该方法会自动订阅频道中后续加入的用户发送的音频流。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unsubscribeaudio"></a>
+### `unsubscribe_audio`
+## unsubscribe_audio
+
+```python
+def unsubscribe_audio(self, user_id: str) -> int:
+```
+
+<span className="index-desc-unsubscribeaudio">停止订阅频道中特定的远端用户发送的音频流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的 ID。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unsubscribeallaudio"></a>
+### `unsubscribe_all_audio`
+## unsubscribe_all_audio
+
+```python
+def unsubscribe_all_audio(self) -> int:
+```
+
+<span className="index-desc-unsubscribeallaudio">停止订阅频道中全部远端用户发送的音频流。该方法会自动取消订阅频道中后续加入的用户发送的音频流。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setplaybackaudioframeparameters"></a>
+### `set_playback_audio_frame_parameters`
+## set_playback_audio_frame_parameters
+
+```python
+def set_playback_audio_frame_parameters(self, channels: int, sample_rate_hz: int, mode: int, samples_per_call: int) -> int:
+```
+
+<span className="index-desc-setplaybackaudioframeparameters">设置播放的音频格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sample_rate_hz` | `onPlaybackAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
+| `mode` | 音频帧的使用模式。 |
+| `samples_per_call` | `onPlaybackAudioFrame` 中返回数据的采样点数。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setrecordingaudioframeparameters"></a>
+### `set_recording_audio_frame_parameters`
+## set_recording_audio_frame_parameters
+
+```python
+def set_recording_audio_frame_parameters(self, channels: int, sample_rate_hz: int, mode: int, samples_per_call: int) -> int:
+```
+
+<span className="index-desc-setrecordingaudioframeparameters">设置采集的原始音频数据格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sample_rate_hz` | `onRecordAudioFrame` 中返回数据的采样率，可设置为 8000、 16000、 32000、44100 或 48000。 |
+| `mode` | 音频帧的使用模式。 |
+| `samples_per_call` | `onRecordAudioFrame` 中返回数据的采样点数。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setmixedaudioframeparameters"></a>
+### `set_mixed_audio_frame_parameters`
+## set_mixed_audio_frame_parameters
+
+```python
+def set_mixed_audio_frame_parameters(self, channels: int, sample_rate_hz: int, samples_per_call: int) -> int:
+```
+
+<span className="index-desc-setmixedaudioframeparameters">设置 `onMixedAudioFrame` 报告的音频数据格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sample_rate_hz` | 音频数据采样率，可设置为 8000、 16000、32000、 44100 或 48000。 |
+| `samples_per_call` | `onMixedAudioFrame` 中返回数据的采样点数。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setplaybackaudioframebeforemixingparameters"></a>
+### `set_playback_audio_frame_before_mixing_parameters`
+## set_playback_audio_frame_before_mixing_parameters
+
+```python
+def set_playback_audio_frame_before_mixing_parameters(self, channels: int, sample_rate_hz: int) -> int:
+```
+
+<span className="index-desc-setplaybackaudioframebeforemixingparameters">设置 `onPlaybackAudioFrameBeforeMixing` 报告的音频数据格式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `channels` | 音频数据声道数，可设置为 1（单声道） 或 2（双声道）。 |
+| `sample_rate_hz` | 音频数据采样率，可设置为 8000、 16000、32000、 44100 或 48000。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="registeraudioframeobserver"></a>
+### `register_audio_frame_observer`
+## register_audio_frame_observer
+
+```python
+def register_audio_frame_observer(self, observer: IAudioFrameObserver) -> int:
+```
+
+<span className="index-desc-registeraudioframeobserver">注册音频帧 observer。你必须实现 `IAudioFrameObserver` 类并根据需求注册回调。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | 音频帧 observer 的指针。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unregisteraudioframeobserver"></a>
+### `unregister_audio_frame_observer`
+## unregister_audio_frame_observer
+
+```python
+def unregister_audio_frame_observer(self) -> int:
+```
+
+<span className="index-desc-unregisteraudioframeobserver">销毁音频帧 observer。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="registervideoencodedframeobserver"></a>
+### `register_video_encoded_frame_observer`
+## register_video_encoded_frame_observer
+
+```python
+def register_video_encoded_frame_observer(self, agora_video_encoded_frame_observer: IVideoEncodedFrameObserver) -> int:
+```
+
+<span className="index-desc-registervideoencodedframeobserver">为编码后的视频图像注册视频帧接收 observer。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_video_encoded_frame_observer` | 视频帧接收 observer。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="unregistervideoencodedframeobserver"></a>
+### `unregister_video_encoded_frame_observer`
+## unregister_video_encoded_frame_observer
+
+```python
+def unregister_video_encoded_frame_observer(self, agora_video_encoded_frame_observer: IVideoEncodedFrameObserver) -> int:
+```
+
+<span className="index-desc-unregistervideoencodedframeobserver">销毁视频帧接收 observer。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `agora_video_encoded_frame_observer` | 视频帧接收 observer。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+### `register_video_frame_observer`
+
+---
+
+### `subscribe_video`
+
+---
+
+### `subscribe_all_video`
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+### `unsubscribe_video`
+
+---
+
+<a id="registerlocaluserobserver"></a>
+### `register_local_user_observer`
+## register_local_user_observer
+
+```python
+def register_local_user_observer(self, observer: IRTCLocalUserObserver) -> int:
+```
+
+<span className="index-desc-registerlocaluserobserver">注册本地用户 observer。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `observer` | 本地用户 observer 对象。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+好的，以下是剩余的 Python API 文档：
+
+<a id="unregisterlocaluserobserver"></a>
+### `unregister_local_user_observer`
+## unregister_local_user_observer
+
+```python
+def unregister_local_user_observer(self) -> int:
+```
+
+<span className="index-desc-unregisterlocaluserobserver">销毁本地用户 observer。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setremoteuserpriority"></a>
+### `set_remote_user_priority`
+## set_remote_user_priority
+
+```python
+def set_remote_user_priority(self, user_id: str, priority: int) -> int:
+```
+
+<span className="index-desc-setremoteuserpriority">设置远端用户的优先级。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的 ID。 |
+| `priority` | 用户优先级。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setencryptionmode"></a>
+### `set_encryption_mode`
+## set_encryption_mode
+
+```python
+def set_encryption_mode(self, encryption_mode: str) -> int:
+```
+
+<span className="index-desc-setencryptionmode">设置加密模式。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `encryption_mode` | 加密模式。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setencryptionkey"></a>
+### `set_encryption_key`
+## set_encryption_key
+
+```python
+def set_encryption_key(self, encryption_key: str) -> int:
+```
+
+<span className="index-desc-setencryptionkey">设置加密密钥。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `encryption_key` | 加密密钥。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setclientrole"></a>
+### `set_client_role`
+## set_client_role
+
+```python
+def set_client_role(self, role: int) -> int:
+```
+
+<span className="index-desc-setclientrole">设置用户角色。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `role` | 用户角色。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="getconnectionstate"></a>
+### `get_connection_state`
+## get_connection_state
+
+```python
+def get_connection_state(self) -> int:
+```
+
+<span className="index-desc-getconnectionstate">获取当前连接状态。</span>
+
+#### 返回值
+
+- `int`: 当前连接状态。
+
+---
+
+<a id="setremotedefaultvideostreamtype"></a>
+### `set_remote_default_video_stream_type`
+## set_remote_default_video_stream_type
+
+```python
+def set_remote_default_video_stream_type(self, stream_type: int) -> int:
+```
+
+<span className="index-desc-setremotedefaultvideostreamtype">设置默认订阅的远端视频流类型。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `stream_type` | 视频流类型。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setremotevideostreamtype"></a>
+### `set_remote_video_stream_type`
+## set_remote_video_stream_type
+
+```python
+def set_remote_video_stream_type(self, user_id: str, stream_type: int) -> int:
+```
+
+<span className="index-desc-setremotevideostreamtype">设置订阅的远端视频流类型。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的 ID。 |
+| `stream_type` | 视频流类型。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setremoteuserpriority"></a>
+### `set_remote_user_priority`
+## set_remote_user_priority
+
+```python
+def set_remote_user_priority(self, user_id: str, priority: int) -> int:
+```
+
+<span className="index-desc-setremoteuserpriority">设置远端用户的优先级。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `user_id` | 远端用户的 ID。 |
+| `priority` | 用户优先级。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="enableencryption"></a>
+### `enable_encryption`
+## enable_encryption
+
+```python
+def enable_encryption(self, enabled: bool, config: EncryptionConfig) -> int:
+```
+
+<span className="index-desc-enableencryption">启用或禁用加密。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `enabled` | 是否启用加密。 |
+| `config` | 加密配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="createdatastream"></a>
+### `create_data_stream`
+## create_data_stream
+
+```python
+def create_data_stream(self, reliable: bool, ordered: bool) -> int:
+```
+
+<span className="index-desc-createdatastream">创建数据流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `reliable` | 数据流是否可靠。 |
+| `ordered` | 数据流是否有序。 |
+
+#### 返回值
+
+- `int`: 数据流 ID。
+
+---
+
+<a id="sendstreammessage"></a>
+### `send_stream_message`
+## send_stream_message
+
+```python
+def send_stream_message(self, stream_id: int, message: str) -> int:
+```
+
+<span className="index-desc-sendstreammessage">发送数据流消息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `stream_id` | 数据流 ID。 |
+| `message` | 发送的消息。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="addpublishstreamurl"></a>
+### `add_publish_stream_url`
+## add_publish_stream_url
+
+```python
+def add_publish_stream_url(self, url: str, transcoding_enabled: bool) -> int:
+```
+
+<span className="index-desc-addpublishstreamurl">向 CDN 增加一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+| `transcoding_enabled` | 是否启用转码。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="removepublishstreamurl"></a>
+### `remove_publish_stream_url`
+## remove_publish_stream_url
+
+```python
+def remove_publish_stream_url(self, url: str) -> int:
+```
+
+<span className="index-desc-removepublishstreamurl">删除一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setlivetranscoding"></a>
+### `set_live_transcoding`
+## set_live_transcoding
+
+```python
+def set_live_transcoding(self, transcoding: LiveTranscoding) -> int:
+```
+
+<span className="index-desc-setlivetranscoding">设置直播转码配置。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `transcoding` | 直播转码配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="startchannelmediarelay"></a>
+### `start_channel_media_relay`
+## start_channel_media_relay
+
+```python
+def start_channel_media_relay(self, configuration: ChannelMediaRelayConfiguration) -> int:
+```
+
+<span className="index-desc-startchannelmediarelay">开始频道媒体流转发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `configuration` | 频道媒体流转发配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="updatechannelmediarelay"></a>
+### `update_channel_media_relay`
+## update_channel_media_relay
+
+```python
+def update_channel_media_relay(self, configuration: ChannelMediaRelayConfiguration) -> int:
+```
+
+<span className="index-desc-updatechannelmediarelay">更新频道媒体流转发配置。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `configuration` | 频道媒体流转发配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="stopchannelmediarelay"></a>
+### `stop_channel_media_relay`
+## stop_channel_media_relay
+
+```python
+def stop_channel_media_relay(self) -> int:
+```
+
+<span className="index-desc-stopchannelmediarelay">停止频道媒体流转发。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="createdatastream"></a>
+### `create_data_stream`
+## create_data_stream
+
+```python
+def create_data_stream(self, reliable: bool, ordered: bool) -> int:
+```
+
+<span className="index-desc-createdatastream">创建数据流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `reliable` | 数据流是否可靠。 |
+| `ordered` | 数据流是否有序。 |
+
+#### 返回值
+
+- `int`: 数据流 ID。
+
+---
+
+<a id="sendstreammessage"></a>
+### `send_stream_message`
+## send_stream_message
+
+```python
+def send_stream_message(self, stream_id: int, message: str) -> int:
+```
+
+<span className="index-desc-sendstreammessage">发送数据流消息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `stream_id` | 数据流 ID。 |
+| `message` | 发送的消息。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="addpublishstreamurl"></a>
+### `add_publish_stream_url`
+## add_publish_stream_url
+
+```python
+def add_publish_stream_url(self, url: str, transcoding_enabled: bool) -> int:
+```
+
+<span className="index-desc-addpublishstreamurl">向 CDN 增加一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+| `transcoding_enabled` | 是否启用转码。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="removepublishstreamurl"></a>
+### `remove_publish_stream_url`
+## remove_publish_stream_url
+
+```python
+def remove_publish_stream_url(self, url: str) -> int:
+```
+
+<span className="index-desc-removepublishstreamurl">删除一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setlivetranscoding"></a>
+### `set_live_transcoding`
+## set_live_transcoding
+
+```python
+def set_live_transcoding(self, transcoding: LiveTranscoding) -> int:
+```
+
+<span className="index-desc-setlivetranscoding">设置直播转码配置。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `transcoding` | 直播转码配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="startchannelmediarelay"></a>
+### `start_channel_media_relay`
+## start_channel_media_relay
+
+```python
+def start_channel_media_relay(self, configuration: ChannelMediaRelayConfiguration) -> int:
+```
+
+<span className="index-desc-startchannelmediarelay">开始频道媒体流转发。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `configuration` | 频道媒体流转发配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="updatechannelmediarelay"></a>
+### `update_channel_media_relay`
+## update_channel_media_relay
+
+```python
+def update_channel_media_relay(self, configuration: ChannelMediaRelayConfiguration) -> int:
+```
+
+<span className="index-desc-updatechannelmediarelay">更新频道媒体流转发配置。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `configuration` | 频道媒体流转发配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="stopchannelmediarelay"></a>
+### `stop_channel_media_relay`
+## stop_channel_media_relay
+
+```python
+def stop_channel_media_relay(self) -> int:
+```
+
+<span className="index-desc-stopchannelmediarelay">停止频道媒体流转发。</span>
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="createdatastream"></a>
+### `create_data_stream`
+## create_data_stream
+
+```python
+def create_data_stream(self, reliable: bool, ordered: bool) -> int:
+```
+
+<span className="index-desc-createdatastream">创建数据流。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `reliable` | 数据流是否可靠。 |
+| `ordered` | 数据流是否有序。 |
+
+#### 返回值
+
+- `int`: 数据流 ID。
+
+---
+
+<a id="sendstreammessage"></a>
+### `send_stream_message`
+## send_stream_message
+
+```python
+def send_stream_message(self, stream_id: int, message: str) -> int:
+```
+
+<span className="index-desc-sendstreammessage">发送数据流消息。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `stream_id` | 数据流 ID。 |
+| `message` | 发送的消息。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="addpublishstreamurl"></a>
+### `add_publish_stream_url`
+## add_publish_stream_url
+
+```python
+def add_publish_stream_url(self, url: str, transcoding_enabled: bool) -> int:
+```
+
+<span className="index-desc-addpublishstreamurl">向 CDN 增加一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+| `transcoding_enabled` | 是否启用转码。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="removepublishstreamurl"></a>
+### `remove_publish_stream_url`
+## remove_publish_stream_url
+
+```python
+def remove_publish_stream_url(self, url: str) -> int:
+```
+
+<span className="index-desc-removepublishstreamurl">删除一个发布 URL。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `url` | 发布 URL。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负值。
+
+---
+
+<a id="setlivetranscoding"></a>
+### `set_live_transcoding`
+## set_live_transcoding
+
+```python
+def set_live_transcoding(self, transcoding: LiveTranscoding) -> int:
+```
+
+<span className="index-desc-setlivetranscoding">设置直播转码配置。</span>
+
+#### 参数
+
+| 参数 | 描述 |
+|---------------|----------------------------------------------------------------------|
+| `transcoding` | 直播转码配置。 |
+
+#### 返回值
+
+- `int`: 方法调用成功返回 0，方法调用失败返回负

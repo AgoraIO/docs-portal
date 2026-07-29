@@ -1,9 +1,9 @@
 ---
 title: 启动和停止智能体
-description: 使用对话式 AI 引擎的 RESTful API 建立实时语音交互，并控制智能体的启动和停止。
+description: 使用 Agents SDK 或 RESTful API 建立实时语音交互，并控制智能体的启动和停止。
 ---
 
-本文介绍如何调用对话式 AI 引擎的 RESTful API 来启动和停止一个智能体。
+本文介绍如何通过 Agents SDK 或对话式 AI 引擎 RESTful API 启动和停止一个智能体。
 
 ## 理解基本流程
 
@@ -19,30 +19,186 @@ description: 使用对话式 AI 引擎的 RESTful API 建立实时语音交互�
 
 开始前，请确保你已经准备好：
 
-- 已为项目[开通对话式 AI](../reference/enable-conversational-ai.md)
-- 从 Agora Console 获取以下信息：
-  - App ID
-  - Customer ID 和 Customer Secret
-  - RTC 临时 Token
-- 已获取下列第三方能力中的至少一部分：
-  - LLM 提供商 API key，例如 OpenAI
-  - TTS 提供商 API key，例如 Microsoft Azure
+- 已准备声网中国区项目并开通对话式 AI。可使用 Agora CLI：
 
-如果你暂时没有第三方 LLM 或 TTS 凭据，可以先参考[使用预设](presets.mdx)，先跑通第一条链路。
-
-另外，你还需要已经完成基础的[实时音视频接入](../../introduction/realtime-audio-video.md)。
+  ```bash
+  agora login --region cn
+  agora project create <project-name> --feature rtc --feature convoai --rtm-data-center CN
+  agora project use <project-name>
+  agora project doctor --feature convoai
+  agora project env --format shell --with-secrets
+  ```
+  
+另外，你还需要已经完成基础的[实时音视频互动](../../realtime-media/rtc/get-started/quick-start.mdx)。
 
 ## 启动智能体
 
-调用 `join` 接口即可创建一个智能体实例，并让它加入指定频道。你需要在请求中传入频道名和 Token 以完成鉴权。
+调用 SDK 的 `start()` 方法或 RESTful API 的 `join` 接口即可创建一个智能体实例，并让它加入指定频道。你需要在请求中传入频道名、智能体 UID、远端用户 UID 和模型配置；使用 SDK 且传入 App Certificate 时，SDK 会自动生成所需鉴权。
 
-```bash
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+package main
+
+import (
+    "context"
+    "log"
+
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+    vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
+)
+
+func main() {
+    ctx := context.Background()
+
+    client := agentkit.NewAgoraClient(agentkit.ClientOptions{
+        AppID:          "<your_app_id>",
+        AppCertificate: "<your_app_certificate>",
+    })
+
+    agent := agentkit.NewAgent(client,
+        agentkit.WithName("support-assistant"),
+    ).WithStt(
+        vendors.NewFengmingSTT(),
+    ).WithLlm(
+        vendors.NewAliyun(vendors.AliyunOptions{
+            BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+            Model:   "qwen-plus",
+            APIKey:  "<your_llm_api_key>",
+            SystemMessages: []map[string]interface{}{
+                {"role": "system", "content": "You are a helpful chatbot."},
+            },
+            GreetingMessage: "你好，有什么可以帮你？",
+            FailureMessage:  "抱歉，我暂时无法回答这个问题。",
+            MaxHistory:      Agora.Int(10),
+        }),
+    ).WithTts(
+        vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
+            Key:   "<your_tts_api_key>",
+            Model: "speech-01-turbo",
+            VoiceSetting: &vendors.MiniMaxVoiceSetting{
+                VoiceID: "female-shaonv",
+            },
+        }),
+    )
+
+    session := agent.CreateSession(agentkit.CreateSessionOptions{
+        Channel:     "<your_channel_name>",
+        AgentUID:    "0",
+        RemoteUIDs:  []string{"1002"},
+        IdleTimeout: Agora.Int(120),
+    })
+
+    agentID, err := session.Start(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Println("Agent started:", agentID)
+}
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+import {
+  Agent,
+  AgoraClient,
+  AliyunLLM,
+  Area,
+  FengmingSTT,
+  MiniMaxCNTTS,
+} from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.CN,
+  appId: '<your_app_id>',
+  appCertificate: '<your_app_certificate>',
+});
+
+const agent = new Agent({ client })
+  .withStt(new FengmingSTT())
+  .withLlm(new AliyunLLM({
+    url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+    model: 'qwen-plus',
+    apiKey: '<your_llm_api_key>',
+    systemMessages: [
+      { role: 'system', content: 'You are a helpful chatbot.' },
+    ],
+    greetingMessage: '你好，有什么可以帮你？',
+    failureMessage: '抱歉，我暂时无法回答这个问题。',
+    maxHistory: 10,
+  }))
+  .withTts(new MiniMaxCNTTS({
+    key: '<your_tts_api_key>',
+    model: 'speech-01-turbo',
+    voiceSetting: { voice_id: 'female-shaonv' },
+  }));
+
+const session = agent.createSession({
+  name: 'support-assistant',
+  channel: '<your_channel_name>',
+  agentUid: '0',
+  remoteUids: ['1002'],
+  idleTimeout: 120,
+});
+
+const agentId = await session.start();
+console.log('Agent started:', agentId);
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+from agora_agent import (
+    Agent,
+    Agora,
+    AliyunLLM,
+    Area,
+    FengmingSTT,
+    MiniMaxCNTTS,
+)
+
+client = Agora(
+    area=Area.CN,
+    app_id='<your_app_id>',
+    app_certificate='<your_app_certificate>',
+)
+
+agent = (
+    Agent(client=client)
+    .with_stt(FengmingSTT())
+    .with_llm(AliyunLLM(
+        base_url='https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+        model='qwen-plus',
+        api_key='<your_llm_api_key>',
+        system_messages=[
+            {'role': 'system', 'content': 'You are a helpful chatbot.'},
+        ],
+        greeting_message='你好，有什么可以帮你？',
+        failure_message='抱歉，我暂时无法回答这个问题。',
+        max_history=10,
+    ))
+    .with_tts(MiniMaxCNTTS(
+        key='<your_tts_api_key>',
+        model='speech-01-turbo',
+        voice_id='female-shaonv',
+    ))
+)
+
+session = agent.create_session(
+    name='support-assistant',
+    channel='<your_channel_name>',
+    agent_uid='0',
+    remote_uids=['1002'],
+    idle_timeout=120,
+)
+
+agent_id = session.start()
+print('Agent started:', agent_id)
+```
+
+```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '{
-    "name": "unique_name",
+    "name": "support-assistant",
     "properties": {
       "channel": "<your_channel_name>",
       "token": "<your_rtc_token>",
@@ -51,8 +207,9 @@ curl --request POST \
       "enable_string_uid": false,
       "idle_timeout": 120,
       "llm": {
-        "url": "https://api.openai.com/v1/chat/completions",
-        "api_key": "<your_llm_api_key>",
+        "vendor": "aliyun",
+        "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+        "api_key": "<your_aliyun_api_key>",
         "system_messages": [
           {
             "role": "system",
@@ -63,18 +220,28 @@ curl --request POST \
         "failure_message": "抱歉，我暂时无法回答这个问题。",
         "max_history": 10,
         "params": {
-          "model": "gpt-4o-mini"
+          "model": "qwen-plus"
         }
       },
       "asr": {
-        "language": "zh-CN"
+        "language": "zh-CN",
+        "vendor": "fengming"
       },
       "tts": {
-        "vendor": "microsoft",
+        "vendor": "minimax",
         "params": {
+          "group_id": "<your_minimax_group_id>",
           "key": "<your_tts_api_key>",
-          "region": "eastus",
-          "voice_name": "zh-CN-XiaoxiaoNeural"
+          "model": "speech-01-turbo",
+          "voice_setting": {
+            "voice_id": "female-shaonv",
+            "speed": 1,
+            "vol": 1,
+            "pitch": 0
+          },
+          "audio_setting": {
+            "sample_rate": 16000
+          }
         }
       }
     }
@@ -95,22 +262,30 @@ curl --request POST \
 
 当用户结束会话时，你的业务后端应调用停止接口，让智能体离开频道：
 
-```bash
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+if err := session.Stop(ctx); err != nil {
+    log.Fatal(err)
+}
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+await session.stop();
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+session.stop()
+```
+
+```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --data '{}'
 ```
 
-## 生产环境建议
+## 集成建议
 
 - 在后端统一发起 `join` 和 `leave` 调用，不要把敏感鉴权信息放到客户端。
 - 用业务侧生成的 `name` 或 `labels` 给每个智能体实例打标，方便监控和排障。
-- 结合[运行时事件](get-runtime-events.mdx)和[会话历史](retrieve-session-history.mdx)来确认真实运行状态。
+- 结合[运行时事件](handle-runtime-events/event-notifications.mdx)和[事件类型](../reference/event-types.mdx)来确认真实运行状态。
 
-## 继续阅读
-
-- [打断智能体](interrupt-agent.mdx)
-- [使用预设](presets.mdx)
-- [监听运行时事件](get-runtime-events.mdx)
-- [对话式 AI REST API 认证](../../api-reference/conversational-ai/rest-api/authentication.mdx)

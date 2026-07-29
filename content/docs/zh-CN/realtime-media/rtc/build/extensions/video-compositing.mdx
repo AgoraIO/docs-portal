@@ -1,0 +1,511 @@
+---
+title: "合图插件（Beta 版）"
+description: "了解如何在实时互动 RTC 中合图插件（Beta 版），包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 使用合图插件（Beta 版）
+
+合图插件需要与 Web SDK（v4.17.0 或以上）搭配使用，可以将本地用户的多路视频流以及图片合为一路视频流，让多个视频画面同时显示在同一个画面中。对于在线教育、远程会议、直播等场景，合图插件可以让 App 用户更加方便地查看和管理多个视频画面，实现人像画中画等功能。
+
+点击[在线链接](https://webdemo.agora.io/example/plugin/videoCompositor/index.html)体验本地合图功能。
+
+## 实现原理
+
+![合图插件原理示意图](https://web-cdn.agora.io/doc-cms/uploads/1729494970411-使用合图插件.png)
+
+本地合图的具体过程如下：
+
+1. 为参与本地合图的每一个视频轨道创建视频输入图层 (`IBaseProcessor`)、每一张图片创建图片输入图层 (`HTMLImageElement`)。
+2. 连接每一个视频轨道与对应的视频输入图层之间的管线，将视频流注入对应的输入图层。
+3. 合成器 (Compositor) 对所有输入图层进行合并。
+4. 连接合成器与本地视频轨道之间的管线，将合图后的视频输出到 SDK。
+
+## 前提条件
+
+使用合图插件需要满足以下前提条件：
+
+- 使用最新版本的桌面端 Chrome 或 Edge 浏览器。
+- 已集成 v4.17.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../../get-started/quick-start?platform=web)文档。
+
+## 示例代码
+
+以下是一段使用合图插件的完整代码，供开发者参考。
+
+<Accordions>
+<Accordion title="点击查看完整的示例代码">
+
+```typescript
+// 创建 Client 对象
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+const extension = new VideoCompositingExtension();
+const vbExtension = new VirtualBackgroundExtension();
+AgoraRTC.registerExtensions([extension, vbExtension]);
+let compositor = extension.createProcessor();
+let vbProcessor = null;
+
+let localTracks = {
+  videoTrack: null,
+  audioTrack: null,
+};
+let screenShareTrack = null;
+let sourceVideoTrack1 = null;
+let sourceVideoTrack2 = null;
+
+async function join() {
+  // 创建屏幕共享视频轨道
+  screenShareTrack = await AgoraRTC.createScreenVideoTrack({
+    encoderConfig: { frameRate: 15 },
+  });
+
+  // 创建源视频轨道 1
+  sourceVideoTrack1 = await AgoraRTC.createCameraVideoTrack({
+    cameraId: videoSelect.value,
+    encoderConfig: "720p_1",
+  });
+
+  // 创建源视频轨道 2
+  const width = 1280,
+    height = 720;
+  const videoElement = await createVideoElement(
+    width,
+    height,
+    "./assets/loop-video.mp4"
+  );
+  const mediaStream = videoElement.captureStream();
+  const msTrack = mediaStream.getVideoTracks()[0];
+  sourceVideoTrack2 = AgoraRTC.createCustomVideoTrack({
+    mediaStreamTrack: msTrack,
+  });
+
+  // 按 z 轴从下到上的顺序创建视频轨道和图片的输入图层
+  const screenShareEndpoint = processor.createInputEndpoint({
+    x: 0,
+    y: 0,
+    width: 1280,
+    height: 720,
+    fit: "cover",
+  });
+  compositor.addImage("./assets/city.jpg", {
+    x: 960,
+    y: 0,
+    width: 320,
+    height: 180,
+    fit: "cover",
+  });
+  compositor.addImage("./assets/space.jpg", {
+    x: 0,
+    y: 540,
+    width: 320,
+    height: 180,
+    fit: "cover",
+  });
+  const endpoint1 = compositor.createInputEndpoint({
+    x: 0,
+    y: 0,
+    width: 320,
+    height: 180,
+    fit: "cover",
+  });
+  const endpoint2 = compositor.createInputEndpoint({
+    x: 960,
+    y: 540,
+    width: 320,
+    height: 180,
+    fit: "cover",
+  });
+
+  // 移除源视频轨道 1 的背景
+  if (!vbProcessor) {
+    vbProcessor = vbExtension.createProcessor();
+    await vbProcessor.init("./assets/wasms");
+    vbProcessor.enable();
+    vbProcessor.setOptions({ type: "none" });
+  }
+  // 连接视频输入管线
+  screenShareTrack
+    .pipe(screenShareEndpoint)
+    .pipe(screenShareTrack.processorDestination);
+  sourceVideoTrack1
+    .pipe(vbProcessor)
+    .pipe(endpoint1)
+    .pipe(sourceVideoTrack1.processorDestination);
+  sourceVideoTrack2
+    .pipe(endpoint2)
+    .pipe(sourceVideoTrack2.processorDestination);
+
+  // 将合并后的视频注入到本地视频轨道
+  const canvas = document.createElement("canvas");
+  canvas.getContext("2d");
+  localTracks.videoTrack = AgoraRTC.createCustomVideoTrack({
+    mediaStreamTrack: canvas.captureStream().getVideoTracks()[0],
+  });
+
+  compositor.setOutputOptions(1280, 720, 15);
+  await compositor.start();
+  localTracks.videoTrack
+    .pipe(compositor)
+    .pipe(localTracks.videoTrack.processorDestination);
+
+  // 播放和发布本地音视频轨道
+  localTracks.videoTrack.play("local-player");
+  localTracks.audioTrack =
+    localTracks.audioTrack || (await AgoraRTC.createMicrophoneAudioTrack());
+  await client.publish(Object.values(localTracks));
+}
+
+// 离开频道并断开所有视频输入管线
+async function leave() {
+  await client.leave();
+  localTracks.audioTrack?.close();
+  localTracks.videoTrack?.unpipe();
+  localTracks.videoTrack?.close();
+  compositor?.unpipe();
+  vbProcessor?.unpipe();
+  sourceVideoTrack1?.unpipe();
+  sourceVideoTrack1?.close();
+  sourceVideoTrack2?.unpipe();
+  sourceVideoTrack2?.close();
+  screenShareTrack?.unpipe();
+  screenShareTrack.close();
+}
+```
+
+</Accordion>
+</Accordions>
+
+## 实现步骤
+
+在远程会议中，会议主讲人除了展示 PPT 和人像画面以外，可能还需要使用图片、视频文件等资料来辅助展示，观众可能希望看到如下效果：
+
+![本地合图效果示意图](https://web-cdn.agora.io/docs-files/1678345681951)
+
+在这个场景中，我们需要将以下内容合成到一个视频轨道上：
+
+- 屏幕共享视频轨道。
+- 两张本地图片。
+- 源视频轨道 1：通过摄像头采集的视频流创建，并且使用[虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)移除该轨道的背景。
+- 源视频轨道 2：通过本地视频文件创建。
+
+本节以这个场景为例，介绍本地合图功能的实现步骤。
+
+### 1. 集成插件
+
+你需要同时集成虚拟背景插件和合图插件。
+
+1. 集成虚拟背景插件并了解注意事项。具体请参考[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+2. 运行以下命令，通过 npm 将合图插件 [agora-extension-video-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) 集成到你的项目中：
+
+   ```bash
+   npm install agora-extension-video-compositor
+   ```
+
+3. 通过以下任意一种方式引入合图插件。
+
+   - 方法一：在 JavaScript 文件中加入以下代码引入。
+
+     ```typescript
+     import VideoCompositingExtension from "agora-extension-video-compositor";
+     ```
+
+   - 方法二：在 HTML 文件中通过 Script 标签引入。引入后即可在 JavaScript 文件中直接使用 `VideoCompositingExtension` 对象。
+
+     ```html
+     <script src="./agora-extension-video-compositor.js"></script>
+     ```
+
+### 2. 注册合图插件
+
+创建 `AgoraRTCClient` 对象之后，创建 `VideoCompositingExtension` 对象并调用 `AgoraRTC.registerExtensions` 注册插件，然后创建一个 `VideoTrackCompositor` 对象。
+
+```typescript
+// 创建 Client 对象
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+// 创建 VideoCompositingExtension 和 VirtualBackgroundExtension 对象
+const extension = new VideoCompositingExtension();
+const vbExtension = new VirtualBackgroundExtension();
+// 注册插件
+AgoraRTC.registerExtensions([extension, vbExtension]);
+// 创建 VideoTrackCompositor 对象
+let compositor = extension.createProcessor();
+let vbProcessor = null;
+```
+
+### 3. 开始合图
+
+按照以下步骤开始合图：
+
+1. 分别调用 [`createScreenVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createscreenvideotrack)、 [`createCameraVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 和 [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomvideotrack) 方法，创建三个视频轨道：
+
+   ```typescript
+   // 使用屏幕画面创建屏幕共享视频轨道
+   screenShareTrack = await AgoraRTC.createScreenVideoTrack({
+     encoderConfig: { frameRate: 15 },
+   });
+
+   // 使用摄像头采集的视频创建源视频轨道 1
+   sourceVideoTrack1 = await AgoraRTC.createCameraVideoTrack({
+     cameraId: videoSelect.value,
+     encoderConfig: "720p_1",
+   });
+
+   // 使用本地视频文件创建源视频轨道 2
+   const width = 1280,
+     height = 720;
+   const videoElement = await createVideoElement(
+     width,
+     height,
+     "./assets/loop-video.mp4"
+   );
+   const mediaStream = videoElement.captureStream();
+   const msTrack = mediaStream.getVideoTracks()[0];
+   sourceVideoTrack2 = AgoraRTC.createCustomVideoTrack({
+     mediaStreamTrack: msTrack,
+   });
+   ```
+
+2. 按从下到上的顺序创建图片和视频轨道的输入图层，后创建的图层会覆盖在上方。在下面这段代码中，屏幕共享画面位于最底层，源视频轨道 2 的画面位于最顶层：
+
+   ```typescript
+   // 创建屏幕共享视频轨道的输入图层
+   const screenShareEndpoint = processor.createInputEndpoint({
+     x: 0,
+     y: 0,
+     width: 1280,
+     height: 720,
+     fit: "cover",
+   });
+   // 创建图片的输入图层
+   compositor.addImage("./assets/city.jpg", {
+     x: 960,
+     y: 0,
+     width: 320,
+     height: 180,
+     fit: "cover",
+   });
+   compositor.addImage("./assets/space.jpg", {
+     x: 0,
+     y: 540,
+     width: 320,
+     height: 180,
+     fit: "cover",
+   });
+   // 创建源视频轨道 1 和 2 的输入图层
+   const endpoint1 = compositor.createInputEndpoint({
+     x: 0,
+     y: 0,
+     width: 320,
+     height: 180,
+     fit: "cover",
+   });
+   const endpoint2 = compositor.createInputEndpoint({
+     x: 960,
+     y: 540,
+     width: 320,
+     height: 180,
+     fit: "cover",
+   });
+   // 设置源视频轨道 1 的虚拟背景
+   if (!vbProcessor) {
+     vbProcessor = vbExtension.createProcessor();
+     await vbProcessor.init("./assets/wasms");
+     vbProcessor.enable();
+     vbProcessor.setOptions({ type: "none" });
+   }
+   // 连接视频输入图层与视频轨道之间的管线
+   screenShareTrack
+     .pipe(screenShareEndpoint)
+     .pipe(screenShareTrack.processorDestination);
+   sourceVideoTrack1
+     .pipe(vbProcessor)
+     .pipe(endpoint1)
+     .pipe(sourceVideoTrack1.processorDestination);
+   sourceVideoTrack2
+     .pipe(endpoint2)
+     .pipe(sourceVideoTrack2.processorDestination);
+   ```
+
+3. 合并所有输入图层，将合并后的视频注入到本地视频轨道：
+
+   ```typescript
+   const canvas = document.createElement("canvas");
+   canvas.getContext("2d");
+   // 创建本地视频轨道
+   localTracks.videoTrack = AgoraRTC.createCustomVideoTrack({
+     mediaStreamTrack: canvas.captureStream().getVideoTracks()[0],
+   });
+
+   // 设置合图选项
+   compositor.setOutputOptions(1280, 720, 15);
+   // 开始合图
+   await compositor.start();
+   // 将合图后的视频注入本地视频轨道
+   localTracks.videoTrack
+     .pipe(compositor)
+     .pipe(localTracks.videoTrack.processorDestination);
+   ```
+
+4. 播放和发布本地视频轨道：
+
+   ```typescript
+   // 播放本地视频轨道
+   localTracks.videoTrack.play("local-player");
+
+   // 发布本地音视频轨道
+   localTracks.audioTrack =
+     localTracks.audioTrack || (await AgoraRTC.createMicrophoneAudioTrack());
+   await client.publish(Object.values(localTracks));
+   ```
+
+### 4. 停止合图
+
+需要离开频道时， 调用 `unpipe` 断开合成器以及所有视频轨道的管线，并且停止所有音视频轨道，否则再次加入频道时可能会出错：
+
+```typescript
+async function leave() {
+  await client.leave();
+  localTracks.audioTrack?.close();
+  localTracks.videoTrack?.unpipe();
+  localTracks.videoTrack?.close();
+  compositor?.unpipe();
+  vbProcessor?.unpipe();
+  sourceVideoTrack1?.unpipe();
+  sourceVideoTrack1?.close();
+  sourceVideoTrack2?.unpipe();
+  sourceVideoTrack2?.close();
+  screenShareTrack?.unpipe();
+  screenShareTrack.close();
+}
+```
+
+## 开发注意事项
+
+- 合图插件的浏览器支持如下：
+  - 支持 Chrome 91 以上版本、Edge 91 以上版本和 Firefox 最新版。为了获得最佳体验，推荐使用 Chrome 或 Edge 94 以上版本。
+  - 由于 Safari 特定版本内核存在 [bug](https://bugs.webkit.org/show_bug.cgi?id=181663&from_wecom=1)，只支持 iOS Safari 15.4 以上版本、macOS Safari 13 以上版本。
+- 在保证效果的前提下，合图插件最多可以合成 2 路视频流（来自摄像头或者本地视频文件）、1 路屏幕共享流、2 张图片。对更多视频流和图片进行合成会影响性能和体验。
+- 如需同时使用多个媒体处理插件，声网建议你使用 Intel Core i5 4 核或以上的处理器。同时开启多个插件后，如果其它正在运行的程序占用了较高的系统资源，你的 App 可能会出现音视频卡顿。
+
+## API 参考
+
+本节提供本地合图插件的 API 参考。
+
+### IVideoCompositingExtension
+
+#### createProcessor
+
+```typescript
+createProcessor(): VideoTrackCompositor;
+```
+
+创建合成器。
+
+返回值：
+
+- `VideoTrackCompositor`: 合成器对应的 `VideoTrackCompositor` 对象。
+
+### IVideoTrackCompositor
+
+#### createInputEndpoint
+
+```typescript
+createInputEndpoint(option: LayerOption): IBaseProcessor;
+```
+
+创建视频轨道的输入图层。
+
+参数：
+
+- `option`: 视频输入的布局选项。详见 [LayerOption](#layeroption)。
+
+返回值：
+
+- `IBaseProcessor`: 视频输入图层对应的 `IBaseProcessor` 对象。
+
+#### addImage
+
+```typescript
+addImage(url: string, option: LayerOption): HTMLImageElement;
+```
+
+创建图片的输入图层。
+
+调用该方法后如果需要更换图片，修改该方法返回的 `HTMLImageElement` 对象的 `src` 属性即可。
+
+参数：
+
+- `url`: 可以传入以下值：
+  - 本地图片的相对路径。
+  - 在线图片的 URL。你需要确保 URL 能被 `HTMLImageElement` 对象加载，并且能够跨域访问。
+- `option`: 图片输入的布局选项。详见 [LayerOption](#layeroption)。
+
+返回值：
+
+- `HTMLImageElement`: 图片输入图层对应的 `HTMLImageElement` 对象。
+
+#### removeImage
+
+```typescript
+removeImage(imgElement: HTMLImageElement): void;
+```
+
+删除图片的输入图层。
+
+参数：
+
+- `imgElement`: 图片输入图层对应的 `HTMLImageElement` 对象。
+
+#### setOutputOptions
+
+```typescript
+setOutputOptions(width: number, height: number, fps?: number): void;
+```
+
+设置合成器输出视频的属性。
+
+参数：
+
+- `width`: 输出视频的宽 (px)。
+- `height`: 输出视频的高 (px)。
+- `fps`: （可选）输出视频的帧率，默认值为 15 帧/秒。
+
+#### start
+
+```typescript
+start(): Promise<void>;
+```
+
+开始合图。合成器会对所有输入图层的内容进行合并，输出视频。
+
+#### stop
+
+```typescript
+stop(): Promise<void>;
+```
+
+停止合图。
+
+### 类型定义
+
+#### LayerOption
+
+```typescript
+export type LayerOption = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fit?: "contain" | "cover" | "fill";
+};
+```
+
+图层的显示选项。用于 [createInputEndpoint](#createinputendpoint) 和 [addImage](#addimage) 方法。
+
+属性：
+
+- `x`: Number 型。图层左上角相对于画布左上角的横向位移。
+- `y`: Number 型。图层左上角相对于画布左上角的纵向位移。
+- `width`: Number 型。图层的宽度 (px)。
+- `height`: Number 型。图层的高度 (px)。
+- `fit`: （可选）String 型。视频或图片内容适应所在图层的方式，可设为：
+  - `"contain"`: 按比例填充并保证内容能完整显示，不足部分用黑色填充。
+  - `"cover"`: 按比例填充并保证内容能充满所在图层，超出部分会被裁剪。
+  - `"fill"`: 拉伸以填满所在图层。

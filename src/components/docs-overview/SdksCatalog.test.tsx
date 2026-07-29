@@ -65,19 +65,42 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
-  it('updates the command when the version changes', () => {
+  it('only exposes the latest SDK version for download', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-    const select = within(voiceCard).getByRole('combobox', {
-      name: 'Voice SDK version',
-    });
+
+    expect(
+      within(voiceCard).getByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
+      ),
+    ).toBeVisible();
+    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+      ),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps current package variants without exposing previous versions', () => {
+    render(<SdksCatalog />);
+
+    const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    const select = within(videoCard).getByRole('combobox', {
+      name: 'Video SDK version',
+    }) as HTMLSelectElement;
+    const optionLabels = Array.from(select.options).map(
+      (option) => option.textContent,
+    );
+
+    expect(optionLabels).toEqual(['v4.6.3 - Latest', 'v4.6.3 Lite - Latest']);
 
     fireEvent.change(select, { target: { value: '1' } });
 
     expect(
-      within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+      within(videoCard).getByText(
+        "implementation 'io.agora.rtc:lite-sdk:4.6.3'",
       ),
     ).toBeVisible();
   });
@@ -277,6 +300,267 @@ describe('SdksCatalog', () => {
     expect(
       screen.queryByRole('article', { name: 'Voice SDK' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('renders the zh-CN catalog with localized links and filters', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=signaling&platform=harmonyos',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
+    expect(screen.getByRole('link', { name: '查看全部 SDK' })).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/sdks',
+    );
+
+    const signalingCard = screen.getByRole('article', {
+      name: '实时消息 SDK',
+    });
+    expect(
+      within(signalingCard).getByRole('tab', { name: 'HarmonyOS' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip',
+    );
+  });
+
+  it('uses prop filters for zh-CN product download pages', () => {
+    render(<SdksCatalog locale="zh-CN" platform="linux" product="signaling" />);
+
+    expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '视频 SDK' }),
+    ).not.toBeInTheDocument();
+
+    const signalingCard = screen.getByRole('article', {
+      name: '实时消息 SDK',
+    });
+    expect(
+      within(signalingCard).getByRole('tab', { name: 'Linux' }),
+    ).toHaveAttribute('aria-selected', 'true');
+    expect(
+      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
+    );
+    expect(
+      within(signalingCard).getByText('f88b55a96cd975494d9592ba3ffe08d8'),
+    ).toBeVisible();
+  });
+
+  it('renders flexible classroom solution SDKs in the zh-CN catalog', () => {
+    render(
+      <SdksCatalog
+        locale="zh-CN"
+        platform="android"
+        product="flexible-classroom"
+      />,
+    );
+
+    expect(screen.getByText('正在显示 灵动课堂 SDK')).toBeVisible();
+    expect(screen.getByRole('article', { name: '灵动课堂 SDK' })).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '云课堂 SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('article', { name: '灵动监考 SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders meeting SDKs in the zh-CN catalog', () => {
+    render(
+      <SdksCatalog locale="zh-CN" platform="electron" product="meeting" />,
+    );
+
+    expect(screen.getByText('正在显示 智能云会议引擎 SDK')).toBeVisible();
+    const meetingCard = screen.getByRole('article', {
+      name: '智能云会议引擎 SDK',
+    });
+    expect(
+      within(meetingCard).getByText('npm i fcr-ui-scene@3.1.0'),
+    ).toBeVisible();
+  });
+
+  it('does not expose a superseded zh-CN SDK marked as latest', () => {
+    render(
+      <SdksCatalog locale="zh-CN" platform="flutter" product="signaling" />,
+    );
+
+    const signalingCard = screen.getByRole('article', {
+      name: '实时消息 SDK',
+    });
+
+    expect(
+      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+    ).toBeVisible();
+    expect(
+      within(signalingCard).queryByRole('combobox'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses the current Flutter Signaling package in the English catalog', () => {
+    render(<SdksCatalog platform="flutter" product="signaling" />);
+
+    const signalingCard = screen.getByRole('article', {
+      name: 'Signaling SDK',
+    });
+
+    expect(
+      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+    ).toBeVisible();
+    expect(
+      within(signalingCard).queryByRole('combobox'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses the current Web Voice package in the zh-CN catalog', () => {
+    render(<SdksCatalog locale="zh-CN" platform="web" product="voice" />);
+
+    const voiceCard = screen.getByRole('article', { name: '语音 SDK' });
+
+    expect(
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
+    ).toBeVisible();
+    expect(
+      within(voiceCard).getByRole('link', { name: '直接下载' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
+    );
+    expect(
+      within(voiceCard).getByRole('link', { name: '包管理器 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
+    );
+    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('localizes zh-CN package variant and language labels', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoOptions = within(
+      screen.getByRole('article', { name: '视频 SDK' }),
+    )
+      .getAllByRole('option')
+      .map((option) => option.textContent);
+    expect(videoOptions).toEqual([
+      'v4.6.3 完整版 - 最新',
+      'v4.6.3 轻量版 - 最新',
+    ]);
+
+    const serverOptions = within(
+      screen.getByRole('article', { name: 'RTC 服务端 SDK' }),
+    )
+      .getAllByRole('option')
+      .map((option) => option.textContent);
+    expect(serverOptions).toContain('v2.2.8 Go - 最新');
+    expect(serverOptions).toContain('v2.2.4 Python - 最新');
+    expect(serverOptions.join(' ')).not.toContain(' for ');
+  });
+
+  it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const headings = screen
+      .getAllByRole('heading', { level: 3 })
+      .map((node) => node.textContent?.trim())
+      .filter(Boolean);
+
+    expect(headings.indexOf('对话式 AI 引擎 SDK')).toBeLessThan(
+      headings.indexOf('语音 SDK'),
+    );
+    expect(headings.indexOf('语音 SDK')).toBeLessThan(
+      headings.indexOf('智能云会议引擎 SDK'),
+    );
+    expect(headings.indexOf('智能云会议引擎 SDK')).toBeLessThan(
+      headings.indexOf('灵动课堂 SDK'),
+    );
+  });
+
+  it('uses canonical Chinese product names and descriptions throughout the catalog', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const expectedProducts = [
+      ['对话式 AI 引擎 SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      [
+        '语音 SDK',
+        '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
+      ],
+      ['视频 SDK', '适用于音视频通话、互动直播和极速直播的实时互动 SDK'],
+      ['实时消息 SDK', '提供低延时消息、信令、状态同步和频道管理能力的 SDK'],
+      ['即时通讯 SDK', '适用于即时通讯场景的 SDK'],
+      ['物联网 aPaaS SDK', '适用于嵌入式设备实时音视频互动的 SDK'],
+      ['媒体播放器组件', '用于在客户端播放本地或在线媒体资源的组件'],
+      ['互动白板 SDK', '提供可高度定制且不含默认 UI 的互动白板核心能力'],
+      ['Fastboard SDK', '提供默认 UI，支持快速集成互动白板功能的 SDK'],
+      [
+        '智能云会议引擎 SDK',
+        '用于构建多人音视频会议、会控、协作办公和 AI 会议体验的 SDK',
+      ],
+      [
+        'RTC 服务端 SDK',
+        '部署在服务端，用于向 RTC 频道发送音视频流或从频道接收音视频流',
+      ],
+      ['本地服务端录制 SDK', '部署在本地服务端，用于录制 RTC 频道中的音视频流'],
+      ['灵动课堂 SDK', '适用于教育场景和课堂 UI 定制的 SDK'],
+      ['云课堂 SDK', '提供默认课堂 UI 的场景化 SDK'],
+      ['灵动监考 SDK', '适用于在线监考场景的 SDK'],
+    ] as const;
+
+    for (const [name, description] of expectedProducts) {
+      expect(
+        within(screen.getByRole('article', { name })).getByText(description),
+      ).toBeVisible();
+    }
+
+    const catalogText = screen
+      .getAllByRole('article')
+      .map((article) => article.textContent)
+      .join('\n');
+    expect(catalogText).not.toMatch(
+      /SDK for:?|Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
+    );
+  });
+
+  it('derives zh-CN Android install commands from confirmed package versions', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=video&platform=android',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = screen.getByRole('article', { name: '视频 SDK' });
+    expect(
+      within(videoCard).getByText(
+        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
+      ),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '直接下载' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
+    );
   });
 
   it('ignores invalid product and platform query values', () => {

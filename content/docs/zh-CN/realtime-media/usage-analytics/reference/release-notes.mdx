@@ -1,0 +1,189 @@
+---
+title: "发版说明"
+description: "查看水晶球的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
+---
+水晶球（声网 Analytics）是声网为开发者提供的全周期通话质量监测、回溯和分析的解决方案，致力于帮助你及时发现问题、定位原因，并最终解决问题以提升用户体验。详见[水晶球概览](/zh-CN/realtime-media/usage-analytics)。
+
+## 2023.09
+
+### 新增特性
+
+本次发布全面升级了通话调查 RESTful API：
+
+- [获取频道信息 API](/zh-CN/api-reference/api-ref/agora-analytics/call-list) 响应内容新增通话峰值人数、累计通话人数、音频/视频卡顿率。
+- [获取用户信息 API](/zh-CN/api-reference/api-ref/agora-analytics/call-sessions) 响应内容新增用户级别音频/视频卡顿率和用户角色和功能标识。
+- [获取用户质量明细指标 API](/zh-CN/api-reference/api-ref/agora-analytics/call-metrics) 响应内容中的指标 ID 细化了视频分辨率指标，现在视频大流和小流的分辨率指标将独立展示。
+- 新增[获取通话统计数据 API](/zh-CN/api-reference/api-ref/agora-analytics/call-statistics) 用于获取指定通话在指定时间范围内、指定维度下的音频/视频卡顿率统计数据。
+- 新增[获取通话卡顿率分桶数据 API](/zh-CN/api-reference/api-ref/agora-analytics/call-freeze-bucket) 用于获取指定通话在指定时间范围内的音频/视频卡顿率分桶统计数据。
+- 新增[获取频道时序指标 API](/zh-CN/api-reference/api-ref/agora-analytics/call-statistics-time) 用于获取指定通话的洞察统计数据。
+
+## 2023.08
+
+### 新增特性
+
+**数据洞察 Plus**
+
+本次发布新增数据洞察 Plus 功能，相比原有数据洞察功能新增以下能力：
+
+- 多维度分解，层层下钻快速归因
+- 用户采样，确认问题影响范围
+- 多指标、多时间窗指标对比，进一步提升分析效率
+
+数据洞察 Plus 功能在专业版与旗舰版套餐包中支持，更多详情请参考以下文档：
+
+- [数据洞察各套餐功能对比](/zh-CN/realtime-media/usage-analytics/reference/billing#数据洞察功能)
+- [数据洞察 Plus 使用指南](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus)
+- [异常数据排查指南](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting)
+
+## 2023.04
+
+### 新增特性
+
+媒体服务是实时音视频（RTC）的重要辅助产品，包括云端录制、旁路推流等。为了方便开发者了解 RTC 媒体服务的线上使用情况，本次发布升级了[数据洞察](/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic)和[实时监控](/zh-CN/realtime-media/usage-analytics/build/rtc/monitor)模块，支持查询云端录制、输入在线媒体流和旁路推流服务的历史或实时规模。
+
+## 2023.03
+
+### 改进
+
+本次发布升级了实时音视频（RTC）产品下的部分 RESTful API：
+
+- 数据洞察 RESTful API
+  - 新增[查询聚合用量指标](/zh-CN/api-reference/api-ref/agora-analytics/insight-usage-aggregation)接口，用于获取指定时间范围内、指定维度下的聚合用量指标。
+  - 新增[查询聚合质量指标](/zh-CN/api-reference/api-ref/agora-analytics/insight-quality-aggregation)接口，用于获取指定时间范围内、指定维度下的聚合质量指标。
+- 实时监控 RESTful API
+  - 查询实时规模和查询实时质量接口新增 `dimension` 和 `dimensionValues` 参数，用于指定查询维度。
+  - 新增[查询实时规模 Top 20 分组](/zh-CN/api-reference/api-ref/agora-analytics/realtime-usage-top20)接口，用于获取指定维度下实时的通话人数的 TOP 20 分组数据。
+  - 新增[查询实时质量 Top 20 分组](/zh-CN/api-reference/api-ref/agora-analytics/realtime-quality-top20)接口，用于获取指定维度下的质量相关指标 TOP 20 分组数据。
+
+## 2022.09
+
+### 改进
+
+本次发布改进了视频卡顿率的计算方式。通过优化数据采集与分析方法、消除屏幕共享等特殊场景的影响，进一步提高了视频卡顿率的精度。视频卡顿率的这项改进适用于以下功能：
+
+- 通话调查
+- 数据洞察
+- 实时监控
+- 告警通知
+
+## 2022.08
+
+### 改进
+
+为了兼顾数据洞察的时效性和准确性，本次发布在数据洞察中增加数据重算机制。数据洞察的数据延迟最低可以达到 6 小时，但内部资源调度、用户网络不佳等原因可能导致数据上报的延迟。增加数据重算机制后，每天的数据都会在 T+2 天重新计算一次，以保证历史数据的完整性。例如，2022 年 7 月 6 日的数据将在 7 月 8 日凌晨进行重算。
+
+## 2022.04
+
+### 新增特性
+
+本次发布推出了通话调查的新版本。与旧版相比，新版通话调查具有以下优势：
+
+- 针对大规模通话场景，提高从通话级别问题定位至用户级别问题的调查效率。
+- 分开呈现接收端与发送端的关键质量指标与事件，方便定位异常问题。
+- 集成自动诊断引擎，提供直观的诊断结论，帮助降低调查成本。与自动诊断引擎相关的功能目前均处于 Beta 阶段。
+
+详见[通话调查流程总览](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
+
+## 2021.10
+
+本次发布下线了实时数据（Beta）和实时预警（Beta），并且新增[实时监控](/zh-CN/realtime-media/usage-analytics/build/rtc/monitor)和[告警通知](/zh-CN/realtime-media/usage-analytics/build/rtc/alarm)功能：
+
+- 实时监控：对声网 RTC 项目提供多指标、可视化的实时监控。
+- 告警通知：对声网 RTC 项目的异常指标和事件提供告警，可以通过邮件、接口回调等多种方式发送告警通知。
+
+此外还增加了[实时监控 RESTful API](/zh-CN/api-reference/api-ref/agora-analytics/realtime-usage)，用于查询实时规模和实时质量。
+
+:::warning[注意]
+自 2021 年 10 月 12 日起，实时数据（Beta）和实时预警（Beta）全面下线。如需继续使用实时数据（Beta）功能，请升级到实时监控服务。详见[计费说明](/zh-CN/realtime-media/usage-analytics/reference/billing)。
+:::
+
+## 2021.07
+
+本次发布对数据洞察功能进行如下优化：
+
+- 优化用量指标和质量指标，提供不同粒度的数据。
+- 数据洞察 RESTful API 有如下改动：
+	- 更新 `/beta/insight/usage/by_time` 接入点。
+	- 新增 `/beta/insight/quality/by_time`（[查询质量指标](/zh-CN/api-reference/api-ref/agora-analytics/insight-quality-time)）接入点。
+
+:::warning[注意]
+自 2021 年 7 月 12 日起，数据洞察 Beta 版全面下线。如果需要使用数据洞察功能，请订阅水晶球套餐包。各套餐包支持的数据洞察功能有所不同，详见[套餐包详情](/zh-CN/realtime-media/usage-analytics/reference/billing#套餐包详情)。
+:::
+
+## 2021.05
+
+本次发布对通话调查 RESTful API 进行如下改动：
+
+- 更新 `/beta/analytics/call/lists` 接入点。
+- 废弃 `/beta/analytics/call/details`（获取通话指标）接入点，并且新增 `/beta/analytics/call/sessions`（[获取用户通话详情](/zh-CN/api-reference/api-ref/agora-analytics/call-sessions)）和 `/beta/analytics/call/metrics`（[获取通话质量指标](/zh-CN/api-reference/api-ref/agora-analytics/call-metrics)）作为替代。
+
+:::warning[注意]
+- 自 2021 年 5 月 20 日起，使用通话调查功能需要订阅水晶球套餐包。各套餐包支持的通话调查功能有所不同，详见[计费说明](/zh-CN/realtime-media/usage-analytics/reference/billing#通话调查功能)。
+- 自 2021 年 6 月起，接入点 `/beta/analytics/call/details` 将停止维护。请使用最新版本的通话调查 RESTful API。
+:::
+
+## 2020.09
+
+### 新增特性
+
+该版本新增大频道 RESTful API，你可以获取以下数据：
+
+- 大频道中体验异常的用户数。体验异常包含视频卡顿、加入大频道慢等。
+- 尝试加入大频道的用户数。
+- 大频道中用户对通话的评分。
+- 大频道的在线用户数。
+
+:::warning[注意]
+使用大频道 RESTful API 前，你需要[联系销售](https://www.shengwang.cn/contact-sales/)开通大频道功能。
+:::
+
+### 改进
+
+#### 通话调查
+
+本次发布提升了通话调查功能的易用性，改进项包括：
+
+- **通话体验质量页面**的事件轴移至**端到端详情页面**的**音视频上行和网络丢包**、**音视频下行和端到端丢包**面板。
+
+- **端到端详情页面**新增以下指标：
+
+   - 视频大流发送码率
+   - 视频小流发送码率
+   - 视频采集帧率
+   - 视频发送分辨率
+
+- 支持在**通话概览页面**一键创建工单。
+
+- 优化 UI 样式。
+
+#### 其他改进
+
+除 RESTful API 外，水晶球各功能默认使用本地时间。
+
+## 2020.06
+
+本次发布新增水晶球内嵌功能（Beta），帮助开发者快速在自己的系统中嵌入水晶球功能，减少对接成本并提升问题调查效率。
+
+## 2020.05
+
+本次发布新增实时预警功能（Beta），实现实时异常识别、根因分析，帮助开发者及时定位异常源。
+
+## 2020.01
+
+本次发布新增大频道功能（Beta），实现频道级监控、异常识别，能极大提高用户运营大频道的效率。
+
+## 2019.10
+
+本次发布新增实时数据功能（Beta），帮助用户实时掌握项目动态，及时识别异常通话体验和异常根因。
+
+## 2019.09
+
+本次发布新增数据洞察功能（Beta），提供整体、地域、版本的质量监控，用户可以历时分析通话规模和质量。
+
+## 2019.08
+
+本次发布新增关键事件功能，提升问题调查效率。
+
+## 2018.08
+
+本次发布提供通话调查功能，帮助用户查找通话并分析质量问题。

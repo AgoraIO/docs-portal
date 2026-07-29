@@ -1,0 +1,70 @@
+---
+title: AudioFrame
+description: 原始音频数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_audioframe
+  sourcePath: html-docs/rtc/Android/API/class_audioframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audioframe__prototype"></a>
+
+```text
+public class AudioFrame {
+  public ByteBuffer buffer;
+  public int sampleRataHz;
+  public int bytesPerSample;
+  public int channelNums;
+  public int samplesPerChannel;
+  public long timestamp;
+}
+```
+
+<a id="class_audioframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+音频帧的数据缓冲区。当音频帧使用立体声通道时，数据缓冲区为交叉存储。缓冲区大小计算方式为：`buffer` = `samples` × `channels` × `bytesPerSample`。
+
+</Parameter>
+<a id="sampleratahz"></a>
+<Parameter name="sampleRataHz">
+
+音频帧中每个声道的采样率（单位为 Hz）。
+
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
+
+每个采样的字节数。对于 PCM 数据，通常为 16 位（2 字节）。
+
+</Parameter>
+<a id="channelnums"></a>
+<Parameter name="channelNums">
+
+音频通道数（立体声时为交叉存储）。
+
+- 1：单声道。
+- 2：立体声。
+
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
+
+音频帧中每个声道的采样数。
+
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
+
+音频帧的时间戳（单位：毫秒）。
+
+</Parameter>
+</ParameterList>

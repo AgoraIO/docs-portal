@@ -1,0 +1,90 @@
+---
+title: com.herewhite.sdk.window.SlideListener接口 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/interfacecom_1_1herewhite_1_1sdk_1_1window_1_1_slide_listener
+  sourcePath: html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1window_1_1_slide_listener.html
+  generator: doxygen
+  warnings: []
+---
+
+## 成员函数说明
+
+<a id="aa7b55dbd3cb671d2ba2ae5b69973baed"></a>
+
+### slideUrlInterrupter()
+
+<ApiSignature>
+
+void com.herewhite.sdk.window.SlideListener.slideUrlInterrupter(String *sourceUrl*, ResultCaller&lt; String &gt; *resultCaller*)
+
+</ApiSignature>
+
+拦截 PPT 资源 URL 回调。
+
+:::info[自从]
+2.16.59
+:::
+
+该回调默认禁用。你可以在初始化白板 SDK 时，通过 [`WhiteSdkConfiguration#setEnableSlideInterrupterAPI`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-white-sdk-configuration#aa056117366231f9c6a94e4c3c8e69ebe) setEnableSlideInterrupterAPI\}(true) 方法开启。
+
+开启后，在 PPT 资源加载时，SDK 会触发该回调，报告资源的原 URL 地址。你需要将替换后的 URL 通过 `resultCaller` 回调到 SDK。
+
+:::info[注解]
+不要在此方法中作过多耗时操作。
+:::
+
+<ParameterList title="参数">
+<Parameter name="sourceUrl">
+
+原 URL 地址。
+
+</Parameter>
+<Parameter name="resultCaller">
+
+回调替换后的 URL。
+
+</Parameter>
+</ParameterList>
+
+<a id="afb9deb51a77275c18ebc66369ba98ea9"></a>
+
+### onSlideError()
+
+<ApiSignature>
+
+default void com.herewhite.sdk.window.SlideListener.onSlideError([SlideErrorType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-slide-error-type) *errorType*, String *errorMsg*, String *slideId*, int *slideIndex*)
+
+</ApiSignature>
+
+PPT 加载错误回调，用于监听 PPT 渲染错误事件。
+
+:::info[自从]
+2.16.93
+:::
+
+<ParameterList title="参数">
+<Parameter name="errorType">
+
+错误类型。
+
+</Parameter>
+<Parameter name="errorMsg">
+
+错误信息。
+
+</Parameter>
+<Parameter name="slideId">
+
+PPT ID。
+
+</Parameter>
+<Parameter name="slideIndex">
+
+PPT 索引。
+
+</Parameter>
+</ParameterList>

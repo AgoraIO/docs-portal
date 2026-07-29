@@ -1,0 +1,155 @@
+---
+title: com.herewhite.sdk.domain.ContentModeConfig类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_content_mode_config
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_content_mode_config.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1domain_1_1_content_mode_config.png has no
+        meaningful alt or title text; the converter used contextual alt text
+        "com.herewhite.sdk.domain.ContentModeConfig类 参考 图示".
+---
+
+类 com.herewhite.sdk.domain.ContentModeConfig 继承关系图:
+
+![com.herewhite.sdk.domain.ContentModeConfig类 参考 图示](/img/api-center-generated/470dca2e197f-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_content_mode_config.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`ContentModeConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config) 类，设置视角边界的缩放模式和缩放比例。
+
+:::info[自从]
+2.5.0
+:::
+
+## 成员函数说明
+
+<a id="a06a5b98e8790b3d89e93b1fca90361d1"></a>
+
+### getScale()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.ContentModeConfig.getScale()
+
+</ApiSignature>
+
+获取视角边界的缩放比例。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+视角边界的缩放比例。
+
+<a id="a9465b7e1e65f043146cb834af99dd0e3"></a>
+
+### setScale()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.ContentModeConfig.setScale(Double *scale*)
+
+</ApiSignature>
+
+设置视角边界的缩放比例。
+
+<ParameterList title="参数">
+<Parameter name="scale">
+
+视角边界的缩放比例，默认值为 1.0，即保持视角边界的原始大小。
+
+</Parameter>
+</ParameterList>
+
+:::info[注解]
+该方法仅在以下缩放模式下生效：
+
+- `CENTER`
+- `CENTER_INSIDE`
+- `CENTER_INSIDE_SCALE`
+- `CENTER_CROP_SPACE`
+:::
+
+<a id="a5c8449496208748dbe39f7132eb93936"></a>
+
+### getSpace()
+
+<ApiSignature>
+
+Double com.herewhite.sdk.domain.ContentModeConfig.getSpace()
+
+</ApiSignature>
+
+获取在视角边界的四周填充的空白空间。
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+在视角边界的四周填充的空白空间，单位为像素。
+
+<a id="a1a40c12618243fb6605afb4e86670765"></a>
+
+### setSpace()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.ContentModeConfig.setSpace(Double *space*)
+
+</ApiSignature>
+
+设置在视角边界的四周填充的空白空间。
+
+:::info[注解]
+该方法仅在 `CENTER_INSIDE_SPACE` 缩放模式下生效。
+:::
+
+<ParameterList title="参数">
+<Parameter name="space">
+
+在视角边界的四周填充的空白空间，单位为像素，默认值为 0。
+
+</Parameter>
+</ParameterList>
+
+<a id="a038271ec668a826a30ba1f426f7063e0"></a>
+
+### getMode()
+
+<ApiSignature>
+
+[ScaleMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config-1-1-scale-mode) com.herewhite.sdk.domain.ContentModeConfig.getMode()
+
+</ApiSignature>
+
+获取视角边界的缩放模式。
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+视角边界的缩放模式，详见 [`ScaleMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config-1-1-scale-mode)。
+
+<a id="a77321e99d4d493c623ccd06473fba532"></a>
+
+### setMode()
+
+<ApiSignature>
+
+void com.herewhite.sdk.domain.ContentModeConfig.setMode([ScaleMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config-1-1-scale-mode) *mode*)
+
+</ApiSignature>
+
+设置视角边界的缩放模式。
+
+<ParameterList title="参数">
+<Parameter name="mode">
+
+视角边界的缩放模式，详见 [`ScaleMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-content-mode-config-1-1-scale-mode)。
+
+</Parameter>
+</ParameterList>

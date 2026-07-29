@@ -1,0 +1,36 @@
+---
+title: "如何开启 iOS 多任务采集？"
+---
+从 iOS 16 开始，系统允许 App 在多任务模式下继续访问摄像头，这意味着在例如分屏 (Split view)、滑动叠放 (Slide over)、画中画 (Picture in picture) 等布局下，摄像头采集可以保持运行。
+
+从 v4.6.2 起，声网 SDK 支持了该系统能力。该能力需要通过官方 **multitasking-camera-access** 权限 (entitlement) 开启。本文介绍如何开启 iOS 多任务采集。
+
+## 前提条件
+
+- 你的 Apple 开发者账号需要加入 Apple Developer Program（需要付费）。
+- 你的 App 需要支持 iOS 16 / iPadOS 16 及以上系统版本。
+
+## 开启步骤
+
+1. 登录 [Apple Developer 控制台](https://developer.apple.com/account/resources/identifiers/list)。
+2. 在 **Identifiers** 页面，选择你想要开启多任务采集功能的 App ID。
+3. 在 App ID 的配置页面，勾选打开 **Multitasking Camera Access** 选项，保存更改并确保对应的 provisioning profile 重新生成并下载/更新。
+
+   该权限对应的 Entitlement key 为：
+
+   ```text
+   com.apple.developer.avfoundation.multitasking-camera-access
+   ```
+
+   表示 App 在多任务场景下仍可访问摄像头。
+
+4. 在 Xcode 中，打开你的项目，选择对应的 Target，进入 **Signing & Capabilities** 页面，点击左上角的 **+ Capability** 按钮，添加 **Multitasking Camera Access** 。
+
+![多任务采集能力](https://web-cdn.agora.io/docs-portal/img/rtc/camera-multitasking.png)
+
+## App 上架与 Apple 审核
+
+完成功能开发后：
+
+- 使用对应的 provisioning profile 构建 App。
+- 在提交 App Store 审核时，应确保在 App Review Notes 中说明你为何使用该多任务摄像头权限，因为 Apple 审核可能会关注该权限是否有明确业务需求。

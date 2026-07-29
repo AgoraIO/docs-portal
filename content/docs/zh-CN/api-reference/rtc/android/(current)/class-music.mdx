@@ -1,0 +1,113 @@
+---
+title: Music
+description: 用于表示音乐资源的详细信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_music
+  sourcePath: html-docs/rtc/Android/API/class_music.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_music__prototype"></a>
+
+```text
+public class Music {
+  public long songCode;
+  public String name;
+  public String singer;
+  public String poster;
+  public String releaseTime;
+  public int type;
+  public int pitchType;
+  public int durationS;
+  public int[] lyricTypes;
+  public MvProperty[] mvProperties;
+  public ClimaxSegment[] climaxSegments;
+}
+```
+
+<a id="class_music__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
+
+音乐资源的唯一标识符，用于识别某个音乐资源。
+
+</Parameter>
+<a id="name"></a>
+<Parameter name="name">
+
+音乐资源的名称。
+
+</Parameter>
+<a id="singer"></a>
+<Parameter name="singer">
+
+歌手名称。
+
+</Parameter>
+<a id="poster"></a>
+<Parameter name="poster">
+
+音乐资源海报的下载地址。
+
+</Parameter>
+<a id="releasetime"></a>
+<Parameter name="releaseTime">
+
+音乐资源的发行时间。
+
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
+
+音乐资源的类型：
+
+- 1：单轨音频，左声道为伴奏，右声道为原唱。
+- 2：单轨音频，仅伴奏。
+- 3：单轨音频，仅原唱。
+- 4：多轨音频。
+
+</Parameter>
+<a id="pitchtype"></a>
+<Parameter name="pitchType">
+
+歌曲是否支持评分功能：
+
+- 1：支持评分功能。
+- 2：不支持评分功能。
+
+</Parameter>
+<a id="durations"></a>
+<Parameter name="durationS">
+
+音乐资源的总时长（单位为秒）。
+
+</Parameter>
+<a id="lyrictypes"></a>
+<Parameter name="lyricTypes">
+
+支持的歌词类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+</Parameter>
+<a id="mvproperties"></a>
+<Parameter name="mvProperties">
+
+MV 属性列表，表示该音乐资源包含的 MV 信息。
+
+</Parameter>
+<a id="climaxsegments"></a>
+<Parameter name="climaxSegments">
+
+音乐高潮片段列表。详见 [ClimaxSegment](/zh-CN/api-reference/rtc/android/class-climaxsegment)。
+
+</Parameter>
+</ParameterList>

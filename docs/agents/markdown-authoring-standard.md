@@ -29,7 +29,20 @@ Tokens expire after 24 hours. Generate a new token before the old one expires.
 :::
 ```
 
-Use only these callout types: `note`, `info`, `tip`, `warning`, and `error`.
+Use only these callout types: `note`, `info`, `tip`, `caution`, `warning`, and
+`error`.
+
+Keep the source severity instead of choosing a type from body wording:
+
+- Use `note` for neutral side information, `info` for emphasized context, and
+  `tip` for recommendations.
+- Use `caution` for precautions or constraints that require attention before
+  proceeding. Legacy HTML `alert alert-warning`, `alert warning`,
+  `note attention`, and `note caution` blocks map here.
+- Use `warning` when the source explicitly uses a warning admonition or a
+  standalone warning class. Use `error` for danger or error blocks.
+- Do not infer callout severity from labels such as “注意” or “警告” when the
+  source provides a semantic class.
 
 Do not use four-colon fences or nested callouts. If you need two notices, write
 two consecutive callouts instead.
@@ -262,7 +275,10 @@ Rules:
 - Do not put lists, callouts, code fences, images, or raw HTML lists inside a
   table cell.
 - If a cell needs block content, move that content below the table under a
-  heading or list item.
+  heading or list item, or use the approved table `Slot` pattern when preserving
+  the tabular shape matters.
+- For table slots, put `<Slot name="..." />` alone in the table cell, then put
+  the matching `<Slot for="...">...</Slot>` block immediately after the table.
 - Keep table rows single-line whenever possible.
 
 ## Agent Checklist

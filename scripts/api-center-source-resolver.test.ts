@@ -1,0 +1,1170 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import { afterEach, describe, expect, it } from 'vitest';
+import { resolveExistingApiCenterTarget } from './lib/api-center/existing-targets.mjs';
+import {
+  buildPathMapIndex,
+  oxygenTocTargetIndex,
+  parseCsv,
+  parseEduStoreSidebarSource,
+  parseOxygenNavigationHtml,
+  resolveLegacyPage,
+  resolveManifestSources,
+} from './lib/api-center/source-resolver.mjs';
+
+const temporaryDirectories: string[] = [];
+
+type SupplementalEduStorePage = {
+  supplementalGeneratedSource: {
+    kind?: string;
+    navigationRole?: 'hidden-reachable' | 'visible-child' | 'visible-entry';
+    sourceSidebar?: Array<{ label: string; sourceRelativePath: string }>;
+    sourceToc?: Array<{ depth: number; fragment: string; label: string }>;
+    targetPlatform: string;
+  };
+};
+
+type ApiCenterManifestPage = {
+  sourceResolution?: { generator?: string };
+  supplementalGeneratedSource?: SupplementalEduStorePage['supplementalGeneratedSource'];
+};
+
+function isSupplementalEduStorePage(
+  page: ApiCenterManifestPage,
+): page is SupplementalEduStorePage & ApiCenterManifestPage {
+  return page.supplementalGeneratedSource?.kind === 'edu-store-typedoc';
+}
+
+afterEach(async () => {
+  await Promise.all(
+    temporaryDirectories
+      .splice(0)
+      .map((directory) => fs.rm(directory, { recursive: true, force: true })),
+  );
+});
+
+function baseIndex() {
+  return {
+    oldRoot: '/legacy',
+    manualSpecific: new Map(),
+    manualGeneric: new Map(),
+    platforms: new Map([
+      [
+        'api-ref/rtc/android',
+        {
+          platformMeta: { docType: 'oxygen' },
+        },
+      ],
+    ]),
+    generatedFiles: new Map([
+      [
+        'api-ref/rtc/android',
+        new Map([
+          [
+            'api/class_client.html',
+            {
+              absolute: '/legacy/html-docs/rtc/Android/API/Class_Client.html',
+              relative: 'API/Class_Client.html',
+            },
+          ],
+          [
+            'index.html',
+            {
+              absolute: '/legacy/html-docs/rtc/Android/index.html',
+              relative: 'index.html',
+            },
+          ],
+        ]),
+      ],
+    ]),
+    generatedTocTargets: new Map(),
+    yamlFiles: new Map(),
+  };
+}
+
+const noPathMap = buildPathMapIndex([]);
+
+async function resolve(
+  sourceIndex: ReturnType<typeof baseIndex>,
+  relative: string,
+) {
+  return resolveLegacyPage({
+    page: {
+      requestedUrl: `https://doc.shengwang.cn/api-ref/rtc/android/${relative}`,
+      status: 'resolved',
+    },
+    sourceIndex,
+    pathMap: noPathMap,
+    lanes: [],
+    newRoot: '/new',
+  });
+}
+
+describe('API Center source resolver', () => {
+  it.each([
+    ['java', 'agoraservice', 'agoraservice.java'],
+    ['java', 'agoramediartcrecorder', 'agoramediartcrecorder.java'],
+    ['cpp', 'iagoraservice', 'iagoraservice.cpp'],
+    ['cpp', 'iagoramediartcrecorder', 'iagoramediartcrecorder.cpp'],
+    ['cpp', 'iagoramediacomponentfactory', 'iagoramediacomponentfactory.cpp'],
+  ])('keeps local recording %s/%s in its platform navigation scope', (platform, legacyLeaf, targetLeaf) => {
+    expect(
+      resolveExistingApiCenterTarget(
+        `https://doc.shengwang.cn/api-ref/recording/${platform}/${legacyLeaf}`,
+      ),
+    ).toEqual({
+      targetPath: `content/docs/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}.mdx`,
+      targetRoute: `/zh-CN/api-reference/local-server-recording/${platform}/${targetLeaf}`,
+    });
+  });
+
+  it('reuses existing Online KTV solution pages instead of duplicating them under API Reference', () => {
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/overview/introduction',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/index.mdx',
+      targetRoute: '/zh-CN/solutions/online-ktv/ktv-scenario',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/ios/auikaraoke/get-started/run-github-project-backend',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend.mdx',
+      targetRoute:
+        '/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/run-github-project-backend',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/online-ktv-sdk/resources',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads/android.mdx',
+      targetRoute:
+        '/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/downloads/android',
+    });
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/ktv-api',
+      ),
+    ).toBeNull();
+  });
+
+  it('rehomes the cloud transcoding event contract into its RESTful API reference', () => {
+    expect(
+      resolveExistingApiCenterTarget(
+        'https://doc.shengwang.cn/doc/cloud-transcoder/restful/webhook/ncs-events',
+      ),
+    ).toEqual({
+      targetPath:
+        'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events.mdx',
+      targetRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+      targetDecision: 'api-reference-supplement',
+      supersededTargetPath:
+        'content/docs/zh-CN/realtime-media/transcoding/reference/ncs-events.mdx',
+      supersededTargetRoute:
+        '/zh-CN/realtime-media/transcoding/reference/ncs-events',
+      apiReferenceSupplement: {
+        parentRoute: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+        groupTitle: 'Webhook 回调事件',
+        label: '事件类型',
+        navigationPagePlacements: [
+          {
+            page: 'authentication',
+            before: '---服务端 API---',
+          },
+          {
+            page: 'template-query',
+            after: 'template-create',
+          },
+        ],
+        relatedPages: [
+          {
+            label: '接入指南',
+            route:
+              '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
+          },
+        ],
+      },
+    });
+  });
+
+  it('adds the complete Edu Store TypeDoc trees with portable source paths', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-edu-store-source-'),
+    );
+    temporaryDirectories.push(root);
+    const oldRoot = path.join(root, 'legacy');
+    const newRoot = path.join(root, 'portal');
+    for (const folder of ['docs-api-reference', 'docs']) {
+      await fs.mkdir(path.join(oldRoot, folder), { recursive: true });
+      await fs.writeFile(
+        path.join(oldRoot, folder, '_products_.meta.js'),
+        'module.exports = [];\n',
+      );
+    }
+    const sidebarSource = `module.exports = [{
+      type: "category",
+      label: "Edu Store API",
+      items: [
+        { type: "doc", label: "概览", id: "flexible-classroom/{{platform}}/overview" },
+        { type: "doc", label: "CloudDriveStore", id: "flexible-classroom/{{platform}}/classes/cloud-drive" },
+      ],
+    }];\n`;
+    const sidebarPath = path.join(
+      oldRoot,
+      'docs-api-reference/flexible-classroom/_sidebar_.meta.javascript.electron.js',
+    );
+    await fs.mkdir(path.dirname(sidebarPath), { recursive: true });
+    await fs.writeFile(sidebarPath, sidebarSource);
+    expect(parseEduStoreSidebarSource(sidebarSource)).toEqual([
+      { label: '概览', sourceRelativePath: 'index.html' },
+      {
+        label: 'CloudDriveStore',
+        sourceRelativePath: 'classes/cloud-drive.html',
+      },
+    ]);
+    const storeHeadings = [
+      'Cloud Drive Store',
+      'Group Store',
+      'Hand Up Store',
+      'Media Store',
+      'Recording Store',
+      'Room Store',
+      'Statistics Store',
+      'Stream Store',
+      'User Store',
+      'Connection Store',
+    ];
+    for (const sourcePlatform of ['Web', 'Electron']) {
+      const sourceRoot = path.join(
+        oldRoot,
+        'html-docs/flexible-classroom',
+        sourcePlatform,
+      );
+      await fs.mkdir(path.join(sourceRoot, 'classes'), { recursive: true });
+      await fs.mkdir(path.join(sourceRoot, 'modules'), { recursive: true });
+      await fs.writeFile(
+        path.join(sourceRoot, 'index.html'),
+        `<nav class="tsd-navigation"><ul>
+          <li><a href="modules.html">Exports</a></li>
+          <li><a href="modules/agora_edu_core_src_index_.html">"agora-edu-core/src/index"</a></li>
+        </ul></nav><div class="col-content">${storeHeadings
+          .map(
+            (heading) =>
+              `<a id="${heading.toLowerCase().replaceAll(' ', '-')}"><h3>${heading}</h3></a>`,
+          )
+          .join('')}</div>`,
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'modules.html'),
+        '<main>Exports</main>',
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'modules/agora_edu_core_src_index_.html'),
+        '<main>Module</main>',
+      );
+      await fs.writeFile(
+        path.join(sourceRoot, 'classes/cloud-drive.html'),
+        '<main>CloudDriveStore</main>',
+      );
+    }
+    const manifest: {
+      entries: unknown[];
+      pageEvidence: unknown[];
+      sourceResolutionSummary?: {
+        classifiedPageCount: number;
+        unresolvedPageCount: number;
+      };
+    } = { entries: [], pageEvidence: [] };
+
+    await resolveManifestSources(manifest, {
+      oldRoot,
+      newRoot,
+      pathMapRows: [],
+      lanes: [],
+    });
+
+    expect(manifest.pageEvidence).toHaveLength(8);
+    expect(manifest.sourceResolutionSummary).toMatchObject({
+      classifiedPageCount: 8,
+      unresolvedPageCount: 0,
+    });
+    expect(manifest.pageEvidence).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          requestedUrl:
+            'https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/overview',
+          adoptExisting: true,
+          sourceResolution: expect.objectContaining({
+            sourcePath: 'html-docs/flexible-classroom/Web/index.html',
+            targetPath:
+              'content/docs/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/index.mdx',
+          }),
+          supplementalGeneratedSource: expect.objectContaining({
+            navigationRole: 'visible-entry',
+            sourceNavigation: [
+              {
+                label: 'Exports',
+                sourceRelativePath: 'modules.html',
+              },
+              {
+                label: '"agora-edu-core/src/index"',
+                sourceRelativePath: 'modules/agora_edu_core_src_index_.html',
+              },
+            ],
+            sourceSidebar: [
+              { label: '概览', sourceRelativePath: 'index.html' },
+              {
+                label: 'CloudDriveStore',
+                sourceRelativePath: 'classes/cloud-drive.html',
+              },
+            ],
+            sourceToc: storeHeadings.map((label) => ({
+              depth: 3,
+              fragment: label.toLowerCase().replaceAll(' ', '-'),
+              label,
+            })),
+          }),
+        }),
+        expect.objectContaining({
+          requestedUrl:
+            'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/cloud-drive.html',
+          supplementalGeneratedSource: expect.objectContaining({
+            navigationRole: 'visible-child',
+          }),
+          sourceResolution: expect.objectContaining({
+            sourcePath:
+              'html-docs/flexible-classroom/Electron/classes/cloud-drive.html',
+            targetRoute:
+              '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/cloud-drive',
+          }),
+        }),
+      ]),
+    );
+    const supplementalPages =
+      manifest.pageEvidence as SupplementalEduStorePage[];
+    for (const targetPlatform of ['web', 'electron']) {
+      const platformPages = supplementalPages.filter(
+        (page) =>
+          page.supplementalGeneratedSource.targetPlatform === targetPlatform,
+      );
+      expect(platformPages).toHaveLength(4);
+      expect(
+        platformPages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        ),
+      ).toHaveLength(1);
+      expect(
+        platformPages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-child',
+        ),
+      ).toHaveLength(1);
+      expect(
+        platformPages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole ===
+            'hidden-reachable',
+        ),
+      ).toHaveLength(2);
+    }
+    expect(JSON.stringify(manifest)).not.toContain(oldRoot);
+  });
+
+  it('matches the old visible Edu Store sidebar and keeps the remaining TypeDoc pages hidden', async () => {
+    const manifest = JSON.parse(
+      await fs.readFile(
+        path.resolve('docs/migration/api-center-html-manifest.json'),
+        'utf8',
+      ),
+    ) as { pageEvidence: ApiCenterManifestPage[] };
+
+    for (const targetPlatform of ['web', 'electron']) {
+      const pages = manifest.pageEvidence.filter(
+        (page): page is SupplementalEduStorePage & ApiCenterManifestPage =>
+          isSupplementalEduStorePage(page) &&
+          page.supplementalGeneratedSource.targetPlatform === targetPlatform,
+      );
+      expect(pages).toHaveLength(399);
+      expect(
+        pages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        ),
+      ).toHaveLength(1);
+      expect(
+        pages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-child',
+        ),
+      ).toHaveLength(11);
+      expect(
+        pages.filter(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole ===
+            'hidden-reachable',
+        ),
+      ).toHaveLength(387);
+      expect(
+        pages.find(
+          (page) =>
+            page.supplementalGeneratedSource.navigationRole === 'visible-entry',
+        )?.supplementalGeneratedSource.sourceToc,
+      ).toHaveLength(10);
+      expect(
+        pages
+          .find(
+            (page) =>
+              page.supplementalGeneratedSource.navigationRole ===
+              'visible-entry',
+          )
+          ?.supplementalGeneratedSource.sourceSidebar?.map(
+            (item) => item.label,
+          ),
+      ).toEqual([
+        '概览',
+        'CloudDriveStore',
+        'GroupStore',
+        'HandUpStore',
+        'MediaStore',
+        'RecordingStore',
+        'RoomStore',
+        'StreamStore',
+        'UserStore',
+        'ConnectionStore',
+        'StatisticsStore',
+        'WidgetStore',
+      ]);
+    }
+    expect(
+      manifest.pageEvidence.filter(
+        (page) =>
+          page.sourceResolution?.generator === 'typedoc' &&
+          !isSupplementalEduStorePage(page),
+      ),
+    ).toHaveLength(162);
+  });
+
+  it.each([
+    [
+      '/api-ref/meeting/ios/client-api',
+      'content/docs/zh-CN/api-reference/meeting/client-api.mdx',
+      '/zh-CN/api-reference/meeting/ios',
+    ],
+    [
+      '/api-ref/fastboard/javascript/fastboard-api',
+      'content/docs/zh-CN/api-reference/whiteboard/fastboard/fastboard-api.mdx',
+      '/zh-CN/api-reference/whiteboard/fastboard/web',
+    ],
+    [
+      '/api-ref/rtm2/harmonyos/toc-configuration/configuration',
+      'content/docs/zh-CN/api-reference/rtm/toc-configuration/configuration.mdx',
+      '/zh-CN/api-reference/rtm/harmonyos/configuration',
+    ],
+    [
+      '/api-ref/rtm2/android/toc-message/enum',
+      'content/docs/zh-CN/api-reference/rtm/android/enumv.mdx',
+      '/zh-CN/api-reference/rtm/android/enumv',
+    ],
+    [
+      '/doc/console/general/user-guides/manage_authentication',
+      'content/docs/zh-CN/introduction/user-guides/manage-authentication.mdx',
+      '/zh-CN/introduction/user-guides/manage-authentication',
+    ],
+    [
+      '/basics/security/video-sdk',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/video-sdk.mdx',
+      '/zh-CN/introduction/security/sdk-compliance/video-sdk',
+    ],
+    [
+      '/basics/security/voice-sdk',
+      'content/docs/zh-CN/introduction/security/sdk-compliance/voice-sdk.mdx',
+      '/zh-CN/introduction/security/sdk-compliance/voice-sdk',
+    ],
+  ])('resolves merged platform source %s to its rendered platform route', (legacyPath, targetPath, targetRoute) => {
+    expect(resolveExistingApiCenterTarget(legacyPath)).toEqual({
+      targetPath,
+      targetRoute,
+    });
+  });
+
+  it('parses quoted CSV fields without losing commas', () => {
+    expect(
+      parseCsv('source_path,target_path,notes\r\na.mdx,b.mdx,"one, two"\r\n'),
+    ).toEqual([
+      { source_path: 'a.mdx', target_path: 'b.mdx', notes: 'one, two' },
+    ]);
+  });
+
+  it('freezes the complete Oxygen navigation hierarchy from the source HTML', () => {
+    const navigation = parseOxygenNavigationHtml({
+      legacyUrl:
+        'https://doc.shengwang.cn/api-ref/rtc/android/API/rtc_api_overview',
+      html: `
+        <nav class="toc">
+          <ul><li><span>Android API Reference</span><ul>
+            <li><a href="../API/rtc_api_overview.html">API 概览</a></li>
+            <li><a href="../API/toc_audio.html">音频功能</a><ul>
+              <li><a href="../API/toc_audio_basic.html">音频基础功能</a></li>
+              <li><a href="../API/toc_audio_capture.html">音频采集</a></li>
+            </ul></li>
+          </ul></li></ul>
+        </nav>
+      `,
+    });
+
+    expect(navigation).toEqual([
+      {
+        excludedReason: null,
+        kind: 'link',
+        label: 'API 概览',
+        link: expect.objectContaining({
+          path: '/api-ref/rtc/android/API/rtc_api_overview',
+        }),
+      },
+      {
+        items: [
+          expect.objectContaining({
+            kind: 'link',
+            label: '音频基础功能',
+            link: expect.objectContaining({
+              path: '/api-ref/rtc/android/API/toc_audio_basic',
+            }),
+          }),
+          expect.objectContaining({ kind: 'link', label: '音频采集' }),
+        ],
+        kind: 'category',
+        label: '音频功能',
+        link: expect.objectContaining({
+          path: '/api-ref/rtc/android/API/toc_audio',
+        }),
+      },
+    ]);
+  });
+
+  it('lets platform-specific MDX override generated HTML', async () => {
+    const sourceIndex = baseIndex();
+    sourceIndex.manualSpecific.set('api-ref/rtc/android/api/class_client', [
+      {
+        sourcePath: 'docs-api-reference/rtc/API/class_client.android.mdx',
+        sourceAbsolutePath:
+          '/legacy/docs-api-reference/rtc/API/class_client.android.mdx',
+        override: 'platform-specific',
+      },
+    ]);
+
+    const result = await resolve(sourceIndex, 'API/class_client');
+
+    expect(result).toMatchObject({
+      status: 'resolved',
+      type: 'manual-mdx',
+      override: 'platform-specific',
+    });
+  });
+
+  it('uses generated HTML before generic MDX and resolves source case-insensitively', async () => {
+    const sourceIndex = baseIndex();
+    sourceIndex.manualGeneric.set('api-ref/rtc/android/api/class_client', [
+      {
+        sourcePath: 'docs-api-reference/rtc/API/class_client.mdx',
+        sourceAbsolutePath:
+          '/legacy/docs-api-reference/rtc/API/class_client.mdx',
+        override: 'generic-fallback',
+      },
+    ]);
+
+    const result = await resolve(sourceIndex, 'API/class_client');
+
+    expect(result).toMatchObject({
+      status: 'resolved',
+      type: 'generated-html',
+      generator: 'oxygen',
+      sourcePath: 'html-docs/rtc/Android/API/Class_Client.html',
+    });
+  });
+
+  it('uses generic MDX only when no generated page exists', async () => {
+    const sourceIndex = baseIndex();
+    sourceIndex.manualGeneric.set('api-ref/rtc/android/guides/setup', [
+      {
+        sourcePath: 'docs-api-reference/rtc/guides/setup.mdx',
+        sourceAbsolutePath: '/legacy/docs-api-reference/rtc/guides/setup.mdx',
+        override: 'generic-fallback',
+      },
+    ]);
+
+    const result = await resolve(sourceIndex, 'guides/setup');
+
+    expect(result).toMatchObject({
+      status: 'resolved',
+      type: 'manual-mdx',
+      override: 'generic-fallback',
+    });
+  });
+
+  it('prefers an existing current-layout MDX over a stale path-map target', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-current-'),
+    );
+    temporaryDirectories.push(root);
+    const currentTarget = path.join(
+      root,
+      'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
+    );
+    await fs.mkdir(path.dirname(currentTarget), { recursive: true });
+    await fs.writeFile(currentTarget, '---\ntitle: Setup\n---\n');
+    const sourceIndex = baseIndex();
+    sourceIndex.manualGeneric.set('api-ref/rtc/android/guides/setup', [
+      {
+        sourcePath: 'docs-api-reference/rtc/guides/setup.mdx',
+        sourceAbsolutePath: '/legacy/docs-api-reference/rtc/guides/setup.mdx',
+        override: 'generic-fallback',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs-api-reference/rtc/guides/setup.mdx',
+        target_path:
+          'content/docs/zh-CN/api-reference/rtc/stale-setup-location.mdx',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/android/guides/setup',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
+      targetExists: true,
+      targetDecision: 'existing-target-layout-over-stale-path-map',
+    });
+  });
+
+  it('reuses an existing directory index as the canonical manual target', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-directory-index-'),
+    );
+    temporaryDirectories.push(root);
+    const canonicalTarget = path.join(
+      root,
+      'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction/index.mdx',
+    );
+    await fs.mkdir(path.dirname(canonicalTarget), { recursive: true });
+    await fs.writeFile(canonicalTarget, '---\ntitle: Setup\n---\n');
+    await fs.writeFile(
+      path.join(
+        root,
+        'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction.mdx',
+      ),
+      '---\ntitle: Duplicate setup\n---\n',
+    );
+    const sourceIndex = baseIndex();
+    sourceIndex.platforms.set('doc/art-class/android', {
+      platformMeta: { docType: 'manual' },
+    });
+    sourceIndex.manualSpecific.set('doc/art-class/android/api/correction', [
+      {
+        sourcePath: 'docs/art-class/api/correction.android.mdx',
+        sourceAbsolutePath: '/legacy/docs/art-class/api/correction.android.mdx',
+        override: 'platform-specific',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs/art-class/api/correction.android.mdx',
+        target_path:
+          'content/docs/zh-CN/solutions/art-class/reference/correction.mdx',
+        new_url: '/zh-CN/solutions/art-class/reference/correction',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/art-class/android/api/correction',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/online-art-teaching/android/api/correction/index.mdx',
+      targetRoute:
+        '/zh-CN/api-reference/online-art-teaching/android/api/correction',
+      targetExists: true,
+      migrationAction: 'audit-existing-target',
+    });
+  });
+
+  it('reuses the canonical ConvoAI REST client MDX instead of generating a duplicate tree', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-convoai-'),
+    );
+    temporaryDirectories.push(root);
+    const canonicalTarget = path.join(
+      root,
+      'content/docs/zh-CN/api-reference/conversational-ai/restclient-go/overview.mdx',
+    );
+    await fs.mkdir(path.dirname(canonicalTarget), { recursive: true });
+    await fs.writeFile(canonicalTarget, '---\ntitle: API 概览\n---\n');
+    const sourceIndex = baseIndex();
+    sourceIndex.platforms.set('api-ref/convoai/go', {
+      platformMeta: { docType: 'manual' },
+    });
+    sourceIndex.manualSpecific.set('api-ref/convoai/go/go-api/overview', [
+      {
+        sourcePath: 'docs-api-reference/convoai/go-api/overview.go.mdx',
+        sourceAbsolutePath: '/legacy/convoai/overview.go.mdx',
+        override: 'platform-specific',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs-api-reference/convoai/go-api/overview.go.mdx',
+        target_path:
+          'content/docs/zh-CN/api-reference/conversational-ai/client-toolkit/overview.go.mdx',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/api-ref/convoai/go/go-api/overview',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/conversational-ai/restclient-go/overview.mdx',
+      targetRoute:
+        '/zh-CN/api-reference/conversational-ai/restclient-go/overview',
+      targetExists: true,
+      migrationAction: 'audit-existing-target',
+    });
+  });
+
+  it('falls back to the API Reference tree when an external path-map target is missing', async () => {
+    const sourceIndex = baseIndex();
+    sourceIndex.manualGeneric.set('api-ref/rtc/android/guides/setup', [
+      {
+        sourcePath: 'docs-api-reference/rtc/guides/setup.mdx',
+        sourceAbsolutePath: '/legacy/docs-api-reference/rtc/guides/setup.mdx',
+        override: 'generic-fallback',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs-api-reference/rtc/guides/setup.mdx',
+        target_path: 'content/docs/zh-CN/realtime-media/rtc/setup.mdx',
+        new_url: '/zh-CN/realtime-media/rtc/setup',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/android/guides/setup',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: '/new',
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
+      targetRoute: '/zh-CN/api-reference/rtc/android/guides/setup',
+      targetDecision: 'api-reference-fallback-over-missing-external-path-map',
+    });
+  });
+
+  it('recognizes an existing MDX alternate for a stale .md target extension', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-extension-'),
+    );
+    temporaryDirectories.push(root);
+    const actualTarget = path.join(
+      root,
+      'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
+    );
+    await fs.mkdir(path.dirname(actualTarget), { recursive: true });
+    await fs.writeFile(actualTarget, '---\ntitle: Setup\n---\n');
+    const sourceIndex = baseIndex();
+    sourceIndex.manualGeneric.set('api-ref/rtc/android/guides/setup', [
+      {
+        sourcePath: 'docs-api-reference/rtc/guides/setup.mdx',
+        sourceAbsolutePath: '/legacy/docs-api-reference/rtc/guides/setup.mdx',
+        override: 'generic-fallback',
+      },
+    ]);
+    const pathMap = buildPathMapIndex([
+      {
+        source_path: 'docs-api-reference/rtc/guides/setup.mdx',
+        target_path:
+          'content/docs/zh-CN/api-reference/rtc/android/guides/setup.md',
+        new_url: '/zh-CN/api-reference/rtc/android/guides/setup',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/android/guides/setup',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/rtc/android/guides/setup.mdx',
+      targetExists: true,
+      targetDecision: 'path-map-alternate-extension',
+    });
+  });
+
+  it('maps generated overview pages back to index.html', async () => {
+    const result = await resolve(baseIndex(), 'overview');
+
+    expect(result).toMatchObject({
+      status: 'resolved',
+      sourcePath: 'html-docs/rtc/Android/index.html',
+    });
+  });
+
+  it('keeps legacy API source pages in the reference center even when the path map points to a solution', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-reference-ownership-'),
+    );
+    temporaryDirectories.push(root);
+    const legacyRoot = path.join(root, 'legacy');
+    const portalRoot = path.join(root, 'portal');
+    const sourceIndex = {
+      ...baseIndex(),
+      oldRoot: legacyRoot,
+      platforms: new Map([
+        ['doc/meeting/restful', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/meeting/restful/api/create-room',
+          [
+            {
+              sourcePath: 'docs/meeting/api/create-room.restful.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/meeting/restful/api/create-room.html',
+        source_path: 'docs/meeting/api/create-room.restful.mdx',
+        target_path:
+          'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+        new_url: '/zh-CN/solutions/meeting/reference/create-room',
+      },
+    ]);
+    await fs.mkdir(
+      path.join(portalRoot, 'content/docs/zh-CN/solutions/meeting/reference'),
+      { recursive: true },
+    );
+    await fs.writeFile(
+      path.join(
+        portalRoot,
+        'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+      ),
+      'legacy section target\n',
+    );
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/meeting/restful/api/create-room',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: portalRoot,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/meeting/restful/api/create-room.mdx',
+      targetRoute: '/zh-CN/api-reference/meeting/restful/api/create-room',
+      targetDecision: 'api-reference-over-section-path-map',
+      targetExists: false,
+      supersededTargetPath:
+        'content/docs/zh-CN/solutions/meeting/reference/create-room.mdx',
+      supersededTargetRoute: '/zh-CN/solutions/meeting/reference/create-room',
+    });
+  });
+
+  it('rehomes Online KTV API pages from their current Solutions canonical paths', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-ktv-reference-ownership-'),
+    );
+    temporaryDirectories.push(root);
+    const legacyRoot = path.join(root, 'legacy');
+    const portalRoot = path.join(root, 'portal');
+    const currentSolutionTarget =
+      'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api.mdx';
+    const sourceIndex = {
+      ...baseIndex(),
+      oldRoot: legacyRoot,
+      platforms: new Map([
+        ['doc/online-ktv/android', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/online-ktv/android/ktv-scenario/api/ktv-api',
+          [
+            {
+              sourcePath:
+                'docs/online-ktv/ktv-scenario/api/ktv-api.android.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/online-ktv/android/ktv-scenario/api/ktv-api.html',
+        source_path: 'docs/online-ktv/ktv-scenario/api/ktv-api.android.mdx',
+        target_path:
+          'content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api.mdx',
+        new_url:
+          '/zh-CN/realtime-media/online-ktv/ktv-scenario/reference/ktv-api',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/online-ktv/android/ktv-scenario/api/ktv-api',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: portalRoot,
+    });
+
+    expect(result).toMatchObject({
+      targetPath:
+        'content/docs/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api.mdx',
+      targetRoute:
+        '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/ktv-api',
+      targetDecision: 'api-reference-over-section-path-map',
+      supersededTargetPath: currentSolutionTarget,
+      supersededTargetRoute:
+        '/zh-CN/solutions/online-ktv/ktv-scenario/reference/ktv-api',
+    });
+  });
+
+  it('does not rehome a non-API solution guide merely because it links to APIs', async () => {
+    const root = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-solution-guide-'),
+    );
+    temporaryDirectories.push(root);
+    const targetPath =
+      'content/docs/zh-CN/solutions/meeting/reference/call-api.mdx';
+    await fs.mkdir(path.dirname(path.join(root, targetPath)), {
+      recursive: true,
+    });
+    await fs.writeFile(path.join(root, targetPath), 'guide\n');
+    const sourceIndex = {
+      ...baseIndex(),
+      platforms: new Map([
+        ['doc/meeting/restful', { platformMeta: { docType: 'manual' } }],
+      ]),
+      manualSpecific: new Map([
+        [
+          'doc/meeting/restful/get-started/call-api',
+          [
+            {
+              sourcePath: 'docs/meeting/get-started/call-api.restful.mdx',
+            },
+          ],
+        ],
+      ]),
+    };
+    const pathMap = buildPathMapIndex([
+      {
+        old_url: '/doc/meeting/restful/get-started/call-api.html',
+        source_path: 'docs/meeting/get-started/call-api.restful.mdx',
+        target_path: targetPath,
+        new_url: '/zh-CN/solutions/meeting/reference/call-api',
+      },
+    ]);
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/meeting/restful/get-started/call-api',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap,
+      lanes: [],
+      newRoot: root,
+    });
+
+    expect(result).toMatchObject({
+      targetPath,
+      targetRoute: '/zh-CN/solutions/meeting/reference/call-api',
+      targetDecision: 'path-map',
+      targetExists: true,
+    });
+    expect(result).not.toHaveProperty('supersededTargetPath');
+  });
+
+  it('derives nested Oxygen target folders from the legacy platform TOC', async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), 'api-center-oxygen-'));
+    temporaryDirectories.push(root);
+    await fs.writeFile(
+      path.join(root, 'index.html'),
+      `<nav><ul class="map"><li>Android API Reference<ul>
+        <li><a href="API/toc_audio.html">音频功能</a><ul>
+          <li><a href="API/toc_audio_basic.html">音频基础功能</a></li>
+        </ul></li>
+        <li><a href="API/toc_network.html">网络及其他</a></li>
+      </ul></li></ul></nav>`,
+    );
+
+    const targets = await oxygenTocTargetIndex(root);
+
+    expect(targets.get('api/toc_audio.html')).toBe('audio/index');
+    expect(targets.get('api/toc_audio_basic.html')).toBe('audio/audio-basic');
+    expect(targets.get('api/toc_network.html')).toBe('network');
+  });
+
+  it('reports same-priority MDX collisions as ambiguous', async () => {
+    const sourceIndex = baseIndex();
+    sourceIndex.manualSpecific.set('api-ref/rtc/android/guides/setup', [
+      { sourcePath: 'first.android.mdx' },
+      { sourcePath: 'second.android.mdx' },
+    ]);
+
+    const result = await resolve(sourceIndex, 'guides/setup');
+
+    expect(result).toMatchObject({
+      status: 'ambiguous',
+      candidates: ['first.android.mdx', 'second.android.mdx'],
+    });
+  });
+
+  it('maps legacy OpenAPI operation IDs to registered target operations by method and path', async () => {
+    const root = await fs.mkdtemp(path.join(os.tmpdir(), 'api-center-source-'));
+    temporaryDirectories.push(root);
+    const oldYaml = path.join(root, 'legacy.yaml');
+    const newYaml = path.join(root, 'new.yaml');
+    await fs.writeFile(
+      oldYaml,
+      'openapi: 3.0.0\ninfo: {title: Old, version: 1}\npaths:\n  /v1/items/{itemId}:\n    get:\n      operationId: get-v1-item\n      responses: {"200": {description: ok}}\n',
+    );
+    await fs.writeFile(
+      newYaml,
+      'openapi: 3.0.0\ninfo: {title: New, version: 1}\npaths:\n  /v1/items/{id}:\n    get:\n      operationId: get-item\n      responses: {"200": {description: ok}}\n',
+    );
+    const sourceIndex = {
+      ...baseIndex(),
+      oldRoot: root,
+      platforms: new Map([
+        ['doc/example/restful', { platformMeta: { docType: 'restful' } }],
+      ]),
+      yamlFiles: new Map([
+        [
+          'doc/example/restful',
+          [
+            {
+              absolute: oldYaml,
+              relative: 'example.yaml',
+            },
+          ],
+        ],
+      ]),
+    };
+    const lane = {
+      id: 'example-rest',
+      parentUrl: { 'zh-CN': '/zh-CN/api-reference/api-ref/example' },
+      routePrefix: 'api-reference/api-ref/example',
+      sourcePath: { 'zh-CN': path.relative(process.cwd(), newYaml) },
+      operations: {
+        'get-item': { routeLeaf: 'get-item' },
+      },
+    };
+
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/doc/example/restful/example/operations/get-v1-item',
+        status: 'resolved',
+      },
+      sourceIndex,
+      pathMap: noPathMap,
+      lanes: [lane],
+      newRoot: process.cwd(),
+    });
+
+    expect(result).toMatchObject({
+      status: 'resolved',
+      type: 'openapi',
+      legacyOperationId: 'get-v1-item',
+      targetOperationId: 'get-item',
+      targetRoute: '/zh-CN/api-reference/api-ref/example/get-item',
+    });
+  });
+
+  it('excludes broken live body links instead of inventing a source', async () => {
+    const result = await resolveLegacyPage({
+      page: {
+        requestedUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/android/API/missing',
+        status: 'warning',
+        warnings: [{ code: 'broken-live-body-link' }],
+      },
+      sourceIndex: baseIndex(),
+      pathMap: noPathMap,
+      lanes: [],
+      newRoot: '/new',
+    });
+
+    expect(result).toMatchObject({
+      status: 'excluded',
+      type: 'broken-live-link',
+    });
+  });
+});

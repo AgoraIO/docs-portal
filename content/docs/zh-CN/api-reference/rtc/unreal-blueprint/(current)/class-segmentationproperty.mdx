@@ -1,0 +1,64 @@
+---
+title: FSegmentationProperty
+description: 背景图像的处理属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_segmentationproperty
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_segmentationproperty.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_segmentationproperty__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FSegmentationProperty
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|SegmentationProperty")
+	ESEG_MODEL_TYPE modelType = ESEG_MODEL_TYPE::SEG_MODEL_AI;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|SegmentationProperty")
+	float greenCapacity = 0.5;
+	FSegmentationProperty(){}
+	FSegmentationProperty(const agora::rtc::SegmentationProperty & AgoraData){
+		modelType = static_cast<ESEG_MODEL_TYPE>(AgoraData.modelType);
+		greenCapacity = AgoraData.greenCapacity;
+	}
+	agora::rtc::SegmentationProperty CreateAgoraData() const {
+		agora::rtc::SegmentationProperty AgoraData;
+		AgoraData.modelType = static_cast<agora::rtc::SegmentationProperty::SEG_MODEL_TYPE>(modelType);
+		AgoraData.greenCapacity = greenCapacity;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::SegmentationProperty& AgoraData) const {
+	}
+};
+```
+
+<a id="class_segmentationproperty__detailed_desc"></a>
+
+<a id="class_segmentationproperty__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="modeltype"></a>
+<Parameter name="modelType">
+
+进行背景处理的算法。详见 [ESEG_MODEL_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-segmodeltype)。
+
+</Parameter>
+<a id="greencapacity"></a>
+<Parameter name="greenCapacity">
+
+对画面中背景颜色识别的精度范围。取值范围为 [0,1]，默认值为 0.5。取值越大，代表可识别的纯色范围越大。当该参数取值过大时，人像边缘和人像范围内的纯色也会被识别。建议你根据实际效果动态调整该参数的值。
+
+:::note
+注： 该参数仅在 modelType 设置为 SEG_MODEL_GREEN 时生效。
+:::
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,148 @@
+---
+title: "PC 端开播弹幕玩法"
+description: "了解如何快速接入弹幕玩法，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+本文介绍如何在 Windows 设备上开播弹幕玩法。
+
+## 前提条件
+
+主播在 PC 端开播弹幕玩法前，请确保：
+
+- 一个有效的声网账号以及声网项目。请参考[开通弹幕服务](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+    - App ID：声网随机生成的字符串，用于识别你的项目。
+    - 客户 ID 和密钥：调用弹幕玩法 RESTful API 所需的 Key 和 Secret。
+    - 临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的 App 服务端生成 Token。
+- 已[联系销售](https://www.shengwang.cn/contact-sales/)开通弹幕玩法。
+- 你已在 App 中实现了基本的实时音视频功能，且 App 已获取相关设备的使用权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现流程
+
+PC 端开播弹幕玩法的流程如下图所示：
+
+![](https://web-cdn.agora.io/docs-portal/img/danmaku/pc-qiuckstart.svg)
+
+:::info[信息]
+声网推荐你在阅读本节的同时在新标签页打开[弹幕玩法服务端 API 专区](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)以获得佳的快速开始体验：
+
+- 详细的 API 参数说明、调用示例和调用注意事项
+- 使用专区右侧的“Send API Request”功能快捷调用 RESTful API
+- 一键生成和复制不同语言的 RESTful API 调用代码
+:::
+
+### 获取弹幕玩法客户端
+
+[联系销售](https://www.shengwang.cn/contact-sales/)获取最新弹幕玩法客户端、对应的 `gameid` 和玩法支持的礼物列表。
+
+### 完成礼物映射
+
+每个弹幕玩法提供了不同价位的付费礼物，你需要分别做不同的礼物映射。
+
+因礼物涉及计量计费，在礼物消息 (`live_gift`) 推送协议中，`gift_id`、`gift_num`、`gfit_value`，需要严格遵守礼物列表中的对应关系。以胖可争霸为例，支持的礼物列表如下：
+
+| `gift_id` | `gift_price` | 礼物说明             |
+| ------- | ---------- | ---------------- |
+| 1001    | 0.1 元      | 召唤大黄蜂 × 12  |
+| 1002    | 5 元        | 召唤搬仓鼠 × 36  |
+| 1003    | 10 元       | 召唤白猫警员 × 2 |
+| 1004    | 20 元       | 召唤小墩墩 × 10  |
+| 1005    | 29.9 元     | 召唤牛战士 × 76  |
+| 1006    | 66.6 元     | 召唤精灵龙 × 2   |
+
+1. 映射 `gift_id`
+
+    业务后台在把礼物 ID 在推送给声网前，需要映射成声网内建礼物 ID (`gift_id`)，且礼物价格保持一致。你需要根据你的业务系统中的礼物价格，寻找游戏礼物列表中同样价格的礼物 ID。例如，当你的系统中有 0.1 元的礼物 ID 为 `custom_gift_id`，当该礼物消息触发时，把 `custom_gift_id` 映射成 `1001`。
+
+2. 计算 `gift_value`
+
+    计算公式为 `gift_value` = `gift_num` × `gift_price` × 100。计算时，你需要需要把单位从元折算成分。
+
+3. 包装 `payload`
+
+    参考[推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)中的礼物 `payload` 参数说明，将上面步骤获取的参数包装成 `payload`，在后续直播间互动阶段发生送礼事件时，将正确的 `payload` 发送给声网云游戏服务平台。
+
+### 完成开播设置
+
+开播前，你需要在直播助手 App（例如 OBS、抖音直播助手等）中完成以下设置：
+
+- 获取直播码：直播码为调用[启动游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)时传入的 `roomid` 字段，即房间编号，是以 `appid` 作为前缀的全局唯一房间 ID。
+- 设置直播推流地址：从开播平台获取推流地址，填写至直播助手软件中。
+- 设置推流画面参数：为保证观众观看体验，声网建议推送 1080P 分辨率的视频流。具体推流画面参数需要结合实际的游戏以及网络、开播设备型号进行调整，你可以与[声网技术支持](https://ticket.shengwang.cn/)沟通，从而获得最好的效果。
+
+### 开始直播
+
+主播在本地启动弹幕玩法客户端 .exe 文件，在直播助手 App 中设置游戏采集源为游戏画面，然后单击开始直播。
+
+:::info[信息]
+在实际生产环境中，声网推荐你在直播助手 App 前端中添加按钮，使用命令行启动弹幕玩法客户端，例如 `game.exe -instructionPic off -token ${appid}_gameroom1 -appid ${appid}`。
+:::
+
+在主播开播后，在业务后台（即 App 服务端）调用[启动游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)。以 cURL 为例：
+
+```shell
+curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games/{gameid}/mode/pc/rooms/{roomid}:start' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: agora token={Your_RTC_Token}' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "rtc_cname": "string",
+  "openid": "abcxxxxxxxxx321_testopenid",
+  "nickname": "Player",
+  "avatar_url": "http://127.0.0.1/xxxxx.jpg"
+}'
+```
+
+### 推送直播间消息
+
+根据直播间中获取到的礼物、评论和点赞消息，在业务后台调用[推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)，将这些消息发送至声网云游戏服务平台。以 cURL 为例：
+
+```shell
+# 以推送礼物消息为例
+curl --location --request POST 'https://{domain}/v2/projects/{appid}/bullet-game/api/live-data/games/{gameid}/rooms/${roomid}/msgType/live_gift:push' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: agora token={Your_RTC_Token}' \
+  --header 'Content-Type: application/json' \
+  --data '[
+  {
+    "payload": {
+      "msg_id": "abcxxxxxxxxx321_12345678",
+      "openid": "abcxxxxxxxxx321_testopenid",
+      "gift_id": 10001,
+      "gift_num": 10,
+      "gift_value": 10000,
+      "avatar_url": "http://127.0.0.1/xxxxx.jpg",
+      "nickname": "Player",
+      "timestamp": 1699068964
+    },
+  }
+]'
+```
+
+### 结束直播
+
+主播下播后，在业务后台调用[关闭游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-pc-game)。以 cURL 为例：
+
+```shell
+curl --location --request POST 'https://{domain}/v2/projects/{appid}/cloud-bullet-game/api/live-data/games/{gameid}/mode/pc/rooms/{roomid}:stop' \
+  --header 'Accept: application/json' \
+  --header 'Authorization: agora token={Your_RTC_Token}' \
+  --header 'Content-Type: application/json'
+```
+
+:::warning[注意]
+业务后台调用启动/关闭游戏服务 API 需要成对, 否则会报错，即调用[启动游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)开启游戏房后需要主动调用[关闭游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-pc-game)以关闭游戏房，或者在启动云游戏服务时处理重复启动错误码。
+:::
+
+## 参考信息
+
+### 开发注意事项
+
+- 协议字段中的 `msgid`，`roomid` 和 `openid` 需要在声网侧保持全局唯一，建议格式为 `<appid>_xxxx` 的方式。对于 `msg_id`，由于同一时间可能存在多用户发送消息，可以通过自增保持唯一性。
+- `roomid` 在主播侧暴露存在安全风险，建议每次开播生成的 `roomid` 为不重复的随机值。
+
+### 相关文档
+
+- [启动游戏服务](/zh-CN/api-reference/api-ref/danmaku/start-pc-game)
+- [关闭游戏服务](/zh-CN/api-reference/api-ref/danmaku/stop-pc-game)
+- [推送直播间消息](/zh-CN/api-reference/api-ref/danmaku/push-message)
+- [响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)
+- [API 调用限制](/zh-CN/realtime-media/danmaku/reference/api-limits)

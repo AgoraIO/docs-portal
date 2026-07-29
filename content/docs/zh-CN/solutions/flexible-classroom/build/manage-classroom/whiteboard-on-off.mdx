@@ -1,0 +1,301 @@
+---
+title: "开启和关闭白板"
+description: "了解灵动课堂在不同平台上的开启和关闭白板方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+灵动课堂中的白板模块是基于 `AgoraWidget` 实现的。你可以通过将 widget 状态设置为活跃（active）或非活跃（inactive）来在教室中打开或关闭白板模块。
+
+关闭白板模块后，铅笔、文本框、形状和橡皮擦等绘图工具将不再可用，用户也不能在白板上显示课件，上传或删除课程文件。弹出式测验、倒计时和屏幕共享等其他不依赖白板的功能不会受到影响。
+
+白板 widget 对应的容器（即组件）是 `AgoraEduWhiteBoardComponent`，widget ID 可通过 `AgoraWidgetDefaultId.WhiteBoard.id` 获取。使用该组件可以达到开启和关闭白板的目的。
+
+实现开启或关闭白板的过程中，你需要监控教师客户端引起的白板状态变化，并相应地调整 UI。 你可以在 `AgoraEduUIKit/src/main/java/com/agora/edu/component/whiteboard/AgoraEduWhiteBoardComponent.kt` 文件中的 `initView()` 方法里看到注册观察者和监听活跃状态，创建或销毁白板组件的逻辑。
+
+如果你想要自己实现开启和关闭白板，可参考以下代码：
+
+- 开启白板：
+
+    ```kotlin
+    // 在关闭白板的按钮所在的文件中添加以下代码：
+    val info = AgoraWidgetRoomPropsUpdateReq(state = 1)
+    eduContext?.widgetContext()?.setWidgetActive(AgoraWidgetDefaultId.WhiteBoard.id, info)
+    ```
+
+- 关闭白板：
+
+    ```kotlin
+    // 在开启白板的按钮所在的文件中添加以下代码：
+    eduContext?.widgetContext()?.setWidgetInActive(AgoraWidgetDefaultId.WhiteBoard.id)
+    ```
+
+- 注册观察者：
+
+    ```kotlin
+    eduContext?.widgetContext()?.addWidgetActiveObserver(widgetActiveObserver, AgoraWidgetDefaultId.LargeWindow.id)
+    ```
+
+- 监听状态：
+
+    ```kotlin
+    private val widgetActiveObserver = object : AgoraWidgetActiveObserver {
+        override fun onWidgetActive(widgetId: String) {
+            // 白板已经创建，这里是子线程
+            if (widgetId == AgoraWidgetDefaultId.WhiteBoard.id) {
+
+            }
+        }
+    
+        override fun onWidgetInActive(widgetId: String) {
+            // 白板已经移除，这里是子线程
+            if (widgetId == AgoraWidgetDefaultId.WhiteBoard.id) {
+                
+            }
+        }
+    }
+    ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+灵动课堂中的白板模块是基于 [AgoraWidget](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget) 实现的，你可以通过将 widget 状态设置为活跃（active）或非活跃（inactive）来开启或关闭白板模块。
+
+关闭白板模块后，铅笔、文本框、形状和橡皮擦等绘图工具将不再可用，用户也不能在白板上显示课件，上传或删除课程文件。弹出式测验、倒计时和屏幕共享等其他不依赖白板的功能不会受到影响。
+
+在教育场景下灵动课堂中，白板开启与关闭的实现逻辑位于 `CloudClass-iOS/SDKs/AgoraEduUI/Classes/Components/Flat/FcrBoardUIComponent.swift` 文件中，内容如下：
+
+1. 监听 Widget Activity
+
+    ```swift
+    // addWidgetActivityObserver
+    widgetController.add(self)
+    ```
+
+2. 当白板 Widget Activity 状态发生变化时，会触发 `onWidgetActive` 或 `onWidgetInactive` 回调。当监听到的状态为 `active` 时，通过创建白板 Widget 对象来实现开启白板；当监听到的状态为 `inactive` 时，通过销毁白板 Widget 对象来实现关闭白板
+
+    ```swift
+    extension FcrBoardUIComponent: AgoraWidgetActivityObserver {
+        func onWidgetActive(_ widgetId: String) {
+        guard widgetId == BoardWidgetId else {
+            return
+        }
+    
+        initWidget()
+        }
+    
+        func onWidgetInactive(_ widgetId: String) {
+        guard widgetId == BoardWidgetId else {
+            return
+        }
+            
+        deinitWidget()
+        }
+    }
+    ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+灵动课堂中的白板模块是基于 `AgoraWidget` 实现的。你可以通过将 widget 状态设置为活跃（active）或非活跃（inactive）来在教室中打开或关闭白板模块。
+
+关闭白板模块后，铅笔、文本框、形状和橡皮擦等绘图工具将不再可用，用户也不能在白板上显示课件，上传或删除课程文件。弹出式测验、倒计时和屏幕共享等其他不依赖白板的功能不会受到影响。
+
+## 开启和关闭白板
+
+白板界面打包在 `packages/agora-classroom-sdk/src/infra/stores/common/base.ts` 文件中，白板相关的接口在 `packages/agora-classroom-sdk/src/infra/protocol/board.ts` 文件中。
+
+```typescript
+ get boardApi() {
+   return EduUIStoreBase._boardApi;
+ }
+```
+
+在实现开启或关闭白板时，你需要监控由教师客户端触发的白板状态变化，并相应调整 UI。
+
+调用白板相关接口 `boardApi.enable()` 和 `boardApi.disable()` 以开启和关闭白板。
+
+```typescript
+// ...
+// 开启白板
+this.boardApi.enable();
+// ...
+// 关闭白板
+this.boardApi.disable();
+// ...
+```
+
+## API 参考
+
+#### connected
+
+```typescript
+@computed
+get connected() {
+  return this.connState === BoardConnectionState.Connected;
+}
+```
+
+查询白板是否连接到服务器。
+
+**返回值**
+
+- `true`：已连接。
+- `false`：未连接。
+
+#### mounted
+
+```typescript
+@computed
+get mounted() {
+  return this.mountState === BoardMountState.Mounted;
+}
+```
+
+查询白板是否已挂载。
+
+**返回值**
+
+- `true`：已挂载。
+- `false`：未挂载。
+
+#### granted
+
+```typescript
+@computed
+get granted() {
+  return this.hasPrivilege();
+}
+```
+
+查询用户是否有操作白板权限。
+
+**返回值**
+
+- `true`：有权限。
+- `false`：无权限。
+
+#### enable
+
+```typescript
+enable() {
+  this._sendBoardCommandMessage(AgoraExtensionRoomEvent.ToggleBoard, true);
+}
+```
+
+连接并开启白板。
+
+#### disable
+
+```typescript
+disable() {
+  this._sendBoardCommandMessage(AgoraExtensionRoomEvent.ToggleBoard, false);
+}
+```
+
+断开连接并关闭白板。
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+灵动课堂中的白板模块是基于 `AgoraWidget` 实现的。你可以通过将 widget 状态设置为活跃（active）或非活跃（inactive）来在教室中打开或关闭白板模块。
+
+关闭白板模块后，铅笔、文本框、形状和橡皮擦等绘图工具将不再可用，用户也不能在白板上显示课件，上传或删除课程文件。弹出式测验、倒计时和屏幕共享等其他不依赖白板的功能不会受到影响。
+
+## 开启和关闭白板
+
+白板界面打包在 `packages/agora-classroom-sdk/src/infra/stores/common/base.ts` 文件中，白板相关的接口在 `packages/agora-classroom-sdk/src/infra/protocol/board.ts` 文件中。
+
+```typescript
+ get boardApi() {
+   return EduUIStoreBase._boardApi;
+ }
+```
+
+在实现开启或关闭白板时，你需要监控由教师客户端触发的白板状态变化，并相应调整 UI。
+
+调用白板相关接口 `boardApi.enable()` 和 `boardApi.disable()` 以开启和关闭白板。
+
+```typescript
+// ...
+// 开启白板
+this.boardApi.enable();
+// ...
+// 关闭白板
+this.boardApi.disable();
+// ...
+```
+
+## API 参考
+
+#### connected
+
+```typescript
+@computed
+get connected() {
+  return this.connState === BoardConnectionState.Connected;
+}
+```
+
+查询白板是否连接到服务器。
+
+**返回值**
+
+- `true`：已连接。
+- `false`：未连接。
+
+#### mounted
+
+```typescript
+@computed
+get mounted() {
+  return this.mountState === BoardMountState.Mounted;
+}
+```
+
+查询白板是否已挂载。
+
+**返回值**
+
+- `true`：已挂载。
+- `false`：未挂载。
+
+#### granted
+
+```typescript
+@computed
+get granted() {
+  return this.hasPrivilege();
+}
+```
+
+查询用户是否有操作白板权限。
+
+**返回值**
+
+- `true`：有权限。
+- `false`：无权限。
+
+#### enable
+
+```typescript
+enable() {
+  this._sendBoardCommandMessage(AgoraExtensionRoomEvent.ToggleBoard, true);
+}
+```
+
+连接并开启白板。
+
+#### disable
+
+```typescript
+disable() {
+  this._sendBoardCommandMessage(AgoraExtensionRoomEvent.ToggleBoard, false);
+}
+```
+
+断开连接并关闭白板。
+
+</PlatformStructured>

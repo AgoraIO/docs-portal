@@ -1,0 +1,357 @@
+---
+title: "频道"
+---
+
+频道是 RTM 实时网络中一种数据传输的管理机制，任何订阅或加入频道的用户都可以在 100 毫秒内接收到频道中传输的消息和事件，RTM 允许客户端订阅数百甚至数千个频道。大多数 RTM API 都将以频道为基础进行发送、接收、加密等行为。
+
+基于声网的能力，RTM 的频道分成三种类型以匹配不同的应用场景：
+
+- Message Channel：遵循行业标准的 Pub/Sub （发布/订阅）模式，频道无需提前创建，订阅频道即可在频道内收发消息。频道内的发布者和订阅者数量没有上限。
+- User Channel：基于 Pub/Sub （发布/订阅）模式的点对点消息收发。用户无需订阅频道操作，可以直接指定用户 ID 发送消息，接收消息也只需监听 `onMessageEvent` 事件。
+- Stream Channel：遵循行业类似观察者模式的 Room （房间）概念，用户需要创建并加入频道才能在频道内收发消息。频道中允许创建不同的 Topic，消息通过 Topic 进行组织和管理。
+
+想要了解 Message Channel 和 Stream Channel 的更多用法及适用场景，可以查看：
+
+- [频道](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic)
+
+## subscribe
+
+### 接口描述
+
+RTM 提供消息、状态等事件通知能力。通过设置事件监听，你可以接收已订阅频道中的消息和事件。关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)章节。
+
+通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `REMOTE_JOIN` 类型的 `onPresenceEvent` 事件，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Message Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribe` 方法：
+
+```java
+void subscribe(
+    String channelName,
+    SubscribeOptions options,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `options` | `SubscribeOptions` | 必填 | - | 订阅频道选项。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="channel-android-html-0-3-4" /> |
+
+<Slot for="channel-android-html-0-3-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+`SubscribeOptions` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `withMessage` | boolean | 选填 | `true` | 是否订阅此频道中的消息事件通知。 |
+| `withPresence` | boolean | 选填 | `true` | 是否订阅此频道中的 Presence 事件通知。 |
+| `withMetadata` | boolean | 选填 | `false` | 是否订阅此频道中的 Storage 事件通知。 |
+| `withLock` | boolean | 选填 | `false` | 是否订阅此频道中的 Lock 事件通知。 |
+| `beQuiet` | boolean | 选填 | `false` | <Slot name="channel-android-html-1-5-4" /> |
+
+<Slot for="channel-android-html-1-5-4">
+
+是否静默订阅频道。该参数设置为 `true` 时表示静默订阅频道，表现如下：
+
+    - 不影响你接收频道内其他用户的事件通知。
+    - 频道内其他用户不会收到你订阅/取消订阅频道、设置/获取/删除临时状态的事件通知。
+    - 调用 `whoNow` 方法查询不到自己。
+    - 调用 `whereNow` 方法查询不到自己静默订阅的频道。
+
+</Slot>
+
+### 基本用法
+
+```java
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(true);
+options.setWithPresence(true);
+options.setWithMetadata(false);
+options.setWithLock(false);
+options.setBeQuiet(false);
+rtmClient.subscribe("channel_name", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "subscribe channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## unsubscribe
+
+### 接口描述
+
+如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Message Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribe` 方法：
+
+```java
+void unsubscribe(
+    String channelName,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="channel-android-html-2-2-4" /> |
+
+<Slot for="channel-android-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+rtmClient.unsubscribe("channel_name", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "unsubscribe channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## createStreamChannel
+
+### 接口描述
+
+在使用 Stream Channel 之前，你需要先调用 `createStreamChannel` 方法创建 `StreamChannel` 实例。成功创建实例后，你可以调用其相关方法，例如：加入频道、离开频道、发送 Topic 消息、订阅 Topic 消息等。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `createStreamChannel` 方法：
+
+```java
+StreamChannel createStreamChannel(String channelName) throws Exception;
+```
+
+|     参数      |  类型  | 是否必填 | 默认值 | 描述       |
+| ---------- | --- | ----- | --- | ---------- |
+| `channelName` | String |   必填   |   -    | 频道名称。 |
+
+### 基本用法
+
+```java
+try {
+    StreamChannel streamChannel = rtmClient.createStreamChannel("channel_name");
+} catch (Exception e) {
+    log(ERROR, "create stream channel failed: " + e.toString());
+}
+```
+
+### 返回值
+
+一个 `StreamChannel` 实例。
+
+## join
+
+### 接口描述
+
+成功创建 Stream Channel 后，你可以调用 `join` 方法加入 Stream Channel。
+
+加入频道后，你才能进行频道相关操作。此时，订阅该频道并添加事件监听的用户会收到如下事件通知：
+
+- 本地用户：
+  - `SNAPSHOT` 类型的 `onPresenceEvent` 事件通知。
+  - `SNAPSHOT` 类型的 `onTopicEvent` 事件通知。
+- 远端用户：`REMOTE_JOIN` 类型的 `onPresenceEvent` 事件通知。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `join` 方法：
+
+```java
+void join(
+    JoinChannelOptions options,
+    ResultCallback<Void> resultCallback
+);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `options` | `JoinChannelOptions` | 必填 | - | 加入频道选项。 |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="channel-android-html-3-2-4" /> |
+
+<Slot for="channel-android-html-3-2-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+`JoinChannelOptions` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | String | 必填 | - | <Slot name="channel-android-html-4-1-4" /> |
+| `withPresence` | boolean | 选填 | `true` | 是否订阅此频道中的 Presence 事件通知。 |
+| `withMetadata` | boolean | 选填 | `false` | 是否订阅此频道中的 Storage 事件通知。 |
+| `withLock` | boolean | 选填 | `false` | 是否订阅此频道中的 Lock 事件通知。 |
+| `beQuiet` | boolean | 选填 | `false` | <Slot name="channel-android-html-4-5-4" /> |
+
+<Slot for="channel-android-html-4-1-4">
+
+加入 Stream Channel 的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTC 临时 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#获取临时-token) 或 Token 服务器生成的 [RTC 正式 Token](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTC 和 RTM 服务的项目 App ID。
+
+</Slot>
+
+<Slot for="channel-android-html-4-5-4">
+
+是否静默加入频道。该参数设置为 `true` 时表示静默加入频道，表现如下：
+
+    - 不影响你接收频道内其他用户的事件通知。
+    - 频道内其他用户不会收到你加入/离开频道、设置/获取/删除临时状态的事件通知。
+    - 调用 `whoNow` 方法查询不到自己。
+    - 调用 `whereNow` 方法查询不到自己静默加入的频道。
+
+</Slot>
+
+### 基本用法
+
+```java
+JoinChannelOptions options = new JoinChannelOptions();
+options.setToken("yourToken")
+options.setWithPresence(true);
+options.setWithMetadata(false);
+options.setWithLock(false);
+options.setBeQuiet(false);
+
+streamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## leave
+
+### 接口描述
+
+如果你不再需要待在某个频道中，你可以调用 `leave` 方法离开该频道。离开后你将不再会接收到此频道中的任何消息、状态及事件通知，你在该频道中创建的 Topic 发布者的角色及你与所有 Topic 的订阅关系都将自动解除。如果想再次恢复之前的发布者角色和订阅关系，你需要调用 `join` 方法再次进入该频道并自行调用 `joinTopic` 和 `subscribeTopic` 方法进行设置。
+
+成功离开频道后，频道中的远端用户会收到 `REMOTE_LEAVE` 类型的 `onPresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
+
+:::info[信息]
+该方法仅适用于 Stream Channel。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `leave` 方法：
+
+```java
+void leave(ResultCallback<Void> resultCallback);
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="channel-android-html-5-1-4" /> |
+
+<Slot for="channel-android-html-5-1-4">
+
+调用结果回调：
+
+    - 调用成功：执行 `onSuccess` 方法。
+    - 调用失败：执行 `onFailure` 方法。
+
+</Slot>
+
+### 基本用法
+
+```java
+streamChannel.leave(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "leave stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+## release
+
+### 接口描述
+
+如果你不再需要某个频道，你可以调用 `release` 方法销毁对应的 Stream Channel 实例以释放资源。调用 `release` 方法销毁 Stream Channel 实例不会销毁该频道，后续可通过再次调用 `createStreamChannel` 和 `join` 重新加入该频道。
+
+:::info[信息]
+- 该方法仅适用于 Stream Channel。如果不先调用 `leave` 离开频道而直接调用 `release` 销毁频道实例，SDK 会自动调用 `leave` 并触发对应的事件。
+- `release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `release` 方法：
+
+```java
+RtmErrorCode release();
+```
+
+### 基本用法
+
+```java
+RtmErrorCode errorCode = streamChannel.release();
+```
+
+### 返回值
+
+本次操作将返回一个 `RtmErrorCode` 数据结构的返回值。详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)。

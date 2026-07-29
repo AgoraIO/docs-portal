@@ -77,6 +77,44 @@ function getRuleBodyContaining(selectorPart: string) {
 }
 
 describe('app prose CSS regressions', () => {
+  it('treats empty legacy anchors as transparent before the first heading', () => {
+    const leadingHeading = getRuleBody(
+      `.prose
+        :where(h2):not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )`,
+    );
+    const leadingHeadingSeparator = getRuleBody(
+      `.prose
+        :where(h2):not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )::before`,
+    );
+    const platformLeadingHeading = getRuleBody(
+      `.prose[data-platform-header-tabs="true"]
+        [data-platform-group="structured"]
+        > [data-platform-panel]:not([hidden])
+        .docs-body
+        > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2))`,
+    );
+    const platformLeadingHeadingSeparator = getRuleBody(
+      `.prose[data-platform-header-tabs="true"]
+        [data-platform-group="structured"]
+        > [data-platform-panel]:not([hidden])
+        .docs-body
+        > h2:not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )::before`,
+    );
+
+    expectDeclaration(leadingHeading.rule, 'margin-top', '0');
+    expectDeclaration(leadingHeading.rule, 'padding-top', '0');
+    expectDeclaration(leadingHeadingSeparator.rule, 'content', 'none');
+    expectDeclaration(platformLeadingHeading.rule, 'margin-top', '0.75rem');
+    expectDeclaration(platformLeadingHeading.rule, 'padding-top', '0');
+    expectDeclaration(platformLeadingHeadingSeparator.rule, 'content', 'none');
+  });
+
   it('uses decimal, alpha, and roman markers for nested ordered lists', () => {
     const topLevel = getRuleBody(
       '.prose :where(ol):not(:where(.not-prose, .not-prose *))',

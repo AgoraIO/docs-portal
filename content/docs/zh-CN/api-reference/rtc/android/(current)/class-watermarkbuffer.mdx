@@ -1,0 +1,102 @@
+---
+title: WatermarkBuffer
+description: 用于配置水印图像的格式、尺寸和像素缓冲区。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_watermarkbuffer
+  sourcePath: html-docs/rtc/Android/API/class_watermarkbuffer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkbuffer__prototype"></a>
+
+```text
+public class WatermarkBuffer {
+  public final static int WATERMARK_BUFFER_FORMAT_I420 = 1;
+  public final static int WATERMARK_BUFFER_FORMAT_BGRA = 2;
+  public final static int WATERMARK_BUFFER_FORMAT_NV21 = 3;
+  public final static int WATERMARK_BUFFER_FORMAT_RGBA = 4;
+  public ByteBuffer buffer;
+  public int width;
+  public int height;
+  public int format;
+}
+```
+
+<a id="class_watermarkbuffer__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+用于定义水印图像的缓冲区数据结构。
+
+<a id="class_watermarkbuffer__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="watermark_buffer_format_i420"></a>
+<Parameter name="WATERMARK_BUFFER_FORMAT_I420">
+
+指定水印缓冲区的格式为 I420。
+
+</Parameter>
+<a id="watermark_buffer_format_bgra"></a>
+<Parameter name="WATERMARK_BUFFER_FORMAT_BGRA">
+
+指定水印缓冲区的格式为 BGRA。
+
+</Parameter>
+<a id="watermark_buffer_format_nv21"></a>
+<Parameter name="WATERMARK_BUFFER_FORMAT_NV21">
+
+指定水印缓冲区的格式为 NV21。
+
+</Parameter>
+<a id="watermark_buffer_format_rgba"></a>
+<Parameter name="WATERMARK_BUFFER_FORMAT_RGBA">
+
+指定水印缓冲区的格式为 RGBA。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+存储水印图像的像素数据。详见 `ByteBuffer`。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+水印图像的宽度，单位为像素。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+水印图像的高度，单位为像素。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+水印图像的格式：
+
+- `WATERMARK_BUFFER_FORMAT_I420`：I420 格式。
+- `WATERMARK_BUFFER_FORMAT_BGRA`：BGRA 格式。
+- `WATERMARK_BUFFER_FORMAT_NV21`：NV21 格式。
+- `WATERMARK_BUFFER_FORMAT_RGBA`：RGBA 格式。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [getBuffer](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkbuffer_getbuffer)
+- [getFormat](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkbuffer_getformat)
+- [getHeight](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkbuffer_getheight)
+- [getId](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkbuffer_getid)
+- [getWidth](/zh-CN/api-reference/rtc/android/video/video-prenpro/watermark#api_watermarkbuffer_getwidth)

@@ -1,0 +1,114 @@
+---
+title: 摄像头采集
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_camera_capture
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_camera_capture.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_camera_capture"></a>
+
+<a id="api_irtcengine_startcameracapture"></a>
+
+<a id="ariaid-title2"></a>
+
+## startCameraCapture
+
+开始通过摄像头采集视频。
+
+<a id="api_irtcengine_startcameracapture__prototype"></a>
+
+```text
+public abstract startCameraCapture(
+    sourceType: Constants.VideoSourceType, config: CameraCapturerConfiguration): number;
+```
+
+<a id="api_irtcengine_startcameracapture__detailed_desc"></a>
+
+### 详情
+
+调用该方法可以通过指定 sourceType 同时开启多路摄像头采集。
+
+<a id="api_irtcengine_startcameracapture__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+视频采集配置。详见 [CameraCapturerConfiguration](/zh-CN/api-reference/rtc/harmonyos/class-cameracapturerconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startcameracapture__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopcameracapture"></a>
+
+<a id="ariaid-title3"></a>
+
+## stopCameraCapture
+
+停止通过摄像头采集视频。
+
+<a id="api_irtcengine_stopcameracapture__prototype"></a>
+
+```text
+public abstract stopCameraCapture(sourceType: Constants.VideoSourceType): number;
+```
+
+<a id="api_irtcengine_stopcameracapture__detailed_desc"></a>
+
+### 详情
+
+调用 [startCameraCapture](/zh-CN/api-reference/rtc/harmonyos/video/camera-capture#api_irtcengine_startcameracapture) 开启一路或多路摄像头采集的视频流后，你可以调用该方法，通过设置 sourceType 停止一路或多路摄像头的视频采集。
+
+:::caution
+注意： 如果你正在使用本地合图功能，调用该方法停止通过第一个摄像头采集视频，会造成本地合图中断。
+:::
+
+<a id="api_irtcengine_stopcameracapture__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
+
+视频源的类型，详见 [VideoSourceType](/zh-CN/api-reference/rtc/harmonyos/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_stopcameracapture__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine)

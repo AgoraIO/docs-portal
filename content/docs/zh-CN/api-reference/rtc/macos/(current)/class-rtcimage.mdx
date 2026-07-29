@@ -1,0 +1,60 @@
+---
+title: AgoraImage
+description: 用于设置直播视频中水印和背景图像属性。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_rtcimage
+  sourcePath: html-docs/rtc/macOS/API/class_rtcimage.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_rtcimage__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraImage : NSObject
+@property(strong, nonatomic) NSURL *_Nonnull url;
+@property(assign, nonatomic) CGRect rect;
+@property (assign, nonatomic) NSInteger zOrder;
+@property(assign, nonatomic) double alpha;
+@end
+```
+
+<a id="class_rtcimage__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
+
+直播视频中图像的 HTTP 或 HTTPS URL 地址。最大长度为 1024 字节。
+
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
+
+图像在视频帧中的位置和尺寸。
+
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
+
+水印或背景图像的图层索引。
+
+- 当使用水印数组添加一个或多个水印时，必须设置为 [1, 255] 范围内的值，否则 SDK 会报错。
+- 其他情况下为可选，取值范围为 [0, 255]，默认值为 0。
+- 0 表示底层，255 表示顶层。
+
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
+
+水印或背景图像的透明度。取值范围为 [0.0, 1.0]：
+
+- 0.0：完全透明。
+- 1.0：（默认）不透明。
+
+</Parameter>
+</ParameterList>

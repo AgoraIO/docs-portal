@@ -1,0 +1,69 @@
+---
+title: "保障 REST 服务高可用"
+description: "了解如何在云端转码中保障 REST 服务高可用，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+为保障 REST 服务的高可用，避免因区域网络故障造成的服务不可用，声网提供故障迁移、多路任务保障、切换域名的方案。
+
+:::warning[注意]
+声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
+:::
+
+## 故障迁移
+
+针对网络故障，以及非声网云服务、非声网软件、基础设施或不可抗力等因素带来的风险，声网为云端转码提供高可用自动任务迁移能力。当故障确认后，该服务会在尽量短的时间（预计 90 秒内）完成迁移，在此期间会存在转码中断等风险。
+
+对于频道内观众较多或对高可用有极高要求的场景，你需要根据业务需求判断能否接受高可用迁移的影响，决定是否要采用更高的质量保障措施。例如，使用多个不同的 `uid`（在输出频道内）发起多路转码任务，或[周期性查询转码任务状态](/zh-CN/realtime-media/transcoding/build/optimize-and-operate/check-service#检查服务运行状态)，以便在发生故障时及时使用备用 `uid` 重新发起新的转码任务，从而确保关键任务顺利完成。
+
+## 多路任务保障
+
+如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路cloud-transcoder任务单独计费，计费方式详见[计费说明](/zh-CN/realtime-media/transcoding)。实现步骤如下：
+
+1. 同时发起主任务和备份任务，针对相同的主播源流进行转码，并向同一频道或不同频道推送转码输出的流，观众端订阅主任务中的输出频道内的 `uid`。
+
+2. 在客户端监听以下回调事件，可以及时通知观众端订阅备份任务中的 `uid`：
+
+    - 主播掉线回调 [`onUserOffline`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onuseroffline)
+
+    - 主播音视频状态变化回调 [`onRemoteAudioStateChanged`](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)/[`onRemoteVideoStateChanged`](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged)
+
+## 切换域名
+
+切换域名的操作如下：
+
+1. 根据你的业务服务器所在地设置主域名：
+    - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 `api.sd-rtn.com`。
+    - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 `api.agora.io`。
+2. 当使用主域名发起 RESTful API 请求失败时，使用该域名重试一次。
+3. 如果步骤 2 的重试依然失败，使用备用的主域名重试：
+    - 如果当前设置的主域名为 `api.sd-rtn.com`，备用的主域名指 `api.agora.io`。
+    - 如果当前设置的主域名为 `api.agora.io`，备用的主域名指 `api.sd-rtn.com`。
+4. 如果步骤 3 的重试依然失败，使用与当前解析区域相邻的区域域名重试。
+
+   举例说明：假设你的业务服务器位于欧洲，你设置主域名为 `api.agora.io`，并且该域名解析到德国。德国对应的区域域名为欧洲中部 `api-eu-central-1.agora.io`。查域名信息表可知，其相邻区域为欧洲西部，对应域名为 `api-eu-west-1.agora.io` 或 `api-eu-west-1.sd-rtn.com`。因此，出现网络故障且步骤 2、3 的重试失败时，请使用 `api-eu-west-1.agora.io` 或 `api-eu-west-1.sd-rtn.com` 重试。
+
+#### 注意事项
+
+- 为避免重试请求过于频繁，超过声网服务所规定的 QPS（每秒请求数），声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- 如果是网络问题而非 DNS 解析域名问题导致的请求失败，声网建议你跳过步骤 3，直接进行步骤 4。
+- 切换至区域域名前，请确保你使用的业务（例如，云端录制、云信令、频道管理等 REST 服务）在该区域有部署服务。
+
+#### 域名信息
+
+| 主域名 | 区域域名 | 地理区域 |
+| --- | --- | --- |
+| `api.sd-rtn.com` | `api-us-west-1.sd-rtn.com` | 美国西部 |
+|  | `api-us-east-1.sd-rtn.com` | 美国东部 |
+|  | `api-ap-southeast-1.sd-rtn.com` | 亚太东南 |
+|  | `api-ap-northeast-1.sd-rtn.com` | 亚太东北 |
+|  | `api-eu-west-1.sd-rtn.com` | 欧洲西部 |
+|  | `api-eu-central-1.sd-rtn.com` | 欧洲中部 |
+|  | `api-cn-east-1.sd-rtn.com` | 中国华东 |
+|  | `api-cn-north-1.sd-rtn.com` | 中国华北 |
+| `api.agora.io` | `api-us-west-1.agora.io` | 美国西部 |
+|  | `api-us-east-1.agora.io` | 美国东部 |
+|  | `api-ap-southeast-1.agora.io` | 亚太东南 |
+|  | `api-ap-northeast-1.agora.io` | 亚太东北 |
+|  | `api-eu-west-1.agora.io` | 欧洲西部 |
+|  | `api-eu-central-1.agora.io` | 欧洲中部 |
+|  | `api-cn-east-1.agora.io` | 中国华东 |
+|  | `api-cn-north-1.agora.io` | 中国华北 |

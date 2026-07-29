@@ -1,0 +1,64 @@
+---
+title: AgoraMusicCollection
+description: 音乐资源列表的详细信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_musiccollection
+  sourcePath: html-docs/rtc/iOS/API/class_musiccollection.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_musiccollection__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraMusicCollection : NSObject
+@property(nonatomic, assign) NSInteger count;
+@property(nonatomic, assign) NSInteger total;
+@property(nonatomic, assign) NSInteger page;
+@property(nonatomic, assign) NSInteger pageSize;
+@property(nonatomic, strong) NSArray<AgoraMusic *>* musicList;
+@end
+```
+
+<a id="class_musiccollection__detailed_desc"></a>
+
+用于描述当前请求中的音乐资源列表信息，包括资源数量、分页信息和当前页的音乐资源详情。
+
+<a id="class_musiccollection__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="count"></a>
+<Parameter name="count">
+
+当前请求中音乐资源列表的音乐项数量。
+
+</Parameter>
+<a id="total"></a>
+<Parameter name="total">
+
+音乐资源列表中的音乐资源总数。
+
+</Parameter>
+<a id="page"></a>
+<Parameter name="page">
+
+当前页码，默认从 1 开始。
+
+</Parameter>
+<a id="pagesize"></a>
+<Parameter name="pageSize">
+
+当前音乐资源列表的总页数。最大值为 50。
+
+</Parameter>
+<a id="musiclist"></a>
+<Parameter name="musicList">
+
+当前页音乐资源的详细信息，详见 [AgoraMusic](/zh-CN/api-reference/rtc/ios/class-music)。
+
+</Parameter>
+</ParameterList>

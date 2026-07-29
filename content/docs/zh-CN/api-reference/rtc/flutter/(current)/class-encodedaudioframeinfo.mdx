@@ -1,0 +1,91 @@
+---
+title: EncodedAudioFrameInfo
+description: 编码后音频的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_encodedaudioframeinfo
+  sourcePath: html-docs/rtc/Flutter/API/class_encodedaudioframeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_encodedaudioframeinfo__prototype"></a>
+
+```text
+class EncodedAudioFrameInfo {
+  const EncodedAudioFrameInfo(
+      {this.codec,
+      this.sampleRateHz,
+      this.samplesPerChannel,
+      this.numberOfChannels,
+      this.advancedSettings,
+      this.captureTimeMs});
+
+  @JsonKey(name: 'codec')
+  final AudioCodecType? codec;
+
+  @JsonKey(name: 'sampleRateHz')
+  final int? sampleRateHz;
+
+  @JsonKey(name: 'samplesPerChannel')
+  final int? samplesPerChannel;
+
+  @JsonKey(name: 'numberOfChannels')
+  final int? numberOfChannels;
+
+  @JsonKey(name: 'advancedSettings')
+  final EncodedAudioFrameAdvancedSettings? advancedSettings;
+
+  @JsonKey(name: 'captureTimeMs')
+  final int? captureTimeMs;
+
+  factory EncodedAudioFrameInfo.fromJson(Map<String, dynamic> json) =>
+      _$EncodedAudioFrameInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EncodedAudioFrameInfoToJson(this);
+}
+```
+
+<a id="class_encodedaudioframeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="codec"></a>
+<Parameter name="codec">
+
+音频编码规格: [AudioCodecType](/zh-CN/api-reference/rtc/flutter/enum-audiocodectype)。
+
+</Parameter>
+<a id="sampleratehz"></a>
+<Parameter name="sampleRateHz">
+
+音频采样率 (Hz)。
+
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
+
+每个声道的音频采样数。
+
+</Parameter>
+<a id="numberofchannels"></a>
+<Parameter name="numberOfChannels">
+
+声道数。
+
+</Parameter>
+<a id="advancedsettings"></a>
+<Parameter name="advancedSettings">
+
+该功能暂不支持。
+
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
+
+采集外部编码视频帧的 Unix 时间戳 (ms)。
+
+</Parameter>
+</ParameterList>

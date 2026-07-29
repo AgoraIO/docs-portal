@@ -66,9 +66,15 @@ type MDXContext = {
 };
 
 const FumadocsAnchor = defaultMdxComponents.a;
+const FumadocsCards = defaultMdxComponents.Cards as ComponentType<
+  ComponentProps<'div'>
+>;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
+const FumadocsCallout = defaultMdxComponents.Callout;
+const FumadocsCalloutContainer = defaultMdxComponents.CalloutContainer;
+const FumadocsCalloutTitle = defaultMdxComponents.CalloutTitle;
 const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
 const RouterFumadocsCard = createLink(FumadocsCard);
@@ -84,6 +90,9 @@ type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
 };
 type DocsCardProps = ComponentProps<typeof FumadocsCard> &
   Pick<AnchorHTMLAttributes<HTMLAnchorElement>, 'download' | 'rel' | 'target'>;
+type DocsCardsProps = ComponentProps<'div'> & {
+  columns?: 2 | 3 | 4;
+};
 type AccordionsRootProps = Omit<
   ComponentProps<typeof FumadocsAccordions>,
   'defaultValue' | 'onValueChange' | 'type' | 'value'
@@ -101,22 +110,41 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   onValueChange?: (value: string) => void;
   value?: string;
 };
+type CalloutProps = ComponentProps<typeof FumadocsCallout>;
+type CalloutContainerProps = ComponentProps<typeof FumadocsCalloutContainer>;
 type PreProps = CodeBlockProps;
+type ParameterListVariant = 'cards' | 'table';
 type ParameterListProps = ComponentProps<'div'> & {
   nullable?: boolean;
   optional?: boolean;
   required?: boolean;
   title?: ReactNode;
+  variant?: ParameterListVariant;
 };
 type ParameterProps = ComponentProps<'div'> & {
   children?: ReactNode;
   defaultValue?: ReactNode;
+  direction?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
   possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
+};
+type ParameterTypeProps = ComponentProps<'div'> & {
+  children?: ReactNode;
+};
+type ApiSignatureProps = ComponentProps<'div'> & {
+  children?: ReactNode;
+  labels?: string;
+};
+type ApiReturnsProps = ComponentProps<'section'> & {
+  children?: ReactNode;
+  title?: ReactNode;
+};
+type ApiReturnTypeProps = ComponentProps<'div'> & {
+  children?: ReactNode;
 };
 type TabValueElement = ReactElement<{
   children?: ReactNode;
@@ -142,6 +170,10 @@ type AccordionPageState = {
 const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
   undefined,
 );
+const ParameterListVariantContext =
+  createContext<ParameterListVariant>('cards');
+const ParameterNestingContext = createContext(0);
+const TableParameterDescriptionContext = createContext(false);
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
@@ -167,6 +199,78 @@ export function MDXAccordionProvider({ children }: { children: ReactNode }) {
 
 function escapeTabValue(value: string) {
   return value.toLowerCase().replace(/\s/, '-');
+}
+
+function DocsCallout(props: CalloutProps) {
+  const isSdkCompliance = props.title === 'SDK 合规信息公示';
+
+  if (!isSdkCompliance) {
+    return <FumadocsCallout {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCallout {...props} />
+    </div>
+  );
+}
+
+function DocsCalloutContainer(props: CalloutContainerProps) {
+  const isSdkCompliance = hasSdkComplianceCalloutTitle(props.children);
+
+  if (!isSdkCompliance) {
+    return <FumadocsCalloutContainer {...props} />;
+  }
+
+  return (
+    <div data-sdk-compliance="true">
+      <FumadocsCalloutContainer {...props} />
+    </div>
+  );
+}
+
+function hasSdkComplianceCalloutTitle(children: ReactNode): boolean {
+  let found = false;
+
+  Children.forEach(children, (child) => {
+    if (found || !isValidElement(child)) {
+      return;
+    }
+
+    const element = child as ReactElement<{ children?: ReactNode }>;
+
+    if (
+      element.type === FumadocsCalloutTitle &&
+      getPlainText(element.props.children) === 'SDK 合规信息公示'
+    ) {
+      found = true;
+      return;
+    }
+
+    if (hasSdkComplianceCalloutTitle(element.props.children)) {
+      found = true;
+    }
+  });
+
+  return found;
+}
+
+function getPlainText(value: ReactNode): string {
+  if (typeof value === 'string' || typeof value === 'number') {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(getPlainText).join('');
+  }
+
+  if (isValidElement(value)) {
+    const element = value as ReactElement<{ children?: ReactNode }>;
+
+    return getPlainText(element.props.children);
+  }
+
+  return '';
 }
 
 function collectTabValues(children: ReactNode, values: string[] = []) {
@@ -736,27 +840,65 @@ function ParameterList({
   optional,
   required,
   title,
+  variant = 'cards',
   ...props
 }: ParameterListProps) {
   const requiredState = getRequiredState({ optional, required });
+  const isTable = variant === 'table';
+  const nestingDepth = useContext(ParameterNestingContext);
+
+  if (isTable && nestingDepth > 0) {
+    return (
+      <ParameterListVariantContext value={variant}>
+        <div
+          className={cn('my-3 space-y-3', className)}
+          data-parameter-list=""
+          data-parameter-nested="true"
+          data-parameter-variant={variant}
+          {...props}
+        >
+          {children}
+        </div>
+      </ParameterListVariantContext>
+    );
+  }
 
   return (
-    <section
-      className={cn(
-        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
-        className,
-      )}
-      data-parameter-list=""
-      {...props}
-    >
-      {title || requiredState || nullable ? (
-        <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
-          {title ? <span>{title}</span> : null}
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-      ) : null}
-      <div className="divide-y divide-fd-border">{children}</div>
-    </section>
+    <ParameterListVariantContext value={variant}>
+      <section
+        className={cn(
+          'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
+          className,
+        )}
+        data-parameter-list=""
+        data-parameter-variant={variant}
+        {...props}
+      >
+        {title || requiredState || nullable ? (
+          <div className="flex flex-wrap items-center gap-2 border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+            {title ? <span>{title}</span> : null}
+            {!isTable ? (
+              <ParameterBadges
+                requiredState={requiredState}
+                nullable={nullable}
+              />
+            ) : null}
+          </div>
+        ) : null}
+        {isTable ? (
+          <div
+            className="grid grid-cols-[minmax(0,42%)_minmax(0,1fr)] border-fd-border border-b bg-fd-muted/20 font-semibold text-fd-foreground sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)]"
+            data-parameter-columns=""
+          >
+            <span className="border-fd-border border-r px-4 py-2.5">
+              参数名
+            </span>
+            <span className="px-4 py-2.5">描述</span>
+          </div>
+        ) : null}
+        <div className="divide-y divide-fd-border">{children}</div>
+      </section>
+    </ParameterListVariantContext>
   );
 }
 
@@ -794,10 +936,200 @@ function ParameterBadges({
   );
 }
 
+function ParameterIdentity({
+  compact,
+  direction,
+  name,
+  nullable,
+  requiredState,
+  richType,
+  type,
+  variant,
+}: {
+  compact?: boolean;
+  direction?: ReactNode;
+  name?: ReactNode;
+  nullable?: boolean;
+  requiredState: 'required' | 'optional' | null;
+  richType?: ReactNode;
+  type?: ReactNode;
+  variant: ParameterListVariant;
+}) {
+  if (variant === 'table') {
+    return (
+      <div
+        className={cn(
+          'min-w-0 break-words font-mono text-[0.8rem] text-fd-foreground leading-6',
+          !compact && 'border-fd-border border-r px-4 py-4',
+        )}
+      >
+        {requiredState === 'optional' ? (
+          <span className="text-fd-muted-foreground">Optional </span>
+        ) : null}
+        {direction ? (
+          <span className="text-fd-muted-foreground">{direction} </span>
+        ) : null}
+        {name ? (
+          <code className="font-mono">
+            {name}
+            {requiredState === 'optional' ? '?' : null}
+          </code>
+        ) : null}
+        {type || richType ? (
+          <>
+            {name ? ': ' : null}
+            {type ? <span>{type}</span> : richType}
+          </>
+        ) : null}
+        {nullable ? (
+          <span className="text-fd-muted-foreground"> | null</span>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-w-0 space-y-2">
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
+        {name ? (
+          <code className="rounded bg-fd-muted px-1.5 py-0.5 font-mono text-[0.82rem] text-fd-foreground">
+            {name}
+          </code>
+        ) : null}
+        {type ? (
+          <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
+            {type}
+          </span>
+        ) : (
+          richType
+        )}
+      </div>
+      {direction ? (
+        <span className="inline-flex w-fit rounded border border-fd-border bg-fd-muted/60 px-1.5 py-0.5 font-mono text-[0.68rem] text-fd-muted-foreground">
+          {direction}
+        </span>
+      ) : null}
+      <ParameterBadges requiredState={requiredState} nullable={nullable} />
+    </div>
+  );
+}
+
+function NestedParameterChildren({
+  children,
+  parameterLabel,
+  variant,
+}: {
+  children: ReactNode;
+  parameterLabel?: string;
+  variant: ParameterListVariant;
+}) {
+  const nestingDepth = useContext(ParameterNestingContext);
+
+  return (
+    <section
+      aria-label={
+        parameterLabel
+          ? `Nested parameters for ${parameterLabel}`
+          : 'Nested parameters'
+      }
+      className={cn(
+        variant === 'table'
+          ? 'mt-3'
+          : 'border-fd-border/70 border-t bg-fd-muted/20 px-4 pb-4 pt-3',
+      )}
+      data-parameter-children=""
+    >
+      <ParameterNestingContext value={nestingDepth + 1}>
+        <div
+          className={cn(
+            variant === 'table'
+              ? 'space-y-3'
+              : 'border-fd-border/80 border-l pl-3 sm:ml-4 sm:pl-4',
+          )}
+        >
+          {variant === 'cards' ? (
+            <div className="overflow-hidden rounded-md border border-fd-border bg-fd-background/80 shadow-sm">
+              <div className="divide-y divide-fd-border">{children}</div>
+            </div>
+          ) : (
+            children
+          )}
+        </div>
+      </ParameterNestingContext>
+    </section>
+  );
+}
+
+function ParameterDescription({
+  compact,
+  defaultValue,
+  descriptionChildren,
+  nestedParameters,
+  parameterLabel,
+  possibleValues,
+  variant,
+}: {
+  compact?: boolean;
+  defaultValue?: ReactNode;
+  descriptionChildren: ReactNode[];
+  nestedParameters: ReactNode[];
+  parameterLabel?: string;
+  possibleValues?: ReactNode;
+  variant: ParameterListVariant;
+}) {
+  return (
+    <TableParameterDescriptionContext value={variant === 'table'}>
+      <div
+        className={cn(
+          'min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0',
+          variant === 'table' && !compact && 'px-4 py-4',
+          compact && 'mt-1',
+        )}
+        data-parameter-description=""
+      >
+        {defaultValue || possibleValues ? (
+          <dl className="space-y-2 text-xs">
+            {defaultValue ? (
+              <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
+                <dt className="font-medium text-fd-foreground">
+                  Default value
+                </dt>
+                <dd className="min-w-0 break-words font-mono">
+                  {defaultValue}
+                </dd>
+              </div>
+            ) : null}
+            {possibleValues ? (
+              <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
+                <dt className="font-medium text-fd-foreground">
+                  Possible values
+                </dt>
+                <dd className="min-w-0">
+                  {renderPossibleValues(possibleValues, parameterLabel)}
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+        ) : null}
+        {descriptionChildren}
+        {nestedParameters.length > 0 && variant === 'table' ? (
+          <NestedParameterChildren
+            parameterLabel={parameterLabel}
+            variant={variant}
+          >
+            {nestedParameters}
+          </NestedParameterChildren>
+        ) : null}
+      </div>
+    </TableParameterDescriptionContext>
+  );
+}
+
 function Parameter({
   children,
   className,
   defaultValue,
+  direction,
   name,
   nullable,
   optional,
@@ -807,88 +1139,217 @@ function Parameter({
   ...props
 }: ParameterProps) {
   const requiredState = getRequiredState({ optional, required });
+  const variant = useContext(ParameterListVariantContext);
   const childNodes = Children.toArray(children);
   const descriptionChildren = childNodes.filter(
-    (child) => !isNestedParameterBlock(child) && !isBlankTextNode(child),
+    (child) =>
+      !isNestedParameterBlock(child) &&
+      !isParameterTypeBlock(child) &&
+      !isBlankTextNode(child),
   );
   const nestedParameters = childNodes.filter(isNestedParameterBlock);
+  const richType = childNodes.find(isParameterTypeBlock);
   const parameterLabel = getPlainTextLabel(name);
+  const nestingDepth = useContext(ParameterNestingContext);
+  const isCompactTableParameter = variant === 'table' && nestingDepth > 0;
+
+  if (isCompactTableParameter) {
+    return (
+      <div
+        className={cn(
+          'group/parameter relative pl-5 before:absolute before:left-1 before:top-2.5 before:size-1.5 before:rounded-full before:bg-fd-muted-foreground',
+          className,
+        )}
+        data-parameter-item=""
+        data-parameter-variant={variant}
+        {...props}
+      >
+        <ParameterIdentity
+          compact
+          direction={direction}
+          name={name}
+          nullable={nullable}
+          requiredState={requiredState}
+          richType={richType}
+          type={type}
+          variant={variant}
+        />
+        <ParameterDescription
+          compact
+          defaultValue={defaultValue}
+          descriptionChildren={descriptionChildren}
+          nestedParameters={nestedParameters}
+          parameterLabel={parameterLabel}
+          possibleValues={possibleValues}
+          variant={variant}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn('group/parameter', className)}
       data-parameter-item=""
+      data-parameter-variant={variant}
       {...props}
     >
       <div
-        className="grid gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]"
+        className={cn(
+          'grid',
+          variant === 'table'
+            ? 'grid-cols-[minmax(0,42%)_minmax(0,1fr)] sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)]'
+            : 'gap-3 px-4 py-4 sm:grid-cols-[minmax(0,16rem)_1fr]',
+        )}
         data-parameter-main=""
       >
-        <div className="min-w-0 space-y-2">
-          <div className="flex min-w-0 flex-wrap items-center gap-2">
-            {name ? (
-              <code className="rounded bg-fd-muted px-1.5 py-0.5 font-mono text-[0.82rem] text-fd-foreground">
-                {name}
-              </code>
-            ) : null}
-            {type ? (
-              <span className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground">
-                {type}
-              </span>
-            ) : null}
-          </div>
-          <ParameterBadges requiredState={requiredState} nullable={nullable} />
-        </div>
-        <div
-          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0"
-          data-parameter-description=""
-        >
-          {defaultValue || possibleValues ? (
-            <dl className="space-y-2 text-xs">
-              {defaultValue ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Default value
-                  </dt>
-                  <dd className="min-w-0 break-words font-mono">
-                    {defaultValue}
-                  </dd>
-                </div>
-              ) : null}
-              {possibleValues ? (
-                <div className="grid gap-1.5 sm:grid-cols-[max-content_minmax(0,1fr)]">
-                  <dt className="font-medium text-fd-foreground">
-                    Possible values
-                  </dt>
-                  <dd className="min-w-0">
-                    {renderPossibleValues(possibleValues, parameterLabel)}
-                  </dd>
-                </div>
-              ) : null}
-            </dl>
-          ) : null}
-          {descriptionChildren}
-        </div>
+        <ParameterIdentity
+          direction={direction}
+          name={name}
+          nullable={nullable}
+          requiredState={requiredState}
+          richType={richType}
+          type={type}
+          variant={variant}
+        />
+        <ParameterDescription
+          defaultValue={defaultValue}
+          descriptionChildren={descriptionChildren}
+          nestedParameters={nestedParameters}
+          parameterLabel={parameterLabel}
+          possibleValues={possibleValues}
+          variant={variant}
+        />
       </div>
-      {nestedParameters.length > 0 ? (
-        <section
-          aria-label={
-            parameterLabel
-              ? `Nested parameters for ${parameterLabel}`
-              : 'Nested parameters'
-          }
-          className="border-fd-border/70 border-t bg-fd-muted/20 px-4 pb-4 pt-3"
-          data-parameter-children=""
+      {nestedParameters.length > 0 && variant === 'cards' ? (
+        <NestedParameterChildren
+          parameterLabel={parameterLabel}
+          variant={variant}
         >
-          <div className="border-fd-border/80 border-l pl-3 sm:ml-4 sm:pl-4">
-            <div className="overflow-hidden rounded-md border border-fd-border bg-fd-background/80 shadow-sm">
-              <div className="divide-y divide-fd-border">
-                {nestedParameters}
-              </div>
-            </div>
-          </div>
-        </section>
+          {nestedParameters}
+        </NestedParameterChildren>
       ) : null}
+    </div>
+  );
+}
+
+function ParameterType({ children, className, ...props }: ParameterTypeProps) {
+  const variant = useContext(ParameterListVariantContext);
+
+  return (
+    <div
+      className={cn(
+        variant === 'table'
+          ? 'prose-no-margin inline min-w-0 font-mono text-[0.8rem] text-fd-muted-foreground [&_a]:text-fd-primary [&_p]:m-0 [&_p]:inline'
+          : 'prose-no-margin min-w-0 rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-mono text-[0.75rem] text-fd-muted-foreground [&_a]:text-fd-primary [&_p]:m-0',
+        className,
+      )}
+      data-parameter-type=""
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+function ApiSignature({
+  children,
+  className,
+  labels,
+  ...props
+}: ApiSignatureProps) {
+  const labelItems = labels?.split(/\s+/).filter(Boolean) ?? [];
+
+  return (
+    <div
+      className={cn(
+        'not-prose my-4 overflow-x-auto rounded-lg border border-fd-border bg-fd-muted/35 shadow-sm',
+        className,
+      )}
+      data-api-signature=""
+      {...props}
+    >
+      {labelItems.length > 0 ? (
+        <div className="flex flex-wrap justify-end gap-1.5 border-fd-border border-b px-3 py-2">
+          {labelItems.map((label) => (
+            <span
+              className="rounded border border-fd-border bg-fd-background px-1.5 py-0.5 font-medium text-[0.68rem] text-fd-muted-foreground"
+              key={label}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      <div className="w-max min-w-full whitespace-pre px-4 py-3 font-mono text-[0.82rem] text-fd-foreground leading-6 [&_a]:text-fd-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p]:whitespace-pre">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ApiReturns({
+  children,
+  className,
+  title = 'Returns',
+  ...props
+}: ApiReturnsProps) {
+  const isTableParameterReturn = useContext(TableParameterDescriptionContext);
+  const childNodes = Children.toArray(children);
+  const returnType = childNodes.find(isApiReturnTypeBlock);
+  const description = childNodes.filter(
+    (child) => !isApiReturnTypeBlock(child) && !isBlankTextNode(child),
+  );
+
+  if (isTableParameterReturn) {
+    return null;
+  }
+
+  return (
+    <section
+      className={cn(
+        'not-prose my-6 overflow-hidden rounded-lg border border-fd-border bg-fd-card text-sm shadow-sm',
+        className,
+      )}
+      data-api-returns=""
+      {...props}
+    >
+      <div className="border-fd-border border-b bg-fd-muted/35 px-4 py-3 font-semibold text-fd-foreground">
+        {title}
+      </div>
+      <div
+        className={cn(
+          'grid gap-3 px-4 py-4',
+          returnType &&
+            description.length > 0 &&
+            'sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]',
+        )}
+      >
+        {returnType}
+        {description.length > 0 ? (
+          <div
+            className="prose-no-margin min-w-0 text-fd-muted-foreground [&_a]:font-medium [&_a]:text-fd-primary"
+            data-api-return-description=""
+          >
+            {description}
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function ApiReturnType({ children, className, ...props }: ApiReturnTypeProps) {
+  return (
+    <div
+      className={cn(
+        'min-w-0 overflow-x-auto whitespace-pre rounded-md border border-fd-border bg-fd-background px-3 py-2 font-mono text-[0.78rem] text-fd-foreground leading-5 [&_a]:text-fd-primary [&_a]:underline [&_a]:underline-offset-4 [&_p]:m-0 [&_p]:w-max [&_p]:min-w-full [&_p]:whitespace-pre',
+        className,
+      )}
+      data-api-return-type=""
+      {...props}
+    >
+      {children}
     </div>
   );
 }
@@ -959,6 +1420,18 @@ function isNestedParameterBlock(
   );
 }
 
+function isParameterTypeBlock(
+  child: ReactNode,
+): child is ReactElement<ParameterTypeProps> {
+  return isValidElement(child) && child.type === ParameterType;
+}
+
+function isApiReturnTypeBlock(
+  child: ReactNode,
+): child is ReactElement<ApiReturnTypeProps> {
+  return isValidElement(child) && child.type === ApiReturnType;
+}
+
 function isBlankTextNode(child: ReactNode) {
   return typeof child === 'string' && child.trim().length === 0;
 }
@@ -971,7 +1444,14 @@ function getPlainTextLabel(value: ReactNode) {
   return undefined;
 }
 
-export { Parameter, ParameterList };
+export {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
+  Parameter,
+  ParameterList,
+  ParameterType,
+};
 
 function getRequiredState({
   optional,
@@ -1056,6 +1536,25 @@ function createDocsCard(contentPath?: string) {
   }
 
   return DocsCard;
+}
+
+function Cards({ className, columns, ...props }: DocsCardsProps) {
+  if (!columns) {
+    return <FumadocsCards className={className} {...props} />;
+  }
+
+  return (
+    <div
+      className={cn(
+        'grid gap-3 @container',
+        columns === 2 && 'grid-cols-1 md:grid-cols-2',
+        columns === 3 && 'grid-cols-1 lg:grid-cols-3',
+        columns === 4 && 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4',
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 function createPlanCardsComponent(contentPath?: string) {
@@ -1148,6 +1647,8 @@ export function getMDXComponents(
 
   return {
     ...defaultMdxComponents,
+    Callout: DocsCallout,
+    CalloutContainer: DocsCalloutContainer,
     img: ZoomableImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,
@@ -1157,6 +1658,7 @@ export function getMDXComponents(
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
+    Cards,
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,
@@ -1167,8 +1669,12 @@ export function getMDXComponents(
     CodeBlockTabsList,
     CodeBlockTab,
     pre: Pre,
+    ApiReturns,
+    ApiReturnType,
+    ApiSignature,
     ParameterList,
     Parameter,
+    ParameterType,
     Accordion,
     Accordions,
     File,
@@ -1177,8 +1683,8 @@ export function getMDXComponents(
     Step,
     Steps,
     RTCMinutesCalculator,
-    PlanCards: DocsPlanCards,
-    PricingCards: DocsPricingCards,
+    PlanCards: createPlanCardsComponent(context?.contentPath),
+    PricingCards: createPricingCardsComponent(context?.contentPath),
     PlatformInline,
     _PlatformProcessedMarker: PlatformProcessedMarker,
     PlatformStructured,

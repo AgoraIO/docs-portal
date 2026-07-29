@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
@@ -8,8 +8,9 @@ type SolutionCardGridComponent = ComponentType<{
   size?: 'large' | 'small';
 }>;
 type SolutionCardComponent = ComponentType<{
+  actions?: Array<{ href: string; label: string }>;
   description: string;
-  href: string;
+  href?: string;
   icon?: 'ai' | 'classroom' | 'device' | 'meeting' | 'messaging' | 'rtc';
   size?: 'large' | 'small';
   tags?: string[];
@@ -81,13 +82,14 @@ type HelpHubComponent = ComponentType<{
     cta: string;
     description: string;
     href: string;
-    icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+    icon: 'blog' | 'discord' | 'stack-overflow' | 'status' | 'ticket';
     title: string;
   }>;
   knowledgeBase: Array<{
     href: string;
     label: string;
   }>;
+  locale?: 'en' | 'zh-CN';
   topics: Array<{
     href: string;
     label: string;
@@ -146,7 +148,7 @@ describe('overview MDX components', () => {
       components.SolutionCardGrid as SolutionCardGridComponent;
     const SolutionCard = components.SolutionCard as SolutionCardComponent;
 
-    render(
+    const { container } = render(
       <SolutionCardGrid>
         <SolutionCard
           description="Build realtime voice experiences."
@@ -164,6 +166,40 @@ describe('overview MDX components', () => {
     ).toHaveAttribute('href', '/en/realtime-media/voice');
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
+    expect(container.querySelector('section')).toHaveClass(
+      'w-[var(--content-max)]',
+      'max-w-full',
+    );
+  });
+
+  it('supports multiple labeled actions that share one target', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    render(
+      <SolutionCard
+        actions={[
+          { href: '/reference/configuration', label: 'Android' },
+          { href: '/reference/configuration', label: 'iOS' },
+        ]}
+        description="One reference with platform variants."
+        title="Configuration"
+      />,
+    );
+
+    expect(screen.getByRole('link', { name: /Android/i })).toHaveAttribute(
+      'href',
+      '/reference/configuration',
+    );
+    expect(screen.getByRole('link', { name: /iOS/i })).toHaveAttribute(
+      'href',
+      '/reference/configuration',
+    );
+    expect(consoleError).not.toHaveBeenCalled();
+    consoleError.mockRestore();
   });
 
   it('renders toolkit groups for the docs home overview', () => {
@@ -239,6 +275,51 @@ describe('overview MDX components', () => {
     expect(
       screen.getByRole('link', { name: /Integration issues/i }),
     ).toHaveAttribute('href', '/en/introduction/support');
+  });
+
+  it('renders localized help hub copy for Chinese pages', () => {
+    const components = getOverviewMDXComponents();
+    const HelpHub = components.HelpHub as HelpHubComponent;
+
+    render(
+      <HelpHub
+        locale="zh-CN"
+        cards={[
+          {
+            cta: '查看博客',
+            description: '阅读产品动态、技术实践和开发者案例。',
+            href: 'https://www.shengwang.cn/blog/',
+            icon: 'blog',
+            title: '声网博客',
+          },
+        ]}
+        knowledgeBase={[
+          {
+            href: '/zh-CN/reference/faq/quality/video_blank',
+            label: '如何排查黑屏问题？',
+          },
+        ]}
+        topics={[
+          {
+            href: '/zh-CN/reference/faq/integration',
+            label: '集成问题',
+          },
+        ]}
+      />,
+    );
+
+    expect(
+      screen.getByText(
+        '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+      ),
+    ).toBeVisible();
+    expect(screen.getByText('热门知识库')).toBeVisible();
+    expect(screen.getByText('快速解答')).toBeVisible();
+    expect(screen.getByText('按主题浏览')).toBeVisible();
+    expect(screen.getByRole('link', { name: /声网博客/ })).toHaveAttribute(
+      'href',
+      'https://www.shengwang.cn/blog/',
+    );
   });
 
   it('renders feature cards for editorial introduction pages', () => {
@@ -452,6 +533,29 @@ describe('overview MDX components', () => {
     expect(
       screen.getByText('No recipes match the current filters.'),
     ).toBeVisible();
+  });
+
+  it('omits the recipe count when the gallery has no results', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesGallery =
+      components.RecipesGallery as RecipesCatalogComponent;
+
+    render(
+      <RecipesGallery
+        allCategoriesLabel="All recipe types"
+        allProductsLabel="All products"
+        allStacksLabel="All stacks"
+        categoryFilterLabel="Recipe type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No recipes match the current filters."
+        items={[]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search recipes"
+        stackFilterLabel="Stack"
+      />,
+    );
+
+    expect(screen.queryByText('0 recipes')).not.toBeInTheDocument();
   });
 
   it('names recipe catalog filter groups and selected filter controls', () => {

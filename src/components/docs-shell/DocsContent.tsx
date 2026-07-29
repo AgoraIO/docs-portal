@@ -38,7 +38,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
+import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import type { PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
@@ -101,13 +101,17 @@ export function DocsContent({
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
-  const canCopyMarkdownContent = isMachineReadableLocale(currentLocale);
+  const canCopyMarkdownContent = isPublicMarkdownLocale(currentLocale);
   const t = i18n.getFixedT(currentLocale, 'common');
   const displayTitle = title ?? slug;
   const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
-  const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const storedArticleReturnLink = useDocsArticleReturnLink(currentPageKey);
+  const articleReturnLink =
+    storedArticleReturnLink?.href === breadcrumb[0]?.url
+      ? null
+      : storedArticleReturnLink;
   const sourceLinks = getDocsSourceLinks(contentPath);
   const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
     sourceTitle,
@@ -163,7 +167,7 @@ export function DocsContent({
     <article
       className={cn(
         'flex min-w-0 flex-col',
-        'gap-4',
+        platformTabs ? 'gap-3' : 'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
@@ -230,7 +234,7 @@ export function DocsContent({
         <div
           className={cn(
             'flex flex-col gap-3',
-            canCopyMarkdownContent && 'xl:flex-row xl:items-start xl:gap-6',
+            canCopyMarkdownContent && 'lg:flex-row lg:items-start lg:gap-6',
           )}
         >
           <div className="min-w-0 flex-1">
@@ -265,7 +269,7 @@ export function DocsContent({
           </div>
           {canCopyMarkdownContent && markdownUrl ? (
             <DocsCopyMenu
-              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
+              className="self-start lg:ml-auto lg:shrink-0 lg:translate-y-1"
               locale={currentLocale}
               markdownUrl={markdownUrl}
               slug={slug ?? ''}
@@ -289,7 +293,10 @@ export function DocsContent({
       </header>
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
-          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+          <FumadocsOpenApiContent
+            locale={currentLocale}
+            pageProps={resolvedBody.pageProps}
+          />
         </div>
       ) : (
         <div
@@ -310,7 +317,7 @@ export function DocsContent({
             </Suspense>
           ) : null}
           {resolvedBody?.kind === 'platform-group' ? (
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-4" data-platform-group-shell>
               <Suspense fallback={<DocsContentSkeleton />}>
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>
@@ -718,13 +725,11 @@ export function DocsTableOfContents({
   const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const items = useMemo(
-    () =>
-      (toc.length > 0 ? toc : derivedItems).filter(
-        (item) => typeof item.title === 'string',
-      ),
-    [derivedItems, toc],
-  );
+  const items = useMemo(() => {
+    const source = derivedItems.length > toc.length ? derivedItems : toc;
+
+    return source.filter((item) => typeof item.title === 'string');
+  }, [derivedItems, toc]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -744,11 +749,6 @@ export function DocsTableOfContents({
   }, []);
 
   useEffect(() => {
-    if (toc.length > 0) {
-      setDerivedItems([]);
-      return;
-    }
-
     let frame = 0;
     const updateDerivedItems = () => {
       if (frame) {
@@ -776,7 +776,7 @@ export function DocsTableOfContents({
 
       observer.disconnect();
     };
-  }, [toc]);
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -1054,6 +1054,7 @@ function isHiddenFromToc(element: HTMLElement) {
     if (
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
+      current.getAttribute('data-toc-hidden') === 'true' ||
       current.hasAttribute('inert')
     ) {
       return true;

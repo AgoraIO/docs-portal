@@ -1,0 +1,153 @@
+---
+title: "如何使用 String 型用户 ID？"
+---
+## 场景描述
+
+:::warning[注意]
+该功能目前正在验证阶段。如需使用，我们建议你联系声网[技术支持](https://ticket.shengwang.cn/)。
+  以下产品或功能不支持 String 型的用户 ID：
+
+- [云端录制](/zh-CN/realtime-media/cloud-recording)
+- [频道管理 RESTful API](/zh-CN/api-reference/api-ref/rtc/create-ban-rule)
+- [控制台 RESTful API](/zh-CN/api-reference/api-ref/console/create-project)
+:::
+
+很多 App 使用 String 类型的用户账号。为降低开发成本，声网新增支持 String 型的用户 ID，方便用户使用 App 账号直接加入频道。
+
+为保证通信质量，频道内所有用户需使用同一数据类型的用户 ID，即频道内的所有用户名应同为 Int 型或同为 String 型。
+
+## 实现方法
+
+开始前请确保你已了解实现基本的[音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)的步骤及代码逻辑。声网实时互动 SDK 在 Native 端，Web 端和小程序端分别使用不同的方法实现支持 String 型用户 ID。
+
+### Native 端
+
+声网 RTC Native SDK 使用 User Account（String 型用户 ID）来标识用户在频道中的身份。
+
+**Android/Windows**：
+
+- `registerLocalUserAccount`：注册本地用户 User Account。
+- `joinChannelWithUserAccount`：使用 User Account 加入频道。
+
+**iOS/macOS**：
+
+- `registerLocalUserAccountWithAppID`：注册本地用户 User Account。
+- `joinChannelByToken`：使用 User Account 加入频道。
+
+参考如下步骤，在你的项目中实现使用 String 型用户 ID 加入频道：
+
+1. 完成初始化 RtcEngine 后，调用 `registerLocalUserAccount` 方法，注册本地用户的 User Account。
+2. 调用 `joinChannelWithUserAccount` 方法，使用注册的 User Account 加入频道。
+3. 离开频道时，调用 `leaveChannel` 方法。
+
+**API 时序图**
+
+下图以 C++ 为例展示使用 String 型用户 ID 加入频道的 API 调用时序：
+
+![时序图](https://web-cdn.agora.io/docs-portal/img/rtc/string-uid.svg)
+
+其中：
+
+- 在调用 `registerLocalUserAccount` 和 `joinChannelWithUserAccount` 方法时，`userAccount` 参数均为必填，不可为 `null`。
+- 声网建议你先调用 `registerLocalUserAccount` 注册 User Account，这样可以减少调用 `joinChannelWithUserAccount` 加入频道的时间。你也可以直接调用 `joinChannelWithUserAccount` 方法加入频道。
+- 对于其他 API，声网仍使用 Int 型的 UID 参数标识用户身份。你可以使用 `getUserInfoByUid` 或 `getUserInfoByUserAccount` 获取对应的 User Account 或 UID，无需自己维护映射表。
+
+#### 示例代码
+
+以下展示使用 String 型用户 ID 的示例代码：
+
+```java tab="Java" tabGroup="sample-code"
+private void initializeAgoraEngine() {
+  try {
+    String appId = getString(R.string.agora_app_id);
+    mRtcEngine = RtcEngine.create(getBaseContext(), appId, mRtcEventHandler);
+    // 初始化后、加入频道前先注册用户名，可以缩短加入频道的时间
+    mRtcEngine.registerLocalUserAccount(appId, mLocal.userAccount);
+  } catch (Exception e) {
+    Log.e(LOG_TAG, Log.getStackTraceString(e));
+
+    throw new RuntimeException("NEED TO check rtc sdk init fatal error\n" + Log.getStackTraceString(e));
+  }
+}
+
+private void joinChannel() {
+  String token = getString(R.string.agora_access_token);
+  if (token.isEmpty()) {
+    token = null;
+  }
+  // 使用注册的用户 ID 加入频道
+  mRtcEngine.joinChannelWithUserAccount(token, "stringifiedChannel1", mLocal.userAccount);
+}
+```
+
+```cpp tab="C++" tabGroup="sample-code"
+LRESULT COpenLiveDlg::OnJoinChannel(WPARAM wParam, LPARAM lParam)
+{
+	IRtcEngine		*lpRtcEngine = CAgoraObject::GetEngine();
+	CAgoraObject	*lpAgoraObject = CAgoraObject::GetAgoraObject();
+
+	// 注册本地用户名
+	lpAgoraObject->RegisterLocalUserAccount(APP_ID, m_dlgEnterChannel.GetStringUid());
+	// 使用用户名加入频道
+	lpAgoraObject->JoinChannelWithUserAccount(strChannelName, m_dlgEnterChannel.GetStringUid());
+
+}
+```
+
+```swift tab="Swift" tabGroup="sample-code"
+func joinChannel() {
+  // 加入频道前注册用户 ID
+  let myStringId = "someStringId"
+  agoraKit.registerLocalUserAccount(userAccount: myStringId, appId: myAppId)
+  // 使用注册的用户 ID 加入频道
+  agoraKit.joinChannel(byUserAccount: myStringId, token: Token, channelId: "demoChannel1") {
+    sid, uid, elapsed) in
+  }
+}
+```
+
+```objc tab="Objective-C" tabGroup="sample-code"
+-(void)joinChannel  {
+// 加入频道前注册用户 ID
+NSString *userAccount = @"someStringId";
+ [self.agoraKit registerLocalUserAccount: userAccount appId: KeyCenter.AppId];
+// 使用注册的用户 ID 加入频道
+[self.agoraKit joinChannelByToken:token channelId:channelName userAccount:userAccount mediaOptions:options joinSuccess:nil];
+}
+```
+
+### Web 端
+
+从 v2.5.0 起，Web SDK 支持将 join 方法中的 uid 设为 Number 或 String 型。因此，你可以直接在调用该方法时，传入 String 型的用户 ID 即可。
+
+#### 示例代码
+
+你可以对照 API 时序图，参考下面的示例代码片段，在项目中实现使用 String 型用户 ID：
+
+```javascript
+// 将 UID 设为 agora，然后加入频道 1024
+client.join("<appid>", "1024", "<token>", "agora");
+```
+
+#### API 参考
+
+- [`IAgoraRTCClient.join`](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#join)
+
+### 小程序端
+
+从 v2.5.6 起，小程序 SDK 支持将 `join` 与 `rejoin` 方法中的 `UidType` 设为 Int 型（默认值）或 String 型。在调用这 2 个方法时，传入与 `UidType` 所设的类型一致的用户 ID 即可。
+
+**API 参考**
+
+- [`Client.join`](/zh-CN/api-reference/rtc/mini-program/classes/client#join)
+- [`Client.rejoin`](/zh-CN/api-reference/rtc/mini-program/classes/client#rejoin)
+
+## 开发注意事项
+
+- 同一频道内，Int 型和 String 型的用户 ID 不可混用。如果你的频道内有不支持 String 型 User Account 的 SDK，则只能使用 Int 型的 User ID。目前支持 String 型 User Account 的 SDK 如下：
+  - Native SDK：v2.8.0 及之后版本
+  - Web SDK：v2.5.0 及之后版本
+  - 小程序 SDK：v2.5.6 及之后版本
+- 如果你将用户名切换至 String 型，请确保所有终端用户同步升级。
+- 如果使用 String 型的用户 ID 加入频道，请确保你的服务端用户生成 Token 的脚本已升级至最新版本，并使用该用户 ID 或其对应的 Int 型 UID 来生成 Token。
+- 如果频道中 Native SDK， Web SDK 或小程序 SDK 之间互通，请确保该两者使用的用户 ID 的类型一致。

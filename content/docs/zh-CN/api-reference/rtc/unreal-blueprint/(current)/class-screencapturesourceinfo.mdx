@@ -1,0 +1,174 @@
+---
+title: FScreenCaptureSourceInfo
+description: 可共享窗口或屏幕的信息。在 IScreenCaptureSourceList 中返回。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_screencapturesourceinfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_screencapturesourceinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FScreenCaptureSourceInfo {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FENUMWRAP_ScreenCaptureSourceType type = FENUMWRAP_ScreenCaptureSourceType();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	int64 sourceId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FString sourceName = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FThumbImageBuffer thumbImage = FThumbImageBuffer();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FThumbImageBuffer iconImage = FThumbImageBuffer();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FString processPath = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FString sourceTitle = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	bool primaryMonitor = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	bool isOccluded = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	FRectangle position = FRectangle();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	bool minimizeWindow = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FScreenCaptureSourceInfo")
+	int64 sourceDisplayId = 0;
+#if defined(_WIN32) || (defined(__APPLE__) && TARGET_OS_MAC && !TARGET_OS_IPHONE)
+	FScreenCaptureSourceInfo(){}
+	FScreenCaptureSourceInfo(const agora::rtc::ScreenCaptureSourceInfo & AgoraData){
+		type = AgoraData.type;
+		sourceId = UABT::FromViewToInt(AgoraData.sourceId);
+		sourceName = UTF8_TO_TCHAR(AgoraData.sourceName);
+		thumbImage = FThumbImageBuffer(AgoraData.thumbImage);
+		iconImage = FThumbImageBuffer(AgoraData.iconImage);
+		processPath = UTF8_TO_TCHAR(AgoraData.processPath);
+		sourceTitle = UTF8_TO_TCHAR(AgoraData.sourceTitle);
+		primaryMonitor = AgoraData.primaryMonitor;
+		isOccluded = AgoraData.isOccluded;
+		position = FRectangle(AgoraData.position);
+#if defined(_WIN32)
+		minimizeWindow = AgoraData.minimizeWindow;
+		sourceDisplayId = UABT::FromViewToInt(AgoraData.sourceDisplayId);
+#endif
+	}
+	agora::rtc::ScreenCaptureSourceInfo CreateAgoraData() const {
+		agora::rtc::ScreenCaptureSourceInfo AgoraData;
+		AgoraData.type = static_cast<agora::rtc::ScreenCaptureSourceType>(type.GetRawValue());
+		AgoraData.sourceId = UABT::ToView(sourceId);
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.sourceName, sourceName)
+		AgoraData.thumbImage = thumbImage.CreateAgoraData();
+		AgoraData.iconImage = iconImage.CreateAgoraData();
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.processPath, processPath)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.sourceTitle, sourceTitle)
+		AgoraData.primaryMonitor = primaryMonitor;
+		AgoraData.isOccluded = isOccluded;
+		AgoraData.position = position.CreateAgoraData();
+#if defined(_WIN32)
+		AgoraData.minimizeWindow = minimizeWindow;
+		AgoraData.sourceDisplayId = UABT::ToView(sourceDisplayId);
+#endif
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ScreenCaptureSourceInfo & AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.sourceName)
+		thumbImage.FreeAgoraData(AgoraData.thumbImage);
+		thumbImage.FreeAgoraData(AgoraData.iconImage);
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.processPath)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.sourceTitle)
+		position.FreeAgoraData(AgoraData.position);
+	}
+#endif
+};
+```
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+共享目标的类型。详见 [FENUMWRAP_ScreenCaptureSourceType](/zh-CN/api-reference/rtc/unreal-blueprint/enum-screencapturesourcetype)。
+
+</Parameter>
+<a id="sourceid"></a>
+<Parameter name="sourceId">
+
+对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
+
+</Parameter>
+<a id="sourcename"></a>
+<Parameter name="sourceName">
+
+窗口或屏幕的名称。UTF-8 编码。
+
+</Parameter>
+<a id="thumbimage"></a>
+<Parameter name="thumbImage">
+
+缩略图的图像内容。详见 [FThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-blueprint/class-thumbimagebuffer)。
+
+</Parameter>
+<a id="iconimage"></a>
+<Parameter name="iconImage">
+
+图标的图像内容。详见 [FThumbImageBuffer](/zh-CN/api-reference/rtc/unreal-blueprint/class-thumbimagebuffer)。
+
+</Parameter>
+<a id="processpath"></a>
+<Parameter name="processPath">
+
+窗口所属的进程。UTF-8 编码。
+
+</Parameter>
+<a id="sourcetitle"></a>
+<Parameter name="sourceTitle">
+
+窗口标题。UTF-8 编码。
+
+</Parameter>
+<a id="primarymonitor"></a>
+<Parameter name="primaryMonitor">
+
+屏幕是否为主显示屏：
+
+- `true`: 屏幕为主显示屏。
+- `false`: 屏幕不是主显示屏。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。详见 [FRectangle](/zh-CN/api-reference/rtc/unreal-blueprint/class-rectangle)。
+
+</Parameter>
+<a id="minimizewindow"></a>
+<Parameter name="minimizeWindow">
+
+(仅适用于 Windows)  窗口是否已最小化：
+
+- `true`: 窗口已最小化。
+- `false`: 窗口未最小化。
+
+</Parameter>
+<a id="sourcedisplayid"></a>
+<Parameter name="sourceDisplayId">
+
+(仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IScreenCaptureSourceList](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_iscreencapturesourcelist)

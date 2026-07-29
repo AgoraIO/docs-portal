@@ -1,0 +1,599 @@
+---
+title: "原始视频数据"
+description: "了解实时互动 RTC 在不同平台上的原始视频数据方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+## 技术原理
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+
+对于有自行处理视频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，创建一个 `IVideoFrameObserver` 对象，并调用 `registerVideoFrameObserver` 方法注册视频观测器。
+
+   ```java
+    int ret = engine.registerVideoFrameObserver(iVideoFrameObserver);
+   ```
+
+2. 实现 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调。 获取视频数据后，你可以根据场景需要自行进行处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+   ```java
+    private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver() {
+    @Override
+    public boolean onCaptureVideoFrame(VideoFrame videoFrame) {
+        Log.i(TAG, "OnEncodedVideoImageReceived"+Thread.currentThread().getName());
+        if(isSnapshot){
+            isSnapshot = false;
+
+        // 获取图像 bitmap
+        VideoFrame.Buffer buffer = videoFrame.getBuffer();
+
+        VideoFrame.I420Buffer i420Buffer = buffer.toI420();
+        int width = i420Buffer.getWidth();
+        int height = i420Buffer.getHeight();
+
+        ByteBuffer bufferY = i420Buffer.getDataY();
+        ByteBuffer bufferU = i420Buffer.getDataU();
+        ByteBuffer bufferV = i420Buffer.getDataV();
+
+        byte[] i420 = YUVUtils.toWrappedI420(bufferY, bufferU, bufferV, width, height);
+
+        Bitmap bitmap = YUVUtils.NV21ToBitmap(getContext(),
+                YUVUtils.I420ToNV21(i420, width, height),
+                width,
+                height);
+
+        Matrix matrix = new Matrix();
+        matrix.setRotate(270);
+        // 围绕原地进行旋转
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
+        // save to file
+        saveBitmap2Gallery(newBitmap);
+
+        bitmap.recycle();
+        i420Buffer.release();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onScreenCaptureVideoFrame(VideoFrame videoFrame) {
+        return false;
+    }
+
+    @Override
+    public boolean onMediaPlayerVideoFrame(VideoFrame videoFrame, int i) {
+        return false;
+    }
+
+    @Override
+    public boolean onRenderVideoFrame(String s, int i, VideoFrame videoFrame) {
+        return false;
+    }
+
+    @Override
+    public int getVideoFrameProcessMode() {
+        return 0;
+    }
+
+    @Override
+    public int getVideoFormatPreference() {
+        return 1;
+    }
+
+    @Override
+    public int getRotationApplied() {
+        return 0;
+    }
+
+    @Override
+    public boolean getMirrorApplied() {
+        return false;
+    }
+   };
+   ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ProcessRawData" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ProcessRawData.java" />
+</Cards>
+
+### API 参考
+
+- [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/android/play/mediaplayer/mediaplayer-observer#registervideoframeobserver)
+- [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/android/video/video-encoded#registervideoencodedframeobserver)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+- [`getVideoFrameProcessMode`](/zh-CN/api-reference/rtc/android/video/video-raw#getvideoframeprocessmode)
+- [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/android/video/video-encoded#onencodedvideoframereceived)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+声网 SDK 运用 `AgoraVideoFrameDelegate` 类来提供原始视频数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+使用原始视频数据功能会增加资源消耗，可能会影响设备性能。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，调用 `setVideoFrameDelegate` 注册视频观测器对象。
+2. 实现 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调。以上回调会对视频帧进行采集和处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+```swift
+class RawVideoDataMain: BaseViewController {
+    var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
+    var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: false)
+
+     @IBOutlet weak var container: AGEVideoContainer!
+    // 定义 agoraKit 变量
+    var agoraKit: AgoraRtcEngineKit!
+
+       ...
+     // 初始化 agoraKit，并注册相应回调
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+    // 调用 setVideoFrameDelegate 注册视频观测器对象
+    agoraKit.setVideoFrameDelegate (self)
+
+       ...
+
+    // 在当前类下，实现 AgoraVideoFrameDelegate 协议的 extension
+    extension RawVideoDataMain: AgoraVideoFrameDelegate {
+
+        // 实现 onCaptureVideoFrame 回调
+        func onCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onScreenCaptureVideoFrame 回调
+        func onScreenCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onRenderVideoFrame 回调
+        func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+               return true;
+        }
+```
+
+## 参考信息
+
+### 示例项目
+
+<Cards>
+  <Card title="RawVideoData" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/RawVideoData" />
+</Cards>
+
+### API 参考
+
+- [`setVideoFrameDelegate`](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+声网 SDK 运用 `AgoraVideoFrameDelegate` 类来提供原始视频数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+使用原始视频数据功能会增加资源消耗，可能会影响设备性能。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，调用 `setVideoFrameDelegate` 注册视频观测器对象。
+2. 实现 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调。以上回调会对视频帧进行采集和处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+```swift
+class RawVideoDataMain: BaseViewController {
+    var localVideo = Bundle.loadVideoView(type: .local, audioOnly: false)
+    var remoteVideo = Bundle.loadVideoView(type: .remote, audioOnly: false)
+
+     @IBOutlet weak var container: AGEVideoContainer!
+    // 定义 agoraKit 变量
+    var agoraKit: AgoraRtcEngineKit!
+
+       ...
+     // 初始化 agoraKit，并注册相应回调
+    agoraKit = AgoraRtcEngineKit.sharedEngine(with: config, delegate: self)
+
+    // 调用 setVideoFrameDelegate 注册视频观测器对象
+    agoraKit.setVideoFrameDelegate (self)
+
+       ...
+
+    // 在当前类下，实现 AgoraVideoFrameDelegate 协议的 extension
+    extension RawVideoDataMain: AgoraVideoFrameDelegate {
+
+        // 实现 onCaptureVideoFrame 回调
+        func onCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onScreenCaptureVideoFrame 回调
+        func onScreenCaptureVideoFrame(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
+               return true;
+        }
+
+        // 实现 onRenderVideoFrame 回调
+        func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
+               return true;
+        }
+```
+
+## 参考信息
+
+### 示例项目
+
+<Cards>
+  <Card title="RawVideoData" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/RawVideoData" />
+</Cards>
+
+### API 参考
+
+- [`setVideoFrameDelegate`](/zh-CN/api-reference/rtc/ios/video/video-raw#api_irtcengine_registervideoframeobserver)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/ios/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+
+对于有自行处理视频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，创建一个 `IVideoFrameObserver` 对象，并调用 `registerVideoFrameObserver` 方法注册视频观测器。
+
+    ```cpp
+    // 注册或取消视频观测器
+    BOOL CAgoraOriginalVideoDlg::RegisterVideoFrameObserver(
+        BOOL bEnable, IVideoFrameObserver *videoFrameObserver) {
+        // 创建使用 IMediaEngine 类为 template 的 AutoPtr 实例
+        agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
+        // AutoPtr 实例调用 queryInterface 方法，通过 IID 获取 IMediaEngine
+        // 实例的指针 AutoPtr 实例会通过箭头操作符访问 IMediaEngine 实例的指针并通过
+        // IMediaEngine 实例调用 registerVideoFrameObserver
+        mediaEngine.queryInterface(m_rtcEngine, AGORA_IID_MEDIA_ENGINE);
+        int nRet = 0;
+
+        agora::base::AParameter apm(*m_rtcEngine);
+        if (mediaEngine.get() == NULL) return FALSE;
+        if (bEnable) {
+            // 注册视频观测器
+            nRet = mediaEngine->registerVideoFrameObserver(videoFrameObserver);
+        } else {
+            // 取消注册视频观测器
+            nRet = mediaEngine->registerVideoFrameObserver(nullptr);
+        }
+        return nRet == 0 ? TRUE : FALSE;
+    }
+    ```
+
+2. 通过 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调获取视频数据后，你可以根据场景需要自行进行处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+    ```cpp
+    // 通过 onCaptureVideoFrame
+    // 回调获取本地摄像头采集的原始视频数据，进行灰度处理，再发送回 SDK
+    bool CGrayVideoProcFrameObserver::onCaptureVideoFrame(VideoFrame &videoFrame) {
+        int nSize = videoFrame.height * videoFrame.width;
+        memset(videoFrame.uBuffer, 128, nSize / 4);
+        memset(videoFrame.vBuffer, 128, nSize / 4);
+        return true;
+    }
+
+    // 通过 onRenderVideoFrame 回调获取远端发送的视频数据
+    bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId,
+                                                        rtc::uid_t remoteUid,
+                                                        VideoFrame &videoFrame) {
+        return true;
+    }
+
+    bool CAverageFilterVideoProcFrameObserver::onCaptureVideoFrame(
+        VideoFrame &videoFrame) {
+        static int step = 1;
+        static bool flag = true;
+        if (flag) {
+            step += 2;
+        } else {
+            step -= 2;
+        }
+        if (step >= 151) {
+            flag = false;
+            step -= 4;
+        } else if (step <= 0) {
+            flag = true;
+            step += 4;
+        }
+        AverageFiltering((unsigned char *)videoFrame.yBuffer, videoFrame.width,
+                        videoFrame.height, step);
+        AverageFiltering((unsigned char *)videoFrame.uBuffer, videoFrame.width / 2,
+                        videoFrame.height / 2, step);
+        AverageFiltering((unsigned char *)videoFrame.vBuffer, videoFrame.width / 2,
+                        videoFrame.height / 2, step);
+        return true;
+    }
+
+    // 通过 onScreenCaptureVideoFrame 回调获取从屏幕采集到的视频数据
+    bool CGrayVideoProcFrameObserver::onScreenCaptureVideoFrame(
+        VideoFrame &videoFrame) {
+        return true;
+    }
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="OriginalVideo" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/OriginalVideo" />
+</Cards>
+
+### API 参考
+
+- [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#registervideoframeobserver)
+- [`registerVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-encoded#registervideoencodedframeobserver)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+- [`getVideoFrameProcessMode`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#getvideoframeprocessmode)
+- [`onEncodedVideoFrameReceived`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-encoded#callback_ivideoencodedframeobserver_onencodedvideoframereceived)
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+
+对于有自行处理视频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+
+:::warning[注意]
+受鸿蒙系统限制，你需要使用 C++ API 来实现原始视频数据的采集和处理。
+:::
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，创建一个 `IVideoFrameObserver` 对象，并调用 `registerVideoFrameObserver` 方法注册视频观测器。
+
+    ```cpp
+    // 注册或取消视频观测器
+    napi_value OriginVideoData::Enable(napi_env env, napi_callback_info info) {
+        AG_INFO("OriginVideoData::Enable called");
+
+        size_t argc = 1;
+        napi_value args[1];
+        napi_value jsThis;
+        napi_get_cb_info(env, info, &argc, args, &jsThis, nullptr);
+        bool enable;
+        napi_get_value_bool(env, args[0], &enable);
+
+        OriginVideoData *obj;
+        // 通过 napi_unwrap 将 jsThis 之前绑定的 C++ 对象取出，并对其进行操作
+        assert(napi_unwrap(env, jsThis, reinterpret_cast<void **>(&obj)) == napi_ok);
+
+        int ret = -1;
+
+        agora::media::IMediaEngine *mediaEngine_ = nullptr;
+        obj->rtcEngine_->queryInterface(agora::rtc::AGORA_IID_MEDIA_ENGINE, (void **)&mediaEngine_);
+
+        if (enable) {
+            // 注册视频观测器
+            ret = mediaEngine_->registerVideoFrameObserver(obj);
+        } else {
+            // 取消注册视频观测器
+            ret = mediaEngine_->registerVideoFrameObserver(nullptr);
+        }
+
+        napi_value num;
+        assert(napi_create_int32(env, ret, &num) == napi_ok);
+        return num;
+    }
+    ```
+
+2. 通过 `onCaptureVideoFrame` 和 `onRenderVideoFrame` 回调获取视频数据后，你可以根据场景需要自行进行处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+    ```cpp
+    // 通过 onCaptureVideoFrame 回调获取本地摄像头采集的原始视频数据，进行处理后再发送回 SDK
+    bool OriginVideoData::onCaptureVideoFrame(agora::rtc::VIDEO_SOURCE_TYPE sourceType, VideoFrame &videoFrame) {
+        if (takeSnapshot_) {
+            uint8_t *buffer = videoFrame.yBuffer;
+            // 保存视频帧数据
+            SaveI420Buffer(buffer, videoFrame.width, videoFrame.height,
+                           "/data/storage/el2/base/haps/entry/files/capture.i420");
+            takeSnapshot_ = false;
+        }
+        return true;
+    }
+
+    // 通过 onRenderVideoFrame 回调获取获取远端发送的视频数据
+    bool CGrayVideoProcFrameObserver::onRenderVideoFrame(const char *channelId,
+                                                        rtc::uid_t remoteUid,
+                                                        VideoFrame &videoFrame) {
+        return true;
+    }
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="OriginVideoDataWrap.ets" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/OriginVideoDataWrap.ets" />
+  <Card title="origin_video_data.cpp" href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/cpp/origin_video_data.cpp" />
+  <Card title="OriginVideoDataWrap.ets" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/OriginVideoDataWrap.ets" />
+  <Card title="origin_video_data.cpp" href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/cpp/origin_video_data.cpp" />
+</Cards>
+
+### API 参考
+
+以下均为 C++ API：
+
+- [`registerVideoFrameObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/mediaplayer/mediaplayer-observer#registervideoframeobserver)
+- [`onCaptureVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`onRenderVideoFrame`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+本文介绍如何对采集到的原始视频数据进行前处理和后处理。
+## 技术原理
+
+视频传输过程中，你可以对采集到的视频数据进行前处理和后处理，获取想要的播放效果。
+对于有自行处理视频数据需求的场景，声网提供原始数据功能。你可以在将数据发送给编码器前进行前处理，对捕捉到的视频帧进行修改；也可以在将数据发送给解码器后进行后处理，对接收到的视频帧进行修改。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+参考如下步骤，在你的项目中实现原始视频数据功能：
+
+1. 加入频道前，创建一个 `IVideoFrameObserver` 对象，并调用 `RegisterVideoFrameObserver` 方法注册视频观测器。如果想要预处理的视频数据生效，需要把 `formatPreference` 设为 `FRAME_TYPE_YUV420`，把 `mode` 设为 `INTPTR`。
+
+    ```csharp
+    // 注册视频观测器
+    RtcEngine.RegisterVideoFrameObserver(new VideoFrameObserver(this),
+        VIDEO_OBSERVER_FRAME_TYPE.FRAME_TYPE_YUV420,
+        VIDEO_MODULE_POSITION.POSITION_POST_CAPTURER |
+        VIDEO_MODULE_POSITION.POSITION_PRE_RENDERER |
+        VIDEO_MODULE_POSITION.POSITION_PRE_ENCODER,
+        OBSERVER_MODE.INTPTR);
+    ```
+
+2. 通过 `OnCaptureVideoFrame` 和 `OnRenderVideoFrame` 回调获取视频数据后，你可以根据场景需要自行进行处理。
+
+    :::warning[注意]
+    建议你在修改 `videoFrame` 中的参数时，需确保修改后的参数跟视频帧缓冲区中的视频帧实际情况保持一致，否则可能导致本地预览画面和对端的视频画面出现非预期的旋转、失真等问题。
+    :::
+
+    ```csharp
+    class VideoFrameObserver : IVideoFrameObserver
+    {   // 通过 OnCaptureVideoFrame 回调获取本地摄像头采集的原始视频数据
+        public override bool OnCaptureVideoFrame(VIDEO_SOURCE_TYPE sourceType, VideoFrame videoFrame)
+        {
+            ProcessVideoFrame(videoFrame);
+            return true;
+        }
+
+        // 通过 OnRenderVideoFrame 回调获取获取远端发送的视频数据
+        public override bool OnRenderVideoFrame(string channelId, uint remoteUid, VideoFrame videoFrame)
+        {
+            ProcessVideoFrame(videoFrame);
+            return true;
+        }
+
+        public void ProcessVideoFrame(VideoFrame videoFrame)
+        {
+            int yBufferLength = videoFrame.yStride * videoFrame.height;
+            int uBufferLength = videoFrame.uStride * videoFrame.height / 2;
+            int vBufferLength = videoFrame.vStride * videoFrame.height / 2;
+
+
+            byte[] bytes = new byte[uBufferLength];
+            for (int i = 0; i < uBufferLength; i++)
+            {
+                bytes[i] = 128;
+            }
+
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.uBufferPtr, uBufferLength);
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, videoFrame.vBufferPtr, vBufferLength);
+        }
+    }
+    ```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的原始视频数据示例项目，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="ProcessVideoRawData" href="https://gitee.com/agoraio-community/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ProcessVideoRawData/ProcessVideoRawData.cs" />
+  <Card title="ProcessVideoRawData" href="https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/ProcessVideoRawData/ProcessVideoRawData.cs" />
+</Cards>
+
+### API 参考
+
+- [`RegisterVideoFrameObserver`](/zh-CN/api-reference/rtc/unity/video/video-raw#api_imediaengine_registervideoframeobserver)
+- [`RegisterVideoEncodedFrameObserver`](/zh-CN/api-reference/rtc/unity/video/video-encoded#api_imediaengine_registervideoencodedframeobserver)
+- [`OnCaptureVideoFrame`](/zh-CN/api-reference/rtc/unity/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe)
+- [`OnRenderVideoFrame`](/zh-CN/api-reference/rtc/unity/video/video-raw#callback_ivideoframeobserver_onrendervideoframe)
+
+</PlatformStructured>

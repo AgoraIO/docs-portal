@@ -1,0 +1,58 @@
+---
+title: CacheStatistics
+description: 缓存文件的统计数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_cachestatistics
+  sourcePath: html-docs/rtc/Flutter/API/class_cachestatistics.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_cachestatistics__prototype"></a>
+
+```text
+class CacheStatistics {
+  const CacheStatistics({this.fileSize, this.cacheSize, this.downloadSize});
+
+  @JsonKey(name: 'fileSize')
+  final int? fileSize;
+
+  @JsonKey(name: 'cacheSize')
+  final int? cacheSize;
+
+  @JsonKey(name: 'downloadSize')
+  final int? downloadSize;
+
+  factory CacheStatistics.fromJson(Map<String, dynamic> json) =>
+      _$CacheStatisticsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CacheStatisticsToJson(this);
+}
+```
+
+<a id="class_cachestatistics__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filesize"></a>
+<Parameter name="fileSize">
+
+本次播放的媒体文件的大小，单位为字节。
+
+</Parameter>
+<a id="cachesize"></a>
+<Parameter name="cacheSize">
+
+本次播放的媒体文件已缓存的数据大小，单位为字节。
+
+</Parameter>
+<a id="downloadsize"></a>
+<Parameter name="downloadSize">
+
+本次播放已下载的媒体文件大小，单位为字节。
+
+</Parameter>
+</ParameterList>

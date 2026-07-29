@@ -1,0 +1,73 @@
+---
+title: AudioVolumeInfo
+description: 用于获取用户音量信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_audiovolumeinfo
+  sourcePath: html-docs/rtc/Cpp/API/class_audiovolumeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiovolumeinfo__prototype"></a>
+
+```text
+struct AudioVolumeInfo {
+  uid_t uid;
+  unsigned int volume;
+  unsigned int vad;
+  double voicePitch;
+};
+```
+
+<a id="class_audiovolumeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+- 在本地用户的回调中，`uid` 为 0。
+- 在远端用户的回调中，`uid` 为瞬时音量最大的远端用户的用户 ID。
+
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
+
+用户的音量，取值范围为 0（最低音量）到 255（最高音量）。
+
+- 如果本地用户开启了音频采集并调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 进行静音，则该值表示本地采集的音频信号音量。
+- 如果用户调用了 `startAudioMixing`，则该值表示混音后的音量。
+
+</Parameter>
+<a id="vad"></a>
+<Parameter name="vad">
+
+:::note
+注：
+
+- `vad` 参数不会报告远端用户的语音活动状态。在远端用户的回调中，该值始终为 1。
+- 若要使用该参数，调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 时必须将 `reportVad` 设置为 true。
+:::
+
+本地用户的语音活动状态。
+
+- 0：本地用户未说话。
+- 1：本地用户正在说话。
+
+</Parameter>
+<a id="voicepitch"></a>
+<Parameter name="voicePitch">
+
+本地用户的语音音高，取值范围为 0.0 到 4000.0。
+
+:::note
+注： `voicePitch` 参数不会报告远端用户的语音音高。在远端用户的回调中，该值始终为 0.0。
+:::
+
+</Parameter>
+</ParameterList>

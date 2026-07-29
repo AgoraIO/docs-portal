@@ -1,0 +1,22 @@
+---
+title: 实时互动 API
+_migration:
+  type: manual-mdx
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/doc/one-to-one-live/ios/custom-signaling/api/rtc-api
+  sourcePath: docs/one-to-one-live/custom-signaling/api/rtc-api.ios.mdx
+  generator: legacy-mdx
+  warnings: []
+---
+
+本页展示 1v1 私密房自定义信令方案中高频调用的实时互动 SDK API。
+
+| API 名称                                                     | 描述                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [sharedEngineWithConfig:delegate](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_initialize) | 创建并初始化 RtcEngine。                                     |
+| [destroy](/zh-CN/api-reference/rtc/ios/initialize#api_irtcengine_release) | 销毁 RtcEngine 对象。                                        |
+| [setClientRole:options:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_setclientrole2) | 秀场转 1v1 场景下设置直播或观众的角色。                                        |
+| [enableLocalVideo:](/zh-CN/api-reference/rtc/ios/video/video-basic#api_irtcengine_enablelocalvideo)  | 秀场转 1v1 场景下开启或关闭本地视频采集。 |
+| [enableLocalAudio:](/zh-CN/api-reference/rtc/ios/audio/audio-capture#api_irtcengine_enablelocalaudio) | 秀场转 1v1 场景下开启或关闭本地音频采集。|                                                  |
+| [joinChannelByToken:channelId:uid:mediaOptions:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) | 秀场转 1v1 场景下设置媒体选项并加入频道。                                     |                                             |
+| [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_updatechannelmediaoptions) | 秀场转 1v1 场景下加入频道后更新频道媒体选项。                                 |

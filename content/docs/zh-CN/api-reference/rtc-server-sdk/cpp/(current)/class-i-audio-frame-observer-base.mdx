@@ -1,0 +1,188 @@
+---
+title: IAudioFrameObserverBase类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/class_i_audio_frame_observer_base
+  sourcePath: html-docs/rtc-server-sdk/cpp/class_i_audio_frame_observer_base.html
+  generator: doxygen
+  warnings: []
+---
+
+被 [IAudioFrameObserver](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer) 继承.
+
+<a id="details"></a>
+
+## 详细描述
+
+语音 observer。
+
+## 成员枚举类型说明
+
+<a id="a81b4df45c544e8a7e8df3116d9bd8f7f"></a>
+
+### AUDIO_FRAME_TYPE
+
+<ApiSignature>
+
+enum [IAudioFrameObserverBase::AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/class-i-audio-frame-observer-base#a81b4df45c544e8a7e8df3116d9bd8f7f)
+
+</ApiSignature>
+
+音频帧类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="a81b4df45c544e8a7e8df3116d9bd8f7fa801a7bb9b2438287a7279df047ea4cc6"></a>FRAME_TYPE_PCM16
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+0: PCM 16
+
+</Slot>
+
+## 构造及析构函数说明
+
+<a id="a12e352fbb9219c789e4d5067b3fbf0b5"></a>
+
+### ~IAudioFrameObserverBase()
+
+<ApiSignature labels="inline virtual">
+
+virtual IAudioFrameObserverBase::~IAudioFrameObserverBase()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a607f7a30a058bf7fe2b7ec2492fe9610"></a>
+
+### onRecordAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onRecordAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
+
+获得录制的声音。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a9956d1aa3b4e18089ef02ee3d782d667"></a>
+
+### onPlaybackAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
+
+获得播放的声音。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a6b3f76a4245bf27b6a7c5cbc44f1c1dd"></a>
+
+### onMixedAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool IAudioFrameObserverBase::onMixedAudioFrame(const char * *channelId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
+
+获取采集和播放声音混音后的数据。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。
+
+<a id="a045b317352faf9d64a97b0274a5529ec"></a>
+
+### onPlaybackAudioFrameBeforeMixing()
+
+<ApiSignature labels="inline virtual">
+
+virtual bool IAudioFrameObserverBase::onPlaybackAudioFrameBeforeMixing(const char * *channelId*, base::user_id_t *userId*, [AudioFrame](/zh-CN/api-reference/rtc-server-sdk/cpp/struct-i-audio-frame-observer-base-1-1-audio-frame) & *audioFrame*)
+
+</ApiSignature>
+
+获得播放声音混音前的数据。
+
+<ParameterList title="参数">
+<Parameter name="channelId">
+
+空指针。
+
+</Parameter>
+<Parameter name="userId">
+
+远端用户的用户名。
+
+</Parameter>
+<Parameter name="audioFrame">
+
+音频原始数据。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- true: 音频帧数据有效，数据会被发送。
+- false: 音频帧数据无效，数据会被舍弃。

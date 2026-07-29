@@ -11,13 +11,12 @@ import { Badge } from '@/components/ui/badge';
 import { FaqFilterToolbar } from './FaqFilterToolbar';
 import { FaqItemList } from './FaqItemList';
 import { FaqSearch } from './FaqSearch';
+import type { FaqCategoryId } from './faq-data';
 import {
-  FAQ_ALL_PLATFORMS,
-  FAQ_ALL_PRODUCTS,
-  type FaqCategoryId,
-  faqCategories,
-  faqItems,
-} from './faq-data';
+  type FaqLocale,
+  faqLocaleFromPathname,
+  getFaqDataset,
+} from './faq-dataset';
 import { filterFaqs } from './faq-filter';
 
 function getParam(name: string, fallback: string): string {
@@ -27,15 +26,23 @@ function getParam(name: string, fallback: string): string {
   return new URLSearchParams(window.location.search).get(name) ?? fallback;
 }
 
-export function FaqCategory({ category }: { category: FaqCategoryId }) {
+export function FaqCategory({
+  category,
+  locale,
+}: {
+  category: FaqCategoryId;
+  locale?: FaqLocale;
+}) {
+  const dataset = getFaqDataset(locale ?? faqLocaleFromPathname());
   const meta =
-    faqCategories.find((entry) => entry.id === category) ?? faqCategories[0];
+    dataset.categories.find((entry) => entry.id === category) ??
+    dataset.categories[0];
 
   const [product, setProduct] = useState(() =>
-    getParam('product', FAQ_ALL_PRODUCTS),
+    getParam('product', dataset.allProducts),
   );
   const [platform, setPlatform] = useState(() =>
-    getParam('platform', FAQ_ALL_PLATFORMS),
+    getParam('platform', dataset.allPlatforms),
   );
   const [query, setQuery] = useState(() => getParam('q', ''));
   const deferredQuery = useDeferredValue(query);
@@ -52,8 +59,8 @@ export function FaqCategory({ category }: { category: FaqCategoryId }) {
         params.set(key, value);
       }
     };
-    set('product', product, FAQ_ALL_PRODUCTS);
-    set('platform', platform, FAQ_ALL_PLATFORMS);
+    set('product', product, dataset.allProducts);
+    set('platform', platform, dataset.allPlatforms);
     set('q', query, '');
     const search = params.toString();
     window.history.replaceState(
@@ -61,29 +68,37 @@ export function FaqCategory({ category }: { category: FaqCategoryId }) {
       '',
       `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`,
     );
-  }, [platform, product, query]);
+  }, [dataset, platform, product, query]);
 
   const items = useMemo(
     () =>
-      filterFaqs(faqItems, {
-        category,
-        platform,
-        product,
-        query: deferredQuery,
-      }),
-    [category, platform, product, deferredQuery],
+      filterFaqs(
+        dataset.items,
+        {
+          category,
+          platform,
+          product,
+          query: deferredQuery,
+        },
+        {
+          allPlatforms: dataset.allPlatforms,
+          allProducts: dataset.allProducts,
+          categories: dataset.categories,
+        },
+      ),
+    [category, dataset, platform, product, deferredQuery],
   );
 
   const hasActiveFilters =
     query.length > 0 ||
-    product !== FAQ_ALL_PRODUCTS ||
-    platform !== FAQ_ALL_PLATFORMS;
+    product !== dataset.allProducts ||
+    platform !== dataset.allPlatforms;
 
   const resetFilters = useCallback(() => {
-    setProduct(FAQ_ALL_PRODUCTS);
-    setPlatform(FAQ_ALL_PLATFORMS);
+    setProduct(dataset.allProducts);
+    setPlatform(dataset.allPlatforms);
     setQuery('');
-  }, []);
+  }, [dataset]);
 
   return (
     <section className="not-prose my-8 flex flex-col gap-5">
@@ -91,27 +106,48 @@ export function FaqCategory({ category }: { category: FaqCategoryId }) {
         {meta.description}
       </p>
 
-      <FaqSearch
-        placeholder={`Search ${meta.label}`}
-        query={query}
-        setQuery={setQuery}
-      />
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <FaqFilterToolbar
-          hasActiveFilters={hasActiveFilters}
-          onClear={resetFilters}
-          onPlatformChange={setPlatform}
-          onProductChange={setProduct}
-          platform={platform}
-          product={product}
+      <section
+        aria-label={
+          dataset.locale === 'zh-CN'
+            ? `${meta.label}筛选`
+            : `${meta.label} filters`
+        }
+        className="flex flex-col gap-4 border-border border-b pb-5"
+      >
+        <FaqSearch
+          placeholder={dataset.ui.searchCategoryPlaceholder(meta.label)}
+          query={query}
+          setQuery={setQuery}
         />
-        <Badge className="whitespace-nowrap" variant="outline">
-          {items.length} {items.length === 1 ? 'question' : 'questions'}
-        </Badge>
-      </div>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <FaqFilterToolbar
+            clearLabel={dataset.ui.clear}
+            hasActiveFilters={hasActiveFilters}
+            onClear={resetFilters}
+            onPlatformChange={setPlatform}
+            onProductChange={setProduct}
+            platform={platform}
+            platformLabel={dataset.ui.platformFilter}
+            platforms={dataset.platforms}
+            product={product}
+            productLabel={dataset.ui.productFilter}
+            products={dataset.products}
+          />
+          <Badge className="ml-auto whitespace-nowrap" variant="outline">
+            {dataset.ui.questionCount(items.length)}
+          </Badge>
+        </div>
+      </section>
 
-      <FaqItemList items={items} onClear={resetFilters} />
+      <FaqItemList
+        categories={dataset.categories}
+        clearFiltersLabel={dataset.ui.clearFilters}
+        emptyDescription={dataset.ui.emptyDescription}
+        emptyTitle={dataset.ui.emptyTitle}
+        items={items}
+        onClear={resetFilters}
+        readLabel={dataset.ui.read}
+      />
     </section>
   );
 }

@@ -1,0 +1,210 @@
+---
+title: Interface RemoteVideoTrackStats
+description: 远端视频轨道的统计数据，包括连接、传输等基本信息，可以通过 AgoraRTCClient.getRemoteVideoStats 获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/remotevideotrackstats
+  sourcePath: html-docs/rtc/React/interfaces/remotevideotrackstats.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- RemoteVideoTrackStats
+
+## Index
+
+### Properties
+
+- [codecType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#codectype)
+- [currentPacketLossRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#currentpacketlossrate)
+- [decodeFrameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#decodeframerate)
+- [end2EndDelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#end2enddelay)
+- [freezeRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#freezerate)
+- [packetLossRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#packetlossrate)
+- [publishDuration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#publishduration)
+- [receiveBitrate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receivebitrate)
+- [receiveBytes](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receivebytes)
+- [receiveDelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receivedelay)
+- [receiveFrameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receiveframerate)
+- [receivePackets](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receivepackets)
+- [receivePacketsLost](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receivepacketslost)
+- [receiveResolutionHeight](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receiveresolutionheight)
+- [receiveResolutionWidth](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#receiveresolutionwidth)
+- [renderFrameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#renderframerate)
+- [totalDuration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#totalduration)
+- [totalFreezeTime](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#totalfreezetime)
+- [transportDelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/remotevideotrackstats#transportdelay)
+
+## Properties
+
+<a id="codectype"></a>
+
+### Optional codecType
+
+codecType: "H264"|"H265"|"VP8"|"VP9"|"AV1X"|"AV1"
+
+视频编码格式。
+
+- `"H264"`: 视频编码格式为 H.264。
+- `"VP8"`: 视频编码格式为 VP8。
+- `"VP9"`: 视频编码格式为 VP9。
+- `"AV1X"`: 视频编码格式为 AV1，在 Chrome M96 版本之前。
+- `"AV1"`: 视频编码格式为 AV1。
+
+> Firefox 上无法获取该值。
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+currentPacketLossRate: number
+
+接收的视频在400ms内的丢包率。
+
+<a id="decodeframerate"></a>
+
+### Optional decodeFrameRate
+
+decodeFrameRate: number
+
+视频解码帧率（fps）。
+
+<a id="end2enddelay"></a>
+
+### end2EndDelay
+
+end2EndDelay: number
+
+视频端到端延迟（ms）。
+
+从远端采集视频到本地播放视频的延迟。该延迟不包括发送端编码和接收端解码的时间。
+
+<a id="freezerate"></a>
+
+### freezeRate
+
+freezeRate: number
+
+接收的视频卡顿率。
+
+<a id="packetlossrate"></a>
+
+### packetLossRate
+
+packetLossRate: number
+
+接收的视频丢包率。
+
+<a id="publishduration"></a>
+
+### publishDuration
+
+publishDuration: number
+
+远端发布视频时长
+ 如果为 -1，说明暂时还无法获取发布时长
+
+<a id="receivebitrate"></a>
+
+### receiveBitrate
+
+receiveBitrate: number
+
+接收的视频码率（bps）。
+
+<a id="receivebytes"></a>
+
+### receiveBytes
+
+receiveBytes: number
+
+接收的视频总字节数。
+
+<a id="receivedelay"></a>
+
+### receiveDelay
+
+receiveDelay: number
+
+接收视频延迟 (ms)。
+
+从发送到接收端播放视频的延迟时间。
+
+> Safari 和 Firefox 上该字段不准确。
+
+<a id="receiveframerate"></a>
+
+### Optional receiveFrameRate
+
+receiveFrameRate: number
+
+视频接收帧率（fps）。
+
+<a id="receivepackets"></a>
+
+### receivePackets
+
+receivePackets: number
+
+接收的视频总包数。
+
+<a id="receivepacketslost"></a>
+
+### receivePacketsLost
+
+receivePacketsLost: number
+
+接收的视频总丢包数。
+
+<a id="receiveresolutionheight"></a>
+
+### receiveResolutionHeight
+
+receiveResolutionHeight: number
+
+接收的视频分辨率高度。
+
+<a id="receiveresolutionwidth"></a>
+
+### receiveResolutionWidth
+
+receiveResolutionWidth: number
+
+接收的视频分辨率宽度。
+
+<a id="renderframerate"></a>
+
+### Optional renderFrameRate
+
+renderFrameRate: number
+
+视频渲染帧率（fps）。
+
+<a id="totalduration"></a>
+
+### totalDuration
+
+totalDuration: number
+
+接收的视频总时长，单位为秒。
+
+<a id="totalfreezetime"></a>
+
+### totalFreezeTime
+
+totalFreezeTime: number
+
+接收的视频总卡顿时长，单位为秒。
+
+<a id="transportdelay"></a>
+
+### transportDelay
+
+transportDelay: number
+
+传输延迟（ms)。
+
+从远端发送视频到本地接收视频的延迟。

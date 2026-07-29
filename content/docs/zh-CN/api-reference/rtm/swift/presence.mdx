@@ -1,0 +1,465 @@
+---
+title: "Presence"
+---
+
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+Presence 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```swift
+whoNow(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmPresenceOptions?
+)   async -> (AgoraRtmWhoNowResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+whoNow(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    options: AgoraRtmPresenceOptions?,
+    completion completionBlock: AgoraRtmWhoNowBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+| `options` | `AgoraRtmPresenceOptions` | 选填 | - | 查询附加选项。 |
+| `completion` | `AgoraRtmWhoNowBlock` | 选填 | - | <Slot name="presence-swift-html-0-4-4" /> |
+
+<Slot for="presence-swift-html-0-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhoNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceOptions` 数据类型包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| -------------- | ----- | ------ | ----- | --------------- |
+| `includeUserId` | Bool |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includeState`  | Bool |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | String  |   必填   |    -    | 页码书签。你可以在返回值中查看是否还有下一页。 |
+
+`AgoraRtmWhoNowResponse` 数据类型包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `totalOccupancy` | Int32 | `userStateList` 列表长度。当 `AgoraRtmPresenceOptions` 中的 `includeUserId` 和 `includeState` 属性都设置为 `false` 时，此值表示频道当前总在线人数。 |
+| `userStateList` | `[AgoraRtmUserState]` | 频道在线用户及其临时状态信息列表。 |
+| `nextPage` | String | <Slot name="presence-swift-html-1-3-2" /> |
+
+<Slot for="presence-swift-html-1-3-2">
+
+下一页书签。通过该属性可以确认是否有下一页：
+
+    - 值为空表示没有下一页。
+    - 值不为空表示有下一页。你可以将该值填写在 `whoNow` 的 `page` 属性中，从而查询下一页结果。
+
+</Slot>
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+| 属性     | 类型                | 描述                               |
+| ------- | ---- | ------ |
+| `userId` | String            | 用户 ID。                          |
+| `states` | `[String : String]` | 频道在线用户及其临时状态信息列表。 |
+
+### 接口方法
+
+```swift tab="async-await"
+// async-await
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+let (response, error) = await rtmClient.getPresence()!.whoNow(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions)
+
+if let errorInfo = error {
+    print("Error querying presence: \(errorInfo.reason)")
+} else if let whoNowResponse = response {
+    // Handle the response containing user presence information
+    print("Users in channel: \(whoNowResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeUserId = true
+presenceOptions.includeState = true
+
+rtmClient.getPresence()!.whoNow(
+    channelName: "exampleChannel",
+    channelType: .message,
+    options: presenceOptions
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error querying presence: \(errorInfo.reason)")
+    } else if let whoNowResponse = response {
+        // Handle the response containing user presence information
+        print("Users in channel: \(whoNowResponse)")
+    } else {
+        print("Presence query completed with no response or error.")
+    }
+}
+```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```swift
+whereNow(userId: String) async -> (AgoraRtmWhereNowResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+whereNow(userId: String, completion completionBlock: AgoraRtmWhereNowBlock? = nil)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmWhereNowBlock` | 选填 | - | <Slot name="presence-swift-html-2-2-4" /> |
+
+<Slot for="presence-swift-html-2-2-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmWhereNowResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmWhereNowResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ------ | --------- |
+| `totalChannel`         |  Int32  |  用户所在频道个数。     |
+| `channels`         |    `[AgoraRtmChannelInfo]`      | 用户所在频道信息类表，其中包含频道名和频道类型。        |
+
+`AgoraRtmChannelInfo` 数据类型包含以下属性：
+
+| 属性          | 类型                   | 描述                          |
+| ------------ | ----------------- | --------- |
+| `channelName` | String               | 频道名称。                    |
+| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let (response, error) = await rtmClient.getPresence()!.whereNow(userId:"your_userID")
+if let errorInfo = error {
+    print("Error querying presence: \(errorInfo.reason)")
+} else if let whereNowResponse = response {
+    // Handle the response containing user presence information
+    print("channels: \(whereNowResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+rtmClient.getPresence()!.whereNow(userId: "your_userID") { (response, error) in
+    if let errorInfo = error {
+        print("Error querying presence: \(errorInfo.reason)")
+    } else if let whereNowResponse = response {
+        // Process the list of channels the user is currently in
+        print("User is present in channels: \(whereNowResponse.channels)")
+    } else {
+        print("No response or error.")
+    }
+}
+```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+setState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    items: [String : String],
+    completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+| `items` | `[String: String]` | 必填 | - | 用户状态，类型为 `StateItem` 数组。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-3-4-4" /> |
+
+<Slot for="presence-swift-html-3-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 接口方法
+
+```swift tab="async-await"
+// async-await
+let stateItems: [String: String] = ["user1": "online","user2": "busy"]
+// Call the setState function
+let (response, error) = await rtmClient.getPresence()!.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+  )
+if let errorInfo = error {
+    print("Error setting state: \(errorInfo.reason)")
+} else if let setStateResponse = response {
+    // Handle the response indicating the result of the state update
+    print("State update response: \(setStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let stateItems: [String: String] = ["user1": "online", "user2": "busy"]
+// Call the setState function using a callback
+rtmClient.getPresence()?.setState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    items: stateItems
+) { (response, error) in
+    if let errorInfo = error {
+        print("Error setting state: \(errorInfo.reason)")
+    } else if let setStateResponse = response {
+        // Handle the response indicating the result of the state update
+        print("State update response: \(setStateResponse)")
+    } else {
+        print("No response or error received.")
+    }
+}
+```
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String
+)   async -> (AgoraRtmPresenceGetStateResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+getState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    userId: String,
+    completion completionBlock: AgoraRtmPresenceGetStateBlock? = nil
+)
+```
+
+| 参数 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+| `userId` | String | 必填 | - | 用户 ID。 |
+| `completion` | `AgoraRtmPresenceGetStateBlock` | 选填 | - | <Slot name="presence-swift-html-4-4-4" /> |
+
+<Slot for="presence-swift-html-4-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmPresenceGetStateResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+`AgoraRtmPresenceGetStateResponse` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ---- | ----- | -------- |
+| `state`         |    `AgoraRtmUserState`      | 频道在线用户及其临时状态信息列表。        |
+
+`AgoraRtmUserState` 数据类型包含以下属性：
+
+| 属性     |        类型         |                描述                |
+| ------- | ---------------- | --- |
+| `userId` |      String       |             用户 ID。              |
+| `states` | `[String : String]` | 频道在线用户及其临时状态信息列表。 |
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let userId = "user1"
+// Call the getState function
+let (response, error) = await rtmClient.getPresence()!.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId
+)
+if let errorInfo = error {
+    print("Error getting state: \(errorInfo.reason)")
+} else if let getStateResponse = response {
+    // Handle the response containing the user's state
+    print("User state response: \(getStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let userId = "user1"
+// Call the getState function
+rtmClient.getPresence()?.getState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    userId: userId,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error getting state: \(error.reason)")
+        } else if let getStateResponse = response {
+            // Handle the response containing the user's state
+            print("User state response: \(getStateResponse)")
+        }
+    }
+)
+```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `remoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/swift/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```swift
+removeState(
+    channelName: String,
+    channelType: AgoraRtmChannelType,
+    keys: [String]
+)   async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo?)
+```
+
+```swift
+removeState(
+  channelName: String,
+  channelType: AgoraRtmChannelType,
+  keys: [String],
+  completion completionBlock: AgoraRtmOperationBlock? = nil
+)
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | String | 必填 | - | 频道名称 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/swift/enumv#channeltype)。 |
+| `keys` | `[String]` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
+| `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-swift-html-5-4-4" /> |
+
+<Slot for="presence-swift-html-5-4-4">
+
+调用结果回调：
+
+    - 调用成功：在 `response` 参数中返回 `AgoraRtmCommonResponse` 数据，在 `errorInfo` 参数中返回 `nil`。
+    - 调用失败：在 `response` 参数中返回 `nil`，在 `errorInfo` 参数中返回错误信息。
+
+</Slot>
+
+### 基本用法
+
+```swift tab="async-await"
+// async-await
+let stateKeys: [String] = ["user1", "user2"]
+// Call the removeState function
+let (response, error) = await rtmClient.getPresence()!.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys
+)
+if let errorInfo = error {
+    print("Error removing state: \(errorInfo.reason)")
+} else if let removeStateResponse = response {
+    // Handle the response indicating the result of the state removal
+    print("State removal response: \(removeStateResponse)")
+}
+```
+
+```swift tab="callback"
+// callback
+let stateKeys: [String] = ["user1", "user2"]
+rtmClient.getPresence()?.removeState(
+    channelName: "exampleChannel",
+    channelType: .message,
+    keys: stateKeys,
+    completion: { (response, error) in
+        if let errorInfo = error {
+            print("Error removing state: \(errorInfo.reason)")
+        } else if let removeStateResponse = response {
+            // Handle the response indicating the result of the state removal
+            print("State removal response: \(removeStateResponse)")
+        }
+    }
+)
+```

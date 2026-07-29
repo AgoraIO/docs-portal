@@ -1,0 +1,120 @@
+---
+title: VideoViewController
+description: AgoraVideoView 的控制器，用于渲染本地和远端视频。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_videoviewcontroller
+  sourcePath: html-docs/rtc/Flutter/API/class_videoviewcontroller.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videoviewcontroller__prototype"></a>
+
+```text
+class VideoViewController
+    with VideoViewControllerBaseMixin
+    implements VideoViewControllerBase {
+  VideoViewController({
+    required this.rtcEngine,
+    required this.canvas,
+    this.useFlutterTexture = false,
+    this.useAndroidSurfaceView = false,
+  }) : connection = const RtcConnection();
+
+  VideoViewController.remote({
+    required this.rtcEngine,
+    required this.canvas,
+    required this.connection,
+    this.useFlutterTexture = false,
+    this.useAndroidSurfaceView = false,
+  }) : assert(connection.channelId != null);
+
+  @override
+  final RtcEngine rtcEngine;
+
+  @override
+  final VideoCanvas canvas;
+
+  @override
+  final RtcConnection connection;
+
+  @override
+  final bool useFlutterTexture;
+
+  @override
+  final bool useAndroidSurfaceView;
+
+  @protected
+  @override
+  int getVideoSourceType() {
+    return canvas.uid! == 0
+        ? VideoSourceType.videoSourceCamera.value()
+        : VideoSourceType.videoSourceRemote.value();
+  }
+}
+```
+
+<a id="class_videoviewcontroller__detailed_desc"></a>
+
+在不同平台上，该类对应的默认视图不同：
+
+- Android: https://developer.android.com/reference/android/view/TextureView。如果你想要使用 [SurfaceView](https://developer.android.com/reference/android/view/SurfaceView)，则设置 `useAndroidSurfaceView` 的属性为 true。
+- iOS: [UIView](https://developer.apple.com/documentation/uikit/uiview)。如果你想要使用 [FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html)，则设置 `useFlutterTexture` 的属性为 true。
+- macOS 和 Windows：[FlutterTexture](https://api.flutter.dev/macos-embedder/protocol_flutter_texture-p.html)。
+
+<a id="class_videoviewcontroller__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="rtcengine"></a>
+<Parameter name="rtcEngine">
+
+[RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+<a id="canvas"></a>
+<Parameter name="canvas">
+
+本地视频显示属性。详见 [VideoCanvas](/zh-CN/api-reference/rtc/flutter/class-videocanvas)。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+<a id="usefluttertexture"></a>
+<Parameter name="useFlutterTexture">
+
+:::note
+注： `FlutterTexture` 适用于 Android、iOS、macOS 和 Windows 平台。
+:::
+
+是否使用 `FlutterTexture` 渲染视频：
+
+- true: 使用 `FlutterTexture` 渲染视频。
+- false: 不使用 `FlutterTexture` 渲染视频。
+
+</Parameter>
+<a id="useandroidsurfaceview"></a>
+<Parameter name="useAndroidSurfaceView">
+
+:::note
+注： Android `SurfaceView` 仅适用于 Android 平台。
+:::
+
+是否使用 Android `SurfaceView` 渲染视频：
+
+- true: 使用 Android `SurfaceView` 渲染视频。
+- false: 不使用 Android `SurfaceView` 渲染视频。
+
+</Parameter>
+</ParameterList>
+
+### 相关参考
+
+- [VideoViewControllerConstructor](/zh-CN/api-reference/rtc/flutter/api-videoviewcontroller-videoviewcontrollerconstructor)

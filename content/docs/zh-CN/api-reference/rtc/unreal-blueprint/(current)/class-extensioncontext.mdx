@@ -1,0 +1,83 @@
+---
+title: FExtensionContext
+description: 插件上下文信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_extensioncontext
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_extensioncontext.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_extensioncontext__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FExtensionContext {
+	GENERATED_BODY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ExtensionContext")
+	bool isValid = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ExtensionContext")
+	int64 uid = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ExtensionContext")
+	FString providerName = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ExtensionContext")
+	FString extensionName = "";
+	FExtensionContext(){}
+	FExtensionContext(const agora::rtc::ExtensionContext& AgoraData){
+		isValid = AgoraData.isValid;
+		uid = AgoraData.uid;
+		providerName = UTF8_TO_TCHAR(AgoraData.providerName);
+		extensionName = UTF8_TO_TCHAR(AgoraData.extensionName);
+	}
+	agora::rtc::ExtensionContext CreateAgoraData() const {
+		agora::rtc::ExtensionContext AgoraData;
+		AgoraData.isValid = isValid;
+		AgoraData.uid = uid;
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.providerName, providerName)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMALLOC(AgoraData.extensionName, extensionName)
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ExtensionContext& AgoraData) const {
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.providerName)
+		SET_UABT_FSTRING_TO_CONST_CHAR___MEMFREE(AgoraData.extensionName)
+	}
+};
+```
+
+<a id="class_extensioncontext__detailed_desc"></a>
+
+<a id="class_extensioncontext__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="isvalid"></a>
+<Parameter name="isValid">
+
+FExtensionContext 中报告的 uid 是否有效：
+
+- `true`：uid 有效。
+- `false`：uid 无效。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。0 代表本地用户，大于 0 代表远端用户。
+
+</Parameter>
+<a id="providername"></a>
+<Parameter name="providerName">
+
+提供插件的服务商名称。
+
+</Parameter>
+<a id="extensionname"></a>
+<Parameter name="extensionName">
+
+插件的名称。
+
+</Parameter>
+</ParameterList>

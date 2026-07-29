@@ -1,0 +1,69 @@
+---
+title: 垫片推流
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_image_source
+  sourcePath: html-docs/rtc/Android/API/toc_image_source.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_image_source"></a>
+
+<a id="api_irtcengine_enablevideoimagesource"></a>
+
+<a id="ariaid-title2"></a>
+
+## enableVideoImageSource
+
+设置在发布视频流时是否使用图片替代当前视频画面。
+
+<a id="api_irtcengine_enablevideoimagesource__prototype"></a>
+
+```text
+public abstract int enableVideoImageSource(boolean enabled, ImageTrackOptions options);
+```
+
+<a id="api_irtcengine_enablevideoimagesource__detailed_desc"></a>
+
+你可以在发布视频流时调用该方法，用自定义图片替代当前的视频画面。启用该功能后，可通过 `options` 参数设置用于替代的视频图片。禁用该功能后，远端用户将看到你发布的视频画面。
+
+<a id="api_irtcengine_enablevideoimagesource__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用该方法。
+
+<a id="api_irtcengine_enablevideoimagesource__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否使用自定义图片替代当前视频画面：
+
+- true：使用自定义图片替代当前视频画面。
+- false：（默认）不替代当前视频画面。
+
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
+
+图片配置。详见 [ImageTrackOptions](/zh-CN/api-reference/rtc/android/class-imagetrackoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablevideoimagesource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)

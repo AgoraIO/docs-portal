@@ -1,0 +1,148 @@
+---
+title: WhiteAudioMixerBridgeDelegate Protocol Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhiteAudioMixerBridgeDelegate
+  sourcePath: html-docs/whiteboard/iOS/Protocols/WhiteAudioMixerBridgeDelegate.html
+  generator: appledoc
+  warnings: []
+---
+
+| Conforms to | NSObject |
+| --- | --- |
+| Declared in | WhiteAudioMixerBridge.h |
+
+<a id="overview"></a>
+
+## Overview
+
+用 RTC SDK 的混音方法播放动态 PPT 中的音频文件。
+
+在使用如下方法前，需要先调用 [initWithBridge](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-audio-mixer-bridge#//api/name/initWithBridge:deletegate:) 方法。
+
+<a id="tasks"></a>
+
+<a id="//api/name/startAudioMixing:loopback:replace:cycle:"></a>
+
+### `– startAudioMixing:loopback:replace:cycle:` required method
+
+开始播放音乐文件及混音。
+
+<ApiSignature>
+
+\- (void)startAudioMixing:(NSString *)*filePath* loopback:(BOOL)*loopback* replace:(BOOL)*replace* cycle:(NSInteger)*cycle*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="filePath">
+
+指定需要混音的本地或在线音频文件的绝对路径。
+
+</Parameter>
+<Parameter name="loopback">
+
+是否只有本地用户可以听到混音后的音频流：
+
+- `YES`：只有本地可以听到混音的音频流。
+- `NO`：本地和对方都可以听到混音的音频流。
+
+</Parameter>
+<Parameter name="replace">
+
+是否播放麦克风采集的音频：
+
+- `YES`： 只播放音频文件，不播放麦克风采集的音频。
+- `NO`: 将音频文件和麦克风采集的音频混音后播放。
+
+</Parameter>
+<Parameter name="cycle">
+
+音乐文件的播放次数。
+
+- ≥ 0: 播放次数。例如，`0` 表示不播放；`1` 表示播放 `1` 次。
+- -1: 无限循环播放。
+
+</Parameter>
+</ParameterList>
+
+#### Discussion
+
+进行混音后，需要将混音结果通过 [setMediaState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-audio-mixer-bridge#//api/name/setMediaState:errorCode:) 传递给动态 PPT 内部。
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`
+
+<a id="//api/name/stopAudioMixing"></a>
+
+### `– stopAudioMixing` required method
+
+停止播放音乐文件及混音。
+
+<ApiSignature>
+
+\- (void)stopAudioMixing
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`
+
+<a id="//api/name/pauseAudioMixing"></a>
+
+### `– pauseAudioMixing` required method
+
+暂停播放音乐文件及混音。
+
+<ApiSignature>
+
+\- (void)pauseAudioMixing
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`
+
+<a id="//api/name/resumeAudioMixing"></a>
+
+### `– resumeAudioMixing` required method
+
+恢复播放音乐文件及混音。
+
+<ApiSignature>
+
+\- (void)resumeAudioMixing
+
+</ApiSignature>
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`
+
+<a id="//api/name/setAudioMixingPosition:"></a>
+
+### `– setAudioMixingPosition:` required method
+
+设置音乐文件的播放位置。
+
+<ApiSignature>
+
+\- (void)setAudioMixingPosition:(NSInteger)*position*
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="position">
+
+整数。进度条位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+#### Declared In
+
+`WhiteAudioMixerBridge.h`

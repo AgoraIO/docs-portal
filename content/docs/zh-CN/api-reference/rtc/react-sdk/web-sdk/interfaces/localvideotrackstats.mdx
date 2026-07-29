@@ -1,0 +1,199 @@
+---
+title: Interface LocalVideoTrackStats
+description: 本地视频轨道的基本信息，可以通过 AgoraRTCClient.getLocalVideoStats 获取。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/react/interfaces/localvideotrackstats
+  sourcePath: html-docs/rtc/React/interfaces/localvideotrackstats.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- LocalVideoTrackStats
+
+## Index
+
+### Properties
+
+- [captureFrameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#captureframerate)
+- [captureResolutionHeight](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#captureresolutionheight)
+- [captureResolutionWidth](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#captureresolutionwidth)
+- [codecType](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#codectype)
+- [currentPacketLossRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#currentpacketlossrate)
+- [encodeDelay](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#encodedelay)
+- [sendBitrate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendbitrate)
+- [sendBytes](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendbytes)
+- [sendFrameRate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendframerate)
+- [sendJitterMs](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendjitterms)
+- [sendPackets](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendpackets)
+- [sendPacketsLost](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendpacketslost)
+- [sendResolutionHeight](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendresolutionheight)
+- [sendResolutionWidth](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendresolutionwidth)
+- [sendRttMs](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#sendrttms)
+- [targetSendBitrate](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#targetsendbitrate)
+- [totalDuration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#totalduration)
+- [totalFreezeTime](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/localvideotrackstats#totalfreezetime)
+
+## Properties
+
+<a id="captureframerate"></a>
+
+### Optional captureFrameRate
+
+captureFrameRate: number
+
+视频采集帧率（fps）。
+
+> Safari 和 Firefox 上无法获取该值。
+
+<a id="captureresolutionheight"></a>
+
+### captureResolutionHeight
+
+captureResolutionHeight: number
+
+视频采集的分辨率高度。
+
+<a id="captureresolutionwidth"></a>
+
+### captureResolutionWidth
+
+captureResolutionWidth: number
+
+视频采集的分辨率宽度。
+
+<a id="codectype"></a>
+
+### Optional codecType
+
+codecType: "H264"|"H265"|"VP8"|"VP9"|"AV1X"|"AV1"
+
+视频编码格式。
+
+- `"H264"`: 视频编码格式为 H.264。
+- `"VP8"`: 视频编码格式为 VP8。
+- `"VP9"`: 视频编码格式为 VP9。
+- `"AV1X"`: 预留参数，暂不支持。
+- `"AV1"`: 视频编码格式为 AV1。
+
+> Firefox 上无法获取该值。
+
+<a id="currentpacketlossrate"></a>
+
+### currentPacketLossRate
+
+currentPacketLossRate: number
+
+发送的视频 400ms 内的丢包率。
+
+<a id="encodedelay"></a>
+
+### Optional encodeDelay
+
+encodeDelay: number
+
+视频编码延迟（ms）。
+
+<a id="sendbitrate"></a>
+
+### sendBitrate
+
+sendBitrate: number
+
+视频发送码率 (bps)。
+
+<a id="sendbytes"></a>
+
+### sendBytes
+
+sendBytes: number
+
+发送的视频总字节数 (bytes)。
+
+<a id="sendframerate"></a>
+
+### Optional sendFrameRate
+
+sendFrameRate: number
+
+视频发送帧率（fps）。
+
+> Firefox 上无法获取该值。
+
+<a id="sendjitterms"></a>
+
+### sendJitterMs
+
+sendJitterMs: number
+
+发送视频数据包的抖动 (ms)。
+
+<a id="sendpackets"></a>
+
+### sendPackets
+
+sendPackets: number
+
+发送的视频总包数。
+
+<a id="sendpacketslost"></a>
+
+### sendPacketsLost
+
+sendPacketsLost: number
+
+发送的视频总丢包数。
+
+> - Safari 上无法获取该值。
+> - Firefox 上该字段不准确。
+
+<a id="sendresolutionheight"></a>
+
+### sendResolutionHeight
+
+sendResolutionHeight: number
+
+视频发送的分辨率高度。
+
+<a id="sendresolutionwidth"></a>
+
+### sendResolutionWidth
+
+sendResolutionWidth: number
+
+视频发送的分辨率宽度。
+
+<a id="sendrttms"></a>
+
+### sendRttMs
+
+sendRttMs: number
+
+发送视频数据包的往返时延 (ms)。
+
+<a id="targetsendbitrate"></a>
+
+### targetSendBitrate
+
+targetSendBitrate: number
+
+视频目标发送码率 (bps)，即 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-sdk/web-sdk/interfaces/videoencoderconfiguration) 中设置的码率。
+
+<a id="totalduration"></a>
+
+### totalDuration
+
+totalDuration: number
+
+视频总时长，单位为秒。
+
+<a id="totalfreezetime"></a>
+
+### totalFreezeTime
+
+totalFreezeTime: number
+
+视频总卡顿时长，单位为秒。

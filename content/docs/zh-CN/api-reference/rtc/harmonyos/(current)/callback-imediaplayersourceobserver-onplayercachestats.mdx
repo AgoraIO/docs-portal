@@ -1,0 +1,34 @@
+---
+title: onPlayerCacheStats
+description: 报告当前缓存中的媒体资源的相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/callback_imediaplayersourceobserver_onplayercachestats
+  sourcePath: html-docs/rtc/HarmonyOS/API/callback_imediaplayersourceobserver_onplayercachestats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__prototype"></a>
+
+```text
+onPlayerCacheStats?:(stats:CacheStatistics) => void
+```
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__detailed_desc"></a>
+
+## 详情
+
+调用 [openWithMediaSource](/zh-CN/api-reference/rtc/harmonyos/play/mediaplayer/mediaplayer-open#api_imediaplayer_openwithmediasource) 方法且设置 enableCache 成员为 `true` 后，SDK 会在媒体文件打开后每秒触发一次该回调，报告当前缓存的媒体文件的统计数据。
+
+<a id="callback_imediaplayersourceobserver_onplayercachestats__parameters"></a>
+
+## 参数
+
+缓存中的媒体资源的相关信息，详见 [CacheStatistics](/zh-CN/api-reference/rtc/harmonyos/class-cachestatistics)。
+
+### 所属接口类
+
+- [IMediaPlayerObserver](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,0 +1,308 @@
+---
+title: "实现和小程序互通"
+description: "了解如何快速接入微呼叫，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+微呼叫是声网基于 RTSA SDK 开发的、用于与微信小程序进行实时音视频互动的服务。
+
+借助该服务，用户可以从智能手表、智能门铃等设备直接呼叫微信电话，也可以从微信小程序直接向智能设备发起呼叫。
+
+设备来电和接听过程的示意图如下：
+
+![微呼叫示意图](https://web-cdn.agora.io/docs-portal/img/voip-callkit/wechat-call.png)
+
+本文介绍使用声网微呼叫对接微信 VoIP 的完整流程，实现智能设备和小程序通话。
+
+## 实现流程
+
+微呼叫涉及小程序、微信和声网三个模块的交互。完整的实现流程如下：
+
+![微呼叫实现流程](https://web-cdn.agora.io/docs-portal/img/voip-callkit/voip-process.png)
+
+## 前提条件
+
+### 开通微信小程序
+
+1. [申请微信小程序](https://mp.weixin.qq.com/cgi-bin/wx?token=&lang=zh_CN)，并获取小程序的 `appid`。
+
+2. 将小程序设备类目设置为[工具-设备管理](https://developers.weixin.qq.com/miniprogram/dev/framework/device/device-access.html)。设备注册成功后，可以获取微信平台的 `modelId`。
+
+### 开通微呼叫和 NCS 服务
+
+1. 参考[开通微呼叫服务](/zh-CN/solutions/voip-call/build/setup-and-access/enable-service)在声网控制台开通微呼叫服务，并完成授权。
+2. 声网微呼叫使用 License 校验呼叫的合法性。如果 License 不合法，会使用消息通知服务 NCS 将相关事件回调给开发者。因此在开发前，你还需要开通[声网消息通知服务](/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook)。
+
+### 熟悉开发参数
+
+在开发过程中，你需要在接口调用中传入相关参数。请先熟悉微信侧和声网侧的如下参数：
+
+微信侧：
+
+- `modelId`：开发者硬件提交对应的产品名称、产品型号、产品说明、产品图片等后，微信会发放该产品的信息；
+- `deviceId`：开发者硬件的唯一设备 ID，由开发者自行定义。在呼叫前，需要先激活，激活校验 `modelId` + `deviceId`，后续的呼叫都会用到该参数；
+- `appId`：小程序应用的 ID；
+- `openId`：小程序用户在其 `appid` 下的唯一 ID。
+
+声网侧：
+
+- `appid`：声网针对每个项目会分配一个唯一的 App ID；
+- `channelName`：声网进行音视频通信时商定的频道号，在同一频道内，双方可以进行通话；
+- `deviceUID`：1v1 通话时，设备加入频道时使用的 `uid`；
+- `robotUID`：1v1 通话时，微呼叫服务使用的 `uid`。声网微呼叫服务会以该 `uid` 加入设备所在频道拉流，并将其转发给小程序。你需要在发起呼叫时将该 `uid` 一并传给声网；
+- `token`：微呼叫 `uid` 加入频道使用的 Token，该 Token 需要开发者在发起呼叫时一同传给声网；
+- `license`：无论设备呼叫小程序或者小程序呼叫设备，需要传入 `license` 值以便确定呼叫的合法性；License 不合法会回调相应的结果给开发者，开发者需要通过消息通知服务接收该事件。
+
+## 实现步骤
+
+### 1. 获取并激活许可证
+
+联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)。然后调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 接口激活申请到的 License：
+
+:::warning[注意]
+请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
+:::
+
+```shell
+curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
+--header 'Authorization: Basic <Basic Auth>'
+```
+
+License 激活成功的响应示例如下：
+
+```json
+{
+  "code": 200,
+  "data": {
+    "pid": "E4D6xxxxxxxxxxxxxxxxxxxxxxxx7E79",
+    "license": "1D65xxxxxxxxxxxxxxxxxxxxxxxx6016",
+    "licenseKey": "1234xxxxxxxxxxx1234",
+    "expireTime": 17xxxxxxxx,
+    "activationTime": 17xxxxxxxx,
+    "skuView": {
+      "product": 1,
+      "name": "演示申请01",
+      "mediaType": 1,
+      "minutes": 100,
+      "period": "00:00~23:59"
+    }
+  }
+}
+```
+
+### 2. 实现设备呼叫小程序
+
+从设备端呼叫小程序的实现细节如下图所示：
+
+:::warning[注意]
+下图中，红色箭头标注为需要你实现的逻辑。
+:::
+
+![设备呼叫小程序逻辑](https://web-cdn.agora.io/docs-portal/img/voip-callkit/device-call-miniapp.svg)
+
+#### 2.1 设备端实现呼叫和挂断
+
+设备端进行音视频通话，需要先集成声网媒体流加速 RTSA SDK。你可以参考 [RTSA 快速开始](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission)集成 SDK 并实现基础的媒体流互通。
+
+设备端在集成 RTSA SDK 后，自行实现如下逻辑：
+
+- 发起呼叫小程序并加入 RTC 频道
+- 挂断小程序
+
+#### 2.2 小程序端实现音视频通话
+
+在小程序管理后台添加 VoIP 插件，然后参考 [VoIP 通话插件](https://developers.weixin.qq.com/miniprogram/dev/framework/device/voip-plugin/)集成并实现音视频通话。
+
+为方便实现，声网在 GitHub 提供一个集成了 VoIP 插件的[小程序示例项目](https://github.com/Shengwang-Community/Voip-wxapp-demo/)供你参考，你可以下载体验并查看源码。
+
+#### 2.3 业务后台呼叫小程序
+
+使用你的业务服务器调用 [`/call/miniapp`](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app) 接口，对指定的小程序发起呼叫。SD-RTN™ 会拉取设备端通过 RTSA SDK 发布的流，同时推送给微信小程序实现通话。
+
+`/call/miniapp` 接口调用的代码示例如下：
+
+```shell
+curl --location 'https://api.sd-rtn.com/v2/miniapp/aabxxxxxxxxxxxx63/voip/call/miniapp' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic MjxxxxxxxxxxxxxxxxxxxxxxxxxxxxM=' \
+--data '{
+  "agora": {
+    "channelName": "voip123456",
+    "robotUID": "123",
+    "deviceUID": "456",
+    "token": "aabxxxxxxxxxxxx63",
+    "license": "sdfjiojefkkglekr",
+    "appId": "aabxxxxxxxxxxxx63",
+    "encryptionMode": "NONE",
+    "encryptionKey": "test123",
+    "encryptionKdfSalt": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+    "source": {
+      "videoCodec": "H264",
+      "videoWidth": 640,
+      "videoHeight": 480,
+      "videoFrameRate": 15
+    },
+    "sink": {
+      "audioCodec": "PCMA",
+      "videoTranscode": false,
+      "videoCodec": "H264",
+      "videoWidth": 640,
+      "videoHeight": 480,
+      "videoFrameRate": 15
+    }
+  },
+  "wechat": {
+    "openId":"ox-xxxxxxxxxxxxA",
+    "appId": "wxxxxxxxxxxd6",
+    "deviceId": "test_sn_1",
+    "modelId": "axxxxxxxxw",
+    "encodeVideoRotation": 1,
+    "landscape": true,
+    "subscribeVideoLength": 320,
+    "roomType": "video",
+    "listenerName": "m",
+    "versionType": 1,
+    "query": "a=b",
+    "callerCameraStatus": 0,
+    "listenerCameraStatus": 0,
+    "source": {
+      "videoCodec": "H264",
+      "videoWidth": 1920,
+      "videoHeight": 1080,
+      "videoFrameRate": 15
+    },
+    "sink": {
+      "videoTranscode": false,
+      "videoCodec": "H264",
+      "videoWidth": 640,
+      "videoHeight": 480,
+      "videoFrameRate": 15
+    }
+  }
+}
+```
+
+成功发起呼叫的响应示例如下：
+
+```json
+{
+  "code":200,
+  "msg":"ok",
+  "taskId":"1NxxxxxxxxxxxxxxxxxV"
+}
+```
+
+### 3. 实现小程序呼叫设备
+
+从小程序向设备端发起呼叫的实现流程如下图所示：
+
+:::warning[注意]
+下图中，红色箭头标注为需要你实现的逻辑。
+:::
+
+![小程序呼叫设备逻辑](https://web-cdn.agora.io/docs-portal/img/voip-callkit/miniapp-call-device.svg)
+
+#### 3.1 设备端实现接听和挂断
+
+设备端在集成 RTSA SDK 后，还需要自行实现如下逻辑：
+
+- 处理业务服务器发来的呼叫通知，进行接听，同时进行推流
+- 挂断小程序
+
+#### 3.2 小程序呼叫设备端
+
+在小程序管理后台添加 VoIP 插件，然后参考 [VoIP 通话插件](https://developers.weixin.qq.com/miniprogram/dev/framework/device/voip-plugin/)集成并实现音视频通话。
+
+为方便实现，声网在 GitHub 提供一个集成了 VoIP 插件的[小程序示例项目](https://github.com/Shengwang-Community/Voip-wxapp-demo/)供你参考，你可以下载体验并查看源码。
+
+调用 [`callDevice`](https://developers.weixin.qq.com/miniprogram/dev/framework/device/voip-plugin/api/callDevice.html) 方法进行呼叫：
+
+```javascript
+wmpfVoip.callDevice({
+  roomType: string
+  sn: string,
+  modelId: string;,
+  payload: string;,
+  isCloud: boolean;,
+  enableCallerCamera: boolean;
+  enableListenerCamera: boolean;
+})
+```
+
+其中：
+
+- `isCloud` 参数需要设为 `true`
+- `payload` 参数为转义格式的字符串。填写示例如下：
+
+  :::info[信息]
+  如果需要，你可以使用 [bejson.com](https://www.bejson.com/) 在线网站进行转义。
+  :::
+
+  ```json
+  payload："{\"agoraVoIP\": {\"trigger\": \"MiniApp\",\"version\": \"v2\",\"transmission\": {\"agora\": {\"channelName\": \"miniapp_voip\",\"robotUID\": \"456\",\"deviceUID\": \"123456\",\"token\": \"aab8b8f5a*******42fcfafe7063\",\"appId\": \"aab8b***********2fcfafe7063\", \"license\": \"UyTjxxxxxxxxxxxxxxxxx\",\"encryptionMode\": \"NONE\", \"encryptionKey\": \"\", \"encryptionKdfSalt\": \"\", \"source\":{\"videoCodec\": \"JPEG\",\"videoWidth\": 480,\"videoHeight\": 480,\"videoFrameRate\": 15}, \"sink\": {\"audioCodec\": \"PCMA\",\"videoTranscode\": true,\"videoCodec\": \"JPEG\",\"videoWidth\": 480,\"videoHeight\": 480,\"videoFrameRate\": 15}},\"wechat\": {\"openId\":\"ox-mm5R8*****mH7WqT_u4lc\",\"appId\": \"wxf*******ed6\",\"deviceId\": \"test_sn_new\",\"modelId\": \"a7ELno*********zOY8L2hw\",\"landscape\": false,\"subscribeVideoLength\":640,\"roomType\": \"video\",\"listenerName\": \"m\",\"versionType\": 0,\"query\": \"a=b\",\"callerCameraStatus\": 0,\"listenerCameraStatus\": 0,\"source\":{\"videoCodec\": \"H264\",\"videoWidth\": 1280,\"videoHeight\": 720,\"videoFrameRate\": 15},\"sink\":{\"videoTranscode\": true,\"videoCodec\": \"H264\",\"videoWidth\": 480,\"videoHeight\": 480,\"videoFrameRate\": 15}}}}}"
+  ```
+
+`payload` 参数包含的主要字段及填写方式如下：
+
+| 字段 | 数据类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `trigger` | String | 是 | 固定 Key `MiniApp`，代表触发端为小程序端。 |
+| `version` | String | 是 | 固定 Key `v2`，代表版本号。 |
+| `transmission` | Object | 是 | <Slot name="start-video-call-html-0-3-3" /> |
+
+<Slot for="start-video-call-html-0-3-3">
+
+包含如下字段：
+
+    - `agora`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)中 `agora` 下的字段一致。
+    - `wechat`：Object 类型，必填，字段含义和[设备呼叫小程序接口](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)中 `wechat` 下的字段一致。其中，如下参数的配置不生效，仅用于统一，便于问题调查：
+      - `encodeVideoRotation`
+      - `landscape`
+      - `subscribeVideoLength`
+      - `roomType`
+      - `listenerName`
+      - `versionType`
+      - `query`
+      - `callerCameraStatus`
+      - `listenerCameraStatus`
+
+</Slot>
+
+#### 3.3 业务服务器通知设备端呼叫到来
+
+当小程序向设备端发起呼叫时，会告知你的业务服务器。业务服务器获取 `robotUID`、`token`、`channelName` 等参数后，通知设备端有呼叫到来，准备推流。
+
+### 4. 挂断小程序
+
+从你的业务服务器调用 [`/call/{modelId}/{deviceId}`](/zh-CN/api-reference/api-ref/voip-callkit/hangup-mini-app) 接口，挂断小程序。
+
+```shell
+curl --location --request DELETE 'https://api.sd-rtn.com/v1/miniapp/aabxxxxxxxxxxxx63/voip/call/axxxxxxxxw/txxxxx1' \
+--header 'Authorization: Basic MjxxxxxxxxxxxxxxxxxxxxxxxxxxxxM='
+```
+
+成功挂断的响应示例如下：
+
+```javascript
+{
+  "code": 200,
+  "msg": "ok",
+  "taskId": ""
+}
+```
+
+### 5. 验收设备
+
+由于微信小程序工具类类目的开通没有门槛，为了安全要求，需要将最终集成的设备寄送给微信进行认证备案，具体参考[硬件 VoIP 审核验证要求](https://developers.weixin.qq.com/community/minihome/doc/00002e131e8cc8ae8a7f5473f56c01)。
+
+## 参考信息
+
+### 常见问题
+
+调用小程序 `callDevice` 接口时返回错误码，应如何解决？
+
+回答：你可以参考[微信 VoIP 插件错误码](https://developers.weixin.qq.com/miniprogram/dev/framework/device/voip-plugin/api/errCode.html)文档进行问题排查和解决。
+
+### API 参考
+
+- [呼叫小程序 RESTful API](/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app)
+- [License 管理 RESTful API](/zh-CN/api-reference/api-ref/voip-callkit/activate-license)
+- [NCS 事件类型](/zh-CN/solutions/voip-call/voip-events)

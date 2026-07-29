@@ -1,0 +1,930 @@
+---
+title: "发送消息"
+description: "了解实时消息 RTM 中发送消息相关内容的适用场景、配置步骤、实现要点和注意事项。"
+---
+发送消息是 RTM 的基本能力之一，本文主要介绍如何在不同类型的频道中发送消息。同时，你也可以查看[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)快速构建一个示例程序并体验如何收发消息。
+
+RTM 目前只支持字符串和二进制类型的消息数据格式。如果你的业务中使用了 JSON、Object 等其他数据类型，或者 protobuf 等第三方数据构建工具，那么你需要在发送消息之前对消息数据进行序列化。关于如何有效构建负载数据结构及推荐的序列化方式可以参考[消息负载结构化](/zh-CN/realtime-media/rtm/build/manage-messages/constructed)和[消息负载序列化](/zh-CN/realtime-media/rtm/build/manage-messages/serialized)。
+
+## 在消息频道中发送消息
+
+在 Message Channel 中，你只需调用 `message.publish` 方法即可发送消息，无需提前订阅频道。该方法一次只能向一个频道发送消息，如需向多个频道发送消息，你需要多次调用该方法。RTM 并不限制你向多少个频道发送消息，也不限制有多少用户向一个频道发送消息，但是对你同时向一个频道发送消息的频率有一定的限制，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+
+:::info[信息]
+`message.publish` 方法仅适用于 Message Channel 和 User Channel，你无法使用该方法向 Stream Channel 发送消息。
+:::
+
+:::info[信息]
+`message.publish` 方法仅适用于 Message Channel，你无法使用该方法向 Stream Channel 发送消息。
+:::
+
+发送字符串消息和二进制消息的示例代码如下：
+
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送字符串消息
+string message = "Hello World";
+string channelName = "chat_room";
+var options = new PublishOptions();
+options.customType = "PlainTxt";
+
+var (status,response) = await rtmClient.PublishAsync(channelName, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Publish Message Success!");
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送字符串消息
+const payload = "Hello Agora!";
+const channelName = "chat_room";
+const options = {
+    customType: "PlainTxt",
+    channelType: "MESSAGE",
+};
+try {
+    const result = await rtm.publish(channelName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送字符串消息
+String message = "Hello World";
+String channelName = "my_channel";
+var options = new PublishOptions();
+options.setCustomType("PlainTxt");
+mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-1"
+let message = "Hello Agora!"
+let channel = "your_channel"
+
+rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送字符串消息
+NSString* message = @"Hello Agora!";
+NSString* channel = @"your_channel";
+[rtm publish:channel message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-1" showLineNumbers
+// 发送字符串消息
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "PlainText";
+
+std::string message =  "hello world";
+uint64_t requestId;
+rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送字符串消息
+final channelName = 'chat_room';
+var payload = 'hello RTM';
+
+try {
+    var (status, response) = await rtmClient.publish(
+        channelName,
+        payload,
+        channelType: RtmChannelType.message,
+        customType: 'PlainText');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-1"
+// Send string message
+import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const message = "Hello World";
+const options: PublishOptions = {
+  channelType: RtmChannelType.MESSAGE,
+  customType: "PlainTxt"
+};
+
+try {
+  const response = await rtmClient.publish(channelName, message, options);
+  console.log("Publish message success:", response);
+} catch (error) {
+  console.error("Publish message failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-2"
+// Send binary message
+import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const binaryData = new Uint8Array([0x00, 0x01, 0x23, 0xC4]);
+const options: PublishOptions = {
+  channelType: RtmChannelType.MESSAGE,
+  customType: "ByteArray"
+};
+
+try {
+  const response = await rtmClient.publish(channelName, binaryData, options);
+  console.log("Publish binary message success:", response);
+} catch (error) {
+  console.error("Publish binary message failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+var channelName = "my_channel";
+var options = new PublishOptions();
+options.customType = "ByteArray";
+
+var (status,response) = await rtmClient.PublishAsync(channelName, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Publish Message Success!");
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+const message = "Hello Agora!";
+const payload = new TextEncoder().encode(message);
+const channelName = "chat_room";
+const options = { customType:"ByteArray", channelType: "MESSAGE" }
+try {
+    const result = await rtm.publish(channelName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+String channelName = "my_channel";
+var options = new PublishOptions();
+options.setCustomType("ByteArray");
+mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-2"
+let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // 代表 "Hello"
+let myDataFromBytes = Data(byteArray)
+let channel = "your_channel"
+
+rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+unsigned char bytes[32] = { /*your raw values */ };
+NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
+NSString* channel = @"your_channel";
+[rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+uint64_t requestId;
+rtm_client->publish("channelName", message, 5, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-1"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish message failed
+        } else {
+            // publish message success
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-1"
+// 发送二进制消息
+final channelName = 'chat_room';
+var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+try {
+    var (status, response) = await rtmClient.publishBinaryMessage(
+        channelName,
+        payload,
+        channelType: RtmChannelType.message,
+        customType: 'Uint8List');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+方法调用成功后，RTM 会在 100 毫秒内将你的消息发送给订阅该频道的所有在线用户。同时，你会收到 `message.publishresult` 类型的返回值，虽然其中的内容是空的。
+
+<a id="userchannel"></a>
+## User Channel 中发送消息
+
+在 User Channel 中，你只需调用 `message.publish` 方法，将 `channelType` 参数设为 `enumv.channeltypeuser`，并将 `channelName` 参数设为指定用户的 `userId`，即可向指定用户发送点对点消息。该方法一次只能向一位用户发送消息，如需向多位用户发送消息，你需要多次调用该方法。RTM 并不限制你向多少用户发送消息，也不限制有多少用户向你发送消息，但是对你向用户发送消息的频率有一定的限制。
+
+:::info[信息]
+`message.publish` 方法仅适用于 Message Channel 和 User Channel，你无法使用该方法向 Stream Channel 发送消息。
+:::
+
+发送字符串消息和二进制消息的示例代码如下：
+
+```java
+// 发送字符串消息
+PublishOptions options = new PublishOptions();
+options.setChannelType(RtmChannelType.USER);
+options.setCustomType("PlainText");
+rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```java
+// 发送二进制消息
+byte[] message = new byte[] {1, 2, 3, 4};
+PublishOptions options = new PublishOptions();
+options.setChannelType(RtmChannelType.USER);
+options.setCustomType("ByteArray");
+rtmClient.publish("Tony", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift
+let message = "Hello Agora!"
+let user = "Tony"
+
+let publishOption = AgoraRtmPublishOptions()
+publishOption.channelType = .user
+
+rtm.publish(channelName: user, message: message, option: publishOption, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+```objc
+// 发送字符串消息
+NSString* message = @"Hello Agora!";
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+
+[rtm publish:user message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```objc
+// 发送二进制消息
+NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+
+[rtm publish:user data:raw_message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="发送字符串消息"
+// 发送字符串消息
+std::string message = "Hello Agora!";
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "PlainText";
+options.channelType = RTM_CHANNEL_TYPE_USER;
+
+uint64_t requestId;
+rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
+```
+
+```cpp tab="发送二进制消息"
+// 发送二进制消息
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+options.channelType = RTM_CHANNEL_TYPE_USER;
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+uint64_t requestId;
+rtmClient->publish("Tony", message, 5, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish message failed
+        } else {
+            // publish message success
+        }
+    }
+};
+```
+
+```dart
+// 发送字符串消息
+final channelName = 'chat_room';
+var payload = 'hello RTM';
+
+try {
+    var (status, response) = await rtmClient.publish(
+        channelName,
+        payload,
+        channelType: RtmChannelType.user,
+        customType: 'PlainText');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```dart showLineNumbers
+// 发送二进制消息
+final channelName = 'chat_room';
+var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+try {
+    var (status, response) = await rtmClient.publishBinaryMessage(
+        channelName,
+        payload,
+        channelType: RtmChannelType.user,
+        customType: 'Uint8List');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript
+// Send string message to user
+import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const userId = "Tony";
+const message = "Hello World";
+const options: PublishOptions = {
+  channelType: RtmChannelType.USER,
+  customType: "PlainText"
+};
+
+try {
+  const response = await rtmClient.publish(userId, message, options);
+  console.log("Send message to user success:", response);
+} catch (error) {
+  console.error("Send message to user failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```typescript
+// Send binary message to user
+import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const userId = "Tony";
+const binaryData = new Uint8Array([0x00, 0x01, 0x23, 0xC4]);
+const options: PublishOptions = {
+  channelType: RtmChannelType.USER,
+  customType: "ByteArray"
+};
+
+try {
+  const response = await rtmClient.publish(userId, binaryData, options);
+  console.log("Send binary message to user success:", response);
+} catch (error) {
+  console.error("Send binary message to user failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```javascript tab="发送字符串消息"
+// 发送字符串消息
+const payload = "Hello Agora!";
+const channelName = "chat_room";
+const options = {
+    customType: "PlainTxt",
+    channelType: "USER",
+};
+try {
+    const result = await rtm.publish(channelName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```javascript tab="发送二进制消息"
+// 发送二进制消息
+const message = "Hello Agora!";
+const payload = new TextEncoder().encode(message);
+const channelName = "chat_room";
+const options = { customType:"ByteArray", channelType: "USER" }
+try {
+    const result = await rtm.publish(channelName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+## 在流频道中发送消息
+
+与 Message Channel 不同，在 Stream Channel 中发送消息，你首先需要具备三个前提条件：
+
+1. 你需要创建一个 `channel.istreamchannel` 实例。
+
+2. 你需要调用 `channel.join` 方法加入该频道。
+
+3. 你需要调用 `topic.join` 方法注册成为指定 Topic 的消息发布者。
+
+满足上述条件后，你就可以调用 `topic.publish` 方法向指定的 Topic 发送消息了。该方法一次只能向一个 Topic 发送消息，如需向多个 Topic 发送消息，你可以多次调用该方法。
+
+RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发布者，即同时只能加入不超过 8 个 Topic，但并不限制一个 Topic 可容纳的用户数量。你向一个 Topic 发送消息的频率可以达到 120 QPS，此特性在需要数据高频大并发的场景中十分有效，例如：元宇宙中的位置状态同步、协同办公中的画板应用、 平行操控中的操作指令传输等。
+
+发送字符串消息和二进制消息的示例代码如下：
+
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+string message = "left";
+string topic = "Motion";
+var options = new TopicMessageOptions();
+options.customType = "PlainTxt";
+var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+const payload = "Hello Agora!";
+const topicName = "chat_topic";
+const options = { customType: "PainTxt" };
+try {
+    const result = await streamChannel.publishTopicMessage(topicName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+String message = "Hello Agora!";
+String topicName = "chat_topic";
+var options = new TopicMessageOptions();
+options.customType = "PainTxt";
+mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "publish topic message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-3"
+let message = "Hello Agora!"
+
+streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+NSString* message = @"Hello Agora!";
+[stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+std::string message = "Hello Agora!";
+TopicMessageOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "PainTxt";
+uint64_t requestId;
+streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-3"
+// 发送字符串消息
+final topicName = 'chat_topic';
+var payload = 'hello RTM';
+
+try {
+    var (status, response) = await stChannel.publishTextMessage(
+        topicName,
+        payload,
+        customType: 'PlainText');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-3"
+// Send string message to topic
+import { TopicMessageOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "chat_topic";
+const message = "Hello Agora!";
+const options: TopicMessageOptions = {
+  customType: "PlainTxt"
+};
+
+try {
+  const response = await streamChannel.publishTopicMessage(topicName, message, options);
+  console.log("Publish topic message success:", response);
+} catch (error) {
+  console.error("Publish topic message failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-4"
+// Send binary message to topic
+import { TopicMessageOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const topicName = "chat_topic";
+const binaryData = new Uint8Array([0x00, 0x01, 0x23, 0xC4]);
+const options: TopicMessageOptions = {
+  customType: "ByteArray"
+};
+
+try {
+  const response = await streamChannel.publishTopicMessage(topicName, binaryData, options);
+  console.log("Publish binary topic message success:", response);
+} catch (error) {
+  console.error("Publish binary topic message failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-4"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+string topic = "Motion";
+var options = new TopicMessageOptions();
+options.customType = "ByteArray";
+var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-4"
+// 发送二进制消息
+const message = "Hello Agora!";
+const payload = new TextEncoder().encode(message);
+const topicName = "chat_topic";
+const options = { customType: "ByteArray" }
+try {
+    const result = await streamChannel.publishTopicMessage(topicName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-4"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+String topicName = "chat_topic";
+var options = new TopicMessageOptions();
+options.customType = "ByteArray";
+mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "publish topic message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-4"
+let bytes: [UInt8] = [ /* your raw values */ ]
+let rawMessage = Data(bytes: bytes, count: bytes.count)
+
+streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-4"
+// 发送二进制消息
+unsigned char bytes[32] = { /*your raw values */ };
+NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
+[stream_channel publishTopicMessage:@"your_topic" data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-4"
+// 发送二进制消息
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+TopicMessageOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+uint64_t requestId;
+streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onpublishtopicresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-2"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishTopicMessageResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish topic message failed
+        } else {
+            // publish topic message success
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-2"
+// 发送二进制消息
+final topicName = 'chat_topic';
+var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+try {
+    var (status, response) = await stChannel.publishBinaryMessage(
+        topicName,
+        payload,
+        customType: 'Uint8List');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+成功向 Topic 发送消息后，RTM 会在 100 毫秒内将你的消息发送给订阅该 Topic 的所有在线用户。同时，你会收到 `topic.publishresulttype` 类型的返回值，虽然当前其中的内容是空的。该消息和在 Message Channel 中发送的消息具备同样的延迟特性和 SLA 保障。
+
+## 消息负载包体积限制
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-3"
+// Status
+{
+    Error = true;
+    ErrorCode =  -11010;
+    Operation = "PublishTopicMessageOperation";
+    Reason = "CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION";
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-3"
+// Status
+{
+    error = true;
+    errorCode = -11010;
+    operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    reason = "Publish too long message.";
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-3"
+// ErrorInfo
+ErrorInfo {
+    errorCode = -11010;
+    reason = "Publish too long message.";
+    operation = "publishTopicMessage"; // or "publish"
+}
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-3"
+// errorInfo
+{
+    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.reason = "Publish too long message."
+    errorInfo.operation = "publish"; // or "publishTopicMessage
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-3"
+// errorInfo
+{
+    errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
+    errorInfo.reason = @"Publish too long message.";
+    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+}
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-3"
+// Status
+{
+    error = true;
+    errorCode = -11010;
+    operation = "PublishTopicMessageOperation";   // Or "PublishOperation"
+    reason = "rtmErrorChannelMessageLengthExceedLimitation";
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-3"
+// RtmError
+import { RtmError, RtmErrorCode } from '@shengwang/rtm-full';
+
+// When message size exceeds limit, you will receive:
+try {
+  await rtmClient.publish(channelName, veryLongMessage, options);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Operation: ${error.operation}`); // "publish" or "publishTopicMessage"
+    console.error(`Error code: ${error.errorCode}`); // -11010
+    console.error(`Reason: ${error.reason}`); // "Message length exceeds limit"
+    
+    if (error.errorCode === RtmErrorCode.CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION) {
+      console.error("Message is too long!");
+    }
+  }
+}
+```
+
+为避免因为消息负载包体积超限而导致发送失败，你可以在消息发送之前对消息负载包体积进行检查。

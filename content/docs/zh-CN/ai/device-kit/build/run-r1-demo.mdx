@@ -1,0 +1,325 @@
+---
+title: "跑通 R1 示例 Demo"
+description: "了解如何快速接入对话式 AI 开发套件，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+为了让开发者快速上手，声网与 Wi-Fi 芯片原厂合作，推出了基于博通集成了 BK7258 的开源开发套件 R1。你可以前往体验或查看源码。
+
+<Cards>
+  <Card title="Conversational-AI-IOT bk7258/v2.0.1" href="https://github.com/Shengwang-Community/Conversational-AI-IOT-Sample/tree/bk7258/v2.0.1" />
+</Cards>
+
+本文介绍如何跑通该示例 Demo。
+
+## 项目简介
+
+R1 套件由 App 端、BK7258 Device 端、配套 Server 端组成。使用时需要分别参考三个端侧对应的开源工程，分别部署 Server、安装 App 后，与 BK7258 Device 端进行联调。各端之间的关系如下图所示：
+
+![Demo 技术架构](https://web-cdn.agora.io/docs-portal/img/toybox/r1-sample-arch.png)
+
+## 前提条件
+
+- 套件的 Server 端依赖 Python 环境。请确保你的开发环境满足 Python 3.7 及以上版本。
+- 套件的 Device 端基于声网与博通 BK 联合开发的 R1 开发板构建。你需要联系 sales@shengwang.cn 购买，并参考 [BK 官方文档](https://docs.bekencorp.com/arminodoc/bk_idk/bk7258/zh_CN/v2.0.1/get-started/index.html)完成开发环境搭建。
+- 一台 Android 设备，用于安装并体验套件的 App 端。
+- 对话式套件的语音对话功能依赖于第三方大语言模型 (LLM) 和文本转语音 (TTS) 服务实现。因此你还需要获取相关服务供应商的 API Key 和服务地址。
+- 一个开启了对话式 AI 引擎的声网项目，并获取了项目的 App ID、App 证书、以及客户 ID 和客户密钥。详见[开通服务](/zh-CN/ai/device-kit/reference/enable-services)。
+
+## 下载示例 Demo
+
+1. 运行如下命令行，将 `Conversational-AI-IOT-Sample` 克隆到本地。
+
+    ```shell
+    $ git clone https://github.com/Shengwang-Community/Conversational-AI-IOT-Sample.git
+    ```
+
+2. 切换到 `bk7258/v2.0.1` 分支。
+
+    ```shell
+    $ git checkout bk7258/v2.0.1
+    ```
+
+## 配置 Server 端
+
+:::warning[注意]
+此 Server 端示例仅供开发者快速体验和演示，请勿在生产环境中使用。生产环境的 Server 端服务需要你自行开发。
+:::
+
+### 安装 Python 服务组件
+
+运行如下命令行，安装相关的服务组件：
+
+```shell
+$ pip install requests
+$ pip install flask
+$ pip install pyjwt
+```
+
+### 设置配置文件
+
+`/server/aiot_server_demo_example/config.json` 是一个标准 `JSON` 格式的配置文件。你需要在该文件中设置定制的服务参数。更多详细参数配置可以参考[创建对话式智能体 RESTful API](/zh-CN/api-reference/api-ref/conversational-ai/join)。
+
+```json
+{
+  // 声网相关配置
+  // 声网项目的 App ID
+  "app_id": "YOUR_AGORA_APP_ID",
+  // 声网项目的 App 证书
+  "app_certificate": "YOUR_AGORA_APP_CERTIFICATE",
+   
+  // 客户认证信息
+  // 客户 ID
+  "customer_key": "YOUR_CUSTOMER_KEY",
+  // 客户密钥
+  "customer_secret": "YOUR_CUSTOMER_SECRET",  
+   
+  // 语音识别 (ASR) 配置
+  "asr": {
+    // 识别语言，默认中文，（支持中英文混合）
+    "language": "zh-CN"
+  },
+   
+  // 系统参数配置
+  "parameters": {
+    // RTC 发流音频编码格式，支持格式："PCMU"、"PCMA"、"G722"、"OPUS"、"OPUSFB"
+    "output_audio_codec": "PCMA"
+  },
+   
+  // 语音合成 (TTS) 配置
+  "tts": {
+    // TTS 服务提供商
+    "vendor": "YOUR_TTS_VENDOR",
+    "params": {
+       
+    }
+  },
+   
+  // 会话超时配置
+  // 会话超时时间（秒）
+  "idle_timeout": 30,
+   
+  // 大语言模型 (LLM) 配置
+  "llm": {
+    // LLM 服务地址
+    "url": "YOUR_LLM_API_URL",
+    "params": {
+      // 使用的模型
+      "model": "YOUR_LLM_MODEL"
+    },
+    // LLM 服务 API Key
+    "api_key": "YOUR_LLM_API_KEY",
+    // 系统预设消息
+    "system_messages": [ 
+      {
+        "role": "system",
+        "content": "You are a helpful chatbot."
+      }
+    ],
+    // 最大历史记录数
+    "max_history": 10,
+    // 欢迎语
+    "greeting_message": "你好，我是小爱，有什么可以帮助你的吗？",
+    // 失败提示
+    "failure_message": "抱歉，我暂时无法回答您的问题..."
+  }
+}
+```
+
+### 运行服务
+
+在 `server/aiot_server_demo_example` 路径下，通过如下命令行运行服务：
+
+```shell
+$ python3 main.py
+```
+
+Server 端服务默认运行在你本地的 `5001` 端口，即 `http://localhost:5001`。你可以根据实际业务需求修改代码设置端口号。
+
+:::info[信息]
+Server 端共提供 3 个 RESTful API 为设备端运行提供业务支持，详见 [Server 端接口文档](#server-端接口文档)。
+:::
+
+## App 端配网
+
+R1 套件的 `app` 文件夹提供了一个 Android 端的蓝牙低功耗设备配网 App，可以通过蓝牙连接智能设备、配置 Wi-Fi 网络连接。
+
+该 App 基于我们的蓝牙配网库开发，提供了一个简单直观的用户界面。完成安装后，App 界面如下图所示：
+
+![app 端用户界面](https://web-cdn.agora.io/docs-portal/img/toybox/run-app.png)
+
+本节介绍如何在 App 端操作实现设备配网。
+
+### 配网流程
+
+完整的设备配网流程如下：
+
+1. 申请并获取必要权限；
+2. 获取当前 Wi-Fi 信息；
+3. 输入 Wi-Fi 密码；
+4. 扫描并找到目标蓝牙设备；
+5. 点击**建立连接**按钮连接设备；
+6. 连接成功后，点击**配置网络**按钮将 Wi-Fi 信息发送给设备；
+7. 配网完成后，点击**断开连接**按钮断开与设备的连接。
+
+### 操作步骤
+
+:::warning[注意]
+开始配网操作前，请确保：
+
+- 你的 Android 设备已开启蓝牙和位置服务。
+- 目标智能设备处于可发现模式。
+- 配网过程中保持手机与智能设备的距离不超过 5 米。
+- 提前在手机设置界面中连接 2.4G 类型的 Wi-Fi，并保证该 Wi-Fi 可以正常访问互联网，否则会配网失败。
+- 对于 Android 12 及以上的设备，需要特别注意授予 `BLUETOOTH_SCAN` 和 `BLUETOOTH_CONNECT` 的权限。
+:::
+
+1. 申请权限。首次使用 App 时，需要获取必要的权限：
+
+   1. 点击**申请权限**按钮，App 会请求蓝牙和位置权限。这些权限对于蓝牙设备的扫描和连接是必需的。
+   2. 在系统弹出的权限请求对话框中选择**允许**。
+
+2. 检查 Wi-Fi 权限。点击**检查 Wi-Fi 权限**按钮，App 会检查是否已获取 Wi-Fi 相关权限：
+   - 如果已获取，会显示**已获取 Wi-Fi 权限**的提示
+   - 如果未获取，会显示**未获取 Wi-Fi 权限**的提示
+
+3. 获取当前 Wi-Fi 信息。点击**获取当前 Wi-Fi 信息**按钮，App 会获取并显示当前连接的 Wi-Fi 网络名称 (SSID)。获取的 Wi-Fi 信息将显示在按钮下方的卡片中。
+
+4. 输入 Wi-Fi 密码。在**Wi-Fi 密码**输入框中输入当前 Wi-Fi 网络的密码，这个密码用于将智能设备连接到你的 Wi-Fi 网络。
+
+5. 扫描蓝牙设备
+
+   1. 点击**开始扫描**按钮，App 会开始扫描周围蓝牙设备。扫描过程中，按钮文字会变为**停止扫描**。
+   2. 扫描到的设备会显示在下方的列表中。
+   3. 再次点击**开始扫描**按钮可停止扫描。
+
+6. 连接设备。在设备列表中，每个设备卡片包含以下信息和操作：
+
+    - 设备名称
+    - MAC 地址
+    - 信号强度 (RSSI)
+    - **建立连接**按钮：点击此按钮与选中的设备建立蓝牙连接
+    - **配置网络**按钮：点击此按钮将之前输入的 Wi-Fi 信息发送给设备，帮助设备连接到 Wi-Fi 网络
+    - **断开连接**按钮：点击此按钮断开与设备的蓝牙连接
+
+如果配网失败，请尝试重新连接设备或重启 App。
+
+### 配网常见问题故障排除
+
+- 如果 App 无法扫描到设备，请检查蓝牙和位置服务是否已开启。
+- 如果连接设备失败，请尝试重新扫描或重启智能设备。
+- 如果配网失败，请确认 Wi-Fi 密码是否正确输入。
+
+## 跑通 Device 端
+
+本节步骤以 Ubuntu 18.04 操作系统为例。
+
+### 硬件要求
+
+R1 套件基于声网与博通 BK 联合开发的 R1 开发板构建。相关硬件功能模块如下图所示：
+
+![r1-kit-hardware](https://web-cdn.agora.io/docs-portal/img/toybox/r1-kit-hardware.png)
+
+### 下载并配置工程
+
+:::info[信息]
+本示例工程支持 bk_aidk branch ai_release/v[2.0.1] 及之后版本。示例工程默认使用 tag ai_release/v[2.0.1.2] (commit id: 3cb4544aa5cdc66ad0b4ccf3175beae152dee6c8)。
+:::
+
+1. 运行如下命令行，从 GitHub 获取 `bk_aidk` 工程：
+
+    ```shell
+    $ git clone --recurse-submodules https://github.com/bekencorp/bk_aidk.git -b ai_release/v2.0.1
+    $ git checkout ai_release/v2.0.1.8
+    $ git submodule update --recursive
+    ```
+
+2. 将示例 Demo 的 `projects` 目录复制到 `bk_aidk` 工程并完全替换的 `projects` 目录（建议先删除 BK 官方 `projects` 目录后录制）：
+
+    ```shell
+    $ rm -rf ${bk_aidk路径}/projects/
+    $ cp -r ./projects ${bk_aidk路径}/projects
+    ```
+
+3. 修改配置文件 `projects/common_components/network_transfer/agora_rtc/agora_config.h`，将 Server URL 设置为你自己部署的服务器地址，如：
+
+    ```shell
+    define CONFIG_AGENT_SERVER_URL    "http://192.168.1.100:5001"
+    ```
+
+### 编译固件
+
+在 `bk_aidk` 目录下，运行如下命令行构建示例项目固件：
+
+```shell
+$ cd ${bk_aidk路径}
+$ make bk7258 PROJECT=beken_genie
+```
+
+### 烧录固件
+
+固件构建完毕后，参考 [BK 官方说明](https://docs.bekencorp.com/arminodoc/bk_idk/bk7258/zh_CN/v2.0.1/developer-guide/config_tools/bk_tool_bkfil.html) 使用烧录程序下载固件。
+
+### 运行示例 Demo
+
+使用 Type-C 数据线接入开发板的 `USB TO UART` 接口，并与电脑连接。参考如下步骤运行示例：
+
+1. 如果还未给开发板设置 Wi-Fi 账号及密码，长按 `S1` 按键 5 秒，进入配网模式，然后和配套的 App 完成配网。
+2. 配网成功后，你可以短按 `S2` 唤醒设备，启动和 AI Agent 的通话。
+3. 对话完毕后，你可以再次短按 `S2` 退出和 AI Agent 的通话。
+4. 开发板在静默状态 3 分钟后自动进入深度休眠状态，你可以通过 `RST` 按键重启运行。
+
+:::info[信息]
+- 开发板的 `USB TO UART` 接口可同时用于电池充电。开发板插入电池或数据线后会自动启用。
+- 当烧录工具无法自动重启开发板时，可以使用 `RST` 按键手动重启恢复烧录能力。
+:::
+
+## 参考信息
+
+### Server 端接口文档
+
+Server 端共提供 3 个 RESTful API 为设备端运行提供业务支持。本节对这 3 个接口进行简要介绍。
+
+- 基础 URL 路径：`https://your-domain.com/`
+- 鉴权方式：本示例项目 Server 端未实现鉴权相关功能。你可以根据需要自行实现：
+
+  ```shell
+  Authorization: None
+  ```
+
+#### 获取设备 RTC 相关参数
+
+- 方法类型：POST
+- 接入点：`/device`
+- 请求 Body 示例：
+
+  ```json
+  {
+    "channel_name": "DEVICE_ID",
+    "uid": DEVICE_USER_ID
+  }
+  ```
+
+#### 启动对话式 AI 引擎服务
+
+- 方法类型：POST
+- 接入点：`/agent/start`
+- 请求 Body 示例：
+
+  ```json
+  {
+    "channel_name": "DEVICE_ID",
+    "uid": DEVICE_USER_ID,
+    "agent_uid": AGENT_USER_ID
+  }
+  ```
+
+#### 停止对话式 AI 引擎服务
+
+- 方法类型：POST
+- 接入点：`/agent/stop`
+- 请求 Body 示例：
+
+  ```json
+  {
+    "agent_id": "AGENT_ID"
+  }
+  ```

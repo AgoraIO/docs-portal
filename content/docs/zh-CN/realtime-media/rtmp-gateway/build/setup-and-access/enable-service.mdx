@@ -1,0 +1,51 @@
+---
+title: "开通声网服务"
+description: "了解如何在声网控制台开通实时消息 RTM，并获取接入所需的项目配置、凭据和服务权限。"
+---
+## 前提条件
+
+本文介绍如何开通 rtmp-gateway服务。
+
+开始前请确保你已经登录控制台，并有一个已经实现了[实时互动](/zh-CN/realtime-media/rtc)功能的项目。关于如何创建实时互动项目，请参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service)。
+
+## 获取 App ID
+成功创建项目后，声网会给每个项目自动分配一个 App ID 作为项目唯一标识。你可以直接在**总览**页面的**项目信息**栏，点击 App ID 右侧的复制按钮来获取当前项目的 App ID。
+
+你需要保存好复制的 App ID，后续调用 API 进行初始化等操作时需要传入你获取的 App ID。
+
+## 获取 App 证书
+创建好项目后，你可以参考如下步骤获取项目的 App 证书。
+
+在声网控制台**总览**页面的**项目信息**栏，点击**主要证书**/**次要证书**下面的复制图标，即可获取项目的主次 App 证书。
+
+## 获取客户 ID 和客户密钥
+
+声网 RESTful API 使用 HTTP 基本认证进行鉴权。进行 HTTP 基本认证时，你需要使用声网提供的客户 ID 和客户密钥生成一个 Base64 算法编码的凭证，并填入 HTTP 请求头部的 `Authorization` 字段中。
+
+参考以下步骤获取客户 ID 和客户密钥：
+
+1. 在[声网控制台](https://console.shengwang.cn/)左侧菜单点击**设置** > **RESTful API**，进入 RESTful API 页面。
+2. 在 RESTful API 页面，点击**添加密钥**按钮，就会生成一组客户 ID 和客户密钥。
+3. 在对应的客户密钥栏点击**下载**按钮。仔细阅读弹窗提示后，点击**下载**。请妥善保管下载的 `key_and_secret.txt` 文件，其中 `key` 为客户 ID，`secret` 为客户密钥。
+
+:::info[信息]
+客户 ID 和客户密钥仅用于访问 RESTful API。客户密钥只能下载一次，下载后将不在控制台保存，请妥善保管。
+:::
+
+## 开通 RTMP 网关服务
+
+第一次使用 rtmp-gateway，需要在声网控制台开通服务，步骤如下：
+
+1. 登录[控制台](https://console.shengwang.cn/)，在左上角下拉列表中切换至需要开通 rtmp-gateway服务的项目。
+
+2. 点击左侧导航栏的**全部产品**，点击**媒体服务**，找到 **rtmp-gateway**。
+
+![在控制台产品列表中找到 RTMP 网关](https://web-cdn.agora.io/docs-portal/img/rtmp-gateway/enable-1.png)
+
+3. 在 **rtmp-gateway**页面，切换到**功能配置**子页面。在 **rtmp-gateway**标签页下，勾选**状态**开关，点击**启用**。
+
+![在 RTMP 网关页面启用服务](https://web-cdn.agora.io/docs-portal/img/rtmp-gateway/enable-2.png)
+
+    开通成功后你可以点击**前往查看**按钮看到 rtmp-gateway的使用情况。
+
+![开通成功后查看 RTMP 网关使用情况](https://web-cdn.agora.io/docs-portal/img/rtmp-gateway/enable-3.png)

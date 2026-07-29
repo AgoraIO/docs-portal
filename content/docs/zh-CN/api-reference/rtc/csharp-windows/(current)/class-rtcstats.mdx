@@ -1,0 +1,255 @@
+---
+title: RtcStats
+description: 通话相关的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_rtcstats
+  sourcePath: html-docs/rtc/Csharp/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_rtcstats__prototype"></a>
+
+```text
+public class RtcStats
+    {
+        public RtcStats()
+        {
+        }
+
+        public RtcStats(uint duration, uint txBytes, uint rxBytes, uint txAudioBytes, uint txVideoBytes,
+            uint rxAudioBytes, uint rxVideoBytes, UInt16 txKBitRate, UInt16 rxKBitRate, UInt16 rxAudioKBitRate,
+            UInt16 txAudioKBitRate, UInt16 rxVideoKBitRate, UInt16 txVideoKBitRate, UInt16 lastmileDelay,
+            uint userCount, double cpuAppUsage, double cpuTotalUsage, int gatewayRtt,
+            double memoryAppUsageRatio, double memoryTotalUsageRatio, int memoryAppUsageInKbytes, int connectTimeMs, int txPacketLossRate, int rxPacketLossRate)
+        {
+            this.duration = duration;
+            this.txBytes = txBytes;
+            this.rxBytes = rxBytes;
+            this.txAudioBytes = txAudioBytes;
+            this.txVideoBytes = txVideoBytes;
+            this.rxAudioBytes = rxAudioBytes;
+            this.rxVideoBytes = rxVideoBytes;
+            this.txKBitRate = txKBitRate;
+            this.rxKBitRate = rxKBitRate;
+            this.rxAudioKBitRate = rxAudioKBitRate;
+            this.txAudioKBitRate = txAudioKBitRate;
+            this.rxVideoKBitRate = rxVideoKBitRate;
+            this.txVideoKBitRate = txVideoKBitRate;
+            this.lastmileDelay = lastmileDelay;
+            this.userCount = userCount;
+            this.cpuAppUsage = cpuAppUsage;
+            this.cpuTotalUsage = cpuTotalUsage;
+            this.gatewayRtt = gatewayRtt;
+            this.memoryAppUsageRatio = memoryAppUsageRatio;
+            this.memoryTotalUsageRatio = memoryTotalUsageRatio;
+            this.memoryAppUsageInKbytes = memoryAppUsageInKbytes;
+            this.connectTimeMs = connectTimeMs;
+            this.txPacketLossRate = txPacketLossRate;
+            this.rxPacketLossRate = rxPacketLossRate;
+        }
+        public uint duration { set; get; }
+        public uint txBytes { set; get; }
+        public uint rxBytes { set; get; }
+        public uint txAudioBytes { set; get; }
+        public uint txVideoBytes { set; get; }
+        public uint rxAudioBytes { set; get; }
+        public uint rxVideoBytes { set; get; }
+        public ushort txKBitRate { set; get; }
+        public ushort rxKBitRate { set; get; }
+        public ushort rxAudioKBitRate { set; get; }
+        public ushort txAudioKBitRate { set; get; }
+        public ushort rxVideoKBitRate { set; get; }
+        public ushort txVideoKBitRate { set; get; }
+        public ushort lastmileDelay { set; get; }
+        public uint userCount { set; get; }
+        public double cpuAppUsage { set; get; }
+        public double cpuTotalUsage { set; get; }
+        public int gatewayRtt { set; get; }
+        public double memoryAppUsageRatio { set; get; }
+        public double memoryTotalUsageRatio { set; get; }
+        public int memoryAppUsageInKbytes { set; get; }
+        public int connectTimeMs { set; get; }
+        public int txPacketLossRate { set; get; }
+        public int rxPacketLossRate { set; get; }
+    }
+```
+
+<a id="class_rtcstats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
+
+本地用户通话时长（秒），累计值。
+
+</Parameter>
+<a id="txbytes"></a>
+<Parameter name="txBytes">
+
+发送字节数 (bytes)。
+
+</Parameter>
+<a id="rxbytes"></a>
+<Parameter name="rxBytes">
+
+接收字节数 (bytes)。
+
+</Parameter>
+<a id="txaudiobytes"></a>
+<Parameter name="txAudioBytes">
+
+发送音频字节数 (bytes)，累计值。
+
+</Parameter>
+<a id="txvideobytes"></a>
+<Parameter name="txVideoBytes">
+
+发送视频字节数 (bytes)，累计值。
+
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
+
+接收音频字节数 (bytes)，累计值。
+
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
+
+接收视频字节数 (bytes)，累计值。
+
+</Parameter>
+<a id="txkbitrate"></a>
+<Parameter name="txKBitRate">
+
+发送码率 (Kbps)。
+
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
+
+接收码率 (Kbps)。
+
+</Parameter>
+<a id="rxaudiokbitrate"></a>
+<Parameter name="rxAudioKBitRate">
+
+音频接收码率 (Kbps)。
+
+</Parameter>
+<a id="txaudiokbitrate"></a>
+<Parameter name="txAudioKBitRate">
+
+音频包的发送码率 (Kbps)。
+
+</Parameter>
+<a id="rxvideokbitrate"></a>
+<Parameter name="rxVideoKBitRate">
+
+视频接收码率 (Kbps)。
+
+</Parameter>
+<a id="txvideokbitrate"></a>
+<Parameter name="txVideoKBitRate">
+
+视频发送码率 (Kbps)。
+
+</Parameter>
+<a id="lastmiledelay"></a>
+<Parameter name="lastmileDelay">
+
+客户端-接入服务器延时 (毫秒)。
+
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
+
+使用抗丢包技术前，客户端上行发送到服务器丢包率 (%)。
+
+</Parameter>
+<a id="rxpacketlossrate"></a>
+<Parameter name="rxPacketLossRate">
+
+使用抗丢包技术前，服务器下行发送到客户端丢包率 (%)。
+
+</Parameter>
+<a id="usercount"></a>
+<Parameter name="userCount">
+
+当前频道内的用户人数。
+
+</Parameter>
+<a id="cpuappusage"></a>
+<Parameter name="cpuAppUsage">
+
+当前 App 的 CPU 使用率 (%)。
+
+:::caution
+注意：
+
+- [OnLeaveChannel](/zh-CN/api-reference/rtc/csharp-windows/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuAppUsage 恒为 0。
+:::
+
+</Parameter>
+<a id="cputotalusage"></a>
+<Parameter name="cpuTotalUsage">
+
+当前系统的 CPU 使用率 (%)。
+
+对于 Windows 平台，在多核环境中，该成员指多核 CPU 的平均使用率。 计算方式为 (100 - 任务管理中显示的系统空闲进程 CPU)/100。
+
+:::caution
+注意：
+
+- [OnLeaveChannel](/zh-CN/api-reference/rtc/csharp-windows/channel#callback_irtcengineeventhandler_onleavechannel) 回调中报告的 cpuTotalUsage 恒为 0。
+:::
+
+</Parameter>
+<a id="connecttimems"></a>
+<Parameter name="connectTimeMs">
+
+从开始建立连接到成功连接的时间（毫秒）。如报告 0，则表示无效。
+
+</Parameter>
+<a id="gatewayrtt"></a>
+<Parameter name="gatewayRtt">
+
+客户端到本地路由器的往返时延 (ms)。
+
+</Parameter>
+<a id="memoryappusageratio"></a>
+<Parameter name="memoryAppUsageRatio">
+
+当前 App 的内存占比 (%)。
+
+:::caution
+注意： 该值仅作参考。受系统限制可能无法获取。
+:::
+
+</Parameter>
+<a id="memorytotalusageratio"></a>
+<Parameter name="memoryTotalUsageRatio">
+
+当前系统的内存占比 (%)。
+
+:::caution
+注意： 该值仅作参考。受系统限制可能无法获取。
+:::
+
+</Parameter>
+<a id="memoryappusageinkbytes"></a>
+<Parameter name="memoryAppUsageInKbytes">
+
+当前 App 的内存大小 (KB)。
+
+:::caution
+注意： 该值仅作参考。受系统限制可能无法获取。
+:::
+
+</Parameter>
+</ParameterList>

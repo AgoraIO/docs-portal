@@ -1,0 +1,205 @@
+---
+title: "结构体"
+---
+
+<a id="iconversationalaiapieventhandlers"></a>
+## IConversationalAIAPIEventHandlers
+
+```typescript
+export interface IConversationalAIAPIEventHandlers
+```
+
+用于会话式 AI API 模块的事件处理器接口。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+<a id="tmessagereceipt"></a>
+## TMessageReceipt
+
+```typescript
+export type TMessageReceipt = {
+  moduleType: EModuleType
+  messageType: EChatMessageType
+  message: string
+  turnId: number
+}
+```
+
+消息回执类型定义。
+
+:::info[信息]
+自 1.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `moduleType` | `EModuleType` | 发送该消息的模块类型。详见 [`EModuleType`](/zh-CN/api-reference/conversational-ai/web/enum#emoduletype)。 |
+| `messageType` | `EChatMessageType` | 消息的类型。详见 [`EChatMessageType`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagetype)。 |
+| `message` | `string` | 消息的内容。 |
+| `turnId` | `number` | 会话轮次的唯一标识符。 |
+
+<a id="ichatmessagebase"></a>
+## IChatMessageBase
+
+```typescript
+export interface IChatMessageBase {
+  messageType: EChatMessageType
+}
+```
+
+包含基础消息类型属性的 [`IChatMessageBase`](/zh-CN/api-reference/conversational-ai/web/struct#ichatmessagebase) 接口。
+
+:::info[信息]
+自 v1.7.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `messageType` | `EChatMessageType` | 消息类型，详见 [`EChatMessageType`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagetype)。 |
+
+<a id="ichatmessageimage"></a>
+## IChatMessageImage
+
+```typescript
+export interface IChatMessageImage extends IChatMessageBase {
+  messageType: EChatMessageType.IMAGE
+  uuid: string
+  url?: string
+}
+```
+
+表示一个基于图片的聊天消息，包含 `url` 形式的图片数据。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `messageType` | `EChatMessageType.IMAGE` | 消息类型，必须为 `IMAGE`。详见 [`EChatMessageType`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagetype)。 |
+| `uuid` | `string` | 图片消息的唯一标识符。 |
+| `url` | `string` | 可选。指向图片资源的 URL。 |
+
+<a id="isubtitlehelperitem"></a>
+## ISubtitleHelperItem
+
+```typescript
+export interface ISubtitleHelperItem<T> {
+  uid: string
+  stream_id: number
+  turn_id: number
+  _time: number
+  text: string
+  status: ETurnStatus
+  metadata: T | null
+}
+```
+
+字幕辅助项接口。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+定义字幕系统中单个字幕项的数据结构。包含用户 ID、流 ID、轮次 ID、时间戳、文本内容、状态和元数据等信息。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `uid` | `string` | 用户的唯一标识符。 |
+| `stream_id` | `number` | 流标识符。 |
+| `turn_id` | `number` | 会话中的轮次标识符。 |
+| `_time` | `number` | 字幕的时间戳（单位为毫秒）。 |
+| `text` | `string` | 字幕文本内容。 |
+| `status` | `ETurnStatus` | 字幕项的当前状态。详见 `ETurnStatus`。 |
+| `metadata` | `T \| null` | 附加的元数据信息。详见 `T`。 |
+
+<a id="tagentmetric"></a>
+## TAgentMetric
+
+```typescript
+export type TAgentMetric = {
+  type: EModuleType
+  name: string
+  value: number
+  timestamp: number
+}
+```
+
+[`TAgentMetric`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmetric) 用于定义智能体指标统计数据类型。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+用于在智能体运行时存储指标数据，包括指标模块类型、名称、数值和时间戳。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `EModuleType` | 指标模块类型，详见 [`EModuleType`](/zh-CN/api-reference/conversational-ai/web/enum#emoduletype)。 |
+| `name` | `string` | 指标名称。 |
+| `value` | `number` | 指标数值。 |
+| `timestamp` | `number` | 数据采集时间戳（毫秒）。 |
+
+<a id="tmoduleerror"></a>
+## TModuleError
+
+```typescript
+export type TModuleError = {
+  type: EModuleType
+  code: number
+  message: string
+  timestamp: number
+}
+```
+
+[`TModuleError`](/zh-CN/api-reference/conversational-ai/web/struct#tmoduleerror) 模块错误类型定义。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+用于表示来自不同 AI 模块的错误信息，包括错误类型、错误码、错误信息和时间戳，便于错误处理和调试。错误码为模块特定内容，应由各模块单独说明。时间戳为 Unix 毫秒格式。错误信息应具备良好可读性，并提供可操作的信息。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `type` | `EModuleType` | 发生错误的模块类型，详见 [`EModuleType`](/zh-CN/api-reference/conversational-ai/web/enum#emoduletype)。 |
+| `code` | `number` | 模块特定的错误码。 |
+| `message` | `string` | 具备可读性的错误描述信息。 |
+| `timestamp` | `number` | 错误发生时的 Unix 毫秒时间戳。 |
+
+<a id="tstatechangeevent"></a>
+## TStateChangeEvent
+
+```typescript
+export type TStateChangeEvent = {
+  state: EAgentState
+  turnID: number
+  timestamp: number
+  reason: string
+}
+```
+
+[`TStateChangeEvent`](/zh-CN/api-reference/conversational-ai/web/struct#tstatechangeevent) 为状态变更事件的数据类型定义。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `state` | `EAgentState` | 语音代理的当前状态。详见 [`EAgentState`](/zh-CN/api-reference/conversational-ai/web/enum#eagentstate)。 |
+| `turnID` | `number` | 当前会话轮次的唯一标识符。 |
+| `timestamp` | `number` | 状态变更发生时的时间戳（单位为毫秒）。 |
+| `reason` | `string` | 状态变更的原因描述。 |

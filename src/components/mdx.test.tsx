@@ -20,6 +20,9 @@ import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
+  ApiReturns,
+  ApiReturnType,
+  ApiSignature,
   getMDXComponents,
   MDXAccordionProvider,
   Parameter,
@@ -54,6 +57,18 @@ type PlatformGroupComponent = ComponentType<{
 type PlatformPanelComponent = ComponentType<{
   children: ReactNode;
   platform: string;
+}>;
+type CalloutComponent = ComponentType<{
+  children: ReactNode;
+  title?: ReactNode;
+  type?: 'info';
+}>;
+type CalloutContainerComponent = ComponentType<{
+  children: ReactNode;
+  type?: 'info';
+}>;
+type CalloutTitleComponent = ComponentType<{
+  children: ReactNode;
 }>;
 type CodeBlockPreComponent = ComponentType<{
   children: ReactNode;
@@ -100,16 +115,32 @@ type ParameterListComponent = ComponentType<{
   optional?: boolean;
   required?: boolean;
   title?: ReactNode;
+  variant?: 'cards' | 'table';
 }>;
 type ParameterComponent = ComponentType<{
-  children: ReactNode;
+  children?: ReactNode;
   defaultValue?: ReactNode;
+  direction?: ReactNode;
   name?: ReactNode;
   nullable?: boolean;
   optional?: boolean;
   possibleValues?: ReactNode;
   required?: boolean;
   type?: ReactNode;
+}>;
+type ParameterTypeComponent = ComponentType<{
+  children: ReactNode;
+}>;
+type ApiSignatureComponent = ComponentType<{
+  children: ReactNode;
+  labels?: string;
+}>;
+type ApiReturnsComponent = ComponentType<{
+  children: ReactNode;
+  title?: ReactNode;
+}>;
+type ApiReturnTypeComponent = ComponentType<{
+  children: ReactNode;
 }>;
 
 function createStorageMock(): Storage {
@@ -234,8 +265,9 @@ describe('common MDX registry', () => {
     expect(components.img).not.toBe(defaults.img);
     expect(components.table).toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
-    expect(components.Cards).toBe(defaults.Cards);
-    expect(components.Callout).toBe(defaults.Callout);
+    expect(components.Cards).not.toBe(defaults.Cards);
+    expect(components.Callout).not.toBe(defaults.Callout);
+    expect(components.CalloutContainer).not.toBe(defaults.CalloutContainer);
 
     expect(components.a).not.toBe(defaults.a);
     expect(components.CommandBlock).toBeDefined();
@@ -257,6 +289,51 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('marks SDK compliance callouts for platform download spacing', () => {
+    const components = getMDXComponents();
+    const CalloutContainer =
+      components.CalloutContainer as CalloutContainerComponent;
+    const CalloutTitle = components.CalloutTitle as CalloutTitleComponent;
+
+    const { rerender } = render(
+      <CalloutContainer type="info">
+        <CalloutTitle>SDK 合规信息公示</CalloutTitle>
+        合规说明
+      </CalloutContainer>,
+    );
+
+    expect(document.querySelector('[data-sdk-compliance]')).toHaveAttribute(
+      'data-sdk-compliance',
+      'true',
+    );
+
+    rerender(
+      <CalloutContainer type="info">
+        <CalloutTitle>信息</CalloutTitle>
+        普通说明
+      </CalloutContainer>,
+    );
+
+    expect(screen.getByText('普通说明')).toBeInTheDocument();
+    expect(document.querySelector('[data-sdk-compliance]')).toBeNull();
+  });
+
+  it('marks direct SDK compliance callouts for platform download spacing', () => {
+    const components = getMDXComponents();
+    const Callout = components.Callout as CalloutComponent;
+
+    render(
+      <Callout title="SDK 合规信息公示" type="info">
+        合规说明
+      </Callout>,
+    );
+
+    expect(document.querySelector('[data-sdk-compliance]')).toHaveAttribute(
+      'data-sdk-compliance',
+      'true',
+    );
   });
 
   it('opens MDX images in a zoom dialog', async () => {
@@ -532,6 +609,7 @@ describe('common MDX registry', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const ParameterList = components.ParameterList as ParameterListComponent;
     const Parameter = components.Parameter as ParameterComponent;
+    const ParameterType = components.ParameterType as ParameterTypeComponent;
 
     render(
       <ParameterList title="params" required>
@@ -543,12 +621,15 @@ describe('common MDX registry', () => {
         </Parameter>
         <Parameter
           defaultValue="{}"
+          direction="[in]"
           name="metadata"
           optional
           possibleValues="provider-specific object"
-          type="object"
         >
           <p>Provider-specific metadata.</p>
+          <ParameterType>
+            <a href="/en/api-reference/metadata">MetadataSchema</a>
+          </ParameterType>
           <ParameterList nullable>
             <Parameter name="metadata.request_id" nullable type="string">
               Optional request identifier.
@@ -564,6 +645,10 @@ describe('common MDX registry', () => {
     expect(screen.getAllByText('required')).toHaveLength(2);
     expect(screen.getByText('model')).toBeVisible();
     expect(screen.getByText('metadata')).toBeVisible();
+    expect(screen.getByText('[in]')).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: 'MetadataSchema' }),
+    ).toHaveAttribute('href', '/en/api-reference/metadata');
     expect(screen.getAllByText('optional')).toHaveLength(2);
     expect(screen.getByText('Default value')).toBeVisible();
     expect(screen.getByText('{}')).toBeVisible();
@@ -574,6 +659,57 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Optional request identifier.')).toBeVisible();
   });
 
+  it('renders API signatures and return values as scroll-safe rich blocks', () => {
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Signature = components.ApiSignature as ApiSignatureComponent;
+    const Returns = components.ApiReturns as ApiReturnsComponent;
+    const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
+
+    render(
+      <>
+        <Signature labels="extern static">
+          <p>
+            onPodium(userUuid: string, source?:{' '}
+            <a href="/zh-CN/api-reference/podium-source">PodiumSource</a>):{' '}
+            Promise&lt;void&gt;
+          </p>
+        </Signature>
+        <Returns>
+          <ReturnType>
+            <p>
+              Promise&lt;
+              <a href="/zh-CN/api-reference/podium-result">PodiumResult</a>
+              &gt;
+            </p>
+          </ReturnType>
+          <p>上台操作完成后的结果。</p>
+        </Returns>
+      </>,
+    );
+
+    const signature = screen
+      .getByText(/onPodium\(userUuid/)
+      .closest('[data-api-signature]');
+    const returns = screen.getByText('Returns').closest('[data-api-returns]');
+
+    expect(signature).toBeInTheDocument();
+    expect(signature?.querySelector('ul')).toBeNull();
+    expect(within(signature as HTMLElement).getByText('extern')).toBeVisible();
+    expect(within(signature as HTMLElement).getByText('static')).toBeVisible();
+    expect(
+      within(signature as HTMLElement).getByRole('link', {
+        name: 'PodiumSource',
+      }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/podium-source');
+    expect(returns).toHaveTextContent('Promise<PodiumResult>');
+    expect(returns).toHaveTextContent('上台操作完成后的结果。');
+    expect(
+      within(returns as HTMLElement).getByRole('link', {
+        name: 'PodiumResult',
+      }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/podium-result');
+  });
+
   it('registers platform sentinels and internal platform renderers', () => {
     const components = getMDXComponents() as Record<string, unknown>;
 
@@ -582,6 +718,10 @@ describe('common MDX registry', () => {
     expect(components.PlatformStructured).toBeDefined();
     expect(components.ParameterList).toBeDefined();
     expect(components.Parameter).toBeDefined();
+    expect(components.ParameterType).toBeDefined();
+    expect(components.ApiSignature).toBeDefined();
+    expect(components.ApiReturns).toBeDefined();
+    expect(components.ApiReturnType).toBeDefined();
     expect(components._PlatformTabsGroup).toBeDefined();
     expect(components._PlatformPanel).toBeDefined();
     expect(components.Slot).toBeUndefined();
@@ -592,6 +732,9 @@ describe('common MDX registry', () => {
 
     expect(ParameterList).toBe(components.ParameterList);
     expect(Parameter).toBe(components.Parameter);
+    expect(ApiSignature).toBe(components.ApiSignature);
+    expect(ApiReturns).toBe(components.ApiReturns);
+    expect(ApiReturnType).toBe(components.ApiReturnType);
   });
 
   it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
@@ -1933,6 +2076,51 @@ describe('common MDX registry', () => {
     expect(description).not.toHaveTextContent('content');
     expect(nestedParameters).toHaveTextContent('role');
     expect(nestedParameters).toHaveTextContent('content');
+  });
+
+  it('renders table parameter lists with nested fields inside the description cell', () => {
+    const components = getMDXComponents();
+    const ParameterList = components.ParameterList as ParameterListComponent;
+    const Parameter = components.Parameter as ParameterComponent;
+    const Returns = components.ApiReturns as ApiReturnsComponent;
+    const ReturnType = components.ApiReturnType as ApiReturnTypeComponent;
+
+    render(
+      <ParameterList title="参数" variant="table">
+        <Parameter name="callback" optional type="function">
+          <p>具体的事件详情。</p>
+          <Returns title="返回值">
+            <ReturnType>nested callback void</ReturnType>
+          </Returns>
+          <ParameterList title="参数" variant="table">
+            <Parameter name="evt" required type="object">
+              <Parameter name="code" required type="number" />
+            </Parameter>
+          </ParameterList>
+        </Parameter>
+      </ParameterList>,
+    );
+
+    expect(screen.getAllByText('参数名')).toHaveLength(1);
+    expect(screen.getAllByText('描述')).toHaveLength(1);
+
+    const callback = screen
+      .getByText('具体的事件详情。')
+      .closest('[data-parameter-item]');
+    const description = callback?.querySelector('[data-parameter-description]');
+    const nestedParameters = callback?.querySelector(
+      '[data-parameter-children]',
+    );
+
+    expect(callback).toHaveAttribute('data-parameter-variant', 'table');
+    expect(description).toContainElement(nestedParameters as HTMLElement);
+    expect(
+      nestedParameters?.querySelector('[data-parameter-nested="true"]'),
+    ).toBeInTheDocument();
+    expect(description).toHaveTextContent('evt');
+    expect(description).toHaveTextContent('code');
+    expect(description).not.toHaveTextContent('返回值');
+    expect(description).not.toHaveTextContent('nested callback void');
   });
 
   it('renders nested ParameterList blocks in the same dedicated child region', () => {

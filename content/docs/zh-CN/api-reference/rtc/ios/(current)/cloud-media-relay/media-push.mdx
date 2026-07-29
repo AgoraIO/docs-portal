@@ -1,0 +1,663 @@
+---
+title: 旁路推流
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_media_push
+  sourcePath: html-docs/rtc/iOS/API/toc_media_push.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_media_push"></a>
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding"></a>
+
+<a id="ariaid-title2"></a>
+
+## startRtmpStreamWithoutTranscoding:
+
+开始向 CDN 推流（不进行转码）。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__prototype"></a>
+
+```text
+- (int)startRtmpStreamWithoutTranscoding:(NSString* _Nonnull)url NS_SWIFT_NAME(startRtmpStreamWithoutTranscoding(_:));
+```
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法将音频或视频流推送到指定的 CDN 地址。该方法每次只能向一个 CDN 地址推流，如果需要推送到多个地址，请多次调用该方法。
+
+:::note
+注：
+
+- 请在加入频道后调用该方法。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
+- 如果推流失败后需要重试，必须先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url"></a>
+<Parameter name="url">
+
+旁路推流地址。格式为 RTMP 或 RTMPS，字符长度不能超过 1024 字节。不支持中文等特殊字符。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startrtmpstreamwithouttranscoding__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码配置不合法。请检查 URL 和转码配置。
+  - -7：调用该方法前未初始化 SDK。
+  - -19：旁路推流地址已被使用。请更换其他地址。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex"></a>
+
+<a id="ariaid-title3"></a>
+
+## startRtmpStreamWithoutTranscodingEx\:connection:
+
+开始向 CDN 推送未经转码的媒体流。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__prototype"></a>
+
+```text
+- (int)startRtmpStreamWithoutTranscodingEx:(NSString* _Nonnull)url
+                                connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startRtmpStreamWithoutTranscodingEx(_:connection:));
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法将音频或视频流推送到指定的 CDN 地址。该方法每次只能推送到一个 CDN 地址，如果需要推送到多个地址，请多次调用该方法。
+
+:::note
+注：
+
+- 请在加入频道后调用该方法。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播可以调用该方法。
+- 如果推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-1"></a>
+<Parameter name="url">
+
+旁路推流地址。格式为 RTMP 或 RTMPS，长度不能超过 1024 字节。不支持中文等特殊字符。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_startrtmpstreamwithouttranscodingex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码配置不合法，请检查 URL 和转码配置。
+  - -7：调用该方法前未初始化 SDK。
+  - -19：旁路推流地址已被使用，请更换地址。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding"></a>
+
+<a id="ariaid-title4"></a>
+
+## startRtmpStreamWithTranscoding\:transcoding:
+
+开始旁路推流并设置转码配置。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__prototype"></a>
+
+```text
+- (int)startRtmpStreamWithTranscoding:(NSString* _Nonnull)url transcoding:(AgoraLiveTranscoding* _Nullable)transcoding NS_SWIFT_NAME(startRtmpStream(withTranscoding:transcoding:));
+```
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法将音视频流推送到指定的 CDN 地址，并设置转码配置。该方法每次只能推送到一个 CDN 地址，如需推送到多个地址，请多次调用该方法。在一个声网项目下，默认最多支持 200 个并发的旁路推流任务。如需更高配额，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+:::note
+注：
+
+- 请在加入频道后调用该方法。
+- 只有在 `LIVE_BROADCASTING` 频道场景中的主播角色可以调用该方法。
+- 如果你在推流失败后需要重试，请先调用 [stopRtmpStream:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_stoprtmpstream) 停止推流，再调用该方法重新推流；否则，SDK 会返回与上次失败相同的错误码。
+:::
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-2"></a>
+<Parameter name="url">
+
+旁路推流地址，格式为 RTMP 或 RTMPS。地址长度不能超过 1024 字节，不支持中文等特殊字符。
+
+</Parameter>
+<a id="transcoding"></a>
+<Parameter name="transcoding">
+
+旁路推流的转码配置，详见 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startrtmpstreamwithtranscoding__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码配置不合法；请检查 `url` 和 `transcoding`。
+  - -7：调用该方法前未初始化 SDK。
+  - -19：旁路推流地址已被使用，请更换地址。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex"></a>
+
+<a id="ariaid-title5"></a>
+
+## startRtmpStreamWithTranscodingEx\:transcoding\:connection:
+
+开始旁路推流并设置转码配置。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__prototype"></a>
+
+```text
+- (int)startRtmpStreamWithTranscodingEx:(NSString* _Nonnull)url
+                            transcoding:(AgoraLiveTranscoding* _Nullable)transcoding
+                             connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startRtmpStreamWithTranscodingEx(_:transcoding:connection:));
+```
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法将音视频流推送到指定的 CDN 地址，并设置转码配置。该方法每次只能推送到一个 CDN 地址，如需推送到多个地址，请多次调用该方法。
+
+:::note
+注： 在使用该方法前，请确保已启用旁路推流服务。
+请在加入频道后调用该方法。
+仅在直播场景下的主播角色可调用该方法。
+如果推流失败后需要重试，请先调用 `stopRtmpStreamEx` 停止推流，再调用该方法重试，否则 SDK 会返回与上次失败相同的错误码。
+:::
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-3"></a>
+<Parameter name="url">
+
+旁路推流地址，格式为 RTMP 或 RTMPS。地址长度不能超过 1024 字节，不支持中文等特殊字符。
+
+</Parameter>
+<a id="transcoding-1"></a>
+<Parameter name="transcoding">
+
+旁路推流的转码配置。详见 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding)。
+
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_startrtmpstreamwithtranscodingex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：URL 或转码配置不合法，请检查 URL 和转码配置。
+  - -7：调用该方法前未初始化 SDK。
+  - -19：旁路推流地址已被使用，请更换地址。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_stoprtmpstream"></a>
+
+<a id="ariaid-title6"></a>
+
+## stopRtmpStream:
+
+停止向 CDN 推送媒体流。
+
+<a id="api_irtcengine_stoprtmpstream__prototype"></a>
+
+```text
+- (int)stopRtmpStream:(NSString* _Nonnull)url NS_SWIFT_NAME(stopRtmpStream(_:));
+```
+
+<a id="api_irtcengine_stoprtmpstream__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法停止向指定的 CDN 地址推送直播流。该方法每次只能停止向一个 CDN 地址推送媒体流。如果需要停止多个地址的推流，请多次调用该方法。
+
+<a id="api_irtcengine_stoprtmpstream__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengine_stoprtmpstream__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-4"></a>
+<Parameter name="url">
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符串长度不能超过 1024 字节。不支持中文等特殊字符。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_stoprtmpstream__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_stoprtmpstreamex"></a>
+
+<a id="ariaid-title7"></a>
+
+## stopRtmpStreamEx\:connection:
+
+停止向指定 CDN 地址推送媒体流。
+
+<a id="api_irtcengineex_stoprtmpstreamex__prototype"></a>
+
+```text
+- (int)stopRtmpStreamEx:(NSString* _Nonnull)url
+             connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(stopRtmpStreamEx(_:connection:));
+```
+
+<a id="api_irtcengineex_stoprtmpstreamex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以调用该方法停止向指定的 CDN 地址进行直播推流。该方法每次只能停止向一个 CDN 地址推送媒体流，如果需要停止多个地址的推流，请多次调用该方法。
+
+<a id="api_irtcengineex_stoprtmpstreamex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_stoprtmpstreamex__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:rtmpStreamingChangedToState\:state\:reason:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#callback_irtcengineeventhandler_onrtmpstreamingstatechanged) 回调报告推流状态。
+
+<a id="api_irtcengineex_stoprtmpstreamex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="url-5"></a>
+<Parameter name="url">
+
+旁路推流地址。格式为 RTMP 或 RTMPS。字符长度不能超过 1024 字节。不支持中文等特殊字符。
+
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_stoprtmpstreamex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_updatertmptranscoding"></a>
+
+<a id="ariaid-title8"></a>
+
+## updateRtmpTranscoding:
+
+更新旁路推流的转码配置。
+
+<a id="api_irtcengine_updatertmptranscoding__prototype"></a>
+
+```text
+- (int)updateRtmpTranscoding:(AgoraLiveTranscoding* _Nullable)transcoding NS_SWIFT_NAME(updateRtmpTranscoding(_:));
+```
+
+<a id="api_irtcengine_updatertmptranscoding__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以在开启带转码的旁路推流后，根据场景动态更新转码配置。
+
+<a id="api_irtcengine_updatertmptranscoding__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="transcoding-2"></a>
+<Parameter name="transcoding">
+
+旁路推流的转码配置。详见 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_updatertmptranscoding__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_updatertmptranscodingex"></a>
+
+<a id="ariaid-title9"></a>
+
+## updateRtmpTranscodingEx\:connection:
+
+更新旁路推流的转码配置。
+
+<a id="api_irtcengineex_updatertmptranscodingex__prototype"></a>
+
+```text
+- (int)updateRtmpTranscodingEx:(AgoraLiveTranscoding* _Nullable)transcoding
+                    connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(updateRtmpTranscodingEx(_:connection:));
+```
+
+<a id="api_irtcengineex_updatertmptranscodingex__detailed_desc"></a>
+
+声网推荐你使用更加完善的服务端推流功能，详见[实现服务端旁路推流](/zh-CN/realtime-media/media-push)。
+你可以在开启带转码的 CDN 推流后，根据场景动态更新转码配置。
+
+<a id="api_irtcengineex_updatertmptranscodingex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_updatertmptranscodingex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="transcoding-3"></a>
+<Parameter name="transcoding">
+
+旁路推流的转码配置。详见 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding)。
+
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_updatertmptranscodingex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent"></a>
+
+<a id="ariaid-title10"></a>
+
+## rtcEngine\:rtmpStreamingEventWithUrl\:eventCode:
+
+报告旁路推流过程中的事件。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__prototype"></a>
+
+```text
+- (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine rtmpStreamingEventWithUrl:(NSString* _Nonnull)url eventCode:(AgoraRtmpStreamingEvent)eventCode NS_SWIFT_NAME(rtcEngine(_:rtmpStreamingEventWithUrl:eventCode:));
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__detailed_desc"></a>
+
+:::info[自从]
+自 v3.1.0 版本新增。
+:::
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__timing"></a>
+
+### 触发时机
+
+该回调在旁路推流过程中发生事件时被触发。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingevent__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
+
+引擎对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+<a id="url-6"></a>
+<Parameter name="url">
+
+旁路推流的 URL。
+
+</Parameter>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
+
+旁路推流的事件码。详见 [AgoraRtmpStreamingEvent](/zh-CN/api-reference/rtc/ios/enum-rtmpstreamingevent)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged"></a>
+
+<a id="ariaid-title11"></a>
+
+## rtcEngine\:rtmpStreamingChangedToState\:state\:reason:
+
+RTMP 或 RTMPS 推流状态发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__prototype"></a>
+
+```text
+- (void)rtcEngine:(AgoraRtcEngineKit* _Nonnull)engine rtmpStreamingChangedToState:(NSString* _Nonnull)url state:(AgoraRtmpStreamingState)state reason:(AgoraRtmpStreamingReason)reason NS_SWIFT_NAME(rtcEngine(_:rtmpStreamingChangedToState:state:reason:));
+```
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__detailed_desc"></a>
+
+当 RTMP 或 RTMPS 推流状态发生变化时，SDK 会触发该回调，用于报告你调用 `addPublishStreamUrl` 或 `removePublishStreamUrl` 的结果。该回调返回推流地址及其当前的推流状态。当出现异常时，你可以通过 `reason` 参数中的详细错误信息进行排查。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在你调用 `addPublishStreamUrl` 或 `removePublishStreamUrl` 方法后，推流状态发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onrtmpstreamingstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine-1"></a>
+<Parameter name="engine">
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+<a id="url-7"></a>
+<Parameter name="url">
+
+CDN 推流地址。
+
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
+
+RTMP 或 RTMPS 推流状态，详见 [AgoraRtmpStreamingState](/zh-CN/api-reference/rtc/ios/enum-rtmpstreampublishstate)。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+推流的详细错误信息，详见 [AgoraRtmpStreamingReason](/zh-CN/api-reference/rtc/ios/enum-rtmpstreampublishreason)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated"></a>
+
+<a id="ariaid-title12"></a>
+
+## rtcEngineTranscodingUpdated:
+
+发布端的云端转码设置更新时触发的回调。
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__prototype"></a>
+
+```text
+- (void)rtcEngineTranscodingUpdated:(AgoraRtcEngineKit * _Nonnull)engine NS_SWIFT_NAME(rtcEngineTranscodingUpdated(_:));
+```
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__detailed_desc"></a>
+
+当你在 [startRtmpStreamWithTranscoding\:transcoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法中更新 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding) 时，SDK 会触发该回调以报告更新信息。
+
+:::note
+注： 如果你首次调用 [startRtmpStreamWithTranscoding\:transcoding:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置 [AgoraLiveTranscoding](/zh-CN/api-reference/rtc/ios/class-livetranscoding)，SDK 不会触发该回调。
+:::
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__timing"></a>
+
+### 触发时机
+
+当发布端的云端转码设置更新时触发。
+
+<a id="callback_irtcengineeventhandler_ontranscodingupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine-2"></a>
+<Parameter name="engine">
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

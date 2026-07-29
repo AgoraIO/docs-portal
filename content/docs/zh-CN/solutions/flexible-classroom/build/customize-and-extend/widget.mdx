@@ -1,0 +1,2415 @@
+---
+title: "自定义插件"
+description: "了解灵动课堂在不同平台上的自定义插件方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+## 概览
+
+由于客户对在线课堂场景存在多种多样、定制化的需求，声网提供 Widget 帮助用户根据自身的需求开发插件并内嵌至灵动课堂内。Widget 是包含界面与功能的独立插件。开发者可基于 `AgoraBaseWidget` 自定义实现一个 Widget，然后在声网 Classroom SDK 内注册该 Widget。声网 Classroom SDK 支持注册多个 Widget。 Widget 与 Widget 之间，以及 Widget 与 UI 层的其他插件都能进行通讯。
+
+## 基本步骤
+
+本节以云盘插件为例，介绍通过 Widget 实现自定义插件并在灵动课堂内嵌入该插件的基本步骤。
+
+1. 定义 `FCRCloudDiskWidget` 类：
+
+   ```kotlin
+   class FCRCloudDiskWidget : AgoraBaseWidget() {
+       override val tag = "AgoraEduNetworkDiskWidget"
+    
+       private var cloudDiskContent: AgoraEduCloudDiskWidgetContent? = null
+    
+       // 初始化 Widget
+       // 建议在这里把你自定义的 UI 布局添加到 container 中
+       override fun init(container: ViewGroup) {
+           super.init(container)
+           container.post {
+               widgetInfo?.let {
+                   // 实例化 content，并把 ClooudDisk 的 view 添加到 container 上
+                   cloudDiskContent = AgoraEduCloudDiskWidgetContent(container, it)
+               }
+           }
+       }
+    
+       // 释放相关资源
+       override fun release() {
+           cloudDiskContent?.dispose()
+           super.release()
+       }
+        
+       // content 类只是为了代码的封装性考虑，把功能细节都放在了 content 中
+       private inner class AgoraEduCloudDiskWidgetContent(val container: ViewGroup, val widgetInfo: AgoraWidgetInfo) {
+           // ...
+       }
+   }
+   ```
+
+   :::info[信息]
+   完整代码可在 [CloudClass-Android](https://github.com/AgoraIO-Community/CloudClass-Android) 仓库 `/AgoraEduUIKit/src/main/java/com/agora/edu/component/teachaids/networkdisk/FCRCloudDiskWidget.kt` 文件中查看。
+   :::
+
+2. 在 `launchConfig` 中配置插件，将该插件注册到声网 Classroom SDK 中：
+
+   ```kotlin
+   // ...
+
+   private fun configPublicCourseware(launchConfig: AgoraEduLaunchConfig) {
+       val courseware0 = CoursewareUtil.transfer(DefaultPublicCoursewareJson.data0)
+       val courseware1 = CoursewareUtil.transfer(DefaultPublicCoursewareJson.data1)
+       val publicCoursewares = ArrayList<AgoraEduCourseware>(2)
+       publicCoursewares.add(courseware0)
+       publicCoursewares.add(courseware1)
+       // map 结构的自定义数据
+       val cloudDiskExtra = mutableMapOf<String, Any>()
+       cloudDiskExtra[publicResourceKey] = publicCoursewares
+       cloudDiskExtra[configKey] = Pair(launchConfig.appId, launchConfig.userUuid)
+       val widgetConfigs = mutableListOf<AgoraWidgetConfig>()
+       widgetConfigs.add(
+           // 实例化 widgetConfig 并加入到 widgetConfig 集合中
+           AgoraWidgetConfig(widgetClass = FCRCloudDiskWidget::class.java, widgetId = AgoraWidgetDefaultId.AgoraCloudDisk.id,
+               extraInfo = cloudDiskExtra)
+       )
+       // 把 widgetConfigs 复制到 SDK 的启动参数中。调用 launch 之后灵动课堂会把 widgetConfigs 传递给内部完成注册。
+       launchConfig.widgetConfigs = widgetConfigs
+   }
+   // ...
+   ```
+
+   :::info[信息]
+   完整代码可在 [CloudClass-Android](https://github.com/AgoraIO-Community/CloudClass-Android) 仓库 `/app/src/main/java/io/agora/education/MainActivity.kt` 文件中查看。
+   :::
+
+3. 将该插件注册到 `AgoraCLassroomSDK.kt` 中的 `getWidgetConfigList` 方法里：
+
+   ```kotlin
+    private fun getWidgetConfigList(appIdExtraInfo: MutableMap<String, Any>): MutableList<AgoraWidgetConfig> {
+        val widgetConfigs = mutableListOf<AgoraWidgetConfig>()
+        widgetConfigs.add(AgoraWidgetConfig(AgoraEduEaseChatWidget::class.java, AgoraWidgetDefaultId.Chat.id, extraInfo = appIdExtraInfo))
+        // ...
+        // 在这里添加你自定义的插件
+        widgetConfigs.add(AgoraWidgetConfig(FCRCloudDiskWidget::class.java, AgoraWidgetDefaultId.AgoraCloudDisk.id))
+        return widgetConfigs
+    }
+   ```
+
+4. 实例化并初始化 widget：
+
+   ```kotlin
+   // ...
+   // 通过 widgetContext.addWidgetActiveObserver 添加一个 AgoraWidgetActiveObserver 来监听 Widget 的激活和注销
+   private val widgetActiveObserver = object : AgoraWidgetActiveObserver {
+       override fun onWidgetActive(widgetId: String) {
+           createWidget(widgetId)
+       }
+    
+       override fun onWidgetInActive(widgetId: String) {
+           destroyWidget(widgetId)
+       }
+   }
+
+   // ...
+
+   private fun createWidget(widgetId: String) {
+       if (teachAidWidgets.contains(widgetId)) {
+           AgoraLog?.w("$tag->'$widgetId' is already created, can not repeat create!")
+           return
+       }
+       AgoraLog?.w("$tag->create teachAid that of '$widgetId'")
+       // 此处通过 widgetId 搜索之前注册过的 widgetConfigs
+       val widgetConfig = eduContext?.widgetContext()?.getWidgetConfig(widgetId)
+       widgetConfig?.let { config ->
+           // 从 widgetConfig 中取出 widgetClass 并通过反射实例化一个 Widget 对象实例
+           val widget = eduContext?.widgetContext()?.create(config)
+           widget?.let {
+               AgoraLog?.w("$tag->successfully created '$widgetId'")
+               when (widgetId) {
+                   CountDown.id -> {
+                       (it as? AgoraCountDownWidget)?.getWidgetMsgObserver()?.let { observer ->
+                           eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                       }
+                   }
+                   Selector.id -> {
+                       (it as? AgoraIClickerWidget)?.getWidgetMsgObserver()?.let { observer ->
+                           eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                       }
+                   }
+                   Polling.id -> {
+                       (it as? AgoraVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                           eduContext?.widgetContext()?.addWidgetMessageObserver(observer, widgetId)
+                       }
+                   }
+               }
+               // 记录 widget
+               teachAidWidgets[widgetId] = widget
+               // 创建 widgetContainer 并与根 Container 绑定
+               val widgetContainer = managerWidgetsContainer(allWidgetsContainer = binding.root, widgetId = widgetId)
+               AgoraLog?.i("$tag->successfully created '$widgetId' container")
+               widgetContainer?.let { group ->
+                   AgoraLog?.w("$tag->initialize '$widgetId'")
+                   // 初始化 Widget
+                   widget.init(group)
+               }
+           }
+       }
+   }
+   
+   // ...
+
+   private fun destroyWidget(widgetId: String) {
+       // remove from map
+       val widget = teachAidWidgets.remove(widgetId)
+       // remove UIDataProviderListener
+       when (widgetId) {
+           CountDown.id -> {
+               (widget as? AgoraTeachAidCountDownWidget)?.getWidgetMsgObserver()?.let { observer ->
+                   eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+               }
+           }
+           Selector.id -> {
+               (widget as? AgoraTeachAidIClickerWidget)?.getWidgetMsgObserver()?.let { observer ->
+                   eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+               }
+           }
+           Polling.id -> {
+               (widget as? AgoraTeachAidVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                   eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+               }
+           }
+           AgoraCloudDisk.id -> {
+               (widget as? AgoraTeachAidVoteWidget)?.getWidgetMsgObserver()?.let { observer ->
+                   eduContext?.widgetContext()?.removeWidgetMessageObserver(observer, widgetId)
+               }
+           }
+       }
+       widget?.let {
+           handler.post { it.release() }
+           it.container?.let { group ->
+               managerWidgetsContainer(binding.root, widgetId, group)
+           }
+       }
+   }
+   ```
+
+   :::info[信息]
+   完整代码可在 [CloudClass-Android](https://github.com/AgoraIO-Community/CloudClass-Android) 仓库 `/AgoraEduUIKit/src/main/java/com/agora/edu/component/teachaids/component/AgoraEduTeachAidContainerComponent.kt` 文件中查看。
+   :::
+
+## API 参考
+
+### AgoraBaseWidget 类
+
+```kotlin
+// Widget 基础类
+abstract class AgoraBaseWidget {
+    // 当前 Widget 的父布局
+    var container: ViewGroup? = null
+ 
+    // 当前 Widget 的相关信息
+    var widgetInfo: AgoraWidgetInfo? = null
+  
+    /**
+     * 初始化当前 Widget
+     * @param container 当前 Widget 的父布局
+     */
+    open fun init(container: ViewGroup) {
+        this.container = container
+    }
+ 
+    /**
+     * 向远端同步当前 Widget 的位置和大小比例信息
+     * @param frame 当前 Widget 的位置和大小比例信息
+     * @param contextCallback 同步操作的回调监听
+     */
+    protected fun updateSyncFrame(frame: AgoraWidgetFrame, contextCallback: EduContextCallback<Unit>? = null) {
+        ......
+    }
+ 
+    /**
+     * @param properties 需要被更新的 Widget 内自定义房间属性的Map。需要传全路径："a.b.c.d": value
+     * @param cause 自定义的更新原因
+     * @param contextCallback 更新操作的回调监听
+     */
+    protected fun updateRoomProperties(
+            properties: MutableMap<String, Any>,
+            cause: MutableMap<String, Any>,
+            contextCallback: EduContextCallback<Unit>? = null
+    ) {
+        ......
+    }
+ 
+    /**
+     * @param keys 需要被删除的 Widget 内自定义用户属性的 key 值集合。需要传全路径：a.b.c.d
+     * @param cause 自定义的删除原因
+     * @param contextCallback 删除操作的回调监听
+     */
+    protected fun deleteRoomProperties(
+            keys: MutableList<String>,
+            cause: MutableMap<String, Any>,
+            contextCallback: EduContextCallback<Unit>? = null
+    ) {
+        ......
+    }
+ 
+    /**
+     * @param properties 需要被更新的 Widget 内自定义用户属性的 Map。需要传全路径："a.b.c.d": value
+     * @param cause 自定义的更新原因
+     * @param contextCallback 更新操作的回调监听
+     */
+    protected fun updateUserProperties(
+        properties: MutableMap<String, Any>,
+        cause: MutableMap<String, Any>,
+        contextCallback: EduContextCallback<Unit>? = null
+    ) {
+        ......
+    }
+ 
+    /**
+     * @param keys 需要被删除的 Widget 内自定义用户属性的 key 值集合。需要传全路径：a.b.c.d
+     * @param cause 自定义的删除原因
+     * @param contextCallback 删除操作的回调监听
+     */
+    protected fun deleteUserProperties(
+        keys: MutableList<String>,
+        cause: MutableMap<String, Any>,
+        contextCallback: EduContextCallback<Unit>? = null
+    ) {
+        ......
+    }
+ 
+    /**
+     * Widget 内部向外部发送消息
+     */
+    protected fun sendMessage(message: String) {
+        ......
+    }
+    
+    /**
+     * Widget 的位置和大小发生改变
+     * @params frame Widget 的位置和大小的比例信息
+     */
+    open fun onSyncFrameUpdated(frame: AgoraWidgetFrame) {
+    }
+ 
+    /**
+     * 接收来自 Widget 外部的消息。消息来自于 widgetContext 中的 sendMessageToWidget
+     */
+    open fun onMessageReceived(message: String) {
+    }
+ 
+    /**
+     * 本地用户信息发生更新的回调
+     */
+    open fun onLocalUserInfoUpdated(info: AgoraWidgetUserInfo) {
+        widgetInfo?.let {
+            ......
+        }
+    }
+ 
+    /**
+     * 房间信息发生更新的回调
+     */
+    open fun onRoomInfoUpdated(info: AgoraWidgetRoomInfo) {
+        widgetInfo?.let {
+            ......
+        }
+    }
+ 
+    /**
+     * Widget 内的自定义房间属性被更新的回调
+     */
+    open fun onWidgetRoomPropertiesUpdated(properties: MutableMap<String, Any>, cause: MutableMap<String, Any>?,
+                                           keys: MutableList<String>) {
+        ......
+    }
+ 
+    /**
+     * Widget 内的自定义房间属性被删除的回调
+     */
+    open fun onWidgetRoomPropertiesDeleted(properties: MutableMap<String, Any>, cause: MutableMap<String, Any>?,
+                                           keys: MutableList<String>) {
+        ......
+    }
+ 
+    /**
+     * Widget 内的自定义本地用户属性被更新的回调
+     */
+    open fun onWidgetUserPropertiesUpdated(properties: MutableMap<String, Any>,
+                                           cause: MutableMap<String, Any>?,
+                                           keys: MutableList<String>) {
+        ......
+    }
+ 
+    /**
+     * Widget 内的自定义本地用户属性被删除的回调
+     */
+    open fun onWidgetUserPropertiesDeleted(properties: MutableMap<String, Any>,
+                                           cause: MutableMap<String, Any>?,
+                                           keys: MutableList<String>) {
+        ......
+    }
+ 
+    // 释放资源
+    open fun release() {
+        ......
+    }
+}
+```
+
+### AgoraWidgetContext 类
+
+```kotlin
+// WidgetContext 能力接口
+interface AgoraWidgetContext {
+    /**
+     * 创建一个 Widget 对象实例
+     * @param config 此 Widget 对象的配置信息
+     * @return Widget 实例，为空说明创建失败
+     */
+    fun create(config: AgoraWidgetConfig): AgoraBaseWidget?
+ 
+    /**
+     * 获取 Widget 当前的位置和大小比例信息
+     * @param widgetId Widget 的唯一标识符
+     * @return widget 当前的位置和大小比例信息。比例的基准需要开发者自己多端统一。
+     */
+    fun getWidgetSyncFrame(widgetId: String): AgoraWidgetFrame?
+ 
+    /**
+     * 获取所有已注册的 Widget 的配置信息
+     */
+    fun getWidgetConfigs(): MutableList<AgoraWidgetConfig>
+ 
+    /**
+     * 获取某一个已注册的 Widget 的配置信息
+     * @param widgetId Widget的唯一标识符
+     */
+    fun getWidgetConfig(widgetId: String): AgoraWidgetConfig?
+ 
+    /**
+     * 激活某一个 Widget。
+     * 操作成功后，你将会收到 AgoraWidgetActiveObserver.onWidgetActive 的回调
+     * @param widgetId Widget 的唯一标识符
+     * @param ownerUserUuid 当前被激活的 Widget 所属用户的 userUuid
+     * @param roomProperties 初始化的房间属性
+     * @param callback 激活操作的回调监听
+     */
+    fun setWidgetActive(widgetId: String, ownerUserUuid: String? = null,
+                        roomProperties: Map<String, Any>? = null,
+                        callback: EduContextCallback<Unit>? = null)
+ 
+    /**
+     * 注销指定 Widget
+     * @param widgetId Widget 的唯一标识符
+     * @param isRemove 是否彻底删除此 Widget 在当前教室内的所有信息：
+     * - true: 彻底删除。roomProperties.widgets.'widgetId' 和 userProperties.widgets.'widgetId' 下的所有信息都会被删除
+     * - false: 仅设置 roomProperties.widgets.'widgetId'.state 为 '0'，即设置当前 Widget 为不活跃状态。不管此值传什么，都会收到 AgoraWidgetActiveObserver.onWidgetInActive 的回调。
+     * @param callback 注销操作的回调监听
+     */
+    fun setWidgetInActive(widgetId: String, isRemove: Boolean = false, callback: EduContextCallback<Unit>? = null)
+     
+    /**
+     * 获取某一个 Widget 的激活状态
+     * @param widgetId Widget 的唯一标识符
+     */
+    fun getWidgetActive(widgetId: String): Boolean
+     
+    /**
+     * 获取所有已注册的 Widget 的激活状态
+     * @param widgetId Widget 的唯一标识符
+     */
+    fun getAllWidgetActive(): Map<String, Boolean>
+ 
+    /**
+     * 添加一个 AgoraWidgetActiveObserver 监听器，监听此 Widget 是否活跃
+     */
+    fun addWidgetActiveObserver(observer: AgoraWidgetActiveObserver, widgetId: String)
+ 
+    /**
+     * 删除一个 AgoraWidgetActiveObserver 监听器
+     */
+    fun removeWidgetActiveObserver(observer: AgoraWidgetActiveObserver, widgetId: String)
+ 
+    /**
+     * 添加一个 AgoraWidgetMessageObserver 监听器，监听此 Widget 发出的所有消息
+     */
+    fun addWidgetMessageObserver(observer: AgoraWidgetMessageObserver, widgetId: String)
+ 
+    /**
+     * 删除一个 AgoraWidgetMessageObserver 监听器
+     */
+    fun removeWidgetMessageObserver(observer: AgoraWidgetMessageObserver, widgetId: String)
+ 
+    /**
+     * 向某一个 Widget 内部发送消息
+     */
+    fun sendMessageToWidget(msg: String, widgetId: String)
+}
+```
+
+### 类型定义
+
+```kotlin
+// Widget 配置类
+data class AgoraWidgetConfig(
+    // 此 WidgetId 对应的自定义 Widget 类
+    var widgetClass: Class<out AgoraBaseWidget>,
+    // 当前 Widget 的唯一标识符
+    var widgetId: String,
+    // 未选中(默认或未激活)状态下的 icon
+    val image: Int? = null,
+    // 选中或激活状态下的 icon
+    val selectedImage: Int? = null,
+    // 自定义数据，Widget 实例化后被传递给 AgoraWidgetInfo.extraInfo
+    var extraInfo: Any? = null
+)
+ 
+// Widget 信息类
+data class AgoraWidgetInfo(
+    var roomInfo: AgoraWidgetRoomInfo,
+    var localUserInfo: AgoraWidgetUserInfo,
+    // 当前 Widget 的唯一标识符
+    val widgetId: String,
+    // 外部传入的自定义数据
+    val extraInfo: Any?,
+    // 当前 Widget 内的自定义房间属性
+    var roomProperties: MutableMap<String, Any>?,
+    // 当前 Widget 内的自定义本地用户属性
+    var localUserProperties: MutableMap<String, Any>?
+)
+ 
+ 
+// Widget 的位置和大小比例信息类
+data class AgoraWidgetFrame(
+    val x: Float? = null,
+    val y: Float? = null,
+    val width: Float? = null,
+    val height: Float? = null
+)
+
+// Widget 内的用户信息类
+data class AgoraWidgetUserInfo(
+        val userUuid: String,
+        val userName: String,
+        val userRole: Int
+)
+ 
+// Widget 内的房间信息类
+data class AgoraWidgetRoomInfo(
+        val roomUuid: String,
+        val roomName: String,
+        val roomType: Int
+)
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+## 概览
+灵动课堂提供 Widget 帮助用户根据自身的需求开发插件并内嵌至课堂内。Widget 是包含界面与功能的独立插件。开发者可基于 `AgoraBaseWidget` 自定义实现一个 Widget，在 Classroom SDK 内注册该 Widget，然后在教室使用该 widget。Classroom SDK 支持注册多个 Widget。
+
+在灵动课堂教育场景中，基于 Widget 实现的业务功能包括白板，倒计时，投票器以及答题器等。
+
+:::info[信息]
+声网提供了预定义的基于 Widget 实现的插件，包括倒计时、投票器和答题器等。你可在 [apaas-extapp-ios](https://github.com/AgoraIO-Community/apaas-extapp-ios) 仓库中查看这些插件的源码。
+:::
+
+## 技术原理
+
+![Widget 技术原理示意图](https://web-cdn.agora.io/docs-files/1681117887041)
+
+* 灵动课堂以 Widget ID 作为 widget 的唯一标识符，在服务端分配独立的数据空间。
+* 基于 `AgoraBaseWidget` 的子类与 `AgoraEduWidgetContext` 提供的 API 与回调，可以灵活实现各种业务功能。
+* 灵动课堂不会涉及 Widget 的具体业务功能，在 Widget 外部通过通用的 API 与回调进行通讯。
+
+## 功能介绍
+
+### 房间属性与用户属性
+
+* 每个继承于 `AgoraBaseWidget` 的子类，当通过 `AgoraEduWidgetContext.create` 来创建对象后，可通过属性 `info` 来获取到当前的房间信息和用户信息。
+* 可以通过 `updateWidgetRoomProperties`，`deleteWidgetRoomProperties`，`updateWidgetUserProperties`，`deleteWidgetUserProperties` 来增加或删除自定义属性，从而实现业务逻辑。
+* Widget 对象创建后自定义的属性变化，可以通过 `onWidgetRoomPropertiesUpdated`，`onWidgetRoomPropertiesDeleted`，`onWidgetUserPropertiesUpdated`，`onWidgetUserPropertiesDeleted` 进行监听。
+
+### 消息发送与接收
+
+* Widget 向外发送消息: 调用 Widget 的 `sendMessage` 方法发送消息。同时可以通过 `AgoraEduWidgetContext` 的 `addWidgetMessageObserver` 注册某个对象成为消息的观察者，来监听发出的消息。
+
+* 向 Widget 发送消息: 调用 `AgoraEduWidgetContext` 的 `sendMessageToWidget:message` 方法。
+
+* Widget 接收消息：`onMessageReceived` 回调可以接收到外部发送进来的消息。
+
+### 活跃状态
+Widget 中定义了 widget 的状态（`Activity`），开发者可以通过 `AgoraEduWidgetContext` 的 `setWidgetActive` 与 `setWidgetInactive` 来进行状态切换，以及通过 `AgoraEduWidgetContext` 的 `addWidgetActivityObserver` 来注册监听。
+
+开发者可以通过 `Activity` 来控制 Widget 的行为，例如当状态为非活跃时销毁 Widget 对象或者隐藏 Widget 对象的视图。
+
+- 当调用 `setWidgetActive` 方法将一个 `userUuid` 作为 `ownerUuid` 的时候，会将该 Widget 与该 `UserUuid` 绑定，当该用户离开房间时，会触发绑定的 `WidgetId` 的 `onWidgetInactive` 回调。
+
+- 当调用 `setWidgetInactive` 方法将 `true` 传入 `isRemove` 参数时，会将 Widget 存在服务端的 `roomProperties` 数据删除。
+
+### 位置与尺寸同步
+如果本地 widget 的位置与尺寸发生变化，开发者可以通过 `AgoraEduWidgetContext` 的 `updateWidgetSyncFrame` 来更新远端 Widget 的位置与尺寸，以及通过 `AgoraEduWidgetContext` 的 `addObserverForWidgetSyncFrame` 来注册监听。
+
+## 实现步骤
+
+本节以倒计时插件为例，介绍通过 Widget 实现自定义插件并在灵动课堂内嵌入该插件的基本步骤。
+
+:::info[信息]
+可在 [apaas-extapp-ios](https://github.com/AgoraIO-Community/apaas-extapp-ios) 仓库中 `/AgoraWidgets/CountdownTimer` 文件夹查看倒计时插件的完整代码。
+:::
+
+### 1. 实现 Widget
+
+参考以下步骤实现自定义 Widget:
+
+1. 在 `AgoraCountdownTimerWidget` 中引入 `AgoraWidget` 库：
+
+   ```swift
+   import AgoraWidget
+   ```
+
+2. 在 `onLoad` 方法中初始化 Widget 的界面与数据：
+
+   ```swift
+   public override func onLoad() {
+        super.onLoad()
+        initViews() 
+        initConstraints()
+        updateData()
+        updateViewFrame()
+   }
+   ```
+
+3. 监听 `onWidgetRoomPropertiesUpdated` 与 `onMessageReceived` 回调，进行数据更新：
+
+   ```swift
+    public override func onWidgetRoomPropertiesUpdated(_ properties: [String : Any],
+                                                       cause: [String : Any]?,
+                                                       keyPaths: [String],
+                                                       operatorUser: AgoraWidgetUserInfo?) {
+        super.onWidgetRoomPropertiesUpdated(properties,
+                                            cause: cause,
+                                            keyPaths: keyPaths,
+                                            operatorUser: operatorUser)
+        updateData()
+    }
+    
+    public override func onMessageReceived(_ message: String) {
+        super.onMessageReceived(message)
+        
+        if let serverTime = message.toSyncTimestamp() {
+            timeDiff = serverTime - Int64(Date().timeIntervalSince1970) * 1000
+        }
+    }
+   ```
+
+4. 如果需要改动 Widget 尺寸，可以通过 `sendMessage` 向外发出一条消息，由外部监听消息的父容器来更新 Widget 的尺寸：
+
+   ```swift
+   func updateViewFrame() {
+        let size = ["width": countdownView.neededSize.width,
+                    "height": countdownView.neededSize.height]
+        
+        guard let message = ["size": size].jsonString() else {
+            return
+        }
+        
+        sendMessage(message)
+    }
+   ```
+
+### 2. 在声网 Classroom SDK 中注册 Widget
+
+在 `AgoraEduLaunchConfig.widgets` 中加入倒计时插件的配置 `AgoraWidgetConfig`，通过调用 `launch` 时将实现好的插件注册到声网 Classroom SDK 中。参考以下示例代码：
+
+```swift
+let launchConfig = AgoraEduLaunchConfig(userName: userName,          
+                                           userUuid: userUuid,          
+                                           userRole: userRole,          
+                                           roomName: roomName,          
+                                           roomUuid: roomUuid,          
+                                           roomType: roomType,          
+                                           appId: appId,                
+                                           token: token,                
+                                           startTime: nil,              
+                                           duration: nil,               
+                                           region: region,              
+                                           mediaOptions: mediaOptions,  
+                                           userProperties: nil)         
+ 
+let widgetId = "countdownTimer"
+ 
+launchConfig.widgets[widgetId] = AgoraWidgetConfig(with: AgoraCountdownTimerWidget.self,
+                                                   widgetId: widgetId)
+ 
+AgoraClassroomSDK.launch(launchConfig,
+                         success: successBlock,
+                         failure: failureBlock)
+```
+
+### 3. 在教室中使用 Widget
+
+![](https://web-cdn.agora.io/docs-files/1681893136272)
+
+在灵动课堂的交互层设计中，Widget 由对应的 `UIComponent` 管理。这样可以隐藏 `UIComponent` 与 Widget 之间较为复杂的通信方式，并在架构上与其他 `UIComponent` 保持一致。
+
+参考以下步骤实现在教室中使用倒计时插件的相关逻辑：
+
+1. 通过 `AgoraEduContext.widget` 的 `addWidgetActivityObserver` 方法将 `AgoraClassToolsUIComponent` 添加为 widget activity 的观察者，监听 activity 的回调：
+
+   ```swift
+       // 调用 addWidgetActivityObserver 方法
+       widgetController.add(self) 
+   ```
+
+2. 通过 `AgoraWidgetActivityObserver` 监听 activity 的回调，并相应创建或销毁 widget：
+
+   ```swift
+   extension AgoraClassToolsViewController: AgoraWidgetActivityObserver {
+
+       // 收到 onWidgetActive 回调时，创建 Widget
+       func onWidgetActive(_ widgetId: String) {
+           createWidget(widgetId)
+       }
+        
+       // 收到 onWidgetInactive 回调时，销毁 Widget
+       func onWidgetInactive(_ widgetId: String) {
+           releaseWidget(widgetId)
+       }
+   }
+   ```
+
+3. 创建 `AgoraCountdownTimer` 的 Widget 对象并实现 Widget 在本地客户端的通讯：
+
+    ```swift
+    // 调用 createWidget 方法创建 AgoraCountdownTimer 的 Widget 对象
+    func createWidget(_ widgetId: String) {
+        let widgetController = contextPool.widget
+        
+        guard widgetIdList.contains(widgetId),
+        // 调用 getWidgetConfig 获取 AgoraCountdownTimer 的 AgoraWidgetConfig
+            let config = widgetController.getWidgetConfig(widgetId) else {
+            return
+        }
+        
+        if let _ = getWidget(widgetId) {
+            return
+        }
+        
+        // 通过 AgoraWidgetContext 的 addObserverForWidgetSyncFrame 将 AgoraClassToolsViewController 添加为 Widget syncFrame 的观察者，监听位置和尺寸变化的回调
+        widgetController.addObserver(forWidgetSyncFrame: self,
+                                     widgetId: widgetId)
+        // 通过 AgoraWidgetContext 的  addWidgetMessageObserver 将 AgoraClassToolsViewController 添加为 widget message 的观察者，监听消息的回调
+        widgetController.add(self,
+                             widgetId: widgetId)
+        
+        let widget = widgetController.create(config)
+        
+        view.addSubview(widget.view)
+        
+        switch widgetId {
+        case PollWidgetId:
+            pollWidget = widget
+        case CountdownTimerWidgetId:
+            countdownTimerWidget = widget
+        case PopupQuizWidgetId:
+            popupQuizWidget = widget
+        default:
+            return
+        }
+        
+        sendWidgetCurrentTimestamp(widgetId)
+    }
+    
+    func sendWidgetCurrentTimestamp(_ widgetId: String) {
+        let syncTimestamp = contextPool.monitor.getSyncTimestamp()
+        let tsDic = ["syncTimestamp": syncTimestamp]
+        
+        if let string = tsDic.jsonString() {
+            // 调用 sendMessage 方法，将当前时间戳发给 Widget 
+            contextPool.widget.sendMessage(toWidget: widgetId,
+                                           message: string)
+        }
+    }
+    ```
+
+4. 监听 `syncFrame` 的回调方法：
+
+    ```swift
+    extension AgoraClassToolsViewController: AgoraWidgetSyncFrameObserver {
+        // 当收到 syncFrame 回调时，AgoraClassToolsViewController 作为父容器更新 Widget 的位置与尺寸
+        func onWidgetSyncFrameUpdated(_ syncFrame: CGRect,
+                                      widgetId: String,
+                                      operatorUser: AgoraWidgetUserInfo?) {
+            let size = getWidgetSize(widgetId)
+            updateWidgetFrame(widgetId,
+                              size: size)
+        }
+    }
+    ```
+
+5. 监听 message 的回调方法：
+
+    ```swift
+    extension AgoraClassToolsViewController: AgoraWidgetMessageObserver {
+        // 当收到 message 回调时，AgoraClassToolsViewController 作为父容器来更新 Widget 的尺寸
+        func onMessageReceived(_ message: String,
+                               widgetId: String) {
+            if let size = parseSizeMessage(widgetId: widgetId,
+                                           message: message) {
+                updateWidgetFrame(widgetId,
+                                  size: size)
+            }
+        }
+    }
+    ```
+
+## API 参考
+
+### AgoraBaseWidget
+
+`AgoraBaseWidget` 是 Widget 的基类，实现具体功能的 Widget 需要继承该类。
+
+#### 成员
+
+| 名称   | 类型              | 描述                                               |
+| :----- | :---------------- | :------------------------------------------------- |
+| `info` | `AgoraWidgetInfo` | Widget 所需的基础信息 |
+| `view` | View              | Widget 的容器 view                                 |
+
+#### updateWidgetRoomProperties
+
+```objc
+- (void)updateWidgetRoomProperties:(NSDictionary<NSString *, id> *)properties
+                             cause:(NSDictionary<NSString *, id> * _Nullable)cause
+                           success:(AgoraWidgetCompletion _Nullable)success
+                           failure:(AgoraWidgetErrorCompletion _Nullable)failure
+```
+
+更新 Widget 的房间属性。更新的房间属性会通过 `onWidgetRoomPropertiesUpdated` 回调传给 Widget。
+
+**参数**
+
+| 名称         | 类型               | 描述                                                      |
+| :----------- | :----------------- | :-------------------------------------------------------- |
+| `properties` | `NSDictionary<NSString *, id>` | 需要更新的 properties，支持 keyPath，只需要传入待更新的值 |
+| `cause`      | `NSDictionary<NSString *, id>` | 更新的原因，可以为空                                      |
+| `success`    | `AgoraWidgetCompletion`   | 请求成功                                                  |
+| `failure`    | `AgoraWidgetErrorCompletion`  | 请求失败，返回一个 error                                  |
+
+#### deleteWidgetRoomProperties
+
+```objc
+- (void)deleteWidgetRoomProperties:(NSArray<NSString *> *)keyPaths
+                             cause:(NSDictionary<NSString *, id> * _Nullable)cause
+                           success:(AgoraWidgetCompletion _Nullable)success
+                           failure:(AgoraWidgetErrorCompletion _Nullable)failure
+```
+
+删除 Widget 的房间属性。删除的房间属性会通过 `onWidgetRoomPropertiesDeleted` 回调传给 Widget。
+
+**参数**
+
+| 名称      | 类型               | 描述                                            |
+| :-------- | :----------------- | :---------------------------------------------- |
+| `keyPaths`    | `NSArray<NSString *>`    | 需要删除的 properties 的 key 数组，支持 keyPath |
+| `cause`   | `NSDictionary<NSString *, id>` | 更新的原因，可以为空                            |
+| `success` | `AgoraWidgetCompletion`   | 请求成功                                        |
+| `failure` | `AgoraWidgetErrorCompletion`  | 请求失败，返回一个 error                        |
+
+#### updateWidgetUserProperties
+
+```objc
+- (void)updateWidgetUserProperties:(NSDictionary<NSString *, id> *)properties
+                             cause:(NSDictionary<NSString *, id> * _Nullable)cause
+                           success:(AgoraWidgetCompletion _Nullable)success
+                           failure:(AgoraWidgetErrorCompletion _Nullable)failure
+```
+
+更新 Widget 的用户属性。更新的房间属性会通过 `onWidgetUserPropertiesUpdated` 回调传给 Widget。
+
+**参数**
+
+| 名称         | 类型               | 描述                                                      |
+| :----------- | :----------------- | :-------------------------------------------------------- |
+| `properties` | `NSDictionary<NSString *, id>` | 需要更新的 properties，支持 keyPath，只需要传入待更新的值 |
+| `cause`      | `NSDictionary<NSString *, id>` | 更新的原因，可以为空                                      |
+| `success`    | `AgoraWidgetCompletion `   | 请求成功                                                  |
+| `failure`    | `AgoraWidgetErrorCompletion `  | 请求失败，返回一个 error                                  |
+
+#### deleteWidgetUserProperties
+
+```objc
+- (void)deleteWidgetUserProperties:(NSArray<NSString *> *)keyPaths
+                             cause:(NSDictionary<NSString *, id> * _Nullable)cause
+                           success:(AgoraWidgetCompletion _Nullable)success
+                           failure:(AgoraWidgetErrorCompletion _Nullable)failure
+```
+
+删除 Widget 的用户属性。删除的房间属性会通过 `onWidgetUserPropertiesDeleted` 回调传给 Widget。
+
+**参数**
+
+| 名称      | 类型               | 描述                                            |
+| :-------- | :----------------- | :---------------------------------------------- |
+| `keyPaths`    | `NSArray<NSString *>`    | 需要删除的 properties 的 key 数组，支持 keyPath |
+| `cause`   | `NSDictionary<NSString *, id>` | 更新的原因，可以为空                            |
+| `success` | `AgoraWidgetCompletion`   | 请求成功                                        |
+| `failure` | `AgoraWidgetErrorCompletion`  | 请求失败，返回一个 error                        |
+
+#### sendMessage
+
+```objc
+- (void)sendMessage:(NSString *)message
+```
+
+发送消息给观察者。
+
+**参数**
+
+| 名称      | 类型     | 描述     |
+| :-------- | :------- | :------- |
+| `message` | `NSString ` | 消息内容 |
+
+#### onLoad
+
+```objc
+- (void)onLoad
+```
+
+Widget 加载完成。
+
+#### onMessageReceived
+
+```objc
+- (void)onMessageReceived:(NSString *)message
+```
+
+Widget 收到消息。
+
+调用 WidgetContext 协议中的 `sendMessageToWidget` 后会触发此回调。
+
+**参数**
+
+| 名称      | 类型     | 描述     |
+| :-------- | :------- | :------- |
+| `message` | `NSString` | 消息内容 |
+
+#### onLocalUserInfoUpdated
+
+```objc
+- (void)onLocalUserInfoUpdated:(AgoraWidgetUserInfo *)localUserInfo
+```
+
+Widget 收到本地用户信息更新。
+
+**参数**
+
+| 名称            | 类型                  | 描述           |
+| :-------------- | :-------------------- | :------------- |
+| `localUserInfo` | `AgoraWidgetUserInfo` | 本地的用户信息 |
+
+#### onRoomInfoUpdated
+
+```objc
+- (void)onRoomInfoUpdated:(AgoraWidgetRoomInfo *)roomInfo
+```
+
+Widget 收到房间信息更新。
+
+**参数**
+
+| 名称       | 类型                  | 描述     |
+| :--------- | :-------------------- | :------- |
+| `roomInfo` | `AgoraWidgetRoomInfo` | 房间信息 |
+
+#### onWidgetRoomPropertiesUpdated
+
+```objc
+- (void)onWidgetRoomPropertiesUpdated:(NSDictionary<NSString *,id> *)properties
+                                cause:(NSDictionary<NSString *,id> * _Nullable)cause
+                             keyPaths:(NSArray<NSString *> *)keyPaths
+                         operatorUser:(AgoraWidgetUserInfo *_Nullable)operatorUser
+```
+
+Widget 收到房间属性更新。
+
+**参数**
+
+| 名称         | 类型               | 描述                      |
+| :----------- | :----------------- | :------------------------ |
+| `properties`   | `NSDictionary<NSString *,id>` | 最终完整的属性            |
+| `cause`        | `Map<String: Any>` | 原因，可以为空            |
+| `keyPaths`     | `NSArray<NSString *>`    | 发生改变的属性的 key 数组 |
+| `operatorUser` | `AgoraWidgetUserInfo` | 操作者，可以为空            |
+
+#### onWidgetRoomPropertiesDeleted
+
+```objc
+- (void)onWidgetRoomPropertiesDeleted:(NSDictionary<NSString *,id> * _Nullable)properties
+                                cause:(NSDictionary<NSString *,id> * _Nullable)cause
+                             keyPaths:(NSArray<NSString *> *)keyPaths
+                         operatorUser:(AgoraWidgetUserInfo *_Nullable)operatorUser
+```
+
+Widget 收到房间属性删除。
+
+**参数**
+
+| 名称         | 类型               | 描述                  |
+| :----------- | :----------------- | :-------------------- |
+| `properties`   | `NSDictionary<NSString *,id>` | 最终完整的属性            |
+| `cause`        | `Map<String: Any>` | 原因，可以为空            |
+| `keyPaths`     | `NSArray<NSString *>`    | 发生改变的属性的 key 数组 |
+| `operatorUser` | `AgoraWidgetUserInfo` | 操作者，可以为空            |
+
+#### onWidgetUserPropertiesUpdated
+
+```objc
+- (void)onWidgetUserPropertiesUpdated:(NSDictionary<NSString *,id> *)properties
+                                cause:(NSDictionary<NSString *,id> * _Nullable)cause
+                             keyPaths:(NSArray<NSString *> *)keyPaths
+                         operatorUser:(AgoraWidgetUserInfo *_Nullable)operatorUser
+```
+
+Widget 收到用户属性更新。
+
+**参数**
+
+| 名称         | 类型               | 描述                  |
+| :----------- | :----------------- | :-------------------- |
+| `properties`   | `NSDictionary<NSString *,id>` | 最终完整的属性            |
+| `cause`        | `Map<String: Any>` | 原因，可以为空            |
+| `keyPaths`     | `NSArray<NSString *>`    | 发生改变的属性的 key 数组 |
+| `operatorUser` | `AgoraWidgetUserInfo` | 操作者，可以为空            |
+
+#### onWidgetUserPropertiesDeleted
+
+```objc
+- (void)onWidgetUserPropertiesDeleted:(NSDictionary<NSString *,id> * _Nullable)properties
+                                cause:(NSDictionary<NSString *,id> * _Nullable)cause
+                             keyPaths:(NSArray<NSString *> *)keyPaths
+                         operatorUser:(AgoraWidgetUserInfo *_Nullable)operatorUser;                                   
+```
+
+Widget 收到用户属性删除。
+
+**参数**
+
+| 名称         | 类型               | 描述                  |
+| :----------- | :----------------- | :-------------------- |
+| `properties`   | `NSDictionary<NSString *,id>` | 最终完整的属性            |
+| `cause`        | `Map<String: Any>` | 原因，可以为空            |
+| `keyPaths`     | `NSArray<NSString *>`    | 发生改变的属性的 key 数组 |
+| `operatorUser` | `AgoraWidgetUserInfo` | 操作者，可以为空            |
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+本文介绍灵动课堂插件机制的原理、灵动课堂内置插件、以及如何新增一个插件。
+:::warning[注意]
+本文仅针对 2.7.0 或之后版本。如需了解如何在 2.4.x、2.5.x、2.6.x 版本上自定义插件，请参考[自定义插件（旧版）](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-previous)。
+:::
+
+## 技术原理
+
+灵动课堂提供插件机制，帮助开发者集成源代码时为业务需求扩展课堂能力。同时，通过插件机制，可以降低自定义业务与课堂的代码耦合程度，从而降低集成源代码的后期升级难度。
+
+插件的技术原理分为：
+
+- 插件的生命周期
+- 插件的实例化
+- 插件的挂载点
+- 插件的通信机制
+- 插件用于扩展教室能力
+- 插件用于调用教室能力
+- 插件的轨迹同步和多语言能力
+
+详见 [插件的技术原理介绍](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-tech)。
+
+## 内置插件
+
+本节介绍灵动课堂内置的插件。它们扩展了教室能力，主要分为以下两类：
+
+- 通用类插件
+  - 互动白板
+  - IM 模块
+  - 内嵌浏览器
+  - 视频同步播放器（目前仅支持 Youtube 视频）
+  - 水印插件
+- 教具类插件
+  - 答题器
+  - 投票器
+  - 计时器
+
+内置插件的源代码均位于 [apaas-widgets-web 仓库](https://github.com/AgoraIO-Community/apaas-widgets-web) 的 `src/gallery` 目录下，具体如下：
+
+| 插件名称                           | 源代码文件夹             | UMD 模块名                   |
+| :--------------------------------- | :----------------------- | :--------------------------- |
+| 互动白板（适配 AgoraEduSDK）       | `classroom/whiteboard`   | `FcrBoardWidget`             |
+| IM 模块（适配 AgoraEduSDK）        | `classroom/im`           | `AgoraHXChatWidget`          |
+| 内嵌浏览器（适配 AgoraEduSDK）     | `classroom/webview`      | `FcrWebviewWidget`           |
+| 视频同步播放器（适配 AgoraEduSDK） | `classroom/stream-media` | `FcrStreamMediaPlayerWidget` |
+| 答题器（适配 AgoraEduSDK）         | `classroom/answer`       | `AgoraSelector`              |
+| 投票器（适配 AgoraEduSDK）         | `classroom/vote`         | `AgoraPolling`               |
+| 计时器（适配 AgoraEduSDK）         | `classroom/counter`      | `AgoraCountdown`             |
+| 水印插件（适配 AgoraEduSDK）       | `classroom/watermark`    | `FcrWatermarkWidget`         |
+| 内嵌浏览器（适配 AgoraProctorSDK） | `proctor/webview`        | `FcrWebviewWidget`           |
+| 聊天室（适配 FcrUIScene）          | `scene/chatroom`         | `FcrChatroom`                |
+| 计时器（适配 FcrUIScene）          | `scene/countdown`        | `FcrCountdownWidget`         |
+| 投票器（适配 FcrUIScene）          | `scene/polling`          | `FcrPollingWidget`           |
+| 答题器（适配 FcrUIScene）          | `scene/quiz`             | `FcrPopupQuizWidget`         |
+| 视频同步播放器（适配 FcrUIScene）  | `scene/stream-media`     | `FcrStreamMediaPlayerWidget` |
+| 内嵌浏览器（适配 FcrUIScene）      | `scene/webview`          | `FcrWebviewWidget`           |
+| 互动白板（适配 FcrUIScene）        | `scene/whiteboard`       | `FcrBoardWidget`             |
+
+## 新增一个插件
+
+如果你需要新增一个自定义的 Widget，可继承灵动课堂提供的 `AgoraWidgetBase` 类，并实现抽象方法。
+
+如下是 `AgoraWidgetBase` 类的定义：
+
+```typescript
+/**
+ * AgoraWidgetBase 提供 Widget 相关操作 API
+ */
+export declare abstract class AgoraWidgetBase
+  implements
+    AgoraWidgetRenderable,
+    AgoraMultiInstanceWidget,
+    AgoraWidgetLifecycle
+{
+  constructor(
+    _widgetController: AgoraWidgetController,
+    _classroomStore: EduClassroomStore
+  );
+
+  onInstall(controller: AgoraWidgetController): void {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  onUninstall(controller: AgoraWidgetController): void {}
+
+  locate(): HTMLElement | undefined | null;
+  render(dom: HTMLElement): void;
+  unload(): void;
+
+  setInstanceId(instId: string): void;
+
+  get instanceId(): string;
+  /**
+   * Widget 的名称
+   */
+  abstract get widgetName(): string;
+  /**
+   * Widget 唯一 ID
+   */
+  get widgetId(): string;
+  /**
+   * 容器层级
+   */
+  get zContainer(): 0 | 10;
+  /**
+   * 轨迹同步控制器
+   */
+  get trackController(): AgoraWidgetTrackController | undefined;
+  /**
+   * Widget 控制器
+   */
+  get widgetController(): AgoraWidgetController;
+  /**
+   * 教室 Store
+   */
+  get classroomStore(): EduClassroomStore;
+  /**
+   * 共享 UIStore
+   */
+  get shareUIStore(): EduShareUIStore;
+  /**
+   * 教室配置
+   */
+  get classroomConfig(): import("agora-edu-core").EduClassroomConfig;
+  /**
+   * UI 配置
+   */
+  get uiConfig(): FcrUIConfig;
+  /**
+   * 主题
+   */
+  get theme(): FcrTheme;
+  /**
+   * 广播消息
+   */
+  broadcast(messageType: string, message: unknown): void;
+  /**
+   * 增加广播监听
+   */
+  addBroadcastListener(
+    listener: Omit<AgoraWidgetMessageListener, "widgetId">
+  ): void;
+  /**
+   * 移除广播监听
+   */
+  removeBroadcastListener(
+    listener: Omit<AgoraWidgetMessageListener, "widgetId">
+  ): void;
+  /**
+   * 更新 Widget 属性
+   */
+  updateWidgetProperties(properties: any): Promise<{
+    data: any;
+  }>;
+  /**
+   * 更新 Widget 用户属性
+   */
+  updateWidgetUserProperties(userProperties: any): void;
+  /**
+   * 删除 Widget
+   * @returns
+   */
+  deleteWidget(): Promise<{
+    data: any;
+  }>;
+  /**
+   * 删除 Widget 用户属性
+   * @param keys
+   * @returns
+   */
+  removeWidgetUserProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+  /**
+   * 删除 Widget 扩展属性
+   * @param keys
+   * @returns
+   */
+  removeWidgetExtraProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+  /**
+   * 设置 Widget 为活跃状态
+   * @param props
+   */
+  setActive(props?: any): void;
+  /**
+   * 设置 Widget 为不活跃状态
+   */
+  setInactive(props?: any): void;
+  /**
+   * 获取最新组件层级
+   */
+  get latestZIndex(): number;
+}
+```
+
+下面展示新增一个 `ExampleWidget` 来实现一个最基本的 Widget。
+
+### 使用 AgoraWidgetBase
+
+创建一个继承 `AgoraWidgetBase` 类的 `ExampleWidget` 类：
+
+```typescript
+import { AgoraWidgetBase } from "agora-common-libs";
+
+export class ExampleWidget extends AgoraWidgetBase {
+  private _dom?: HTMLElement;
+  /**
+   * 全局唯一的 Widget 名称
+   */
+  get widgetName(): string {
+    return "example";
+  }
+
+  /**
+   * 挂载点
+   * 重写 locate 方法返回一个节点，则此 Widget 将渲染在此节点内部
+   *
+   * 这里将 ExampleWidget 挂载至白板区域
+   */
+  locate(): HTMLElement | null | undefined {
+    return document.querySelector(".widget-slot-board") as HTMLElement;
+  }
+
+  /**
+   * Widget 节点已挂载
+   * 此时可以在 DOM 节点进行自定义渲染
+   */
+  render(dom: HTMLElement): void {
+    dom.innerHTML = "This is a custom widget";
+    dom.style.height = "100%";
+    dom.style.display = "flex";
+    dom.style.alignItems = "center";
+    dom.style.justifyContent = "center";
+    this._dom = dom;
+  }
+
+  /**
+   * 卸载组件
+   * 此时可以把相关资源释放掉
+   */
+  unload(): void {
+    this._dom = undefined;
+  }
+}
+```
+
+### launch 中传入自定义的 Widget
+
+通过 [`launch`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 中的 `widgets` 参数传入自定义 Widget：
+
+```typescript
+const widgets = {
+  // 需要引入上面定义的 ExampleWidget 类
+  'example': ExampleWidget
+};
+// 填入你使用的 SDK 名或场景 API 名，如 AgoraEduSDK、AgoraProctorSDK、FcrUIScene
+AgoraEduSDK.launch(dom, {
+  // ...
+  widgets: widgets
+  // ...
+});
+```
+
+### 创建自定义的 Widget
+
+因为这里的 `ExampleWidget` 为自定义的 Widget，因此需要手动调用 `WidgetUIStore` 中的 `createWidget` 方法来创建 Widget：
+
+```typescript
+// 修改 WidgetUIStore 代码
+// 文件路径 packages/agora-classroom-sdk/src/infra/stores/common/widget/index.ts 文件中加入代码
+
+onInstall() {
+  // ...
+  // 在 onInstall 方法最后加入此代码，在房间加入成功后打开指定 Widget
+  this._disposers.push(
+    reaction(
+      () => this.classroomStore.widgetStore.widgetController,
+      () => {
+        // 打开我们新增的 widget ，此处传入 widgetName
+        this.createWidget('example');
+      },
+    ),
+  );
+}
+```
+
+### 插件效果展示
+
+启动教室，插件挂载后的效果如图：
+
+![挂载效果示意图](https://web-cdn.agora.io/docs-files/1664451212904)
+
+## 基于现有能力快速创建一个教具插件
+
+灵动课堂为开发者提供了一个名为 `AgoraEduToolWidget` 的抽象类，此类实现了教具类插件通用能力的封装。继承此类可以获得插件的轨迹同步、层级控制能力，以及对 UI 窗口显示与隐藏的控制逻辑。
+
+配合 `ControlledModal` 组件，你还可快速实现内置教具插件的外层窗口，减少大量的通用逻辑代码开发，具体实现请参考仓库 `src/gallery` 目录下 `answer`、`vote`、`counter` 文件夹，其中提供灵动课堂内置的教具类插件源代码。
+
+如下是 `AgoraEduToolWidget` 类的定义：
+
+```typescript
+/**
+ * AgoraEduToolWidget 是教学道具 Widget 基类
+ * 使用 AgoraEduToolWidget 抽象类作为基类，实现可拖拽且轨迹同步的 Widget
+ */
+export abstract class AgoraEduToolWidget
+  extends AgoraWidgetBase
+  implements AgoraWidgetLifecycle, AgoraTrackSyncedWidget
+{
+  private _controlStateCallbacks: CallableFunction[] = [];
+  onUninstall(controller: AgoraWidgetController) {}
+  onInstall(controller: AgoraWidgetController) {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  get track(): Track {
+    return this.trackController?.track!;
+  }
+  get zIndex(): number {
+    return this.trackController?.zIndex || 0;
+  }
+  @bound
+  updateZIndexToRemote(zIndex: number) {
+    this.trackController?.updateRemoteZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  @bound
+  updateZIndexToLocal(zIndex: number) {
+    this.trackController?.updateLocalZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  get draggable(): boolean {
+    return true;
+  }
+  get resizable(): boolean {
+    return false;
+  }
+  get dragHandleClassName(): string {
+    return "modal-title";
+  }
+  get dragCancelClassName(): string {
+    return "modal-title-close";
+  }
+  get boundaryClassName(): string {
+    return "widget-slot-board";
+  }
+  get minWidth(): number {
+    return 0;
+  }
+  get minHeight(): number {
+    return 0;
+  }
+  get trackMode(): AgoraWidgetTrackMode {
+    return AgoraWidgetTrackMode.TrackPositionOnly;
+  }
+
+  @bound
+  updateToRemote(
+    end: boolean,
+    pos: Point,
+    dimensions?: Dimensions | undefined,
+    options?: TrackOptions | undefined
+  ): void {
+    this.trackController?.updateRemoteTrack(end, pos, dimensions, options);
+  }
+
+  @bound
+  updateToLocal(trackProps: AgoraWidgetTrack): void {
+    this.trackController?.updateLocalTrack(trackProps);
+  }
+
+  @bound
+  handleResize({ width, height }: { width: number; height: number }) {
+    this.track.setRealDimensions({ width, height });
+    this.track.reposition(false);
+  }
+
+  @bound
+  handleClose() {
+    this.widgetController.broadcast(
+      AgoraExtensionWidgetEvent.WidgetBecomeInactive,
+      this.widgetId
+    );
+
+    this.deleteWidget();
+  }
+
+  @bound
+  setVisibility(visible: boolean) {
+    this.track.setVisibility(visible);
+  }
+
+  get controlled() {
+    return this.hasPrivilege;
+  }
+
+  addControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks.push(cb);
+  }
+
+  removeControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks = this._controlStateCallbacks.filter(
+      (c) => c !== cb
+    );
+  }
+
+  fireControlStateChanged() {
+    const controled = this.controlled;
+    this._controlStateCallbacks.forEach((cb) => {
+      cb(controled);
+    });
+  }
+}
+```
+
+<a id="rollbook"></a>
+下面展示如何基于灵动课堂现有 Widget 能力创建一个课前点名的教具插件。完整源代码见
+[rollbook-widget](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/feature/2.9.0/rollbook-widget)。
+
+### 使用 AgoraEduToolWidget
+
+创建一个继承 `AgoraEduToolWidget` 类的 `RollbookWidget` 类：
+
+```typescript
+// src/gallery/rollbook/index.tsx
+import { render, unmountComponentAtNode } from "react-dom";
+import { App } from "./app";
+import { AgoraEduToolWidget } from "../../common/edu-tool-widget";
+import { observable, action, computed } from "mobx";
+import type { AgoraWidgetController } from "agora-edu-core";
+import { bound } from "agora-common-libs";
+import { AgoraExtensionWidgetEvent } from "../../events";
+import { SvgIconEnum } from "../../components/svg-img";
+
+/**
+ * 点名册：
+ * 老师可通过此插件知晓教室内学生参与情况
+ */
+export class RollbookWidget extends AgoraEduToolWidget {
+  private _dom?: HTMLElement;
+  @observable
+  started = false;
+  @observable
+  checkInList: string[] = [];
+  /**
+   * 是否已签到
+   */
+  @computed
+  get isCheckedIn() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    return this.checkInList.includes(userUuid);
+  }
+  /**
+   * 签到用户名列表
+   */
+  @computed
+  get checkInUserNames() {
+    return this.checkInList.map((userUuid) => {
+      // 从UserStore中取出对应用户ID的用户名(此方法不适用于大班课班型)
+      const user = this.classroomStore.userStore.studentList.get(userUuid);
+      return user?.userName || "Unknown";
+    });
+  }
+  /**
+   * 窗口初始宽度
+   */
+  get minWidth(): number {
+    return 400;
+  }
+  /**
+   * 窗口初始高度
+   */
+  get minHeight(): number {
+    return 200;
+  }
+
+  /**
+   * 全局唯一的Widget名称
+   */
+  get widgetName(): string {
+    return "rollbook";
+  }
+
+  /**
+   * 控制Widget是否可控
+   */
+  get hasPrivilege(): boolean {
+    return [1, 3].includes(this.classroomConfig.sessionInfo.role);
+  }
+
+  get checkInPropKey() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    const key = `checkIn-${userUuid}`;
+    return key;
+  }
+
+  /**
+   * Widget节点已挂载，此时可以在DOM节点进行自定义渲染
+   * @param dom
+   */
+  render(dom: HTMLElement): void {
+    this._dom = dom;
+    dom.style.width = "100%";
+    dom.style.height = "100%";
+    // 使用 React 渲染UI组件
+    render(<App widget={this} />, dom);
+  }
+
+  /**
+   * 组件卸载，此时可以把相关资源释放掉
+   */
+  unload(): void {
+    if (this._dom) {
+      // 卸载 React 组件
+      unmountComponentAtNode(this._dom);
+    }
+    this._dom = undefined;
+  }
+
+  onCreate(properties: any, userProperties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onPropertiesUpdate(properties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onInstall(controller: AgoraWidgetController) {
+    // 将插件入口注册到工具箱
+    controller.broadcast(AgoraExtensionWidgetEvent.RegisterCabinetTool, {
+      id: this.widgetName,
+      name: "Rollbook",
+      iconType: SvgIconEnum.ANSWER,
+    });
+  }
+
+  onUninstall(controller: AgoraWidgetController) {
+    // 将插件入口从工具箱移除
+    controller.broadcast(
+      AgoraExtensionWidgetEvent.UnregisterCabinetTool,
+      this.widgetName
+    );
+  }
+
+  @action
+  private _handlePropertiesChange(properties: any) {
+    const list: string[] = [];
+    Object.keys(properties.extra || {}).forEach((k) => {
+      if (k.startsWith("checkIn-")) {
+        const userUuid = k.replace("checkIn-", "");
+        list.push(userUuid);
+      }
+    });
+    this.checkInList = list;
+    this.started = !!properties.extra?.started;
+  }
+
+  /**
+   * 学生点击签到，更新签到列表
+   */
+  @bound
+  checkIn() {
+    this.updateWidgetProperties({
+      extra: {
+        // 使用Key-Value方式可以以增量方式更新Widget
+        [this.checkInPropKey]: true,
+      },
+    });
+  }
+
+  /**
+   * 老师点击开始签到，更新Widget状态
+   */
+  @bound
+  startCheckIn() {
+    this.setActive({ extra: { started: 1 } });
+  }
+}
+```
+
+### 增加渲染组件
+
+增加一个 App 组件用于在插件窗口中渲染：
+
+```typescript
+// src/gallery/rollbook/app.tsx
+import React, { FC } from "react";
+import { observer } from "mobx-react";
+import { ControlledModal } from "../../common/edu-tool-modal";
+import { EduRoleTypeEnum } from "agora-edu-core";
+import { RollbookWidget } from ".";
+import { Button } from "../../components/button";
+
+/**
+ * 点名册组件
+ * @param param0
+ * @returns
+ */
+export const App: FC<{ widget: RollbookWidget }> = ({ widget }) => {
+  const view = () =>
+    [EduRoleTypeEnum.teacher, EduRoleTypeEnum.assistant].includes(
+      widget.classroomConfig.sessionInfo.role
+    ) ? (
+      <TeacherView widget={widget} />
+    ) : (
+      <StudentView widget={widget} />
+    );
+  return (
+    <ControlledModal
+      onFullScreen={() => {}}
+      canRefresh={false}
+      widget={widget}
+      title="Rollbook"
+      onCancel={widget.handleClose}
+    >
+      {view()}
+    </ControlledModal>
+  );
+};
+
+/**
+ * 老师界面显示实际签到列表
+ */
+export const TeacherView: FC<{ widget: RollbookWidget }> = observer(
+  ({ widget }) => {
+    const started = widget.started;
+    return (
+      <div>
+        {started ? (
+          <React.Fragment>
+            <div>Check-In List:</div>
+            <ul>
+              {widget.checkInUserNames.map((item, i) => (
+                <li key={i.toString()}>{item}</li>
+              ))}
+            </ul>
+          </React.Fragment>
+        ) : (
+          <Button onClick={widget.startCheckIn}>Start Check-In</Button>
+        )}
+      </div>
+    );
+  }
+);
+
+/**
+ * 学生显示签到按钮
+ */
+export const StudentView: FC<{ widget: RollbookWidget }> = observer(
+  ({ widget }) => {
+    const isCheckedIn = widget.isCheckedIn;
+    return (
+      <div>
+        <Button onClick={widget.checkIn} disabled={isCheckedIn}>
+          {isCheckedIn ? "Checked-In" : "Check-In"}
+        </Button>
+      </div>
+    );
+  }
+);
+```
+
+### launch 中传入自定义的 Widget
+
+通过 [`launch`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 中的 `widgets` 参数传入自定义 Widget：
+
+```typescript
+const widgets = {
+  // 需要引入上面定义的 RollbookWidget 类
+  'rollbook': RollbookWidget
+};
+// 填入你使用的 SDK 名或场景 API 名，如 AgoraEduSDK、AgoraProctorSDK、FcrUIScene
+AgoraEduSDK.launch(dom, {
+...
+widgets: widgets
+...
+});
+```
+
+### 插件效果展示
+
+启动教室，可以在工具箱中找到此插件，如图：
+
+![工具箱中的插件入口](https://web-cdn.agora.io/docs-files/1664451141797)
+
+老师点击并打开插件的界面效果：
+
+![Rollbook 插件打开后的界面效果](https://web-cdn.agora.io/docs-files/1664451162107)
+
+老师点击 **Start Check-In** 后，学生端显示插件的效果：
+
+![学生端的插件效果](https://web-cdn.agora.io/docs-files/1664451174839)
+
+学生点击 **Check-In** 后，老师端签到列表中显示此学生的效果：
+
+![教师端学生签到列表效果](https://web-cdn.agora.io/docs-files/1664451187164)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+本文介绍灵动课堂插件机制的原理、灵动课堂内置插件、以及如何新增一个插件。
+:::warning[注意]
+本文仅针对 2.7.0 或之后版本。如需了解如何在 2.4.x、2.5.x、2.6.x 版本上自定义插件，请参考[自定义插件（旧版）](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-previous)。
+:::
+
+## 技术原理
+
+灵动课堂提供插件机制，帮助开发者集成源代码时为业务需求扩展课堂能力。同时，通过插件机制，可以降低自定义业务与课堂的代码耦合程度，从而降低集成源代码的后期升级难度。
+
+插件的技术原理分为：
+
+- 插件的生命周期
+- 插件的实例化
+- 插件的挂载点
+- 插件的通信机制
+- 插件用于扩展教室能力
+- 插件用于调用教室能力
+- 插件的轨迹同步和多语言能力
+
+详见 [插件的技术原理介绍](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-tech)。
+
+## 内置插件
+
+本节介绍灵动课堂内置的插件。它们扩展了教室能力，主要分为以下两类：
+
+- 通用类插件
+  - 互动白板
+  - IM 模块
+  - 内嵌浏览器
+  - 视频同步播放器（目前仅支持 Youtube 视频）
+  - 水印插件
+- 教具类插件
+  - 答题器
+  - 投票器
+  - 计时器
+
+内置插件的源代码均位于 [apaas-widgets-web 仓库](https://github.com/AgoraIO-Community/apaas-widgets-web) 的 `src/gallery` 目录下，具体如下：
+
+| 插件名称                           | 源代码文件夹             | UMD 模块名                   |
+| :--------------------------------- | :----------------------- | :--------------------------- |
+| 互动白板（适配 AgoraEduSDK）       | `classroom/whiteboard`   | `FcrBoardWidget`             |
+| IM 模块（适配 AgoraEduSDK）        | `classroom/im`           | `AgoraHXChatWidget`          |
+| 内嵌浏览器（适配 AgoraEduSDK）     | `classroom/webview`      | `FcrWebviewWidget`           |
+| 视频同步播放器（适配 AgoraEduSDK） | `classroom/stream-media` | `FcrStreamMediaPlayerWidget` |
+| 答题器（适配 AgoraEduSDK）         | `classroom/answer`       | `AgoraSelector`              |
+| 投票器（适配 AgoraEduSDK）         | `classroom/vote`         | `AgoraPolling`               |
+| 计时器（适配 AgoraEduSDK）         | `classroom/counter`      | `AgoraCountdown`             |
+| 水印插件（适配 AgoraEduSDK）       | `classroom/watermark`    | `FcrWatermarkWidget`         |
+| 内嵌浏览器（适配 AgoraProctorSDK） | `proctor/webview`        | `FcrWebviewWidget`           |
+| 聊天室（适配 FcrUIScene）          | `scene/chatroom`         | `FcrChatroom`                |
+| 计时器（适配 FcrUIScene）          | `scene/countdown`        | `FcrCountdownWidget`         |
+| 投票器（适配 FcrUIScene）          | `scene/polling`          | `FcrPollingWidget`           |
+| 答题器（适配 FcrUIScene）          | `scene/quiz`             | `FcrPopupQuizWidget`         |
+| 视频同步播放器（适配 FcrUIScene）  | `scene/stream-media`     | `FcrStreamMediaPlayerWidget` |
+| 内嵌浏览器（适配 FcrUIScene）      | `scene/webview`          | `FcrWebviewWidget`           |
+| 互动白板（适配 FcrUIScene）        | `scene/whiteboard`       | `FcrBoardWidget`             |
+
+## 新增一个插件
+
+如果你需要新增一个自定义的 Widget，可继承灵动课堂提供的 `AgoraWidgetBase` 类，并实现抽象方法。
+
+如下是 `AgoraWidgetBase` 类的定义：
+
+```typescript
+/**
+ * AgoraWidgetBase 提供 Widget 相关操作 API
+ */
+export declare abstract class AgoraWidgetBase
+  implements
+    AgoraWidgetRenderable,
+    AgoraMultiInstanceWidget,
+    AgoraWidgetLifecycle
+{
+  constructor(
+    _widgetController: AgoraWidgetController,
+    _classroomStore: EduClassroomStore
+  );
+
+  onInstall(controller: AgoraWidgetController): void {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  onUninstall(controller: AgoraWidgetController): void {}
+
+  locate(): HTMLElement | undefined | null;
+  render(dom: HTMLElement): void;
+  unload(): void;
+
+  setInstanceId(instId: string): void;
+
+  get instanceId(): string;
+  /**
+   * Widget 的名称
+   */
+  abstract get widgetName(): string;
+  /**
+   * Widget 唯一 ID
+   */
+  get widgetId(): string;
+  /**
+   * 容器层级
+   */
+  get zContainer(): 0 | 10;
+  /**
+   * 轨迹同步控制器
+   */
+  get trackController(): AgoraWidgetTrackController | undefined;
+  /**
+   * Widget 控制器
+   */
+  get widgetController(): AgoraWidgetController;
+  /**
+   * 教室 Store
+   */
+  get classroomStore(): EduClassroomStore;
+  /**
+   * 共享 UIStore
+   */
+  get shareUIStore(): EduShareUIStore;
+  /**
+   * 教室配置
+   */
+  get classroomConfig(): import("agora-edu-core").EduClassroomConfig;
+  /**
+   * UI 配置
+   */
+  get uiConfig(): FcrUIConfig;
+  /**
+   * 主题
+   */
+  get theme(): FcrTheme;
+  /**
+   * 广播消息
+   */
+  broadcast(messageType: string, message: unknown): void;
+  /**
+   * 增加广播监听
+   */
+  addBroadcastListener(
+    listener: Omit<AgoraWidgetMessageListener, "widgetId">
+  ): void;
+  /**
+   * 移除广播监听
+   */
+  removeBroadcastListener(
+    listener: Omit<AgoraWidgetMessageListener, "widgetId">
+  ): void;
+  /**
+   * 更新 Widget 属性
+   */
+  updateWidgetProperties(properties: any): Promise<{
+    data: any;
+  }>;
+  /**
+   * 更新 Widget 用户属性
+   */
+  updateWidgetUserProperties(userProperties: any): void;
+  /**
+   * 删除 Widget
+   * @returns
+   */
+  deleteWidget(): Promise<{
+    data: any;
+  }>;
+  /**
+   * 删除 Widget 用户属性
+   * @param keys
+   * @returns
+   */
+  removeWidgetUserProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+  /**
+   * 删除 Widget 扩展属性
+   * @param keys
+   * @returns
+   */
+  removeWidgetExtraProperties(keys: string[]): Promise<{
+    data: any;
+  }>;
+  /**
+   * 设置 Widget 为活跃状态
+   * @param props
+   */
+  setActive(props?: any): void;
+  /**
+   * 设置 Widget 为不活跃状态
+   */
+  setInactive(props?: any): void;
+  /**
+   * 获取最新组件层级
+   */
+  get latestZIndex(): number;
+}
+```
+
+下面展示新增一个 `ExampleWidget` 来实现一个最基本的 Widget。
+
+### 使用 AgoraWidgetBase
+
+创建一个继承 `AgoraWidgetBase` 类的 `ExampleWidget` 类：
+
+```typescript
+import { AgoraWidgetBase } from "agora-common-libs";
+
+export class ExampleWidget extends AgoraWidgetBase {
+  private _dom?: HTMLElement;
+  /**
+   * 全局唯一的 Widget 名称
+   */
+  get widgetName(): string {
+    return "example";
+  }
+
+  /**
+   * 挂载点
+   * 重写 locate 方法返回一个节点，则此 Widget 将渲染在此节点内部
+   *
+   * 这里将 ExampleWidget 挂载至白板区域
+   */
+  locate(): HTMLElement | null | undefined {
+    return document.querySelector(".widget-slot-board") as HTMLElement;
+  }
+
+  /**
+   * Widget 节点已挂载
+   * 此时可以在 DOM 节点进行自定义渲染
+   */
+  render(dom: HTMLElement): void {
+    dom.innerHTML = "This is a custom widget";
+    dom.style.height = "100%";
+    dom.style.display = "flex";
+    dom.style.alignItems = "center";
+    dom.style.justifyContent = "center";
+    this._dom = dom;
+  }
+
+  /**
+   * 卸载组件
+   * 此时可以把相关资源释放掉
+   */
+  unload(): void {
+    this._dom = undefined;
+  }
+}
+```
+
+### launch 中传入自定义的 Widget
+
+通过 [`launch`](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk#launch) 中的 `widgets` 参数传入自定义 Widget：
+
+```typescript
+const widgets = {
+  // 需要引入上面定义的 ExampleWidget 类
+  'example': ExampleWidget
+};
+// 填入你使用的 SDK 名，如 AgoraEduSDK、AgoraProctorSDK
+AgoraEduSDK.launch(dom, {
+  // ...
+  widgets: widgets
+  // ...
+});
+```
+
+### 创建自定义的 Widget
+
+因为这里的 `ExampleWidget` 为自定义的 Widget，因此需要手动调用 `WidgetUIStore` 中的 `createWidget` 方法来创建 Widget：
+
+```typescript
+// 修改 WidgetUIStore 代码
+// 文件路径 packages/agora-classroom-sdk/src/infra/stores/common/widget/index.ts 文件中加入代码
+
+onInstall() {
+  // ...
+  // 在 onInstall 方法最后加入此代码，在房间加入成功后打开指定 Widget
+  this._disposers.push(
+    reaction(
+      () => this.classroomStore.widgetStore.widgetController,
+      () => {
+        // 打开我们新增的 widget ，此处传入 widgetName
+        this.createWidget('example');
+      },
+    ),
+  );
+}
+```
+
+### 插件效果展示
+
+启动教室，插件挂载后的效果如图：
+
+![挂载效果示意图](https://web-cdn.agora.io/docs-files/1664451212904)
+
+## 基于现有能力快速创建一个教具插件
+
+灵动课堂为开发者提供了一个名为 `AgoraEduToolWidget` 的抽象类，此类实现了教具类插件通用能力的封装。继承此类可以获得插件的轨迹同步、层级控制能力，以及对 UI 窗口显示与隐藏的控制逻辑。
+
+配合 `ControlledModal` 组件，你还可快速实现内置教具插件的外层窗口，减少大量的通用逻辑代码开发，具体实现请参考仓库 `src/gallery` 目录下 `answer`、`vote`、`counter` 文件夹，其中提供灵动课堂内置的教具类插件源代码。
+
+如下是 `AgoraEduToolWidget` 类的定义：
+
+```typescript
+/**
+ * AgoraEduToolWidget 是教学道具 Widget 基类
+ * 使用 AgoraEduToolWidget 抽象类作为基类，实现可拖拽且轨迹同步的 Widget
+ */
+export abstract class AgoraEduToolWidget
+  extends AgoraWidgetBase
+  implements AgoraWidgetLifecycle, AgoraTrackSyncedWidget
+{
+  private _controlStateCallbacks: CallableFunction[] = [];
+  onUninstall(controller: AgoraWidgetController) {}
+  onInstall(controller: AgoraWidgetController) {}
+  onCreate(properties: any, userProperties: any): void {}
+  onPropertiesUpdate(properties: any): void {}
+  onUserPropertiesUpdate(userProperties: any): void {}
+  onDestroy(): void {}
+  get track(): Track {
+    return this.trackController?.track!;
+  }
+  get zIndex(): number {
+    return this.trackController?.zIndex || 0;
+  }
+  @bound
+  updateZIndexToRemote(zIndex: number) {
+    this.trackController?.updateRemoteZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  @bound
+  updateZIndexToLocal(zIndex: number) {
+    this.trackController?.updateLocalZIndex(zIndex);
+    this.widgetController.zIndexController.setZIndex(zIndex);
+  }
+  get draggable(): boolean {
+    return true;
+  }
+  get resizable(): boolean {
+    return false;
+  }
+  get dragHandleClassName(): string {
+    return "modal-title";
+  }
+  get dragCancelClassName(): string {
+    return "modal-title-close";
+  }
+  get boundaryClassName(): string {
+    return "widget-slot-board";
+  }
+  get minWidth(): number {
+    return 0;
+  }
+  get minHeight(): number {
+    return 0;
+  }
+  get trackMode(): AgoraWidgetTrackMode {
+    return AgoraWidgetTrackMode.TrackPositionOnly;
+  }
+
+  @bound
+  updateToRemote(
+    end: boolean,
+    pos: Point,
+    dimensions?: Dimensions | undefined,
+    options?: TrackOptions | undefined
+  ): void {
+    this.trackController?.updateRemoteTrack(end, pos, dimensions, options);
+  }
+
+  @bound
+  updateToLocal(trackProps: AgoraWidgetTrack): void {
+    this.trackController?.updateLocalTrack(trackProps);
+  }
+
+  @bound
+  handleResize({ width, height }: { width: number; height: number }) {
+    this.track.setRealDimensions({ width, height });
+    this.track.reposition(false);
+  }
+
+  @bound
+  handleClose() {
+    this.widgetController.broadcast(
+      AgoraExtensionWidgetEvent.WidgetBecomeInactive,
+      this.widgetId
+    );
+
+    this.deleteWidget();
+  }
+
+  @bound
+  setVisibility(visible: boolean) {
+    this.track.setVisibility(visible);
+  }
+
+  get controlled() {
+    return this.hasPrivilege;
+  }
+
+  addControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks.push(cb);
+  }
+
+  removeControlStateListener(cb: (controlled: boolean) => void) {
+    this._controlStateCallbacks = this._controlStateCallbacks.filter(
+      (c) => c !== cb
+    );
+  }
+
+  fireControlStateChanged() {
+    const controled = this.controlled;
+    this._controlStateCallbacks.forEach((cb) => {
+      cb(controled);
+    });
+  }
+}
+```
+
+<a id="rollbook"></a>
+下面展示如何基于灵动课堂现有 Widget 能力创建一个课前点名的教具插件。完整源代码见
+[rollbook-widget](https://github.com/AgoraIO-Community/apaas-widgets-web/tree/feature/2.9.0/rollbook-widget)。
+
+### 使用 AgoraEduToolWidget
+
+创建一个继承 `AgoraEduToolWidget` 类的 `RollbookWidget` 类：
+
+```typescript
+// src/gallery/rollbook/index.tsx
+import { render, unmountComponentAtNode } from "react-dom";
+import { App } from "./app";
+import { AgoraEduToolWidget } from "../../common/edu-tool-widget";
+import { observable, action, computed } from "mobx";
+import type { AgoraWidgetController } from "agora-edu-core";
+import { bound } from "agora-common-libs";
+import { AgoraExtensionWidgetEvent } from "../../events";
+import { SvgIconEnum } from "../../components/svg-img";
+
+/**
+ * 点名册：
+ * 老师可通过此插件知晓教室内学生参与情况
+ */
+export class RollbookWidget extends AgoraEduToolWidget {
+  private _dom?: HTMLElement;
+  @observable
+  started = false;
+  @observable
+  checkInList: string[] = [];
+  /**
+   * 是否已签到
+   */
+  @computed
+  get isCheckedIn() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    return this.checkInList.includes(userUuid);
+  }
+  /**
+   * 签到用户名列表
+   */
+  @computed
+  get checkInUserNames() {
+    return this.checkInList.map((userUuid) => {
+      // 从UserStore中取出对应用户ID的用户名(此方法不适用于大班课班型)
+      const user = this.classroomStore.userStore.studentList.get(userUuid);
+      return user?.userName || "Unknown";
+    });
+  }
+  /**
+   * 窗口初始宽度
+   */
+  get minWidth(): number {
+    return 400;
+  }
+  /**
+   * 窗口初始高度
+   */
+  get minHeight(): number {
+    return 200;
+  }
+
+  /**
+   * 全局唯一的Widget名称
+   */
+  get widgetName(): string {
+    return "rollbook";
+  }
+
+  /**
+   * 控制Widget是否可控
+   */
+  get hasPrivilege(): boolean {
+    return [1, 3].includes(this.classroomConfig.sessionInfo.role);
+  }
+
+  get checkInPropKey() {
+    const { userUuid } = this.classroomConfig.sessionInfo;
+    const key = `checkIn-${userUuid}`;
+    return key;
+  }
+
+  /**
+   * Widget节点已挂载，此时可以在DOM节点进行自定义渲染
+   * @param dom
+   */
+  render(dom: HTMLElement): void {
+    this._dom = dom;
+    dom.style.width = "100%";
+    dom.style.height = "100%";
+    // 使用 React 渲染UI组件
+    render(<App widget={this} />, dom);
+  }
+
+  /**
+   * 组件卸载，此时可以把相关资源释放掉
+   */
+  unload(): void {
+    if (this._dom) {
+      // 卸载 React 组件
+      unmountComponentAtNode(this._dom);
+    }
+    this._dom = undefined;
+  }
+
+  onCreate(properties: any, userProperties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onPropertiesUpdate(properties: any): void {
+    this._handlePropertiesChange(properties);
+  }
+
+  onInstall(controller: AgoraWidgetController) {
+    // 将插件入口注册到工具箱
+    controller.broadcast(AgoraExtensionWidgetEvent.RegisterCabinetTool, {
+      id: this.widgetName,
+      name: "Rollbook",
+      iconType: SvgIconEnum.ANSWER,
+    });
+  }
+
+  onUninstall(controller: AgoraWidgetController) {
+    // 将插件入口从工具箱移除
+    controller.broadcast(
+      AgoraExtensionWidgetEvent.UnregisterCabinetTool,
+      this.widgetName
+    );
+  }
+
+  @action
+  private _handlePropertiesChange(properties: any) {
+    const list: string[] = [];
+    Object.keys(properties.extra || {}).forEach((k) => {
+      if (k.startsWith("checkIn-")) {
+        const userUuid = k.replace("checkIn-", "");
+        list.push(userUuid);
+      }
+    });
+    this.checkInList = list;
+    this.started = !!properties.extra?.started;
+  }
+
+  /**
+   * 学生点击签到，更新签到列表
+   */
+  @bound
+  checkIn() {
+    this.updateWidgetProperties({
+      extra: {
+        // 使用Key-Value方式可以以增量方式更新Widget
+        [this.checkInPropKey]: true,
+      },
+    });
+  }
+
+  /**
+   * 老师点击开始签到，更新Widget状态
+   */
+  @bound
+  startCheckIn() {
+    this.setActive({ extra: { started: 1 } });
+  }
+}
+```
+
+### 增加渲染组件
+
+增加一个 App 组件用于在插件窗口中渲染：
+
+```typescript
+// src/gallery/rollbook/app.tsx
+import React, { FC } from "react";
+import { observer } from "mobx-react";
+import { ControlledModal } from "../../common/edu-tool-modal";
+import { EduRoleTypeEnum } from "agora-edu-core";
+import { RollbookWidget } from ".";
+import { Button } from "../../components/button";
+
+/**
+ * 点名册组件
+ * @param param0
+ * @returns
+ */
+export const App: FC<{ widget: RollbookWidget }> = ({ widget }) => {
+  const view = () =>
+    [EduRoleTypeEnum.teacher, EduRoleTypeEnum.assistant].includes(
+      widget.classroomConfig.sessionInfo.role
+    ) ? (
+      <TeacherView widget={widget} />
+    ) : (
+      <StudentView widget={widget} />
+    );
+  return (
+    <ControlledModal
+      onFullScreen={() => {}}
+      canRefresh={false}
+      widget={widget}
+      title="Rollbook"
+      onCancel={widget.handleClose}
+    >
+      {view()}
+    </ControlledModal>
+  );
+};
+
+/**
+ * 老师界面显示实际签到列表
+ */
+export const TeacherView: FC<{ widget: RollbookWidget }> = observer(
+  ({ widget }) => {
+    const started = widget.started;
+    return (
+      <div>
+        {started ? (
+          <React.Fragment>
+            <div>Check-In List:</div>
+            <ul>
+              {widget.checkInUserNames.map((item, i) => (
+                <li key={i.toString()}>{item}</li>
+              ))}
+            </ul>
+          </React.Fragment>
+        ) : (
+          <Button onClick={widget.startCheckIn}>Start Check-In</Button>
+        )}
+      </div>
+    );
+  }
+);
+
+/**
+ * 学生显示签到按钮
+ */
+export const StudentView: FC<{ widget: RollbookWidget }> = observer(
+  ({ widget }) => {
+    const isCheckedIn = widget.isCheckedIn;
+    return (
+      <div>
+        <Button onClick={widget.checkIn} disabled={isCheckedIn}>
+          {isCheckedIn ? "Checked-In" : "Check-In"}
+        </Button>
+      </div>
+    );
+  }
+);
+```
+
+### launch 中传入自定义的 Widget
+
+通过 [`launch`](/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk#launch) 中的 `widgets` 参数传入自定义 Widget：
+
+```typescript
+const widgets = {
+  // 需要引入上面定义的 RollbookWidget 类
+  'rollbook': RollbookWidget
+};
+// 填入你使用的 SDK 名，如 AgoraEduSDK、AgoraProctorSDK
+AgoraEduSDK.launch(dom, {
+...
+widgets: widgets
+...
+});
+```
+
+### 插件效果展示
+
+启动教室，可以在工具箱中找到此插件，如图：
+
+![工具箱中的插件入口](https://web-cdn.agora.io/docs-files/1664451141797)
+
+老师点击并打开插件的界面效果：
+
+![Rollbook 插件打开后的界面效果](https://web-cdn.agora.io/docs-files/1664451162107)
+
+老师点击 **Start Check-In** 后，学生端显示插件的效果：
+
+![学生端的插件效果](https://web-cdn.agora.io/docs-files/1664451174839)
+
+学生点击 **Check-In** 后，老师端签到列表中显示此学生的效果：
+
+![教师端学生签到列表效果](https://web-cdn.agora.io/docs-files/1664451187164)
+
+</PlatformStructured>

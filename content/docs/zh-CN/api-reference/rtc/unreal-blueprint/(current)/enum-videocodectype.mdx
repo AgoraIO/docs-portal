@@ -1,0 +1,54 @@
+---
+title: EUABT_VIDEO_CODEC_TYPE
+description: 视频编码格式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/enum_videocodectype
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/enum_videocodectype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_videocodectype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="video_codec_none"></a>
+<Parameter name="VIDEO_CODEC_NONE">
+
+0：（默认）不指定编解码格式。SDK 会根据当前视频流的分辨率、设备性能自动匹配适合的编解码格式。
+
+</Parameter>
+<a id="video_codec_vp8"></a>
+<Parameter name="VIDEO_CODEC_VP8">
+
+1：标准 VP8。
+
+</Parameter>
+<a id="video_codec_h264"></a>
+<Parameter name="VIDEO_CODEC_H264">
+
+2：标准 H.264。
+
+</Parameter>
+<a id="video_codec_h265"></a>
+<Parameter name="VIDEO_CODEC_H265">
+
+3：标准 H.265。
+
+</Parameter>
+<a id="video_codec_generic"></a>
+<Parameter name="VIDEO_CODEC_GENERIC">
+
+6：Generic。本类型主要用于传输视频裸数据(比如用户已加密的视频帧)，该类型视频帧以回调的形式返回给用户，需要用户自行解码与渲染。
+
+</Parameter>
+<a id="video_codec_generic_jpeg"></a>
+<Parameter name="VIDEO_CODEC_GENERIC_JPEG">
+
+20：Generic JPEG。本类型所需的算力较小，可用于算力有限的 IoT 设备。
+
+</Parameter>
+</ParameterList>

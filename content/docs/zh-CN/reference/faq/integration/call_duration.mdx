@@ -1,0 +1,28 @@
+---
+title: "如何获取用户的通话时长？"
+---
+## 介绍
+
+在一个通话中，某个用户可能多次加入和离开 RTC 频道，该用户累计在频道内的时间为该用户的通话时长。通过声网 RTC SDK 或水晶球，你可以获取用户的通话时长。
+
+## 实现方法
+
+### 使用声网 RTC SDK
+
+正常情况下，用户成功加入 RTC 频道后会触发 [`onRtcStats`](/zh-CN/api-reference/rtc/android/channel#callback_irtcengineeventhandler_onrtcstats) 回调，用户离开频道前收到的最后一次 `onRtcStats` 回调中的 `totalDuration` 参数即为该用户的通话时长。如果用户在通话中多次进出频道，你需要累计多个 `totalDuration` 值算出用户的通话时长。
+
+:::warning[注意]
+上述示例为 Java 语言，其他语言可通过如下参数获取用户单次在频道内的时间：
+
+  - C++: `onRtcStats` 回调中的 `duration` 参数
+  - Objective-C: `reportRtcStats` 回调中的 `duration` 参数
+  - Javascript: `Client.getSessionStats` 方法中的 `Duration` 参数
+:::
+
+如果遇到断线等异常情况，通过声网 RTC SDK 获取的通话时长可能不准确。你需要通过声网 RTM SDK 或自己的信令系统开启心跳检测机制，从而获取客户端和服务端断开连接的时长。在声网 RTC SDK 获取的通话时长中减去客户端断开连接的时长，即为该用户准确的通话时长。
+
+### 使用水晶球
+
+你可以通过水晶球通话调查界面，查看用户**在频道内时间**，即该用户的通话时长。详见[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)。
+
+![](https://web-cdn.agora.io/docs-files/1592406841873)

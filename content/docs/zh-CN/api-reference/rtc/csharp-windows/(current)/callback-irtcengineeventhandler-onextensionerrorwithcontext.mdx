@@ -1,0 +1,53 @@
+---
+title: OnExtensionErrorWithContext
+description: 插件出错回调。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/rtc/csharp/API/callback_irtcengineeventhandler_onextensionerrorwithcontext
+  sourcePath: html-docs/rtc/Csharp/API/callback_irtcengineeventhandler_onextensionerrorwithcontext.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__prototype"></a>
+
+```text
+public virtual void OnExtensionErrorWithContext(ExtensionContext context, int error, string message){}
+```
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__detailed_desc"></a>
+
+### 详情
+
+启用插件失败或者插件运行出错时，插件会触发该回调并报告错误码和错误原因。
+
+<a id="callback_irtcengineeventhandler_onextensionerrorwithcontext__parameters"></a>
+
+## 参数
+
+<ParameterList>
+<a id="context"></a>
+<Parameter name="context">
+
+插件上下文信息，详见 [ExtensionContext](/zh-CN/api-reference/rtc/csharp-windows/class-extensioncontext)。
+
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
+
+错误码。详见插件服务商提供的插件文档。
+
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
+
+错误原因。详见插件服务商提供的插件文档。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineeventhandler)

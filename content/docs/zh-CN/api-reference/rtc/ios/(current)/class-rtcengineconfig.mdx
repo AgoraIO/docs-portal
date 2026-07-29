@@ -1,0 +1,101 @@
+---
+title: AgoraRtcEngineConfig
+description: 配置 AgoraRtcEngineKit 实例的参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_rtcengineconfig
+  sourcePath: html-docs/rtc/iOS/API/class_rtcengineconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_rtcengineconfig__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraRtcEngineConfig: NSObject
+@property (copy, nonatomic) NSString * _Nullable appId;
+@property (assign, nonatomic) AgoraChannelProfile channelProfile;
+@property (copy, nonatomic) NSString * _Nullable license;
+@property (assign, nonatomic) AgoraAudioScenario audioScenario;
+@property (assign, nonatomic) AgoraAreaCodeType areaCode;
+@property (strong, nonatomic) AgoraLogConfig * _Nullable logConfig;
+@property (assign, nonatomic) AgoraThreadPriorityType threadPriority;
+@property (weak, nonatomic) id<AgoraMediaFilterEventDelegate> _Nullable eventDelegate;
+@property (assign, nonatomic) BOOL domainLimit;
+@property (assign, nonatomic) BOOL autoRegisterAgoraExtensions;
+@end
+```
+
+<a id="class_rtcengineconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
+
+由声网为你的项目签发的 App ID。只有使用相同 App ID 的用户才能加入同一个频道并互相通信。一个 App ID 只能用于创建一个 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 实例。如需更换 App ID，需先调用 [destroy](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_destroy_imusiccontentcenter) 销毁当前实例，再创建新的实例。
+
+</Parameter>
+<a id="channelprofile"></a>
+<Parameter name="channelProfile">
+
+频道场景，详见 [AgoraChannelProfile](/zh-CN/api-reference/rtc/ios/enum-channelprofiletype)。
+
+</Parameter>
+<a id="license"></a>
+<Parameter name="license">
+
+用于连接频道时验证的 License。根据 License 收费。
+
+</Parameter>
+<a id="audioscenario"></a>
+<Parameter name="audioScenario">
+
+音频场景。在不同音频场景下，设备使用不同的音量类型。详见 [AgoraAudioScenario](/zh-CN/api-reference/rtc/ios/enum-audioscenariotype)。
+
+</Parameter>
+<a id="areacode"></a>
+<Parameter name="areaCode">
+
+连接区域。该高级功能适用于有区域限制的场景。支持的区域详见 [AgoraAreaCodeType](/zh-CN/api-reference/rtc/ios/enum-areacode)。区域码支持按位操作。
+
+</Parameter>
+<a id="logconfig"></a>
+<Parameter name="logConfig">
+
+日志配置。默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，文件大小为 2,048 KB，采用 UTF-8 编码。日志轮转规则详见注释。详见 [AgoraLogConfig](/zh-CN/api-reference/rtc/ios/class-logconfig)。
+
+</Parameter>
+<a id="threadpriority"></a>
+<Parameter name="threadPriority">
+
+SDK 通用线程的线程优先级。
+
+</Parameter>
+<a id="eventdelegate"></a>
+<Parameter name="eventDelegate">
+
+[AgoraMediaFilterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaextensionobserver) 实例。详见 [AgoraMediaFilterEventDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediaextensionobserver)。
+
+</Parameter>
+<a id="domainlimit"></a>
+<Parameter name="domainLimit">
+
+是否启用域名限制：
+
+- YES：启用域名限制。适用于物联网设备使用物联网卡接入网络的场景。SDK 仅连接已向运营商报备的域名或 IP 白名单中的服务器。
+- NO：（默认）不启用域名限制。适用于大多数常见场景。
+
+</Parameter>
+<a id="autoregisteragoraextensions"></a>
+<Parameter name="autoRegisterAgoraExtensions">
+
+初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 时是否自动注册声网扩展：
+
+- YES：（默认）自动注册。
+- NO：不自动注册。需调用 [enableExtensionWithVendor\:extension\:enabled\:sourceType:](/zh-CN/api-reference/rtc/ios/extension#api_irtcengine_enableextension) 手动注册。
+
+</Parameter>
+</ParameterList>

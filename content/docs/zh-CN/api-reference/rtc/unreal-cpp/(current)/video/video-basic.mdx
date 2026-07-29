@@ -1,0 +1,1475 @@
+---
+title: 视频基础功能
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/toc_video_basic
+  sourcePath: html-docs/rtc/Unreal-cpp/API/toc_video_basic.html
+  generator: oxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/showroom/android/overview/product-overview.
+---
+
+<a id="toc_video_basic"></a>
+
+<a id="api_irtcengine_disablevideo"></a>
+
+<a id="ariaid-title2"></a>
+
+## disableVideo
+
+关闭视频模块。
+
+<a id="api_irtcengine_disablevideo__prototype"></a>
+
+```text
+virtual int disableVideo() = 0;
+```
+
+<a id="api_irtcengine_disablevideo__detailed_desc"></a>
+
+该方法用于关闭视频模块。
+
+<a id="api_irtcengine_disablevideo__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用：
+
+- 如果在加入频道前调用，则开启纯音频模式。
+- 如果在加入频道后调用，则由视频模式切换为纯音频模式，然后再调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 方法可开启视频模式。
+
+<a id="api_irtcengine_disablevideo__restriction"></a>
+
+### 调用限制
+
+- 该方法设置的是内部引擎为禁用状态，在离开频道后仍然有效。
+- 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
+
+<a id="api_irtcengine_disablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，远端会触发 [onUserEnableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onuserenablevideo) (`false`) 回调。
+
+<a id="api_irtcengine_disablevideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablelocalvideo"></a>
+
+<a id="ariaid-title3"></a>
+
+## enableLocalVideo
+
+开关本地视频采集。
+
+<a id="api_irtcengine_enablelocalvideo__prototype"></a>
+
+```text
+virtual int enableLocalVideo(bool enabled) = 0;
+```
+
+<a id="api_irtcengine_enablelocalvideo__detailed_desc"></a>
+
+### 详情
+
+<a id="api_irtcengine_enablelocalvideo__desc1"></a>
+
+该方法禁用或重新启用本地视频采集，不影响接收远端视频。
+
+调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 后，本地视频采集即默认开启。
+
+如果你在频道内调用 [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo)(`false`) 关闭本地视频采集，也会同时停止在频道内发布视频流。如果想要重新开启，则可调用 enableLocalVideo(`true`)，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_updatechannelmediaoptions) 并设置 options 参数，将本地采集的视频流发布到频道中。
+
+成功禁用或启用本地视频采集后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+:::caution
+注意：
+
+- 该方法在加入频道前后均可调用，但加入频道前调用的设置，在加入频道后才会生效。
+- 该方法设置内部引擎为启用状态，在离开频道后仍然有效。
+:::
+
+<a id="api_irtcengine_enablelocalvideo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否开启本地视频采集。
+
+- `true`:（默认）开启本地视频采集。
+- `false`: 关闭本地视频采集。关闭后，远端用户会接收不到本地用户的视频流；但本地用户依然可以接收远端用户的视频流。设置为 `false` 时，该方法不需要本地有摄像头。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablelocalvideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enablevideo"></a>
+
+<a id="ariaid-title4"></a>
+
+## enableVideo
+
+启用视频模块。
+
+<a id="api_irtcengine_enablevideo__prototype"></a>
+
+```text
+virtual int enableVideo() = 0;
+```
+
+<a id="api_irtcengine_enablevideo__detailed_desc"></a>
+
+视频模块默认为关闭状态，需要调用该方法启用。如果后续需要关闭视频模块，需调用 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo) 方法。
+
+<a id="api_irtcengine_enablevideo__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或者频道内调用：
+
+- 如果在加入频道前调用，则开启视频模块。
+- 如果在纯音频通话中调用，则音频通话将自动切换为视频通话。
+
+<a id="api_irtcengine_enablevideo__restriction"></a>
+
+### 调用限制
+
+- 该方法设置的是内部引擎为启用状态，在离开频道后仍然有效。
+- 调用该方法会重置整个引擎，响应时间较慢。你可以根据实际需求用以下方法来独立控制视频模块的某一项功能：
+
+  - [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo): 是否启动摄像头采集并创建本地视频流。
+  - [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream): 是否发布本地视频流。
+  - [muteRemoteVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteremotevideostream): 是否接收并播放远端视频流。
+  - [muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_muteallremotevideostreams): 是否接收并播放所有远端视频流。
+- 在频道内调用该方法时，会重置 enableLocalVideo、muteRemoteVideoStream 和 muteAllRemoteVideoStreams 的设置，需谨慎使用。
+
+<a id="api_irtcengine_enablevideo__related"></a>
+
+### 相关回调
+
+成功调用该方法后，远端会触发 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调。
+
+<a id="api_irtcengine_enablevideo__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvideoencoderconfiguration"></a>
+
+<a id="ariaid-title5"></a>
+
+## setVideoEncoderConfiguration
+
+设置视频编码属性。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__prototype"></a>
+
+```text
+virtual int setVideoEncoderConfiguration(const VideoEncoderConfiguration& config) = 0;
+```
+
+<a id="api_irtcengine_setvideoencoderconfiguration__detailed_desc"></a>
+
+<a id="api_irtcengine_setvideoencoderconfiguration__desc"></a>
+
+设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后都能调用。如果用户在加入频道后不需要重新设置视频编码属性，则建议在 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 前调用该方法，可以加快首帧出图的时间。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__restriction"></a>
+
+### 调用限制
+
+- 该方法和 [getMirrorApplied](/zh-CN/api-reference/rtc/unreal-cpp/video/video-raw#callback_ivideoframeobserver_getmirrorapplied) 方法均支持设置镜像效果，声网建议你仅选择一种方法进行设置，同时使用两种方法会导致镜像效果叠加从而造成设置镜像失败。
+- 该方法的 config 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 config 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+
+<a id="api_irtcengine_setvideoencoderconfiguration__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setvideoencoderconfiguration__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex"></a>
+
+<a id="ariaid-title6"></a>
+
+## setVideoEncoderConfigurationEx
+
+设置视频编码属性。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__prototype"></a>
+
+```text
+virtual int setVideoEncoderConfigurationEx(const VideoEncoderConfiguration& config, const RtcConnection& connection) = 0;
+```
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__detailed_desc"></a>
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__desc"></a>
+
+设置本地视频的编码属性。每一种视频编码属性对应一系列视频相关参数设置，包含分辨率、帧率和码率。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [joinChannelEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_joinchannelex) 之后调用。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__restriction"></a>
+
+### 调用限制
+
+该方法的 config 参数设置是在理想网络状态下能达到的最大值。如果网络状态不好，视频引擎便不能使用该 config 渲染本地视频，它会自动降低到一个合适的视频参数设置。
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
+
+视频编码参数配置。详见 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration)。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/unreal-cpp/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_setvideoencoderconfigurationex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setvideoscenario"></a>
+
+<a id="ariaid-title7"></a>
+
+## setVideoScenario
+
+设置视频业务场景。
+
+<a id="api_irtcengine_setvideoscenario__prototype"></a>
+
+```text
+virtual int setVideoScenario(VIDEO_APPLICATION_SCENARIO_TYPE scenarioType) = 0;
+```
+
+<a id="api_irtcengine_setvideoscenario__detailed_desc"></a>
+
+### 详情
+
+成功调用该方法设置视频业务场景后，SDK 会基于指定场景启用最佳实践策略，自动调整关键性能指标，进而优化视频体验质量。
+
+:::caution
+注意： 该方法需要在加入频道前调用。
+:::
+
+<a id="api_irtcengine_setvideoscenario__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="scenariotype"></a>
+<Parameter name="scenarioType">
+
+视频业务场景。详见 [VIDEO_APPLICATION_SCENARIO_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videoapplicationscenariotype)。
+
+<a id="api_irtcengine_setvideoscenario__meeting"></a>
+
+APPLICATION_SCENARIO_MEETING (1) 适用于会议场景。SDK 会针对该场景启用以下策略：
+
+- 针对会议场景对小流码率要求较高的情况，自动启用多项抗弱网技术，提升小流的抗弱网能力，确保多路流订阅时接收端的流畅性。
+- 实时监测接收端大流的订阅人数，根据订阅人数动态调节大流配置：
+
+  - 无人订阅大流时，会自动降低大流的码率和帧率，节省上行带宽和消耗。
+  - 有人订阅大流时，大流会重置为用户最近一次调用 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 时的 [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-cpp/class-videoencoderconfiguration) 配置。如果用户此前没有进行设置，则使用如下值：
+
+    - 视频分辨率：桌面端为 1280 × 720；移动端为 960 × 540
+    - 视频帧率：15 fps
+    - 码率：桌面端为 1600 Kbps；移动端为 1000 Kbps
+- 实时监测接收端小流的订阅人数，根据订阅人数动态开启和关闭小流：
+
+  :::note
+  注： 如果用户已调用 [setDualStreamMode [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_setdualstreammode2) 将小流设置为始终不发送 (DISABLE_SIMULCAST_STREAM)，会议场景对小流的动态开关不生效。
+  :::
+
+  - 无人订阅小流时，自动关闭小流，节省上行带宽和消耗。
+  - 有人订阅小流时，开启小流并重置为用户最近一次调用 setDualStreamMode [2/2] 时的 [SimulcastStreamConfig](/zh-CN/api-reference/rtc/unreal-cpp/class-simulcaststreamconfig) 配置。如果用户此前没有进行设置，则使用如下值：
+
+    - 视频分辨率：480 × 272
+    - 视频帧率：15 fps
+    - 码率：500 Kbps
+
+<a id="api_irtcengine_setvideoscenario__1v1"></a>
+
+APPLICATION_SCENARIO_1V1 (2) 适用于[视频 1v1 通话](/zh-CN/api-reference/private-room/android/rtm/overview/product-overview)场景。针对该场景低延迟、高画质的体验要求，SDK 进行了策略调优，提升了画质、首帧出图、中低端机延迟及弱网流畅度等性能表现。
+
+<a id="api_irtcengine_setvideoscenario__liveshow"></a>
+
+APPLICATION_SCENARIO_LIVESHOW (3) 适用于秀场直播场景。针对该场景对首帧出图时间和画质清晰度的高要求，SDK 进行了策略调优，例如，默认开启音视频帧加速渲染来提升首帧出图体验，无需再额外调用 [enableInstantMediaRendering](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_enableinstantmediarendering)，同时会默认开启 B 帧来确保较高的图像质量、提高传输效率。此外，也增强了在弱网环境和低端设备上的画质和流畅度表现。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setvideoscenario__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：一般性的错误（未明确归类）。
+  - -4：不支持设置视频业务场景。可能的原因是当前使用的是音频 SDK。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startpreview"></a>
+
+<a id="ariaid-title8"></a>
+
+## startPreview [1/2]
+
+开启视频预览。
+
+<a id="api_irtcengine_startpreview__prototype"></a>
+
+```text
+virtual int startPreview() = 0;
+```
+
+<a id="api_irtcengine_startpreview__detailed_desc"></a>
+
+该方法用于启动本地视频预览。
+
+<a id="api_irtcengine_startpreview__timing"></a>
+
+### 调用时机
+
+该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
+
+<a id="api_irtcengine_startpreview__restriction"></a>
+
+### 调用限制
+
+- 本地预览默认开启镜像功能。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [stopPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_stoppreview) 关闭本地预览。
+
+<a id="api_irtcengine_startpreview__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startpreview2"></a>
+
+<a id="ariaid-title9"></a>
+
+## startPreview [2/2]
+
+开启视频预览并指定预览的视频源。
+
+<a id="api_irtcengine_startpreview2__prototype"></a>
+
+```text
+virtual int startPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
+```
+
+<a id="api_irtcengine_startpreview2__detailed_desc"></a>
+
+该方法用于启动本地视频预览，并指定出现在预览画面中的视频源。
+
+<a id="api_irtcengine_startpreview2__timing"></a>
+
+### 调用时机
+
+该方法必须在 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 和 [setupLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-rendering#api_irtcengine_setuplocalvideo) 之后调用。
+
+<a id="api_irtcengine_startpreview2__restriction"></a>
+
+### 调用限制
+
+- 本地预览默认开启镜像功能。
+- 在离开频道后，本地预览依然处于开启状态。你需要调用 [stopPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_stoppreview) 关闭本地预览。
+
+<a id="api_irtcengine_startpreview2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startpreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoppreview"></a>
+
+<a id="ariaid-title10"></a>
+
+## stopPreview [1/2]
+
+停止视频预览。
+
+<a id="api_irtcengine_stoppreview__prototype"></a>
+
+```text
+virtual int stopPreview() = 0;
+```
+
+<a id="api_irtcengine_stoppreview__detailed_desc"></a>
+
+<a id="api_irtcengine_stoppreview__scenario"></a>
+
+### 适用场景
+
+调用 [startPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview) 开启预览后，如果你想关闭本地视频预览，请调用该方法。
+
+<a id="api_irtcengine_stoppreview__timing"></a>
+
+### 调用时机
+
+请在加入频道前或离开频道后调用该方法。
+
+<a id="api_irtcengine_stoppreview__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_stoppreview__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoppreview2"></a>
+
+<a id="ariaid-title11"></a>
+
+## stopPreview [2/2]
+
+停止视频预览。
+
+<a id="api_irtcengine_stoppreview2__prototype"></a>
+
+```text
+virtual int stopPreview(VIDEO_SOURCE_TYPE sourceType) = 0;
+```
+
+<a id="api_irtcengine_stoppreview2__detailed_desc"></a>
+
+<a id="api_irtcengine_stoppreview2__scenario"></a>
+
+### 适用场景
+
+调用 [startPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview2) 开启预览后，如果你想关闭本地视频预览，请调用该方法。
+
+<a id="api_irtcengine_stoppreview2__timing"></a>
+
+### 调用时机
+
+请在加入频道前或离开频道后调用该方法。
+
+<a id="api_irtcengine_stoppreview2__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_stoppreview2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype-1"></a>
+<Parameter name="sourceType">
+
+视频源的类型，详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_stoppreview2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe"></a>
+
+<a id="ariaid-title12"></a>
+
+## onFirstLocalVideoFrame
+
+已显示本地视频首帧回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__prototype"></a>
+
+```text
+virtual void onFirstLocalVideoFrame(VIDEO_SOURCE_TYPE source, int width, int height, int elapsed) {
+    (void)source;
+    (void)width;
+    (void)height;
+    (void)elapsed;
+  }
+
+```
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__desc"></a>
+
+本地视频首帧显示在本地视图上时，SDK 会触发此回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="source"></a>
+<Parameter name="source">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+本地渲染视频的宽 (px) 。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+本地渲染视频的高 (px)。
+
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
+
+从调用 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或[joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 加入频道时到发生此事件过去的时间（毫秒）。如果在加入频道前调用了 [startPreview [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview)/[startPreview [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_startpreview2)，则该参数表示从调用 startPreview [1/2] 或startPreview [2/2] 开启本地视频预览到发生此事件过去的时间。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished"></a>
+
+<a id="ariaid-title13"></a>
+
+## onFirstLocalVideoFramePublished
+
+已发布本地视频首帧回调。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__prototype"></a>
+
+```text
+  virtual void onFirstLocalVideoFramePublished(VIDEO_SOURCE_TYPE source, int elapsed) {
+    (void)source;
+    (void)elapsed;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__detailed_desc"></a>
+
+### 详情
+
+SDK 会在以下三种时机触发该回调：
+
+- 开启本地视频模块的情况下，调用 [joinChannel [1/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel) 或[joinChannel [2/2]](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_joinchannel2) 成功加入频道后。
+- 调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream)(`true`)，再调用 muteLocalVideoStream(`false`) 后。
+- 调用 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo)，再调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 后。
+- 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/unreal-cpp/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 成功向 SDK 推送视频帧后。
+
+<a id="callback_irtcengineeventhandler_onfirstlocalvideoframepublished__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="source-1"></a>
+<Parameter name="source">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
+
+从调用 joinChannel [1/2] 或joinChannel [2/2] 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded"></a>
+
+<a id="ariaid-title14"></a>
+
+## onFirstRemoteVideoDecoded
+
+已接收到远端视频并完成解码回调。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__prototype"></a>
+
+```text
+virtual void onFirstRemoteVideoDecoded(uid_t uid,
+    int width,
+    int height,
+    int elapsed) {
+    (void)uid;
+    (void)width;
+    (void)height;
+    (void)elapsed;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__detailed_desc"></a>
+
+### 详情
+
+SDK 会在以下时机触发该回调：
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__ul_xcz_f34_npb"></a>
+
+- 远端用户首次上线后发送视频。
+- 远端用户视频离线再上线后发送视频。出现这种中断的可能原因包括：
+
+  - 远端用户离开频道。
+  - 远端用户掉线。
+  - 远端用户调用 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo) 方法关闭视频模块。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideodecoded__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID，指定是哪个用户的视频流。
+
+</Parameter>
+<a id="width-1"></a>
+<Parameter name="width">
+
+视频流宽（px）。
+
+</Parameter>
+<a id="height-1"></a>
+<Parameter name="height">
+
+视频流高（px）。
+
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
+
+从本地调用 joinChannel [1/2] 或joinChannel [2/2] 开始到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe"></a>
+
+<a id="ariaid-title15"></a>
+
+## onFirstRemoteVideoFrame
+
+渲染器已接收首帧远端视频回调。
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__prototype"></a>
+
+```text
+virtual void onFirstRemoteVideoFrame(uid_t userId, int width, int height, int elapsed) {
+                    (void)userId;
+                    (void)width;
+                    (void)height;
+                    (void)elapsed;
+                    }
+```
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__detailed_desc"></a>
+
+### 详情
+
+:::caution
+注意： 该回调只在 SDK 渲染时才会触发；如果用户采用自定义视频渲染则不会触发，客户需要通过 SDK 以外的方法自行实现。
+:::
+
+<a id="callback_irtcengineeventhandler_onfirstremotevideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="userid"></a>
+<Parameter name="userId">
+
+用户 ID，指定是哪个用户的视频流。
+
+</Parameter>
+<a id="width-2"></a>
+<Parameter name="width">
+
+视频流宽（px）。
+
+</Parameter>
+<a id="height-2"></a>
+<Parameter name="height">
+
+视频流高（px）。
+
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
+
+从本地调用 joinChannel [1/2] 或joinChannel [2/2] 到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged"></a>
+
+<a id="ariaid-title16"></a>
+
+## onLocalVideoStateChanged
+
+本地视频状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__prototype"></a>
+
+```text
+  virtual void onLocalVideoStateChanged(VIDEO_SOURCE_TYPE source, LOCAL_VIDEO_STREAM_STATE state, LOCAL_VIDEO_STREAM_REASON reason) {
+    (void)source;
+    (void)state;
+    (void)reason;
+  }
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__desc1"></a>
+
+本地视频的状态发生改变时，SDK 会触发该回调，报告当前的本地视频状态以及状态改变的原因。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__scenario"></a>
+
+### 适用场景
+
+你可以通过该回调及时了解本地视频流的状态变化，并根据状态改变的原因采取相应的措施，更好地管理和调试视频流相关的问题。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__timing"></a>
+
+### 触发时机
+
+- SDK 会在如下情况触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_FAILED，reason 为 `LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE`：
+
+  - 应用退到后台，系统回收摄像头。
+  - Android 9 及以上版本，App 切后台一段时间后，系统会收回相机权限。
+  - Android 6 及以上版本，如果相机被第三方应用占用一段时间后释放，则 SDK 会触发该回调，并报告 onLocalVideoStateChanged(`LOCAL_VIDEO_STREAM_STATE_CAPTURING，LOCAL_VIDEO_STREAM_REASON_OK`) 回调。
+  - 摄像头正常启动，但连续 4 秒都没有输出采集的视频。
+- 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 LOCAL_VIDEO_STREAM_STATE_CAPTURING，reason 为 LOCAL_VIDEO_STREAM_REASON_CAPTURE_FAILURE。
+
+  :::note
+  注：
+
+  - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
+  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `LOCAL_VIDEO_STREAM_STATE_CAPTURING` 或 `LOCAL_VIDEO_STREAM_STATE_ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
+  :::
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="source-2"></a>
+<Parameter name="source">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
+
+本地视频状态，详见 [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-localvideostreamstate)。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+本地视频状态改变原因，详见 [LOCAL_VIDEO_STREAM_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-localvideostreamreason)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats"></a>
+
+<a id="ariaid-title17"></a>
+
+## onLocalVideoStats
+
+本地视频流统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__prototype"></a>
+
+```text
+virtual void onLocalVideoStats(VIDEO_SOURCE_TYPE source, const LocalVideoStats& stats) {
+    (void)source;
+    (void)stats;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__desc"></a>
+
+该回调描述本地设备发送视频流的统计信息，每 2 秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onlocalvideostats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="source-3"></a>
+<Parameter name="source">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="stats"></a>
+<Parameter name="stats">
+
+本地视频流统计信息。详见 [LocalVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/class-localvideostats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged"></a>
+
+<a id="ariaid-title18"></a>
+
+## onRemoteVideoStateChanged
+
+远端视频状态发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__prototype"></a>
+
+```text
+virtual void onRemoteVideoStateChanged(uid_t uid,
+     REMOTE_VIDEO_STATE state,
+     REMOTE_VIDEO_STATE_REASON reason,
+     int elapsed) {
+     (void)uid;
+     (void)state;
+     (void)reason;
+     (void)elapsed;
+     }
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__note"></a>
+
+:::caution
+注意： 频道内的用户（通信场景）或主播（直播场景）人数超过 32 人时，该回调可能不准确。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotevideostatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+发生视频状态改变的远端用户 ID。
+
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
+
+远端视频流状态，详见 [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-remotevideostate)。
+
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
+
+远端视频流状态改变的具体原因，详见 [REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc/unreal-cpp/enum-remotevideostatereason)。
+
+</Parameter>
+<a id="elapsed-4"></a>
+<Parameter name="elapsed">
+
+从本地用户调用 joinChannel [2/2] 方法到发生本事件经历的时间，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideostats"></a>
+
+<a id="ariaid-title19"></a>
+
+## onRemoteVideoStats
+
+通话中远端视频流的统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__prototype"></a>
+
+```text
+virtual void onRemoteVideoStats(const RemoteVideoStats& stats) {
+    (void)stats;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__desc"></a>
+
+该回调描述远端用户在通话中端到端的视频流统计信息， 针对每个远端用户/主播每 2 秒触发一次。如果远端同时存在多个用户/主播， 该回调每 2 秒会被触发多次。
+
+<a id="callback_irtcengineeventhandler_onremotevideostats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
+
+远端视频统计数据。详见 [RemoteVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/class-remotevideostats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats"></a>
+
+<a id="ariaid-title20"></a>
+
+## onRemoteVideoTransportStats
+
+通话中远端视频流传输的统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__prototype"></a>
+
+```text
+virtual void onRemoteVideoTransportStats(uid_t uid,
+     unsigned short delay,
+     unsigned short lost,
+     unsigned short rxKBitRate) {
+     (void)uid;
+     (void)delay;
+     (void)lost;
+     (void)rxKBitRate;
+     }
+```
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__detailed_desc"></a>
+
+### 详情
+
+<a id="弃用"></a>
+
+:::error[弃用：]
+该回调已被废弃，请改用 [onRemoteVideoStats](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostats)。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__desc1"></a>
+
+该回调描述远端用户通话中端到端的网络统计信息，通过视频包计算，用客观的数据，如丢包、 网络延迟等，展示当前网络状态。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__desc2"></a>
+
+通话中，当用户收到远端用户/主播发送的视频数据包后，会每 2 秒触发一次该回调。
+
+<a id="callback_irtcengineeventhandler_onremotevideotransportstats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
+
+用户 ID，指定是哪个用户/主播的视频包。
+
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
+
+视频包从发送端到接收端的延时（毫秒）。
+
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
+
+视频包从发送端到接收端的丢包率 (%)。
+
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
+
+远端视频包的接收码率（Kbps）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo"></a>
+
+<a id="ariaid-title21"></a>
+
+## onUserEnableLocalVideo
+
+远端用户开/关本地视频采集回调。
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__prototype"></a>
+
+```text
+virtual void onUserEnableLocalVideo(uid_t uid, bool enabled) {
+    (void)uid;
+    (void)enabled;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__detailed_desc"></a>
+
+### 详情
+
+<a id="弃用-1"></a>
+
+:::error[弃用：]
+该回调已废弃，请改用 [onRemoteVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onremotevideostatechanged) 回调的如下枚举：
+
+- REMOTE_VIDEO_STATE_STOPPED(0) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_MUTED(5)。
+- REMOTE_VIDEO_STATE_DECODING (2) 和 REMOTE_VIDEO_STATE_REASON_REMOTE_UNMUTED(6)。
+:::
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__desc"></a>
+
+该回调是由远端用户调用 [enableLocalVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablelocalvideo) 方法开启或关闭视频采集触发的。
+
+<a id="callback_irtcengineeventhandler_onuserenablelocalvideo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
+
+用户 ID，提示是哪个用户的视频流。
+
+</Parameter>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
+
+远端用户是否启用视频采集：
+
+- `true`: 该用户已启用视频功能。启用后，其他用户可以接收到该用户的视频流。
+- `false`: 该用户已关闭视频功能。关闭后，该用户仍然可以接收其他用户的视频流，但其他用户接收不到该用户的视频流。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo"></a>
+
+<a id="ariaid-title22"></a>
+
+## onUserEnableVideo
+
+远端用户开/关视频模块回调。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__prototype"></a>
+
+```text
+virtual void onUserEnableVideo(uid_t uid, bool enabled) {
+    (void)uid;
+    (void)enabled;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__desc1"></a>
+
+关闭视频功能是指该用户只能进行语音通话，不能显示、发送自己的视频，也不能接收、显示别人的视频。
+
+该回调是由远端用户调用 [enableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_enablevideo) 或 [disableVideo](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#api_irtcengine_disablevideo) 方法开启或关闭视频模块触发的。
+
+<a id="callback_irtcengineeventhandler_onuserenablevideo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
+
+用户 ID，提示是哪个用户的视频流。
+
+</Parameter>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
+
+- `true`: 该用户已启用视频功能。
+- `false`: 该用户已关闭视频功能。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onusermutevideo"></a>
+
+<a id="ariaid-title23"></a>
+
+## onUserMuteVideo
+
+远端用户取消或恢复发布视频流回调。
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__prototype"></a>
+
+```text
+virtual void onUserMuteVideo(uid_t uid, bool muted) {
+    (void)uid;
+    (void)muted;
+    }
+```
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__detailed_desc"></a>
+
+### 详情
+
+当远端用户调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-cpp/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消或恢复发布视频流时，SDK 会触发该回调向本地用户报告远端用户的发流状况。
+
+:::caution
+注意： 当频道内的用户（通信场景）或主播（直播场景）的人数超过 32 人时，该回调可能不准确。
+:::
+
+<a id="callback_irtcengineeventhandler_onusermutevideo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
+
+远端用户是否取消发布视频流：
+
+- `true`: 取消发布视频流。
+- `false`: 发布视频流。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged"></a>
+
+<a id="ariaid-title24"></a>
+
+## onVideoPublishStateChanged
+
+视频发布状态改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__prototype"></a>
+
+```text
+virtual void onVideoPublishStateChanged(VIDEO_SOURCE_TYPE source, const char* channel, STREAM_PUBLISH_STATE oldState, STREAM_PUBLISH_STATE newState, int elapseSinceLastState) {
+    (void)source;
+    (void)channel;
+    (void)oldState;
+    (void)newState;
+    (void)elapseSinceLastState;
+  }
+```
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onvideopublishstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
+
+频道名。
+
+</Parameter>
+<a id="source-4"></a>
+<Parameter name="source">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="oldstate"></a>
+<Parameter name="oldState">
+
+之前的发布状态，详见 [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc/unreal-cpp/enum-streampublishstate)。
+
+</Parameter>
+<a id="newstate"></a>
+<Parameter name="newState">
+
+当前的发布状态，详见 STREAM_PUBLISH_STATE。
+
+</Parameter>
+<a id="elapsesincelaststate"></a>
+<Parameter name="elapseSinceLastState">
+
+两次状态变化时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged"></a>
+
+<a id="ariaid-title25"></a>
+
+## onVideoSizeChanged
+
+本地或远端视频大小和旋转信息发生改变回调。
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__prototype"></a>
+
+```text
+virtual void onVideoSizeChanged(VIDEO_SOURCE_TYPE sourceType, uid_t uid, int width, int height, int rotation) {
+    (void)uid;
+    (void)width;
+    (void)height;
+    (void)rotation;
+  }
+```
+
+<a id="callback_irtcengineeventhandler_onvideosizechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sourcetype-2"></a>
+<Parameter name="sourceType">
+
+视频源的类型。详见 [VIDEO_SOURCE_TYPE](/zh-CN/api-reference/rtc/unreal-cpp/enum-videosourcetype)。
+
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
+
+图像尺寸和旋转信息发生变化的用户 ID（本地用户的 uid 为 0。此时视频为本地用户的视频预览）。
+
+</Parameter>
+<a id="width-3"></a>
+<Parameter name="width">
+
+视频流的宽度（像素）。
+
+</Parameter>
+<a id="height-3"></a>
+<Parameter name="height">
+
+视频流的高度（像素）。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+旋转信息，取值范围 [0,360)。
+
+:::note
+注： 在 iOS 平台上，该参数值始终为 0。
+:::
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onvideostopped"></a>
+
+<a id="ariaid-title26"></a>
+
+## onVideoStopped
+
+视频功能已停止回调。
+
+<a id="callback_irtcengineeventhandler_onvideostopped__prototype"></a>
+
+```text
+virtual void onVideoStopped()
+```
+
+<a id="callback_irtcengineeventhandler_onvideostopped__detailed_desc"></a>
+
+### 详情
+
+<a id="弃用-2"></a>
+
+:::error[弃用：]
+请改用 [onLocalVideoStateChanged](/zh-CN/api-reference/rtc/unreal-cpp/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调中的 LOCAL_VIDEO_STREAM_STATE_STOPPED(0)。
+:::
+
+<a id="callback_irtcengineeventhandler_onvideostopped__desc"></a>
+
+App 如需在停止视频后对 view 做其他处理（比如显示其他画面），可以在这个回调中进行。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-cpp/rtc-interface-class#class_irtcengineeventhandler)

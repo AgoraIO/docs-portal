@@ -1,0 +1,60 @@
+---
+title: 互动白板概览
+description: "了解互动白板的核心能力、适用场景、接入路径和相关参考资源。"
+---
+声网互动白板提供可实时协作的白板能力，适用于在线教育、在线会议、协作办公和互动娱乐等场景。你可以根据接入速度和 UI 自定义需求，在互动白板 SDK 和 Fastboard SDK 之间选择合适路径。
+
+## 选择接入路径
+
+<Cards>
+  <Card
+    title="互动白板 SDK"
+    href="/zh-CN/realtime-media/whiteboard/whiteboard-sdk"
+    description="适合需要完整控制白板 UI、房间状态、场景管理、插件和自定义事件的应用。"
+  />
+  <Card
+    title="Fastboard SDK"
+    href="/zh-CN/realtime-media/whiteboard/fastboard-sdk"
+    description="适合希望使用默认 UI、窗口管理器和插件中心，以更少代码快速接入白板能力的应用。"
+  />
+</Cards>
+
+<a id="如何选择白板-sdk-和-fastboard-sdk"></a>
+
+## 如何选择互动白板 SDK 和 Fastboard SDK
+
+Fastboard SDK 基于互动白板 SDK 开发，提供默认白板 UI、窗口管理器和插件中心，适合更快完成接入。互动白板 SDK 提供更底层的白板能力和状态接口，适合需要完整自定义 UI 与业务逻辑的应用。
+
+:::warning[注意]
+Fastboard SDK 与互动白板 SDK 不互通。请在项目接入前根据业务需求选择其中一套 SDK。
+:::
+
+| 对比项 | Fastboard SDK | 互动白板 SDK |
+| --- | --- | --- |
+| 产品定位 | 新一代互动白板 SDK，封装默认 UI、窗口管理器和常用插件，减少基础界面开发工作。 | 互动白板 PaaS SDK，提供房间、场景、状态和事件等基础能力，支持深度自定义。 |
+| UI 边界 | 提供默认白板 UI，包括工具条、页面控制、视角控制、重做、撤销等组件；如默认 UI 不满足需求，需要自行覆盖或重写。 | 不提供默认业务 UI，你需要自行实现工具栏、页面管理、交互流程和视觉样式。 |
+| 插件能力 | 内置窗口管理器和部分开源插件，如文档展示、播放器、代码编辑器、倒计时、GeoGebra、网页嵌入等；也可以基于开源插件扩展。 | 不内置 Fastboard 的默认插件体系，适合自行设计插件、业务组件和交互逻辑。 |
+| 适用团队 | 适合开发资源有限、排期紧，希望快速上线在线课堂、会议协作或互动演示，同时仍有一定定制需求的团队。 | 适合开发资源充足、对 UI、状态管理、业务流程和扩展能力有较高定制要求的团队。 |
+| 开发成本 | 较低 | 较高 |
+| 平台支持 | Web：Chrome 58+ 或 Safari 11+（macOS 10+）；Android：Android 5.0（SDK API Level 21）及以上版本；iOS：iOS 9.0 及以上版本。 | Web：Chrome 58+ 或 Safari 11+（macOS 10+）；Android：Android 5.0（SDK API Level 21）及以上版本；iOS：iOS 9.0 及以上版本。 |
+
+## 产品能力
+
+<CardGrid>
+  <FeatureCard title="多人实时协作">
+    支持多人在同一个白板房间中实时书写、绘制、擦除、选择和编辑内容。
+  </FeatureCard>
+  <FeatureCard title="文件展示和文档转换">
+    支持将 PPT、PPTX、Word、PDF 等文件转换为可展示素材，并用于白板演示和教学讲解。
+  </FeatureCard>
+  <FeatureCard title="场景和页面管理">
+    支持场景目录、场景路径、分页、侧边预览、视角控制和页面缩放，方便组织复杂白板内容。
+  </FeatureCard>
+  <FeatureCard title="扩展和回放能力">
+    支持自定义事件、全局状态、多窗口模式、插件中心、白板录制和回放。
+  </FeatureCard>
+</CardGrid>
+
+## 阅读路径
+
+如果你需要完全自定义白板体验，请进入[互动白板 SDK](/zh-CN/realtime-media/whiteboard/whiteboard-sdk)。如果你希望以默认 UI 更快完成接入，请进入[Fastboard SDK](/zh-CN/realtime-media/whiteboard/fastboard-sdk)。

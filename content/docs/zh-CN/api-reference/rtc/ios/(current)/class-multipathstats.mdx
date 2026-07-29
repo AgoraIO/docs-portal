@@ -1,0 +1,87 @@
+---
+title: AgoraMultipathStats
+description: 聚合多路径传输中各网络路径的统计信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_multipathstats
+  sourcePath: html-docs/rtc/iOS/API/class_multipathstats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_multipathstats__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraMultipathStats : NSObject
+@property (assign, nonatomic) NSUInteger lanRxBytes;
+@property (assign, nonatomic) NSUInteger lanTxBytes;
+@property (assign, nonatomic) NSUInteger wifiRxBytes;
+@property (assign, nonatomic) NSUInteger wifiTxBytes;
+@property (assign, nonatomic) NSUInteger mobileRxBytes;
+@property (assign, nonatomic) NSUInteger mobileTxBytes;
+@property (assign, nonatomic) NSUInteger activePathNum;
+@property (copy, nonatomic) NSArray<AgoraPathStats *> *_Nullable pathStats NS_SWIFT_NAME(pathStats);
+@end
+```
+
+<a id="class_multipathstats__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+<a id="class_multipathstats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="lanrxbytes"></a>
+<Parameter name="lanRxBytes">
+
+通过 LAN 路径接收的字节总数。
+
+</Parameter>
+<a id="lantxbytes"></a>
+<Parameter name="lanTxBytes">
+
+通过 LAN 路径发送的字节总数。
+
+</Parameter>
+<a id="wifirxbytes"></a>
+<Parameter name="wifiRxBytes">
+
+通过 Wi-Fi 路径接收的字节总数。
+
+</Parameter>
+<a id="wifitxbytes"></a>
+<Parameter name="wifiTxBytes">
+
+通过 Wi-Fi 路径发送的字节总数。
+
+</Parameter>
+<a id="mobilerxbytes"></a>
+<Parameter name="mobileRxBytes">
+
+通过移动网络路径接收的字节总数。
+
+</Parameter>
+<a id="mobiletxbytes"></a>
+<Parameter name="mobileTxBytes">
+
+通过移动网络路径发送的字节总数。
+
+</Parameter>
+<a id="activepathnum"></a>
+<Parameter name="activePathNum">
+
+当前活跃的传输路径数量。
+
+</Parameter>
+<a id="pathstats"></a>
+<Parameter name="pathStats">
+
+每条活跃传输路径的统计信息。详见 [AgoraPathStats](/zh-CN/api-reference/rtc/ios/class-pathstats)。
+
+</Parameter>
+</ParameterList>

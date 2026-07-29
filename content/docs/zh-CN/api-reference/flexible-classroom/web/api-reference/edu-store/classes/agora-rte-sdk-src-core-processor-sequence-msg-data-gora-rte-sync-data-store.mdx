@@ -1,0 +1,500 @@
+---
+title: Class AgoraRteSyncDataStore
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: >-
+    https://doc.shengwang.cn/api-ref/flexible-classroom/javascript/classes/agora_rte_sdk_src_core_processor_sequence_msg_data_goraRteSyncDataStore.html
+  sourcePath: >-
+    html-docs/flexible-classroom/Web/classes/agora_rte_sdk_src_core_processor_sequence_msg_data_goraRteSyncDataStore.html
+  generator: typedoc
+  warnings: []
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+### constructor
+
+<ApiSignature>
+
+new AgoraRteSyncDataStore(): [AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraRteSyncDataStore](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-sequence-msg-data-gora-rte-sync-data-store)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Accessors
+
+<a id="messages"></a>
+
+### messages
+
+<ApiSignature>
+
+get messages(): List&lt;[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+List&lt;[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="roomInfo"></a>
+
+### roomInfo
+
+<ApiSignature>
+
+get roomInfo(): Map&lt;unknown, unknown&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;unknown, unknown&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="roomProperties"></a>
+
+### roomProperties
+
+<ApiSignature>
+
+get roomProperties(): Map&lt;string, unknown&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, unknown&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="streams"></a>
+
+### streams
+
+<ApiSignature>
+
+get streams(): Map&lt;string, [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="users"></a>
+
+### users
+
+<ApiSignature>
+
+get users(): Map&lt;string, [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
+
+</ApiSignature>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Map&lt;string, [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;
+
+</ApiReturnType>
+
+</ApiReturns>
+
+## Methods
+
+<a id="addMessage"></a>
+
+### addMessage
+
+<ApiSignature>
+
+addMessage(message: [AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="message" required>
+
+<ParameterType>
+
+[AgoraChatMessage](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-type-gora-chat-message)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteStream"></a>
+
+### deleteStream
+
+<ApiSignature>
+
+deleteStream(key: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteStreams"></a>
+
+### deleteStreams
+
+<ApiSignature>
+
+deleteStreams(keys: string[]): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="keys" type="string[]" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="deleteUser"></a>
+
+### deleteUser
+
+<ApiSignature>
+
+deleteUser(key: string): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="findStream"></a>
+
+### findStream
+
+<ApiSignature>
+
+findStream(streamUuid: string): undefined | [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="streamUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="findUser"></a>
+
+### findUser
+
+<ApiSignature>
+
+findUser(userUuid: string): undefined | [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+undefined | [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="findUserStreams"></a>
+
+### findUserStreams
+
+<ApiSignature>
+
+findUserStreams(userUuid: string): [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)[]
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="userUuid" type="string" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+[AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRoomInfo"></a>
+
+### setRoomInfo
+
+<ApiSignature>
+
+setRoomInfo(roomInfo: [AgoraRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-room)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomInfo" required>
+
+<ParameterType>
+
+[AgoraRoom](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-room)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setRoomProperties"></a>
+
+### setRoomProperties
+
+<ApiSignature>
+
+setRoomProperties(roomProperties: any): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="roomProperties" type="any" required />
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setStream"></a>
+
+### setStream
+
+<ApiSignature>
+
+setStream(key: string, stream: [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+<Parameter name="stream" required>
+
+<ParameterType>
+
+[AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setStreams"></a>
+
+### setStreams
+
+<ApiSignature>
+
+setStreams(streams: Map&lt;string, [AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream)&gt;): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="streams" required>
+
+<ParameterType>
+
+Map & lt; string,[AgoraStream](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-stream) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setUser"></a>
+
+### setUser
+
+<ApiSignature>
+
+setUser(key: string, user: [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="key" type="string" required />
+<Parameter name="user" required>
+
+<ParameterType>
+
+[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setUsers"></a>
+
+### setUsers
+
+<ApiSignature>
+
+setUsers(users: Map&lt;string, [AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user)&gt;): void
+
+</ApiSignature>
+
+<ParameterList title="Parameters">
+<Parameter name="users" required>
+
+<ParameterType>
+
+Map & lt; string,[AgoraUser](/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store/classes/agora-rte-sdk-src-core-processor-struct-gora-user) & gt;
+
+</ParameterType>
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

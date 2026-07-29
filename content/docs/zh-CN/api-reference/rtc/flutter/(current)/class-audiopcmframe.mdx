@@ -1,0 +1,91 @@
+---
+title: AudioPcmFrame
+description: 外部 PCM 格式音频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_audiopcmframe
+  sourcePath: html-docs/rtc/Flutter/API/class_audiopcmframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiopcmframe__prototype"></a>
+
+```text
+class AudioPcmFrame {
+  const AudioPcmFrame(
+      {this.captureTimestamp,
+      this.samplesPerChannel,
+      this.sampleRateHz,
+      this.numChannels,
+      this.bytesPerSample,
+      this.data});
+
+  @JsonKey(name: 'capture_timestamp')
+  final int? captureTimestamp;
+
+  @JsonKey(name: 'samples_per_channel_')
+  final int? samplesPerChannel;
+
+  @JsonKey(name: 'sample_rate_hz_')
+  final int? sampleRateHz;
+
+  @JsonKey(name: 'num_channels_')
+  final int? numChannels;
+
+  @JsonKey(name: 'bytes_per_sample')
+  final BytesPerSample? bytesPerSample;
+
+  @JsonKey(name: 'data_')
+  final List<int>? data;
+
+  factory AudioPcmFrame.fromJson(Map<String, dynamic> json) =>
+      _$AudioPcmFrameFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AudioPcmFrameToJson(this);
+}
+```
+
+<a id="class_audiopcmframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="capturetimestamp"></a>
+<Parameter name="captureTimestamp">
+
+音频帧的时间戳 (ms)。
+
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
+
+每个声道的采样点数。
+
+</Parameter>
+<a id="sampleratehz"></a>
+<Parameter name="sampleRateHz">
+
+音频采样率 (Hz)。
+
+</Parameter>
+<a id="numchannels"></a>
+<Parameter name="numChannels">
+
+音频声道数。
+
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
+
+音频数据的字节数。
+
+</Parameter>
+<a id="data"></a>
+<Parameter name="data">
+
+音频帧数据。
+
+</Parameter>
+</ParameterList>

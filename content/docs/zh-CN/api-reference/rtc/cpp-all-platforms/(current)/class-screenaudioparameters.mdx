@@ -1,0 +1,54 @@
+---
+title: ScreenAudioParameters
+description: 用于设置共享屏幕流的音频参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_screenaudioparameters
+  sourcePath: html-docs/rtc/Cpp/API/class_screenaudioparameters.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screenaudioparameters__prototype"></a>
+
+```text
+struct ScreenAudioParameters {
+  int sampleRate;
+  int channels;
+  int captureSignalVolume;
+#if defined(__APPLE__) && !TARGET_OS_IOS
+  bool excludeCurrentProcessAudio = true;
+#else
+#endif
+};
+```
+
+<a id="class_screenaudioparameters__detailed_desc"></a>
+
+仅当 `captureAudio` 为 true 时生效。
+
+<a id="class_screenaudioparameters__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+音频采样率，单位为 Hz。
+
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
+
+音频通道数。默认值为 2，表示立体声。
+
+</Parameter>
+<a id="capturesignalvolume"></a>
+<Parameter name="captureSignalVolume">
+
+采集的系统音频音量，取值范围为 [0, 100]，默认值为 100。
+
+</Parameter>
+</ParameterList>

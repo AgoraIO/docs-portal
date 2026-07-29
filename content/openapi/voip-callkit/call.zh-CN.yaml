@@ -1,0 +1,855 @@
+openapi: 3.1.0
+x-stoplight:
+  id: t3vyjmmbk6lrc
+info:
+  title: 声网 VoIP 呼叫服务 API
+  version: 1.0.0
+  description: |
+    该文档描述了声网 VoIP 呼叫服务相关的 API，包括设备呼叫小程序、挂断小程序、License 激活与管理等功能。
+servers:
+- url: https://api.sd-rtn.com
+  description: 声网 API 服务器
+tags:
+- name: 呼叫小程序
+  description: 小程序呼叫相关接口
+- name: License 管理
+  description: License 管理相关接口
+paths:
+  /v2/miniapp/{appId}/voip/call/miniapp:
+    post:
+      tags:
+      - 呼叫小程序
+      summary: 设备呼叫小程序
+      operationId: callMiniApp
+      description: 通过该接口实现设备端向微信小程序发起呼叫。
+      security:
+      - Basic Auth: []
+      parameters:
+      - $ref: '#/components/parameters/appIdParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallMiniAppRequest'
+            examples:
+              Example 1:
+                value:
+                  agora:
+                    channelName: voip123456
+                    robotUID: '123'
+                    deviceUID: '456'
+                    token: aabxxxxxxxxxxxx63
+                    license: sdfjiojefkkglekr
+                    appId: aabxxxxxxxxxxxx63
+                    encryptionMode: NONE
+                    encryptionKey: test123
+                    encryptionKdfSalt: qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+                    source:
+                      videoCodec: H264
+                      videoWidth: 640
+                      videoHeight: 480
+                      videoFrameRate: 15
+                    sink:
+                      audioCodec: PCMA
+                      videoTranscode: false
+                      videoCodec: H264
+                      videoWidth: 640
+                      videoHeight: 480
+                      videoFrameRate: 15
+                  wechat:
+                    openId: ox-xxxxxxxxxxxxA
+                    appId: wxxxxxxxxxxd6
+                    deviceId: test_sn_1
+                    modelId: axxxxxxxxw
+                    encodeVideoRotation: 1
+                    landscape: true
+                    subscribeVideoLength: 320
+                    roomType: video
+                    listenerName: m
+                    versionType: 1
+                    query: a=b
+                    callerCameraStatus: 0
+                    listenerCameraStatus: 0
+                    source:
+                      videoCodec: H264
+                      videoWidth: 1920
+                      videoHeight: 1080
+                      videoFrameRate: 15
+                    sink:
+                      videoTranscode: false
+                      videoCodec: H264
+                      videoWidth: 640
+                      videoHeight: 480
+                      videoFrameRate: 15
+        required: true
+      responses:
+        '200':
+          description: 请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+              examples:
+                success:
+                  value:
+                    code: 200
+                    msg: ok
+                    taskId: 1NxxxxxxxxxxxxxxxxxV
+        非 200:
+          description: |
+            请求失败。可能的原因有：
+            - 状态码为 400，表示请求异常。可能的原因有参数错误、License 错误、未开通服务等。你可以参考响应 Body 中的 `msg` 信息进行问题排查。
+            - 状态码为 500，表示服务端异常。可能的原因有连接超时、响应错误等。你可以参考响应 Body 中的 `msg` 信息进行问题排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+      x-stoplight:
+        id: pdeehoylysppo
+  /v1/miniapp/{appId}/voip/call/{modelId}/{deviceId}:
+    delete:
+      tags:
+      - 呼叫小程序
+      summary: 挂断小程序
+      operationId: hangupMiniApp
+      description: 通过该接口实现挂断与小程序的通话。
+      security:
+      - Basic Auth: []
+      parameters:
+      - $ref: '#/components/parameters/appIdParam'
+      - $ref: '#/components/parameters/modelIdParam'
+      - $ref: '#/components/parameters/deviceIdParam'
+      responses:
+        '200':
+          description: 请求成功。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+              examples:
+                success:
+                  value:
+                    code: 200
+                    msg: ok
+                    taskId: ''
+        非 200:
+          description: |
+            请求失败。可能的原因有：
+            - 状态码为 400，表示请求异常。可能的原因有参数错误、License 错误、未开通服务等。你可以参考响应 Body 中的 `msg` 信息进行问题排查。
+            - 状态码为 500，表示服务端异常。可能的原因有连接超时、响应错误等。你可以参考响应 Body 中的 `msg` 信息进行问题排查。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+      x-stoplight:
+        id: i06dczcxk5xt3
+  /dabiz/license/v2/active:
+    post:
+      tags:
+      - License 管理
+      summary: 激活 License
+      operationId: activateLicense
+      description: 通过该接口实现 License 的激活。
+      security:
+      - Basic Auth: []
+      parameters:
+      - name: pid
+        in: query
+        description: 由 SKU、有效期、品类定义的 License 激活标识。
+        required: true
+        schema:
+          type: string
+      - name: licenseKey
+        in: query
+        description: |
+          设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。
+
+          > - 请注意区分大小写。
+          > - 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。
+        required: true
+        schema:
+          type: string
+          maxLength: 64
+      - name: appid
+        in: query
+        description: 你的声网项目使用的 [App ID](/zh-CN/introduction/glossary#appid)。
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      pid:
+                        type: string
+                        description: 由 SKU、有效期、品类定义的 License 激活标识。
+                        example: E4D6xxxxxxxxxxxxxxxxxxxxxxxx7E79
+                      license:
+                        type: string
+                        description: |
+                          激活的 License 的值。
+
+                          你需要自行保存该值，以便后续进行续期等操作。
+                        example: 1D65xxxxxxxxxxxxxxxxxxxxxxxx6016
+                      licenseKey:
+                        type: string
+                        description: 设备的唯一标识。和你在 `active` 接口中传入的 `licenseKey` 一致。
+                        example: 1234xxxxxxxxxxx1234
+                      expireTime:
+                        type: integer
+                        description: License 的过期时间。
+                        format: int64
+                        example: 17xxxxxxxx
+                      activationTime:
+                        type: integer
+                        description: License 的激活时间。
+                        format: int64
+                        example: 17xxxxxxxx
+                      skuView:
+                        type: object
+                        description: |
+                          SKU 能力集。
+                        properties:
+                          product:
+                            type: integer
+                            description: |
+                              产品类型:
+                              - `1`: RTC
+                              - `2`: RTSA
+                              - `3`: FPA
+                            example: 1
+                          name:
+                            type: string
+                            description: SKU 的名称。
+                            example: 演示申请01
+                          mediaType:
+                            type: integer
+                            description: |
+                              媒体类型:
+                              - `1`: 音频
+                              - `2`: 视频
+                              - `3`: 音视频
+                            example: 1
+                          minutes:
+                            type: integer
+                            description: License 分钟数上限。
+                            example: 100
+                          period:
+                            type: string
+                            description: License 使用时间段。
+                            example: 00:00~23:59
+              examples:
+                success:
+                  value:
+                    code: 200
+                    data:
+                      pid: E4D6xxxxxxxxxxxxxxxxxxxxxxxx7E79
+                      license: 1D65xxxxxxxxxxxxxxxxxxxxxxxx6016
+                      licenseKey: 1234xxxxxxxxxxx1234
+                      expireTime: 17xxxxxxxx
+                      activationTime: 17xxxxxxxx
+                      skuView:
+                        product: 1
+                        name: 演示申请01
+                        mediaType: 1
+                        minutes: 100
+                        period: 00:00~23:59
+        非 200:
+          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+      x-stoplight:
+        id: 3esnxokjrilcr
+  /dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses:
+    get:
+      tags:
+      - License 管理
+      summary: 查询即将到期的 License 列表
+      operationId: getExpiringLicenses
+      description: 查询指定 PID 下即将到期的 License 列表。
+      security:
+      - Basic Auth: []
+      parameters:
+      - $ref: '#/components/parameters/appIdParam'
+      - name: pid
+        in: path
+        required: true
+        description: 由 SKU、有效期、品类定义的 License 激活标识。需要和 `active` 接口中传入的 `pid` 一致。
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: （可选）分页页码。默认值为 1。
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        description: （可选）每页查询的 License 数量。默认值为 100，最大值为 100。
+        required: false
+        schema:
+          type: integer
+          default: 100
+          maximum: 100
+      - name: expiringDay
+        in: query
+        description: |
+          将要过期的天数，可设为如下值：
+          - `60`: 60 天。
+          - `90`: 90 天。
+
+          服务器会返回即将在设置的天数内过期的 License 信息。不会返回已经过期的 License 信息。
+        required: true
+        schema:
+          type: integer
+          enum:
+          - 60
+          - 90
+      responses:
+        '200':
+          description: 请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: 即将过期的 License 数量。
+                      list:
+                        type: array
+                        description: |
+                          由多组 Lisence 信息组成的数组。
+                        items:
+                          type: object
+                          properties:
+                            license:
+                              type: string
+                              description: 即将过期的 License 的值。
+                            licenseKey:
+                              type: string
+                              description: 设备的唯一标识。和你在 `activate` 接口中传入的 `licenseKey` 一致。
+                            activeTime:
+                              type: string
+                              description: License 的激活时间，RFC3339 格式。
+                              format: date-time
+                            expireTime:
+                              type: string
+                              description: License 的过期时间，RFC3339 格式。
+                              format: date-time
+              examples:
+                success:
+                  value:
+                    code: 200
+                    data:
+                      count: 1
+                      list:
+                      - license: 698AxxxxxxxxxxxxxxxxxxxxxxxxEDDB0
+                        licenseKey: xxxx
+                        activeTime: '2024-12-02T08:15:39Z'
+                        expireTime: '2024-12-05T08:15:39Z'
+        非 200:
+          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+      x-stoplight:
+        id: 0ffuumxjc8gnl
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          能正常使用 License 后，你可以调用 `expiringLicense` 接口查询即将到期的 License 列表。
+  /dabiz/license/v2/renew:
+    post:
+      tags:
+      - License 管理
+      summary: License 续期
+      operationId: renewLicense
+      description: 续期指定的 License。
+      security:
+      - Basic Auth: []
+      parameters:
+      - name: appid
+        in: query
+        description: 你的声网项目使用的 [App ID](/zh-CN/introduction/glossary#appid)。
+        required: true
+        schema:
+          type: string
+      - name: renewId
+        in: query
+        description: |
+          （可选）由 SKU、有效期、品类定义的 License 续期标识。联系 sales@shengwang.cn 获取。如果不填，则声网会按照项目级别、公司级别从高到低优先选择最早生成的 `renewId` 来执行续期操作。
+        required: false
+        schema:
+          type: string
+      - name: license
+        in: query
+        description: |
+          需要续期的 License 值。你可以在激活接口的 `license` 响应参数中获取。
+
+          > 请注意区分大小写。
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: |
+            请求成功。
+
+            为避免误调用续期 API 引起不必要的损失，只有当 License 的剩余有效时间小于 `renewId` 的有效期时，你才能成功调用续期 API。例如，当 License 的剩余有效时间为 40 天时，如果 `renewId` 的有效期为 60 天，则你可以成功调用续期 API；如果 `renewId` 的有效期为 30 天，则调用续期 API 会失败。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: license续期成功
+                  data:
+                    type: object
+                    properties:
+                      licenseKey:
+                        type: string
+                        description: 设备的唯一标识。
+                      license:
+                        type: string
+                        description: 续期的 License。
+                      renewTimes:
+                        type: integer
+                        description: 续期次数。
+                      lastRenewTime:
+                        type: integer
+                        description: 上次续期的时间戳。
+                        format: int64
+                      activationTime:
+                        type: integer
+                        description: License 激活的时间戳。
+                        format: int64
+                      expireTime:
+                        type: integer
+                        description: License 过期的时间戳。
+                        format: int64
+              examples:
+                success:
+                  value:
+                    code: 200
+                    message: license续期成功
+                    data:
+                      licenseKey: xxxx
+                      license: 85B3xxxxxxxxxxxxxxxxxxxxxxxx656F
+                      renewTimes: 1
+                      lastRenewTime: 1700644272
+                      activationTime: 1700642665
+                      expireTime: 1705913065
+        非 200:
+          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+      x-stoplight:
+        id: rs72nbaqzt2zj
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 `renew` 接口续期 License。
+  /dabiz/license/v3/projects/{appId}/renewals:
+    get:
+      tags:
+      - License 管理
+      summary: 查询 License 续期订单
+      operationId: getLicenseRenewals
+      description: 查询指定 PID 下的 License 续期订单。
+      security:
+      - Basic Auth: []
+      parameters:
+      - $ref: '#/components/parameters/appIdParam'
+      - name: pid
+        in: query
+        description: （可选）由 SKU、有效期、品类定义的 License 激活标识。需要和 `activate` 接口中传入的 `pid` 一致。
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: （可选）页码。默认值为 1。
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: size
+        in: query
+        description: （可选）每页查询的 License 数量。默认值为 100，最大值为 100。
+        required: false
+        schema:
+          type: integer
+          default: 100
+          maximum: 100
+      responses:
+        '200':
+          description: 请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: 续期订单数量。
+                      list:
+                        type: array
+                        description: 由多组续期订单信息组成的数组。
+                        items:
+                          type: object
+                          properties:
+                            renewId:
+                              type: string
+                              description: 续期 ID。
+                            pid:
+                              type: string
+                              description: 由 SKU、有效期、品类定义的 License 激活标识。和你在请求中填入的 `pid` 一致。
+                            type:
+                              type: integer
+                              description: |
+                                License 类型：
+                                - `1`: 整个 CID 下所有 App ID 均可使用。
+                                - `2`: 仅指定 App ID 可用。
+                            duration:
+                              type: integer
+                              description: |
+                                有效期。单位根据你的 `pid` 类型而定：
+                                - 如果 `pid` 为测试类型，则有效期的单位为天。
+                                - 如果 `pid` 为正式类型，则有效期的单位为年。
+                            totalCount:
+                              type: integer
+                              description: 续期次数。
+                            allocateCount:
+                              type: integer
+                              description: 已经使用的次数。
+                            createTime:
+                              type: string
+                              description: 续期创建的时间，RFC3339 格式。
+                              format: date-time
+              examples:
+                success:
+                  value:
+                    code: 200
+                    data:
+                      count: 2
+                      list:
+                      - renewId: xxxx
+                        pid: xxxx
+                        type: 2
+                        duration: 50
+                        totalCount: 20
+                        allocateCount: 0
+                        createTime: '2024-12-02T08:32:12Z'
+                      - renewId: xxxx
+                        pid: xxxx
+                        type: 1
+                        duration: 30
+                        totalCount: 100
+                        allocateCount: 0
+                        createTime: '2024-12-02T08:25:30Z'
+        非 200:
+          description: 请求失败。你可以根据返回的响应状态码和响应 Body 中 `message` 字段的描述排查错误。
+      x-stoplight:
+        id: 51tlwjis84ad6
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          该方法可以查询指定 PID 下所有的续期订单，方便你根据剩余数量和有效期等信息，确定使用哪一个 `renewId` 进行续期。
+components:
+  schemas:
+    StandardResponse:
+      type: object
+      description: 标准响应格式。
+      properties:
+        code:
+          type: integer
+          description: 状态码。
+        msg:
+          type: string
+          description: 提示信息。
+        taskId:
+          type: string
+          description: 本次请求的唯一标识符。该字段的值和 NCS 事件中返回的 sid 一致，你可以使用该字段定位出现异常的请求，然后排查问题。
+      required:
+      - code
+      - msg
+      x-stoplight:
+        id: oqcsn1xacsbrx
+    CallMiniAppRequest:
+      type: object
+      description: 设备呼叫小程序请求体。
+      properties:
+        agora:
+          type: object
+          description: 声网相关配置。
+          properties:
+            appId:
+              type: string
+              description: 你的声网项目使用的 [App ID](/zh-CN/introduction/glossary#appid)。
+            channelName:
+              type: string
+              description: 设备端加入的 RTC 频道名。
+            robotUID:
+              type: string
+              description: 微呼叫服务加入 RTC 频道时使用的 UID。
+            deviceUID:
+              type: string
+              description: 设备端加入 RTC 频道时使用的 UID。
+            token:
+              type: string
+              description: 微呼叫服务加入 RTC 频道时使用的 [Token](/zh-CN/introduction/glossary#token)。
+            license:
+              type: string
+              description: License 值，用于校验呼叫是否合法，校验结果会通过 NCS 事件 98 返回。详见[获取并使用 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)。
+            encryptionMode:
+              type: string
+              description: |
+                加密模式。可以设为如下值：
+                - `AES_128_XTS1`: 128 位 AES 加密，XTS 模式
+                - `AES_128_ECB2`: 128 位 AES 加密，ECB 模式
+                - `AES_256_XTS3`: 256 位 AES 加密，XTS 模式
+                - `SM4_128_ECB4`: 128 位 SM4 加密，ECB 模式
+                - `AES_128_GCM5`: 128 位 AES 加密，GCM 模式
+                - `AES_256_GCM6`: 256 位 AES 加密，GCM 模式
+                - `AES_128_GCM27`:（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（encryptionKdfSalt）
+                - `AES_256_GCM28`: 256 位 AES 加密，GCM 模式。该加密模式需要设置盐（encryptionKdfSalt）
+
+                如果不想启用加密，可以设置为 `NONE`。
+            encryptionKey:
+              type: string
+              description: 加密的 Key 值，与设备端对应，encryptionMode 为 `NONE` 时，可以不填。
+            encryptionKdfSalt:
+              type: string
+              description: 盐值，encryptionMode 为 `NONE` 时，可以不填。
+            source:
+              required:
+              - videoCodec
+              - videoWidth
+              - videoHeight
+              - videoFrameRate
+              type: object
+              description: |
+                从设备端向小程序端发送的视频祯属性。`agora.source` 和 `wechat.sink` 为对应关系，你可以参考 [设置 Source 和 Sink](/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink)了解更多细节。
+              properties:
+                videoCodec:
+                  type: string
+                  description: 支持设为 JPEG、H264、H265。
+                videoWidth:
+                  type: integer
+                  description: 视频的宽。
+                videoHeight:
+                  type: integer
+                  description: 视频的高。
+                videoFrameRate:
+                  type: integer
+                  description: 视频帧率。
+            sink:
+              required:
+              - audioCodec
+              - videoCodec
+              - videoWidth
+              - videoHeight
+              - videoFrameRate
+              type: object
+              description: |
+                设备端接收小程序端的视频祯属性。`agora.sink` 和 `wechat.source` 为对应关系，你可以参考 [设置 Source 和 Sink](/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink)了解更多细节。
+              properties:
+                videoTranscode:
+                  type: boolean
+                  description: 是否需要对接收到的视频祯进行转码。如果 `agora.sink` 中的 videoCodec 设为 JPEG，则需要设置为 `true`。
+                audioCodec:
+                  type: string
+                  description: 支持设为 PCMU、PCMA、G722、AAC。
+                videoCodec:
+                  type: string
+                  description: 支持设为 JPEG、H264、H265。
+                videoWidth:
+                  type: integer
+                  description: 视频的宽。
+                videoHeight:
+                  type: integer
+                  description: 视频的高。
+                videoFrameRate:
+                  type: integer
+                  description: 视频帧率。
+          required:
+          - appId
+          - channelName
+          - robotUID
+          - deviceUID
+          - token
+          - license
+          - encryptionMode
+          - source
+          - sink
+        wechat:
+          type: object
+          description: 微信小程序相关配置。
+          properties:
+            openId:
+              type: string
+              description: 小程序用户的唯一 ID。该 ID 需要用户授权。
+            appId:
+              type: string
+              description: 微信小程序的 App ID。
+            deviceId:
+              type: string
+              description: 设备 ID。
+            modelId:
+              type: string
+              description: 设备的 Model ID。
+            encodeVideoRotation:
+              type: integer
+              description: |
+                设备端接收的视频旋转信息，适用于没有画面旋转能力的设备。可以设为如下值：
+                - `1`：设备端看到的微信小程序画面永远保持正向
+                - `2`：保留原有的旋转方向
+
+                更多信息可以参考[微信小程序 VoIP 视频流指南](https://developers.weixin.qq.com/miniprogram/dev/framework/device/voip/voip-video.html)。
+            landscape:
+              type: boolean
+              description: |
+                设备端接收小程序推流是否为 4:3 的流。
+                - `true`: SDK 收到的流为横屏，即宽高比为 4:3。该宽高比下，视频分辨率可以设为 320 × 240、480 × 352、640 × 480、1280 × 720、1920 × 1080
+                - `false`: SDK 收到的流为竖屏，即宽高比为 3:4。该宽高比下，视频分辨率可以设为 240 × 320、352 × 480、480 × 640、720 × 1080、1080 × 1920
+            subscribeVideoLength:
+              type: integer
+              description: |
+                设备端订阅视频分辨率的固定长边值。适用于不希望收到可变分辨率视频流的设备。如果不使用此功能，SDK 收到的视频流在不同的网络环境下会有不同的分辨率。如果想开通该功能，需要同时向微信提交 App ID，待开通订阅机制后才生效。支持设为如下值：
+                - `320`: video_landscape = true 时收到的是 320 × 240，video_landscape = false 时收到的是 240 × 320
+                - `640`: 不支持 video_landscape = true 模式，video_landscape = false 时收到的是 480 × 640
+            roomType:
+              type: string
+              description: |
+                房间类型，支持设为如下值：
+                - `video`：视频通话
+                - `voice`：音频通话
+            listenerName:
+              type: string
+              description: 微信端显示呼入名字，在小程序授权设备时指定。该参数设置不生效，可以填写任意字符串，如 `"m"`。
+            versionType:
+              type: integer
+              description: |
+                接听方小程序的类型：
+                - `0`：正式版
+                - `1`：开发版
+                - `2`：体验版
+            query:
+              type: string
+              description: 小程序页面自定义参数。
+            callerCameraStatus:
+              type: integer
+              description: |
+                小程序是否打开远端视图，以便看到拨打方:
+                - `0`：打开
+                - `1`：关闭
+            listenerCameraStatus:
+              type: integer
+              description: |
+                小程序是否打开本地视图，以便看到接听方：
+                - `0`：打开
+                - `1`：关闭
+            source:
+              required:
+              - videoCodec
+              - videoWidth
+              - videoHeight
+              - videoFrameRate
+              type: object
+              description: |
+                从小程序端向设备端发送的视频祯属性。`wechat.source` 和 `agora.sink` 为对应关系，你可以参考 [Source 和 Sink 对应关系](/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink)了解更多细节。
+              properties:
+                videoCodec:
+                  type: string
+                  description: 支持 H264、H265。
+                videoWidth:
+                  type: integer
+                  description: 视频的宽。
+                videoHeight:
+                  type: integer
+                  description: 视频的高。
+                videoFrameRate:
+                  type: integer
+                  description: 视频帧率。
+            sink:
+              required:
+              - videoCodec
+              - videoWidth
+              - videoHeight
+              - videoFrameRate
+              type: object
+              description: |
+                小程序端接收设备端发送的视频祯属性。`wechat.sink` 和 `agora.source` 为对应关系，你可以参考 [Source 和 Sink 对应关系](/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink)了解更多细节。
+              properties:
+                videoTranscode:
+                  type: boolean
+                  description: 是否需要对接收到的视频祯进行转码。如果 `agora.source` 中的 videoCodec 为JPEG，则需要设置 `true`。
+                videoCodec:
+                  type: string
+                  description: 支持 H264、H265。
+                videoWidth:
+                  type: integer
+                  description: 视频的宽。
+                videoHeight:
+                  type: integer
+                  description: 视频的高。
+                videoFrameRate:
+                  type: integer
+                  description: 视频帧率。
+          required:
+          - openId
+          - appId
+          - deviceId
+          - modelId
+          - landscape
+          - subscribeVideoLength
+          - roomType
+          - listenerName
+          - versionType
+          - query
+          - callerCameraStatus
+          - listenerCameraStatus
+          - source
+          - sink
+      required:
+      - agora
+      - wechat
+      x-stoplight:
+        id: 7ul6upmgdeg16
+  parameters:
+    appIdParam:
+      name: appId
+      in: path
+      description: 你的声网项目使用的 [App ID](/zh-CN/introduction/glossary#appid)。
+      required: true
+      schema:
+        type: string
+    modelIdParam:
+      name: modelId
+      in: path
+      description: 小程序对应的设备型号。
+      required: true
+      schema:
+        type: string
+    deviceIdParam:
+      name: deviceId
+      in: path
+      description: 设备 ID。
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Basic Auth:
+      type: http
+      scheme: basic
+      description: |
+        发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求头部的 `Authorization` 字段。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 基本认证](/zh-CN/api-reference/api-ref/voip-callkit/authentication)。

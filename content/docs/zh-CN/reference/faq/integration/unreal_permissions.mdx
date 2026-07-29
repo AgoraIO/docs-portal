@@ -1,0 +1,160 @@
+---
+title: "如何为 Unreal Engine 项目添加实时互动所需的权限？"
+---
+为了在不同的目标平台上实现实时互动功能，你需要为你的 Unreal Engine 项目添加访问摄像头、访问麦克风等权限。根据目标平台不同，你可以参考本文采取不同的步骤和配置来获取这些权限。
+
+## iOS
+
+如果目标平台是 iOS，在 **Unreal Editor** 中，点击 **Edit > Project Settings > Platforms > iOS** 打包项目，粘贴以下代码到 **Additional Plist Data** 输入框中，添加实时互动所需的摄像头和麦克风权限：
+
+    ```xml
+    <key>NSCameraUsageDescription</key><string>AgoraVideoCall</string><key>NSMicrophoneUsageDescription</key><string>AgoraVideoCall</string>
+    ```
+
+## macOS
+
+如果目标平台是 macOS，参考以下步骤为你的 Unreal Engine 项目添加实时互动所需的摄像头和麦克风权限：
+
+#### 步骤一
+
+对于 Unreal Engine 4，你可以直接修改项目打包后生成的 `Info.plist` 文件，为你的项目添加所需权限；如果你使用的是 Unreal Engine 5，声网建议你修改引擎自带的 `Info.plist` 模板，进而确保打包时生成的文件中已经添加所需权限。
+
+<Tabs defaultValue="ue4">
+<TabsList>
+  <TabsTrigger value="ue4">Unreal Engine 4</TabsTrigger>
+  <TabsTrigger value="ue5">Unreal Engine 5</TabsTrigger>
+</TabsList>
+
+<TabsContent value="ue4">
+
+在 **Unreal Editor** 中，点击 **Edit > Project Settings > Platforms > Mac** 打包项目。右击编译生成的应用程序文件 (`.app`)，选择 **Show Package Contents** 显示包内容，其中包含打包生成的 `Info.plist` 文件。
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/ue-showcontentpackages.png)
+
+</TabsContent>
+
+<TabsContent value="ue5">
+
+打开 `./Epic Games/<Unreal Engine 版本对应的路径>/Engine/Source/Runtime/Launch/Resources/Mac`，即 `Info.plist` 模板所在的本地路径。
+
+</TabsContent>
+</Tabs>
+
+#### 步骤二
+
+在 `Info.plist` 文件的 **Information Property List** 中添加如下摄像头和麦克风隐私权限：
+
+- Privacy - Camera Usage Description：摄像头使用权限
+- Privacy - Microphone Usage Description：麦克风使用权限
+
+<Tabs defaultValue="method1">
+<TabsList>
+  <TabsTrigger value="method1">方式一</TabsTrigger>
+  <TabsTrigger value="method2">方式二</TabsTrigger>
+</TabsList>
+
+<TabsContent value="method1">
+
+在 **Xcode** 中双击打开 `Info.plist` 文件，在 **Information Property List** 下添加摄像头和麦克风隐私权限：
+
+![](https://web-cdn.agora.io/docs-portal/img/rtc/ue-infoplist.gif)
+
+</TabsContent>
+
+<TabsContent value="method2">
+
+使用文本编辑器打开 `Info.plist` 文件，添加以下 XML 片段：
+
+    ```xml
+    <key>NSCameraUsageDescription</key>
+    <string>Use camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Use mic</string>
+    ```
+
+</TabsContent>
+</Tabs>
+
+## Android
+
+如果目标平台是 Android，参考以下步骤为你的 Unreal Engine 项目添加如下实时互动所需的权限：
+
+    - `android.permission.RECORD_AUDIO`：录音权限。
+    - `android.permission.CAMERA`：相机权限。
+    - `android.permission.READ_PHONE_STATE`：读取电话状态权限。
+    - `android.permission.WRITE_EXTERNAL_STORAGE`：写入外部存储权限。
+
+<Tabs defaultValue="cpp">
+<TabsList>
+  <TabsTrigger value="cpp">C++</TabsTrigger>
+  <TabsTrigger value="bp">Blueprint</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cpp">
+
+1. 在 `Project/Source/Project/AgoraWidget.h` 文件中添加以下 include 代码：
+
+    ```cpp
+    #if PLATFORM_ANDROID
+    #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+    #endif
+    ```
+
+2. 在 `Project/Source/Project/Project.Build.cs` 文件中添加 AndroidPermission 库：
+
+    ```cpp
+    if (Target.Platform == UnrealTargetPlatform.Android)
+    {
+        PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+    }
+    ```
+
+3. 检查是否已获取安卓权限。在 `AgoraWidget.h` 和 `AgoraWidget.cpp` 文件中添加 `NativeConstruct` 和 `CheckAndroidPermission` 方法和实现，并在 `NativeConstruct` 中调用 `CheckAndroidPermission` 方法来检查是否已获取安卓系统所需权限。示例代码如下：
+
+    ```cpp
+    // AgoraWidget.h
+    private:
+        // 获取安卓权限
+        void CheckAndroidPermission();
+    ```
+
+    ```cpp
+    // AgoraWidget.cpp
+    // 在 #include "AgoraWidget.h" 后添加如下代码
+    void UAgoraWidget::CheckAndroidPermission()
+    {
+    #if PLATFORM_ANDROID
+        FString pathfromName = UGameplayStatics::GetPlatformName();
+        if (pathfromName == "Android")
+        {
+            TArray<FString> AndroidPermission;
+            AndroidPermission.Add(FString("android.permission.CAMERA"));
+            AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+            AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+            AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+            AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
+            AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
+            UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+        }
+    #endif
+    }
+
+    void UAgoraWidget::NativeConstruct()
+    {
+        Super::NativeConstruct();
+    #if PLATFORM_ANDROID
+        CheckAndroidPermission()
+    #endif
+    }
+    ```
+
+</TabsContent>
+
+<TabsContent value="bp">
+
+在初始化 RTC 引擎前，需要检查是否已获取实现实时互动所需的 Android 系统权限。你可以参照下图创建节点，用于添加 Android 系统中访问麦克风、访问摄像头等权限。
+
+![](https://web-cdn.agora.io/docs-files/1689838387857)
+
+</TabsContent>
+</Tabs>

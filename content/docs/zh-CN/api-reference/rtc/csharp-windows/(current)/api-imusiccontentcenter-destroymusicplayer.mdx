@@ -1,0 +1,40 @@
+---
+title: "DestroyMusicPlayer"
+description: "销毁音乐播放器对象。"
+---
+<a id="api_imusiccontentcenter_destroymusicplayer__prototype"></a>
+
+```csharp
+public abstract int DestroyMusicPlayer(IMusicPlayer music_player);
+```
+
+<a id="api_imusiccontentcenter_destroymusicplayer__detailed_desc"></a>
+
+当你不再需要使用音乐播放器时，你可以调用该方法来销毁音乐播放器对象。销毁之后如果需要重新使用音乐播放器，需要调用 重新创建一个音乐播放器对象。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__timing"></a>
+
+## 调用时机
+
+该方法在加入频道前后均可调用，但请确保在 IRtcEngine 的 [Dispose](/zh-CN/api-reference/rtc/csharp-windows/initialize#api_irtcengine_release) 方法前调用。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__parameters"></a>
+
+## 参数
+
+### `music_player`
+
+[IMusicPlayer](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_imusicplayer) 对象。
+
+<a id="api_imusiccontentcenter_destroymusicplayer__return_values"></a>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。

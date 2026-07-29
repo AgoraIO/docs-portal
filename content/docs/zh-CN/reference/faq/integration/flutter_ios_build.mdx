@@ -1,0 +1,22 @@
+---
+title: "如何解决 Flutter 上 iOS release 包初始化时报 symbol not found 的问题？"
+---
+## 问题现象
+
+在 Flutter 上打包出 iOS release 包时，初始化卡住，Xcode 报错 `Unhandled exception: Invalid argument(s): Failed to lookup symbol 'InitDartApiDL': dlsym(RTLD_DEFAULT, InitDartApiDL): symbol not found`。
+
+## 问题原因
+
+这个问题是由于 Flutter 在构建 Release 包时，会进行符号裁剪优化，引起 `symbol not found` 报错。详细信息可以参考 [Flutter 官方文档](https://docs.flutter.dev/platform-integration/ios/c-interop#stripping-ios-symbols)。
+
+## 解决方案
+
+你可以通过如下步骤解决该问题：
+
+1. 在 Xcode 项目的 **Build Settings** 中，找到 **deployment postprocessing**，将其设为 **Yes**。
+
+![deployment postprocessing](https://web-cdn.agora.io/docs-portal/img/rtc/deployment-postprocessing.png)
+
+2. 再在 **Build Settings** 下找到 **strip style**，然后将 **Release** 设为 **Non-Global Symbols**。
+
+![strip style](https://web-cdn.agora.io/docs-portal/img/rtc/strip-style.png)

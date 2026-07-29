@@ -1,0 +1,99 @@
+---
+title: AudioRecordingConfiguration
+description: 用于配置录音参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_audiorecordingconfiguration
+  sourcePath: html-docs/rtc/Cpp/API/class_audiorecordingconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiorecordingconfiguration__prototype"></a>
+
+```text
+struct AudioRecordingConfiguration {
+  const char* filePath;
+  bool encode;
+  int sampleRate;
+  AUDIO_FILE_RECORDING_TYPE fileRecordingType;
+  AUDIO_RECORDING_QUALITY_TYPE quality;
+  int recordingChannel;
+};
+```
+
+<a id="class_audiorecordingconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+录音文件的绝对路径（包含文件扩展名），例如：C:\\music\\audio.aac。
+
+:::note
+注： 请确保日志文件目录存在且可写。
+:::
+
+</Parameter>
+<a id="encode"></a>
+<Parameter name="encode">
+
+是否对音频数据进行编码：
+
+- true：以 AAC 格式编码音频数据。
+- false：不编码音频数据，直接保存录制的音频数据。
+
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+:::note
+注： 如果将该参数设置为 44100 或 48000，声网建议录制 WAV 文件，或将 `quality` 设置为 `AUDIO_RECORDING_QUALITY_MEDIUM` 或 `AUDIO_RECORDING_QUALITY_HIGH` 的 AAC 文件，以获得更好的录音质量。
+:::
+
+录音采样率（Hz）：
+
+- 16000
+- 32000（默认）
+- 44100
+- 48000
+
+</Parameter>
+<a id="filerecordingtype"></a>
+<Parameter name="fileRecordingType">
+
+录音内容类型，详见 [AUDIO_FILE_RECORDING_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiofilerecordingtype)。
+
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
+
+录音质量，详见 [AUDIO_RECORDING_QUALITY_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiorecordingqualitytype)。
+
+:::note
+注： 该参数仅适用于 AAC 文件。
+:::
+
+</Parameter>
+<a id="recordingchannel"></a>
+<Parameter name="recordingChannel">
+
+:::note
+注： 实际录制的音频声道与采集的音频声道有关：
+
+- 如果采集的是单声道，且 `recordingChannel` 为 2，则录制的音频是从单声道复制的双声道数据，不是立体声。
+- 如果采集的是双声道，且 `recordingChannel` 为 1，则录制的音频是由双声道混合而成的单声道数据。
+
+集成方案也会影响最终录制的音频声道。如果需要录制立体声，请[联系技术支持](https://ticket.shengwang.cn/)。
+:::
+
+录音的音频声道数，支持以下取值：
+
+- 1：单声道（默认）。
+- 2：立体声。
+
+</Parameter>
+</ParameterList>

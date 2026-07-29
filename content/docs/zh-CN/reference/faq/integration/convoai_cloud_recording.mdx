@@ -1,0 +1,140 @@
+---
+title: "使用云端录制功能录制 AI 对话时，如何优化音频体验？"
+---
+本文介绍在集成声网云端录制服务与声网对话式 AI 引擎时，如何通过配置解决可能出现的音频体验不一致问题。
+
+## 核心问题与解决方案
+
+当智能体和云端录制在同一频道中使用时，可能会影响音频体验的两个主要问题：
+
+1. **音频场景冲突**：导致智能体的音频优化失效，并可能在录制开始时产生短暂的音频中断。
+2. **静默音频流自动发布**：智能体即使在没有说话时也会发布音频流，导致录制文件开头出现静音片段。
+
+下表总结了根本原因和相应的配置解决方案：
+
+| 问题 | 症状 | 解决方案 |
+| --- | --- | --- |
+| 音频场景不兼容 | 当云端录制用户加入频道时，智能体的 AI_Server 音频场景会回退到默认模式，从而导致录制开始时可能出现短暂的音频中断。 | 将智能体的 `audio_scenario` 设置为合唱场景 `"chorus"`。 |
+| 静默音频流自动发布 | 录制文件开头有一段静音。 | [联系技术支持](https://ticket.shengwang.cn)解决。 |
+
+## 配置步骤和示例
+
+将以下配置应用到智能体的启动请求体中。
+
+### 将音频场景设置为合唱场景
+
+将智能体的 `audio_scenario` 参数设置为合唱场景 `"chorus"`，可以确保智能体在与云端录制共享的频道中使用稳定的音频处理模式。
+
+在智能体的启动参数中添加或修改 `audio_scenario` 字段：
+
+```json
+{
+  "properties": {
+    "parameters": {
+      "audio_scenario": "chorus" // 使用 "chorus" 而不是 "AI_Server"
+    }
+  }
+}
+```
+
+### 完整配置示例
+
+以下是包含上述优化配置的智能体启动请求体的完整示例：
+
+```json
+{
+    "name": "TestConvoAgent",
+    "properties": {
+        "channel": "{{AccessChannel}}",
+        "token": "{{token}}",
+        "agent_rtc_uid": "0",
+        "remote_rtc_uids": [
+            "*"
+        ],
+        "idle_timeout": 30,
+        "advanced_features": {
+            "enable_bhvs": true
+        },
+        "llm": {
+            "url": "https://api.minimax.chat/v2/text/chatcompletion_v2",
+            "api_key": "xxx",
+            "system_messages": [
+                {
+                "role": "system",
+                "content": "You are a helpful chatbot."
+                }
+            ],
+            "greeting_message": "您好，有什么可以帮您？",
+            "failure_message": "抱歉，我无法回答这个问题。",
+            "max_history": 32,
+            "params": {
+                "model": "abab6.5s-chat",
+                "max_token": 1024,
+                "userName": "Tomas"
+            }
+        },
+        "tts": {
+            "vendor": "minimax",
+            "params": {
+                "group_id": "xxxx",
+                "key": "xxxx",
+                "model": "speech-01-turbo",
+                "voice_setting": {
+                    "voice_id": "female-shaonv",
+                    "speed": 1,
+                    "vol": 1,
+                    "pitch": 0,
+                    "emotion": "happy"
+                },
+                "audio_setting": {
+                    "sample_rate": 16000
+                }
+            }
+        },
+        "turn_detection": {
+            "silence_duration_ms": 640
+        },
+        "parameters": {
+            "enable_dump": true,
+            "enable_error_message": true,
+            "audio_scenario": "chorus",
+            "enable_delay": true,
+        }
+    }
+}
+```
+
+## 启动云端录制
+
+使用正确的配置启动智能体后，你可以通过调用 [POST 开启云端录制](/zh-CN/api-reference/api-ref/cloud-recording/start)启动云端录制服务。
+
+以下是云端录制启动请求体的完整示例：
+
+```json
+{
+	"cname":"{{AccessChannel}}",
+	"uid":"{{RecordingUID}}",
+	"clientRequest":{
+		"token":"{{token}}",
+		"recordingConfig":{
+			"maxIdleTime":120,
+			"streamTypes":0,
+			"audioProfile":1,
+			"channelType":1
+		},
+        "recordingFileConfig": {
+            "avFileType": [
+                "hls",
+                "mp4"
+            ]
+        },
+		"storageConfig":{
+			"vendor":{{Vendor}},
+			"region":{{Region}},
+			"bucket":"{{Bucket}}",
+			"accessKey":"{{AccessKey}}",
+			"secretKey":"{{SecretKey}}"
+		}
+	}
+}
+```

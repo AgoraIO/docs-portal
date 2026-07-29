@@ -1,0 +1,57 @@
+---
+title: 音频路由
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_audio_route
+  sourcePath: html-docs/rtc/Electron/API/toc_audio_route.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_route"></a>
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged"></a>
+
+<a id="ariaid-title2"></a>
+
+## onAudioRoutingChanged
+
+音频路由已发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__prototype"></a>
+
+```text
+onAudioRoutingChanged?(routing: number): void;
+```
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__detailed_desc"></a>
+
+:::note
+注： 该回调仅适用于 macOS 平台。
+:::
+
+<a id="callback_irtcengineeventhandler_onaudioroutingchanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="routing"></a>
+<Parameter name="routing">
+
+当前的音频路由：
+
+- -1：使用默认的音频路由。
+- 0：音频路由为带麦克风的耳机。
+- 1：音频路由为听筒。
+- 2：音频路由为不带麦克风的耳机。
+- 3：音频路由为设备自带的扬声器。
+- 4：音频路由为外接的扬声器。（仅适用于 iOS 和 macOS）
+- 5：音频路由为蓝牙耳机。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineeventhandler)

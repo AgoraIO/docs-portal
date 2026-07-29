@@ -1,0 +1,60 @@
+---
+title: ColorEnhanceOptions
+description: 用于配置色彩增强效果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_colorenhanceoptions
+  sourcePath: html-docs/rtc/Android/API/class_colorenhanceoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_colorenhanceoptions__prototype"></a>
+
+```text
+public class ColorEnhanceOptions {
+  public float strengthLevel;
+  public float skinProtectLevel;
+}
+```
+
+<a id="class_colorenhanceoptions__detailed_desc"></a>
+
+:::info[自从]
+自 v3.6.2 版本新增。
+:::
+
+<a id="class_colorenhanceoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="strengthlevel"></a>
+<Parameter name="strengthLevel">
+
+色彩增强的强度级别。取值范围为 [0.0, 1.0]。
+
+- `0.0`：默认值，表示不对视频应用色彩增强。
+- 数值越大，色彩增强效果越明显。
+
+默认值为 `0.5`。
+
+</Parameter>
+<a id="skinprotectlevel"></a>
+<Parameter name="skinProtectLevel">
+
+肤色保护的强度级别。取值范围为 [0.0, 1.0]。
+
+- `0.0`：表示不启用肤色保护。
+- 数值越大，肤色保护效果越强。
+
+默认值为 `1.0`。
+
+- 当色彩增强强度较高时，人物肤色可能出现明显偏色，因此建议设置合适的肤色保护级别。
+- 肤色保护级别越高，色彩增强效果可能略有下降。
+
+为获得最佳效果，建议你根据实际情况调整 `strengthLevel` 与 `skinProtectLevel`。
+
+</Parameter>
+</ParameterList>

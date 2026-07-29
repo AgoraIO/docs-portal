@@ -1,0 +1,781 @@
+---
+title: "快速开始"
+description: "了解如何快速接入 Fastboard SDK，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+<PlatformStructured platform="android">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+![互动白板快速开始流程图](https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg)
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- Android Studio 4.1.0 及以上版本
+- Android SDK API level ≥ 21
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+<a id="createroom"></a>
+## 服务端实现
+### 1. 创建房间
+
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+    "method": "POST",
+    "url": "https://api.netless.link/v5/rooms",
+    "headers": {
+        "token": "你的 SDK Token",
+        "Content-Type": "application/json",
+        "region": "cn-hz"
+    }
+};
+request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require('request');
+var options = {
+    "method": "POST",
+    // 将 <房间的 UUID> 替换成你的房间 UUID
+    "url": "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>", 
+    "headers": {
+        "token": "你的 SDK Token",
+        "Content-Type": "application/json",
+        "region": "cn-hz"
+    },
+    body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+};
+request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+## 客户端实现
+
+### 1. 项目设置
+
+实现加入互动白板房间之前，参考如下步骤设置你的项目：
+
+1. 如需创建新项目，在 **Android Studio** 里，依次选择 **Phone and Tablet** > **Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
+
+   创建项目后，**Android Studio** 会自动开始同步 gradle。请确保同步成功再进行下一步操作。
+
+2. 在项目根目录的 `settings.gradle` 文件中添加 JitPack 仓库：
+
+    ```groovy
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            google()
+            mavenCentral()
+            maven { url 'https://jitpack.io' }
+        }
+    }
+    ```
+
+3. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件的 `dependencies` 字段中添加如下行以添加 `Fastboard SDK` 依赖：
+
+    ```groovy
+    dependencies {
+        ...
+        implementation 'com.github.netless-io:fastboard-android:1.2.0'
+    }
+    ```
+
+:::info[信息]
+本文使用 Fastboard Android SDK 1.2.0 版本。更多版本详见[发版说明](/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/release-notes-fb)。
+:::
+
+### 2. 实现用户界面
+
+Fastboard SDK 提供带 UI 的白板界面 `FastboardView`，只需将其添加到项目的布局中，app 运行时即可看到白板界面。
+
+将 `/app/res/layout/activity_main.xml` 文件中的内容替换成如下代码：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <io.agora.board.fast.FastboardView
+        android:id="@+id/fastboard_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+### 3. 实现加入房间
+
+调用 Fastboard SDK 的如下方法加入白板房间：
+
+1. 调用 `FastboardView` 类的 `getFastboard` 方法获取 `Fastboard` 对象。
+2. 调用 `Fastboard` 类的 `createFastRoom` 方法创建 `FastRoom` 对象。调用该方法时，你需要通过 `roomOptions` 参数传入以下房间配置信息：
+   - `appId`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+   - `uuid`：String。房间的 UUID，详见[创建房间](#createroom)。
+   - `token`：String。用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#roomtoken)。
+   - `uid`：String。用户 UID，即用户的唯一标识符，字符串格式，长度不能超过 1024 字节。
+   - `FastRegion`：枚举。数据中心，必须和创建房间时设置的数据中心一致。
+
+在 `/app/java/com.example./MainActivity` 文件中添加如下代码：
+
+```kotlin
+package com.example.fastboardquickstart
+ 
+import android.content.pm.ActivityInfo
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.Handler
+import android.widget.Button
+import io.agora.board.fast.FastboardView
+import io.agora.board.fast.model.FastRegion
+import io.agora.board.fast.model.FastRoomOptions
+import java.lang.Exception
+ 
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        // 横屏设置
+        supportActionBar?.hide()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+         setupFastboard()
+
+    }
+		
+        private fun setupFastboard() {
+        // 获取 fastboard 对象
+        val fastboardView = findViewById<FastboardView>(R.id.fastboard_view)
+        val fastboard = fastboardView.fastboard
+ 
+        // 设置白板房间的参数
+        val roomOptions = FastRoomOptions(
+            "互动白板项目的 AppIdentifier",
+            "房间的 UUID",
+            "Room Token",
+            "用户 UID",
+           FastRegion.CN_HZ
+        )
+ 
+        // 创建 FastRoom 对象
+        val fastRoom = fastboard.createFastRoom(roomOptions)
+        // 加入房间
+        fastRoom.join()
+    }
+}
+```
+
+## 运行项目
+
+在 Android Studio 中编译并在模拟器或真机上运行项目。app 成功安装并启动后，你可以看到如下界面：
+
+![项目界面示例](https://web-cdn.agora.io/docs-files/1647398709640)
+
+你可以选择右侧工具栏上的铅笔、文字或形状工具，在白板上写写画画；当前页面写满时，可以点击右下方的![新增页面图标](https://web-cdn.agora.io/docs-files/1646622745090)图标，新增页面，并使用箭头切换页面。
+
+## 后续步骤
+
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。
+
+本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+![互动白板快速开始流程图](https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg)
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- Xcode 10+
+- iOS 10.0+
+- CocoaPods [最新版本](https://cocoapods.org/)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart#注册账号)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+
+<a id="createroom"></a>
+## 服务端实现
+### 1. 创建房间
+
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/rooms",
+  "headers": {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+	"region": "cn-hz"
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require('request');
+var options = {
+  "method": "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  "url": "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>", 
+  "headers": {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+	"region": "cn-hz"
+  },
+  body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+  
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+## 客户端实现
+
+### 1. 创建项目
+
+1. 打开 Xcode 并点击 **Create a new Xcode project**。
+2. 选择平台类型为 **iOS**、项目类型为 **Single View App**，并点击 **Next**。
+3. 输入如下项目信息，并点击 **Next**：
+   - **Product Name**：产品名称。本文设为 **ExampleFastboard**。
+   - **Team**：开发团队信息。如果你已添加过开发团队信息，可从弹出的菜单中选择；如果没有，会看到 **Add account…** 按钮。点击该按钮并按照屏幕提示输入 Apple ID，完成后即可选择你的 Apple 账户作为开发团队。
+   - **Organization Name**：组织名称。
+   - **Interface**：用户界面，选择 **Storyboard**。
+   - **Language**：语言。选择 **Swift**。
+4. 选择项目存储路径，并点击 **Create**。
+
+### 2. 获取 SDK
+
+参照如下步骤获取最新版的 Fastboard iOS SDK：
+
+1. 在终端里进入项目根目录，并运行以下命令，在项目文件夹下创建一个 `Podfile` 文件：
+
+   ```shell
+   pod init
+   ```
+
+2. 打开 `Podfile` 文件，添加如下内容：
+
+   ```ruby
+    platform :ios, '10.0'
+    use_frameworks!
+    target 'ExampleFastboard' do
+        pod 'Fastboard'
+    end
+   ```
+
+3. 在终端里运行以下命令安装 SDK：
+
+   ```shell
+   pod install
+   ```
+
+   安装成功后，项目文件夹下会生成一个 `xcworkspace` 文件，你可以打开该文件，对项目进行后续编辑。
+
+4. （可选）在终端里运行以下命令以更新 SDK：
+
+    ```shell
+    pod update Fastboard
+    ```
+
+:::tip[提示]
+对于中国大陆用户，如果在执行 pod install 命令时由于网络原因失败，可以使用 [TUNA 镜像源](https://mirrors.tuna.tsinghua.edu.cn/help/CocoaPods/)。
+:::
+
+### 3. 实现加入房间
+
+使用 Fastboard SDK 加入白板房间的步骤如下：
+
+1. 调用 `Fastboard` 类的 [`createFastRoom`](/zh-CN/api-reference/whiteboard/fastboard/ios#createfastroom) 创建 `FastRoom` 实例。
+2. 将 `FastRoom` 实例的 view 添加到 `viewController` 并设置布局。`FastRoomView` 提供白板界面，并带有常用功能的 UI。
+3. 调用 `FastRoom` 类的 [`joinRoom`](/zh-CN/api-reference/whiteboard/fastboard/ios#joinroom) 加入白板房间。
+
+调用 `createFastRoom` 创建 `FastRoom` 实例，需要通过 `config` 参数传入以下白板房间配置信息：
+
+- `appIdentifier`：String。互动白板项目的 AppIdentifier。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- `roomUUID`：String。房间的 UUID，详见[创建房间](#createroom)。
+- `roomToken`：String。用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#roomtoken)。
+- `region`：数据中心，必须和创建房间时设置的数据中心一致。
+- `userUID`：String。用户 UID，即用户的唯一标识符，字符串格式，长度不能超过 1024 字节。
+
+将 `ViewController.swift` 文件中的内容替换成如下代码：
+
+```swift
+import UIKit
+// 导入 Fastboard SDK
+import Fastboard
+
+class ViewController: UIViewController {
+
+    // 定义 fastRoom 变量
+    var fastRoom: FastRoom!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // 设置白板房间的参数
+        let config = FastRoomConfiguration(appIdentifier: "互动白板项目的 AppIdentifier",
+                                           roomUUID: "房间的 UUID",
+                                           roomToken: "房间的 Token",
+                                           region: .CN,
+                                           userUID: "用户 UID")
+        // 创建 FastRoom 实例
+        let fastRoom = Fastboard.createFastRoom(withFastRoomConfig: config)
+        // 添加 FastRoomView
+        view.addSubview(fastRoom.view)
+        // 加入房间
+        fastRoom.joinRoom()
+        self.fastRoom = fastRoom
+    }
+    
+    // 设置 FastRoomView 的布局
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        fastRoom.view.frame = view.bounds
+    }
+}
+```
+
+## 运行项目
+
+在 Xcode 中编译并在模拟器或真机上运行项目。app 成功安装并启动后，你可以看到如下界面：
+
+![项目界面示例](https://web-cdn.agora.io/docs-files/1648121138765)
+
+你可以选择左侧工具栏上的铅笔、文字或形状工具，在白板上写写画画；当前页面写满时，可以点击下方的![新增页面图标](https://web-cdn.agora.io/docs-files/1646622745090)图标，新增页面，并使用箭头切换页面。
+
+## 后续步骤
+
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+声网互动白板房间提供丰富的编辑工具，支持展示静态图片、动态 PPT、H5 课件等多种格式的文件，不同终端用户能在白板上实时展示想法，轻松实现多人互动协作。
+
+本文介绍如何建立一个简单的项目，使用声网互动白板 SDK 加入房间并实现基础的白板功能。
+
+:::warning[注意]
+由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网互动白板 SDK 仅支持 HTTPS 协议以及 http://localhost（http://127.0.0.1），请勿使用 HTTP 协议部署你的项目。
+:::
+
+## 技术原理
+
+下图展示了加入声网互动白板房间的基本流程。
+
+![互动白板快速开始流程图](https://web-cdn.agora.io/docs-portal/img/whiteboard/quick-start.svg)
+
+当你的 App 客户端请求加入互动白板房间时：
+
+1. 你的 App 服务端使用 SDK Token 向声网互动白板服务端发起创建房间的请求。
+2. 成功创建房间后，声网互动白板服务端向你的 App 服务端返回新建房间的房间 UUID。
+3. 你的 App 服务端使用房间 UUID 生成 room Token，并将房间 UUID 和 room Token 发送给 App 客户端。
+4. App 客户端使用从声网控制台获取的 AppIdentifier 初始化互动白板 SDK 实例。
+5. App 客户端调用 SDK 的方法并传入房间 UUID 和 room Token 以加入互动白板房间。
+
+## 前提条件
+
+- 满足[最低版本要求的浏览器](/zh-CN/realtime-media/whiteboard#如何选择白板-sdk-和-fastboard-sdk)。
+- 有效的声网[开发者账号](/zh-CN/introduction/quickstart)。
+- 已在声网控制台[开启互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)并获取[白板项目的 AppIdentifier 和 SDK Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+- [Node.js 及 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)。
+
+## 服务端实现
+
+在 App 客户端加入互动白板房间前，你需要在 App 服务端调用声网互动白板提供的 RESTful API 创建房间、获取房间 UUID 并生成 Room Token，并将房间 UUID 和 Room Token 传给 App 客户端。
+
+:::warning[注意]
+你需要自行实现将房间 UUID 和 Room Token 下发给 App 客户端的逻辑。
+:::
+
+<a id="createroom"></a>
+### 1. 创建房间
+
+调用互动白板服务端 RESTful API 创建一个房间。详见[创建房间（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require("request");
+var options = {
+  "method": "POST",
+  "url": "https://api.netless.link/v5/rooms",
+  "headers": {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+	"region": "cn-hz"
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回新建房间的信息，其中的 `uuid` 是房间的唯一标识，App 客户端加入房间时需要传入该参数。
+
+**响应示例**
+
+```json
+{
+    "uuid": "4a50xxxxxx796b", // 房间的 UUID
+    "teamUUID": "RMmLxxxxxx15aw",
+    "appUUID": "i54xxxxxx1AQ",
+    "isRecord": true,
+    "isBan": false,
+    "createdAt": "2021-01-18T06:56:29.432Z",
+    "limit": 0
+}
+```
+
+<a id="roomtoken"></a>
+### 2. 生成 Room Token
+
+创建房间并获取新建房间的 `uuid` 后，你需要在 App 服务端生成 Room Token 并下发给 App 客户端。当 App 客户端加入房间时，声网互动白板服务端会使用该 Token 对其鉴权。
+
+你可以通过以下方式在 App 服务端生成 Room Token：
+
+- 使用代码生成 Room Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。（推荐）
+- 调用互动白板服务端 RESTful API 生成 Room Token，详见[生成 Room Token（POST）](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。
+
+下面以调用 RESTful API 的方式为例介绍如何生成 Room Token。
+
+**请求示例**
+
+你可以使用以下 Node.js 脚本发送请求：
+
+:::info[信息]
+使用 Node.js 发送 HTTP 请求前安装 `request` 模块。你可以运行 `npm install request` 安装。
+:::
+
+```javascript
+var request = require('request');
+var options = {
+  "method": "POST",
+  // 将 <房间的 UUID> 替换成你的房间 UUID
+  "url": "https://api.netless.link/v5/tokens/rooms/<房间的 UUID>", 
+  "headers": {
+    "token": "你的 SDK Token",
+    "Content-Type": "application/json",
+	"region": "cn-hz"
+  },
+  body: JSON.stringify({"lifespan":3600000,"role":"admin"})
+  
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+
+如果方法调用成功，声网互动白板服务端将返回生成的 Room Token。
+
+**响应示例**
+
+```json
+"NETLESSROOM_YWs9XXXXXXXXXXXZWNhNjk" // Room Token
+```
+
+## 客户端实现
+
+创建一个名为 `fastboard_quickstart` 的文件夹。一个 Web 客户端项目至少需包含以下文件：
+
+- `package.json`: 安装并管理项目依赖。
+- `index.html`: 用于设计 Web 应用的用户界面。
+- `main.js`: 实现具体应用逻辑的代码。
+
+<a id="添加依赖项"></a>
+
+### 1. 添加依赖项
+
+参考如下步骤创建 `package.json` 文件并添加必要的依赖项：
+
+1. 进入 `fastboard_quickstart` 目录并运行 `npm init` 命令来创建 `package.json` 文件。
+
+2. 运行如下命令安装最新版本的 Fastboard SDK 及相关依赖项：
+
+    ```shell
+    npm add @netless/fastboard @netless/window-manager white-web-sdk
+    ```
+
+    各字段的含义如下：
+
+    - `@netless/fastboard`：Fastboard SDK。
+    - `@netless/window-manager`：窗口管理插件，用于实现和管理多窗口应用。
+    - `white-web-sdk`：提供互动白板核心功能的 SDK。
+
+3. 为运行和打包项目，你需要指定构建工具。本文使用 [Vite](https://vitejs.dev/)。在 `devDependencies` 中添加 `vite` 字段，并在 `scripts` 中定义项目运行命令。
+
+    ```json
+    {
+        "name": "fastboard_quickstart",
+        "private": true,
+        "scripts": {
+            "build": "vite build",
+            "dev": "vite --open"
+        },
+        "dependencies": {
+            "@netless/fastboard": "latest",
+            "@netless/window-manager": "latest",
+            "white-web-sdk": "latest"
+        },
+        "devDependencies": {
+            "vite": "latest"
+        }
+    }
+    ```
+
+### 2. 实现用户界面
+
+将以下代码复制到 `index.html` 实现应用的用户界面：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+</head>
+
+<body>
+    <div id="app" style="width: 600px; height: 400px; border: 1px solid;"></div>
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
+```
+
+:::warning[注意]
+请确保给挂载白板的元素设置宽和高，否则无法看到白板页面。
+:::
+
+### 3. 实现加入房间
+
+调用 Fastboard SDK 的如下方法加入白板房间：
+
+1. 调用 `createFastboard` 创建一个 `FastboardApp` 实例并加入白板房间。
+2. 调用 `mount` 将 `FastboardApp` 实例挂载到网页元素中。
+
+调用 `createFastboard` 方法时，你需要填入以下参数：
+
+- 在 `sdkConfig` 中传入 SDK 配置参数：
+  - `appIdentifier`: 互动白板项目的 AppIdentifier。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
+  - `region`：数据中心，必须和创建房间时设置的数据中心一致。
+
+- 在 `joinRoom` 中传入房间配置参数：
+  - `uid`: 用户的唯一标识符，字符串格式，长度不能超过 1024 字节。
+  - `uuid`: 房间 UUID，即房间的唯一标识符。详见[创建房间](#createroom)。
+  - `roomToken`: 用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token#在-app-服务端生成-token)。
+
+将以下代码复制到 `main.js` 实现加入白板房间的逻辑：
+
+```javascript
+import { createFastboard, mount } from "@netless/fastboard";
+ 
+let app;
+async function mountFastboard(div) {
+  app = await createFastboard({
+    sdkConfig: {
+      appIdentifier: "你的 AppIdentifier",
+      region: "cn-hz",
+    },
+    joinRoom: {
+      uid: "用户 uid",
+      uuid: "房间 UUID",
+      roomToken: "房间 Token",
+    },
+    managerConfig: {
+      cursor: true,
+    },
+  });
+  window.app = app;
+  return mount(app, div);
+}
+ 
+mountFastboard(document.getElementById("app"));
+```
+
+## 运行项目
+
+1. 在项目根目录下运行下列命令安装依赖：
+
+   ```shell
+   npm install
+   ```
+
+2. 运行项目：
+
+   ```shell
+   npm run dev
+   ```
+
+你的浏览器会自动打开以下页面：
+
+![白板运行界面图](https://web-cdn.agora.io/docs-files/1651065648333)
+
+你可以选择右侧工具栏上的铅笔、文字或形状工具，在白板上写写画画；可以点击工具栏最下方的![](https://web-cdn.agora.io/docs-files/1646622732159)图标，体验丰富的插件功能；当前页面写满时，可以点击右下方的![](https://web-cdn.agora.io/docs-files/1651065279305)图标，新增页面，并使用箭头切换页面。
+
+:::warning[注意]
+在本地服务器（localhost）运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
+:::
+
+## 后续步骤
+
+体验完带 UI 的白板功能后，你可以调用 Fastboard SDK 的 API 并自定义 UI，以实现插入图片、播放音视频、演示文档等功能。详见[展示文件](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/manage-whiteboard/present-files-fb)。
+
+</PlatformStructured>

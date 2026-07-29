@@ -1,0 +1,114 @@
+---
+title: EncodedVideoFrameInfo
+description: 包含外部编码视频帧的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_encodedvideoframeinfo
+  sourcePath: html-docs/rtc/Android/API/class_encodedvideoframeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_encodedvideoframeinfo__prototype"></a>
+
+```text
+public class EncodedVideoFrameInfo {
+  public int codecType;
+  public int width;
+  public int height;
+  public int framesPerSecond;
+  public int frameType;
+  public int rotation;
+  public int trackId;
+  public long captureTimeMs;
+  public long decodeTimeMs;
+  public int streamType;
+}
+```
+
+<a id="class_encodedvideoframeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="codectype"></a>
+<Parameter name="codecType">
+
+:::note
+注： 在某些场景下，例如采集的视频流分辨率较低或设备性能受限，SDK 会自动调整为 H.264 编码格式。
+:::
+
+视频的编解码器类型：
+
+- `1`：`VIDEO_CODEC_VP8`，VP8。
+- `2`：`VIDEO_CODEC_H264`，H.264。
+- `3`：（默认）`VIDEO_CODEC_H265`，H.265。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+视频帧的宽度（单位：像素）。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+视频帧的高度（单位：像素）。
+
+</Parameter>
+<a id="framespersecond"></a>
+<Parameter name="framesPerSecond">
+
+视频帧的每秒帧数。当该参数不为 `0` 时，你可以使用它来计算外部编码视频帧的 Unix 时间戳。
+
+</Parameter>
+<a id="frametype"></a>
+<Parameter name="frameType">
+
+视频帧类型：
+
+- `0`：（默认）`VIDEO_FRAME_TYPE_BLANK_FRAME`，空白帧。
+- `3`：`VIDEO_FRAME_TYPE_KEY_FRAME`，关键帧。
+- `4`：`VIDEO_FRAME_TYPE_DELTA_FRAME`，Delta 帧。
+- `5`：`VIDEO_FRAME_TYPE_B_FRAME`，B 帧。
+- `6`：`VIDEO_FRAME_TYPE_UNKNOW`，未知帧。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+视频帧的旋转角度：
+
+- `0`：（默认）0 度。
+- `90`：90 度。
+- `180`：180 度。
+- `270`：270 度。
+
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+保留参数，用于未来扩展。
+
+</Parameter>
+<a id="capturetimems"></a>
+<Parameter name="captureTimeMs">
+
+外部编码视频帧采集时的 Unix 时间戳（单位：毫秒）。
+
+</Parameter>
+<a id="decodetimems"></a>
+<Parameter name="decodeTimeMs">
+
+输出参数，表示解码该视频帧的时间戳（单位：毫秒）。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+视频流的类型。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,550 @@
+---
+title: 自定义音频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/toc_audio_custom_capturenrendering
+  sourcePath: html-docs/rtc/Cpp/API/toc_audio_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_custom_capturenrendering"></a>
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume"></a>
+
+<a id="ariaid-title2"></a>
+
+## adjustCustomAudioPlayoutVolume
+
+调节本地播放的自定义音频轨道的音量。
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__prototype"></a>
+
+```text
+virtual int adjustCustomAudioPlayoutVolume(track_id_t trackId, int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__detailed_desc"></a>
+
+如果你想更改本地播放的音频音量，需要再次调用该方法。
+
+:::note
+注： 请确保在调用该方法前，已通过调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
+
+音频源的音量，取值范围为 0 到 100。
+
+- 0：静音。
+- 100：原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_adjustcustomaudioplayoutvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume"></a>
+
+<a id="ariaid-title3"></a>
+
+## adjustCustomAudioPublishVolume
+
+调节远端播放的自定义音频轨道的音量。
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__prototype"></a>
+
+```text
+virtual int adjustCustomAudioPublishVolume(track_id_t trackId, int volume) = 0;
+```
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__detailed_desc"></a>
+
+如果你想更改远端播放的音频音量，需要再次调用该方法。
+
+:::note
+注： 请确保在调用该方法前，已通过调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-1"></a>
+<Parameter name="trackId">
+
+音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+音频源的音量，取值范围为 0 到 100。
+
+- 0：静音。
+- 100：原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_adjustcustomaudiopublishvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine"></a>
+
+<a id="ariaid-title4"></a>
+
+## createCustomAudioTrack
+
+创建自定义音频轨道。
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine__prototype"></a>
+
+```text
+virtual rtc::track_id_t createCustomAudioTrack(rtc::AUDIO_TRACK_TYPE trackType, const rtc::AudioTrackConfig& config) = 0;
+```
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine__detailed_desc"></a>
+
+要发布自定义音频源，请按照以下步骤操作：
+
+1. 调用该方法创建一个自定义音频轨道，并获取音频轨道 ID。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你要发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
+3. 调用 [pushAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe)，并将 `trackId` 设置为步骤 2 中设置的音频轨道 ID，即可在频道中发布对应的自定义音频源。
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
+
+自定义音频轨道的类型，详见 [AUDIO_TRACK_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audiotracktype)。
+
+:::note
+注： 如果该参数设置为 `AUDIO_TRACK_DIRECT`，则在调用 `joinChannel` 加入频道时，必须将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设置为 false，否则加入频道会失败并返回错误码 -2。
+:::
+
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
+
+自定义音频轨道的配置，详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_createcustomaudiotrack_imediaengine__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回音频轨道 ID，作为该音频轨道的唯一标识符。
+- 方法调用失败，返回 `0xffffffff`。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_destroycustomaudiotrack_imediaengine"></a>
+
+<a id="ariaid-title5"></a>
+
+## destroyCustomAudioTrack
+
+销毁指定的音频轨道。
+
+<a id="api_imediaengine_destroycustomaudiotrack_imediaengine__prototype"></a>
+
+```text
+virtual int destroyCustomAudioTrack(rtc::track_id_t trackId) = 0;
+```
+
+<a id="api_imediaengine_destroycustomaudiotrack_imediaengine__detailed_desc"></a>
+
+<a id="api_imediaengine_destroycustomaudiotrack_imediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-2"></a>
+<Parameter name="trackId">
+
+[createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_destroycustomaudiotrack_imediaengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback"></a>
+
+<a id="ariaid-title6"></a>
+
+## enableCustomAudioLocalPlayback
+
+设置是否启用外部音频源的本地播放。
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__prototype"></a>
+
+```text
+virtual int enableCustomAudioLocalPlayback(track_id_t trackId, bool enabled) = 0;
+```
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__detailed_desc"></a>
+
+调用该方法可开启外部音频源的本地播放。如需停止播放，可再次调用该方法并将 `enabled` 设置为 false。你可以调用 [adjustCustomAudioPlayoutVolume](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_irtcengine_adjustcustomaudioplayoutvolume) 方法调整自定义音频轨道的本地播放音量。
+
+:::note
+注： 请确保在调用该方法前，已通过 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 创建自定义音频轨道。
+:::
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid-3"></a>
+<Parameter name="trackId">
+
+音频轨道 ID，设置为 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 返回的自定义音频轨道 ID。
+
+</Parameter>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否播放外部音频源：
+
+- true：播放外部音频源。
+- false：（默认）不播放外部音频源。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablecustomaudiolocalplayback__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaengine_pullaudioframe_imediaengine"></a>
+
+<a id="ariaid-title7"></a>
+
+## pullAudioFrame
+
+拉取远端混音后的音频数据。
+
+<a id="api_imediaengine_pullaudioframe_imediaengine__prototype"></a>
+
+```text
+virtual int pullAudioFrame(IAudioFrameObserverBase::AudioFrame* frame) = 0;
+```
+
+<a id="api_imediaengine_pullaudioframe_imediaengine__detailed_desc"></a>
+
+调用该方法后，App 会拉取解码并混音后的音频数据用于播放。该方法需要在加入频道后调用。在调用该方法前，请先调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink_imediaengine) 启用并设置外部音频渲染。
+
+:::note
+注： [pullAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe_imediaengine) 和 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调都可用于获取远端混音后的音频数据。启用外部音频渲染（调用 [setExternalAudioSink](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_setexternalaudiosink_imediaengine)）后，App 将无法再通过 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调获取数据。请根据实际业务需求选择使用该方法或 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调。两者的区别如下：
+
+- 调用 [pullAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe_imediaengine) 后，App 会自动从 SDK 拉取音频数据。通过设置音频数据参数，SDK 会调整帧缓冲区，帮助 App 处理延迟，有效避免音频播放抖动。
+- 注册 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调后，SDK 会通过回调将音频数据发送给 App。若 App 处理音频帧的过程存在延迟，可能会导致音频抖动。
+
+该方法仅用于获取远端混音后的音频数据。如果你需要获取采集、播放等不同音频处理阶段的数据，可以通过调用 [registerAudioFrameObserver](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#api_imediaengine_registeraudioframeobserver_imediaengine) 注册相应的回调。
+:::
+
+<a id="api_imediaengine_pullaudioframe_imediaengine__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_imediaengine_pullaudioframe_imediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
+
+输出参数，指向 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe) 的指针。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_pullaudioframe_imediaengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_pushaudioframe0"></a>
+
+<a id="api_imediaengine_pushaudioframe"></a>
+
+<a id="ariaid-title8"></a>
+
+## pushAudioFrame
+
+推送外部音频帧。
+
+<a id="api_imediaengine_pushaudioframe__prototype"></a>
+
+```text
+virtual int pushAudioFrame(IAudioFrameObserverBase::AudioFrame* frame, rtc::track_id_t trackId = 0) = 0;
+```
+
+<a id="api_imediaengine_pushaudioframe__detailed_desc"></a>
+
+<a id="api_imediaengine_pushaudioframe__timing"></a>
+
+### 调用时机
+
+在调用该方法推送外部音频数据前，请先完成以下操作：
+
+1. 调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine) 创建自定义音频轨道并获取音频轨道 ID。
+2. 调用 `joinChannel` 加入频道。在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-channelmediaoptions) 中，将 `publishCustomAudioTrackId` 设置为你希望发布的音频轨道 ID，并将 `publishCustomAudioTrack` 设置为 true。
+
+<a id="api_imediaengine_pushaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="frame-1"></a>
+<Parameter name="frame">
+
+外部音频帧。详见 [AudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/class-audioframe)。
+
+</Parameter>
+<a id="trackid-4"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。如果你希望发布自定义音频源，请将该参数设置为对应的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_pushaudioframe__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine"></a>
+
+<a id="ariaid-title9"></a>
+
+## setExternalAudioSink
+
+设置外部音频渲染器。
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine__prototype"></a>
+
+```text
+virtual int setExternalAudioSink(bool enabled, int sampleRate, int channels) = 0;
+```
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine__detailed_desc"></a>
+
+启用外部音频渲染器后，你可以调用 [pullAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_pullaudioframe_imediaengine) 方法拉取远端音频帧，处理后使用自定义音效进行播放，适用于需要使用外部音频数据播放的场景。
+
+:::note
+注： 启用外部音频渲染器后，应用将无法从 [onPlaybackAudioFrame](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe_iaudioframeobserverbase) 回调中获取任何音频数据。
+:::
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine__timing"></a>
+
+### 调用时机
+
+请在加入频道前调用该方法。
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
+
+是否启用外部音频渲染器：
+
+- true：启用外部音频渲染器。
+- false：（默认）禁用外部音频渲染器。
+
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+外部音频渲染器的采样率（Hz），可设置为 16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
+
+外部音频渲染器的声道数：
+
+- 1：单声道。
+- 2：双声道。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_setexternalaudiosink_imediaengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)
+
+<a id="api_imediaengine_setexternalaudiosource2"></a>
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine"></a>
+
+<a id="ariaid-title10"></a>
+
+## setExternalAudioSource
+
+设置外部音频源参数。
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine__prototype"></a>
+
+```text
+virtual int setExternalAudioSource(bool enabled, int sampleRate, int channels, bool localPlayback = false, bool publish = true) __deprecated = 0;
+```
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack_imediaengine)。
+:::
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine__timing"></a>
+
+### 调用时机
+
+在加入频道前调用该方法。
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
+
+是否启用外部音频源：
+
+- true：启用外部音频源。
+- false：（默认）不启用外部音频源。
+
+</Parameter>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
+
+外部音频源的采样率（Hz），可设置为 8000、16000、32000、44100 或 48000。
+
+</Parameter>
+<a id="channels-1"></a>
+<Parameter name="channels">
+
+外部音频源的声道数，可设置为 1（单声道）或 2（立体声）。
+
+</Parameter>
+<a id="localplayback"></a>
+<Parameter name="localPlayback">
+
+是否播放外部音频源：
+
+- true：播放外部音频源。
+- false：（默认）不播放外部音频源。
+
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
+
+是否向远端用户发布音频：
+
+- true：（默认）发布音频到远端用户。
+- false：不发布音频到远端用户。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_setexternalaudiosource_imediaengine__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_imediaengine)

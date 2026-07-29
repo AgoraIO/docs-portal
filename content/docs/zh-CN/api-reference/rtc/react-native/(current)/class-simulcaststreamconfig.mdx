@@ -1,0 +1,46 @@
+---
+title: SimulcastStreamConfig
+description: 视频小流的配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_simulcaststreamconfig
+  sourcePath: html-docs/rtc/RN/API/class_simulcaststreamconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_simulcaststreamconfig__prototype"></a>
+
+```text
+export class SimulcastStreamConfig {
+  dimensions?: VideoDimensions;
+  kBitrate?: number;
+  framerate?: number;
+}
+```
+
+<a id="class_simulcaststreamconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
+
+视频尺寸。详见 [VideoDimensions](/zh-CN/api-reference/rtc/react-native/class-videodimensions)。默认值为视频大流的 50%。
+
+</Parameter>
+<a id="kbitrate"></a>
+<Parameter name="kBitrate">
+
+视频码率 (Kbps)，默认值为 -1。该参数无需设置，SDK 会根据你设定的视频分辨率和帧率自动匹配最合适的码率。
+
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="framerate">
+
+视频帧率 (fps)。默认值为 5。
+
+</Parameter>
+</ParameterList>

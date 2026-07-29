@@ -1,0 +1,471 @@
+---
+title: "PPT 转换效果支持情况"
+description: "查看互动白板 SDK 的 PPT 转换效果支持情况，了解关键概念、参数说明、使用限制和接入注意事项。"
+---
+使用[文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)将由 Microsoft Office PowerPoint 制作的 PPT 或 PPTX 文件转换为动态 HTML 网页时，可能会遇到因 PPT 中使用的部分元素、特效、图片、动画等解析失败而导致转换后的 PPT 中部分效果失效或效果不好的情况。本文列出文档转换服务对 PPT 中各功能的支持情况，帮助你定位问题元素并修复 PPT。
+
+:::info[信息]
+- 此文档仅适用于 Microsoft PowerPoint 制作的 PPT 或 PPTX 文件。对于使用 WPS 制作的 PPT 文件，声网不保证转换效果。
+- 对于未在列表中提到的功能或效果，可能是版本差异导致功能不一致，建议手动测试。
+:::
+
+## 不支持的效果
+
+| PPT 元素 | 不支持的效果 | 不完美支持的效果 | 备注 |
+| --- | --- | --- | --- |
+| 文字 | <Slot name="convert-ppt-html-0-1-1" /> | <Slot name="convert-ppt-html-0-1-2" /> | <Slot name="convert-ppt-html-0-1-3" /> |
+| 形状 | 带公式的形状不支持添加颜色填充动画 | <Slot name="convert-ppt-html-0-2-2" /> | 某些特殊图形不要超出图形边界，超出边界部分不显示 |
+| 表格 | <Slot name="convert-ppt-html-0-3-1" /> | / | / |
+| 图片 | 图片格式-效果：三维格式/三维旋转 | <Slot name="convert-ppt-html-0-4-2" /> | / |
+| 音视频 | <Slot name="convert-ppt-html-0-5-1" /> | / | / |
+| 动画 | <Slot name="convert-ppt-html-0-6-1" /> | <Slot name="convert-ppt-html-0-6-2" /> | / |
+| 其他 | <Slot name="convert-ppt-html-0-7-1" /> | 隐藏幻灯片功能不支持将幻灯片的首页隐藏 | / |
+
+<Slot for="convert-ppt-html-0-1-1">
+
+- 字体-效果：全部大写字母/小型大写字母
+    - 形状格式-文本选项：阴影/映像/发光/柔化边缘/三维格式/三维旋转
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-1-2">
+
+- 字体：部分字体无法完美转换，请使用[支持的字体](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/convert-ppt)
+    - 文字描边：无法完美还原 PPT 中的效果
+    - 竖排文本：行间距非单倍行距可能与原 PPT 不一致，字体横坐标会发生偏移
+    - 艺术字：转换效果不完美，详见[示例](https://canvas-conversion-demo.netless.group/#/slide/58f35f4dca284a868c19a58663297358/1?prefix=https%3A%2F%2Fconversion-demo-cn.oss-cn-hangzhou.aliyuncs.com%2FdynamicConvert&resolution=4&maxResolutionLevel=4&minFPS=40&maxFPS=200)，上侧（左侧）为转换后的效果，右侧（下侧）为 PPT 内的效果
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-1-3">
+
+- 避免在一页内插入过多文字
+    - 避免连续使用换行符，建议将大段文字拆分为多个文本框
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-2-2">
+
+- 形状格式-效果：使用阴影/映像/发光/柔化边缘效果时会出现整个图形先全部显示，特效生效延后的情况
+    - 形状格式-形状轮廓：
+      - 选择虚线时，小于 1.5 磅的虚线转换后会变为实线
+      - 箭头转换后可能会移位
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-3-1">
+
+- 形状格式-填充：
+      - 图案填充
+      - 图片或纹理填充中不支持勾选**将图片平铺为纹理**
+    - 形状格式-效果：阴影/映像/发光/柔化边缘/三维格式/三维旋转
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-4-2">
+
+- 图片格式-删除背景：支持不完美，转换后图片可能有白边
+    - 图片格式-图片颜色：重新着色或使用颜色滤镜的图片转换后可能存在色差
+    - 图片格式-图片矫正：亮度/对比度调整效果还原不完美
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-5-1">
+
+- 选项：跨幻灯片播放
+    - 样式：在后台播放
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-6-1">
+
+- 切页动画：飞机/日式折纸/碎片/涡流/闪耀/平滑
+    - 强调动画：放大缩小（仅对文字添加不支持）/画笔颜色/彩色延伸/彩色脉冲/下划线
+    - 路径动画：播放完毕后倒带
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-6-2">
+
+- 计时-延迟：动画延迟时间可能存在少量误差
+    - 高级动画-触发-通过单击：点击事件会向下层元素穿透
+
+</Slot>
+
+<Slot for="convert-ppt-html-0-7-1">
+
+- 提取批注
+    - 文档转换后生成的缩略图 (`preview`) 中，下列效果不生效：
+        - 所有渐变效果
+        - 所有切页动画
+        - 包含形状内部改变的动画不生效，包括：百叶窗/棋盘/溶解/随机线条/形状/劈裂/阶梯/轮子/擦除/淡化/浮入
+        - 透明度
+        - 重新着色
+        - 阴影/映像/发光/柔化边缘
+
+</Slot>
+
+## 支持的效果
+
+| PPT 元素 | 效果菜单 | 支持的效果 | 备注 |
+| --- | --- | --- | --- |
+| 文字 | 字体 | <Slot name="convert-ppt-html-1-1-2" /> | 部分字体转换后，需确认本地已安装字体文件，以保证该字体正确显示 |
+| 段落 | <Slot name="convert-ppt-html-1-2-1" /> | / |  |
+| 形状 | 形状格式 | <Slot name="convert-ppt-html-1-3-2" /> | / |
+| 表格 | 表设计 | <Slot name="convert-ppt-html-1-4-2" /> | / |
+| 表布局 | 全部 | / |  |
+| 图片 | 图片格式 | <Slot name="convert-ppt-html-1-6-2" /> | / |
+| 音视频 | 音频/视频格式 | <Slot name="convert-ppt-html-1-7-2" /> | / |
+| 动画 | 动画类型 | <Slot name="convert-ppt-html-1-8-2" /> | / |
+| 动画属性 | <Slot name="convert-ppt-html-1-9-1" /> | / |  |
+| 其他 | 其他菜单 | 修改 PPT 主题、自定义主题 | / |
+
+<Slot for="convert-ppt-html-1-1-2">
+
+- 字体、字形、字号：全部
+    - 颜色和下划线：全部
+    - 效果：支持删除线、双删除线、上标、下标、等高字符
+    - 字符间距：全部
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-2-1">
+
+- 项目符号
+    - 编号
+    - 文本对齐方式：全部
+    - 缩进
+    - 间距
+    - 中文版式：全部
+    - 多栏排版
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-3-2">
+
+- 形状填充：全部
+    - 形状轮廓/线条：全部
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-4-2">
+
+- 表格样式选项：全部
+    - 表格样式：
+      - 主题：全部
+      - 底纹
+      - 边框
+      - 填充：颜色填充/图片填充/纹理填充/渐变填充/图案填充
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-6-2">
+
+- 删除背景
+    - 调整：全部
+    - 图片样式：
+      - 样式模板
+      - 边框
+      - 版式
+      - 效果：阴影/映像/发光/柔化边缘
+    - 排列：全部
+    - 裁剪
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-7-2">
+
+- 裁剪（进度裁剪）
+    - 添加书签
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-8-2">
+
+- 切页动画：淡入/淡出/推入/擦除/分割/显示/切入/随机线条/形状/揭开/覆盖/跌落/悬挂/帘式/剥离/溶解/棋盘/百叶窗/时钟/涟漪/切换/旋转/库/立方体/框/梳理/缩放/平移/传送带
+    - 出现/消失动画：全部
+    - 字动画：全部
+    - 路径动画：全部
+    - 模板动画：全部
+    - 带声音的动画
+
+</Slot>
+
+<Slot for="convert-ppt-html-1-9-1">
+
+- 计时：开始条件/持续时间/延迟/重复
+    - 触发器：通过单击/通过书签
+    - 设置文本动画、组合文本
+
+</Slot>
+
+## 修复 PPT 最佳实践
+
+如果转换后的 PPT 中部分效果存在缺失或与原 PPT 有差异的情况，你可以参考以下步骤定位问题元素并修复：
+
+1. **定位问题元素**
+
+    对比转换前后的 PPT，找出问题元素。
+
+2. **处理问题元素**
+
+    根据实际情况，你可以：
+
+    - 直接删除问题元素或删除元素上不支持的效果。
+    - 为问题元素替换其他文档转换已支持的效果。
+    - 将问题元素另存为图片，删除问题元素，之后重新插入图片至原位置。如果问题元素较多，可以先组合问题元素再进行转图片操作。
+
+3. **重新发起转换**
+
+    重新调用 RESTful API 发起转换。转换成功后，再次对比转换前后的 PPT 效果，如果依然存在问题，重复以上步骤。
+
+## 参考信息
+
+### 支持的字体
+
+声网建议你制作 PPT 时使用下列字体，避免使用其他不支持的字体，否则可能会出现转码失败或转码后格式异常的情况。如果你有其他字体需求，请[联系技术支持](https://ticket.shengwang.cn/)。
+
+- Taipei Sans TC Beta
+- Taipei Sans TC Beta,Taipei Sans TC Beta Light
+- Source Han Serif SC,思源宋体,Source Han Serif SC ExtraLight,思源宋体 ExtraLight
+- Noto Sans Lepcha
+- Source Han Serif K,본명조
+- Gen Shin Gothic,源真ゴシック,Gen Shin Gothic Regular,源真ゴシック Regular
+- Noto Sans Kannada,Noto Sans Kannada Medium
+- HanWangGB06,王漢宗鋼筆行楷繁
+- Noto Sans Myanmar,Noto Sans Myanmar Blk
+- Noto Sans Ogham
+- PT Sans
+- Lato
+- Mitr
+- Source Han Serif SC,思源宋体,Source Han Serif SC Heavy,思源宋体 Heavy
+- Source Han Serif SC,思源宋体,Source Han Serif SC Light,思源宋体 Light
+- Noto Sans Buginese
+- Noto Sans Tai Le
+- Noto Sans Kayah Li
+- Source Han Serif,源ノ明朝,Source Han Serif Heavy,源ノ明朝 Heavy
+- Source Han Serif,源ノ明朝,Source Han Serif Light,源ノ明朝 Light
+- Noto Sans Tai Tham
+- Noto Sans Tifinagh
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN Regular,思源黑体 CN Regular
+- Mitr,Mitr Medium
+- Noto Sans Thaana
+- MingLiU_HKSCS,細明體_HKSCS
+- Quicksand,Quicksand SemiBold
+- Source Han Serif CN,思源宋体 CN,Source Han Serif CN ExtraLight,思源宋体 CN ExtraLight
+- Quicksand
+- Source Han Serif CN,思源宋体 CN,Source Han Serif CN SemiBold,思源宋体 CN SemiBold
+- Mukta Mahee,MuktaMahee Light
+- Noto Sans Mongolian
+- Noto Sans Myanmar,Noto Sans Myanmar ExtBd
+- Source Han Serif SC,思源宋体,Source Han Serif SC SemiBold,思源宋体 SemiBold
+- Noto Sans Old South Arabian,Noto Sans OldSouArab
+- Noto Sans Brahmi
+- PT Mono
+- Noto Sans Chakma
+- Noto Sans Myanmar,Noto Sans Myanmar ExtLt
+- Dubai
+- Webdings
+- Noto Sans Javanese
+- Noto Serif SC,Noto Serif SC Black
+- Noto Sans SC,Noto Sans SC Medium
+- Noto Sans Shavian
+- Noto Sans Armenian,Noto Sans Armenian SemBd
+- Noto Sans Kannada,Noto Sans Kannada ExtraLight
+- Noto Sans Mandaic
+- Noto Serif SC
+- Noto Sans Zawgyi,Noto Sans Zawgyi ExtBd
+- Noto Sans SC,Noto Sans SC Black
+- Noto Sans Kharoshthi
+- Noto Sans Zawgyi,Noto Sans Zawgyi ExtLt
+- Noto Sans Myanmar,Noto Sans Myanmar Med
+- Noto Sans Old Persian
+- Noto Sans Zawgyi
+- Noto Sans Cham
+- Noto Nastaliq Urdu UI
+- Noto Sans Tai Viet
+- Noto Sans Buhid
+- Noto Sans Armenian,Noto Sans Armenian Thin
+- Noto Sans Runic
+- Noto Sans Kannada,Noto Sans Kannada Black
+- Noto Sans Inscriptional Parthian,Noto Sans InsParthi
+- Noto Serif Myanmar,Noto Serif Myanmar Med
+- Noto Serif Myanmar,Noto Serif Myanmar Blk
+- Noto Sans Tagalog
+- Noto Serif SC,Noto Serif SC Medium
+- Noto Sans Batak
+- Noto Sans Glagolitic
+- Noto Sans Oriya
+- Noto Sans Linear B
+- Noto Serif Myanmar,Noto Serif Myanmar SemBd
+- Noto Sans Gothic
+- Noto Sans Lydian
+- Noto Sans Ol Chiki
+- Noto Sans Zawgyi,Noto Sans Zawgyi Med
+- Noto Serif SC,Noto Serif SC SemiBold
+- Noto Sans Ugaritic
+- Noto Sans Meetei Mayek
+- Noto Sans Myanmar,Noto Sans Myanmar Light
+- Noto Sans Cypriot
+- Noto Sans Kannada,Noto Sans Kannada SemiBold
+- Noto Sans PhagsPa
+- Noto Sans Imperial Aramaic,Noto Sans ImpAramaic
+- Noto Sans Zawgyi,Noto Sans Zawgyi Blk
+- Noto Sans Egyptian Hieroglyphs,Noto Sans EgyptHiero
+- Noto Sans Kannada,Noto Sans Kannada ExtraBold
+- Noto Sans Zawgyi,Noto Sans Zawgyi Light
+- Noto Sans SC,Noto Sans SC Light
+- Noto Serif Myanmar,Noto Serif Myanmar ExtLt
+- Noto Sans Armenian,Noto Sans Armenian Blk
+- Noto Sans Armenian
+- Noto Serif Balinese
+- Noto Serif Myanmar,Noto Serif Myanmar ExtBd
+- Noto Serif Myanmar
+- Noto Sans Old Italic
+- Noto Sans Lisu
+- Noto Sans Kaithi
+- Noto Sans Tagbanwa
+- Noto Sans Myanmar
+- Noto Sans Vai
+- Noto Sans NKo,Noto Sans N'Ko
+- Noto Sans New Tai Lue
+- Noto Sans Syloti Nagri
+- Noto Sans Samaritan
+- Noto Sans Carian
+- Noto Sans Bamum
+- Noto Sans Avestan
+- Noto Serif Myanmar,Noto Serif Myanmar Light
+- Noto Sans Cuneiform
+- Noto Sans Zawgyi,Noto Sans Zawgyi Thin
+- Noto Sans Kannada
+- Noto Sans Armenian,Noto Sans Armenian Med
+- Noto Sans Armenian,Noto Sans Armenian Light
+- Noto Sans Old Turkic
+- Noto Sans Myanmar,Noto Sans Myanmar SemBd
+- Noto Sans Limbu
+- Noto Serif Myanmar,Noto Serif Myanmar Thin
+- Noto Sans Osmanya
+- Noto Sans Lycian
+- Noto Serif SC,Noto Serif SC Light
+- Noto Sans Yi
+- Noto Sans Saurashtra
+- Noto Sans SC
+- Noto Sans Syriac
+- Noto Sans Coptic
+- Noto Sans Rejang
+- Noto Sans Armenian,Noto Sans Armenian ExtBd
+- Noto Sans Armenian,Noto Sans Armenian ExtLt
+- Noto Nastaliq Urdu
+- Noto Sans Zawgyi,Noto Sans Zawgyi SemBd
+- Noto Sans Kannada,Noto Sans Kannada Thin
+- Noto Sans Kannada,Noto Sans Kannada Light
+- Noto Sans Hanunoo
+- Noto Sans SC,Noto Sans SC Thin
+- Noto Sans Inscriptional Pahlavi,Noto Sans InsPahlav
+- Noto Sans Sundanese
+- Noto Sans Phoenician
+- Noto Sans Myanmar,Noto Sans Myanmar Thin
+- Noto Serif SC,Noto Serif SC ExtraLight
+- Source Han Serif CN,思源宋体 CN
+- STKaiti,华文楷体
+- STIXSizeTwoSym
+- Source Han Serif K,본명조,Source Han Serif K ExtraLight,본명조 ExtraLight
+- Mitr,Mitr ExtraLight
+- shetumodengxiaofangti,摄图摩登小方体
+- AaManYuShouXieTi,Aa漫语手写体
+- ZCOOL Addict Italic 01,Lucida Calligraphy
+- ZCOOL Addict Italic 02,Lucida Calligraphy
+- JiangChengYuanTi,江城圆体,江城圆体 600W
+- ZCOOLtongtong,站酷彤彤体
+- Mitr,Mitr Light
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN Heavy,思源黑体 CN Heavy
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN Light,思源黑体 CN Light
+- Open Sans,Open Sans Semibold
+- Mukta Mahee,MuktaMahee SemiBold
+- Roboto
+- 猫啃什锦黑,MaokenAssortedSans
+- Source Han Serif CN,思源宋体 CN,Source Han Serif CN Medium,思源宋体 CN Medium
+- Mitr,Mitr SemiBold
+- HanWang SinSongThin\-Gb5,王漢宗細新宋簡,王汉宗细新宋简
+- Source Han Serif TC,思源宋體,思源宋體 Heavy,Source Han Serif TC Heavy
+- Source Han Serif TC,思源宋體,思源宋體 Light,Source Han Serif TC Light
+- HGMinchoE,HG明朝E
+- HGPMinchoE,HGP明朝E
+- HGSMinchoE,HGS明朝E
+- YRDZST,杨任东竹石体,YRDZST\-Regular,杨任东竹石体\-Regular
+- ZhenyanGB,锐字真言体免费商用
+- HGMaruGothicMPRO,HG丸ｺﾞｼｯｸM\-PRO
+- Mukta Mahee,MuktaMahee Medium
+- STIXGeneral
+- Source Han Serif TC,思源宋體
+- Merriweather,Merriweather Black
+- Sukhumvit Set
+- YRDZST,杨任东竹石体,YRDZST\-Medium,杨任东竹石体\-Medium
+- PT Sans Caption
+- Roboto,Roboto Thin
+- Source Han Serif SC,思源宋体
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN Medium,思源黑体 CN Medium
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN Normal,思源黑体 CN Normal
+- Roboto Slab
+- zcoolqingkehuangyouti,站酷庆科黄油体
+- Gen Shin Gothic,源真ゴシック,Gen Shin Gothic Bold,源真ゴシック Bold
+- Do Hyeon
+- PT Serif
+- HappyZcool\-2016,站酷快乐体2016修订版
+- Noteworthy
+- Gmarket Sans TTF,G마켓 산스 TTF,Gmarket Sans TTF Medium,G마켓 산스 TTF Medium
+- HuXiaoBo\-NanShen,胡晓波男神体
+- MaoKenTangYuan (beta),猫啃网糖圆体 (测试版)
+- Mukta Mahee,MuktaMahee Bold
+- Georgia Pro
+- ZCOOL_KuHei,站酷酷黑
+- Roboto Condensed
+- Lato,Lato Light
+- Open Sans
+- YRDZST,杨任东竹石体,YRDZST\-Heavy,杨任东竹石体\-Heavy
+- YRDZST,杨任东竹石体,YRDZST\-Light,杨任东竹石体\-Light
+- Merriweather
+- zcool\-gdh,站酷高端黑
+- Mukta Mahee,MuktaMahee ExtraBold
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi Medium,阿里巴巴普惠体 Medium
+- Roboto,Roboto Medium
+- Source Han Serif TC,思源宋體,思源宋體 Medium,Source Han Serif TC Medium
+- Source Sans Pro
+- Alimama DongFangDaKai,阿里妈妈东方大楷
+- SoukouMincho,装甲明朝
+- STIXSizeOneSym
+- Pangolin
+- Aqua Kana,.Aqua かな
+- STIXSizeFourSym
+- YRDZST,杨任东竹石体,YRDZST\-Extralight,杨任东竹石体\-Extralight
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi B,阿里巴巴普惠体 B
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi H,阿里巴巴普惠体 H
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi L,阿里巴巴普惠体 L
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi M,阿里巴巴普惠体 M
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi R,阿里巴巴普惠体 R
+- Source Han Sans CN,思源黑体 CN,Source Han Sans CN ExtraLight,思源黑体 CN ExtraLight
+- Source Han Serif SC,思源宋体,Source Han Serif SC Medium,思源宋体 Medium
+- JiangChengYuanTi,江城圆体,江城圆体 300W
+- Source Han Sans SC,思源黑体,Source Han Sans SC Heavy,思源黑体 Heavy
+- Source Han Sans SC,思源黑体,Source Han Sans SC Light,思源黑体 Light
+- Roboto,Roboto Black
+- LXGW WenKai,霞鹜文楷
+- Quicksand,Quicksand Medium
+- Open Sans,Open Sans Light
+- Oswald
+- New York
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi Heavy,阿里巴巴普惠体 Heavy
+- Alibaba PuHuiTi,阿里巴巴普惠体,Alibaba PuHuiTi Light,阿里巴巴普惠体 Light
+- Yu Gothic UI
+- zcoolwenyiti,站酷文艺体
+- Mukta Mahee,MuktaMahee Regular
+- Source Han Serif TC,思源宋體,思源宋體 ExtraLight,Source Han Serif TC ExtraLight
+- Open Sans,Open Sans Extrabold
+- YRDZST,杨任东竹石体,YRDZST\-Semibold,杨任东竹石体\-Semibold
+- Alimama FangYuanTi VF,阿里妈妈方圆体 VF
+- Source Han Serif K,본명조,Source Han Serif K Medium,본명조 Medium
+- Merriweather,Merriweather Light
+- Source Han Serif,源ノ明朝,Source Han Serif Medium,源ノ明朝 Medium
+- Source Han Serif TC,思源宋體,思源宋體 SemiBold,Source Han Serif TC SemiBold
+- Source Han Serif CN,思源宋体 CN,Source Han Serif CN Heavy,思源宋体 CN Heavy
+- Source Han Serif CN,思源宋体 CN,Source Han Serif CN Light,思源宋体 CN Light

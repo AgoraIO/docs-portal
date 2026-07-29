@@ -1,0 +1,75 @@
+---
+title: MixedAudioStream
+description: 在本地进行合流的音频源。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/class_mixedaudiostream
+  sourcePath: html-docs/rtc/Csharp/API/class_mixedaudiostream.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_mixedaudiostream__prototype"></a>
+
+```text
+public class MixedAudioStream
+{
+    public AUDIO_SOURCE_TYPE sourceType;
+    public uint remoteUserUid;
+    public string channelId;
+    public uint trackId;
+    }
+```
+
+<a id="class_mixedaudiostream__detailed_desc"></a>
+
+<a id="class_mixedaudiostream__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+音频源的类型。详见 [AUDIO_SOURCE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-audiosourcetype)。
+
+</Parameter>
+<a id="remoteuseruid"></a>
+<Parameter name="remoteUserUid">
+
+远端用户 ID。
+
+:::caution
+注意： 当参与本地音频合流的音频源类型为 AUDIO_SOURCE_REMOTE_USER 时，需要设置该参数。
+:::
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="class_mixedaudiostream__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+:::caution
+注意： 当参与本地音频合流的音频源类型为 AUDIO_SOURCE_REMOTE_CHANNEL 或 AUDIO_SOURCE_REMOTE_USER 时，需要设置该参数。
+:::
+
+</Parameter>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+音频轨道 ID。将该参数设置为调用 CreateCustomAudioTrack 方法返回的自定义音频轨道 ID。
+
+:::caution
+注意： 当参与本地本地音频合流的音频源类型为 AUDIO_SOURCE_CUSTOM 时，需要设置该参数。
+:::
+
+</Parameter>
+</ParameterList>

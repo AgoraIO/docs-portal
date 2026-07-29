@@ -1,0 +1,87 @@
+---
+title: 快速开始
+description: 了解如何开通内容审核服务，并完成控制台、网易易盾后台和回调地址配置。
+---
+
+## 前提条件
+
+- 已注册声网账号并可访问目标项目。
+- 已确认业务需要开通音频审核、视频审核，或同时开通两者。
+- 已准备可接收审核结果的服务端回调地址。
+- 如需通过 RTC SDK 启动审核，已准备可用的 RTC Token。
+
+## 创建声网项目并获取 App ID
+
+<a id="获取-app-id"></a>
+
+1. 登录[声网控制台](https://console.shengwang.cn/)。
+2. 创建或选择一个项目。
+3. 在项目配置中复制 App ID。
+
+你需要保存好 App ID，后续调用 API 进行初始化等操作时需要传入该参数。
+
+## 获取临时 Token
+
+对于鉴权机制为安全模式的项目，后续调用 API 加入频道等操作时，还需要传入频道名和 Token 对用户进行鉴权。
+
+在调试阶段，你可以先从控制台获取有效期为 24 小时的临时 Token；在 App 正式上线前，你必须在自己的服务端部署并生成 Token。
+
+:::warning[注意]
+通过 SDK 启动内容审核时，当前必须使用以 `007` 开头的 RTC Token，即 AccessToken2。
+:::
+
+## 开启音频审核和视频审核
+
+首次使用前，请按以下步骤在声网控制台启用内容审核服务：
+
+1. 登录声网控制台，在左上角选择需要配置内容审核的项目。
+2. 在左侧导航栏依次进入**全部产品 > 拓展能力 > 内容审核**。
+3. 在**内容审核**页面切换到**功能配置**页，填写邮箱、回调地址等必要信息，并分别开启音频审核和视频审核。
+4. 开启成功后，你可以在**功能配置**页面看到对应功能已处于启用状态。
+
+![内容审核功能配置页面](https://assets-docs.agora.io/images/content-moderation/console-function-configuration.png)
+
+:::info[信息]
+内容审核开通后默认提供 7 天测试期。测试期结束后，你需要购买内容审核套餐包才能继续使用服务。
+:::
+
+## 配置项说明
+
+首次开通内容审核时，建议重点确认以下配置项：
+
+- 邮箱：用于接收音频审核相关的第三方平台登录信息。
+- 回调地址：用于接收审核结果回调，建议配置为稳定、可监控、支持验签和幂等处理的服务端接口。
+- 审核能力：按业务实际需要开启音频审核、视频审核，或同时开启两者。
+
+## 网易易盾控制台相关说明
+
+开通内容审核后，声网会为你创建网易易盾相关账号。你可以登录网易易盾后台查看业务配置、调整策略和提交问题反馈。
+
+### 登录网易易盾后台
+
+![网易易盾登录页面](https://assets-docs.agora.io/images/content-moderation/yidun-login.png)
+
+使用声网控制台中填写的邮箱接收账号信息，并登录网易易盾后台。
+
+### 查看业务配置
+
+![网易易盾业务管理入口](https://assets-docs.agora.io/images/content-moderation/yidun-business-management-entry.png)
+
+在网易易盾后台中，你可以查看音频审核和视频审核对应的业务配置。
+
+### 配置审核策略
+
+![网易易盾名单策略页面](https://assets-docs.agora.io/images/content-moderation/yidun-list-policy.jpg)
+
+你可以通过**策略配置 > 名单策略**进行简单的个性化策略调整，例如关键词名单、忽略词名单、图片名单、用户 ID/IP 名单等。
+
+任何网易易盾审核策略配置相关问题，请提交**问题反馈**工单，并备注声网渠道客户。网易易盾运营支持将提供服务。
+
+## 开通后的下一步
+
+完成服务开通后，建议按以下顺序继续配置和验证：
+
+1. 阅读[配置说明](/zh-CN/realtime-media/content-moderation/build/configuration)，确认透传字段和回调地址配置方式。
+2. 按需接入[使用网易易盾视频审核](/zh-CN/realtime-media/content-moderation/build/netease-yidun-video-moderation)或[使用网易易盾音频审核](/zh-CN/realtime-media/content-moderation/build/audio-moderation-api)。
+3. 参考[内容审核最佳实践](/zh-CN/realtime-media/content-moderation/build/best-practices)完成回调联调和问题排查。
+4. 查看[计费说明](/zh-CN/realtime-media/content-moderation/reference/billing)，确认测试期结束后的套餐和费用规则。

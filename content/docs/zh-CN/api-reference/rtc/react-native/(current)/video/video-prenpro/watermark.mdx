@@ -1,0 +1,440 @@
+---
+title: 直播水印
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/toc_watermark
+  sourcePath: html-docs/rtc/RN/API/toc_watermark.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_watermark"></a>
+
+<a id="api_irtcengine_addvideowatermark2"></a>
+
+<a id="ariaid-title2"></a>
+
+## addVideoWatermark
+
+添加本地视频水印。
+
+<a id="api_irtcengine_addvideowatermark2__prototype"></a>
+
+```text
+abstract addVideoWatermark(
+    watermarkUrl: string,
+    options: WatermarkOptions
+  ): number;
+```
+
+<a id="api_irtcengine_addvideowatermark2__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+弃用：该方法已废弃，请改用 [addVideoWatermarkWithConfig](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/watermark#api_irtcengine_addvideowatermark3)。
+:::
+
+该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户、旁路直播观众和采集设备都能看到或采集到该水印图片。当前只支持在直播视频流中添加一个水印，后添加的水印会替换掉之前添加的水印。
+水印坐标和 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法中的设置有依赖关系：
+
+- 如果视频编码方向（[OrientationMode](/zh-CN/api-reference/rtc/react-native/enum-orientationmode)）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
+- 如果视频编码方向（[OrientationMode](/zh-CN/api-reference/rtc/react-native/enum-orientationmode)）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
+- 设置水印坐标时，水印的图像区域不能超出 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 方法中设置的视频尺寸，否则超出部分将被裁剪。
+
+:::note
+注：
+
+- 你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用该方法。
+- 如果你只是在旁路推流时添加水印，你可以使用该方法或 [startRtmpStreamWithTranscoding](/zh-CN/api-reference/rtc/react-native/cloud-media-relay/media-push#api_irtcengine_startrtmpstreamwithtranscoding) 方法设置水印。
+- 待添加水印图片必须是 PNG 格式。该方法支持所有像素格式的 PNG 图片：RGBA、RGB、Palette、Gray 和 Alpha_gray。
+- 如果待添加的 PNG 图片的尺寸与你在该方法中设置的尺寸不一致，SDK 会对 PNG 图片进行缩放或裁剪，以与设置相符。
+- 如果你已设置本地视频为镜像模式，那么此处的本地水印也为镜像。为避免本地用户看本地视频时的水印也被镜像，建议你不要对本地视频同时使用镜像和水印功能，请在应用层实现本地水印功能。
+:::
+
+<a id="api_irtcengine_addvideowatermark2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="watermarkurl"></a>
+<Parameter name="watermarkUrl">
+
+待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
+
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
+
+待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/react-native/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_addvideowatermark2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_addvideowatermark3"></a>
+
+<a id="ariaid-title3"></a>
+
+## addVideoWatermarkWithConfig
+
+向本地视频流添加水印图像。
+
+<a id="api_irtcengine_addvideowatermark3__prototype"></a>
+
+```text
+abstract addVideoWatermarkWithConfig(configs: WatermarkConfig): number;
+```
+
+<a id="api_irtcengine_addvideowatermark3__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.2 版本新增。
+:::
+
+你可以使用该方法在本地视频流中叠加水印图像，并通过 [WatermarkConfig](/zh-CN/api-reference/rtc/react-native/class-watermarkconfig) 设置水印在预览画面中的位置、大小和可见性。
+
+<a id="api_irtcengine_addvideowatermark3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="configs"></a>
+<Parameter name="configs">
+
+水印配置。详见 [WatermarkConfig](/zh-CN/api-reference/rtc/react-native/class-watermarkconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_addvideowatermark3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_addvideowatermarkex"></a>
+
+<a id="ariaid-title4"></a>
+
+## addVideoWatermarkEx
+
+添加本地视频水印。
+
+<a id="api_irtcengineex_addvideowatermarkex__prototype"></a>
+
+```text
+abstract addVideoWatermarkEx(
+    watermarkUrl: string,
+    options: WatermarkOptions,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_addvideowatermarkex__detailed_desc"></a>
+
+<a id="废弃-1"></a>
+
+:::error[废弃]
+弃用：该方法已废弃，请改用 [addVideoWatermarkWithConfigEx](/zh-CN/api-reference/rtc/react-native/video/video-prenpro/watermark#api_irtcengineex_addvideowatermarkex1)。
+:::
+
+该方法将一张 PNG 图片作为水印添加到本地发布的直播视频流上，同一直播频道中的用户、旁路直播观众和采集设备都能看到或采集到该水印图片。当前只支持在直播视频流中添加一个水印，后添加的水印会替换掉之前添加的水印。
+水印坐标和 [setVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) 方法中的设置有依赖关系：
+
+- 如果视频编码方向（[OrientationMode](/zh-CN/api-reference/rtc/react-native/enum-orientationmode)）固定为横屏或自适应模式下的横屏，那么水印使用横屏坐标。
+- 如果视频编码方向（[OrientationMode](/zh-CN/api-reference/rtc/react-native/enum-orientationmode)）固定为竖屏或自适应模式下的竖屏，那么水印使用竖屏坐标。
+- 设置水印坐标时，水印的图像区域不能超出 [setVideoEncoderConfigurationEx](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengineex_setvideoencoderconfigurationex) 方法中设置的视频尺寸，否则超出部分将被裁剪。
+
+:::note
+注：
+
+- 你需要在调用 [enableVideo](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_enablevideo) 方法之后再调用本方法。
+- 待添加水印图片必须是 PNG 格式。本方法支持所有像素格式的 PNG 图片：RGBA、RGB、Palette、Gray 和 Alpha_gray。
+- 如果待添加的 PNG 图片的尺寸与你在本方法中设置的尺寸不一致，SDK 会对 PNG 图片进行缩放或裁剪，以与设置相符。
+- 如果你已经使用 [startPreview](/zh-CN/api-reference/rtc/react-native/video/video-basic#api_irtcengine_startpreview2) 方法开启本地视频预览，那么本方法的 `visibleInPreview` 可设置水印在预览时是否可见。
+- 如果你已设置本地视频为镜像模式，那么此处的本地水印也为镜像。为避免本地用户看本地视频时的水印也被镜像，建议你不要对本地视频同时使用镜像和水印功能，请在应用层实现本地水印功能。
+:::
+
+<a id="api_irtcengineex_addvideowatermarkex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="watermarkurl-1"></a>
+<Parameter name="watermarkUrl">
+
+待添加的水印图片的本地路径。该方法支持从本地绝对/相对路径添加水印图片。
+
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
+
+待添加的水印图片的设置选项，详见 [WatermarkOptions](/zh-CN/api-reference/rtc/react-native/class-watermarkoptions)。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_addvideowatermarkex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_addvideowatermarkex1"></a>
+
+<a id="ariaid-title5"></a>
+
+## addVideoWatermarkWithConfigEx
+
+向本地视频添加水印图像。
+
+<a id="api_irtcengineex_addvideowatermarkex1__prototype"></a>
+
+```text
+abstract addVideoWatermarkWithConfigEx(
+    config: WatermarkConfig,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_addvideowatermarkex1__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.2 版本新增。
+:::
+
+<a id="api_irtcengineex_addvideowatermarkex1__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_addvideowatermarkex1__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+水印配置，详见 [WatermarkConfig](/zh-CN/api-reference/rtc/react-native/class-watermarkconfig)。
+
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+[RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection) 对象，详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_addvideowatermarkex1__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_clearvideowatermarkex"></a>
+
+<a id="ariaid-title6"></a>
+
+## clearVideoWatermarkEx
+
+删除已添加的视频水印。
+
+<a id="api_irtcengineex_clearvideowatermarkex__prototype"></a>
+
+```text
+abstract clearVideoWatermarkEx(connection: RtcConnection): number;
+```
+
+<a id="api_irtcengineex_clearvideowatermarkex__detailed_desc"></a>
+
+<a id="api_irtcengineex_clearvideowatermarkex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_clearvideowatermarkex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_clearvideowatermarks"></a>
+
+<a id="ariaid-title7"></a>
+
+## clearVideoWatermarks
+
+删除已添加的视频水印。
+
+<a id="api_irtcengine_clearvideowatermarks__prototype"></a>
+
+```text
+abstract clearVideoWatermarks(): number;
+```
+
+<a id="api_irtcengine_clearvideowatermarks__detailed_desc"></a>
+
+<a id="api_irtcengine_clearvideowatermarks__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_removevideowatermark"></a>
+
+<a id="ariaid-title8"></a>
+
+## removeVideoWatermark
+
+从本地视频中移除水印图像。
+
+<a id="api_irtcengine_removevideowatermark__prototype"></a>
+
+```text
+abstract removeVideoWatermark(id: string): number;
+```
+
+<a id="api_irtcengine_removevideowatermark__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.2 版本新增。
+:::
+
+该方法根据指定的唯一 ID，从本地视频流中移除之前添加的水印图像。
+
+<a id="api_irtcengine_removevideowatermark__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
+
+要移除的水印的 ID。该值需与添加水印时使用的 ID 相同。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_removevideowatermark__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_removevideowatermarkex"></a>
+
+<a id="ariaid-title9"></a>
+
+## removeVideoWatermarkEx
+
+从本地或远端视频流中移除指定的水印图像。
+
+<a id="api_irtcengineex_removevideowatermarkex__prototype"></a>
+
+```text
+abstract removeVideoWatermarkEx(
+    id: string,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_removevideowatermarkex__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.2 版本新增。
+:::
+
+<a id="api_irtcengineex_removevideowatermarkex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_removevideowatermarkex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="id-1"></a>
+<Parameter name="id">
+
+水印 ID。
+
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/react-native/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_removevideowatermarkex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_irtcengineex)

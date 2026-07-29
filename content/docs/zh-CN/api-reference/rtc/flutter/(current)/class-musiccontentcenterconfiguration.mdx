@@ -1,0 +1,77 @@
+---
+title: MusicContentCenterConfiguration
+description: 音乐内容中心的设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_musiccontentcenterconfiguration
+  sourcePath: html-docs/rtc/Flutter/API/class_musiccontentcenterconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_musiccontentcenterconfiguration__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class MusicContentCenterConfiguration {
+  const MusicContentCenterConfiguration(
+      {this.appId, this.token, this.mccUid, this.maxCacheSize});
+
+  @JsonKey(name: 'appId')
+  final String? appId;
+
+  @JsonKey(name: 'token')
+  final String? token;
+
+  @JsonKey(name: 'mccUid')
+  final int? mccUid;
+
+  @JsonKey(name: 'maxCacheSize')
+  final int? maxCacheSize;
+
+  factory MusicContentCenterConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$MusicContentCenterConfigurationFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$MusicContentCenterConfigurationToJson(this);
+}
+```
+
+<a id="class_musiccontentcenterconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
+
+已启用内容中心的项目的 App ID。
+
+</Parameter>
+<a id="token"></a>
+<Parameter name="token">
+
+使用音乐内容中心时，用于鉴权的 RTM Token。
+
+:::note
+注：
+
+- 声网推荐你使用 AccessToken2 进行鉴权，详见[部署 Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。生成 Token 时，请向 `uid` 传入 `String` 型的 `mccUid`。
+- 当你的 Token 即将过期时，你可以调用 [renewToken](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_renewtoken) 来传入新的 Token。
+:::
+
+</Parameter>
+<a id="mccuid"></a>
+<Parameter name="mccUid">
+
+使用音乐内容中心的用户 ID，该 ID 可以和你加入 RTC 频道时使用的 `uid` 一致，但不能为 0。
+
+</Parameter>
+<a id="maxcachesize"></a>
+<Parameter name="maxCacheSize">
+
+可缓存的音乐资源数量，最多不能超过 50。
+
+</Parameter>
+</ParameterList>

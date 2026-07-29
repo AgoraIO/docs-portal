@@ -1,0 +1,661 @@
+---
+title: 音视频观测器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_mediaplayer_observer
+  sourcePath: html-docs/rtc/Flutter/API/toc_mediaplayer_observer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_mediaplayer_observer"></a>
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer"></a>
+
+<a id="ariaid-title2"></a>
+
+## registerAudioFrameObserver
+
+注册音频帧观测器。
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__prototype"></a>
+
+```text
+void registerAudioFrameObserver(
+      {required AudioPcmFrameSink observer,
+      RawAudioFrameOpModeType mode =
+          RawAudioFrameOpModeType.rawAudioFrameOpModeReadOnly});
+```
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
+
+音频帧观测器，观测每帧音频的接收，详见 [AudioPcmFrameSink](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+音频帧的使用模式，详见 [RawAudioFrameOpModeType](/zh-CN/api-reference/rtc/flutter/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_registeraudioframeobserver2_imediaplayer__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_registerplayersourceobserver"></a>
+
+<a id="ariaid-title3"></a>
+
+## registerPlayerSourceObserver
+
+注册一个播放观测器。
+
+<a id="api_imediaplayer_registerplayersourceobserver__prototype"></a>
+
+```text
+void registerPlayerSourceObserver(MediaPlayerSourceObserver observer);
+```
+
+<a id="api_imediaplayer_registerplayersourceobserver__detailed_desc"></a>
+
+<a id="api_imediaplayer_registerplayersourceobserver__timing"></a>
+
+### 调用时机
+
+加入频道前后均可调用。
+
+<a id="api_imediaplayer_registerplayersourceobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
+
+播放观测器，报告播放中的事件，详见 [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_registerplayersourceobserver__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title4"></a>
+
+## registerVideoFrameObserver
+
+注册视频帧观测器。
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__prototype"></a>
+
+```text
+void registerVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
+```
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__detailed_desc"></a>
+
+你需要在该方法中实现一个 [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver) 类，并根据场景需要，注册该类的回调。成功注册视频帧观测器后，SDK 会在捕捉到每个视频帧时，触发你所注册的回调。
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-2"></a>
+<Parameter name="observer">
+
+视频帧观测器，观测每帧视频的接收。详见 [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_registervideoframeobserver_imediaplayer__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title5"></a>
+
+## unregisterAudioFrameObserver
+
+取消注册音频帧观测器。
+
+<a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__prototype"></a>
+
+```text
+void unregisterAudioFrameObserver(AudioPcmFrameSink observer);
+```
+
+<a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-3"></a>
+<Parameter name="observer">
+
+音频帧观测器，详见 [AudioPcmFrameSink](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiopcmframesink)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_unregisteraudioframeobserver_imediaplayer__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unregisterplayersourceobserver"></a>
+
+<a id="ariaid-title6"></a>
+
+## unregisterPlayerSourceObserver
+
+取消注册播放观测器。
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__prototype"></a>
+
+```text
+void unregisterPlayerSourceObserver(MediaPlayerSourceObserver observer);
+```
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__detailed_desc"></a>
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-4"></a>
+<Parameter name="observer">
+
+播放观测器，报告播放中的事件，详见 [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_unregisterplayersourceobserver__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer"></a>
+
+<a id="ariaid-title7"></a>
+
+## unregisterVideoFrameObserver
+
+取消注册视频帧观测器。
+
+<a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__prototype"></a>
+
+```text
+void unregisterVideoFrameObserver(MediaPlayerVideoFrameObserver observer);
+```
+
+<a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer-5"></a>
+<Parameter name="observer">
+
+视频帧观测器，观测每帧视频的接收，详见 [MediaPlayerVideoFrameObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayervideoframeobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_unregistervideoframeobserver_imediaplayer__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver"></a>
+
+<a id="ariaid-title8"></a>
+
+## onAudioVolumeIndication
+
+媒体播放器音量提示回调。
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__prototype"></a>
+
+```text
+final void Function(int volume)? onAudioVolumeIndication;
+```
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__detailed_desc"></a>
+
+SDK 每 200 毫秒触发一次该回调，报告媒体播放器当前的音量。
+
+<a id="callback_imediaplayersourceobserver_onaudiovolumeindication_imediaplayersourceobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
+
+播放器的当前音量，取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink"></a>
+
+<a id="ariaid-title9"></a>
+
+## onFrame
+
+已获取音频帧回调。
+
+<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__prototype"></a>
+
+```text
+final void Function(AudioPcmFrame frame)? onFrame;
+```
+
+<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__detailed_desc"></a>
+
+注册音频数据观测器后，每次接收到一帧音频帧时，都会触发该回调，报告音频帧信息。
+
+<a id="callback_iaudiopcmframesink_onframe_iaudiopcmframesink__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
+
+音频帧信息。详见 [AudioPcmFrame](/zh-CN/api-reference/rtc/flutter/class-audiopcmframe)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AudioPcmFrameSink](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_iaudiopcmframesink)
+
+<a id="callback_imediaplayersourceobserver_onmetadata"></a>
+
+<a id="ariaid-title10"></a>
+
+## onMetaData
+
+报告已获取媒体附属信息。
+
+<a id="callback_imediaplayersourceobserver_onmetadata__prototype"></a>
+
+```text
+final void Function(Uint8List data, int length)? onMetaData;
+```
+
+<a id="callback_imediaplayersourceobserver_onmetadata__detailed_desc"></a>
+
+解析媒体附属信息后时，SDK 会触发该回调，报告媒体附属信息的数据类型和具体数据。
+
+<a id="callback_imediaplayersourceobserver_onmetadata__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="data"></a>
+<Parameter name="data">
+
+具体数据，用户自定义格式的数据。
+
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
+
+数据长度，单位为 byte。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated"></a>
+
+<a id="ariaid-title11"></a>
+
+## onPlayBufferUpdated
+
+报告当前缓冲数据能播放的时间。
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__prototype"></a>
+
+```text
+final void Function(int playCachedBuffer)? onPlayBufferUpdated;
+```
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__detailed_desc"></a>
+
+播放在线媒体资源的过程中，SDK 会每隔 1 秒触发一次该回调，报告当前缓冲的数据能支持的播放时间。
+
+- 当缓冲数据支持的播放时间小于阈值（默认为 0）时，返回 `playerEventBufferLow` (6)。
+- 当缓冲数据支持的播放时间大于阈值（默认为 0）时，返回 `playerEventBufferRecover` (7)。
+
+<a id="callback_imediaplayersourceobserver_onplaybufferupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="playcachedbuffer"></a>
+<Parameter name="playCachedBuffer">
+
+当前缓冲的数据能支持的播放时间 (毫秒)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayerevent"></a>
+
+<a id="ariaid-title12"></a>
+
+## onPlayerEvent
+
+报告播放器的事件。
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__prototype"></a>
+
+```text
+final void Function(
+          MediaPlayerEvent eventCode, int elapsedTime, String message)?
+      onPlayerEvent;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__detailed_desc"></a>
+
+- 调用 [seek](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-control#api_imediaplayer_seek) 定位播放后，SDK 会触发该回调，报告定位播放的结果。
+
+<a id="callback_imediaplayersourceobserver_onplayerevent__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eventcode"></a>
+<Parameter name="eventCode">
+
+播放器事件，详见 [MediaPlayerEvent](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerevent)。
+
+</Parameter>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
+
+发生事件的时间 (毫秒)。
+
+</Parameter>
+<a id="message"></a>
+<Parameter name="message">
+
+事件的信息。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated"></a>
+
+<a id="ariaid-title13"></a>
+
+## onPlayerInfoUpdated
+
+媒体播放器相关信息发生改变回调。
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__prototype"></a>
+
+```text
+final void Function(PlayerUpdatedInfo info)? onPlayerInfoUpdated;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__detailed_desc"></a>
+
+当媒体播放器相关信息发生改变时，SDK 会触发该回调。你可用其进行问题定位和排查。
+
+<a id="callback_imediaplayersourceobserver_onplayerinfoupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
+
+媒体播放器相关信息。详见 [PlayerUpdatedInfo](/zh-CN/api-reference/rtc/flutter/class-playerupdatedinfo)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged"></a>
+
+<a id="ariaid-title14"></a>
+
+## onPlayerSourceStateChanged
+
+报告播放器状态改变。
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__prototype"></a>
+
+```text
+final void Function(MediaPlayerState state, MediaPlayerReason reason)?
+    onPlayerSourceStateChanged;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__detailed_desc"></a>
+
+当播放器状态改变时，SDK 会触发该回调，报告新的播放状态。
+
+<a id="callback_imediaplayersourceobserver_onplayersourcestatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+新的播放状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerstate)。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+播放器状态改变的原因，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged"></a>
+
+<a id="ariaid-title15"></a>
+
+## onPlayerSrcInfoChanged
+
+媒体资源视频码率变化回调。
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__prototype"></a>
+
+```text
+final void Function(SrcInfo from, SrcInfo to)? onPlayerSrcInfoChanged;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__detailed_desc"></a>
+
+<a id="callback_imediaplayersourceobserver_onplayersrcinfochanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="from"></a>
+<Parameter name="from">
+
+变化前，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/flutter/class-srcinfo)。
+
+</Parameter>
+<a id="to"></a>
+<Parameter name="to">
+
+变化后，媒体资源播放时的视频码率相关信息。详见 [SrcInfo](/zh-CN/api-reference/rtc/flutter/class-srcinfo)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged"></a>
+
+<a id="ariaid-title16"></a>
+
+## onPositionChanged
+
+报告当前媒体资源的播放进度。
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__prototype"></a>
+
+```text
+final void Function(int positionMs, int timestampMs)? onPositionChanged;
+```
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__detailed_desc"></a>
+
+播放媒体文件时，SDK 每隔 1 秒会自动触发该回调，报告当前播放进度。
+
+<a id="callback_imediaplayersourceobserver_onpositionchanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="positionms"></a>
+<Parameter name="positionMs">
+
+当前播放进度，单位为 ms。
+
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timestampMs">
+
+当前播放进度的 NTP 时间戳，单位为 ms。
+
+:::note
+注： 该参数仅在频道内生效。
+:::
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent"></a>
+
+<a id="ariaid-title17"></a>
+
+## onPreloadEvent
+
+报告预加载媒体资源的事件。
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__prototype"></a>
+
+```text
+final void Function(String src, PlayerPreloadEvent event)? onPreloadEvent;
+```
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__detailed_desc"></a>
+
+<a id="callback_imediaplayersourceobserver_onpreloadevent__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="src"></a>
+<Parameter name="src">
+
+媒体资源的路径。
+
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
+
+预加载媒体资源时发生的事件。详见 [PlayerPreloadEvent](/zh-CN/api-reference/rtc/flutter/enum-playerpreloadevent)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)

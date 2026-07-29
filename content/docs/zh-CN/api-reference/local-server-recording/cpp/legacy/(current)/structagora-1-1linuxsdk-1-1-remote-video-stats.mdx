@@ -1,0 +1,113 @@
+---
+title: agora::linuxsdk::RemoteVideoStats结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/recording/cpp/structagora_1_1linuxsdk_1_1_remote_video_stats
+  sourcePath: html-docs/recording/cpp/structagora_1_1linuxsdk_1_1_remote_video_stats.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /cn/Interactive%20Broadcast/in-call_quality_windows.
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+远端视频流的统计信息。请参考远端视频流统计信息报告。
+
+## 构造及析构函数说明
+
+<a id="aea02e67ca7b5bbcfd5fad417914acf1b"></a>
+
+### RemoteVideoStats()
+
+<ApiSignature labels="inline">
+
+agora::linuxsdk::RemoteVideoStats::RemoteVideoStats()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a557cfe2a65b04333ef31ff723fc58ee6"></a>
+
+### delay
+
+<ApiSignature>
+
+int agora::linuxsdk::RemoteVideoStats::delay
+
+</ApiSignature>
+
+延迟（毫秒）。
+
+<a id="abc710c1c03bc02cc576a8563a1feb892"></a>
+
+### width
+
+<ApiSignature>
+
+int agora::linuxsdk::RemoteVideoStats::width
+
+</ApiSignature>
+
+视频流宽（像素）。
+
+<a id="a527d2f6818702f4927f588e021aa211f"></a>
+
+### height
+
+<ApiSignature>
+
+int agora::linuxsdk::RemoteVideoStats::height
+
+</ApiSignature>
+
+视频流高（像素）。
+
+<a id="a10be7eb64b4ae20b8b6f5a9ef6cbe345"></a>
+
+### receivedBitrate
+
+<ApiSignature>
+
+int agora::linuxsdk::RemoteVideoStats::receivedBitrate
+
+</ApiSignature>
+
+接收码率 (Kbps)。
+
+<a id="a22e4036def9096346b336036be0ae48c"></a>
+
+### decoderOutputFrameRate
+
+<ApiSignature>
+
+int agora::linuxsdk::RemoteVideoStats::decoderOutputFrameRate
+
+</ApiSignature>
+
+远端视频解码器的输出帧率 (fps)。
+
+:::info[注解]
+该参数仅在合流录制或获取 YUV 格式原始视频数据时有效，其他情况均为 0。
+:::
+
+<a id="a9d1075633eb6e40881f14cd7fba040f7"></a>
+
+### rxStreamType
+
+<ApiSignature>
+
+[REMOTE_VIDEO_STREAM_TYPE](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a15775e611bf72104f8210b3ad70e107d) agora::linuxsdk::RemoteVideoStats::rxStreamType
+
+</ApiSignature>
+
+视频流类型:
+
+- 0: 视频大流。
+- 1: 视频小流。

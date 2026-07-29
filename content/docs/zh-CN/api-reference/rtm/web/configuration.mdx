@@ -1,0 +1,548 @@
+---
+title: "初始配置"
+---
+
+RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法、基本用法示例代码和返回值。
+
+在初始化 RTM 客户端实例之前，你需要首先在代码中引入 RTM Javascript SDK：
+
+#### 方式一：使用 CDN 添加 SDK
+
+[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
+
+```javascript
+// 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
+// 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.2
+// 可通过发版说明获取最新版本号
+<script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
+```
+
+#### 方式二：使用包管理器引入 SDK
+
+1. 根据你的应用场景和开发需要，选择一种方式和工具安装 SDK。
+
+   **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtm
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtm
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+yarn add agora-rtm
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+    **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
+
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+```shell
+npm install agora-rtm
+```
+
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+```shell
+pnpm add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+pnpm update agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+pnpm add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+pnpm add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```shell
+yarn add agora-rtm
+```
+
+如果项目使用的 RTC 版本与 RTM 中依赖的 RTC 版本不一致，会收到提示：`unmet peer agora-rtc-sdk-ng@4.22.0: found 4.16.0`。此时你需要升级 RTC 的版本：
+
+```shell
+yarn upgrade agora-rtc-sdk-ng@4.22.0
+```
+
+或者通过以下命令同时保留两个版本的 RTC 库：
+
+```shell
+yarn add agora-rtc-sdk-ng-4.16@npm:agora-rtc-sdk-ng@4.16.0 --save-exact
+yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+```
+
+然后将代码中原来的 `import AgoraRTC from "agora-rtc-sdk-ng"` 替换为如下行：
+
+```javascript
+import AgoraRTC from "agora-rtc-sdk-ng-4.16"
+```
+
+:::warning[注意]
+保留两个版本的 RTC 库会增加项目的包体积。
+:::
+
+</TabsContent>
+</Tabs>
+
+    **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
+
+```shell tab="使用 npm" tabGroup="package"
+npm install agora-rtx
+```
+
+```shell tab="使用 pnpm" tabGroup="package"
+pnpm add agora-rtx --shamefully-hoist
+```
+
+```shell tab="使用 Yarn" tabGroup="package"
+# 若版本为 2.2.0
+# yarn add agora-rtx
+# yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
+
+# 2.2.0 及之后版本
+yarn add agora-rtx
+```
+
+2. 完成安装后，在你的 `app.js` 中引入 RTM：
+
+    ```javascript
+    // 如果安装的是 agora-rtm
+    import AgoraRTM from 'agora-rtm';
+
+    // 如果安装的是融合版 agora-rtx
+    // import AgoraRTM from 'agora-rtx';
+    // import AgoraRTC from 'agora-rtc-sdk-ng';
+    ```
+
+想要了解详细的初始配置步骤，可以查看：
+
+- [应用配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup)
+
+<a id="Init"></a>
+## Initialization
+
+### 接口描述
+
+创建并初始化 RTM 客户端实例，初始化实例的时候你需要提供 `appId` 和 `userId` 等参数，你可以在声网控制台创建项目并获得 App ID。
+
+:::info[信息]
+- 创建并初始化客户端实例需要在调用 RTM 的其他 API 之前进行。
+- 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
+:::
+
+### 接口方法
+
+你可以通过以下方式创建并初始化实例：
+
+```javascript
+class RTM(
+    constructor(
+        appId: string,
+        userId: string,
+        rtmConfig?: {
+            encryptionMode: string,
+            cipherKey: string,
+            salt: Uint8Array,
+            useStringUserId: boolean,
+            presenceTimeout: number,
+            logUpload: boolean,
+            logLevel: string,
+            cloudProxy: boolean
+        }
+    );
+)
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 | 描述                     |
+| --------- | --------- | ------ | ---- | --------- |
+|   `appId`   |  string    |   必填   |   -    | 你在声网控制台创建项目时获得的 App ID。      |
+|  `userId`   |  string    |   必填   |   -    | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。                |
+| `rtmConfig` | `RTMConfig` |   选填   |   -    | 其它初始化的配置参数，详见 [`RTMConfig`](#rtmconfig)。 |
+
+### 基本用法
+
+```javascript
+const { RTM } = AgoraRTM;
+const rtm = new RTM("yourAppId", "Tony");
+```
+
+### 返回值
+
+一个 RTM 客户端实例，用以在后续调用 RTM 其他 API。
+
+## RTMConfig
+
+### 接口描述
+
+`RTMConfig` 用于设置 RTM 初始化时配置其他额外属性，这些配置属性会在整个 RTM 客户端的生命周期中生效，影响 RTM 客户端的行为。
+
+### 接口方法
+
+你可以通过以下方式创建 `RTMConfig` 实例：
+
+```javascript
+const { RTMConfig } = AgoraRTM;
+```
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `encryptionMode` | string | 选填 | - | 端侧消息加密模式。如果不设置或设置为 `NONE`，则表示不启用端侧加密功能。支持的取值见[端侧加密模式](/zh-CN/api-reference/rtm/web/enumv#端侧加密模式)。 |
+| `salt` | Uint8Array | 选填 | - | 加密需要用到的盐，必须为 32 字节的二进制数组。 |
+| `cipherKey` | string | 选填 | - | 加解密需要用到的密钥。如果启用了加密功能，此属性必须设置。 |
+| `presenceTimeout` | number | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
+| `logUpload` | boolean | 选填 | `false` | <Slot name="configuration-javascript-html-0-5-4" /> |
+| `cloudProxy` | boolean | 选填 | `false` | <Slot name="configuration-javascript-html-0-6-4" /> |
+| `useStringUserId` | boolean | 选填 | `true` | <Slot name="configuration-javascript-html-0-7-4" /> |
+| `logLevel` | string | 选填 | - | 开启及设置 SDK 的输出日志输出等级。支持的取值见[日志输出等级](/zh-CN/api-reference/rtm/web/enumv#日志输出等级)。 |
+| `heartbeatInterval` | number | 选填 | `5` | <Slot name="configuration-javascript-html-0-9-4" /> |
+| `privateConfig` | object | 选填 | - | 当使用 RTM 的私有化部署功能时，需要配置此项参数。 |
+
+<Slot for="configuration-javascript-html-0-5-4">
+
+是否上传日志：
+
+    - `true`: 启用日志上传
+    - `false`: 关闭日志上传。
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-6-4">
+
+是否开启云代理:
+
+    - `true`: 开启。
+    - `false`: 关闭。
+
+    :::info[信息]
+    该功能仅适用于 Message Channel。
+    :::
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-7-4">
+
+是否使用 string 类型的用户 ID：
+
+    - `true`: 使用 string 类型的用户 ID。
+    - `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
+
+</Slot>
+
+<Slot for="configuration-javascript-html-0-9-4">
+
+SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM 服务器发送心跳包的时间间隔。如果客户端在该参数设置的时间内没有向 RTM 服务器发送心跳包，则 RTM 服务器会判定客户端超时。
+    :::info[信息]
+    该参数会影响 PCU 计数，从而影响计费。
+    :::
+
+</Slot>
+
+`privateConfig` 包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `serviceType` | string[] | 选填 | - | 服务类型。支持的取值见[服务类型](/zh-CN/api-reference/rtm/web/enumv#rtmservicetype)。 |
+| `accessPointHosts` | string[] | 选填 | - | 使用 RTM 服务的服务器列表。仅支持填入域名。 |
+| `eventUploadHosts` | string[] | 选填 | - | 使用事件上报的服务器列表。仅支持填入域名。 |
+| `logUploadHosts` | string[] | 选填 | - | 使用日志上传的服务器列表。仅支持填入域名。 |
+| `originDomains` | string[] | 选填 | - | 连接 RTM 基础服务时使用的后缀域名列表。仅支持填入域名。 |
+| `domainMode` | number | 选填 | `1` | <Slot name="configuration-javascript-html-1-6-4" /> |
+
+<Slot for="configuration-javascript-html-1-6-4">
+
+RTM 私有化场景下 SDK 边缘节点服务器的域名格式。支持以下取值：
+
+      - `1`：(默认) 自定义格式，例如 `ip.**`。
+      - `2`：老版本私有化格式，例如 `ip.edge.**`。
+
+</Slot>
+
+:::warning[注意]
+如果你需要升级私有化部署的 RTM WEB SDK 至 2.2.4 及以后版本，为保证兼容性，需要将 `domainMode` 设置为 `2`。如果省略该参数或使用默认值 `1`，可能无法连接到 RTM 服务器。
+:::
+
+### 基本用法
+
+```javascript
+const { RTM, EncryptionMode } = AgoraRTM;
+const rtmConfig = {
+    encryptionMode : EncryptionMode.AES_256_GCM,
+    salt : yourSalt,
+    cipherKey : "yourCipherKey",
+    presenceTimeout : 300,
+    logUpload : true,
+    logLevel : "debug",
+    cloudProxy : false,
+    useStringUserId : false,
+    privateConfig: {
+        serviceType: ["MESSAGE", "STREAM"],
+        domainMode: 2
+    },
+    heartbeatInterval: 5
+};
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
+```
+
+<a id="事件监听"></a>
+## 事件监听
+
+### 接口描述
+
+RTM 总共有 8 种事件通知类型，如下表所示：
+
+| 事件类型   | 描述               |
+|--------------| ---------- |
+| <code className="index-api-onmessageevent" id="message">message</code>             | <span className="index-desc-onmessageevent">接收用户所订阅的 Message Channel 及 Topic 中的所有消息事件通知。</span>                  |
+| <code className="index-api-onpresenceevent" id="presence">presence</code>            | <span className="index-desc-onpresenceevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Presence 事件通知。</span>            |
+| <code className="index-api-ontopicevent" id="topic">topic</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。</span>                |
+| <code className="index-api-onstorageevent" id="storage">storage</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。</span>  |
+| <code className="index-api-onlockevent" id="lock">lock</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。</span>   |
+| <code className="index-api-onconnection" id="status">status</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。</span> |
+|        <code className="index-api-onlinkstateevent" id="linkState">linkState</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。</span> |
+| <code className="index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
+
+<a id="添加监听"></a>
+### 添加监听
+
+你可以调用 `addEventListener` 方法监听指定的事件通知。示例代码如下：
+
+```javascript
+// add the message event listener
+
+// Message
+rtm.addEventListener("message", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this message come from
+    const topic = event.topicName;              // Which Topic does this message come from, it is valid when the channelType is "STREAM".
+    const messageType = event.messageType;      // Which message type it is, Should be "STRING" or "BINARY" .
+    const customType = event.customType;        // User defined type
+    const publisher = event.publisher;          // Message publisher
+    const message = event.message;              // Message payload
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Presence
+rtm.addEventListener("presence", event => {
+    const action = event.eventType;             // Which action it is ,should be one of 'SNAPSHOT'、'INTERVAL'、'JOIN'、'LEAVE'、'TIMEOUT、'STATE_CHANGED'、'OUT_OF_SERVICE'.
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const states = event.stateChanged;          // User state payload, only for stateChanged event
+    const interval = event.interval;            // Interval payload, only for interval event
+    const snapshot = event.snapshot;            // Snapshot payload, only for snapshot event
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Topic
+rtm.addEventListener("topic", event => {
+    const action = event.evenType;              // Which action it is ,should be one of 'SNAPSHOT'、'JOIN'、'LEAVE'.
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.userId;             // Who trigger this event
+    const topicInfos = event.topicInfos;        // Topic information payload
+    const totalTopics = event.totalTopics;      // How many topics
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Storage
+rtm.addEventListener("storage", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const storageType = event.storageType;      // Which category the event is, should be 'USER'、'CHANNEL'
+    const action = event.eventType;             // Which action it is ,should be one of "SNAPSHOT"、"SET"、"REMOVE"、"UPDATE" or "NONE"
+    const data = event.data;                    // 'USER_METADATA' or 'CHANNEL_METADATA' payload
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Lock
+rtm.addEventListener("lock", event => {
+    const channelType = event.channelType;      // Which channel type it is, Should be "STREAM", "MESSAGE" or "USER" .
+    const channelName = event.channelName;      // Which channel does this event come from
+    const publisher = event.publisher;          // Who trigger this event
+    const action = event.evenType;              // Which action it is ,should be one of 'SET'、'REMOVED'、'ACQUIRED'、'RELEASED'、'EXPIRED'、'SNAPSHOT'
+    const lockName = event.lockName;            // Which lock it effect
+    const ttl = event.ttl;                      // The ttl of this lock
+    const snapshot = event.snapshot;            // Snapshot payload
+    const owner = event.owner;                  // The owner of this lock
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Connection State Change
+rtm.addEventListener("status", event => {
+    const currentState = event.state;                // Which connection state right now
+    const changeReason = event.reason;                // Why trigger this event
+    const timestamp = event.timestamp;          // Event timestamp
+});
+// Link State Change
+rtm.addEventListener('linkState', event => {
+    const currentState = event.currentState;
+    const previousState = event.previousState;
+    const serviceType = event.serviceType;
+    const operation = event.operation;
+    const reason = event.reason;
+    const reasonCode = event.reasonCode;
+    const affectedChannels = event.affectedChannels;
+    const unrestoredChannels = event.unrestoredChannels;
+    const timestamp = event.timestamp;
+    const isResumed = event.isResumed;
+});
+// Token Privilege Will Expire
+rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
+    const channelName = channelName;            // Which Channel Token Will Expire
+});
+```
+
+<a id="删除监听"></a>
+### 删除监听
+
+你可以调用 `{config. removedelegate["javascript"]}` 方法删除指定的事件监听。示例代码如下：
+
+```javascript
+rtm.removeEventListener("status", statusHandler);
+```
+
+## login
+
+### 接口描述
+
+创建并初始化 RTM 实例之后，你需要执行 `login` 操作以登录 RTM 服务。登录成功将使客户端与 RTM 服务器建立起长连接，之后客户端才能正常访问 RTM 资源。
+
+:::info[信息]
+用户成功登录 RTM 服务后，应用的 PCU 会增加，这将影响你的账单数据。
+:::
+
+### 接口方法
+
+你可以通过以下方法登录 RTM 系统：
+
+```javascript
+rtm.login(options?: object): Promise<LoginResponse>;
+```
+
+|    参数     |  类型  | 是否必填 | 默认值 |       描述       |
+| --------- | ---- | ------ | ---- | ----- |
+|  `options`  | object |   选填   |   -    | 登录选项。 |
+
+`options` 对象包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `token` | string | 选填 | - | <Slot name="configuration-javascript-html-2-1-4" /> |
+
+<Slot for="configuration-javascript-html-2-1-4">
+
+初始化 RTM 客户端的 Token。
+
+    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+    - 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
+
+</Slot>
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.login({ token: "your_token" });
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `LoginResponse` 类型数据：
+
+```javascript
+type LoginResponse = {
+    timestamp: number          // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。
+
+## logout
+
+### 接口描述
+
+当你不再需要操作后，可以登出系统。本操作会影响你账单中的 PCU 计费项。
+
+### 接口方法
+
+你可以通过以下接口退出登录：
+
+```javascript
+rtm.logout(): Promise<LogoutResponse>;
+```
+
+### 基本用法
+
+```javascript
+try{
+    const result = await rtm.logout();
+    console.log(result);
+} catch (status){
+    console.log(status);
+}
+```
+
+### 返回值
+
+如果方法调用成功，则返回一个 `LogoutResponse` 类型数据：
+
+```javascript
+type LoginResponse = {
+    timestamp: number               // 预留字段
+}
+```
+
+如果方法调用失败，则返回一个 `ErrorInfo` 类型数据：
+
+```javascript
+type ErrorInfo = {
+    error: boolean;                     // 本次操作是否出错
+    operation: string;                  // 本次操作的 API 名称
+    errorCode: number;                  // 错误码
+    reason: string;                     // 错误描述
+}
+```
+
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting)了解错误原因，并找到对应的解决方法。

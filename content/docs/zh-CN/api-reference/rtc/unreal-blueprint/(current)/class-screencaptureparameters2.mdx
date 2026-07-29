@@ -1,0 +1,109 @@
+---
+title: FScreenCaptureParameters2
+description: 屏幕共享的参数配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_screencaptureparameters2
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_screencaptureparameters2.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screencaptureparameters2__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FScreenCaptureParameters2
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ScreenCaptureParameters2")
+	bool captureAudio = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ScreenCaptureParameters2")
+	FScreenAudioParameters audioParams = FScreenAudioParameters();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ScreenCaptureParameters2")
+	bool captureVideo = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ScreenCaptureParameters2")
+	FScreenVideoParameters videoParams = FScreenVideoParameters();
+#if defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IOS)
+	FScreenCaptureParameters2(){}
+	FScreenCaptureParameters2(const agora::rtc::ScreenCaptureParameters2 & AgoraData){
+		captureAudio = AgoraData.captureAudio;
+		audioParams = FScreenAudioParameters(AgoraData.audioParams);
+		captureVideo = AgoraData.captureVideo;
+		videoParams = FScreenVideoParameters(AgoraData.videoParams);
+	}
+	agora::rtc::ScreenCaptureParameters2 CreateAgoraData() const {
+		agora::rtc::ScreenCaptureParameters2 AgoraData;
+		AgoraData.captureAudio = captureAudio;
+		AgoraData.audioParams = audioParams.CreateAgoraData();
+		AgoraData.captureVideo = captureVideo;
+		AgoraData.videoParams = videoParams.CreateAgoraData();
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ScreenCaptureParameters2& AgoraData) const {
+		audioParams.FreeAgoraData(AgoraData.audioParams);
+		videoParams.FreeAgoraData(AgoraData.videoParams);
+	}
+#endif
+};
+```
+
+<a id="class_screencaptureparameters2__detailed_desc"></a>
+
+<a id="class_screencaptureparameters2__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="captureaudio"></a>
+<Parameter name="captureAudio">
+
+屏幕共享时是否采集系统音频：
+
+- `true`: 采集系统音频。
+- `false`: （默认）不采集系统音频。
+
+:::note
+注：
+
+- 受系统限制，采集系统音频仅适用于 Android API 级别为 29 及以上，即 Android 10 及以上。
+- 为提高屏幕共享时采集系统音频的成功率，请确保你已调用 [SetAudioScenario](/zh-CN/api-reference/rtc/unreal-blueprint/audio/audio-basic#api_irtcengine_setaudioscenario) 方法并设置音频场景为 `AUDIO_SCENARIO_GAME_STREAMING`。
+:::
+
+</Parameter>
+<a id="audioparams"></a>
+<Parameter name="audioParams">
+
+共享屏幕流的音频配置。详见 [FScreenAudioParameters](/zh-CN/api-reference/rtc/unreal-blueprint/class-screenaudioparameters)。
+
+:::caution
+注意： 该参数仅在 captureAudio 为 `true` 时生效。
+:::
+
+</Parameter>
+<a id="capturevideo"></a>
+<Parameter name="captureVideo">
+
+屏幕共享时是否采集屏幕：
+
+- `true`:（默认）采集屏幕。
+- `false`: 不采集屏幕。
+
+:::note
+注： 受系统限制，采集屏幕仅适用于 Android API 级别为 21 及以上，即 Android 5 及以上。
+:::
+
+</Parameter>
+<a id="videoparams"></a>
+<Parameter name="videoParams">
+
+共享屏幕流的视频编码配置。详见 [FScreenVideoParameters](/zh-CN/api-reference/rtc/unreal-blueprint/class-screenvideoparameters)。
+
+:::caution
+注意： 该参数仅在 captureVideo 为 `true` 时生效。
+:::
+
+</Parameter>
+</ParameterList>

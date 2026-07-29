@@ -1,0 +1,48 @@
+---
+title: FClientRoleOptions
+description: 用户角色属性设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_clientroleoptions
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_clientroleoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_clientroleoptions__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FClientRoleOptions
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|ClientRoleOptions")
+	EAUDIENCE_LATENCY_LEVEL_TYPE audienceLatencyLevel = EAUDIENCE_LATENCY_LEVEL_TYPE::AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY;
+	FClientRoleOptions() {}
+	FClientRoleOptions(const agora::rtc::ClientRoleOptions& AgoraData) {
+		audienceLatencyLevel = static_cast<EAUDIENCE_LATENCY_LEVEL_TYPE>(AgoraData.audienceLatencyLevel);
+	}
+	agora::rtc::ClientRoleOptions CreateAgoraData() const {
+		agora::rtc::ClientRoleOptions AgoraData;
+		AgoraData.audienceLatencyLevel = static_cast<agora::rtc::AUDIENCE_LATENCY_LEVEL_TYPE>(audienceLatencyLevel);
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::ClientRoleOptions& AgoraData) const {
+	}
+};
+```
+
+<a id="class_clientroleoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="audiencelatencylevel"></a>
+<Parameter name="audienceLatencyLevel">
+
+观众端延时级别。详见 [EAUDIENCE_LATENCY_LEVEL_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-audiencelatencyleveltype)。
+
+</Parameter>
+</ParameterList>

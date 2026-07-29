@@ -1,0 +1,88 @@
+---
+title: "实现 HTTP 鉴权"
+description: "了解如何在实时消息 RTM 中 HTTP 鉴权，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+RTMP 网关服务 RESTful API 使用如下安全认证：本节介绍如何进行 HTTP 基本认证。
+
+TMP 网关服务 RESTful API 支持以下鉴权方式：
+
+- HTTP 基本认证。易用，但安全性较弱。
+- HTTP HMAC（Hash-based Message Authentication Code）鉴权。安全性较高，推荐使用。
+
+## 实现 HTTP 基本认证
+
+### 前提条件
+
+已经从声网控制台获取客户 ID 和客户密钥，详见[开通服务](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service)。
+
+### 实现方法
+
+参考 [HTTP 基本认证](/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth#生成方法)实现。
+
+## 实现 HTTP HMAC 鉴权
+
+本节介绍如何实现 HTTP HMAC 鉴权。
+
+### 前提条件
+
+在生成认证字段过程中，你需要用到以下声网账号的信息：
+
+- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取-app-id)。
+- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[获取客户 ID 和密钥](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取客户-id-和客户密钥)。
+
+### 实现方法
+
+在发送 HTTP 请求时，你需要通过 HMAC-SHA256 算法生成一个签名，并在请求头部的 `Authorization` 字段传入签名及相关信息。
+
+下面的 Node.js 代码演示如何生成 `Authorization` 字段的值：
+
+```javascript
+const crypto = require('crypto');
+const http = require('http');
+const host = "api.sd-rtn.com"
+
+// 你的声网项目的 App ID
+appid = ""
+// 声网控制台 RESTful API 中获取的客户 ID
+customer_username = ""
+// 声网控制台 RESTful API 中获取的客户密钥
+customer_secret = ""
+// 请求包体
+data = ""
+
+function hashData(data) {
+    const hash = crypto.createHash('sha256');
+    hash.update(data);
+    return hash.digest('base64');
+}
+function signData(data) {
+    const hmac = crypto.createHmac('sha256', customer_secret);
+    hmac.update(data);
+    return hmac.digest('base64');
+}
+
+date = (new Date()).toUTCString();
+reqpath = `/cn/v1/projects/${appid}/rtls/ingress/appconfig`;
+reqline = `GET ${reqpath} HTTP/1.1`;
+// 计算 Body 的 SHA-256 的哈希值
+bodySign = hashData(data);
+digest = `SHA-256=${bodySign}`;
+// 生成签名
+signingStr = `host: ${host}\ndate: ${date}\n${reqline}\ndigest: ${digest}`;
+sign = signData(signingStr);
+
+auth = `hmac username="${customer_username}", `
+auth += `algorithm="hmac-sha256", `
+auth += `headers="host date request-line digest", `
+auth += `signature="${sign}"`;
+
+console.log(`Authorization: ${auth}`);
+```
+
+## 下一步
+
+开通服务、实现 HTTP 鉴权后，你可以进行如下操作：
+
+1. 参考 [API 文档](/zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key)集成 rtmp-gateway服务。
+2. 参考[接收 Webhook 事件](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)开启消息通知服务，通过事件回调监听服务状态。
+3. 参考[最佳实践](/zh-CN/realtime-media/rtmp-gateway/build/manage-media-streams/rtmp-domain-switch)检查你的集成步骤，保障服务可靠性。

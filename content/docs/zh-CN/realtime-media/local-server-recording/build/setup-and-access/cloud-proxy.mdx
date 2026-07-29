@@ -1,0 +1,57 @@
+---
+title: "应对防火墙限制"
+description: "了解如何在本地服务端录制中应对防火墙限制，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+大型企业、医院、高校、银行等安全需求较高的机构会部署防火墙将办公环境与外网隔离开来，保护内部信息安全。
+
+避免这些企业用户因防火墙无法使用声网的服务，声网提供防火墙白名单和云代理服务。
+
+本地服务端录制目前支持云代理服务。你只需将特定的 IP 及端口加入防火墙白名单，就可以实现内网访问声网服务。
+
+## 工作原理
+
+声网云代理的工作原理如下：
+
+![云代理工作原理](https://web-cdn.agora.io/docs-portal/img/recording/proxy.png)
+
+1. 声网 SDK 在连接声网 SD-RTN™ 之前，向云代理发起请求。
+2. 云代理返回相应代理信息。
+3. 声网 SDK 向云代理发送数据，云代理将接收到的数据透传给声网 SD-RTN™。
+4. 声网 SD-RTN™ 向云代理返回数据，云代理再将接收到的数据发送给声网 SDK。
+
+## 前提条件
+
+开始前，请确保你已经下载声网录制 4.x SDK 并参考[开始录制音视频](/zh-CN/realtime-media/local-server-recording/get-started/start-recording)在项目中实现了基础的录制功能。
+
+由于录制依赖实时音视频功能的实现，因此，你还需要确保 RTC 服务也[开通并实现了云代理功能](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
+
+## 实现步骤
+
+1. 联系 sales@shengwang.cn，提供以下信息申请开通云代理服务。
+   - App ID。
+   - 代理服务使用区域。
+   - 并发规模。
+   - 网络运营商。
+
+2. 声网在收到申请后，会提供用于云代理的 IP 地址和端口。
+3. 将声网提供的 IP 地址和端口添加到防火墙名单。
+
+4. 调用 `setBool` 并设置私有参数 `rtc.enable_proxy` 为 `true`。
+
+   ```cpp tab="C++" tabGroup="local-recording-cloud-proxy"
+   auto agoraParameter = service->getAgoraParameter();
+   agoraParameter->setBool("rtc.enable_proxy", true);
+   ```
+
+   ```java tab="Java" tabGroup="local-recording-cloud-proxy"
+   AgoraParameter parameter = agoraService.getAgoraParameter();
+   parameter.setBool("rtc.enable_proxy", true);
+   ```
+
+5. 测试是否能正常实现音视频录制。
+
+6. 如果需要关闭已设置的云代理服务，将 `rtc.enable_proxy` 设为 `false`。
+
+## 开发注意事项
+
+启用云代理需要在频道外调用，其设置在 `AgoraService` 生命周期内有效。

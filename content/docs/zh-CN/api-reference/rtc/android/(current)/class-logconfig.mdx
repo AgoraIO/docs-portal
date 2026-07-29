@@ -1,0 +1,51 @@
+---
+title: LogConfig
+description: 用于配置声网 SDK 的日志文件。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_logconfig
+  sourcePath: html-docs/rtc/Android/API/class_logconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_logconfig__prototype"></a>
+
+```text
+public static class LogConfig {
+    public String filePath;
+    public int fileSizeInKB;
+    public int level = Constants.LogLevel.getValue(Constants.LogLevel.LOG_LEVEL_INFO);
+  }
+```
+
+<a id="class_logconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+日志文件的完整路径。声网建议使用默认日志目录。如果你需要修改默认目录，请确保你指定的目录已存在且具有写入权限。默认路径为 /storage/emulated/0/Android/data/&lt;packagename&gt;/files/agorasdk.log。
+
+</Parameter>
+<a id="filesizeinkb"></a>
+<Parameter name="fileSizeInKB">
+
+`agorasdk.log` 文件的大小，单位为 KB。取值范围为 [128, 20480]，默认值为 2048。
+
+- 当设置值小于 128 时，SDK 会自动调整为 128。
+- 当设置值大于 20480 时，SDK 会自动调整为 20480。
+
+</Parameter>
+<a id="level"></a>
+<Parameter name="level">
+
+SDK 日志文件的输出级别，详见 [LogLevel](/zh-CN/api-reference/rtc/android/enum-loglevel)。
+
+- 设置为 `WARN` 时，SDK 会输出 `FATAL`、`ERROR` 和 `WARN` 级别的日志。
+
+</Parameter>
+</ParameterList>

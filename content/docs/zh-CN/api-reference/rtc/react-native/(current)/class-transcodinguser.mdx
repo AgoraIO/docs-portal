@@ -1,0 +1,106 @@
+---
+title: TranscodingUser
+description: 参与转码合流的每个主播的设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/rn/API/class_transcodinguser
+  sourcePath: html-docs/rtc/RN/API/class_transcodinguser.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_transcodinguser__prototype"></a>
+
+```text
+export class TranscodingUser {
+  uid?: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  zOrder?: number;
+  alpha?: number;
+  audioChannel?: number;
+}
+```
+
+<a id="class_transcodinguser__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+主播的用户 ID。
+
+</Parameter>
+<a id="x"></a>
+<Parameter name="x">
+
+主播视频画面在输出视频画面的 x 坐标 (px)，以输出视频画面的左上角为原点。取值范围为[0,width]，width 为 [LiveTranscoding](/zh-CN/api-reference/rtc/react-native/class-livetranscoding) 中设置的 `width`。
+
+</Parameter>
+<a id="y"></a>
+<Parameter name="y">
+
+主播视频画面在输出视频画面的 y 坐标 (px)，以输出视频画面的左上角为原点。取值范围为[0,height]，height 为 [LiveTranscoding](/zh-CN/api-reference/rtc/react-native/class-livetranscoding) 中设置的 `height`。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+主播视频画面的宽 (px)。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+主播视频画面的高 (px)。
+
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
+
+:::note
+注：
+
+- 如果取值小于 0 或大于 100，会返回错误 `ErrInvalidArgument`。
+- 支持将 zOrder 设置为 0。
+:::
+
+主播视频画面的图层编号。取值范围为 [0,100]。
+
+- 0:（默认）视频画面位于图层的最下层。
+- 100: 视频画面位于图层的最上层。
+
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
+
+主播视频画面的透明度。取值范围为 [0.0,1.0]。
+
+- 0.0: 完全透明。
+- 1.0:（默认）完全不透明。
+
+</Parameter>
+<a id="audiochannel"></a>
+<Parameter name="audioChannel">
+
+:::note
+注： 取值不为 `0` 时，需要使用特殊的播放器。
+:::
+
+主播音频在输出音频中占用的声道。默认值为 0，取值范围为 [0,5]：
+
+- `0`: （推荐）默认混音设置，最多支持双声道，与主播上行音频相关。
+- `1`: 主播音频在输出音频的 FL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `2`: 主播音频在输出音频的 FC 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `3`: 主播音频在输出音频的 FR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `4`: 主播音频在输出音频的 BL 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `5`: 主播音频在输出音频的 BR 声道。如果主播上行音频是多声道，声网服务器会先把多声道混音成单声道。
+- `0xFF` 或取值大于 `5`: 该主播音频静音，声网服务器移除该主播的音频。
+
+</Parameter>
+</ParameterList>

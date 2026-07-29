@@ -1,0 +1,70 @@
+---
+title: PlayerUpdatedInfo
+description: 媒体播放器相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_playerupdatedinfo
+  sourcePath: html-docs/rtc/Flutter/API/class_playerupdatedinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_playerupdatedinfo__prototype"></a>
+
+```text
+class PlayerUpdatedInfo {
+  const PlayerUpdatedInfo({this.playerId, this.deviceId});
+
+  @JsonKey(name: 'playerId')
+  final String? playerId;
+  @JsonKey(name: 'deviceId')
+  final String? deviceId;
+  factory PlayerUpdatedInfo.fromJson(Map<String, dynamic> json) =>
+      _$PlayerUpdatedInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$PlayerUpdatedInfoToJson(this);
+}
+```
+
+<a id="class_playerupdatedinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
+
+设备 ID，标识一个设备。
+
+</Parameter>
+<a id="videoheight"></a>
+<Parameter name="videoHeight">
+
+视频高度 (pixel)。
+
+</Parameter>
+<a id="videowidth"></a>
+<Parameter name="videoWidth">
+
+视频宽度 (pixel)。
+
+</Parameter>
+<a id="audiosamplerate"></a>
+<Parameter name="audioSampleRate">
+
+音频采样率 (Hz)。
+
+</Parameter>
+<a id="audiochannels"></a>
+<Parameter name="audioChannels">
+
+声道数。
+
+</Parameter>
+<a id="audiobitspersample"></a>
+<Parameter name="audioBitsPerSample">
+
+每个音频采样点的位数 (bit)。
+
+</Parameter>
+</ParameterList>

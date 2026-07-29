@@ -1,0 +1,1849 @@
+---
+title: 音效文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_audio_effect_file
+  sourcePath: html-docs/rtc/macOS/API/toc_audio_effect_file.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_effect_file"></a>
+
+<a id="api_irtcengine_geteffectcurrentposition"></a>
+
+<a id="ariaid-title2"></a>
+
+## getEffectCurrentPosition:
+
+获取音效文件的播放位置。
+
+<a id="api_irtcengine_geteffectcurrentposition__prototype"></a>
+
+```text
+- (int)getEffectCurrentPosition:(int)soundId NS_SWIFT_NAME(getEffectCurrentPosition(_:));
+```
+
+<a id="api_irtcengine_geteffectcurrentposition__detailed_desc"></a>
+
+获取指定音效文件的播放位置，单位为毫秒。
+
+:::note
+注： 请在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用此方法。
+:::
+
+<a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_geteffectcurrentposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回指定音效文件的播放位置（单位为毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geteffectduration"></a>
+
+<a id="ariaid-title3"></a>
+
+## getEffectDuration:
+
+获取音效文件的时长。
+
+<a id="api_irtcengine_geteffectduration__prototype"></a>
+
+```text
+- (int)getEffectDuration:(NSString* _Nonnull)filePath NS_SWIFT_NAME(getEffectDuration(_:));
+```
+
+<a id="api_irtcengine_geteffectduration__detailed_desc"></a>
+
+:::note
+注： 请在加入频道后调用该方法。
+:::
+
+<a id="api_irtcengine_geteffectduration__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+文件路径：
+
+- iOS 或 macOS：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_geteffectduration__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功，返回指定音效文件的总时长（毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geteffectsvolume"></a>
+
+<a id="ariaid-title4"></a>
+
+## getEffectsVolume
+
+获取音效的音量。
+
+<a id="api_irtcengine_geteffectsvolume__prototype"></a>
+
+```text
+- (int)getEffectsVolume NS_SWIFT_NAME(getEffectsVolume());
+```
+
+<a id="api_irtcengine_geteffectsvolume__detailed_desc"></a>
+
+音量为整数，范围为 0 到 100。默认值为 100，表示原始音量。
+
+:::note
+注： 请在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用此方法。
+:::
+
+<a id="api_irtcengine_geteffectsvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getvolumeofeffect"></a>
+
+<a id="ariaid-title5"></a>
+
+## getVolumeOfEffect:
+
+获取指定音效文件的音量。
+
+<a id="api_irtcengine_getvolumeofeffect__prototype"></a>
+
+```text
+- (int)getVolumeOfEffect:(int)soundId NS_SWIFT_NAME(getVolumeOfEffect(_:));
+```
+
+<a id="api_irtcengine_getvolumeofeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_getvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-1"></a>
+<Parameter name="soundId">
+
+音效文件的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getvolumeofeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pausealleffects"></a>
+
+<a id="ariaid-title6"></a>
+
+## pauseAllEffects
+
+暂停所有音效。
+
+<a id="api_irtcengine_pausealleffects__prototype"></a>
+
+```text
+- (int)pauseAllEffects NS_SWIFT_NAME(pauseAllEffects());
+```
+
+<a id="api_irtcengine_pausealleffects__detailed_desc"></a>
+
+<a id="api_irtcengine_pausealleffects__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pauseeffect"></a>
+
+<a id="ariaid-title7"></a>
+
+## pauseEffect:
+
+暂停指定的音效文件。
+
+<a id="api_irtcengine_pauseeffect__prototype"></a>
+
+```text
+- (int)pauseEffect:(int)soundId NS_SWIFT_NAME(pauseEffect(_:));
+```
+
+<a id="api_irtcengine_pauseeffect__detailed_desc"></a>
+
+你可以调用该方法暂停指定的音效文件。
+
+<a id="api_irtcengine_pauseeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-2"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pauseeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playalleffects"></a>
+
+<a id="ariaid-title8"></a>
+
+## playAllEffectsWithLoopCount\:pitch\:pan\:gain\:publish:
+
+播放所有音效。
+
+<a id="api_irtcengine_playalleffects__prototype"></a>
+
+```text
+- (int)playAllEffectsWithLoopCount:(NSInteger)loopCount
+                         pitch:(double)pitch
+                           pan:(double)pan
+                          gain:(NSInteger)gain
+                       publish:(BOOL)publish NS_SWIFT_NAME(playAllEffects(withLoopCount:pitch:pan:gain:publish:));
+```
+
+<a id="api_irtcengine_playalleffects__detailed_desc"></a>
+
+在多次调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 预加载多个音效到内存中后，你可以调用此方法为频道内的所有用户播放所有预加载的音效。
+
+<a id="api_irtcengine_playalleffects__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
+
+音效的循环播放次数：
+
+- `-1`：无限循环播放音效，直到调用 `stopEffect` 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopalleffects) 停止播放。
+- `0`：播放音效一次。
+- `1`：播放音效两次。
+
+</Parameter>
+<a id="pitch"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0。默认值为 `1.0`（原始音调）。值越小，音调越低。
+
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- `-1.0`：音效定位在左侧。
+- `0.0`：音效定位在正前方。
+- `1.0`：音效定位在右侧。
+
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100。默认值为 `100`（原始音量）。值越小，音效音量越低。
+
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
+
+是否将音效发布到远端：
+
+- YES：将音效发布到远端。
+- NO：不将音效发布到远端。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playalleffects__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playeffect1"></a>
+
+<a id="ariaid-title9"></a>
+
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain:
+
+播放指定的本地或在线音效文件。
+
+<a id="api_irtcengine_playeffect1__prototype"></a>
+
+```text
+- (int)playEffect:(int)soundId
+          filePath:(NSString* _Nonnull)filePath
+         loopCount:(NSInteger)loopCount
+             pitch:(double)pitch
+               pan:(double)pan
+              gain:(NSInteger)gain NS_SWIFT_NAME(playEffect(_:filePath:loopCount:pitch:pan:gain:));
+```
+
+<a id="api_irtcengine_playeffect1__detailed_desc"></a>
+
+要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音频文件。
+
+:::note
+注：
+
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，然后再调用该方法播放音效。否则，可能因加载超时或失败导致播放失败或无声音。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`，`playEffect` 播放后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，`playEffect` 播放后将销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengine_playeffect1__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用该方法。
+
+<a id="api_irtcengine_playeffect1__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-3"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 必须唯一。注意：如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
+
+音效文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。注意：如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+
+</Parameter>
+<a id="loopcount-1"></a>
+<Parameter name="loopCount">
+
+音效循环播放的次数。
+
+- ≥ 0：播放的次数。例如，1 表示循环播放一次，即总共播放两次。
+- -1：无限循环播放该音效文件。
+
+</Parameter>
+<a id="pitch-1"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0。默认值为 1.0，表示原始音调。值越小，音调越低。
+
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- -1.0：音效从你左侧播放。
+- 0.0：音效从你正前方播放。
+- 1.0：音效从你右侧播放。
+
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100。默认值为 100，表示原始音量。值越小，音量越低。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playeffect1__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playeffect2"></a>
+
+<a id="ariaid-title10"></a>
+
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish:
+
+播放指定的本地或在线音效文件。
+
+<a id="api_irtcengine_playeffect2__prototype"></a>
+
+```text
+- (int)playEffect:(int)soundId
+          filePath:(NSString* _Nonnull)filePath
+         loopCount:(NSInteger)loopCount
+             pitch:(double)pitch
+               pan:(double)pan
+              gain:(NSInteger)gain
+           publish:(BOOL)publish NS_SWIFT_NAME(playEffect(_:filePath:loopCount:pitch:pan:gain:publish:));
+```
+
+<a id="api_irtcengine_playeffect2__detailed_desc"></a>
+
+要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用此方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音效文件。
+
+:::note
+注：
+
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将其预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengine_playeffect2__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用此方法。
+
+<a id="api_irtcengine_playeffect2__related"></a>
+
+### 相关回调
+
+音效文件播放完成后，SDK 会触发 [rtcEngineDidAudioEffectFinish\:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+
+<a id="api_irtcengine_playeffect2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-4"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 是唯一的。
+
+:::note
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+:::
+
+</Parameter>
+<a id="filepath-2"></a>
+<Parameter name="filePath">
+
+文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
+
+:::note
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+:::
+
+</Parameter>
+<a id="loopcount-2"></a>
+<Parameter name="loopCount">
+
+音效循环播放的次数：
+
+- ≥ 0：播放的次数。例如，1 表示循环一次，即总共播放两次。
+- -1：无限循环播放该音频文件。
+
+</Parameter>
+<a id="pitch-2"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0。默认值为 1.0，表示原始音调。值越小，音调越低。
+
+</Parameter>
+<a id="pan-2"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- -1.0：音效从你左侧播放。
+- 0.0：音效从你正前方播放。
+- 1.0：音效从你右侧播放。
+
+</Parameter>
+<a id="gain-2"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100。默认值为 100，表示原始音量。值越小，音量越低。
+
+</Parameter>
+<a id="publish-1"></a>
+<Parameter name="publish">
+
+是否将音效发布给远端用户：
+
+- YES：将音效发布给远端用户，你和远端用户都能听到音效。
+- NO：不将音效发布给远端用户，只有你能听到音效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playeffect2__return_values"></a>
+
+### 返回值
+
+0：方法调用成功。
+&lt; 0：方法调用失败。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playeffect3"></a>
+
+<a id="ariaid-title11"></a>
+
+## playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:
+
+播放指定的本地或在线音效文件。
+
+<a id="api_irtcengine_playeffect3__prototype"></a>
+
+```text
+- (int)playEffect:(int)soundId
+         filePath:(NSString* _Nonnull)filePath
+        loopCount:(NSInteger)loopCount
+            pitch:(double)pitch
+              pan:(double)pan
+             gain:(NSInteger)gain
+          publish:(BOOL)publish
+         startPos:(int)startPos NS_SWIFT_NAME(playEffect(_:filePath:loopCount:pitch:pan:gain:publish:startPos:));
+```
+
+<a id="api_irtcengine_playeffect3__detailed_desc"></a>
+
+要同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。为获得最佳用户体验，声网建议你不要同时播放超过三个音频文件。
+
+:::note
+注：
+
+- 如果你需要播放在线音效文件，声网建议你先将该文件缓存到本地设备，调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将文件预加载到内存中，再调用此方法播放音效。否则，可能因加载超时或失败导致播放失败或无声。
+- 如果在调用 `playEffect` 之前已调用 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后资源将被销毁。下次调用 `playEffect` 时将尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengine_playeffect3__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用该方法。
+
+<a id="api_irtcengine_playeffect3__related"></a>
+
+### 相关回调
+
+播放音效文件结束后，SDK 会触发 [rtcEngineDidAudioEffectFinish\:soundId:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+
+<a id="api_irtcengine_playeffect3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-5"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 必须唯一。
+
+:::note
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `soundId` 相同。
+:::
+
+</Parameter>
+<a id="filepath-3"></a>
+<Parameter name="filePath">
+
+文件路径。支持以 `ipod-library://` 开头的路径、URL 以及本地文件的绝对路径。绝对路径需精确到文件名及扩展名。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV 和 3GP。
+
+:::note
+注： 如果你已通过调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 将音效预加载到内存中，请确保该参数的值与 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 中的 `filePath` 相同。
+:::
+
+</Parameter>
+<a id="loopcount-3"></a>
+<Parameter name="loopCount">
+
+音效循环播放的次数：
+
+- ≥ 0：播放的次数。例如，1 表示循环播放一次，即总共播放两次。
+- -1：无限循环播放该音频文件。
+
+</Parameter>
+<a id="pitch-3"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0。默认值为 1.0，表示原始音调。值越小，音调越低。
+
+</Parameter>
+<a id="pan-3"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- -1.0：音效从用户左侧播放。
+- 0.0：音效从用户正前方播放。
+- 1.0：音效从用户右侧播放。
+
+</Parameter>
+<a id="gain-3"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100。默认值为 100，表示原始音量。值越小，音量越低。
+
+</Parameter>
+<a id="publish-2"></a>
+<Parameter name="publish">
+
+是否将音效发布给远端用户：
+
+- YES：将音效发布给远端用户，本地和远端用户都能听到该音效。
+- NO：不将音效发布给远端用户，只有本地用户能听到该音效。
+
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playeffect3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_playeffectex"></a>
+
+<a id="ariaid-title12"></a>
+
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:
+
+在频道中播放指定的音效。
+
+<a id="api_irtcengineex_playeffectex__prototype"></a>
+
+```text
+- (int)playEffectEx:(AgoraRtcConnection* _Nonnull)connection
+          soundId:(int)soundId
+         filePath:(NSString* _Nonnull)filePath
+        loopCount:(NSInteger)loopCount
+            pitch:(double)pitch
+              pan:(double)pan
+             gain:(NSInteger)gain
+          publish:(BOOL)publish
+         startPos:(int)startPos NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:publish:startPos:));
+```
+
+<a id="api_irtcengineex_playeffectex__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx` 预加载音效后，可调用此方法将指定音效播放给频道内所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用该方法。
+
+:::note
+注：
+
+- 声网建议不要同时播放超过三个音效。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
+:::
+
+<a id="api_irtcengineex_playeffectex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_playeffectex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
+
+[AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 对象。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-6"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效文件的唯一标识。如果通过 `preloadEffectEx` 方法将音效预加载到内存中，请确保该参数值与 `preloadEffectEx` 方法中的值一致。
+
+</Parameter>
+<a id="filepath-4"></a>
+<Parameter name="filePath">
+
+本地音效文件的绝对路径（包括文件扩展名）或在线音效文件的 URL，例如 /var/mobile/Containers/Data/audio.mp4。支持的音频格式包括 mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="loopcount-4"></a>
+<Parameter name="loopCount">
+
+设置音效的循环次数：
+
+- 0：播放一次。
+- 1：播放两次。
+- -1：无限循环，直到调用 `stopEffect` 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopalleffects)。
+
+</Parameter>
+<a id="pitch-4"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。值越小，音调越低。
+
+</Parameter>
+<a id="pan-4"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- 0.0：音效从你正前方传来。
+- 1.0：音效从你右侧传来。
+- -1.0：音效从你左侧传来。
+
+</Parameter>
+<a id="gain-4"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100，默认值为 100。值越小，音量越低。
+
+</Parameter>
+<a id="publish-3"></a>
+<Parameter name="publish">
+
+是否在频道中发布音效：
+
+- YES：在频道中发布音效，远端用户可以听到。
+- NO：不在频道中发布音效。
+
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_playeffectex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_playeffectex2"></a>
+
+<a id="ariaid-title13"></a>
+
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:publish:
+
+在频道中播放指定的音效。
+
+<a id="api_irtcengineex_playeffectex2__prototype"></a>
+
+```text
+- (int)playEffectEx:(AgoraRtcConnection* _Nonnull)connection
+             soundId:(int)soundId
+            filePath:(NSString* _Nonnull)filePath
+           loopCount:(NSInteger)loopCount
+               pitch:(double)pitch
+                 pan:(double)pan
+                gain:(NSInteger)gain
+            publish:(BOOL)publish NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:publish:));
+```
+
+<a id="api_irtcengineex_playeffectex2__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx:filePath:` 预加载音效后，可调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用此方法。
+
+:::note
+注：
+
+- 声网建议不要同时播放超过三个音效。
+- 此方法中的 `soundId` 和 `filePath` 必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
+:::
+
+<a id="api_irtcengineex_playeffectex2__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_playeffectex2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+[AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 对象。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-7"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效文件的唯一 ID。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+
+</Parameter>
+<a id="filepath-5"></a>
+<Parameter name="filePath">
+
+本地音效文件的绝对路径（包括文件扩展名）或在线音效文件的 URL，例如 /var/mobile/Containers/Data/audio.mp4。支持的音频格式包括 mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="loopcount-5"></a>
+<Parameter name="loopCount">
+
+设置音效的循环播放次数：
+
+- 0：播放一次。
+- 1：播放两次。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopalleffects)。
+
+</Parameter>
+<a id="pitch-5"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。值越小，音调越低。
+
+</Parameter>
+<a id="pan-5"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- 0.0：音效从你正前方传来。
+- 1.0：音效从你右侧传来。
+- -1.0：音效从你左侧传来。
+
+</Parameter>
+<a id="gain-5"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100，默认值为 100。值越小，音量越低。
+
+</Parameter>
+<a id="publish-4"></a>
+<Parameter name="publish">
+
+是否在频道中发布音效：
+
+- YES：在频道中发布音效，远端用户可以听到。
+- NO：不在频道中发布音效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_playeffectex2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_playeffectex3"></a>
+
+<a id="ariaid-title14"></a>
+
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain\:startPos:
+
+在频道中播放指定的音效。
+
+<a id="api_irtcengineex_playeffectex3__prototype"></a>
+
+```text
+- (int)playEffectEx:(AgoraRtcConnection* _Nonnull)connection
+             soundId:(int)soundId
+            filePath:(NSString* _Nonnull)filePath
+           loopCount:(NSInteger)loopCount
+               pitch:(double)pitch
+                 pan:(double)pan
+                gain:(NSInteger)gain
+            startPos:(int)startPos NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:startPos:));
+```
+
+<a id="api_irtcengineex_playeffectex3__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+你可以使用该方法在频道中播放指定的音效。若需同时播放多个音效文件，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。在调用 `preloadEffectEx:filePath:` 预加载音效后，你可以调用该方法将音效播放给频道内所有用户。每次调用该方法只能播放一个音效，若需同时播放多个音效，请多次调用该方法。
+
+:::note
+注：
+
+- 声网建议你不要同时播放超过三个音效。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后资源将被销毁。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
+:::
+
+<a id="api_irtcengineex_playeffectex3__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_playeffectex3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+[AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 对象。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-8"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+
+</Parameter>
+<a id="filepath-6"></a>
+<Parameter name="filePath">
+
+本地音效文件的绝对路径（包含文件扩展名）或在线音效文件的 URL，例如 /var/mobile/Containers/Data/audio.mp4。支持的音频格式包括 mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="loopcount-6"></a>
+<Parameter name="loopCount">
+
+设置音效的循环播放次数：
+
+- 0：播放一次。
+- 1：播放两次。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopalleffects)。
+
+</Parameter>
+<a id="pitch-6"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。值越小，音调越低。
+
+</Parameter>
+<a id="pan-6"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- 0.0：音效从你正前方传来。
+- 1.0：音效从你右侧传来。
+- -1.0：音效从你左侧传来。
+
+</Parameter>
+<a id="gain-6"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100，默认值为 100。值越小，音量越低。
+
+</Parameter>
+<a id="startpos-2"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_playeffectex3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_playeffectex4"></a>
+
+<a id="ariaid-title15"></a>
+
+## playEffectEx\:soundId\:filePath\:loopCount\:pitch\:pan\:gain:
+
+在频道中播放指定的音效。
+
+<a id="api_irtcengineex_playeffectex4__prototype"></a>
+
+```text
+- (int)playEffectEx:(AgoraRtcConnection* _Nonnull)connection
+             soundId:(int)soundId
+            filePath:(NSString* _Nonnull)filePath
+           loopCount:(NSInteger)loopCount
+               pitch:(double)pitch
+                 pan:(double)pan
+                gain:(NSInteger)gain NS_SWIFT_NAME(playEffectEx(_:soundId:filePath:loopCount:pitch:pan:gain:));
+```
+
+<a id="api_irtcengineex_playeffectex4__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+该方法用于设置是否在频道中发布音效。若需同时播放多个音效文件，只需使用不同的 `soundId` 和 `filePath` 多次调用该方法。在通过 `preloadEffectEx:filePath:` 预加载音效后，可以调用此方法将指定音效播放给频道中的所有用户。每次调用该方法只能播放一个音效。若需同时播放多个音效，请多次调用该方法。
+
+:::note
+注：
+
+- 声网建议不要同时播放超过三个音效。
+- 此方法中的音效 ID 和文件路径必须与 `preloadEffectEx:filePath:` 方法中的保持一致。
+- 如果在执行 `playEffectEx` 之前调用了 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时将直接从头开始播放。
+- 如果在执行 `playEffectEx` 之前未调用 `preloadEffectEx:filePath:`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时将尝试重新打开文件并从头播放。
+:::
+
+<a id="api_irtcengineex_playeffectex4__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_playeffectex4__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+[AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 对象。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-9"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效文件的唯一标识。请确保该参数值与 `preloadEffectEx:filePath:` 方法中的值一致。
+
+</Parameter>
+<a id="filepath-7"></a>
+<Parameter name="filePath">
+
+本地音效文件的绝对路径（包含文件扩展名）或在线音效文件的 URL，例如 /var/mobile/Containers/Data/audio.mp4。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="loopcount-7"></a>
+<Parameter name="loopCount">
+
+设置音效的循环播放次数：
+
+- 0：播放一次。
+- 1：播放两次。
+- -1：无限循环，直到调用 [stopEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_stopalleffects)。
+
+</Parameter>
+<a id="pitch-7"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。值越小，音调越低。
+
+</Parameter>
+<a id="pan-7"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- 0.0：音效从用户正前方传来。
+- 1.0：音效从用户右侧传来。
+- -1.0：音效从用户左侧传来。
+
+</Parameter>
+<a id="gain-7"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100，默认值为 100。值越小，音量越低。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_playeffectex4__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_preloadeffect"></a>
+
+<a id="ariaid-title16"></a>
+
+## preloadEffect\:filePath\:startPos:
+
+预加载指定的音效文件。
+
+<a id="api_irtcengine_preloadeffect__prototype"></a>
+
+```text
+- (int)preloadEffect:(int)soundId
+             filePath:(NSString* _Nonnull)filePath
+             startPos:(int)startPos NS_SWIFT_NAME(preloadEffect(_:filePath:startPos:));
+```
+
+<a id="api_irtcengine_preloadeffect__detailed_desc"></a>
+
+该方法每次调用时仅将一个指定的音效文件预加载到内存中。如需预加载多个音效文件，请多次调用该方法。
+你可以调用 `playEffect` 播放已预加载的音效，或调用 [playAllEffectsWithLoopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有已预加载的音效。
+
+- 为确保通信顺畅，请限制音效文件的大小。
+- 声网建议你在加入频道前调用此方法。
+- 如果在调用 `playEffect` 之前调用了 `preloadEffect`，则 `playEffect` 执行后不会关闭文件资源。下次调用 `playEffect` 时将直接从头开始播放。
+- 如果在调用 `playEffect` 之前未调用 `preloadEffect`，则 `playEffect` 执行后会销毁资源。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
+
+<a id="api_irtcengine_preloadeffect__timing"></a>
+
+### 调用时机
+
+声网建议你在加入频道前调用该方法。
+
+<a id="api_irtcengine_preloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-10"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 必须唯一。
+
+</Parameter>
+<a id="filepath-8"></a>
+<Parameter name="filePath">
+
+本地音效文件的绝对路径或在线音效文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="startpos-3"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_preloadeffect2"></a>
+
+<a id="ariaid-title17"></a>
+
+## preloadEffect\:filePath:
+
+将指定的音效文件预加载到内存中。
+
+<a id="api_irtcengine_preloadeffect2__prototype"></a>
+
+```text
+- (int)preloadEffect:(int)soundId
+             filePath:(NSString* _Nonnull)filePath NS_SWIFT_NAME(preloadEffect(_:filePath:));
+```
+
+<a id="api_irtcengine_preloadeffect2__detailed_desc"></a>
+
+确保所有预加载文件的总大小不超过限制。关于该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些音频文件格式](/zh-CN/reference/faq/product/audio_format)。
+
+:::note
+注：
+
+- 如果你在调用 `playEffect` 之前调用了 `preloadEffect`，则在 `playEffect` 执行后文件资源不会被关闭。下次调用 `playEffect` 时会直接从头开始播放。
+- 如果你在调用 `playEffectEx` 之前未调用 `preloadEffect`，则在 `playEffect` 执行后资源会被销毁。下次调用 `playEffect` 时会尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengine_preloadeffect2__timing"></a>
+
+### 调用时机
+
+声网建议你在加入频道前调用该方法。
+
+<a id="api_irtcengine_preloadeffect2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-11"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 必须唯一。
+
+</Parameter>
+<a id="filepath-9"></a>
+<Parameter name="filePath">
+
+文件路径：
+
+- iOS 或 macOS：音效文件的绝对路径或 URL 地址（包括文件名后缀）。例如：/var/mobile/Containers/Data/audio.mp4。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadeffect2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_preloadeffectex"></a>
+
+<a id="ariaid-title18"></a>
+
+## preloadEffectEx\:soundId\:filePath\:startPos:
+
+预加载指定的音效文件到频道中。
+
+<a id="api_irtcengineex_preloadeffectex__prototype"></a>
+
+```text
+- (int)preloadEffectEx:(AgoraRtcConnection* _Nonnull)connection
+              soundId:(int)soundId
+             filePath:(NSString* _Nonnull)filePath
+             startPos:(int)startPos NS_SWIFT_NAME(preloadEffectEx(_:soundId:filePath:startPos:));
+```
+
+<a id="api_irtcengineex_preloadeffectex__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 `playEffect` 播放预加载的音效，或调用 `playAllEffects` 播放所有预加载的音效。
+
+:::note
+注：
+
+- 为确保使用体验流畅，音效文件的大小不应超过限制。
+- 声网建议在加入频道前调用该方法。
+- 如果在调用 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时会直接从头开始播放。
+- 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengineex_preloadeffectex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_preloadeffectex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-4"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-12"></a>
+<Parameter name="soundId">
+
+音效 ID。
+
+</Parameter>
+<a id="filepath-10"></a>
+<Parameter name="filePath">
+
+本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="startpos-4"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_preloadeffectex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengineex_preloadeffectex2"></a>
+
+<a id="ariaid-title19"></a>
+
+## preloadEffectEx\:soundId\:filePath:
+
+预加载指定的音效文件到频道中。
+
+<a id="api_irtcengineex_preloadeffectex2__prototype"></a>
+
+```text
+- (int)preloadEffectEx:(AgoraRtcConnection* _Nonnull)connection
+              soundId:(int)soundId
+             filePath:(NSString* _Nonnull)filePath NS_SWIFT_NAME(preloadEffectEx(_:soundId:filePath:));
+```
+
+<a id="api_irtcengineex_preloadeffectex2__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+每次调用该方法时，你只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，你可以调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 `playAllEffects:loopCount:pitch:pan:gain:publish:` 播放所有预加载的音效。
+
+:::note
+注：
+
+- 为确保使用体验流畅，音效文件的大小不应超过限制。
+- 声网建议你在加入频道前调用该方法。
+- 如果在调用 `playEffectEx` 之前调用了 `preloadEffectEx`，则 `playEffectEx` 执行后不会关闭文件资源。下次执行 `playEffectEx` 时会直接从头开始播放。
+- 如果在调用 `playEffectEx` 之前未调用 `preloadEffectEx`，则 `playEffectEx` 执行后会销毁资源。下次执行 `playEffectEx` 时会尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengineex_preloadeffectex2__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_preloadeffectex2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-5"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-13"></a>
+<Parameter name="soundId">
+
+音效 ID。
+
+</Parameter>
+<a id="filepath-11"></a>
+<Parameter name="filePath">
+
+本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_preloadeffectex2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_resumealleffects"></a>
+
+<a id="ariaid-title20"></a>
+
+## resumeAllEffects
+
+恢复播放所有音效文件。
+
+<a id="api_irtcengine_resumealleffects__prototype"></a>
+
+```text
+- (int)resumeAllEffects NS_SWIFT_NAME(resumeAllEffects());
+```
+
+<a id="api_irtcengine_resumealleffects__detailed_desc"></a>
+
+调用 [pauseAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_pausealleffects) 后，可以调用该方法恢复播放。
+
+<a id="api_irtcengine_resumealleffects__timing"></a>
+
+### 调用时机
+
+请在调用 [pauseAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_pausealleffects) 之后调用该方法。
+
+<a id="api_irtcengine_resumealleffects__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_resumeeffect"></a>
+
+<a id="ariaid-title21"></a>
+
+## resumeEffect:
+
+恢复播放指定的音效。
+
+<a id="api_irtcengine_resumeeffect__prototype"></a>
+
+```text
+- (int)resumeEffect:(int)soundId NS_SWIFT_NAME(resumeEffect(_:));
+```
+
+<a id="api_irtcengine_resumeeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_resumeeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-14"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_resumeeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_seteffectposition"></a>
+
+<a id="ariaid-title22"></a>
+
+## setEffectPosition\:pos:
+
+设置音效文件的播放位置。
+
+<a id="api_irtcengine_seteffectposition__prototype"></a>
+
+```text
+- (int)setEffectPosition:(int)soundId pos:(NSInteger)pos  NS_SWIFT_NAME(setEffectPosition(_:pos:));
+```
+
+<a id="api_irtcengine_seteffectposition__detailed_desc"></a>
+
+设置成功后，本地音效文件会从指定位置开始播放。
+
+:::note
+注： 请在调用 `playEffect` 方法之后调用此方法。
+:::
+
+<a id="api_irtcengine_seteffectposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-15"></a>
+<Parameter name="soundId">
+
+音效 ID。每个音效文件的 ID 是唯一的。
+
+</Parameter>
+<a id="pos"></a>
+<Parameter name="pos">
+
+音效文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_seteffectposition__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_seteffectsvolume"></a>
+
+<a id="ariaid-title23"></a>
+
+## setEffectsVolume:
+
+设置音效的播放音量。
+
+<a id="api_irtcengine_seteffectsvolume__prototype"></a>
+
+```text
+- (int)setEffectsVolume:(NSInteger)volume NS_SWIFT_NAME(setEffectsVolume(_:));
+```
+
+<a id="api_irtcengine_seteffectsvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_seteffectsvolume__timing"></a>
+
+### 调用时机
+
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
+
+<a id="api_irtcengine_seteffectsvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0, 100]。（默认）为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_seteffectsvolume__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvolumeofeffect"></a>
+
+<a id="ariaid-title24"></a>
+
+## setVolumeOfEffect\:withVolume:
+
+设置指定音效文件的播放音量。
+
+<a id="api_irtcengine_setvolumeofeffect__prototype"></a>
+
+```text
+- (int)setVolumeOfEffect:(int)soundId
+              withVolume:(int)volume NS_SWIFT_NAME(setVolumeOfEffect(_:withVolume:));
+```
+
+<a id="api_irtcengine_setvolumeofeffect__detailed_desc"></a>
+
+调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后，可调用该方法设置指定音效文件的播放音量。
+
+<a id="api_irtcengine_setvolumeofeffect__timing"></a>
+
+### 调用时机
+
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法后调用。
+
+<a id="api_irtcengine_setvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-16"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效文件的唯一 ID。
+
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0, 100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setvolumeofeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopalleffects"></a>
+
+<a id="ariaid-title25"></a>
+
+## stopAllEffects
+
+停止播放所有音效。
+
+<a id="api_irtcengine_stopalleffects__prototype"></a>
+
+```text
+- (int)stopAllEffects NS_SWIFT_NAME(stopAllEffects());
+```
+
+<a id="api_irtcengine_stopalleffects__detailed_desc"></a>
+
+当你不再需要播放音效时，可以调用此方法停止播放所有音效。如果你只需要暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_pausealleffects) 方法。
+
+<a id="api_irtcengine_stopalleffects__timing"></a>
+
+### 调用时机
+
+请在调用 `playEffect` 方法之后调用此方法。
+
+<a id="api_irtcengine_stopalleffects__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopeffect"></a>
+
+<a id="ariaid-title26"></a>
+
+## stopEffect:
+
+停止播放指定的音效。
+
+<a id="api_irtcengine_stopeffect__prototype"></a>
+
+```text
+- (int)stopEffect:(int)soundId NS_SWIFT_NAME(stopEffect(_:));
+```
+
+<a id="api_irtcengine_stopeffect__detailed_desc"></a>
+
+当你不再需要播放某个音效时，可以调用该方法停止播放。如果你只需要暂停播放，请调用 [pauseEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_pauseeffect) 方法。
+
+<a id="api_irtcengine_stopeffect__timing"></a>
+
+### 调用时机
+
+在调用 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect1)、[playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect2) 或 [playEffect\:filePath\:loopCount\:pitch\:pan\:gain\:publish\:startPos:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 方法之后调用。
+
+<a id="api_irtcengine_stopeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-17"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效都有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_stopeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unloadeffect"></a>
+
+<a id="ariaid-title27"></a>
+
+## unloadEffect:
+
+释放指定的预加载音效文件。
+
+<a id="api_irtcengine_unloadeffect__prototype"></a>
+
+```text
+- (int)unloadEffect:(int)soundId NS_SWIFT_NAME(unloadEffect(_:));
+```
+
+<a id="api_irtcengine_unloadeffect__detailed_desc"></a>
+
+调用 [preloadEffect\:filePath:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_preloadeffect2) 方法将音效文件加载到内存后，如需释放该音效文件，可调用 [unloadEffect:](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_unloadeffect) 方法。
+
+<a id="api_irtcengine_unloadeffect__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或后调用此方法。
+
+<a id="api_irtcengine_unloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-18"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_unloadeffect__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
+
+<a id="ariaid-title28"></a>
+
+## rtcEngineDidAudioEffectFinish\:soundId:
+
+本地音效文件播放完成时的回调。
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__prototype"></a>
+
+```text
+- (void)rtcEngineDidAudioEffectFinish:(AgoraRtcEngineKit * _Nonnull)engine soundId:(int)soundId NS_SWIFT_NAME(rtcEngineDidAudioEffectFinish(_:soundId:));
+```
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></a>
+
+该回调在本地音效文件播放完成时触发。
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__timing"></a>
+
+### 触发时机
+
+该回调在本地音效文件播放完成时被触发。
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+<a id="soundid-19"></a>
+<Parameter name="soundId">
+
+音效 ID，每个音效文件的唯一标识。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

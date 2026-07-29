@@ -18,6 +18,7 @@ import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
+import { i18n } from '@/lib/i18n/i18n';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -292,25 +293,28 @@ describe('DocsContent', () => {
     expect(within(lastUpdated).queryByText('1970/01/01 00:00:00')).toBeNull();
   });
 
-  it('does not render the copy page action when the locale has no public markdown content', async () => {
+  it('renders the copy page action for zh-CN public markdown content', async () => {
     renderWithRouter(
       <DocsContent
-        contentPath="zh-CN/introduction/about-agora.md"
+        contentPath="zh-CN/introduction/mcp-integrate.mdx"
         locale="zh-CN"
-        markdownUrl="/zh-CN/introduction/about-agora.md"
-        slug="introduction/about-agora"
-        title="About Agora"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
         toc={[]}
       />,
-      '/zh-CN/introduction/about-agora',
+      '/zh-CN/introduction/mcp-integrate',
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'About Agora' }),
+      await screen.findByRole('heading', { name: '使用 MCP 集成' }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole('button', { name: 'Copy Page' }),
-    ).not.toBeInTheDocument();
+      screen.getByRole('button', { name: '复制页面' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '复制页面更多操作' }),
+    ).toBeInTheDocument();
   });
 
   it('renders MDX content in the server output without a skeleton', () => {
@@ -425,7 +429,7 @@ describe('DocsContent', () => {
     expect(screen.getByText('Learn the platform basics.')).toBeInTheDocument();
   });
 
-  it('uses a tight header-to-body gap on non-platform-tabs pages', async () => {
+  it('uses a compact header-to-body gap on non-platform-tabs pages', async () => {
     renderWithRouter(
       <DocsContent
         contentPath="en/introduction/about-agora.md"
@@ -478,10 +482,16 @@ describe('DocsContent', () => {
     expect(
       await screen.findByRole('heading', { name: 'Split platform page' }),
     ).toBeInTheDocument();
+    expect(await screen.findByRole('article')).toHaveClass('gap-3');
     expect(await screen.findByTestId('platform-header-tabs')).toHaveTextContent(
       '["ios","android"]',
     );
-    expect(screen.getByText('en/ai/get-started/platform-split/index.mdx'));
+    const commonBody = screen.getByText(
+      'en/ai/get-started/platform-split/index.mdx',
+    );
+    expect(commonBody.closest('[data-platform-group-shell]')).toHaveClass(
+      'gap-4',
+    );
     expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
   });
 
@@ -550,6 +560,34 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByText('No headings on this page.'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses rendered headings when the payload TOC is incomplete', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h2 id="overview">Overview</h2>
+          <h2 id="guide">Guide</h2>
+          <h3 id="late-section">Late section</h3>
+          <h4 data-toc-hidden="true" id="parameter-details">
+            Parameter details
+          </h4>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Overview', url: '#overview' },
+              { depth: 2, title: 'Guide', url: '#guide' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Late section' }),
+    ).toHaveAttribute('href', '#late-section');
+    expect(
+      screen.queryByRole('link', { name: 'Parameter details' }),
     ).not.toBeInTheDocument();
   });
 
@@ -629,6 +667,7 @@ describe('DocsContent', () => {
     const tabs = await screen.findByTestId('platform-header-tabs');
     const body = await screen.findByTestId('docs-content-body');
 
+    expect(await screen.findByRole('article')).toHaveClass('gap-3');
     expect(tabs).toHaveTextContent('["web","android"]');
     expect(tabs).toHaveAttribute('data-default-platform', 'android');
     expect(tabs).toHaveAttribute('data-initial-platform', 'android');
@@ -761,6 +800,91 @@ describe('DocsContent', () => {
     ).toHaveAttribute('href', '/en/introduction/about-agora');
   });
 
+  it('hides the dynamic return path when an API hierarchy breadcrumb is present', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: '/zh-CN/api-reference/api',
+          title: 'API 参考',
+        },
+        targetPage: '/zh-CN/api-reference/cloud-recording',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API 参考',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            title: '云端录制',
+          },
+          {
+            title: 'RESTful API',
+          },
+        ]}
+        contentPath="zh-CN/api-reference/api-ref/cloud-recording/index.mdx"
+        locale="zh-CN"
+        slug="cloud-recording"
+        title="云端录制概览"
+        toc={[]}
+      />,
+      '/zh-CN/api-reference/cloud-recording',
+    );
+
+    expect(await screen.findByLabelText('Breadcrumb')).toHaveTextContent(
+      'API 参考/云端录制/RESTful API',
+    );
+    expect(
+      screen.queryByRole('link', { name: '返回 API 参考' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps a guide return path when an API hierarchy breadcrumb is present', async () => {
+    window.sessionStorage.setItem(
+      'docs-portal:article-return:v1',
+      JSON.stringify({
+        createdAt: Date.now(),
+        source: {
+          href: '/zh-CN/realtime-media/cloud-recording/overview',
+          title: '云端录制指南',
+        },
+        targetPage: '/zh-CN/api-reference/cloud-recording',
+      }),
+    );
+
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'API 参考',
+            url: '/zh-CN/api-reference/api',
+          },
+          {
+            title: '云端录制',
+          },
+          {
+            title: 'RESTful API',
+          },
+        ]}
+        contentPath="zh-CN/api-reference/api-ref/cloud-recording/index.mdx"
+        locale="zh-CN"
+        slug="cloud-recording"
+        title="云端录制概览"
+        toc={[]}
+      />,
+      '/zh-CN/api-reference/cloud-recording',
+    );
+
+    expect(
+      await screen.findByRole('link', { name: /返回\s*云端录制指南/ }),
+    ).toHaveAttribute('href', '/zh-CN/realtime-media/cloud-recording/overview');
+  });
+
   it('does not render a stored return path when the source href is not an internal docs path', async () => {
     window.sessionStorage.setItem(
       'docs-portal:article-return:v1',
@@ -875,6 +999,101 @@ describe('DocsContent', () => {
     expect(
       screen.getByRole('menuitem', { name: 'View as Markdown' }),
     ).toHaveAttribute('href', '/en/introduction/about-agora.md');
+  });
+
+  it('uses the route locale for copy menu labels during server render', async () => {
+    await i18n.changeLanguage('en');
+
+    const html = renderToString(
+      <AppProviders>
+        <DocsCopyMenu
+          locale="zh-CN"
+          markdownUrl="/zh-CN/ai.md"
+          slug="ai"
+          title="智能体"
+        />
+      </AppProviders>,
+    );
+
+    expect(html).toContain('复制页面');
+    expect(html).toContain('复制页面更多操作');
+    expect(html).not.toContain('Copy Page');
+  });
+
+  it('renders zh-CN copy page menu actions with Chinese docs targets', async () => {
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
+      />,
+      '/zh-CN/introduction/mcp-integrate',
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+
+    expect(await screen.findByText('AI 工具')).toBeInTheDocument();
+    expect(screen.getByText('MCP')).toBeInTheDocument();
+    expect(screen.getByText('其他')).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: '连接到 Cursor' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
+    expect(
+      screen.getByRole('menuitem', { name: '连接到 VS Code' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
+    expect(
+      screen.getByRole('menuitem', { name: '查看 Markdown' }),
+    ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate.md');
+  });
+
+  it('copies zh-CN MCP config and command from the copy page menu', async () => {
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="使用 MCP 集成"
+      />,
+      '/zh-CN/introduction/mcp-integrate',
+    );
+
+    fireEvent.pointerDown(
+      await screen.findByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: '复制 MCP 配置' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenCalledWith(`{
+  "mcpServers": {
+    "shengwang-docs": {
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}`);
+    });
+
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: '复制页面更多操作' }),
+      { button: 0 },
+    );
+    fireEvent.click(
+      await screen.findByRole('menuitem', { name: '复制 MCP 命令' }),
+    );
+    await waitFor(() => {
+      expect(clipboardWriteText).toHaveBeenLastCalledWith(
+        `code --add-mcp '{"name":"shengwang-docs","url":"https://doc-mcp.shengwang.cn/mcp"}'`,
+      );
+    });
   });
 
   it('copies MCP config and command from the copy page menu', async () => {

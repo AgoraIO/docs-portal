@@ -1,7 +1,16 @@
-import { createFileRoute, Outlet, useMatch } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  notFound,
+  Outlet,
+  redirect,
+  useMatch,
+} from '@tanstack/react-router';
 import { DocsShell } from '@/components/docs-shell/DocsShell';
+import { getDocsTabIndex } from '@/lib/docs-page';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { isSupportedDocLocale } from '@/lib/docs-routing';
 import { readStaticDocsSearchIndex } from '@/lib/docs-search-index';
+import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
 
 export const Route = createFileRoute('/$locale/$tab')({
   server: {
@@ -19,6 +28,39 @@ export const Route = createFileRoute('/$locale/$tab')({
         return response ?? next();
       },
     },
+  },
+  loader: async ({ location, params }) => {
+    if (!isSupportedDocLocale(params.locale)) {
+      throw notFound();
+    }
+
+    const tabPath = `/${params.locale}/${params.tab}`;
+    if (normalizePathname(location.pathname) !== tabPath) {
+      return null;
+    }
+
+    if (shouldUseStaticDocsPayload()) {
+      return null;
+    }
+
+    const page = await getDocsTabIndex({
+      data: {
+        locale: params.locale,
+        tab: params.tab,
+      },
+    });
+
+    if (!page) {
+      throw notFound();
+    }
+
+    if (page.url !== tabPath) {
+      throw redirect({
+        href: preserveRedirectSearch(page.url, location),
+      });
+    }
+
+    return null;
   },
   component: DocsTabLayout,
 });
@@ -77,4 +119,19 @@ function DocsTabLayout() {
       <Outlet />
     </DocsShell>
   );
+}
+
+function normalizePathname(pathname: string) {
+  return pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+}
+
+function preserveRedirectSearch(
+  href: string,
+  location: { hash?: string; searchStr?: string },
+) {
+  if (/[?#]/.test(href)) {
+    return href;
+  }
+
+  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
 }

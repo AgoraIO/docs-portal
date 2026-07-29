@@ -1,0 +1,61 @@
+---
+title: LastmileProbeResult
+description: 上下行 Last mile 网络质量探测结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_lastmileproberesult
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_lastmileproberesult.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileproberesult__prototype"></a>
+
+```text
+export class LastmileProbeResult {
+
+  public state:number = 0;
+
+  public rtt:number = 0;
+
+  public uplinkReport:LastmileProbeOneWayResult = new LastmileProbeOneWayResult();
+
+  public downlinkReport:LastmileProbeOneWayResult = new LastmileProbeOneWayResult();
+}
+```
+
+<a id="class_lastmileproberesult__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+Last mile 质量探测结果的状态，有如下几种：
+
+- COMPLETE (1)：表示本次 Last mile 质量探测是完整的。
+- INCOMPLETE_NO_BWE (2)：表示本次 Last mile 质量探测未进行带宽预测，因此结果不完整。一个可能的原因是测试资源暂时受限。
+- UNAVAILABLE (3)：未进行 Last mile 质量探测。一个可能的原因是网络连接中断。
+
+</Parameter>
+<a id="uplinkreport"></a>
+<Parameter name="uplinkReport">
+
+上行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/harmonyos/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="downlinkreport"></a>
+<Parameter name="downlinkReport">
+
+下行网络质量报告。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/harmonyos/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="rtt"></a>
+<Parameter name="rtt">
+
+往返时延 (ms)。
+
+</Parameter>
+</ParameterList>

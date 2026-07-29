@@ -1,0 +1,120 @@
+---
+title: Music
+description: 音乐资源的详细信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_music
+  sourcePath: html-docs/rtc/Electron/API/class_music.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_music__prototype"></a>
+
+```text
+export class Music {
+  songCode?: number;
+  name?: string;
+  singer?: string;
+  poster?: string;
+  releaseTime?: string;
+  durationS?: number;
+  type?: number;
+  pitchType?: number;
+  lyricCount?: number;
+  lyricList?: number[];
+  climaxSegmentCount?: number;
+  climaxSegmentList?: ClimaxSegment[];
+}
+```
+
+<a id="class_music__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="songcode"></a>
+<Parameter name="songCode">
+
+音乐资源的编号，用于标识一个音乐资源。
+
+</Parameter>
+<a id="name"></a>
+<Parameter name="name">
+
+音乐资源名称。
+
+</Parameter>
+<a id="singer"></a>
+<Parameter name="singer">
+
+歌手名。
+
+</Parameter>
+<a id="poster"></a>
+<Parameter name="poster">
+
+音乐资源海报的下载地址。
+
+</Parameter>
+<a id="releasetime"></a>
+<Parameter name="releaseTime">
+
+音乐资源发布的时间。
+
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
+
+音乐资源类型：
+
+- 1：左声道伴奏，右声道原唱的单音轨音源。
+- 2：只有伴唱的单音轨音源。
+- 3：只有原唱的单音轨音源。
+- 4：多音轨音源。
+
+</Parameter>
+<a id="pitchtype"></a>
+<Parameter name="pitchType">
+
+歌曲是否支持演唱评分功能：
+
+- 1：歌曲支持演唱评分功能。
+- 2：歌曲不支持演唱评分功能。
+
+</Parameter>
+<a id="durations"></a>
+<Parameter name="durationS">
+
+音乐资源总时长 （秒）。
+
+</Parameter>
+<a id="lyriclist"></a>
+<Parameter name="lyricList">
+
+支持的歌词类型：
+
+- 0：xml 格式。
+- 1：lrc 格式。
+
+</Parameter>
+<a id="climaxsegmentlist"></a>
+<Parameter name="climaxSegmentList">
+
+音乐高潮片段列表，详见 [ClimaxSegment](/zh-CN/api-reference/rtc/electron/class-climaxsegment)。
+
+</Parameter>
+<a id="lyriccount"></a>
+<Parameter name="lyricCount">
+
+歌曲的歌词数量。
+
+</Parameter>
+<a id="climaxsegmentcount"></a>
+<Parameter name="climaxSegmentCount">
+
+高潮片段的数量。
+
+</Parameter>
+</ParameterList>

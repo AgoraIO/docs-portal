@@ -55,4 +55,27 @@ describe('FaqCategory', () => {
       }),
     ).toBeVisible();
   });
+
+  it('uses localized labels and FAQ data for Chinese pages', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/faq/integration',
+    );
+
+    render(<FaqCategory category="integration-issues" locale="zh-CN" />);
+
+    expect(screen.getByPlaceholderText('搜索集成类')).toBeVisible();
+    expect(screen.getByRole('combobox', { name: '产品' })).toHaveDisplayValue(
+      '全部产品',
+    );
+    expect(
+      screen.getByRole('link', {
+        name: /为什么媒体音量下，设置录制时允许震动不生效？/,
+      }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/faq/integration/allow_haptics',
+    );
+  });
 });

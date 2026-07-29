@@ -1,0 +1,1136 @@
+---
+title: 音效文件播放
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_audio_effect_file
+  sourcePath: html-docs/rtc/Flutter/API/toc_audio_effect_file.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_effect_file"></a>
+
+<a id="api_irtcengine_geteffectcurrentposition"></a>
+
+<a id="ariaid-title2"></a>
+
+## getEffectCurrentPosition
+
+获取指定音效文件的播放进度。
+
+<a id="api_irtcengine_geteffectcurrentposition__prototype"></a>
+
+```text
+Future<int> getEffectCurrentPosition(int soundId);
+```
+
+<a id="api_irtcengine_geteffectcurrentposition__detailed_desc"></a>
+
+:::note
+注： 该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+:::
+
+<a id="api_irtcengine_geteffectcurrentposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_geteffectcurrentposition__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回指定音效文件的播放进度（毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geteffectduration"></a>
+
+<a id="ariaid-title3"></a>
+
+## getEffectDuration
+
+获取指定音效文件总时长。
+
+<a id="api_irtcengine_geteffectduration__prototype"></a>
+
+```text
+Future<int> getEffectDuration(String filePath);
+```
+
+<a id="api_irtcengine_geteffectduration__detailed_desc"></a>
+
+:::note
+注： 该方法需要在加入频道后调用。
+:::
+
+<a id="api_irtcengine_geteffectduration__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+文件路径：
+
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
+- iOS 或 macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_geteffectduration__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回指定音效文件时长（毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geteffectsvolume"></a>
+
+<a id="ariaid-title4"></a>
+
+## getEffectsVolume
+
+获取音效文件的播放音量。
+
+<a id="api_irtcengine_geteffectsvolume__prototype"></a>
+
+```text
+Future<int> getEffectsVolume();
+```
+
+<a id="api_irtcengine_geteffectsvolume__detailed_desc"></a>
+
+音量范围为 0~100。100 （默认值）为原始文件音量。
+
+:::note
+注： 该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+:::
+
+<a id="api_irtcengine_geteffectsvolume__return_values"></a>
+
+### 返回值
+
+- 音效文件的音量。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getvolumeofeffect"></a>
+
+<a id="ariaid-title5"></a>
+
+## getVolumeOfEffect
+
+获取指定音效文件的播放音量。
+
+<a id="api_irtcengine_getvolumeofeffect__prototype"></a>
+
+```text
+Future<int> getVolumeOfEffect(int soundId);
+```
+
+<a id="api_irtcengine_getvolumeofeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_getvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-1"></a>
+<Parameter name="soundId">
+
+音效文件的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getvolumeofeffect__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 方法调用成功，返回播放音量。音量范围为 [0,100]。100 为原始音量。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pausealleffects"></a>
+
+<a id="ariaid-title6"></a>
+
+## pauseAllEffects
+
+暂停所有音效文件播放。
+
+<a id="api_irtcengine_pausealleffects__prototype"></a>
+
+```text
+Future<void> pauseAllEffects();
+```
+
+<a id="api_irtcengine_pausealleffects__detailed_desc"></a>
+
+<a id="api_irtcengine_pausealleffects__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_pauseeffect"></a>
+
+<a id="ariaid-title7"></a>
+
+## pauseEffect
+
+暂停音效文件播放。
+
+<a id="api_irtcengine_pauseeffect__prototype"></a>
+
+```text
+Future<void> pauseEffect(int soundId);
+```
+
+<a id="api_irtcengine_pauseeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_pauseeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-2"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pauseeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playalleffects"></a>
+
+<a id="ariaid-title8"></a>
+
+## playAllEffects
+
+播放所有音效文件。
+
+<a id="api_irtcengine_playalleffects__prototype"></a>
+
+```text
+Future<void> playAllEffects(
+    {required int loopCount,
+    required double pitch,
+    required double pan,
+    required int gain,
+    bool publish = false});
+```
+
+<a id="api_irtcengine_playalleffects__detailed_desc"></a>
+
+多次调用 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
+
+<a id="api_irtcengine_playalleffects__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="loopcount"></a>
+<Parameter name="loopCount">
+
+音效文件循环播放的次数：
+
+- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
+- 0: 播放音效文件一次。
+- 1: 播放音效文件两次。
+
+</Parameter>
+<a id="pitch"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 [0.5,2.0]。默认值为 1.0，代表原始音调。取值越小，则音调越低。
+
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 [-1.0,1.0]:
+
+- -1.0: 音效出现在左边。
+- 0: 音效出现在正前边。
+- 1.0: 音效出现在右边。
+
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 [0,100]。100 为默认值，代表原始音量。取值越小，则音量越低。
+
+</Parameter>
+<a id="publish"></a>
+<Parameter name="publish">
+
+是否将音效发布到远端：
+
+- true: 将音效发布到远端。本地和远端用户都能听到该音效。
+- false: （默认）不将音效发布到远端。只能本地用户能听到该音效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playalleffects__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_playeffect3"></a>
+
+<a id="ariaid-title9"></a>
+
+## playEffect
+
+播放指定的本地或在线音效文件。
+
+<a id="api_irtcengine_playeffect3__prototype"></a>
+
+```text
+Future<void> playEffect(
+    {required int soundId,
+    required String filePath,
+    required int loopCount,
+    required double pitch,
+    required double pan,
+    required int gain,
+    bool publish = false,
+    int startPos = 0});
+```
+
+<a id="api_irtcengine_playeffect3__detailed_desc"></a>
+
+你可以多次调用该方法，传入不同的 `soundID` 和 `filePath`，同时播放多个音效文件。为获得最佳用户体验，建议同时播放的音效文件不超过 3 个。
+
+:::note
+注： 如果你需要播放在线音效文件，声网建议先将在线音效文件缓存到本地设备，调用 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 将缓存的音效文件预加载到内存中，然后再调用此方法播放音效。否则，可能出现因在线音效文件加载超时、加载失败而导致的播放失败和无声的问题。
+:::
+
+<a id="api_irtcengine_playeffect3__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_playeffect3__related"></a>
+
+### 相关回调
+
+音效文件播放结束后，SDK 会触发 [onAudioEffectFinished](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#callback_irtcengineeventhandler_onaudioeffectfinished) 回调。
+
+<a id="api_irtcengine_playeffect3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-3"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+:::note
+注： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `soundId` 相同。
+:::
+
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
+
+播放文件的地址，支持在线文件的 URL 地址、播放文件的绝对路径，需精确到文件名及后缀。支持的音频格式包括 MP3、AAC、M4A、MP4、WAV、3GP 等。
+
+:::note
+注： 如果你已通过 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效加载至内存，请确保该参数与 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 中设置的 `filePath` 相同。
+:::
+
+</Parameter>
+<a id="loopcount-1"></a>
+<Parameter name="loopCount">
+
+音效循环播放的次数。
+
+- ≥ 0: 循环播放次数。例如，1 表示循环播放 1 次，即总计播放 2 次。
+- -1: 无限循环播放。
+
+</Parameter>
+<a id="pitch-1"></a>
+<Parameter name="pitch">
+
+音效的音调，取值范围为 [0.5,2.0]。默认值为 1.0，表示原始音调。取值越小，则音调越低。
+
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 [-1.0,1.0]，例如：
+
+- -1.0：音效出现在左边
+- 0.0：音效出现在正前方
+- 1.0：音效出现在右边
+
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 [0.0,100.0]。默认值为 100.0，表示原始音量。取值越小，则音量越低。
+
+</Parameter>
+<a id="publish-1"></a>
+<Parameter name="publish">
+
+是否将音效发布至远端：
+
+- true: 将音效发布至远端。本地用户和远端用户都能听到音效。
+- false: 不将音效发布至远端。只有本地用户能听到音效。
+
+</Parameter>
+<a id="startpos"></a>
+<Parameter name="startPos">
+
+音效文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playeffect3__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_playeffectex"></a>
+
+<a id="ariaid-title10"></a>
+
+## playEffectEx
+
+在频道中播放指定音效。
+
+<a id="api_irtcengineex_playeffectex__prototype"></a>
+
+```text
+Future<void> playEffectEx(
+      {required RtcConnection connection,
+      required int soundId,
+      required String filePath,
+      required int loopCount,
+      required double pitch,
+      required double pan,
+      required int gain,
+      bool publish = false,
+      int startPos = 0});
+```
+
+<a id="api_irtcengineex_playeffectex__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+你可以调用该方法在频道内向所有用户播放指定音效。每次调用该方法只能播放一个音效。若需同时播放多个音效，请使用不同的 `soundId` 和 `filePath` 多次调用该方法。你还可以设置是否在频道中发布该音效。
+
+:::note
+注：
+
+- 声网建议不要同时播放超过三个音效。
+- 该方法中的音效 ID 和文件路径必须与 [preloadEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_preloadeffectex) 方法中的保持一致。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 之前调用了 [preloadEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_preloadeffectex)，[playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 之前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_preloadeffectex)，[playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头播放。
+:::
+
+<a id="api_irtcengineex_playeffectex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_playeffectex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
+
+[RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection) 对象，详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-4"></a>
+<Parameter name="soundId">
+
+音效 ID。
+
+</Parameter>
+<a id="filepath-2"></a>
+<Parameter name="filePath">
+
+本地文件的绝对路径或在线文件的 URL。支持的音频格式包括 mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="loopcount-2"></a>
+<Parameter name="loopCount">
+
+音效的循环播放次数：
+
+- `-1`：无限循环，直到调用 [stopEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_stopalleffects)。
+- `0`：播放一次。
+- `1`：播放两次。
+
+</Parameter>
+<a id="pitch-2"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 0.5 到 2.0，默认值为 1.0（原始音调）。数值越小，音调越低。
+
+</Parameter>
+<a id="pan-2"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 -1.0 到 1.0：
+
+- `-1.0`：音效从用户左侧传来。
+- `0.0`：音效从用户正前方传来。
+- `1.0`：音效从用户右侧传来。
+
+</Parameter>
+<a id="gain-2"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 0 到 100，默认值为 100（原始音量）。数值越小，音量越低。
+
+</Parameter>
+<a id="publish-2"></a>
+<Parameter name="publish">
+
+是否在频道中发布该音效：
+
+- true：在频道中发布该音效。
+- false：（默认）不在频道中发布该音效。
+
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_playeffectex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_preloadeffect"></a>
+
+<a id="ariaid-title11"></a>
+
+## preloadEffect
+
+将音效文件加载至内存。
+
+<a id="api_irtcengine_preloadeffect__prototype"></a>
+
+```text
+Future<void> preloadEffect(
+    {required int soundId, required String filePath, int startPos = 0});
+```
+
+<a id="api_irtcengine_preloadeffect__detailed_desc"></a>
+
+为保证通信畅通，请注意控制预加载音效文件的大小。
+该方法支持的预加载音频文件的格式见 [RTC SDK 支持播放哪些格式的音频文件](/zh-CN/reference/faq/product/audio_format)。
+
+<a id="api_irtcengine_preloadeffect__timing"></a>
+
+### 调用时机
+
+声网建议在加入频道前调用该方法。
+
+<a id="api_irtcengine_preloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-5"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+<a id="filepath-3"></a>
+<Parameter name="filePath">
+
+文件路径：
+
+- Android: 文件路径，需精确到文件名及后缀。支持在线文件的 URL 地址，本地文件的 URI 地址、绝对路径或以 `/assets/` 开头的路径。通过绝对路径访问本地文件可能会遇到权限问题，建议使用 URI 地址访问本地文件。例如 `content://com.android.providers.media.documents/document/audio%3A14441`。
+- Windows: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `C:\music\audio.mp4`。
+- iOS 或 macOS: 音频文件的绝对路径或 URL 地址，需精确到文件名及后缀。例如 `/var/mobile/Containers/Data/audio.mp4`。
+
+</Parameter>
+<a id="startpos-2"></a>
+<Parameter name="startPos">
+
+音效文件加载的起始位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_preloadeffectex"></a>
+
+<a id="ariaid-title12"></a>
+
+## preloadEffectEx
+
+将指定音效预加载到频道中。
+
+<a id="api_irtcengineex_preloadeffectex__prototype"></a>
+
+```text
+Future<void> preloadEffectEx(
+      {required RtcConnection connection,
+      required int soundId,
+      required String filePath,
+      int startPos = 0});
+```
+
+<a id="api_irtcengineex_preloadeffectex__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+每次调用该方法时，只能将一个音效文件预加载到内存中。如果需要预加载多个音效文件，请多次调用该方法。预加载完成后，可以调用 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 播放预加载的音效，或调用 [playAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playalleffects) 播放所有预加载的音效。
+
+:::note
+注：
+
+- 为确保使用体验流畅，音效文件的大小不应超过限制。
+- 声网建议在加入频道前调用该方法。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 前已调用 [preloadEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后不会关闭文件资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 时会直接从头开始播放。
+- 如果在调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 前未调用 [preloadEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_preloadeffectex)，则 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 执行后会销毁资源。下次调用 [playEffectEx](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengineex_playeffectex) 时会尝试重新打开文件并从头开始播放。
+:::
+
+<a id="api_irtcengineex_preloadeffectex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_preloadeffectex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/flutter/class-rtcconnection)。
+
+</Parameter>
+<a id="soundid-6"></a>
+<Parameter name="soundId">
+
+音效 ID。
+
+</Parameter>
+<a id="filepath-4"></a>
+<Parameter name="filePath">
+
+本地文件的绝对路径或在线文件的 URL。支持的音频格式包括：mp3、mp4、m4a、aac、3gp、mkv 和 wav。
+
+</Parameter>
+<a id="startpos-3"></a>
+<Parameter name="startPos">
+
+音效文件的播放起始位置（单位为毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_preloadeffectex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_resumealleffects"></a>
+
+<a id="ariaid-title13"></a>
+
+## resumeAllEffects
+
+恢复播放所有音效文件。
+
+<a id="api_irtcengine_resumealleffects__prototype"></a>
+
+```text
+Future<void> resumeAllEffects();
+```
+
+<a id="api_irtcengine_resumealleffects__detailed_desc"></a>
+
+当你调用 [pauseAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_pausealleffects) 暂停播放所有音效文件后，如需恢复播放，可以调用该方法。
+
+<a id="api_irtcengine_resumealleffects__timing"></a>
+
+### 调用时机
+
+该方法需要在 [pauseAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_pausealleffects) 后调用。
+
+<a id="api_irtcengine_resumealleffects__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_resumeeffect"></a>
+
+<a id="ariaid-title14"></a>
+
+## resumeEffect
+
+恢复播放指定音效文件。
+
+<a id="api_irtcengine_resumeeffect__prototype"></a>
+
+```text
+Future<void> resumeEffect(int soundId);
+```
+
+<a id="api_irtcengine_resumeeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_resumeeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-7"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_resumeeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_seteffectposition"></a>
+
+<a id="ariaid-title15"></a>
+
+## setEffectPosition
+
+设置指定音效文件的播放位置。
+
+<a id="api_irtcengine_seteffectposition__prototype"></a>
+
+```text
+Future<void> setEffectPosition({required int soundId, required int pos});
+```
+
+<a id="api_irtcengine_seteffectposition__detailed_desc"></a>
+
+成功设置后，本地音效文件会在指定位置开始播放。
+
+:::note
+注： 该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+:::
+
+<a id="api_irtcengine_seteffectposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-8"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+<a id="pos"></a>
+<Parameter name="pos">
+
+音效文件的播放位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_seteffectposition__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_seteffectsvolume"></a>
+
+<a id="ariaid-title16"></a>
+
+## setEffectsVolume
+
+设置音效文件的播放音量。
+
+<a id="api_irtcengine_seteffectsvolume__prototype"></a>
+
+```text
+Future<void> setEffectsVolume(int volume);
+```
+
+<a id="api_irtcengine_seteffectsvolume__detailed_desc"></a>
+
+<a id="api_irtcengine_seteffectsvolume__timing"></a>
+
+### 调用时机
+
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+
+<a id="api_irtcengine_seteffectsvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_seteffectsvolume__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setvolumeofeffect"></a>
+
+<a id="ariaid-title17"></a>
+
+## setVolumeOfEffect
+
+设置指定音效文件的播放音量。
+
+<a id="api_irtcengine_setvolumeofeffect__prototype"></a>
+
+```text
+Future<void> setVolumeOfEffect({required int soundId, required int volume});
+```
+
+<a id="api_irtcengine_setvolumeofeffect__detailed_desc"></a>
+
+<a id="api_irtcengine_setvolumeofeffect__timing"></a>
+
+### 调用时机
+
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 后调用。
+
+<a id="api_irtcengine_setvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-9"></a>
+<Parameter name="soundId">
+
+指定音效的 ID。每个音效均有唯一的 ID。
+
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setvolumeofeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopalleffects"></a>
+
+<a id="ariaid-title18"></a>
+
+## stopAllEffects
+
+停止播放所有音效文件。
+
+<a id="api_irtcengine_stopalleffects__prototype"></a>
+
+```text
+Future<void> stopAllEffects();
+```
+
+<a id="api_irtcengine_stopalleffects__detailed_desc"></a>
+
+当你不需要再播放音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseAllEffects](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_pausealleffects)。
+
+<a id="api_irtcengine_stopalleffects__timing"></a>
+
+### 调用时机
+
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+
+<a id="api_irtcengine_stopalleffects__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopeffect"></a>
+
+<a id="ariaid-title19"></a>
+
+## stopEffect
+
+停止播放指定音效文件。
+
+<a id="api_irtcengine_stopeffect__prototype"></a>
+
+```text
+Future<void> stopEffect(int soundId);
+```
+
+<a id="api_irtcengine_stopeffect__detailed_desc"></a>
+
+当你不需要再播放某一音效文件时，可以调用该方法停止播放。如果你仅需暂停播放，请调用 [pauseEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_pauseeffect)。
+
+<a id="api_irtcengine_stopeffect__timing"></a>
+
+### 调用时机
+
+该方法需要在 [playEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 之后调用。
+
+<a id="api_irtcengine_stopeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-10"></a>
+<Parameter name="soundId">
+
+指定音效文件的 ID。每个音效文件均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_stopeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unloadalleffects"></a>
+
+<a id="ariaid-title20"></a>
+
+## unloadAllEffects
+
+从内存释放所有预加载音效文件。
+
+<a id="api_irtcengine_unloadalleffects__prototype"></a>
+
+```text
+Future<void> unloadAllEffects();
+```
+
+<a id="api_irtcengine_unloadalleffects__detailed_desc"></a>
+
+<a id="api_irtcengine_unloadalleffects__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unloadeffect"></a>
+
+<a id="ariaid-title21"></a>
+
+## unloadEffect
+
+从内存释放某个预加载的音效文件。
+
+<a id="api_irtcengine_unloadeffect__prototype"></a>
+
+```text
+Future<void> unloadEffect(int soundId);
+```
+
+<a id="api_irtcengine_unloadeffect__detailed_desc"></a>
+
+调用 [preloadEffect](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_preloadeffect) 将音效文件加载至内存后，如需释放该音效文件，请调用该方法。
+
+<a id="api_irtcengine_unloadeffect__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_unloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-11"></a>
+<Parameter name="soundId">
+
+指定音效文件的 ID。每个音效文件均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_unloadeffect__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
+
+<a id="ariaid-title22"></a>
+
+## onAudioEffectFinished
+
+本地音效文件播放已结束回调。
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__prototype"></a>
+
+```text
+final void Function(int soundId)? onAudioEffectFinished;
+```
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__detailed_desc"></a>
+
+当播放音效结束后，会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onaudioeffectfinished__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-12"></a>
+<Parameter name="soundId">
+
+指定音效的 ID。每个音效均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [RtcEngineEventHandler](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengineeventhandler)

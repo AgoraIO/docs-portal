@@ -1,0 +1,51 @@
+---
+title: AgoraConnectionState
+description: 连接状态。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/enum_connectionstatetype
+  sourcePath: html-docs/rtc/iOS/API/enum_connectionstatetype.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_connectionstatetype__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="agoraconnectionstatedisconnected"></a>
+<Parameter name="AgoraConnectionStateDisconnected">
+
+（1）：SDK 与声网边缘服务器断开连接。该状态表示 SDK 处于以下阶段之一：调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法前的初始状态，或调用 [leaveChannel:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel) 方法后。
+
+</Parameter>
+<a id="agoraconnectionstateconnecting"></a>
+<Parameter name="AgoraConnectionStateConnecting">
+
+（2）：SDK 正在连接声网边缘服务器。该状态表示调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 方法后，SDK 正在与指定频道建立连接。连接成功后，SDK 会触发 `connectionChangedToState:reason:` 回调，并将状态切换为 `AgoraConnectionStateConnected`。连接建立后，SDK 会初始化媒体，并在准备就绪时触发 `didJoinChannel:withUid:elapsed:` 回调。
+
+</Parameter>
+<a id="agoraconnectionstateconnected"></a>
+<Parameter name="AgoraConnectionStateConnected">
+
+（3）：SDK 已连接到声网边缘服务器。该状态还表示用户已加入频道，并可在频道中发布或订阅媒体流。如果因网络中断或切换导致连接丢失，SDK 会自动尝试重连，并触发 `connectionChangedToState:reason:` 回调，通知当前状态变为 `AgoraConnectionStateReconnecting`。
+
+</Parameter>
+<a id="agoraconnectionstatereconnecting"></a>
+<Parameter name="AgoraConnectionStateReconnecting">
+
+（4）：SDK 正在持续重连声网边缘服务器。该状态表示 SDK 因网络问题与频道断开连接后，正在尝试重新加入频道：
+
+- 若在 10 秒内未能重新加入频道，SDK 会触发 [rtcEngineConnectionDidLost:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionlost) 回调，保持在该状态并继续重连。
+- 若在断开连接 20 分钟后仍未成功重连，SDK 会触发 `connectionChangedToState:reason:` 回调，切换至 `AgoraConnectionStateFailed` 状态，并停止重连。
+
+</Parameter>
+<a id="agoraconnectionstatefailed"></a>
+<Parameter name="AgoraConnectionStateFailed">
+
+（5）：SDK 无法连接到声网边缘服务器或加入频道。该状态表示 SDK 停止尝试重连。你必须调用 [leaveChannel:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel) 离开频道。可调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_joinchannel2) 重新加入频道。如果 SDK 被声网边缘服务器通过 RESTful API 禁止加入频道，会触发 `connectionChangedToState:reason:` 回调。
+
+</Parameter>
+</ParameterList>

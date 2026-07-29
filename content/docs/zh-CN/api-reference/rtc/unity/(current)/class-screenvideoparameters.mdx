@@ -1,0 +1,63 @@
+---
+title: ScreenVideoParameters
+description: 共享屏幕流的视频编码配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_screenvideoparameters
+  sourcePath: html-docs/rtc/Unity/API/class_screenvideoparameters.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screenvideoparameters__prototype"></a>
+
+```text
+public class ScreenVideoParameters
+    {
+        public VideoDimensions dimensions { set; get; }
+
+        public int frameRate { set; get; }
+
+        public int bitrate { set; get; }
+
+        public VIDEO_CONTENT_HINT contentHint = VIDEO_CONTENT_HINT.CONTENT_HINT_MOTION;
+
+        public ScreenVideoParameters()
+        {
+            dimensions = new VideoDimensions(1280, 720);
+            frameRate = 15;
+        }
+    };
+```
+
+<a id="class_screenvideoparameters__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
+
+视频编码的分辨率。默认值为 1280 × 720。
+
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
+
+视频编码帧率 (fps)。默认值为 15。
+
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
+
+视频编码码率 (Kbps)。
+
+</Parameter>
+<a id="contenthint"></a>
+<Parameter name="contentHint">
+
+屏幕共享视频的内容类型。
+
+</Parameter>
+</ParameterList>

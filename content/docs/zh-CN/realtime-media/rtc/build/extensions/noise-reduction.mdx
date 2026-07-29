@@ -1,0 +1,520 @@
+---
+title: "AI 降噪插件"
+description: "了解如何在实时互动 RTC 中 AI 降噪插件，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 使用 AI 降噪插件
+
+AI 降噪插件使用声网人工智能噪声消除算法，可以与 Web SDK（v4.15.1 或以上）搭配使用，降低上百种噪声，减少多人同时说话时的人声失真。对于在线会议、语聊房、远程问诊、游戏语音等场景，AI 降噪插件能够让远程交流和面对面交谈一样实时。
+
+以下视频展示了对典型噪声的抑制效果和大混响环境下的解混响效果：
+
+<video controls width="90%" height="auto" src="https://web-cdn.agora.io/docs-files/1656322358091" poster="https://web-cdn.agora.io/docs-files/1656321003740"></video>
+
+点击[在线链接](https://webdemo.agora.io/example/plugin/aiDenoiser/index.html)体验 AI 降噪功能。
+
+## 功能介绍
+
+本节介绍 AI 降噪插件支持的噪声类型、降噪策略，以及在使用之前你需要了解的注意事项。
+
+<a id="type"></a>
+### 噪声类型
+
+AI 降噪插件可以有效压制以下类型的噪声：
+
+- 电视噪声
+- 厨房噪声
+- 街道噪声，如鸟叫声、汽车噪声、地铁噪声
+- 机器噪声，如风扇、空调、吸尘器、复印机等噪声
+- 办公室噪声，如敲键盘、鼠标点击
+- 家庭噪声，如开关门声、吱吱响椅子声、婴儿哭叫声、装修噪声
+- 连续敲击声
+- 提示音、鼓掌声
+- 音乐
+
+### 降噪策略
+
+AI 降噪插件支持如下降噪策略：
+
+- 默认策略：在保护人声的前提下，将噪声降低到人耳舒适的状态。
+- 定制策略：如果你需要增强降噪效果或根据业务场景定制降噪策略，请联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)。
+
+### 已知限制
+
+AI 降噪插件目前有以下限制：
+
+   - 如果当前页面只有部分音频轨道开启了 AI 降噪，由于开启 AI 降噪会打开浏览器自带的 AEC 和 AGC、关闭浏览器自带的 NS，未开启 AI 降噪的音频轨道可能会受影响。
+   - 仅支持 Safari 14.1 以上版本，但由于 Safari 自身性能原因，声网不建议在 Safari 上使用。
+   - 暂不支持在移动端使用。
+   - 如需同时使用多个媒体处理插件，声网建议你使用 Intel Core i5 4 核或以上的处理器。同时开启多个插件后，如果其它正在运行的程序占用了较高的系统资源，你的 App 可能会出现音视频卡顿。
+
+## 实现原理
+
+声网 Web SDK 的媒体传输管道包含采集、前处理、编码、传输、解码、后处理和播放等环节。在前处理阶段，插件可以对管道中的音视频数据进行处理，从而实现虚拟背景、降噪、美颜、语音活动检测等功能。
+
+![处理插件原理](https://web-cdn.agora.io/doc-cms/uploads/1728974154162-web-extension-update.png)
+
+## 前提条件
+
+使用 AI 降噪插件需要满足以下前提条件：
+
+- [噪声类型](#type)符合你的业务场景。 例如：当前版本会将麦克风采集的背景音乐当作噪声，因此不适用于使用麦克风同时采集人声和背景音乐的场景。
+- 使用最新版本的桌面端 Chrome（推荐）、Edge、Firefox 浏览器。
+- 已集成 v4.15.0 或以上版本的 Web SDK，实现基础的实时音视频互动功能，具体参考[快速开始](../../get-started/quick-start?platform=web)文档。
+
+## 实现步骤
+
+:::warning[注意]
+本节介绍如何使用**最新版本**的 AI 降噪插件。历史版本的实现步骤可能会有所不同，具体差异详见[插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release)。
+:::
+
+按照以下步骤集成 AI 降噪插件并实现 AI 降噪功能。
+
+### 1. 集成插件
+
+通过 npm 将 AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 集成到你的项目中。
+
+1. 运行以下命令安装 AI 降噪插件，默认安装 v2.0.2 版本：
+
+    ```shell
+    npm install agora-extension-ai-denoiser
+    ```
+
+<Tabs defaultValue="v202" groupId="ai-denoiser-version" persist>
+<TabsList>
+  <TabsTrigger value="v202">v2.0.2</TabsTrigger>
+  <TabsTrigger value="v201">v2.0.1</TabsTrigger>
+</TabsList>
+
+<TabsContent value="v202">
+
+- 新增背景人声消除能力。
+- 适用于嘈杂环境或多人发言场景，可进一步突出目标人声，提升音频采集效果。
+- 安装命令：`npm install agora-extension-ai-denoiser@2.0.2`
+
+</TabsContent>
+
+<TabsContent value="v201">
+
+- 支持低延迟模式和日志等级设置。
+- 如果你需要背景人声消除能力，请选择 v2.0.2。
+- 安装命令：`npm install agora-extension-ai-denoiser@2.0.1`
+
+</TabsContent>
+</Tabs>
+
+2. 在你的 `.js` 文件中加入以下代码导入 AI 降噪模块：
+
+    ```typescript
+    import {AIDenoiserExtension} from "agora-extension-ai-denoiser";
+    ```
+
+### 2. 加载 Wasm 依赖
+
+AI 降噪插件依赖一些 [Wasm 文件](https://webassembly.org/)。为保证浏览器可以正常加载和运行这些文件，你需要完成以下步骤：
+
+1. 将 `node_modules/agora-extension-ai-denoiser/external` 目录下的 Wasm 文件发布至 CDN 或者静态资源服务器中，并且处于同一个公共路径下。后续创建 `AIDenoiserExtension` 对象时，需要传入上述公共路径的 URL，插件会动态加载这些依赖文件。
+
+    :::warning[注意]
+    - 如果 Wasm 文件的 Host URL 与网页应用的 Host URL 不一致，则需要开启访问文件域名的 CORS 策略。
+    - 不能把 Wasm 文件放在 HTTP 服务下，因为在 HTTPS 域名下加载 HTTP 资源会被浏览器安全策略禁止。
+    :::
+
+2. 如果启用了 CSP（Content Security Policy），由于 Chrome 和 Edge 默认禁止加载和运行 Wasm 文件、默认禁止加载 Blob 对象，你需要根据浏览器版本配置 CSP：
+    - 高于 Chrome 97 和 Edge 97 的版本（含 Chrome 97 和 Edge 97）：在 [`script-src`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) 选项中添加 `'wasm-unsafe-eval'` 和 `blob:`。 例如：
+
+        ```text
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'wasm-unsafe-eval' blob:">
+        ```
+
+    - 低于 Chrome 97 和 Edge 97 的版本：在 `script-src` 选项中添加 `'unsafe-eval'` 和 `blob:`。
+
+### 3. 注册插件
+
+调用 [`AgoraRTC.registerExtensions`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#registerextensions) 方法并传入创建的 `AIDenoiserExtension` 实例注册 AI 降噪插件。你还可以监听 Wasm 文件加载失败的事件。
+
+:::warning[注意]
+声网推荐你只创建一个 `AIDenoiserExtension` 实例。
+:::
+
+```typescript
+// 传入 Wasm 文件所在的公共路径以创建 AIDenoiserExtension 实例，路径结尾不带 “/”
+const denoiser = new AIDenoiserExtension({assetsPath:'./external'});
+// 检查兼容性
+if (!denoiser.checkCompatibility()) {
+  // 当前浏览器可能不支持 AI 降噪插件，你可以停止执行之后的逻辑
+  console.error("Does not support AI Denoiser!");
+}
+// 注册插件
+AgoraRTC.registerExtensions([denoiser]);
+// 监听 Wasm 文件加载失败的事件，可能原因包括 Wasm 文件路径有误等
+denoiser.onloaderror = (e) => {
+  // 如果 Wasm 文件加载失败，你可以关闭插件，例如：
+  // openDenoiserButton.enabled = false;
+  console.log(e);
+}
+```
+
+### 4. 开启插件
+
+按照以下步骤开启 AI 降噪插件：
+
+1. 调用 `createProcessor` 方法创建一个 `IAIDenoiserProcessor` 实例。你可以设置插件为默认开启或关闭。如果不设置，插件将沿用上一次的状态。
+
+   ```typescript
+   // 创建 IAIDenoiserProcessor 实例
+   const processor = denoiser.createProcessor();
+   // 设置插件为默认开启
+   processor.enable();
+   // 设置插件为默认关闭
+   // processor.disable();
+   ```
+
+2. 调用 SDK 的 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 方法并指定 [`processorDestination`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#processordestination) 属性，将插件注入音频处理管道。
+
+   ```typescript
+   // 创建音频轨道
+   const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+   // 将插件注入音频处理管道
+   audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+   await processor.enable();
+   ```
+
+3. 如果没有设置插件为默认开启，还需要调用 `enable` 方法开启插件。
+
+    ```typescript
+    await processor.enable();
+    ```
+
+### 5. 调整降噪模式或降噪等级
+
+根据需要调整降噪模式或降噪等级：
+
+```typescript
+// 监听降噪处理耗时过长的事件
+processor.on("overload", async (elapsedTime) => {
+  console.log("overload!!!");
+  // 调整为稳态降噪模式，临时关闭 AI 降噪
+  await processor.setMode("STATIONARY_NS");
+  // 完全关闭 AI 降噪，使用浏览器自带的降噪
+  // await processor.disable()
+});
+```
+
+### 6. 转储音频数据
+
+调用 `dump` 方法，并监听 `dump`  和 `dumpend` 事件，转储降噪处理过程中的音频数据。
+
+:::warning[注意]
+声网强烈推荐你对音频数据进行转储。在降噪处理发生问题的情况下，转储可以提高定位和分析问题的效率。
+:::
+
+```typescript
+processor.on("dump", (blob, name) => {
+  // 将降噪处理过程中的音频数据文件以 .pcm 格式转储到本地
+  const objectURL = URL.createObjectURL(blob);
+  const tag = document.createElement("a");
+  tag.download = name;
+  tag.href = objectURL;
+  tag.click();
+  setTimeout(() => {URL.revokeObjectURL(objectURL);}, 0);
+});
+
+processor.on("dumpend", () => {
+  console.log("dump ended!!");
+});
+
+processor.dump();
+```
+
+### 7. 关闭插件
+
+需要停止使用 AI 降噪插件时，调用 `disable` 方法关闭插件。
+
+```typescript
+await processor.disable();
+```
+
+## API 参考
+
+本节提供 AI 降噪插件的 API 参考。
+
+### IAIDenoiserExtension
+
+#### checkCompatibility
+
+```typescript
+checkCompatibility(): boolean;
+```
+
+**自从 v1.1.0**。
+
+检查当前浏览器是否支持 AI 降噪插件。该方法返回的结果仅供参考。
+
+#### createProcessor
+
+```typescript
+createProcessor(): IAIDenoiserProcessor;
+```
+
+创建 `IAIDenoiserProcessor` 实例。
+
+#### setLogLevel
+
+```typescript
+public setLogLevel(level: AIDenoiserLogLevel)
+```
+
+**自从 v2.0.0**。
+
+设置日志等级。可以设置的日志级别详见 [AIDenoiserLogLevel](#aidenoiserloglevel)。
+
+#### onloaderror
+
+```typescript
+onloaderror?: (error: Error) => void;
+```
+
+**从 2.0.0 起废弃**。
+
+Wasm 依赖文件加载失败回调。
+
+### IAIDenoiserProcessor
+
+#### kind
+
+```typescript
+get kind(): 'video' | 'audio';
+```
+
+Processor 的类型，分为视频和音频两种。
+
+#### enabled
+
+```typescript
+get enabled(): boolean;
+```
+
+插件是否启用：
+
+- true：已启用。
+- false：未启用。
+
+#### enable
+
+```typescript
+enable(): void | Promise<void>;
+```
+
+开启 AI 降噪功能。
+
+#### disable
+
+```typescript
+disable(): void | Promise<void>;
+```
+
+关闭 AI 降噪功能。
+
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
+
+#### setMode
+
+```typescript
+setMode(mode: AIDenoiserProcessorMode): Promise<void>;
+```
+
+**自从 v1.1.0**。
+
+设置降噪模式。
+
+你可以在 [onoverload](#onoverload) 回调中调用该方法切换至稳态降噪，降低开销。详见 [AIDenoiserProcessorMode](#aidenoiserprocessormode)。
+
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
+
+#### setLevel
+
+```typescript
+setLevel(level: AIDenoiserProcessorLevel): Promise<void>;
+```
+
+**自从 v1.1.0**。
+
+设置降噪强度，详见 [AIDenoiserProcessorLevel](#aidenoiserprocessorlevel)。
+
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
+
+#### setLatency
+
+```typescript
+setLatency(latency: AIDenoiserProcessorLatency): Promise<void>;
+```
+
+**自从 v2.0.0**。
+
+设置降噪时延等级，详见 [AIDenoiserProcessorLatency](#aidenoiserprocessorlatency)。
+
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
+
+#### dump
+
+```typescript
+dump(): void;
+```
+
+转储降噪处理过程中的音频数据，方便定位和分析降噪处理的问题。
+
+该方法必须在 [`pipe`](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#pipe) 之后调用。
+
+调用该方法会触发 9 次 `dump` 事件，返回插件在该方法调用前 30 秒和后 60 秒处理的音频数据，一共 9 个音频文件（详见音频文件说明）。然后触发 `dumpend` 事件，表示已结束音频数据的转储。
+
+**音频文件说明**
+
+每个音频文件的编码格式为 PCM，长度为 30 秒。文件名包含以下信息：
+
+- 音频数据所处的阶段，有以下三种：
+   - input：待降噪的音频数据。
+   - ns_out：经过降噪处理的音频数据。
+   - agc_out：经过人声增强处理的音频数据。
+- 音频采样率。
+- 通道数。
+- 转储时间：假设转储时间为 T（单位为秒），则文件包含 [T-30,T] 范围内的音频数据。
+
+音频文件名示例：`input_16000hz_1ch_0.pcm`
+
+**注意**
+
+- 如果你在 `dump` 事件触发不到 9 次时关闭了 AI 降噪，转储过程会立即终止，并触发 `dumpend` 事件，此时返回的音频数据文件不足 9 个。
+- 如果插件实际处理的音频长度不足 30 秒，则对应的音频文件长度也不足 30 秒。
+
+#### ondump
+
+```typescript
+ondump?: (blob: Blob, name: string) => void;
+```
+
+**从 2.0.0 起废弃**。
+
+转储音频数据回调。
+
+该回调返回以下参数：
+
+- `blob`：音频数据文件。
+- `name`：音频数据文件的名称。
+
+#### ondumpend
+
+```typescript
+ondumpend?: () => void;
+```
+
+**从 2.0.0 起废弃**。
+
+转储音频数据已结束回调。
+
+#### onoverload
+
+```typescript
+onoverload?: (elapsedTime: number) => void;
+```
+
+**从 2.0.0 起废弃**。
+
+降噪处理耗时过长回调。
+
+回调参数：
+
+- `elapsedTime`：插件处理一帧音频的时间（毫秒）。该值仅作参考，精度取决于浏览器计时的精度，比如 Firefox 上的时间精度较低。
+
+#### on 回调
+
+```typescript
+on(event: "pipeerror", listener: AIDenoiserProcessorPipeErrorCallback): void;
+on(event: "overload", listener: AIDenoiserProcessorOverloadCallback): void;
+on(event: "dump", listener: AIDenoiserProcessorDumpCallback): void;
+on(event: "dumpend", listener: AIDenoiserProcessorDumpEndCallback): void;
+```
+
+**从 v2.0.0 起**，AI 降噪插件通过 `on` 监听如下事件：
+
+- `pipeerror`：Wasm 依赖文件加载失败事件，取代原来的 `onloaderror` 回调。
+- `overload`：降噪处理耗时过长事件，取代原来的 `onoverload` 回调。
+- `dump`：转储音频数据事件，取代原来的 `ondump` 回调。
+- `dumpend`：转储音频数据已结束事件，取代原来的 `ondumpend` 回调。
+
+### 类型定义
+
+#### AIDenoiserExtensionOptions
+
+```typescript
+export interface AIDenoiserExtensionOptions {
+  assetsPath: string
+}
+```
+
+AI 降噪插件初始化参数：
+
+- `assetsPath` ： AI 降噪插件依赖的 Wasm 文件的 URL 路径。路径结尾不要带“/”，例如 `./external`。
+
+插件会根据 `assetsPath` 拼接出 Wasm 文件的完整路径。如果路径错误导致 Wasm 文件加载失败，你会收到 `pipeerror` 事件。
+
+#### AIDenoiserProcessorMode
+
+```typescript
+export enum AIDenoiserProcessorMode {
+  NSNG = "NSNG",
+  STATIONARY_NS = "STATIONARY_NS",
+}
+```
+
+降噪模式：
+
+- `NSNG`：混合降噪。该模式可以压制[噪声类型](#type)中的稳态与非稳态噪声。
+- `STATIONARY_NS`：稳态降噪。该模式仅压制稳态噪声，建议仅在 AI 降噪处理耗时过长时使用。
+
+#### AIDenoiserProcessorLevel
+
+```typescript
+export enum AIDenoiserProcessorLevel {
+  SOFT = "SOFT",
+  AGGRESSIVE = "AGGRESSIVE",
+}
+```
+
+降噪强度：
+
+- `SOFT`：（推荐）舒缓降噪。
+- `AGGRESSIVE`：激进降噪。将降噪强度提高到激进降噪会增大损伤人声的概率。
+
+#### AIDenoiserLogLevel
+
+```typescript
+export enum AIDenoiserLogLevel {
+  DEBUG = "DEBUG",
+  INFO = "INFO",
+  WARN = "WARN",
+  ERROR = "ERROR",
+  NONE = "NONE",
+}
+```
+
+AI 降噪插件日志等级：
+
+- `DEBUG`：(0) 打印调试信息、普通信息、警告和错误日志。
+- `INFO`：(1) 打印普通信息、警告和错误日志。
+- `WARN`：(2) 打印警告和错误日志。
+- `ERROR`：(3) 打印错误日志。
+- `NONE`：(4) 不打印任何日志。
+
+#### AIDenoiserProcessorLatency
+
+```typescript
+export enum AIDenoiserProcessorLatency {
+  LOW = "LOW",
+  FULL = "FULL",
+}
+```
+
+AI 降噪时延等级：
+
+- `LOW`：低时延（约 40 ms）模式。该模式下，降噪效果略差。
+- `FULL`：高时延等级。

@@ -1,0 +1,29 @@
+---
+title: "如何设置镜像模式？"
+---
+SDK 提供不同的接口方便你在实时音视频通话的不同阶段中获取期望的视频显示效果。
+
+## 阶段 1. 本地视图显示
+
+在本地设备上，本地用户的视频流绑定在本地视图上，本地用户可以看到本地视图显示效果。你可以在`setupLocalVideo` 或 `setLocalRenderMode`[2/2] 中，通过 `mirrorMode` 设置本地视图显示为镜像效果。它只影响本地用户所见，不影响远端用户所见。
+
+:::info[信息]
+如果你使用前置摄像头，默认启动本地用户视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+:::
+
+## 阶段 2. 远端用户视图显示
+
+在本地设备上，远端用户的视频流绑定在对应的远端视图上，本地用户可以看到远端视图显示效果。你可以在 `setupRemoteVideo` 或 `setRemoteRenderMode`中，通过 `mirrorMode` 设置远端视图显示为镜像效果。它只影响本地用户所见，不影响远端用户所见。
+
+## 阶段 3. 本地发送视频流
+
+本地视频流编码后会发送给远端用户观看。在`setVideoEncoderConfiguration` 中，你可以通过 `config` 设置本地发送的视频流为镜像模式。它只影响远端用户所见，不影响本地用户所见。
+
+## API 参考
+如果你想了解更多细节，请参考以下 API 文档：
+
+- [`setupLocalVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setuplocalvideo)
+- [`setLocalRenderMode`[2/2]](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setlocalrendermode2)
+- [`setupRemoteVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setupremotevideo)
+- [`setRemoteRenderMode`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_setremoterendermode2)
+- [`setVideoEncoderConfiguration`](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration)

@@ -1119,6 +1119,19 @@ Why teams use it.`,
   } as unknown as PageWithSource;
 }
 
+function mockPagesByRequestedSlugs() {
+  mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+    const slugPath = slugs.join('/');
+
+    return {
+      ...createPage(),
+      path: `${locale}/${slugPath}.md`,
+      slugs: [locale, ...slugs],
+      url: `/${locale}/${slugPath}`,
+    };
+  });
+}
+
 function createOpenApiPage(): PageWithSource {
   return {
     data: {
@@ -1225,6 +1238,18 @@ function createPlatformPanelPage(platform: 'android' | 'ios'): PageWithSource {
 
 describe('loadDocsTabIndex', () => {
   beforeEach(() => {
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'en' || slugs.join('/') !== 'ai') {
+        return undefined;
+      }
+
+      return {
+        ...createPage(),
+        path: 'en/ai/index.md',
+        slugs: ['en', 'ai', 'index'],
+        url: '/en/ai',
+      };
+    });
     mockedGetPages.mockReturnValue([]);
     mockedGetPageTree.mockReturnValue(pageTree);
   });
@@ -1245,6 +1270,52 @@ describe('loadDocsTabIndex', () => {
         url: '/en/introduction/about-agora',
       },
     );
+  });
+
+  it('redirects tab roots without index content to the first descendant page', async () => {
+    const nestedProductTree: Root = {
+      children: [
+        {
+          $id: 'en-root',
+          children: [
+            {
+              $id: 'realtime-media-folder',
+              children: [
+                {
+                  $id: 'rtc-folder',
+                  children: [],
+                  index: {
+                    $id: 'rtc-index',
+                    name: 'RTC',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc',
+                  },
+                  name: 'RTC',
+                  type: 'folder',
+                },
+              ],
+              name: 'Realtime Media',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: 'English',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(undefined);
+    mockedGetPageTree.mockReturnValue(nestedProductTree);
+
+    await expect(
+      loadDocsTabIndex('en', 'realtime-media'),
+    ).resolves.toMatchObject({
+      locale: 'en',
+      tab: 'realtime-media',
+      url: '/en/realtime-media/rtc',
+    });
   });
 });
 
@@ -2048,6 +2119,226 @@ Web body
     });
   });
 
+  it('returns scoped Chinese OpenAPI lanes to the reference center', async () => {
+    const basePage = createPage();
+    const fusionCdnPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+          path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+        },
+        title: '融合 CDN 直播 RESTful API',
+      },
+      path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'fusion-cdn', 'index'],
+      url: '/zh-CN/api-reference/api-ref/fusion-cdn',
+    } as unknown as PageWithSource;
+    const zhCnApiReferenceTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'api-reference-fusion-cdn-folder',
+                  children: [],
+                  index: {
+                    $id: 'api-reference-fusion-cdn-index',
+                    name: '融合 CDN 直播 RESTful API',
+                    type: 'page',
+                    url: fusionCdnPage.url,
+                  },
+                  name: '融合 CDN 直播 RESTful API',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-overview',
+                name: '参考概览',
+                type: 'page',
+                url: '/zh-CN/api-reference/overview',
+              },
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(fusionCdnPage);
+    mockedGetPages.mockReturnValue([fusionCdnPage]);
+    mockedGetPageTree.mockReturnValue(zhCnApiReferenceTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-fusion-cdn-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: '融合 CDN 直播 RESTful API',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'fusion-cdn',
+      ]),
+    );
+
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: 'API 参考',
+    });
+
+    mockedGetNodeMeta.mockReturnValue(undefined);
+
+    const unscopedPayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'fusion-cdn',
+      ]),
+    );
+
+    expect(unscopedPayload.sidebarHeader).toEqual({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: 'API 参考',
+      title: 'RESTful API',
+    });
+  });
+
+  it('uses generated meta groups only for opted-in focused OpenAPI sidebars', async () => {
+    const parentUrl = '/zh-CN/api-reference/api-ref/cloud-transcoding';
+    const eventUrl = `${parentUrl}/ncs-events`;
+    const guideUrl =
+      '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification';
+    const makePage = (url: string, title: string) => ({
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath: `/virtual/content/docs${url}.mdx`,
+          path: `${url.slice(1)}.mdx`,
+        },
+        title,
+      },
+      path: `${url.slice(1)}.mdx`,
+      slugs: url.split('/').filter(Boolean),
+      url,
+    });
+    const parentPage = makePage(parentUrl, '概览');
+    const eventPage = makePage(eventUrl, '事件类型');
+    const guidePage = makePage(guideUrl, '接收 Webhook 事件');
+    const laneFolder = {
+      $id: 'cloud-transcoding-folder',
+      children: [
+        {
+          $id: 'cloud-transcoding-index',
+          name: '概览',
+          type: 'page' as const,
+          url: parentUrl,
+        },
+        {
+          $id: 'webhook-group',
+          name: 'Webhook 回调事件',
+          type: 'separator' as const,
+        },
+        {
+          $id: 'webhook-guide',
+          name: '接入指南',
+          type: 'page' as const,
+          url: guideUrl,
+        },
+        {
+          $id: 'cloud-transcoding-events',
+          name: '事件类型',
+          type: 'page' as const,
+          url: eventUrl,
+        },
+        {
+          $id: 'webhook-group-end',
+          name: '{flat}',
+          type: 'separator' as const,
+        },
+      ],
+      name: '云端转码',
+      type: 'folder' as const,
+    };
+    const focusedTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [laneFolder],
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+
+    mockedGetPage.mockReturnValue(eventPage);
+    mockedGetPages.mockReturnValue([parentPage, eventPage, guidePage]);
+    mockedGetPageTree.mockReturnValue(focusedTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === laneFolder.$id
+        ? ({
+            data: {
+              openApiSidebarFromMeta: true,
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'cloud-transcoding',
+        'ncs-events',
+      ]),
+    );
+    const webhookGroup = flattenSidebarSections(payload.sidebar).find(
+      (node) => node.title === 'Webhook 回调事件',
+    );
+
+    expect(webhookGroup?.children).toMatchObject([
+      { title: '接入指南', type: 'page', url: guideUrl },
+      { title: '事件类型', type: 'page', url: eventUrl },
+    ]);
+
+    mockedGetNodeMeta.mockReturnValue(undefined);
+    const unchangedPayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'cloud-transcoding',
+        'ncs-events',
+      ]),
+    );
+
+    expect(
+      flattenSidebarSections(unchangedPayload.sidebar).some(
+        (node) => node.title === 'Webhook 回调事件',
+      ),
+    ).toBe(false);
+  });
+
   it('redirects legacy Conversational AI REST endpoint URLs to the OpenAPI lane', async () => {
     await expect(
       loadDocsPagePayload('en', 'api-reference', [
@@ -2058,6 +2349,29 @@ Web body
       ]),
     ).resolves.toEqual({
       redirectUrl: '/en/api-reference/api-ref/conversational-ai/join',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai',
+    });
+  });
+
+  it('redirects the retired zh-CN aggregate API reference page to the merged API page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref', 'rtc']),
+    ).resolves.not.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api',
     });
   });
 
@@ -2520,7 +2834,7 @@ Web body
 
       if (
         normalizedSlugs ===
-        'en/realtime-media/rtc/android/quick-start/integrate-with-ai-tools'
+        'realtime-media/rtc/quick-start/android/integrate-with-ai-tools'
       ) {
         return androidPage;
       }
@@ -2574,6 +2888,8 @@ Web body
   });
 
   it('redirects the legacy video quickstart path to the get-started-sdk path', async () => {
+    mockPagesByRequestedSlugs();
+
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
     ).resolves.toEqual({
@@ -2644,13 +2960,50 @@ Web body
       loadDocsPagePayload('zh-CN', 'best-practices', ['http-basic-auth']),
     ).resolves.toEqual({
       redirectUrl:
-        '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+        '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
     });
 
     await expect(
       loadDocsPagePayload('zh-CN', 'best-practices', ['release-notes']),
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/ai/release-notes',
+    });
+  });
+
+  it('redirects merged platform suffix pages to the canonical page with platform selection', async () => {
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+      if (
+        locale === 'zh-CN' &&
+        slugs.join('/') ===
+          'api-reference/conversational-ai/client-toolkit/overview'
+      ) {
+        return {
+          ...createPage(),
+          path: 'zh-CN/api-reference/conversational-ai/client-toolkit/overview.mdx',
+          slugs: [
+            'zh-CN',
+            'api-reference',
+            'conversational-ai',
+            'client-toolkit',
+            'overview',
+          ],
+          url: '/zh-CN/api-reference/conversational-ai/client-toolkit/overview',
+        };
+      }
+
+      return undefined;
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'client-toolkit',
+        'overview.go',
+      ]),
+    ).resolves.toEqual({
+      preserveSearch: false,
+      redirectUrl:
+        '/zh-CN/api-reference/conversational-ai/client-toolkit/overview?platform=go',
     });
   });
 
@@ -2754,6 +3107,26 @@ Web body
       loadDocsPagePayload('en', 'ai', ['device-kit']),
     ).resolves.toEqual({
       redirectUrl: '/en/ai/device-kit/start-here/quickstart',
+    });
+  });
+
+  it('redirects the zh-CN Device Kit overview path to the product overview page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', ['device-kit']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/device-kit/overview/product-overview',
+    });
+  });
+
+  it('redirects legacy zh-CN Device Kit quickstart paths to the R1 demo page', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', [
+        'device-kit',
+        'get-started',
+        'quickstart',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/device-kit/build/run-r1-demo',
     });
   });
 
@@ -3193,6 +3566,14 @@ Web body
     });
   });
 
+  it('redirects the Chinese Whiteboard RESTful product root to its API overview', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref', 'whiteboard']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    });
+  });
+
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
     const page = createPage();
     const broadcastPage = {
@@ -3373,6 +3754,184 @@ Web body
     );
   });
 
+  it('removes deleted source-backed API directory indexes from scoped Chinese RESTful navigation', async () => {
+    const basePage = createPage();
+    const publishPage = {
+      ...basePage,
+      data: {
+        ...basePage.data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/api-reference/api-ref/signaling/publish.mdx',
+          path: 'zh-CN/api-reference/api-ref/signaling/publish.mdx',
+        },
+        title: '发送消息',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/publish.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'publish'],
+      url: '/zh-CN/api-reference/api-ref/signaling/publish',
+    } as unknown as PageWithSource;
+    const receivePage = {
+      ...publishPage,
+      data: {
+        ...publishPage.data,
+        title: '接收历史消息',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/receive.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'receive'],
+      url: '/zh-CN/api-reference/api-ref/signaling/receive',
+    } as unknown as PageWithSource;
+    const zhCnApiReferenceTree: Root = {
+      children: [
+        {
+          $id: 'zh-cn-root',
+          children: [
+            {
+              $id: 'api-reference-folder',
+              children: [
+                {
+                  $id: 'api-reference-api-ref-folder',
+                  children: [
+                    {
+                      $id: 'api-reference-api-ref-signaling-folder',
+                      children: [
+                        {
+                          $id: 'api-reference-api-ref-signaling-publish',
+                          name: '发送消息',
+                          type: 'page',
+                          url: publishPage.url,
+                        },
+                        {
+                          $id: 'api-reference-api-ref-signaling-receive',
+                          name: '接收历史消息',
+                          type: 'page',
+                          url: receivePage.url,
+                        },
+                      ],
+                      index: {
+                        $id: 'api-reference-api-ref-signaling-index',
+                        name: 'Signaling Overview',
+                        type: 'page',
+                        url: '/zh-CN/api-reference/api-ref/signaling',
+                      },
+                      name: '实时消息 RTM',
+                      type: 'folder',
+                    },
+                  ],
+                  name: 'API',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'api-reference-overview',
+                name: '参考概览',
+                type: 'page',
+                url: '/zh-CN/api-reference/overview',
+              },
+              name: '参考中心',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    };
+    const pages = [publishPage, receivePage];
+
+    mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      const url = `/zh-CN/${slugs.join('/')}`;
+      return pages.find((page) => page.url === url);
+    });
+    mockedGetPages.mockReturnValue(pages);
+    mockedGetPageTree.mockReturnValue(zhCnApiReferenceTree);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'api-reference-api-ref-signaling-folder'
+        ? ({
+            data: {
+              navScope: {},
+              title: '实时消息 RTM',
+            },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'signaling',
+        'publish',
+      ]),
+    );
+
+    expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
+      publishPage.url,
+      receivePage.url,
+    ]);
+    expect(payload.sidebarHeader).toEqual({
+      backHref: '/zh-CN/realtime-media/rtm',
+      backLabel: '实时消息 RTM',
+      title: '实时消息 RTM',
+    });
+    expect(payload.breadcrumb).toEqual([
+      {
+        title: 'API 参考',
+        url: '/zh-CN/api-reference/api',
+      },
+      {
+        title: '实时消息 RTM',
+      },
+      {
+        title: 'RESTful API',
+      },
+      {
+        title: '发送消息',
+        url: '/zh-CN/api-reference/api-ref/signaling/publish',
+      },
+    ]);
+    expect(payload.navigation.previous).toBeUndefined();
+    expect(payload.navigation.next).toEqual({
+      title: '接收历史消息',
+      url: receivePage.url,
+    });
+
+    const futureSignalingPage = {
+      ...publishPage,
+      data: {
+        ...publishPage.data,
+        title: '未来的 Signaling API 页面',
+      },
+      path: 'zh-CN/api-reference/api-ref/signaling/future.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'signaling', 'future'],
+      url: '/zh-CN/api-reference/api-ref/signaling/future',
+    } as unknown as PageWithSource;
+
+    mockedGetPage.mockReturnValue(futureSignalingPage);
+    mockedGetPages.mockReturnValue([futureSignalingPage]);
+    mockedGetNodeMeta.mockReturnValue(undefined);
+
+    const futurePayload = unwrapPayload(
+      await loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'signaling',
+        'future',
+      ]),
+    );
+
+    expect(futurePayload.sidebarHeader).not.toEqual(
+      expect.objectContaining({
+        backHref: '/zh-CN/realtime-media/rtm',
+        backLabel: '实时消息 RTM',
+      }),
+    );
+  });
+
   it('uses the get-started-sdk page as the video quickstart sidebar entry', async () => {
     const basePage = createPage();
     const videoPage = {
@@ -3469,7 +4028,43 @@ Web body
     });
   });
 
+  it('redirects moved zh-CN pages to their new product tabs', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', ['usage-analytics']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/usage-analytics',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', [
+        'usage-analytics',
+        'rtc',
+        'monitor',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/usage-analytics/build/rtc/monitor',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', ['ppt-transcoding']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/solutions/ppt-transcoding',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'introduction', [
+        'ppt-transcoding',
+        'get-started',
+        'quick-start',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+    });
+  });
+
   it('redirects moved Reference pages to their new product paths', async () => {
+    mockPagesByRequestedSlugs();
+
     await expect(
       loadDocsPagePayload('en', 'realtime-media', [
         'cloud-recording',

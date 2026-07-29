@@ -1,0 +1,118 @@
+---
+title: MediaStreamInfo
+description: 播放器媒体流的所有信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_playerstreaminfo
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_playerstreaminfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_playerstreaminfo__prototype"></a>
+
+```text
+export class MediaStreamInfo
+{
+  public streamIndex:number = 0
+  public mediaStreamType:number = 0
+  public codecName:string = ""
+  public language:string = ""
+  public videoFrameRate:number = 0
+  public videoBitRate:number = 0
+  public videoWidth:number = 0
+  public videoHeight:number = 0
+  public videoRotation:number = 0
+  public audioSampleRate:number = 0
+  public audioChannels:number = 0
+  public audioBytesPerSample:number = 0
+  public duration:bigint = BigInt(0)
+}
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="streamindex"></a>
+<Parameter name="streamIndex">
+
+媒体流的索引值。
+
+</Parameter>
+<a id="mediastreamtype"></a>
+<Parameter name="mediaStreamType">
+
+此条媒体流的类型。
+
+- STREAM_TYPE_UNKNOWN (0): 未知类型。
+- STREAM_TYPE_VIDEO (1): 视频流。
+- STREAM_TYPE_AUDIO (2): 音频流。
+- STREAM_TYPE_SUBTITLE (3): 字幕流。
+
+</Parameter>
+<a id="codecname"></a>
+<Parameter name="codecName">
+
+此条媒体流的编码规格。
+
+</Parameter>
+<a id="language"></a>
+<Parameter name="language">
+
+此条媒体流的语言。
+
+</Parameter>
+<a id="videoframerate"></a>
+<Parameter name="videoFrameRate">
+
+该参数仅对视频流生效，表示视频帧率 (fps)。
+
+</Parameter>
+<a id="videobitrate"></a>
+<Parameter name="videoBitRate">
+
+该参数仅对视频流生效，表示视频码率 (bps)。
+
+</Parameter>
+<a id="videowidth"></a>
+<Parameter name="videoWidth">
+
+该参数仅对视频流生效，表示视频宽度 (px)。
+
+</Parameter>
+<a id="videoheight"></a>
+<Parameter name="videoHeight">
+
+该参数仅对视频流生效，表示视频高度 (px)。
+
+该参数仅对视频流生效，表示旋转角度。
+
+</Parameter>
+<a id="audiosamplerate"></a>
+<Parameter name="audioSampleRate">
+
+该参数仅对音频流生效，表示音频采样率 (Hz)。
+
+</Parameter>
+<a id="audiochannels"></a>
+<Parameter name="audioChannels">
+
+该参数仅对音频流生效，表示声道数。
+
+</Parameter>
+<a id="audiobytespersample"></a>
+<Parameter name="audioBytesPerSample">
+
+该参数仅对音频流生效，表示每个音频采样点的位数 (bit)。
+
+</Parameter>
+<a id="duration"></a>
+<Parameter name="duration">
+
+媒体流的时长（毫秒）。
+
+</Parameter>
+</ParameterList>

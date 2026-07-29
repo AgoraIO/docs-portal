@@ -1,0 +1,477 @@
+---
+title: 跨频道媒体流转发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_channel_media_relay
+  sourcePath: html-docs/rtc/iOS/API/toc_channel_media_relay.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_channel_media_relay"></a>
+
+<a id="api_irtcengine_pauseallchannelmediarelay"></a>
+
+<a id="ariaid-title2"></a>
+
+## pauseAllChannelMediaRelay
+
+暂停向所有目标频道的跨频道媒体流转发。
+
+<a id="api_irtcengine_pauseallchannelmediarelay__prototype"></a>
+
+```text
+- (int)pauseAllChannelMediaRelay NS_SWIFT_NAME(pauseAllChannelMediaRelay());
+```
+
+<a id="api_irtcengine_pauseallchannelmediarelay__detailed_desc"></a>
+
+跨频道媒体流转发开始后，你可以调用此方法暂停向所有目标频道转发媒体流。如需恢复转发，请调用 [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
+
+:::note
+注： 请在调用 [startOrUpdateChannelMediaRelay:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 方法之后调用此方法。
+:::
+
+<a id="api_irtcengine_pauseallchannelmediarelay__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex"></a>
+
+<a id="ariaid-title3"></a>
+
+## pauseAllChannelMediaRelayEx:
+
+暂停向所有目标频道的跨频道媒体流转发。
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex__prototype"></a>
+
+```text
+- (int)pauseAllChannelMediaRelayEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(pauseAllChannelMediaRelayEx(_:));
+```
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex__detailed_desc"></a>
+
+你可以调用该方法暂停向所有目标频道转发媒体流。如需恢复转发，请调用 [resumeAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_resumeallchannelmediarelay) 方法。
+
+:::note
+注： 请在调用 `startOrUpdateChannelMediaRelayEx` 方法之后调用该方法。
+:::
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_pauseallchannelmediarelayex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_resumeallchannelmediarelay"></a>
+
+<a id="ariaid-title4"></a>
+
+## resumeAllChannelMediaRelay
+
+恢复向所有目标频道的跨频道媒体流转发。
+
+<a id="api_irtcengine_resumeallchannelmediarelay__prototype"></a>
+
+```text
+- (int)resumeAllChannelMediaRelay NS_SWIFT_NAME(resumeAllChannelMediaRelay());
+```
+
+<a id="api_irtcengine_resumeallchannelmediarelay__detailed_desc"></a>
+
+调用 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后，可以调用此方法恢复向所有目标频道转发媒体流。
+
+:::note
+注： 请在调用 [pauseAllChannelMediaRelay](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_pauseallchannelmediarelay) 方法后调用此方法。
+:::
+
+<a id="api_irtcengine_resumeallchannelmediarelay__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：方法调用被拒绝，当前没有已暂停的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex"></a>
+
+<a id="ariaid-title5"></a>
+
+## resumeAllChannelMediaRelayEx:
+
+恢复向所有目标频道的跨频道媒体流转发。
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex__prototype"></a>
+
+```text
+- (int)resumeAllChannelMediaRelayEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(resumeAllChannelMediaRelayEx(_:));
+```
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex__detailed_desc"></a>
+
+调用 [pauseAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 方法后，可以调用该方法恢复向所有目标频道转发媒体流。
+
+:::note
+注： 请在调用 [pauseAllChannelMediaRelayEx:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengineex_pauseallchannelmediarelayex) 方法后再调用此方法。
+:::
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_resumeallchannelmediarelayex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：调用被拒绝，当前没有已暂停的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_startorupdatechannelmediarelay"></a>
+
+<a id="ariaid-title6"></a>
+
+## startOrUpdateChannelMediaRelay:
+
+开始或更新跨频道媒体流转发。
+
+<a id="api_irtcengine_startorupdatechannelmediarelay__prototype"></a>
+
+```text
+- (int)startOrUpdateChannelMediaRelay:(AgoraChannelMediaRelayConfiguration * _Nonnull)config NS_SWIFT_NAME(startOrUpdateChannelMediaRelay(_:));
+```
+
+<a id="api_irtcengine_startorupdatechannelmediarelay__detailed_desc"></a>
+
+:::info[自从]
+自 v4.2.0 版本新增。
+:::
+
+首次成功调用该方法会开始将媒体流从源频道转发到目标频道。若需将媒体流转发到其他频道，或退出当前的某个媒体流转发，可再次调用该方法更新目标频道。该功能最多支持将媒体流转发到六个目标频道。
+调用该方法成功后，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调，报告媒体流转发的状态。
+
+- 若该回调返回 `AgoraChannelMediaRelayStateRunning`（2）和 `AgoraChannelMediaRelayErrorNone`（0），表示媒体流转发已成功启动。
+- 若该回调返回 `AgoraChannelMediaRelayStateFailure`（3），表示媒体流转发过程中发生异常。
+
+:::note
+注：
+
+- 请在加入频道后调用该方法。
+- 该方法仅在你是直播频道中的主播时生效。
+- 跨频道媒体流转发功能需[联系技术支持](https://ticket.shengwang.cn/)开启。
+- 该 API 不支持字符串用户 User Account。
+:::
+
+<a id="api_irtcengine_startorupdatechannelmediarelay__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+媒体流转发的配置。详见 [AgoraChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/ios/class-channelmediarelayconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startorupdatechannelmediarelay__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -8：内部状态错误，可能是因为用户不是主播。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex"></a>
+
+<a id="ariaid-title7"></a>
+
+## startOrUpdateChannelMediaRelayEx\:connection:
+
+开始或更新跨频道媒体流转发。
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__prototype"></a>
+
+```text
+- (int)startOrUpdateChannelMediaRelayEx:(AgoraChannelMediaRelayConfiguration * _Nonnull)config connection:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(startOrUpdateChannelMediaRelayEx(_:connection:));
+```
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__detailed_desc"></a>
+
+:::info[自从]
+自 v4.2.0 版本新增。
+:::
+
+首次成功调用该方法会开始将媒体流从源频道转发到目标频道。若需将媒体流转发到其他频道，或退出当前的某个媒体流转发，可再次调用该方法更新目标频道。该功能最多支持将媒体流转发到六个目标频道。
+
+:::note
+注：
+
+- 请在加入频道后调用该方法。
+- 该方法仅在你是直播频道中的主播时生效。
+- 跨频道媒体流转发功能需[联系技术支持](https://ticket.shengwang.cn/)开启。
+- 该 API 不支持字符串用户 User Account。
+:::
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__related"></a>
+
+### 相关回调
+
+成功调用该方法后，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告媒体流转发的状态。常见状态如下：
+
+- 若回调返回 `AgoraChannelMediaRelayStateRunning`（2）和 `AgoraChannelMediaRelayErrorNone`（0），表示 SDK 成功开始将媒体流从源频道转发到目标频道。
+- 若回调返回 `AgoraChannelMediaRelayStateFailure`（3），表示媒体流转发过程中发生异常。
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
+
+媒体流转发的配置。详见 [AgoraChannelMediaRelayConfiguration](/zh-CN/api-reference/rtc/ios/class-channelmediarelayconfiguration)。
+
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_startorupdatechannelmediarelayex__return_values"></a>
+
+### 返回值
+
+0：方法调用成功。
+&lt; 0：方法调用失败。
+
+- -1：发生通用错误（无明确原因）。
+- -2：参数无效。
+- -8：内部状态错误，可能是因为用户不是主播。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_stopchannelmediarelay"></a>
+
+<a id="ariaid-title8"></a>
+
+## stopChannelMediaRelay
+
+停止跨频道媒体流转发。
+
+<a id="api_irtcengine_stopchannelmediarelay__prototype"></a>
+
+```text
+- (int)stopChannelMediaRelay NS_SWIFT_NAME(stopChannelMediaRelay());
+```
+
+<a id="api_irtcengine_stopchannelmediarelay__detailed_desc"></a>
+
+调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道。SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播成功停止转发。
+
+:::note
+注： 如果方法调用失败，SDK 会通过 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调返回 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 `leaveChannel` 方法离开频道，跨频道媒体流转发会自动停止。
+:::
+
+<a id="api_irtcengine_stopchannelmediarelay__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_stopchannelmediarelayex"></a>
+
+<a id="ariaid-title9"></a>
+
+## stopChannelMediaRelayEx:
+
+停止跨频道媒体流转发。
+
+<a id="api_irtcengineex_stopchannelmediarelayex__prototype"></a>
+
+```text
+- (int)stopChannelMediaRelayEx:(AgoraRtcConnection * _Nonnull)connection NS_SWIFT_NAME(stopChannelMediaRelayEx(_:));
+```
+
+<a id="api_irtcengineex_stopchannelmediarelayex__detailed_desc"></a>
+
+调用该方法停止跨频道媒体流转发。调用成功后，主播会退出所有目标频道，SDK 会触发 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调。如果该回调返回 `AgoraChannelMediaRelayStateIdle`（0）和 `AgoraChannelMediaRelayErrorNone`（0），表示主播已成功停止转发。
+
+:::note
+注： 如果方法调用失败，SDK 会通过 [rtcEngine\:channelMediaRelayStateDidChange\:error:](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `AgoraChannelMediaRelayErrorServerNoResponse`（2）或 `AgoraChannelMediaRelayErrorServerConnectionLost`（8）错误码。你可以调用 [leaveChannel\:leaveChannelBlock:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengine_leavechannel2) 方法离开频道，媒体流转发会自动停止。
+:::
+
+<a id="api_irtcengineex_stopchannelmediarelayex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_stopchannelmediarelayex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+连接信息。详见 [AgoraRtcConnection](/zh-CN/api-reference/rtc/ios/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_stopchannelmediarelayex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：调用被拒绝，当前没有正在进行的跨频道媒体流转发。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit(Ex)](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineex)
+
+<a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged"></a>
+
+<a id="ariaid-title10"></a>
+
+## rtcEngine\:channelMediaRelayStateDidChange\:error:
+
+跨频道媒体流转发状态发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__prototype"></a>
+
+```text
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine
+channelMediaRelayStateDidChange:(AgoraChannelMediaRelayState)state
+            error:(AgoraChannelMediaRelayError)error NS_SWIFT_NAME(rtcEngine(_:channelMediaRelayStateDidChange:error:));
+```
+
+<a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__detailed_desc"></a>
+
+该回调返回当前跨频道媒体流转发的状态及错误码。
+
+<a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__timing"></a>
+
+### 触发时机
+
+该回调在跨频道媒体流转发状态发生变化时触发。
+
+<a id="callback_irtcengineeventhandler_onchannelmediarelaystatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
+
+[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，详见 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)。
+
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
+
+跨频道媒体流转发的状态码，详见 [AgoraChannelMediaRelayState](/zh-CN/api-reference/rtc/ios/enum-channelmediarelaystate)。
+
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
+
+跨频道媒体流转发的错误码，详见 [AgoraChannelMediaRelayError](/zh-CN/api-reference/rtc/ios/enum-channelmediarelayerror)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengineeventhandler)

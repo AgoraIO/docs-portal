@@ -1,0 +1,564 @@
+---
+title: 监听智能体事件
+_migration:
+  type: manual-mdx
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/doc/convoai/restful/user-guides/listen-agent-events
+  sourcePath: docs/convoai/user-guides/listen-agent-events.mdx
+  generator: legacy-mdx
+  warnings:
+    - code: manual-mdx-normalized
+      severity: info
+      message: Normalized 1 legacy MDX syntax signal(s).
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtc/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtc/homepage as local text.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /doc/rtm2/homepage.
+    - code: source-only-link-removed
+      severity: info
+      message: Rendered unresolved legacy MDX link /doc/rtm2/homepage as local text.
+    - code: manual-fragment-normalized
+      severity: info
+      message: Normalized 1 legacy fragment link(s) to stable local anchors.
+---
+
+与对话式智能体进行实时互动时，你可能需要监听智能体相关事件来实现更丰富的功能。本文介绍如何在你的 App 中监听智能体相关事件。
+
+## 技术原理
+
+声网提供一套灵活可扩展、标准化的对话式 AI 引擎客户端组件（以下简称组件）。该组件支持 iOS、Android、Web 平台，封装了多个场景化 API，你只需要调用这些 API 即可结合声网实时互动 (RTC) SDK 和实时消息 (RTM) SDK 的能力实现以下功能：
+
+- [打断智能体](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/interrupt-agent)
+- [实时字幕](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/realtime-sub)
+- [监听智能体相关事件](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/listen-agent-events)
+- [设置最佳音频参数](/zh-CN/api-reference/conversational-ai/rest-api/best-practice/audio-settings) （仅支持 Android 和 iOS）
+- [发送图片消息](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/send-multimodal-message)
+
+组件提供一系列回调，支持监听不同的智能体相关事件和信息：
+
+- `onAgentStateChanged`：通过接收 RTM `presence` 事件，监听智能体状态变化（静默/聆听/思考/说话）。可用于更新智能体 UI 或追踪对话流程。
+- `onAgentInterrupted`：通过接收 RTM `message` 事件，监听智能体打断事件。
+- `onAgentMetrics`：通过接收 RTM `message` 事件，监听智能体性能指标，包括 LLM 推理延迟、TTS 合成延迟等。可用于监控系统性能。
+- `onAgentError`：通过接收 RTM `message` 事件，监听智能体错误事件，例如智能体某模块（例如 LLM、TTS 等）发生错误。可用于错误监控、日志记录和实现优雅降级策略。
+
+## 前提条件
+
+开始前，请确保完成以下准备工作：
+
+- 已集成 RTC SDK v4.5.1 及以上版本，且已在 App 中实现基本的实时音视频功能并获取相关设备权限。请参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+- 已在[控制台](https://console.shengwang.cn/)为项目启用 RTM 服务，并在 App 中实现基本的实时消息功能。请参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)。
+- 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
+- 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
+
+## 实现步骤
+
+### 集成组件
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+<Tabs defaultValue="maven" groupId="android-install-method" persist>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+在 `Podfile` 中添加如下依赖：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.9.0`：
+
+```text
+https://github.com/AgoraIO/agent-client-toolkit-swift.git
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="web-install-method" persist>
+<TabsList>
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
+
+根据你的项目类型安装组件依赖。
+
+- Vanilla JS / TypeScript：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0
+  ```
+
+- React：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  ```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
+
+### 初始化组件
+
+为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
+
+```kotlin tab="Android" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+val config = ConversationalAIAPIConfig(
+    rtcEngine = rtcEngineInstance,
+    rtmClient = rtmClientInstance,
+    enableLog = true
+)
+// 创建组件实例
+val api = ConversationalAIAPIImpl(config)
+```
+
+```swift tab="iOS" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+let config = ConversationalAIAPIConfig(
+    rtcEngine: rtcEngine,
+    rtmEngine: rtmEngine,
+    enableLog: true
+)
+/// 创建组件实例
+convoAIAPI = ConversationalAIAPIImpl(config: config)
+```
+
+```typescript tab="Web" tabGroup="language"
+// 为 RTC 和 RTM 实例创建配置对象
+ConversationalAIAPI.init({
+    rtcEngine,
+    rtmEngine,
+    })
+
+// 获取 API 实例（单例）
+const conversationalAIAPI = ConversationalAIAPI.getInstance()
+```
+
+### 注册回调
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+调用 `addHandler` 方法，注册并实现智能体相关事件回调：
+
+```kotlin
+// 注册回调
+api.addHandler(object : IConversationalAIAPIEventHandler {
+    // 监听智能体状态变化
+    override fun onAgentStateChanged(agentUserId: String, event: StateChangeEvent) {
+        when (event.state) {
+            AgentState.SILENT -> {
+                updateAgentStatus("等待中...")
+            }
+            AgentState.LISTENING -> {
+                updateAgentStatus("正在听...")
+            }
+            AgentState.THINKING -> {
+                updateAgentStatus("思考中...")
+            }
+            AgentState.SPEAKING -> {
+                updateAgentStatus("说话中...")
+            }
+            AgentState.UNKNOWN -> {
+                Log.w("AgentState", "Unknown agent state: $event")
+            }
+        }
+    }
+    // 监听智能体打断事件
+    override fun onAgentInterrupted(agentUserId: String, event: InterruptEvent) {
+        // 智能体被打断，可以更新 UI 或记录日志
+        Log.d("AgentInterrupt", "Agent $agentUserId interrupted at turn ${event.turnId}")
+        // 可以在这里更新 UI，比如显示"对话已中断"
+        showInterruptNotification()
+    }
+    // 监听智能体性能指标，用于监控和优化
+    override fun onAgentMetrics(agentUserId: String, metric: Metric) {
+        when (metric.type) {
+            ModuleType.LLM -> {
+                Log.d("Metrics", "LLM latency: ${metric.value}ms")
+                // 可以记录 LLM 响应时间用于性能分析
+            }
+            ModuleType.TTS -> {
+                Log.d("Metrics", "TTS latency: ${metric.value}ms")
+                // 可以记录 TTS 合成时间
+            }
+            else -> {
+                Log.d("Metrics", "${metric.type}: ${metric.name} = ${metric.value}")
+            }
+        }
+    }
+    // 监听智能体错误事件
+    override fun onAgentError(agentUserId: String, error: ModuleError) {
+
+        Log.e("AgentError", "Error in ${error.type}: ${error.message} (code: ${error.code})")
+
+        when (error.type) {
+            ModuleType.LLM -> {
+                // LLM 错误，可能需要重试或降级处理
+                showErrorMessage("AI处理出错，请稍后重试")
+            }
+            ModuleType.TTS -> {
+                // TTS 错误，可能需要切换到文本模式
+                showErrorMessage("语音合成出错")
+            }
+            else -> {
+                // 其他错误类型
+                showErrorMessage("系统错误: ${error.message}")
+            }
+        }
+    }
+
+    override fun onDebugLog(log: String) {
+        // 处理调试日志
+        if (BuildConfig.DEBUG) {
+            Log.d("ConvoAI", log)
+        }
+        // 可以将日志发送到远程服务器进行问题诊断
+    }
+})
+```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+调用 `addHandler` 方法，注册并实现智能体相关事件回调：
+
+```swift
+// 让你的类遵循 ConversationalAIAPIEventHandler 协议
+class ConversationViewController: UIViewController, ConversationalAIAPIEventHandler {
+
+    // 实现协议方法
+    func onAgentStateChanged(agentUserId: String, event: StateChangeEvent) {
+        // 更新 UI 显示智能体当前状态
+        DispatchQueue.main.async {
+            self.updateAgentStatus(event.state)
+        }
+    }
+
+    func onAgentInterrupted(agentUserId: String, event: InterruptEvent) {
+        // 智能体被中断，可以更新 UI 或记录日志
+        print("Agent \(agentUserId) interrupted at turn \(event.turnId)")
+        DispatchQueue.main.async {
+            self.showInterruptNotification()
+        }
+    }
+
+    func onAgentMetrics(agentUserId: String, metrics: Metric) {
+        // 监听智能体性能指标，用于监控和优化
+        switch metrics.type {
+        case .llm:
+            print("LLM latency: \(metrics.value)ms")
+            // 可以记录LLM响应时间用于性能分析
+        case .tts:
+            print("TTS latency: \(metrics.value)ms")
+            // 可以记录TTS合成时间
+        case .unknown:
+            print("Unknown metric: \(metrics.name) = \(metrics.value)")
+        }
+    }
+
+    func onAgentError(agentUserId: String, error: ModuleError) {
+        // 监听智能体错误事件
+        print("Error in \(error.type): \(error.message) (code: \(error.code))")
+
+        DispatchQueue.main.async {
+            switch error.type {
+            case .llm:
+                // LLM错误，可能需要重试或降级处理
+                self.showErrorMessage("AI处理出错，请稍后重试")
+            case .tts:
+                // TTS错误，可能需要切换到文本模式
+                self.showErrorMessage("语音合成出错")
+            case .mllm:
+                // MLLM错误
+                self.showErrorMessage("多模态AI处理出错")
+            case .unknown:
+                // 其他错误类型
+                self.showErrorMessage("系统错误: \(error.message)")
+            }
+        }
+    }
+
+    // 辅助方法，用于更新 UI 显示智能体当前状态
+    private func updateAgentStatus(_ state: AgentState) {
+        let (text, color): (String, UIColor) = {
+            switch state {
+            case .idle:
+                return ("空闲", .gray)
+            case .silent:
+                return ("等待中...", .gray)
+            case .listening:
+                return ("正在听...", .blue)
+            case .thinking:
+                return ("思考中...", .orange)
+            case .speaking:
+                return ("说话中...", .green)
+            case .unknown:
+                return ("未知状态", .red)
+            }
+        }()
+
+        statusLabel.text = text
+        statusLabel.textColor = color
+    }
+
+    private func showInterruptNotification() {
+        statusLabel.text = "对话已中断"
+        statusLabel.textColor = .red
+    }
+
+    private func showErrorMessage(_ message: String) {
+        let alert = UIAlertController(title: "错误", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .default))
+        present(alert, animated: true)
+    }
+}
+
+// 注册事件回调
+convoAIAPI.addHandler(handler: self)
+```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+```typescript
+// 监听智能体状态变化
+conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_STATE_CHANGED, onAgentStateChanged)
+// 监听智能体性能指标
+conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_METRICS, onAgentMetricsChanged)
+// 监听智能体错误事件
+conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_ERROR, onAgentError)
+```
+
+</TabsContent>
+</Tabs>
+
+### 订阅频道消息
+
+智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
+
+```kotlin tab="Android" tabGroup="language"
+api.subscribeMessage("channelName") { error ->
+    if (error != null) {
+        // 处理错误
+    }
+}
+```
+
+```swift tab="iOS" tabGroup="language"
+convoAIAPI.subscribeMessage(channelName: channelName) { error in
+    if let error = error {
+        print("订阅失败: \(error.message)")
+    } else {
+        print("订阅成功")
+    }
+}
+```
+
+```typescript tab="Web" tabGroup="language"
+conversationalAIAPI.subscribeMessage(channel_name)
+```
+
+### 智能体加入频道
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+
+- `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
+- `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
+- `parameters.enable_metrics: true` —— （按需开启）接收智能体性能数据
+- `parameters.enable_error_message: true` —— （按需开启）接收智能体错误事件
+
+调用成功后，智能体会加入指定 RTC 频道，用户可以开始与智能体互动。
+
+### 取消订阅频道消息
+
+每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
+
+```kotlin tab="Android" tabGroup="language"
+api.unsubscribeMessage("channelName") { error ->
+    if (error != null) {
+        // 处理错误
+    }
+}
+```
+
+```swift tab="iOS" tabGroup="language"
+/// 取消订阅频道消息
+convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
+    if let error = error {
+        print("取消订阅失败: \(error.message)")
+    } else {
+        print("取消订阅成功")
+    }
+}
+```
+
+```typescript tab="Web" tabGroup="language"
+conversationalAIAPI.unsubscribeMessage(channel_name)
+```
+
+### 销毁组件实例
+
+结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
+
+```kotlin tab="Android" tabGroup="language"
+api.destroy()
+```
+
+```swift tab="iOS" tabGroup="language"
+convoAIAPI.destroy()
+```
+
+```typescript tab="Web" tabGroup="language"
+conversationalAIAPI.destroy()
+```
+
+## 参考信息
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="Conversational-AI-Demo" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/" />
+</Cards>
+
+### API 参考
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`addHandler`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#addhandler)
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#subscribemessage)
+- [`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#unsubscribemessage)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#destroy)
+- [`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentstatechanged)
+- [`onAgentInterrupted`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentinterrupted)
+- [`onAgentMetrics`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentmetrics)
+- [`onAgentError`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagenterror)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`addHandler`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#addhandler)
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#subscribemessage)
+- [`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#unsubscribemessage)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#destroy)
+- [`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentstatechanged)
+- [`onAgentInterrupted`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentinterrupted)
+- [`onAgentMetrics`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentmetrics)
+- [`onAgentError`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagenterror)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`IConversationalAIAPIEventHandler`](/zh-CN/api-reference/conversational-ai/web/struct#iconversationalaiapieventhandlers)
+- [`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents)
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#subscribemessage)
+- [`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#subscribemessage)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#destroy)
+
+</TabsContent>
+</Tabs>

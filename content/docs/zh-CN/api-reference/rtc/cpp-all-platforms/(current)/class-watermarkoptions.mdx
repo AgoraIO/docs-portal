@@ -1,0 +1,70 @@
+---
+title: WatermarkOptions
+description: 用于设置水印图像的相关配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_watermarkoptions
+  sourcePath: html-docs/rtc/Cpp/API/class_watermarkoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkoptions__prototype"></a>
+
+```text
+struct WatermarkOptions {
+  bool visibleInPreview;
+  Rectangle positionInLandscapeMode;
+  Rectangle positionInPortraitMode;
+  WatermarkRatio watermarkRatio;
+  WATERMARK_FIT_MODE mode;
+  int zOrder;
+};
+```
+
+<a id="class_watermarkoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="visibleinpreview"></a>
+<Parameter name="visibleInPreview">
+
+水印是否在本地预览视图中可见：
+
+- true：（默认）水印在本地预览视图中可见。
+- false：水印在本地预览视图中不可见。
+
+</Parameter>
+<a id="positioninlandscapemode"></a>
+<Parameter name="positionInLandscapeMode">
+
+当水印的适配模式为 `FIT_MODE_COVER_POSITION` 时，用于设置水印图像在横屏模式下的位置区域。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
+
+</Parameter>
+<a id="positioninportraitmode"></a>
+<Parameter name="positionInPortraitMode">
+
+当水印的适配模式为 `FIT_MODE_COVER_POSITION` 时，用于设置水印图像在竖屏模式下的位置区域。详见 [Rectangle](/zh-CN/api-reference/rtc/cpp-all-platforms/class-rectangle)。
+
+</Parameter>
+<a id="watermarkratio"></a>
+<Parameter name="watermarkRatio">
+
+当水印的适配模式为 `FIT_MODE_USE_IMAGE_RATIO` 时，用于设置水印的坐标。详见 [WatermarkRatio](/zh-CN/api-reference/rtc/cpp-all-platforms/class-watermarkratio)。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+水印的适配模式。详见 [WATERMARK_FIT_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-watermarkfitmode)。
+
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
+
+水印图像的图层顺序，默认值为 0。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,45 @@
+---
+title: RemoteVoicePositionInfo
+description: 远端用户或媒体播放器的空间位置信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/class_remotevoicepositioninfo
+  sourcePath: html-docs/rtc/Unity/API/class_remotevoicepositioninfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_remotevoicepositioninfo__prototype"></a>
+
+```text
+public class RemoteVoicePositionInfo
+    {
+        public RemoteVoicePositionInfo(float[] position, float[] forward)
+        {
+            this.position = position;
+            this.forward = forward;
+        }
+        public float[] position { set; get; }
+        public float[] forward { set; get; }
+    };
+```
+
+<a id="class_remotevoicepositioninfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="position"></a>
+<Parameter name="position">
+
+在世界坐标系中的坐标。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。前、右、上分别对应 Unity Vector3 的 z、x、y 轴的正方向。
+
+</Parameter>
+<a id="forward"></a>
+<Parameter name="forward">
+
+在世界坐标系前轴的单位向量。该参数是长度为 3 的数组，三个值依次表示前、右、上的坐标值。前、右、上分别对应 Unity Vector3 的 z、x、y 轴的正方向。
+
+</Parameter>
+</ParameterList>

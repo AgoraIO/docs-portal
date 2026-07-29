@@ -1,0 +1,152 @@
+---
+title: "传递自定义信息"
+description: "了解如何在对话式 AI 引擎中传递自定义信息，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+与智能体对话时，你可能需要从端侧获取用户的说话状态、选中的文字、个性签名、得分等自定义上下文信息，并将这些信息传递给智能体，引导智能体输出更符合用户需求的内容。
+
+本文介绍如何结合 RTM SDK 提供的能力，实现与智能体对话时携带自定义信息。
+
+## 技术原理
+
+[声网实时消息 RTM SDK](/zh-CN/realtime-media/rtm/reference/downloads) 支持为频道中的用户设置自定义的临时状态信息，并以事件通知的方式通知频道中其他的在线用户。如果你的 App 同时集成了声网实时互动 RTC 和实时消息 RTM 服务，就可以在创建智能体时开启 RTM 功能，让智能体在调用大模型前，从 RTM 频道中获取临时状态信息，并将其作为上下文信息传递给大模型，引导智能体输出更符合用户需求的内容。
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
+- 已参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)为你的 App 集成 RTM SDK，并实现基本的收发消息功能。
+- 已参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)对你的大模型进行适配，使其能够处理 `context.presence` 字段中的临时状态信息。
+
+## 实现方式
+
+### 打开 RTM 开关
+
+通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM。如果需要让大模型处理 `context.presence` 字段，建议配合[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)使用。
+
+:::info[信息]
+- 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](/zh-CN/reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。
+- 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多使用 String UID 的相关信息请参考[如何使用 String 型用户 ID](/zh-CN/reference/faq/integration/string_uid)。
+:::
+
+```go tab="Go SDK" tabGroup="agent-sdk-language"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+)
+
+// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+agent := baseAgent.WithAdvancedFeatures(&agentkit.AdvancedFeatures{
+    EnableRtm: Agora.Bool(true),
+})
+
+session := agent.CreateSession(agentkit.CreateSessionOptions{
+    Channel:         "channel_name",
+    AgentUID:        "friday",
+    RemoteUIDs:      []string{"*"},
+    EnableStringUID: Agora.Bool(true),
+})
+
+agentID, err := session.Start(ctx)
+```
+
+```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+const agent = baseAgent
+  .withAdvancedFeatures({ enable_rtm: true });
+
+const session = agent.createSession({
+  name: 'unique_name',
+  channel: 'channel_name',
+  agentUid: 'friday',
+  remoteUids: ['*'],
+  enableStringUid: true,
+});
+
+const agentId = await session.start();
+```
+
+```python tab="Python SDK" tabGroup="agent-sdk-language"
+# 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
+agent = base_agent.with_advanced_features({
+    'enable_rtm': True,
+})
+
+session = agent.create_session(
+    name='unique_name',
+    channel='channel_name',
+    agent_uid='friday',
+    remote_uids=['*'],
+    enable_string_uid=True,
+)
+
+agent_id = session.start()
+```
+
+```shell tab="REST API" tabGroup="agent-sdk-language"
+curl --request POST \
+  --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
+  --header 'Authorization: agora token="007abcxxxxxxx123"' \
+  --data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "channel_name",
+    "token": "token",
+    "agent_rtc_uid": "friday",
+    "advanced_features": {
+      "enable_rtm": true
+    },
+    "remote_rtc_uids": [
+      "*"
+    ],
+    "enable_string_uid": true,
+    "llm": {
+      "url": "https://api.xxxx/v1/xxxx",
+      "api_key": "xxx",
+      "vendor": "custom",
+      "params": {
+        "model": "xxxx"
+      }
+    },
+    "tts": {
+      "vendor": "vendor_name",
+      "params": {
+        "key": "xxxx",
+        "voice_id": "xxxx"
+      }
+    }
+  }
+}
+'
+
+```
+
+### 设置自定义信息
+
+参考[临时用户状态](/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state)文档，为频道中的用户设置临时状态信息。
+
+### 传递自定义信息
+
+智能体在调用大模型前，会自动获取说话用户的临时状态信息，并将其作为上下文信息传递给大模型。该临时状态信息会被设置到 `context.presence` 字段中。
+
+以下示例的场景为用户 UserA 在 App 中选中了文字“勾股定理”，并向智能体提问“这是什么意思？”。示例 JSON 展示了智能体在调用大模型时，从 RTM 获取了 UserA 的一个名为 `selection` 的临时状态信息，请求的数据结构如下：
+
+```json
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "这是什么意思"
+    }
+  ],
+  "context": {
+    "presence": {
+      "userA": {
+        "selection": "勾股定理"
+      }
+    }
+  },
+  "model": "deepseek-r1"
+}
+```

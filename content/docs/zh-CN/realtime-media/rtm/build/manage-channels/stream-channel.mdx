@@ -1,0 +1,599 @@
+---
+title: "流频道"
+description: "了解如何在实时消息 RTM 中流频道，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+**Stream** 频道是 RTM 提供的一种基于 Room 模型的频道类型。与 Message 频道不同的是，使用 Stream 频道的相关方法前你需要先创建 `channel.istreamchannel` 对象实例。加入 Stream 频道后，你就可以监听频道中的事件通知了，但如需收发消息，你还需要通过 Topic 特性来实现，详见 [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。RTM 允许你的 App 中同时存在成千上万个 Stream 频道，但由于端侧性能和带宽的限制，单个客户端同时只能加入有限数量的频道，详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。
+
+:::info[信息]
+如需接收并处理接收到的消息和事件通知，除了要加入该频道外，你还需要完成[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)程序的配置。
+:::
+
+## 创建频道
+
+在使用 Stream 频道之前，你需要先调用 `channel.create` 方法创建 Stream Channel 实例。成功创建 Stream Channel 实例后，你可以调用 Stream Channel 相关方法，例如：加入频道、离开频道、销毁频道、发送 Topic 消息、订阅 Topic 消息等。
+
+你可以通过以下方式创建 `channel.istreamchannel` 对象实例：
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-1"
+IStreamChannel streamChannel = rtmClient.CreateStreamChannel("chat_room");
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-stream-channel-1"
+const channelName = "chat_room";
+const streamChannel = rtmClient.createStreamChannel(channelName);
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-1"
+StreamChannel mStreamChannel = mRtmClient.createStreamChannel("chat_room");
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-1"
+ do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ }catch let error {
+    print("error\(error)")
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-1"
+NSError* create_error = nil;
+AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel" error:&create_error];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-1"
+int errorCode = 0;
+IStreamChannel* stream_channel = rtm_client->createStreamChannel("channel_name", errorCode);
+if (stream_channel == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-channels-stream-channel-1"
+final channel = 'stream_room';
+late StreamChannel stChannel;
+try {
+    var (status, channel) = await rtmClient.createStreamChannel(channel);
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        stChannel = channel ;
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-1"
+import { StreamChannel } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const streamChannel: StreamChannel = rtmClient.createStreamChannel(channelName);
+console.log("Stream channel created:", channelName);
+```
+
+该方法一次只能创建一个 `channel.istreamchannel` 对象实例，如需同时创建多个 `channel.istreamchannel` 对象实例，你需要多次调用该方法。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-2"
+// Create the first instance
+IStreamChannel streamChannel1 = rtmClient.CreateStreamChannel("chat_room1");
+// Create the second instance
+IStreamChannel streamChannel2 = rtmClient.CreateStreamChannel("chat_room2");
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-2"
+// Create the first instance
+StreamChannel mStreamChannel1 = mRtmClient.createStreamChannel("chat_room11");
+// Create the second instance
+StreamChannel mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2");
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-2"
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName1)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ }catch let error {
+    print("error\(error)")
+}
+
+do {
+    let stream_channel = try RtmClient?.createStreamChannel(channelName2)
+    if stream_channel != nil {
+        print("create stream channel success");
+    }
+ }catch let error {
+    print("error\(error)")
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-2"
+NSError* create_error = nil;
+// Create the first instance
+AgoraRtmStreamChannel* stream_channel1 = [rtm createStreamChannel:@"your_channel1" error:&create_error];
+// Create the second instance
+AgoraRtmStreamChannel* stream_channel2 = [rtm createStreamChannel:@"your_channel2" error:&create_error];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-2"
+int errorCode = 0;
+IStreamChannel* stream_channel1 = rtm_client->createStreamChannel("chat_room1", errorCode);
+if (stream_channel1 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+
+IStreamChannel* stream_channel2 = rtm_client->createStreamChannel("chat_room2", errorCode);
+if (stream_channel2 == nullptr || errorCode != 0) {
+    printf("create stream channel failed");
+} else {
+    printf("create stream channel success");
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-2"
+import { StreamChannel } from '@shengwang/rtm-full';
+
+// 创建第一个实例
+const streamChannel1: StreamChannel = rtmClient.createStreamChannel("chat_room1");
+console.log("Stream channel 1 created");
+
+// 创建第二个实例
+const streamChannel2: StreamChannel = rtmClient.createStreamChannel("chat_room2");
+console.log("Stream channel 2 created");
+```
+
+RTM 支持你在单个客户端创建无限个 `channel.istreamchannel` 对象实例，但声网建议你结合实际需求和端侧性能情况合理创建。例如，如果你同时持有多个暂时用不到的 `channel.istreamchannel` 实例，为避免浪费资源，声网建议你及时销毁该实例，并在需要使用的时候再创建。
+
+## 加入频道
+
+创建 `channel.istreamchannel` 对象实例后，调用 `channel.join` 方法加入 Stream Channel，以便监听其中的事件通知。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-3"
+var options = new JoinChannelOptions();
+options.token = "your_token";
+var (status,response) = await streamChannel.JoinAsync(options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-stream-channel-3"
+const options = {
+    token: "your_token",
+    withPresence: true,
+    withLock: true,
+    withMetadata: true
+};
+try {
+    const result = await streamChannel.join(options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-3"
+JoinChannelOptions options = new JoinChannelOptions();
+options.setToken("your_token");
+options.setWithPresence(true);
+options.setWithLock(true);
+options.setWithMetadata(true);
+
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-3"
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-3"
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_token";
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-3"
+// 方法调用
+JoinChannelOptions options;
+options.token = "your_token";
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onjoinresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-4"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onJoinResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("join rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("join rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-channels-stream-channel-4"
+var (status, response) = await stChannel.join(
+    token: 'your_streamChannel_token',
+    withMetadata: true,
+    withPresence: true,
+    withLock: true,
+    beQuite: false);
+if (status.error == true ){
+    print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+} else {
+    print('${status.operation} success!');
+    print(response);
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-4"
+import { JoinOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const options: JoinOptions = {
+  token: "your_token",
+  withPresence: true,
+  withLock: true,
+  withMetadata: true
+};
+
+try {
+  const response = await streamChannel.join(options);
+  console.log("Join stream channel success:", response);
+} catch (error) {
+  console.error("Join channel failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Join channel failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+加入频道时，你需要在 `channel.joinchanneloptions` 中设置 `token` 参数。为方便体验和测试 App，你可以在创建项目时选择**鉴权机制**为**调试模式：APP ID**，并在加入频道时将 App ID 填写至 `token` 参数中。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-5"
+var options = new JoinChannelOptions();
+options.token = "your_appId";
+options.withLock = true;
+
+var (status,response) = await streamChannel.JoinAsync(options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-stream-channel-5"
+const options = {
+    token: "your_appId",
+    withPresence: true,
+    withLock: true,
+    withMetadata: true
+};
+try {
+    const result = await streamChannel.join(options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-5"
+JoinChannelOptions options = new JoinChannelOptions("your_appid", true, true, true);
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-5"
+let join_option = AgoraRtmJoinChannelOption();
+join_option.token = "your_token"
+join_option.features = [.presence, .storage]
+stream_channel.join(join_option, completion: { (res, error) in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+    })
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-5"
+AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
+join_opt.token =  @"your_appId";
+join_opt.features = join_opt.features | AgoraRtmJoinChannelFeatureLock;
+[stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"join channel success!!");
+    } else {
+        NSLog(@"join channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-5"
+JoinChannelOptions options;
+options.token = "your_token";
+options.withLock = false;
+options.withMetadata = false;
+options.withPresence = true;
+
+uint64_t requestId;
+stream_channel->join(options, requestId);
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-channels-stream-channel-5"
+var (status, response) = await stChannel.join(
+    token: 'your_appId',
+    withMetadata: true,
+    withPresence: true,
+    withLock: true,
+    beQuite: false);
+if (status.error == true ){
+    print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+} else {
+    print('${status.operation} success!');
+    print(response);
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-5"
+import { JoinOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const options: JoinOptions = {
+  token: "your_appId",  // 调试模式下使用 App ID
+  withPresence: true,
+  withLock: true,
+  withMetadata: true
+};
+
+try {
+  const response = await streamChannel.join(options);
+  console.log("Join stream channel success:", response);
+} catch (error) {
+  console.error("Join channel failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Join channel failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+Stream Channel 通过 Topic 来实现消息流机制。即使你设置了全局的消息监听程序，你也需要加入 Topic 才能发送消息，需要订阅 Topic 才能接收消息。详见 [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。
+
+## 离开频道
+
+如果你不再需要接收某个频道中所有消息和事件通知，你可以调用 `channel.leave` 方法离开该频道。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-6"
+var (status,response) = await streamChannel.LeaveAsync();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+}
+```
+
+```javascript tab="JavaScript" tabGroup="rtm-build-manage-channels-stream-channel-6"
+try {
+    const result = await streamChannel.leave();
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode ${errorCode}, due to: ${reason}.`);
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-6"
+mStreamChannel.leave(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "leave stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-6"
+stream_channel.leave({ res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-6"
+[stream_channel leave:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"leave channel success!!");
+    } else {
+        NSLog(@"leave channel failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-6"
+// 方法调用
+uint64_t requestId;
+streamChannel->leave(requestId);
+```
+
+调用该方法后，SDK 会触发 `config.onleaveresult` 回调并返回 API 调用结果。
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-7"
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onLeaveResult(const uint64_t requestId, const char *channelName, const char *userId, RTM_ERROR_CODE errorCode) {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("leave rtm channel failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("leave rtm channel %s success\n", channelName);
+        }
+    }
+};
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-channels-stream-channel-7"
+try {
+    var (status, response) = await stChannel.leave();
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-7"
+import { RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await streamChannel.leave();
+  console.log("Leave stream channel success:", response);
+} catch (error) {
+  console.error("Leave channel failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`Leave channel failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+离开频道后，只要当前的 `channel.istreamchannel` 对象实例没有被销毁，你还可以调用 `channel.join` 方法再次加入该频道。
+
+## 销毁频道
+
+对于不再需要的 `channel.istreamchannel` 对象实例，你可以调用 `channel.release` 方法销毁它以释放资源。
+
+```csharp tab="C#" tabGroup="rtm-build-manage-channels-stream-channel-8"
+var status = streamChannel.Dispose();
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+else
+{
+    Debug.Log("Dispose Channel Success!");
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-manage-channels-stream-channel-8"
+mStreamChannel.release();
+```
+
+```swift tab="Swift" tabGroup="rtm-build-manage-channels-stream-channel-8"
+stream_channel.destroy();
+stream_channel = nil;
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-manage-channels-stream-channel-8"
+[stream_channel destroy];
+stream_channel = nil;
+```
+
+```cpp tab="C++" tabGroup="rtm-build-manage-channels-stream-channel-8"
+int ret = streamChannel->release();
+```
+
+```dart tab="Dart" tabGroup="rtm-build-manage-channels-stream-channel-8"
+try {
+    var status = await stChannel.release();
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-manage-channels-stream-channel-8"
+streamChannel.release();
+console.log("Stream channel released");
+```
+
+销毁频道指的是销毁当前客户端中的 `channel.istreamchannel` 对象实例，而非在整个 RTM 网络中销毁该频道，所以该操作不会影响频道中的其他用户。
+
+:::info[信息]
+`channel.release` 需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+## 共频道传输
+
+声网会同时发行和维护两套 RTM SDK 版本：
+
+- **独立版**（Standalone Version）：保持 RTM 功能独立，体积精简。版本号以 RTM 前缀开始，例如 RTM 2.3.0。适用于只需消息实时传输或与其他厂商 RTC 产品配合使用但不需要同步传输或优先级控制的场景。
+
+- **融合版**（Merge Version）：与声网 RTC 产品深度融合，版本号以 RTC 加 RTM 版本号的形式展示。适用于需要实时消息传输和实时音视频传输的场景。基于 SDK 的深度融合，融合版在独立版的基础上增加了共频道传输数据、[消息与音视频同步传输](/zh-CN/realtime-media/rtm/build/manage-topics/usage#同步传输)、消息数据与音视频数据全局优先级控制等特性。
+
+无论是哪套版本，SDK 都具备同样的优异性能和 SLA 保证。你只需根据自己的业务场景进行选择。
+
+共频道传输是指声网 RTM 的频道和 RTC 的频道可以通过合理的接口调用共用一个网络连接，且同名的 RTM Stream Channel 和 RTC Channel 会作为同一个频道，即你可以用同一个频道传输消息数据和音视频数据。共频道传输特性是实现消息与音视频数据同步传输和数据全局优先级控制等特性的基础。
+
+:::info[信息]
+只有融合版 SDK 支持共频道传输特性，且该特性仅对 Stream 类型频道有效。
+:::

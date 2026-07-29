@@ -1,0 +1,81 @@
+---
+title: FPlayerPlaybackStats
+description: 当前播放的媒体资源的相关信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_playerplaybackstats
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_playerplaybackstats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_playerplaybackstats__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FPlayerPlaybackStats {
+
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FPlayerPlaybackStats")
+	int videoFps = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FPlayerPlaybackStats")
+	int videoBitrateInKbps =0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FPlayerPlaybackStats")
+	int audioBitrateInKbps =0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FPlayerPlaybackStats")
+	int totalBitrateInKbps =0;
+	FPlayerPlaybackStats(){}
+	FPlayerPlaybackStats(const agora::media::base::PlayerPlaybackStats& AgoraData) {
+		videoFps = AgoraData.videoFps;
+		videoBitrateInKbps = AgoraData.videoBitrateInKbps;
+		audioBitrateInKbps = AgoraData.audioBitrateInKbps;
+		totalBitrateInKbps = AgoraData.totalBitrateInKbps;
+	}
+	agora::media::base::PlayerPlaybackStats CreateAgoraData() const {
+		agora::media::base::PlayerPlaybackStats AgoraData;
+		AgoraData.videoFps = videoFps;
+		AgoraData.videoBitrateInKbps = videoBitrateInKbps;
+		AgoraData.audioBitrateInKbps = audioBitrateInKbps;
+		AgoraData.totalBitrateInKbps = totalBitrateInKbps;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::media::base::PlayerPlaybackStats & AgoraData) const {
+
+	}
+};
+```
+
+<a id="class_playerplaybackstats__detailed_desc"></a>
+
+<a id="class_playerplaybackstats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="videofps"></a>
+<Parameter name="videoFps">
+
+视频帧率，单位为 fps。
+
+</Parameter>
+<a id="videobitrateinkbps"></a>
+<Parameter name="videoBitrateInKbps">
+
+视频码率，单位为 kbps。
+
+</Parameter>
+<a id="audiobitrateinkbps"></a>
+<Parameter name="audioBitrateInKbps">
+
+音频码率，单位为 kbps。
+
+</Parameter>
+<a id="totalbitrateinkbps"></a>
+<Parameter name="totalBitrateInKbps">
+
+媒体流的总码率，单位为 kbps。
+
+</Parameter>
+</ParameterList>

@@ -1,10 +1,19 @@
 ---
-title: "媒体流附属信息分发"
-description: RTC Android API 参考迁移页。
+title: 媒体流附属信息分发
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_metadata_observer
+  sourcePath: html-docs/rtc/Android/API/toc_metadata_observer.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_metadata_observer"></a>
 
 <a id="api_imetadataobserver_getmaxmetadatasize"></a>
+
+<a id="ariaid-title2"></a>
 
 ## getMaxMetadataSize
 
@@ -12,7 +21,7 @@ description: RTC Android API 参考迁移页。
 
 <a id="api_imetadataobserver_getmaxmetadatasize__prototype"></a>
 
-```java
+```text
 public abstract int getMaxMetadataSize()
 ```
 
@@ -27,9 +36,12 @@ public abstract int getMaxMetadataSize()
 方法调用成功，返回你希望使用的元数据 `buffer` 的最大大小，单位为字节。最大值为 1024 字节。请确保设置返回值。
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="api_irtcengine_registermediametadataobserver"></a>
+
+<a id="ariaid-title3"></a>
 
 ## registerMediaMetadataObserver
 
@@ -37,43 +49,53 @@ public abstract int getMaxMetadataSize()
 
 <a id="api_irtcengine_registermediametadataobserver__prototype"></a>
 
-```java
+```text
 public abstract int registerMediaMetadataObserver(IMetadataObserver observer, int type);
 ```
 
 <a id="api_irtcengine_registermediametadataobserver__detailed_desc"></a>
 
-你需要实现 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver) 类，并在该方法中指定元数据类型。该方法支持你在视频流中添加同步元数据，以实现更丰富的互动直播场景，例如发送购物链接、数字优惠券和在线问答。成功调用该方法后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调。
+你需要实现 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver) 类，并在该方法中指定元数据类型。该方法支持你在视频流中添加同步元数据，以实现更丰富的互动直播场景，例如发送购物链接、数字优惠券和在线问答。成功调用该方法后，SDK 会触发 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调。
 
-:::info[注]
-请在调用 `joinChannel` 之前调用此方法。
+:::note
+注： 请在调用 `joinChannel` 之前调用此方法。
 :::
 
 <a id="api_irtcengine_registermediametadataobserver__parameters"></a>
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
 
-元数据观察器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)。
+元数据观察器，详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
-#### `type`
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
 
 元数据类型。当前 SDK 仅支持以下类型：
 
-- VIDEO_METADATA：视频元数据。
+- `VIDEO_METADATA`：视频元数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_registermediametadataobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_unregistermediametadataobserver"></a>
+
+<a id="ariaid-title4"></a>
 
 ## unregisterMediaMetadataObserver
 
@@ -81,7 +103,7 @@ public abstract int registerMediaMetadataObserver(IMetadataObserver observer, in
 
 <a id="api_irtcengine_unregistermediametadataobserver__prototype"></a>
 
-```java
+```text
 public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, int type);
 ```
 
@@ -91,27 +113,37 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 
 ### 参数
 
-#### `observer`
+<ParameterList>
+<a id="observer-1"></a>
+<Parameter name="observer">
 
-元数据观察者。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)。
+元数据观察者。详见 [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)。
 
-#### `type`
+</Parameter>
+<a id="type-1"></a>
+<Parameter name="type">
 
 元数据类型。当前 SDK 仅支持以下类型：
 
-- VIDEO_METADATA：视频元数据。
+- `VIDEO_METADATA`：视频元数据。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_unregistermediametadataobserver__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_imetadataobserver_onmetadatareceived"></a>
+
+<a id="ariaid-title5"></a>
 
 ## onMetadataReceived
 
@@ -119,7 +151,7 @@ public abstract int unregisterMediaMetadataObserver(IMetadataObserver observer, 
 
 <a id="callback_imetadataobserver_onmetadatareceived__prototype"></a>
 
-```java
+```text
 public abstract void onMetadataReceived(AgoraMetadata metadata)
 ```
 
@@ -135,14 +167,22 @@ public abstract void onMetadataReceived(AgoraMetadata metadata)
 
 ### 参数
 
-#### `metadata`
+<ParameterList>
+<a id="metadata"></a>
+<Parameter name="metadata">
 
-接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-metadata)。
+接收到的元数据。详见 [AgoraMetadata](/zh-CN/api-reference/rtc/android/class-metadata)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)
 
 <a id="callback_imetadataobserver_onreadytosendmetadata"></a>
+
+<a id="ariaid-title6"></a>
 
 ## onReadyToSendMetadata
 
@@ -150,14 +190,14 @@ SDK 准备好发送元数据时触发的回调。
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__prototype"></a>
 
-```java
+```text
 public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 ```
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
 
-:::info[注]
-请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。
+:::note
+注： 请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/android/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。
 :::
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__timing"></a>
@@ -170,13 +210,20 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 
 ### 参数
 
-#### `timeStampMs`
+<ParameterList>
+<a id="timestampms"></a>
+<Parameter name="timeStampMs">
 
 时间戳。
 
-#### `sourceType`
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
 
-视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/class-and-enum/enums/enum-videosourcetype)。
+视频数据类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/android/enum-videosourcetype)。
+
+</Parameter>
+</ParameterList>
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__return_values"></a>
 
@@ -185,4 +232,5 @@ public abstract byte[] onReadyToSendMetadata(long timeStampMs, int sourceType)
 方法调用成功时，返回希望发送的元数据，格式为字节数组。
 
 ### 所属接口类
-- [IMetadataObserver](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_imetadataobserver)
+
+- [IMetadataObserver](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_imetadataobserver)

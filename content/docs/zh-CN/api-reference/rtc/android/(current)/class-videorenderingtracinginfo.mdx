@@ -1,0 +1,90 @@
+---
+title: VideoRenderingTracingInfo
+description: 采集视频帧渲染过程的关键指标。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_videorenderingtracinginfo
+  sourcePath: html-docs/rtc/Android/API/class_videorenderingtracinginfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videorenderingtracinginfo__prototype"></a>
+
+```text
+public static class VideoRenderingTracingInfo {
+    public int elapsedTime;
+    public int start2JoinChannel;
+    public int join2JoinSuccess;
+    public int joinSuccess2RemoteJoined;
+    public int remoteJoined2SetView;
+    public int remoteJoined2UnmuteVideo;
+    public int remoteJoined2PacketReceived;
+}
+```
+
+<a id="class_videorenderingtracinginfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="elapsedtime"></a>
+<Parameter name="elapsedTime">
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到 SDK 触发 [onVideoRenderingTracingResult](/zh-CN/api-reference/rtc/android/video/video-rendering#callback_irtcengineeventhandler_onvideorenderingtracingresult) 回调的时间间隔，单位为毫秒。声网建议在加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
+
+</Parameter>
+<a id="start2joinchannel"></a>
+<Parameter name="start2JoinChannel">
+
+从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到调用 `joinChannel` 的时间间隔，单位为毫秒。若为负数，表示先调用 `joinChannel` 后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)。
+
+</Parameter>
+<a id="join2joinsuccess"></a>
+<Parameter name="join2JoinSuccess">
+
+从调用 `joinChannel` 到成功加入频道的时间间隔，单位为毫秒。
+
+</Parameter>
+<a id="joinsuccess2remotejoined"></a>
+<Parameter name="joinSuccess2RemoteJoined">
+
+若本地用户在成功加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该字段表示从本地用户成功加入频道到远端用户加入频道的时间间隔，单位为毫秒。若本地用户在成功加入频道后调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则为从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到远端用户加入频道的时间间隔，单位为毫秒。
+
+:::note
+注： 如果本地用户在远端用户加入频道后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无实际意义。为减少远端用户首帧渲染时间，声网建议在远端用户加入频道时再让本地用户加入频道，以减小该值。
+:::
+
+</Parameter>
+<a id="remotejoined2setview"></a>
+<Parameter name="remoteJoined2SetView">
+
+若本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该字段表示从远端用户加入频道到本地用户设置远端视图的时间间隔，单位为毫秒。若本地用户在远端用户加入频道后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，则表示从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到设置远端视图的时间间隔，单位为毫秒。
+
+:::note
+注： 如果本地用户在设置远端视图之后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。为减少远端用户首帧渲染时间，声网建议在远端用户加入频道前设置远端视图，或在远端用户加入频道后立即设置远端视图，以减小该值。
+:::
+
+</Parameter>
+<a id="remotejoined2unmutevideo"></a>
+<Parameter name="remoteJoined2UnmuteVideo">
+
+若本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该字段表示从远端用户加入频道到订阅远端视频流的时间间隔，单位为毫秒。若本地用户在远端用户加入频道后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，表示从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到订阅远端视频流的时间间隔，单位为毫秒。
+
+:::note
+注： 如果在本地用户订阅远端视频流之后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0，且无效。为减少远端用户首帧渲染时间，声网建议在远端用户加入频道后立即订阅其视频流，以缩短该值。
+:::
+
+</Parameter>
+<a id="remotejoined2packetreceived"></a>
+<Parameter name="remoteJoined2PacketReceived">
+
+若本地用户在远端用户加入频道前调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该字段表示从远端用户加入频道到本地用户接收到远端视频的时间间隔，单位为毫秒。若本地用户在远端用户加入频道后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，表示从调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing) 到接收远端视频流的时间间隔，单位为毫秒。
+
+:::note
+注： 如果本地用户在收到远端视频流之后才调用 [startMediaRenderingTracing](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengine_startmediarenderingtracing)，该值为 0 且无效。为减少远端用户首帧渲染时延，声网建议远端用户在加入频道后立即发送视频，本地用户也应立即订阅视频流，以减小该值。
+:::
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,74 @@
+---
+title: CameraCapturerConfiguration
+description: 用于设置摄像头采集偏好。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_cameracapturerconfiguration
+  sourcePath: html-docs/rtc/Android/API/class_cameracapturerconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_cameracapturerconfiguration__prototype"></a>
+
+```text
+public class CameraCapturerConfiguration {
+  public CAMERA_DIRECTION cameraDirection = null;
+  public String cameraId = null;
+  public CAMERA_FOCAL_LENGTH_TYPE cameraFocalLengthType = null;
+  public CaptureFormat captureFormat;
+  public Boolean followEncodeDimensionRatio = null;
+}
+```
+
+<a id="class_cameracapturerconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="cameradirection"></a>
+<Parameter name="cameraDirection">
+
+（可选）摄像头朝向。详见 [CAMERA_DIRECTION](/zh-CN/api-reference/rtc/android/enum-cameradirection)。
+
+</Parameter>
+<a id="cameraid"></a>
+<Parameter name="cameraId">
+
+（可选）摄像头 ID，默认值为前置摄像头的 ID。你可以通过 Android 原生系统 API 获取 camera ID。
+
+:::note
+注： 此参数与 `cameraDirection` 在摄像头选择上互斥，你可以根据需要选择其中一个。
+
+- 通过 `cameraDirection` 指定摄像头更加便捷。你只需指定摄像头朝向（前置或后置），不需要显式指定 camera ID；SDK 会通过 Android 原生 API 获取并确认实际的 camera ID。
+- 通过 `cameraId` 指定摄像头可以更精确定位某个摄像头。对于拥有多个摄像头的设备，当 `cameraDirection` 无法识别或访问全部摄像头时，建议使用 `cameraId` 明确指定所需的摄像头 ID。
+:::
+
+</Parameter>
+<a id="camerafocallengthtype"></a>
+<Parameter name="cameraFocalLengthType">
+
+（可选）摄像头焦距类型。详见 [CAMERA_FOCAL_LENGTH_TYPE](/zh-CN/api-reference/rtc/android/enum-camerafocallengthtype)。
+
+:::note
+注： 要设置摄像头焦距类型，仅支持通过 `cameraDirection` 来指定摄像头，不支持通过 `cameraId` 指定。
+:::
+
+</Parameter>
+<a id="captureformat"></a>
+<Parameter name="captureFormat">
+
+（可选）视频帧的格式。详见 [CaptureFormat](/zh-CN/api-reference/rtc/android/class-videoformat)。
+
+</Parameter>
+<a id="followencodedimensionratio"></a>
+<Parameter name="followEncodeDimensionRatio">
+
+（可选）是否遵循 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中设置的视频宽高比。
+
+- true：（默认）遵循设置的视频宽高比。SDK 会根据设置的视频比例裁剪采集视频，并同步修改本地预览画面，以及 [onCaptureVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_oncapturevideoframe) 和 [onPreEncodeVideoFrame](/zh-CN/api-reference/rtc/android/video/video-raw#callback_ivideoframeobserver_onpreencodevideoframe) 中的视频帧。
+- false：不遵循设置的视频宽高比。SDK 不会修改采集的视频帧宽高比。
+
+</Parameter>
+</ParameterList>

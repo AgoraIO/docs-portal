@@ -226,6 +226,65 @@ describe('docs nav scope', () => {
     });
   });
 
+  it('prefers the declared tab root over an earlier folder with cross-tab links', () => {
+    const englishRoot = apiReferenceTree.children[0];
+    if (englishRoot.type !== 'folder') {
+      throw new Error('expected localized docs root');
+    }
+
+    const tree: Root = {
+      ...apiReferenceTree,
+      children: [
+        {
+          ...englishRoot,
+          children: [
+            {
+              $id: 'solution-reference-folder',
+              children: [
+                {
+                  $id: 'solution-reference-link',
+                  name: 'API response codes',
+                  type: 'page',
+                  url: '/en/api-reference/response-codes',
+                },
+              ],
+              name: 'Solution reference',
+              type: 'folder',
+            },
+            ...englishRoot.children,
+          ],
+        },
+      ],
+    };
+
+    const scope = resolveDocsNavScope({
+      activePath: '/en/api-reference/rtc/android/overview',
+      getNodeMeta,
+      root: tree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.scope.node.$id).toBe('android-folder');
+  });
+
+  it('skips hidden structural parent scopes when building the back link', () => {
+    const scope = resolveDocsNavScope({
+      activePath: '/en/api-reference/rtc/android/overview',
+      getNodeMeta: (node) => {
+        const meta = getNodeMeta(node);
+        return node.$id === 'rtc-folder' && meta
+          ? { ...meta, sidebarHidden: true }
+          : meta;
+      },
+      root: apiReferenceTree,
+      tab: 'api-reference',
+    });
+
+    expect(scope?.parentScope).toBeUndefined();
+    expect(scope?.header.backHref).toBe('/en/api-reference');
+    expect(scope?.header.backLabel).toBe('Reference');
+  });
+
   it('resolves the previous-version scope from a versioned URL', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/4.6.0/overview',

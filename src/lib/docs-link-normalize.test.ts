@@ -48,6 +48,16 @@ describe('normalizeDocsHref', () => {
       href: '/en/api-reference/api-ref/conversational-ai?view=all#start',
       kind: 'internal-doc',
     });
+
+    expect(
+      normalizeDocsHref(
+        '../api-reference/conversational-ai/rest-api/index.md?view=all#start',
+        { contentPath: 'zh-CN/ai/index.md' },
+      ),
+    ).toEqual({
+      href: '/zh-CN/api-reference/api-ref/conversational-ai?view=all#start',
+      kind: 'internal-doc',
+    });
   });
 
   it('leaves non-doc links unchanged', () => {
@@ -342,6 +352,13 @@ describe('normalizeDocsHref', () => {
       href: '/en/api-reference/api-ref/conversational-ai/join',
       kind: 'root',
     });
+
+    expect(
+      normalizeDocsHref('/zh-CN/api-reference/conversational-ai/rest-api'),
+    ).toEqual({
+      href: '/zh-CN/api-reference/api-ref/conversational-ai',
+      kind: 'root',
+    });
   });
 
   it('normalizes moved AI docs targets and english server sdk routes', () => {
@@ -359,10 +376,12 @@ describe('normalizeDocsHref', () => {
       kind: 'root',
     });
 
-    expect(normalizeDocsHref('/en/ai/best-practices/start-stop-agent')).toEqual({
-      href: '/en/ai/build/start-stop-agent',
-      kind: 'root',
-    });
+    expect(normalizeDocsHref('/en/ai/best-practices/start-stop-agent')).toEqual(
+      {
+        href: '/en/ai/build/start-stop-agent',
+        kind: 'root',
+      },
+    );
 
     expect(normalizeDocsHref('/en/ai/models/mllm/overview')).toEqual({
       href: '/en/ai/models/mllm/gemini',

@@ -1,0 +1,106 @@
+---
+title: "Agora Skills"
+description: "配置 Agora Skills，让 AI Coding Agent 按声网官方工作流选择 Starter、接入步骤和代码实现方式。"
+---
+
+配置 Agora Skills 后，AI Coding Agent 可以在编码前先确定声网产品路径、Starter 和接入步骤，再按官方流程完成实现。
+
+当任务需要判断“先做什么”或“该走哪条官方路径”时，优先使用 Agora Skills。如果还需要在生成代码前查询最新官方文档，可以同时配置 [Agora MCP](/zh-CN/introduction/mcp-integrate)。
+
+## 安装 Agora Skills
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
+  <TabsTrigger value="manual">手动安装</TabsTrigger>
+</TabsList>
+
+<TabsContent value="skills-cli">
+
+```bash
+npx skills add AgoraIO/skills
+```
+
+当 Agent 检测到相关声网任务时，Skills 会自动激活。
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+克隆仓库，并将 AI Coding Agent 指向 Agora Skills 文件：
+
+```bash
+git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+```
+
+使用 `skills/agora/` 作为目录入口。如果你的工具需要单个根文件，也可以直接加载 `SKILL.md`。
+
+</TabsContent>
+</Tabs>
+
+手动安装时，请按工具要求放置 Agora Skills 文件：
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
+  <TabsTrigger value="windsurf">Windsurf</TabsTrigger>
+  <TabsTrigger value="copilot">GitHub Copilot</TabsTrigger>
+  <TabsTrigger value="other-tools">其他工具</TabsTrigger>
+</TabsList>
+
+<TabsContent value="claude-code">
+
+在 Claude Code 中运行以下命令。
+
+- **用户级**，可在所有项目中使用：
+
+  ```bash
+  /plugin marketplace add AgoraIO/skills
+  /plugin install agora
+  ```
+
+- **项目级**，可通过版本控制与团队共享：
+
+  ```bash
+  /plugin marketplace add AgoraIO/skills
+  /plugin install agora --scope project
+  ```
+
+</TabsContent>
+
+<TabsContent value="cursor">
+
+将 `skills/agora/` 复制或符号链接到 `.cursor/rules/`。
+
+</TabsContent>
+
+<TabsContent value="windsurf">
+
+将 `skills/agora/` 添加到 Cascade 上下文中。
+
+</TabsContent>
+
+<TabsContent value="copilot">
+
+通过 `@workspace` 引用这些文件，或将它们加入 Copilot instructions。
+
+</TabsContent>
+
+<TabsContent value="other-tools">
+
+将工具指向 `skills/agora/` 或顶层 `SKILL.md`。
+
+</TabsContent>
+</Tabs>
+
+## 从提示词开始
+
+安装 Agora Skills 后，让 AI Coding Agent 在创建项目或编辑代码前选择正确的声网路径。
+
+```text
+使用 Agora Skills 和 Agora MCP 帮我构建一个网页端对话式 AI Demo。
+请先查询官方文档，选择合适的 Starter，并使用 Agora CLI 完成中国区项目配置。
+```
+
+接下来，让 AI Coding Agent 先确认 Starter 和接入路径，再开始创建项目或编辑代码。

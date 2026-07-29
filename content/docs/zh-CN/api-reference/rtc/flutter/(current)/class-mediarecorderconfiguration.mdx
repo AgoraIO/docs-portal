@@ -1,0 +1,162 @@
+---
+title: MediaRecorderConfiguration
+description: 音视频流录制配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_mediarecorderconfiguration
+  sourcePath: html-docs/rtc/Flutter/API/class_mediarecorderconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_mediarecorderconfiguration__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class MediaRecorderConfiguration {
+
+  const MediaRecorderConfiguration(
+      {this.storagePath,
+      this.containerFormat,
+      this.streamType,
+      this.maxDurationMs,
+      this.recorderInfoUpdateInterval,
+      this.width,
+      this.height,
+      this.fps,
+      this.sampleRate,
+      this.channelNum,
+      this.videoSourceType});
+
+  @JsonKey(name: 'storagePath')
+  final String? storagePath;
+
+  @JsonKey(name: 'containerFormat')
+  final MediaRecorderContainerFormat? containerFormat;
+
+  @JsonKey(name: 'streamType')
+  final MediaRecorderStreamType? streamType;
+
+  @JsonKey(name: 'maxDurationMs')
+  final int? maxDurationMs;
+
+  @JsonKey(name: 'recorderInfoUpdateInterval')
+  final int? recorderInfoUpdateInterval;
+
+  @JsonKey(name: 'width')
+  final int? width;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'fps')
+  final int? fps;
+
+  @JsonKey(name: 'sample_rate')
+  final int? sampleRate;
+
+  @JsonKey(name: 'channel_num')
+  final int? channelNum;
+
+  @JsonKey(name: 'videoSourceType')
+  final VideoSourceType? videoSourceType;
+
+  factory MediaRecorderConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$MediaRecorderConfigurationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MediaRecorderConfigurationToJson(this);
+}
+```
+
+<a id="class_mediarecorderconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="storagepath"></a>
+<Parameter name="storagePath">
+
+:::note
+注： 请确保你指定的路径存在并且可写。
+:::
+
+录制文件在本地保存的绝对路径，需精确到文件名及格式。例如：
+
+- Windows: `C:\Users\<user_name>\AppData\Local\Agora\<process_name>\example.mp4`
+- iOS: `/App Sandbox/Library/Caches/example.mp4`
+- macOS: `/Library/Logs/example.mp4`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.mp4`
+
+</Parameter>
+<a id="containerformat"></a>
+<Parameter name="containerFormat">
+
+录制文件的格式。详见 [MediaRecorderContainerFormat](/zh-CN/api-reference/rtc/flutter/enum-mediarecordercontainerformat)。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+录制内容。详见 [MediaRecorderStreamType](/zh-CN/api-reference/rtc/flutter/enum-mediarecorderstreamtype)。
+
+</Parameter>
+<a id="maxdurationms"></a>
+<Parameter name="maxDurationMs">
+
+最大录制时长，单位为毫秒，默认值为 120000。
+
+</Parameter>
+<a id="recorderinfoupdateinterval"></a>
+<Parameter name="recorderInfoUpdateInterval">
+
+录制信息更新间隔，单位为毫秒，取值范围为 [1000,10000]。SDK 会根据该值的设置触发 [onRecorderInfoUpdated](/zh-CN/api-reference/rtc/flutter/recording#callback_imediarecorderobserver_onrecorderinfoupdated) 回调，报告更新后的录制信息。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+录制视频的宽度 (px)，宽 × 高的最大值不应超过 3840 × 2160。
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的  `type`设置为 preview 时需要传入。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+录制视频的高度 (px)，宽 × 高的最大值不超过 3840 × 2160。
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的  `type`设置为 preview 时需要传入。
+
+</Parameter>
+<a id="fps"></a>
+<Parameter name="fps">
+
+录制视频的帧率，最高值不超过 30，如： 5、10、15、24、30 等。
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的  `type`设置为 preview 时需要传入。
+
+</Parameter>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+录制音频的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的  `type`设置为 preview 时需要传入。
+
+</Parameter>
+<a id="channelnum"></a>
+<Parameter name="channelNum">
+
+录制音频的声道数:
+
+- 1: 单声道
+- 2: 双声道
+
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的 `type`设置为 preview 时需要传入。
+
+</Parameter>
+<a id="videosourcetype"></a>
+<Parameter name="videoSourceType">
+
+录制视频源的类型。详见 [VideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-videosourcetype)。
+该参数仅在 调用 [createMediaRecorder](/zh-CN/api-reference/rtc/flutter/recording#api_irtcengine_createmediarecorder) 且将 [RecorderStreamInfo](/zh-CN/api-reference/rtc/flutter/class-recorderstreaminfo) 中的  `type`设置为 preview 时需要传入。
+
+</Parameter>
+</ParameterList>

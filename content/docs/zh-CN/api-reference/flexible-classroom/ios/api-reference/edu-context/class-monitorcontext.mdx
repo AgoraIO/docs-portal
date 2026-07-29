@@ -1,0 +1,150 @@
+---
+title: "AgoraEduMonitorContext"
+description: "AgoraEduMonitorContext 类。"
+---
+<a id="class_monitorcontext"></a>
+
+AgoraEduMonitorContext 类。
+
+<a id="class_monitorcontext__detailed_desc"></a>
+
+### 详情
+
+AgoraEduMonitorContext 类提供的方法用于：
+
+- 监控 SDK 状态。
+- 向声网服务端上报状态信息。
+
+<a id="api_uploadlog"></a>
+
+## uploadLog
+
+上传日志。
+
+<a id="api_uploadlog__prototype"></a>
+
+```swift
+void uploadLog(Callback<String> success,
+               Callback<AgoraEduContextError> fail)
+```
+
+<a id="api_uploadlog__detailed_desc"></a>
+
+<a id="api_uploadlog__parameters"></a>
+
+### 参数
+
+#### `success`
+
+上传成功，则返回日志 ID。
+
+#### `fail`
+
+调用失败，则返回 [AgoraEduContextError](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_error)。
+
+<a id="api_getsynctimestamp"></a>
+
+## getSyncTimestamp
+
+获取与服务器校对后的时间戳。
+
+<a id="api_getsynctimestamp__prototype"></a>
+
+```swift
+Int64 getSyncTimestamp()
+```
+
+<a id="api_getsynctimestamp__return_values"></a>
+
+### 返回值
+
+时间戳。
+
+<a id="api_onmediapacketstatsupdated"></a>
+
+## onMediaPacketStatsUpdated
+
+报告媒体包信息。
+
+<a id="api_onmediapacketstatsupdated__prototype"></a>
+
+```swift
+@objc optional func onMediaPacketStatsUpdated(roomUuid: String,
+                                                  stats: FcrMediaPacketStats)
+```
+
+<a id="api_onmediapacketstatsupdated__detailed_desc"></a>
+
+### 详情
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onmediapacketstatsupdated__parameters"></a>
+
+### 参数
+
+#### `roomUuid`
+
+房间 ID。
+
+#### `stats`
+
+媒体包信息统计数据，详见 [FcrMediaPacketStats](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_fcrmediapacketstats)。
+
+<a id="api_onperformanceupdated"></a>
+
+## onPerformanceUpdated
+
+性能信息更新回调。
+
+<a id="api_onperformanceupdated__prototype"></a>
+
+```swift
+@objc optional func onPerformanceUpdated(info: FcrPerformanceInfo)
+```
+
+<a id="api_onperformanceupdated__detailed_desc"></a>
+
+### 详情
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onperformanceupdated__parameters"></a>
+
+### 参数
+
+#### `info`
+
+性能信息。详见 [FcrPerformanceInfo](/zh-CN/api-reference/flexible-classroom/ios/api-reference/edu-context/api-data-type#class_fcrperformanceinfo)。
+
+<a id="api_onmediaerroroccurred"></a>
+
+## onMediaErrorOccurred
+
+发生媒体错误回调。
+
+<a id="api_onmediaerroroccurred__prototype"></a>
+
+```swift
+@objc optional func onMediaErrorOccurred(errorCode: Int16)
+```
+
+<a id="api_onmediaerroroccurred__detailed_desc"></a>
+
+### 详情
+
+#### `自从`
+
+v2.8.60
+
+<a id="api_onmediaerroroccurred__parameters"></a>
+
+### 参数
+
+#### `errorCode`
+
+错误码。

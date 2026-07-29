@@ -1,0 +1,2432 @@
+---
+title: 频道相关
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/toc_channel
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/toc_channel.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_channel"></a>
+
+<a id="api_irtcengine_getuserinfobyuid"></a>
+
+<a id="ariaid-title2"></a>
+
+## GetUserInfoByUid
+
+通过 UID 获取用户信息。
+
+<a id="api_irtcengine_getuserinfobyuid__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int GetUserInfoByUid(int64 uid, FUserInfo& userInfo);
+```
+
+<a id="api_irtcengine_getuserinfobyuid__detailed_desc"></a>
+
+<a id="api_irtcengine_getuserinfobyuid__getUserInfo_desc"></a>
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 UID 来获取包含了指定用户 User Account 的 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 对象。
+
+<a id="api_irtcengine_getuserinfobyuid__timing"></a>
+
+### 调用时机
+
+在收到 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调后调用。
+
+<a id="api_irtcengine_getuserinfobyuid__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getuserinfobyuid__related"></a>
+
+### 相关回调
+
+[OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated)
+
+<a id="api_irtcengine_getuserinfobyuid__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="userinfo"></a>
+<Parameter name="userInfo">
+
+输入和输出参数。标识用户的 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 对象：
+
+- 输入值：一个 FUserInfo 对象。
+- 输出值：一个包含了用户 User Account 和 UID 的 FUserInfo 对象。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_getuserinfobyuid__d103e173"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="localuseraccount"></a>
+<Parameter name="localUserAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getuserinfobyuid__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getuserinfobyuseraccount"></a>
+
+<a id="ariaid-title3"></a>
+
+## GetUserInfoByUserAccount
+
+通过 User Account 获取用户信息。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int GetUserInfoByUserAccount(const FString& userAccount, FUserInfo& userInfo);
+```
+
+<a id="api_irtcengine_getuserinfobyuseraccount__detailed_desc"></a>
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 User Account 来获取包含了指定用户 UID 的 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 对象。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__timing"></a>
+
+### 调用时机
+
+在收到 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调后调用。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__related"></a>
+
+### 相关回调
+
+[OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated)
+
+<a id="api_irtcengine_getuserinfobyuseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
+
+用户 User Account。
+
+</Parameter>
+<a id="userinfo-1"></a>
+<Parameter name="userInfo">
+
+输入和输出参数。标识用户的 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 对象：
+
+- 输入值：一个 FUserInfo 对象。
+- 输出值：一个包含了用户 User Account 和 UID 的 FUserInfo 对象。
+
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_getuserinfobyuseraccount__d103e173"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="localuseraccount-1"></a>
+<Parameter name="localUserAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_joinchannel"></a>
+
+<a id="ariaid-title4"></a>
+
+## JoinChannel
+
+加入频道。
+
+<a id="api_irtcengine_joinchannel__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int JoinChannel(const FString & token, const FString& channelId, int64 uid);
+```
+
+<a id="api_irtcengine_joinchannel__detailed_desc"></a>
+
+加入频道后，默认情况下用户订阅频道内所有其他用户的音频流和视频流，因此会产生用量并**影响计费**。如果想取消订阅，可以通过相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannel__timing"></a>
+
+### 调用时机
+
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannel__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannel__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 [OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [OnRejoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengine_joinchannel__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+:::
+
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
+
+<a id="api_irtcengine_joinchannel__d103e171"></a>
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannel__d103e173"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="info"></a>
+<Parameter name="info">
+
+(非必选项) 预留参数。
+
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 OnJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannel__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是：调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要在该方法前调用 StopEchoTest。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+<a id="api_irtcengine_joinchannel2"></a>
+
+<a id="ariaid-title5"></a>
+
+## JoinChannelWithOptions
+
+设置媒体选项并加入频道。
+
+<a id="api_irtcengine_joinchannel2__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int JoinChannelWithOptions(const FString& token, const FString& channelId, int64 uid, const FChannelMediaOptions& options);
+```
+
+<a id="api_irtcengine_joinchannel2__detailed_desc"></a>
+
+该方法可以在加入频道时设置媒体选项，如是否在频道内发布音视频流等。用户加入频道时是否自动订阅频道内所有远端音视频流。默认情况下，用户订阅频道内所有其他用户的音频流和视频流，因此会产生用量并**影响计费**。如果想取消订阅，可以通过设置 options 参数或相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannel2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannel2__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannel2__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 [OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [OnRejoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengine_joinchannel2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-1"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+:::
+
+</Parameter>
+<a id="channelid-3"></a>
+<Parameter name="channelId">
+
+<a id="api_irtcengine_joinchannel2__channelID_desc"></a>
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannel2__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
+
+用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 OnJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
+
+频道媒体设置选项。详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannel2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是：调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要在该方法前调用 StopEchoTest。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_joinchannelex"></a>
+
+<a id="ariaid-title6"></a>
+
+## JoinChannelEx
+
+加入频道。
+
+<a id="api_irtcengineex_joinchannelex__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int JoinChannelEx(const FString& token, const FRtcConnection& connection, const FChannelMediaOptions& options);
+```
+
+<a id="api_irtcengineex_joinchannelex__detailed_desc"></a>
+
+调用该方法，你可以同时加入多个频道。如果你想在不同的设备上加入相同的频道，请确保你在不同设备上使用的用户 ID 都不同。
+
+<a id="api_irtcengineex_joinchannelex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_joinchannelex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后调用。
+
+在多摄像头采集场景下，你需要在调用该方法之后调用 [StartPreview](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_startpreview2) 方法设置 sourceType 为 VIDEO_SOURCE_CAMERA_SECONDARY，以确保第二个摄像头采集正常。
+
+<a id="api_irtcengineex_joinchannelex__restriction"></a>
+
+### 调用限制
+
+如果你已经在一个频道内，你不能用相同的用户 ID 再次加入该频道。
+
+加入频道前，请确保用于生成 Token 的 App ID 和调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengineex_joinchannelex__related"></a>
+
+### 相关回调
+
+成功调用该方法加入频道后会触发以下回调：
+
+- 本地会触发 [OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 通信场景下的用户和直播场景下的主播加入频道后，远端会触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 回调。
+
+在网络状况不理想的情况下，客户端可能会与声网服务器失去连接，此时 SDK 会自动尝试重连，重连成功后，本地会触发 [OnRejoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onrejoinchannelsuccess) 回调。
+
+<a id="api_irtcengineex_joinchannelex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-2"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+:::
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+<a id="options-1"></a>
+<Parameter name="options">
+
+频道媒体设置选项。详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+<a id="eventhandler"></a>
+<Parameter name="eventHandler">
+
+[IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_joinchannelex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是：调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要在该方法前调用 StopEchoTest。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_joinchannelwithuseraccount2"></a>
+
+<a id="ariaid-title7"></a>
+
+## JoinChannelWithUserAccount
+
+使用 User Account 和 Token 加入频道，并设置频道媒体选项。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int JoinChannelWithUserAccount(const FString& token, const FString& channelId, const FString& userAccount, const FChannelMediaOptions& options);
+```
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__detailed_desc"></a>
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__account"></a>
+
+调用该方法前，如果你未调用 [RegisterLocalUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_registerlocaluseraccount) 注册一个 User Account，调用该方法加入频道时，SDK 会自动为你创建一个 User Account。先调用 [RegisterLocalUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_registerlocaluseraccount) 方法注册 Account，再调用此方法加入频道，可以缩短进入频道的时间。
+
+用户成功加入频道后，默认订阅频道内所有其他用户的音频流和视频流，因此产生用量并**影响计费**。如果想取消订阅，可以通过调用相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__note"></a>
+
+:::caution
+注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__related"></a>
+
+### 相关回调
+
+成功加入频道后，会触发以下回调：
+
+- 本地：[OnLocalUserRegistered](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onlocaluserregistered)、[OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端：通信场景下的用户和直播场景下的主播加入频道后，远端会分别触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 和 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+:::
+
+</Parameter>
+<a id="channelid-4"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__d103e173"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
+
+频道媒体设置选项。详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是：调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要在该方法前调用 StopEchoTest。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_joinchannelwithuseraccountex"></a>
+
+<a id="ariaid-title8"></a>
+
+## JoinChannelWithUserAccountEx
+
+使用 User Account 和 Token 加入频道，并设置频道媒体选项。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int JoinChannelWithUserAccountEx(const FString& token, const FString& channelId, const FString& userAccount, const FChannelMediaOptions& options);
+```
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__detailed_desc"></a>
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__account"></a>
+
+调用该方法前，如果你未调用 [RegisterLocalUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_registerlocaluseraccount) 注册一个 User Account，调用该方法加入频道时，SDK 会自动为你创建一个 User Account。先调用 [RegisterLocalUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_registerlocaluseraccount) 方法注册 Account，再调用此方法加入频道，可以缩短进入频道的时间。
+
+用户成功加入频道后，默认订阅频道内所有其他用户的音频流和视频流，因此产生用量并**影响计费**。如果想取消订阅，可以通过设置 options 参数或调用相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__note"></a>
+
+:::caution
+注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [Initialize](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__related"></a>
+
+### 相关回调
+
+成功加入频道后，会触发以下回调：
+
+- 本地：[OnLocalUserRegistered](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onlocaluserregistered)、[OnJoinChannelSuccess](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端：通信场景下的用户和直播场景下的主播加入频道后，远端会分别触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 和 [OnUserInfoUpdated](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+:::
+
+</Parameter>
+<a id="channelid-5"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__d103e173"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="options-3"></a>
+<Parameter name="options">
+
+频道媒体设置选项。详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+<a id="eventhandler-1"></a>
+<Parameter name="eventHandler">
+
+[IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex) 的回调类，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)。多频道相关的事件通知通过你在此参数中传递的 eventHandler 对象回调。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 IRtcEngine 对象。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是：调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 开始通话回路测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 停止测试就调用该方法加入频道。你需要在该方法前调用 StopEchoTest。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_leavechannel"></a>
+
+<a id="ariaid-title9"></a>
+
+## LeaveChannel
+
+离开频道。
+
+<a id="api_irtcengine_leavechannel__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int LeaveChannel();
+```
+
+<a id="api_irtcengine_leavechannel__detailed_desc"></a>
+
+调用该方法后，SDK 会终止音视频互动、离开当前频道，并会释放会话相关的所有资源。
+
+成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
+
+:::caution
+注意：
+
+- 该方法是异步操作，调用返回时并没有真正退出频道。
+- 如果你已调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
+:::
+
+<a id="api_irtcengine_leavechannel__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_leavechannel__restriction"></a>
+
+### 调用限制
+
+如果你调用了该方法后立即调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_release) 方法，SDK 将不会触发 OnLeaveChannel 回调。
+
+<a id="api_irtcengine_leavechannel__related"></a>
+
+### 相关回调
+
+成功调用该方法离开频道后会触发以下回调：
+
+- 本地：[OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端：主播离开频道后，远端会触发 [OnUserOffline](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
+
+<a id="api_irtcengine_leavechannel__parameters"></a>
+
+<a id="api_irtcengine_leavechannel__return_values"></a>
+
+### 返回值
+
+- 0(ERR_OK): 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 参数无效。
+  - -7: SDK 尚未初始化。
+
+<a id="leaveChannel-[2/2]"></a>
+
+<a id="api_irtcengine_leavechannel2"></a>
+
+<a id="ariaid-title10"></a>
+
+## LeaveChannelWithOptions
+
+设置频道选项并离开频道。
+
+<a id="api_irtcengine_leavechannel2__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int LeaveChannelWithOptions(const FLeaveChannelOptions& options);
+```
+
+<a id="api_irtcengine_leavechannel2__detailed_desc"></a>
+
+调用该方法后，SDK 会终止音视频互动、离开当前频道，并会释放会话相关的所有资源。
+
+成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。如果你已调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 加入多个频道，调用本方法后会同时离开所有已加入的频道。
+
+:::caution
+注意： 该方法是异步操作，调用返回时并没有真正退出频道。
+:::
+
+<a id="api_irtcengine_leavechannel2__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_leavechannel2__restriction"></a>
+
+### 调用限制
+
+如果你调用了该方法后立即调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_release) 方法，SDK 将不会触发 OnLeaveChannel 回调。
+
+<a id="api_irtcengine_leavechannel2__related"></a>
+
+### 相关回调
+
+成功调用该方法离开频道后会触发以下回调：
+
+- 本地：[OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端：主播离开频道后，远端会触发 [OnUserOffline](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
+
+<a id="api_irtcengine_leavechannel2__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_leavechannel2__parml_jsr_dky_hqb"></a>
+
+<ParameterList>
+<a id="options-4"></a>
+<Parameter name="options">
+
+离开频道的选项，详见 [FLeaveChannelOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-leavechanneloptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_leavechannel2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_leavechannelex2"></a>
+
+<a id="ariaid-title11"></a>
+
+## LeaveChannelEx
+
+设置频道选项并离开频道。
+
+<a id="api_irtcengineex_leavechannelex2__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int LeaveChannelEx(const FRtcConnection& connection, const FLeaveChannelOptions& options);
+```
+
+<a id="api_irtcengineex_leavechannelex2__detailed_desc"></a>
+
+调用该方法后，SDK 会终止音视频互动、离开当前频道，并会释放会话相关的所有资源。
+
+调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 成功加入频道后，必须调用本方法结束通话，否则无法开始下一次通话。
+
+:::caution
+注意：
+
+- 该方法是异步操作，调用返回时并没有真正退出频道。
+- 如果你调用了 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 后，会同时离开 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 及 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 加入的频道。
+:::
+
+<a id="api_irtcengineex_leavechannelex2__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_leavechannelex2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 后调用。
+
+<a id="api_irtcengineex_leavechannelex2__restriction"></a>
+
+### 调用限制
+
+如果你调用了该方法后立即调用 [Release](/zh-CN/api-reference/rtc/unreal-blueprint/initialize#api_irtcengine_release) 方法，SDK 将不会触发 OnLeaveChannel 回调。
+
+<a id="api_irtcengineex_leavechannelex2__related"></a>
+
+### 相关回调
+
+成功调用该方法离开频道后会触发以下回调：
+
+- 本地：[OnLeaveChannel](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onleavechannel) 回调。
+- 远端：主播离开频道后，远端会触发 [OnUserOffline](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
+
+<a id="api_irtcengineex_leavechannelex2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+<a id="options-5"></a>
+<Parameter name="options">
+
+离开频道的选项，详见 [FLeaveChannelOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-leavechanneloptions)。
+
+:::note
+注： 该参数仅支持设置 FLeaveChannelOptions 中的 stopMicrophoneRecording 成员，设置其他成员均不生效。
+:::
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_leavechannelex2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_preloadchannel"></a>
+
+<a id="ariaid-title12"></a>
+
+## PreloadChannel
+
+使用 token、channelId、uid 预加载频道。
+
+<a id="api_irtcengine_preloadchannel__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int PreloadChannel(const FString & token, const FString & channelId, int64 uid);
+```
+
+<a id="api_irtcengine_preloadchannel__detailed_desc"></a>
+
+<a id="api_irtcengine_preloadchannel__desc1"></a>
+
+调用该方法可以减少观众频繁切换频道时加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的视频体验。
+
+<a id="api_irtcengine_preloadchannel__desc2"></a>
+
+如果当前频道已经成功预加载，观众加入、离开频道后如需再次加入该频道，只要预加载时传入的 Token 仍在有效期内，则无需重新预加载。
+
+<a id="api_irtcengine_preloadchannel__note3"></a>
+
+:::note
+注： 预加载不生效不会影响后续正常加入频道，也不会增加加入频道的耗时。
+:::
+
+<a id="api_irtcengine_preloadchannel__timing"></a>
+
+### 调用时机
+
+为了提升预加载频道的用户体验，声网推荐你在确认频道名、用户信息后、加入频道前，尽早调用该方法。
+
+<a id="api_irtcengine_preloadchannel__restriction"></a>
+
+### 调用限制
+
+- 调用该方法时，请确保用户角色设为观众、音频应用场景设为非合唱场景（AUDIO_SCENARIO_CHORUS），否则预加载不生效。
+- 请确保预加载频道时传入的频道名、用户 ID、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 目前一个 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 实例最多支持预加载 20 个频道，如超出限制，仅最新预加载的 20 个频道生效。
+
+<a id="api_irtcengine_preloadchannel__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-5"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
+
+- 预加载一个频道时：调用此方法来传入新的 Token。
+- 预加载多个频道时：
+
+  - 如果你使用了通配的 Token，调用 [UpdatePreloadChannelToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatepreloadchanneltoken) 来更新所有预加载频道的 Token。
+
+    <a id="api_irtcengine_preloadchannel__uid"></a>
+
+    :::note
+    注： 生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+    :::
+  - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
+
+</Parameter>
+<a id="channelid-6"></a>
+<Parameter name="channelId">
+
+待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
+          该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="uid-3"></a>
+<Parameter name="uid">
+
+用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位无符号整数。建议设置范围：1 到 232-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 OnJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadchannel__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_preloadchannelwithuseraccount"></a>
+
+<a id="ariaid-title13"></a>
+
+## PreloadChannelWithUserAccount
+
+使用 token、channelId、userAccount 预加载频道。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int PreloadChannelWithUserAccount(const FString& token, const FString& channelId, const FString& userAccount);
+```
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__detailed_desc"></a>
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__d116e55"></a>
+
+调用该方法可以减少观众频繁切换频道时加入频道的时间，从而缩短观众听到主播首帧音频以及看到首帧画面的耗时，提升观众端的视频体验。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__d116e58"></a>
+
+如果当前频道已经成功预加载，观众加入、离开频道后如需再次加入该频道，只要预加载时传入的 Token 仍在有效期内，则无需重新预加载。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__d116e61"></a>
+
+:::note
+注： 预加载不生效不会影响后续正常加入频道，也不会增加加入频道的耗时。
+:::
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__timing"></a>
+
+### 调用时机
+
+为了提升预加载频道的用户体验，声网推荐你在确认频道名、用户信息后、加入频道前，尽早调用该方法。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__restriction"></a>
+
+### 调用限制
+
+- 调用该方法时，请确保用户角色设为观众、音频应用场景设为非合唱场景（AUDIO_SCENARIO_CHORUS），否则预加载不生效。
+- 请确保预加载频道时传入的频道名、用户 User Account、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+- 目前一个 [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 实例最多支持预加载 20 个频道，如超出限制，仅最新预加载的 20 个频道生效。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-6"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+Token 过期后，根据预加载频道的数量，你可以通过不同方式来传入用于预加载频道的新 Token：
+
+- 预加载一个频道时：调用此方法来传入新的 Token。
+- 预加载多个频道时：
+
+  - 如果你使用了通配的 Token，调用 [UpdatePreloadChannelToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_updatepreloadchanneltoken) 来更新所有预加载频道的 Token。
+
+    <a id="api_irtcengine_preloadchannelwithuseraccount__d116e131"></a>
+
+    :::note
+    注： 生成通配 Token 时，用户 ID 不得设为 0。详见 [使用通配 Token](/zh-CN/realtime-media/rtc/build/security-and-auth/wildcard-token)。
+    :::
+  - 如果你使用了不同的 Token：调用此方法并传入你的用户 ID、对应的频道名和更新后的 Token。
+
+</Parameter>
+<a id="channelid-7"></a>
+<Parameter name="channelId">
+
+待预加载的频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。
+          该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，User Account 为空。你需要填入有效的参数，重新加入频道。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_registerlocaluseraccount"></a>
+
+<a id="ariaid-title14"></a>
+
+## RegisterLocalUserAccount
+
+注册本地用户 User Account。
+
+<a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int RegisterLocalUserAccount(const FString& appId, const FString& userAccount);
+```
+
+<a id="api_irtcengine_registerlocaluseraccount__detailed_desc"></a>
+
+该方法为本地用户注册一个 User Account。注册成功后，该 User Account 即可标识该本地用户的身份，用户可以使用它加入频道。
+
+该方法为可选。如果你希望用户使用 User Account 加入频道，可参考下列任意一种方式实现：
+
+- 先调用 RegisterLocalUserAccount 方法注册 Account，再调用 [JoinChannelWithUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，可以缩短进入频道的时间。
+- 直接调用 JoinChannelWithUserAccount 方法加入频道。
+
+:::caution
+注意：
+
+- 请确保在该方法中设置的 userAccount 在频道中的唯一性。
+- 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_registerlocaluseraccount__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_registerlocaluseraccount__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [OnLocalUserRegistered](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onlocaluserregistered) 回调，告知本地用户的 UID 和 User Account。
+
+<a id="api_irtcengine_registerlocaluseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="appid"></a>
+<Parameter name="appId">
+
+你的项目在控制台注册的 App ID。
+
+</Parameter>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_renewtoken"></a>
+
+<a id="ariaid-title15"></a>
+
+## RenewToken
+
+更新 Token。
+
+<a id="api_irtcengine_renewtoken__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int RenewToken(const FString & token);
+```
+
+<a id="api_irtcengine_renewtoken__detailed_desc"></a>
+
+该方法用于更新 Token。Token 会在一定时间后失效，此时 SDK 将无法和服务器建立连接。
+
+<a id="api_irtcengine_renewtoken__timing"></a>
+
+### 调用时机
+
+在以下任意一种情况下，声网推荐你在你的服务端重新生成 Token，然后调用该方法传入新的 Token：
+
+- 收到 [OnTokenPrivilegeWillExpire](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_ontokenprivilegewillexpire) 回调报告 Token 即将过期时；
+- 收到 [OnRequestToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onrequesttoken) 回调报告 Token 已过期；
+- 收到 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调报告 CONNECTION_CHANGED_TOKEN_EXPIRED(9) 时；
+
+<a id="api_irtcengine_renewtoken__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_renewtoken__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-7"></a>
+<Parameter name="token">
+
+新生成的 Token。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_renewtoken__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，Token 为空。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -110：Token 无效。请确保：
+
+    - 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致，
+    - 生成的 Token 和加入频道使用的 Token 一致。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setchannelprofile"></a>
+
+<a id="ariaid-title16"></a>
+
+## SetChannelProfile
+
+设置频道场景。
+
+<a id="api_irtcengine_setchannelprofile__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int SetChannelProfile(ECHANNEL_PROFILE_TYPE profile);
+```
+
+<a id="api_irtcengine_setchannelprofile__detailed_desc"></a>
+
+你可以调用该方法设置频道的使用场景。SDK 会针对不同的使用场景采用不同的优化策略，如直播场景优先保证画质。SDK 初始化后默认的频道场景为直播场景。
+
+:::caution
+注意：
+
+不同的频道场景下，SDK 的默认音频路由是不同的，详见 [SetDefaultAudioRouteToSpeakerphone](/zh-CN/api-reference/rtc/unreal-blueprint/device-management/audio-route#api_irtcengine_setdefaultaudioroutetospeakerphone) 中的说明。
+:::
+
+<a id="api_irtcengine_setchannelprofile__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setchannelprofile__restriction"></a>
+
+### 调用限制
+
+为保证实时音视频质量，相同频道内的用户必须使用同一种频道场景。
+
+<a id="api_irtcengine_setchannelprofile__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
+
+频道使用场景。详见 [ECHANNEL_PROFILE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-channelprofiletype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setchannelprofile__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2: 参数无效。
+  - -7: SDK 尚未初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setclientrole2"></a>
+
+<a id="ariaid-title17"></a>
+
+## SetClientRole
+
+设置直播场景下的用户角色和观众端延时级别。
+
+<a id="api_irtcengine_setclientrole2__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int SetClientRole(FClientRoleOptions options, ECLIENT_ROLE_TYPE clientroletype = ECLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER);
+```
+
+<a id="api_irtcengine_setclientrole2__detailed_desc"></a>
+
+SDK 默认设置用户角色为观众，你可以调用该方法设置用户角色为主播。用户角色（role）确定用户在 SDK 层的权限，包含是否有发流权限等。
+
+<a id="api_irtcengine_setclientrole2__timing"></a>
+
+### 调用时机
+
+该方法在加入频道前后均可调用。
+
+<a id="api_irtcengine_setclientrole2__preview1"></a>
+
+如果你在加入频道前调用该方法设置用户角色为主播、并且通过 [SetupLocalVideo](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-rendering#api_irtcengine_setuplocalvideo) 方法设置了本地视频属性，则用户加入频道时会自动开启本地视频预览。
+
+<a id="api_irtcengine_setclientrole2__sdk"></a>
+
+如果你在加入频道后调用该方法切换用户角色，调用成功后，SDK 会自动调用 [MuteLocalAudioStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 和 [MuteLocalVideoStream](/zh-CN/api-reference/rtc/unreal-blueprint/publishnsubscribe#api_irtcengine_mutelocalvideostream) 修改发布音视频流的状态。
+
+<a id="api_irtcengine_setclientrole2__restriction"></a>
+
+### 调用限制
+
+当用户角色设为主播时，观众端延时级别仅支持设置为 AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY（超低延时）。
+
+在加入频道前调用该方法并将 role 设为 BROADCASTER（主播）时，本地不会触发 [OnClientRoleChanged](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+
+<a id="api_irtcengine_setclientrole2__related"></a>
+
+### 相关回调
+
+如果你在加入频道后成功调用该方法切换用户角色，SDK 会触发下列回调：
+
+- 本地触发 [OnClientRoleChanged](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onclientrolechanged) 回调。
+
+  :::note
+  注： 在加入频道前调用该方法并将 role 设为 AUDIENCE（观众）时，也会触发该回调。
+  :::
+- 远端触发 [OnUserJoined](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuserjoined) 或 [OnUserOffline](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onuseroffline) 回调。
+
+如果你在加入频道后调用该方法切换用户角色失败，SDK 会触发 [OnClientRoleChangeFailed](/zh-CN/api-reference/rtc/unreal-blueprint/channel#callback_irtcengineeventhandler_onclientrolechangefailed)，报告切换失败的原因和当前的用户角色。
+
+<a id="api_irtcengine_setclientrole2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="clientroletype"></a>
+<Parameter name="clientroletype">
+
+用户角色。详见 [ECLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientroletype)。
+
+:::note
+注： 角色为观众的用户无法在频道内发布音视频流。在直播场景下发流时，请确保你的用户角色已切换为主播。
+:::
+
+</Parameter>
+<a id="options-6"></a>
+<Parameter name="options">
+
+用户具体设置，包含用户级别。详见 [FClientRoleOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setclientrole2__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1: 一般性的错误（未明确归类）。
+  - -2: 参数无效。
+  - -5: 调用被拒绝。
+  - -7: SDK 尚未初始化。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_updatechannelmediaoptions"></a>
+
+<a id="ariaid-title18"></a>
+
+## UpdateChannelMediaOptions
+
+加入频道后更新频道媒体选项。
+
+<a id="api_irtcengine_updatechannelmediaoptions__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int UpdateChannelMediaOptions(const FChannelMediaOptions& options);
+```
+
+<a id="api_irtcengine_updatechannelmediaoptions__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="options-7"></a>
+<Parameter name="options">
+
+频道媒体选项，详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_updatechannelmediaoptions__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：[FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED(1) 或 CONNECTION_STATE_FAILED(5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
+
+<a id="ariaid-title19"></a>
+
+## UpdateChannelMediaOptionsEx
+
+加入频道后更新频道媒体选项。
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int UpdateChannelMediaOptionsEx(const FChannelMediaOptions& options, const FRtcConnection& connection);
+```
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="options-8"></a>
+<Parameter name="options">
+
+频道媒体选项，详见 [FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions)。
+
+</Parameter>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_updatechannelmediaoptionsex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：[FChannelMediaOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-channelmediaoptions) 成员值设置无效。例如，使用了不合法的 Token，设置了无效的用户角色。你需要填入有效的参数。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+  - -8：IRtcEngine 对象内部状态错误。可能的原因是用户不在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。如果收到 CONNECTION_STATE_DISCONNECTED(1) 或 CONNECTION_STATE_FAILED(5)，则表示用户不在频道中。你需要在调用该方法前调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 加入频道。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_updatepreloadchanneltoken"></a>
+
+<a id="ariaid-title20"></a>
+
+## UpdatePreloadChannelToken
+
+更新预加载频道的通配 Token。
+
+<a id="api_irtcengine_updatepreloadchanneltoken__prototype"></a>
+
+```text
+UFUNCTION(BlueprintCallable, Category = "Agora|IRtcEngine")
+	int UpdatePreloadChannelToken(const FString& token);
+```
+
+<a id="api_irtcengine_updatepreloadchanneltoken__detailed_desc"></a>
+
+### 详情
+
+你需要自行维护通配 Token 的生命周期。当通配 Token 过期后，你需要在你的服务端生成新的通配 Token，然后通过此方法来传入新的 Token。
+
+<a id="api_irtcengine_updatepreloadchanneltoken__scenario"></a>
+
+### 适用场景
+
+在需要频繁切换频道及多频道场景下，使用通配 Token 可以避免观众在切换不同频道时需多次申请 Token 从而导致切换频道时间增长，可以进一步加快切换频道的速度，同时减少你的 Token 服务端的压力。
+
+<a id="api_irtcengine_updatepreloadchanneltoken__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-8"></a>
+<Parameter name="token">
+
+新的 Token。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_updatepreloadchanneltoken__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token。你需要填入有效的参数，重新加入频道。
+  - -7：IRtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 IRtcEngine 对象。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
+
+<a id="ariaid-title21"></a>
+
+## OnClientRoleChanged
+
+用户角色、观众端延时级别已切换回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnClientRoleChanged(ECLIENT_ROLE_TYPE oldRole, ECLIENT_ROLE_TYPE newRole, const FClientRoleOptions& newRoleOptions);
+```
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__timing"></a>
+
+### 触发时机
+
+在以下任意一种情况时，会触发此回调：
+
+- 在**加入频道后**调用 [SetClientRole](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_setclientrole2) 设置用户角色或观众端延时级别。
+- 在**加入频道前**调用 [SetClientRole](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_setclientrole2) 并将用户角色设为 AUDIENCE。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__restriction"></a>
+
+### 使用限制
+
+当你在**加入频道前**调用 [SetClientRole](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_setclientrole2) 并将用户角色设为 BROADCASTER 时，不会触发此回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="oldrole"></a>
+<Parameter name="oldRole">
+
+切换前的角色：[ECLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientroletype)。
+
+</Parameter>
+<a id="newrole"></a>
+<Parameter name="newRole">
+
+切换后的角色：[ECLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientroletype)。
+
+</Parameter>
+<a id="newroleoptions"></a>
+<Parameter name="newRoleOptions">
+
+切换后的角色属性。详见 [FClientRoleOptions](/zh-CN/api-reference/rtc/unreal-blueprint/class-clientroleoptions)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
+
+<a id="ariaid-title22"></a>
+
+## OnClientRoleChangeFailed
+
+用户角色切换失败回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnClientRoleChangeFailed(ECLIENT_ROLE_CHANGE_FAILED_REASON reason, ECLIENT_ROLE_TYPE currentRole);
+```
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__detailed_desc"></a>
+
+当用户角色切换失败时，你可以通过此回调得知切换失败的原因和当前的用户角色。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__timing"></a>
+
+### 触发时机
+
+本地用户加入频道后调用 [SetClientRole](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_setclientrole2) 设置用户角色失败时，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onclientrolechangefailed__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="reason"></a>
+<Parameter name="reason">
+
+切换用户角色失败的原因。详见 [ECLIENT_ROLE_CHANGE_FAILED_REASON](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientrolechangefailedreason)。
+
+</Parameter>
+<a id="currentrole"></a>
+<Parameter name="currentRole">
+
+当前用户角色。详见 [ECLIENT_ROLE_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-clientroletype)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onerror"></a>
+
+<a id="ariaid-title23"></a>
+
+## OnError
+
+发生错误回调。
+
+<a id="callback_irtcengineeventhandler_onerror__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnError(int error, const FString& msg);
+```
+
+<a id="callback_irtcengineeventhandler_onerror__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onerror__desc"></a>
+
+该回调方法表示 SDK 运行时出现了网络或媒体相关的错误。通常情况下，SDK 上报的错误意味着 SDK 无法自动恢复，需要 App 干预或提示用户。
+
+<a id="callback_irtcengineeventhandler_onerror__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="msg"></a>
+<Parameter name="msg">
+
+错误描述。
+
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
+
+错误码。
+
+- ERR_OK(0)：没有错误。
+- ERR_FAILED(1)：一般性的错误（没有明确归类的错误原因）。请重新调用方法。
+- ERR_INVALID_ARGUMENT(2)：方法中设置了无效的参数。例如指定的频道名中含有非法字符。请重新设置参数。
+- ERR_NOT_READY(3)：SDK 尚未准备好。可能的原因有：
+
+  - [IRtcEngine](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengine) 初始化失败。请重新初始化 IRtcEngine。
+  - 调用方法时用户尚未加入频道。请检查方法的调用逻辑。
+  - 调用 [Rate](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_rate) 或 [Complain](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_complain) 方法时用户尚未离开频道。请检查方法的调用逻辑。
+  - 请检查是否已开启音频模块。请检查程序集完整性。
+- ERR_NOT_SUPPORTED(4)：IRtcEngine 当前状态不支持该操作。可能的原因有：
+
+  - 使用内置加密时，设置的加密模式不正确，或加载外部加密库失败。请检查加密的枚举值是否正确，或重新加载外部加密库。
+- ERR_REFUSED(5)：方法调用被拒绝。可能的原因有：
+
+  - IRtcEngine 初始化失败。请重新初始化 IRtcEngine。
+  - 在加入频道时，将频道名设为空字符 `""`。请重新设置频道名。
+  - 多频道场景下，在调用 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 方法加入频道时，设置的频道名已存在。请重新设置频道名。
+- ERR_BUFFER_TOO_SMALL(6)：缓冲区大小不足以存放返回的数据。
+- ERR_NOT_INITIALIZED(7)：IRtcEngine 尚未初始化就调用方法。请确认在调用该方法前已创建 IRtcEngine 对象并完成初始化。
+- ERR_INVALID_STATE(8)：当前状态无效。
+- ERR_NO_PERMISSION(9)：没有操作权限。请检查用户是否授予了 App 音视频设备的使用权限。
+- ERR_TIMEDOUT(10)： 方法调用超时。有些方法调用需要 SDK 返回结果，如果 SDK 处理事件过长，超过 10 秒没有返回，会出现此错误。
+- ERR_JOIN_CHANNEL_REJECTED(17)：加入频道被拒绝。可能的原因有：
+
+  - 用户已经在频道中。建议通过 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 CONNECTION_STATE_DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - 用户在调用 [StartEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_startechotest3) 进行通话测试后，未调用 [StopEchoTest](/zh-CN/api-reference/rtc/unreal-blueprint/network#api_irtcengine_stopechotest) 结束当前测试就尝试加入频道。开始通话测试后，需要先调用 StopEchoTest 结束当前测试，再加入频道。
+- ERR_LEAVE_CHANNEL_REJECTED(18)：离开频道失败。可能的原因有：
+
+  - 调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 前，用户已离开频道。停止调用该方法即可。
+  - 用户尚未加入频道，就调用 LeaveChannelWithOptions 退出频道。这种情况下无需额外操作。
+- ERR_ALREADY_IN_USE(19)：资源已被占用，不能重复使用。
+- ERR_ABORTED(20)：SDK 放弃请求，可能由于请求的次数太多。
+- ERR_RESOURCE_LIMITED(22)：SDK 分配资源失败，可能由于 App 占用资源过多或系统资源耗尽。
+- ERR_INVALID_APP_ID(101)：不是有效的 App ID。请更换有效的 App ID 重新加入频道。
+- ERR_INVALID_CHANNEL_NAME(102)：不是有效的频道名。可能的原因是设置的参数数据类型不正确。请更换有效的频道名重新加入频道。
+- ERR_NO_SERVER_RESOURCES(103)：无法获取当前区域的服务器资源。请在初始化 IRtcEngine 时尝试指定其他区域。
+- ERR_TOKEN_EXPIRED(109)：当前使用的 Token 过期，不再有效。请在服务端申请生成新的 Token，并调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 更新 Token。
+
+  <a id="弃用"></a>
+
+  :::error[弃用：]
+  该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_TOKEN_EXPIRED(9)。
+  :::
+- ERR_INVALID_TOKEN(110)：Token 无效。一般有以下原因：
+
+  - 在控制台中启用了 App 证书，但未使用 App ID + Token 鉴权。当项目启用了 App 证书，就必须使用 Token 鉴权。
+  - 生成 Token 时填入的 `uid` 字段，和用户加入频道时填入的 uid 不匹配。
+
+  <a id="弃用-1"></a>
+
+  :::error[弃用：]
+  该枚举已废弃。请改用 [OnConnectionStateChanged](/zh-CN/api-reference/rtc/unreal-blueprint/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调中的 CONNECTION_CHANGED_INVALID_TOKEN(8)。
+  :::
+- ERR_CONNECTION_INTERRUPTED(111)：网络连接中断。SDK 在和服务器建立连接后，失去网络连接超过 4 秒。
+- ERR_CONNECTION_LOST(112)：网络连接丢失。网络连接中断，且 SDK 无法在 10 秒内连接服务器。
+- ERR_NOT_IN_CHANNEL(113)：调用 [SendStreamMessage](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_sendstreammessage) 方法时用户不在频道内。
+- ERR_SIZE_TOO_LARGE(114)：在调用 SendStreamMessage 时，发送的数据长度大于 1 KB。
+- ERR_BITRATE_LIMIT(115)：在调用 SendStreamMessage 时，发送数据的频率超过限制（6 KB/s）。
+- ERR_TOO_MANY_DATA_STREAMS(116)：在调用 [CreateDataStream](/zh-CN/api-reference/rtc/unreal-blueprint/metadata/datastream#api_irtcengine_createdatastream2) 时，创建的数据流超过限制（5 个）。
+- ERR_STREAM_MESSAGE_TIMEOUT(117)：数据流发送超时。
+- ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED(119)：用户切换角色失败，请尝试重新加入频道。
+- ERR_DECRYPTION_FAILED(120)：解密失败。可能是用户加入频道时使用了错误的密码。请检查用户加入频道时填入的密码，或引导用户尝试重新加入频道。
+- ERR_INVALID_USER_ID(121)：该用户 ID 无效。
+- ERR_CLIENT_IS_BANNED_BY_SERVER(123)：该用户被服务器禁止。
+- ERR_ENCRYPTED_STREAM_NOT_ALLOWED_PUBLISH(130)：SDK 不支持将加密过的流推到 CDN 上。
+- ERR_INVALID_USER_ACCOUNT(134)：无效的 user account，可能是因为设置了无效的参数。
+- ERR_LOAD_MEDIA_ENGINE(1001)：加载媒体引擎失败。
+- ERR_ADM_GENERAL_ERROR(1005)：音频设备出现错误（未指明何种错误）。请检查音频设备是否被其他应用占用，或者尝试重新进入频道。
+- ERR_ADM_INIT_PLAYOUT(1008)：初始化播放设备出错。请检查播放设备是否被其他应用占用，或者尝试重新进入频道。
+- ERR_ADM_START_PLAYOUT(1009)：启动播放设备出错。请检查播放设备是否正常。
+- ERR_ADM_STOP_PLAYOUT(1010)：停止播放设备出错。
+- ERR_ADM_INIT_RECORDING(1011)：初始化录音设备出错。请检查录音设备是否正常，或者尝试重新进入频道。
+- ERR_ADM_START_RECORDING(1012)：启动录音设备出错。请检查录音设备是否正常。
+- ERR_ADM_STOP_RECORDING(1013)：停止录音设备出错。
+- ERR_VDM_CAMERA_NOT_AUTHORIZED(1501)：没有摄像头使用权限。请检查是否已经打开摄像头权限。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
+
+<a id="ariaid-title24"></a>
+
+## OnJoinChannelSuccess
+
+成功加入频道回调。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnJoinChannelSuccess(const FString& Channel, int64 Uid, int Elapsed);
+```
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__desc"></a>
+
+该回调方法表示该客户端成功加入了指定的频道。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__timing"></a>
+
+### 触发时机
+
+当你调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2)、[JoinChannelWithUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannelwithuseraccount2)、 [JoinChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_joinchannelex) 或 [JoinChannelWithUserAccountEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannelwithuseraccountex) 方法成功加入频道后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onjoinchannelsuccess__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
+
+频道名。
+
+</Parameter>
+<a id="uid-4"></a>
+<Parameter name="uid">
+
+加入频道的用户 ID。
+
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
+
+从本地调用 JoinChannelWithOptions 开始到发生此事件过去的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onleavechannel"></a>
+
+<a id="ariaid-title25"></a>
+
+## OnLeaveChannel
+
+离开频道回调。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnLeaveChannel(const FRtcStats& stats);
+```
+
+<a id="callback_irtcengineeventhandler_onleavechannel__detailed_desc"></a>
+
+你可以通过该回调获取此次通话的总通话时长、SDK 收发数据的流量等信息。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__timing"></a>
+
+### 触发时机
+
+当你成功调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 或 [LeaveChannelEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_leavechannelex2) 离开频道后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onleavechannel__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
+
+通话的统计数据，详见 [FRtcStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
+
+<a id="ariaid-title26"></a>
+
+## OnLocalUserRegistered
+
+本地用户成功注册 User Account 回调。
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnLocalUserRegistered(int64 uid, const FString& userAccount);
+```
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__detailed_desc"></a>
+
+### 详情
+
+本地用户成功调用 [RegisterLocalUserAccount](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_registerlocaluseraccount) 方法注册用户 User Account，或调用 JoinChannelWithUserAccount 加入频道后，SDK 会触发该回调，并告知本地用户的 UID 和 User Account。
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
+
+本地用户的 ID。
+
+</Parameter>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
+
+<a id="ariaid-title27"></a>
+
+## OnRejoinChannelSuccess
+
+成功重新加入频道回调。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnRejoinChannelSuccess(const FString& channel, int64 uid, int elapsed);
+```
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__timing"></a>
+
+### 触发时机
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__desc"></a>
+
+有时候由于网络原因，客户端可能会和服务器失去连接，SDK 会进行自动重连，自动重连成功后触发此回调方法。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrejoinchannelsuccess__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channel-1"></a>
+<Parameter name="channel">
+
+频道名。
+
+</Parameter>
+<a id="uid-6"></a>
+<Parameter name="uid">
+
+重新加入频道的用户 ID。
+
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
+
+从调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 方法到触发该回调的时间间隔（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrequesttoken"></a>
+
+<a id="ariaid-title28"></a>
+
+## OnRequestToken
+
+Token 已过期回调。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnRequestToken();
+```
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__desc1"></a>
+
+在音视频互动过程中，如果 Token 失效，SDK 会触发该回调报告 Token 已过期。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__renew"></a>
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+
+- 单频道场景：
+
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 来传入新的 Token。
+  - 调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+- 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
+
+###
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onrtcstats"></a>
+
+<a id="ariaid-title29"></a>
+
+## OnRtcStats
+
+当前通话相关的统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnRtcStats(const FRtcStats& stats);
+```
+
+<a id="callback_irtcengineeventhandler_onrtcstats__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onrtcstats__timing"></a>
+
+### 触发时机
+
+SDK 定期向 App 报告当前通话的统计信息，每两秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onrtcstats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
+
+RTC 引擎统计数据，详见 [FRtcStats](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcstats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
+
+<a id="ariaid-title30"></a>
+
+## OnTokenPrivilegeWillExpire
+
+Token 即将在 30s 内过期回调。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnTokenPrivilegeWillExpire(const FString& token);
+```
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__detailed_desc"></a>
+
+当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+
+- 单频道场景：
+
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 来传入新的 Token。
+  - 调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+- 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>
+
+### 触发时机
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__desc1"></a>
+
+在音视频互动过程中，SDK 会在 Token 过期前 30 秒触发该回调，提醒 App 更新 Token。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-9"></a>
+<Parameter name="token">
+
+即将过期的 Token。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
+
+<a id="ariaid-title31"></a>
+
+## OnUserInfoUpdated
+
+远端用户信息已更新回调。
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnUserInfoUpdated(int64 uid, const FUserInfo& info);
+```
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__detailed_desc"></a>
+
+### 详情
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的 Mapping 表，并在本地触发该回调。
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
+
+标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [FUserInfo](/zh-CN/api-reference/rtc/unreal-blueprint/class-userinfo) 类。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuserjoined"></a>
+
+<a id="ariaid-title32"></a>
+
+## OnUserJoined
+
+远端用户（通信场景）/主播（直播场景）加入当前频道回调。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnUserJoined(int64 uid, int elapsed);
+```
+
+<a id="callback_irtcengineeventhandler_onuserjoined__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onuserjoined__detailed_desc_scene"></a>
+
+- 通信场景下，该回调提示有远端用户加入了频道。如果加入之前已经有其他用户在频道中，新加入的用户也会收到这些已有用户加入频道的回调。
+- 直播场景下，该回调提示有主播加入了频道。如果加入之前，已经有主播在频道中了，新加入的用户也会收到已有主播加入频道的回调。建议连麦主播不超过 32 人（其中视频连麦主播不超过 17 人）。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__timing"></a>
+
+### 触发时机
+
+该回调在如下情况下会被触发：
+
+- 远端用户/主播加入频道。
+- 远端用户加入频道后将用户角色改变为主播。
+- 远端用户/主播网络中断后重新加入频道。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onuserjoined__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [FUABT_RtcConnection](/zh-CN/api-reference/rtc/unreal-blueprint/class-rtcconnection)。
+
+</Parameter>
+<a id="uid-8"></a>
+<Parameter name="uid">
+
+新加入频道的远端用户/主播 ID。
+
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
+
+从本地用户调用 JoinChannel 或 JoinChannelWithOptions 到该回调触发的延迟（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuseroffline"></a>
+
+<a id="ariaid-title33"></a>
+
+## OnUserOffline
+
+远端用户（通信场景）/主播（直播场景）离开当前频道回调。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__prototype"></a>
+
+```text
+UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
+	void OnUserOffline(int64 uid, EUSER_OFFLINE_REASON_TYPE reason);
+```
+
+<a id="callback_irtcengineeventhandler_onuseroffline__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onuseroffline__desc"></a>
+
+用户离开频道一般有以下两个原因：
+
+- 正常离开：远端用户或主播会发送类似“再见”的消息然后主动离开频道。
+- 超时掉线：在一定时间内（通信场景为 20 秒，直播场景稍有延时），用户没有收到对方的任何数据包，则判定为对方掉线。在网络较差的情况下，有可能会误报。建议使用 RTM SDK 来做可靠的掉线检测。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__timing"></a>
+
+### 触发时机
+
+在音视频互动过程中，当远端用户或主播离开当前频道时会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__restriction"></a>
+
+### 使用限制
+
+无。
+
+<a id="callback_irtcengineeventhandler_onuseroffline__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-9"></a>
+<Parameter name="uid">
+
+离线的远端用户或主播的 ID。
+
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
+
+远端用户（通信场景）或主播（直播场景）离线的原因，详见 [EUSER_OFFLINE_REASON_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-userofflinereasontype)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/unreal-blueprint/rtc-interface-class#class_irtcengineeventhandler)

@@ -1,0 +1,31 @@
+---
+title: 微呼叫 API 概览
+description: 使用 RESTful API 管理设备呼叫小程序、挂断通话以及 License 激活和续期。
+---
+
+声网微呼叫 API 可用于从你的服务端向微信小程序发起呼叫、挂断通话，并管理微呼叫服务所需的 License。
+
+## API 基础
+
+- **鉴权**：所有请求都需要使用 [RESTful API 鉴权](authentication)。
+- **请求**：请求包体和响应包体均使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
+
+:::info
+微呼叫 REST API 仅支持 HTTPS。请求 URL 和请求包体区分大小写。
+:::
+
+## REST API
+
+- [设备呼叫小程序](call-mini-app)：从设备端向微信小程序发起呼叫。
+- [挂断小程序](hangup-mini-app)：挂断与小程序的通话。
+- [激活 License](activate-license)：激活用于校验呼叫合法性的 License。
+- [查询即将到期的 License 列表](list-expiring-licenses)：查询指定 PID 下即将到期的 License。
+- [License 续期](renew-license)：续期指定的 License。
+- [查询 License 续期订单](list-license-renewals)：查询可用的续期订单。
+
+## 相关页面
+
+- [微呼叫](/zh-CN/solutions/voip-call)
+- [获取并使用 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)
+- [设置 Source 和 Sink](/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink)

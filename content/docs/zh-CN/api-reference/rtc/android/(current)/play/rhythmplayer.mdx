@@ -1,0 +1,241 @@
+---
+title: 虚拟节拍器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_rhythmplayer
+  sourcePath: html-docs/rtc/Android/API/toc_rhythmplayer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_rhythmplayer"></a>
+
+<a id="api_irtcengine_configrhythmplayer"></a>
+
+<a id="ariaid-title2"></a>
+
+## configRhythmPlayer
+
+配置虚拟节拍器。
+
+<a id="api_irtcengine_configrhythmplayer__prototype"></a>
+
+```text
+public abstract int configRhythmPlayer(AgoraRhythmPlayerConfig config);
+```
+
+<a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+调用 [startRhythmPlayer](/zh-CN/api-reference/rtc/android/play/rhythmplayer#api_irtcengine_startrhythmplayer) 后，可以使用该方法重新配置虚拟节拍器。启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频。默认情况下，虚拟节拍器的声音会在频道中发布。如果希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
+
+<a id="api_irtcengine_configrhythmplayer__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或后调用。
+
+<a id="api_irtcengine_configrhythmplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+节拍器的配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_configrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startrhythmplayer"></a>
+
+<a id="ariaid-title3"></a>
+
+## startRhythmPlayer
+
+启用虚拟节拍器。
+
+<a id="api_irtcengine_startrhythmplayer__prototype"></a>
+
+```text
+public abstract int startRhythmPlayer(String sound1, String sound2, AgoraRhythmPlayerConfig config);
+```
+
+<a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
+
+<a id="废弃-1"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果你将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频内容。
+默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 true。
+
+<a id="api_irtcengine_startrhythmplayer__scenario"></a>
+
+### 适用场景
+
+在音乐教育、体育教学等场景中，教师通常需要使用节拍器帮助学生按照正确的节奏进行练习。节拍由强拍和弱拍组成，每小节的第一个节拍称为强拍，其余为弱拍。
+
+<a id="api_irtcengine_startrhythmplayer__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或后调用。
+
+<a id="api_irtcengine_startrhythmplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sound1"></a>
+<Parameter name="sound1">
+
+强拍音效文件的绝对路径或 URL 地址（包含文件扩展名）。例如：content://com.android.providers.media.documents/document/audio%203A14441。支持的音频文件格式详见[声网 RTC SDK 支持哪些音频文件格式](/zh-CN/reference/faq/product/audio_format)。
+
+</Parameter>
+<a id="sound2"></a>
+<Parameter name="sound2">
+
+弱拍音效文件的绝对路径或 URL 地址（包含文件扩展名）。例如：content://com.android.providers.media.documents/document/audio%203A14441。支持的音频文件格式详见[声网 RTC SDK 支持哪些音频文件格式](/zh-CN/reference/faq/product/audio_format)。
+
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
+
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/android/class-agorarhythmplayerconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -22：未找到音效文件。请为 `sound1` 和 `sound2` 设置正确的路径。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoprhythmplayer"></a>
+
+<a id="ariaid-title4"></a>
+
+## stopRhythmPlayer
+
+禁用虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__prototype"></a>
+
+```text
+public abstract int stopRhythmPlayer();
+```
+
+<a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
+
+<a id="废弃-2"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+你可以调用该方法来禁用虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+<a id="ariaid-title5"></a>
+
+## onRhythmPlayerStateChanged
+
+虚拟节拍器状态发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
+
+```text
+public void onRhythmPlayerStateChanged(int state, int reason)
+```
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
+
+<a id="废弃-3"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+该回调用于报告虚拟节拍器的当前状态，指示本地音频流的状态，帮助你在音频异常发生时排查问题。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在虚拟节拍器状态发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+当前虚拟节拍器的状态：
+
+- `RHYTHM_PLAYER_STATE_IDLE`（810）：虚拟节拍器未启用或已被禁用。
+- `RHYTHM_PLAYER_STATE_OPENING`（811）：正在打开节拍文件。
+- `RHYTHM_PLAYER_STATE_DECODING`（812）：正在解码节拍文件。
+- `RHYTHM_PLAYER_STATE_PLAYING`（813）：节拍文件正在播放。
+- `RHYTHM_PLAYER_STATE_FAILED`（814）：虚拟节拍器启动失败。你可以使用返回的错误码排查原因，或尝试重新启动虚拟节拍器。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+虚拟节拍器的错误码和错误信息：
+
+- `RHYTHM_PLAYER_REASON_OK`（0）：节拍文件正常播放。
+- `RHYTHM_PLAYER_REASON_FAILED`（1）：通用错误，原因不明确。
+- `RHYTHM_PLAYER_REASON_CAN_NOT_OPEN`（801）：打开节拍文件时出错。
+- `RHYTHM_PLAYER_REASON_CAN_NOT_PLAY`（802）：播放节拍文件时出错。
+- `RHYTHM_PLAYER_REASON_FILE_OVER_DURATION_LIMIT`（803）：节拍音频文件的时长超过限制，最大为 1.2 秒。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

@@ -268,6 +268,539 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders localized operation security before parameters in zh-CN when no Authorization header parameter exists', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/apps/{appid}/cloud_recording/acquire',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Cloud Recording API',
+              },
+              openapi: '3.2.0',
+              components: {
+                securitySchemes: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
+                    scheme: 'basic',
+                    type: 'http',
+                  },
+                },
+              },
+              security: [
+                {
+                  'Basic Auth': [],
+                },
+              ],
+              paths: {
+                '/v1/apps/{appid}/cloud_recording/acquire': {
+                  post: {
+                    operationId: 'acquire',
+                    parameters: [
+                      {
+                        description: '项目的 App ID。',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '获取云端录制资源',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '路径参数' }),
+    ).toBeInTheDocument();
+    const authHeading = screen.getByRole('heading', { name: '鉴权' });
+    expect(authHeading).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Basic Auth' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/客户 ID 和客户密钥/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '实现 HTTP 基本认证' }),
+    ).toHaveAttribute(
+      'href',
+      'https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/http-basic-auth',
+    );
+    const pathHeading = screen.getByRole('heading', { name: '路径参数' });
+    expect(
+      authHeading.compareDocumentPosition(pathHeading) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('prefers an explicit Authorization header parameter over localized securitySchemes in zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              components: {
+                securitySchemes: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
+                    scheme: 'basic',
+                    type: 'http',
+                  },
+                },
+              },
+              security: [
+                {
+                  'Basic Auth': [],
+                },
+              ],
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    parameters: [
+                      {
+                        description:
+                          '鉴权凭证。支持 RTC Token 或 HTTP 基本认证。',
+                        in: 'header',
+                        name: 'Authorization',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                      {
+                        description: '项目的 App ID。',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description: '智能体名称。',
+                                type: 'string',
+                              },
+                            },
+                            required: ['name'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                agent_id: {
+                                  description: '智能体 ID。',
+                                  type: 'string',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '路径参数' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '鉴权' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Basic Auth' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/客户 ID 和客户密钥/)).not.toBeInTheDocument();
+    const headerSection = screen
+      .getByRole('heading', { name: '请求 Header' })
+      .closest('section') as HTMLElement;
+    expect(
+      within(headerSection).getByText('Authorization'),
+    ).toBeInTheDocument();
+    expect(
+      within(headerSection).getByText(/支持 RTC Token/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: '请求 Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: '响应 Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Header Parameters' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Request Body' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders OpenAPI blockquote descriptions as localized note callouts in zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              agent_rtc_uid: {
+                                description:
+                                  '智能体在 RTC 频道内的用户 ID。\n> 同一 `channel` 内的用户 ID 不可重复，否则智能体加入频道会失败。',
+                                type: 'string',
+                              },
+                              allowed_tools: {
+                                description:
+                                  '工具允许列表。\n> `allowed_tools` 字段生效规则:\n> - 不填写 `allowed_tools` 字段：所有工具都生效\n> - 填写为 `[]`：所有工具不生效',
+                                type: 'array',
+                                items: {
+                                  type: 'string',
+                                },
+                              },
+                              greeting_audio_url: {
+                                description:
+                                  '问候语音频地址。\n>- 配置 `greeting_audio_url` 时，必须同时配置 `greeting_message` 用于异常回退。\n>- 下载失败时，系统会自动使用 `greeting_message` 播报。',
+                                type: 'string',
+                              },
+                              enable_string_uid: {
+                                description:
+                                  '是否启用 String UID。\n> 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多信息请参考[如何使用 String UID](https://example.com/string-uid)。',
+                                type: 'boolean',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findAllByText('注意')).toHaveLength(4);
+    const channelCode = screen.getAllByText('channel').at(0);
+    expect(channelCode?.tagName).toBe('CODE');
+    const channelNote = screen.getByText((_content, node) =>
+      Boolean(
+        node?.textContent ===
+          '同一 channel 内的用户 ID 不可重复，否则智能体加入频道会失败。',
+      ),
+    );
+    expect(
+      channelNote.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    const allowedToolsRule = screen.getByText((_content, node) =>
+      Boolean(
+        node?.textContent === '不填写 allowed_tools 字段：所有工具都生效',
+      ),
+    );
+    expect(allowedToolsRule.tagName).toBe('LI');
+    expect(
+      allowedToolsRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    const greetingRule = screen.getByText((_content, node) =>
+      Boolean(
+        node?.tagName === 'LI' &&
+          node.textContent?.includes('配置 greeting_audio_url 时') &&
+          node.textContent?.includes('greeting_message 用于异常回退'),
+      ),
+    );
+    expect(greetingRule.tagName).toBe('LI');
+    expect(
+      greetingRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '如何使用 String UID' }),
+    ).toHaveAttribute('href', 'https://example.com/string-uid');
+  });
+
+  it('keeps OpenAPI blockquote descriptions as blockquotes outside zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              agent_rtc_uid: {
+                                description:
+                                  'Agent user ID.\n> User IDs must be unique in the same `channel`.',
+                                type: 'string',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Start agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const blockquoteText = await screen.findByText('User IDs must be unique', {
+      exact: false,
+    });
+    expect(blockquoteText.closest('blockquote')).toBeInTheDocument();
+    expect(screen.queryByText('Note')).not.toBeInTheDocument();
+    expect(
+      blockquoteText.closest('.openapi-markdown-blockquote'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('omits unannotated scalar array item rows from schema rendering', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              remote_rtc_uids: {
+                                description: '智能体订阅的用户 ID 列表。',
+                                items: {
+                                  type: 'string',
+                                },
+                                type: 'array',
+                              },
+                              tools: {
+                                items: {
+                                  properties: {
+                                    name: {
+                                      type: 'string',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                                type: 'array',
+                              },
+                            },
+                            required: ['remote_rtc_uids'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findByText('remote_rtc_uids')).toBeInTheDocument();
+    expect(
+      document.getElementById('request-body-remote-rtc-uids-items'),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand tools properties' }),
+    );
+    expect(
+      document.getElementById('request-body-tools-items'),
+    ).not.toBeInTheDocument();
+    expect(
+      document.getElementById('request-body-tools-items-name'),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps array item wrapper rows outside zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              tools: {
+                                items: {
+                                  properties: {
+                                    name: {
+                                      type: 'string',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                                type: 'array',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Start agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findByText('tools')).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand tools properties' }),
+    );
+    expect(
+      document.getElementById('request-body-tools-items'),
+    ).toBeInTheDocument();
+  });
+
   it('renders operation callouts from the bundled source operation', async () => {
     render(
       <FumadocsOpenApiContent
@@ -1764,6 +2297,7 @@ describe('FumadocsOpenApiContent', () => {
   it('renders response body schema field descriptions', async () => {
     render(
       <FumadocsOpenApiContent
+        locale="zh-CN"
         pageProps={{
           operations: [
             {
@@ -1844,15 +2378,25 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const responseBody = await screen.findByRole('heading', {
-      name: 'Response schema',
-    });
+    expect(
+      await screen.findByRole('heading', { name: '响应 Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '响应 Schema' }),
+    ).not.toBeInTheDocument();
     for (const button of screen.getAllByRole('button', {
-      name: /^Expand all .* schema fields$/,
+      name: /^(200|401)$/,
     })) {
       fireEvent.click(button);
     }
-    expect(responseBody).toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: '展开全部 响应 Body 字段',
+      }),
+    );
     const responseScope = within(document.body);
     const visibleText = document.body.textContent?.replace(/\s+/g, ' ') ?? '';
 
@@ -1973,6 +2517,62 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
+  it('keeps the supplemental response schema outside zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'get',
+              path: '/v1/agents/{agentId}',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/agents/{agentId}': {
+                  get: {
+                    operationId: 'get-agent',
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                agent_id: {
+                                  description: 'Agent ID.',
+                                  type: 'string',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Get agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Response Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Response schema' }),
+    ).toBeInTheDocument();
+  });
+
   it('adds stable deep-link anchors to parameters and schema fields', async () => {
     render(
       <FumadocsOpenApiContent
@@ -2058,6 +2658,7 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
+    fireEvent.click(screen.getByRole('button', { name: '200' }));
 
     for (const button of screen.getAllByRole('button', {
       name: /^Expand all .* schema fields$/,
@@ -2075,7 +2676,7 @@ describe('FumadocsOpenApiContent', () => {
       document.getElementById('request-body-config-idle-timeout'),
     ).not.toBeNull();
     expect(
-      document.getElementById('responses-200-data-agent-id'),
+      document.getElementById('response-body-data-agent-id'),
     ).not.toBeNull();
     expect(
       document.querySelector('a[href="#request-body-channel-name"]'),

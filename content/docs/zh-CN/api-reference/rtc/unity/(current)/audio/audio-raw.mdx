@@ -1,0 +1,747 @@
+---
+title: 原始音频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unity/API/toc_audio_raw
+  sourcePath: html-docs/rtc/Unity/API/toc_audio_raw.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_raw"></a>
+
+<a id="api_imediaengine_registeraudioframeobserver"></a>
+
+<a id="ariaid-title2"></a>
+
+## RegisterAudioFrameObserver
+
+注册音频观测器对象。
+
+<a id="api_imediaengine_registeraudioframeobserver__prototype"></a>
+
+```text
+public abstract int RegisterAudioFrameObserver(IAudioFrameObserver audioFrameObserver, AUDIO_FRAME_POSITION position, OBSERVER_MODE mode = OBSERVER_MODE.INTPTR);
+```
+
+<a id="api_imediaengine_registeraudioframeobserver__detailed_desc"></a>
+
+该方法用于注册音频观测器对象，即注册回调。当需要 SDK 触发 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe)、[OnRecordAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe)、[OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe)、[OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 和 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调时，需要调用该方法注册回调。
+
+<a id="api_imediaengine_registeraudioframeobserver__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_registeraudioframeobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="audioframeobserver"></a>
+<Parameter name="audioFrameObserver">
+
+接口对象实例。详见 [IAudioFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserver)。如果传入 NULL，则表示取消注册。建议在收到 [OnLeaveChannel](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onleavechannel) 后调用，来释放音频观测器对象。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+音频数据回调模式，详见 [OBSERVER_MODE](/zh-CN/api-reference/rtc/unity/enum-observermode)。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+音频观测位置。
+
+- AUDIO_FRAME_POSITION_PLAYBACK (0x0001)：该位置可观测所有远端用户混音后的播放音频，对应 [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+- AUDIO_FRAME_POSITION_RECORD (0x0002)：该位置可观测采集的本地用户的音频，对应 [OnRecordAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+- AUDIO_FRAME_POSITION_MIXED (0x0004)：该位置可观测本地和所有远端用户混音后的音频，对应 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+- AUDIO_FRAME_POSITION_BEFORE_MIXING (0x0008)：该位置可观测单个远端用户混音前的音频，对应 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+- AUDIO_FRAME_POSITION_EAR_MONITORING (0x0010)：该位置可观测单个本地用户耳返的音频，对应 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_registeraudioframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IMediaEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_imediaengine)
+
+<a id="api_irtcengine_setearmonitoringaudioframeparameters"></a>
+
+<a id="ariaid-title3"></a>
+
+## SetEarMonitoringAudioFrameParameters
+
+设置耳返的音频数据格式。
+
+<a id="api_irtcengine_setearmonitoringaudioframeparameters__prototype"></a>
+
+```text
+public abstract int SetEarMonitoringAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
+```
+
+<a id="api_irtcengine_setearmonitoringaudioframeparameters__detailed_desc"></a>
+
+该方法用于设置 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调的耳返音频数据格式。
+
+:::note
+注：
+
+- 调用该方法前，你需要先调用 [EnableInEarMonitoring](/zh-CN/api-reference/rtc/unity/audio/audio-capture#api_irtcengine_enableinearmonitoring2)，将 `includeAudioFilters` 设置为 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS` 或 `EAR_MONITORING_FILTER_NOISE_SUPPRESSION`。
+- SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+:::
+
+<a id="api_irtcengine_setearmonitoringaudioframeparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate"></a>
+<Parameter name="sampleRate">
+
+[OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel"></a>
+<Parameter name="channel">
+
+[OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告音频的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+<a id="mode-1"></a>
+<Parameter name="mode">
+
+音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+<a id="samplespercall"></a>
+<Parameter name="samplesPerCall">
+
+[OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 中报告的音频的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setearmonitoringaudioframeparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setmixedaudioframeparameters"></a>
+
+<a id="ariaid-title4"></a>
+
+## SetMixedAudioFrameParameters
+
+设置采集和播放音频混音后的原始音频数据格式。
+
+<a id="api_irtcengine_setmixedaudioframeparameters__prototype"></a>
+
+```text
+public abstract int SetMixedAudioFrameParameters(int sampleRate, int channel, int samplesPerCall);
+```
+
+<a id="api_irtcengine_setmixedaudioframeparameters__detailed_desc"></a>
+
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+
+<a id="api_irtcengine_setmixedaudioframeparameters__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setmixedaudioframeparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate-1"></a>
+<Parameter name="sampleRate">
+
+音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel-1"></a>
+<Parameter name="channel">
+
+音频数据的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+<a id="samplespercall-1"></a>
+<Parameter name="samplesPerCall">
+
+音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setmixedaudioframeparameters__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters"></a>
+
+<a id="ariaid-title5"></a>
+
+## SetPlaybackAudioFrameBeforeMixingParameters [1/2]
+
+设置混音前的原始音频播放数据格式。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__prototype"></a>
+
+```text
+public abstract int SetPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel);
+```
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__detailed_desc"></a>
+
+SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate-2"></a>
+<Parameter name="sampleRate">
+
+音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel-2"></a>
+<Parameter name="channel">
+
+音频数据的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1"></a>
+
+<a id="ariaid-title6"></a>
+
+## SetPlaybackAudioFrameBeforeMixingParameters [2/2]
+
+设置混音前的原始音频播放数据格式。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__prototype"></a>
+
+```text
+public abstract int SetPlaybackAudioFrameBeforeMixingParameters(int sampleRate, int channel, int samplesPerCall);
+```
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__detailed_desc"></a>
+
+SDK 会根据该采样间隔触发 [OnPlaybackAudioFrameBeforeMixing](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserver_onplaybackaudioframebeforemixing) 回调。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate-3"></a>
+<Parameter name="sampleRate">
+
+音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel-3"></a>
+<Parameter name="channel">
+
+音频数据的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+<a id="samplespercall-2"></a>
+<Parameter name="samplesPerCall">
+
+设置 `onPlaybackAudioFrameBeforeMixing` 回调中返回音频数据的采样点数。在 RTMP 推流场景中，建议设置为 1024。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setplaybackaudioframebeforemixingparameters1__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setplaybackaudioframeparameters"></a>
+
+<a id="ariaid-title7"></a>
+
+## SetPlaybackAudioFrameParameters
+
+设置播放的原始音频数据格式。
+
+<a id="api_irtcengine_setplaybackaudioframeparameters__prototype"></a>
+
+```text
+public abstract int SetPlaybackAudioFrameParameters(int sampleRate, int channel,
+            RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
+```
+
+<a id="api_irtcengine_setplaybackaudioframeparameters__detailed_desc"></a>
+
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+
+<a id="api_irtcengine_setplaybackaudioframeparameters__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setplaybackaudioframeparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate-4"></a>
+<Parameter name="sampleRate">
+
+音频数据的采样率 (Hz)，可设置为 8000、 16000、 24000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel-4"></a>
+<Parameter name="channel">
+
+音频数据的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+<a id="mode-2"></a>
+<Parameter name="mode">
+
+音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+<a id="samplespercall-3"></a>
+<Parameter name="samplesPerCall">
+
+音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setplaybackaudioframeparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setrecordingaudioframeparameters"></a>
+
+<a id="ariaid-title8"></a>
+
+## SetRecordingAudioFrameParameters
+
+设置采集的原始音频数据格式。
+
+<a id="api_irtcengine_setrecordingaudioframeparameters__prototype"></a>
+
+```text
+public abstract int SetRecordingAudioFrameParameters(int sampleRate, int channel, RAW_AUDIO_FRAME_OP_MODE_TYPE mode, int samplesPerCall);
+```
+
+<a id="api_irtcengine_setrecordingaudioframeparameters__detailed_desc"></a>
+
+SDK 会通过该方法中的 `samplesPerCall`、`sampleRate` 和 `channel` 参数计算出采样间隔，计算公式为采样间隔 = `samplesPerCall`/(`sampleRate` × `channel`)。请确保采样间隔不小于 0.01 秒。SDK 会根据该采样间隔触发 [OnRecordAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+
+<a id="api_irtcengine_setrecordingaudioframeparameters__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setrecordingaudioframeparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="samplerate-5"></a>
+<Parameter name="sampleRate">
+
+音频数据的采样率 (Hz)，可设置为 8000、 16000、 32000、44100 或 48000。
+
+</Parameter>
+<a id="channel-5"></a>
+<Parameter name="channel">
+
+音频数据的声道数，可设置为 1 或 2:
+
+- 1: 单声道。
+- 2: 双声道。
+
+</Parameter>
+<a id="mode-3"></a>
+<Parameter name="mode">
+
+音频帧的使用模式，详见 [RAW_AUDIO_FRAME_OP_MODE_TYPE](/zh-CN/api-reference/rtc/unity/enum-rawaudioframeopmodetype)。
+
+</Parameter>
+<a id="samplespercall-4"></a>
+<Parameter name="samplesPerCall">
+
+音频数据的采样点数，如旁路推流应用中通常为 1024。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setrecordingaudioframeparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_unregisteraudioframeobserver"></a>
+
+<a id="ariaid-title9"></a>
+
+## UnRegisterAudioFrameObserver
+
+取消注册音频帧观测器。
+
+<a id="api_irtcengine_unregisteraudioframeobserver__prototype"></a>
+
+```text
+public abstract int UnRegisterAudioFrameObserver();
+```
+
+<a id="api_irtcengine_unregisteraudioframeobserver__detailed_desc"></a>
+
+<a id="api_irtcengine_unregisteraudioframeobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_irtcengine)
+
+<a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe"></a>
+
+<a id="ariaid-title10"></a>
+
+## OnEarMonitoringAudioFrame
+
+获得耳返的原始音频数据。
+
+<a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__prototype"></a>
+
+```text
+public virtual bool OnEarMonitoringAudioFrame(AudioFrame audioFrame)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__detailed_desc"></a>
+
+为保证耳返的音频数据格式符合预期，你可以调用 [SetEarMonitoringAudioFrameParameters](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_irtcengine_setearmonitoringaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [OnEarMonitoringAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onearmonitoringaudioframe) 回调。
+
+<a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="audioframe"></a>
+<Parameter name="audioFrame">
+
+音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/unity/class-audioframe)。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_iaudioframeobserverbase_onearmonitoringaudioframe__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
+
+<a id="callback_iaudioframeobserverbase_onmixedaudioframe"></a>
+
+<a id="ariaid-title11"></a>
+
+## OnMixedAudioFrame
+
+获取采集和播放音频混音后的数据。
+
+<a id="callback_iaudioframeobserverbase_onmixedaudioframe__prototype"></a>
+
+```text
+public virtual bool OnMixedAudioFrame(string channelId, AudioFrame audio_frame)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudioframeobserverbase_onmixedaudioframe__detailed_desc"></a>
+
+为保证采集和播放混音后的音频数据格式符合预期，你可以调用 [SetMixedAudioFrameParameters](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_irtcengine_setmixedaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [OnMixedAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onmixedaudioframe) 回调。
+
+<a id="callback_iaudioframeobserverbase_onmixedaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="audio_frame"></a>
+<Parameter name="audio_frame">
+
+音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/unity/class-audioframe)。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_iaudioframeobserverbase_onmixedaudioframe__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
+
+<a id="callback_iaudioframeobserverbase_onplaybackaudioframe"></a>
+
+<a id="ariaid-title12"></a>
+
+## OnPlaybackAudioFrame
+
+获得播放的原始音频数据。
+
+<a id="callback_iaudioframeobserverbase_onplaybackaudioframe__prototype"></a>
+
+```text
+public virtual bool OnPlaybackAudioFrame(string channelId, AudioFrame audio_frame)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudioframeobserverbase_onplaybackaudioframe__detailed_desc"></a>
+
+为保证播放的音频数据格式符合预期，你可以调用 [SetPlaybackAudioFrameParameters](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_irtcengine_setplaybackaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [OnPlaybackAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onplaybackaudioframe) 回调。
+
+<a id="callback_iaudioframeobserverbase_onplaybackaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="audio_frame-1"></a>
+<Parameter name="audio_frame">
+
+音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/unity/class-audioframe)。
+
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
+
+频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_iaudioframeobserverbase_onplaybackaudioframe__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)
+
+<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing"></a>
+
+<a id="ariaid-title13"></a>
+
+## OnPlaybackAudioFrameBeforeMixing
+
+获取所订阅的远端用户混音前的声音。
+
+<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__prototype"></a>
+
+```text
+public virtual bool OnPlaybackAudioFrameBeforeMixing(string channel_id,
+                                                        uint uid,
+                                                        AudioFrame audio_frame)
+        {
+            return false;
+        }
+```
+
+<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__detailed_desc"></a>
+
+<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channel_id"></a>
+<Parameter name="channel_id">
+
+频道 ID。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+订阅的远端用户的 ID。
+
+</Parameter>
+<a id="audio_frame-2"></a>
+<Parameter name="audio_frame">
+
+音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/unity/class-audioframe)。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_iaudioframeobserver_onplaybackaudioframebeforemixing__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserver](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserver)
+
+<a id="callback_iaudioframeobserverbase_onrecordaudioframe"></a>
+
+<a id="ariaid-title14"></a>
+
+## OnRecordAudioFrame
+
+获得采集的原始音频数据。
+
+<a id="callback_iaudioframeobserverbase_onrecordaudioframe__prototype"></a>
+
+```text
+public virtual bool OnRecordAudioFrame(string channelId, AudioFrame audioFrame)
+        {
+            return true;
+        }
+```
+
+<a id="callback_iaudioframeobserverbase_onrecordaudioframe__detailed_desc"></a>
+
+为保证采集的音频数据格式符合预期，你可以调用 [SetRecordingAudioFrameParameters](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_irtcengine_setrecordingaudioframeparameters) 设置音频数据格式后，调用 [RegisterAudioFrameObserver](/zh-CN/api-reference/rtc/unity/audio/audio-raw#api_imediaengine_registeraudioframeobserver) 注册音频观测器对象，SDK 会根据该方法中的参数计算采样间隔，并根据该采样间隔触发 [OnRecordAudioFrame](/zh-CN/api-reference/rtc/unity/audio/audio-raw#callback_iaudioframeobserverbase_onrecordaudioframe) 回调。
+
+<a id="callback_iaudioframeobserverbase_onrecordaudioframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="audioframe-1"></a>
+<Parameter name="audioFrame">
+
+音频原始数据。详见 [AudioFrame](/zh-CN/api-reference/rtc/unity/class-audioframe)。
+
+</Parameter>
+<a id="channelid-2"></a>
+<Parameter name="channelId">
+
+频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_iaudioframeobserverbase_onrecordaudioframe__return_values"></a>
+
+### 返回值
+
+无实际含义。
+
+### 所属接口类
+
+- [IAudioFrameObserverBase](/zh-CN/api-reference/rtc/unity/rtc-interface-class#class_iaudioframeobserverbase)

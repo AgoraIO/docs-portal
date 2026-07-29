@@ -1,0 +1,46 @@
+---
+title: UserAudioSpectrumInfo
+description: 远端用户的音频频谱信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_useraudiospectruminfo
+  sourcePath: html-docs/rtc/Flutter/API/class_useraudiospectruminfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_useraudiospectruminfo__prototype"></a>
+
+```text
+class UserAudioSpectrumInfo {
+  const UserAudioSpectrumInfo({this.uid, this.spectrumData});
+
+  @JsonKey(name: 'uid')
+  final int? uid;
+  @JsonKey(name: 'spectrumData')
+  final AudioSpectrumData? spectrumData;
+  factory UserAudioSpectrumInfo.fromJson(Map<String, dynamic> json) =>
+      _$UserAudioSpectrumInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$UserAudioSpectrumInfoToJson(this);
+}
+```
+
+<a id="class_useraudiospectruminfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="spectrumdata"></a>
+<Parameter name="spectrumData">
+
+远端用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/flutter/class-audiospectrumdata)。
+
+</Parameter>
+</ParameterList>

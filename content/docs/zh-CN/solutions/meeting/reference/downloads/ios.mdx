@@ -1,0 +1,33 @@
+## 通过 CocoaPods 集成依赖
+
+1. 在终端里进入项目文件夹，运行 `pod init`。
+
+2. 打开 `Podfile` 文件，修改为如下内容：
+
+```ruby
+platform :ios, '11.0'
+use_frameworks!
+
+target 'YourTargetName' do
+    pod 'FcrUIScene', '3.1.0'
+    pod "AgoraRtm_OC_Special", '2.2.1.1'
+end
+```
+
+3. 在终端里进入项目文件夹，运行如下命令安装依赖：
+
+```shell
+pod install
+```
+
+## 下载 SDK
+
+<SdksCatalog locale="zh-CN" product="meeting" platform="ios" />
+
+## 相关文档
+
+<Cards>
+  <Card title="集成智能云会议引擎" href="/zh-CN/solutions/meeting/get-started/integrate-meeting" />
+  <Card title="开通智能云会议引擎服务" href="/zh-CN/solutions/meeting/build/setup-and-access/enable-service" />
+  <Card title="平台支持" href="/zh-CN/solutions/meeting/reference/platform-support" />
+</Cards>

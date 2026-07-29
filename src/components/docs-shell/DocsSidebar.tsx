@@ -5,8 +5,12 @@ import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
 } from '@/components/ui/sidebar';
+import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import type { AppLocale } from '@/lib/i18n/i18n-config';
+import { getDocsSidebarMode } from '@/lib/reference-center-navigation';
+import { ApiReferenceProductNav } from './ApiReferenceProductNav';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { useTransientScrollbar } from './useTransientScrollbar';
@@ -14,18 +18,23 @@ import { useTransientScrollbar } from './useTransientScrollbar';
 export function DocsSidebar({
   activePath,
   header,
+  locale,
   nodes,
   onSelectPath,
   resetKey,
 }: {
   activePath: string;
   header?: DocsSidebarHeader;
+  locale: AppLocale;
   nodes: DocsSidebarNode[];
   onSelectPath: () => void;
   resetKey: string;
 }) {
   const { isScrollbarVisible, scrollContainerRef, scrollToTop } =
     useTransientScrollbar<HTMLDivElement>();
+  const sidebarMode = getDocsSidebarMode(activePath, locale);
+  const hasPrimaryResourceLinks = sidebarMode === 'reference';
+  const hasApiProductNav = sidebarMode === 'api';
 
   useEffect(() => {
     void resetKey;
@@ -46,25 +55,50 @@ export function DocsSidebar({
       variant="inset"
     >
       <SidebarContent
-        className={`docs-scrollbar h-full min-h-0 overflow-y-auto ${
-          isScrollbarVisible ? 'docs-scrollbar-visible' : ''
-        }`}
+        className={cn(
+          'h-full min-h-0',
+          sidebarMode ? 'overflow-y-hidden' : 'docs-scrollbar overflow-y-auto',
+          !sidebarMode && isScrollbarVisible && 'docs-scrollbar-visible',
+        )}
         data-testid="docs-sidebar-scroll"
         ref={scrollContainerRef}
       >
-        <div className="py-4 pr-3 pb-8">
-          {header ? (
-            <DocsSidebarHeaderBlock
-              header={header}
-              mode="desktop"
-              onSelectPath={onSelectPath}
-            />
-          ) : null}
-          <DocsSidebarTree
-            activePath={activePath}
-            nodes={nodes}
-            onSelectPath={onSelectPath}
-          />
+        <div
+          className={cn(
+            'pr-3',
+            sidebarMode ? 'flex h-full min-h-0 flex-col pt-4' : 'py-4 pb-8',
+          )}
+        >
+          {sidebarMode ? (
+            <>
+              {hasPrimaryResourceLinks ? (
+                <div className="shrink-0">
+                  <DocsSidebarTree
+                    activePath={activePath}
+                    nodes={nodes}
+                    onSelectPath={onSelectPath}
+                  />
+                </div>
+              ) : null}
+              {hasApiProductNav ? <ApiReferenceProductNav /> : null}
+            </>
+          ) : (
+            <div>
+              {header ? (
+                <DocsSidebarHeaderBlock
+                  header={header}
+                  locale={locale}
+                  mode="desktop"
+                  onSelectPath={onSelectPath}
+                />
+              ) : null}
+              <DocsSidebarTree
+                activePath={activePath}
+                nodes={nodes}
+                onSelectPath={onSelectPath}
+              />
+            </div>
+          )}
         </div>
       </SidebarContent>
     </ShadcnSidebar>

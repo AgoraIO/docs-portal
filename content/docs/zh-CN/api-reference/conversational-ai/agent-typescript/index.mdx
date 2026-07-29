@@ -1,0 +1,975 @@
+---
+title: "API 概览"
+description: "声网对话式 AI TypeScript SDK 的完整 API 参考，包括 AgoraClient、Agent、AgentSession 以及各类 vendor 类。"
+---
+## AgoraClient
+
+`AgoraClient` 是 SDK 的入口，用于管理区域路由、鉴权和 API 访问。
+
+```typescript
+import { AgoraClient, Area } from 'agora-agents';
+```
+
+### Constructor
+
+```typescript
+const client = new AgoraClient(options: AgoraClient.Options);
+```
+
+鉴权模式会根据你提供的参数自动解析。
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `area` | [`Area`](#area) | Yes | API 路由所使用的区域。固定为 `Area.CN` |
+| `appId` | `string` | Yes | 声网 App ID |
+| `appCertificate` | `string` | Yes | 声网 App Certificate。请妥善保管，切勿暴露在客户端 |
+| `customerId` | `string` | No | 用于 Basic Auth 的客户 ID |
+| `customerSecret` | `string` | No | 用于 Basic Auth 的客户密钥 |
+| `authToken` | `string` | No | 预先构造好的 `agora token=<value>` 字符串 |
+| `timeoutInSeconds` | `number` | No | 请求超时时间，单位为秒 |
+| `maxRetries` | `number` | No | 最大重试次数 |
+| `logging` | `LogConfig \| Logger` | No | SDK 日志配置 |
+| `fetch` | `typeof fetch` | No | 在不支持默认运行时的环境中传入自定义 `fetch` 实现 |
+
+鉴权模式根据你提供的参数解析如下：
+
+| Options provided | Resolved [`authMode`](#agoraauthmode) |
+|---|---|
+| `customerId` + `customerSecret` | `"basic"` |
+| `authToken` | `"token"` |
+| Neither | `"app-credentials"` |
+
+各鉴权模式的详细说明可参考[实现 HTTP 鉴权](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/http-basic-auth)。
+
+### Properties
+
+任意 `AgoraClient` 实例都提供以下只读属性。
+
+| Property | Type | Description |
+|---|---|---|
+| `appId` | `string` | 声网 App ID |
+| `appCertificate` | `string` | 声网 App Certificate |
+| `authMode` | [`AgoraAuthMode`](#agoraauthmode) | 解析后的鉴权模式 |
+| `pool` | `Pool` | 用于区域路由的底层域名池实例 |
+
+### Methods
+
+除基础 API 访问能力外，还提供以下高层方法。
+
+#### `agent(options?)`
+
+创建一个绑定到当前 client 的 [`Agent`](#agent)。这样无需在 `Agent` 构造函数里再次传入 `client`。
+
+```typescript
+const agent = client.agent({ turnDetection: { language: 'zh-CN' } });
+```
+
+#### `nextRegion()`
+
+将域名池切换到下一个区域前缀。通常在请求失败后调用，以尝试其他区域端点。
+
+```typescript
+client.nextRegion();
+```
+
+#### `selectBestDomain(signal?)`
+
+手动触发一次 DNS 解析检测，以选择最优的域名后缀。SDK 默认每 30 秒自动执行一次，你也可以手动调用。
+
+```typescript
+await client.selectBestDomain();
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `signal` | `AbortSignal` | 可选的中止信号，用于取消此次 DNS 检测 |
+
+#### `getCurrentURL()`
+
+返回当前正在使用的完整 API URL，类型为 `string`。
+
+```typescript
+const url = client.getCurrentURL();
+// Example: 'https://api-cn-east-1.sd-rtn.com/cn/api/conversational-ai-agent'
+```
+
+### Sub-clients
+
+`AgoraClient` 也暴露了原始 API client，便于访问尚未被 `Agent` 或 `AgentSession` 封装的接口。大多数场景下，建议优先使用 [Agent](#agent) 和 [AgentSession](#agentsession) 这套高层 API。
+
+| Property | Description |
+|---|---|
+| `client.agents` | 启动、停止、更新、播报、打断、获取历史记录、查询智能体列表 |
+
+完整的方法签名和请求参数可参考[创建对话式智能体 RESTful API](/zh-CN/api-reference/api-ref/conversational-ai/join)。
+
+## Agent
+
+`Agent` 是一个不可变的配置对象。每个 builder method 都会返回一个新的 `Agent` 实例，原对象不会被修改。建议在应用启动时定义一个 `Agent`，并在每次用户对话时基于它调用 `createSession()`。
+
+在构造时通过 `new Agent({ client, ... })`（或 [`client.agent(...)`](#agentoptions)）绑定 `AgoraClient`，[`createSession()`](#createsessionoptions) 会复用该 client，因此创建会话时无需再传入 client。智能体实例名不在 `Agent` 构造函数上设置，而是在 `createSession({ name })` 时传入。
+
+```typescript
+import { AgoraClient, Agent, Area } from 'agora-agents';
+
+const client = new AgoraClient({ area: Area.CN, appId: 'your-app-id', appCertificate: 'your-app-certificate' });
+const agent = new Agent({ client });
+```
+
+### Constructor
+
+```typescript
+new Agent<TTSSampleRate extends number = number>(options?: AgentOptions)
+```
+
+所有选项均为可选项。创建后可通过 [builder methods](#builder-methods) 配置各 vendor。
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `client` | `AgoraClient` | `undefined` | 绑定的 client，绑定后即可调用 `createSession(options)` 而无需再传入 client |
+| `pipelineId` | `string` | `undefined` | 作为基础配置使用的已发布 AI Studio pipeline ID |
+| `instructions` | `string` | `undefined` | 已废弃。请改用 LLM vendor 的 `systemMessages` |
+| `greeting` | `string` | `undefined` | 已废弃。请改用 LLM vendor 的 `greetingMessage` |
+| `failureMessage` | `string` | `undefined` | 已废弃。请改用 LLM vendor 的 `failureMessage` |
+| `maxHistory` | `number` | `undefined` | 已废弃。请改用 LLM vendor 的 `maxHistory` |
+| `turnDetection` | `TurnDetectionConfig` | `undefined` | 语音活动检测设置 |
+| `interruption` | `InterruptionConfig` | `undefined` | 统一的打断控制设置 |
+| `sal` | `SalConfig` | `undefined` | Selective Attention Locking 配置 |
+| `avatar` | `AvatarConfig` | `undefined` | 数字人配置（推荐使用 `withAvatar()` 以获得类型安全） |
+| `advancedFeatures` | `AdvancedFeatures` | `undefined` | 启用 AI-VAD 等高级特性 |
+| `parameters` | `SessionParams` | `undefined` | 会话参数，包括静默与结束语配置 |
+| `geofence` | `GeofenceConfig` | `undefined` | 区域访问限制 |
+| `labels` | `Labels` | `undefined` | 在通知回调中返回的自定义键值标签 |
+| `rtc` | `RtcConfig` | `undefined` | RTC 媒体加密配置 |
+| `fillerWords` | `FillerWordsConfig` | `undefined` | 在等待 LLM 响应期间播放的填充词配置 |
+| `greetingConfigs` | `LlmGreetingConfigs` | `undefined` | 已废弃。请改在 LLM vendor 上配置 |
+
+`instructions`、`greeting`、`failureMessage`、`maxHistory`、`greetingConfigs` 是兼容性字段。新代码应在 LLM vendor 上配置这些值，以匹配核心请求 schema。
+
+:::info
+`AgentOptions` 支持泛型参数（`AgentOptions<TArea>`）。当 client 使用 `Area.CN` 时，SDK 会据此提示可用的 vendor，但不会强制校验 vendor 与区域是否匹配。
+:::
+
+### Builder methods
+
+所有 builder method 都会返回一个**新的** `Agent` 实例，原对象不会被修改。
+
+仅支持级联式 ASR + LLM + TTS 流水线以及 vendor。
+
+#### `withLlm(vendor)`
+
+设置 LLM vendor。传入任意 [LLM vendor class](#llm-vendors)（[`AliyunLLM`](#llm-vendors)、[`BytedanceLLM`](#llm-vendors)、[`DeepSeekLLM`](#llm-vendors)、[`TencentLLM`](#llm-vendors) 或 [`CustomLLM`](#llm-vendors)）的实例。
+
+```typescript
+withLlm(vendor: BaseCNLLM): Agent<TTSSampleRate>
+```
+
+#### `withTts(vendor)`
+
+设置 TTS vendor。该方法会捕获并追踪采样率类型，以便进行[数字人](#avatar-vendors)兼容性校验。
+
+```typescript
+withTts<SR extends number>(vendor: BaseCNTTS<SR>): Agent<SR>
+```
+
+#### `withStt(vendor)`
+
+设置 STT vendor。可传入任意 [STT vendor class](#stt-vendors) 的实例。
+
+```typescript
+withStt(vendor: BaseCNSTT): Agent<TTSSampleRate>
+```
+
+#### `withAvatar(vendor)`
+
+设置数字人 vendor。这里的 `this` 约束会在编译阶段校验该 `Agent` 的 TTS 采样率是否满足数字人要求。需要使用级联式 ASR + LLM + TTS 流水线。
+
+```typescript
+withAvatar<RequiredSR extends number>(
+  this: Agent<RequiredSR>,
+  vendor: BaseCNAvatar<RequiredSR>
+): Agent<RequiredSR>
+```
+
+#### `withTurnDetection(config)`
+
+配置级联流程中的 turn detection。使用 `config.start_of_speech` 和 `config.end_of_speech` 配置 SOS/EOS 检测。打断行为请使用 `withInterruption()`。
+
+```typescript
+withTurnDetection(config: TurnDetectionConfig): Agent<TTSSampleRate>
+```
+
+#### `withInterruption(config)`
+
+通过顶层 `interruption` 对象配置统一打断行为。适用于 `start_of_speech` 和 `keywords` 两类打断模式。
+
+```typescript
+withInterruption(config: InterruptionConfig): Agent<TTSSampleRate>
+```
+
+#### `withInstructions(text)`
+
+已废弃。请改用 LLM vendor 的 `systemMessages`。在新的 `Agent` 实例上覆盖 LLM system prompt。
+
+```typescript
+withInstructions(instructions: string): Agent<TTSSampleRate>
+```
+
+#### `withGreeting(text)`
+
+已废弃。请改用 LLM vendor 的 `greetingMessage`。在新的 `Agent` 实例上覆盖问候语。
+
+```typescript
+withGreeting(greeting: string): Agent<TTSSampleRate>
+```
+
+#### Other builder methods
+
+以下方法遵循相同模式，都会返回一个包含更新后配置的新 `Agent` 实例。
+
+| Method | Parameter type | Description |
+|---|---|---|
+| `withSal(config)` | `SalConfig` | 设置 Selective Attention Locking 配置 |
+| `withAdvancedFeatures(features)` | `AdvancedFeatures` | 设置高级特性 |
+| `withTools(enabled)` | `boolean` | 启用或关闭 MCP tool 调用 |
+| `withParameters(parameters)` | `SessionParams` | 设置会话参数 |
+| `withAudioScenario(audioScenario)` | `ParametersAudioScenario` | 设置 `parameters.audio_scenario`。可选值为 `default`、`chorus` 和 `aiserver`。未设置时，SDK 会自动补成 `chorus`。为便于发现可选值，建议使用导出的 `AudioScenario` 常量，例如 `agent.withAudioScenario(AudioScenario.Aiserver)` |
+| `withFailureMessage(message)` | `string` | 设置 LLM 失败时播报的消息 |
+| `withMaxHistory(n)` | `number` | 设置级联 LLM 流水线的最大对话历史长度 |
+| `withGeofence(geofence)` | `GeofenceConfig` | 设置 geofence 配置 |
+| `withLabels(labels)` | `Labels` | 设置自定义标签 |
+| `withRtc(rtc)` | `RtcConfig` | 设置 RTC 配置 |
+| `withFillerWords(fillerWords)` | `FillerWordsConfig` | 设置填充词配置 |
+
+### `createSession(options)`
+
+使用构造 `Agent` 时绑定的 client 创建一个绑定到频道的 [`AgentSession`](#agentsession)。该方法不会立即启动智能体，需调用 [`session.start()`](#start) 才会加入频道。
+
+如果构造 `Agent` 时未传入 `client`，调用 `createSession()` 会抛出错误。
+
+```typescript
+createSession(
+  options: SessionOptions,
+): AgentSession
+```
+
+```typescript
+const session = agent.createSession({
+  name: 'support-agent',
+  channel: 'support-room',
+  agentUid: '1',
+  remoteUids: ['100'],
+});
+```
+
+`name` 为智能体实例名，会发送给声网 API。请在 `createSession()` 上设置，而不要设置在 `Agent` 上；省略时自动生成 `agent-{timestamp}`。
+
+`SessionOptions` 字段如下：
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `name` | `string` | No | 发送给声网 API 的智能体实例名。省略时自动生成 `agent-{timestamp}` |
+| `channel` | `string` | Yes | 要加入的频道名 |
+| `agentUid` | `string` | Yes | 智能体的 RTC UID |
+| `remoteUids` | `string[]` | Yes | 智能体需要监听并响应的远端用户 UID 列表 |
+| `token` | `string` | No | 预先构造好的 RTC+RTM token。留空时会根据 app credentials 自动生成 |
+| `expiresIn` | `number` | No | token 有效期，单位为秒。仅在自动生成 token 时生效。有效范围为 1–86400。建议使用 [`ExpiresIn`](#expiresin) 辅助方法增强可读性 |
+| `idleTimeout` | `number` | No | 当检测不到音频时，智能体自动退出前的秒数。`0` 表示禁用超时 |
+| `enableStringUid` | `boolean` | No | 使用字符串 UID，而非数字 UID |
+| `pipelineId` | `string` | No | 作为基础配置使用的已发布 AI Studio pipeline ID |
+| `debug` | `boolean` | No | 在控制台输出 API 请求日志 |
+| `warn` | `(message: string) => void` | No | 自定义告警日志函数；如需静默告警可传入 no-op |
+
+各 vendor 均为 BYOK，需要提供对应 provider 的凭据。
+
+### Properties
+
+任意 `Agent` 实例都提供以下只读属性。
+
+| Property | Type | Description |
+|---|---|---|
+| `pipelineId` | `string \| undefined` | 作为基础配置使用的已发布 AI Studio pipeline ID |
+| `instructions` | `string \| undefined` | LLM system prompt（兼容性字段） |
+| `greeting` | `string \| undefined` | 问候语（兼容性字段） |
+| `failureMessage` | `string \| undefined` | LLM 失败时播报的消息（兼容性字段） |
+| `maxHistory` | `number \| undefined` | 最大对话历史长度（兼容性字段） |
+| `llm` | `LlmConfig \| undefined` | LLM 配置 |
+| `tts` | `TtsConfig \| undefined` | TTS 配置 |
+| `stt` | `SttConfig \| undefined` | STT 配置 |
+| `avatar` | `AvatarConfig \| undefined` | 数字人配置 |
+| `turnDetection` | `TurnDetectionConfig \| undefined` | 轮次检测配置 |
+| `interruption` | `InterruptionConfig \| undefined` | 打断配置 |
+| `sal` | `SalConfig \| undefined` | SAL 配置 |
+| `advancedFeatures` | `AdvancedFeatures \| undefined` | 高级特性配置 |
+| `parameters` | `SessionParams \| undefined` | 会话参数 |
+| `geofence` | `GeofenceConfig \| undefined` | Geofence 配置 |
+| `labels` | `Labels \| undefined` | 自定义标签 |
+| `rtc` | `RtcConfig \| undefined` | RTC 配置 |
+| `fillerWords` | `FillerWordsConfig \| undefined` | 填充词配置 |
+| `greetingConfigs` | `LlmGreetingConfigs \| undefined` | 问候语播放配置兼容性字段 |
+| `config` | `AgentOptions` | 完整的只读配置快照 |
+
+### `toProperties(opts)`
+
+高级方法，用于将 `Agent` 配置转换为 Start Agent API 所需的请求结构。`AgentSession.start()` 内部会调用该方法；除非你需要自行构造请求体，否则通常无需直接调用。
+
+```typescript
+toProperties(opts): StartAgentsRequest.Properties
+```
+
+### Type aliases
+
+SDK 公开了常用请求与响应类型的别名，包括 `LlmConfig`、`SttConfig`、`AsrConfig`（即 `SttConfig`）、`AvatarConfig`、会话/对话相关类型，以及 think 类型（例如 `ThinkOnListeningAction`）。
+
+Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionIgnore`。
+
+## AgentSession
+
+`AgentSession` 负责管理运行中智能体的完整生命周期。请通过 [`agent.createSession()`](#createsessionoptions) 创建会话，而不要直接调用构造函数。
+
+```typescript
+import { AgentSession } from 'agora-agents';
+```
+
+通过 `SessionOptions` 的 `name` 字段设置发送给声网 API 的智能体实例名；省略时自动生成 `agent-{timestamp}`。
+
+### State machine
+
+会话状态会按以下流程推进：
+
+```
+idle ──► starting ──► running ──► stopping ──► stopped
+                         │
+                         ▼
+                       error
+```
+
+| Transition | Trigger |
+|---|---|
+| `idle → starting` | 调用 `start()` |
+| `starting → running` | API 返回 agent ID |
+| `starting → error` | API 请求失败 |
+| `running → stopping` | 调用 `stop()` |
+| `stopping → stopped` | API 确认智能体已停止 |
+| `stopping → error` | 停止请求失败，且智能体并未提前停止 |
+| `running → error` | 交互过程中发生不可恢复错误 |
+
+在 `stopped` 或 `error` 状态下，也可以再次调用 `start()` 以重启会话。
+
+### Methods
+
+`AgentSession` 实例提供以下方法。
+
+#### `start()`
+
+启动智能体会话。如果未提供 token，则自动生成 token，随后发送启动请求并返回 agent ID。
+
+```typescript
+start(): Promise<string>
+```
+
+- 状态流转：`idle` / `stopped` / `error` → `starting` → `running`
+- 若在 `starting`、`running` 或 `stopping` 状态下调用，则抛出异常
+- 若数字人配置无效（例如 TTS 采样率不匹配），则抛出异常
+- 各 vendor 均为 BYOK，会按 `Agent` 上配置的 vendor 凭据发送配置
+
+#### `stop()`
+
+停止智能体会话，并让智能体退出频道。如果智能体已经停止，例如由于空闲超时自动退出，则该方法会静默返回，而不会因为 404 报错。
+
+```typescript
+stop(): Promise<void>
+```
+
+- 状态流转：`running` → `stopping` → `stopped`
+- 仅可在 `running` 状态下调用，否则抛出异常
+
+#### `say(text, options?)`
+
+指示智能体播报指定文本。
+
+```typescript
+say(text: string, options?: SayOptions): Promise<void>
+```
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `text` | `string` | Yes | 要让智能体播报的文本 |
+| `options.priority` | [`SpeakPriority`](#speakpriority) | No | 消息优先级 |
+| `options.interruptable` | `boolean` | No | 该消息是否允许被用户打断 |
+
+- 仅在 `running` 状态下有效
+
+#### `interrupt()`
+
+打断智能体当前正在播报的内容。
+
+```typescript
+interrupt(): Promise<void>
+```
+
+- 仅在 `running` 状态下有效
+
+#### `update(config)`
+
+在不重启会话的情况下，更新会话中的智能体配置。该方法接收 REST API 格式的部分配置对象。
+
+```typescript
+update(config: AgentConfigUpdate): Promise<void>
+```
+
+- 仅在 `running` 状态下有效
+
+#### `getHistory()`
+
+获取当前会话的对话历史。该方法要求已有有效的 agent ID，也就是 `start()` 必须已成功调用。
+
+```typescript
+getHistory(): Promise<ConversationHistory>
+```
+
+#### `getTurns(options?)`
+
+获取当前会话的逐轮分析数据，包括开始/结束事件以及延迟指标。该方法要求已有有效的 agent ID，且 `start()` 已成功调用。
+
+```typescript
+getTurns(options?: GetTurnsOptions): Promise<ConversationTurns>
+```
+
+- `options.page_index`：页码，从 `1` 开始
+- `options.page_size`：每页返回的轮次数量
+
+#### `getAllTurns(options?)`
+
+获取所有轮次分析分页，并合并 `turns` 数组。该方法要求已有有效的 agent ID，且 `start()` 已成功调用。
+
+```typescript
+getAllTurns(options?: Omit<GetTurnsOptions, "page_index">): Promise<ConversationTurns>
+```
+
+- 要求存在有效的 `agentId`
+- 对于超长会话，建议使用 `getTurns()` 按页处理，以避免一次性将所有数据加载到内存中
+
+#### `getInfo()`
+
+从 API 获取当前智能体的元数据。该方法要求已有有效的 agent ID。
+
+```typescript
+getInfo(): Promise<SessionInfo>
+```
+
+#### `on(event, handler)`
+
+订阅会话事件。建议在调用 `start()` 之前注册 handler，以避免错过 `started` 事件。
+
+```typescript
+on<T>(event: AgentSessionEvent, handler: AgentSessionEventHandler<T>): void
+```
+
+#### `off(event, handler)`
+
+取消订阅此前注册的事件 handler。
+
+```typescript
+off<T>(event: AgentSessionEvent, handler: AgentSessionEventHandler<T>): void
+```
+
+### Events
+
+会话会发出以下事件。类型详情可参考 [`AgentSessionEvent`](#agentsessionevent) 和 [`AgentSessionEventHandler`](#agentsessioneventhandler)。
+
+| Event | Payload type | Description |
+|---|---|---|
+| `"started"` | `{ agentId: string }` | 智能体成功加入频道 |
+| `"stopped"` | `{ agentId: string }` | 智能体离开频道 |
+| `"error"` | `Error` | 发生不可恢复错误 |
+
+### Properties
+
+任意 `AgentSession` 实例都提供以下只读属性。
+
+| Property | Type | Description |
+|---|---|---|
+| `status` | `string` | 当前会话状态，可能取值为 `"idle"`、`"starting"`、`"running"`、`"stopping"`、`"stopped"`、`"error"` |
+| `id` | `string \| null` | agent ID，在 `start()` 成功后填充 |
+| `agent` | `Agent` | 当前会话所基于的 agent 配置 |
+| `appId` | `string` | 当前会话使用的声网 App ID |
+| `raw` | `AgentsClient` | 直接访问原始 `AgentsClient`，适用于高级调用场景 |
+
+#### Using `session.raw`
+
+你可以通过 `session.raw` 调用尚未被高层 API 封装的接口：
+
+```typescript
+await session.raw.someNewEndpoint({
+  appid: session.appId,
+  agentId: session.id!,
+});
+```
+
+使用 raw 方法时，需要手动传入 `appid` 和 `agentId`。
+
+### BYOK
+
+建议优先在 `Agent` builder 上配置 vendor。各 vendor 均为 BYOK，需要显式提供对应 provider 的凭据。
+
+- 在 builder 上为各 vendor 显式提供凭据
+
+## Vendors
+
+vendor 类均从 `agora-agents` 导入。将这些 vendor 实例传给 [Agent builder methods](#builder-methods) 即可。
+
+```typescript
+import {
+  AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM, CustomLLM,
+  MiniMaxCNTTS, TencentTTS, BytedanceTTS, MicrosoftCNTTS,
+  CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS,
+  FengmingSTT, TencentSTT, MicrosoftCNSTT,
+  XfyunSTT, XfyunBigModelSTT, XfyunDialectSTT,
+  SensetimeAvatar,
+} from 'agora-agents';
+```
+
+采用 STT → LLM → TTS 的级联流程。所有 vendor 均为 BYOK，需要提供对应 provider 的凭据。constructor 在必填字段缺失时会抛出错误。
+
+### LLM vendors
+
+与 [`withLlm()`](#withllmvendor) 配合使用。LLM helper 均基于 OpenAI 兼容协议（`style = "openai"`），共享同一套构造参数，区别仅在于内部写入的 `vendor` 标识。CN 场景下这些 helper 均为 BYOK，`url`、`model` 和 `apiKey` 均为必填。
+
+| Class | `vendor` 值 | Provider |
+|---|---|---|
+| `AliyunLLM` | `aliyun` | 阿里云百炼（通义千问，如 `qwen-plus`） |
+| `BytedanceLLM` | `bytedance` | 火山引擎（字节跳动豆包，如 `doubao-seed-1-6`） |
+| `DeepSeekLLM` | `deepseek` | DeepSeek（如 `deepseek-chat`） |
+| `TencentLLM` | `tencent` | 腾讯混元（如 `hunyuan-turbos-latest`） |
+| `CustomLLM` | `custom` | 任意 OpenAI 兼容协议的 LLM |
+
+以上 helper 共用相同的构造参数：
+
+```typescript
+import { AliyunLLM } from 'agora-agents';
+
+const llm = new AliyunLLM({
+  url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+  model: 'qwen-plus',
+  apiKey: 'your-api-key',
+});
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `url` | `string` | Yes | OpenAI 兼容的 chat completions 端点 |
+| `model` | `string` | Yes | 模型名称 |
+| `apiKey` | `string` | Yes | provider API key |
+| `maxHistory` | `number` | No | 缓存的最大对话历史条数 |
+| `systemMessages` | `Record<string, unknown>[]` | No | 附加 system message 列表 |
+| `greetingMessage` | `string` | No | 智能体问候语 |
+| `failureMessage` | `string` | No | LLM 调用失败时播报的消息 |
+| `inputModalities` | `string[]` | No | 输入模态。默认值：`["text"]` |
+| `outputModalities` | `string[]` | No | 输出模态 |
+| `params` | `Record<string, unknown>` | No | 透传给模型的附加 LLM 参数 |
+| `headers` | `Record<string, string>` | No | 转发给 LLM 服务商的自定义 HTTP Header |
+| `greetingConfigs` | `LlmGreetingConfigs` | No | 问候语播放配置 |
+| `templateVariables` | `Record<string, string>` | No | 消息模板变量 |
+
+:::info
+自定义 LLM 路由复用 `CustomLLM`，因此即便是 BYOK 路径，`apiKey`、`model`、`url` 均为必填。
+:::
+
+### TTS vendors
+
+与 [`withTts()`](#withttsvendor) 配合使用。`sampleRate`（或对应字段）决定数字人兼容性，详见 [`withAvatar()`](#withavatarvendor)。所有 TTS 类均支持 `skipPatterns` 和 `additionalParams`。
+
+#### MiniMaxCNTTS
+
+MiniMax TTS 为 BYOK，始终要求 `key` 和 `model`。此外必须提供 `voiceSetting.voice_id` 或非空的 `timberWeights` 之一。
+
+```typescript
+new MiniMaxCNTTS(options: MiniMaxCNTTSOptions)
+```
+
+```typescript
+import { MiniMaxCNTTS } from 'agora-agents';
+
+const tts = new MiniMaxCNTTS({
+  key: 'your-minimax-key',
+  model: 'speech-01-turbo',
+  voiceSetting: { voice_id: 'female-shaonv' },
+  audioSetting: { sample_rate: 16000 },
+});
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `key` | `string` | Yes | MiniMax API key |
+| `model` | `string` | Yes | MiniMax TTS 模型 |
+| `voiceSetting` | `MiniMaxCNVoiceSetting` | Conditional | 音色设置；未提供 `timberWeights` 时必须设置且 `voice_id` 非空 |
+| `timberWeights` | `MiniMaxCNTimberWeight[]` | Conditional | 混合音色权重；未提供 `voiceSetting.voice_id` 时必填，至少一项 |
+| `audioSetting` | `MiniMaxCNAudioSetting` | No | 音频设置（`sample_rate`） |
+| `pronunciationDict` | `MiniMaxCNPronunciationDict` | No | 发音词典（`tone: string[]`） |
+| `languageBoost` | `string` | No | 语言增强策略 |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 MiniMax TTS 参数 |
+
+`MiniMaxCNVoiceSetting` 字段：`voice_id`（必填）、`speed?`、`vol?`、`pitch?`、`emotion?`、`latex_read?`、`english_normalization?`。`MiniMaxCNTimberWeight` 字段：`voice_id`、`weight`。
+
+#### TencentTTS
+
+```typescript
+new TencentTTS(options: TencentTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `appId` | `string` | Yes | 腾讯云 TTS app id |
+| `secretId` | `string` | Yes | 腾讯云 TTS secret id |
+| `secretKey` | `string` | Yes | 腾讯云 TTS secret key |
+| `voiceType` | `number` | Yes | 腾讯云 TTS 音色类型 |
+| `volume` | `number` | No | 音量 |
+| `speed` | `number` | No | 语速 |
+| `emotionCategory` | `string` | No | 情感类别 |
+| `emotionIntensity` | `number` | No | 情感强度 |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加腾讯云 TTS 参数 |
+
+#### BytedanceTTS
+
+```typescript
+new BytedanceTTS(options: BytedanceTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `token` | `string` | Yes | 字节跳动 TTS token |
+| `appId` | `string` | Yes | 字节跳动 TTS app id |
+| `cluster` | `string` | Yes | 字节跳动 TTS cluster |
+| `voiceType` | `string` | Yes | 字节跳动 TTS 音色类型 |
+| `speedRatio` | `number` | No | 语速比例 |
+| `volumeRatio` | `number` | No | 音量比例 |
+| `pitchRatio` | `number` | No | 音调比例 |
+| `emotion` | `string` | No | 情感 |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加字节跳动 TTS 参数 |
+
+#### MicrosoftCNTTS
+
+`sampleRate` 可取 `16000`、`24000` 或 `48000`，并参与数字人采样率校验。
+
+```typescript
+new MicrosoftCNTTS<SR extends MicrosoftCNSampleRate>(options: MicrosoftCNTTSOptions<SR>)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `key` | `string` | Yes | Microsoft Azure subscription key |
+| `region` | `string` | Yes | Azure 区域 |
+| `voiceName` | `string` | Yes | 音色名称 |
+| `sampleRate` | `16000 \| 24000 \| 48000` | No | 采样率，单位 Hz |
+| `speed` | `number` | No | 语速倍率 |
+| `volume` | `number` | No | 音量 |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 Microsoft TTS 参数 |
+
+#### CosyVoiceTTS
+
+```typescript
+new CosyVoiceTTS(options: CosyVoiceTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | CosyVoice API key |
+| `model` | `string` | Yes | CosyVoice 模型 |
+| `sampleRate` | `number` | Yes | 采样率，单位 Hz |
+| `voice` | `string` | Yes | CosyVoice 音色 |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 CosyVoice TTS 参数 |
+
+#### BytedanceDuplexTTS
+
+字节跳动全双工 TTS（`vendor = "bytedance_duplex"`）。
+
+```typescript
+new BytedanceDuplexTTS(options: BytedanceDuplexTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `appId` | `string` | Yes | 字节跳动 Duplex TTS app id |
+| `token` | `string` | Yes | 字节跳动 Duplex TTS token |
+| `speaker` | `string` | Yes | 字节跳动 Duplex TTS speaker |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加字节跳动 Duplex TTS 参数 |
+
+#### StepFunTTS
+
+```typescript
+new StepFunTTS(options: StepFunTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | StepFun TTS API key |
+| `model` | `string` | Yes | StepFun TTS 模型 |
+| `voiceId` | `string` | Yes | StepFun TTS 音色 id |
+| `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 StepFun TTS 参数 |
+
+### STT vendors
+
+与 [`withStt()`](#withsttvendor) 配合使用。
+
+#### FengmingSTT
+
+声网自研的「风鸣」STT 服务，无需任何参数和外部凭据，输出 `asr.vendor = "fengming"`。
+
+```typescript
+new FengmingSTT()
+```
+
+#### TencentSTT
+
+```typescript
+new TencentSTT(options: TencentSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `key` | `string` | Yes | 腾讯云 ASR 参数 `secret_id` |
+| `appId` | `string` | Yes | 腾讯云 App ID |
+| `secret` | `string` | Yes | 腾讯云 ASR 参数 `secret_key` |
+| `engineModelType` | `string` | Yes | 引擎模型类型 |
+| `voiceId` | `string` | Yes | 会话标识 |
+| `language` | `string` | No | 语言代码 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
+
+#### MicrosoftCNSTT
+
+```typescript
+new MicrosoftCNSTT(options: MicrosoftCNSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `key` | `string` | Yes | Azure Speech Services key |
+| `region` | `string` | Yes | Azure 区域，例如 `'chinaeast2'` |
+| `language` | `string` | Yes | 语言代码，例如 `'zh-CN'` |
+| `phraseList` | `string[]` | No | 提升识别准确率的短语列表 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
+
+#### XfyunSTT
+
+科大讯飞标准 STT（`asr.vendor = "xfyun"`）。
+
+```typescript
+new XfyunSTT(options: XfyunSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | 讯飞 API key |
+| `appId` | `string` | Yes | 讯飞 App ID |
+| `apiSecret` | `string` | Yes | 讯飞 API secret |
+| `language` | `string` | Yes | 语言代码 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
+
+#### XfyunBigModelSTT
+
+科大讯飞大模型 STT（`asr.vendor = "xfyun_bigmodel"`）。
+
+```typescript
+new XfyunBigModelSTT(options: XfyunBigModelSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | 讯飞 API key |
+| `appId` | `string` | Yes | 讯飞 App ID |
+| `apiSecret` | `string` | Yes | 讯飞 API secret |
+| `languageName` | `string` | Yes | 语种名称 |
+| `language` | `string` | Yes | 语言代码 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
+
+#### XfyunDialectSTT
+
+科大讯飞方言 STT（`asr.vendor = "xfyun_dialect"`）。
+
+```typescript
+new XfyunDialectSTT(options: XfyunDialectSTTOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `appId` | `string` | Yes | 讯飞 App ID |
+| `accessKeyId` | `string` | Yes | Access key ID |
+| `accessKeySecret` | `string` | Yes | Access key secret |
+| `language` | `string` | Yes | 方言/语言代码 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
+
+### Avatar vendors
+
+与 [`withAvatar()`](#withavatarvendor) 配合使用。`SensetimeAvatar` 直接接收数字人发布者的 `agoraUid` 和 `agoraToken`，其 `requiredSampleRate` 为 `0`，即不强制要求特定的 TTS 采样率。
+
+#### SensetimeAvatar
+
+商汤数字人。如果 `agoraUid`、`appId` 或 `appKey` 为空，构造函数会抛出错误。
+
+```typescript
+new SensetimeAvatar(options: SensetimeAvatarOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `agoraUid` | `string` | Yes | 数字人视频流使用的 RTC UID |
+| `appId` | `string` | Yes | 商汤 App ID（输出为 `appId`） |
+| `appKey` | `string` | Yes | 商汤 App Key |
+| `sceneList` | `Record<string, unknown>[]` | Yes | 商汤场景列表 |
+| `agoraToken` | `string` | No | 数字人鉴权所用的 RTC token |
+| `enable` | `boolean` | No | 是否启用数字人。默认值：`true` |
+| `additionalParams` | `Record<string, unknown>` | No | 附加商汤数字人参数，合并进 `params` |
+
+## Token utilities
+
+用于生成和管理 token 的辅助函数与类。当你需要精确控制 token 有效期，或在 session 之外生成 token 时，可使用这些能力。
+
+```typescript
+import { generateConvoAIToken, ExpiresIn } from 'agora-agents';
+```
+
+### `generateConvoAIToken(options)`
+
+生成一个同时具备 RTC 和 RTM 权限的对话式 AI token。这与 SDK 在 app-credentials 模式下自动生成的 token 相同。当你需要在 session 之外生成 token，或希望将预生成的 token 传给 [`SessionOptions.token`](#createsessionoptions) 时，可使用该方法。
+
+```typescript
+generateConvoAIToken(options: GenerateConvoAITokenOptions): string
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `appId` | `string` | Yes | 声网 App ID |
+| `appCertificate` | `string` | Yes | 声网 App Certificate |
+| `channelName` | `string` | Yes | token 所授权访问的频道 |
+| `account` | `string` | Yes | token 颁发给哪个 UID，使用字符串形式表示 |
+| `tokenExpire` | `number` | No | token 有效期，单位秒。默认值：`86400`。有效范围：1–86400 |
+
+**Returns:** `string` — 生成后的 token。
+
+```typescript
+const token = generateConvoAIToken({
+  appId: 'your-app-id',
+  appCertificate: 'your-app-certificate',
+  channelName: 'support-room-123',
+  account: '1',
+  tokenExpire: ExpiresIn.hours(12),
+});
+```
+
+### `ExpiresIn`
+
+用于指定 token 有效期的辅助类。可与 [`SessionOptions.expiresIn`](#createsessionoptions) 或 [`generateConvoAIToken`](#generateconvoaitokenoptions) 配合使用。所有值都会经过校验，并受限于声网的最大值 86400 秒（24 小时）。
+
+| Value or method | Returns | Description |
+|---|---|---|
+| `ExpiresIn.DAY` | `86400` | 24 小时，即声网允许的最大值，也是默认值 |
+| `ExpiresIn.hours(n)` | `number` | 返回 `n` 小时对应的秒数。若 `n` ≤ 0 则抛出异常；若超过 24 小时则发出警告并截断至上限 |
+| `ExpiresIn.minutes(n)` | `number` | 返回 `n` 分钟对应的秒数。若 `n` ≤ 0 则抛出异常；若超过 24 小时则发出警告并截断至上限 |
+
+## Types and enums
+
+`AgoraClient`、`Agent`、`AgentSession` 及各 vendor 类会共用以下类型与枚举。
+
+### `Area`
+
+用于 API 路由的区域枚举。通过 `AgoraClient` 的 `area` 选项传入。固定使用 `Area.CN`。
+
+```typescript
+import { Area } from 'agora-agents';
+```
+
+| Value | Region |
+|---|---|
+| `Area.CN` | 中国大陆 |
+
+`Area.CN` 的路由信息：
+
+| Item | Value |
+|---|---|
+| 主区域前缀 | `api-cn-east-1` |
+| 备用区域前缀 | `api-cn-north-1` |
+| 主域名后缀 | `sd-rtn.com` |
+| 备用域名后缀 | `agora.io` |
+| 请求路径 | `/cn/api/conversational-ai-agent` |
+
+### `AgoraAuthMode`
+
+表示 `AgoraClient` 实例上的已解析鉴权模式，可通过 `client.authMode` 读取。
+
+```typescript
+type AgoraAuthMode = "app-credentials" | "token" | "basic";
+```
+
+| Value | Description |
+|---|---|
+| `"app-credentials"` | 提供了 App ID 和 App Certificate，SDK 自动生成 token |
+| `"token"` | 提供了预先构造的 `authToken` |
+| `"basic"` | 提供了 `customerId` 和 `customerSecret` |
+
+### `AgentSessionEvent`
+
+`session.on()` 和 `session.off()` 可用的所有事件名的联合类型。
+
+```typescript
+type AgentSessionEvent = "started" | "stopped" | "error";
+```
+
+### `AgentSessionEventHandler`
+
+会话事件回调的泛型 handler 类型。
+
+```typescript
+type AgentSessionEventHandler<T> = (data: T) => void;
+```
+
+| Event | `T` |
+|---|---|
+| `"started"` | `{ agentId: string }` |
+| `"stopped"` | `{ agentId: string }` |
+| `"error"` | `Error` |
+
+### `SpeakPriority`
+
+用于控制智能体在处理 [`say()`](#saytext-options) 调用时，如何与当前活动状态交互。
+
+```typescript
+type SpeakPriority = "INTERRUPT" | "APPEND" | "IGNORE";
+```
+
+| Value | Description |
+|---|---|
+| `"INTERRUPT"` | 智能体立即停止当前播报并输出该消息 |
+| `"APPEND"` | 将消息加入队列，待当前播报结束后输出 |
+| `"IGNORE"` | 如果智能体当前正在播报，则直接丢弃该消息 |
+
+### `AgoraError`
+
+当 API 返回 4xx 或 5xx 响应时抛出。可捕获该错误以检查状态码和响应包体。
+
+```typescript
+import { AgoraError } from 'agora-agents';
+
+try {
+  const agentId = await session.start();
+} catch (err) {
+  if (err instanceof AgoraError) {
+    console.error('Status:', err.statusCode);
+    console.error('Message:', err.message);
+    console.error('Body:', err.body);
+  }
+}
+```
+
+| Property | Type | Description |
+|---|---|---|
+| `statusCode` | `number` | API 返回的 HTTP 状态码 |
+| `message` | `string` | 可读的错误消息 |
+| `body` | `unknown` | 原始响应包体 |

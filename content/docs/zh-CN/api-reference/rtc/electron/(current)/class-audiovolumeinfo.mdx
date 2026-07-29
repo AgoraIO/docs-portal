@@ -1,0 +1,74 @@
+---
+title: AudioVolumeInfo
+description: 用户音量信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_audiovolumeinfo
+  sourcePath: html-docs/rtc/Electron/API/class_audiovolumeinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiovolumeinfo__prototype"></a>
+
+```text
+export class AudioVolumeInfo {
+
+  uid?: number;
+
+  volume?: number;
+
+  vad?: number;
+
+  voicePitch?: number;
+}
+```
+
+<a id="class_audiovolumeinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+- 在本地用户的回调中，`uid` 为 0。
+- 在远端用户的回调中，`uid` 为瞬时音量最高的远端用户（最多 3 位）的 ID。
+
+</Parameter>
+<a id="volume"></a>
+<Parameter name="volume">
+
+用户的音量，取值范围为 [0,255]。如果用户将自己静音（将 [muteLocalAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 设为 true），但开启了音频采集，`volume` 的值表示本地采集信号的音量。
+
+</Parameter>
+<a id="vad"></a>
+<Parameter name="vad">
+
+:::note
+注：
+
+- `vad` 无法报告远端用户的人声状态。对于远端用户，`vad` 的值始终为 1。
+- 如需使用此参数，请在调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/electron/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 时设置 `reportVad` 为 true。
+:::
+
+本地用户的人声状态。
+
+- 0：本地无人声。
+- 1：本地有人声。
+
+</Parameter>
+<a id="voicepitch"></a>
+<Parameter name="voicePitch">
+
+本地用户的人声音调（Hz）。取值范围为 [0.0,4000.0]。
+
+:::note
+注： `voicePitch` 无法报告远端用户的人声音调。对于远端用户，`voicePitch` 的值始终为 0.0。
+:::
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,103 @@
+---
+title: AgoraTranscodingVideoStream
+description: 本地合图的视频流配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/class_transcodingvideostream
+  sourcePath: html-docs/rtc/iOS/API/class_transcodingvideostream.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_transcodingvideostream__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraTranscodingVideoStream: NSObject
+@property (assign, nonatomic) NSUInteger remoteUserUid;
+@property (assign, nonatomic) AgoraVideoSourceType sourceType;
+@property (copy, nonatomic) NSString * _Nullable imageUrl;
+@property(assign, nonatomic) NSUInteger mediaPlayerId;
+@property (assign, nonatomic) CGRect rect;
+@property (assign, nonatomic) NSInteger zOrder;
+@property(assign, nonatomic) double alpha;
+@property(assign, nonatomic) BOOL mirror;
+@end
+```
+
+<a id="class_transcodingvideostream__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="remoteuseruid"></a>
+<Parameter name="remoteUserUid">
+
+远端用户的用户 ID。
+
+:::note
+注： 仅当视频源类型为 `AgoraVideoSourceTypeRemote` 且用于本地合图时使用该参数。
+:::
+
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+本地合图的视频源类型。详见 [AgoraVideoSourceType](/zh-CN/api-reference/rtc/ios/enum-videosourcetype)。
+
+</Parameter>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
+
+本地图像的文件路径。例如：iOS：`/var/mobile/Containers/Data/Application/<APP-UUID>/Documents/image.png`，macOS：`~/Pictures/image.png`。
+
+:::note
+注： 仅当视频源类型为图像且用于本地合图时使用该参数。
+:::
+
+</Parameter>
+<a id="mediaplayerid"></a>
+<Parameter name="mediaPlayerId">
+
+媒体播放器 ID。
+
+:::note
+注： 仅当你将 `sourceType` 设置为 `AgoraVideoSourceTypeMediaPlayer` 时使用该参数。
+:::
+
+</Parameter>
+<a id="rect"></a>
+<Parameter name="rect">
+
+本地合图中视频相对于画布原点（左上角）的位置和大小。
+
+</Parameter>
+<a id="zorder"></a>
+<Parameter name="zOrder">
+
+本地合图中视频所属图层的层级，取值范围为 [0, 100]。
+
+- 0：（默认）图层位于底部。
+- 100：图层位于顶部。
+
+</Parameter>
+<a id="alpha"></a>
+<Parameter name="alpha">
+
+本地合图中视频的透明度，取值范围为 [0.0, 1.0]。0.0 表示完全透明，1.0 表示不透明。
+
+</Parameter>
+<a id="mirror"></a>
+<Parameter name="mirror">
+
+:::note
+注： 该参数仅对摄像头类型的视频源生效。
+:::
+
+是否镜像本地合图中的视频。
+
+- YES：镜像视频。
+- NO：（默认）不镜像视频。
+
+</Parameter>
+</ParameterList>

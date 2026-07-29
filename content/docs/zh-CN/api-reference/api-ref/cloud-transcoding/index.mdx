@@ -1,28 +1,28 @@
 ---
-title: Overview
-description: Create and manage Cloud Transcoding tasks using RESTful APIs.
+title: 概览
+description: 使用 RESTful API 创建和管理云端转码任务。
 ---
 
-Agora Cloud Transcoding transcodes media streams on Agora servers and outputs the result to an RTC channel. Send HTTPS requests from your business server to manage transcoding tasks and templates.
+声网云端转码在声网服务器上对媒体流进行转码，并将结果输出到 RTC 频道。你可以从业务服务器发送 HTTPS 请求，管理转码任务和转码模板。
 
-## API basics
+## API 基础信息
 
-- **Authentication**: All APIs require [Basic Auth](authentication).
-- **Request**: Request bodies use JSON.
-- **Response**: Response bodies use JSON.
-- **Base URL**: `https://api.sd-rtn.com`
+- **鉴权**：所有 API 都需要使用 [Basic Auth](authentication)。
+- **请求**：请求包体使用 JSON。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
 
 :::info
-The Cloud Transcoding REST API supports HTTPS only. Requests over plain HTTP are not supported.
+云端转码 REST API 仅支持 HTTPS，不支持明文 HTTP 请求。
 :::
 
-## REST APIs
+## REST API
 
-- [Acquire a builder token](acquire): Retrieve a builder token before creating a task.
-- [Create a cloud transcoding task](create): Start transcoding by creating a task.
-- [Query the status of a task](query): Check the status of a Cloud Transcoding task.
-- [Update a cloud transcoding task](update): Update an existing task.
-- [Destroy a cloud transcoding task](destroy): Destroy a Cloud Transcoding task.
-- [Create or update a transcoding template](template-create): Create or update a transcoding template.
-- [Query transcoding templates](template-query): Query all transcoding template configurations under an App ID.
-- [Query message notification server IP](ncs-query-ip): Get message notification server IP addresses for firewall whitelisting.
+- [获取云端转码资源](acquire)：创建任务前获取 builderToken。
+- [创建云端转码](create)：创建任务并开始云端转码。
+- [查询云端转码状态](query)：查询云端转码任务的当前状态。
+- [更新指定的云端转码](update)：更新已有云端转码任务。
+- [销毁云端转码](destroy)：销毁不再需要的云端转码任务。
+- [创建或更新转码模板](template-create)：创建或更新转码模板。
+- [查询转码模板](template-query)：查询指定 App ID 下的所有转码模板配置。
+- [查询消息通知服务器 IP](ncs-query-ip)：获取消息通知服务器 IP 地址，用于配置防火墙白名单。

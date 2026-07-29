@@ -1,0 +1,79 @@
+---
+title: "保障 REST 服务高可用"
+description: "了解如何在云端录制中保障 REST 服务高可用，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+## 故障迁移
+
+为保障 REST 服务的高可用，避免因区域网络故障造成的服务不可用，声网提供故障迁移、多路任务保障、跨区请求加速和切换域名的方案。
+
+针对网络故障，以及非声网云服务、非声网软件、基础设施和不可抗力等因素可能导致的风险，声网云端录制提供高可用自动任务迁移服务。当故障确认后，该服务会在尽量短的时间（预计 90 秒内）完成，在此期间会存在录制中断，录制文件丢失等风险。
+
+对于频道内观众较多或对高可用要求极高的场景，你需要基于自身业务特点综合考虑能否接受高可用迁移影响，决定是否采用更高的质量保障措施，例如[多路任务保障](#多路任务保障)，或通过[周期性频道查询](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#使用周期性频道查询)和消息通知服务获知录制任务状态，及时使用不同的 `uid` 重新发起新的录制任务。
+
+## 多路任务保障
+
+如需比故障迁移更高的质量保障，你可以采用多路任务保障策略。每路cloud-recording任务单独计费，计费方式详见[单流和合流录制计费](/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing)。实现步骤如下：
+
+1. 同时发起主任务和备份任务，实现对同一个频道进行多路录制。为此，你需要使用相同 `appId` 和 `cname`，以及不同的 `uid` 来发起多个录制任务。
+
+2. 发起后续录制任务时，你需要在 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 请求的 Body 中设置 `clientRequest.excludeResourceIds` 字段，将其设置为前一路或前几路录制任务的 `resourceId`，以排除后续录制任务使用此前录制任务所在区域的资源。当此前录制任务所在区域发生网络故障时，后续录制任务不会受到影响。
+
+## 切换域名
+
+切换域名的操作如下：
+
+1. 根据你的业务服务器所在地设置主域名：
+    - 业务服务器 DNS 地址位于中国大陆时，设置主域名为 `api.sd-rtn.com`。
+    - 业务服务器 DNS 地址位于中国大陆以外的国家或地区时，设置主域名为 `api.agora.io`。
+2. 当使用主域名发起 RESTful API 请求失败时，使用该域名重试一次。
+3. 如果步骤 2 的重试依然失败，使用备用的主域名重试：
+    - 如果当前设置的主域名为 `api.sd-rtn.com`，备用的主域名指 `api.agora.io`。
+    - 如果当前设置的主域名为 `api.agora.io`，备用的主域名指 `api.sd-rtn.com`。
+4. 如果步骤 3 的重试依然失败，使用与当前解析区域相邻的区域域名重试。
+
+   举例说明：假设你的业务服务器位于欧洲，你设置主域名为 `api.agora.io`，而且业务服务器对主域名的解析结果位于德国。德国位于欧洲中部 `api-eu-central-1.agora.io`，查域名信息表可知，相邻区域为欧洲西部 `api-eu-west-1.agora.io` 或 `api-eu-west-1.sd-rtn.com`。因此，出现网络故障且步骤 2、3 的重试失败时，请使用 `api-eu-west-1.agora.io` 或 `api-eu-west-1.sd-rtn.com` 域名重试。
+
+### 注意事项
+
+- 为避免重试请求过于频繁，超过声网服务所规定的 QPS（每秒请求数），声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
+- 如果是网络问题而非 DNS 解析域名问题导致的请求失败，声网建议你跳过步骤 3，直接进行步骤 4。
+- 切换至区域域名前，请确保你使用的业务（例如，云端录制、云信令、频道管理等 REST 服务）在该区域有部署服务。
+
+### 域名信息
+
+| 主域名 | 区域域名 | 地理区域 |
+| --- | --- | --- |
+| `api.sd-rtn.com` | `api-us-west-1.sd-rtn.com` | 美国西部 |
+|  | `api-us-east-1.sd-rtn.com` | 美国东部 |
+|  | `api-ap-southeast-1.sd-rtn.com` | 亚太东南 |
+|  | `api-ap-northeast-1.sd-rtn.com` | 亚太东北 |
+|  | `api-eu-west-1.sd-rtn.com` | 欧洲西部 |
+|  | `api-eu-central-1.sd-rtn.com` | 欧洲中部 |
+|  | `api-cn-east-1.sd-rtn.com` | 中国华东 |
+|  | `api-cn-north-1.sd-rtn.com` | 中国华北 |
+| `api.agora.io` | `api-us-west-1.agora.io` | 美国西部 |
+|  | `api-us-east-1.agora.io` | 美国东部 |
+|  | `api-ap-southeast-1.agora.io` | 亚太东南 |
+|  | `api-ap-northeast-1.agora.io` | 亚太东北 |
+|  | `api-eu-west-1.agora.io` | 欧洲西部 |
+|  | `api-eu-central-1.agora.io` | 欧洲中部 |
+|  | `api-cn-east-1.agora.io` | 中国华东 |
+|  | `api-cn-north-1.agora.io` | 中国华北 |
+
+## 跨区请求加速
+
+当你发起录制请求的服务器所在地区和你指定的云存储区域 (`storageConfig.region`) 不同时，会影响录制文件上传到云存储的成功率和实时性。在这种跨区情况下，为加速录制文件上传，推荐你进行如下设置：
+
+- 设置 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 请求 Body 中的 `regionAffinity` 字段为你的云存储区域。
+
+- 将所有请求 URL 中的 `https://api.sd-rtn.com/v1` 修改成 `https://api.sd-rtn.com/{region}/v1`。`region` 参数代表声网服务器所在地区，你需要将该参数设为你的云存储区域。`region` 支持如下取值：
+    - `cn`: 中国大陆。
+    - `eu`: 欧洲。
+    - `ap`: 除中国大陆以外的亚洲区域。
+    - `us`: 北美。
+
+假设你的云录制应用面向海外市场，你发起录制请求的服务器部署在中国，云存储区域位于东南亚。为保障录制文件上传的成功率和实时性，推荐你进行如下设置：
+
+- 设置 `regionAffinity` 为 `2`（东南亚）。
+
+- 将请求 URL 的 `https://api.sd-rtn.com/v1` 修改成 `https://api.sd-rtn.com/ap/v1`。

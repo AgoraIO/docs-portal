@@ -1,0 +1,90 @@
+---
+title: WatermarkConfig
+description: 用于配置水印信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_watermarkconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_watermarkconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkconfig__prototype"></a>
+
+```text
+struct WatermarkConfig {
+  const char* id;
+  WATERMARK_SOURCE_TYPE type;
+  union {
+    WatermarkBuffer buffer;
+    WatermarkTimestamp timestamp;
+    WatermarkLiteral literal;
+    const char* imageUrl;
+  };
+  WatermarkOptions options;
+};
+```
+
+<a id="class_watermarkconfig__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+<a id="class_watermarkconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
+
+水印的唯一标识符，建议使用 UUID。
+
+</Parameter>
+<a id="type"></a>
+<Parameter name="type">
+
+水印类型，详见 [WATERMARK_SOURCE_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-watermarksourcetype)。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+水印的缓冲区。详见 [WatermarkBuffer](/zh-CN/api-reference/rtc/cpp-all-platforms/class-watermarkbuffer)。
+
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
+
+水印的时间戳。
+
+:::note
+注： 仅支持在 Linux 平台使用。
+:::
+
+</Parameter>
+<a id="literal"></a>
+<Parameter name="literal">
+
+水印的文本内容。
+
+:::note
+注： 仅支持在 Linux 平台使用。
+:::
+
+</Parameter>
+<a id="imageurl"></a>
+<Parameter name="imageUrl">
+
+水印图像文件的 URL，默认值为 NULL。
+
+</Parameter>
+<a id="options"></a>
+<Parameter name="options">
+
+水印的配置选项。详见 [WatermarkOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/class-watermarkoptions)。
+
+</Parameter>
+</ParameterList>

@@ -1,0 +1,134 @@
+---
+title: 已编码视频数据
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_video_encoded
+  sourcePath: html-docs/rtc/macOS/API/toc_video_encoded.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_video_encoded"></a>
+
+<a id="api_irtcengine_registervideoencodedframeobserver"></a>
+
+<a id="ariaid-title2"></a>
+
+## setEncodedVideoFrameDelegate:
+
+注册一个用于接收编码后视频图像的对象。
+
+<a id="api_irtcengine_registervideoencodedframeobserver__prototype"></a>
+
+```text
+- (BOOL)setEncodedVideoFrameDelegate:(id<AgoraEncodedVideoFrameDelegate> _Nullable)delegate NS_SWIFT_NAME(setEncodedVideoFrameDelegate(_:));
+```
+
+<a id="api_irtcengine_registervideoencodedframeobserver__detailed_desc"></a>
+
+如果你只想观察编码后的视频帧（例如 H.264 格式），而不进行解码和渲染，声网建议你通过此方法实现一个 [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoencodedframeobserver) 类。
+
+:::note
+注： 请在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_registervideoencodedframeobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
+
+观察者实例。设置为 nil 可释放该实例。详见 [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoencodedframeobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_registervideoencodedframeobserver__return_values"></a>
+
+### 返回值
+
+- YES：方法调用成功。
+- NO：方法调用失败。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived"></a>
+
+<a id="ariaid-title3"></a>
+
+## onEncodedVideoFrameReceived\:length\:info\:channelId\:uid:
+
+本地回调远端发送的待解码视频帧信息。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__prototype"></a>
+
+```text
+- (BOOL)onEncodedVideoFrameReceived:(NSData * _Nonnull )videoData length:(size_t)length info:(AgoraEncodedVideoFrameInfo * _Nonnull)videoFrameInfo channelId:(NSString * _Nonnull)channelId uid:(NSUInteger)uid NS_SWIFT_NAME(onEncodedVideoFrameReceived(_:length:info:channelId:uid:));
+```
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+如果你调用了 `setRemoteVideoSubscriptionOptions` 方法，并将 `encodedFrameOnly` 设置为 YES，SDK 会在本地触发该回调，用于上报接收到的编码视频帧信息。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__timing"></a>
+
+### 触发时机
+
+该回调在你设置 `encodedFrameOnly` 为 YES 后，接收到远端编码视频帧时被触发。
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="videodata"></a>
+<Parameter name="videoData">
+
+编码后的视频图像数据。
+
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
+
+视频图像的数据长度。
+
+</Parameter>
+<a id="videoframeinfo"></a>
+<Parameter name="videoFrameInfo">
+
+编码视频帧的信息，详见 [AgoraEncodedVideoFrameInfo](/zh-CN/api-reference/rtc/macos/class-encodedvideoframeinfo)。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="callback_ivideoencodedframeobserver_onencodedvideoframereceived__return_values"></a>
+
+### 返回值
+
+- YES：回调处理成功。
+- NO：回调处理失败。
+
+### 所属接口类
+
+- [AgoraEncodedVideoFrameDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_ivideoencodedframeobserver)

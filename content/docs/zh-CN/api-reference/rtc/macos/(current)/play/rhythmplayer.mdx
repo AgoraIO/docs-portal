@@ -1,0 +1,241 @@
+---
+title: 虚拟节拍器
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/toc_rhythmplayer
+  sourcePath: html-docs/rtc/macOS/API/toc_rhythmplayer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_rhythmplayer"></a>
+
+<a id="api_irtcengine_configrhythmplayer"></a>
+
+<a id="ariaid-title2"></a>
+
+## configRhythmPlayer:
+
+配置虚拟节拍器。
+
+<a id="api_irtcengine_configrhythmplayer__prototype"></a>
+
+```text
+- (int)configRhythmPlayer:(AgoraRhythmPlayerConfig * _Nullable)config NS_SWIFT_NAME(configRhythmPlayer(_:));
+```
+
+<a id="api_irtcengine_configrhythmplayer__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+调用 `startRhythmPlayer` 方法后，你可以调用该方法重新配置虚拟节拍器。启用虚拟节拍器后，SDK 会从头开始播放指定的音效文件，并根据你在 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/macos/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频。默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 YES。
+
+<a id="api_irtcengine_configrhythmplayer__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或后调用。
+
+<a id="api_irtcengine_configrhythmplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/macos/class-agorarhythmplayerconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_configrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startrhythmplayer"></a>
+
+<a id="ariaid-title3"></a>
+
+## startRhythmPlayer\:sound2\:config:
+
+启用虚拟节拍器。
+
+<a id="api_irtcengine_startrhythmplayer__prototype"></a>
+
+```text
+- (int)startRhythmPlayer:(NSString * _Nonnull)sound1 sound2:(NSString * _Nonnull)sound2 config:(AgoraRhythmPlayerConfig *  _Nullable)config NS_SWIFT_NAME(startRhythmPlayer(_:sound2:config:));
+```
+
+<a id="api_irtcengine_startrhythmplayer__detailed_desc"></a>
+
+<a id="废弃-1"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+启用虚拟节拍器后，SDK 会从头开始播放你指定的音效文件，并根据 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/macos/class-agorarhythmplayerconfig) 中设置的 `beatsPerMinute` 控制每个文件的播放时长。例如，如果你将 `beatsPerMinute` 设置为 60，SDK 每秒播放一个节拍。如果文件时长超过节拍时长，SDK 只播放节拍时长内的音频内容。默认情况下，虚拟节拍器的声音会在频道中发布。如果你希望远端用户也能听到该声音，可以在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 中将 `publishRhythmPlayerTrack` 设置为 YES。
+
+<a id="api_irtcengine_startrhythmplayer__scenario"></a>
+
+### 适用场景
+
+在音乐教育、体育教学等场景中，教师通常需要使用节拍器帮助学生按照正确的节奏进行练习。节拍由强拍和弱拍组成，每小节的第一个节拍称为强拍，其余为弱拍。
+
+<a id="api_irtcengine_startrhythmplayer__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_startrhythmplayer__related"></a>
+
+### 相关回调
+
+调用该方法成功后，SDK 会在本地触发 [rtcEngine\:didRhythmPlayerStateChanged\:reason:](/zh-CN/api-reference/rtc/macos/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) 回调，报告虚拟节拍器的状态。
+
+<a id="api_irtcengine_startrhythmplayer__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="sound1"></a>
+<Parameter name="sound1">
+
+强拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如，/var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/reference/faq/product/audio_format)。
+
+</Parameter>
+<a id="sound2"></a>
+<Parameter name="sound2">
+
+弱拍音效文件的绝对路径或 URL 地址（包括文件扩展名）。例如，/var/mobile/Containers/Data/audio.mp4。该方法支持的音频文件格式，详见[声网 RTC SDK 支持哪些格式的音频文件](/zh-CN/reference/faq/product/audio_format)。
+
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
+
+节拍器配置。详见 [AgoraRhythmPlayerConfig](/zh-CN/api-reference/rtc/macos/class-agorarhythmplayerconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startrhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -22：未找到音效文件。请设置正确的 `sound1` 和 `sound2` 路径。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoprhythmplayer"></a>
+
+<a id="ariaid-title4"></a>
+
+## stopRhythmPlayer
+
+禁用虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__prototype"></a>
+
+```text
+- (int)stopRhythmPlayer NS_SWIFT_NAME(stopRhythmPlayer());
+```
+
+<a id="api_irtcengine_stoprhythmplayer__detailed_desc"></a>
+
+<a id="废弃-2"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+调用 `startRhythmPlayer` 方法后，你可以调用该方法来禁用虚拟节拍器。
+
+<a id="api_irtcengine_stoprhythmplayer__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged"></a>
+
+<a id="ariaid-title5"></a>
+
+## rtcEngine\:didRhythmPlayerStateChanged\:reason:
+
+当虚拟节拍器状态发生变化时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__prototype"></a>
+
+```text
+- (void)rtcEngine:(AgoraRtcEngineKit * _Nonnull)engine didRhythmPlayerStateChanged:(AgoraRhythmPlayerState)state
+        reason:(AgoraRhythmPlayerReason)reason NS_SWIFT_NAME(rtcEngine(_:didRhythmPlayerStateChanged:reason:));
+```
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__detailed_desc"></a>
+
+<a id="废弃-3"></a>
+
+:::error[废弃]
+自 v4.6.0 版本废弃。
+:::
+
+当虚拟节拍器状态发生变化时，SDK 会触发该回调以报告当前虚拟节拍器的状态。该回调指示本地音频流的状态，并帮助你在音频异常发生时排查问题。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在虚拟节拍器状态发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onrhythmplayerstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="engine"></a>
+<Parameter name="engine">
+
+当前使用的 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengine) 实例。
+
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
+
+当前虚拟节拍器的状态，详见 [AgoraRhythmPlayerState](/zh-CN/api-reference/rtc/macos/enum-rhythmplayerstatetype)。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+与虚拟节拍器错误相关的错误码和错误信息，详见 [AgoraRhythmPlayerReason](/zh-CN/api-reference/rtc/macos/enum-rhythmplayerreason)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraRtcEngineDelegate](/zh-CN/api-reference/rtc/macos/rtc-interface-class#class_irtcengineeventhandler)

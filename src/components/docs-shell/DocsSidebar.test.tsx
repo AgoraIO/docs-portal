@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react';
-import { createRef } from 'react';
+import { render, screen } from '@testing-library/react';
+import { type AnchorHTMLAttributes, createRef, type ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
@@ -12,8 +12,37 @@ vi.mock('./useTransientScrollbar', () => ({
   useTransientScrollbar: vi.fn(),
 }));
 
+vi.mock('@tanstack/react-router', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@tanstack/react-router')>();
+
+  return {
+    ...actual,
+    Link: ({
+      children,
+      params: _params,
+      search: _search,
+      to,
+      ...props
+    }: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> & {
+      children: ReactNode;
+      params?: unknown;
+      search?: unknown;
+      to: string;
+    }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
+  };
+});
+
 vi.mock('./DocsSidebarTree', () => ({
-  DocsSidebarTree: () => <div data-testid="docs-sidebar-tree" />,
+  DocsSidebarTree: ({ nodes }: { nodes: DocsSidebarNode[] }) => (
+    <div data-testid="docs-sidebar-tree">
+      {nodes.map((node) => `${node.type}:${node.title}`).join(',')}
+    </div>
+  ),
 }));
 
 const nodes: DocsSidebarNode[] = [
@@ -31,21 +60,77 @@ const nodes: DocsSidebarNode[] = [
   },
 ];
 
+const apiReferenceNodes: DocsSidebarNode[] = [
+  {
+    id: 'api-reference',
+    title: 'API 参考',
+    type: 'page',
+    url: '/zh-CN/api-reference/api',
+  },
+  {
+    id: 'sdk-downloads',
+    title: 'SDK 下载',
+    type: 'page',
+    url: '/zh-CN/reference/sdks',
+  },
+  {
+    children: [],
+    id: 'guides',
+    title: '指南',
+    type: 'section',
+  },
+];
+
+const referenceNodes: DocsSidebarNode[] = [
+  {
+    id: 'sdk-downloads',
+    title: 'SDK 下载',
+    type: 'page',
+    url: '/zh-CN/reference/sdks',
+  },
+  {
+    id: 'recipes',
+    title: 'Demo',
+    type: 'page',
+    url: '/zh-CN/reference/recipes',
+  },
+  {
+    children: [
+      {
+        id: 'faq-integration',
+        title: '集成类',
+        type: 'page',
+        url: '/zh-CN/reference/faq/integration',
+      },
+    ],
+    defaultOpen: false,
+    id: 'faq',
+    title: '常见问题',
+    type: 'section',
+    url: '/zh-CN/reference/faq',
+  },
+];
+
 const scrollToTop = vi.fn();
 const useTransientScrollbarMock = vi.mocked(useTransientScrollbar);
 
 function renderDocsSidebar({
   activePath = '/en/introduction',
+  locale = 'en',
+  sidebarNodes = nodes,
   resetKey = 'introduction',
 }: {
   activePath?: string;
+  locale?: 'en' | 'zh-CN';
+  sidebarNodes?: DocsSidebarNode[];
   resetKey?: string;
 } = {}) {
   const view = render(
     <SidebarProvider>
       <DocsSidebar
         activePath={activePath}
-        nodes={nodes}
+        locale={locale}
+        nodes={sidebarNodes}
         onSelectPath={() => {}}
         resetKey={resetKey}
       />
@@ -54,12 +139,17 @@ function renderDocsSidebar({
 
   return {
     ...view,
-    rerenderSidebar(nextProps: { activePath?: string; resetKey?: string }) {
+    rerenderSidebar(nextProps: {
+      activePath?: string;
+      resetKey?: string;
+      sidebarNodes?: DocsSidebarNode[];
+    }) {
       view.rerender(
         <SidebarProvider>
           <DocsSidebar
             activePath={nextProps.activePath ?? activePath}
-            nodes={nodes}
+            locale={locale}
+            nodes={nextProps.sidebarNodes ?? sidebarNodes}
             onSelectPath={() => {}}
             resetKey={nextProps.resetKey ?? resetKey}
           />
@@ -96,6 +186,82 @@ describe('DocsSidebar', () => {
     });
 
     expect(scrollToTop).toHaveBeenCalledTimes(2);
+  });
+
+  it('omits reference shortcuts from API Reference and keeps them in Reference', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    const { rerenderSidebar } = renderDocsSidebar({
+      activePath: '/zh-CN/api-reference/api',
+      locale: 'zh-CN',
+      resetKey: 'api-reference',
+      sidebarNodes: apiReferenceNodes,
+    });
+
+    expect(screen.getByTestId('docs-sidebar-scroll')).toHaveClass(
+      'overflow-y-hidden',
+    );
+    const productNav = screen.getByTestId('api-reference-product-nav');
+
+    expect(screen.queryByTestId('docs-sidebar-tree')).not.toBeInTheDocument();
+    expect(productNav).toBeVisible();
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/sdks',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    const referenceTree = screen.getByTestId('docs-sidebar-tree');
+    expect(referenceTree).toHaveTextContent(
+      'page:SDK 下载,page:Demo,section:常见问题',
+    );
+    expect(referenceTree).not.toHaveTextContent('API 参考');
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('api-reference-product-nav'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('sdk-download-product-nav'),
+    ).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/recipes',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    expect(
+      screen.queryByTestId('sdk-download-product-nav'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/reference/faq/integration',
+      resetKey: 'reference',
+      sidebarNodes: referenceNodes,
+    });
+
+    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
+
+    rerenderSidebar({
+      activePath: '/zh-CN/api-reference/rtc/android/overview',
+      resetKey: 'api-reference',
+    });
+
+    expect(
+      screen.queryByTestId('reference-center-primary-nav'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('docs-sidebar-tree')).toBeVisible();
   });
 });
 

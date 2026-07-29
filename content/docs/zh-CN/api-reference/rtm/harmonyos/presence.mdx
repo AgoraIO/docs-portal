@@ -1,0 +1,361 @@
+---
+title: "Presence"
+---
+
+Presence 提供监控用户上线、下线及用户历史状态变更通知的能力。通过 Presence 功能，你可以实时获取以下信息：
+
+- 用户加入或离开指定频道的实时事件通知
+- 自定义临时用户状态及其变更实时事件通知
+- 查询指定用户加入或订阅了哪些频道
+- 查询指定频道有哪些用户加入及其用户临时状态数据
+
+:::info[信息]
+**Presence** 能力适用于 Message Channel 和 Stream Channel。
+:::
+
+## whoNow
+
+### 接口描述
+
+调用 `whoNow` 方法，你可以实时查询指定频道的在线用户数量、在线用户列表及在线用户的临时状态等信息。
+
+### 接口方法
+
+你可以通过以下方式调用 `whoNow` 方法：
+
+```typescript
+async whoNow(channelName: string, channelType: RtmChannelType, options: PresenceOptions): Promise<WhoNowResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `options` | `PresenceOptions` | 必填 | - | 查询附加选项。 |
+
+`PresenceOptions` 数据类型包含以下属性：
+
+|       属性       |  类型   | 是否必填 | 默认值  | 描述  |
+| ------------- | ---- | ----- | ---- | --------------- |
+| `includeUserId` | boolean |   选填   | `true`  | 返回结果中是否包含在线成员的用户 ID。              |
+| `includeState`  | boolean |   选填   | `false` | 返回结果中是否包含在线用户的临时状态数据。         |
+|      `page`      | string  |   选填   |    `''`    | 页码书签。如果不填写，则 SDK 默认返回第一页结果。你可以在返回值中查看是否还有下一页。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `WhoNowResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`WhoNowResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userStateList` | `UserState[]` | 频道在线用户及其临时状态信息列表。 |
+| `totalOccupancy` | number | 频道当前总在线人数。当 `includeUserId` 和 `includeState` 都设置为 `false` 时，`userStateList` 可能为空，但此值表示频道实际在线人数。 |
+| `nextPage` | string | <Slot name="presence-harmonyos-html-1-4-2" /> |
+
+<Slot for="presence-harmonyos-html-1-4-2">
+
+下一页书签。通过该属性可以确认是否有下一页：
+
+    - 值为空字符串表示没有下一页。
+    - 值不为空表示有下一页。你可以将该值填写在 `whoNow` 的 `page` 属性中，从而查询下一页结果。
+
+</Slot>
+
+`UserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `userId`         |  string  |  用户 ID。     |
+| `states`         |    `StateItem[]`      | 频道在线用户及其临时状态信息列表。        |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ------ | ------- | ------ |
+| `key`         |         string        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | string | 用户状态的值。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { PresenceOptions } from '@shengwang/rtm-full';
+
+// Query with detailed user info
+const options: PresenceOptions = {
+  includeState: true,
+  includeUserId: true
+};
+
+try {
+  const response = await rtmClient.presence.whoNow('channelName', RtmChannelType.MESSAGE, options);
+  console.log('Total users in channel:', response.totalOccupancy);
+  console.log('User list length:', response.userStateList.length);
+  
+  // Process user states
+  response.userStateList.forEach((userState) => {
+    console.log('User:', userState.userId);
+    userState.states.forEach((state) => {
+      console.log(`  ${state.key}: ${state.value}`);
+    });
+  });
+  
+  // Check for next page
+  if (response.nextPage) {
+    const nextPageOptions: PresenceOptions = {
+      includeState: true,
+      includeUserId: true,
+      page: response.nextPage
+    };
+    const nextPageResult = await rtmClient.presence.whoNow('channelName', RtmChannelType.MESSAGE, nextPageOptions);
+    console.log('Next page users:', nextPageResult.userStateList.length);
+  }
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('whoNow failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## whereNow
+
+### 接口描述
+
+在数据统计、App 调试等场景中，你可能需要了解指定用户订阅或加入的所有频道。调用 `whereNow` 方法，你可以实时获取指定用户所在频道的列表。
+
+### 接口方法
+
+你可以通过以下方式调用 `whereNow` 方法：
+
+```typescript
+async whereNow(userId: string): Promise<WhereNowResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `WhereNowResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`WhereNowResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `channels` | `ChannelInfo[]` | 频道信息列表。 |
+
+`ChannelInfo` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | --------- |
+| `channelName`     | string |  频道名称。         |
+| `channelType` | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.presence.whereNow('tony');
+  console.log('User is in', response.channels.length, 'channels');
+  
+  response.channels.forEach((channel) => {
+    console.log('Channel:', channel.channelName, 'Type:', channel.channelType);
+  });
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('whereNow failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## setState
+
+### 接口描述
+
+为满足不同业务场景对用户状态的设置需求，RTM 提供 `setState` 方法自定义临时用户状态。用户可以为自己添加分数、游戏状态、位置、心情、连麦状态等自定义状态。
+
+设置成功后，只要用户保持订阅频道并一直在线，自定义状态就会在频道中持续存在。`setState` 方法设置的是临时用户状态，当用户离开频道或断开与 RTM 的连接时，状态会消失。如果需要在重新加入频道或者重新连接时恢复用户状态，你需要实时在本地缓存该数据。如果你希望永久保存用户状态数据，声网推荐改用 Storage 功能的 `setUserMetadata` 方法。
+
+如果用户修改了临时用户状态，RTM 会实时触发 `REMOTE_STATE_CHANGED` 类型的 `presence` 事件通知。你可以通过订阅频道并配置对应属性来接收该事件。
+
+### 接口方法
+
+你可以通过以下方式调用 `setState` 方法：
+
+```typescript
+async setState(channelName: string, channelType: RtmChannelType, items: StateItem[]): Promise<SetStateResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `items` | `StateItem[]` | 必填 | - | 用户状态数组。 |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ------ | ------- | ------ |
+| `key`         |         string        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | string | 用户状态的值。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `SetStateResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`SetStateResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { StateItem } from '@shengwang/rtm-full';
+
+const states: StateItem[] = [
+  { key: 'mood', value: 'pumped' },
+  { key: 'status', value: 'online' }
+];
+
+try {
+  const response = await rtmClient.presence.setState('channelName', RtmChannelType.MESSAGE, states);
+  console.log('User state set successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('setState failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## getState
+
+### 接口描述
+
+如需获取指定频道中指定用户的临时用户状态，你可以调用 `getState` 方法。
+
+### 接口方法
+
+你可以通过以下方式调用 `getState` 方法：
+
+```typescript
+async getState(channelName: string, channelType: RtmChannelType, userId: string): Promise<GetStateResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `GetStateResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`GetStateResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userState` | `UserState` | 频道在线用户及其临时状态信息。 |
+
+`UserState` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述      |
+| ---- | ----- | -------- |
+| `userId`         |  string  |  用户 ID。     |
+| `states`         |    `StateItem[]`      | 频道在线用户及其临时状态信息列表。        |
+
+`StateItem` 数据类型包含以下属性：
+
+|  属性  |  类型  | 描述                            |
+| ------ | ------- | ------ |
+| `key`         |         string        | 用户状态的键。如果指定的键已经存在，则该键的值会被新值覆盖；如果指定的键不存在，则 SDK 会新增该键/值对。     |
+| `value` | string | 用户状态的值。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.presence.getState('channelName', RtmChannelType.MESSAGE, 'tony');
+  console.log('User ID:', response.userState.userId);
+  
+  response.userState.states.forEach((state) => {
+    console.log(`${state.key}: ${state.value}`);
+  });
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('getState failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## removeState
+
+### 接口描述
+
+当不再需要某个临时用户状态时，你可以调用 `removeState` 方法删除自己的一个或多个临时状态。
+
+成功删除用户状态后，订阅该频道且开启 Presence 事件监听的用户会收到 `REMOTE_STATE_CHANGED` 类型的 `presence` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeState` 方法：
+
+```typescript
+async removeState(channelName: string, channelType: RtmChannelType, keys: string[]): Promise<RemoveStateResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `keys` | string[] | 必填 | - | 需要删除状态的 `key` 列表。如果传入空数组，则删除全部状态。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `RemoveStateResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`RemoveStateResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+
+// Remove specific keys
+const keysToRemove = ['key0', 'key1', 'key2'];
+
+try {
+  const response = await rtmClient.presence.removeState('channelName', RtmChannelType.MESSAGE, keysToRemove);
+  console.log('Specific states removed successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('removeState failed:', error.errorCode, error.reason);
+  }
+}
+
+// Remove all states (pass empty array)
+try {
+  const response = await rtmClient.presence.removeState('channelName', RtmChannelType.MESSAGE, []);
+  console.log('All states removed successfully');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('removeState failed:', error.errorCode, error.reason);
+  }
+}
+```

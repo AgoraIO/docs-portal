@@ -1,0 +1,113 @@
+---
+title: "创建自定义事件"
+description: "了解如何在互动白板 SDK 中创建自定义事件，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+声网互动白板 SDK 提供自定义事件接口，用于在房间内实时发送和接收自定义消息，帮助实现消息广播、实时聊天、点赞、送礼等功能。
+
+本文介绍如何实现发送、接收和停止接收自定义事件。
+
+## 技术原理
+
+互动白板 SDK 提供以下自定义事件接口：
+
+- `dispatchMagixEvent`：发送自定义事件。
+- `addMagixEventListener`：注册自定义事件监听。
+- `removeMagixEventListener`：移除自定义事件监听。
+
+实现发送和接收自定义事件的步骤如下：
+
+1. 定义事件名称、内容和回调函数。
+2. 调用 `addMagixEventListener` 监听事件。
+3. 调用 `dispatchMagixEvent` 发送事件。房间内所有监听该事件的用户都会收到事件通知。
+4. 当不再需要接收事件通知时，可以调用 `removeMagixEventListener` 注销对该事件的监听。
+
+## 前提条件
+
+开始前，请确保你已在项目中集成声网互动白板 SDK 并加入房间。详见[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
+
+## 实现方法
+
+本节展示如何在[加入实时房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)示例代码的基础上使用自定义事件接口发送和接收简单的文字消息。
+
+### 监听和发送自定义事件
+
+在 `index.js` 文件中添加如下代码：
+
+```javascript
+var whiteWebSdk = new WhiteWebSdk({
+    appIdentifier: "RMxxxAQ",
+});
+
+var joinRoomParams = {
+    uuid: "a7xxx69",
+    roomToken: "NETLESSROOM_YWxxxjk",
+};
+
+// 定义事件的名称和内容
+var eventObject = {
+    event: "Greetings",
+    payload: "",
+};
+
+// 定义事件回调函数
+function onReceiveGreetings(eventObject) {
+    // 当收到 Greetings 事件时，在控制台输出事件的内容
+    console.log(eventObject.payload);
+}
+
+whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+
+    // 监听 Greetings 事件
+    room.addMagixEventListener("Greetings", onReceiveGreetings);
+
+    // 发送 Greetings 事件
+    room.dispatchMagixEvent("Greetings", "Hello, how do you do");
+
+}).catch(function(err) {
+
+    console.error(err);
+});
+```
+
+保存修改后，刷新 `index.html` 页面，打开浏览器的控制台，可以看到如下信息：
+
+```text
+Hello, how do you do
+```
+
+### 注销自定义事件监听
+
+如果你想停止接收某一自定义事件的回调通知，可以调用 `removeMagixEventListener` 注销对该自定义事件的监听。
+
+例如，要取消对 `Greetings` 事件的监听，在 `index.js` 文件中添加如下行：
+
+```javascript
+whiteWebSdk.joinRoom(joinRoomParams).then(function(room) {
+ 
+    room.bindHtmlElement(document.getElementById("whiteboard"));
+ 
+    // 注销对 Greetings 事件的监听
+    room.removeMagixEventListener("Greetings", onReceiveGreetings);
+ 
+}).catch(function(err) {
+ 
+    console.error(err);
+});
+```
+
+## 参考信息
+
+### 开发注意事项
+
+在使用自定义事件接口时，你需要注意以下几点：
+
+- 在高频率、事件 `payload` 较大的情况下，无法保证 `dispatchMagixEvent` 的稳定性，且房间可能出现延时或卡顿，影响用户体验。声网建议每个自定义事件的 `payload` 不超过 1 KB。
+- 通过 `addMagixEventListener` 监听自定义事件时，只能接收到监听之后发送的自定义事件，不能接收到监听之前发送的自定义事件。
+
+### API 参考
+
+- [`dispatchMagixEvent`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#dispatchmagixevent)
+- [`addMagixEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#addmagixeventlistener)
+- [`removeMagixEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/displayer#removemagixeventlistener)

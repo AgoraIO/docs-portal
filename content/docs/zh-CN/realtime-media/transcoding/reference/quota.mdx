@@ -1,0 +1,116 @@
+---
+title: "配额限制"
+description: "了解云端转码的配额、API 调用限制、并发限制和使用约束。"
+---
+本文介绍云端转码的配额限制。
+
+:::info[信息]
+本文不适用于观众端多码率服务。
+:::
+
+## 峰值并发任务数
+
+峰值并发任务数（PCW，Peak Concurrent Workload）指最大并发任务数。PCW 限制和你使用云端转码服务处理的视频流分辨率、所在地区有关，详见下表：
+
+| 服务类型 | 中国大陆 | 亚洲（除去中国大陆） | 欧洲 | 美洲 |
+| --- | --- | --- | --- | --- |
+| 云端转码 | <Slot name="quota-html-0-1-1" /> | <Slot name="quota-html-0-1-2" /> | <Slot name="quota-html-0-1-3" /> | <Slot name="quota-html-0-1-4" /> |
+
+<Slot for="quota-html-0-1-1">
+
+- SD: 20
+    - HD: 10
+    - FHD: 5
+
+</Slot>
+
+<Slot for="quota-html-0-1-2">
+
+- SD: 20
+    - HD: 10
+    - FHD: 3
+
+</Slot>
+
+<Slot for="quota-html-0-1-3">
+
+- SD: 10
+    - HD: 5
+    - FHD: 2
+
+</Slot>
+
+<Slot for="quota-html-0-1-4">
+
+- SD: 0
+    - HD: 0
+    - FHD: 0
+
+</Slot>
+
+:::info[信息]
+视频分辨率说明：
+
+- SD：标清视频，分辨率 ≤ 640 × 360
+- HD：高清视频，640 × 360 < 分辨率 ≤ 1280 × 720
+- FHD：全高清视频，1280 × 720 < 分辨率 ≤ 1920 × 1080
+:::
+
+## 调用频率限制
+
+针对每个声网账号，cloud-transcoder服务的每秒请求数（QPS，Queries Per Second）上限为 10 次/秒。超出限制速率时会返回状态码 `429 (Too Many Requests)`。
+
+在有并发任务场景下，cloud-transcoder服务的每秒请求数不能超过最大并发任务数的 10%。
+
+## 转码分辨率和路数限制
+
+云端转码支持处理的视频属性上限为：分辨率 1920 × 1080，帧率 30 fps。
+
+云端转码支持处理的最大流路数详见下表：
+
+| 服务类型 | 中国大陆 | 亚洲（除去中国大陆） | 欧洲 | 美洲 |
+| --- | --- | --- | --- | --- |
+| 云端转码 | <Slot name="quota-html-1-1-1" /> | <Slot name="quota-html-1-1-2" /> | <Slot name="quota-html-1-1-3" /> | <Slot name="quota-html-1-1-4" /> |
+
+<Slot for="quota-html-1-1-1">
+
+- SD: 20
+    - HD: 10
+    - FHD: 5
+
+</Slot>
+
+<Slot for="quota-html-1-1-2">
+
+- SD: 20
+    - HD: 10
+    - FHD: 3
+
+</Slot>
+
+<Slot for="quota-html-1-1-3">
+
+- SD: 10
+    - HD: 5
+    - FHD: 2
+
+</Slot>
+
+<Slot for="quota-html-1-1-4">
+
+- SD: 0
+    - HD: 0
+    - FHD: 0
+
+</Slot>
+
+如果你需要同时转多种档位的流，确保同时满足如下要求：
+
+- 各档位转码路数不能超过该档位支持的最大路数。
+- 总路数不能超过所有转码档位支持路数的最大值。
+
+例如，当你需要在中国大陆使用云端转码时，如果你既转标清，又转高清视频，则标清转码路数不能超过 20，高清转码路数不能超过 10，转码总路数不能超过 20。
+
+## 提升配额
+
+如果你想提升配额，可以联系 sales@shengwang.cn。

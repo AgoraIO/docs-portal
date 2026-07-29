@@ -1,0 +1,2050 @@
+openapi: 3.1.0
+x-stoplight:
+  id: ypdtnn3eb0s00
+info:
+  version: ''
+  title: API 概述
+  description: |2+
+
+servers:
+- url: https://api.sd-rtn.com
+paths:
+  /v1/projects/{appId}/rtsc/cloud-transcoder/builderTokens:
+    post:
+      tags:
+      - 云端转码
+      summary: 获取云端转码资源
+      description: 获取用于创建云端转码任务的 builderToken。
+      operationId: post-v1-projects-appId-rtsc-cloud-transcoder-builderTokens
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - services
+              - instanceId
+              properties:
+                services:
+                  type: object
+                  x-stoplight:
+                    id: d30cy7jv1bbe0
+                  required:
+                  - cloudTranscoder
+                  properties:
+                    cloudTranscoder:
+                      type: object
+                      x-stoplight:
+                        id: k7t1sxlkt9ev2
+                      required:
+                      - serviceType
+                      - config
+                      properties:
+                        serviceType:
+                          $ref: '#/components/schemas/serviceType'
+                          x-stoplight:
+                            id: ez6e6gfm7dyc6
+                        config:
+                          type: object
+                          x-stoplight:
+                            id: y9o4l2olaldsj
+                          required:
+                          - transcoder
+                          properties:
+                            transcoder:
+                              $ref: '#/components/schemas/transcoder'
+                              x-stoplight:
+                                id: grb43iob3ish2
+                instanceId:
+                  $ref: '#/components/schemas/instanceId'
+            examples:
+              Example 1:
+                value:
+                  instanceId: abc13328
+                  services:
+                    cloudTranscoder:
+                      serviceType: cloudTranscoderV2
+                      config:
+                        transcoder:
+                          idleTimeout: 300
+                          audioInputs:
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 123
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 456
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          canvas:
+                            width: 960
+                            height: 480
+                            color: 0
+                            backgroundImage: https://web-cdn.agora.io/website-files/images/new-home-2-banne-online-karaoke-bg.jpg
+                            fillMode: FIT
+                          waterMarks:
+                          - imageUrl: https://web-cdn.agora.io/website-files/images/advantage-interactive-live-streaming.png
+                            region:
+                              x: 0
+                              y: 0
+                              width: 100
+                              height: 100
+                              zOrder: 50
+                          videoInputs:
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 123
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            placeholderImageUrl: https://web-cdn.agora.io/website-files/images/new-home-2-banner-realtime-bg.jpg
+                            region:
+                              x: 0
+                              y: 0
+                              width: 320
+                              height: 360
+                              zOrder: 2
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 456
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            region:
+                              x: 320
+                              y: 0
+                              width: 320
+                              height: 320
+                              zOrder: 2
+                          outputs:
+                          - rtc:
+                              rtcChannel: test02
+                              rtcUid: 1000
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            audioOption:
+                              profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                            videoOption:
+                              fps: 30
+                              codec: H264
+                              bitrate: 800
+                              width: 960
+                              height: 480
+                              lowBitrateHighQuality: false
+      responses:
+        '200':
+          description: 如果状态码为 2XX，则请求成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  createTs:
+                    $ref: '#/components/schemas/createTs-acquire-r'
+                  instanceId:
+                    $ref: '#/components/schemas/instanceId-acquire-r'
+                  tokenName:
+                    $ref: '#/components/schemas/tokenName-acquire-r'
+              examples:
+                Example 1:
+                  value:
+                    createTs: 1661324606
+                    instanceId: abc13328
+                    tokenName: nUwUbQf9Zg6tsgtLslGnDg0lk8RYaUE0***
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: |-
+                UUID（通用唯一识别码），用于标识本次请求。
+
+                **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+        非 2XX:
+          $ref: '#/components/responses/failure-with-message'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: kzaabdfkinsk2
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Acquire` 方法用于在开始云端转码前获取云端转码资源。'
+      x-docs-callouts:
+      - type: info
+        title: 注意
+        position: after-description
+        markdown: |-
+          - 调用成功后，你可以在响应包体中得到一个 `builderToken`。一个 `builderToken` 仅可用于一次云端转码任务，同一时间仅允许一个 `builderToken` 运行任务。
+          - `builderToken` 用于创建云端转码的有效期为 5 分钟。为确保成功进行云端转码，建议你在每次 `Acquire` 请求获取到 `builderToken` 后的 2 秒内立即发起对应的 [`Create`](create) 请求。
+          - 成功创建后，如果需要调用 `Update`/`Delete`，请求中传入的 `builderToken` 需要和创建云端转码时传入的 `builderToken` 一致。
+          - 在批量获取 `builderToken` 后进行批量 `Create` 请求可能导致请求失败。
+  /v1/projects/{appId}/rtsc/cloud-transcoder/tasks:
+    post:
+      tags:
+      - 云端转码
+      summary: 创建云端转码
+      description: 创建云端转码任务并输出转码后的媒体流。
+      operationId: post-v1-projects-appId-rtsc-cloud-transcoder-tasks
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/builderToken'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - services
+              properties:
+                services:
+                  type: object
+                  required:
+                  - cloudTranscoder
+                  properties:
+                    cloudTranscoder:
+                      type: object
+                      required:
+                      - serviceType
+                      - config
+                      properties:
+                        serviceType:
+                          $ref: '#/components/schemas/serviceType'
+                        config:
+                          type: object
+                          required:
+                          - transcoder
+                          properties:
+                            transcoder:
+                              $ref: '#/components/schemas/transcoder'
+            examples:
+              合图转码输出到 RTC 频道:
+                value:
+                  services:
+                    cloudTranscoder:
+                      serviceType: cloudTranscoderV2
+                      config:
+                        transcoder:
+                          idleTimeout: 300
+                          audioInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-1
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-2
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                          canvas:
+                            width: 960
+                            height: 480
+                            color: 0
+                            backgroundImage: https://example.jpg
+                            fillMode: FIT
+                          waterMarks:
+                          - imageUrl: https://example.png
+                            region:
+                              x: 0
+                              y: 0
+                              width: 120
+                              height: 120
+                              zOrder: 50
+                          videoInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-1
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                            placeholderImageUrl: https://example.jpg
+                            region:
+                              x: 0
+                              y: 0
+                              width: 320
+                              height: 360
+                              zOrder: 2
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-2
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                            placeholderImageUrl: https://example.jpg
+                            region:
+                              x: 320
+                              y: 0
+                              width: 320
+                              height: 320
+                              zOrder: 2
+                          outputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid
+                              rtcToken: cloudTranscoder-robot-token-follow-rtcUid
+                            audioOption:
+                              profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                            videoOption:
+                              fps: 30
+                              codec: H264
+                              bitrate: 800
+                              width: 960
+                              height: 480
+                              lowBitrateHighQuality: false
+                            seiOption:
+                              source:
+                                agora:
+                                  uidVideoLayout: true
+                              sink:
+                                type: 100
+              视频不转码推流到 CDN:
+                value:
+                  services:
+                    cloudTranscoder:
+                      serviceType: cloudTranscoderV2
+                      config:
+                        transcoder:
+                          streamProcessMode: heterogeneous-single
+                          idleTimeout: 300
+                          audioInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                          videoInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                          outputs:
+                          - audioOption:
+                              profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                            videoOption:
+                              mode: RAW
+                            streamUrl: rtmp://xxx/live/yyy
+              合图转码推流到 CDN:
+                value:
+                  services:
+                    cloudTranscoder:
+                      serviceType: cloudTranscoderV2
+                      config:
+                        transcoder:
+                          idleTimeout: 300
+                          audioInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-1
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-2
+                              rtcToken: cloudTranscoder_robot_token, generated with
+                                uid 0>
+                          videoInputs:
+                          - rtc:
+                              rtcChannel: your-channel-name
+                              rtcUid: your-uid-1
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                            region:
+                              x: 0
+                              y: 0
+                              width: 480
+                              height: 240
+                              zOrder: 2
+                          - rtc:
+                              rtcChannel: your channel name>
+                              rtcUid: your-uid-2
+                              rtcToken: cloudTranscoder-robot-token-generated-with-uid-0
+                            region:
+                              x: 0
+                              y: 240
+                              width: 480
+                              height: 240
+                              zOrder: 2
+                          canvas:
+                            width: 960
+                            height: 480
+                            color: 255
+                          outputs:
+                          - streamUrl: rtmp://xxx/live/yyy
+                            audioOption:
+                              profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                            videoOption:
+                              fps: 20
+                              codec: H264
+                              bitrate: 800
+                              width: 960
+                              height: 480
+      responses:
+        '200':
+          $ref: '#/components/responses/create-success'
+        非 2XX:
+          $ref: '#/components/responses/failure-with-message'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 1zq3bw66oebmx
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Create` 方法用于创建云端转码任务。发起 [`Acquire`](acquire) 请求后，你可以通过 `Create`
+          请求创建 Cloud transcoder。声网服务器会开始将你指定的多路流转码合流并输入到声网 RTC 频道。'
+  /v1/projects/{appId}/rtsc/cloud-transcoder/tasks/{taskId}:
+    get:
+      tags:
+      - 云端转码
+      summary: 查询云端转码状态
+      description: 查询云端转码任务的当前状态。
+      operationId: get-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/builderToken2'
+      - $ref: '#/components/parameters/taskId'
+      - $ref: '#/components/parameters/appId'
+      responses:
+        '200':
+          $ref: '#/components/responses/query-success'
+        非 2XX:
+          $ref: '#/components/responses/failure-with-message'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: j4748x1kph4ny
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Query` 方法用于在创建云端转码任务后查询转码状态。'
+    patch:
+      tags:
+      - 云端转码
+      summary: 更新指定的云端转码
+      description: 更新指定云端转码任务的配置。
+      operationId: patch-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/builderToken2'
+      - $ref: '#/components/parameters/sequenceId'
+      - $ref: '#/components/parameters/updateMask'
+      - $ref: '#/components/parameters/taskId'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - services
+              properties:
+                services:
+                  type: object
+                  required:
+                  - cloudTranscoder
+                  properties:
+                    cloudTranscoder:
+                      type: object
+                      required:
+                      - serviceType
+                      - config
+                      properties:
+                        serviceType:
+                          $ref: '#/components/schemas/serviceType'
+                        config:
+                          type: object
+                          required:
+                          - transcoder
+                          properties:
+                            transcoder:
+                              $ref: '#/components/schemas/transcoder'
+            examples:
+              音视频场景下更新:
+                value:
+                  services:
+                    cloudTranscoder:
+                      serviceType: cloudTranscoderV2
+                      config:
+                        transcoder:
+                          idleTimeout: 300
+                          audioInputs:
+                          - rtc:
+                              rtcChannel: test
+                              rtcUid: 123
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 456
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                          canvas:
+                            width: 960
+                            height: 480
+                            color: 0
+                            backgroundImage: https://example.jpg
+                            fillMode: FIT
+                          waterMarks:
+                          - imageUrl: https://example.png
+                            region:
+                              x: 0
+                              y: 0
+                              width: 120
+                              height: 120
+                              zOrder: 50
+                          videoInputs:
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 123
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            placeholderImageUrl: https://example.jpg
+                            region:
+                              x: 0
+                              y: 0
+                              width: 320
+                              height: 360
+                              zOrder: 2
+                          - rtc:
+                              rtcChannel: test01
+                              rtcUid: 456
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            placeholderImageUrl: https://example.jpg
+                            region:
+                              x: 320
+                              y: 0
+                              width: 320
+                              height: 320
+                              zOrder: 2
+                          outputs:
+                          - rtc:
+                              rtcChannel: test02
+                              rtcUid: 1000
+                              rtcToken: aab8b8f5a8cd4469a63042fcfafe7***
+                            audioOption:
+                              profileType: AUDIO_PROFILE_MUSIC_STANDARD
+                            videoOption:
+                              fps: 30
+                              codec: H264
+                              bitrate: 800
+                              width: 960
+                              height: 480
+                              lowBitrateHighQuality: false
+      responses:
+        '200':
+          description: 如果状态码为 2XX，则请求成功。包体为空。
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: |-
+                UUID（通用唯一识别码），用于标识本次请求。
+
+                **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+        非 2XX:
+          $ref: '#/components/responses/failure-with-message'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: b7e37b7ijj49b
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Update` 方法用于更新云端转码任务。通过 [`Acquire`](acquire) 和 [`Create`](create)
+          请求获取并创建 Cloud transcoder 后，你可以调用该接口更新 Cloud transcoder。'
+      - title: 可更新字段
+        position: after-description
+        markdown: |-
+          `Update` 请求支持修改如下字段：
+
+          - 新增或删除 `audioInputs[]`、`videoInputs[]` 中的 `rtc` 成员，用于订阅或取消订阅频道内主播的音视频流。
+          - 修改 `videoInputs[]` 中的 `region` 字段，用于更新主播的合图布局。
+          - 修改 `outputs[]` 中的 `audioOption`、`videoOption` 字段，用于更新转码输出的音频和视频配置。
+    delete:
+      tags:
+      - 云端转码
+      summary: 销毁云端转码
+      description: 销毁不再需要的云端转码任务。
+      operationId: delete-v1-projects-appId-rtsc-cloud-transcoder-tasks-taskId
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/taskId'
+      - $ref: '#/components/parameters/appId'
+      - $ref: '#/components/parameters/builderToken2'
+      responses:
+        '200':
+          $ref: '#/components/responses/delete-success'
+        非 2XX:
+          $ref: '#/components/responses/failure-with-message'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: jp98t41xfrrh0
+      security:
+      - Basic Auth: []
+      x-docs-sections:
+      - position: after-description
+        markdown: '`Delete` 方法用于销毁云端转码任务。如果你不再需要云端转码，可以发起 `Delete` 请求销毁。'
+      x-docs-callouts:
+      - type: info
+        title: 注意
+        position: after-description
+        markdown: 请确保请求中传入的 `builderToken` 和调用 [`Create`](create) 创建云端转码时传入的 `builderToken`
+          一致。
+  /v1/projects/{appId}/rtls/abr/config/codecs/{codecId}:
+    post:
+      tags:
+      - 观众端多码率
+      summary: 创建或更新转码模板
+      description: 创建或更新指定 App ID 下的转码模板。
+      operationId: post-v1-projects-appId-rtls-abr-config-codecs-codecId
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/codecId'
+      - $ref: '#/components/parameters/appId'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  $ref: '#/components/schemas/abr-enabled'
+                video:
+                  type: object
+                  properties:
+                    width:
+                      $ref: '#/components/schemas/abr-width'
+                    height:
+                      $ref: '#/components/schemas/abr-height'
+                    fps:
+                      $ref: '#/components/schemas/abr-fps'
+                  required:
+                  - width
+                  - height
+                  - fps
+              required:
+              - enabled
+              - video
+      responses:
+        '200':
+          $ref: '#/components/responses/abr-success'
+        非 200:
+          $ref: '#/components/responses/abr-failure'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: k0n8ijxiuqzw6
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          创建或更新指定 App ID 下的转码模板。
+
+          - 发起请求创建转码模板时，Body 中所有字段都是必填。
+          - 创建后，如果你想更新转码模板，可以再次发起请求。更新视频属性时，你需要填写完整的 `video` object，不能只填写 `video` object 中的单个字段。
+  /v1/projects/{appId}/rtls/abr/config/codecs:
+    get:
+      tags:
+      - 观众端多码率
+      summary: 查询转码模板
+      description: 查询指定 App ID 下所有转码模板配置。
+      operationId: get-v1-projects-appId-rtls-abr-config-codecs
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/appId'
+      responses:
+        '200':
+          $ref: '#/components/responses/abr-query-success'
+        非 200:
+          $ref: '#/components/responses/abr-query-failure'
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 4omno025rfei9
+      security:
+      - Basic Auth: []
+      - API Key: []
+      x-docs-sections:
+      - position: after-description
+        markdown: 查询指定 App ID 下所有的转码模板配置。
+  /v1/ncs/ip:
+    get:
+      summary: 查询消息通知服务器 IP
+      description: 查询消息通知服务器的 IP 地址或 IP 地址列表。
+      operationId: get-v1-ncs-ip
+      responses:
+        '200':
+          description: |-
+            如果返回的 HTTP 状态码为 200，表示请求成功。
+
+            你只需关心响应 Body 中的 `PrimaryIP` 字段，无需关心响应 Header 以及响应 Body 中的其他字段。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      service:
+                        type: object
+                        properties:
+                          hosts:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                primaryIP:
+                                  type: string
+                                  description: 声网消息通知服务器的 IP 地址。
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      service:
+                        hosts:
+                        - primaryIP: xxx.xxx.xxx.xxx
+                        - primaryIP: xxx.xxx.xxx.xxx
+      servers:
+      - url: https://api.sd-rtn.com
+      x-stoplight:
+        id: 6ayz3ts6tfq05
+      security:
+      - Basic Auth: []
+      tags:
+      - 消息通知服务
+      x-docs-sections:
+      - position: after-description
+        markdown: |-
+          **背景**：开通消息通知服务后，声网消息通知服务可以将云端转码业务中的一些事件以 HTTPS 请求的方式通知到你的服务器。声网会动态调整消息通知服务器的 IP 地址，周期为 24 小时。
+
+          **用法**：你可以通过本方法查询 IP 地址。查询后，需要将 IP 地址或 IP 地址列表添加到白名单中。
+      x-docs-callouts:
+      - type: info
+        title: 注意
+        position: after-description
+        markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
+tags:
+- name: 云端转码
+- name: 观众端多码率
+- name: 消息通知服务
+components:
+  parameters:
+    builderToken:
+      name: builderToken
+      in: query
+      description: |-
+        通过 `Acquire` 方法的响应包体得到的 `tokenName` 的值。
+        > 同一时间仅允许一个 `builderToken` 运行任务。
+      required: true
+      schema:
+        type: string
+    sequenceId:
+      name: sequenceId
+      in: query
+      description: |-
+        `Update` 请求的序列号。取值需要大于 0。请确保后一次 `Update` 请求的序列号大于前一次 `Update` 请求的序列号。序列号可以确保声网服务器按照你指定的最新配置来更新 Cloud transcoder。
+
+        **使用建议**：声网推荐你在第一次调用 `Update` 时，将 `sequence` 设置为 `1`。在第二次调用 `Update` 时，将 `sequence` 设置为 `2`。在第三次调用 `Update` 时，将 `sequence` 设置为 `3`。依次类推。声网服务器会按照最新 `Update` 请求（即最大的序列号）更新 Cloud transcoder。
+      required: true
+      schema:
+        type: string
+    updateMask:
+      name: updateMask
+      in: query
+      description: 指定的更新配置项。需要填为 `services.cloudTranscoder.config`，代表全量更新。
+      required: true
+      schema:
+        type: string
+    taskId:
+      name: taskId
+      in: path
+      description: 转码任务 ID，为 UUID，用于标识本次请求操作的 Cloud transcoder。
+      required: true
+      schema:
+        type: string
+    codecId:
+      name: codecId
+      in: path
+      description: |-
+        转码模板的 ID。字符串长度不超过 64 字节，支持的字符集范围（共 89 个字符）如下：
+
+        - 26 个小写英文字母 a~z
+        - 26 个大写英文字母 A~Z
+        - 10 个数字 0~9
+        - 空格
+        - `!`、`#`、`$`、`%`、`&`、`(`、`)`、`+`、`-`、`:`、`;`、`<`、`=`、`.`、`>`、`?`、`@`、`[`、`]`、`^`、`_`、`{`、`}`、`|`、`~`、`,`
+
+        **用法说明**：假设你在频道名为 `channel` 的频道中开启观众端多码率功能，并且创建转码模板，设置转码模板 ID 为 `codecId`。那么，观众端进入对应的 `channel_codecId` 频道即可订阅经过转码模板处理过的多码率主播流。
+      required: true
+      schema:
+        type: string
+        examples:
+        - '"720p"'
+    appId:
+      name: appId
+      in: path
+      description: 声网为每个开发者提供的 **App ID**。在声网控制台创建一个项目后即可得到一个 App ID。一个 App ID 是一个项目的唯一标识。
+      required: true
+      schema:
+        type: string
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: '`application/json`'
+      required: true
+      schema:
+        type: string
+    builderToken2:
+      name: builderToken
+      in: query
+      required: true
+      schema:
+        type: string
+      description: "通过 `Acquire` 方法的响应包体得到的 `tokenName` 的值。 \n> 请确保填入的 `builderToken`\
+        \ 和你在 `Create` 接口中传入的 `builderToken` 一致。"
+  securitySchemes:
+    Basic Auth:
+      type: http
+      description: 声网云端转码 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64
+        编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/api-reference/api-ref/cloud-transcoding/authentication)。
+      scheme: basic
+    API Key:
+      type: apiKey
+      description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization`
+        字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](/zh-CN/api-reference/api-ref/cloud-transcoding/authentication)。'
+      name: API Key
+      in: header
+  responses:
+    create-success:
+      description: 如果状态码为 2XX，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              taskId:
+                $ref: '#/components/schemas/taskId-r'
+              createTs:
+                $ref: '#/components/schemas/createTs-task'
+              status:
+                $ref: '#/components/schemas/status-query-r'
+              services:
+                type: object
+                properties:
+                  cloudTranscoder:
+                    type: object
+                    properties:
+                      config:
+                        type: object
+                        description: 同你在 `Create` 请求包体中设置的 `config` 字段。
+                      createTs:
+                        $ref: '#/components/schemas/createTs-r'
+                      details:
+                        $ref: '#/components/schemas/reserved-object'
+                      message:
+                        $ref: '#/components/schemas/reserved-string'
+                      serviceType:
+                        $ref: '#/components/schemas/serviceType'
+                      status:
+                        $ref: '#/components/schemas/status-service-r'
+              eventHandlers:
+                $ref: '#/components/schemas/reserved-object'
+              execution:
+                type: object
+                properties:
+                  workflows:
+                    $ref: '#/components/schemas/reserved-object'
+              properties:
+                $ref: '#/components/schemas/reserved-object'
+              sequenceId:
+                $ref: '#/components/schemas/reserved-string'
+              variables:
+                $ref: '#/components/schemas/reserved-object'
+              workflows:
+                $ref: '#/components/schemas/reserved-object'
+          examples:
+            例:
+              value:
+                createTs: 1661324613
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: '1'
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661324614
+                    details: {}
+                    message: ''
+                    serviceType: cloudTranscoderV2
+                    status: serviceReady
+                status: STARTED
+                taskId: 609f28f2644f1ae1ceb041b7047e3***
+                variables: {}
+                workflows: {}
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: |-
+            UUID（通用唯一识别码），用于标识本次请求。
+
+            **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+    delete-success:
+      description: 如果状态码为 2XX，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              taskId:
+                $ref: '#/components/schemas/taskId-r'
+              createTs:
+                $ref: '#/components/schemas/createTs-task'
+              status:
+                $ref: '#/components/schemas/status-query-r'
+              services:
+                type: object
+                properties:
+                  cloudTranscoder:
+                    type: object
+                    properties:
+                      config:
+                        type: object
+                        description: 同你在 `Create` 请求包体中设置的 `config` 字段。
+                      createTs:
+                        $ref: '#/components/schemas/createTs-r'
+                      details:
+                        $ref: '#/components/schemas/reserved-object'
+                      message:
+                        $ref: '#/components/schemas/reserved-string'
+                      serviceType:
+                        $ref: '#/components/schemas/serviceType'
+                      status:
+                        $ref: '#/components/schemas/status-service-r'
+              eventHandlers:
+                $ref: '#/components/schemas/reserved-object'
+              execution:
+                type: object
+                properties:
+                  workflows:
+                    $ref: '#/components/schemas/reserved-object'
+              properties:
+                $ref: '#/components/schemas/reserved-object'
+              sequenceId:
+                $ref: '#/components/schemas/reserved-string'
+              variables:
+                $ref: '#/components/schemas/reserved-object'
+              workflows:
+                $ref: '#/components/schemas/reserved-object'
+          examples:
+            例:
+              value:
+                createTs: 1661324613
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: '0'
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661324614
+                    details: {}
+                    message: OnSlaveServiceStopped
+                    serviceType: cloudTranscoderV2
+                    status: serviceCompleted
+                status: STOPPED
+                taskId: 609f28f2644f1ae1ceb041b7047e3***
+                variables: {}
+                workflows: {}
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: |-
+            UUID（通用唯一识别码），用于标识本次请求。
+
+            **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+    query-success:
+      description: 如果状态码为 2XX，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              taskId:
+                $ref: '#/components/schemas/taskId-r'
+              createTs:
+                $ref: '#/components/schemas/createTs-task'
+              status:
+                $ref: '#/components/schemas/status-query-r'
+              services:
+                type: object
+                properties:
+                  cloudTranscoder:
+                    type: object
+                    properties:
+                      config:
+                        type: object
+                        description: 同你在 `Create` 请求包体中设置的 `config` 字段。
+                      createTs:
+                        $ref: '#/components/schemas/createTs-r'
+                      details:
+                        $ref: '#/components/schemas/reserved-object'
+                      message:
+                        $ref: '#/components/schemas/reserved-string'
+                      serviceType:
+                        $ref: '#/components/schemas/serviceType'
+                      status:
+                        $ref: '#/components/schemas/status-service-r'
+              eventHandlers:
+                $ref: '#/components/schemas/reserved-object'
+              execution:
+                type: object
+                properties:
+                  workflows:
+                    $ref: '#/components/schemas/reserved-object'
+              properties:
+                $ref: '#/components/schemas/reserved-object'
+              sequenceId:
+                $ref: '#/components/schemas/reserved-string'
+              variables:
+                $ref: '#/components/schemas/reserved-object'
+              workflows:
+                $ref: '#/components/schemas/reserved-object'
+          examples:
+            例:
+              value:
+                createTs: 1661420011
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: '0'
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661420011
+                    message: OnSlaveServiceQueryUpdated
+                    serviceType: cloudTranscoderV2
+                    status: serviceInProgress
+                status: IN_PROGRESS
+                taskId: c0077139e34d0949c719189a393aa***
+                variables: {}
+                workflows: {}
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: |-
+            UUID（通用唯一识别码），用于标识本次请求。
+
+            **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+    failure-with-message:
+      description: 如果状态码不为 2XX，请求失败。请根据响应状态码和 `message` 字段进行排查。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                $ref: '#/components/schemas/message'
+      headers:
+        X-Request-ID:
+          schema:
+            type: string
+          description: |-
+            UUID（通用唯一识别码），用于标识本次请求。
+
+            **注意**：如果请求出错，请在日志中打印出该值，排查问题。如果本次请求的响应状态码不是 2XX，那么响应 Header 中可能无该字段。
+    abr-success:
+      description: 如果状态码为 200，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/abr-status'
+    abr-failure:
+      description: 如果状态码不为 200，表示请求失败。请根据响应状态码和 `message` 字段进行排查。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/abr-status'
+              message:
+                $ref: '#/components/schemas/message'
+    abr-query-success:
+      description: 如果状态码为 200，则请求成功。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/abr-status'
+              data:
+                type: object
+                properties:
+                  enabled:
+                    $ref: '#/components/schemas/enabled-abr-r'
+                  codecs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/codecId-abr-r'
+                        enabled:
+                          $ref: '#/components/schemas/abr-enabled'
+                        video:
+                          type: object
+                          properties:
+                            width:
+                              $ref: '#/components/schemas/abr-width-r'
+                            height:
+                              $ref: '#/components/schemas/abr-height-r'
+                            fps:
+                              $ref: '#/components/schemas/abr-fps-r'
+    abr-query-failure:
+      description: 如果状态码不为 200，表示请求失败。请根据响应状态码和 `message` 字段进行排查。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                $ref: '#/components/schemas/abr-status'
+              data:
+                type: object
+                properties:
+                  enabled:
+                    $ref: '#/components/schemas/enabled-abr-r'
+                  codecs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/codecId-abr-r'
+                        enabled:
+                          $ref: '#/components/schemas/abr-enabled'
+                        video:
+                          type: object
+                          properties:
+                            width:
+                              $ref: '#/components/schemas/abr-width-r'
+                            height:
+                              $ref: '#/components/schemas/abr-height-r'
+                            fps:
+                              $ref: '#/components/schemas/abr-fps-r'
+              message:
+                $ref: '#/components/schemas/message'
+  schemas:
+    instanceId:
+      type: string
+      title: instanceId
+      description: |-
+        用户指定的实例 ID。长度必须在 64 个字符以内，支持的字符集范围为：
+        - 所有小写英文字母（a-z）
+        - 所有大写英文字母（A-Z）
+        - 数字 0-9
+        - "-", "_"
+        > 一个 `instanceId` 可以生成多个 `builderToken`，但同一时间仅允许一个 `builderToken` 运行任务。
+      x-stoplight:
+        id: xiydvjp8ydj6s
+    createTs-acquire-r:
+      type: number
+      title: createTs-acquire-r
+      description: 生成 `builderToken` 时的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: xx7hcsjidg1yu
+    instanceId-acquire-r:
+      type: string
+      title: instanceId-acquire-r
+      description: 请求时设置的 `instanceId`。
+      x-stoplight:
+        id: w55fq37fbvozz
+    tokenName-acquire-r:
+      type: string
+      title: tokenName-acquire-r
+      description: 代表 `builderToken` 的值，在后续调用其他方法时需要传入该值。
+      x-stoplight:
+        id: rxb4rhgjbqfkn
+    serviceType:
+      type: string
+      title: serviceType
+      description: 服务类型，此处为 `"cloudTranscoderV2"`。
+      x-stoplight:
+        id: l5pez3b5gx4ni
+    idleTimeout:
+      type: number
+      title: idleTimeout
+      description: 空闲超时时间（秒）。空闲指 Cloud transcoder 处理的音视频流所对应的所有主播均已离开频道。当没有输入超过设置的时间（秒）后，Cloud
+        transcoder 会停止工作并自动销毁，以节省资源。
+      minimum: 1
+      maximum: 86400
+      default: 300
+      x-stoplight:
+        id: 88fquwf3bsgxh
+    rtcChannel-a:
+      type: string
+      title: rtcChannel-a
+      description: 频道名称，用于指定来源音频流来自那个频道。目前仅支持订阅单个频道的音视频源，音频源和视频源所属频道必须相同。
+      x-stoplight:
+        id: rwa39xqajiol1
+    rtcUid-a:
+      type: number
+      title: rtcUid-a
+      description: 音频输入源所对应的 UID。在 RTC 系统中每个主播在频道内身份的唯一标识。
+      x-stoplight:
+        id: neddoeswzdc79
+    rtcToken-a-v:
+      type: string
+      title: rtcToken-a-v
+      description: |-
+        Cloud transcoder 在进入待转码视频源所属 RTC 频道时所需设置的 Token。该值可用于确保频道安全，避免异常用户扰乱频道内其他用户。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+        > Cloud transcoder 在待转码音视频源所属 RTC 频道内的 UID 为声网随机分配，因此，生成 Token 时，你使用的 `uid` 必须为 0。
+      x-stoplight:
+        id: n3vyt0n45lyzo
+    rtcChannel-v:
+      type: string
+      title: rtcChannel-v
+      description: 频道名称，用于指定来源视频流来自哪个频道。
+      x-stoplight:
+        id: 8h32s3rj5y0fu
+    rtcUid-v:
+      type: number
+      title: rtcUid-v
+      description: 视频输入源所对应的 UID。在 RTC 系统中每个主播在频道内身份的唯一标识。
+      x-stoplight:
+        id: ollak2lr269ty
+    placeholderImageUrl:
+      type: string
+      title: placeholderImageUrl
+      description: 用户离线时占位图片的 URL。必须为合法 URL，且包含 `jpg` 或 `png` 后缀。
+      x-stoplight:
+        id: 95jtm2onxmgii
+    x-v:
+      type: number
+      title: x-v
+      description: 画面在画布上的 x 坐标 (px)。以画布左上角为原点，x 坐标为画面左上角相对于原点的横向位移。
+      minimum: 0
+      maximum: 3840
+      x-stoplight:
+        id: i9zjbpgl3lhct
+    y-v:
+      type: number
+      title: y-v
+      description: 画面在画布上的 y 坐标 (px)。以画布左上角为原点，y 坐标为画面左上角相对于原点的纵向位移。
+      minimum: 0
+      maximum: 3840
+      x-stoplight:
+        id: qeqka2nc03fn6
+    width-v:
+      type: number
+      title: width-v
+      description: 画面的宽度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: 1rldjktq9hfb5
+    height-v:
+      type: number
+      title: height-v
+      description: 画面的高度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: ng8nipybyx0x8
+    zOrder-v:
+      type: number
+      title: zOrder-v
+      description: 主播画面的图层编号。2 代表占位图图层所在的上面一层。100 代表最上层的图层。
+      minimum: 2
+      maximum: 100
+      x-stoplight:
+        id: 5f8va5ujzbb4q
+    width-ca:
+      type: number
+      title: width-ca
+      description: 画布的宽度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: yf5a6birjr8g8
+    height-ca:
+      type: number
+      title: height-ca
+      description: '画布的高度 (px)。取值范围为 [120,3840]。 '
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: 6jqq8ohuffq5o
+    color-ca:
+      type: number
+      title: color-ca
+      description: 画布的背景色。RGB 颜色值，以十进制数表示。如 0 代表黑色，255 代表蓝色。
+      minimum: 0
+      maximum: 16777215
+      x-stoplight:
+        id: 6m7v9hximgyhs
+    backgImage-ca:
+      type: string
+      title: ''
+      description: |-
+        画布背景图。必须为合法 URL，且包含 `jpg` 或 `png` 后缀。
+
+        > 如果不传值，则没有画布背景图。
+      x-stoplight:
+        id: wc63oetcssjj2
+    fillMode-ca:
+      type: string
+      title: fillMode-ca
+      description: |-
+        画布背景图的填充模式：
+        - `"FILL"`：在保持长宽比的前提下，缩放画面，并居中剪裁。详见[示意图](https://web-cdn.agora.io/docs-files/1628837665989)  。
+        - `"FIT"`：在保持长宽比的前提下，缩放画面，使其完整显示。详见[示意图](https://web-cdn.agora.io/docs-files/1628837708782) 。
+      default: FILL
+      x-stoplight:
+        id: c7do36tfx3drs
+    imageUrl:
+      type: string
+      title: imageUrl
+      description: 水印图片的 URL。必须为合法 URL，且包含 `jpg` 或 `png` 后缀。
+      x-stoplight:
+        id: 0kmzkj245q24z
+    x-wm:
+      type: number
+      title: x-wm
+      description: 水印在画布上的 x 坐标 (px)。以画布左上角为原点，x 坐标为画面左上角相对于原点的横向位移。
+      minimum: 0
+      maximum: 3840
+      x-stoplight:
+        id: edd937bfuiuba
+    y-wm:
+      type: number
+      title: y-wm
+      description: 水印在画布上的 y 坐标 (px)。以画布左上角为原点，y 坐标为画面左上角相对于原点的纵向位移。
+      minimum: 0
+      maximum: 3840
+      x-stoplight:
+        id: y7t79sxjc3ox4
+    width-wm:
+      type: number
+      title: width-wm
+      description: 水印的宽度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: 3ngi0nqj2q017
+    height-wm:
+      type: number
+      title: height-wm
+      description: 水印的高度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: 1ijtr6cnoqfka
+    zOrder-wm:
+      type: number
+      title: zOrder-wm
+      description: 水印的图层编号。0 代表最下层的图层。100 代表最上层的图层。
+      minimum: 0
+      maximum: 100
+      x-stoplight:
+        id: vwxolk3ktp0f9
+    fillMode-wm:
+      type: string
+      title: fillMode-wm
+      description: |-
+        水印的填充模式：
+        - `"FILL"`：在保持长宽比的前提下，缩放画面，并居中剪裁。详见[示意图](https://web-cdn.agora.io/docs-files/1628837665989)  。
+        - `"FIT"`：在保持长宽比的前提下，缩放画面，使其完整显示。详见[示意图](https://web-cdn.agora.io/docs-files/1628837708782) 。
+      default: FILL
+      x-stoplight:
+        id: e0izv96zmlalg
+    rtcChannel-o:
+      type: string
+      title: rtcChannel-o
+      description: 转码输出的音视频流所属的 RTC 频道名。
+      x-stoplight:
+        id: mc3m91djj4cn0
+    rtcUid-o:
+      type: number
+      title: rtcUid-o
+      description: Cloud transcoder 在转码输出音视频流所属 RTC 频道内的 UID。RTC 频道内不允许存在相同的 UID，因此，请确保该值与频道内其他用户
+        UID 不同。
+      x-stoplight:
+        id: u2cgeba8vp3ej
+    rtcToken-o:
+      type: string
+      title: rtcToken-o
+      description: |-
+        Cloud transcoder 在进入输出音视频流所属 RTC 频道时所需设置的 Token。该值可用于确保频道安全，避免异常用户扰乱频道内其他用户。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+        > Cloud transcoder 在转码输出音视频流所属 RTC 频道内的 UID 为你指定的 `outputs.rtc.rtcUid`，因此，生成 Token 时，你使用的 `uid` 必须和 `outputs.rtc.rtcUid` 一致。
+      x-stoplight:
+        id: 8u0elg96dwfmc
+    profileType:
+      type: string
+      title: profileType
+      description: |-
+        转码输出的音频属性：
+        - `"AUDIO_PROFILE_DEFAULT"`：48 kHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+        - `"AUDIO_PROFILE_SPEECH_STANDARD"`：32 kHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
+        - `"AUDIO_PROFILE_MUSIC_STANDARD"`: 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+        - `"AUDIO_PROFILE_MUSIC_STANDARD_STEREO"`：48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
+        - `"AUDIO_PROFILE_MUSIC_HIGH_QUALITY"`：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
+        - `"AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO"`：48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+      x-stoplight:
+        id: 63pu202q0wga0
+    fps:
+      type: number
+      title: fps
+      description: '转码输出视频的帧率 (fps)。 '
+      minimum: 1
+      maximum: 30
+      default: 15
+      x-stoplight:
+        id: awqn2kwhn3mod
+    codec:
+      type: string
+      title: codec
+      description: |-
+        转码输出视频的 codec。取值包括：
+        - `"H264"`：标准 H.264 编码。
+        - `"VP8"`：标准 VP8 编码。
+      x-stoplight:
+        id: tdhe52ugs1axc
+    bitrate:
+      type: number
+      title: bitrate
+      description: 转码输出视频的码率。
+      minimum: 1
+      maximum: 10000
+      x-stoplight:
+        id: 7tr1x6jbryynb
+    width-o:
+      type: number
+      title: width-o
+      description: 转码输出视频的宽度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: y50hlnjywmnq3
+    height-o:
+      type: number
+      title: height-o
+      description: 转码输出视频的高度 (px)。
+      minimum: 120
+      maximum: 3840
+      x-stoplight:
+        id: 83qm8gsen5vqj
+    lowBhighQ:
+      type: boolean
+      title: lowBhighQ
+      description: |-
+        是否对转码输出的音视频流开启低码高清功能：
+        - `true`：开启。
+        - `false`：不开启。
+
+        > 低码高清功能可以以较低的码率达到人眼感受的较高质量视频的效果。该功能会增加费用，开通前请联系声网销售咨询费用。
+      default: false
+      x-stoplight:
+        id: jsvd9ydj0blnb
+    abr-enabled:
+      type: boolean
+      title: abr-enabled
+      description: |-
+        是否开启该转码模版：
+        - `true`：开启该模板。
+        - `false`：不开启该模板。
+      x-stoplight:
+        id: wyepuy196d61y
+    abr-width:
+      type: number
+      title: abr-width
+      description: 转码输出视频的宽度 (px)。
+      exclusiveMinimum: 0
+      maximum: 1920
+      x-stoplight:
+        id: qqebpmwrse54z
+    abr-height:
+      type: number
+      title: abr-height
+      description: 转码输出视频的高度 (px)。
+      exclusiveMinimum: 0
+      maximum: 1920
+      x-stoplight:
+        id: l3cxi72mmjsyu
+    abr-fps:
+      type: number
+      title: abr-fps
+      description: 转码输出视频的帧率 (fps)。
+      exclusiveMinimum: 0
+      maximum: 60
+      x-stoplight:
+        id: cd2amw5u34znr
+    taskId-r:
+      type: string
+      title: taskId-r
+      description: 转码任务 ID，为 UUID，用于标识本次请求操作的 Cloud transcoder。
+      x-stoplight:
+        id: 1cd5gdus601qj
+    createTs-task:
+      type: number
+      title: createTs-task
+      description: 转码任务创建时的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: h1dztogsh3ruz
+    status-query-r:
+      type: string
+      title: status-query-r
+      description: |-
+        转码任务的运行状态：
+
+        - `"IDLE"`: 任务未开始。
+        - `"PREPARED"`: 任务已收到开启请求。
+        - `"STARTING"`: 任务正在开启。
+        - `"CREATED"`: 任务初始化完成。
+        - `"STARTED"`: 任务已经启动。
+        - `"IN_PROGRESS"`: 任务正在进行。
+        - `"STOPPING"`: 任务正在停止。
+        - `"STOPPED"`: 任务已经停止。
+        - `"EXIT"`: 任务正常退出。
+        - `"FAILURE_STOP"`: 任务异常退出。
+
+        **注意**：你可以用该字段监听任务的状态。
+      x-stoplight:
+        id: 5hh99z7vdet7i
+    createTs-r:
+      type: number
+      title: createTs-r
+      description: 创建服务时的 Unix 时间戳（秒）。
+      x-stoplight:
+        id: g6thogwflfwtj
+    reserved-object:
+      type: object
+      title: reserved-object
+      description: 预留字段。
+      x-stoplight:
+        id: yrdj5pk0wbm9b
+    reserved-string:
+      type: string
+      title: reserved-string
+      description: 预留字段。
+      x-stoplight:
+        id: sbmwynisi00gd
+    status-service-r:
+      type: string
+      title: status
+      description: |-
+        转码任务中的转码服务的运行状态：
+
+        - `"serviceIdle"`: 服务未开始。
+        - `"serviceReady"`: 服务已经就绪。
+        - `"serviceStarted"`: 服务已经开始。
+        - `"serviceInProgress"`: 服务正在进行。
+        - `"serviceCompleted"`: 服务已经停止，任务全部完成。
+        - `"servicePartialCompleted"`: 服务已经停止，任务部分完成。
+        - `"serviceValidationFailed"`: 服务参数验证失败。
+        - `"serviceAbnormal"`: 服务异常退出。
+        - `"serviceUnknown"`: 服务未知状态。
+
+        **注意**：该字段可用于让声网技术团队调查问题，你无需过多关注。
+      x-stoplight:
+        id: esh7bxrl11158
+    message:
+      type: string
+      title: message
+      description: 描述请求失败的原因。
+      x-stoplight:
+        id: utb8q4maunc24
+    abr-status:
+      type: string
+      title: abr-status
+      description: |
+        本次请求的状态：
+        - `success`：请求成功。
+        - `error`：请求失败。
+      x-stoplight:
+        id: 0983xnng4qifq
+    enabled-abr-r:
+      type: boolean
+      title: enabled-abr-r
+      description: |-
+        是否开启观众端多码率功能：
+        - `true`：开启功能。
+        - `false`：不开启功能。
+      x-stoplight:
+        id: gc5jqwt2l6wjt
+    codecId-abr-r:
+      type: string
+      title: codecId-abr-r
+      description: 转码模板的 ID。
+      x-stoplight:
+        id: c7jar7il7kc61
+    abr-width-r:
+      type: number
+      title: abr-width-r
+      description: 转码输出视频的宽度 (px)。
+      x-stoplight:
+        id: l505ci3n0bgtv
+    abr-height-r:
+      type: number
+      title: abr-height-r
+      description: 转码输出视频的高度 (px)。
+      x-stoplight:
+        id: 4t4n458gwpp30
+    abr-fps-r:
+      type: number
+      title: abr-fps-r
+      description: 转码输出视频的帧率 (fps)。
+      x-stoplight:
+        id: foe6kn915y2q7
+    streamProcessMode:
+      x-stoplight:
+        id: 2oy3ot8tuzgir
+      type: string
+      description: |-
+        Cloud transcoder 的工作模式，如果不指定此参数，就是合图模式。可以指定类型如下：
+        - `"heterogeneous-single"`: 异构单流模式，也就是输入流和输出流的类型可以不同，也可以相同，当前支持的流类型是 RTC 流和 CDN 流。
+        - `"single"`: RTC 流 Relay 模式，即把源频道内主播的音视频数据和信令一同 Relay 到目的频道。
+
+        > - 如果 `streamProcessMode` 设置为 `"heterogeneous-single"` 或者 `"single"`，那 `audioInputs` 或者 `videoInputs` 列表最多只能包含一项。
+        > - 如果需要混音、合图或混音合图，则无需设置 `streamProcessMode`。
+      default: mix
+    repeat:
+      x-stoplight:
+        id: 52g61d6cjgw5f
+      type: object
+      description: |-
+        媒体流播放重复次数：
+        - `1`：（默认）播放媒体流一次。
+        - `-1`：循环播放媒体流。
+        - `n`：自定义播放媒体流次数。不可设置为 0。
+
+        > 仅在音频输入源是 CDN 场景下设置。
+    transcoder:
+      title: transcoder
+      x-stoplight:
+        id: s14rr7r9f077a
+      type: object
+      description: Cloud transcoder 服务配置项。
+      required:
+      - outputs
+      properties:
+        idleTimeout:
+          $ref: '#/components/schemas/idleTimeout'
+          x-stoplight:
+            id: alup9tig7gl3y
+        streamProcessMode:
+          $ref: '#/components/schemas/streamProcessMode'
+          x-stoplight:
+            id: w5tip9geldy50
+        audioInputs:
+          $ref: '#/components/schemas/audioInputs'
+          x-stoplight:
+            id: s0uihnh8vg622
+        videoInputs:
+          $ref: '#/components/schemas/videoInputs'
+          x-stoplight:
+            id: 4hxooowfpvq4v
+        canvas:
+          $ref: '#/components/schemas/canvas'
+          x-stoplight:
+            id: p0ak8secryi5j
+        watermarks:
+          $ref: '#/components/schemas/watermarks'
+          x-stoplight:
+            id: e6yzhwb3w9ivl
+        outputs:
+          $ref: '#/components/schemas/outputs'
+          x-stoplight:
+            id: keicxl5xc0v9f
+    audioInputs:
+      x-stoplight:
+        id: mql19e4nyx7fp
+      type: array
+      description: |-
+        音频输入源列表，支持 RTC 音频流和 CDN 音频流两种类型。如果 `audioInputs` 包含多个输入音频源，则表示需要混音。
+
+        > `streamUrl` 和 `rtc` 两者中必须填一个。
+      items:
+        x-stoplight:
+          id: ip3ojj9x18opi
+        type: object
+        properties:
+          streamUrl:
+            type: string
+            x-stoplight:
+              id: cpx2de02ss0ke
+            description: |-
+              音频源流的 URL。
+
+              > 在音频输入源是 CDN 场景下，该参数为必填。
+          volume:
+            type: number
+            x-stoplight:
+              id: 34uhaqpqdilkg
+            description: |-
+              音频源流的音量。
+
+              > 仅在音频输入源是 CDN 场景下设置。
+            minimum: 0
+            maximum: 200
+            default: 100
+          repeat:
+            $ref: '#/components/schemas/repeat'
+            x-stoplight:
+              id: 7osf1tx1txilf
+          rtc:
+            $ref: '#/components/schemas/audioinputs-rtc'
+            x-stoplight:
+              id: 45xaqemgp7y0y
+    audioinputs-rtc:
+      title: ''
+      x-stoplight:
+        id: fv15iitomxqet
+      type: object
+      required:
+      - rtcChannel
+      - rtcUid
+      - rtcToken
+      properties:
+        rtcChannel:
+          $ref: '#/components/schemas/rtcChannel-a'
+          x-stoplight:
+            id: 9mmc1yfj2kvsj
+        rtcUid:
+          $ref: '#/components/schemas/rtcUid-a'
+          x-stoplight:
+            id: njnuor5moypiw
+        rtcToken:
+          $ref: '#/components/schemas/rtcToken-a-v'
+          x-stoplight:
+            id: ogwbruafkguan
+      description: 在音频输入源是 RTC 场景下，该对象为必填。
+    videoInputs:
+      x-stoplight:
+        id: 8hqays7rc8cev
+      type: array
+      description: |-
+        视频输入源列表，支持 RTC 视频流和 CDN 视频流两种类型。如果 `videoInputs` 包含多个输入视频源，则表示需要合图。
+
+        > `streamUrl` 和 `rtc` 两者中必须填一个。
+      items:
+        x-stoplight:
+          id: 8oiqa97oylr7z
+        type: object
+        required:
+        - region
+        properties:
+          streamUrl:
+            type: string
+            x-stoplight:
+              id: t6xos8bxtehmm
+            description: |-
+              视频源流的 URL。
+
+              > 在视频输入源是 CDN 场景下，该参数为必填。
+          repeat:
+            $ref: '#/components/schemas/repeat'
+            x-stoplight:
+              id: qilxiyx8tzhf5
+          rtc:
+            $ref: '#/components/schemas/videoinputs-rtc'
+            x-stoplight:
+              id: 3zseh0txdf6j7
+          placeholderImageUrl:
+            $ref: '#/components/schemas/placeholderImageUrl'
+            x-stoplight:
+              id: kf7ilzgr632up
+          region:
+            $ref: '#/components/schemas/region'
+            x-stoplight:
+              id: 2wmlsel60qx6e
+    videoinputs-rtc:
+      x-stoplight:
+        id: v5ielopeb68jk
+      type: object
+      required:
+      - rtcChannel
+      - rtcUid
+      - rtcToken
+      properties:
+        rtcChannel:
+          $ref: '#/components/schemas/rtcChannel-v'
+          x-stoplight:
+            id: 6w235iffmuaj4
+        rtcUid:
+          $ref: '#/components/schemas/rtcUid-v'
+          x-stoplight:
+            id: ahwx7b59zjxse
+        rtcToken:
+          $ref: '#/components/schemas/rtcToken-a-v'
+          x-stoplight:
+            id: 2n5gg7hk085we
+      description: 在视频输入源是 RTC 场景下，该对象为必填。
+    region:
+      x-stoplight:
+        id: vhezw687m2zeb
+      type: object
+      description: |-
+        视频流画面在其画布上布局的位置和大小信息。
+
+        > 如果需要合图，那 `videoInputs` 列表中的每一项都要设置 `region` 字段，指定其在输出画布中的位置，要保证不能超过画布大小。
+      required:
+      - x
+      - y
+      - width
+      - height
+      - zOrder
+      properties:
+        x:
+          $ref: '#/components/schemas/x-v'
+          x-stoplight:
+            id: gyrj13mw5xreo
+        y:
+          $ref: '#/components/schemas/y-v'
+          x-stoplight:
+            id: mvry14l67je9o
+        width:
+          $ref: '#/components/schemas/width-v'
+          x-stoplight:
+            id: 8ort94l70frwk
+        height:
+          $ref: '#/components/schemas/height-v'
+          x-stoplight:
+            id: 6rl08i957sf93
+        zOrder:
+          $ref: '#/components/schemas/zOrder-v'
+          x-stoplight:
+            id: z3vgozyu1zdrs
+    canvas:
+      x-stoplight:
+        id: pfa8h47874wsn
+      type: object
+      description: 输出画布。
+      required:
+      - width
+      - height
+      - color
+      properties:
+        width:
+          $ref: '#/components/schemas/width-ca'
+          x-stoplight:
+            id: 70oqyte5z3bab
+        height:
+          $ref: '#/components/schemas/height-ca'
+          x-stoplight:
+            id: udknmzivg0lo5
+        color:
+          $ref: '#/components/schemas/color-ca'
+          x-stoplight:
+            id: rrwt3ceosh57u
+        backgroundImage:
+          $ref: '#/components/schemas/backgImage-ca'
+          x-stoplight:
+            id: zhbctvokyd654
+        fillMode:
+          $ref: '#/components/schemas/fillMode-ca'
+          x-stoplight:
+            id: mlss5hn5xxm89
+    watermarks:
+      x-stoplight:
+        id: b79zapzcoqa4v
+      type: array
+      items:
+        x-stoplight:
+          id: ste72b7vfos4x
+        type: object
+        required:
+        - imageUrl
+        - region
+        properties:
+          imageUrl:
+            $ref: '#/components/schemas/imageUrl'
+            x-stoplight:
+              id: a9ukzefuu310b
+          region:
+            $ref: '#/components/schemas/watermark-region'
+            x-stoplight:
+              id: 76njawfa1s6jp
+          fillMode:
+            $ref: '#/components/schemas/fillMode-wm'
+            x-stoplight:
+              id: jb2iccu1vcy2q
+    watermark-region:
+      x-stoplight:
+        id: 3fxxcxb5k6ui8
+      type: object
+      required:
+      - x
+      - y
+      - width
+      - height
+      - zOrder
+      properties:
+        x:
+          $ref: '#/components/schemas/x-wm'
+          x-stoplight:
+            id: 8cljqp3onvv4h
+        y:
+          $ref: '#/components/schemas/y-wm'
+          x-stoplight:
+            id: d8swsyez1dqqr
+        width:
+          $ref: '#/components/schemas/width-wm'
+          x-stoplight:
+            id: 8k9mnok1yk1ns
+        height:
+          $ref: '#/components/schemas/height-wm'
+          x-stoplight:
+            id: mgr9m2gvfm5b3
+        zOrder:
+          $ref: '#/components/schemas/zOrder-wm'
+          x-stoplight:
+            id: ki7ktj61bi77f
+    outputs:
+      x-stoplight:
+        id: c808shifdaxc3
+      type: array
+      description: |-
+        服务配置的输出设置，可选择输出到 RTC 频道或者 CDN 地址。
+
+        > `streamUrl` 和 `rtc` 两者中必须填一个。
+      items:
+        x-stoplight:
+          id: 4857pxgxkq40r
+        type: object
+        properties:
+          streamUrl:
+            type: string
+            x-stoplight:
+              id: jyemqw34xuzpm
+            description: |-
+              CDN 推流地址。
+
+              > 在输出到 CDN 推流地址场景中，该参数为必填。
+          rtc:
+            $ref: '#/components/schemas/output-rtc'
+            x-stoplight:
+              id: 67hjo9lqsv1r2
+          audioOption:
+            $ref: '#/components/schemas/audioOption'
+            x-stoplight:
+              id: 9kw346rh3xaok
+          videoOption:
+            $ref: '#/components/schemas/videoOption'
+            x-stoplight:
+              id: 4jacm05wqb2ki
+          seiOption:
+            $ref: '#/components/schemas/seiOption'
+    audioOption:
+      title: audioOption
+      x-stoplight:
+        id: xr1c0x1nnvy9r
+      type: object
+      description: '输出音频编码参数。默认值: `AUDIO_PROFILE_DEFAULT`。'
+      properties:
+        profileType:
+          $ref: '#/components/schemas/profileType'
+          x-stoplight:
+            id: l6fqprx0l5q45
+    videoOption:
+      x-stoplight:
+        id: sybvbic92xstq
+      type: object
+      description: |
+        输出视频的编码参数。
+        > 支持的最大转码分辨率为 1080p (1920 x 1080 px)。
+      required:
+      - width
+      - height
+      - bitrate
+      - codec
+      properties:
+        width:
+          $ref: '#/components/schemas/width-o'
+          x-stoplight:
+            id: ny2astm54emnz
+        height:
+          $ref: '#/components/schemas/height-o'
+          x-stoplight:
+            id: cbb5xiwnn4yx9
+        bitrate:
+          $ref: '#/components/schemas/bitrate'
+          x-stoplight:
+            id: h80peh0r19gcm
+        codec:
+          $ref: '#/components/schemas/codec'
+          x-stoplight:
+            id: t76621jgq72ly
+        fps:
+          $ref: '#/components/schemas/fps'
+          x-stoplight:
+            id: frlewx8b07e9d
+        mode:
+          type: string
+          x-stoplight:
+            id: w9ejjvx1yeuia
+          description: |-
+            可以设为 `"RAW"`，表示输出视频不转码，即保持输入视频的编码格式不变。
+
+            > - 如果输出的视频转码，请勿设置该字段。
+            > - `"RAW"` 模式下，`videoInputs` 中设置的输入数量只能为 1。
+    seiOption:
+      type: object
+      description: 预留字段。
+      properties:
+        source:
+          type: object
+          description: 预留字段。
+          properties:
+            agora:
+              type: object
+              description: 预留字段。
+              properties:
+                uidVideoLayout:
+                  type: boolean
+                  x-stoplight:
+                    id: 0bn58bhrg1xzh
+                  description: 预留字段。
+        sink:
+          type: object
+          description: 预留字段。
+          properties:
+            type:
+              type: integer
+              description: 预留字段。
+    output-rtc:
+      x-stoplight:
+        id: mwntagblp38xs
+      type: object
+      required:
+      - rtcToken
+      - rtcChannel
+      - rtcUid
+      properties:
+        rtcToken:
+          $ref: '#/components/schemas/rtcToken-o'
+          x-stoplight:
+            id: fikedcgj1ylhg
+        rtcChannel:
+          $ref: '#/components/schemas/rtcChannel-o'
+          x-stoplight:
+            id: n8gb37e9vbonw
+        rtcUid:
+          $ref: '#/components/schemas/rtcUid-o'
+          x-stoplight:
+            id: 0osu942ofga8e
+      description: 在输出到 RTC 场景中，该对象为必填。
+security:
+- Basic Auth: []
+- API Key: []

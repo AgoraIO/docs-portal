@@ -1,0 +1,67 @@
+---
+title: ChannelMediaRelayConfiguration
+description: 跨频道媒体流转发配置信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_channelmediarelayconfiguration
+  sourcePath: html-docs/rtc/Electron/API/class_channelmediarelayconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_channelmediarelayconfiguration__prototype"></a>
+
+```text
+export class ChannelMediaRelayConfiguration {
+
+  srcInfo?: ChannelMediaInfo;
+
+  destInfos?: ChannelMediaInfo[];
+
+  destCount?: number;
+}
+```
+
+<a id="class_channelmediarelayconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="srcinfo"></a>
+<Parameter name="srcInfo">
+
+源频道信息 [ChannelMediaInfo](/zh-CN/api-reference/rtc/electron/class-channelmediainfo)，包含如下成员：
+
+- `channelName`：源频道名。默认值为 null，表示 SDK 填充当前的频道名。
+- `token`：能加入源频道的 `token`。由你在 `srcInfo` 中设置的 `channelName` 和 `uid` 生成。
+
+  - 如未启用 App Certificate，可直接将该参数设为默认值 null，表示 SDK 填充 App ID。
+  - 如已启用 App Certificate，则务必填入使用 `channelName` 和 `uid` 生成的 `token`，且其中的 `uid` 必须为 0。
+- `uid`：标识源频道中的转发媒体流的 UID。默认值为 0，请勿修改。
+
+</Parameter>
+<a id="destinfos"></a>
+<Parameter name="destInfos">
+
+:::note
+注： 由于目标频道中任意频道的 token 过期会导致所有跨频道推流停止，因此建议你将目标频道的 token 设置为相同的过期时长。
+:::
+
+目标频道信息 [ChannelMediaInfo](/zh-CN/api-reference/rtc/electron/class-channelmediainfo)，包含如下成员：
+
+- `channelName`：目标频道的频道名。
+- `token`：能加入目标频道的 `token`。由你在 `destInfos` 中设置的 `channelName` 和 `uid` 生成。
+
+  - 如未启用 App Certificate，可直接将该参数设为默认值 null，表示 SDK 填充 App ID。
+  - 如已启用 App Certificate，则务必填入使用 `channelName` 和 `uid` 生成的 `token`。
+- `uid`：标识目标频道中的转发媒体流的 UID。取值范围为 0 到 (2 32-1），请确保与目标频道中的所有 UID 不同。默认值为 0，表示 SDK 随机分配一个 UID。
+
+</Parameter>
+<a id="destcount"></a>
+<Parameter name="destCount">
+
+目标频道数量，默认值为 0，取值范围为 [0,6]。该参数应与你在 `destInfos` 中定义的 [ChannelMediaInfo](/zh-CN/api-reference/rtc/electron/class-channelmediainfo) 数组的数目一致。
+
+</Parameter>
+</ParameterList>

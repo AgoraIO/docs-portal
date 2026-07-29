@@ -1,8 +1,12 @@
 export type SdkDownloadVersion = {
   downloadLink?: string;
   id: string;
+  latestVariant?: true;
   label: string;
+  md5?: string;
+  packageName?: string;
   packageManager?: string;
+  releaseDate?: string;
 };
 
 export type SdkDownloadProduct = {
@@ -277,6 +281,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.3-video-sdk-android-lite',
+            latestVariant: true,
             label: 'Version 4.6.3 Lite (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_LITE.zip',
@@ -993,6 +998,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.2-video-sdk-ios-lite',
+            latestVariant: true,
             label: 'Version 4.6.2 Lite (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.6.2_LITE.zip',
@@ -3623,8 +3629,13 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
+            id: '2.2.6-signaling-sdk-flutter',
+            label: 'Version 2.2.6 (Latest)',
+            packageManager: 'https://pub.dev/packages/agora_rtm/versions/2.2.6',
+          },
+          {
             id: '2.2.5-signaling-sdk-flutter',
-            label: 'Version 2.2.5 (Latest)',
+            label: 'Version 2.2.5',
             packageManager: 'https://pub.dev/packages/agora_rtm/versions/2.2.5',
           },
           {
@@ -3741,18 +3752,21 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'c++-arm-x64',
+            latestVariant: true,
             label: 'arm64 Version 4.4.151 for C++ (Latest)',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.151-20250919_102817-891319.tgz',
           },
           {
             id: 'java-x86_64',
+            latestVariant: true,
             label: 'x86_64 Version 4.4.151 for Java (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151.1-x86_64-891308-28c706d74a-20250919_142050.zip',
           },
           {
             id: 'java-arm-x64',
+            latestVariant: true,
             label: 'arm64 Version 4.4.151 for Java (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora-Linux-Recording-Java-SDK-v4.4.151-aarch64-891319-952e64402b-20250919_140753.zip',
@@ -3772,24 +3786,28 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'cpp-server-gateway-sdk-linux-arm',
+            latestVariant: true,
             label: 'Version 4.4.32 aarch64 for C++ (Latest)',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-aarch64-linux-gnu-v4.4.32-20250425_150503-675674.tgz',
           },
           {
             id: 'cpp-server-gateway-sdk-linux',
+            latestVariant: true,
             label: 'Version 4.4.32 x86_64 for C++ (Latest)',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTC-x86_64-linux-gnu-v4.4.32-20250425_144419-675648.tgz',
           },
           {
             id: 'go-server-gateway-sdk-linux',
+            latestVariant: true,
             label: 'Version 2.2.8 for Go (Latest)',
             downloadLink:
               'https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/tree/release/2.2.8',
           },
           {
             id: 'python-server-gateway-sdk-linux',
+            latestVariant: true,
             label: 'Version 2.2.4 for Python (Latest)',
             downloadLink:
               'https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK/tree/release/2.2.4',

@@ -1,0 +1,60 @@
+---
+title: FCodecCapLevels
+description: 编解码能力等级。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_codeccaplevels
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_codeccaplevels.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_codeccaplevels__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FCodecCapLevels {
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FCodecCapLevels")
+	FENUMWRAP_VIDEO_CODEC_CAPABILITY_LEVEL hwDecodingLevel;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|FCodecCapLevels")
+	FENUMWRAP_VIDEO_CODEC_CAPABILITY_LEVEL swDecodingLevel;
+
+	FCodecCapLevels() {}
+	FCodecCapLevels(const agora::rtc::CodecCapLevels& AgoraData) {
+		hwDecodingLevel = AgoraData.hwDecodingLevel;
+		swDecodingLevel = AgoraData.swDecodingLevel;
+	}
+	agora::rtc::CodecCapLevels CreateAgoraData() const {
+		agora::rtc::CodecCapLevels AgoraData;
+		AgoraData.hwDecodingLevel = hwDecodingLevel.GetRawValue();
+		AgoraData.swDecodingLevel = swDecodingLevel.GetRawValue();
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::CodecCapLevels& AgoraData) const {
+			}
+};
+```
+
+<a id="class_codeccaplevels__detailed_desc"></a>
+
+<a id="class_codeccaplevels__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="hwdecodinglevel"></a>
+<Parameter name="hwDecodingLevel">
+
+硬件解码能力等级，表示设备能够对不同品质视频进行硬件解码的能力。详见 [FENUMWRAP_VIDEO_CODEC_CAPABILITY_LEVEL](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodeccapabilitylevel)。
+
+</Parameter>
+<a id="swdecodinglevel"></a>
+<Parameter name="swDecodingLevel">
+
+软件解码能力等级，表示设备能够对不同品质视频进行软件解码的能力。详见 [FENUMWRAP_VIDEO_CODEC_CAPABILITY_LEVEL](/zh-CN/api-reference/rtc/unreal-blueprint/enum-videocodeccapabilitylevel)。
+
+</Parameter>
+</ParameterList>

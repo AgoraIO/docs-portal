@@ -1,17 +1,22 @@
+import { existsSync } from 'node:fs';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
+import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
+  type DocsSidebarHeader,
   getNavScopeSidebarNodes,
   getNavScopeVersionLinks,
   getScopedNavScopeSidebarNodes,
   getSharedNavScopeSidebarNodes,
   resolveDocsNavScope,
 } from './docs-nav-scope';
-import { getSourceSlugs } from './docs-routing';
+import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
 import {
   type DocsSidebarNode,
@@ -22,16 +27,19 @@ import {
   getPrevNextLinksFromNode,
   getProductScopes,
   getSidebarBreadcrumb,
+  getSidebarNodes,
   getTabSummaries,
 } from './docs-tree';
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
 import {
+  findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
   getOpenApiLanes,
   getOpenApiOperationIds,
+  getOpenApiReferenceBackLink,
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
@@ -61,13 +69,30 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
+import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
+const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
+const ZH_CN_RTM_REST_API_PAGE_URLS = [
+  '/zh-CN/api-reference/api-ref/signaling/publish',
+  '/zh-CN/api-reference/api-ref/signaling/receive',
+] as const;
+const ZH_CN_RTM_REST_API_PAGE_URL_SET = new Set<string>(
+  ZH_CN_RTM_REST_API_PAGE_URLS,
+);
+const ZH_CN_RTM_REST_API_BACK_LINK = {
+  backHref: '/zh-CN/realtime-media/rtm',
+  backLabel: '实时消息 RTM',
+};
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
 const SDKS_ROOT_SLUG = 'sdks';
+const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
+  'mcp-integrate',
+  'skills-integrate',
+]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
@@ -99,11 +124,260 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
-    'zh-CN': '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+    'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
   },
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
   },
+};
+
+const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
+  'conversational-ai/client-toolkit':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/client-toolkit/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/client-toolkit/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/client-toolkit/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi',
+  'conversational-ai/client-toolkit/conversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/client-toolkit/enum':
+    '/zh-CN/api-reference/conversational-ai/android/enum',
+  'conversational-ai/client-toolkit/iconversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi',
+  'conversational-ai/client-toolkit/iconversationalaiapieventhandler':
+    '/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler',
+  'conversational-ai/client-toolkit/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/client-toolkit/overview':
+    '/zh-CN/api-reference/conversational-ai/android/overview',
+  'conversational-ai/client-toolkit/overview.agent-go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/client-toolkit/overview.agent-python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/client-toolkit/overview.agent-typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/agent-go/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/agent-python/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/agent-typescript/overview':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/client-toolkit/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/client-toolkit/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/client-toolkit/struct':
+    '/zh-CN/api-reference/conversational-ai/android/struct',
+  'conversational-ai/go-api/baseresponse.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/baseresponse.go',
+  'conversational-ai/go-api/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/basicauthcredential',
+  'conversational-ai/go-api/client.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/client.go',
+  'conversational-ai/go-api/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/enum',
+  'conversational-ai/go-api/listoptions.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/listoptions.go',
+  'conversational-ai/go-api/overview.go':
+    '/zh-CN/api-reference/conversational-ai/agent-go',
+  'conversational-ai/go-api/response.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/response.go',
+  'conversational-ai/go-api/samplelogger.go':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/samplelogger.go',
+  'conversational-ai/go-api/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-go/struct',
+  'conversational-ai/java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/basicauthcredential':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential',
+  'conversational-ai/java/convoaiclient.java':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java',
+  'conversational-ai/java/enum':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/enum',
+  'conversational-ai/java/overview':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/overview',
+  'conversational-ai/java/struct':
+    '/zh-CN/api-reference/conversational-ai/restclient-java/struct',
+  'conversational-ai/python-api/overview.python':
+    '/zh-CN/api-reference/conversational-ai/agent-python',
+  'conversational-ai/typescript-api/conversationalaiapi':
+    '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi',
+  'conversational-ai/typescript-api/enum':
+    '/zh-CN/api-reference/conversational-ai/web/enum',
+  'conversational-ai/typescript-api/overview.typescript':
+    '/zh-CN/api-reference/conversational-ai/agent-typescript',
+  'conversational-ai/typescript-api/struct':
+    '/zh-CN/api-reference/conversational-ai/web/struct',
+  'local-server-recording/agoramediartcrecorder.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoramediartcrecorder.java',
+  'local-server-recording/agoraservice.java':
+    '/zh-CN/api-reference/local-server-recording/java/agoraservice.java',
+  'local-server-recording/api-overview':
+    '/zh-CN/api-reference/local-server-recording/java/api-overview',
+  'local-server-recording/enum':
+    '/zh-CN/api-reference/local-server-recording/java/enum',
+  'local-server-recording/iagoramediacomponentfactory.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediacomponentfactory.cpp',
+  'local-server-recording/iagoramediartcrecorder.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoramediartcrecorder.cpp',
+  'local-server-recording/iagoramediartcrecordereventhandler':
+    '/zh-CN/api-reference/local-server-recording/java/iagoramediartcrecordereventhandler',
+  'local-server-recording/iagoraservice.cpp':
+    '/zh-CN/api-reference/local-server-recording/cpp/iagoraservice.cpp',
+  'local-server-recording/irecordervideoframeobserver':
+    '/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver',
+  'local-server-recording/struct':
+    '/zh-CN/api-reference/local-server-recording/java/struct',
+  'meeting/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/android/client-api': '/zh-CN/api-reference/meeting/android',
+  'api-ref/meeting/ios/client-api': '/zh-CN/api-reference/meeting/ios',
+  'api-ref/meeting/electron/client-api':
+    '/zh-CN/api-reference/meeting/electron',
+  'private-room/call-api': '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/android/call-api':
+    '/zh-CN/api-reference/private-room/android',
+  'api-ref/private-room/ios/call-api': '/zh-CN/api-reference/private-room/ios',
+  rtm: '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/components-hooks':
+    '/zh-CN/api-reference/rtm/react-native/components-hooks',
+  'rtm/enumv': '/zh-CN/api-reference/rtm/android/enumv',
+  'rtm/error-codes': '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/react-native/error-codes':
+    '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'rtm/toc-channel/channel': '/zh-CN/api-reference/rtm/android/channel',
+  'rtm/toc-configuration/configuration':
+    '/zh-CN/api-reference/rtm/android/configuration',
+  'rtm/toc-lock/lock': '/zh-CN/api-reference/rtm/android/lock',
+  'rtm/toc-message/message': '/zh-CN/api-reference/rtm/android/message',
+  'rtm/toc-message/publish': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'rtm/toc-message/receive': '/zh-CN/api-reference/api-ref/signaling/receive',
+  'rtm/toc-message/response-code':
+    '/zh-CN/realtime-media/rtm/reference/response-code',
+  'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
+  'rtm/toc-storage/storage': '/zh-CN/api-reference/rtm/android/storage',
+  'rtm/toc-token/token': '/zh-CN/api-reference/rtm/android/token',
+  'rtm/toc-topic/topic': '/zh-CN/api-reference/rtm/android/topic',
+  'api-ref/signaling': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/restful': '/zh-CN/api-reference/api-ref/signaling/publish',
+  'api-ref/signaling/response-code':
+    '/zh-CN/realtime-media/rtm/reference/response-code',
+  'api-ref/ppt-conversion-service/status-codes':
+    '/zh-CN/solutions/ppt-transcoding/reference/response-code',
+  'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  'api-ref/fastboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/fastboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'api-ref/fastboard/javascript/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/web',
+  'api-ref/whiteboard/android/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'api-ref/whiteboard/ios/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/ios',
+  'whiteboard/fastboard': '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'whiteboard/fastboard/fastboard-api':
+    '/zh-CN/api-reference/whiteboard/fastboard/android',
+  'flexible-classroom/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'flexible-classroom/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'flexible-classroom/android':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'flexible-classroom/ios':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'flexible-classroom/web':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'flexible-classroom/electron':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/android/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/javascript/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/electron/classroom-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/classroom-sdk',
+  'api-ref/flexible-classroom/ios/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/ios/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/electron/proctor-sdk':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/proctor-sdk',
+  'api-ref/flexible-classroom/javascript/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/electron/fcr-ui-scene':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene',
+  'api-ref/flexible-classroom/javascript/overview':
+    '/zh-CN/api-reference/flexible-classroom/web/api-reference/edu-store',
+  'api-ref/flexible-classroom/electron/overview':
+    '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store',
+  'api-ref/flexible-classroom/classroom-rest-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'api-ref/flexible-classroom/restful-api':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-classroom':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  'flexible-classroom/restful/api/api-recording':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+  'flexible-classroom/restful/api/api-sync':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+  'flexible-classroom/restful/api/api-user':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+  'flexible-classroom/restful/api/api-widget':
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+  'rtc/error-code': '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/android/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/ios/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/macos/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/windows/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/electron/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/flutter/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/react-native/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unity/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/unreal/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/mini-program/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc/web/error-code':
+    '/zh-CN/realtime-media/rtc/reference/error-code',
+  'api-ref/rtc-server-sdk/go/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'api-ref/rtc-server-sdk/python/error-code':
+    '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
+  'rtc/android': '/zh-CN/api-reference/rtc/android/rtc-api-overview',
+  'rtc/cpp-all-platforms':
+    '/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-api-overview',
+  'rtc/csharp-windows':
+    '/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview',
+  'rtc/electron': '/zh-CN/api-reference/rtc/electron/rtc-api-overview',
+  'rtc/flutter': '/zh-CN/api-reference/rtc/flutter/rtc-api-overview',
+  'rtc/harmonyos': '/zh-CN/api-reference/rtc/harmonyos/rtc-api-overview',
+  'rtc/ios': '/zh-CN/api-reference/rtc/ios/rtc-api-overview',
+  'rtc/macos': '/zh-CN/api-reference/rtc/macos/rtc-api-overview',
+  'rtc/react-native': '/zh-CN/api-reference/rtc/react-native/rtc-api-overview',
+  'rtc/unity': '/zh-CN/api-reference/rtc/unity/rtc-api-overview',
+  'rtc/unreal-blueprint':
+    '/zh-CN/api-reference/rtc/unreal-blueprint/rtc-api-overview',
+  'rtc/unreal-cpp': '/zh-CN/api-reference/rtc/unreal-cpp/rtc-api-overview',
 };
 
 export async function loadDocsTabIndex(locale: string, tab: string) {
@@ -120,7 +394,8 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
   const tabSummaries = getTabSummaries(pageTree);
   const tabSummary = tabSummaries.find((item) => item.id === tab);
 
-  if (tabSummary?.url === `/${locale}/${tab}`) {
+  const tabUrl = `/${locale}/${tab}`;
+  if (tabSummary?.url === tabUrl && hasDocsPageForUrl(source, tabUrl)) {
     return {
       locale,
       url: tabSummary.url,
@@ -128,7 +403,12 @@ export async function loadDocsTabIndex(locale: string, tab: string) {
     };
   }
 
-  const firstPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const indexedPageUrl = getFirstTabPageUrl(pageTree, tab);
+  const firstDescendantPageUrl = getFirstChildPageUrl(pageTree, tab, []);
+  const firstPageUrl =
+    indexedPageUrl === tabUrl && !hasDocsPageForUrl(source, tabUrl)
+      ? firstDescendantPageUrl
+      : (indexedPageUrl ?? firstDescendantPageUrl);
 
   if (!firstPageUrl) {
     return null;
@@ -147,6 +427,16 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
+  const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
+  if (movedDocsRedirect) {
+    return {
+      redirectUrl: canonicalizeZhCnProductIaRedirectUrl(
+        locale,
+        movedDocsRedirect,
+      ),
+    };
+  }
+
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
     tab,
@@ -213,6 +503,28 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const sharedConceptRedirect = resolveZhCnSharedConceptRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (sharedConceptRedirect) {
+    return {
+      redirectUrl: sharedConceptRedirect,
+    };
+  }
+
+  const zhCnProductIaRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (zhCnProductIaRedirect) {
+    return {
+      redirectUrl: zhCnProductIaRedirect,
+    };
+  }
+
   const realtimeMediaApiReferenceRedirect =
     resolveRealtimeMediaApiReferenceRedirect(locale, tab, slugSegments);
   if (realtimeMediaApiReferenceRedirect) {
@@ -271,6 +583,19 @@ export async function loadDocsPagePayload(
     }),
     locale,
   );
+
+  if (!page) {
+    const mergedPlatformSuffixRedirect = resolveMergedPlatformSuffixRedirect({
+      locale,
+      slugSegments,
+      source,
+      tab,
+    });
+
+    if (mergedPlatformSuffixRedirect) {
+      return mergedPlatformSuffixRedirect;
+    }
+  }
 
   let requestedPlatform: PlatformKey | undefined;
   let platformResolvedProcessedText: string | undefined;
@@ -342,6 +667,14 @@ export async function loadDocsPagePayload(
 
   const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? new Set(
+          localePages
+            .filter((item) => hasExistingDocsSourceFile(item, locale))
+            .map((item) => item.url),
+        )
+      : null;
   const openApiPage = isOpenApiPageWithProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
@@ -358,9 +691,10 @@ export async function loadDocsPagePayload(
   const structuredPlatformTabs = extractStructuredPlatformTabs(processedText);
   const defaultStructuredPlatform = structuredPlatformTabs?.defaultPlatform;
   const artifactPlatform = requestedPlatform ?? defaultStructuredPlatform;
-  const toc = isOpenApiPage
+  const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
+  const toc = applyPageTocDepthLimit(page, unboundedToc);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
@@ -389,7 +723,18 @@ export async function loadDocsPagePayload(
     source,
     tab,
   });
+  const focusedOpenApiLaneHeader =
+    !navScope && supportedLocale
+      ? resolveFocusedOpenApiLaneSidebarHeader(page.url, supportedLocale, tab)
+      : undefined;
   const breadcrumb = getSidebarBreadcrumb(sidebar, page.url);
+  const apiReferenceBreadcrumb =
+    locale === 'zh-CN' && tab === 'api-reference'
+      ? resolveZhCnApiReferenceBreadcrumb({
+          activePath: page.url,
+          title,
+        })
+      : null;
   const platformGroup = resolvePlatformGroupDefinition(page, localePages);
   const mdxBody = platformGroup
     ? {
@@ -447,7 +792,8 @@ export async function loadDocsPagePayload(
     activeTab: tab,
     body,
     breadcrumb:
-      navScope?.scope.meta.sidebarIndexTitle &&
+      apiReferenceBreadcrumb ??
+      (navScope?.scope.meta.sidebarIndexTitle &&
       page.url === navScope.scope.node.index?.url
         ? [
             {
@@ -462,7 +808,7 @@ export async function loadDocsPagePayload(
                 title,
                 url: page.url,
               },
-            ],
+            ]),
     contentPath: page.path,
     description: page.data.description,
     markdownUrl: getPageMarkdownUrl(page, artifactPlatform).url,
@@ -495,15 +841,46 @@ export async function loadDocsPagePayload(
             supportedLocale,
             openApiRoute.operationId,
           )
-        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+        : getPrevNextLinksFromNode(
+            navScope?.sidebarRoot ?? pageTree,
+            page.url,
+            sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
+          ),
     productScopes: getProductScopes(pageTree),
     sidebar,
-    sidebarHeader,
+    sidebarHeader: sidebarHeader ?? focusedOpenApiLaneHeader,
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
     toc,
   };
+}
+
+function canonicalizeZhCnProductIaRedirectUrl(
+  locale: string,
+  redirectUrl: string,
+) {
+  if (locale !== 'zh-CN') {
+    return redirectUrl;
+  }
+
+  const [pathname, suffix = ''] = redirectUrl.split(/([?#].*)/, 2);
+  const localePrefix = `/${locale}/`;
+
+  if (!pathname.startsWith(localePrefix)) {
+    return redirectUrl;
+  }
+
+  const [targetTab, ...targetSlugSegments] = pathname
+    .slice(localePrefix.length)
+    .split('/');
+  const canonicalRedirect = resolveZhCnProductIaRedirect(
+    locale,
+    targetTab,
+    targetSlugSegments,
+  );
+
+  return canonicalRedirect ? `${canonicalRedirect}${suffix}` : redirectUrl;
 }
 
 export async function loadDocsSearchIndex(
@@ -587,6 +964,27 @@ function resolveLegacyBestPracticesRedirect(
   return redirect;
 }
 
+function resolveZhCnSharedConceptRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const leafSlug = slugSegments.at(-1);
+  if (!leafSlug || !ZH_CN_SHARED_CONCEPT_SLUGS.has(leafSlug)) {
+    return null;
+  }
+
+  if (tab === 'introduction' && slugSegments.length === 1) {
+    return null;
+  }
+
+  return `/zh-CN/introduction/${leafSlug}`;
+}
+
 function resolveDeviceKitRedirect(
   locale: string,
   tab: string,
@@ -597,23 +995,35 @@ function resolveDeviceKitRedirect(
   }
 
   const normalizedPath = slugSegments.join('/');
+  const isZhCn = locale === 'zh-CN';
+  const deviceKitOverviewPath = isZhCn
+    ? `/${locale}/ai/device-kit/overview/product-overview`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitQuickstartPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/start-here/quickstart`;
+  const deviceKitRunDemoPath = isZhCn
+    ? `/${locale}/ai/device-kit/build/run-r1-demo`
+    : `/${locale}/ai/device-kit/build/run-the-r1-demo`;
 
   if (normalizedPath === 'device-kit') {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitOverviewPath;
   }
 
   if (normalizedPath === `choose-your-path/${DEVICE_KIT_PATH_ENTRY_SLUG}`) {
-    return `/${locale}/ai/device-kit/start-here/quickstart`;
+    return deviceKitQuickstartPath;
   }
 
   const redirects: Record<string, string> = {
-    'device-kit/get-started': `/${locale}/ai/device-kit/start-here/quickstart`,
-    'device-kit/get-started/quickstart': `/${locale}/ai/device-kit/start-here/quickstart`,
+    'device-kit/get-started': deviceKitQuickstartPath,
+    'device-kit/get-started/quickstart': deviceKitQuickstartPath,
     'device-kit/get-started/enable-services': `/${locale}/ai/device-kit/reference/enable-services`,
-    'device-kit/get-started/run-the-demo': `/${locale}/ai/device-kit/build/run-the-r1-demo`,
-    'device-kit/overview': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/overview/architecture': `/${locale}/ai/device-kit/build/architecture-overview`,
-    'device-kit/reference': `/${locale}/ai/device-kit/build/device-controls`,
+    'device-kit/get-started/run-the-demo': deviceKitRunDemoPath,
+    'device-kit/overview': deviceKitOverviewPath,
+    'device-kit/overview/architecture': isZhCn
+      ? deviceKitOverviewPath
+      : `/${locale}/ai/device-kit/build/architecture-overview`,
+    'device-kit/reference': `/${locale}/ai/device-kit/reference/enable-services`,
     'device-kit/reference/device-controls': `/${locale}/ai/device-kit/build/device-controls`,
     'device-kit/overview/pricing': `/${locale}/ai/device-kit/reference/pricing`,
     'device-kit/overview/release-notes': `/${locale}/ai/device-kit/reference/release-notes`,
@@ -671,8 +1081,18 @@ function resolveApiReferenceRedirect(
     return legacyConversationalAiRestRedirect;
   }
 
+  const legacyFlexibleClassroomApiRedirect =
+    resolveLegacyFlexibleClassroomApiRedirect(locale, normalizedPath);
+  if (legacyFlexibleClassroomApiRedirect) {
+    return legacyFlexibleClassroomApiRedirect;
+  }
+
   if (normalizedPath === RECIPES_PATH_ENTRY_SLUG) {
     return `/${locale}/${OPENAPI_TAB}/${RECIPES_ROOT_SLUG}`;
+  }
+
+  if (locale === 'zh-CN' && normalizedPath === 'api-ref') {
+    return '/zh-CN/api-reference/api';
   }
 
   if (
@@ -695,6 +1115,24 @@ function resolveApiReferenceRedirect(
     return '/en/api-reference/api-ref/rtc';
   }
 
+  if (locale === 'zh-CN' && normalizedPath === 'rtc') {
+    return '/zh-CN/api-reference/api-ref/rtc';
+  }
+
+  if (locale === 'zh-CN') {
+    const placeholderRedirect =
+      ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[normalizedPath];
+    if (placeholderRedirect) {
+      return placeholderRedirect;
+    }
+
+    const flexibleClassroomRedirect =
+      resolveFlexibleClassroomPlatformRedirect(normalizedPath);
+    if (flexibleClassroomRedirect) {
+      return flexibleClassroomRedirect;
+    }
+  }
+
   if (
     locale === 'en' &&
     isLegacyEnglishApiReferenceProductPath(normalizedPath)
@@ -704,6 +1142,43 @@ function resolveApiReferenceRedirect(
     }
 
     return `/en/${getApiReferenceProductRoot(locale)}/${normalizedPath}`;
+  }
+
+  return null;
+}
+
+function resolveFlexibleClassroomPlatformRedirect(normalizedPath: string) {
+  const match = normalizedPath.match(
+    /^flexible-classroom\/(android|ios|web|electron)\/(.+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, slug] = match;
+
+  if (slug.startsWith('api-reference/')) {
+    return null;
+  }
+
+  if (platform === 'android' || platform === 'ios') {
+    if (slug === 'classroom-sdk' || slug === 'proctor-sdk') {
+      return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+    }
+
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
+  }
+
+  if (
+    slug === 'classroom-sdk' ||
+    slug === 'proctor-sdk' ||
+    slug === 'edu-store'
+  ) {
+    return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/${slug}`;
+  }
+
+  if (platform === 'web' && slug === 'fcr-ui-scene') {
+    return '/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene';
   }
 
   return null;
@@ -787,21 +1262,17 @@ function resolveLegacyConversationalAiRestRedirect(
   const prefix = 'conversational-ai/rest-api';
 
   if (normalizedPath === prefix) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai`;
   }
 
   if (normalizedPath === `${prefix}/authentication`) {
-    return locale === 'en'
-      ? `/${locale}/api-reference/api-ref/conversational-ai/authentication`
-      : null;
+    return `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
   if (normalizedPath === `${prefix}/status-codes`) {
     return locale === 'en'
       ? `/${locale}/api-reference/api-ref/conversational-ai/status-codes`
-      : null;
+      : `/${locale}/ai/api/response-code`;
   }
 
   if (!normalizedPath.startsWith(`${prefix}/agent/`)) {
@@ -845,6 +1316,27 @@ function resolveAiDocsRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function resolveLegacyFlexibleClassroomApiRedirect(
+  locale: string,
+  normalizedPath: string,
+) {
+  if (locale !== 'zh-CN') {
+    return null;
+  }
+
+  const match = normalizedPath.match(
+    /^api-ref\/flexible-classroom\/(android|ios)\/API\/([^/]+)$/,
+  );
+  if (!match) {
+    return null;
+  }
+
+  const [, platform, legacySlug] = match;
+  const slug = legacySlug.replaceAll('_', '-').toLowerCase();
+
+  return `/zh-CN/api-reference/flexible-classroom/${platform}/api-reference/edu-context/${slug}`;
 }
 
 function resolveLegacyProductRedirect(
@@ -911,6 +1403,36 @@ function resolveRealtimeMediaRedirect(
 
   const normalizedPath = slugSegments.join('/');
 
+  const zhCnSpeechToTextRedirects: Record<string, string> =
+    locale === 'zh-CN'
+      ? {
+          'speech-to-text/overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/product-overview': `/${locale}/realtime-media/speech-to-text`,
+          'speech-to-text/overview/release-notes': `/${locale}/realtime-media/speech-to-text/reference/release-notes`,
+          'speech-to-text/overview/billing': `/${locale}/realtime-media/speech-to-text/reference/billing`,
+          'speech-to-text/get-started/enable-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides/http-basic-auth': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth`,
+          'speech-to-text/user-guides/transcribe-specified-hosts': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts`,
+          'speech-to-text/user-guides/translation': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/translation`,
+          'speech-to-text/user-guides/update-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service`,
+          'speech-to-text/user-guides/how-to-use-protobuf': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf`,
+          'speech-to-text/user-guides/render-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/render-captions`,
+          'speech-to-text/user-guides/record-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/record-captions`,
+          'speech-to-text/user-guides/encrypt-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions`,
+          'speech-to-text/best-practices': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/enable-from-client': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/optimize-quality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/optimize-quality`,
+          'speech-to-text/audio-modality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/audio-modality`,
+          'speech-to-text/api': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/api/supported-languages': `/${locale}/realtime-media/speech-to-text/reference/supported-languages`,
+          'speech-to-text/api/response-code': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
+          'speech-to-text/webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/receive-webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/ncs-events': `/${locale}/realtime-media/speech-to-text/reference/ncs-events`,
+        }
+      : {};
+
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
@@ -926,6 +1448,7 @@ function resolveRealtimeMediaRedirect(
     'whiteboard/overview/release-notes-uikit': `/${locale}/realtime-media/whiteboard/reference/release-notes-uikit`,
     'whiteboard/overview/supported-platforms': `/${locale}/realtime-media/whiteboard/reference/supported-platforms`,
     'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
+    ...zhCnSpeechToTextRedirects,
   };
 
   return redirects[normalizedPath] ?? null;
@@ -1030,7 +1553,30 @@ function resolveSolutionsApiReferenceRedirect(
   tab: string,
   slugSegments: string[],
 ) {
-  if (locale !== 'en' || tab !== 'solutions') {
+  if (tab !== 'solutions') {
+    return null;
+  }
+
+  const normalizedPath = slugSegments.join('/');
+
+  if (locale === 'zh-CN') {
+    const redirects: Record<string, string> = {
+      'flexible-classroom/reference/api-classroom':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+      'flexible-classroom/reference/api-recording':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-recording',
+      'flexible-classroom/reference/api-sync':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-sync',
+      'flexible-classroom/reference/api-user':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-user',
+      'flexible-classroom/reference/api-widget':
+        '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
+    };
+
+    return redirects[normalizedPath] ?? null;
+  }
+
+  if (locale !== 'en') {
     return null;
   }
 
@@ -1055,7 +1601,57 @@ function resolveSolutionsApiReferenceRedirect(
       '/en/api-reference/api-ref/iot-channel-management-rest-api',
   };
 
-  return redirects[slugSegments.join('/')] ?? null;
+  return redirects[normalizedPath] ?? null;
+}
+
+const MERGED_PLATFORM_SUFFIXES: Record<string, PlatformKey> = {
+  cpp: 'cpp',
+  csharp: 'csharp',
+  cscrip: 'csharp',
+  cscript: 'csharp',
+  go: 'go',
+  java: 'java',
+  swift: 'swift',
+  typescript: 'typescript',
+};
+
+function resolveMergedPlatformSuffixRedirect({
+  locale,
+  slugSegments,
+  source,
+  tab,
+}: {
+  locale: string;
+  slugSegments: string[];
+  source: typeof docsSource;
+  tab: string;
+}) {
+  const requestedSlug = slugSegments.at(-1);
+  const platformSeparatorIndex = requestedSlug?.lastIndexOf('.') ?? -1;
+
+  if (!requestedSlug || platformSeparatorIndex <= 0) {
+    return null;
+  }
+
+  const baseSlug = requestedSlug.slice(0, platformSeparatorIndex);
+  const suffix = requestedSlug.slice(platformSeparatorIndex + 1);
+  const platform = MERGED_PLATFORM_SUFFIXES[suffix];
+
+  if (!platform) {
+    return null;
+  }
+
+  const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
+  const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
+
+  if (!hasDocsPageForUrl(source, targetUrl)) {
+    return null;
+  }
+
+  return {
+    preserveSearch: false,
+    redirectUrl: `${targetUrl}?platform=${platform}`,
+  };
 }
 
 function hasDocsPageForUrl(source: typeof docsSource, url: string) {
@@ -1077,7 +1673,9 @@ function hasDocsPageForUrl(source: typeof docsSource, url: string) {
   );
 
   return Boolean(
-    page && !isPlatformGroupPanelPage(page, source.getPages(locale)),
+    page &&
+      page.url === url &&
+      !isPlatformGroupPanelPage(page, source.getPages(locale)),
   );
 }
 
@@ -1144,6 +1742,7 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
     if (
       typeof item.title !== 'string' ||
       item.title.trim().length === 0 ||
+      item.title.includes('[!toc]') ||
       typeof item.url !== 'string' ||
       item.url.length === 0
     ) {
@@ -1158,6 +1757,18 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
+}
+
+function applyPageTocDepthLimit<T extends { depth: number }>(
+  page: PageWithSource,
+  toc: T[],
+) {
+  const maxDepth =
+    'tocMaxDepth' in page.data && typeof page.data.tocMaxDepth === 'number'
+      ? page.data.tocMaxDepth
+      : null;
+
+  return maxDepth === null ? toc : toc.filter((item) => item.depth <= maxDepth);
 }
 
 function hasPageText(page: PageWithSource): page is PageWithSource & {
@@ -1252,23 +1863,51 @@ async function getDocsSidebarNodes({
         tab,
       })
     : null;
+  const focusedOpenApiLaneSidebar =
+    !navScope && activePath && locale
+      ? await getFocusedOpenApiLaneSidebarNodes({
+          activePath,
+          locale,
+          pageTree,
+          source,
+          tab,
+        })
+      : null;
+  const focusedZhCnRtmRestSidebar =
+    !navScope && activePath && locale
+      ? getFocusedZhCnRtmRestSidebarNodes({
+          activePath,
+          locale,
+          source,
+          tab,
+        })
+      : null;
   const sidebar = navScope
     ? getScopedSidebarNodes({
         locale,
         navScope,
         source,
       })
-    : getNavScopeSidebarNodes({
+    : (focusedZhCnRtmRestSidebar ??
+      focusedOpenApiLaneSidebar ??
+      getNavScopeSidebarNodes({
         getNodeMeta: (node) =>
           getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
         root: pageTree,
         tab,
-      });
+      }));
+  const sourcePageUrls =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? getLocaleSourcePageUrls(source, locale)
+      : null;
+  const sidebarWithSourcePagesOnly = sourcePageUrls
+    ? filterSourceBackedSidebarNodes(sidebar, sourcePageUrls)
+    : sidebar;
   const scopedReferenceProductSidebar =
     Boolean(navScope) && isReferenceProductSidebarPath(activePath ?? pageUrl);
   const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
-    ? stripSidebarSectionIcons(sidebar)
-    : sidebar;
+    ? stripSidebarSectionIcons(sidebarWithSourcePagesOnly)
+    : sidebarWithSourcePagesOnly;
 
   const sidebarWithRealtimeMediaApiReference =
     addRealtimeMediaApiReferenceSidebarItem(
@@ -1286,135 +1925,472 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (isRecipesApiReferencePath(activePath)) {
+  if (isRecipesPath(activePath)) {
     return restoreRecipesSidebarSections(openApiSidebar);
   }
 
   return openApiSidebar;
 }
 
-const REALTIME_MEDIA_API_REFERENCE_LINKS = [
+function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {
+  return new Set(
+    source
+      .getPages(locale)
+      .filter((page) => hasExistingDocsSourceFile(page, locale))
+      .map((page) => page.url),
+  );
+}
+
+function hasExistingDocsSourceFile(page: PageWithSource, locale: AppLocale) {
+  if (!('info' in page.data)) {
+    return true;
+  }
+
+  if (!page.path.startsWith(`${locale}/`)) {
+    return false;
+  }
+
+  const fullPath = page.data.info.fullPath;
+
+  if (fullPath.startsWith('/virtual/')) {
+    return true;
+  }
+
+  return existsSync(fullPath) || existsSync(`content/docs/${page.path}`);
+}
+
+function filterSourceBackedSidebarNodes(
+  nodes: DocsSidebarNode[],
+  sourcePageUrls: Set<string>,
+): DocsSidebarNode[] {
+  const filtered: DocsSidebarNode[] = [];
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      if (
+        node.external ||
+        node.href ||
+        sourcePageUrls.has(node.url) ||
+        isOpenApiTabUrl(node.url)
+      ) {
+        filtered.push(node);
+      }
+      continue;
+    }
+
+    const children = filterSourceBackedSidebarNodes(
+      node.children,
+      sourcePageUrls,
+    );
+
+    if (children.length === 0) {
+      continue;
+    }
+
+    const filteredSection: DocsSidebarNode = {
+      ...node,
+      children,
+    };
+
+    if (node.url && !sourcePageUrls.has(node.url)) {
+      delete filteredSection.url;
+    }
+
+    filtered.push(filteredSection);
+  }
+
+  return filtered;
+}
+
+function isOpenApiTabUrl(url: string) {
+  return url.includes('/api-reference/openapi/');
+}
+
+const PRODUCT_API_REFERENCE_LINKS = [
   {
+    locale: 'en',
     productSlug: 'broadcast-streaming',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'cloud-recording',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/cloud-recording',
   },
   {
+    locale: 'en',
     productSlug: 'im',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/im',
   },
   {
+    locale: 'en',
     productSlug: 'media-pull',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/media-pull',
   },
   {
+    locale: 'en',
     productSlug: 'media-push',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/media-push',
   },
   {
+    locale: 'en',
     productSlug: 'on-premise-recording',
+    tab: 'realtime-media',
     title: 'API reference',
     url: '/en/api-reference/api-ref/on-premise-recording',
   },
   {
+    locale: 'en',
     productSlug: 'rtm',
+    tab: 'realtime-media',
     title: 'Signaling REST API',
     url: '/en/api-reference/api-ref/signaling',
   },
   {
+    locale: 'en',
     productSlug: 'rtmp-gateway',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtmp-gateway',
   },
   {
+    locale: 'en',
     productSlug: 'speech-to-text',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/speech-to-text',
   },
   {
+    locale: 'en',
     productSlug: 'video',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'voice',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/rtc',
   },
   {
+    locale: 'en',
     productSlug: 'whiteboard',
+    tab: 'realtime-media',
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/whiteboard',
   },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtc',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/rtc',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/signaling/publish',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'speech-to-text',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/speech-to-text',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'cloud-recording',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/cloud-recording',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'transcoding',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/cloud-transcoding',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'usage-analytics',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/agora-analytics',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'media-push',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/media-push',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'media-pull',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/media-pull',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'rtmp-gateway',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/rtmp-gateway',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'fusion-cdn',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/fusion-cdn',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'danmaku',
+    tab: 'realtime-media',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/danmaku',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'ppt-transcoding',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'voip-call',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/api-ref/voip-callkit',
+  },
+  {
+    locale: 'zh-CN',
+    productSlug: 'flexible-classroom',
+    tab: 'solutions',
+    title: 'RESTful API',
+    url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  },
 ] as const;
+
+type ProductApiReferenceLink = (typeof PRODUCT_API_REFERENCE_LINKS)[number];
+
+const PRODUCT_CLIENT_API_REFERENCE_LINKS = [
+  {
+    productId: 'rtc',
+    productSlug: 'rtc',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtm',
+    productSlug: 'rtm',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'rtsa',
+    productSlug: 'rtsa',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'whiteboard',
+    productSlug: 'whiteboard',
+    tab: 'realtime-media',
+  },
+  {
+    productId: 'flexible-classroom',
+    productSlug: 'flexible-classroom',
+    tab: 'solutions',
+  },
+  {
+    productId: 'meeting',
+    productSlug: 'meeting',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-art-teaching',
+    productSlug: 'art-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-ktv',
+    productSlug: 'online-ktv',
+    tab: 'solutions',
+  },
+  {
+    productId: 'online-music-teaching',
+    productSlug: 'online-music-class',
+    tab: 'solutions',
+  },
+  {
+    productId: 'private-room',
+    productSlug: 'one-to-one-live',
+    tab: 'solutions',
+  },
+  {
+    productId: 'teleoperation',
+    productSlug: 'teleoperation',
+    tab: 'solutions',
+  },
+] as const;
+
+type ProductClientApiReferenceLink =
+  (typeof PRODUCT_CLIENT_API_REFERENCE_LINKS)[number];
+
+function createZhCnClientApiReferencePage(
+  productId: string,
+): DocsSidebarPageNode {
+  return {
+    id: `zh-CN-${productId}-client-api-reference`,
+    linked: true,
+    search: {
+      apiType: 'client',
+      product: productId,
+    },
+    title: '客户端 API',
+    type: 'page',
+    url: '/zh-CN/api-reference/api',
+  };
+}
 
 function addRealtimeMediaApiReferenceSidebarItem(
   nodes: DocsSidebarNode[],
   activePath?: string,
 ): DocsSidebarNode[] {
-  const link = getRealtimeMediaApiReferenceLink(activePath);
+  const restApiLink = getProductApiReferenceLink(activePath);
+  const clientApiLink = getProductClientApiReferenceLink(activePath);
 
-  if (!link) {
+  if (!restApiLink && !clientApiLink) {
     return nodes;
   }
 
-  const pageNode = {
-    id: link.url,
-    linked: true,
-    title: link.title,
-    type: 'page',
-    url: link.url,
-  } satisfies DocsSidebarPageNode;
-
-  const existingUrls = new Set([
-    link.url,
-    ...getRealtimeMediaLegacyApiReferenceUrls(link.productSlug),
-  ]);
+  const restApiPageNode = restApiLink
+    ? ({
+        id: restApiLink.url,
+        linked: true,
+        title: restApiLink.title,
+        type: 'page',
+        url: restApiLink.url,
+      } satisfies DocsSidebarPageNode)
+    : null;
+  const clientApiPageNode = clientApiLink
+    ? createZhCnClientApiReferencePage(clientApiLink.productId)
+    : null;
+  const existingRestApiUrls = restApiLink
+    ? new Set([
+        restApiLink.url,
+        ...getProductLegacyApiReferenceUrls(restApiLink),
+      ])
+    : new Set<string>();
 
   return nodes.map((node) => {
-    if (node.type !== 'section' || node.title !== 'Reference') {
+    if (node.type !== 'section') {
       return node;
+    }
+
+    if (
+      isProductReferenceSectionTitle(node.title, restApiLink?.locale ?? 'zh-CN')
+    ) {
+      return {
+        ...node,
+        children: [
+          ...(clientApiPageNode ? [clientApiPageNode] : []),
+          ...(restApiPageNode ? [restApiPageNode] : []),
+          ...filterSidebarNodes(
+            node.children,
+            (child) =>
+              child.type !== 'page' ||
+              (child.title !== '客户端 API' &&
+                !existingRestApiUrls.has(child.url)),
+          ),
+        ],
+      };
     }
 
     return {
       ...node,
-      children: [
-        pageNode,
-        ...filterSidebarNodes(
-          node.children,
-          (child) => child.type !== 'page' || !existingUrls.has(child.url),
-        ),
-      ],
+      children: addRealtimeMediaApiReferenceSidebarItem(
+        node.children,
+        activePath,
+      ),
     };
   });
 }
 
-function getRealtimeMediaApiReferenceLink(activePath?: string) {
-  if (!activePath?.startsWith('/en/realtime-media/')) {
+function getProductClientApiReferenceLink(
+  activePath?: string,
+): ProductClientApiReferenceLink | null {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
+
+  if (locale !== 'zh-CN' || !tab || !productSlug) {
     return null;
   }
 
-  const productSlug = activePath.split('/').filter(Boolean)[2];
-
   return (
-    REALTIME_MEDIA_API_REFERENCE_LINKS.find(
-      (link) => link.productSlug === productSlug,
+    PRODUCT_CLIENT_API_REFERENCE_LINKS.find(
+      (link) => link.tab === tab && link.productSlug === productSlug,
     ) ?? null
   );
 }
 
-function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
-  const prefix = `/en/realtime-media/${productSlug}`;
+function getProductApiReferenceLink(activePath?: string) {
+  const [, locale, tab, productSlug] = activePath?.split('/') ?? [];
 
-  switch (productSlug) {
+  if (!locale || !tab || !productSlug) {
+    return null;
+  }
+
+  return (
+    PRODUCT_API_REFERENCE_LINKS.find(
+      (link) =>
+        link.locale === locale &&
+        link.tab === tab &&
+        link.productSlug === productSlug,
+    ) ?? null
+  );
+}
+
+function isProductReferenceSectionTitle(
+  title: string,
+  locale: ProductApiReferenceLink['locale'],
+) {
+  return locale === 'zh-CN'
+    ? title === '参考' || title === '参考信息'
+    : title === 'Reference';
+}
+
+function getProductLegacyApiReferenceUrls(link: ProductApiReferenceLink) {
+  if (link.locale !== 'en') {
+    return [];
+  }
+
+  const prefix = `/en/${link.tab}/${link.productSlug}`;
+
+  switch (link.productSlug) {
     case 'broadcast-streaming':
       return [
         `${prefix}/reference/agora-console-rest-api`,
@@ -1474,10 +2450,10 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
   }
 }
 
-function isRecipesApiReferencePath(path?: string) {
+function isRecipesPath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
-    path?.startsWith('/zh-CN/api-reference/recipes') ||
+    path?.startsWith('/zh-CN/reference/recipes') ||
     false
   );
 }
@@ -1613,13 +2589,15 @@ function buildAiProductSidebar(
     !referenceSection ||
     !deviceKitSection
   ) {
-    return filterSidebarNodes(nodes, (node) => {
+    const filteredNodes = filterSidebarNodes(nodes, (node) => {
       if (node.type !== 'page') {
         return true;
       }
 
       return !node.url.includes('/ai/choose-your-path/');
     });
+
+    return addAiRestApiReferenceSidebarItem(filteredNodes);
   }
 
   const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
@@ -1639,17 +2617,18 @@ function buildAiProductSidebar(
 
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
-  const restApiUrl = isZhCn
-    ? `${aiLocalePrefix}/api-reference/conversational-ai/rest-api/authentication`
-    : `${aiLocalePrefix}/api-reference/api-ref/conversational-ai/authentication`;
+  const restApiUrl = `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
 
   const restApiPage = {
     id: restApiUrl,
     linked: true,
-    title: isZhCn ? 'REST API' : 'RESTful API',
+    title: 'RESTful API',
     type: 'page',
     url: restApiUrl,
   } satisfies DocsSidebarPageNode;
+  const clientApiPage = isZhCn
+    ? createZhCnClientApiReferencePage('conversational-ai')
+    : null;
   const serverSdkTypescriptUrl = isZhCn
     ? `${aiLocalePrefix}/api-reference/conversational-ai/server-sdk/typescript`
     : `${aiLocalePrefix}/api-reference/api-ref/server-sdk/typescript`;
@@ -1689,6 +2668,7 @@ function buildAiProductSidebar(
   const mergedReferenceSection: DocsSidebarSectionNode = {
     ...stripSidebarSectionMeta(referenceSection),
     children: [
+      ...(clientApiPage ? [clientApiPage] : []),
       restApiPage,
       serverSdkTypescriptPage,
       ...referenceLeadingChildren,
@@ -1749,20 +2729,144 @@ function buildAiProductSidebar(
   ];
 }
 
+function addAiRestApiReferenceSidebarItem(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const locale = getSidebarLocale(nodes);
+
+  if (!locale) {
+    return nodes;
+  }
+
+  const restApiUrl = `/${locale}/api-reference/api-ref/conversational-ai`;
+  const restApiPage = {
+    id: restApiUrl,
+    linked: true,
+    title: 'RESTful API',
+    type: 'page',
+    url: restApiUrl,
+  } satisfies DocsSidebarPageNode;
+  const clientApiPage =
+    locale === 'zh-CN'
+      ? createZhCnClientApiReferencePage('conversational-ai')
+      : null;
+  const existingUrls = new Set([
+    restApiUrl,
+    `/${locale}/ai/reference/restful-api`,
+    `/${locale}/api-reference/api-ref/conversational-ai/authentication`,
+    `/${locale}/api-reference/conversational-ai/rest-api`,
+    `/${locale}/api-reference/conversational-ai/rest-api/authentication`,
+  ]);
+
+  return nodes.map((node) => {
+    if (
+      node.type !== 'section' ||
+      !isAiSoftwareClientsSectionTitle(node.title)
+    ) {
+      return node;
+    }
+
+    return {
+      ...node,
+      children: addAiRestApiReferenceToReferenceSection(
+        node.children,
+        [...(clientApiPage ? [clientApiPage] : []), restApiPage],
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function addAiRestApiReferenceToReferenceSection(
+  nodes: DocsSidebarNode[],
+  apiReferencePages: DocsSidebarPageNode[],
+  existingUrls: Set<string>,
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type !== 'section') {
+      return node;
+    }
+
+    if (isProductReferenceSectionTitle(node.title, locale)) {
+      return {
+        ...node,
+        children: [
+          ...apiReferencePages,
+          ...filterSidebarNodes(
+            node.children,
+            (child) =>
+              child.type !== 'page' ||
+              (child.title !== '客户端 API' && !existingUrls.has(child.url)),
+          ),
+        ],
+      };
+    }
+
+    return {
+      ...node,
+      children: addAiRestApiReferenceToReferenceSection(
+        node.children,
+        apiReferencePages,
+        existingUrls,
+        locale,
+      ),
+    };
+  });
+}
+
+function isAiSoftwareClientsSectionTitle(title: string) {
+  return (
+    title === 'Voice Agent in apps' ||
+    title === 'Voice agent in apps' ||
+    title === '对话式 AI 引擎'
+  );
+}
+
+function getSidebarLocale(nodes: DocsSidebarNode[]): AppLocale | null {
+  for (const node of nodes) {
+    const locale = getSidebarNodeLocale(node);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
+function getSidebarNodeLocale(node: DocsSidebarNode): AppLocale | null {
+  if (node.type === 'page') {
+    if (node.url.startsWith('/zh-CN/')) {
+      return 'zh-CN';
+    }
+
+    if (node.url.startsWith('/en/')) {
+      return 'en';
+    }
+
+    return null;
+  }
+
+  for (const child of node.children) {
+    const locale = getSidebarNodeLocale(child);
+    if (locale) {
+      return locale;
+    }
+  }
+
+  return null;
+}
+
 function flattenDeviceKitSidebarChildren(
   children: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const flattened: DocsSidebarNode[] = [];
   let hasPushedReleaseNotes = false;
-  const releaseNotes =
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/en/ai/device-kit/reference/release-notes',
-    ) ??
-    findSidebarPageByExactUrlInNodes(
-      children,
-      '/zh-CN/ai/device-kit/reference/release-notes',
-    );
+  const releaseNotes = findSidebarPageByExactUrlInNodes(
+    children,
+    '/en/ai/device-kit/reference/release-notes',
+  );
 
   for (const child of children) {
     if (child.type === 'page') {
@@ -1773,10 +2877,7 @@ function flattenDeviceKitSidebarChildren(
         continue;
       }
 
-      if (
-        child.url === '/en/ai/device-kit/reference/release-notes' ||
-        child.url === '/zh-CN/ai/device-kit/reference/release-notes'
-      ) {
+      if (child.url === '/en/ai/device-kit/reference/release-notes') {
         hasPushedReleaseNotes = true;
       }
       flattened.push(child);
@@ -1784,15 +2885,10 @@ function flattenDeviceKitSidebarChildren(
     }
 
     if (child.title === 'Start here' || child.title === '从这里开始') {
-      const quickstart =
-        findSidebarPageByExactUrl(
-          child,
-          '/en/ai/device-kit/start-here/quickstart',
-        ) ??
-        findSidebarPageByExactUrl(
-          child,
-          '/zh-CN/ai/device-kit/start-here/quickstart',
-        );
+      const quickstart = findSidebarPageByExactUrl(
+        child,
+        '/en/ai/device-kit/start-here/quickstart',
+      );
 
       if (quickstart) {
         if (releaseNotes && !hasPushedReleaseNotes) {
@@ -1958,15 +3054,37 @@ function resolveDocsSidebarHeader({
     return undefined;
   }
 
+  const openApiLane =
+    locale && SUPPORTED_LOCALES.includes(locale as AppLocale)
+      ? findOpenApiLaneByUrl(locale as AppLocale, tab, activePath)
+      : undefined;
+  const referenceBackLink = openApiLane
+    ? getOpenApiReferenceBackLink(locale as AppLocale)
+    : undefined;
+  const sidebarBackLink = isZhCnRtmRestApiPage(activePath, locale)
+    ? ZH_CN_RTM_REST_API_BACK_LINK
+    : referenceBackLink
+      ? {
+          backHref: referenceBackLink.href,
+          backLabel: referenceBackLink.label,
+        }
+      : undefined;
+  const baseHeader = sidebarBackLink
+    ? {
+        ...navScope.header,
+        ...sidebarBackLink,
+      }
+    : navScope.header;
+
   if (hidePlatformTabs) {
     return {
-      ...navScope.header,
+      ...baseHeader,
       versionSwitcher: undefined,
     };
   }
 
   if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
-    return navScope.header;
+    return baseHeader;
   }
 
   const versionLinks = getNavScopeVersionLinks({
@@ -1982,22 +3100,60 @@ function resolveDocsSidebarHeader({
     !versionLinks.some((link) => link.href === activePath)
   ) {
     return {
-      ...navScope.header,
+      ...baseHeader,
       versionSwitcher: undefined,
     };
   }
 
   return {
-    ...navScope.header,
+    ...baseHeader,
     versionSwitcher: {
       currentId:
         versionLinks.find((item) => item.href === activePath)?.id ??
-        navScope.header.versionSwitcher?.currentId ??
+        baseHeader.versionSwitcher?.currentId ??
         versionLinks[0].id,
       presentation: 'tabs' as const,
       versions: versionLinks,
     },
   };
+}
+
+function resolveFocusedOpenApiLaneSidebarHeader(
+  activePath: string,
+  locale: AppLocale,
+  tab: string,
+): DocsSidebarHeader | undefined {
+  if (!isOpenApiTab(tab)) {
+    return undefined;
+  }
+
+  if (isZhCnRtmRestApiPage(activePath, locale)) {
+    return {
+      ...ZH_CN_RTM_REST_API_BACK_LINK,
+      title: 'RESTful API',
+    };
+  }
+
+  const lane = findOpenApiLaneByUrl(locale, tab, activePath);
+
+  if (!lane) {
+    return undefined;
+  }
+
+  const referenceBackLink = getOpenApiReferenceBackLink(locale);
+
+  return {
+    backHref: referenceBackLink.href,
+    backLabel: referenceBackLink.label,
+    title: 'RESTful API',
+  };
+}
+
+function isZhCnRtmRestApiPage(
+  activePath: string,
+  locale: AppLocale | string | null,
+) {
+  return locale === 'zh-CN' && ZH_CN_RTM_REST_API_PAGE_URL_SET.has(activePath);
 }
 
 function shouldUseSharedPlatformSidebar(
@@ -2156,6 +3312,186 @@ async function addOpenApiEndpointSidebarItems(
       appendEndpointPagesToOpenApiParent(node, locale, tab),
     ),
   );
+}
+
+function getFocusedZhCnRtmRestSidebarNodes({
+  activePath,
+  locale,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  source: typeof docsSource;
+  tab: string;
+}): DocsSidebarNode[] | null {
+  if (!isZhCnRtmRestApiPage(activePath, locale) || !isOpenApiTab(tab)) {
+    return null;
+  }
+
+  const sourcePageByUrl = new Map(
+    source
+      .getPages(locale)
+      .filter((page) => ZH_CN_RTM_REST_API_PAGE_URL_SET.has(page.url))
+      .map((page) => [page.url, page]),
+  );
+  const children = ZH_CN_RTM_REST_API_PAGE_URLS.flatMap((url) => {
+    const page = sourcePageByUrl.get(url);
+    if (!page || !hasExistingDocsSourceFile(page, locale)) {
+      return [];
+    }
+
+    return [
+      {
+        id: url,
+        title: page.data.title ?? page.slugs.at(-1) ?? url,
+        type: 'page' as const,
+        url,
+      },
+    ];
+  });
+
+  return [
+    {
+      children,
+      id: ZH_CN_RTM_REST_API_PARENT_URL,
+      title: 'RESTful API',
+      type: 'section',
+    },
+  ];
+}
+
+async function getFocusedOpenApiLaneSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+  tab,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+  tab: string;
+}): Promise<DocsSidebarNode[] | null> {
+  if (!isOpenApiTab(tab)) {
+    return null;
+  }
+
+  const lane = findOpenApiLaneByUrl(locale, tab, activePath);
+
+  if (!lane) {
+    return null;
+  }
+
+  const parentUrl = lane.parentUrl[locale];
+  const operationUrls = new Set(
+    getOpenApiOperationIds(lane).map((operationId) =>
+      getOpenApiEndpointUrl(lane, locale, operationId),
+    ),
+  );
+  const sourcePages = source
+    .getPages(locale)
+    .filter(
+      (page) =>
+        isSamePathOrDescendant(page.url, parentUrl) &&
+        hasExistingDocsSourceFile(page, locale),
+    );
+  const sourcePageByUrl = new Map(sourcePages.map((page) => [page.url, page]));
+  const parentPage = sourcePageByUrl.get(parentUrl);
+  const parentNode: DocsSidebarPageNode = {
+    id: parentUrl,
+    title: parentPage?.data.title ?? '概览',
+    type: 'page',
+    url: parentUrl,
+  };
+  const manualNodes = sourcePages
+    .filter((page) => page.url !== parentUrl && !operationUrls.has(page.url))
+    .sort((left, right) => left.url.localeCompare(right.url))
+    .map(
+      (page): DocsSidebarPageNode => ({
+        id: page.url,
+        title: page.data.title ?? page.slugs.at(-1) ?? page.url,
+        type: 'page',
+        url: page.url,
+      }),
+    );
+  const operationNodes: DocsSidebarPageNode[] = await Promise.all(
+    getOpenApiOperationIds(lane).map(async (operationId) => ({
+      id: getOpenApiEndpointUrl(lane, locale, operationId),
+      method: (await getOpenApiOperation(lane, operationId, locale)).method,
+      title: lane.operations[operationId].title[locale],
+      type: 'page' as const,
+      url: getOpenApiEndpointUrl(lane, locale, operationId),
+    })),
+  );
+
+  const fallbackNodes = [parentNode, ...manualNodes, ...operationNodes];
+  const laneFolder = findFolderByIndexUrl(pageTree, parentUrl);
+  const laneMeta = laneFolder
+    ? getDocsMetaData(source.getNodeMeta(laneFolder, locale))
+    : undefined;
+
+  if (
+    !laneFolder ||
+    !laneMeta ||
+    !('openApiSidebarFromMeta' in laneMeta) ||
+    !laneMeta.openApiSidebarFromMeta
+  ) {
+    return fallbackNodes;
+  }
+
+  const metaNodes = getSidebarNodes(
+    {
+      children: [{ ...laneFolder, root: true }],
+      name: 'Focused OpenAPI lane',
+    } as Root,
+    tab,
+  );
+  const metaNodeUrls = collectSidebarPageUrls(metaNodes);
+
+  return [
+    ...metaNodes,
+    ...fallbackNodes.filter((node) => !metaNodeUrls.has(node.url)),
+  ];
+}
+
+function findFolderByIndexUrl(node: Folder | Root, url: string): Folder | null {
+  for (const child of node.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+    if (
+      child.index?.url === url ||
+      child.children.some((item) => item.type === 'page' && item.url === url)
+    ) {
+      return child;
+    }
+
+    const match = findFolderByIndexUrl(child, url);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
+}
+
+function collectSidebarPageUrls(nodes: DocsSidebarNode[]) {
+  const urls = new Set<string>();
+
+  for (const node of nodes) {
+    if (node.type === 'page') {
+      urls.add(node.url);
+      continue;
+    }
+
+    for (const url of collectSidebarPageUrls(node.children)) {
+      urls.add(url);
+    }
+  }
+
+  return urls;
 }
 
 async function appendEndpointPagesToOpenApiParent(

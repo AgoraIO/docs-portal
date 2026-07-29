@@ -1,0 +1,44 @@
+---
+title: VideoSubscriptionOptions
+description: 视频订阅设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/class_videosubscriptionoptions
+  sourcePath: html-docs/rtc/Electron/API/class_videosubscriptionoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videosubscriptionoptions__prototype"></a>
+
+```text
+export class VideoSubscriptionOptions {
+
+  type?: VideoStreamType;
+
+  encodedFrameOnly?: boolean;
+}
+```
+
+<a id="class_videosubscriptionoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+订阅的视频流类型，默认值为 VideoStreamHigh，即订阅视频大流。详见 [VideoStreamType](/zh-CN/api-reference/rtc/electron/enum-videostreamtype)。
+
+</Parameter>
+<a id="encodedframeonly"></a>
+<Parameter name="encodedFrameOnly">
+
+是否仅订阅编码后的视频流：
+
+- true：仅订阅编码后的视频数据（结构化数据），SDK 未对该视频数据做解码及渲染。
+- false：（默认）订阅原始视频数据和编码后的数据。
+
+</Parameter>
+</ParameterList>

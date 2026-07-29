@@ -1,10 +1,19 @@
 ---
-title: "音频基础功能"
-description: RTC Android API 参考迁移页。
+title: 音频基础功能
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_audio_basic
+  sourcePath: html-docs/rtc/Android/API/toc_audio_basic.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_audio_basic"></a>
 
 <a id="api_irtcengine_adjustplaybacksignalvolume"></a>
+
+<a id="ariaid-title2"></a>
 
 ## adjustPlaybackSignalVolume
 
@@ -12,7 +21,7 @@ description: RTC Android API 参考迁移页。
 
 <a id="api_irtcengine_adjustplaybacksignalvolume__prototype"></a>
 
-```java
+```text
 public abstract int adjustPlaybackSignalVolume(int volume);
 ```
 
@@ -30,7 +39,9 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0,400]。
 
@@ -38,17 +49,23 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_adjustplaybacksignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume"></a>
+
+<a id="ariaid-title3"></a>
 
 ## adjustUserPlaybackSignalVolume
 
@@ -56,7 +73,7 @@ public abstract int adjustPlaybackSignalVolume(int volume);
 
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__prototype"></a>
 
-```java
+```text
 public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 ```
 
@@ -74,11 +91,15 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-#### `volume`
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0, 400]。
 
@@ -86,17 +107,23 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_irtcengine_adjustuserplaybacksignalvolume__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex"></a>
+
+<a id="ariaid-title4"></a>
 
 ## adjustUserPlaybackSignalVolumeEx
 
@@ -104,7 +131,7 @@ public abstract int adjustUserPlaybackSignalVolume(int uid, int volume);
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__prototype"></a>
 
-```java
+```text
 public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcConnection connection);
 ```
 
@@ -128,11 +155,15 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-#### `volume`
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 用户的音量，取值范围为 [0, 400]。
 
@@ -140,21 +171,29 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 - 100：（默认）原始音量。
 - 400：原始音量的四倍（将音频信号放大四倍）。
 
-#### `connection`
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
 
-连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_adjustuserplaybacksignalvolumeex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_disableaudio"></a>
+
+<a id="ariaid-title5"></a>
 
 ## disableAudio
 
@@ -162,7 +201,7 @@ public abstract int adjustUserPlaybackSignalVolumeEx(int uid, int volume, RtcCon
 
 <a id="api_irtcengine_disableaudio__prototype"></a>
 
-```java
+```text
 public abstract int disableAudio();
 ```
 
@@ -170,12 +209,14 @@ public abstract int disableAudio();
 
 音频模块默认启用。你可以调用该方法来禁用。
 
+:::note
 注： 该方法会重置内部引擎，并需要一些时间生效。声网建议使用以下 API 分别控制音频模块：
 
-- enableLocalAudio：是否启用麦克风以创建本地音频流。
-- muteLocalAudioStream：是否发布本地音频流。
-- muteRemoteAudioStream：是否订阅并播放远端音频流。
-- muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
+- [enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+- [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+- [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+- [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
+:::
 
 <a id="api_irtcengine_disableaudio__timing"></a>
 
@@ -188,12 +229,15 @@ public abstract int disableAudio();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudio"></a>
+
+<a id="ariaid-title6"></a>
 
 ## enableAudio
 
@@ -201,7 +245,7 @@ public abstract int disableAudio();
 
 <a id="api_irtcengine_enableaudio__prototype"></a>
 
-```java
+```text
 public abstract int enableAudio();
 ```
 
@@ -209,14 +253,17 @@ public abstract int enableAudio();
 
 调用 [disableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio) 方法禁用音频模块后，可以调用 [enableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio) 方法重新启用。
 
+:::note
 注：
 
 - 调用此方法会重置整个引擎，可能导致响应时间变慢。你可以根据实际需求，使用以下方法分别控制音频模块的具体功能：
-  - enableLocalAudio：是否启用麦克风以创建本地音频流。
-  - muteLocalAudioStream：是否发布本地音频流。
-  - muteRemoteAudioStream：是否订阅并播放远端音频流。
-  - muteAllRemoteAudioStreams：是否订阅并播放所有远端音频流。
-- 成功调用此方法会重置 enableLocalAudio、 muteRemoteAudioStream 和 muteAllRemoteAudioStreams 的状态，请谨慎使用。
+
+  - [enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio)：是否启用麦克风以创建本地音频流。
+  - [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream)：是否发布本地音频流。
+  - [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremoteaudiostream)：是否订阅并播放远端音频流。
+  - [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams)：是否订阅并播放所有远端音频流。
+- 成功调用此方法会重置 [enableLocalAudio](/zh-CN/api-reference/rtc/android/audio/audio-capture#api_irtcengine_enablelocalaudio)、[muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremoteaudiostream) 和 [muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 的状态，请谨慎使用。
+:::
 
 <a id="api_irtcengine_enableaudio__timing"></a>
 
@@ -229,12 +276,15 @@ public abstract int enableAudio();
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_enableaudiovolumeindication"></a>
+
+<a id="ariaid-title7"></a>
 
 ## enableAudioVolumeIndication
 
@@ -242,7 +292,7 @@ public abstract int enableAudio();
 
 <a id="api_irtcengine_enableaudiovolumeindication__prototype"></a>
 
-```java
+```text
 public abstract int enableAudioVolumeIndication(int interval, int smooth, boolean reportVad);
 ```
 
@@ -266,33 +316,45 @@ public abstract int enableAudioVolumeIndication(int interval, int smooth, boolea
 
 ### 参数
 
-#### `interval`
+<ParameterList>
+<a id="interval"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（毫秒）：
 
 - ≤ 0：关闭音量提示。
-- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔（毫秒）。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-#### `smooth`
+</Parameter>
+<a id="smooth"></a>
+<Parameter name="smooth">
 
 设置音量提示的灵敏度平滑系数。取值范围为 0 到 10，推荐值为 3。数值越大，提示越灵敏。
 
-#### `reportVad`
+</Parameter>
+<a id="reportvad"></a>
+<Parameter name="reportVad">
 
-- true：启用本地用户的语音活动检测。启用后， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭本地用户的语音活动检测。关闭后， onAudioVolumeIndication 回调中的 vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用本地用户的语音活动检测。启用后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭本地用户的语音活动检测。关闭后，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_enableaudiovolumeindication__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex"></a>
+
+<a id="ariaid-title8"></a>
 
 ## enableAudioVolumeIndicationEx
 
@@ -300,7 +362,7 @@ public abstract int enableAudioVolumeIndication(int interval, int smooth, boolea
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__prototype"></a>
 
-```java
+```text
 public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, boolean reportVad, RtcConnection connection);
 ```
 
@@ -330,39 +392,53 @@ public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 ### 参数
 
-#### `interval`
+<ParameterList>
+<a id="interval-1"></a>
+<Parameter name="interval">
 
 设置两次音量提示之间的时间间隔（单位为毫秒）：
 
 - ≤ 0：关闭音量提示功能。
-- &gt; 0：两次音量提示之间的时间间隔。该值需大于 10，否则无法收到 onAudioVolumeIndication 回调。建议设置为大于 100。
+- &gt; 0：两次音量提示之间的时间间隔。该值需大于 10，否则无法收到 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调。建议设置为大于 100。
 
-#### `smooth`
+</Parameter>
+<a id="smooth-1"></a>
+<Parameter name="smooth">
 
 设置音量提示的灵敏度平滑系数，取值范围为 [0, 10]，推荐值为 3。数值越大，提示越灵敏。
 
-#### `reportVad`
+</Parameter>
+<a id="reportvad-1"></a>
+<Parameter name="reportVad">
 
 是否启用本地用户的语音活动检测（VAD）：
 
-- true：启用语音活动检测， onAudioVolumeIndication 回调中的 vad 参数会报告本地用户的语音活动状态。
-- false：（默认）关闭语音活动检测， vad 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
+- true：启用语音活动检测，[onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调中的 `vad` 参数会报告本地用户的语音活动状态。
+- false：（默认）关闭语音活动检测，`vad` 参数不会报告本地用户的语音活动状态，除非引擎自动检测到语音活动。
 
-#### `connection`
+</Parameter>
+<a id="connection-1"></a>
+<Parameter name="connection">
 
-连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcconnection)。
+连接信息，详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengineex_enableaudiovolumeindicationex__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngineEx](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineex)
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
 
 <a id="api_irtcengine_setaudioprofile"></a>
+
+<a id="ariaid-title9"></a>
 
 ## setAudioProfile [1/2]
 
@@ -370,21 +446,23 @@ public abstract int enableAudioVolumeIndicationEx(int interval, int smooth, bool
 
 <a id="api_irtcengine_setaudioprofile__prototype"></a>
 
-```java
+```text
 public abstract int setAudioProfile(int profile, int scenario);
 ```
 
 <a id="api_irtcengine_setaudioprofile__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃"></a>
 
+:::error[废弃]
 该方法已废弃。请使用 `setAudioProfile(int profile)` 设置音频配置，使用 `setAudioScenario(int scenario)` 设置音频场景。
+:::
 
 <a id="api_irtcengine_setaudioprofile__scenario"></a>
 
 ### 适用场景
 
-该方法适用于多种音频场景，你可以根据实际需求进行选择。例如，在对音质要求较高的场景（如音乐教学）中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4），将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。你可以在加入频道前或加入频道后调用该方法。
+该方法适用于多种音频场景，你可以根据实际需求进行选择。例如，在对音质要求较高的场景（如音乐教学）中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`（4），将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。你可以在加入频道前或加入频道后调用该方法。
 
 <a id="api_irtcengine_setaudioprofile__timing"></a>
 
@@ -396,41 +474,52 @@ public abstract int setAudioProfile(int profile, int scenario);
 
 ### 参数
 
-#### `profile`
+<ParameterList>
+<a id="profile"></a>
+<Parameter name="profile">
 
 音频配置，包括采样率、码率、编码模式和声道数，详见 `profile`：
 
-- DEFAULT (0)：默认值。
+- `DEFAULT` (0)：默认值。
+
   - 互动直播场景：采样率 48 kHz，音乐编码，单声道，码率最高 64 Kbps。
   - 通信场景：采样率 32 kHz，语音编码，单声道，码率最高 18 Kbps。
-- SPEECH_STANDARD (1)：采样率 32 kHz，语音编码，单声道，码率最高 18 Kbps。
-- MUSIC_STANDARD (2)：采样率 48 kHz，音乐编码，单声道，码率最高 64 Kbps。
-- MUSIC_STANDARD_STEREO (3)：采样率 48 kHz，音乐编码，立体声，码率最高 80 Kbps。
-- MUSIC_HIGH_QUALITY (4)：采样率 48 kHz，音乐编码，单声道，码率最高 96 Kbps。
-- MUSIC_HIGH_QUALITY_STEREO (5)：采样率 48 kHz，音乐编码，立体声，码率最高 128 Kbps。
+- `SPEECH_STANDARD` (1)：采样率 32 kHz，语音编码，单声道，码率最高 18 Kbps。
+- `MUSIC_STANDARD` (2)：采样率 48 kHz，音乐编码，单声道，码率最高 64 Kbps。
+- `MUSIC_STANDARD_STEREO` (3)：采样率 48 kHz，音乐编码，立体声，码率最高 80 Kbps。
+- `MUSIC_HIGH_QUALITY` (4)：采样率 48 kHz，音乐编码，单声道，码率最高 96 Kbps。
+- `MUSIC_HIGH_QUALITY_STEREO` (5)：采样率 48 kHz，音乐编码，立体声，码率最高 128 Kbps。
 
-#### `scenario`
+</Parameter>
+<a id="scenario"></a>
+<Parameter name="scenario">
 
 音频场景，不同场景下设备使用不同的音量类型，详见 `scenario`：
 
-- AUDIO_SCENARIO_DEFAULT (0)：默认自动场景，SDK 会根据用户角色和音频路由选择合适的音频质量。
-- AUDIO_SCENARIO_GAME_STREAMING (3)：高音质场景，适用于主要播放音乐的场景。
-- AUDIO_SCENARIO_CHATROOM (5)：聊天室场景，适用于频繁切换角色或静音/取消静音麦克风的场景。
-- AUDIO_SCENARIO_CHORUS (7)：实时合唱场景，适用于网络状况良好且对延迟要求极高的场景。使用该枚举前需调用 getAudioDeviceInfo 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（isLowLatencyAudioSupported = true ）。
-- AUDIO_SCENARIO_MEETING (8)：会议场景，以人声为主。
-- AUDIO_SCENARIO_AI_CLIENT (10)：AI 对话场景，仅适用于用户与由 Conversational AI Engine 创建的对话式智能体交互的场景。
+- `AUDIO_SCENARIO_DEFAULT` (0)：默认自动场景，SDK 会根据用户角色和音频路由选择合适的音频质量。
+- `AUDIO_SCENARIO_GAME_STREAMING` (3)：高音质场景，适用于主要播放音乐的场景。
+- `AUDIO_SCENARIO_CHATROOM` (5)：聊天室场景，适用于频繁切换角色或静音/取消静音麦克风的场景。
+- `AUDIO_SCENARIO_CHORUS` (7)：实时合唱场景，适用于网络状况良好且对延迟要求极高的场景。使用该枚举前需调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true）。
+- `AUDIO_SCENARIO_MEETING` (8)：会议场景，以人声为主。
+- `AUDIO_SCENARIO_AI_CLIENT` (10)：AI 对话场景，仅适用于用户与由 `Conversational AI Engine` 创建的对话式智能体交互的场景。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioprofile2"></a>
+
+<a id="ariaid-title10"></a>
 
 ## setAudioProfile [2/2]
 
@@ -438,19 +527,19 @@ public abstract int setAudioProfile(int profile, int scenario);
 
 <a id="api_irtcengine_setaudioprofile2__prototype"></a>
 
-```java
+```text
 public abstract int setAudioProfile(int profile);
 ```
 
 <a id="api_irtcengine_setaudioprofile2__detailed_desc"></a>
 
-如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 方法，或调用 [create](/zh-CN/api-reference/rtc/android/audio/pre-and-post-processing/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 并在 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcengineconfig) 中设置 `mAudioScenario`。
+如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 方法，或调用 [create](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 并在 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-rtcengineconfig) 中设置 `mAudioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__scenario"></a>
 
 ### 适用场景
 
-你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` （4）。如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 并在 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-rtcengineconfig) 中设置 `audioScenario`。
+你可以根据实际需求选择合适的音频配置文件。例如，在音乐教学等对音质要求较高的场景中，建议将 `profile` 设置为 `AUDIO_PROFILE_MUSIC_HIGH_QUALITY`（4）。如果你需要设置音频场景，可以调用 [setAudioScenario](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)，或者调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 并在 [RtcEngineConfig](/zh-CN/api-reference/rtc/android/class-rtcengineconfig) 中设置 `audioScenario`。
 
 <a id="api_irtcengine_setaudioprofile2__timing"></a>
 
@@ -462,30 +551,39 @@ public abstract int setAudioProfile(int profile);
 
 ### 参数
 
-#### `profile`
+<ParameterList>
+<a id="profile-1"></a>
+<Parameter name="profile">
 
 音频配置文件，包括采样率、码率、编码模式和声道数：
 
-- DEFAULT （0）：默认配置。
+- `DEFAULT`（0）：默认配置。
+
   - 互动直播场景：采样率为 48 kHz，音乐编码，单声道，码率最高为 64 Kbps。
   - 通信场景：采样率为 32 kHz，语音编码，单声道，码率最高为 18 Kbps。
-- SPEECH_STANDARD （1）：采样率为 32 kHz，语音编码，单声道，码率最高为 18 Kbps。
-- MUSIC_STANDARD （2）：采样率为 48 kHz，音乐编码，单声道，码率最高为 64 Kbps。
-- MUSIC_STANDARD_STEREO （3）：采样率为 48 kHz，音乐编码，立体声，码率最高为 80 Kbps。
-- MUSIC_HIGH_QUALITY （4）：采样率为 48 kHz，音乐编码，单声道，码率最高为 96 Kbps。
-- MUSIC_HIGH_QUALITY_STEREO （5）：采样率为 48 kHz，音乐编码，立体声，码率最高为 128 Kbps。
+- `SPEECH_STANDARD`（1）：采样率为 32 kHz，语音编码，单声道，码率最高为 18 Kbps。
+- `MUSIC_STANDARD`（2）：采样率为 48 kHz，音乐编码，单声道，码率最高为 64 Kbps。
+- `MUSIC_STANDARD_STEREO`（3）：采样率为 48 kHz，音乐编码，立体声，码率最高为 80 Kbps。
+- `MUSIC_HIGH_QUALITY`（4）：采样率为 48 kHz，音乐编码，单声道，码率最高为 96 Kbps。
+- `MUSIC_HIGH_QUALITY_STEREO`（5）：采样率为 48 kHz，音乐编码，立体声，码率最高为 128 Kbps。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioprofile2__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="api_irtcengine_setaudioscenario"></a>
+
+<a id="ariaid-title11"></a>
 
 ## setAudioScenario
 
@@ -493,7 +591,7 @@ public abstract int setAudioProfile(int profile);
 
 <a id="api_irtcengine_setaudioscenario__prototype"></a>
 
-```java
+```text
 public abstract int setAudioScenario(int scenario);
 ```
 
@@ -503,7 +601,7 @@ public abstract int setAudioScenario(int scenario);
 
 ### 适用场景
 
-该方法适用于多种音频场景。例如，在对音质要求较高的音乐教学场景中，建议将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING` （3）。
+该方法适用于多种音频场景。例如，在对音质要求较高的音乐教学场景中，建议将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`（3）。
 
 <a id="api_irtcengine_setaudioscenario__timing"></a>
 
@@ -515,28 +613,36 @@ public abstract int setAudioScenario(int scenario);
 
 ### 参数
 
-#### `scenario`
+<ParameterList>
+<a id="scenario-1"></a>
+<Parameter name="scenario">
 
 音频场景。在不同的音频场景下，设备使用不同的音量类型：
 
-- AUDIO_SCENARIO_DEFAULT （0）：默认自动场景，SDK 会根据用户角色和音频路由选择合适的音质。
-- AUDIO_SCENARIO_GAME_STREAMING （3）：高音质场景，适用于主要播放音乐的场景。
-- AUDIO_SCENARIO_CHATROOM （5）：聊天室场景，适用于用户频繁切换角色或静音/取消静音麦克风的场景。
-- AUDIO_SCENARIO_CHORUS （7）：实时合唱场景，适用于网络状况良好且对超低延迟有要求的场景。在使用该枚举值前，你需要调用 getAudioDeviceInfo 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（isLowLatencyAudioSupported = true ）。
-- AUDIO_SCENARIO_MEETING （8）：会议场景，主要以人声为主。
-- AUDIO_SCENARIO_AI_CLIENT （10）：AI 对话场景，仅适用于用户与由 Conversational AI Engine 创建的对话式智能体交互的场景。
+- `AUDIO_SCENARIO_DEFAULT`（0）：默认自动场景，SDK 会根据用户角色和音频路由选择合适的音质。
+- `AUDIO_SCENARIO_GAME_STREAMING`（3）：高音质场景，适用于主要播放音乐的场景。
+- `AUDIO_SCENARIO_CHATROOM`（5）：聊天室场景，适用于用户频繁切换角色或静音/取消静音麦克风的场景。
+- `AUDIO_SCENARIO_CHORUS`（7）：实时合唱场景，适用于网络状况良好且对超低延迟有要求的场景。在使用该枚举值前，你需要调用 [getAudioDeviceInfo](/zh-CN/api-reference/rtc/android/device-management/audio-device#api_irtcengine_getaudiodeviceinfo) 查看音频设备是否支持超低延迟采集和播放。若要体验超低延迟，需确保音频设备支持超低延迟（`isLowLatencyAudioSupported` = true）。
+- `AUDIO_SCENARIO_MEETING`（8）：会议场景，主要以人声为主。
+- `AUDIO_SCENARIO_AI_CLIENT`（10）：AI 对话场景，仅适用于用户与由 `Conversational AI Engine` 创建的对话式智能体交互的场景。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setaudioscenario__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 ### 所属接口类
-- [RtcEngine](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengine)
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
 
 <a id="callback_irtcengineeventhandler_onactivespeaker"></a>
+
+<a id="ariaid-title12"></a>
 
 ## onActiveSpeaker
 
@@ -544,7 +650,7 @@ public abstract int setAudioScenario(int scenario);
 
 <a id="callback_irtcengineeventhandler_onactivespeaker__prototype"></a>
 
-```java
+```text
 public void onActiveSpeaker(int uid)
 ```
 
@@ -565,14 +671,22 @@ public void onActiveSpeaker(int uid)
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-2"></a>
+<Parameter name="uid">
 
 最活跃远端说话用户的用户 ID。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudioquality"></a>
+
+<a id="ariaid-title13"></a>
 
 ## onAudioQuality
 
@@ -580,15 +694,17 @@ public void onActiveSpeaker(int uid)
 
 <a id="callback_irtcengineeventhandler_onaudioquality__prototype"></a>
 
-```java
+```text
 public void onAudioQuality(int uid, int quality, short delay, short lost)
 ```
 
 <a id="callback_irtcengineeventhandler_onaudioquality__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-1"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats)。
+:::
 
 该回调每两秒触发一次，用于报告每个正在发送音频流的远端用户的音频质量。
 
@@ -596,35 +712,49 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
 
 发送音频流的远端用户 ID。
 
-#### `quality`
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
 
 用户的音频质量：
 
-- QUALITY_UNKNOWN (0)：音质未知。
-- QUALITY_EXCELLENT (1)：音质极佳。
-- QUALITY_GOOD (2)：网络质量很好，但码率略低于极佳。
-- QUALITY_POOR (3)：通话质量轻微受损。
-- QUALITY_BAD (4)：无法流畅沟通。
-- QUALITY_VBAD (5)：音质极差，几乎无法沟通。
-- QUALITY_DOWN (6)：网络连接中断，完全无法沟通。
-- QUALITY_DETECTING (8)：正在进行 Last-mile 网络探测。
+- `QUALITY_UNKNOWN` (0)：音质未知。
+- `QUALITY_EXCELLENT` (1)：音质极佳。
+- `QUALITY_GOOD` (2)：网络质量很好，但码率略低于极佳。
+- `QUALITY_POOR` (3)：通话质量轻微受损。
+- `QUALITY_BAD` (4)：无法流畅沟通。
+- `QUALITY_VBAD` (5)：音质极差，几乎无法沟通。
+- `QUALITY_DOWN` (6)：网络连接中断，完全无法沟通。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 网络探测。
 
-#### `delay`
+</Parameter>
+<a id="delay"></a>
+<Parameter name="delay">
 
 从发送端到接收端的网络延迟（毫秒），包括音频采样预处理、网络传输和网络抖动缓冲造成的延迟。
 
-#### `lost`
+</Parameter>
+<a id="lost"></a>
+<Parameter name="lost">
 
 从远端用户发送到接收端的音频数据包的丢包率（%）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication"></a>
+
+<a id="ariaid-title14"></a>
 
 ## onAudioVolumeIndication
 
@@ -632,7 +762,7 @@ public void onAudioQuality(int uid, int quality, short delay, short lost)
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__prototype"></a>
 
-```java
+```text
 public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 ```
 
@@ -640,31 +770,43 @@ public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 
 默认情况下，该回调处于关闭状态。你可以通过调用 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 方法开启该回调。开启后，当用户在频道中发送音频流时，SDK 会根据 [enableAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudiovolumeindication) 中设置的时间间隔触发该回调。SDK 会同时触发两个独立的 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告发送音频流的本地用户和瞬时音量最高的最多三位远端用户的音量信息。
 
-注： 开启该回调后，即使本地用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalaudiostream) 方法静音，SDK 仍会继续报告本地用户的音量信息。
+:::note
+注： 开启该回调后，即使本地用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法静音，SDK 仍会继续报告本地用户的音量信息。
 
 - 如果某位远端用户的音量在频道中排名前三，但停止发布音频流超过 20 秒，该回调将不再包含该用户的信息。
 - 如果所有远端用户都停止发布音频流超过 20 秒，SDK 将不再触发远端用户的音量回调。
+:::
 
 <a id="callback_irtcengineeventhandler_onaudiovolumeindication__parameters"></a>
 
 ### 参数
 
-#### `speakers`
+<ParameterList>
+<a id="speakers"></a>
+<Parameter name="speakers">
 
-用户的音量信息。当该数组为空时，表示频道中没有远端用户或远端用户未发送音频流。详见 [AudioVolumeInfo](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-audiovolumeinfo)。
+用户的音量信息。当该数组为空时，表示频道中没有远端用户或远端用户未发送音频流。详见 [AudioVolumeInfo](/zh-CN/api-reference/rtc/android/class-audiovolumeinfo)。
 
-#### `totalVolume`
+</Parameter>
+<a id="totalvolume"></a>
+<Parameter name="totalVolume">
 
 说话者的音量，取值范围为 [0, 255]。
 
-- 对于本地用户的回调， totalVolume 是发送音频流的本地用户的音量。
-- 对于远端用户的回调， totalVolume 是瞬时音量最高的最多三位远端用户的音量总和。
-- 如果调用了 startAudioMixing，则 totalVolume 是混音后的音量。
+- 对于本地用户的回调，`totalVolume` 是发送音频流的本地用户的音量。
+- 对于远端用户的回调，`totalVolume` 是瞬时音量最高的最多三位远端用户的音量总和。
+- 如果调用了 `startAudioMixing`，则 `totalVolume` 是混音后的音量。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished"></a>
+
+<a id="ariaid-title15"></a>
 
 ## onFirstLocalAudioFramePublished
 
@@ -672,7 +814,7 @@ public void onAudioVolumeIndication(AudioVolumeInfo[] speakers, int totalVolume)
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__prototype"></a>
 
-```java
+```text
 public void onFirstLocalAudioFramePublished(int elapsed)
 ```
 
@@ -680,10 +822,10 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 当满足以下任一条件时，SDK 会触发该回调：
 
-- 本地客户端启用音频模块并成功调用 joinChannel。
-- 本地客户端依次调用 muteLocalAudioStream(true) 和 muteLocalAudioStream(false)。
-- 本地客户端依次调用 disableAudio 和 enableAudio。
-- 本地客户端调用 pushExternalAudioFrame 成功将音频帧推送至 SDK。
+- 本地客户端启用音频模块并成功调用 `joinChannel`。
+- 本地客户端依次调用 `muteLocalAudioStream(true)` 和 `muteLocalAudioStream(false)`。
+- 本地客户端依次调用 [disableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio) 和 [enableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_enableaudio)。
+- 本地客户端调用 [pushExternalAudioFrame](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) 成功将音频帧推送至 SDK。
 
 <a id="callback_irtcengineeventhandler_onfirstlocalaudioframepublished__timing"></a>
 
@@ -695,14 +837,22 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 ### 参数
 
-#### `elapsed`
+<ParameterList>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间间隔（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded"></a>
+
+<a id="ariaid-title16"></a>
 
 ## onFirstRemoteAudioDecoded
 
@@ -710,15 +860,17 @@ public void onFirstLocalAudioFramePublished(int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__prototype"></a>
 
-```java
+```text
 public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-2"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__timing"></a>
 
@@ -727,24 +879,34 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 该回调在以下场景中被触发：
 
 - 远端用户加入频道并首次发送音频流。
-- 远端用户音频从离线恢复为在线并重新发送音频流。可能的原因包括：远端用户离开频道、掉线、调用 muteLocalAudioStream 停止发送音频流，或调用 disableAudio 禁用音频。
+- 远端用户音频从离线恢复为在线并重新发送音频流。可能的原因包括：远端用户离开频道、掉线、调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 停止发送音频流，或调用 [disableAudio](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_disableaudio) 禁用音频。
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudiodecoded__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-4"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-1"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe"></a>
+
+<a id="ariaid-title17"></a>
 
 ## onFirstRemoteAudioFrame
 
@@ -752,15 +914,17 @@ public void onFirstRemoteAudioDecoded(int uid, int elapsed)
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__prototype"></a>
 
-```java
+```text
 public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 ```
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-3"></a>
 
+:::error[废弃]
 该方法已废弃，请改用 [onRemoteAudioStateChanged](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged)。
+:::
 
 <a id="callback_irtcengineeventhandler_onfirstremoteaudioframe__timing"></a>
 
@@ -772,18 +936,28 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
 
 远端用户的用户 ID。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-2"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 到 SDK 触发该回调的时间（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged"></a>
+
+<a id="ariaid-title18"></a>
 
 ## onLocalAudioStateChanged
 
@@ -791,7 +965,7 @@ public void onFirstRemoteAudioFrame(int uid, int elapsed) {}
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__prototype"></a>
 
-```java
+```text
 public void onLocalAudioStateChanged(int state, int reason)
 ```
 
@@ -799,8 +973,8 @@ public void onLocalAudioStateChanged(int state, int reason)
 
 当本地音频流的状态发生变化时，SDK 会触发该回调以报告当前状态，便于你在音频异常时排查问题。
 
-:::info[注]
-当状态为 `LOCAL_AUDIO_STREAM_STATE_FAILED` （3）时，可以在 `error` 参数中查看错误信息。
+:::note
+注： 当状态为 `LOCAL_AUDIO_STREAM_STATE_FAILED`（3）时，可以在 `error` 参数中查看错误信息。
 :::
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostatechanged__timing"></a>
@@ -813,31 +987,41 @@ public void onLocalAudioStateChanged(int state, int reason)
 
 ### 参数
 
-#### `state`
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
 
 本地音频的状态：
 
-- LOCAL_AUDIO_STREAM_STATE_STOPPED （0）：本地音频处于初始状态。
-- LOCAL_AUDIO_STREAM_STATE_RECORDING （1）：本地音频采集设备启动成功。
-- LOCAL_AUDIO_STREAM_STATE_ENCODING （2）：首帧音频编码成功。
-- LOCAL_AUDIO_STREAM_STATE_FAILED （3）：本地音频启动失败。
+- `LOCAL_AUDIO_STREAM_STATE_STOPPED`（0）：本地音频处于初始状态。
+- `LOCAL_AUDIO_STREAM_STATE_RECORDING`（1）：本地音频采集设备启动成功。
+- `LOCAL_AUDIO_STREAM_STATE_ENCODING`（2）：首帧音频编码成功。
+- `LOCAL_AUDIO_STREAM_STATE_FAILED`（3）：本地音频启动失败。
 
-#### `reason`
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
 
 本地音频状态变化的原因：
 
-- LOCAL_AUDIO_STREAM_REASON_OK （0）：本地音频状态正常。
-- LOCAL_AUDIO_STREAM_REASON_FAILURE （1）：本地音频失败的原因不明确。提示用户尝试重新加入频道。
-- LOCAL_AUDIO_STREAM_REASON_DEVICE_NO_PERMISSION （2）：没有权限使用本地音频采集设备。提示用户授予权限。
-- LOCAL_AUDIO_STREAM_REASON_DEVICE_BUSY （3）：麦克风被占用。提示用户检查是否有其他应用占用了麦克风。麦克风空闲约五秒后本地音频采集会自动恢复，也可以在麦克风空闲后尝试重新加入频道。
-- LOCAL_AUDIO_STREAM_REASON_CAPTURE_FAILURE （4）：本地音频采集失败。
-- LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE （5）：本地音频编码失败。
-- LOCAL_AUDIO_STREAM_REASON_INTERRUPTED （8）：本地音频采集被系统电话、智能助手或闹钟中断。如果需要继续采集本地音频，提示用户结束电话、智能助手或闹钟。
+- `LOCAL_AUDIO_STREAM_REASON_OK`（0）：本地音频状态正常。
+- `LOCAL_AUDIO_STREAM_REASON_FAILURE`（1）：本地音频失败的原因不明确。提示用户尝试重新加入频道。
+- `LOCAL_AUDIO_STREAM_REASON_DEVICE_NO_PERMISSION`（2）：没有权限使用本地音频采集设备。提示用户授予权限。
+- `LOCAL_AUDIO_STREAM_REASON_DEVICE_BUSY`（3）：麦克风被占用。提示用户检查是否有其他应用占用了麦克风。麦克风空闲约五秒后本地音频采集会自动恢复，也可以在麦克风空闲后尝试重新加入频道。
+- `LOCAL_AUDIO_STREAM_REASON_CAPTURE_FAILURE`（4）：本地音频采集失败。
+- `LOCAL_AUDIO_STREAM_REASON_ENCODE_FAILURE`（5）：本地音频编码失败。
+- `LOCAL_AUDIO_STREAM_REASON_INTERRUPTED`（8）：本地音频采集被系统电话、智能助手或闹钟中断。如果需要继续采集本地音频，提示用户结束电话、智能助手或闹钟。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats"></a>
+
+<a id="ariaid-title19"></a>
 
 ## onLocalAudioStats
 
@@ -845,7 +1029,7 @@ public void onLocalAudioStateChanged(int state, int reason)
 
 <a id="callback_irtcengineeventhandler_onlocalaudiostats__prototype"></a>
 
-```java
+```text
 public void onLocalAudioStats(LocalAudioStats stats) {}
 ```
 
@@ -863,14 +1047,22 @@ public void onLocalAudioStats(LocalAudioStats stats) {}
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
 
-本地音频统计信息。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-localaudiostats)。
+本地音频统计信息。详见 [LocalAudioStats](/zh-CN/api-reference/rtc/android/class-localaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged"></a>
+
+<a id="ariaid-title20"></a>
 
 ## onRemoteAudioStateChanged
 
@@ -878,7 +1070,7 @@ public void onLocalAudioStats(LocalAudioStats stats) {}
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__prototype"></a>
 
-```java
+```text
 public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapsed)
 ```
 
@@ -886,8 +1078,8 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 该回调在语音/视频通话频道中的远端用户或直播频道中的主播的音频状态发生变化时被触发，用于报告远端音频流的当前状态。
 
-:::info[注]
-当频道中的用户（通信场景）或主播（直播场景）数量超过 32 时，该回调可能无法正常工作。
+:::note
+注： 当频道中的用户（通信场景）或主播（直播场景）数量超过 32 时，该回调可能无法正常工作。
 :::
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostatechanged__timing"></a>
@@ -900,41 +1092,55 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-6"></a>
+<Parameter name="uid">
 
 音频状态发生变化的远端用户 ID。
 
-#### `state`
+</Parameter>
+<a id="state-1"></a>
+<Parameter name="state">
 
 远端音频状态：
 
-- REMOTE_AUDIO_STATE_STOPPED （0）：远端音频处于初始状态。SDK 在 REMOTE_AUDIO_REASON_LOCAL_MUTED、 REMOTE_AUDIO_REASON_REMOTE_MUTED 或 REMOTE_AUDIO_REASON_REMOTE_OFFLINE 的情况下报告该状态。
-- REMOTE_AUDIO_STATE_STARTING （1）：已接收到第一包远端音频数据。
-- REMOTE_AUDIO_STATE_DECODING （2）：远端音频流解码并正常播放。SDK 在 REMOTE_AUDIO_REASON_NETWORK_RECOVERY、 REMOTE_AUDIO_REASON_LOCAL_UNMUTED 或 REMOTE_AUDIO_REASON_REMOTE_UNMUTED 的情况下报告该状态。
-- REMOTE_AUDIO_STATE_FROZEN （3）：远端音频卡顿。SDK 在 REMOTE_AUDIO_REASON_NETWORK_CONGESTION 的情况下报告该状态。
-- REMOTE_AUDIO_STATE_FAILED （4）：远端音频启动失败。SDK 在 REMOTE_AUDIO_REASON_INTERNAL 的情况下报告该状态。
+- `REMOTE_AUDIO_STATE_STOPPED`（0）：远端音频处于初始状态。SDK 在 `REMOTE_AUDIO_REASON_LOCAL_MUTED`、`REMOTE_AUDIO_REASON_REMOTE_MUTED` 或 `REMOTE_AUDIO_REASON_REMOTE_OFFLINE` 的情况下报告该状态。
+- `REMOTE_AUDIO_STATE_STARTING`（1）：已接收到第一包远端音频数据。
+- `REMOTE_AUDIO_STATE_DECODING`（2）：远端音频流解码并正常播放。SDK 在 `REMOTE_AUDIO_REASON_NETWORK_RECOVERY`、`REMOTE_AUDIO_REASON_LOCAL_UNMUTED` 或 `REMOTE_AUDIO_REASON_REMOTE_UNMUTED` 的情况下报告该状态。
+- `REMOTE_AUDIO_STATE_FROZEN`（3）：远端音频卡顿。SDK 在 `REMOTE_AUDIO_REASON_NETWORK_CONGESTION` 的情况下报告该状态。
+- `REMOTE_AUDIO_STATE_FAILED`（4）：远端音频启动失败。SDK 在 `REMOTE_AUDIO_REASON_INTERNAL` 的情况下报告该状态。
 
-#### `reason`
+</Parameter>
+<a id="reason-1"></a>
+<Parameter name="reason">
 
 远端音频状态变化的原因：
 
-- REMOTE_AUDIO_REASON_INTERNAL （0）：SDK 音频状态改变时报告该原因。
-- REMOTE_AUDIO_REASON_NETWORK_CONGESTION （1）：网络拥塞。
-- REMOTE_AUDIO_REASON_NETWORK_RECOVERY （2）：网络恢复。
-- REMOTE_AUDIO_REASON_LOCAL_MUTED （3）：本地用户停止接收远端音频流或关闭音频模块。
-- REMOTE_AUDIO_REASON_LOCAL_UNMUTED （4）：本地用户恢复接收远端音频流或开启音频模块。
-- REMOTE_AUDIO_REASON_REMOTE_MUTED （5）：远端用户停止发送音频流或关闭音频模块。
-- REMOTE_AUDIO_REASON_REMOTE_UNMUTED （6）：远端用户恢复发送音频流或开启音频模块。
-- REMOTE_AUDIO_REASON_REMOTE_OFFLINE （7）：远端用户离开频道。
+- `REMOTE_AUDIO_REASON_INTERNAL`（0）：SDK 音频状态改变时报告该原因。
+- `REMOTE_AUDIO_REASON_NETWORK_CONGESTION`（1）：网络拥塞。
+- `REMOTE_AUDIO_REASON_NETWORK_RECOVERY`（2）：网络恢复。
+- `REMOTE_AUDIO_REASON_LOCAL_MUTED`（3）：本地用户停止接收远端音频流或关闭音频模块。
+- `REMOTE_AUDIO_REASON_LOCAL_UNMUTED`（4）：本地用户恢复接收远端音频流或开启音频模块。
+- `REMOTE_AUDIO_REASON_REMOTE_MUTED`（5）：远端用户停止发送音频流或关闭音频模块。
+- `REMOTE_AUDIO_REASON_REMOTE_UNMUTED`（6）：远端用户恢复发送音频流或开启音频模块。
+- `REMOTE_AUDIO_REASON_REMOTE_OFFLINE`（7）：远端用户离开频道。
 
-#### `elapsed`
+</Parameter>
+<a id="elapsed-3"></a>
+<Parameter name="elapsed">
 
 从本地用户调用 `joinChannel` 方法到 SDK 触发该回调的时间（毫秒）。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats"></a>
+
+<a id="ariaid-title21"></a>
 
 ## onRemoteAudioStats
 
@@ -942,7 +1148,7 @@ public void onRemoteAudioStateChanged(int uid, int state, int reason, int elapse
 
 <a id="callback_irtcengineeventhandler_onremoteaudiostats__prototype"></a>
 
-```java
+```text
 public void onRemoteAudioStats(RemoteAudioStats stats) {}
 ```
 
@@ -954,14 +1160,22 @@ public void onRemoteAudioStats(RemoteAudioStats stats) {}
 
 ### 参数
 
-#### `stats`
+<ParameterList>
+<a id="stats-1"></a>
+<Parameter name="stats">
 
-远端音频流的统计信息。详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/android/class-and-enum/classes/class-remoteaudiostats)。
+远端音频流的统计信息。详见 [RemoteAudioStats](/zh-CN/api-reference/rtc/android/class-remoteaudiostats)。
+
+</Parameter>
+</ParameterList>
 
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats"></a>
+
+<a id="ariaid-title22"></a>
 
 ## onRemoteAudioTransportStats
 
@@ -969,15 +1183,17 @@ public void onRemoteAudioStats(RemoteAudioStats stats) {}
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__prototype"></a>
 
-```java
+```text
 public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBitRate)
 ```
 
 <a id="callback_irtcengineeventhandler_onremoteaudiotransportstats__detailed_desc"></a>
 
-#### `废弃`
+<a id="废弃-4"></a>
 
+:::error[废弃]
 该回调已废弃，请使用 [onRemoteAudioStats](/zh-CN/api-reference/rtc/android/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) 代替。
+:::
 
 该回调上报远端音频流的传输层统计信息，例如本地用户接收到远端用户音频包后的丢包率和网络时延。
 
@@ -991,26 +1207,40 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
 
 远端用户 ID，即发送音频流的用户。
 
-#### `delay`
+</Parameter>
+<a id="delay-1"></a>
+<Parameter name="delay">
 
 从远端用户到接收端的网络时延，单位为毫秒。
 
-#### `lost`
+</Parameter>
+<a id="lost-1"></a>
+<Parameter name="lost">
 
 从远端用户到接收端的音频包丢包率，单位为百分比（%）。
 
-#### `rxKBitRate`
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
 
 接收到的音频码率，单位为 Kbps。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio"></a>
+
+<a id="ariaid-title23"></a>
 
 ## onUserMuteAudio
 
@@ -1018,38 +1248,46 @@ public void onRemoteAudioTransportStats(int uid, int delay, int lost, int rxKBit
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__prototype"></a>
 
-```java
+```text
 public void onUserMuteAudio(int uid, boolean muted)
 ```
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__detailed_desc"></a>
 
-该回调在远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalaudiostream) 方法时触发。
+该回调在远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法时触发。
 
-:::info[注]
-当频道中用户（在通信场景下）或主播（在直播场景下）数量超过 32 时，该回调可能无法正常工作。
+:::note
+注： 当频道中用户（在通信场景下）或主播（在直播场景下）数量超过 32 时，该回调可能无法正常工作。
 :::
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__timing"></a>
 
 ### 触发时机
 
-该回调在远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publish-and-subscribe#api_irtcengine_mutelocalaudiostream) 方法停止或恢复发送音频流时被触发。
+该回调在远端用户调用 [muteLocalAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalaudiostream) 方法停止或恢复发送音频流时被触发。
 
 <a id="callback_irtcengineeventhandler_onusermuteaudio__parameters"></a>
 
 ### 参数
 
-#### `uid`
+<ParameterList>
+<a id="uid-8"></a>
+<Parameter name="uid">
 
 远端用户 ID。
 
-#### `muted`
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 远端用户的音频流是否被静音：
 
 - true：音频流被静音。
 - false：音频流未被静音。
 
+</Parameter>
+</ParameterList>
+
 ### 所属接口类
-- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/full-sdk-api-list#class_irtcengineeventhandler)
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

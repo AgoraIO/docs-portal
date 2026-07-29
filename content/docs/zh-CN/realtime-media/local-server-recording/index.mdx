@@ -1,0 +1,132 @@
+---
+title: 本地服务端录制概览
+description: "了解本地服务端录制的核心能力、适用场景、接入路径和相关参考资源。"
+---
+声网本地服务端录制 SDK 需要你部署在 Linux 服务器上，并自行运维。
+
+:::info[信息]
+如果你不想部署 Linux 服务器，而是想要通过 RESTful API 以更加便捷的方式实现录制功能，推荐使用声网[云端录制](/zh-CN/realtime-media/cloud-recording)。
+:::
+
+声网本地服务端录制 SDK，是声网针对音视频通话、直播研发的录制组件，与声网 RTC Native 及框架 SDK（1.7.0 或更高版本）及声网 RTC Web SDK（1.12.0 或更高版本）兼容，通过简单的操作方法，帮助开发者快速、灵活地部署录制服务，来实现音视频通话或直播的录制，生成 MP4 格式的录制文件。
+
+有了录制功能，你可以将语音聊天、视频聊天以及直播的内容储存下来，提供给更多的人在方便的时间观看。举个例子，某个用户报名参加了某线上课程，除了在规定的时间段上线听课外，他还可以选择在其他时间段观看课程录像，方便复习或补课。这个功能就是课程提供者在服务端部署录制服务来实现的。
+
+## 开始构建
+
+<Cards>
+  <Card title="快速开始" href="/zh-CN/realtime-media/local-server-recording/get-started/start-recording" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=on-premise-recording&platform=linux" description="获取 Linux 平台本地服务端录制 SDK，并选择 C++ 或 Java 包。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/local-server-recording/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
+
+## 功能描述
+
+声网本地服务端录制 SDK 支持录制声网音视频 SDK 的高清音视频通话，具体如下：
+
+| 功能 | 描述 |
+| --- | --- |
+| 录制指定的媒体类型 | <Slot name="product-overview-html-0-1-1" /> |
+| [选择录制模式](/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode) | <Slot name="product-overview-html-0-2-1" /> |
+| [设置合流布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout) | 合流录制模式下，支持设置合流布局，指定发流用户画面的大小及其在视频画布上的位置，设置用户和画面的背景图。 |
+| 录制指定用户 ID 的流 | 支持录制频道中指定用户 ID 的流。 |
+| [水印](/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark) | 单流和合流模式下，支持在录制视频文件中添加文字水印、动态时间戳水印和静态图片水印。 |
+| [本地截图](/zh-CN/realtime-media/local-server-recording/build/recording-modes/screen-capture) | <Slot name="product-overview-html-0-6-1" /> |
+| 支持代理 | 支持配置代理服务器或[使用云代理服务](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy)，实现内网访问声网服务，进行录制。 |
+| 录制加密频道 | 支持录制加密的频道。 |
+
+<Slot for="product-overview-html-0-1-1">
+
+支持录制指定的媒体类型：
+
+      - 仅录制音频。
+      - 仅录制视频。
+      - 同时录制音频和视频。
+
+</Slot>
+
+<Slot for="product-overview-html-0-2-1">
+
+可选择：
+
+      - 单流录制模式：对频道内不同的主播发出的流，根据用户 ID 进行区分并分别录制，产生不同的 MP4 录制文件。
+      - 合流录制模式：将频道内全部主播的音视频合流录制到一起，只生成一个 MP4 录制文件。
+
+</Slot>
+
+<Slot for="product-overview-html-0-6-1">
+
+从 v4.4.151 起，录制 SDK 支持如下功能：
+
+      - 从 RTC 频道获取原始视频数据，支持 YUV、JPG、和编码视频帧。
+      - 截取 JPG 格式的图片文件并存储在指定路径。
+
+</Slot>
+
+## 适用场景
+
+声网本地服务端录制 SDK 应用广泛，主要可以在以下场景中发挥重要作用：
+
+| 行业 | 适用场景 |
+| --- | --- |
+| 在线教育 | <Slot name="product-overview-html-1-1-1" /> |
+| 社交直播 | <Slot name="product-overview-html-1-2-1" /> |
+| 金融行业 | 在开展在线理财、开户、面签等业务时，应国家监管要求，必须提供录音录像服务，形成交易记录的视频，存档备查。 |
+| 客服中心 | <Slot name="product-overview-html-1-4-1" /> |
+| 远程医疗 | 对远程问诊、在线咨询过程进行在线录制，帮助病人足不出户获取医疗资源，并方便后期诊疗参考等。 |
+
+<Slot for="product-overview-html-1-1-1">
+
+在一对一、一对多的小班线上课堂中，提供高质量的音视频录制：
+
+      - 方便用户在课程结束后，反复观看、收听录制下来的课堂视频或音频，来巩固及复习学习成果。
+      - 因时间冲突错过上课的用户也可以观看课堂视频或音频进行学习。
+
+</Slot>
+
+<Slot for="product-overview-html-1-2-1">
+
+- 精彩瞬间录制
+      - 直播回放
+
+</Slot>
+
+<Slot for="product-overview-html-1-4-1">
+
+- 获取相关用户信息
+      - 客服质量评估
+
+</Slot>
+
+## 产品特性
+
+声网本地服务端录制 SDK 主要有以下特性：
+
+| 特性     | 描述                                                         |
+| -------- | ------------------------------------------------------------ |
+| 高可靠性 | 支持集群部署，动态扩容，提供高可用性服务。                   |
+| 高安全性 | 提供视频通话、数据传输、数据存储等端到端安全保障机制，详情可参考[信息安全说明](/zh-CN/introduction/security/information)。 |
+| 兼容性   | 支持 arm64 和 x86-64 架构的 Ubuntu 18.04+ 和 CentOS 7.0+ 操作系统。       |
+| 稳定易用 | 操作方法简单易学，能帮助开发者快速上手，在移动端和网页端轻松地实现录制功能。 |
+| 灵活组合 | 通过灵活组合各个功能，可以无缝应用于所需的多种场景，实现更完善的服务。 |
+
+## SDK 兼容性
+
+声网本地服务端录制 SDK 支持：
+
+- RTC Native 及框架端录制
+- RTC Web 端录制
+- RTC Web 与 Native 及框架互通时录制
+
+声网本地服务端录制 SDK 与以下声网 SDK 兼容:
+
+| SDK | 描述 |
+| --- | --- |
+| 声网 RTC Native 及框架 SDK | 1.7.0 或更高版本。|
+| 声网 RTC Web SDK | 1.12.0 或更高版本。|
+
+:::warning[注意]
+如果频道内有任何用户使用了不兼容版本的 SDK，则整个频道无法录制。
+:::

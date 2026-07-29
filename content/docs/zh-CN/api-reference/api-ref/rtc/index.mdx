@@ -1,0 +1,46 @@
+---
+title: RTC 频道管理概览
+description: 使用 RTC 频道管理 REST API 查询频道信息、管理用户权限和获取消息通知服务器 IP。
+---
+
+除集成在 App 客户端的音频/视频 SDK 外，声网还提供服务端 RESTful API，帮助你管理实时音视频频道。
+
+RTC 频道管理 REST API 可用于查询在线频道、查询频道内用户、封禁用户加入频道或发送音视频流，以及获取声网消息通知服务器 IP 地址。
+
+## API 基础
+
+所有请求均发送到 `api.sd-rtn.com`。
+
+- **鉴权**：每个请求都需要使用 [RESTful API 鉴权](authentication)。
+- **请求**：请求包体使用 JSON。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
+
+:::info
+请求 URL 和请求包体区分大小写。所有请求必须使用 HTTPS。
+:::
+
+## REST API
+
+**查询在线频道信息**
+
+- [查询项目的频道列表](query-channel-list)：按页查询指定项目下的频道列表。
+- [查询用户列表](query-user-list)：查询指定频道内的用户列表。
+- [查询主播列表](query-host-list)：查询直播场景下指定频道内的主播列表。
+- [查询用户状态](query-user-status)：查询指定频道中指定用户的在线状态。
+
+**封禁用户权限**
+
+- [创建规则](create-ban-rule)：创建用于封禁指定用户权限的规则。
+- [删除规则](delete-ban-rule)：删除指定的封禁用户权限规则。
+- [获取规则列表](get-ban-rule-list)：获取指定项目下的封禁用户权限规则列表。
+- [更新规则过期时间](update-ban-expiration)：更新指定封禁用户权限规则的过期时间。
+
+**消息通知服务**
+
+- [查询消息通知服务器 IP](query-ip-address)：查询声网消息通知服务器的 IP 地址。
+
+## 相关页面
+
+- [RESTful API 鉴权](authentication)
+- [响应状态码](/zh-CN/realtime-media/rtc/reference/response-code)

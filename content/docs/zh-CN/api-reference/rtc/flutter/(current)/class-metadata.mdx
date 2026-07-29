@@ -1,0 +1,81 @@
+---
+title: Metadata
+description: 媒体附属信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_metadata
+  sourcePath: html-docs/rtc/Flutter/API/class_metadata.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_metadata__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class Metadata {
+  const Metadata(
+      {this.channelId, this.uid, this.size, this.buffer, this.timeStampMs});
+
+  @JsonKey(name: 'channelId')
+  final String? channelId;
+
+  @JsonKey(name: 'uid')
+  final int? uid;
+
+  @JsonKey(name: 'size')
+  final int? size;
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+
+  @JsonKey(name: 'timeStampMs')
+  final int? timeStampMs;
+
+  factory Metadata.fromJson(Map<String, dynamic> json) =>
+      _$MetadataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MetadataToJson(this);
+}
+```
+
+<a id="class_metadata__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名称。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+- 对于接收者：发送该 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的远端用户的 ID。
+- 对于发送者：请忽略。
+
+</Parameter>
+<a id="size"></a>
+<Parameter name="size">
+
+接收到的或发送的 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的缓存大小。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+接收到的 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的缓存地址。
+
+</Parameter>
+<a id="timestampms"></a>
+<Parameter name="timeStampMs">
+
+发送 [Metadata](/zh-CN/api-reference/rtc/flutter/class-metadata) 的时间戳，单位为毫秒。
+
+</Parameter>
+</ParameterList>

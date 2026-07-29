@@ -1,0 +1,442 @@
+---
+title: "展示文件"
+description: "了解 Fastboard SDK 在不同平台上的展示文件方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+声网 Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如图片、音视频和文档，帮助用户快速分享丰富多元的信息，创造沉浸式的互动体验。本文介绍如何调用 Fastboard SDK 的 API 插入图片、演示文档和播放音视频。
+
+## 插入图片
+
+声网 Fastboard SDK 提供 [`insertImage`](/zh-CN/api-reference/whiteboard/fastboard/android#insertimage) 方法，用于在白板主窗口中插入并展示图片。你只需调用该方法，并传入图片的 URL、宽和高，即可在白板上展示指定图片。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好图片的 URL 地址并确保 App 客户端能够访问该 URL，否则图片无法正常展示。
+- 确保图片的格式为 PNG、JPG/JPEG 或 WEBP。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中插入一张图片。
+
+1. 用如下代码替换 `MainActivity` 文件中的 `fastRoom.join()`：
+
+    ```kotlin
+    // 加入房间
+    fastRoom.join { room ->
+        // 调用 insertImage 并传入图片的 URL，宽和高
+        room.insertImage("https://test.com/cloud-storage//ebxxxeda.png", 512, 512)
+    }
+    ```
+
+2. 运行项目。App 重启后，可以在白板页面看到插入的图片。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入图片功能提供 UI，你需要自行实现。
+:::
+
+## 播放音视频
+
+声网 Fastboard SDK 集成了内置插件 MediaPlayer，用于播放音视频文件。你只需调用 Fastboard SDK 的 [`insertVideo`](/zh-CN/api-reference/whiteboard/fastboard/android#insertvideo) 方法，传入音视频文件的 URL 地址和窗口标题，即可在白板子窗口中播放音视频。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好音频或视频文件的 URL 地址并请确保 App 客户端能够访问该 URL，否则音视频文件无法播放。
+- 确保要播放的音频文件为 MP3 格式，视频文件为 MP4 格式（推荐使用 h264 编码格式的 MP4 文件，否则可能会有兼容性问题）。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中插入并播放音视频文件。
+
+1. 用如下代码替换 `MainActivity` 文件中的 `fastRoom.join()`：
+
+    ```kotlin
+    fastRoom.join { room ->
+        // 调用 insertVideo 并传入音视频文件的 url 和子窗口标题
+        room.insertVideo("https://test.com/cloud-storage/55xxx37.mp4", "test1.mp4")
+    }
+    ```
+
+2. 运行项目。App 重启后，可以在白板页面上看到名为 **test1.mp4** 的子窗口，点击开始按钮，即可播放视频。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入音视频功能提供 UI，你需要自行实现。
+:::
+
+## 演示文档
+
+声网 Fastboard SDK 集成了内置插件 DocsViewer，用于展示文档。成功使用声网文档转换服务完成文档转换后，只需调用 Fastboard SDK 的 [`insertDocs`](/zh-CN/api-reference/whiteboard/fastboard/android#insertdocs) 方法，并传入文档转换任务的 Task UUID 和 Task Token 等信息，即可在白板子窗口中分页演示文档。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 了解并开通[文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
+
+具体实现步骤如下：
+
+1. 将源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
+2. 调用[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token) 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
+3. 加入白板房间后，调用 `insertDocs` 方法，并通过该方法的 `params` 参数传入如下信息：
+   - `taskUUID`：String。文档转换任务的 Task UUID。
+   - `taskToken`：String。文档转换任务的 Task Token。
+   - `fileType`：String。文档类型。`pdf` 表示静态文档；`pptx` 表示动态文档。
+   - `title`：String。窗口标题。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何插入并展示一个带动画效果的 PPTX 文件。
+
+1. 成功发起并完成了动态文档转换，获取了转换任务的 Task UUID 和 Task Token。
+
+2. 用如下代码替换 `MainActivity` 文件中的 `fastRoom.join()`：
+
+```kotlin
+// 加入房间
+fastRoom.join { room ->
+    // 文档的参数设置
+    val params = FastInsertDocParams("Task UUID", "Task Token", "pptx", "演示文档")
+    // 调用 insertDocs 插入文档，并监听插入文档结果回调
+    room.insertDocs(
+        params,
+        object : FastResult<String> {
+            override fun onSuccess(value: String) {}
+
+            override fun onError(exception: Exception?) {}
+        }
+    )
+}
+```
+
+3. 运行项目。App 重启后，可以在白板页面上看到名为**演示文档**的子窗口，点击切页箭头，即可分页演示文档。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为演示文档功能提供 UI，你需要自行实现。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网 Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如图片、音视频和文档，帮助用户快速分享丰富多元的信息，创造沉浸式的互动体验。
+
+本文介绍如何调用 Fastboard SDK 的 API 插入图片、演示文档和播放音视频。
+
+## 插入图片
+
+声网 Fastboard SDK 提供 [`insertImg`](/zh-CN/api-reference/whiteboard/fastboard/ios#insertimg) 方法，用于在白板主窗口中插入并展示图片。你只需调用该方法，并传入图片的 URL、宽和高，即可在白板上展示指定图片。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好图片的 URL 地址并确保 App 客户端能够访问该 URL，否则图片无法正常展示。
+- 确保图片的格式为 PNG、JPG 或 JPEG 。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中插入一张图片。
+
+1. 在 `ViewController.swift` 文件中，用如下代码替换 `fastRoom.joinRoom()`：
+
+    ```swift
+    fastRoom.joinRoom {
+    // 调用 insertImg 并传入图片的 URL 和尺寸
+    fastRoom.insertImg(
+        URL(string: "https://test.aliyuncs.com/cloud-storage/2022-xx/15/e3xxda.png")!,
+        imageSize: .init(width: 100, height: 100))
+    }
+    ```
+
+2. 运行项目。App 重启后，可以在白板页面看到插入的图片。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入音视频功能提供 UI，你需要自行实现。
+:::
+
+## 播放音视频
+
+声网 Fastboard SDK 集成了内置插件 MediaPlayer，用于播放音视频文件。你只需调用 Fastboard SDK 的 `insertMedia` 方法，传入音视频文件的 URL 地址和窗口标题，即可在白板子窗口中播放音视频。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好音频或视频文件的 URL 地址并请确保 App 客户端能够访问该 URL，否则音视频文件无法播放。
+- 确保要播放的音频文件为 MP3 格式，视频文件为 MP4 格式（推荐使用 h264 编码格式的 MP4 文件，否则可能会有兼容性问题）。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中插入并播放音视频文件。
+
+1. 在 `ViewController.swift` 文件中，用如下代码替换 `fastRoom.joinRoom()`：
+
+    ```swift
+    fastRoom.joinRoom {
+    // 调用 insertMedia 并传入音视频文件的 URL 和子窗口标题
+    fastRoom.insertMedia(
+        URL(string: "https://test.aliyuncs.com/cloud-storage/2022-xx/15/52xxx37.mp4")!,
+        title: "test1.mp4",
+        completionHandler: nil)
+    }
+    ```
+
+2. 运行项目。App 重启后，可以在白板页面上看到名为 **test1.mp4** 的子窗口，点击开始按钮，即可播放视频。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入音视频功能提供 UI，你需要自行实现。
+:::
+
+## 演示文档
+
+声网 Fastboard SDK 集成了内置插件 DocsViewer，用于展示文档。成功使用声网文档转换服务完成文档转换后，只需调用 Fastboard SDK 的 [`insertPptx`](/zh-CN/api-reference/whiteboard/fastboard/ios#insertpptx) 或 [`insertStaticDocument`](/zh-CN/api-reference/whiteboard/fastboard/ios#insertstaticdocument) 方法，并传入转换后的文件信息，即可在白板子窗口中分页演示文档。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 了解并开通[文档转换服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files)。
+
+具体实现步骤如下：
+
+1. 将源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个文档转换任务。请求成功后，声网服务端会在响应包体中返回 `uuid`，即文档转换任务的 Task UUID。
+2. 调用[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token) API 并在请求路径中传入 `uuid`，为文档转换任务生成一个 Task Token。
+3. 调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 并传入该转换任务的 Task Token 和 Task UUID，获取转换后的文件信息，即响应包体中 `convertedFileList` 参数的值。
+4. 加入白板房间后，根据文档的类型，调用 `insertPptx` 或 `insertStaticDocument` 方法，并传入如下参数：
+   - `pages`：转换后的文件信息。你需要自行将 `convertedFileList` 转换为 `WhitePptPage` 数组。
+   - `title`：窗口标题。
+   - `completionHandler`：方法调用结果回调。传入 `nil`，表示不注册回调。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何插入并展示一个带动画效果的 PPTX 文件。
+
+1. 成功完成了动态文档转换，并调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 获取了转换后的文件信息。
+
+2. 在 `ViewController.swift` 文件中添加如下行，导入 Whiteboard SDK：
+
+    ```swift
+    import UIKit
+    import Fastboard
+    // 导入 Whiteboard SDK
+    import Whiteboard
+    ```
+
+3. 在 `ViewController.swift` 文件中，用如下代码替换 `fastRoom.joinRoom()`：
+
+    ```swift
+    fastRoom.joinRoom {
+    // 将文档转换结果中 convertedFileList 的值定义为 jsonStr 变量
+    let jsonStr =
+        """
+                [{
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/1.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/1.png"
+                },
+                {
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/2.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/2.png"
+                },
+                {
+                    "width": 1280,
+                    "height": 720,
+                    "conversionFileUrl": "pptx://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/3.slide",
+                    "preview": "https://convertcdn.netless.link/dynamicConvert/3ce728e0954f11ec997c6580ac31fd96/preview/3.png"
+                }]
+        """
+    // 将 jsonStr 转换为 WhitePptPage 数组
+    let dic = try! JSONSerialization.jsonObject(with: jsonStr.data(using: .utf8)!) as! [[String: Any]]
+    let pages = dic.map { item -> WhitePptPage in
+        let url = item["conversionFileUrl"] as? String
+        let pre = item["preview"] as? String
+        let w = item["width"] as? Int
+        let h = item["height"] as? Int
+        return WhitePptPage(src: url!, preview: pre!, size: .init(width: w!, height: h!))
+    }
+    // 调用 insertPptx 插入文档
+    fastRoom.insertPptx(pages, title: "演示文档")
+    return
+    }
+    ```
+
+4. 运行项目。App 重启后，可以在白板页面上看到名为**演示文档**的子窗口，点击切页箭头，即可分页演示文档。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+声网 Fastboard SDK 支持在白板中插入和展示多种形式的文件，例如图片、音视频和文档，帮助用户快速分享丰富多元的信息，创造沉浸式的互动体验。
+
+本文介绍如何调用 Fastboard SDK 的 API 插入图片、演示文档和播放音视频。
+
+## 插入图片
+
+声网 Fastboard SDK 提供 [`insertImage`](/zh-CN/api-reference/whiteboard/fastboard/web#insertimage) 方法，用于在白板主窗口中插入并展示图片。你只需调用该方法，并传入图片的 URL，即可在白板上展示指定图片。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好图片的 URL 地址并确保 App 客户端能够访问该 URL，否则图片无法正常展示。
+- 确保图片的格式为 PNG、JPG/JPEG 或 WEBP。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中插入一张图片。
+
+1. 在 `main.js` 文件的 `mountFastboard(document.getElementById("app"));` 后面添加如下行插入图片：
+
+    ```javascript
+    await app.insertImage(
+      "https://web-cdn.agora.io/website-files/images/interactive-whiteboard-text-tab-1.png"
+    );
+    ```
+
+2. 运行项目：
+
+    ```shell
+    npm run dev
+    ```
+
+    `index.html` 页面打开后可以看到插入的图片。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入图片功能提供 UI，你需要自行实现。
+:::
+
+## 播放音视频
+
+声网 Fastboard SDK 集成了内置插件 MediaPlayer，用于播放音视频文件。你只需调用 Fastboard SDK 的 [`insertMedia`](/zh-CN/api-reference/whiteboard/fastboard/web#insertmedia) 方法，传入子窗口标题和音视频文件的 URL 地址，即可在白板子窗口中播放音视频。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 准备好音频或视频文件的 URL 地址并请确保 App 客户端能够访问该 URL，否则音视频文件无法播放。
+- 确保要播放的音频文件为 MP3 格式，视频文件为 MP4 格式（推荐使用 h264 编码格式的 MP4 文件，否则可能会有兼容性问题）。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何在白板中播放音视频。
+
+1. 在 `main.js` 文件的 `mountFastboard(document.getElementById("app"));` 后面添加如下行插入音视频文件：
+
+    ```javascript
+    await app.insertMedia(
+      "test1.mp4",
+      "https://beings.oss-cn-hxxxou.aliyuncs.com/test/aaa59xxxxxxxc695def4/1606277539701637%E7%9A%84%E5%89%AF%E6%9C%AC.mp4"
+    );
+    ```
+
+2. 运行项目：
+
+    ```shell
+    npm run dev
+    ```
+
+    `index.html` 页面打开后可以看到名为 `test1.mp4` 的子窗口，点击开始按钮，即可播放视频。
+
+:::warning[注意]
+目前 Fastboard SDK 没有为插入音视频功能提供 UI，你需要自行实现。
+:::
+
+## 演示文档
+
+声网 Fastboard SDK 集成了内置插件 DocsViewer，用于展示文档。你只需调用 Fastboard SDK 的 [`insertDocs`](/zh-CN/api-reference/whiteboard/fastboard/web#insertdocs) 方法，并传入文档的信息，即可在白板子窗口中分页演示文档，具体实现步骤如下：
+
+1. 调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)将源文档分页转换成一组图片或网页。
+2. 调用[查询文档转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task)获取文档转换结果。
+3. 调用 `insertDocs` 方法，并将每页图片或网页的宽、高和 URL 按顺序传入 `scenes` 参数中。
+
+将源文档转换为图片或网页时，你需要特别注意以下几点：
+
+- **确保转换后的图片或网页格式正确。**
+  目前 Fastboard SDK 支持插入并展示的图片或网页格式如下：
+
+  - 由 PPT、PPTX、DOC、DOCX、PDF 格式的源文件转换成的 PNG、JPG/JPEG、WEBP 格式的静态图片。详见[静态文档转换](/zh-CN/realtime-media/whiteboard/concepts#静态文档转换)。
+  - 由 PPTX 格式的源文件转换成的 HTML 网页。详见[动态文档转换](/zh-CN/realtime-media/whiteboard/concepts#动态文档转换)。
+- **确保图片或网页的访问权限。**
+  你需要确保转换后的图片或网页可通过公网访问；此外，如果存储图片或网页的服务器与你的 Web 应用域名不同，你需要配置[跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)。否则，你的 Web 应用服务将无法访问并加载这些图片或网页。
+
+开始前，请确保满足以下条件：
+
+- 在项目中集成声网 Fastboard SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)。
+- 完成文档转换，并生成一组图片或网页的 URL 地址。
+
+下面在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的示例项目基础上添加代码，展示如何插入并展示一个三页、带动画效果的 PPTX 文件。
+
+1. 将 PPTX 源文件上传至第三方云存储，调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)，创建一个动态文档转换任务，将 PPTX 文件按页转换为 HTML 网页。
+
+2. 调用[查询转换任务进度](/zh-CN/api-reference/api-ref/whiteboard/restful/get-file-conversion-task) 获取文档转换的结果。
+
+3. 在[加入白板房间](/zh-CN/realtime-media/whiteboard/fastboard-sdk/get-started/join-room-fb)的 `main.js` 文件中添加如下行插入文档：
+
+    ```javascript
+    // 将查询结果（查询文档转换任务进度 API 返回的整个响应包体）传入 response 参数。
+    var response = {
+    uuid: "01xxxx82",
+    type: "dynamic",
+    status: "Finished",
+    progress: {
+        totalPageSize: 3,
+        convertedPageSize: 3,
+        convertedPercentage: 100,
+        convertedFileList: [
+        {
+            width: 1280,
+            height: 720,
+            conversionFileUrl:
+            "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/1.slide",
+            preview:
+            "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/preview/1.png",
+        },
+        {
+            width: 1280,
+            height: 720,
+            conversionFileUrl:
+            "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/2.slide",
+            preview:
+            "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/preview/2.png",
+        },
+        {
+            width: 1280,
+            height: 720,
+            conversionFileUrl:
+            "pptx://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/3.slide",
+            preview:
+            "https://docs-test-ct.oss-cn-hangzhou.aliyuncs.com/dynamicConvert/016127900ed511ec8ad01bd5558ec882/preview/3.png",
+        },
+        ],
+        currentStep: "Packaging",
+    },
+    };
+    // 调用 insertDocs 插入文档。
+    var btn = document.getElementById("addPPT");
+    btn.onclick = async function addPPT() {
+    await app.insertDocs("演示文档", response);
+    };
+    ```
+
+4. 在 `index.html` 文件中添加如下代码，将演示文档的按钮加载到页面上：
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+     <head>
+       <meta charset="UTF-8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <title>Vite App</title>
+     </head>
+     <body>
+       <div
+         id="app"
+         style="width: 600px; height: 400px; border: 1px solid;"
+       ></div>
+       <!--定义演示文档按钮的样式，并将其添加到网页上-->
+       <div style="display: inline-block;">
+       <div id="viewDocs" class="Prev" style="width: 50px; border: 1px solid; position: fixed; bottom: 430px; right：20px;">
+         演示文档
+     </div>
+   </div>
+       <script type="module" src="/main.js"></script>
+     </body>
+   </html>
+   ```
+
+5. 运行项目：
+
+   ```shell
+   npm run dev
+   ```
+
+    `index.html` 页面打开后可以看到**演示文档**按钮，点击该按钮，即会弹出子窗口并加载文档，点击切页箭头，即可分页演示文档。
+
+:::info[信息]
+Fastboard SDK 还提供一个同名的 [`insertDocs`](/zh-CN/api-reference/whiteboard/fastboard/web#insertdocs) 方法，用于插入和展示文档。你可参考上述步骤和 `insertDocs` 参考文档，实现演示文档的功能。
+:::
+
+</PlatformStructured>

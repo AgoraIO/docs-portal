@@ -1,0 +1,38 @@
+---
+title: "如何升级到 Token 鉴权方案？"
+---
+为提高项目的安全性，Agora 会逐步取消对 App ID 鉴权方案的支持。
+
+对于创建时选择 **APP ID** 为鉴权机制的项目，你可以参考本文升级到 Token 鉴权方案。
+
+## 1. 开启 App 证书
+
+如果你在创建项目时，选择 **APP ID** 为鉴权机制，则需要先手动启用主要证书。
+
+在**项目信息**页面，找到**主要证书**，点击下图所示按钮启用证书。成功启用后，你可以点击复制按钮查看并复制 App ID。
+
+![](https://web-cdn.agora.io/docs-files/1672741035684)
+
+ 开启 App 证书后，项目同时支持 App ID 和 Token 鉴权，因此不会对当前使用 App ID 鉴权的 App 客户端产生影响。
+
+ ## 2. 在服务端生成 Token
+
+你可以参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)来在你的 App 服务器上部署生成 Token 的代码。
+
+ ## 3. 修改客户端逻辑
+
+ 你需要修改 App 客户端的鉴权逻辑。将 `joinChannel` 或者 `login` 方法中的 `token` 参数填入服务端实际生成的 Token。
+
+ ## 4. 灰度升级
+
+ 此时你可以开始对 App 客户端进行灰度升级。该状态同时支持用户直接加入频道，或者通过 Token 鉴权后加入频道。
+
+ ## 5. 不允许仅 App ID 加入
+
+ 当全部用户切换到 Token 鉴权后，在控制台中禁用项目的**允许仅 App ID 加入**，防止用户不经鉴权就加入频道。
+
+ :::error[警告]
+ 一旦禁用了**允许仅 App ID 加入**，未使用 Token 鉴权的客户端会无法加入频道。
+ :::
+
+![](https://web-cdn.agora.io/docs-files/1672741655165)

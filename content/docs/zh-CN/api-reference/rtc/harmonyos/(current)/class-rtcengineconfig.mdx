@@ -1,0 +1,69 @@
+---
+title: RtcEngineConfig
+description: RtcEngineConfig 定义。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_rtcengineconfig
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_rtcengineconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_rtcengineconfig__prototype"></a>
+
+```text
+export class RtcEngineConfig{
+  public mContext:Context;
+  public mAppId:string;
+  public mEventHandler: IRtcEngineEventHandler ;
+  public mLogConfig?:LogConfig;
+  public areaCode: Constants.AreaCode = Constants.AreaCode.GLOB;
+}
+```
+
+<a id="class_rtcengineconfig__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="meventhandler"></a>
+<Parameter name="mEventHandler">
+
+[RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 的事件句柄，详见 [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)。
+
+</Parameter>
+<a id="mappid"></a>
+<Parameter name="mAppId">
+
+声网为 App 开发者签发的 App ID。 使用同一个 App ID 的 App 才能进入同一个频道进行通话或直播。一个 App ID 只能用于创建一个 RtcEngine。如需更换 App ID，必须先调用 [destroy](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_release) 销毁当前 RtcEngine 再重新创建。
+
+</Parameter>
+<a id="mcontext"></a>
+<Parameter name="mContext">
+
+上下文。
+
+</Parameter>
+<a id="mlogconfig"></a>
+<Parameter name="mLogConfig">
+
+设置 SDK 输出的日志文件。详见 [LogConfig](/zh-CN/api-reference/rtc/harmonyos/class-logconfig)。
+
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+
+- SDK 日志文件的名称分别为：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log`、`agorasdk.4.log`。
+- API 调用日志文件的名称分别为：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log`、`agoraapi.4.log`。
+- 每个 SDK 日志文件的默认大小为 2,048 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
+- 最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。
+- 当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+
+  1. 删除 `agorasdk.4.log` 文件（如有）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 新建 `agorasdk.log` 文件。
+- `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+</Parameter>
+</ParameterList>

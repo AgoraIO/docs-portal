@@ -1,0 +1,206 @@
+---
+title: ExternalVideoFrame
+description: 表示外部视频帧。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_externalvideoframe
+  sourcePath: html-docs/rtc/Cpp/API/class_externalvideoframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_externalvideoframe__prototype"></a>
+
+```text
+struct ExternalVideoFrame {
+  VIDEO_BUFFER_TYPE type;
+  VIDEO_PIXEL_FORMAT format;
+  void* buffer;
+  int stride;
+  int height;
+  int cropLeft;
+  int cropTop;
+  int cropRight;
+  int cropBottom;
+  int rotation;
+  long long timestamp;
+  void* eglContext;
+  EGL_CONTEXT_TYPE eglType;
+  int textureId;
+  long long fenceObject;
+  float matrix[16];
+  uint8_t* metadataBuffer;
+  int metadataSize;
+  uint8_t* alphaBuffer;
+  bool fillAlphaBuffer;
+  ALPHA_STITCH_MODE alphaStitchMode;
+  void *d3d11Texture2d;
+  int textureSliceIndex;
+  ColorSpace colorSpace;
+};
+```
+
+<a id="class_externalvideoframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+视频类型。详见 [VIDEO_BUFFER_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videobuffertype)。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+像素格式。详见 [VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videopixelformat)。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+视频帧缓冲区。
+
+</Parameter>
+<a id="stride"></a>
+<Parameter name="stride">
+
+输入视频帧的行间距，单位为像素而非字节。对于纹理数据，该值为纹理的宽度。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+输入视频帧的高度。
+
+</Parameter>
+<a id="cropleft"></a>
+<Parameter name="cropLeft">
+
+从左侧裁剪的像素数。默认值为 0。
+
+</Parameter>
+<a id="croptop"></a>
+<Parameter name="cropTop">
+
+从顶部裁剪的像素数。默认值为 0。
+
+</Parameter>
+<a id="cropright"></a>
+<Parameter name="cropRight">
+
+从右侧裁剪的像素数。默认值为 0。
+
+</Parameter>
+<a id="cropbottom"></a>
+<Parameter name="cropBottom">
+
+从底部裁剪的像素数。默认值为 0。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+视频帧的顺时针旋转角度。可设置为 0、90、180 或 270。默认值为 0。
+
+</Parameter>
+<a id="timestamp"></a>
+<Parameter name="timestamp">
+
+输入视频帧的时间戳（毫秒）。时间戳错误会导致帧丢失或音视频不同步。
+
+</Parameter>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
+
+仅适用于 Texture 格式的视频数据。
+
+- 使用 Khronos 定义的 OpenGL 接口（javax.microedition.khronos.egl.*）时，将该字段设置为 `eglContext`。
+- 使用 Android 定义的 OpenGL 接口（android.opengl.*）时，也将该字段设置为 `eglContext`。
+
+</Parameter>
+<a id="egltype"></a>
+<Parameter name="eglType">
+
+仅适用于 Texture 格式的视频数据。纹理上下文类型。
+
+</Parameter>
+<a id="textureid"></a>
+<Parameter name="textureId">
+
+仅适用于 Texture 格式的视频数据。视频帧的纹理 ID。
+
+</Parameter>
+<a id="fenceobject"></a>
+<Parameter name="fenceObject">
+
+仅适用于 Texture 格式的视频数据。与 `textureId` 参数相关的 fence 对象，表示纹理数据的同步状态。默认值为 0。
+
+</Parameter>
+<a id="matrix"></a>
+<Parameter name="matrix">
+
+仅适用于 Texture 格式的视频数据。输入的 4×4 变换矩阵。典型值为单位矩阵。
+
+</Parameter>
+<a id="metadatabuffer"></a>
+<Parameter name="metadataBuffer">
+
+仅适用于 Texture 格式的视频数据。MetaData 缓冲区。默认值为 NULL。
+
+</Parameter>
+<a id="metadatasize"></a>
+<Parameter name="metadataSize">
+
+仅适用于 Texture 格式的视频数据。MetaData 大小。默认值为 0。
+
+</Parameter>
+<a id="alphabuffer"></a>
+<Parameter name="alphaBuffer">
+
+输出参数，通过人像分割算法输出的 Alpha 通道数据。该数据与视频帧大小一致，每个像素值范围为 [0, 255]，其中 0 表示背景，255 表示前景（人像）。通过设置该参数，可以将视频背景渲染为透明、纯色、图像、视频等多种效果。
+
+</Parameter>
+<a id="fillalphabuffer"></a>
+<Parameter name="fillAlphaBuffer">
+
+:::note
+注： 对于 BGRA 或 RGBA 格式的视频数据，可以通过以下任一方式设置 Alpha 通道数据：
+
+- 将该参数设置为 true，自动提取。
+- 通过 `alphaBuffer` 参数手动设置。
+:::
+
+仅适用于 BGRA 或 RGBA 格式的视频数据。是否从视频帧中提取 Alpha 通道数据并自动填充到 `alphaBuffer`：
+
+- true：提取并填充 Alpha 通道数据。
+- false：不提取和填充 Alpha 通道数据。
+
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
+
+当视频帧包含 Alpha 通道数据时，表示 `alphaBuffer` 与视频帧的相对位置。详见 [ALPHA_STITCH_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-alphastitchmode)。
+
+</Parameter>
+<a id="d3d11texture2d"></a>
+<Parameter name="d3d11Texture2d">
+
+仅适用于 Windows Texture 格式的视频数据。指向 `ID3D11Texture2D` 类型对象的指针，该对象由视频帧使用。
+
+</Parameter>
+<a id="texturesliceindex"></a>
+<Parameter name="textureSliceIndex">
+
+仅适用于 Windows Texture 格式的视频数据。表示视频帧在 `ID3D11Texture2D` 数组中使用的纹理对象的索引。
+
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
+
+视频帧的色彩空间属性，默认采用 Full Range 和 BT.709 标准配置。详见 [`VideoColorSpace`](https://developer.mozilla.org/en-US/docs/Web/API/VideoColorSpace)。
+
+</Parameter>
+</ParameterList>

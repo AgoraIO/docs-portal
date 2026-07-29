@@ -1,0 +1,29 @@
+---
+title: 旁路推流概览
+description: 使用 RESTful API 创建和管理旁路推流 Converter。
+---
+
+声网旁路推流 RESTful API 用于订阅声网频道内的音视频流，将音视频流转码后，或选择不转码，通过 RTMP 等标准协议推送到 CDN。你可以通过业务服务器向声网服务器发送 HTTPS 请求，创建、更新、查询和销毁 Converter。
+
+如需监听旁路推流状态，启用消息通知服务并通过 Webhook 接收推流事件。声网会动态调整消息通知服务器 IP 地址，因此你需要定期查询 IP 地址并更新防火墙白名单。
+
+## API 基础信息
+
+- **鉴权**：所有 API 都需要 Basic Auth。
+- **请求**：请求包体使用 JSON。
+- **响应**：响应包体使用 JSON。
+- **Base URL**: `https://api.sd-rtn.com`
+
+:::info
+旁路推流 RESTful API 仅支持 HTTPS，不支持通过 HTTP 明文请求。
+:::
+
+## REST APIs
+
+- [创建 Converter](create)：在项目中创建一个 Converter，用于处理音视频流并推流到 CDN。
+- [销毁指定 Converter](delete)：销毁项目中的指定 Converter。
+- [更新指定 Converter](update)：更新指定 Converter 的配置。
+- [获取指定 Converter 的推流状态](get)：查询指定 Converter 的当前推流状态。
+- [查询项目下所有 Converter](list)：查询一个项目下所有 Converter 的信息。
+- [查询频道内 Converter](list-by-channel)：查询指定频道内所有 Converter 的信息。
+- [查询消息通知服务器 IP](get-ncs-ip)：获取消息通知服务器 IP 地址，用于配置防火墙白名单。

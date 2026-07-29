@@ -1,0 +1,749 @@
+---
+title: "实现秀场直播"
+description: "了解秀场直播在不同平台上的秀场直播方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+## 示例项目
+
+本文介绍如何实现秀场直播。声网在 `agora-ent-scenarios` 仓库中提供秀场直播源代码供你参考：
+
+<Cards>
+  <Card title="agora-ent-scenarios" href="https://github.com/AgoraIO-Usecase/agora-ent-scenarios/tree/main/Android/scenes/show" />
+</Cards>
+
+## 业务流程
+
+本节展示秀场直播中常见的业务流程。
+
+### 创建直播间
+
+下图展示房主预览、创建、进入、退出直播的流程。
+
+![秀场创建直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/create-room.png)
+
+### 进入/退出直播间
+
+下图展示用户进入房主已创建好的直播间的流程。这里的用户可以有两种角色：
+
+- 观众：可以观看房主直播或与主播连麦。
+- 虚假主播：通过声网输入在线媒体流服务在房间内创建的一路视频流，是伪直播。观众和房主可以观看虚假主播，但是不能与其连麦。
+
+![秀场加入离开直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/join-leave-room.png)
+
+### 主播 PK 连麦
+
+下图展示主播 PK 连麦的流程。在这个流程中，房主邀请另一个房间的房主开始 PK 连麦。两个房间内的观众都可以看到两个房主 PK 连麦直播的画面。
+
+![秀场 PK 连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/pk-host.png)
+
+### 观众连麦
+
+下图展示观众与主播连麦的流程。观众与主播连麦有两种方式：
+
+- 主播邀请观众连麦。展示在下图左侧的流程中。
+- 观众申请与主播连麦。展示在下图右侧的流程中。
+
+![秀场观众连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/co-host.png)
+
+## 准备开发环境
+
+### 前提条件
+
+开始前，请确保满足以下前提条件：
+
+- [Android Studio](https://developer.android.com/studio/) 4.1 及以上。
+- Android 手机，版本 Android 5.0（API Level 21）及以上。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- [开通秀场直播服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)并从声网控制台获取 App ID 和临时 Token。
+
+    :::warning[注意]
+    临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+    :::
+
+### 创建项目并集成 SDK
+
+如需创建一个新的 Android 项目来集成秀场直播，按照如下步骤操作：
+
+1. [创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建项目)：新建一个 Android 项目。
+2. [集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)：将实时互动 RTC SDK 集成到项目中。
+
+## 实现秀场直播
+
+本节介绍如何使用声网 RTC SDK 和你的应用业务服务器来创建直播间、进入直播间、PK 连麦、观众连麦、退出直播间。
+
+- **声网 RTC SDK**：承担实时音视频的业务。本节会详细介绍如何调用 RTC SDK 的 API 完成这些音视频逻辑。
+- **应用业务服务器**：承担信令消息和数据存储的业务。你需要自行实现相关功能，具体实现时可参考 [API 时序图](#api-时序图)和[示例项目](https://github.com/AgoraIO-Usecase/agora-ent-scenarios/tree/main/Android/scenes/show)。
+
+### 1. 创建直播间
+
+创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示初始化 RTC 引擎并开启视频模块的示例代码。
+
+你需要调用 [`create`](/zh-CN/api-reference/rtc/android/initialize#create-22) 方法创建 RTC 引擎，并在 `config` 参数中配置上下文 Context、项目的 App ID、注册事件回调。调用 [`enableVideo`](/zh-CN/api-reference/rtc/android/video/video-basic#enablevideo) 开启视频。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-1.svg)
+
+```kotlin
+val rtcEngine: RtcEngineEx
+    get() {
+        if (innerRtcEngine == null) {
+            val config = RtcEngineConfig()
+            config.mContext = AgoraApplication.the()
+            config.mAppId = io.agora.scene.base.BuildConfig.AGORA_APP_ID
+            config.mEventHandler = object : IRtcEngineEventHandler() {
+                override fun onError(err: Int) {
+                    super.onError(err)
+                    ToastUtils.showToast(
+                        "Rtc Error code:$err, msg:" + RtcEngine.getErrorDescription(err)
+                    )
+                }
+            }
+            innerRtcEngine = (RtcEngine.create(config) as RtcEngineEx).apply {
+                enableVideo()
+            }
+        }
+        return innerRtcEngine!!
+    }
+```
+
+### 2. 进入直播间
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示加入频道的示例代码。
+
+调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
+
+- 主播：可以发送和接收音视频流。直播间的房主即为主播。
+- 观众：只可以接收音视频流。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-2.svg)
+
+```kotlin
+private fun joinChannel() {
+    val channelMediaOptions = ChannelMediaOptions()
+    channelMediaOptions.clientRoleType =
+        if (isRoomOwner) Constants.CLIENT_ROLE_BROADCASTER else Constants.CLIENT_ROLE_AUDIENCE
+    channelMediaOptions.autoSubscribeVideo = true
+    channelMediaOptions.autoSubscribeAudio = true
+    // 对于房主，发布音视频流
+    // 对于观众，不发布音视频流
+    channelMediaOptions.publishCameraTrack = isRoomOwner
+    channelMediaOptions.publishMicrophoneTrack = isRoomOwner
+    // 对于观众，把延时等级设置为 LOW_LATENCY，以便体验低延时的音视频互动
+    if (!isRoomOwner) {
+        channelMediaOptions.audienceLatencyLevel = AUDIENCE_LATENCY_LEVEL_LOW_LATENCY
+    }
+    rtcEngine.joinChannel(
+        token,
+        rtcConnection,
+        channelMediaOptions,
+        object: IRtcEventHandler() {}
+    )
+}
+```
+
+### 3. 主播设置本地视图
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/android/video/video-rendering#setuplocalvideo) 在主播端设置并渲染主播视频的示例代码。
+
+```kotlin
+mRtcEngine.setupLocalVideo(
+    VideoCanvas(
+        view, // 需要渲染的视图
+        RENDER_MODE_HIDDEN, // 渲染模式
+    )
+)
+```
+
+### 4. 观众渲染主播视频
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#setupremotevideoex) 在观众端渲染远端视频（即主播的视频）的示例代码。
+
+```kotlin
+mRtcEngine.setupRemoteVideoEx(
+    VideoCanvas(
+        view, // 需要渲染的视图
+        RENDER_MODE_HIDDEN, // 渲染模式
+        uid // 主播 UID（用户 ID）
+    ),
+    rtcConnection
+)
+```
+
+### 5. 主播 PK 连麦
+
+房主跨直播间 PK 连麦意味着不同频道内的主播加入对方频道进行连麦。当房间内用户收到房主 PK 连麦的信令消息后，房间内用户的代码逻辑如下：
+
+- 房间 A：
+    - 房主 A 通过 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#joinchannelex) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#setupremotevideoex) 渲染频道 B 中主播的视频。
+    - 观众通过 `joinChannelEx` 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 B 中主播的视频。
+- 房间 B：
+    - 房主 B 通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
+    - 观众通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
+
+完成这些逻辑后，观众可以同时接收频道 A 和 B 的音视频流，因此可以同时看到两个房间的房主。房主仅在自己的频道发流，在对方的频道内不发流仅收流，因此，房主可以（在对方频道）看到对方，达到连麦的效果。
+
+:::warning[注意]
+为了加快 PK 连麦时视频出图速度，在发起 PK 连麦的过程中就让用户加入对方频道并设置远端视图，但此时无需订阅音频流。等 PK 连麦建立成功后，直接将远端视频显示出来并订阅对方主播的音频流。请注意，提前加入频道会产生额外的费用，因此建议你根据实际业务需要调整集成逻辑。
+:::
+
+结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/android/channel#leavechannelex-12) 离开对方频道。
+
+本节展示用户加入对方频道和离开对方频道的示例代码，如需查阅 `setupRemoteVideoEx` 方法调用逻辑，请参考 [GitHub 示例项目](#示例项目)。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-3.svg)
+
+```kotlin tab="主播加入对方频道的设置"
+// 主播加入对方频道的设置
+val channelMediaOptions = ChannelMediaOptions()
+channelMediaOptions.publishCameraTrack = false
+channelMediaOptions.publishMicrophoneTrack = false
+channelMediaOptions.publishCustomAudioTrack = false
+channelMediaOptions.autoSubscribeVideo = true
+channelMediaOptions.autoSubscribeAudio = true
+channelMediaOptions.clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
+channelMediaOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY
+channelMediaOptions.isInteractiveAudience = true
+
+
+// 观众加入对方频道的设置
+val channelMediaOptions = ChannelMediaOptions()
+channelMediaOptions.publishCameraTrack = false
+channelMediaOptions.publishMicrophoneTrack = false
+channelMediaOptions.publishCustomAudioTrack = false
+channelMediaOptions.autoSubscribeVideo = true
+channelMediaOptions.autoSubscribeAudio = true
+channelMediaOptions.clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
+channelMediaOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY
+channelMediaOptions.isInteractiveAudience = true
+
+// 加入对方频道
+// 例如房间 A 的用户加入频道 B，或者房间 B 的用户加入频道 A
+rtcEngine.joinChannelEx(
+    token,
+    pkRtcConnection,
+    channelMediaOptions,
+    object: IRtcEventHandler() {}
+)
+```
+
+```kotlin tab="退出对方频道"
+// 退出对方频道
+// 例如房间 A 的用户退出频道 B，或者房间 B 的用户退出频道 A
+rtcEngine.leaveChannelEx(pkRtcConnection)
+```
+
+### 6. 观众连麦
+
+观众与主播连麦时，你可以通过信令让主播邀请观众连麦，或观众向主播申请连麦。让待上麦观众更新频道媒体选项、预览并设置本地视图。让其他用户收到观众连麦通知后，渲染该连麦观众的视频。完成这些逻辑后，直播间内观众可以看到主播和上麦观众的连麦直播。
+
+结束连麦时，你需要让待下麦观众更新频道媒体选项、停止预览并取消本地视图。让其他用户收到该观众下麦通知后，取消渲染该观众的视频。完成这些逻辑后，直播间观众可以看到仅有主播的直播画面。
+
+本节展示观众连麦和结束连麦时更新频道媒体选项的示例代码。通过 [`updateChannelMediaOptionsEx`](/zh-CN/api-reference/rtc/android/channel#updatechannelmediaoptionsex) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `CLIENT_ROLE_AUDIENCE`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `CLIENT_ROLE_BROADCASTER`。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-4.svg)
+
+```kotlin
+// 观众上麦时，用户角色从 AUDIENCE 切换成 BROADCASTER
+val channelMediaOptions = ChannelMediaOptions()
+// 发布音视频流
+channelMediaOptions.publishCameraTrack = true
+channelMediaOptions.publishMicrophoneTrack = true
+channelMediaOptions.publishCustomAudioTrack = false
+channelMediaOptions.enableAudioRecordingOrPlayout = true
+channelMediaOptions.autoSubscribeVideo = true
+channelMediaOptions.autoSubscribeAudio = true
+channelMediaOptions.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+mRtcEngine.updateChannelMediaOptionsEx(channelMediaOptions, rtcConnection)
+
+
+// 连麦观众下麦时，用户角色从 BROADCASTER 切换成 AUDIENCE
+val channelMediaOptions = ChannelMediaOptions()
+val rtcConnection = mMainRtcConnection
+// 不发布音视频流
+channelMediaOptions.publishCameraTrack = false
+channelMediaOptions.publishMicrophoneTrack = false
+channelMediaOptions.publishCustomAudioTrack = false
+channelMediaOptions.enableAudioRecordingOrPlayout = true
+channelMediaOptions.autoSubscribeVideo = true
+channelMediaOptions.autoSubscribeAudio = true
+// 注意：角色为观众时，即使 publishCameraTrack 和 publishMicrophoneTrack 设为 true，也无法发音视频流。如需发布音视频流，必须将角色设为主播。
+channelMediaOptions.clientRoleType = Constants.CLIENT_ROLE_AUDIENCE
+channelMediaOptions.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY
+mRtcEngine.updateChannelMediaOptionsEx(channelMediaOptions, rtcConnection)
+```
+
+### 7. 离开并销毁房间
+
+直播结束时，主播和观众离开房间，你可以离开频道并销毁 RTC 引擎。
+
+本节展示调用 [`destroy`](/zh-CN/api-reference/rtc/android/initialize#destroy) 销毁 RTC 引擎的示例代码。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and-5.svg)
+
+```kotlin
+fun destroy() {
+    // 移除所有消息和定时任务
+    innerVideoSwitcher?.let {
+        it.unloadConnections()
+        innerVideoSwitcher = null
+    }
+    // 销毁 RTC 引擎
+    innerRtcEngine?.let {
+        workingExecutor.execute { RtcEngine.destroy() }
+        innerRtcEngine = null
+    }
+}
+
+
+// innerVideoSwitcher
+// class VideoSwitcherImpl
+// unloadConnections 函数中执行的具体操作
+override fun unloadConnections() {
+    mainHandler.removeCallbacksAndMessages(null)
+    connectionsJoined.forEach {
+        leaveRtcChannel(it)
+    }
+    connectionsPreloaded.forEach {
+        leaveRtcChannel(it)
+    }
+    localVideoCanvas?.release()
+    connectionsForPreloading.clear()
+    connectionsPreloaded.clear()
+    connectionsJoined.clear()
+    ShowLogger.d(tag, "unloadConnections")
+}
+```
+
+### API 时序图
+
+下图展示实现本文全部流程所需的 API 调用时序。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-and.svg)
+
+## 开发注意事项
+
+如果你需要在秀场直播中实现美颜功能，可以参考[集成第三方美颜](/zh-CN/solutions/showroom/build/customize-and-extend/beauty/overview)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+本文介绍如何实现秀场直播。
+## 示例项目
+
+声网在 `agora-ent-scenarios` 仓库中提供秀场直播源代码供你参考：
+
+<Cards>
+  <Card title="agora-ent-scenarios" href="https://github.com/AgoraIO-Usecase/agora-ent-scenarios/tree/main/iOS/AgoraEntScenarios/Scenes/Show" />
+</Cards>
+
+## 业务流程
+
+本节展示秀场直播中常见的业务流程。
+
+### 创建直播间
+
+下图展示房主预览、创建、进入、退出直播的流程。
+
+![秀场创建直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/create-room.png)
+
+### 进入/退出直播间
+
+下图展示用户进入房主已创建好的直播间的流程。这里的用户可以有两种角色：
+
+- 观众：可以观看房主直播或与主播连麦。
+- 虚假主播：通过声网输入在线媒体流服务在房间内创建的一路视频流，是伪直播。观众和房主可以观看虚假主播，但是不能与其连麦。
+
+![秀场加入离开直播间业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/join-leave-room.png)
+
+### 主播 PK 连麦
+
+下图展示主播 PK 连麦的流程。在这个流程中，房主邀请另一个房间的房主开始 PK 连麦。两个房间内的观众都可以看到两个房主 PK 连麦直播的画面。
+
+![秀场 PK 连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/pk-host.png)
+
+### 观众连麦
+
+下图展示观众与主播连麦的流程。观众与主播连麦有两种方式：
+
+- 主播邀请观众连麦。展示在下图左侧的流程中。
+- 观众申请与主播连麦。展示在下图右侧的流程中。
+
+![秀场观众连麦业务流程](https://web-cdn.agora.io/docs-portal/img/showroom/co-host.png)
+
+## 准备开发环境
+
+### 前提条件
+
+开始前，请确保满足以下前提条件：
+
+- [Xcode](https://apps.apple.com/cn/app/xcode/id497799835?mt=12) 12.0 及以上。
+- iOS 设备，版本 13.0 及以上。
+- 有效的苹果开发者账号。
+- 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
+- [开通秀场直播服务](/zh-CN/solutions/showroom/build/setup-and-access/enable-service)并从声网控制台获取 App ID 和临时 Token。
+
+    :::warning[注意]
+    临时 Token 的有效期是 24 小时。Token 过期会导致加入频道失败。
+    :::
+
+### 创建项目并集成 SDK
+
+如需创建一个新的 iOS 项目来集成秀场直播，按照如下步骤操作：
+
+1. [创建项目](/zh-CN/realtime-media/rtc/get-started/quick-start#创建项目)：新建一个 iOS 项目。
+2. [集成 SDK](/zh-CN/realtime-media/rtc/get-started/quick-start#集成-sdk)：将实时互动 RTC SDK 集成到项目中。
+
+## 实现秀场直播
+
+本节介绍如何使用声网 RTC SDK 和你的应用业务服务器来创建直播间、进入直播间、PK 连麦、观众连麦、退出直播间。
+
+- **声网 RTC SDK**：承担实时音视频的业务。本节会详细介绍如何调用 RTC SDK 的 API 完成这些音视频逻辑。
+- **应用业务服务器**：承担信令消息和数据存储的业务。你需要自行实现相关功能，具体实现时可参考 [API 时序图](#api-时序图)和[示例项目](https://github.com/AgoraIO-Usecase/agora-ent-scenarios/tree/main/iOS/AgoraEntScenarios/Scenes/Show)。
+
+### 1. 创建直播间
+
+创建直播间时，你需要初始化 RTC 引擎、为主播设置本地视图并进行预览。本节展示调用 [`sharedEngineWithConfig`](/zh-CN/api-reference/rtc/ios/initialize#sharedEngineWithConfig) 初始化 RTC 引擎的示例代码。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-1.svg)
+
+```swift
+fileprivate(set) lazy var agoraKit: AgoraRtcEngineKit = {
+    let kit = AgoraRtcEngineKit.sharedEngine(with: rtcEngineConfig, delegate: nil)
+    showLogger.info("load AgoraRtcEngineKit, sdk version: \(AgoraRtcEngineKit.getSdkVersion())", context: kShowLogBaseContext)
+    return kit
+}()
+```
+
+### 2. 进入直播间
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示加入频道的示例代码。
+
+调用 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道。频道用于传输直播间中的音视频流，应用业务服务用于传输直播间中的信令消息和存储数据。用户在频道内可以进行实时音视频互动。频道内的用户有两种角色：
+
+- 主播：可以发送和接收音视频流。直播间的房主即为主播。
+- 观众：只可以接收音视频流。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-2.svg)
+
+```swift
+private func joinChannel(needUpdateCavans: Bool = true) {
+    agoraKitManager.setRtcDelegate(delegate: self, roomId: roomId)
+    guard let channelId = room?.roomId, let ownerId = room?.ownerId else {
+        return
+    }
+    currentChannelId = channelId
+    self.joinStartDate = Date()
+    let uid: UInt = UInt(ownerId)!
+    agoraKitManager.joinChannelEx(currentChannelId: channelId,
+                                  targetChannelId: channelId,
+                                  ownerId: uid,
+                                  options: self.channelOptions,
+                                  role: role) { [weak self] in
+        guard let self = self else { return }
+        if needUpdateCavans {
+            if self.role == .audience {
+                self.agoraKitManager.setupRemoteVideo(channelId: channelId,
+                                                      uid: uid,
+                                                      canvasView: self.liveView.canvasView.localView)
+            } else {
+                self.agoraKitManager.setupLocalVideo(uid: uid, canvasView: self.liveView.canvasView.localView)
+            }
+        }
+    }
+
+    liveView.canvasView.setLocalUserInfo(name: room?.ownerName ?? "", img: room?.ownerAvatar ?? "")
+
+    self.muteLocalVideo = false
+    self.muteLocalAudio = false
+}
+
+
+// ShowAgoraKitManager.swift
+private func _joinChannelEx(currentChannelId: String,
+                            targetChannelId: String,
+                            ownerId: UInt,
+                            token: String,
+                            options:AgoraRtcChannelMediaOptions,
+                            role: AgoraClientRole) {
+    if exConnectionMap[targetChannelId] == nil {
+        let subscribeStatus = role == .audience ? false : true
+        let mediaOptions = AgoraRtcChannelMediaOptions()
+        mediaOptions.autoSubscribeAudio = subscribeStatus
+        mediaOptions.autoSubscribeVideo = subscribeStatus
+        mediaOptions.clientRoleType = role
+        // 对于观众，把延时等级设置为 lowLatency，以便体验低延时的音视频互动
+        if role == .audience {
+            mediaOptions.audienceLatencyLevel = .lowLatency
+        } else {
+            updateVideoEncoderConfigurationForConnenction(currentChannelId: currentChannelId)
+        }
+
+        let connection = AgoraRtcConnection()
+        connection.channelId = targetChannelId
+        connection.localUid = UInt(VLUserCenter.user.id) ?? 0
+
+        let proxy = delegateMap[currentChannelId]
+        let date = Date()
+        showLogger.info("try to join room[\(connection.channelId)] ex uid: \(connection.localUid)", context:
+kShowLogBaseContext)
+        let ret =
+        agoraKit.joinChannelEx(byToken: token,
+                               connection: connection,
+                               delegate: proxy,
+                               mediaOptions: mediaOptions) { channelName, uid, elapsed in
+            let cost = Int(-date.timeIntervalSinceNow * 1000)
+            showLogger.info("join room[\(channelName)] ex success uid: \(uid) cost \(cost) ms", context:
+kShowLogBaseContext)
+        }
+        agoraKit.updateChannelEx(with: mediaOptions, connection: connection)
+        exConnectionMap[targetChannelId] = connection
+
+        if ret == 0 {
+            showLogger.info("join room ex: channelId: \(targetChannelId) ownerId: \(ownerId)",
+                            context: "AgoraKitManager")
+        } else {
+            showLogger.error("join room ex fail: channelId: \(targetChannelId) ownerId: \(ownerId) token = \(token),
+\(ret)",
+                             context: kShowLogBaseContext)
+        }
+    }
+}
+```
+
+### 3. 主播设置本地视图
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupLocalVideo`](/zh-CN/api-reference/rtc/ios/video/video-rendering#setuplocalvideo) 在主播端设置并渲染主播视频的示例代码。
+
+```swift
+self.agoraKitManager.setupLocalVideo(uid: uid, canvasView: self.liveView.canvasView.localView)
+
+
+// ShowAgoraKitManager.swift
+func setupLocalVideo(uid: UInt, canvasView: UIView) {
+    canvas.view = canvasView
+    canvas.uid = uid
+    canvas.mirrorMode = .disabled
+    // 设置耳返
+    agoraKit.setDefaultAudioRouteToSpeakerphone(true)
+    // 开启音频
+    agoraKit.enableAudio()
+    // 开启视频
+    agoraKit.enableVideo()
+    // 设置本地视图
+    agoraKit.setupLocalVideo(canvas)
+    // 开启本地视频预览
+    agoraKit.startPreview()
+    showLogger.info("setupLocalVideo target uid:\(uid), user uid\(UserInfo.userId)", context: kShowLogBaseContext)
+}
+```
+
+### 4. 观众渲染主播视频
+
+进入直播间时，你需要在主播和观众端都设置并渲染主播视频，再加入频道。本节展示调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 在观众端渲染远端视频（即主播的视频）的示例代码。
+
+```swift
+self.agoraKitManager.setupRemoteVideo(channelId: channelId,
+                                      uid: uid,
+                                      canvasView: self.liveView.canvasView.localView)
+
+
+// ShowAgoraKitManager.swift
+func setupRemoteVideo(channelId: String, uid: UInt, canvasView: UIView) {
+    guard let connection = exConnectionMap[channelId] else {
+        showLogger.error("_joinChannelEx fail: connection is empty")
+        return
+    }
+
+    let videoCanvas = AgoraRtcVideoCanvas()
+    videoCanvas.uid = uid
+    videoCanvas.view = canvasView
+    videoCanvas.renderMode = .hidden
+    let ret = agoraKit.setupRemoteVideoEx(videoCanvas, connection: connection)
+
+    showLogger.info("setupRemoteVideoEx ret = \(ret), uid:\(uid) localuid: \(UserInfo.userId) channelId: \(channelId)", context:
+kShowLogBaseContext)
+}
+```
+
+### 5. 主播 PK 连麦
+
+房主跨直播间 PK 连麦意味着不同频道内的主播加入对方频道进行连麦。当房间内用户收到房主 PK 连麦的信令消息后，房间内用户的代码逻辑如下：
+
+- 房间 A：
+    - 房主 A 通过 [`joinChannelExByToken`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 渲染频道 B 中主播的视频。
+    - 观众通过 `joinChannelEx` 加入频道 B，并且设置订阅频道 B 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 B 中主播的视频。
+- 房间 B：
+    - 房主 B 通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
+    - 观众通过 `joinChannelEx` 加入频道 A，并且设置订阅频道 A 内音视频流，但不发送音视频流。同时通过 `setupRemoteVideoEx` 渲染频道 A 中主播的视频。
+
+完成这些逻辑后，观众可以同时接收频道 A 和 B 的音视频流，因此可以同时看到两个房间的房主。房主仅在自己的频道发流，在对方的频道内不发流仅收流，因此，房主可以（在对方频道）看到对方，达到连麦的效果。
+
+:::warning[注意]
+为了加快 PK 连麦时视频出图速度，在发起 PK 连麦的过程中就让用户加入对方频道并设置远端视图，但此时无需订阅音频流。等 PK 连麦建立成功后，直接将远端视频显示出来并订阅对方主播的音频流。请注意，提前加入频道会产生额外的费用，因此建议你根据实际业务需要调整集成逻辑。
+:::
+
+结束 PK 连麦时，房间内用户都需要调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_leavechannelex) 离开对方频道。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-3.svg)
+
+```swift
+// 加入对方频道
+agoraKitManager.joinChannelEx(currentChannelId: roomId,
+                              targetChannelId: interactionRoomId,
+                              ownerId: uid,
+                              options: self.channelOptions,
+                              role: role) {
+    showLogger.info("\(self.roomId) updateLoadingType _onStartInteraction---------- \(self.roomId)")
+    if self.role == .broadcaster {
+        self.agoraKitManager.setupRemoteVideo(channelId: interactionRoomId,
+                                              uid: uid,
+                                              canvasView: self.liveView.canvasView.remoteView)
+    } else {
+        self.updateLoadingType(loadingType: self.loadingType)
+    }
+}
+
+
+// ShowAgoraKitManager.swift
+private func _joinChannelEx(currentChannelId: String,
+                            targetChannelId: String,
+                            ownerId: UInt,
+                            token: String,
+                            options:AgoraRtcChannelMediaOptions,
+                            role: AgoraClientRole) {
+    if exConnectionMap[targetChannelId] == nil {
+        let subscribeStatus = role == .audience ? false : true
+        let mediaOptions = AgoraRtcChannelMediaOptions()
+        mediaOptions.autoSubscribeAudio = subscribeStatus
+        mediaOptions.autoSubscribeVideo = subscribeStatus
+        mediaOptions.clientRoleType = role
+        if role == .audience {
+            mediaOptions.audienceLatencyLevel = .lowLatency
+        } else {
+            updateVideoEncoderConfigurationForConnenction(currentChannelId: currentChannelId)
+        }
+
+        let connection = AgoraRtcConnection()
+        connection.channelId = targetChannelId
+        connection.localUid = UInt(VLUserCenter.user.id) ?? 0
+
+        let proxy = delegateMap[currentChannelId]
+        let date = Date()
+        showLogger.info("try to join room[\(connection.channelId)] ex uid: \(connection.localUid)", context: kShowLogBaseContext)
+        let ret =
+        agoraKit.joinChannelEx(byToken: token,
+                               connection: connection,
+                               delegate: proxy,
+                               mediaOptions: mediaOptions) { channelName, uid, elapsed in
+            let cost = Int(-date.timeIntervalSinceNow * 1000)
+            showLogger.info("join room[\(channelName)] ex success uid: \(uid) cost \(cost) ms", context: kShowLogBaseContext)
+        }
+        agoraKit.updateChannelEx(with: mediaOptions, connection: connection)
+        exConnectionMap[targetChannelId] = connection
+
+        if ret == 0 {
+            showLogger.info("join room ex: channelId: \(targetChannelId) ownerId: \(ownerId)",
+                            context: "AgoraKitManager")
+        } else {
+            showLogger.error("join room ex fail: channelId: \(targetChannelId) ownerId: \(ownerId) token = \(token), \(ret)",
+                             context: kShowLogBaseContext)
+        }
+    }
+}
+
+
+// 退出对方频道
+agoraKitManager.leaveChannelEx(roomId: self.roomId, channelId: interaction.roomId)
+
+
+// ShowAgoraKitManager.swift
+func leaveChannelEx(roomId: String, channelId: String) {
+    guard let connection = exConnectionMap[channelId] else { return }
+    let depMap: [String: ShowRTCLoadingType]? = exConnectionDeps[channelId]
+    guard depMap?.count ?? 0 == 0 else {
+        showLogger.info("leaveChannelEx break, depcount: \(depMap?.count ?? 0), roomId: \(roomId), channelId: \(channelId)", context:
+kShowLogBaseContext)
+        return
+    }
+    showLogger.info("leaveChannelEx roomId: \(roomId), channelId: \(channelId)", context: kShowLogBaseContext)
+    agoraKit.leaveChannelEx(connection)
+    exConnectionMap[channelId] = nil
+}
+```
+
+### 6. 观众连麦
+
+观众与主播连麦时，你可以通过信令让主播邀请观众连麦，或观众向主播申请连麦。让待上麦观众更新频道媒体选项、预览并设置本地视图。让其他用户收到观众连麦通知后，渲染该连麦观众的视频。完成这些逻辑后，直播间内观众可以看到主播和上麦观众的连麦直播。
+
+结束连麦时，你需要让待下麦观众更新频道媒体选项、停止预览并取消本地视图。让其他用户收到该观众下麦通知后，取消渲染该观众的视频。完成这些逻辑后，直播间观众可以看到仅有主播的直播画面。
+
+本节展示观众连麦和结束连麦时更新频道媒体选项、设置视图的示例代码。通过 [`updateChannelExWithMediaOptions`](/zh-CN/api-reference/rtc/ios/channel#updateChannelExWithMediaOptions) 方法在观众加入频道后更新频道媒体选项，例如是否开启本地音频采集，是否发布本地音频流等。观众的用户角色为 `audience`，因此无法在频道内发布音频流。如果观众想与主播连麦，需要将用户角色修改为 `broadcaster`。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-4.svg)
+
+```swift
+agoraKitManager.switchRole(role: role,
+                           channelId: roomId,
+                           options: self.channelOptions,
+                           uid: interaction.userId,
+                           canvasView: liveView.canvasView.remoteView)
+
+
+// ShowAgoraKitManager.swift
+func switchRole(role: AgoraClientRole,
+                channelId: String,
+                options:AgoraRtcChannelMediaOptions,
+                uid: String?,
+                canvasView: UIView?) {
+    guard let uid = UInt(uid ?? ""), let canvasView = canvasView else {
+        showLogger.error("switchRole fatel")
+        return
+    }
+    options.clientRoleType = role
+    updateChannelEx(channelId:channelId, options: options)
+    if "\(uid)" == VLUserCenter.user.id {
+        setupLocalVideo(uid: uid, canvasView: canvasView)
+    } else {
+        setupRemoteVideo(channelId: channelId, uid: uid, canvasView: canvasView)
+    }
+}
+
+
+func updateChannelEx(channelId: String, options: AgoraRtcChannelMediaOptions) {
+    guard let connection = exConnectionMap[channelId] else {
+        showLogger.error("updateChannelEx fail: connection is empty")
+        return
+    }
+
+    agoraKit.updateChannelEx(with: options, connection: connection)
+}
+```
+
+### 7. 离开并销毁房间
+
+直播结束时，主播和观众离开房间，你可以离开频道并销毁 RTC 引擎。
+
+本节展示调用 [`destroy`](/zh-CN/api-reference/rtc/ios/initialize#destroy) 销毁 RTC 引擎的示例代码。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios-5.svg)
+
+```swift
+// ShowAgoraKitManager.swift
+deinit {
+    AgoraRtcEngineKit.destroy()
+    showLogger.info("deinit-- ShowAgoraKitManager")
+}
+```
+
+### API 时序图
+
+下图展示实现本文全部流程所需的 API 调用时序。
+
+![](https://web-cdn.agora.io/docs-portal/img/showroom/integ-ios.svg)
+
+## 开发注意事项
+
+如果你需要在秀场直播中实现美颜功能，可以参考[集成第三方美颜](/zh-CN/solutions/showroom/build/customize-and-extend/beauty/overview)。
+
+</PlatformStructured>

@@ -1,0 +1,84 @@
+---
+title: FLastmileProbeConfig
+description: Last mile 网络探测配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_lastmileprobeconfig
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_lastmileprobeconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileprobeconfig__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FLastmileProbeConfig
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeConfig")
+	bool probeUplink = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeConfig")
+	bool probeDownlink = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeConfig")
+	int expectedUplinkBitrate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|LastmileProbeConfig")
+	int expectedDownlinkBitrate = 0;
+	FLastmileProbeConfig(){}
+	FLastmileProbeConfig(const agora::rtc::LastmileProbeConfig & AgoraData){
+		probeUplink = AgoraData.probeUplink;
+		probeDownlink = AgoraData.probeDownlink;
+		expectedUplinkBitrate = AgoraData.expectedUplinkBitrate;
+		expectedDownlinkBitrate = AgoraData.expectedDownlinkBitrate;
+	}
+	agora::rtc::LastmileProbeConfig CreateAgoraData() const{
+		agora::rtc::LastmileProbeConfig AgoraData;
+		AgoraData.probeUplink = probeUplink;
+		AgoraData.probeDownlink = probeDownlink;
+		AgoraData.expectedUplinkBitrate = expectedUplinkBitrate;
+		AgoraData.expectedDownlinkBitrate = expectedDownlinkBitrate;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::rtc::LastmileProbeConfig& AgoraData) const {
+	}
+};
+```
+
+<a id="class_lastmileprobeconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="probeuplink"></a>
+<Parameter name="probeUplink">
+
+是否探测上行网络。有些用户，如直播频道中的普通观众，不需要进行网络探测:
+
+- `true`: 探测上行网络。
+- `false`: 不探测上行网络。
+
+</Parameter>
+<a id="probedownlink"></a>
+<Parameter name="probeDownlink">
+
+是否探测下行网络：
+
+- `true`: 探测下行网络。
+- `false`: 不探测下行网络。
+
+</Parameter>
+<a id="expecteduplinkbitrate"></a>
+<Parameter name="expectedUplinkBitrate">
+
+用户期望的最高发送码率，单位为 bps，范围为 [100000,5000000]。建议参考 [SetVideoEncoderConfiguration](/zh-CN/api-reference/rtc/unreal-blueprint/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 中的码率值设置该参数的值。
+
+</Parameter>
+<a id="expecteddownlinkbitrate"></a>
+<Parameter name="expectedDownlinkBitrate">
+
+用户期望的最高接收码率，单位为 bps，范围为 [100000,5000000]。
+
+</Parameter>
+</ParameterList>

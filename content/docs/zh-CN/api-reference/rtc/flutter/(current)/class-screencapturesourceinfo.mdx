@@ -1,0 +1,147 @@
+---
+title: ScreenCaptureSourceInfo
+description: 可共享窗口或屏幕的信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_screencapturesourceinfo
+  sourcePath: html-docs/rtc/Flutter/API/class_screencapturesourceinfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_screencapturesourceinfo__prototype"></a>
+
+```text
+class ScreenCaptureSourceInfo {
+  const ScreenCaptureSourceInfo(
+      {this.type,
+      this.sourceId,
+      this.sourceName,
+      this.thumbImage,
+      this.iconImage,
+      this.processPath,
+      this.sourceTitle,
+      this.primaryMonitor,
+      this.position,
+      this.minimizeWindow,
+      this.sourceDisplayId});
+
+  @JsonKey(name: 'type')
+  final ScreenCaptureSourceType? type;
+
+  @JsonKey(name: 'sourceId')
+  final int? sourceId;
+
+  @JsonKey(name: 'sourceName')
+  final String? sourceName;
+
+  @JsonKey(name: 'thumbImage')
+  final ThumbImageBuffer? thumbImage;
+
+  @JsonKey(name: 'iconImage')
+  final ThumbImageBuffer? iconImage;
+
+  @JsonKey(name: 'processPath')
+  final String? processPath;
+
+  @JsonKey(name: 'sourceTitle')
+  final String? sourceTitle;
+
+  @JsonKey(name: 'primaryMonitor')
+  final bool? primaryMonitor;
+
+  @JsonKey(name: 'position')
+  final Rectangle? position;
+
+  @JsonKey(name: 'minimizeWindow')
+  final bool? minimizeWindow;
+
+  @JsonKey(name: 'sourceDisplayId')
+  final int? sourceDisplayId;
+
+  factory ScreenCaptureSourceInfo.fromJson(Map<String, dynamic> json) =>
+      _$ScreenCaptureSourceInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ScreenCaptureSourceInfoToJson(this);
+}
+```
+
+<a id="class_screencapturesourceinfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+共享目标的类型。详见 [ScreenCaptureSourceType](/zh-CN/api-reference/rtc/flutter/enum-screencapturesourcetype)。
+
+</Parameter>
+<a id="sourceid"></a>
+<Parameter name="sourceId">
+
+对于窗口，表示窗口 ID（Window ID）；对于屏幕，表示屏幕 ID（Display ID）。
+
+</Parameter>
+<a id="sourcename"></a>
+<Parameter name="sourceName">
+
+窗口或屏幕的名称。UTF-8 编码。
+
+</Parameter>
+<a id="thumbimage"></a>
+<Parameter name="thumbImage">
+
+缩略图的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/flutter/class-thumbimagebuffer)。
+
+</Parameter>
+<a id="iconimage"></a>
+<Parameter name="iconImage">
+
+图标的图像内容。详见 [ThumbImageBuffer](/zh-CN/api-reference/rtc/flutter/class-thumbimagebuffer)。
+
+</Parameter>
+<a id="processpath"></a>
+<Parameter name="processPath">
+
+窗口所属的进程。UTF-8 编码。
+
+</Parameter>
+<a id="sourcetitle"></a>
+<Parameter name="sourceTitle">
+
+窗口标题。UTF-8 编码。
+
+</Parameter>
+<a id="primarymonitor"></a>
+<Parameter name="primaryMonitor">
+
+屏幕是否为主显示屏：
+
+- true: 屏幕为主显示屏。
+- false: 屏幕不是主显示屏。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+窗口相对于整个屏幕空间（包含所有可共享屏幕）的位置。详见 [Rectangle](/zh-CN/api-reference/rtc/flutter/class-rectangle)。
+
+</Parameter>
+<a id="minimizewindow"></a>
+<Parameter name="minimizeWindow">
+
+(仅适用于 Windows)  窗口是否已最小化：
+
+- true: 窗口已最小化。
+- false: 窗口未最小化。
+
+</Parameter>
+<a id="sourcedisplayid"></a>
+<Parameter name="sourceDisplayId">
+
+(仅适用于 Windows) 窗口所在的屏幕 ID。如果窗口为跨屏幕显示，则表示与该窗口相交面积最大的屏幕 ID。如果窗口位于可见屏幕之外，则该成员的值为 -2。
+
+</Parameter>
+</ParameterList>

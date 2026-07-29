@@ -1,0 +1,170 @@
+---
+title: VideoEncoderConfiguration
+description: 用于设置视频编码器的参数。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_videoencoderconfiguration
+  sourcePath: html-docs/rtc/Android/API/class_videoencoderconfiguration.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videoencoderconfiguration__prototype"></a>
+
+```text
+public class VideoEncoderConfiguration {
+  public final static VideoDimensions VD_120x120 = new VideoDimensions(120, 120);
+  public final static VideoDimensions VD_160x120 = new VideoDimensions(160, 120);
+  public final static VideoDimensions VD_180x180 = new VideoDimensions(180, 180);
+  public final static VideoDimensions VD_240x180 = new VideoDimensions(240, 180);
+  public final static VideoDimensions VD_320x180 = new VideoDimensions(320, 180);
+  public final static VideoDimensions VD_240x240 = new VideoDimensions(240, 240);
+  public final static VideoDimensions VD_320x240 = new VideoDimensions(320, 240);
+  public final static VideoDimensions VD_424x240 = new VideoDimensions(424, 240);
+  public final static VideoDimensions VD_360x360 = new VideoDimensions(360, 360);
+  public final static VideoDimensions VD_480x360 = new VideoDimensions(480, 360);
+  public final static VideoDimensions VD_640x360 = new VideoDimensions(640, 360);
+  public final static VideoDimensions VD_480x480 = new VideoDimensions(480, 480);
+  public final static VideoDimensions VD_640x480 = new VideoDimensions(640, 480);
+  public final static VideoDimensions VD_840x480 = new VideoDimensions(840, 480);
+  public final static VideoDimensions VD_960x540 = new VideoDimensions(960, 540);
+  public final static VideoDimensions VD_960x720 = new VideoDimensions(960, 720);
+  public final static VideoDimensions VD_1280x720 = new VideoDimensions(1280, 720);
+  public final static VideoDimensions VD_1920x1080 = new VideoDimensions(1920, 1080);
+  public final static VideoDimensions VD_2540x1440 = new VideoDimensions(2540, 1440);
+  public final static VideoDimensions VD_3840x2160 = new VideoDimensions(3840, 2160);
+  public static final int STANDARD_BITRATE = 0;
+  public static final int COMPATIBLE_BITRATE = -1;
+  public static final int DEFAULT_MIN_BITRATE = -1;
+  public static final int DEFAULT_MIN_FRAMERATE = -1;
+  public static final int DEFAULT_MIN_BITRATE_EQUAL_TO_TARGET_BITRATE = -2;
+  public VideoDimensions dimensions;
+  public int frameRate;
+  public int minFrameRate;
+  public int bitrate;
+  public int minBitrate;
+  public ORIENTATION_MODE orientationMode;
+  public DEGRADATION_PREFERENCE degradationPrefer;
+  public MIRROR_MODE_TYPE mirrorMode;
+  public AdvanceOptions advanceOptions;
+  public VIDEO_CODEC_TYPE codecType;
+}
+```
+
+<a id="class_videoencoderconfiguration__detailed_desc"></a>
+
+你可以自定义分辨率，或从预设分辨率中选择。支持设置不同的编码码率和帧率，以适配不同的频道场景类型，还可以指定视频编码方向、镜像模式和编码器优先策略等。
+
+<a id="class_videoencoderconfiguration__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
+
+:::note
+注： 是否支持 720p 或更高分辨率取决于设备性能。如果设备无法支持 720p，帧率可能低于设定值。默认值为 960 × 540。
+:::
+
+视频分辨率。你可以自定义设置，或从以下列表中选择：
+
+- `VD_120x120`：120 × 120
+- `VD_160x120`：160 × 120
+- `VD_180x180`：180 × 180
+- `VD_240x180`：240 × 180
+- `VD_320x180`：320 × 180
+- `VD_240x240`：240 × 240
+- `VD_320x240`：320 × 240
+- `VD_424x240`：424 × 240
+- `VD_360x360`：360 × 360
+- `VD_480x360`：480 × 360
+- `VD_640x360`：640 × 360
+- `VD_480x480`：480 × 480
+- `VD_640x480`：640 × 480
+- `VD_840x480`：840 × 480
+- `VD_960x540`：960 × 540
+- `VD_960x720`：960 × 720
+- `VD_1280x720`：1280 × 720
+- `VD_1920x1080`：1920 × 1080
+- `VD_2540x1440`：2540 × 1440
+- `VD_3840x2160`：3840 × 2160。
+
+详见 [VideoDimensions](/zh-CN/api-reference/rtc/android/class-videodimensions)。
+
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
+
+编码视频帧的帧率（fps）。默认值为 15。详见 [FRAME_RATE](/zh-CN/api-reference/rtc/android/enum-framerate)。
+
+</Parameter>
+<a id="minframerate"></a>
+<Parameter name="minFrameRate">
+
+（预留参数）最小视频编码帧率（fps）。默认值为 `DEFAULT_MIN_FRAMERATE(-1)`，即 SDK 使用最低编码帧率。
+
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
+
+视频编码码率（Kbps）。无需手动设置该参数，保持默认值 STANDARD_BITRATE 即可。SDK 会根据设置的视频分辨率和帧率自动匹配最合适的码率。
+
+- `STANDARD_BITRATE (0)`：推荐使用的标准码率模式。
+- `COMPATIBLE_BITRATE (-1)`：自适应码率模式。一般不建议使用该值。
+
+</Parameter>
+<a id="minbitrate"></a>
+<Parameter name="minBitrate">
+
+视频的最小编码码率（Kbps）。SDK 会自动调整编码码率以适应网络状况。设置高于默认值可能会强制编码器输出高质量图像，但可能导致更高丢包率并影响传输流畅性。
+
+:::note
+注： 该参数仅适用于互动直播场景。
+:::
+
+</Parameter>
+<a id="orientationmode"></a>
+<Parameter name="orientationMode">
+
+编码视频的方向模式。详见 [ORIENTATION_MODE](/zh-CN/api-reference/rtc/android/enum-orientationmode)。
+
+</Parameter>
+<a id="degradationprefer"></a>
+<Parameter name="degradationPrefer">
+
+带宽受限时的视频编码降级偏好。详见 [DEGRADATION_PREFERENCE](/zh-CN/api-reference/rtc/android/enum-degradationpreference)。
+
+:::note
+注： 当该参数设置为 `MAINTAIN_FRAMERATE (1)` 或 `MAINTAIN_BALANCED (2)` 时，`orientationMode` 需同时设为 `ORIENTATION_MODE_ADAPTIVE (0)`，否则该设置无效。
+:::
+
+</Parameter>
+<a id="mirrormode"></a>
+<Parameter name="mirrorMode">
+
+:::note
+注： 默认情况下，视频无镜像效果。
+:::
+
+设置本地视频流发布时的镜像模式，仅影响远端用户看到的视频：
+
+- `VIDEO_MIRROR_MODE_AUTO (0)`：SDK 决定是否启用镜像模式，默认关闭。
+- `VIDEO_MIRROR_MODE_ENABLED (1)`：开启远端镜像。
+- `VIDEO_MIRROR_MODE_DISABLED (2)`：关闭远端镜像。
+
+</Parameter>
+<a id="advanceoptions"></a>
+<Parameter name="advanceOptions">
+
+视频编码的高级选项。详见 [AdvanceOptions](/zh-CN/api-reference/rtc/android/class-advanceoptions)。
+
+</Parameter>
+<a id="codectype"></a>
+<Parameter name="codecType">
+
+本地视频流的首选编码器类型。详见 [VIDEO_CODEC_TYPE](/zh-CN/api-reference/rtc/android/enum-videocodectype)。
+
+</Parameter>
+</ParameterList>

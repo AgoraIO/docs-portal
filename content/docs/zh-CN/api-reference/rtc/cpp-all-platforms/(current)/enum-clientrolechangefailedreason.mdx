@@ -1,0 +1,46 @@
+---
+title: CLIENT_ROLE_CHANGE_FAILED_REASON
+description: 用户角色切换失败的原因。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/enum_clientrolechangefailedreason
+  sourcePath: html-docs/rtc/Cpp/API/enum_clientrolechangefailedreason.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_clientrolechangefailedreason__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="client_role_change_failed_too_many_broadcasters"></a>
+<Parameter name="CLIENT_ROLE_CHANGE_FAILED_TOO_MANY_BROADCASTERS">
+
+（1）：频道中的主播数量超过限制。
+
+:::note
+注： 仅在启用 128 人功能时报告此枚举值。主播的最大数量取决于启用 128 人功能时配置的实际主播数量。
+:::
+
+</Parameter>
+<a id="client_role_change_failed_not_authorized"></a>
+<Parameter name="CLIENT_ROLE_CHANGE_FAILED_NOT_AUTHORIZED">
+
+（2）：请求被声网服务器拒绝。建议提示用户重试切换角色。
+
+</Parameter>
+<a id="client_role_change_failed_request_time_out"></a>
+<Parameter name="CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT">
+
+（3）：请求超时。建议提示用户检查网络连接并重试切换角色。
+
+</Parameter>
+<a id="client_role_change_failed_connection_failed"></a>
+<Parameter name="CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED">
+
+（4）：客户端实例与声网边缘服务器断开连接。你可以通过 onConnectionStateChanged 回调中的 reason 排查失败原因。
+
+</Parameter>
+</ParameterList>

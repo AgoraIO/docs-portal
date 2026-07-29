@@ -1,0 +1,53 @@
+---
+title: LastmileProbeResult
+description: 表示上下行 Last-mile 网络探测的结果。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_lastmileproberesult
+  sourcePath: html-docs/rtc/Cpp/API/class_lastmileproberesult.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileproberesult__prototype"></a>
+
+```text
+struct LastmileProbeResult {
+  LASTMILE_PROBE_RESULT_STATE state;
+  LastmileProbeOneWayResult uplinkReport;
+  LastmileProbeOneWayResult downlinkReport;
+  unsigned int rtt;
+};
+```
+
+<a id="class_lastmileproberesult__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+Last-mile 网络探测的状态。详见 [LASTMILE_PROBE_RESULT_STATE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-lastmileproberesultstate)。
+
+</Parameter>
+<a id="uplinkreport"></a>
+<Parameter name="uplinkReport">
+
+上行 Last-mile 网络探测的结果。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="downlinkreport"></a>
+<Parameter name="downlinkReport">
+
+下行 Last-mile 网络探测的结果。详见 [LastmileProbeOneWayResult](/zh-CN/api-reference/rtc/cpp-all-platforms/class-lastmileprobeonewayresult)。
+
+</Parameter>
+<a id="rtt"></a>
+<Parameter name="rtt">
+
+往返时延（毫秒）。
+
+</Parameter>
+</ParameterList>

@@ -88,7 +88,7 @@ export function resolveDocsNavScope({
     return null;
   }
 
-  const parentScope = scopedAncestors.at(-2);
+  const parentScope = findNearestVisibleParentScope(scopedAncestors);
   const activeVersion = resolveActiveVersion({
     activePath,
     scope: scope.node,
@@ -171,11 +171,13 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
-  return flattenNavScopeSidebarNodes(
-    navScope.sidebarRoot,
-    getNodeMeta,
-    navScope.scope.meta,
-  );
+  const sidebarRootMeta = getNodeMeta(navScope.sidebarRoot);
+  return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta, {
+    ...navScope.scope.meta,
+    ...(sidebarRootMeta?.sidebarLabels
+      ? { sidebarLabels: sidebarRootMeta.sidebarLabels }
+      : {}),
+  });
 }
 
 export function getSharedNavScopeSidebarNodes({
@@ -258,6 +260,19 @@ function hasNavScopeDescendant(
   );
 }
 
+function findNearestVisibleParentScope(
+  ancestors: Array<FolderAncestor & { meta: DocsMeta }>,
+) {
+  for (let index = ancestors.length - 2; index >= 0; index -= 1) {
+    const ancestor = ancestors[index];
+    if (!ancestor.meta.sidebarHidden) {
+      return ancestor;
+    }
+  }
+
+  return undefined;
+}
+
 function flattenParentNavScopeSidebarNodes(
   folder: Folder,
   tab: string,
@@ -277,14 +292,16 @@ function flattenParentNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -297,6 +314,10 @@ function flattenParentNavScopeSidebarNodes(
         nodes.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -373,14 +394,16 @@ function flattenNavScopeSidebarNodes(
 
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of folder.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -396,7 +419,15 @@ function flattenNavScopeSidebarNodes(
       continue;
     }
 
-    for (const node of navScopeNodeToSidebarNodes(child, getNodeMeta)) {
+    if (hideCurrentGroup) {
+      continue;
+    }
+
+    for (const node of navScopeNodeToSidebarNodes(
+      child,
+      getNodeMeta,
+      rootMeta,
+    )) {
       if (node.type === 'page' && node.url === indexUrl) {
         continue;
       }
@@ -488,6 +519,7 @@ function remapSharedSidebarUrl(
 function navScopeNodeToSidebarNodes(
   node: Node,
   getNodeMeta: GetDocsNodeMeta,
+  rootMeta?: DocsMeta,
 ): DocsSidebarNode[] {
   if (node.type === 'separator') {
     return [];
@@ -497,7 +529,9 @@ function navScopeNodeToSidebarNodes(
     return [
       {
         id: node.url,
-        title: normalizeLabel(node.name, node.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.url] ??
+          normalizeLabel(node.name, node.url),
         type: 'page',
         url: node.url,
       },
@@ -515,21 +549,23 @@ function navScopeNodeToSidebarNodes(
   if (meta?.navScope) {
     return shouldUseScopedFolderEntryInParent(node, meta, getNodeMeta)
       ? [getFolderPageNode(node, meta)]
-      : pageTreeNodeToSidebarNodes(node);
+      : pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
   }
 
   if (node.index && node.children.length === 0) {
     return [
       {
         id: node.index.url,
-        title: normalizeLabel(node.index.name, node.index.url),
+        title:
+          rootMeta?.sidebarLabels?.[node.index.url] ??
+          normalizeLabel(node.index.name, node.index.url),
         type: 'page',
         url: node.index.url,
       },
     ];
   }
 
-  return pageTreeNodeToSidebarNodes(node);
+  return pageTreeNodeToSidebarNodes(node, rootMeta?.sidebarLabels);
 }
 
 function pageTreeFolderToParentSidebarNodes(
@@ -541,14 +577,16 @@ function pageTreeFolderToParentSidebarNodes(
     null;
   let currentSection: Extract<DocsSidebarNode, { type: 'section' }> | null =
     null;
+  let hideCurrentGroup = false;
 
   for (const child of node.children) {
     if (child.type === 'separator') {
       const group = parseSidebarGroupMetadata(child.name);
       const title = group.title;
       currentSection = null;
+      hideCurrentGroup = group.sidebarHidden === true;
 
-      if (title.length > 0) {
+      if (!hideCurrentGroup && title.length > 0) {
         const icon = getConfiguredIconName(child);
         currentSection = {
           children: [],
@@ -561,6 +599,10 @@ function pageTreeFolderToParentSidebarNodes(
         children.push(currentSection);
       }
 
+      continue;
+    }
+
+    if (hideCurrentGroup) {
       continue;
     }
 
@@ -655,7 +697,7 @@ function getFolderPageNode(
   const href = getFolderHref(node);
   return {
     id: href,
-    title: getMetaTitle(meta, node),
+    title: meta.sidebarIndexTitle ?? getMetaTitle(meta, node),
     type: 'page',
     url: href,
   };
@@ -774,7 +816,34 @@ function resolveVersionSwitcherLinks({
 
 function findTabFolder(root: Root, activeTab: string): Folder | null {
   for (const child of root.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  for (const child of root.children) {
     const result = findTabFolderInNode(child, activeTab);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+function findRootTabFolderInNode(node: Node, activeTab: string): Folder | null {
+  if (node.type !== 'folder') {
+    return null;
+  }
+
+  const index = getFolderIndex(node);
+  if (node.root === true && index && getTabIdFromUrl(index.url) === activeTab) {
+    return node;
+  }
+
+  for (const child of node.children) {
+    const result = findRootTabFolderInNode(child, activeTab);
     if (result) {
       return result;
     }

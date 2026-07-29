@@ -1,0 +1,18 @@
+---
+title: "推流服务器域名切换"
+description: "了解如何在实时消息 RTM 中推流服务器域名切换，包括适用场景、配置步骤、实现要点和注意事项。"
+---
+[设置推流服务器域名](/zh-CN/realtime-media/rtmp-gateway/get-started/use-gateway#获取服务器域名)时，为避免因区域网络故障造成的服务不可用，建议你参考如下步骤设置推流服务器域名切换：
+
+1. 根据你的源流所在地，设置主域名、备用主域名和次域名：
+
+    | 主域名                           | 备用主域名             |  次域名                             | 地理区域    |
+    | -----------------------        | ----------------------| ---------------------------------- | ---------- |
+    | `rtls-ingress-prod-cn.agoramdn.com` | 无                     | `rtls-ingress-prod-backup-cn.agoramdn.com` | 中国大陆    |
+    | `rtls-ingress-prod-ap.agoramdn.com` | `ap.rtmpg.rtelink.com` | `ap-backup.rtmpg.rtelink.com`              | 除中国大陆以外的亚洲区域 |
+    | `rtls-ingress-prod-eu.agoramdn.com` | `eu.rtmpg.rtelink.com` | `eu-backup.rtmpg.rtelink.com`              | 欧洲   |
+    | `rtls-ingress-prod-na.agoramdn.com` | `na.rtmpg.rtelink.com` | `na-backup.rtmpg.rtelink.com`              | 北美   |
+
+2. 当主域名请求失败时，先用主域名重试一次。如果还是失败，则以备用主域名重试一次（如无备用主域名，则以主域名重试两次）。
+
+3. 如果步骤 2 的重试依然失败，使用次域名重试。

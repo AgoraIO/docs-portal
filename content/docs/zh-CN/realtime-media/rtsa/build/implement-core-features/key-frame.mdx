@@ -1,0 +1,54 @@
+---
+title: "发送关键帧"
+---
+关键帧是自带全部解码信息的独立视频帧，解码时仅需本帧数据，无需参考其他图像。关键帧的设置会影响视频编解码效率和数据空间占用。本文介绍如何发送关键帧。
+
+## 实现方法
+
+### 发送端
+
+发送端在调用 `agora_rtc_send_video_data` 方法发送视频帧时通过 `video_frame_info_t.type` 参数告知 SDK 该视频帧是否为关键帧。
+
+示例代码如下：
+
+```c
+static connection_id_t g_conn_id;
+video_frame_info_t info;
+info.type = frame.u.video.is_key_frame ? VIDEO_FRAME_KEY : VIDEO_FRAME_DELTA;
+info.frames_per_sec = config->send_video_frame_rate;
+info.data_type = config->video_data_type;
+
+// data 表示视频数据
+// len 表示视频数据的长度
+agora_rtc_send_video_data(g_conn_id, data, len, &info);
+```
+
+一帧视频数据被分成数据包发送后，在弱网条件下很可能发生数据包丢失，导致接收端无法还原视频帧，从而发生丢帧。如果不加以处理则接收端将无法解码该 GOP 内的后续 P 帧，使得视频画面停滞，或解码失败出现花屏、绿屏等问题。
+
+发送端长时间没有发送关键帧、关键帧丢失或损坏时，SDK 会通过 `on_key_frame_gen_req` 回调告知发送端为指定的视频流编码一个新的关键帧。为了提升用户体验，我们建议视频编码器定期主动编码关键帧。
+
+```c
+static void __on_key_frame_gen_req(connection_id_t conn_id, uint32_t uid, video_stream_type_e stream_type)
+{
+  // 发送端为指定的视频流编码一个新的关键帧
+  printf("[conn-%u] Frame loss detected. Please notify the encoder to generate key frame immediately\n", conn_id);
+}
+```
+
+### 接收端
+
+接收端解码出错时，可主动调用 `agora_rtc_request_video_key_frame` 方法请求关键帧。
+
+示例代码如下：
+
+```c
+agora_rtc_request_video_key_frame(conn_id, remote_uid, stream_type);
+```
+
+## API 参考
+
+开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
+
+- [`agora_rtc_send_video_data`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5)
+- [`agora_rtc_request_video_key_frame`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a74fbf2ac33a8cefce0f02de3eacc2577)
+- [`on_key_frame_gen_req`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab698db32db28c348552915a3a1337bf8)

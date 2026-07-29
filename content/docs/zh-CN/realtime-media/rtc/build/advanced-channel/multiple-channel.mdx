@@ -1,0 +1,713 @@
+---
+title: "加入多频道"
+description: "了解实时互动 RTC 在不同平台上的加入多频道方式，包括接入流程、关键配置和平台差异。"
+---
+<PlatformStructured platform="android">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 通过 `RtcConnection` 对象和 `RtcEngineEx` 类实现多频道功能。`RtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `RtcEngineEx` 类中的 `joinChannelEx` 并设置不同的 `RtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 不同频道的事件通过你在调用 `joinChannelEx` 方法时，向 `eventHandler` 所传入的不同 `IRtcEngineEventHandler` 对象来回调。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 在项目的 `/app/java/com.example.<projectname>/MainActivity` 文件中定义 `RtcConnection` 对象。
+
+   ```java
+   private RtcConnection rtcConnection2 = new RtcConnection();
+   ```
+
+2. 使用随机的用户 ID 加入频道。
+
+   ```java
+   private boolean joinSecondChannel() {
+       ChannelMediaOptions option = new ChannelMediaOptions();
+       mediaOptions.autoSubscribeAudio = true;
+       mediaOptions.autoSubscribeVideo = true;
+       rtcConnection2.channelId = channel2;
+       rtcConnection2.localUid = new Random().nextInt(512)+512;
+       int ret = engine.joinChannelEx("your token",rtcConnection2,mediaOptions,iRtcEngineEventHandler2);
+       return (ret == 0);
+   }
+   ```
+
+3. 监听 `rtcConnection2` 中的事件，并在 `onUserJoined` 回调中设置远端视频。
+
+   ```java
+   private final IRtcEngineEventHandler iRtcEngineEventHandler2 = new IRtcEngineEventHandler() {
+       @Override
+       public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+           Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid));
+           showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid));
+       }
+       @Override
+       public void onUserJoined(int uid, int elapsed) {
+           Log.i(TAG, "channel2 onUserJoined->" + uid);
+           showLongToast(String.format("user %d joined!", uid));
+           Context context = getContext();
+           if (context == null) {
+               return;
+           }
+           handler.post(() ->
+           {
+               // 显示远端视频流
+               SurfaceView surfaceView = null;
+               if (fl_remote2.getChildCount() > 0) {
+                   fl_remote2.removeAllViews();
+               }
+               // 通过 RtcEngine 创建渲染视图
+               surfaceView = new SurfaceView(context);
+               surfaceView.setZOrderMediaOverlay(true);
+               // 将视图加入远端容器
+               fl_remote2.addView(surfaceView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+               // 设置远端视图
+               engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2);
+           });
+       }
+
+   };
+   ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setupremotevideoex)
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinMultipleChannel" href="https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/JoinMultipleChannel.java" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `AgoraRtcConnection` 对象和 `AgoraRtcEngineKit(Ex)` 类实现多频道功能。`AgoraRtcEngineKit(Ex)` 提供适用于指定 `AgoraRtcConnection` 对象的方法。
+
+`AgoraRtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `AgoraRtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `AgoraRtcEngineKit(Ex)` 类中的 `joinChannelExByToken[1/2]` 并设置不同的 `AgoraRtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `AgoraRtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelExByToken[1/2]` 中的 `AgoraRtcConnection` 对象配置发布和订阅选项。
+- 每个 `AgoraRtcConnection` 可以独立发布多路音频流和一路视频流。
+- 不同频道的事件通过你在调用 `joinChannelExByToken` 方法时，向 `delegate` 所传入的不同 `AgoraRtcEngineDelegate` 对象来回调。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 在项目的 `ViewController.swift` 文件中定义 `AgoraRtcConnection` 对象。
+
+   ```swift
+   let connection1 = AgoraRtcConnection()
+   ```
+
+2. 使用随机的用户 ID 加入频道。
+
+   ```swift
+   var mediaOptions = AgoraRtcChannelMediaOptions()
+   mediaOptions.autoSubscribeVideo = .of(true)
+   mediaOptions.autoSubscribeAudio = .of(true)
+   connection1.channelId = channelName1
+   connection1.localUid = UInt.random(in: 1001...2000)
+   var result = agoraKit.joinChannelEx(byToken: "your token", connection: connection1, delegate: channel1, mediaOptions: mediaOptions, joinSuccess: nil)
+   channel1.channelId = channelName1
+   channel1.connecitonDelegate = self
+   if result != 0 {
+       self.showAlert(title: "Error", message: "joinChannel1 call failed: \(result), please check your params")
+   }
+   ```
+
+3. 在 `didJoinedOfUid` 回调中设置远端视频。
+
+    ```swift
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        guard let channelId = channelId, let channel2RemoteVideo = view else {
+            return
+        }
+        LogUtils.log(message: "remote user join room channel \(channelId): \(uid) \(elapsed)ms", level: .info)
+
+        // 在该操作中，仅一个远端视频视图可用
+        // 此处，我们检查是否存在标签为该 uid 的视图
+        let videoCanvas = AgoraRtcVideoCanvas()
+        videoCanvas.uid = uid
+        // 待绑定的视图
+        videoCanvas.view = channel2RemoteVideo.videoView
+        videoCanvas.renderMode = .hidden
+        let connection = AgoraRtcConnection()
+        connection.channelId = channelId
+        connection.localUid = CONNECTION_2_UID
+        engine.setupRemoteVideoEx(videoCanvas, connection: connection)
+        remoteUid = uid
+    }
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelExByToken[1/2]`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex)
+
+### 示例项目
+
+声网在 GitHub 上提供如下开源的示例项目。你可以前往下载，或查看其中的源代码：
+
+<Cards>
+  <Card title="JoinMultiChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/JoinMultiChannel" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `AgoraRtcConnection` 对象和 `AgoraRtcEngineKit(Ex)` 类实现多频道功能。`AgoraRtcEngineKit(Ex)` 提供适用于指定 `AgoraRtcConnection` 对象的方法。
+
+`AgoraRtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `AgoraRtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `AgoraRtcEngineKit(Ex)` 类中的 `joinChannelExByToken[1/2]` 并设置不同的 `AgoraRtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `AgoraRtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelExByToken[1/2]` 中的 `AgoraRtcConnection` 对象配置发布和订阅选项。
+- 每个 `AgoraRtcConnection` 可以独立发布多路音频流和一路视频流。
+- 不同频道的事件通过你在调用 `joinChannelExByToken` 方法时，向 `delegate` 所传入的不同 `AgoraRtcEngineDelegate` 对象来回调。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 在项目的 `ViewController.swift` 文件中定义 `AgoraRtcConnection` 对象。
+
+   ```swift
+   let connection1 = AgoraRtcConnection()
+   ```
+
+2. 使用随机的用户 ID 加入频道。
+
+   ```swift
+   var mediaOptions = AgoraRtcChannelMediaOptions()
+   mediaOptions.autoSubscribeVideo = .of(true)
+   mediaOptions.autoSubscribeAudio = .of(true)
+   connection1.channelId = channelName1
+   connection1.localUid = UInt.random(in: 1001...2000)
+   var result = agoraKit.joinChannelEx(byToken: "your token", connection: connection1, delegate: channel1, mediaOptions: mediaOptions, joinSuccess: nil)
+   channel1.channelId = channelName1
+   channel1.connecitonDelegate = self
+   if result != 0 {
+       self.showAlert(title: "Error", message: "joinChannel1 call failed: \(result), please check your params")
+   }
+   ```
+
+3. 在 `didJoinedOfUid` 回调中设置远端视频。
+
+    ```swift
+    func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+        guard let channelId = channelId, let channel2RemoteVideo = view else {
+            return
+        }
+        LogUtils.log(message: "remote user join room channel \(channelId): \(uid) \(elapsed)ms", level: .info)
+
+        // 在该操作中，仅一个远端视频视图可用
+        // 此处，我们检查是否存在标签为该 uid 的视图
+        let videoCanvas = AgoraRtcVideoCanvas()
+        videoCanvas.uid = uid
+        // 待绑定的视图
+        videoCanvas.view = channel2RemoteVideo.videoView
+        videoCanvas.renderMode = .hidden
+        let connection = AgoraRtcConnection()
+        connection.channelId = channelId
+        connection.localUid = CONNECTION_2_UID
+        engine.setupRemoteVideoEx(videoCanvas, connection: connection)
+        remoteUid = uid
+    }
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelExByToken[1/2]`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengineex_setupremotevideoex)
+
+### 示例项目
+
+声网在 GitHub 上提供如下开源的示例项目。你可以前往下载，或查看其中的源代码：
+
+<Cards>
+  <Card title="JoinMultiChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/JoinMultiChannel" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `RtcConnection` 对象和 `IRtcEngineEx` 类，用于实现多频道功能。`IRtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名和用户 ID。
+
+如果你要加入多个频道，需要多次调用 `IRtcEngineEx` 类中的 `joinChannelEx` 方法，并设置不同的 `RtcConnection` 对象。加入多频道时，请注意以下事项：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 不同频道的事件通过你在调用 `joinChannelEx` 方法时，向 `eventHandler` 所传入的不同 `IRtcEngineEventHandler` 对象来回调。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 定义连接并使用随机的用户 ID 加入频道。
+
+   ```cpp
+   agora::rtc::ChannelMediaOptions options2;
+   options2.autoSubscribeAudio = false;
+   options2.autoSubscribeVideo = false;
+   options2.publishAudioTrack = false;
+   options2.publishCameraTrack = false;
+   options2.publishSecondaryCameraTrack = true;
+   options2.clientRoleType = CLIENT_ROLE_BROADCASTER;
+   // 定义连接
+   connection.localUid = generateUid();
+   connection.channelId = szChannelId.data();
+   // 加入频道
+   int ret = m_rtcEngine->joinChannelEx(APP_TOKEN, connection, options2, &m_camera2EventHandler);
+   ```
+
+2. 监听 `onUserJoined` 回调并设置远端视频。
+
+    ```cpp
+    // 监听 onUserJoined 回调
+    void CAGEngineEventHandler::onUserJoined(uid_t uid, int elapsed) {
+        LPAGE_USER_JOINED lpData = new AGE_USER_JOINED;
+
+        lpData->uid = uid;
+        lpData->elapsed = elapsed;
+
+        if (m_hMainWnd != NULL)
+            ::PostMessage(m_hMainWnd, WM_MSGID(EID_USER_JOINED), (WPARAM)lpData, 0);
+    }
+    ```
+
+    ```cpp
+    VideoCanvas canvas;
+    canvas.renderMode = RENDER_MODE_FIT;
+    canvas.uid = 123;
+    canvas.view = videoWnd.GetSafeHwnd();
+
+    connection.localUid =123;
+    connection.channelId = "channel123";
+
+    // 设置远端视频
+    rtcEngine->setupRemoteVideoEx(canvas, connection);
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengineex_setupremotevideoex)
+
+### 示例项目
+
+声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="MultiChannel" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MultiChannel" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `RtcConnection` 对象和 `IRtcEngineEx` 类实现多频道功能。`IRtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `IRtcEngineEx` 类中的 `joinChannelEx` 并设置不同的 `RtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 你可以通过每个具体回调中的 `connection` 参数得知该回调对应哪个频道的事件。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 调用 `joinChannelEx`，定义 `RtcConnection` 并使用随机的用户 ID 加入频道。
+
+    ```javascript
+    let token2 = "token2";
+    const channelId2 = "channel2";
+    let uid2 = 321;
+
+    // 加入多频道
+    rtcEngine.joinChannelEx(
+        token2,
+        // RtcConnection
+        {
+            channelId: channelId2,
+            localUid: uid2,
+        },
+        // ChannelMediaOptions
+        {
+            clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+            publishMicrophoneTrack: false,
+            publishCameraTrack: false,
+            autoSubscribeAudio: false,
+            autoSubscribeVideo: false,
+            publishSecondaryCameraTrack: true,
+        }
+    );
+    ```
+
+2. 监听 `onUserJoined` 回调并设置远端视频。
+
+    ```javascript
+    const EventHandles = {
+        // 监听远端用户加入频道事件
+        onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+            console.log('远端用户 ' + remoteUid + ' 已加入');
+            // 远端用户加入频道后，设置远端视频窗口
+            rtcEngine.setupRemoteVideoEx(
+                {
+                    sourceType: VideoSourceType.VideoSourceRemote,
+                    uid: remoteUid,
+                    view: remoteVideoContainer,
+                    setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+                },
+                {
+                    channelId: channelId2,
+                    localUid: uid2,
+                },
+            );
+        },
+        // 其他事件回调
+    };
+
+    // 注册事件回调
+    rtcEngine.registerEventHandler(EventHandles);
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengineex_joinchannelex)
+- [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/electron/video/video-rendering#api_irtcengineex_setupremotevideoex)
+- [`onUserJoined`](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onuserjoined)
+
+### 示例项目
+
+声网提供了加入多频道的示例项目供你参考。你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinMultiChannel" href="https://gitee.com/agoraio-community/Electron-SDK/blob/main/example/src/renderer/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx" />
+  <Card title="JoinMultiChannel" href="https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx" />
+</Cards>
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `RtcConnection` 对象和 `IRtcEngineEx` 类实现多频道功能。`IRtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `IRtcEngineEx` 类中的 `JoinChannelEx` 并设置不同的 `RtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `JoinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 你可以通过每个具体回调中的 `connection` 参数得知该回调对应哪个频道的事件。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+本节介绍如何在已经加入一个频道的情况下，以主播身份加入第二个频道。
+
+1. 调用 `JoinChannelEx` 加入第二个频道。
+
+   ```csharp
+   ChannelMediaOptions options2 = new ChannelMediaOptions();
+   // 自动订阅远端的音频流
+   options2.autoSubscribeAudio.SetValue(true);
+   // 自动订阅远端的视频流
+   options2.autoSubscribeVideo.SetValue(true);
+   // 发布麦克风采集的音频流
+   options2.publishMicrophoneTrack.SetValue(true);
+   // 发布摄像头采集的视频流
+   options2.publishCameraTrack.SetValue(true);
+   // 设置用户角色为主播
+   options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+   // 加入第二个频道
+   // 请确保加入频道使用的用户 ID 是唯一的
+   ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, UID2), options2);
+   Debug.Log("JoinChannelEx returns: " + ret);
+   ```
+
+2. 监听 `OnUserJoined` 回调，并调用 `SetForUser` 设置远端用户视频渲染。
+
+    ```csharp
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+    {
+        Debug.Log(string.Format("OnUserJoined uid: ${0} elapsed: ${1}", uid, elapsed));
+        //创建远端用户视图
+        var videoSurface = MakeImageSurface(uid.ToString());
+        // 设置视频渲染
+        videoSurface.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+        // Texture 的宽高发生改变回调
+        videoSurface.OnTextureSizeModify += (int width, int height) =>
+        {
+            var transform = videoSurface.GetComponent<RectTransform>();
+            if (transform)
+            {
+                // 如果在 RawImage 中渲染，只需设置 RawImage 的尺寸
+                transform.sizeDelta = new Vector2(width / 2, height / 2);
+                transform.localScale = Vector3.one;
+             }
+             else
+             {
+                 // 如果在 MeshRenderer 中渲染，只需设置 MeshRenderer 的本地尺寸
+                 float scale = (float)height / (float)width;
+                 videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+              }
+              Debug.Log("OnTextureSizeModify: " + width + "  " + height);
+        }
+    }
+
+
+    private static VideoSurface MakeImageSurface(string goName)
+    {
+        GameObject go = new GameObject();
+        go.name = goName;
+        // to be renderered onto
+        go.AddComponent<RawImage>();
+        // make the object draggable
+        go.AddComponent<UIElementDrag>();
+        var canvas = GameObject.Find("VideoCanvas");
+        if (canvas != null)
+        {
+            go.transform.parent = canvas.transform;
+            Debug.Log("add video view");
+        }
+        else
+        {
+            Debug.Log("Canvas is null video view");
+         }
+
+         // 设置 transform 属性
+         go.transform.Rotate(0f, 0.0f, 180.0f);
+         go.transform.localPosition = Vector3.zero;
+         go.transform.localScale = new Vector3(2f, 3f, 1f);
+
+         // 添加 videoSurface 组件
+         var videoSurface = go.AddComponent<VideoSurface>();
+         return videoSurface;
+    }
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`JoinChannelEx`](/zh-CN/api-reference/rtc/unity/channel#api_irtcengineex_joinchannelex)
+- [`OnUserJoined`](/zh-CN/api-reference/rtc/unity/channel#callback_irtcengineeventhandler_onuserjoined)
+- [`SetForUser`](/zh-CN/api-reference/rtc/unity/video/video-rendering#api_videosurface_setforuser)
+- [`OnTextureSizeModify`](/zh-CN/api-reference/rtc/unity/video/video-rendering#ontexturesizemodify)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+声网 SDK 支持用户同时加入多个频道，同一时间可以在多个频道中接收和发布音视频流。
+
+## 技术原理
+
+SDK 提供 `RtcConnection` 对象和 `IRtcEngineEx` 类实现多频道功能。`IRtcEngineEx` 提供适用于指定 `RtcConnection` 对象的方法。
+
+`RtcConnection` 对象包含用于识别连接的如下信息：
+
+- 频道名称
+- 本地用户的用户 ID
+
+你可以创建多个 `RtcConnection` 对象，并为每个对象设置不同的频道名称和用户 ID。
+
+如果要加入多个频道，多次调用 `IRtcEngineEx` 类中的 `joinChannelEx` 并设置不同的 `RtcConnection` 对象。加入多频道时请注意：
+
+- 每个 `RtcConnection` 对象的用户 ID 是唯一的，且不为 `0`。
+- 可以为 `joinChannelEx` 中的 `RtcConnection` 对象配置发布和订阅选项。
+- 每个 `RtcConnection` 可以独立发布多路音频流和一路视频流。
+- 你可以通过每个具体回调中的 `connection` 参数得知该回调对应哪个频道的事件。
+
+## 前提条件
+
+在进行操作之前，请确保你已经在项目中实现了基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+## 实现方法
+
+为实现多频道功能，你需要对每个频道进行如下设置：
+
+1. 调用 `joinChannelEx`，定义 `RtcConnection` 并使用随机的用户 ID 加入频道。
+
+    ```javascript
+    let token2 = "token2";
+    const channelId2 = "channel2";
+    let uid2 = 321;
+
+    // 加入多频道
+    rtcEngine.joinChannelEx(
+        token2,
+        // RtcConnection
+        {
+            channelId: channelId2,
+            localUid: uid2,
+        },
+        // ChannelMediaOptions
+        {
+            clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+            publishMicrophoneTrack: false,
+            publishCameraTrack: false,
+            autoSubscribeAudio: false,
+            autoSubscribeVideo: false,
+            publishSecondaryCameraTrack: true,
+        }
+    );
+    ```
+
+2. 监听 `onUserJoined` 回调并设置远端视频。
+
+    ```jsx
+    // 注册远端用户加入当前频道回调
+    agoraEngine.registerEventHandler(
+        {
+            onUserJoined: (_connection: RtcConnection, uid: number) => {
+                showMessage("远端用户 " + uid + " 已加入");
+                setRemoteUid(uid);
+            },
+        }
+    );
+
+    // 使用 RtcSurfaceView 创建远端视图
+    <RtcSurfaceView
+        canvas={
+            {
+                uid: remoteUid,
+                sourceType: VideoSourceType.VideoSourceRemote,
+            }
+        }
+        style={styles.videoView}
+    />;
+    ```
+
+## 参考信息
+
+### API 参考
+
+- [`joinChannelEx`](/zh-CN/api-reference/rtc/react-native/channel#api_irtcengineex_joinchannelex)
+- `setupRemoteVideoEx`
+- [`onUserJoined`](/zh-CN/api-reference/rtc/react-native/channel#callback_irtcengineeventhandler_onuserjoined)
+
+### 示例项目
+
+声网提供了加入多频道的示例项目供你参考。你可以前往下载或查看其中的源代码。
+
+<Cards>
+  <Card title="JoinMultiChannel" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx" />
+  <Card title="JoinMultiChannel" href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx" />
+</Cards>
+
+</PlatformStructured>

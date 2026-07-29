@@ -1,0 +1,193 @@
+---
+title: VideoFrame
+description: 视频帧的属性设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/class_videoframe
+  sourcePath: html-docs/rtc/HarmonyOS/API/class_videoframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_videoframe__prototype"></a>
+
+```text
+export class VideoFrame {
+  public buffer:ArrayBuffer | null = null;
+  public yBuffer: ArrayBuffer | null = null;
+  public uBuffer: ArrayBuffer | null = null;
+  public vBuffer: ArrayBuffer | null = null;
+
+  public rotation:number = 0;
+  public timestamp:number = 0;
+  public yStride:number = 0;
+  public uStride:number = 0;
+  public vStride:number = 0;
+  public width:number = 0;
+  public height:number = 0;
+  public type:VideoBufferType = VideoBufferType.RAW_DATA;
+  public format:VideoPixelFormat = VideoPixelFormat.VIDEO_PIXEL_NV21;
+  constructor(type:VideoBufferType,format:VideoPixelFormat) {
+    this.type = type;
+    this.format = format;
+  }
+}
+```
+
+<a id="class_videoframe__detailed_desc"></a>
+
+### 详情
+
+缓冲区给出的是指向指针的指针，该接口不能修改缓冲区的指针，只能修改缓冲区的内容。
+
+<a id="class_videoframe__parameters"></a>
+
+##
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+视频类型。详见 [VideoBufferType](/zh-CN/api-reference/rtc/harmonyos/enum-videobuffertype)。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+像素格式。详见 [VideoPixelFormat](/zh-CN/api-reference/rtc/harmonyos/enum-videopixelformat)。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+视频像素宽度。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+视频像素高度。
+
+</Parameter>
+<a id="ystride"></a>
+<Parameter name="yStride">
+
+对 YUV 数据，表示 Y 缓冲区的行跨度；对 RGBA 数据，表示总的数据长度。
+
+:::caution
+注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+</Parameter>
+<a id="ustride"></a>
+<Parameter name="uStride">
+
+对 YUV 数据，表示 U 缓冲区的行跨度；对 RGBA 数据，值为 0。
+
+:::caution
+注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+</Parameter>
+<a id="vstride"></a>
+<Parameter name="vStride">
+
+对 YUV 数据，表示 V 缓冲区的行跨度；对 RGBA 数据，值为 0。
+
+:::caution
+注意： 在处理视频数据时，需根据该参数处理每行像素数据之间的偏移量，否则可能导致图像失真。
+:::
+
+</Parameter>
+<a id="ybuffer"></a>
+<Parameter name="yBuffer">
+
+对 YUV 数据，表示 Y 缓冲区的指针；对 RGBA 数据，表示数据缓冲区。
+
+</Parameter>
+<a id="ubuffer"></a>
+<Parameter name="uBuffer">
+
+对 YUV 数据，表示 U 缓冲区的指针；对 RGBA 数据，值为空。
+
+</Parameter>
+<a id="vbuffer"></a>
+<Parameter name="vBuffer">
+
+对 YUV 数据，表示 V 缓冲区的指针；对 RGBA 数据，值为空。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+:::caution
+注意： 该参数不可为空，否则会发生异常。
+:::
+
+缓冲区的数据。与该参数相关的方法如下所示：
+
+- `getRotatedWidth`：获取旋转后的视频帧宽度。
+- `getRotatedHeight`：获取旋转后的视频帧高度。
+- `replaceBuffer`：将缓冲区中的数据替换为新的视频帧。
+- `retain`：将缓冲区的引用计数加 1。
+- `release`：将缓冲区的引用计数减 1。当计数为 0 时，缓冲区的资源会被释放。
+
+</Parameter>
+<a id="rotation"></a>
+<Parameter name="rotation">
+
+在渲染视频前设置该帧的顺时针旋转角度，目前支持 0 度、90 度、180 度，和 270 度。
+
+</Parameter>
+<a id="timestampns"></a>
+<Parameter name="timestampNs">
+
+视频帧的时间戳（纳秒）。
+
+</Parameter>
+<a id="colorspace"></a>
+<Parameter name="colorSpace">
+
+表示视频帧的色彩空间。详见 VideoColorSpace。
+
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+在使用 SDK 采集视频时，表示该视频源的类型。
+
+- kFrontCamera：前置摄像头。
+- kBackCamera：后置摄像头。
+- kUnspecified：(默认) 视频源类型未知。
+
+</Parameter>
+<a id="sampleaspectratio"></a>
+<Parameter name="sampleAspectRatio">
+
+单个像素的宽高比，即每个像素宽度与高度的比值。
+
+采用人像分割算法输出的 Alpha 通道数据。该数据跟视频帧的尺寸一致，每个像素点的取值范围为 [0,255]，其中 0 代表背景；255 代表前景（人像）。
+
+你可以通过设置该参数，实现将视频背景自渲染为各种效果，例如：透明、纯色、图片、视频等。
+
+:::caution
+注意：
+
+- 请务必确保 跟视频帧的尺寸 (width × height) 完全一致，否则可能会导致 App 崩溃。
+:::
+
+</Parameter>
+<a id="alphastitchmode"></a>
+<Parameter name="alphaStitchMode">
+
+当视频帧中包含 Alpha 通道数据时，设置 alphaBuffer 和视频帧的相对位置。
+
+</Parameter>
+<a id="metainfo"></a>
+<Parameter name="metaInfo">
+
+视频帧中的元信息。该参数需要[联系技术支持](https://ticket.shengwang.cn/)使用。
+
+</Parameter>
+</ParameterList>

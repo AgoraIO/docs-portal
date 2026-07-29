@@ -1,0 +1,864 @@
+---
+title: agora::rtc::ILocalUserObserver类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_user_observer
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_local_user_observer.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[`ILocalUserObserver`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer) 类。
+
+## 成员枚举类型说明
+
+<a id="aebf5fda0b9fa8f8921fab72a2bf6556a"></a>
+
+### USER_MEDIA_INFO
+
+<ApiSignature>
+
+enum [agora::rtc::ILocalUserObserver::USER_MEDIA_INFO](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#aebf5fda0b9fa8f8921fab72a2bf6556a)
+
+</ApiSignature>
+
+用户媒体信息。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+| <Slot name="api-center-table-2" /> | <Slot name="api-center-table-3" /> |
+| <Slot name="api-center-table-4" /> | <Slot name="api-center-table-5" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="aebf5fda0b9fa8f8921fab72a2bf6556aad15b0ab1be696265256f8245acf5881a"></a>USER_MEDIA_INFO_MUTE_AUDIO
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+0: 用户已经停止发布音频流。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="aebf5fda0b9fa8f8921fab72a2bf6556aa8bb5302885ceef4379af47121e5e4b8c"></a>USER_MEDIA_INFO_MUTE_VIDEO
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+1: 用户已经停止发布视频流。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+<a id="aebf5fda0b9fa8f8921fab72a2bf6556aa917bfb392bb266b81c3ff5471d807848"></a>USER_MEDIA_INFO_ENABLE_VIDEO
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+4: 用户已开启视频功能。
+
+</Slot>
+
+<a id="ac8c847858dc6423a9d4de641b9d5c00b"></a>
+
+### REMOTE_USER_STATE
+
+<ApiSignature>
+
+enum [agora::rtc::ILocalUserObserver::REMOTE_USER_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#ac8c847858dc6423a9d4de641b9d5c00b)
+
+</ApiSignature>
+
+远端用户状态信息。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-6" /> | <Slot name="api-center-table-7" /> |
+| <Slot name="api-center-table-8" /> | <Slot name="api-center-table-9" /> |
+| <Slot name="api-center-table-10" /> | <Slot name="api-center-table-11" /> |
+| <Slot name="api-center-table-12" /> | <Slot name="api-center-table-13" /> |
+
+<Slot for="api-center-table-6">
+
+<a id="ac8c847858dc6423a9d4de641b9d5c00ba236ce351dc59d8716c515b4790c8a406"></a>PEER_STATE_MUTE_AUDIO
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+1：远端用户已经停止发布音频。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+<a id="ac8c847858dc6423a9d4de641b9d5c00baa8c8f83d90769c476ae9b6f9dd0e13a8"></a>PEER_STATE_MUTE_VIDEO
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+2：远端用户已经停止发布视频。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+<a id="ac8c847858dc6423a9d4de641b9d5c00ba1e3b2d4150567694454050646b8d1a03"></a>PEER_STATE_ENABLE_VIDEO
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+3：远端用户已经开启视频。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+<a id="ac8c847858dc6423a9d4de641b9d5c00ba252a35fd8810de675f5a8f47e24ef9e7"></a>PEER_STATE_ENABLE_LOCAL_VIDEO
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+4：远端用户已经开启视频采集。
+
+</Slot>
+
+## 构造及析构函数说明
+
+<a id="a0535e51265af6624002d861b63ebd614"></a>
+
+### ~ILocalUserObserver()
+
+<ApiSignature labels="inline virtual">
+
+virtual agora::rtc::ILocalUserObserver::~ILocalUserObserver()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a1fe4d9e7b6abd7c3a18d75970d1f7937"></a>
+
+### onAudioTrackPublishSuccess()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onAudioTrackPublishSuccess([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*)
+
+</ApiSignature>
+
+在第一个本地音频包发送时触发，表明本地音频轨道已成功发布。
+
+<ParameterList title="参数">
+<Parameter name="audioTrack">
+
+[ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象。
+
+</Parameter>
+</ParameterList>
+
+<a id="ad64b655df59c4ec56c85df47743659a2"></a>
+
+### onLocalAudioTrackStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onLocalAudioTrackStateChanged([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) &gt; *audioTrack*, [LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332) *state*, [LOCAL_AUDIO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045e) *errorCode*)
+
+</ApiSignature>
+
+在本地音频轨道状态变化时触发。
+
+<ParameterList title="参数">
+<Parameter name="audioTrack">
+
+[ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象。
+
+</Parameter>
+<Parameter name="state">
+
+音频轨道的状态：[LOCAL_AUDIO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a19311f858629420654fcc0da9d043332)。
+
+</Parameter>
+<Parameter name="errorCode">
+
+错误信息： [LOCAL_AUDIO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a3929991eea3a522dcbf6ac078810045e)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a38bbffc4bcd41754ee637ca314a26563"></a>
+
+### onLocalAudioTrackStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onLocalAudioTrackStatistics(const [LocalAudioStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-audio-stats) & *stats*)
+
+</ApiSignature>
+
+报告本地音频轨道状态。
+
+<ParameterList title="参数">
+<Parameter name="stats">
+
+本地音频轨道状态：[LocalAudioStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-audio-stats)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a70cd9478bb697521064b3ec58094cd64"></a>
+
+### onRemoteAudioTrackStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onRemoteAudioTrackStatistics([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) &gt; *audioTrack*, const [RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-audio-track-stats) & *stats*)
+
+</ApiSignature>
+
+报告远端音频轨道状态。
+
+<ParameterList title="参数">
+<Parameter name="audioTrack">
+
+远端音频轨道：[IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track)。
+
+</Parameter>
+<Parameter name="stats">
+
+远端音频轨道统计信息：[RemoteAudioTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-audio-track-stats)。
+
+</Parameter>
+</ParameterList>
+
+<a id="aa308da2febe75ed17423e8b231bb5519"></a>
+
+### onUserAudioTrackSubscribed()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserAudioTrackSubscribed([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) &gt; *audioTrack*)
+
+</ApiSignature>
+
+成功订阅远端用户发送的音频流时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+发送音频帧的远端用户 ID。
+
+</Parameter>
+<Parameter name="audioTrack">
+
+远端音频轨道：[IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track)。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae69feaba3395bdbe820ab98150bdda38"></a>
+
+### onUserAudioTrackStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserAudioTrackStateChanged([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) &gt; *audioTrack*, [REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516) *state*, [REMOTE_AUDIO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fc) *reason*, int *elapsed*)
+
+</ApiSignature>
+
+在远端音频轨道状态变化时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="audioTrack">
+
+远端音频轨道：[IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track)。
+
+</Parameter>
+<Parameter name="state">
+
+音频轨道的当前状态：[REMOTE_AUDIO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aa83ef274510d1063e840d6104fd12516)。
+
+</Parameter>
+<Parameter name="reason">
+
+状态改变原因：[REMOTE_AUDIO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a532f4584f6ed5962012e1f08bef6f0fc)。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a6aa9af78a8661e6edb90238ecb79c030"></a>
+
+### onVideoTrackPublishSuccess()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onVideoTrackPublishSuccess([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*)
+
+</ApiSignature>
+
+在第一个本地视频包发送时触发，表明本地音视频轨道已成功发布。
+
+<ParameterList title="参数">
+<Parameter name="videoTrack">
+
+本地视频轨道： [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)。
+
+</Parameter>
+</ParameterList>
+
+<a id="ae4c177878b7e0afcdd390de4df899f48"></a>
+
+### onLocalVideoTrackStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onLocalVideoTrackStateChanged([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, [LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b) *state*, [LOCAL_VIDEO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842) *errorCode*)
+
+</ApiSignature>
+
+本地视频轨道状态改变时触发。
+
+:::info[注解]
+如果该回调返回错误码，声网建议你通过 `setEnabled` 方法关闭轨道再重新开启。
+:::
+
+<ParameterList title="参数">
+<Parameter name="videoTrack">
+
+本地视频轨道：[ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)。
+
+</Parameter>
+<Parameter name="state">
+
+本地视频轨道状态：[LOCAL_VIDEO_STREAM_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a7c8ce313cb6ccb0d186953bd06e6200b)。
+
+</Parameter>
+<Parameter name="errorCode">
+
+错误信息：[LOCAL_VIDEO_STREAM_ERROR](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#aca8292c30c50a78f6fbd1ef1b264d842)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a167b28d331295decd627a6a80907b168"></a>
+
+### onLocalVideoTrackStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onLocalVideoTrackStatistics([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) &gt; *videoTrack*, const [LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats) & *stats*)
+
+</ApiSignature>
+
+报告本地视频轨道的统计信息。
+
+<ParameterList title="参数">
+<Parameter name="videoTrack">
+
+本地视频轨道。
+
+</Parameter>
+<Parameter name="stats">
+
+本地视频轨道的统计信息：[LocalVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-local-video-track-stats)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a50040b5c094d40e0987e82de59ec602e"></a>
+
+### onUserVideoTrackSubscribed()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserVideoTrackSubscribed([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [VideoTrackInfo](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-video-track-info) *trackInfo*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) &gt; *videoTrack*)
+
+</ApiSignature>
+
+成功订阅远端用户发送的视频流时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+发送视频帧的远端用户 ID。
+
+</Parameter>
+<Parameter name="trackInfo">
+
+视频轨道信息。
+
+</Parameter>
+<Parameter name="videoTrack">
+
+远端视频轨道。
+
+</Parameter>
+</ParameterList>
+
+<a id="a633eeef87c0b2ca62f6e05c9e8cbe87d"></a>
+
+### onUserVideoTrackStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserVideoTrackStateChanged([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) &gt; *videoTrack*, [REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8) *state*, [REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bff) *reason*, int *elapsed*)
+
+</ApiSignature>
+
+在远端视频轨道状态变更时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="videoTrack">
+
+远端视频轨道。
+
+</Parameter>
+<Parameter name="state">
+
+当前视频帧状态：[REMOTE_VIDEO_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a8098bde3bb614a7716d0f39105b8f1d8)。
+
+</Parameter>
+<Parameter name="reason">
+
+状态改变原因：[REMOTE_VIDEO_STATE_REASON](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ae31fce5548860cb0a62e4c232fb18bff)。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a7acbf5f758768d580d6aa47b2b6d5e55"></a>
+
+### onFirstRemoteVideoFrameRendered()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onFirstRemoteVideoFrameRendered([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, int *width*, int *height*, int *elapsed*)
+
+</ApiSignature>
+
+在第一个远端发送的视频帧渲染时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="width">
+
+视频帧宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频帧高度（像素）。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="acb8043e4a0c46620830788126e5f31c9"></a>
+
+### onRemoteVideoTrackStatistics()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onRemoteVideoTrackStatistics([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) &gt; *videoTrack*, const [RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) & *stats*)
+
+</ApiSignature>
+
+报告远端视频轨道的统计信息。
+
+<ParameterList title="参数">
+<Parameter name="videoTrack">
+
+远端视频轨道：[IRemoteVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-video-track) 。
+
+</Parameter>
+<Parameter name="stats">
+
+远端视频轨道统计信息：[RemoteVideoTrackStats](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-remote-video-track-stats) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a09a5043cafce60cba0808f060963b5b3"></a>
+
+### onAudioSubscribeStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onAudioSubscribeStateChanged(const char * *channel*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) *oldState*, [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) *newState*, int *elapseSinceLastState*)
+
+</ApiSignature>
+
+对远端用户音频订阅状态变更时触发。
+
+<ParameterList title="参数">
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="userId">
+
+订阅的远端用户的 ID。
+
+</Parameter>
+<Parameter name="oldState">
+
+之前的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="newState">
+
+新的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="elapseSinceLastState">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a31fddab1fbfa9acffe3f033bfdea3a32"></a>
+
+### onVideoSubscribeStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onVideoSubscribeStateChanged(const char * *channel*, [user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) *oldState*, [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) *newState*, int *elapseSinceLastState*)
+
+</ApiSignature>
+
+对远端用户视频订阅状态变更时触发。
+
+<ParameterList title="参数">
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="userId">
+
+订阅的远端用户的 ID。
+
+</Parameter>
+<Parameter name="oldState">
+
+之前的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="newState">
+
+新的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="elapseSinceLastState">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a2cd55760dfcef7b6dc6f13b0e51ed0dc"></a>
+
+### onAudioPublishStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onAudioPublishStateChanged(const char * *channel*, [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) *oldState*, [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) *newState*, int *elapseSinceLastState*)
+
+</ApiSignature>
+
+音频发布状态变更后触发。
+
+<ParameterList title="参数">
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="oldState">
+
+之前的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="newState">
+
+新的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="elapseSinceLastState">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a00564978b6d7f59074f71afc303b0a21"></a>
+
+### onVideoPublishStateChanged()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onVideoPublishStateChanged(const char * *channel*, [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) *oldState*, [STREAM_PUBLISH_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a58eeb8b495ca1c91d38785f064132537) *newState*, int *elapseSinceLastState*)
+
+</ApiSignature>
+
+视频发布状态变更后触发。
+
+<ParameterList title="参数">
+<Parameter name="channel">
+
+用户所在频道的频道名。
+
+</Parameter>
+<Parameter name="oldState">
+
+之前的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="newState">
+
+新的订阅状态： [STREAM_SUBSCRIBE_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#ac405a073458682fd6464c82d49fece3c) 。
+
+</Parameter>
+<Parameter name="elapseSinceLastState">
+
+变更为新状态之后的时长（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="ab66e3d7f7df89932c5817c06352bdbc6"></a>
+
+### onFirstRemoteAudioFrame()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onFirstRemoteAudioFrame([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, int *elapsed*)
+
+</ApiSignature>
+
+接收到远端用户发送的第一个音频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+远端用户的 ID。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a684740deb2ce6a0a44ed95a76d90c996"></a>
+
+### onFirstRemoteAudioDecoded()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onFirstRemoteAudioDecoded([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, int *elapsed*)
+
+</ApiSignature>
+
+在 SDK 解码第一个收到的远端音频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+发送音频帧的用户 user ID。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="ac2ea2bc9cd9743a76908c6fac67f456d"></a>
+
+### onFirstRemoteVideoDecoded()
+
+<ApiSignature labels="pure virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onFirstRemoteVideoDecoded([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, int *width*, int *height*, int *elapsed*)
+
+</ApiSignature>
+
+在 SDK 解码第一个视频帧时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+发送视频帧的用户 user ID。
+
+</Parameter>
+<Parameter name="width">
+
+视频帧的宽度（像素）。
+
+</Parameter>
+<Parameter name="height">
+
+视频帧的高度（像素）。
+
+</Parameter>
+<Parameter name="elapsed">
+
+远端用户连接频道之后经过的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+<a id="a33015fc17aed0131666c469b7dfcfdb0"></a>
+
+### onUserInfoUpdated()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserInfoUpdated([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, [USER_MEDIA_INFO](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#aebf5fda0b9fa8f8921fab72a2bf6556a) *msg*, bool *val*)
+
+</ApiSignature>
+
+用户媒体信息更新时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+用户 ID。
+
+</Parameter>
+<Parameter name="msg">
+
+用户媒体信息。详见 [USER_MEDIA_INFO](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#aebf5fda0b9fa8f8921fab72a2bf6556a) 。
+
+</Parameter>
+<Parameter name="val">
+
+用户是否停止发流。
+
+</Parameter>
+</ParameterList>
+
+<a id="abe52ed35277c6c6efc50125b05895859"></a>
+
+### onIntraRequestReceived()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onIntraRequestReceived()
+
+</ApiSignature>
+
+本地用户收到来自远端用户的关键帧请求时触发。
+
+该回调提醒本地用户编码关键帧。
+
+<a id="a0a0af52ad5ef54b08919df497b738f8b"></a>
+
+### onStreamMessage()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onStreamMessage([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, int *streamId*, const char * *data*, size_t *length*)
+
+</ApiSignature>
+
+接收到数据流消息的回调。
+
+该回调表示本地用户收到了远端用户调用 [sendStreamMessage](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a2545d46a802312553e260e1acb45b721) 方法发送的流消息。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+发送消息的用户 ID。
+
+</Parameter>
+<Parameter name="streamId">
+
+接收到的消息的 Stream ID。
+
+</Parameter>
+<Parameter name="data">
+
+接收到的数据。
+
+</Parameter>
+<Parameter name="length">
+
+数据长度，单位为字节。
+
+</Parameter>
+</ParameterList>
+
+<a id="aafb1342a58c31264531cea41ca8e4969"></a>
+
+### onUserStateChanged()
+
+<ApiSignature labels="inline virtual">
+
+virtual void agora::rtc::ILocalUserObserver::onUserStateChanged([user_id_t](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a67aa7eac4d2b30c5c02951f1303bcc48) *userId*, uint32_t *state*)
+
+</ApiSignature>
+
+远端用户状态更新时触发。
+
+<ParameterList title="参数">
+<Parameter name="userId">
+
+远端用户 ID。
+
+</Parameter>
+<Parameter name="state">
+
+远端用户状态： [REMOTE_USER_STATE](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-user-observer#ac8c847858dc6423a9d4de641b9d5c00b) 。
+
+</Parameter>
+</ParameterList>

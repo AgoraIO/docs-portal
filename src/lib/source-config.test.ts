@@ -32,16 +32,12 @@ describe('source config', () => {
     vi.resetModules();
   });
 
-  it(
-    'uses canonical docs and meta collection globs by default',
-    async () => {
-      const { docs } = await import('../../source.config');
+  it('uses canonical docs and meta collection globs by default', async () => {
+    const { docs } = await import('../../source.config');
 
-      expect(docs.docs.files).toEqual(['**/*.{md,mdx}']);
-      expect(docs.meta.files).toEqual(['**/meta.{json,yaml}']);
-    },
-    30000,
-  );
+    expect(docs.docs.files).toEqual(['**/*.{md,mdx}']);
+    expect(docs.meta.files).toEqual(['**/meta.{json,yaml}']);
+  }, 30000);
 
   it('creates scoped docs collection globs for a focused dev subtree', () => {
     expect(createScopedDocsFiles('en/ai/openai-realtime')).toEqual({
@@ -97,6 +93,43 @@ describe('source config', () => {
 
         expect(compiled).toContain(`<CalloutContainer type="${calloutType}">`);
       }),
+    );
+  });
+
+  it('normalizes legacy heading anchors through the docs MDX pipeline', async () => {
+    const { docs } = await import('../../source.config');
+    const configureMdx = docs.docs.mdxOptions;
+
+    expect(configureMdx).toBeTypeOf('function');
+
+    if (typeof configureMdx !== 'function') {
+      throw new Error('Expected docs MDX options to be configured lazily.');
+    }
+
+    const mdxOptions = await configureMdx('bundler');
+    const compiled = String(
+      await compile(
+        `
+<a id="moduletype"></a>
+## ModuleType
+
+<a id="legacy"></a>
+## Heading [#canonical]
+`,
+        {
+          ...mdxOptions,
+          jsx: true,
+        },
+      ),
+    );
+
+    expect(compiled).not.toContain('<a id="moduletype" />');
+    expect(compiled).toContain(
+      '<_components.h2 id="moduletype">{"ModuleType"}</_components.h2>',
+    );
+    expect(compiled).toContain('<a id="legacy" />');
+    expect(compiled).toContain(
+      '<_components.h2 id="canonical">{"Heading"}</_components.h2>',
     );
   });
 });

@@ -1,0 +1,1076 @@
+openapi: 3.1.0
+info:
+  version: ''
+  title: API 概述
+  summary: ''
+  description: |
+    本页介绍声网弹幕玩法服务端 RESTful API 的基本信息。
+
+    ## 基本功能
+
+    声网弹幕玩法服务端 RESTful API 提供以下功能：
+
+    ### 移动端云开播
+
+    - [获取云游戏列表](get-cloud-game-list)
+    - [获取云游戏详情](get-cloud-game-detail)
+    - [启动云游戏服务](start-cloud-game)
+    - [关闭云游戏服务](stop-cloud-game)
+    - [查询云游戏任务状态](get-cloud-game-status)
+    - [更新云游戏推流 Token](renew-cloud-game-token)
+    - [推送直播间消息](push-message)
+
+    ### Windows 端开播
+
+    - [启动云游戏服务](start-pc-game)
+    - [关闭云游戏服务](stop-pc-game)
+    - [推送直播间消息](push-message)
+
+    ## 响应状态码
+
+    调用弹幕玩法 RESTful API 可能返回的响应状态码详见[响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)。
+servers:
+- url: https://{domain}/v2/projects/{appid}
+  description: ''
+  variables:
+    domain:
+      description: |-
+        API 域名。分为以下两种：
+
+        - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+        - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+      default: ''
+    appid:
+      description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+      default: ''
+paths:
+  /cloud-bullet-game/api/live-data/games:
+    get:
+      tags:
+      - 移动端云开播
+      summary: 获取云游戏列表
+      description: 获取指定游戏的游戏商、支持的礼物列表和弹幕指令等信息。
+      operationId: get-cloud-game-list
+      parameters:
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/page_num'
+      - $ref: '#/components/parameters/page_size'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list:
+                    $ref: '#/components/schemas/list'
+                  page_num:
+                    $ref: '#/components/schemas/page_num'
+                  page_size:
+                    $ref: '#/components/schemas/page_size'
+              examples:
+                Example 1:
+                  value:
+                    list:
+                    - game_id: pkzb
+                      name: pwnk争霸
+                      vendor: pwnk
+                      thumbnail: /pwnk.png
+                      introduce: pwnk争霸，是兄弟，就来砍一刀
+                    page_num: 1
+                    page_size: 10
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+  /cloud-bullet-game/api/live-data/games/{gameid}:
+    get:
+      tags:
+      - 移动端云开播
+      summary: 获取云游戏详情
+      description: 获取指定云游戏的详情、礼物列表和弹幕指令等信息。
+      operationId: get-cloud-game-detail
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/gameid'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  game_id:
+                    $ref: '#/components/schemas/game_id'
+                  name:
+                    $ref: '#/components/schemas/name'
+                  vendor:
+                    $ref: '#/components/schemas/vendor'
+                  thumbnail:
+                    $ref: '#/components/schemas/thumbnail'
+                  feature:
+                    type: object
+                    properties:
+                      like:
+                        type: number
+                        description: |-
+                          是否支持点赞：
+                          - `1`：支持。
+                          - `0`：不支持。
+                      comment:
+                        type: number
+                        description: |-
+                          是否支持评论：
+                          - `1`：支持。
+                          - `0`：不支持。
+                  gifts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/gfit_id'
+                        name:
+                          $ref: '#/components/schemas/gift_name'
+                        price:
+                          $ref: '#/components/schemas/price'
+                        thumbnail:
+                          $ref: '#/components/schemas/gift_thumb'
+                        game_id:
+                          $ref: '#/components/schemas/game_id'
+                  instruct:
+                    type: array
+                    description: 游戏支持的弹幕指令。
+              examples:
+                Example 1:
+                  value:
+                    game_id: pkzb
+                    name: pwnk争霸
+                    vendor: pwnk
+                    thumbnail: /game.png
+                    feature:
+                      like: 1
+                      comment: 1
+                    gifts:
+                    - id: 10000
+                      name: 礼物 1
+                      price: 100
+                      thumbnail: /gift.png
+                      game_id: pkzb
+                    instruct: []
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+  /cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:start:
+    post:
+      tags:
+      - 移动端云开播
+      summary: 启动云游戏服务
+      description: 启动移动端云游戏服务。
+      operationId: start-cloud-game
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/roomid'
+      - $ref: '#/components/parameters/gameid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                openid:
+                  $ref: '#/components/schemas/openid'
+                nickname:
+                  $ref: '#/components/schemas/nickname'
+                avatar_url:
+                  $ref: '#/components/schemas/avatar_url'
+                rtc_config:
+                  type: object
+                  description: RTC 推拉流相关配置。
+                  properties:
+                    broadcast_uid:
+                      type: integer
+                      description: 主播 RTC uid，用于云游戏识别主播、处理主播游戏控制指令和控制离线超时停止游戏。
+                      examples:
+                      - 2345
+                    uid:
+                      type: integer
+                      description: 云游戏推流 uid，用于标识云游戏视频流。
+                      examples:
+                      - 1234
+                    token:
+                      type: string
+                      description: 云游戏推流使用的 RTC Token，生成方法详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+                    channel_name:
+                      type: string
+                      description: 云游戏推流频道名。
+                    encryption:
+                      type: object
+                      description: RTC 内置加密设置。详见[`enableEncrption`](/zh-CN/api-reference/rtc/cpp-all-platforms/network#api_irtcengine_enableencryption)。
+                      properties:
+                        mode:
+                          type: string
+                          description: 加密模式。
+                        secret:
+                          type: string
+                          description: 加密密钥。
+                        salt:
+                          type: string
+                          description: 盐。
+                  required:
+                  - broadcast_uid
+                  - uid
+                  - token
+                  - channel_name
+              required:
+              - openid
+              - nickname
+              - avatar_url
+              - rtc_config
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    properties:
+                      taskid:
+                        type: string
+                        description: 云游戏任务 ID，标识一次云游戏开播任务。
+                        examples:
+                        - xxxxx
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '16000000000000052'
+                    data:
+                      task_id: xxxxxxxxx
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+  /cloud-bullet-game/api/live-data/games/{gameid}/mode/cloud/rooms/{roomid}:stop:
+    post:
+      tags:
+      - 移动端云开播
+      summary: 关闭云游戏服务
+      description: 关闭移动端云游戏服务。
+      operationId: stop-cloud-game
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/gameid'
+      - $ref: '#/components/parameters/roomid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                openid:
+                  $ref: '#/components/schemas/openid'
+                taskid:
+                  $ref: '#/components/schemas/taskid'
+              required:
+              - openid
+              - taskid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    description: 请求成功时返回空对象。
+                x-examples:
+                  Example 1:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690981765801316352'
+                    data: {}
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '160000000000000352'
+                    data: {}
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+  /cloud-bullet-game/api/live-data/tasks/{taskid}/status:
+    get:
+      tags:
+      - 移动端云开播
+      summary: 查询云游戏任务状态
+      description: 查询指定云游戏任务的当前状态。
+      operationId: get-cloud-game-status
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/taskid'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        description: |-
+                          云游戏任务状态。可能为以下值：
+
+                          - `schedule`：调度中。
+                          - `scheduled`：调度成功。
+                          - `starting`：任务启动中。
+                          - `start_failed`：任务启动失败。
+                          - `started`：任务启动成功。
+                          - `stopping`：任务停止中。
+                          - `stopped`：任务已停止。
+                x-examples:
+                  Example 1:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690981765801316352'
+                    data: {}
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690000000352'
+                    data:
+                      status: starting
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 taskid 调用上限为 5 次/秒。'
+  /cloud-bullet-game/api/live-data/tasks/{taskid}/renew-token:
+    post:
+      tags:
+      - 移动端云开播
+      summary: 更新云游戏推流 Token
+      description: 更新指定云游戏任务使用的 RTC Token。
+      operationId: renew-cloud-game-token
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/taskid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                openid:
+                  $ref: '#/components/schemas/openid'
+                rtc_uid:
+                  type: integer
+                  description: 启动云游戏时设置的推流 uid。
+                  examples:
+                  - 12345
+                rtc_token:
+                  type: string
+                  description: 新生成的 RTC Token，建议在旧 token 快过期的前几分钟，重新生成并调用该接口。
+                  examples:
+                  - abcxxxxxxxx321
+              required:
+              - openid
+              - rtc_uid
+              - rtc_token
+              x-examples:
+                Example 1:
+                  openid: '{appid}_xxxx'
+                  rtc_uid: 12345
+                  rtc_token: xxxx
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    description: 请求成功时返回空对象。
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '16900000000000000352'
+                    data: {}
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 taskid 调用上限为 5 次/秒。'
+  /bullet-game/api/live-data/games/{gameid}/rooms/${roomid}/msgType/{msg_type}:push:
+    post:
+      tags:
+      - 移动端云开播
+      - PC 端开播
+      summary: 推送直播间消息
+      description: 向直播间推送礼物、评论和点赞消息。
+      operationId: push-message
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/gameid'
+      - $ref: '#/components/parameters/roomid'
+      - name: msg_type
+        in: path
+        description: |-
+          消息类型，支持以下三种：
+
+          - `live_gift`：礼物消息。
+          - `live_comment`：评论消息。
+          - `live_like`：点赞消息。
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: |-
+          根据推送的消息类型不同，请求包体中的 `payload` 字段内容也有所不同。
+          > - 支持单次调用提交多个与路径参数中的 `msg_type` 类型一致的 `payload`。
+          > - 三种消息类型的 `payload` 字段名均为 `payload`，参数说明中的中文仅作区分用，实际调用时需要删除。
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  礼物-payload:
+                    type: object
+                    properties:
+                      msg_id:
+                        $ref: '#/components/schemas/msg_id'
+                      openid:
+                        $ref: '#/components/schemas/openid'
+                      gift_id:
+                        type: number
+                        description: 礼物 ID，需按约定的礼物编号发送。
+                        examples:
+                        - 10001
+                      gift_num:
+                        type: integer
+                        description: 送出的礼物数量。
+                        examples:
+                        - 10
+                      gift_value:
+                        type: integer
+                        description: 礼物的价值，折算成分。
+                        examples:
+                        - 10000
+                      avatar_url:
+                        $ref: '#/components/schemas/avatar_url'
+                      nickname:
+                        $ref: '#/components/schemas/nickname'
+                      timestamp:
+                        $ref: '#/components/schemas/timestamp'
+                    required:
+                    - msg_id
+                    - openid
+                    - gift_id
+                    - gift_num
+                    - gift_value
+                    - avatar_url
+                    - nickname
+                    - timestamp
+                  评论-payload:
+                    type: object
+                    properties:
+                      msg_id:
+                        $ref: '#/components/schemas/msg_id'
+                      openid:
+                        $ref: '#/components/schemas/openid'
+                      content:
+                        type: string
+                        description: 评论内容。
+                      avatar_url:
+                        $ref: '#/components/schemas/avatar_url'
+                      nickname:
+                        $ref: '#/components/schemas/nickname'
+                      timestamp:
+                        $ref: '#/components/schemas/timestamp'
+                    required:
+                    - msg_id
+                    - openid
+                    - content
+                    - avatar_url
+                    - nickname
+                    - timestamp
+                  点赞-payload:
+                    type: object
+                    properties:
+                      msg_id:
+                        $ref: '#/components/schemas/msg_id'
+                      openid:
+                        $ref: '#/components/schemas/openid'
+                      like_num:
+                        type: integer
+                        description: 点赞数量，上游每 2 秒合并一次数据。
+                        examples:
+                        - 123
+                      avatar_url:
+                        $ref: '#/components/schemas/avatar_url'
+                      nickname:
+                        $ref: '#/components/schemas/nickname'
+                      timestamp:
+                        $ref: '#/components/schemas/timestamp'
+                    required:
+                    - msg_id
+                    - openid
+                    - like_num
+                    - avatar_url
+                    - nickname
+                    - timestamp
+            examples:
+              Example 1:
+                value:
+                - 礼物-payload:
+                    msg_id: abcxxxxxxxxx321_12345678
+                    openid: abcxxxxxxxxx321_testopenid
+                    gift_id: 10001
+                    gift_num: 10
+                    gift_value: 10000
+                    avatar_url: http://127.0.0.1/xxxxx.jpg
+                    nickname: Player
+                    timestamp: 1699068964
+                  评论-payload:
+                    msg_id: abcxxxxxxxxx321_12345678
+                    openid: abcxxxxxxxxx321_testopenid
+                    content: string
+                    avatar_url: http://127.0.0.1/xxxxx.jpg
+                    nickname: Player
+                    timestamp: 1699068964
+                  点赞-payload:
+                    msg_id: abcxxxxxxxxx321_12345678
+                    openid: abcxxxxxxxxx321_testopenid
+                    like_num: 123
+                    avatar_url: http://127.0.0.1/xxxxx.jpg
+                    nickname: Player
+                    timestamp: 1699068964
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    description: 请求成功时返回空对象。
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690000000352'
+                    data: {}
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: |-
+          - 调用频率限制：单个直播间调用上限为 200 次/秒。
+          - 建议平台侧对单个用户做消息聚合，以减小请求数。
+          - 当 QPS 达到容量后建议在服务端做退避策略，例如第一次等待 3 秒，第二次等待 6 秒。
+  /cloud-bullet-game/api/live-data/games/{gameid}/mode/pc/rooms/{roomid}:start:
+    post:
+      tags:
+      - PC 端开播
+      summary: 启动游戏服务
+      description: 启动 Windows 端游戏服务。
+      operationId: start-pc-game
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - name: gameid
+        in: path
+        description: 游戏编号，每款游戏编号唯一，从声网对接人员获得。
+        required: true
+        schema:
+          type: string
+      - name: roomid
+        in: path
+        description: 房间编号，以 `appid` 作为前缀的全局唯一房间 ID。
+        required: true
+        schema:
+          type: string
+          examples:
+          - abcxxxxx321_testroom
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rtc_cname:
+                  type: string
+                  description: 传入 RTC SDK 的频道名。
+                openid:
+                  $ref: '#/components/schemas/openid'
+                nickname:
+                  $ref: '#/components/schemas/nickname'
+                avatar_url:
+                  $ref: '#/components/schemas/avatar_url'
+              required:
+              - rtc_cname
+              - openid
+              - nickname
+              - avatar_url
+            examples:
+              Example 1:
+                value:
+                  rtc_cname: string
+                  openid: abcxxxxxxxxx321_testopenid
+                  nickname: Player
+                  avatar_url: http://127.0.0.1/xxxxx.jpg
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    description: 请求成功时返回空对象。
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690000000352'
+                    data: {}
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+  /cloud-bullet-game/api/live-data/games/{gameid}/mode/pc/rooms/{roomid}:stop:
+    post:
+      tags:
+      - PC 端开播
+      summary: 关闭游戏服务
+      description: 关闭 Windows 端游戏服务。
+      operationId: stop-pc-game
+      parameters:
+      - $ref: '#/components/parameters/Authorization'
+      - $ref: '#/components/parameters/Content-Type'
+      - $ref: '#/components/parameters/gameid'
+      - $ref: '#/components/parameters/roomid'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err_no:
+                    $ref: '#/components/schemas/err_no'
+                  err_msg:
+                    $ref: '#/components/schemas/err_msg'
+                  logid:
+                    $ref: '#/components/schemas/logid'
+                  data:
+                    type: object
+                    description: 请求成功时返回空对象。
+              examples:
+                Example 1:
+                  value:
+                    err_no: 0
+                    err_msg: success
+                    logid: '1690000000352'
+                    data: {}
+      servers:
+      - url: https://{domain}/v2/projects/{appid}
+        description: ''
+        variables:
+          domain:
+            description: |-
+              API 域名。分为以下两种：
+
+              - 正式环境域名：`api.sd-rtn.com`，切换后会按照礼物消息进行计量计费。访问正式环境域名的最佳实践，请参考[保障 REST 服务高可用](/zh-CN/realtime-media/rtc/build/optimize-and-operate/rest-availability)。
+              - 测试环境域名：`api-test.agora.io`，有调用容量限制，不保证可用性。
+            default: ''
+          appid:
+            description: 你的项目使用的 [App ID](/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service#获取开发参数)。
+            default: ''
+      x-docs-callouts:
+      - position: after-description
+        markdown: '- 调用频率限制：单个 APP ID 调用上限为 10 次/秒。'
+tags:
+- name: 移动端云开播
+- name: PC 端开播
+components:
+  parameters:
+    page_num:
+      name: page_num
+      in: query
+      description: 列表展示的起始页码 ，默认为从第一页开始展示。
+      required: true
+      schema:
+        type: integer
+        default: 1
+    page_size:
+      name: page_size
+      in: query
+      description: 每页展示的数据条数。
+      required: true
+      schema:
+        type: integer
+        maximum: 100
+        default: 10
+    gameid:
+      name: gameid
+      in: path
+      description: 游戏编号，调用[获取云游戏列表](get-cloud-game-list)获得。
+      required: true
+      schema:
+        type: string
+    roomid:
+      name: roomid
+      in: path
+      description: 房间编号，以 `appid` 作为前缀的全局唯一房间 ID。
+      required: true
+      schema:
+        type: string
+        examples:
+        - abcxxxxx321_testroom
+    taskid:
+      name: taskid
+      in: path
+      description: 云游戏任务 ID，调用[启动云游戏服务](start-cloud-game)获得。
+      required: true
+      schema:
+        type: string
+    gameid-pc:
+      name: gameid
+      in: path
+      description: 游戏编号，每款游戏编号唯一，从声网对接人员获得。
+      required: true
+      schema:
+        type: string
+    Authorization:
+      name: Authorization
+      in: header
+      description: 发送 HTTP 请求时，你需要将用于游戏推流使用的 RTC Token 填入 HTTP 请求头部的 `Authorization` 字段。Token 生成方式请参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+      required: true
+      schema:
+        type: string
+        examples:
+        - agora token=abcxxxxxxxxxxxxxx123
+    Content-Type:
+      name: Content-Type
+      in: header
+      description: 数据类型，必须包含 `application/json`。
+      required: true
+      schema:
+        type: string
+        examples:
+        - application/json
+  schemas:
+    list:
+      type: array
+      title: list
+      description: 当前支持的游戏列表。
+      examples:
+      - - game_id: pkzb
+          name: pwnk争霸
+          vendor: pwnk
+          thumbnail: /pwnk.png
+          introduce: pwnk争霸，是兄弟，就来砍一刀
+      items:
+        type: object
+        properties:
+          game_id:
+            $ref: '#/components/schemas/game_id'
+          name:
+            $ref: '#/components/schemas/name'
+          vendor:
+            $ref: '#/components/schemas/vendor'
+          thumbnail:
+            $ref: '#/components/schemas/thumbnail'
+          introduce:
+            $ref: '#/components/schemas/introduce'
+    game_id:
+      type: string
+      title: game_id
+      description: 游戏 ID。
+    name:
+      type: string
+      title: name
+      description: 游戏名称。
+    vendor:
+      type: string
+      title: vendor
+      description: 游戏商。
+    thumbnail:
+      type: string
+      title: thumbnail
+      description: 游戏缩略图路径。
+      examples:
+      - /game.png
+    introduce:
+      type: string
+      title: introduce
+      description: 游戏介绍。
+    page_num:
+      type: integer
+      title: page_num
+      description: 当前页码。
+      examples:
+      - 1
+    page_size:
+      type: integer
+      title: page_size
+      description: 每页展示的数据条数。
+      examples:
+      - 10
+    err_no:
+      type: integer
+      title: err_no
+      description: 请求错误码，`0` 表示请求成功，非 `0` 表示请求失败，对应的错误原因和解决方案详见[响应状态码](/zh-CN/realtime-media/danmaku/reference/response-code)。
+      examples:
+      - 0
+    err_msg:
+      type: string
+      title: err_msg
+      description: '`err_no` 为非 `0` 时附带的错误提示信息。'
+      examples:
+      - success
+    logid:
+      type: string
+      title: logid
+      description: 请求链路 id, 用于出现未知问题时提供给声网技术支持以便定位问题。
+      examples:
+      - '1690000000352'
+    gfit_id:
+      type: number
+      title: id
+      description: 游戏礼物 ID。
+      examples:
+      - 10000
+    gift_name:
+      type: string
+      title: gift_name
+      description: 礼物名。
+      examples:
+      - 礼物 1
+    price:
+      type: number
+      title: price
+      description: 礼物单价。单位：分。
+      examples:
+      - 100
+    gift_thumb:
+      type: string
+      title: thumbnail
+      description: 礼物图标缩略图路径。
+      examples:
+      - /gift.png
+    openid:
+      type: string
+      title: openid
+      description: 主播编号。以 `appid` 作为前缀的全局唯一主播 ID。
+      examples:
+      - abcxxxxxxxxx321_testopenid
+    nickname:
+      type: string
+      title: nickname
+      description: 主播昵称，会显示在游戏中。
+      examples:
+      - Player
+    avatar_url:
+      type: string
+      title: avatar_url
+      description: 主播头像 URL 地址，会显示在游戏中。
+      examples:
+      - http://127.0.0.1/xxxxx.jpg
+    taskid:
+      type: string
+      title: taskid
+      description: 云游戏任务 ID，调用[启动云游戏服务](start-cloud-game)获得。
+    msg_id:
+      type: string
+      title: msg_id
+      description: 全局唯一的消息 ID，以 APP ID 为前缀。
+      examples:
+      - abcxxxxxxxxx321_12345678
+    timestamp:
+      type: number
+      title: timestamp
+      description: 消息推送时刻的毫秒级时间戳。误差须小于 60 秒，否则即使推送成功业务侧也无响应。
+      examples:
+      - 1699068964

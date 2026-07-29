@@ -1,0 +1,630 @@
+---
+title: 自定义视频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_video_custom_capturenrendering
+  sourcePath: html-docs/rtc/Flutter/API/toc_video_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_video_custom_capturenrendering"></a>
+
+<a id="api_irtcengine_createcustomvideotrack"></a>
+
+<a id="ariaid-title2"></a>
+
+## createCustomVideoTrack
+
+创建一个自定义的视频轨道。
+
+<a id="api_irtcengine_createcustomvideotrack__prototype"></a>
+
+```text
+Future<int> createCustomVideoTrack();
+```
+
+<a id="api_irtcengine_createcustomvideotrack__detailed_desc"></a>
+
+当你需要在频道中发布自定义采集视频时，可参考以下步骤：
+
+1. 调用该方法创建视频轨道并获得视频轨道 ID。
+2. 调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
+3. 调用 [pushVideoFrame](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+
+<a id="api_irtcengine_createcustomvideotrack__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回视频轨道 ID 作为该视频轨道的唯一标识。
+- 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroycustomvideotrack"></a>
+
+<a id="ariaid-title3"></a>
+
+## destroyCustomVideoTrack
+
+销毁指定的视频轨道。
+
+<a id="api_irtcengine_destroycustomvideotrack__prototype"></a>
+
+```text
+Future<void> destroyCustomVideoTrack(int videoTrackId);
+```
+
+<a id="api_irtcengine_destroycustomvideotrack__detailed_desc"></a>
+
+<a id="api_irtcengine_destroycustomvideotrack__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="videotrackid"></a>
+<Parameter name="videoTrackId">
+
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_destroycustomvideotrack__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_agorapip_ispipactivated"></a>
+
+<a id="ariaid-title4"></a>
+
+## isPipActivated
+
+检查画中画模式是否已激活。
+
+<a id="api_agorapip_ispipactivated__prototype"></a>
+
+```text
+Future<bool> isPipActivated();
+```
+
+<a id="api_agorapip_ispipactivated__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_ispipactivated__return_values"></a>
+
+### 返回值
+
+- true：画中画模式已激活。
+- false：画中画模式未激活。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipdispose"></a>
+
+<a id="ariaid-title5"></a>
+
+## pipDispose
+
+释放画中画相关的资源。
+
+<a id="api_agorapip_pipdispose__prototype"></a>
+
+```text
+Future<void> pipDispose();
+```
+
+<a id="api_agorapip_pipdispose__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipisautoentersupported"></a>
+
+<a id="ariaid-title6"></a>
+
+## pipIsAutoEnterSupported
+
+检查是否支持自动进入画中画模式。
+
+<a id="api_agorapip_pipisautoentersupported__prototype"></a>
+
+```text
+Future<bool> pipIsAutoEnterSupported();
+```
+
+<a id="api_agorapip_pipisautoentersupported__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_pipisautoentersupported__return_values"></a>
+
+### 返回值
+
+- true：支持自动进入画中画模式。
+- false：不支持自动进入画中画模式。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipissupported"></a>
+
+<a id="ariaid-title7"></a>
+
+## pipIsSupported
+
+检查当前设备是否支持画中画模式。
+
+<a id="api_agorapip_pipissupported__prototype"></a>
+
+```text
+Future<bool> pipIsSupported();
+```
+
+<a id="api_agorapip_pipissupported__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_pipissupported__return_values"></a>
+
+### 返回值
+
+- true：当前设备支持画中画模式。
+- false：当前设备不支持画中画模式。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipsetup"></a>
+
+<a id="ariaid-title8"></a>
+
+## pipSetup
+
+配置画中画模式。
+
+<a id="api_agorapip_pipsetup__prototype"></a>
+
+```text
+Future<bool> pipSetup(AgoraPipOptions options);
+```
+
+<a id="api_agorapip_pipsetup__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_pipsetup__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="options"></a>
+<Parameter name="options">
+
+画中画配置选项，详见 [AgoraPipOptions](/zh-CN/api-reference/rtc/flutter/class-agorapipoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_agorapip_pipsetup__return_values"></a>
+
+### 返回值
+
+- true：方法调用成功。
+- false：方法调用失败。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipstart"></a>
+
+<a id="ariaid-title9"></a>
+
+## pipStart
+
+启动画中画模式。
+
+<a id="api_agorapip_pipstart__prototype"></a>
+
+```text
+Future<bool> pipStart();
+```
+
+<a id="api_agorapip_pipstart__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_pipstart__return_values"></a>
+
+### 返回值
+
+- true：方法调用成功。
+- false：方法调用失败。
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_pipstop"></a>
+
+<a id="ariaid-title10"></a>
+
+## pipStop
+
+停止画中画模式。
+
+<a id="api_agorapip_pipstop__prototype"></a>
+
+```text
+Future<void> pipStop();
+```
+
+<a id="api_agorapip_pipstop__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_imediaengine_pushvideoframe"></a>
+
+<a id="ariaid-title11"></a>
+
+## pushVideoFrame
+
+将外部原始视频帧通过自定义视频轨道发布到频道中。
+
+<a id="api_imediaengine_pushvideoframe__prototype"></a>
+
+```text
+Future<void> pushVideoFrame(
+    {required ExternalVideoFrame frame, int videoTrackId = 0});
+```
+
+<a id="api_imediaengine_pushvideoframe__detailed_desc"></a>
+
+当你需要在频道中发布自定义采集视频时，可参考以下步骤：
+
+1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
+2. 调用 [joinChannel](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/class-channelmediaoptions) 中的 `customVideoTrackId` 设置为你想要发布的视频轨道 ID，并将 `publishCustomVideoTrack` 设置为 true。
+3. 调用该方法将 `videoTrackId` 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
+
+:::note
+注： 调用该方法后，即使你停止推送外部视频帧到 SDK，自定义采集的视频流仍然会被计入视频时长用量并产生费用，声网建议你根据实际情况采取相应措施避免此类视频计费：
+
+- 如果你不再需要采集外部视频数据，可以调用 [destroyCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_destroycustomvideotrack) 销毁自定义采集的视频轨道。
+- 如果你只想将采集到的外部视频数据用于本地预览、而不在频道内发布，可以调用 [muteLocalVideoStream](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_mutelocalvideostream) 取消发送视频流，或调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_updatechannelmediaoptions) 将 `publishCustomVideoTrack` 设置为 false。
+:::
+
+<a id="api_imediaengine_pushvideoframe__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="frame"></a>
+<Parameter name="frame">
+
+待推送的视频帧。详见 [ExternalVideoFrame](/zh-CN/api-reference/rtc/flutter/class-externalvideoframe)。
+
+</Parameter>
+<a id="videotrackid-1"></a>
+<Parameter name="videoTrackId">
+
+调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法返回的视频轨道 ID。
+
+:::note
+注： 如果你只需推送一路外部视频流，`videoTrackId` 设置为 0 即可。
+:::
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_pushvideoframe__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
+<a id="api_agorapip_registerpipstatechangedobserver"></a>
+
+<a id="ariaid-title12"></a>
+
+## registerPipStateChangedObserver
+
+注册画中画状态改变观测器。
+
+<a id="api_agorapip_registerpipstatechangedobserver__prototype"></a>
+
+```text
+Future<void> registerPipStateChangedObserver(AgoraPipStateChangedObserver observer);
+```
+
+<a id="api_agorapip_registerpipstatechangedobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="api_agorapip_registerpipstatechangedobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="observer"></a>
+<Parameter name="observer">
+
+画中画状态改变观测器，详见 [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_agorapip_release_agorapip"></a>
+
+<a id="ariaid-title13"></a>
+
+## dispose
+
+释放画中画相关的资源。
+
+<a id="api_agorapip_release_agorapip__prototype"></a>
+
+```text
+Future<void> dispose();
+```
+
+<a id="api_agorapip_release_agorapip__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="api_irtcengine_setexternalremoteeglcontext"></a>
+
+<a id="ariaid-title14"></a>
+
+## setExternalRemoteEglContext
+
+设置远端视频流渲染的 EGL 环境上下文。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__prototype"></a>
+
+```text
+Future<void> setExternalRemoteEglContext(int eglContext);
+```
+
+<a id="api_irtcengine_setexternalremoteeglcontext__detailed_desc"></a>
+
+通过设置该方法，开发者可以替换 SDK 内部默认的远端 EGL 环境上下文，便于实现统一的 EGL 上下文管理。
+引擎销毁时，SDK 会自动释放 EGL 环境上下文。
+
+:::note
+注： 该方法仅适用于 Android。
+:::
+
+<a id="api_irtcengine_setexternalremoteeglcontext__scenario"></a>
+
+### 适用场景
+
+该方法适用于使用 Texture 格式的视频数据进行远端视频自渲染的场景。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_irtcengine_setexternalremoteeglcontext__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="eglcontext"></a>
+<Parameter name="eglContext">
+
+用于远端视频流渲染的 EGL 环境上下文对象。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setexternalremoteeglcontext__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediaengine_setexternalvideosource"></a>
+
+<a id="ariaid-title15"></a>
+
+## setExternalVideoSource
+
+设置外部视频源。
+
+<a id="api_imediaengine_setexternalvideosource__prototype"></a>
+
+```text
+Future<void> setExternalVideoSource(
+    {required bool enabled,
+    required bool useTexture,
+    ExternalVideoSourceType sourceType = ExternalVideoSourceType.videoFrame,
+    SenderOptions encodedVideoOption = const SenderOptions()});
+```
+
+<a id="api_imediaengine_setexternalvideosource__detailed_desc"></a>
+
+调用该方法启用外部视频源后，你可以调用 [pushVideoFrame](/zh-CN/api-reference/rtc/flutter/video/video-custom-capturenrendering#api_imediaengine_pushvideoframe) 向 SDK 推送外部视频数据。
+
+:::note
+注： 不支持在频道内动态切换视频源。如果已调用该方法启用外部视频源并加入频道，若想切换为内部视频源，必须先退出频道，然后调用该方法关闭外部视频源，再重新加入频道。
+:::
+
+<a id="api_imediaengine_setexternalvideosource__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道前调用。
+
+<a id="api_imediaengine_setexternalvideosource__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否启用外部视频源：
+
+- true: 启用外部视频源。SDK 准备接收外部视频帧。
+- false:（默认）不启用外部视频源。
+
+</Parameter>
+<a id="usetexture"></a>
+<Parameter name="useTexture">
+
+是否使用 Texture 格式的外部视频帧：
+
+- true: 使用 Texture 格式的外部视频帧。
+- false: 不使用 Texture 格式的外部视频帧。
+
+</Parameter>
+<a id="sourcetype"></a>
+<Parameter name="sourceType">
+
+外部视频帧是否编码，详见 [ExternalVideoSourceType](/zh-CN/api-reference/rtc/flutter/enum-externalvideosourcetype)。
+
+</Parameter>
+<a id="encodedvideooption"></a>
+<Parameter name="encodedVideoOption">
+
+视频编码选项。如果 `sourceType` 为 `encodedVideoFrame`，则需要设置该参数。你可以[联系技术支持](https://ticket.shengwang.cn/)了解如何设置该参数。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_setexternalvideosource__return_values"></a>
+
+### 返回值
+
+方法成功调用时，无返回值；方法调用失败时，会抛出 [AgoraRtcException](/zh-CN/api-reference/rtc/flutter/class-agorartcexception) 异常，你需要捕获异常并进行处理。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaEngine](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaengine)
+
+<a id="api_agorapip_unregisterpipstatechangedobserver"></a>
+
+<a id="ariaid-title16"></a>
+
+## unregisterPipStateChangedObserver
+
+取消注册画中画状态改变观测器。
+
+<a id="api_agorapip_unregisterpipstatechangedobserver__prototype"></a>
+
+```text
+Future<void> unregisterPipStateChangedObserver();
+```
+
+<a id="api_agorapip_unregisterpipstatechangedobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+### 所属接口类
+
+- [AgoraPipController](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapip)
+
+<a id="callback_agorapipstatechangedobserver_onpipstatechanged"></a>
+
+<a id="ariaid-title17"></a>
+
+## onPipStateChanged
+
+画中画状态改变回调。
+
+<a id="callback_agorapipstatechangedobserver_onpipstatechanged__prototype"></a>
+
+```text
+final void Function(AgoraPipState state, String? error) onPipStateChanged;
+```
+
+<a id="callback_agorapipstatechangedobserver_onpipstatechanged__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+当画中画状态发生改变时，SDK 会触发此回调。
+
+<a id="callback_agorapipstatechangedobserver_onpipstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+新的画中画状态，详见 [AgoraPipState](/zh-CN/api-reference/rtc/flutter/enum-agorapipstate)。
+
+</Parameter>
+<a id="error"></a>
+<Parameter name="error">
+
+如果状态改变失败，返回错误信息；否则返回 null。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraPipStateChangedObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_agorapipstatechangedobserver)

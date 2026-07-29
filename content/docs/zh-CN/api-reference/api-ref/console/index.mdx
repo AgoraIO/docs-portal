@@ -1,0 +1,31 @@
+---
+title: 控制台 RESTful API 概览
+description: 使用控制台 RESTful API 创建和管理声网项目。
+---
+
+控制台 RESTful API 可用于从服务端创建项目、查询项目信息、更新项目状态，以及管理主要 App 证书。
+
+## API 基础
+
+- **鉴权**：所有请求都需要使用 [RESTful API 鉴权](authentication)。
+- **请求**：请求包体和响应包体均使用 JSON。
+- **Base URL**：`https://api.sd-rtn.com`
+
+:::info
+控制台 RESTful API 仅支持 HTTPS。请求 URL 和请求包体区分大小写。
+:::
+
+## REST API
+
+- [创建项目](create-project)：创建一个新的声网项目。
+- [获取指定项目信息](get-project)：查询指定项目的信息。
+- [获取所有项目信息](list-projects)：查询当前账户下的项目列表。
+- [禁用或启用项目](update-project-status)：更新指定项目的状态。
+- [启用或禁用主要 App 证书](update-primary-app-certificate)：更新指定项目主要 App 证书的启用状态。
+- [重置主要 App 证书](reset-primary-app-certificate)：重置指定项目的主要 App 证书。
+
+## 相关页面
+
+- [响应状态码](response-codes)
+- [配额限制](quota)
+- [保障 REST 服务高可用](guarantee-rest)

@@ -1,0 +1,586 @@
+---
+title: com.herewhite.sdk.Displayer类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1_displayer
+  sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_displayer.html
+  generator: doxygen
+  warnings:
+    - code: missing-source-text
+      severity: warning
+      message: >-
+        The source image classcom_1_1herewhite_1_1sdk_1_1_displayer.png has no meaningful alt or
+        title text; the converter used contextual alt text "com.herewhite.sdk.Displayer类 参考 图示".
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/whiteboard/android/deprecated.html#_deprecated000005 as local text.
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/whiteboard/android/deprecated.html#_deprecated000006 as local text.
+---
+
+类 com.herewhite.sdk.Displayer 继承关系图:
+
+![com.herewhite.sdk.Displayer类 参考 图示](/img/api-center-generated/2ccaa1f7f56d-classcom_1_1herewhite_1_1sdk_1_1_displayer.png)
+
+<a id="details"></a>
+
+## 详细描述
+
+[`Displayer`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-displayer) 类。该类为 [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 类和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类的父类。 [`Room`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room) 和 [`Player`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-player) 类可以继承该类下的方法。
+
+## 成员函数说明
+
+<a id="a218d273792fc859b2f343f9185368407"></a>
+
+### postIframeMessage() [1/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.postIframeMessage(String *string*)
+
+</ApiSignature>
+
+向 iframe 插件发送字符串信息。
+
+:::info[自从]
+2.11.4
+:::
+
+<ParameterList title="参数">
+<Parameter name="string">
+
+字符串格式的信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="aafcea84ae1fc2539996f6d0e2710a362"></a>
+
+### postIframeMessage() [2/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.postIframeMessage([WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) *object*)
+
+</ApiSignature>
+
+向 iframe 插件发送 key-value 格式的信息。
+
+:::info[自从]
+2.11.4
+:::
+
+<ParameterList title="参数">
+<Parameter name="object">
+
+key-value 格式的信息，必须为 [`WhiteObject`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object) 的子类。
+
+</Parameter>
+</ParameterList>
+
+<a id="ac47409b4e5ca783e080e11e0c032c145"></a>
+
+### getScenePathType()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.getScenePathType(String *path*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [WhiteScenePathType](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-scene-path-type) &gt; *promise*)
+
+</ApiSignature>
+
+查询场景路径类型。
+
+你可以在该方法中指定想要查询的场景路径，SDK 会返回该路径对应的场景类型。
+
+<ParameterList title="参数">
+<Parameter name="path">
+
+想要查询的场景路径。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<WhiteScenePathType>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenePathType` 方法的调用结果：
+
+- 如果方法调用成功，将返回场景路径类型。详见 [`WhiteScenePathType`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-scene-path-type)。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="ac8467c97aecb62aa78d8520dabd108bd"></a>
+
+### getScene()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.getScene(String *path*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene) &gt; *promise*)
+
+</ApiSignature>
+
+获取指定场景的信息。
+
+<ParameterList title="参数">
+<Parameter name="path">
+
+场景的路径。请确保场景路径以 `/` 开头，并且由场景目录和场景名构成，例如，`/math/classA`。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<Scene>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScene` 方法的调用结果：
+
+- 如果方法调用成功，将返回场景信息。详见 [`Scene`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a8fd708269f78c0a4d8fbee3f3ec465f2"></a>
+
+### getEntireScenes()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.getEntireScenes(final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Map&lt; String, [Scene](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-scene)[]&gt; &gt; *promise*)
+
+</ApiSignature>
+
+获取当前房间内所有场景的信息。
+
+<ParameterList title="参数">
+<Parameter name="promise">
+
+`Promise<Map<String, Scene[]>>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getEntireScenes` 方法的调用结果：
+
+- 如果方法调用成功，将返回当前房间内所有场景的信息。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a20be8e5cc145577cd66706d9012989a6"></a>
+
+### refreshViewSize()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.refreshViewSize()
+
+</ApiSignature>
+
+刷新白板的界面。
+
+当 [`WhiteboardView`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-whiteboard-view) 出现改变时，需要手动调用该方法刷新白板的界面。
+
+<a id="a65bbfa5b2fd5fa7d0cb1e1cfe03413f7"></a>
+
+### scaleIframeToFit()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.scaleIframeToFit()
+
+</ApiSignature>
+
+调整视角，以保证完整显示 H5 课件的内容。
+
+:::info[自从]
+2.12.13
+:::
+
+<a id="a4b8ecbbc38569db7868c25790f191fbe"></a>
+
+### scalePptToFit() [1/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.scalePptToFit()
+
+</ApiSignature>
+
+以渐变模式调整视角，以保证完整显示 PPT 的内容。
+
+:::info[自从]
+2.4.22
+:::
+
+<a id="a29f2d682f7d728e53767ded3889c60ee"></a>
+
+### scalePptToFit() [2/2]
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.scalePptToFit([AnimationMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode) *mode*)
+
+</ApiSignature>
+
+根据指定的动画模式调整视角，以保证完整显示 PPT 的内容。
+
+:::info[自从]
+2.4.28
+:::
+
+<ParameterList title="参数">
+<Parameter name="mode">
+
+视角调整时的动画模式，详见 [`AnimationMode`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-animation-mode)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a5789b995344ae4c9bd0872dfb3fd8cae"></a>
+
+### addMagixEventListener()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.addMagixEventListener(String *eventName*, [EventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener) *eventListener*)
+
+</ApiSignature>
+
+注册自定义事件监听。
+
+成功注册后，你可以接收到对应的自定义事件通知。
+
+:::info[注解]
+对于同名的自定义事件，SDK 仅支持触发一个回调。
+:::
+
+<ParameterList title="参数">
+<Parameter name="eventName">
+
+想要监听的自定义事件名称。
+
+</Parameter>
+<Parameter name="eventListener">
+
+自定义事件回调，详见 [`EventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+
+</Parameter>
+</ParameterList>
+
+<a id="a53b433bf7d24a786c4976ba85dee9940"></a>
+
+### addHighFrequencyEventListener()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.addHighFrequencyEventListener(String *eventName*, [FrequencyEventListener](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener) *eventListener*, Integer *fireInterval*)
+
+</ApiSignature>
+
+注册高频自定义事件监听。
+
+成功注册后，你可以接收到对应的自定义事件通知。
+
+:::info[注解]
+对于同名的自定义事件，SDK 仅支持触发一个回调。
+:::
+
+<ParameterList title="参数">
+<Parameter name="eventName">
+
+想要监听的自定义事件名称。
+
+</Parameter>
+<Parameter name="eventListener">
+
+自定义事件回调，详见 [`FrequencyEventListener`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-frequency-event-listener)。如果添加多个同名的事件回调，则之前添加的回调会被覆盖。
+
+</Parameter>
+<Parameter name="fireInterval">
+
+SDK 触发回调的频率，单位为毫秒。该参数最小值为 500 ms，如果设置为低于该值会被重置为 500 ms。
+
+</Parameter>
+</ParameterList>
+
+<a id="a071edba37f99285bbea69988481eb3ae"></a>
+
+### removeMagixEventListener()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.removeMagixEventListener(String *eventName*)
+
+</ApiSignature>
+
+移除自定义事件监听。
+
+<ParameterList title="参数">
+<Parameter name="eventName">
+
+想要移除监听的自定义事件名称。
+
+</Parameter>
+</ParameterList>
+
+<a id="a1bfd39e7482e2937908a2dea49db1c27"></a>
+
+### convertToPointInWorld()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.convertToPointInWorld(double *x*, double *y*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; [Point](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-point) &gt; *promise*)
+
+</ApiSignature>
+
+转换白板上点的坐标。
+
+该方法可以将 Android 内部坐标系（以屏幕左上角为原点）中的坐标转换为世界坐标系（以白板初始化时的中点为原点）坐标。
+
+<ParameterList title="参数">
+<Parameter name="x">
+
+点在 Android 坐标系中的 X 轴坐标。
+
+</Parameter>
+<Parameter name="y">
+
+点在 Android 坐标系中的 Y 轴坐标。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<Point>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `convertToPointInWorld` 的调用结果：
+
+- 如果方法调用成功，将返回点在世界坐标系上的坐标。详见 [`Point`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-point)。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a7ebc499b1f6ca5457d41fcec9bad214e"></a>
+
+### setCameraBound()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.setCameraBound([CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) *bound*)
+
+</ApiSignature>
+
+设置视角边界。
+
+:::info[自从]
+2.5.0
+:::
+
+<ParameterList title="参数">
+<Parameter name="bound">
+
+视角边界，详见 [`CameraBound`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound)。
+
+</Parameter>
+</ParameterList>
+
+<a id="a67b020e6d15247e1bdc7dbd9b86bcfbe"></a>
+
+### setBackgroundColor()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.setBackgroundColor(@ColorInt int *intColor*)
+
+</ApiSignature>
+
+设置白板的背景色。
+
+:::info[自从]
+2.4.14
+:::
+
+<a id="弃用"></a>
+
+:::error[弃用:]
+该方法已废弃，请改用 Android 系统的 [setBackgroundColor](https://developer.android.com/reference/android/view/View#setBackgroundColor(int)) 方法。
+:::
+
+:::info[注解]
+该方法仅对本地白板有效，不会影响房间内其他用户白板的背景色。
+:::
+
+<ParameterList title="参数">
+<Parameter name="intColor">
+
+白板的背景色，格式为 16 进制 RGBA 定义下的 Hex 值。注意 A 属性不能达到使白板透明的效果。
+
+</Parameter>
+</ParameterList>
+
+<a id="aa164b4edc632f73ac9a83b3f1bdab64c"></a>
+
+### getBackgroundColor()
+
+<ApiSignature>
+
+int com.herewhite.sdk.Displayer.getBackgroundColor()
+
+</ApiSignature>
+
+获取本地白板的背景色。
+
+:::info[自从]
+2.4.0
+:::
+
+<a id="弃用-1"></a>
+
+:::error[弃用:]
+该方法已废弃。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+本地白板的背景色，格式为 16 进制 ARGB 定义下的 Hex 值。
+
+<a id="a01268dd20584fcebfa1aecc5d98e3616"></a>
+
+### getScenePreviewImage()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.getScenePreviewImage(String *scenePath*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; *promise*)
+
+</ApiSignature>
+
+获取指定场景的预览图。
+
+:::info[自从]
+2.3.0
+:::
+
+<ParameterList title="参数">
+<Parameter name="scenePath">
+
+场景路径。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<Bitmap>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getScenePreviewImage` 方法的调用结果：
+
+- 如果方法调用成功，将返回指定场景的预览图。
+- 如果方法调用失败，将返回错误码。
+
+</Parameter>
+</ParameterList>
+
+<a id="a0995da14d5d9b20d5f98c2639018700e"></a>
+
+### getSceneSnapshotImage()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.getSceneSnapshotImage(String *scenePath*, final [Promise](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)&lt; Bitmap &gt; *promise*)
+
+</ApiSignature>
+
+获取指定场景的截图。
+
+:::info[自从]
+2.3.0
+:::
+
+<ParameterList title="参数">
+<Parameter name="scenePath">
+
+场景路径。
+
+</Parameter>
+<Parameter name="promise">
+
+`Promise<Bitmap>` 接口实例，详见 [`Promise`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1domain-1-1-promise)。你可以通过该接口获取 `getSceneSnapshotImage` 方法的调用结果：
+
+- 如果方法调用成功，将返回指定场景的截图。
+- 如果方法调用失败，将返回错误信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="a4b4ee486693efafc4683e312244d1129"></a>
+
+### disableCameraTransform()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.disableCameraTransform(Boolean *disable*)
+
+</ApiSignature>
+
+禁止/允许用户调整视角。
+
+:::info[自从]
+2.11.0
+:::
+
+该方法用于禁止或允许用户通过触屏手势移动或缩放视角。
+
+<ParameterList title="参数">
+<Parameter name="disable">
+
+是否禁止用户调整视角：
+
+- `true`: 禁止用户调整视角。
+- `false`: (默认) 允许用户调整视角。
+
+</Parameter>
+</ParameterList>
+
+<a id="aa73a9b1c04e23e0f8b1ecb79099d858a"></a>
+
+### moveCamera()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.moveCamera([CameraConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config) *camera*)
+
+</ApiSignature>
+
+调整视角。
+
+:::info[自从]
+2.2.0
+:::
+
+调用该方法后，SDK 会根据传入的参数调整视角。
+
+<ParameterList title="参数">
+<Parameter name="camera">
+
+视角的参数配置，详见 [`CameraConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-config)。
+
+</Parameter>
+</ParameterList>
+
+<a id="af19ee0561ddd8b547b22040e58309549"></a>
+
+### moveCameraToContainer()
+
+<ApiSignature>
+
+void com.herewhite.sdk.Displayer.moveCameraToContainer([RectangleConfig](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config) *rectangle*)
+
+</ApiSignature>
+
+调整视角，以保证完整显示视觉矩形。
+
+:::info[自从]
+2.2.0
+:::
+
+<ParameterList title="参数">
+<Parameter name="rectangle">
+
+视觉矩形的参数设置，详见 [`RectangleConfig`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-rectangle-config)。
+
+</Parameter>
+</ParameterList>

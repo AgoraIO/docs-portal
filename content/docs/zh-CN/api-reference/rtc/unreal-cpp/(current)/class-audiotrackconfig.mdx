@@ -1,0 +1,52 @@
+---
+title: AudioTrackConfig
+description: 自定义音频轨道的配置选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_audiotrackconfig
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_audiotrackconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiotrackconfig__prototype"></a>
+
+```text
+struct AudioTrackConfig {
+
+  bool enableLocalPlayback;
+
+  bool enableAudioProcessing;
+  AudioTrackConfig() : enableLocalPlayback(true),enableAudioProcessing(false) {}
+};
+```
+
+<a id="class_audiotrackconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="enablelocalplayback"></a>
+<Parameter name="enableLocalPlayback">
+
+是否启用本地音频播放：
+
+- `true`：(默认) 启用本地音频播放。
+- `false`：不启用本地音频播放。
+
+</Parameter>
+<a id="enableaudioprocessing"></a>
+<Parameter name="enableAudioProcessing">
+
+是否启用音频处理模块：
+
+- `true`：启用音频处理模块，应用回声消除 (AEC)、降噪 (ANS) 和自动增益控制 (AGC) 效果。
+- `false`：（默认）不启用音频处理模块。
+
+:::caution
+注意： 该参数设置仅对 AUDIO_TRACK_DIRECT 类型的自定义音频采集轨道生效。
+:::
+
+</Parameter>
+</ParameterList>

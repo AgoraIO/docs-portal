@@ -1,0 +1,52 @@
+---
+title: AgoraLogConfig
+description: 配置声网 SDK 日志文件的路径、大小和日志级别。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/macos/API/class_logconfig
+  sourcePath: html-docs/rtc/macOS/API/class_logconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_logconfig__prototype"></a>
+
+```text
+__attribute__((visibility("default"))) @interface AgoraLogConfig: NSObject
+@property (copy, nonatomic) NSString * _Nullable filePath;
+@property (assign, nonatomic) NSInteger fileSizeInKB;
+@property (assign, nonatomic) AgoraLogLevel level;
+@end
+```
+
+<a id="class_logconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+日志文件的完整路径。声网建议使用默认的日志目录。如果你需要修改默认目录，请确保指定的目录存在且可写。默认日志目录如下：
+
+- iOS：AppSandbox/Library/caches/agorasdk.log
+- macOS：
+
+  - 启用 Sandbox 时：AppSandbox/Library/Logs/agorasdk.log
+  - 未启用 Sandbox 时：~/Library/Logs/agorasdk.log。
+
+</Parameter>
+<a id="filesizeinkb"></a>
+<Parameter name="fileSizeInKB">
+
+`agorasdk.log` 文件的大小（单位：KB）。取值范围为 [128, 20480]。默认值为 2048 KB。如果设置的值小于 128 KB，SDK 会自动调整为 128 KB；如果设置的值大于 20480 KB，SDK 会自动调整为 20480 KB。
+
+</Parameter>
+<a id="level"></a>
+<Parameter name="level">
+
+日志输出级别，详见 [AgoraLogLevel](/zh-CN/api-reference/rtc/macos/enum-loglevel)。
+
+</Parameter>
+</ParameterList>

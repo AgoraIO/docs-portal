@@ -1,0 +1,571 @@
+---
+title: 音视频录制
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/ios/API/toc_recording
+  sourcePath: html-docs/rtc/iOS/API/toc_recording.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_recording"></a>
+
+<a id="api_irtcengine_createmediarecorder"></a>
+
+<a id="ariaid-title2"></a>
+
+## createMediaRecorder:
+
+创建一个媒体录制器实例。
+
+<a id="api_irtcengine_createmediarecorder__prototype"></a>
+
+```text
+- (AgoraMediaRecorder * _Nullable)createMediaRecorder:(AgoraRecorderStreamInfo * _Nonnull)info NS_SWIFT_NAME(createMediaRecorder(withInfo:));
+```
+
+<a id="api_irtcengine_createmediarecorder__detailed_desc"></a>
+
+在开始音视频流录制之前，你需要调用该方法创建一个媒体录制器实例。SDK 支持录制来自本地或远端用户的多个音视频流。你可以多次调用该方法创建多个录制器实例，并使用 `info` 参数指定要录制的频道名和远端用户 ID。
+
+成功创建录制器实例后，你需要调用 [setMediaRecorderDelegate:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_setmediarecorderobserver) 方法为该录制器注册一个观察者，以监听相关回调，然后调用 [startRecording:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_startrecording) 方法开始录制。
+
+<a id="api_irtcengine_createmediarecorder__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
+
+要录制的音视频流的信息，详见 [AgoraRecorderStreamInfo](/zh-CN/api-reference/rtc/ios/class-recorderstreaminfo)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_createmediarecorder__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 对象。
+- 方法调用失败，返回 nil。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_destroymediarecorder"></a>
+
+<a id="ariaid-title3"></a>
+
+## destroyMediaRecorder:
+
+销毁音视频录制器实例。
+
+<a id="api_irtcengine_destroymediarecorder__prototype"></a>
+
+```text
+- (int)destroyMediaRecorder:(AgoraMediaRecorder * _Nullable)mediaRecorder;
+```
+
+<a id="api_irtcengine_destroymediarecorder__detailed_desc"></a>
+
+当你不再需要录制音视频流时，可以调用此方法销毁对应的音视频录制器实例。如果录制正在进行中，请先调用 [stopRecording](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_stoprecording) 停止录制，然后再调用此方法销毁录制器实例。
+
+<a id="api_irtcengine_destroymediarecorder__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="mediarecorder"></a>
+<Parameter name="mediaRecorder">
+
+要销毁的 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_destroymediarecorder__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。请参阅错误码获取详细信息和排查建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder"></a>
+
+<a id="ariaid-title4"></a>
+
+## enableMainQueueDispatch:
+
+设置是否将回调方法派发到主线程。
+
+<a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__prototype"></a>
+
+```text
+- (int)enableMainQueueDispatch:(BOOL)enabled NS_SWIFT_NAME(enableMainQueueDispatch(_:));
+```
+
+<a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__detailed_desc"></a>
+
+如果不将回调方法派发到主线程，应用应将 UI 操作派发到主线程。
+
+<a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否将回调方法派发到主线程：
+
+- YES：将回调方法派发到主线程。
+- NO：不将回调方法派发到主线程。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediarecorder_enablemainqueuedispatch_imediarecorder__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。详见错误码获取详情和排查建议。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)
+
+<a id="api_imediarecorder_setmediarecorderobserver"></a>
+
+<a id="ariaid-title5"></a>
+
+## setMediaRecorderDelegate:
+
+注册 [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver) 观察者。
+
+<a id="api_imediarecorder_setmediarecorderobserver__prototype"></a>
+
+```text
+- (int)setMediaRecorderDelegate:(id<AgoraMediaRecorderDelegate> _Nullable)delegate;
+```
+
+<a id="api_imediarecorder_setmediarecorderobserver__detailed_desc"></a>
+
+:::info[自从]
+自 v4.0.0 版本新增。
+:::
+
+该方法用于设置音视频录制的回调，使你在录制过程中能够获取音视频流的录制状态和相关信息。
+
+在调用该方法前，请确保已创建并初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象，并使用 [createMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_createmediarecorder) 创建录制器实例。
+
+<a id="api_imediarecorder_setmediarecorderobserver__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="delegate"></a>
+<Parameter name="delegate">
+
+音视频流录制的回调。详见 [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediarecorder_setmediarecorderobserver__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)
+
+<a id="api_irtcengine_startaudiorecording1"></a>
+
+<a id="ariaid-title6"></a>
+
+## startAudioRecording\:quality:
+
+开始客户端录音。
+
+<a id="api_irtcengine_startaudiorecording1__prototype"></a>
+
+```text
+- (int)startAudioRecording:(NSString * _Nonnull)filePath
+                   quality:(AgoraAudioRecordingQuality)quality NS_SWIFT_NAME(startAudioRecording(_:quality:));
+```
+
+<a id="api_irtcengine_startaudiorecording1__detailed_desc"></a>
+
+你可以在通话过程中调用该方法进行客户端录音。该方法会录制频道中所有用户的音频，并生成包含所有用户声音的录音文件。录音文件仅支持以下格式：
+
+- `.wav`：文件体积大，音频保真度高。
+- `.aac`：文件体积小，音频保真度有损。
+
+:::note
+注： 调用该方法时，默认的录音采样率为 32 kHz，且无法修改。
+:::
+
+<a id="api_irtcengine_startaudiorecording1__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+录音文件保存的本地绝对路径。路径必须包含文件名和扩展名，例如：/var/mobile/Containers/Data/audio.aac。
+
+:::note
+注： 请确保指定路径存在且可写。
+:::
+
+</Parameter>
+<a id="quality"></a>
+<Parameter name="quality">
+
+录音质量，详见 [AgoraAudioRecordingQuality](/zh-CN/api-reference/rtc/ios/enum-audiorecordingqualitytype)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startaudiorecording1__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startaudiorecording3"></a>
+
+<a id="ariaid-title7"></a>
+
+## startAudioRecordingWithConfig:
+
+开始客户端录制并配置录制设置。
+
+<a id="api_irtcengine_startaudiorecording3__prototype"></a>
+
+```text
+- (int)startAudioRecordingWithConfig:(AgoraAudioRecordingConfiguration * _Nonnull)config NS_SWIFT_NAME(startAudioRecording(withConfig:));
+```
+
+<a id="api_irtcengine_startaudiorecording3__detailed_desc"></a>
+
+调用该方法后，你可以录制频道中用户的音频并生成录音文件。录音文件仅支持以下格式：
+
+- WAV：音频保真度较高但文件较大。例如，采样率为 32000 Hz 的 10 分钟录音文件约为 73 MB。
+- AAC：音频保真度较低但文件较小。例如，采样率为 32000 Hz 且录音质量为 `AgoraAudioRecordingQualityMedium` 的 10 分钟录音文件约为 2 MB。
+
+当你离开频道时，录制会自动停止。该方法支持在通话过程中进行客户端录制。
+
+<a id="api_irtcengine_startaudiorecording3__timing"></a>
+
+### 调用时机
+
+该方法必须在加入频道后调用。
+
+<a id="api_irtcengine_startaudiorecording3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config"></a>
+<Parameter name="config">
+
+录制配置，详见 [AgoraAudioRecordingConfiguration](/zh-CN/api-reference/rtc/ios/class-audiorecordingconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startaudiorecording3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_startrecording"></a>
+
+<a id="ariaid-title8"></a>
+
+## startRecording:
+
+开始录制音视频流。
+
+<a id="api_imediarecorder_startrecording__prototype"></a>
+
+```text
+- (int)startRecording:(AgoraMediaRecorderConfiguration* _Nonnull)config NS_SWIFT_NAME(startRecording(_:));
+```
+
+<a id="api_imediarecorder_startrecording__detailed_desc"></a>
+
+:::info[自从]
+自 v4.0.0 版本新增。
+:::
+
+该方法用于开始录制音频和视频流。声网 SDK 支持同时录制本地和远端用户的音视频流。
+在开始录制前，请确保：
+
+- 已调用 [createMediaRecorder:](/zh-CN/api-reference/rtc/ios/recording#api_irtcengine_createmediarecorder) 创建媒体录制器对象。
+- 已调用 [setMediaRecorderDelegate:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_setmediarecorderobserver) 注册媒体录制器观察者以监听录制相关的回调。
+- 已加入频道。
+
+该方法支持录制以下数据：
+
+- 通过麦克风采集的音频，编码格式为 AAC。
+- 通过摄像头采集的视频，编码格式为 H.264 或 H.265。
+
+录制开始后，如果录制过程中视频分辨率发生变化，SDK 会停止录制。如果音频采样率或声道数发生变化，SDK 会继续录制并生成一个 MP4 文件。仅当检测到可录制的音视频流时，才会生成录制文件。如果在录制过程中未检测到可录制的音视频流，或音视频流中断超过 5 秒，SDK 会停止录制并触发 [mediaRecorder\:stateDidChanged\:uid\:state\:reason:](/zh-CN/api-reference/rtc/ios/recording#callback_imediarecorderobserver_onrecorderstatechanged) 回调（`AgoraMediaRecorderStateError`，`AgoraMediaRecorderReasonCodeNoStream`）。
+
+:::note
+注：
+
+- 如果需要录制本地音视频流，请确保本地用户角色在开始录制前已设置为主播。
+- 如果需要录制远端用户的音视频流，请确保在开始录制前已订阅目标用户的音视频流。
+:::
+
+<a id="api_imediarecorder_startrecording__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-1"></a>
+<Parameter name="config">
+
+用于配置音视频流录制的参数，详见 [AgoraMediaRecorderConfiguration](/zh-CN/api-reference/rtc/ios/class-mediarecorderconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediarecorder_startrecording__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。详见错误码：
+
+  - -2：参数无效。请确保：
+
+    - 指定的录制文件保存路径正确且可写。
+    - 指定的录制文件格式正确。
+    - 最大录制时长设置正确。
+  - -4：当前 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 的状态不支持该操作。可能是由于已有录制任务正在进行，或录制错误导致录制已停止。
+  - -7：调用该方法时 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 尚未初始化。请确保在调用该方法前已创建 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 对象。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)
+
+<a id="api_irtcengine_stopaudiorecording"></a>
+
+<a id="ariaid-title9"></a>
+
+## stopAudioRecording
+
+停止客户端录制音频。
+
+<a id="api_irtcengine_stopaudiorecording__prototype"></a>
+
+```text
+- (int)stopAudioRecording NS_SWIFT_NAME(stopAudioRecording());
+```
+
+<a id="api_irtcengine_stopaudiorecording__detailed_desc"></a>
+
+<a id="api_irtcengine_stopaudiorecording__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine)
+
+<a id="api_imediarecorder_stoprecording"></a>
+
+<a id="ariaid-title10"></a>
+
+## stopRecording
+
+停止录制音视频流。
+
+<a id="api_imediarecorder_stoprecording__prototype"></a>
+
+```text
+- (int)stopRecording NS_SWIFT_NAME(stopRecording());
+```
+
+<a id="api_imediarecorder_stoprecording__detailed_desc"></a>
+
+:::info[自从]
+自 v4.0.0 版本新增。
+:::
+
+:::note
+注： 调用 [startRecording:](/zh-CN/api-reference/rtc/ios/recording#api_imediarecorder_startrecording) 后，如果你想停止录制，必须调用此方法；否则生成的录制文件可能无法正常播放。
+:::
+
+<a id="api_imediarecorder_stoprecording__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败：
+
+  - -7：在初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 之前调用该方法。请确保在调用此方法之前已创建 `Recorder` 对象。
+
+### 所属接口类
+
+- [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated"></a>
+
+<a id="ariaid-title11"></a>
+
+## mediaRecorder\:informationDidUpdated\:uid\:info:
+
+录制信息更新回调。
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__prototype"></a>
+
+```text
+- (void)mediaRecorder:(AgoraMediaRecorder* _Nonnull)recorder informationDidUpdated:(NSString * _Nonnull)channelId uid:(NSUInteger)uid info:(AgoraMediaRecorderInfo* _Nonnull)info;
+```
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__detailed_desc"></a>
+
+:::info[自从]
+自 v4.0.0 版本新增。
+:::
+
+在你成功注册该回调并开始音视频流录制后，SDK 会根据你在 [AgoraMediaRecorderConfiguration](/zh-CN/api-reference/rtc/ios/class-mediarecorderconfiguration) 中设置的 `recorderInfoUpdateInterval` 的值，周期性地触发该回调，报告当前录制文件的名称、时长和大小。
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__timing"></a>
+
+### 触发时机
+
+该回调在你成功注册并开始音视频流录制后，SDK 会周期性地触发。
+
+<a id="callback_imediarecorderobserver_onrecorderinfoupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="recorder"></a>
+<Parameter name="recorder">
+
+[AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder) 实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="info-1"></a>
+<Parameter name="info">
+
+录制文件信息，详见 [AgoraMediaRecorderInfo](/zh-CN/api-reference/rtc/ios/class-recorderinfo)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver)
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged"></a>
+
+<a id="ariaid-title12"></a>
+
+## mediaRecorder\:stateDidChanged\:uid\:state\:reason:
+
+录制状态发生变化时的回调。
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__prototype"></a>
+
+```text
+- (void)mediaRecorder:(AgoraMediaRecorder* _Nonnull)recorder stateDidChanged:(NSString * _Nonnull)channelId uid:(NSUInteger)uid state:(AgoraMediaRecorderState)state reason:(AgoraMediaRecorderReasonCode)reason;
+```
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__detailed_desc"></a>
+
+:::info[自从]
+自 v4.0.0 版本新增。
+:::
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__timing"></a>
+
+### 触发时机
+
+当音视频流的录制状态发生变化时触发。
+
+<a id="callback_imediarecorderobserver_onrecorderstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="recorder-1"></a>
+<Parameter name="recorder">
+
+录制器实例。详见 [AgoraMediaRecorder](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorder)。
+
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
+
+频道名。
+
+</Parameter>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="state"></a>
+<Parameter name="state">
+
+当前的录制状态，详见 [AgoraMediaRecorderState](/zh-CN/api-reference/rtc/ios/enum-recorderstate)。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+录制状态变化的原因，详见 [AgoraMediaRecorderReasonCode](/zh-CN/api-reference/rtc/ios/enum-recorderreasoncode)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [AgoraMediaRecorderDelegate](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_imediarecorderobserver)

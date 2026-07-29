@@ -1,0 +1,70 @@
+---
+title: WatermarkOptions
+description: 水印图片的设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_watermarkoptions
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_watermarkoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkoptions__prototype"></a>
+
+```text
+struct WatermarkOptions {
+  bool visibleInPreview;
+  Rectangle positionInLandscapeMode;
+  Rectangle positionInPortraitMode;
+  WatermarkRatio watermarkRatio;
+  WATERMARK_FIT_MODE mode;
+  WatermarkOptions()
+    : visibleInPreview(false),
+      positionInLandscapeMode(0, 0, 0, 0),
+      positionInPortraitMode(0, 0, 0, 0),
+      mode(FIT_MODE_COVER_POSITION) {}
+};
+```
+
+<a id="class_watermarkoptions__detailed_desc"></a>
+
+<a id="class_watermarkoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="visibleinpreview"></a>
+<Parameter name="visibleInPreview">
+
+水印是否在本地预览视图中可见：
+
+- `true`: （默认）水印在本地预览视图中可见。
+- `false`: 水印在本地预览视图中不可见。
+
+</Parameter>
+<a id="positioninlandscapemode"></a>
+<Parameter name="positionInLandscapeMode">
+
+水印的适配模式为 FIT_MODE_COVER_POSITION 时，用于设置横屏模式下水印图片的区域。详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
+
+</Parameter>
+<a id="positioninportraitmode"></a>
+<Parameter name="positionInPortraitMode">
+
+水印的适配模式为 FIT_MODE_COVER_POSITION 时，用于设置竖屏模式下水印图片的区域。详见 [Rectangle](/zh-CN/api-reference/rtc/unreal-cpp/class-rectangle)。
+
+</Parameter>
+<a id="watermarkratio"></a>
+<Parameter name="watermarkRatio">
+
+水印的适配模式为 FIT_MODE_USE_IMAGE_RATIO 时，该参数可设置缩放模式下的水印坐标。详见 [WatermarkRatio](/zh-CN/api-reference/rtc/unreal-cpp/class-watermarkratio)。
+
+</Parameter>
+<a id="mode"></a>
+<Parameter name="mode">
+
+水印的适配模式。详见 [WATERMARK_FIT_MODE](/zh-CN/api-reference/rtc/unreal-cpp/enum-watermarkfitmode)。
+
+</Parameter>
+</ParameterList>

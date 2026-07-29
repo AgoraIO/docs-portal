@@ -1,0 +1,205 @@
+---
+title: 听声辨位
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/electron/API/toc_sound_position
+  sourcePath: html-docs/rtc/Electron/API/toc_sound_position.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_sound_position"></a>
+
+<a id="api_irtcengine_enablesoundpositionindication"></a>
+
+<a id="ariaid-title2"></a>
+
+## enableSoundPositionIndication
+
+开启/关闭远端用户的语音立体声。
+
+<a id="api_irtcengine_enablesoundpositionindication__prototype"></a>
+
+```text
+abstract enableSoundPositionIndication(enabled: boolean): number;
+```
+
+<a id="api_irtcengine_enablesoundpositionindication__detailed_desc"></a>
+
+如果想调用 [setRemoteVoicePosition](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/sound-position#api_irtcengine_setremotevoiceposition) 实现听声辨位的功能，请确保在加入频道前调用该方法开启远端用户的语音立体声。
+
+<a id="api_irtcengine_enablesoundpositionindication__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否开启远端用户语音立体声：
+
+- true: 开启语音立体声。
+- false: 关闭语音立体声。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablesoundpositionindication__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotevoiceposition"></a>
+
+<a id="ariaid-title3"></a>
+
+## setRemoteVoicePosition
+
+设置远端用户声音的 2D 位置，即水平面位置。
+
+<a id="api_irtcengine_setremotevoiceposition__prototype"></a>
+
+```text
+abstract setRemoteVoicePosition(
+    uid: number,
+    pan: number,
+    gain: number
+  ): number;
+```
+
+<a id="api_irtcengine_setremotevoiceposition__detailed_desc"></a>
+
+设置远端用户声音的 2D 位置和音量，方便本地用户听声辨位。
+通过调用该接口设置远端用户声音出现的位置，左右声道的声音差异会产生声音的方位感，从而判断出远端用户的实时位置。在多人在线游戏场景，如吃鸡游戏中，该方法能有效增加游戏角色的方位感，模拟真实场景。
+
+:::note
+注：
+
+- 使用该方法需要在加入频道前调用 [enableSoundPositionIndication](/zh-CN/api-reference/rtc/electron/audio/audio-prenpost/sound-position#api_irtcengine_enablesoundpositionindication) 开启远端用户的语音立体声。
+- 为获得最佳听觉体验，建议使用该方法时使用有线耳机。
+- 该方法需要在加入频道后调用。
+:::
+
+<a id="api_irtcengine_setremotevoiceposition__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+远端用户的 ID
+
+</Parameter>
+<a id="pan"></a>
+<Parameter name="pan">
+
+设置远端用户声音的 2D 位置，取值范围为 [-1.0,1.0]:
+
+- （默认）0.0: 声音出现在正前方。
+- -1.0: 声音出现在左边。
+- 1.0: 声音出现在右边。
+
+</Parameter>
+<a id="gain"></a>
+<Parameter name="gain">
+
+设置远端用户声音的音量，取值范围为 [0.0,100.0]，默认值为 100.0，表示该用户的原始音量。取值越小，则音量越低。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setremotevoiceposition__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngine](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_setremotevoicepositionex"></a>
+
+<a id="ariaid-title4"></a>
+
+## setRemoteVoicePositionEx
+
+设置远端用户声音的 2D 位置，即水平面位置。
+
+<a id="api_irtcengineex_setremotevoicepositionex__prototype"></a>
+
+```text
+abstract setRemoteVoicePositionEx(
+    uid: number,
+    pan: number,
+    gain: number,
+    connection: RtcConnection
+  ): number;
+```
+
+<a id="api_irtcengineex_setremotevoicepositionex__detailed_desc"></a>
+
+设置远端用户声音的空间位置和音量，方便本地用户听声辨位。
+通过调用该接口设置远端用户声音出现的位置，左右声道的声音差异会产生声音的方位感，从而判断出远端用户的实时位置。在多人在线游戏场景，如吃鸡游戏中，该方法能有效增加游戏角色的方位感，模拟真实场景。
+
+:::note
+注：
+
+- 为获得最佳听觉体验，建议用户佩戴有线耳机。
+- 该方法需要在加入频道后调用。
+:::
+
+<a id="api_irtcengineex_setremotevoicepositionex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+远端用户的 ID。
+
+</Parameter>
+<a id="pan-1"></a>
+<Parameter name="pan">
+
+设置远端用户声音的空间位置，取值范围为 [-1.0,1.0]:
+
+- -1.0: 声音出现在左边。
+- （默认）0.0: 声音出现在正前方。
+- 1.0: 声音出现在右边。
+
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
+
+设置远端用户声音的音量，取值范围为 [0.0,100.0]，默认值为 100.0，表示该用户的原始音量。取值越小，则音量越低。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/electron/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_setremotevoicepositionex__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/electron/rtc-interface-class#class_irtcengineex)

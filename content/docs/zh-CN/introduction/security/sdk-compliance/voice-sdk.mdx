@@ -1,0 +1,482 @@
+---
+title: 音频 SDK
+description: "了解 App 使用音频 SDK 时的权限、初始化时机、可选个人信息配置、隐私政策披露示例和最终用户权利响应建议。"
+---
+
+## 一、概述
+
+根据中国法律法规和监管部门规章要求，App 开发运营者在提供网络产品服务时应尊重和保护最终用户个人信息，不得违法违规收集使用个人信息，保证个人信息处理行为获得最终用户的授权同意，遵循最小必要原则，并采取有效的技术措施和组织措施确保个人信息安全。
+
+为帮助开发者在使用 SDK 的过程中更好地落实用户个人信息保护相关要求，避免出现侵害用户个人信息权益情形，上海声网科技有限公司制定本 **音频 SDK** 合规使用说明。
+
+## 二、App 使用音频 SDK 时的合规指引
+
+SDK 向您提供了可选个人信息及权限的控制开关，您可以根据 App 所需的 SDK 功能服务自行配置打开或关闭隐私信息请求开关。
+
+- 基本功能：本 SDK 的基本功能是为开发者提供稳定的音频功能，包括音频通话、音频互动等基础音频功能。
+- 扩展功能：在基本功能的基础上，本 SDK 还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)。其中 AI 智能识别涉及到可选个人信息收集，具体请参考下文。
+
+### 1. SDK 所需的系统权限的说明
+
+音频 SDK 功能所需的权限，您可以参考如下表格，了解相关权限功能和时机。
+
+SDK 只会检查 App 是否获得相应授权，不会主动向最终用户申请权限。
+
+权限配置，请查阅相关配置文档：
+- Android：[实现纯音频互动-创建项目](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#创建项目)
+- iOS：[实现纯音频互动-创建项目](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#创建项目)
+- HarmonyOS：[实现纯音频互动-创建项目](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#创建项目)
+
+Android 操作系统应用权限列表：
+
+| 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
+| --- | --- | --- | --- |
+| INTERNET 访问网络 | 用于在加入频道时接入网络 | 必选 | 当需要接入网络时 |
+| ACCESS_NETWORK_STATE 查看网络状态 | 用于查看网络连接状态 | 可选 | 当需要查看网络状态时 |
+| ACCESS_WIFI_STATE 查看 WiFi 状态 | 用于查看 WiFi 连接状态 | 可选 | 当需要查看 WiFi 状态时 |
+| RECORD_AUDIO 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | <Slot name="voicesdk-table-0-row-5-cell-3" /> |
+| MODIFY_AUDIO_SETTINGS 麦克风设置权限 | 用于提供音音频通话设置功能 | 可选 | 当用户设置麦克风时。 |
+| BLUETOOTH_CONNECT 蓝牙连接权限 | <Slot name="voicesdk-table-0-row-7-cell-1" /> | 可选 | <Slot name="voicesdk-table-0-row-7-cell-3" /> |
+| READ_PHONE_STATE 读取电话状态权限 | <Slot name="voicesdk-table-0-row-8-cell-1" /> | 可选 | 当用户设备电话呼入时，SDK 会识别来电状态，并会停止 SDK 音频传输和交互。 |
+
+<Slot for="voicesdk-table-0-row-5-cell-3">
+
+当用户同意开启权限时。
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="voicesdk-table-0-row-7-cell-1">
+
+用于支持蓝牙耳机和耳麦的接入
+
+:::warning
+仅针对 Android 12 及以上版本的设备。
+:::
+
+</Slot>
+
+<Slot for="voicesdk-table-0-row-7-cell-3">
+
+当用户同意开启权限时。
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="voicesdk-table-0-row-8-cell-1">
+
+用于识别设备接到电话呼入状态，当电话呼入时，停止音频传输和交互
+
+:::warning
+仅针对 Android 12 及以上版本的设备。
+:::
+
+</Slot>
+
+iOS 操作系统应用权限列表：
+
+| 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
+| --- | --- | --- | --- |
+| Microphone Usage Description 麦克风权限 | 用于提供语音通话和互动功能，传输和交互语音信息 | 可选 | <Slot name="voicesdk-table-1-row-2-cell-3" /> |
+
+<Slot for="voicesdk-table-1-row-2-cell-3">
+
+当用户同意开启权限时。
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+HarmonyOS 操作系统应用权限列表：
+
+| 权限 | 权限功能说明 | 必选或可选 | 申请时机 |
+| --- | --- | --- | --- |
+| ohos.permission.INTERNET 网络权限 | 使用网络传输音频数据 | 必选 | 当 App 需要接入网络时 |
+| ohos.permission.MICROPHONE 麦克风权限 | 用于提供语音通话和互动功能，传输交互语音信息 | 可选 | <Slot name="voicesdk-table-2-row-3-cell-3" /> |
+| ohos.permission.GET_NETWORK_INFO 网络信息权限 | 用于监测网络变化以便规划网络链接节点 | 可选 | <Slot name="voicesdk-table-2-row-4-cell-3" /> |
+| <Slot name="voicesdk-table-2-row-5-cell-0" /> | 用于 App 在后台运行时可以正常进行音频互动 | 可选 | <Slot name="voicesdk-table-2-row-5-cell-3" /> |
+
+<Slot for="voicesdk-table-2-row-3-cell-3">
+
+当 App 需要使用麦克风时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="voicesdk-table-2-row-4-cell-3">
+
+当 App 需要获取网络信息时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+<Slot for="voicesdk-table-2-row-5-cell-0">
+
+ohos.permission.KEEP_BACKGROUND_RUNNING
+后台运行权限
+
+</Slot>
+
+<Slot for="voicesdk-table-2-row-5-cell-3">
+
+当 App 需要在后台继续进行音频互动时
+
+:::note
+SDK 检查 App 是否获得相应授权，不会主动申请权限。
+:::
+
+</Slot>
+
+### 2. SDK 初始化及业务功能调用时机说明
+
+您应确保在登录注册页面及 App 首次运行时，通过简洁、明显且易于访问方式向最终用户告知涵盖个人信息处理主体、处理目的、处理方式、处理类型、保存期限等内容的 App 个人信息处理规则（App 隐私政策）。
+
+您应确保在最终用户同意 App 隐私政策后，再进行音频 SDK 的初始化。并且，在用户同意隐私政策前，您应避免动态申请涉及用户个人信息的敏感设备权限；也应避免私自采集和上报个人信息。如果最终用户不同意 App 隐私政策，则不能初始化音频 SDK，无法使用 SDK 功能。
+
+SDK 初始化和相关功能配置，请查阅相关配置文档：
+- Android：[开始纯语音互动-初始化引擎](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#初始化引擎)
+- iOS：[开始纯语音互动-初始化引擎](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#初始化引擎)
+- HarmonyOS：[开始纯语音互动-初始化引擎](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#初始化引擎)
+
+SDK 功能、接口配置方式及示例说明：
+
+| 系统 | 业务功能 | 相关个人信息 | 配置方式及示例 | 时机 |
+| --- | --- | --- | --- | --- |
+| Android | 纯音频互动 | <Slot name="voicesdk-table-3-row-2-cell-2" /> | <Slot name="voicesdk-table-3-row-2-cell-3" /> | 用户加入频道开启音频通话时 |
+| Android | 极速直播 | <Slot name="voicesdk-table-3-row-3-cell-2" /> | <Slot name="voicesdk-table-3-row-3-cell-3" /> | 用户加入频道开启极速直播时 |
+| Android | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型； | <Slot name="voicesdk-table-3-row-4-cell-3" /> | 用户加入频道后，在音频互动时播放音乐文件 |
+| iOS | 纯音频互动 | <Slot name="voicesdk-table-3-row-5-cell-2" /> | <Slot name="voicesdk-table-3-row-5-cell-3" /> | 用户加入频道开启音频通话时 |
+| iOS | 极速直播 | <Slot name="voicesdk-table-3-row-6-cell-2" /> | <Slot name="voicesdk-table-3-row-6-cell-3" /> | 用户加入频道开启极速直播时 |
+| iOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型； | <Slot name="voicesdk-table-3-row-7-cell-3" /> | 用户加入频道后，在音频互动时播放音乐文件时 |
+| HarmonyOS | 纯音频互动 | <Slot name="voicesdk-table-3-row-8-cell-2" /> | <Slot name="voicesdk-table-3-row-8-cell-3" /> | 用户加入频道开启音频通话时 |
+| HarmonyOS | 极速直播 | <Slot name="voicesdk-table-3-row-9-cell-2" /> | <Slot name="voicesdk-table-3-row-9-cell-3" /> | 用户加入频道开启极速直播时 |
+| HarmonyOS | 播放音乐文件 | 必要：设备品牌、设备型号、操作系统版本； | <Slot name="voicesdk-table-3-row-10-cell-3" /> | 用户加入频道后，在音频互动时播放音乐文件时 |
+
+<Slot for="voicesdk-table-3-row-2-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型；
+
+可选：频道内用户 ID；
+
+权限：麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-2-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.joinChannel(String token,  String channelId, int uid, ChannelMediaOptions options)；`
+
+参数：
+
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `channelId`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集此信息
+- `options`：频道媒体设置选项
+
+**配置关闭示例：**
+`RTCEngine.leaveChannel()`
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-3-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型；
+
+权限：麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-3-cell-3">
+
+**配置开启、关闭示例：**
+
+`RTCEngine.setClientRole(int role,  ClientRoleOptions options)；`
+
+参数：
+
+- `role`：直播场景中用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则就关闭极速直播
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-4-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.startAudioMixing(String  filePath, boolean loopback, int cycle, int startPos);`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件播放次数
+- `startPos`：音乐文件播放位置
+
+**配置关闭示例：**
+
+`RTCEngine.stopAudioMixing()`
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-5-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型；
+
+可选：频道内用户 ID；
+
+权限：麦克风权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-5-cell-3">
+
+**配置开启示例：**
+
+`agoraKit.joinChannel(byToken:  <#Your Token#>, channelId: <#Your Channel Name#>, uid: 0, mediaOptions:  option)`
+
+参数：
+
+- `byToken`：在服务端生成的用于鉴权的动态密钥
+- `channelId`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集此信息
+- `option`：频道媒体设置选项
+
+**配置关闭示例：**
+
+`agoraKit.leaveChannel()`
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-6-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型；
+
+权限：麦克风权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-6-cell-3">
+
+**配置开启、关闭示例：**
+
+`agoraKit.setClientRole(role, options:  options)；`
+
+参数：
+
+- `role`：直播场景中的用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` 时开启极速直播，否则关闭极速直播
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-7-cell-3">
+
+**配置开启示例：**
+
+`agoraKit.startAudioMixing(filePath,  loopback: loopback, replace: replace, cycle: cycle)`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件的播放次数
+- `startPos`：音乐文件的播放位置
+
+**配置关闭示例：**
+
+`agoraKit.stopAudioMixing();`
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-8-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本；
+
+可选：频道内用户 ID；
+
+权限：麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-8-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.joinChannel(token:string, channelId:string, uid:number, options:ChannelMediaOptions)；`
+
+参数：
+
+- `token`：在服务端生成的用于鉴权的动态密钥
+- `channelId`：频道名
+- `uid`：用户 ID，当 `uid` 为 0 时，服务端将动态给 `uid` 分配随机值，即不收集此信息
+- `options`：频道媒体设置选项
+
+**配置关闭示例：**
+
+`RTCEngine.leaveChannel()`
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-9-cell-2">
+
+必要：设备品牌、设备型号、操作系统版本；
+
+权限：麦克风权限、网络权限
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-9-cell-3">
+
+**配置开启、关闭示例：**
+
+`RTCEngine.setClientRole(role:number,options:ClientRoleOptions)；`
+
+参数：
+
+- `role`，直播场景中用户角色
+- `options`：用户具体设置，包含用户级别，当 `audienceLatencyLevel` = `Constants.AudienceLatencyLevel.LOW_LATENCY` 时开启极速直播，否则就关闭极速直播
+
+</Slot>
+
+<Slot for="voicesdk-table-3-row-10-cell-3">
+
+**配置开启示例：**
+
+`RTCEngine.startAudioMixing(filepath: string, loopback: boolean, cycle: number,startpos :number);`
+
+参数：
+
+- `filePath`：文件路径
+- `loopback`：是否只在本地播放音乐文件
+- `cycle`：音乐文件播放次数
+- `startPos`：音乐文件播放位置
+
+**配置关闭示例：**
+
+`RTCEngine.stopAudioMixing()`
+
+</Slot>
+
+### 3. 配置可选个人信息
+
+在基本功能的基础上，我司还提供了额外的扩展功能，例如[云端录制](/zh-CN/realtime-media/cloud-recording)、[云端转码](/zh-CN/realtime-media/transcoding)、[对话式 AI](/zh-CN/ai)。其涉及到可选个人信息收集，具体请参考下文。
+
+| 个人信息名称 | 处理目的 | 使用场景 | 处理方式 |
+| --- | --- | --- | --- |
+| 视频信息 | 对视频进行录制或转码 | 视频录制、视频转码场景 | <Slot name="voicesdk-table-4-row-2-cell-3" /> |
+| 音频信息 | 对音频内容进行转文本处理 | 语音智能识别 | 音频信息处理完成后即时删除，我们不会在服务器中留存；生成的文本在完成识别后即时删除，除非您开启了查错模式，我们不会在服务器中留存。 |
+
+<Slot for="voicesdk-table-4-row-2-cell-3">
+
+录制场景中视频信息处理完成后会传输至客户指定的存储地点，除非客户有存储需求我们不会做任何存储。
+
+在转码场景中视频信息仅作转码处理，不会进行任何形式的存储。
+
+</Slot>
+
+由于扩展功能均需要您在声网控制台单独开通，并在配置中写入必要的参数方可启用。请您查阅以下文档理解扩展业务功能可选个人信息的具体调用方法并进行相应配置:
+- [云端录制](/zh-CN/realtime-media/cloud-recording)
+- [云端转码](/zh-CN/realtime-media/transcoding)
+- [对话式 AI 引擎](/zh-CN/ai)
+
+### 4. SDK 隐私政策披露要求与示例说明
+
+请您根据集成音频 SDK 的实际情况，在您的 App 隐私政策中披露：第三方 SDK 名称、SDK 公司名称、SDK 使用目的和功能场景、SDK 涉及个人信息类型、实现 SDK 功能所需的权限、SDK 隐私政策链接。
+
+请在您的 App 隐私政策中，以文字或列表的方式向公众披露第三方 SDK 的相关信息。
+
+第三方 SDK 披露示例（仅供参考）：
+
+#### Android 示例
+
+- SDK 名称：音频 SDK
+- SDK 公司名称：上海声网科技有限公司
+- SDK 使用目的和功能场景：提供语音通信服务，包括语音通话、语音直播等
+- SDK 涉及的个人信息类型：
+  - 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型
+  - 可选：频道内用户 ID
+- 实现 SDK 功能所需权限：麦克风、麦克风设置、蓝牙连接、读取电话状态、访问网络、查看网络状态、查看 WiFi 状态
+- SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
+
+#### iOS 示例
+
+- SDK 名称：音频 SDK
+- SDK 公司名称：上海声网科技有限公司
+- SDK 使用目的和功能场景：提供语音通信服务，包括语音通话、语音直播等
+- SDK 涉及的个人信息类型：
+  - 必要：设备品牌、设备型号、操作系统版本、CPU 信息、内存使用情况、电池电量信息、IP 地址、网络接入方式和类型
+  - 可选：频道内用户 ID
+- 实现 SDK 功能所需权限：麦克风权限
+- SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
+
+#### HarmonyOS 示例
+
+- SDK 名称：音频 SDK
+- SDK 公司名称：上海声网科技有限公司
+- SDK 使用目的和功能场景：提供实时音频通信服务，包括视频通话、互动直播、极速直播等
+- SDK 涉及的个人信息类型：
+  - 必要：设备品牌、设备型号、操作系统版本、IP 地址
+  - 可选：频道内的用户 ID
+- 实现 SDK 功能所需权限：麦克风、访问网络、获取网络信息、后台运行
+- SDK 隐私政策链接：[shengwang.cn/SDK-privacy-policy/](https://www.shengwang.cn/SDK-privacy-policy/)
+
+### 5. 最终用户同意方式的建议方式说明
+
+App 首次运行时应当有隐私弹窗，隐私弹窗中应公示隐私政策内容并附完整隐私政策链接，并明确提示最终用户阅读并选择是否同意隐私政策；隐私弹窗应提供同意按钮和拒绝同意的按钮，并由最终用户主动选择。
+
+![App 隐私弹窗示例](https://web-cdn.agora.io/docs-portal/img/security/app-alert.png)
+
+App 取得敏感权限前，应通过隐私弹窗获得用户单独授权同意（如：麦克风权限）。
+
+### 6. 最终用户行使权利的配置说明
+
+开发者在其 App 中集成音频 SDK 后，SDK 的正常运行会收集和处理必要的最终用户的个人信息用于提供语音通话目的。
+
+SDK 提供以下接口配置，以便您帮助最终用户实现其个人信息权利的请求。在最终用户撤销同意处理其个人信息的授权时，您可以通过调用接口，停止和关闭 SDK 功能，并停止收集相应的用户数据。
+
+App 开发者应根据相关法律法规为最终用户提供行使个人信息主体权利的路径功能，需要音频 SDK 配合的，请与 SDK 及时进行联系。
+
+相关配置操作，请查阅相关配置文档：
+- Android：[开始纯语音互动-结束音频互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#结束音频互动)
+- iOS：[开始纯语音互动-结束音频互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#结束音频互动)
+- HarmonyOS：[开始纯语音互动-结束音频互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start#结束音频互动)
+
+### 7. 开发者合规注意事项
+
+- 在 App 隐私政策中清晰说明所集成 SDK 的名称、开发者名称、处理的个人信息类型、处理目的、处理方式和 SDK 隐私政策链接。
+- 在最终用户同意 App 隐私政策后，再初始化并调用相关 SDK。
+- 仅在实现业务功能所必需的场景下申请系统权限，并向最终用户说明权限用途。
+- 如你的 App 面向未成年人、教育、医疗、金融等特殊场景，请结合适用法律法规补充更严格的合规措施。
+
+## 三、合规文件指引
+
+1. [《个人信息保护法》](http://www.cac.gov.cn/2021-08/20/c_1631050028355286.htm)
+2. [《工业和信息化部关于开展信息通信服务感知提升行动的通知》](https://www.gov.cn/zhengce/zhengceku/2021-11/06/content_5649420.htm)
+3. [《工业和信息化部关于开展纵深推进 App 侵害用户权益专项整治行动的通知》](https://www.cac.gov.cn/2020-07/28/c_1597492913060262.htm)
+4. [《工业和信息化部关于开展 App 侵害用户权益专项整治工作的通知》](https://www.cac.gov.cn/2020-07/28/c_1597492913060262.htm)
+5. [《App 违法违规收集使用个人信息行为认定方法》](http://www.cac.gov.cn/2019-12/27/c_1578986455686625.htm)
+6. [《App收集使用个人信息自评估指南》](https://www.tc260.org.cn/upload/2020-07-22/1595396892533085831.pdf)
+7. [《常见类型移动互联网应用程序必要个人信息范围规定》](https://www.gov.cn/zhengce/zhengceku/2021-03/23/content_5595088.htm)
+8. [《GB/T 35273-2020信息安全技术个人信息安全规范》](https://openstd.samr.gov.cn/bzgk/gb/newGbInfo?hcno=4568F276E0F8346EB0FBA097AA0CE05E&refer=outter)
+9. [《网络安全标准实践指南—移动互联网应用程序（App）使用软件开发工具包（SDK）安全指引》](https://www.tc260.org.cn/portal/article/2/20201126161240)
+
+## 四、联系方式
+
+我们设立了专门的个人信息保护团队和负责人，如果您和/或最终用户对本规则或个人信息保护相关事宜有疑问或投诉、建议时，可以通过以下方式与我们联系：[privacy@shengwang.cn](mailto:privacy@shengwang.cn)。
+
+我们将尽快审核所涉问题，并在 15 个工作日或法律法规规定的期限内予以反馈。

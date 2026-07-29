@@ -1,0 +1,48 @@
+---
+title: SnapshotConfig
+description: 用于配置视频截图的结构体。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_snapshotconfig
+  sourcePath: html-docs/rtc/Cpp/API/class_snapshotconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_snapshotconfig__prototype"></a>
+
+```text
+struct SnapshotConfig {
+  const char* filePath;
+  media::base::VIDEO_MODULE_POSITION position;
+};
+```
+
+<a id="class_snapshotconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+:::note
+注： 请确保指定的路径存在且可写。
+:::
+
+截图的本地路径（包含文件扩展名）。例如：
+
+- Windows: `C:\Users\<user_name>\AppData\Local\声网\<process_name>\example.jpg`
+- iOS: `/App Sandbox/Library/Caches/example.jpg`
+- macOS: `～/Library/Logs/example.jpg`
+- Android: `/storage/emulated/0/Android/data/<package name>/files/example.jpg`。
+
+</Parameter>
+<a id="position"></a>
+<Parameter name="position">
+
+截图视频帧在视频处理流程中的位置，详见 [VIDEO_MODULE_POSITION](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-videomoduleposition)。
+
+</Parameter>
+</ParameterList>

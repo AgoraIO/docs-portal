@@ -1,0 +1,167 @@
+---
+title: "RoomContext"
+description: "RoomContext 类。"
+---
+<a id="class_roomcontext"></a>
+
+<a id="api_joinroom"></a>
+
+## joinRoom
+
+加入房间。
+
+<a id="api_joinroom__prototype"></a>
+
+```kotlin
+abstract fun joinRoom(callback: EduContextCallback<Unit>?)
+```
+
+<a id="api_joinroom__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-callback) 异步获取调用结果。
+
+<a id="api_leaveroom"></a>
+
+## leaveRoom
+
+离开房间。
+
+<a id="api_leaveroom__prototype"></a>
+
+```kotlin
+abstract fun leaveRoom(callback: EduContextCallback<Unit>?)
+```
+
+<a id="api_leaveroom__parameters"></a>
+
+### 参数
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-callback) 异步获取调用结果。
+
+<a id="api_getroominfo"></a>
+
+## getRoomInfo
+
+获取房间信息。
+
+<a id="api_getroominfo__prototype"></a>
+
+```kotlin
+abstract fun getRoomInfo(): EduContextRoomInfo
+```
+
+<a id="api_getroominfo__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [EduContextRoomInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_roominfo)。
+
+<a id="api_getroomproperties"></a>
+
+## getRoomProperties
+
+获取自定义房间属性。
+
+<a id="api_getroomproperties__prototype"></a>
+
+```kotlin
+abstract fun getRoomProperties(): Map<String, Any>?
+```
+
+<a id="api_getroomproperties__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 Map&lt;String, Any&gt;。
+
+<a id="api_updateroomproperties"></a>
+
+## updateRoomProperties
+
+新增或更新自定义房间属性。
+
+<a id="api_updateroomproperties__prototype"></a>
+
+```kotlin
+abstract fun updateRoomProperties(properties: MutableMap<String, Any>,
+                                  cause: MutableMap<String, Any>?,
+                                  callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_updateroomproperties__detailed_desc"></a>
+
+### 详情
+
+详见 [如何设置自定义房间属性](/zh-CN/reference/faq/integration/agora_class_custom_properties)。
+
+属性成功更新后，会触发 [onRoomPropertiesUpdated](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-roomhandler#api_onroompropertiesupdated) 回调。
+
+<a id="api_updateroomproperties__parameters"></a>
+
+### 参数
+
+#### `properties`
+
+房间属性。
+
+#### `cause`
+
+更新原因。可为空。
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-callback) 异步获取调用结果。
+
+<a id="api_deleteroomproperties"></a>
+
+## deleteRoomProperties
+
+删除自定义房间属性。
+
+<a id="api_deleteroomproperties__prototype"></a>
+
+```kotlin
+abstract fun deleteRoomProperties(keyPaths: MutableList<String>,
+                                  cause: MutableMap<String, Any>?,
+                                  callback: EduContextCallback<Unit>? = null)
+```
+
+<a id="api_deleteroomproperties__parameters"></a>
+
+### 参数
+
+#### `keyPaths`
+
+你想要删除的属性的 key path，如 key1.subkey1。
+
+#### `cause`
+
+删除原因。可为空。
+
+#### `callback`
+
+通过 [EduContextCallback](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/class-callback) 异步获取调用结果。
+
+<a id="api_getclassinfo"></a>
+
+## getClassInfo
+
+获取课堂信息。
+
+<a id="api_getclassinfo__prototype"></a>
+
+```kotlin
+abstract fun getClassInfo(): AgoraEduContextClassInfo
+```
+
+<a id="api_getclassinfo__return_values"></a>
+
+### 返回值
+
+调用成功，则返回 [AgoraEduContextClassInfo](/zh-CN/api-reference/flexible-classroom/android/api-reference/edu-context/api-data-type#class_classinfo)。

@@ -61,13 +61,12 @@ import { getDocsSourceLinks } from './docs-source-links';
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
 const DOCS_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_fit-content(calc(var(--content-max)+5rem))_220px]';
+  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 export const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY =
   'agora-docs:legacy-docs-banner-dismissed';
 const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE = 'true';
-const DISMISS_LEGACY_DOCS_BANNER_LABEL = 'Dismiss legacy docs banner';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
 const mobilePageLinkClassName =
@@ -172,6 +171,7 @@ export function DocsShell({
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
   const homeHref = buildDocPath(currentLocale, 'introduction');
   const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
+  const dismissLegacyDocsBannerLabel = t('docs.dismissLegacyDocsBanner');
 
   useEffect(() => {
     if (isLegacyDocsBannerDismissed()) {
@@ -271,7 +271,7 @@ export function DocsShell({
                 <span className="sr-only"> ({t('docs.opensInNewTab')})</span>
               </a>
               <Button
-                aria-label={DISMISS_LEGACY_DOCS_BANNER_LABEL}
+                aria-label={dismissLegacyDocsBannerLabel}
                 className="text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)]"
                 onClick={dismissLegacyDocsBanner}
                 size="icon-xs"
@@ -279,9 +279,7 @@ export function DocsShell({
                 variant="ghost"
               >
                 <XIcon />
-                <span className="sr-only">
-                  {DISMISS_LEGACY_DOCS_BANNER_LABEL}
-                </span>
+                <span className="sr-only">{dismissLegacyDocsBannerLabel}</span>
               </Button>
             </div>
           ) : null}
@@ -305,6 +303,7 @@ export function DocsShell({
                 </SheetTrigger>
                 <SheetContent
                   className="w-[min(92vw,24rem)] max-w-[calc(100vw-1rem)] gap-0 overflow-hidden p-0 sm:max-w-sm"
+                  closeLabel={t('docs.close')}
                   data-testid="docs-mobile-sidebar-sheet"
                   side="left"
                 >
@@ -484,6 +483,7 @@ export function DocsShell({
           <DocsSidebar
             activePath={activePath}
             header={sidebarHeader}
+            locale={currentLocale}
             nodes={sidebar}
             onSelectPath={() => setIsMobileSheetOpen(false)}
             resetKey={sidebarResetKey}
@@ -512,6 +512,7 @@ export function DocsShell({
             shellWidthClassName,
           )}
           contentClassName="px-4 sm:px-6 lg:px-10"
+          locale={currentLocale}
         />
       </div>
     </SidebarProvider>
@@ -638,6 +639,7 @@ function MobileSidebar({
             {sidebarHeader ? (
               <DocsSidebarHeaderBlock
                 header={sidebarHeader}
+                locale={currentLocale}
                 mode="mobile"
                 onSelectPath={onSelectPath}
               />
@@ -727,7 +729,7 @@ function MobileSidebarNode({
         className={className}
         onClick={onSelectPath}
         params={{}}
-        search={{}}
+        search={node.search ?? {}}
         to={node.url}
       >
         {content}

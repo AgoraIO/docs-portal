@@ -1,0 +1,169 @@
+---
+title: FPlayerStreamInfo
+description: 播放器媒体流的所有信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-blueprint/API/class_playerstreaminfo
+  sourcePath: html-docs/rtc/Unreal-blueprint/API/class_playerstreaminfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_playerstreaminfo__prototype"></a>
+
+```text
+USTRUCT(BlueprintType)
+struct FPlayerStreamInfo
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int streamIndex = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	EMEDIA_STREAM_TYPE streamType = EMEDIA_STREAM_TYPE::STREAM_TYPE_UNKNOWN;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	FString codecName = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	FString language = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int videoFrameRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int videoBitRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int videoWidth = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int videoHeight = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int videoRotation = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int audioSampleRate = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int audioChannels = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int audioBitsPerSample = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Agora|PlayerStreamInfo")
+	int duration = 0;
+	FPlayerStreamInfo(){}
+	FPlayerStreamInfo(const agora::media::base::PlayerStreamInfo & AgoraData){
+		streamIndex = AgoraData.streamIndex;
+		streamType = (EMEDIA_STREAM_TYPE)AgoraData.streamType;
+		codecName = UTF8_TO_TCHAR(AgoraData.codecName);
+		language = UTF8_TO_TCHAR(AgoraData.language);
+		videoFrameRate = AgoraData.videoFrameRate;
+		videoBitRate = AgoraData.videoBitRate;
+		videoWidth = AgoraData.videoWidth;
+		videoHeight = AgoraData.videoHeight;
+		videoRotation = AgoraData.videoRotation;
+		audioSampleRate = AgoraData.audioSampleRate;
+		audioChannels = AgoraData.audioChannels;
+		audioBitsPerSample = AgoraData.audioBitsPerSample;
+		duration = AgoraData.duration;
+	}
+	agora::media::base::PlayerStreamInfo CreateAgoraData() const {
+		agora::media::base::PlayerStreamInfo AgoraData;
+		AgoraData.streamIndex = streamIndex;
+		AgoraData.streamType = (agora::media::base::MEDIA_STREAM_TYPE)streamType;
+		SET_UABT_FSTRING_TO_CHAR_ARRAY(AgoraData.codecName, codecName,agora::media::base::kMaxCharBufferLength)
+		SET_UABT_FSTRING_TO_CHAR_ARRAY(AgoraData.language, language, agora::media::base::kMaxCharBufferLength)
+		AgoraData.videoFrameRate = videoFrameRate;
+		AgoraData.videoBitRate = videoBitRate;
+		AgoraData.videoWidth = videoWidth;
+		AgoraData.videoHeight = videoHeight;
+		AgoraData.videoRotation = videoRotation;
+		AgoraData.audioSampleRate = audioSampleRate;
+		AgoraData.audioChannels = audioChannels;
+		AgoraData.audioBitsPerSample = audioBitsPerSample;
+		AgoraData.duration = duration;
+		return AgoraData;
+	}
+	void FreeAgoraData(agora::media::base::PlayerStreamInfo & AgoraData) const {
+
+	}
+};
+```
+
+<a id="class_playerstreaminfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="streamindex"></a>
+<Parameter name="streamIndex">
+
+媒体流的索引值。
+
+</Parameter>
+<a id="streamtype"></a>
+<Parameter name="streamType">
+
+此条媒体流的类型。详见 [EMEDIA_STREAM_TYPE](/zh-CN/api-reference/rtc/unreal-blueprint/enum-mediastreamtype)。
+
+</Parameter>
+<a id="codecname"></a>
+<Parameter name="codecName">
+
+此条媒体流的编码规格。
+
+</Parameter>
+<a id="language"></a>
+<Parameter name="language">
+
+此条媒体流的语言。
+
+</Parameter>
+<a id="videoframerate"></a>
+<Parameter name="videoFrameRate">
+
+该参数仅对视频流生效，表示视频帧率 (fps)。
+
+</Parameter>
+<a id="videobitrate"></a>
+<Parameter name="videoBitRate">
+
+该参数仅对视频流生效，表示视频码率 (bps)。
+
+</Parameter>
+<a id="videowidth"></a>
+<Parameter name="videoWidth">
+
+该参数仅对视频流生效，表示视频宽度 (px)。
+
+</Parameter>
+<a id="videoheight"></a>
+<Parameter name="videoHeight">
+
+该参数仅对视频流生效，表示视频高度 (px)。
+
+</Parameter>
+<a id="videorotation"></a>
+<Parameter name="videoRotation">
+
+该参数仅对视频流生效，表示旋转角度。
+
+</Parameter>
+<a id="audiosamplerate"></a>
+<Parameter name="audioSampleRate">
+
+该参数仅对音频流生效，表示音频采样率 (Hz)。
+
+</Parameter>
+<a id="audiochannels"></a>
+<Parameter name="audioChannels">
+
+该参数仅对音频流生效，表示声道数。
+
+</Parameter>
+<a id="audiobitspersample"></a>
+<Parameter name="audioBitsPerSample">
+
+该参数仅对音频流生效，表示每个音频采样点的位数 (bit)。
+
+</Parameter>
+<a id="duration"></a>
+<Parameter name="duration">
+
+媒体流的时长（毫秒）。
+
+</Parameter>
+</ParameterList>

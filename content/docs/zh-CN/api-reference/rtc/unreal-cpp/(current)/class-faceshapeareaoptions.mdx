@@ -1,0 +1,59 @@
+---
+title: FaceShapeAreaOptions
+description: 滤镜效果选项。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_faceshapeareaoptions
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_faceshapeareaoptions.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_faceshapeareaoptions__prototype"></a>
+
+```text
+struct FaceShapeAreaOptions {
+  enum FACE_SHAPE_AREA {
+    FACE_SHAPE_AREA_NONE = -1,
+    FACE_SHAPE_AREA_HEADSCALE = 0,
+    FACE_SHAPE_AREA_FOREHEAD = 1,
+    FACE_SHAPE_AREA_FACECONTOUR = 2,
+    FACE_SHAPE_AREA_FACELENGTH = 3,
+    FACE_SHAPE_AREA_FACEWIDTH = 4,
+    FACE_SHAPE_AREA_CHEEKBONE = 5,
+    FACE_SHAPE_AREA_CHEEK = 6,
+    FACE_SHAPE_AREA_CHIN = 7,
+    FACE_SHAPE_AREA_EYESCALE = 8,
+    FACE_SHAPE_AREA_NOSELENGTH = 9,
+    FACE_SHAPE_AREA_NOSEWIDTH = 10,
+    FACE_SHAPE_AREA_MOUTHSCALE = 11,
+  };
+
+  FACE_SHAPE_AREA shapeArea;
+  int shapeIntensity;
+
+  FaceShapeAreaOptions(FACE_SHAPE_AREA shapeArea, int areaIntensity) : shapeArea(shapeArea), shapeIntensity(areaIntensity) {}
+
+  FaceShapeAreaOptions() : shapeArea(FACE_SHAPE_AREA_NONE), shapeIntensity(0) {}
+};
+```
+
+<a id="class_faceshapeareaoptions__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="shapearea"></a>
+<Parameter name="shapeArea">
+
+美型部位，详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unreal-cpp/enum-faceshapearea)。
+
+</Parameter>
+<a id="shapeintensity"></a>
+<Parameter name="shapeIntensity">
+
+修饰力度。各部位的修饰力度定义（包括修饰的方向、范围、预设值等）有所不同，详见 [FACE_SHAPE_AREA](/zh-CN/api-reference/rtc/unreal-cpp/enum-faceshapearea)。
+
+</Parameter>
+</ParameterList>

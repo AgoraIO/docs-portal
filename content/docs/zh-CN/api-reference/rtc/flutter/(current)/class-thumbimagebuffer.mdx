@@ -1,0 +1,68 @@
+---
+title: ThumbImageBuffer
+description: 缩略图或图标的图像内容。在 ScreenCaptureSourceInfo 中设置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_thumbimagebuffer
+  sourcePath: html-docs/rtc/Flutter/API/class_thumbimagebuffer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_thumbimagebuffer__prototype"></a>
+
+```text
+class ThumbImageBuffer {
+  const ThumbImageBuffer({this.buffer, this.length, this.width, this.height});
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+  @JsonKey(name: 'length')
+  final int? length;
+  @JsonKey(name: 'width')
+  final int? width;
+  @JsonKey(name: 'height')
+  final int? height;
+  factory ThumbImageBuffer.fromJson(Map<String, dynamic> json) =>
+      _$ThumbImageBufferFromJson(json);
+  Map<String, dynamic> toJson() => _$ThumbImageBufferToJson(this);
+}
+```
+
+<a id="class_thumbimagebuffer__detailed_desc"></a>
+
+:::note
+注： 图像默认为 ARGB 格式。如果你需要使用其他格式，请自行转换格式。
+:::
+
+<a id="class_thumbimagebuffer__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+缩略图或图标的 buffer。
+
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
+
+缩略图或图标的 buffer 长度，单位为字节。
+
+</Parameter>
+<a id="width"></a>
+<Parameter name="width">
+
+缩略图或图标的实际宽度（px）。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+缩略图或图标的实际高度（px）。
+
+</Parameter>
+</ParameterList>

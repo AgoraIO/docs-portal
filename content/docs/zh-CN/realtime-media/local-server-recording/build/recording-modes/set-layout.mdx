@@ -1,0 +1,162 @@
+---
+title: "设置合流布局"
+description: "了解本地服务端录制中设置合流布局相关内容的适用场景、配置步骤、实现要点和注意事项。"
+---
+在使用合流录制模式时，你需要设置频道内所有发流用户子视频的大小及其在视频画布上的位置，进行合流布局。
+
+本文介绍如何使用录制 4.x SDK 在合流录制时设置合流布局。
+
+## 功能介绍
+
+下图为合流后的视频示例。我们将视频的背景称为**画布**，每个发流用户占据一个**子视频**。
+
+![画布视窗示例](https://web-cdn.agora.io/docs-portal/img/recording/canvas-view.png)
+
+## 前提条件
+
+开始前，请确保你已经参考[开始录制音视频](/zh-CN/realtime-media/local-server-recording/get-started/start-recording)在项目中实现了基础的录制功能，且录制模式为合流录制。
+
+## 实现方式
+
+录制 SDK 提供了一个 [`setVideoMixingLayout`](/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k#setvideomixinglayout) 方法用来设置合流布局，通过对 `VideoMixingLayout` 对象的定义，来设置合流画布和参与合流的用户的视窗：
+
+```java
+public class VideoMixingLayout {
+    private int canvasWidth;   // 合流画布的宽
+    private int canvasHeight;  // 合流画布的高
+    private int canvasFps;     // 合流画布的帧率
+    private long backgroundColor;     // 合流画布的背景颜色
+    private String backgroundImage;  // 合流画布的背景图片路径
+    private int userLayoutConfigNum; // 合流的视频总数
+    private UserMixerLayout[] userLayoutConfigs;  // 合流中各个子视频的配置
+}
+```
+
+录制 SDK 提供了一个 [`setVideoMixingLayout`](/zh-CN/api-reference/local-server-recording/cpp/legacy/classagora-1-1recording-1-1-i-recording-engine#setvideomixinglayout) 方法用来设置合流布局，通过对 `VideoMixingLayout` 结构体的定义，来设置合流画布和参与合流的用户的视窗：
+
+```cpp
+struct VideoMixingLayout
+{
+    int canvasWidth;   // 合流画布的宽
+    int canvasHeight;  // 合流画布的高
+    int canvasFps;     // 合流画布的帧率
+    uint32_t backgroundColor;     // 合流画布的背景颜色
+    const char* backgroundImage;  // 合流画布的背景图片路径
+    uint32_t userLayoutConfigNum; // 合流的视频总数
+    const UserMixerLayout* userLayoutConfigs;  // 合流中各个子视频的配置
+};
+```
+
+合流中各个子视频的配置项通过 `UserMixerLayout` 和 `MixerLayoutConfig` 进行详细定义：
+
+```java
+public class UserMixerLayout {
+    private String userId; // 参与合流的子视频的用户 ID，用以区分不同的子视频。可以直接设置为用户 ID
+    private MixerLayoutConfig config; // 具体的子视频配置
+}
+```
+
+```java
+public class MixerLayoutConfig {
+    private int x; // 参与合流的子视频相对于画布的横向偏移
+    private int y; // 参与合流的子视频相对于画布的纵向偏移
+    private int width; // 子视频的宽
+    private int height; // 子视频的高
+    private int zOrder; // 子视频的渲染图层（用于确定各个视频的上下关系）
+    private float alpha; // 子视频的透明度
+    private boolean mirror; // 子视频是否镜像
+    private String imagePath; // 子视频的背景图片路径
+    private int rotation; // 子视频的顺时针旋转信息，可以设为 0 不旋转、1: 90°、2: 180°、3: 270°
+}
+```
+
+```cpp
+struct UserMixerLayout
+{
+    user_id_t userId;          // 参与合流的子视频的用户 ID，用以区分不同的子视频。可以直接设置为用户 ID
+    MixerLayoutConfig config;  // 具体的子视频配置
+};
+```
+
+```cpp
+struct MixerLayoutConfig {
+    int32_t x;      // 参与合流的子视频相对于画布的横向偏移
+    int32_t y;      // 参与合流的子视频相对于画布的纵向偏移
+    int32_t width;  // 子视频的宽
+    int32_t height; // 子视频的高
+    int32_t zOrder; // 子视频的渲染图层（用于确定各个视频的上下关系）
+    float alpha;    // 子视频的透明度
+    bool mirror;    // 子视频是否镜像
+    const char* image_path; // 子视频的背景图片路径
+    int rotation;           // 子视频的顺时针旋转信息，可以设为 0 不旋转、1: 90°、2: 180°、3: 270°
+};
+```
+
+:::warning[注意]
+参与合流的子视频的宽高比，需要和原视频的宽高比一致。否则 SDK
+  会按照原视频的宽高比对子视频进行裁剪，可能会引起子视频中有画面丢失。
+:::
+
+## 合流示例
+
+你可以参考如下示例代码设置合流布局：
+
+```java tab="Java" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-set-layout-1"
+VideoMixingLayout recorderLayout = new VideoMixingLayout();
+recorderLayout.setCanvasWidth(1280);
+recorderLayout.setCanvasHeight(720);
+recorderLayout.setCanvasFps(25);
+
+UserMixerLayout[] layout = new UserMixerLayout[2];
+
+// 初始化第一个用户布局
+layout[0] = new UserMixerLayout();
+layout[0].setUserId("1234");
+MixerLayoutConfig mixerLayoutConfig1 = new MixerLayoutConfig();
+mixerLayoutConfig1.setX(0);
+mixerLayoutConfig1.setY(0);
+mixerLayoutConfig1.setWidth(640);
+mixerLayoutConfig1.setHeight(360);
+layout[0].setConfig(mixerLayoutConfig1);
+
+// 初始化第二个用户布局
+layout[1] = new UserMixerLayout();
+layout[1].setUserId("5678");
+MixerLayoutConfig mixerLayoutConfig2 = new MixerLayoutConfig();
+mixerLayoutConfig2.setX(720);
+mixerLayoutConfig2.setY(270);
+mixerLayoutConfig2.setWidth(540);
+mixerLayoutConfig2.setHeight(320);
+layout[1].setConfig(mixerLayoutConfig2);
+
+recorderLayout.setUserLayoutConfigs(layout);
+agoraMediaRtcRecorder.setVideoMixingLayout(recorderLayout);
+```
+
+```cpp tab="C++" tabGroup="zh-cn-realtime-media-recording-local-server-recording-build-recording-modes-set-layout-1"
+struct VideoMixingLayout  recorderLayout;
+recorderLayout.canvasWidth = 1280;
+recorderLayout.canvasHeight = 720;
+recorderLayout.canvasFps = 25;
+ 
+UserMixerLayout layout[2];
+layout[0].userId = "1234";
+layout[0].config.x = 0;
+layout[0].config.y = 0;
+layout[0].config.width = 640;
+layout[0].config.height = 360;
+ 
+layout[1].userId = "5678";
+layout[1].config.x = 720;
+layout[1].config.y = 270;
+layout[1].config.width = 540;
+layout[1].config.height = 320;
+ 
+recorderLayout.userLayoutConfigNum = 2;
+recorderLayout.userLayoutConfigs = layout;
+recorder->setVideoMixingLayout(recorderLayout);
+```
+
+上述示例代码达到的合流效果如下图所示：
+
+![合流布局示意](https://web-cdn.agora.io/docs-portal/img/recording/video-mixing.png)

@@ -1,0 +1,61 @@
+---
+title: GetCallIdEx
+description: 使用连接 ID 获取通话 ID。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/api_irtcengineex_getcallidex
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengineex_getcallidex.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="api_irtcengineex_getcallidex__prototype"></a>
+
+```text
+public abstract int GetCallIdEx(ref string callId, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_getcallidex__detailed_desc"></a>
+
+客户端在每次加入频道后会生成一个对应的 callId，标识该客户端的此次通话。你可以调用该方法获取 callId 参数，然后在调用 [Rate](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_rate)、[Complain](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_complain) 等方法时填入。
+
+<a id="api_irtcengineex_getcallidex__timing"></a>
+
+## 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengineex_getcallidex__restriction"></a>
+
+## 调用限制
+
+无。
+
+<a id="api_irtcengineex_getcallidex__parameters"></a>
+
+## 参数
+
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
+
+输出参数，当前的通话 ID。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/csharp-windows/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+## 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [IRtcEngineEx](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_irtcengineex)

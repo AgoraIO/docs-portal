@@ -1,0 +1,116 @@
+---
+title: LocalAudioStats
+description: 本地音频统计数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_localaudiostats
+  sourcePath: html-docs/rtc/Flutter/API/class_localaudiostats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_localaudiostats__prototype"></a>
+
+```text
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class LocalAudioStats {
+  const LocalAudioStats(
+      {this.numChannels,
+      this.sentSampleRate,
+      this.sentBitrate,
+      this.internalCodec,
+      this.txPacketLossRate,
+      this.audioDeviceDelay,
+      this.audioPlayoutDelay,
+      this.earMonitorDelay,
+      this.aecEstimatedDelay});
+
+  @JsonKey(name: 'numChannels')
+  final int? numChannels;
+
+  @JsonKey(name: 'sentSampleRate')
+  final int? sentSampleRate;
+
+  @JsonKey(name: 'sentBitrate')
+  final int? sentBitrate;
+
+  @JsonKey(name: 'internalCodec')
+  final int? internalCodec;
+
+  @JsonKey(name: 'txPacketLossRate')
+  final int? txPacketLossRate;
+
+  @JsonKey(name: 'audioDeviceDelay')
+  final int? audioDeviceDelay;
+
+  @JsonKey(name: 'audioPlayoutDelay')
+  final int? audioPlayoutDelay;
+
+  @JsonKey(name: 'earMonitorDelay')
+  final int? earMonitorDelay;
+
+  @JsonKey(name: 'aecEstimatedDelay')
+  final int? aecEstimatedDelay;
+
+  factory LocalAudioStats.fromJson(Map<String, dynamic> json) =>
+      _$LocalAudioStatsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LocalAudioStatsToJson(this);
+}
+```
+
+<a id="class_localaudiostats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="numchannels"></a>
+<Parameter name="numChannels">
+
+声道数。
+
+</Parameter>
+<a id="sentsamplerate"></a>
+<Parameter name="sentSampleRate">
+
+发送本地音频的采样率，单位为 Hz。
+
+</Parameter>
+<a id="sentbitrate"></a>
+<Parameter name="sentBitrate">
+
+发送本地音频的码率平均值，单位为 Kbps。
+
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
+
+弱网对抗前本端到声网边缘服务器的丢包率 (%)。
+
+</Parameter>
+<a id="internalcodec"></a>
+<Parameter name="internalCodec">
+
+内部的 payload 类型。
+
+</Parameter>
+<a id="audiodevicedelay"></a>
+<Parameter name="audioDeviceDelay">
+
+播放或录制音频时，音频设备模块的延迟 (ms)。
+
+</Parameter>
+<a id="earmonitordelay"></a>
+<Parameter name="earMonitorDelay">
+
+耳返延迟 (ms)，即声音从麦克风输入到耳机输出的延迟。
+
+</Parameter>
+<a id="aecestimateddelay"></a>
+<Parameter name="aecEstimatedDelay">
+
+回声消除延迟 (ms)，即回声消除 (Acoustic Echo Cancellation, AEC) 模块测算出音频在本地播放前与被本地采集后的信号延迟。
+
+</Parameter>
+</ParameterList>

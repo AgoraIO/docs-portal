@@ -1,0 +1,113 @@
+---
+title: "实时翻译"
+description: "了解如何快速接入实时转录，完成环境准备、参数配置、示例运行和核心流程验证。"
+---
+除了将频道中主播的音频实时转写为文本，声网还支持在转写时进行翻译。例如，在国际会议等场景下，你可以将频道中主播的发言转写为文本，然后对转写后的内容进行翻译，最后将原文和译文以字幕的形式推送回频道内。
+
+本文介绍如何调用实时转录翻译的 RESTful API 将转写的内容翻译为指定的语言。
+
+## 前提条件
+
+开始前，请确保你的开发环境满足以下条件：
+
+- 参考[开通服务](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service)在声网控制台开通实时语音转写服务，并复制保存 App ID、临时 Token、客户 ID 和客户密钥，以供后续使用。
+- 可以访问互联网的计算机。如果你的网络环境部署了防火墙，参考[应对防火墙限制](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)以正常使用声网服务。
+- 集成并使用声网 [实时互动 RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 搭建一个极简的实时音视频互动 App。
+- 参考[实现 HTTP 基本认证](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth)获取 `Authorization` 值。
+
+## 翻译转写内容
+
+在调用 `start` 开始转写任务时，设置 `translateConfig` 来对转写的文本内容进行翻译。
+
+### 请求示例
+
+如下示例展示如何在转写时设置翻译。下面是一个完成的请求示例，包含 URL、Header 和 Body。如需在转写任务中同时进行录制、加密，请参考[录制字幕](/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/record-captions)、[加密字幕](/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions)。
+
+```shell
+curl --location --request POST 'https://api.sd-rtn.com/cn/v1/projects/{{appId}}/rtsc/speech-to-text/tasks?builderToken={{tokenName}}' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: <http_basic_auth>' \
+--data '{
+    "languages": [
+        "zh-CN"
+    ],
+    "maxIdleTime": 50,
+    "rtcConfig": {
+        "channelName": "<YourChannelName>",
+        "subBotUid": "<YourSubscribeUid>",
+        "pubBotUid": "<YourPublishUid>",
+// highlight-start
+        "subscribeAudioUids": [uint]
+    },
+    "translateConfig": {
+        "languages": [
+            {
+                "source": "zh-CN",
+                "target": [
+                    "en-US",
+                    "ar-SA",
+                    "id-ID",
+                    "fr-FR",
+                    "ja-JP"
+// highlight-end
+                ]
+            }
+        ]
+    }
+}'
+```
+
+以下介绍实时翻译的关键配置。
+
+1. 指定需要转写的主播的 ID 和其所在的频道名。
+   在 `rtcConfig` 中通过 `subscribeAudioUids` 设置需要转写的用户 ID，一个转写任务中最多同时支持转写 5 个用户的音频，通过 `channelName` 设置频道名。其他参数的配置可参考[开始实时转录翻译](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)。
+
+2. 设置 `languages` 数组。数组长度最大为 2，即最多支持同时翻译两个不同的源语种。
+   | 参数名   | 类型     | 含义                                                         |
+   | -------- | -------- | ------------------------------------------------------------ |
+   | `source` | `String Array` | 翻译时的源语种。                                             |
+   | `target` | `array`  | 翻译时的目标语种，最多支持配置 5 个目标语种。支持的语种类别详见[语言列表](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/translation)。 |
+
+:::warning[注意]
+- 目前同一转写任务中，最多支持同时翻译 5 个主播的转写内容。
+- 翻译时，源语种和目标语种不能设为一致，否则会报错。
+:::
+
+### 响应示例
+
+```json
+{
+   "agent_id": "String",
+   "create_ts": number,
+   "status": enum(STATUS)
+}
+```
+
+| 参数名 | 类型 | 含义 |
+| --- | --- | --- |
+| `agent_id` | `string` | 任务 ID。 |
+| `create_ts` | `number` | 任务创建的时间戳。 |
+| `status` | `enum` | <Slot name="translation-html-0-3-2" /> |
+
+<Slot for="translation-html-0-3-2">
+
+任务状态：
+
+      - `PREPARING`：任务已收到初始化请求。
+      - `PREPARED`：任务初始化完成。
+      - `STARTING`：任务开始启动。
+      - `CREATED`：部分任务启动完成。
+      - `STARTED`：所有任务启动完成。
+      - `IN_PROGRESS`：任务进行中。
+      - `STOPPING`：任务暂停。
+      - `STOPPED`：任务终止。
+      - `FAILURE_STOP`：任务终止失败。
+
+</Slot>
+
+调用 `start` 开启实时转写任务，且设置翻译配置后，你可以参考实现[开始实时转录翻译](/zh-CN/realtime-media/speech-to-text/get-started/quick-start)进行查询、更新、停止任务等操作。
+
+## 语言列表
+
+参考[语言列表](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)了解实时转录翻译支持的语种。

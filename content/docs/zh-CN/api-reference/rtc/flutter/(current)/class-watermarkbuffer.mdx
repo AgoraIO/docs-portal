@@ -1,0 +1,84 @@
+---
+title: WatermarkBuffer
+description: 用于配置水印图像的格式、尺寸和像素缓冲区。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/class_watermarkbuffer
+  sourcePath: html-docs/rtc/Flutter/API/class_watermarkbuffer.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_watermarkbuffer__prototype"></a>
+
+```text
+class WatermarkBuffer implements AgoraSerializable {
+  const WatermarkBuffer(
+      {this.width, this.height, this.length, this.format, this.buffer});
+
+  @JsonKey(name: 'width')
+  final int? width;
+
+  @JsonKey(name: 'height')
+  final int? height;
+
+  @JsonKey(name: 'length')
+  final int? length;
+
+  @JsonKey(name: 'format')
+  final VideoPixelFormat? format;
+
+  @JsonKey(name: 'buffer', ignore: true)
+  final Uint8List? buffer;
+
+  factory WatermarkBuffer.fromJson(Map<String, dynamic> json) =>
+      _$WatermarkBufferFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$WatermarkBufferToJson(this);
+}
+```
+
+<a id="class_watermarkbuffer__detailed_desc"></a>
+
+:::info[自从]
+自 v6.6.2 版本新增。
+:::
+
+<a id="class_watermarkbuffer__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="width"></a>
+<Parameter name="width">
+
+水印图像的宽度，单位为像素。
+
+</Parameter>
+<a id="height"></a>
+<Parameter name="height">
+
+水印图像的高度，单位为像素。
+
+</Parameter>
+<a id="length"></a>
+<Parameter name="length">
+
+水印图像缓冲区的长度，单位为字节。
+
+</Parameter>
+<a id="format"></a>
+<Parameter name="format">
+
+水印图像的像素格式，详见 [VideoPixelFormat](/zh-CN/api-reference/rtc/flutter/enum-videopixelformat)。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+水印图像的像素缓冲区数据。
+
+</Parameter>
+</ParameterList>

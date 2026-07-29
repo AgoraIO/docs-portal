@@ -1,0 +1,59 @@
+---
+title: LastmileProbeConfig
+description: 用于配置 Last-mile 网络测试。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_lastmileprobeconfig
+  sourcePath: html-docs/rtc/Android/API/class_lastmileprobeconfig.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_lastmileprobeconfig__prototype"></a>
+
+```text
+public class LastmileProbeConfig {
+  public boolean probeUplink;
+  public boolean probeDownlink;
+  public int expectedUplinkBitrate;
+  public int expectedDownlinkBitrate;
+}
+```
+
+<a id="class_lastmileprobeconfig__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="probeuplink"></a>
+<Parameter name="probeUplink">
+
+是否测试上行网络。
+
+- true：测试上行网络。
+- false：不测试上行网络。例如，在 `LIVE_BROADCASTING` 频道场景中，观众通常无需测试上行网络。
+
+</Parameter>
+<a id="probedownlink"></a>
+<Parameter name="probeDownlink">
+
+是否测试下行网络。
+
+- true：测试下行网络。
+- false：不测试下行网络。
+
+</Parameter>
+<a id="expecteduplinkbitrate"></a>
+<Parameter name="expectedUplinkBitrate">
+
+本地用户期望的最大上行码率（bps）。取值范围为 [100000, 5000000]。建议参考 [setVideoEncoderConfiguration](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_setvideoencoderconfiguration) 设置该值。
+
+</Parameter>
+<a id="expecteddownlinkbitrate"></a>
+<Parameter name="expectedDownlinkBitrate">
+
+本地用户期望的最大下行码率（bps）。取值范围为 [100000, 5000000]。
+
+</Parameter>
+</ParameterList>

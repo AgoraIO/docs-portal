@@ -1,0 +1,495 @@
+---
+title: agora::base::IAgoraService类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc-server-sdk/cpp/classagora_1_1base_1_1_i_agora_service
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1base_1_1_i_agora_service.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+[`IAgoraService`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 类。作为 SDK 的入口类，你可以通过 [`IAgoraService`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 类创建媒体轨道和连接。
+
+调用 [createAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/group-create-agora-service) 创建 [`IAgoraService`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
+
+使用 [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration) 配置 [`IAgoraService`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
+
+## 构造及析构函数说明
+
+<a id="a8c069f67ebd97e40c17d881dbde595ac"></a>
+
+### ~IAgoraService()
+
+<ApiSignature labels="inline protected virtual">
+
+virtual agora::base::IAgoraService::~IAgoraService()
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="a6f1fb6e792c564dee46903cbb3bc35fc"></a>
+
+### initialize()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::initialize(const [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration) & *config*)
+
+</ApiSignature>
+
+初始化 [IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
+
+<ParameterList title="参数">
+<Parameter name="config">
+
+初始化配置。 详见 [AgoraServiceConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1base-1-1-agora-service-configuration)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="affb633b88e136c72ef321d696b7a0656"></a>
+
+### release()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::release()
+
+</ApiSignature>
+
+释放 [IAgoraService](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-service) 对象。
+
+:::info[注解]
+该方法需要在非回调内的子线程调用，避免在回调中执行。
+:::
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a5d7223e244269fb9ebbe9e609d82c523"></a>
+
+### setAudioSessionPreset()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setAudioSessionPreset([agora::rtc::AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533) *scenario*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+设置预设音效。
+
+<ParameterList title="参数">
+<Parameter name="scenario">
+
+预设音效场景： [AUDIO_SCENARIO_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1rtc#a2c5708461a9e1568bbda636d95055533)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-2"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a3aecc66675ca9698fa6fdeab5b85333a"></a>
+
+### setLogFile()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setLogFile(const char * *filePath*, unsigned int *fileSize*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+设置 SDK 日志文件的路径和大小。
+
+默认情况下，SDK 会生成 5 个 SDK 日志文件和 5 个 API 调用日志文件，规则如下：
+
+- SDK 日志文件的名称分别为：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log`、`agorasdk.4.log`。
+- API 调用日志文件的名称分别为：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log`、`agoraapi.4.log`。
+- 每个 SDK 日志文件的默认大小为 1,024 KB；API 调用日志文件的默认大小为 2,048 KB。日志文件均为 UTF-8 编码。
+- 最新的日志永远写在 `agorasdk.log` 和 `agoraapi.log` 中。 当 `agorasdk.log` 写满后，SDK 会按照以下顺序对日志文件进行操作：
+- 删除 `agorasdk.4.log` 文件（如有）。
+- 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+- 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+- 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+- 新建 `agorasdk.log` 文件。 `agoraapi.log` 文件的覆盖规则与 `agorasdk.log` 相同。
+
+<ParameterList title="参数">
+<Parameter name="filePath">
+
+日志文件的完整路径。该日志文件为 UTF-8 编码。
+
+</Parameter>
+<Parameter name="fileSize">
+
+单个 `agorasdk.log` 日志文件的大小，单位为 KB，取值范围为 [128,20480]，默认值为 1,024 KB。 如果你将 `fileSize` 设为小于 128 KB，SDK 会自动调整到 128 KB；如果你将 `fileSize` 设为大于 20,480 KB，SDK 会自动调整到 20,480 KB。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-3"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ad46b8621ebf9c9143007f444b5064b8d"></a>
+
+### setLogFilter()
+
+<ApiSignature labels="pure virtual">
+
+virtual int agora::base::IAgoraService::setLogFilter(unsigned int *filters*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+设置日志输出等级。
+
+该方法设置 SDK 的输出日志输出等级。不同的输出等级可以单独或组合使用。日志级别顺序依次为 OFF、CRITICAL、ERROR、WARNING、INFO 和 DEBUG。 选择一个级别，你就可以看到在该级别之前所有级别的日志信息。
+
+例如，你选择 WARNING 级别，就可以看到在 CRITICAL、ERROR 和 WARNING 级别上的所有日志信息。
+
+<ParameterList title="参数">
+<Parameter name="filters">
+
+日志过滤等级。详见 [LOG_FILTER_TYPE](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1commons#ae089652ab7c76a97e26ff5b2c8cd17d9)。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-4"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a326cda8c926bcb6da5f3a2c512a9ae90"></a>
+
+### createRtcConnection()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection)&gt; agora::base::IAgoraService::createRtcConnection(const [rtc::RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) & *cfg*)
+
+</ApiSignature>
+
+创建一个 [RtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象。
+
+<ParameterList title="参数">
+<Parameter name="cfg">
+
+RTC 连接配置： [RtcConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtc-connection-configuration) 。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-5"}>返回值</h4>
+
+- [IRtcConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="adae5bb15639f9559a1399082590955e5"></a>
+
+### createRtmpConnection()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection)&gt; agora::base::IAgoraService::createRtmpConnection(const [rtc::RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration) & *cfg*)
+
+</ApiSignature>
+
+创建一个 [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) 对象。
+
+<ParameterList title="参数">
+<Parameter name="cfg">
+
+CDN 连接配置： [RtmpConnectionConfiguration](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-rtmp-connection-configuration)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-6"}>返回值</h4>
+
+- [IRtmpConnection](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtmp-connection) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a80cdd14cd711c50b153ffb9a8961bf0a"></a>
+
+### createLocalAudioTrack()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createLocalAudioTrack()
+
+</ApiSignature>
+
+创建本地音频轨道对象。
+
+SDK 默认通过用户选中的音频输入设备创建本地音频轨道，例如手机的麦克风。
+
+<h4 data-toc-hidden="true" id={"返回值-7"}>返回值</h4>
+
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="ab267caa07c4614e8bf27da38527150de"></a>
+
+### createCustomAudioTrack() [1/2]
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*)
+
+</ApiSignature>
+
+创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
+
+该轨道对象可用于发送来 PCM 格式的音频数据。
+
+<ParameterList title="参数">
+<Parameter name="audioSource">
+
+PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-8"}>返回值</h4>
+
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a2151a9043d465a1c7ae673a030fbb433"></a>
+
+### createDirectCustomAudioTrack()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createDirectCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender) &gt; *audioSource*)
+
+</ApiSignature>
+
+创建本地音频轨道对象，包含一个发送 PCM 音频数据的音频源。
+
+该轨道对象可用于发送来 PCM 格式的音频数据。音频数据不参与混音。
+
+<ParameterList title="参数">
+<Parameter name="audioSource">
+
+PCM 格式的音频数据源： [IAudioPcmDataSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-pcm-data-sender)。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-9"}>返回值</h4>
+
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="abd68de1445a1561136c05dec655e0a85"></a>
+
+### createCustomAudioTrack() [2/2]
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track)&gt; agora::base::IAgoraService::createCustomAudioTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IAudioEncodedFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender) &gt; *audioSource*, [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87) *mixMode*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+创建本地音频轨道对象，包含一个发送编码音频数据的音频源。
+
+该轨道对象可用于发送已编码的音频数据，例如 Opus 格式的编码数据。
+
+<ParameterList title="参数">
+<Parameter name="audioSource">
+
+发送编码音频数据的音频源： [IAudioEncoderFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-encoded-frame-sender)。
+
+</Parameter>
+<Parameter name="mixMode">
+
+已编码的音频在频道中的混音模式: [TMixMode](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora-1-1base#a0813f100ad4d2518f2e0d4e2144e8c87) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-10"}>返回值</h4>
+
+- [ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track) 对象的指针：方法调用成功。
+- 空指针：方法调用失败。
+
+<a id="a02745fde3a908936af56c0243506d1d7"></a>
+
+### createMediaNodeFactory()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory)&gt; agora::base::IAgoraService::createMediaNodeFactory()
+
+</ApiSignature>
+
+创建一个媒体节点工厂对象。
+
+<h4 data-toc-hidden="true" id={"返回值-11"}>返回值</h4>
+
+- [IMediaNodeFactory](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-media-node-factory) 的指针: 方法调用成功。
+- 空指针: 方法调用失败。
+
+<a id="ac209846c760933cc343d3e056c1a0f81"></a>
+
+### createMixedVideoTrack()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createMixedVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
+
+创建本地视频轨道对象，包含一个合图器。
+
+创建之后，你可以将该轨道添加到合图器进行合图。
+
+<ParameterList title="参数">
+<Parameter name="videoSource">
+
+合图器: [IVideoMixerSource](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-mixer-source)。
+
+</Parameter>
+<Parameter name="id">
+
+流 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-12"}>返回值</h4>
+
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
+- 空指针: 方法调用失败。
+
+<a id="aaefc87859c82a4266947f0a4ebd07c51"></a>
+
+### createCustomVideoTrack() [1/2]
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender) &gt; *videoSource*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
+
+创建本地视频轨道对象，包含一个发送 YUV 格式视频数据的视频源。
+
+该轨道对象可用于发送 YUV 格式视频数据。
+
+<ParameterList title="参数">
+<Parameter name="videoSource">
+
+YUV 格式视频源对象 [IVideoFrameSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-frame-sender)。
+
+</Parameter>
+<Parameter name="id">
+
+视频轨道的频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
+- 空指针: 方法调用失败。
+
+<a id="a5cbbb4b5bebe8a90953389bb249a2d4d"></a>
+
+### createCustomVideoTrack() [2/2]
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[rtc::ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track)&gt; agora::base::IAgoraService::createCustomVideoTrack([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [rtc::IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender) &gt; *videoSource*, const rtc::SenderOptions & *options*, const char * *id* = `OPTIONAL_NULLPTR`)
+
+</ApiSignature>
+
+创建本地视频轨道对象，包含一个发送编码视频数据的视频源。
+
+该轨道对象可用于发送已编码的视频数据，例如 H.264 或 VP8 格式的编码数据。
+
+<ParameterList title="参数">
+<Parameter name="videoSource">
+
+发送编码视频数据的视频源。详见 [IVideoEncodedImageSender](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-video-encoded-image-sender)。
+
+</Parameter>
+<Parameter name="options">
+
+视频轨道设置。
+
+</Parameter>
+<Parameter name="id">
+
+视频轨道的频道 ID。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-14"}>返回值</h4>
+
+- [ILocalVideoTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-video-track) 对象的指针: 方法调用成功。
+- 空指针: 方法调用失败。
+
+<a id="a97df07f6f57f0d5b00e52a70065f1804"></a>
+
+<a id="a1c707744b5e4f06467219a25ecaeccb7"></a>
+
+### getAgoraParameter()
+
+<ApiSignature labels="pure virtual">
+
+virtual [agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt;[base::IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter)&gt; agora::base::IAgoraService::getAgoraParameter()
+
+</ApiSignature>
+
+获取 SDK 全局的 [IAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象。
+
+:::info[自从]
+4.4.30
+:::
+
+通过该方法获取的 [`IAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象，设置对 SDK 全局有效。如果仅需对某个 Connection 进行设置，改用 [IRtcConnection::getAgoraParameter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-rtc-connection#a44ce079c780ace4b8188d59ad68d96fb) 方法。
+
+<h4 data-toc-hidden="true" id={"返回值-15"}>返回值</h4>
+
+- [`IAgoraParameter`](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1base-1-1-i-agora-parameter) 对象：方法调用成功。
+- 空指针：方法调用失败。

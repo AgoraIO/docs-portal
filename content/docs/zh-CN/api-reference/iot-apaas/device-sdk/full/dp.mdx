@@ -1,0 +1,239 @@
+---
+title: "agora_iot_dp.h"
+---
+本页提供声网灵隼设备端 SDK 的 `agora_iot_dp.h` 文件的 API 参考。
+
+## 引用文件
+
+```c
+#include "agora_iot_base.h"
+```
+
+<a id="agoraiotdpregisterdpqueryhandler"></a>
+## 函数
+### agora_iot_dp_register_dp_query_handler
+
+```c
+agora_iot_dp_result_e agora_iot_dp_register_dp_query_handler(agora_iot_handle_t handle, int dp_id,
+                                                             agora_dp_type_e dp_type, on_dp_query_callback callback,
+                                                             void *args);
+```
+
+注册属性查询回调。
+
+你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+| [in] `dp_id` | 属性 ID。即控制台**功能定义**页面的功能标识符。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| [in] `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。  |
+| [in] `callback` | 属性查询回调。详见 [on_dp_query_callback](#ondpquerycallback)。 |
+| [in] `args` | 回调参数。 |
+
+#### 返回
+
+[agora_iot_dp_result_e](#agoraiotdpresulte) 结构体中的枚举。
+
+<a id="agoraiotdpregisterdpcmdhandler"></a>
+### agora_iot_dp_register_dp_cmd_handler
+
+```c
+agora_iot_dp_result_e agora_iot_dp_register_dp_cmd_handler(agora_iot_handle_t handle, int dp_id,
+                                                           agora_dp_type_e dp_type, on_dp_cmd_callback callback,
+                                                           void *args);                                                         
+```
+
+注册属性命令回调。
+
+你需要确保已经在控制台通过**功能定义**页面新增了相应功能。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+| [in] `dp_id` | 属性 ID。即控制台**属性定义**页面的属性标识符。参考[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)在控制台创建属性。 |
+| [in] `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。  |
+| [in] `callback` | 属性命令回调。详见 [on_dp_cmd_callback](#ondpquerycallback)。 |
+| [in] `args` | 回调参数。 |
+
+#### 返回
+
+[agora_iot_dp_result_e](#agoraiotdpresulte) 结构体中的枚举。
+
+<a id="agoraiotdppublish"></a>
+### agora_iot_dp_publish
+
+```c
+agora_iot_dp_result_e agora_iot_dp_publish(agora_iot_handle_t handle, agora_dp_info_t *info);
+```
+
+发布一个属性。
+
+你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+| [in] `info` | 属性信息。详见 [agora_dp_info_t](#agoradpinfot)。 |
+
+#### 返回
+
+[agora_iot_dp_result_e](#agoraiotdpresulte) 结构体中的枚举。
+
+<a id="agoraiotdppublishall"></a>
+### agora_iot_dp_publish_all
+
+```c
+agora_iot_dp_result_e agora_iot_dp_publish_all(agora_iot_handle_t handle);
+```
+
+发布全部属性。你需要确保已经在控制台通过**功能定义**页面新增了相应属性。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。
+
+在发布全部属性之前，确保你已经调用 [agora_iot_dp_register_dp_query_handler](#agoraiotdpregisterdpqueryhandler) 注册了属性回调。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `handle` | [agora_iot_init](/zh-CN/api-reference/iot-apaas/device-sdk/full/config#agoraiotinit) 返回的 SDK 句柄。详见 [agora_iot_handle_t](/zh-CN/api-reference/iot-apaas/device-sdk/full/base#agoraiothandlet)。 |
+
+#### 返回
+
+[agora_iot_dp_result_e](#agoraiotdpresulte) 结构体中的枚举。
+
+## 常量
+
+### AGORA_DP_USER_LEN
+
+```c
+#define AGORA_DP_USER_LEN     64
+```
+
+属性用户名长度。
+
+### AGORA_DP_ID_MIN
+
+```c
+#define AGORA_DP_ID_MIN       100
+```
+
+属性 ID 长度的最小值。
+
+<a id="agoraiotdpresulte"></a>
+## 类型定义
+### agora_iot_dp_result_e
+
+```c
+typedef enum {
+  ERR_AG_DP_SUCCESS           = ERR_SUCCESS,
+  ERR_AG_DP_FAILED            = ERR_FAILED,
+  ERR_AG_DP_INVALID_ARGUMENT  = ERR_INVALID_ARGUMENT,
+} agora_iot_dp_result_e;
+```
+
+属性函数调用结果。
+
+| 参数 | 描述 |
+| --- | --- |
+| `ERR_AG_DP_SUCCESS` | 0：方法调用成功。 |
+| `ERR_AG_DP_FAILED` | -1：方法调用失败。 |
+| `ERR_AG_DP_INVALID_ARGUMENT` | -2：参数无效。 |
+
+<a id="agoradptypee"></a>
+### agora_dp_type_e
+
+```c
+typedef enum agora_dp_type {
+  AGORA_DP_TYPE_INT           = 0,
+  AGORA_DP_TYPE_BOOL          = 1,
+  AGORA_DP_TYPE_ENUM          = 2,
+  AGORA_DP_TYPE_STR           = 3,
+} agora_dp_type_e;
+```
+
+属性类型。
+
+| 参数 | 描述 |
+| --- | --- |
+| `AGORA_DP_TYPE_INT` | 0：整数类型。 |
+| `AGORA_DP_TYPE_BOOL` | 1：布尔类型。 |
+| `AGORA_DP_TYPE_ENUM` | 2：枚举类型。 |
+| `AGORA_DP_TYPE_STR` | 3：字符串类型。 |
+
+<a id="agoradpvaluet"></a>
+### agora_dp_value_t
+
+```c
+typedef union {
+  int dp_int;
+  bool dp_bool;
+  unsigned int dp_enum;
+  char *dp_str;
+} agora_dp_value_t;
+```
+
+属性的值。
+
+| 参数 | 描述 |
+| --- | --- |
+| `dp_int` | 整数类型的值。 |
+| `dp_bool` | 布尔类型的值。 |
+| `dp_enum` | 枚举类型的值。 |
+| `dp_str` | 字符串类型的值。 SDK 不会自动释放该参数分配的内存。为避免内存泄露，你需要手动管理内存。|
+
+<a id="agoradpinfot"></a>
+### agora_dp_info_t
+
+```c
+typedef struct agora_dp_info {
+  unsigned int dp_id;
+  agora_dp_type_e dp_type;
+  agora_dp_value_t dp_value;
+} agora_dp_info_t;
+```
+
+属性信息。
+
+| 参数 | 描述 |
+| --- | --- |
+| `dp_id` | 属性 ID。即控制台**功能定义**页面的属性标识符。详见[开通灵隼服务](/zh-CN/solutions/iot-apaas/build/setup-and-access/enable-service)。 |
+| `dp_type` | 属性的数据类型。详见 [agora_dp_type_e](#agoradptypee)。 |
+| `dp_value` | 属性的值。详见 [agora_dp_value_t](#agoradpvaluet)。 |
+
+<a id="ondpquerycallback"></a>
+### on_dp_query_callback
+
+```c
+typedef void (*on_dp_query_callback)(agora_dp_info_t *info, void *args);
+```
+
+客户端 SDK 通过设备属性方法查询本地属性时触发。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `info` | 属性信息。详见 [agora_dp_info_t](#agoradpinfot)。你需要在此参数中传入本地属性的信息。 |
+| [in] `args` | 回调参数。通过 [agora_iot_dp_register_dp_query_handler](#agoraiotdpregisterdpqueryhandler) 传入。 |
+
+<a id="ondpcmdcallback"></a>
+### on_dp_cmd_callback
+
+```c
+typedef void (*on_dp_cmd_callback)(const agora_dp_info_t *info, void *args);
+```
+
+接收到客户端 SDK 通过设备属性方法发送的命令时触发。
+
+#### 参数
+
+| 参数 | 描述 |
+| --- | --- |
+| [in] `info` | 属性信息。详见 [agora_dp_info_t](#agoradpinfot)。你可以在此参数中传入本地属性或远端属性的信息。 |
+| [in] `args` | 回调参数。通过 [agora_iot_dp_register_dp_cmd_handler](#agoraiotdpregisterdpcmdhandler) 传入。 |

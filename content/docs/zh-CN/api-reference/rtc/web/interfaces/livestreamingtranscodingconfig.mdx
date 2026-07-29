@@ -1,0 +1,195 @@
+---
+title: Interface LiveStreamingTranscodingConfig
+description: 管理 CDN 直播推流转码的接口，在调用 AgoraRTCClient 时使用。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/livestreamingtranscodingconfig
+  sourcePath: html-docs/rtc/Web/interfaces/livestreamingtranscodingconfig.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- LiveStreamingTranscodingConfig
+
+## Index
+
+### Properties
+
+- [audioBitrate](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#audiobitrate)
+- [audioChannels](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#audiochannels)
+- [audioSampleRate](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#audiosamplerate)
+- [backgroundColor](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#backgroundcolor)
+- [backgroundImage](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#backgroundimage)
+- [height](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#height)
+- [images](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#images)
+- [transcodingUsers](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#transcodingusers)
+- [userConfigExtraInfo](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#userconfigextrainfo)
+- [videoBitrate](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#videobitrate)
+- [videoCodecProfile](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#videocodecprofile)
+- [videoFrameRate](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#videoframerate)
+- [videoGop](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#videogop)
+- [watermark](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#watermark)
+- [width](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#width)
+
+## Properties
+
+<a id="audiobitrate"></a>
+
+### Optional audioBitrate
+
+audioBitrate: number
+
+用于直播推流的输出音频的码率，单位为 Kbps。
+
+正整数，默认值为 48，最大值为 128。
+
+<a id="audiochannels"></a>
+
+### Optional audioChannels
+
+audioChannels: 1|2|3|4|5
+
+用于直播推流的输出音频的声道数。
+
+建议取 1 或 2。 3、4、5 需要特殊播放器支持：
+
+- 1:（默认值）单声道
+- 2: 双声道
+- 3: 三声道
+- 4: 四声道
+- 5: 五声道
+
+<a id="audiosamplerate"></a>
+
+### Optional audioSampleRate
+
+audioSampleRate: 32000|44100|48000
+
+用于直播推流的输出音频的采样率。
+
+- 32000: 音频采样率 32 kHz。
+- 44100: 音频采样率 44.1 kHz。
+- 48000: （默认值）音频采样率 48 kHz。
+
+<a id="backgroundcolor"></a>
+
+### Optional backgroundColor
+
+backgroundColor: number
+
+背景色。
+
+默认 0x000000，必须是 16 进制格式。
+
+<a id="backgroundimage"></a>
+
+### Optional backgroundImage
+
+backgroundImage: [LiveStreamingTranscodingImage](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingimage)
+
+用于给直播推流的视频添加背景图片。
+
+<a id="height"></a>
+
+### Optional height
+
+height: number
+
+推流视频的总高度，默认值 360，单位为像素。
+
+- 如果推视频流，`height` 值不得低于 64，否则声网会调整为 64。
+- 如果推音频流，请将 `width` 和 `height` 设为 0。
+
+<a id="images"></a>
+
+### Optional images
+
+images: [LiveStreamingTranscodingImage](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingimage)[]
+
+### deprecated
+
+用于给直播推流的视频添加水印。
+
+推荐使用 [LiveStreamingTranscodingConfig.watermark](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig#watermark) 为直播推流的视频添加水印。
+
+> 目前推流后台只支持添加一张水印图片
+
+<a id="transcodingusers"></a>
+
+### Optional transcodingUsers
+
+transcodingUsers: [LiveStreamingTranscodingUser](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodinguser)[]
+
+用于管理参与直播推流的视频合图的用户。
+
+最多支持 17 人同时转码合图。
+
+<a id="userconfigextrainfo"></a>
+
+### Optional userConfigExtraInfo
+
+userConfigExtraInfo: string
+
+用户自定义的发送到旁路推流客户端的信息，用于填充 H264/H265 视频中 SEI 帧内容。长度限制：4096字节。关于 SEI 的详细信息，详见 [SEI 帧相关问题](/zh-CN/reference/faq/quality/sei)。
+
+<a id="videobitrate"></a>
+
+### Optional videoBitrate
+
+videoBitrate: number
+
+用于直播推流的输出视频的码率，单位为 Kbps，默认值 400。
+
+<a id="videocodecprofile"></a>
+
+### Optional videoCodecProfile
+
+videoCodecProfile: 66|77|100
+
+用于直播推流的输出视频的编码规格。
+
+可以设置为 `66`、`77` 或 `100`。如果设置其他值，声网会统一设为默认值 `100`。
+
+- `66`: Baseline 级别的视频编码规格，一般用于低阶或需要额外容错的应用，比如视频通话、手机视频等。
+- `77`: Main 级别的视频编码规格，一般用于主流消费类电子产品，如 MP4、便携的视频播放器、PSP 和 iPad 等。
+- `100`:（默认）High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。
+
+<a id="videoframerate"></a>
+
+### Optional videoFrameRate
+
+videoFrameRate: number
+
+用于直播推流的输出视频的帧率，单位为 fps，默认值 15。
+
+声网会将高于 30 的帧率设置改为 30。
+
+<a id="videogop"></a>
+
+### Optional videoGop
+
+videoGop: number
+
+用于直播推流的输出视频的 GOP，单位为帧，默认值 30。
+
+<a id="watermark"></a>
+
+### Optional watermark
+
+watermark: [LiveStreamingTranscodingImage](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingimage)
+
+用于给直播推流的视频添加水印。
+
+<a id="width"></a>
+
+### Optional width
+
+width: number
+
+推流视频的总宽度，默认值 640，单位为像素。
+
+- 如果推视频流，`width` 值不得低于 64，否则声网会调整为 64。
+- 如果推音频流，请将 `width` 和 `height` 设为 0。

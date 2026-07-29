@@ -1,0 +1,18 @@
+---
+title: "如何处理开发团队配置信息缺失导致的 Xcode 项目编译失败？"
+---
+## 问题描述
+
+将 Xcode 项目部署到 iOS 真机进行调试时，遇到以下错误：
+
+```shell
+Error: Signing for "Runner" requires a development team. Select a development team in the Signing & Capabilities editor. (in target 'Runner' from project 'Runner')"
+```
+
+## 问题原因
+
+在 iOS 平台上，所有 App 都需要一个由 Apple 认证的开发者签名，以验证 App 的来源及其安全性。如果 Xcode 未能检测到有效的开发团队或证书，便无法完成 App 的编译和部署。
+
+## 解决方案
+
+参考 [Apple 官方说明](https://help.apple.com/xcode/mac/current/#/dev60b6fbbc7)配置有效的开发者团队和证书。

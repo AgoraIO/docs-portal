@@ -1,0 +1,780 @@
+---
+title: "Storage"
+---
+
+RTM 的 Storage 功能提供了一套动态数据库机制，可以让开发者动态设置、存储、更新、删除 Channel Metadata 和 User Metadata 等数据。
+
+## setChannelMetadata
+
+### 接口描述
+
+`setChannelMetadata` 方法可以为频道（Message Channel 或 Stream Channel）设置 Channel Metadata。一个频道只能有一组 Metadata，但每组 Metadata 可以有一个或多个 Metadata Item。如果多次调用该方法，SDK 会依次检索 Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item `key` 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item `key` 值相同，则最后一次设置的 Metadata Item 的 `value` 会覆盖之前的值。
+
+Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set），该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `Metadata` 中的 `majorRevision ` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 Channel Metadata 或 Metadata Item 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；否则 SDK 会返回错误码。
+
+成功设置 Channel Metadata 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `setChannelMetadata` 方法：
+
+```typescript
+async setChannelMetadata(
+  channelName: string,
+  channelType: RtmChannelType,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<SetChannelMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性      |  类型   | 是否必填 | 默认值  | 描述                      |
+| ----------- | ---- | ----- | ---- | ----------- |
+|   `lockName`   | string |   选填   | `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。    |
+|   `recordTs`   | boolean |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `SetChannelMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`SetChannelMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `channelName` | string | 频道名称。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+
+const items: MetadataItem[] = [
+  { key: 'Apple', value: '100', revision: 174298200 },
+  { key: 'Banana', value: '200', revision: 174298100 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true,
+  lockName: 'myLock'
+};
+
+try {
+  const response = await rtmClient.storage.setChannelMetadata('channelName', RtmChannelType.MESSAGE, metadata, options);
+  console.log('Channel metadata set successfully');
+  console.log('Channel:', response.channelName);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('setChannelMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## getChannelMetadata
+
+### 接口描述
+
+`getChannelMetadata` 方法可以获取指定频道的 Metadata。
+
+### 接口方法
+
+你可以通过以下方式调用 `getChannelMetadata` 方法：
+
+```typescript
+async getChannelMetadata(
+  channelName: string,
+  channelType: RtmChannelType
+): Promise<GetChannelMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `GetChannelMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`GetChannelMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `channelName` | string | 频道名称。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.storage.getChannelMetadata('channelName', RtmChannelType.MESSAGE);
+  console.log('Channel metadata retrieved successfully');
+  console.log('Channel:', response.channelName);
+  console.log('Major revision:', response.data.majorRevision);
+  console.log('Items:');
+  response.data.items.forEach((item) => {
+    console.log(`  ${item.key}: ${item.value}`);
+    console.log(`    Revision: ${item.revision}`);
+    console.log(`    Author: ${item.authorUserId}`);
+    console.log(`    Updated at: ${item.updateTs}`);
+  });
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('getChannelMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## removeChannelMetadata
+
+### 接口描述
+
+`removeChannelMetadata` 方法可以删除 Channel Metadata 或 Channel Metadata Item 数组。
+
+删除时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性默认为 `-1` ，本次调用不开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会删除该值；如果 Channel Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 Channel Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后删除对应值；否则 SDK 会返回错误码。
+
+成功删除 Channel Metadata 或 Metadata Item 后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeChannelMetadata` 方法：
+
+```typescript
+async removeChannelMetadata(
+  channelName: string,
+  channelType: RtmChannelType,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<RemoveChannelMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性      |  类型   | 是否必填 | 默认值  | 描述                      |
+| ----------- | ---- | ----- | ---- | ----------- |
+|   `lockName`   | string |   选填   | `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。    |
+|   `recordTs`   | boolean |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `RemoveChannelMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`RemoveChannelMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `channelName` | string | 频道名称。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+
+// Remove specific items
+const items: MetadataItem[] = [
+  { key: 'Apple', value: '', revision: 174298200 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true,
+  lockName: 'myLock'
+};
+
+try {
+  const response = await rtmClient.storage.removeChannelMetadata('channelName', RtmChannelType.MESSAGE, metadata, options);
+  console.log('Channel metadata removed successfully');
+  console.log('Channel:', response.channelName);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('removeChannelMetadata failed:', error.errorCode, error.reason);
+  }
+}
+
+// Remove all metadata (empty items array)
+const emptyMetadata: Metadata = {
+  majorRevision: -1,
+  items: []
+};
+
+try {
+  await rtmClient.storage.removeChannelMetadata('channelName', RtmChannelType.MESSAGE, emptyMetadata);
+  console.log('All channel metadata cleared');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Clear metadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## updateChannelMetadata
+
+### 接口描述
+
+`updateChannelMetadata` 方法可以更新已有的 Channel Metadata。每次调用该方法，你可以更新一个 Channel Metadata，也可以更新一个或多个 Channel Metadata Item 数组。
+
+成功更新后，订阅该频道且开启事件监听的用户会收到 `CHANNEL` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateChannelMetadata` 方法：
+
+```typescript
+async updateChannelMetadata(
+  channelName: string,
+  channelType: RtmChannelType,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<UpdateChannelMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `channelName` | string | 必填 | - | 频道名称。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性      |  类型   | 是否必填 | 默认值  | 描述                      |
+| ----------- | ---- | ----- | ---- | ----------- |
+|   `lockName`   | string |   选填   | `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。    |
+|   `recordTs`   | boolean |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `UpdateChannelMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`UpdateChannelMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `channelName` | string | 频道名称。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError, RtmChannelType } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+
+const items: MetadataItem[] = [
+  { key: 'Apple', value: '120', revision: 174298200 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true,
+  lockName: 'myLock'
+};
+
+try {
+  const response = await rtmClient.storage.updateChannelMetadata('channelName', RtmChannelType.MESSAGE, metadata, options);
+  console.log('Channel metadata updated successfully');
+  console.log('Channel:', response.channelName);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('updateChannelMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## setUserMetadata
+
+### 接口描述
+
+`setUserMetadata` 方法可以设置 User Metadata。如果多次调用该方法时，SDK 会依次检索 User Metadata Item 的 `key` 值，并按如下规则处理：
+
+- 如果设置的 Metadata Item key 值不同，则会根据调用顺序依次增加。
+- 如果设置的 Metadata Item key 值相同，则最后一次设置的 Metadata 的 value 会覆盖之前的值。
+
+成功设置 User Metadata 后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+User Metadata 同时也引进了版本控制逻辑 CAS，该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
+
+- 通过 `Metadata` 中的 `majorRevision ` 属性开启整组 Channel Metadata 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+设置 User Metadata 时，配合版本属性可以控制本次调用是否开启版本号校验，逻辑如下：
+
+- 版本属性为 `-1` 时，本次调用不开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则该值会被最新值覆盖；如果 User Metadata 或 Metadata Item 不存在，则会创建该值。
+- 版本属性为正整数时，本次调用开启 CAS 验证。如果 User Metadata 或 Metadata Item 已存在，则 SDK 会在版本号验证成功后更新对应的值；如果 User Metadata 或 Metadata Item 不存在，则 SDK 会返回错误码。
+
+### 接口方法
+
+你可以通过以下方式调用 `setUserMetadata` 方法：
+
+```typescript
+async setUserMetadata(
+  userId: string,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<SetUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性      |  类型   | 是否必填 | 默认值  | 描述                      |
+| ----------- | ---- | ----- | ---- | ----------- |
+|   `recordTs`   | boolean |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `SetUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`SetUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+
+const items: MetadataItem[] = [
+  { key: 'Name', value: 'Tony', revision: 174298200 },
+  { key: 'Mute', value: 'true', revision: 174298100 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true
+};
+
+try {
+  const response = await rtmClient.storage.setUserMetadata('Tony', metadata, options);
+  console.log('User metadata set successfully');
+  console.log('User ID:', response.userId);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('setUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## getUserMetadata
+
+### 接口描述
+
+`getUserMetadata` 方法可以获取指定用户的 Metadata 和 User Metadata Item。
+
+### 接口方法
+
+你可以通过以下方式调用 `getUserMetadata` 方法：
+
+```typescript
+async getUserMetadata(userId: string): Promise<GetUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `GetUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`GetUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+| `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.storage.getUserMetadata('Tony');
+  console.log('User metadata retrieved successfully');
+  console.log('User ID:', response.userId);
+  console.log('Major revision:', response.data.majorRevision);
+  console.log('Items:');
+  response.data.items.forEach((item) => {
+    console.log(`  ${item.key}: ${item.value}`);
+    console.log(`    Revision: ${item.revision}`);
+    console.log(`    Author: ${item.authorUserId}`);
+    console.log(`    Updated at: ${item.updateTs}`);
+  });
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('getUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## removeUserMetadata
+
+### 接口描述
+
+`removeUserMetadata` 方法可以删除 User Metadata 或某几个 User Metadata Item。
+
+成功删除后，订阅该用户 Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `removeUserMetadata` 方法：
+
+```typescript
+async removeUserMetadata(
+  userId: string,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<RemoveUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性      |  类型   | 是否必填 | 默认值  | 描述                      |
+| ----------- | ---- | ----- | ---- | ----------- |
+|   `recordTs`   | boolean |   选填   | `false` | 是否记录编辑的时间戳。    |
+| `recordUserId` | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `RemoveUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`RemoveUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem } from '@shengwang/rtm-full';
+
+// Remove specific item
+const items: MetadataItem[] = [
+  { key: 'Mute', value: '', revision: 174298200 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+try {
+  const response = await rtmClient.storage.removeUserMetadata('Tony', metadata);
+  console.log('User metadata removed successfully');
+  console.log('User ID:', response.userId);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('removeUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+
+// Remove all metadata (empty items array)
+const emptyMetadata: Metadata = {
+  majorRevision: -1,
+  items: []
+};
+
+try {
+  await rtmClient.storage.removeUserMetadata('Tony', emptyMetadata);
+  console.log('All user metadata cleared');
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('Clear metadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## updateUserMetadata
+
+### 接口描述
+
+`updateUserMetadata` 方法可以更新已有的 User Metadata 或 Metadata Item。
+
+成功更新后，订阅该 User Metadata 且开启事件监听的用户会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+:::info[信息]
+该方法不能对不存在的 Metadata Item 进行操作。
+:::
+
+### 接口方法
+
+你可以通过以下方式调用 `updateUserMetadata` 方法：
+
+```typescript
+async updateUserMetadata(
+  userId: string,
+  data: Metadata,
+  options?: MetadataOptions
+): Promise<UpdateUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+| `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
+| `options` | `MetadataOptions` | 选填 | `{}` | User Metadata 配置选项。 |
+
+`MetadataOptions` 数据类型包含以下属性：
+
+|      属性       |  类型   | 是否必填 | 默认值  | 描述        |
+| ------------ | ---- | ----- | ---- | ------------- |
+| `recordTs`  | boolean |   选填   | `false` | 是否记录编辑的时间戳。            |
+|   `recordUserId`   | boolean |   选填   | `false` | 是否记录编辑者的用户 ID。         |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `UpdateUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`UpdateUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+import type { Metadata, MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+
+const items: MetadataItem[] = [
+  { key: 'Apple', value: '100', revision: 174298200 }
+];
+
+const metadata: Metadata = {
+  majorRevision: 174298270,
+  items: items
+};
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true
+};
+
+try {
+  const response = await rtmClient.storage.updateUserMetadata('Tony', metadata, options);
+  console.log('User metadata updated successfully');
+  console.log('User ID:', response.userId);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('updateUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## subscribeUserMetadata
+
+### 接口描述
+
+`subscribeUserMetadata` 方法可以订阅指定用户的 Metadata。
+
+成功订阅且开启事件监听后，当该用户的 Metadata 发生变更时会收到 `USER` 类型的 `storage` 事件通知。详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
+
+### 接口方法
+
+你可以通过以下方式调用 `subscribeUserMetadata` 方法：
+
+```typescript
+async subscribeUserMetadata(userId: string): Promise<SubscribeUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `SubscribeUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`SubscribeUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.storage.subscribeUserMetadata('Tony');
+  console.log('Subscribed to user metadata successfully');
+  console.log('User ID:', response.userId);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('subscribeUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## unsubscribeUserMetadata
+
+### 接口描述
+
+如果你不需要接收某个用户 User Metadata 的变更通知，调用 `unsubscribeUserMetadata` 方法取消订阅。
+
+### 接口方法
+
+你可以通过以下方式调用 `unsubscribeUserMetadata` 方法：
+
+```typescript
+async unsubscribeUserMetadata(userId: string): Promise<UnsubscribeUserMetadataResponse>
+```
+
+| 参数 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `userId` | string | 必填 | - | 用户 ID。 |
+
+### 返回值
+
+该方法返回一个 Promise，成功时 resolve 并返回 `UnsubscribeUserMetadataResponse` 对象，失败时 reject 并抛出 `RtmError` 异常。
+
+`UnsubscribeUserMetadataResponse` 数据结构如下：
+
+| 属性 | 类型 | 描述 |
+| --- | --- | --- |
+| `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
+| `userId` | string | 用户 ID。 |
+
+### 基本用法
+
+```typescript
+import { RtmClient, RtmError } from '@shengwang/rtm-full';
+
+try {
+  const response = await rtmClient.storage.unsubscribeUserMetadata('Tony');
+  console.log('Unsubscribed from user metadata successfully');
+  console.log('User ID:', response.userId);
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error('unsubscribeUserMetadata failed:', error.errorCode, error.reason);
+  }
+}
+```
+
+## Metadata
+
+设置和管理 Metadata 的数据结构。包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `majorRevision` | number | 选填 | `-1` | <Slot name="storage-harmonyos-html-20-1-4" /> |
+| `items` | `MetadataItem[]` | 选填 | `[]` | Metadata Item 数组。 |
+
+<Slot for="storage-harmonyos-html-20-1-4">
+
+设置版本控制开关：
+
+    - `-1`: 关闭版本校验。
+    - > `0`: 开启版本校验，只有目标版本号与此值相符才能执行操作。
+
+</Slot>
+
+`MetadataItem` 数据类型包含以下属性：
+
+| 属性 | 类型 | 是否必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| `key` | string | 选填 | `''` | 键。 |
+| `value` | string | 选填 | `''` | 值。 |
+| `authorUserId` | string | 选填 | `''` | 编辑者的用户 ID。该值为只读，不支持写入。 |
+| `revision` | number | 选填 | `-1` | <Slot name="storage-harmonyos-html-21-4-4" /> |
+| `updateTs` | number | 选填 | `0` | 更新时间戳。该值为只读，不支持写入。 |
+
+<Slot for="storage-harmonyos-html-21-4-4">
+
+- 在读取操作时作为真实版本号返回。
+      - 在写入操作时作为版本控制开关：
+        -  `-1`: 关闭版本校验。
+        - > `0`: 开启版本校验，只有目标版本号与此值相符才执行操作。
+
+</Slot>

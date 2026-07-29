@@ -1,0 +1,2378 @@
+---
+title: 网络及其他
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/toc_network
+  sourcePath: html-docs/rtc/Android/API/toc_network.html
+  generator: oxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/android/API/class_localaccesspointconfiguration.html.
+---
+
+<a id="toc_network"></a>
+
+<a id="api_irtcengine_complain"></a>
+
+<a id="ariaid-title2"></a>
+
+## complain
+
+允许你在通话结束后投诉通话质量。
+
+<a id="api_irtcengine_complain__prototype"></a>
+
+```text
+public abstract int complain(String callId, String description);
+```
+
+<a id="api_irtcengine_complain__detailed_desc"></a>
+
+请在用户离开频道后调用该方法。
+
+<a id="api_irtcengine_complain__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="callid"></a>
+<Parameter name="callId">
+
+当前通话的 Call ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcallid) 获取。
+
+</Parameter>
+<a id="description"></a>
+<Parameter name="description">
+
+（可选）对通话的描述。字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_complain__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：发生通用错误（无明确原因）。
+  - -2：参数无效。
+  - -7：在 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 初始化之前调用该方法。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_enableencryption"></a>
+
+<a id="ariaid-title3"></a>
+
+## enableEncryption
+
+启用或关闭内置加密功能。
+
+<a id="api_irtcengine_enableencryption__prototype"></a>
+
+```text
+public abstract int enableEncryption(boolean enabled, EncryptionConfig config);
+```
+
+<a id="api_irtcengine_enableencryption__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭内置加密功能。请在用户重新加入频道前调用该方法。
+
+:::note
+注：
+
+- 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
+- 启用内置加密功能后，无法使用旁路推流功能。
+:::
+
+<a id="api_irtcengine_enableencryption__scenario"></a>
+
+### 适用场景
+
+适用于安全性要求较高的场景。
+
+<a id="api_irtcengine_enableencryption__timing"></a>
+
+### 调用时机
+
+请在加入频道前调用该方法。
+
+<a id="api_irtcengine_enableencryption__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled"></a>
+<Parameter name="enabled">
+
+是否启用内置加密功能：
+
+- true：启用内置加密功能。
+- false：（默认）关闭内置加密功能。
+
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
+
+内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/android/class-encryptionconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enableencryption__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：参数无效。请传入有效参数。
+  - -4：内置加密模式错误或 SDK 加载外部加密库失败。请检查枚举值或重新加载外部加密库。
+  - -7：SDK 未初始化。请先初始化 [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine) 实例后再调用该方法。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_enableencryptionex"></a>
+
+<a id="ariaid-title4"></a>
+
+## enableEncryptionEx
+
+启用或关闭内置加密功能。
+
+<a id="api_irtcengineex_enableencryptionex__prototype"></a>
+
+```text
+public abstract int enableEncryptionEx(boolean enabled, EncryptionConfig config, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_enableencryptionex__detailed_desc"></a>
+
+用户离开频道后，SDK 会自动关闭内置加密。你需要在用户重新加入频道前调用该方法。
+
+:::note
+注：
+
+- 同一频道内的所有用户在调用该方法时必须设置相同的加密配置。
+- 启用内置加密后，无法使用旁路推流功能。
+:::
+
+<a id="api_irtcengineex_enableencryptionex__scenario"></a>
+
+### 适用场景
+
+适用于多频道场景，或对安全性要求较高的场景。
+
+<a id="api_irtcengineex_enableencryptionex__timing"></a>
+
+### 调用时机
+
+请在加入频道前调用该方法。
+
+<a id="api_irtcengineex_enableencryptionex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-1"></a>
+<Parameter name="enabled">
+
+是否启用内置加密：
+
+- true：启用内置加密。
+- false：（默认）关闭内置加密。
+
+</Parameter>
+<a id="config-1"></a>
+<Parameter name="config">
+
+内置加密配置。详见 [EncryptionConfig](/zh-CN/api-reference/rtc/android/class-encryptionconfig)。
+
+</Parameter>
+<a id="connection"></a>
+<Parameter name="connection">
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_enableencryptionex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_enablewebsdkinteroperability"></a>
+
+<a id="ariaid-title5"></a>
+
+## enableWebSdkInteroperability
+
+启用或关闭与声网 Web SDK 的互通功能，仅适用于直播场景。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__prototype"></a>
+
+```text
+public abstract int enableWebSdkInteroperability(boolean enabled);
+```
+
+<a id="api_irtcengine_enablewebsdkinteroperability__detailed_desc"></a>
+
+<a id="废弃"></a>
+
+:::error[废弃]
+该方法已废弃。SDK 自动开启与 Web SDK 的互通，无需调用该方法开启。
+:::
+
+如果频道中存在 Web SDK 用户，必须调用该方法，否则 Native 用户的视频画面在 Web 端将显示为黑屏。该方法仅适用于直播场景，在语音通话场景中默认启用互通功能。
+
+<a id="api_irtcengine_enablewebsdkinteroperability__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="enabled-2"></a>
+<Parameter name="enabled">
+
+是否启用互通功能：
+
+- true：启用互通功能。
+- false：（默认）关闭互通功能。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_enablewebsdkinteroperability__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getcallid"></a>
+
+<a id="ariaid-title6"></a>
+
+## getCallId
+
+获取当前通话 ID。
+
+<a id="api_irtcengine_getcallid__prototype"></a>
+
+```text
+public abstract String getCallId();
+```
+
+<a id="api_irtcengine_getcallid__detailed_desc"></a>
+
+客户端在用户加入频道后会生成一个用于标识当前通话的 `callId`。你可以调用 [getCallId](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcallid) 获取 `callId`，并在调用 [rate](/zh-CN/api-reference/rtc/android/network#api_irtcengine_rate)、[complain](/zh-CN/api-reference/rtc/android/network#api_irtcengine_complain) 等方法时传入该值。
+
+<a id="api_irtcengine_getcallid__timing"></a>
+
+### 调用时机
+
+该方法需要在加入频道后调用。
+
+<a id="api_irtcengine_getcallid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功时，返回当前通话的 `callId`。
+- 方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getcallidex"></a>
+
+<a id="ariaid-title7"></a>
+
+## getCallIdEx
+
+获取与连接 ID 对应的通话 ID。
+
+<a id="api_irtcengineex_getcallidex__prototype"></a>
+
+```text
+public abstract String getCallIdEx(RtcConnection connection);
+```
+
+<a id="api_irtcengineex_getcallidex__detailed_desc"></a>
+
+你可以调用该方法获取 `callId`，并在调用 [rate](/zh-CN/api-reference/rtc/android/network#api_irtcengine_rate) 和 [complain](/zh-CN/api-reference/rtc/android/network#api_irtcengine_complain) 等方法时传入该 ID。
+
+<a id="api_irtcengineex_getcallidex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_getcallidex__timing"></a>
+
+### 调用时机
+
+请在加入频道后调用此方法。
+
+<a id="api_irtcengineex_getcallidex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-1"></a>
+<Parameter name="connection">
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_getcallidex__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回通话 ID。
+方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getconnectionstate"></a>
+
+<a id="ariaid-title8"></a>
+
+## getConnectionState
+
+获取 SDK 当前的连接状态。
+
+<a id="api_irtcengine_getconnectionstate__prototype"></a>
+
+```text
+public abstract int getConnectionState();
+```
+
+<a id="api_irtcengine_getconnectionstate__detailed_desc"></a>
+
+<a id="api_irtcengine_getconnectionstate__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getconnectionstate__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回当前的连接状态。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_getconnectionstateex"></a>
+
+<a id="ariaid-title9"></a>
+
+## getConnectionStateEx
+
+获取 SDK 当前的连接状态。
+
+<a id="api_irtcengineex_getconnectionstateex__prototype"></a>
+
+```text
+public abstract int getConnectionStateEx(RtcConnection connection);
+```
+
+<a id="api_irtcengineex_getconnectionstateex__detailed_desc"></a>
+
+<a id="api_irtcengineex_getconnectionstateex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_getconnectionstateex__timing"></a>
+
+### 调用时机
+
+该方法可以在加入频道前或后调用。
+
+<a id="api_irtcengineex_getconnectionstateex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="connection-2"></a>
+<Parameter name="connection">
+
+连接信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_getconnectionstateex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms"></a>
+
+<a id="ariaid-title10"></a>
+
+## getCurrentMonotonicTimeInMs
+
+获取 SDK 当前的单调时间。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__prototype"></a>
+
+```text
+public abstract long getCurrentMonotonicTimeInMs();
+```
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__detailed_desc"></a>
+
+在自定义视频采集和自定义音频采集场景中，为确保音视频同步，声网建议调用该方法获取 SDK 当前的单调时间，并将该值传入采集的视频帧 ([VideoFrame](/zh-CN/api-reference/rtc/android/class-videoframe)) 和音频帧 ([AudioFrame](/zh-CN/api-reference/rtc/android/class-audioframe)) 的时间戳参数中。单调时间是指一个随时间单调递增的时间序列，单位为毫秒。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__timing"></a>
+
+### 调用时机
+
+该方法可在加入频道前或加入频道后调用。
+
+<a id="api_irtcengine_getcurrentmonotonictimeinms__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 SDK 当前的单调时间（单位为毫秒）。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_geterrordescription"></a>
+
+<a id="ariaid-title11"></a>
+
+## getErrorDescription
+
+获取警告或错误码对应的描述信息。
+
+<a id="api_irtcengine_geterrordescription__prototype"></a>
+
+```text
+public static String getErrorDescription(int error)
+```
+
+<a id="api_irtcengine_geterrordescription__detailed_desc"></a>
+
+<a id="api_irtcengine_geterrordescription__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="error"></a>
+<Parameter name="error">
+
+SDK 报告的错误码。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_geterrordescription__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回错误码对应的描述信息。
+方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnativehandle"></a>
+
+<a id="ariaid-title12"></a>
+
+## getNativeHandle
+
+获取原生 SDK 的 C++ 句柄。
+
+<a id="api_irtcengine_getnativehandle__prototype"></a>
+
+```text
+public abstract long getNativeHandle();
+```
+
+<a id="api_irtcengine_getnativehandle__detailed_desc"></a>
+
+该方法可用于注册音频和视频帧观察器。
+
+<a id="api_irtcengine_getnativehandle__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回 SDK 的原生句柄。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getnetworktype"></a>
+
+<a id="ariaid-title13"></a>
+
+## getNetworkType
+
+获取本地网络连接类型。
+
+<a id="api_irtcengine_getnetworktype__prototype"></a>
+
+```text
+public abstract int getNetworkType();
+```
+
+<a id="api_irtcengine_getnetworktype__detailed_desc"></a>
+
+你可以在任意阶段调用此方法获取当前使用的网络类型。
+
+:::note
+注： 你可以在加入频道前或后调用此方法。
+:::
+
+<a id="api_irtcengine_getnetworktype__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回本地网络连接类型：
+
+  - 0：SDK 与网络断开连接。
+  - 1：网络类型为 LAN。
+  - 2：网络类型为 Wi-Fi（包括热点）。
+  - 3：网络类型为移动 2G。
+  - 4：网络类型为移动 3G。
+  - 5：网络类型为移动 4G。
+  - 6：网络类型为移动 5G。
+- 方法调用失败，返回错误码：
+
+  - -1：网络类型未知。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getntpwalltimeinms"></a>
+
+<a id="ariaid-title14"></a>
+
+## getNtpWallTimeInMs
+
+获取当前 NTP（网络时间协议）时间。
+
+<a id="api_irtcengine_getntpwalltimeinms__prototype"></a>
+
+```text
+public abstract long getNtpWallTimeInMs();
+```
+
+<a id="api_irtcengine_getntpwalltimeinms__detailed_desc"></a>
+
+在实时合唱场景中，尤其是当多个接收端因网络问题导致下行链路连接不一致时，可以调用该方法获取当前 NTP 时间作为参考时间，以对齐多个接收端的歌词和音乐，实现合唱同步。
+
+<a id="api_irtcengine_getntpwalltimeinms__return_values"></a>
+
+### 返回值
+
+方法调用成功，返回当前 NTP 时间的 Unix 时间戳（毫秒）。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_getversion"></a>
+
+<a id="ariaid-title15"></a>
+
+## getSdkVersion
+
+获取 SDK 的版本号。
+
+<a id="api_irtcengine_getversion__prototype"></a>
+
+```text
+public static String getSdkVersion()
+```
+
+<a id="api_irtcengine_getversion__detailed_desc"></a>
+
+<a id="api_irtcengine_getversion__return_values"></a>
+
+### 返回值
+
+方法调用成功时，返回 SDK 的版本号字符串。
+方法调用失败，返回空字符串。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_isfeatureavailableondevice"></a>
+
+<a id="ariaid-title16"></a>
+
+## isFeatureAvailableOnDevice
+
+检查当前设备是否支持指定的高级功能。
+
+<a id="api_irtcengine_isfeatureavailableondevice__prototype"></a>
+
+```text
+public abstract boolean isFeatureAvailableOnDevice(int type);
+```
+
+<a id="api_irtcengine_isfeatureavailableondevice__detailed_desc"></a>
+
+:::info[自从]
+自 v4.3.0 版本新增。
+:::
+
+在使用高级功能前，建议调用该方法判断当前设备的能力是否满足要求，以避免在低端设备上启用高级功能时出现性能下降或功能不可用的情况。你可以根据该方法的返回值决定是否显示或启用相应的功能按钮，或在设备能力不足时提示用户。
+
+<a id="api_irtcengine_isfeatureavailableondevice__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+高级功能的类型：
+
+- `FEATURE_VIDEO_VIRTUAL_BACKGROUND`（1）：虚拟背景。
+- `FEATURE_VIDEO_BEAUTY_EFFECT`（2）：美颜特效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_isfeatureavailableondevice__return_values"></a>
+
+### 返回值
+
+- true：当前设备支持指定的功能。
+- false：当前设备不支持指定的功能。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_querydevicescore"></a>
+
+<a id="ariaid-title17"></a>
+
+## queryDeviceScore
+
+查询设备评分。
+
+<a id="api_irtcengine_querydevicescore__prototype"></a>
+
+```text
+public abstract int queryDeviceScore();
+```
+
+<a id="api_irtcengine_querydevicescore__detailed_desc"></a>
+
+你可以调用该方法查询设备评分。如果返回的评分较低（例如低于 60），你需要降低视频分辨率，以避免影响视频体验。不同业务场景对设备评分的最低要求不同，具体评分建议请[联系技术支持](https://ticket.shengwang.cn/)。
+
+<a id="api_irtcengine_querydevicescore__return_values"></a>
+
+### 返回值
+
+- &gt; 0：方法调用成功，返回当前设备评分，范围为 [0, 100]，数值越大表示设备性能越强。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_rate"></a>
+
+<a id="ariaid-title18"></a>
+
+## rate
+
+允许用户在通话结束后对通话进行评分。
+
+<a id="api_irtcengine_rate__prototype"></a>
+
+```text
+public abstract int rate(String callId, int rating, String description);
+```
+
+<a id="api_irtcengine_rate__detailed_desc"></a>
+
+:::note
+注： 请确保在离开频道后调用此方法。
+:::
+
+<a id="api_irtcengine_rate__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="callid-1"></a>
+<Parameter name="callId">
+
+当前通话的 ID。你可以通过调用 [getCallId](/zh-CN/api-reference/rtc/android/network#api_irtcengine_getcallid) 获取该 ID。
+
+</Parameter>
+<a id="rating"></a>
+<Parameter name="rating">
+
+评分值，范围为 1（最低分）到 5（最高分）。
+
+</Parameter>
+<a id="description-1"></a>
+<Parameter name="description">
+
+（可选）对通话的描述。字符串长度应小于 800 字节。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_rate__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -1：发生通用错误。
+  - -2：参数无效。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_sendcustomreportmessage"></a>
+
+<a id="ariaid-title19"></a>
+
+## sendCustomReportMessage
+
+上报自定义消息。
+
+<a id="api_irtcengine_sendcustomreportmessage__prototype"></a>
+
+```text
+public abstract int sendCustomReportMessage(String id, String category, String event, String label, int value);
+```
+
+<a id="api_irtcengine_sendcustomreportmessage__detailed_desc"></a>
+
+该功能目前处于测试阶段，提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请[联系技术支持](https://ticket.shengwang.cn/)，并与我们讨论自定义消息的格式。
+
+<a id="api_irtcengine_sendcustomreportmessage__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="id"></a>
+<Parameter name="id">
+
+自定义消息的 ID。
+
+</Parameter>
+<a id="category"></a>
+<Parameter name="category">
+
+自定义消息的类别。
+
+</Parameter>
+<a id="event"></a>
+<Parameter name="event">
+
+自定义消息的事件名称。
+
+</Parameter>
+<a id="label"></a>
+<Parameter name="label">
+
+自定义消息的标签。
+
+</Parameter>
+<a id="value"></a>
+<Parameter name="value">
+
+自定义消息的数值。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_sendcustomreportmessage__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengineex_sendcustomreportmessageex"></a>
+
+<a id="ariaid-title20"></a>
+
+## sendCustomReportMessageEx
+
+支持上报和分析自定义消息。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__prototype"></a>
+
+```text
+public abstract int sendCustomReportMessageEx(String id, String category, String event, String label, int value, RtcConnection connection);
+```
+
+<a id="api_irtcengineex_sendcustomreportmessageex__detailed_desc"></a>
+
+该功能目前处于测试阶段，提供免费试用。在测试版本中，最多支持在 6 秒内上报 10 条消息，每条消息不超过 256 字节，每个字符串不超过 100 字节。如需试用该功能，请[联系技术支持](https://ticket.shengwang.cn/)并与我们讨论自定义消息的格式。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__scenario"></a>
+
+### 适用场景
+
+该方法适用于多频道场景。
+
+<a id="api_irtcengineex_sendcustomreportmessageex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="id-1"></a>
+<Parameter name="id">
+
+自定义消息的 ID。
+
+</Parameter>
+<a id="category-1"></a>
+<Parameter name="category">
+
+自定义消息的类别。
+
+</Parameter>
+<a id="event-1"></a>
+<Parameter name="event">
+
+自定义消息的事件名称。
+
+</Parameter>
+<a id="label-1"></a>
+<Parameter name="label">
+
+自定义消息的标签。
+
+</Parameter>
+<a id="value-1"></a>
+<Parameter name="value">
+
+自定义消息的数值。
+
+</Parameter>
+<a id="connection-3"></a>
+<Parameter name="connection">
+
+连接信息，适用于多频道场景。详见 [RtcConnection](/zh-CN/api-reference/rtc/android/class-rtcconnection)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_sendcustomreportmessageex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngineEx](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineex)
+
+<a id="api_irtcengine_setavsyncsource"></a>
+
+<a id="ariaid-title21"></a>
+
+## setAVSyncSource
+
+设置发布端的音视频同步源。
+
+<a id="api_irtcengine_setavsyncsource__prototype"></a>
+
+```text
+public abstract int setAVSyncSource(String channelId, int uid);
+```
+
+<a id="api_irtcengine_setavsyncsource__detailed_desc"></a>
+
+你可以在视频发布设备上调用该方法，并传入音频发布设备所在频道的频道名和用户 ID。SDK 会以发送的音频流的时间戳为参考，自动调整视频流，从而确保即使两个发布设备的上行网络条件不同（例如一个使用 Wi-Fi，另一个使用 4G），接收端的音视频也能实现时间同步。
+
+:::note
+注： 建议在加入频道前调用此方法。
+:::
+
+<a id="api_irtcengine_setavsyncsource__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+音频发布设备所在频道的频道名。
+
+</Parameter>
+<a id="uid"></a>
+<Parameter name="uid">
+
+音频发布设备的用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setavsyncsource__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setcloudproxy"></a>
+
+<a id="ariaid-title22"></a>
+
+## setCloudProxy
+
+设置云代理服务。
+
+<a id="api_irtcengine_setcloudproxy__prototype"></a>
+
+```text
+public abstract int setCloudProxy(int proxyType);
+```
+
+<a id="api_irtcengine_setcloudproxy__detailed_desc"></a>
+
+当用户的网络访问受防火墙限制时，需要先配置防火墙，允许访问声网提供的特定 IP 地址和端口，然后调用该方法启用云代理，并通过 `proxyType` 参数设置云代理类型。成功连接云代理后，SDK 会触发 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调，状态为 `CONNECTION_STATE_CONNECTING`，原因为 `CONNECTION_CHANGED_SETTING_PROXY_SERVER`。
+
+如需关闭已设置的云代理，请调用 [setCloudProxy](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setcloudproxy)，并将 `proxyType` 设置为 `TRANSPORT_TYPE_NONE_PROXY`。
+如需切换云代理类型，请先调用 [setCloudProxy](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setcloudproxy) 关闭当前代理（`proxyType` 设置为 `TRANSPORT_TYPE_NONE_PROXY`），再调用 [setCloudProxy](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setcloudproxy) 设置新的 `proxyType`。
+
+:::note
+注：
+
+- 建议在加入频道前调用该方法。
+- 当用户处于防火墙之后并使用强制 UDP 云代理时，媒体推流和跨频道联播服务不可用。
+- 使用强制 TCP 云代理时，调用 `startAudioMixing` 播放 HTTP 协议的在线音乐文件会报错。媒体推流和跨频道联播服务使用 TCP 协议的云代理。
+:::
+
+<a id="api_irtcengine_setcloudproxy__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="proxytype"></a>
+<Parameter name="proxyType">
+
+云代理的类型：
+
+- `TRANSPORT_TYPE_NONE_PROXY` (0)：自动模式。SDK 默认启用该模式。在此模式下，SDK 会尝试直接连接 SD-RTN™，若失败则自动切换至 TCP/TLS 443。
+- `TRANSPORT_TYPE_UDP_PROXY` (1)：UDP 协议的云代理，即强制 UDP 云代理模式。在此模式下，SDK 始终通过 UDP 传输数据。
+- `TRANSPORT_TYPE_TCP_PROXY` (2)：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在此模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setcloudproxy__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：参数无效。
+  - -7：SDK 未初始化。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlocalaccesspoint"></a>
+
+<a id="ariaid-title23"></a>
+
+## setLocalAccessPoint
+
+配置连接到声网私有媒体服务器接入模块。
+
+<a id="api_irtcengine_setlocalaccesspoint__prototype"></a>
+
+```text
+public abstract int setLocalAccessPoint(LocalAccessPointConfiguration config);
+```
+
+<a id="api_irtcengine_setlocalaccesspoint__detailed_desc"></a>
+
+成功部署声网混合云解决方案并将 4.x RTC SDK 集成到内网客户端后，可以调用该方法指定本地接入点，并将接入模块分配给 SDK。
+
+:::note
+注： 该方法仅在部署声网混合云解决方案后生效。你可以联系销售了解并部署声网混合云。
+:::
+
+<a id="api_irtcengine_setlocalaccesspoint__timing"></a>
+
+### 调用时机
+
+必须在加入频道前调用该方法。
+
+<a id="api_irtcengine_setlocalaccesspoint__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-2"></a>
+<Parameter name="config">
+
+本地接入点配置。详见 LocalAccessPointConfiguration。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setlocalaccesspoint__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfile"></a>
+
+<a id="ariaid-title24"></a>
+
+## setLogFile
+
+设置 SDK 输出日志文件。
+
+<a id="api_irtcengine_setlogfile__prototype"></a>
+
+```text
+public abstract int setLogFile(String filePath);
+```
+
+<a id="api_irtcengine_setlogfile__detailed_desc"></a>
+
+<a id="废弃-1"></a>
+
+:::error[废弃]
+该方法已废弃，请在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志文件路径。
+:::
+
+该方法需在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 后立即调用，否则输出日志可能不完整。
+
+:::note
+注： 确保日志文件所在目录存在且可写。
+:::
+
+<a id="api_irtcengine_setlogfile__timing"></a>
+
+### 调用时机
+
+该方法需在调用 [create](/zh-CN/api-reference/rtc/android/audio/audio-prenpost/spatial-audio#api_ilocalspatialaudioengine_create_ilocalspatialaudioengine) 后立即调用，否则输出日志可能不完整。
+
+<a id="api_irtcengine_setlogfile__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filepath"></a>
+<Parameter name="filePath">
+
+日志文件的完整路径，日志文件使用 UTF-8 编码。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setlogfile__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilesize"></a>
+
+<a id="ariaid-title25"></a>
+
+## setLogFileSize
+
+设置 SDK 日志文件的大小。
+
+<a id="api_irtcengine_setlogfilesize__prototype"></a>
+
+```text
+public abstract int setLogFileSize(long fileSizeInKBytes);
+```
+
+<a id="api_irtcengine_setlogfilesize__detailed_desc"></a>
+
+<a id="废弃-2"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 中的 `logConfig` 参数设置日志文件大小。
+:::
+
+默认情况下，SDK 会生成五个 SDK 日志文件和五个 API 调用日志文件，规则如下：
+
+- SDK 日志文件包括：`agorasdk.log`、`agorasdk.1.log`、`agorasdk.2.log`、`agorasdk.3.log` 和 `agorasdk.4.log`。
+- API 调用日志文件包括：`agoraapi.log`、`agoraapi.1.log`、`agoraapi.2.log`、`agoraapi.3.log` 和 `agoraapi.4.log`。
+- 每个日志文件的默认大小为 2,048 KB，采用 UTF-8 编码。
+- SDK 会将最新日志写入 `agorasdk.log` 或 `agoraapi.log` 文件。
+- 当 `agorasdk.log` 写满时，SDK 会按以下顺序处理日志文件：
+
+  1. 删除 `agorasdk.4.log`（如果存在）。
+  2. 将 `agorasdk.3.log` 重命名为 `agorasdk.4.log`。
+  3. 将 `agorasdk.2.log` 重命名为 `agorasdk.3.log`。
+  4. 将 `agorasdk.1.log` 重命名为 `agorasdk.2.log`。
+  5. 创建新的 `agorasdk.log` 文件。
+- `agoraapi.log` 的覆盖规则与 `agorasdk.log` 相同。
+
+:::note
+注： [setLogFileSize](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setlogfilesize) 仅用于设置 `agorasdk.log` 文件的大小，不影响 `agoraapi.log` 文件。
+:::
+
+<a id="api_irtcengine_setlogfilesize__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filesizeinkbytes"></a>
+<Parameter name="fileSizeInKBytes">
+
+`agorasdk.log` 文件的大小，单位为 KB。取值范围为 [128, 20480]，默认值为 2,048 KB。
+
+- 如果设置值小于 128 KB，SDK 会自动调整为 128 KB。
+- 如果设置值大于 20,480 KB，SDK 会自动调整为 20,480 KB。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setlogfilesize__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setlogfilter"></a>
+
+<a id="ariaid-title26"></a>
+
+## setLogFilter
+
+设置 SDK 的日志输出等级。
+
+<a id="api_irtcengine_setlogfilter__prototype"></a>
+
+```text
+public abstract int setLogFilter(int filter);
+```
+
+<a id="api_irtcengine_setlogfilter__detailed_desc"></a>
+
+<a id="废弃-3"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 中的 `logConfig`。
+:::
+
+你可以使用一个或多个日志过滤等级的组合。日志等级的顺序为 `LOG_FILTER_OFF`、`LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR`、`LOG_FILTER_WARN`、`LOG_FILTER_INFO` 和 `LOG_FILTER_DEBUG`。选择一个等级可以查看该等级及其之前的日志信息。例如，如果将日志等级设置为 `LOG_FILTER_WARN`，你将看到 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志信息。
+
+<a id="api_irtcengine_setlogfilter__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="filter"></a>
+<Parameter name="filter">
+
+SDK 的日志输出等级。
+
+- `LOG_FILTER_OFF` (0)：不输出任何日志信息。
+- `LOG_FILTER_DEBUG` (0x080f)：输出所有日志信息。如果你希望获取最完整的日志文件，请将日志过滤等级设置为 `LOG_FILTER_DEBUG`。
+- `LOG_FILTER_INFO` (0x0f)：输出 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR`、`LOG_FILTER_WARN` 和 `LOG_FILTER_INFO` 等级的日志信息。建议将日志等级设置为该等级。
+- `LOG_FILTER_WARN` (0x0e)：输出 `LOG_FILTER_CRITICAL`、`LOG_FILTER_ERROR` 和 `LOG_FILTER_WARN` 等级的日志信息。
+- `LOG_FILTER_ERROR` (0x0c)：输出 `LOG_FILTER_CRITICAL` 和 `LOG_FILTER_ERROR` 等级的日志信息。
+- `LOG_FILTER_CRITICAL` (0x08)：仅输出 `LOG_FILTER_CRITICAL` 等级的日志信息。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setlogfilter__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setloglevel"></a>
+
+<a id="ariaid-title27"></a>
+
+## setLogLevel
+
+设置 SDK 的输出日志等级。
+
+<a id="api_irtcengine_setloglevel__prototype"></a>
+
+```text
+public abstract int setLogLevel(int level);
+```
+
+<a id="api_irtcengine_setloglevel__detailed_desc"></a>
+
+<a id="废弃-4"></a>
+
+:::error[废弃]
+该方法已废弃，请在调用 [create [2/2]](/zh-CN/api-reference/rtc/android/initialize#api_irtcengine_initialize) 时通过 `config` 参数设置日志输出级别。
+:::
+
+选择一个日志等级，以查看该等级及更高级别的日志信息。
+
+<a id="api_irtcengine_setloglevel__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="level"></a>
+<Parameter name="level">
+
+日志等级。详见 [LogLevel](/zh-CN/api-reference/rtc/android/enum-loglevel)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setloglevel__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setparameters"></a>
+
+<a id="ariaid-title28"></a>
+
+## setParameters
+
+通过配置 JSON 选项，为 SDK 提供技术预览功能或特殊定制。
+
+<a id="api_irtcengine_setparameters__prototype"></a>
+
+```text
+public abstract int setParameters(String parameters);
+```
+
+<a id="api_irtcengine_setparameters__detailed_desc"></a>
+
+<a id="api_irtcengine_setparameters__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="parameters"></a>
+<Parameter name="parameters">
+
+用于设置参数的 JSON 字符串。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setparameters__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotesubscribefallbackoption"></a>
+
+<a id="ariaid-title29"></a>
+
+## setRemoteSubscribeFallbackOption [1/2]
+
+根据网络状况设置订阅端的视频流回退选项。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__prototype"></a>
+
+```text
+public abstract int setRemoteSubscribeFallbackOption(Constants.StreamFallbackOptions option);
+```
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__detailed_desc"></a>
+
+如果将 `option` 设置为 `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW` 或 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，当下行网络无法同时支持音视频时，SDK 会自动将视频从高质量流切换为低质量流，或关闭视频以保障音频质量。SDK 会持续监测网络质量，在网络改善时恢复音视频流的订阅。
+
+:::note
+注： 当订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+:::
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="option"></a>
+<Parameter name="option">
+
+订阅流的回退选项。详见 [StreamFallbackOptions](/zh-CN/api-reference/rtc/android/enum-streamfallbackoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setremotesubscribefallbackoption__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_setremotesubscribefallbackoption2"></a>
+
+<a id="ariaid-title30"></a>
+
+## setRemoteSubscribeFallbackOption [2/2]
+
+根据网络状况设置已订阅视频流的回退选项。
+
+<a id="api_irtcengine_setremotesubscribefallbackoption2__prototype"></a>
+
+```text
+public abstract int setRemoteSubscribeFallbackOption(int option)
+```
+
+<a id="api_irtcengine_setremotesubscribefallbackoption2__detailed_desc"></a>
+
+<a id="废弃-5"></a>
+
+:::error[废弃]
+该方法已废弃。
+:::
+
+不稳定的网络会影响视频通话或互动直播中的音视频质量。当下行网络无法同时支持音视频时，若将 `option` 设置为 `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW` 或 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，SDK 会自动将视频从高质量流切换为低质量流，或关闭视频以保障音频质量。SDK 会持续监测网络质量，在网络改善后恢复订阅音视频流。
+
+:::note
+注： 当已订阅的视频流回退为纯音频流，或从纯音频流恢复为音视频流时，SDK 会触发 [onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。
+:::
+
+<a id="api_irtcengine_setremotesubscribefallbackoption2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="option-1"></a>
+<Parameter name="option">
+
+已订阅流的回退选项：
+
+- `STREAM_FALLBACK_OPTION_DISABLED`（0）：不对音视频流进行回退处理，无法保证音视频质量。
+- `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW`（1）：（默认）在下行网络较差时，订阅的远端视频流回退为低质量（低分辨率、低码率）的视频流。
+- `STREAM_FALLBACK_OPTION_AUDIO_ONLY`（2）：在网络条件较差时，优先尝试接收视频小流；若因网络极差无法显示视频，则回退为仅接收音频流。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setremotesubscribefallbackoption2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startechotest3"></a>
+
+<a id="ariaid-title31"></a>
+
+## startEchoTest
+
+开始音视频设备回路测试。
+
+<a id="api_irtcengine_startechotest3__prototype"></a>
+
+```text
+public abstract int startEchoTest(EchoTestConfiguration config);
+```
+
+<a id="api_irtcengine_startechotest3__detailed_desc"></a>
+
+你可以调用该方法执行一次音视频通话回路测试，用于检测音视频设备以及用户上下行网络是否正常工作。开始测试后，用户需要发出声音或面对摄像头，音频或视频将在约两秒后输出。
+
+:::note
+注：
+
+- 在频道中调用该方法时，请确保未发布任何音视频流。
+- 调用该方法后需调用 [stopEchoTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_stopechotest) 结束测试，否则用户无法进行下一次音视频通话回路测试，也无法加入频道。
+- 在直播场景中，该方法仅适用于主播。
+:::
+
+<a id="api_irtcengine_startechotest3__timing"></a>
+
+### 调用时机
+
+你可以在加入频道前或加入频道后调用此方法。
+
+<a id="api_irtcengine_startechotest3__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-3"></a>
+<Parameter name="config">
+
+音视频通话回路测试的配置。详见 [EchoTestConfiguration](/zh-CN/api-reference/rtc/android/class-echotestconfiguration)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startechotest3__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_startlastmileprobetest"></a>
+
+<a id="ariaid-title32"></a>
+
+## startLastmileProbeTest
+
+开始 Last-mile 网络探测测试。
+
+<a id="api_irtcengine_startlastmileprobetest__prototype"></a>
+
+```text
+public abstract int startLastmileProbeTest(LastmileProbeConfig config);
+```
+
+<a id="api_irtcengine_startlastmileprobetest__detailed_desc"></a>
+
+该方法在加入频道前启动 Last-mile 网络探测测试，用于获取上行和下行的网络统计信息，包括带宽、丢包率、抖动和往返时延（RTT）。
+
+:::note
+注： 调用时序：在收到 [onLastmileQuality](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmilequality) 和 [onLastmileProbeResult](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmileproberesult) 回调前，请勿调用其他方法，否则可能会中断这些回调。
+相关回调：成功调用该方法后，SDK 会依次触发以下两个回调：
+
+- [onLastmileQuality](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmilequality)：SDK 会在约两秒内根据网络状况触发该回调。该回调用于评估网络质量，与用户体验更相关。
+- [onLastmileProbeResult](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onlastmileproberesult)：SDK 会在约 30 秒内根据网络状况触发该回调。该回调返回网络状况的实时统计数据，更加客观。
+:::
+
+<a id="api_irtcengine_startlastmileprobetest__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="config-4"></a>
+<Parameter name="config">
+
+Last-mile 网络探测测试的配置。详见 [LastmileProbeConfig](/zh-CN/api-reference/rtc/android/class-lastmileprobeconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_startlastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stopechotest"></a>
+
+<a id="ariaid-title33"></a>
+
+## stopEchoTest
+
+停止音频通话测试。
+
+<a id="api_irtcengine_stopechotest__prototype"></a>
+
+```text
+public abstract int stopEchoTest();
+```
+
+<a id="api_irtcengine_stopechotest__detailed_desc"></a>
+
+调用 [startEchoTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_startechotest3) 后，必须调用该方法结束测试，否则你无法进行下一次音视频通话回路测试，也无法加入频道。
+
+<a id="api_irtcengine_stopechotest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -5：停止回声测试失败，可能未在运行回声测试。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="api_irtcengine_stoplastmileprobetest"></a>
+
+<a id="ariaid-title34"></a>
+
+## stopLastmileProbeTest
+
+停止 Last-mile 网络探测测试。
+
+<a id="api_irtcengine_stoplastmileprobetest__prototype"></a>
+
+```text
+public abstract int stopLastmileProbeTest();
+```
+
+<a id="api_irtcengine_stoplastmileprobetest__detailed_desc"></a>
+
+<a id="api_irtcengine_stoplastmileprobetest__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [RtcEngine](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengine)
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned"></a>
+
+<a id="ariaid-title35"></a>
+
+## onConnectionBanned
+
+连接被声网服务器封禁时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__prototype"></a>
+
+```text
+public void onConnectionBanned() {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__detailed_desc"></a>
+
+<a id="废弃-6"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
+
+<a id="callback_irtcengineeventhandler_onconnectionbanned__timing"></a>
+
+### 触发时机
+
+该回调在连接被声网服务器封禁时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted"></a>
+
+<a id="ariaid-title36"></a>
+
+## onConnectionInterrupted
+
+[onConnectionInterrupted](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__prototype"></a>
+
+```text
+public void onConnectionInterrupted() {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__detailed_desc"></a>
+
+<a id="废弃-7"></a>
+
+:::error[废弃]
+该方法已废弃，请改用 [onConnectionStateChanged](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionstatechanged)。
+:::
+
+该回调在 SDK 建立连接后与服务器断开连接超过四秒时被触发。触发该回调后，SDK 会尝试重新连接服务器。你可以通过该回调实现弹窗提醒功能。
+该回调与 [onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 的区别如下：
+
+- 当 SDK 成功加入频道后，与服务器断开连接超过四秒时，会触发 [onConnectionInterrupted](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectioninterrupted) 回调。
+- 无论是否加入频道，当 SDK 与服务器断开连接超过 10 秒时，会触发 [onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 回调。
+
+如果 SDK 在与声网边缘服务器断开连接后 20 分钟内仍未重新加入频道，则停止重连。
+
+<a id="callback_irtcengineeventhandler_onconnectioninterrupted__timing"></a>
+
+### 触发时机
+
+该回调在 SDK 与服务器断开连接超过四秒时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionlost"></a>
+
+<a id="ariaid-title37"></a>
+
+## onConnectionLost
+
+[onConnectionLost](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onconnectionlost) 回调：当 SDK 在连接中断后 10 秒内无法重新连接到声网边缘服务器时触发。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__prototype"></a>
+
+```text
+public void onConnectionLost() {}
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__detailed_desc"></a>
+
+无论是否在频道中，当调用 `joinChannel` 方法后，SDK 在连接中断后 10 秒内无法连接到服务器时会触发该回调。如果 SDK 在与声网边缘服务器断开连接后 20 分钟内仍无法重新加入频道，则停止重连。
+
+<a id="callback_irtcengineeventhandler_onconnectionlost__timing"></a>
+
+### 触发时机
+
+该回调在调用 `joinChannel` 后，SDK 与服务器连接中断并在 10 秒内无法重新连接时被触发。
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged"></a>
+
+<a id="ariaid-title38"></a>
+
+## onConnectionStateChanged
+
+网络连接状态发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__prototype"></a>
+
+```text
+public void onConnectionStateChanged(int state, int reason)
+```
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__detailed_desc"></a>
+
+:::info[自从]
+自 v2.3.2 版本新增。
+:::
+
+SDK 会在网络连接状态发生变化时触发该回调，并报告当前的连接状态及其变化原因。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__timing"></a>
+
+### 触发时机
+
+该回调在网络连接状态发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onconnectionstatechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="state"></a>
+<Parameter name="state">
+
+当前的连接状态：
+
+- `CONNECTION_STATE_DISCONNECTED` (1)：SDK 与声网边缘服务器断开连接。
+- `CONNECTION_STATE_CONNECTING` (2)：SDK 正在连接声网边缘服务器。
+- `CONNECTION_STATE_CONNECTED` (3)：SDK 已连接到声网边缘服务器。
+- `CONNECTION_STATE_RECONNECTING` (4)：SDK 尝试重新连接声网边缘服务器。
+- `CONNECTION_STATE_FAILED` (5)：SDK 连接声网边缘服务器失败。
+
+</Parameter>
+<a id="reason"></a>
+<Parameter name="reason">
+
+连接状态变化的原因：
+
+- `CONNECTION_CHANGED_CONNECTING` (0)：SDK 正在连接声网边缘服务器。
+- `CONNECTION_CHANGED_JOIN_SUCCESS` (1)：SDK 成功加入频道。
+- `CONNECTION_CHANGED_INTERRUPTED` (2)：SDK 与声网边缘服务器之间的连接中断。
+- `CONNECTION_CHANGED_BANNED_BY_SERVER` (3)：连接被声网服务器禁止，例如用户被踢出频道时会返回该错误码。
+- `CONNECTION_CHANGED_JOIN_FAILED` (4)：SDK 加入频道失败。若超过 20 分钟未能加入频道，SDK 会停止重连并返回该错误码。你需要提示用户尝试切换网络并重新加入频道。
+- `CONNECTION_CHANGED_LEAVE_CHANNEL` (5)：SDK 已离开频道。
+- `CONNECTION_CHANGED_INVALID_APP_ID` (6)：无效的 App ID。你需要使用有效的 App ID 重新加入频道，并确保该 App ID 与声网控制台中生成的一致。
+- `CONNECTION_CHANGED_INVALID_CHANNEL_NAME` (7)：无效的频道名。请使用有效的频道名重新加入频道。有效的频道名为不超过 64 字节的字符串，支持的字符包括：
+
+  - 所有小写英文字母：a 到 z。
+  - 所有大写英文字母：A 到 Z。
+  - 所有数字字符：0 到 9。
+  - 特殊字符：`!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`。
+- `CONNECTION_CHANGED_INVALID_TOKEN` (8)：无效的 Token。可能原因包括：
+
+  - 项目在声网控制台启用了 App Certificate，但加入频道时未传入 Token。
+  - 调用 `joinChannel` 加入频道时指定的 `uid` 与生成 Token 时传入的 `uid` 不一致。
+  - 使用的 Token 与生成的 Token 不一致。
+
+请确保：
+
+- 项目启用 App Certificate 时，加入频道必须传入 Token。
+- 生成 Token 时指定的用户 ID 与加入频道时使用的用户 ID 一致。
+- 使用的 Token 与生成的 Token 一致。
+
+- `CONNECTION_CHANGED_TOKEN_EXPIRED` (9)：当前使用的 Token 已过期。你需要在服务器上生成新的 Token，并使用新 Token 重新加入频道。
+- `CONNECTION_CHANGED_REJECTED_BY_SERVER` (10)：用户被服务器禁止。
+- `CONNECTION_CHANGED_SETTING_PROXY_SERVER` (11)：设置代理服务器后，SDK 尝试重新连接。
+- `CONNECTION_CHANGED_RENEW_TOKEN` (12)：由于 Token 被更新，连接状态发生变化。
+- `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED` (13)：客户端 IP 地址发生变化。如果多次收到该错误码，你需要提示用户切换网络并重新加入频道。
+- `CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT` (14)：SDK 与声网边缘服务器之间的连接保活超时，SDK 会自动尝试重新连接。
+- `CONNECTION_CHANGED_REJOIN_SUCCESS` (15)：SDK 成功重新加入频道。
+- `CONNECTION_CHANGED_LOST` (16)：SDK 与服务器之间的连接丢失。
+- `CONNECTION_CHANGED_ECHO_TEST` (17)：由于回声测试，连接状态发生变化。
+- `CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER` (18)：本地 IP 地址被用户更改。
+- `CONNECTION_CHANGED_SAME_UID_LOGIN` (19)：用户在不同设备上以相同的 `uid` 加入同一频道。注意：以相同 `uid` 加入同一 RTC 频道属于未定义行为，声网不保证在相同情况下始终触发该错误码。
+- `CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` (20)：频道中的主播数量已达上限。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onencryptionerror"></a>
+
+<a id="ariaid-title39"></a>
+
+## onEncryptionError
+
+内置加密错误回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__prototype"></a>
+
+```text
+public void onEncryptionError(int errorType)
+```
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__detailed_desc"></a>
+
+如果在调用 [enableEncryption](/zh-CN/api-reference/rtc/android/network#api_irtcengine_enableencryption) 启用加密功能后，发送端或接收端在加密或解密过程中发生错误，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__timing"></a>
+
+### 触发时机
+
+该回调在加密或解密过程中发生错误时被触发。
+
+<a id="callback_irtcengineeventhandler_onencryptionerror__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="errortype"></a>
+<Parameter name="errorType">
+
+错误类型：
+
+- `ENCRYPTION_ERROR_INTERNAL_FAILURE`（0）：内部原因。
+- `ENCRYPTION_ERROR_DECRYPTION_FAILURE`（1）：媒体流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
+- `ENCRYPTION_ERROR_ENCRYPTION_FAILURE`（2）：媒体流加密错误。
+- `ENCRYPTION_ERROR_DATASTREAM_DECRYPTION_FAILURE`（3）：数据流解密错误。请确保接收端和发送端使用相同的加密模式和密钥。
+- `ENCRYPTION_ERROR_DATASTREAM_ENCRYPTION_FAILURE`（4）：数据流加密错误。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult"></a>
+
+<a id="ariaid-title40"></a>
+
+## onLastmileProbeResult
+
+上行和下行 Last-mile 网络探测测试结果的回调。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__prototype"></a>
+
+```text
+public void onLastmileProbeResult(LastmileProbeResult result) {}
+```
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__detailed_desc"></a>
+
+该回调在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_startlastmileprobetest) 后触发。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__timing"></a>
+
+### 触发时机
+
+该回调在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_startlastmileprobetest) 后 30 秒内被触发。
+
+<a id="callback_irtcengineeventhandler_onlastmileproberesult__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="result"></a>
+<Parameter name="result">
+
+上行和下行 Last-mile 网络探测测试结果。详见 [LastmileProbeResult](/zh-CN/api-reference/rtc/android/class-lastmileproberesult)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onlastmilequality"></a>
+
+<a id="ariaid-title41"></a>
+
+## onLastmileQuality
+
+本地用户的 Last-mile 网络质量回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__prototype"></a>
+
+```text
+public void onLastmileQuality(int quality)
+```
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__detailed_desc"></a>
+
+该回调在用户加入频道前触发，用于上报本地用户与声网边缘服务器之间连接的 Last-mile 网络质量。在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_startlastmileprobetest) 后，SDK 会触发该回调。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__timing"></a>
+
+### 触发时机
+
+该回调在调用 [startLastmileProbeTest](/zh-CN/api-reference/rtc/android/network#api_irtcengine_startlastmileprobetest) 方法后被触发。
+
+<a id="callback_irtcengineeventhandler_onlastmilequality__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="quality"></a>
+<Parameter name="quality">
+
+Last-mile 网络质量：
+
+- `QUALITY_UNKNOWN` (0)：网络质量未知。
+- `QUALITY_EXCELLENT` (1)：网络质量极好。
+- `QUALITY_GOOD` (2)：网络质量较好，但码率可能略低于极好。
+- `QUALITY_POOR` (3)：通信质量略有下降。
+- `QUALITY_BAD` (4)：无法流畅通信。
+- `QUALITY_VBAD` (5)：网络质量极差，几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onmultipathstats"></a>
+
+<a id="ariaid-title42"></a>
+
+## onMultipathStats
+
+多路径传输统计信息回调。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__prototype"></a>
+
+```text
+public void onMultipathStats(MultipathStats stats) {}
+```
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__timing"></a>
+
+### 触发时机
+
+该回调在你将 `enableMultipath` 设置为 true 以启用多路径传输后被触发。
+
+<a id="callback_irtcengineeventhandler_onmultipathstats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
+
+多路径传输统计信息。详见 [MultipathStats](/zh-CN/api-reference/rtc/android/class-multipathstats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworkquality"></a>
+
+<a id="ariaid-title43"></a>
+
+## onNetworkQuality
+
+[onNetworkQuality](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onnetworkquality) 回调。报告频道中每个用户的 Last-mile 网络质量。
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__prototype"></a>
+
+```text
+public void onNetworkQuality(int uid, int txQuality, int rxQuality)
+```
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__detailed_desc"></a>
+
+该回调通过在频道内发送和接收广播数据包来反馈网络质量。过多的广播数据包可能导致广播风暴。为防止广播风暴造成频道内大量数据传输，该回调默认最多同时反馈 4 个远端用户的网络质量。
+
+:::note
+注： `txQuality` 在用户未发送流时为 `UNKNOWN`；`rxQuality` 在用户未接收流时为 `UNKNOWN`。
+:::
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__timing"></a>
+
+### 触发时机
+
+该回调每两秒触发一次。
+
+<a id="callback_irtcengineeventhandler_onnetworkquality__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+用户 ID，用于标识被报告网络质量的用户。
+
+- 0：表示本地用户。
+
+</Parameter>
+<a id="txquality"></a>
+<Parameter name="txQuality">
+
+用户上行网络质量评分，依据传输码率、丢包率、平均往返时延（RTT）和抖动等指标评估。
+
+- `QUALITY_UNKNOWN` (0)：质量未知。
+- `QUALITY_EXCELLENT` (1)：质量极佳。
+- `QUALITY_GOOD` (2)：网络质量看似极佳，但码率略低于极佳。
+- `QUALITY_POOR` (3)：用户能感受到通信略有卡顿。
+- `QUALITY_BAD` (4)：用户无法流畅通信。
+- `QUALITY_VBAD` (5)：质量极差，用户几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
+
+</Parameter>
+<a id="rxquality"></a>
+<Parameter name="rxQuality">
+
+用户下行网络质量评分，依据丢包率、平均往返时延（RTT）和抖动等指标评估。
+
+- `QUALITY_UNKNOWN` (0)：质量未知。
+- `QUALITY_EXCELLENT` (1)：质量极佳。
+- `QUALITY_GOOD` (2)：网络质量看似极佳，但码率略低于极佳。
+- `QUALITY_POOR` (3)：用户能感受到通信略有卡顿。
+- `QUALITY_BAD` (4)：用户无法流畅通信。
+- `QUALITY_VBAD` (5)：质量极差，用户几乎无法通信。
+- `QUALITY_DOWN` (6)：网络连接已断，用户无法通信。
+- `QUALITY_DETECTING` (8)：正在进行 Last-mile 探测测试。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged"></a>
+
+<a id="ariaid-title44"></a>
+
+## onNetworkTypeChanged
+
+本地网络类型发生变化时的回调。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__prototype"></a>
+
+```text
+public void onNetworkTypeChanged(int type)
+```
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__detailed_desc"></a>
+
+你可以通过该回调获取连接状态及其变化原因。当网络连接中断时，该回调会指示中断是由于网络类型变化还是由于网络状况不佳导致的。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__timing"></a>
+
+### 触发时机
+
+该回调在本地网络类型发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onnetworktypechanged__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="type-1"></a>
+<Parameter name="type">
+
+网络类型：
+
+- `NETWORK_TYPE_UNKNOWN`（-1）：网络类型未知。
+- `NETWORK_TYPE_DISCONNECTED`（0）：SDK 与网络断开连接。
+- `NETWORK_TYPE_LAN`（1）：网络类型为 LAN。
+- `NETWORK_TYPE_WIFI`（2）：网络类型为 Wi-Fi（包括热点）。
+- `NETWORK_TYPE_MOBILE_2G`（3）：网络类型为移动 2G。
+- `NETWORK_TYPE_MOBILE_3G`（4）：网络类型为移动 3G。
+- `NETWORK_TYPE_MOBILE_4G`（5）：网络类型为移动 4G。
+- `NETWORK_TYPE_MOBILE_5G`（6）：网络类型为移动 5G。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissionerror"></a>
+
+<a id="ariaid-title45"></a>
+
+## onPermissionError
+
+设备权限获取失败时触发的回调。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__prototype"></a>
+
+```text
+public void onPermissionError(int permission)
+```
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__detailed_desc"></a>
+
+该回调在 SDK 无法获取设备权限时被触发，用于报告无法获取的权限类型。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__timing"></a>
+
+### 触发时机
+
+该回调在 SDK 无法获取设备权限时被触发。
+
+<a id="callback_irtcengineeventhandler_onpermissionerror__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="permission"></a>
+<Parameter name="permission">
+
+设备权限的类型：
+
+- `RECORD_AUDIO`（0）：音频采集设备的权限。
+- `CAMERA`（1）：摄像头的权限。
+- `SCREEN_CAPTURE`（2）：屏幕共享的权限。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted"></a>
+
+<a id="ariaid-title46"></a>
+
+## onPermissionGranted
+
+[onPermissionGranted](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onpermissiongranted) 回调。用于上报已授予的权限。
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__prototype"></a>
+
+```text
+public void onPermissionGranted(int permission)
+```
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__detailed_desc"></a>
+
+<a id="callback_irtcengineeventhandler_onpermissiongranted__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="permission-1"></a>
+<Parameter name="permission">
+
+权限类型。包括：
+
+- `RECORD_AUDIO`：录音权限。
+- `CAMERA`：摄像头权限。
+- `SCREEN_CAPTURE`：屏幕采集权限。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onproxyconnected"></a>
+
+<a id="ariaid-title47"></a>
+
+## onProxyConnected
+
+代理连接状态回调。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__prototype"></a>
+
+```text
+public void onProxyConnected(String channel, int uid, int proxyType, String localProxyIp, int elapsed)
+```
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__detailed_desc"></a>
+
+当用户调用 [setCloudProxy](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setcloudproxy) 并成功加入频道后，SDK 会触发该回调，报告用户 ID、连接的代理类型，以及从调用 `joinChannel` 到触发该回调所经历的时间（毫秒）。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__timing"></a>
+
+### 触发时机
+
+该回调在用户调用 [setCloudProxy](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setcloudproxy) 并成功加入频道后被触发。
+
+<a id="callback_irtcengineeventhandler_onproxyconnected__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="channel"></a>
+<Parameter name="channel">
+
+频道名。
+
+</Parameter>
+<a id="uid-2"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="proxytype-1"></a>
+<Parameter name="proxyType">
+
+连接的代理类型：
+
+- `PROXY_TYPE_NONE_PROXY`（0）：预留参数。
+- `PROXY_TYPE_UDP_CLOUD_PROXY`（1）：UDP 协议的云代理，即强制 UDP 云代理模式。在该模式下，SDK 始终通过 UDP 传输数据。
+- `PROXY_TYPE_TCP_CLOUD_PROXY`（2）：TCP（加密）协议的云代理，即强制 TCP 云代理模式。在该模式下，SDK 始终通过 TCP/TLS 443 传输数据。
+- `PROXY_TYPE_LOCAL_PROXY`（3）：预留参数。
+- `PROXY_TYPE_TCP_AUTO_FALLBACK`（4）：自动模式。在该模式下，SDK 会尝试直接连接 SD-RTN™，如果失败则自动切换到 TCP/TLS 443。
+
+</Parameter>
+<a id="localproxyip"></a>
+<Parameter name="localProxyIp">
+
+预留参数。
+
+</Parameter>
+<a id="elapsed"></a>
+<Parameter name="elapsed">
+
+从调用 `joinChannel` 到触发该回调所经历的时间（毫秒）。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly"></a>
+
+<a id="ariaid-title48"></a>
+
+## onRemoteSubscribeFallbackToAudioOnly
+
+[onRemoteSubscribeFallbackToAudioOnly](/zh-CN/api-reference/rtc/android/network#callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly) 回调。当远端媒体流因网络变化在音频流与视频流之间切换时触发。
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__prototype"></a>
+
+```text
+public void onRemoteSubscribeFallbackToAudioOnly(int uid, boolean isFallbackOrRecover)
+```
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__detailed_desc"></a>
+
+如果你调用了 `setRemoteSubscribeFallbackOption` 并将 `option` 设置为 `STREAM_FALLBACK_OPTION_AUDIO_ONLY`，SDK 会在以下情况下触发该回调：
+
+- 下行网络条件较差，已订阅的视频流降级为纯音频流。
+- 下行网络条件改善，已订阅的流恢复为视频流。
+
+:::note
+注： 你可以在 [onRemoteVideoStats](/zh-CN/api-reference/rtc/android/video/video-basic#callback_irtcengineeventhandler_onremotevideostats) 回调中监控高质量与视频小流之间的切换。
+:::
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__timing"></a>
+
+### 触发时机
+
+该回调在远端媒体流因网络变化在音频流与视频流之间切换时被触发。
+
+<a id="callback_irtcengineeventhandler_onremotesubscribefallbacktoaudioonly__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-3"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="isfallbackorrecover"></a>
+<Parameter name="isFallbackOrRecover">
+
+是否因网络变化触发音视频切换：
+
+- true：由于网络条件差，已订阅的媒体流降级为纯音频流。
+- false：网络条件改善后，已订阅的媒体流恢复为视频流。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated"></a>
+
+<a id="ariaid-title49"></a>
+
+## onUplinkNetworkInfoUpdated
+
+上行网络信息发生变化回调。
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__prototype"></a>
+
+```text
+public void onUplinkNetworkInfoUpdated(UplinkNetworkInfo info) {}
+```
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__detailed_desc"></a>
+
+:::note
+注： 该回调仅适用于将外部编码的 H.264 格式视频数据推送到 SDK 的场景。
+:::
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__timing"></a>
+
+### 触发时机
+
+该回调在上行网络信息发生变化时被触发。
+
+<a id="callback_irtcengineeventhandler_onuplinknetworkinfoupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="info"></a>
+<Parameter name="info">
+
+上行网络信息，详见 [UplinkNetworkInfo](/zh-CN/api-reference/rtc/android/class-uplinknetworkinfo)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_irtcengineeventhandler)

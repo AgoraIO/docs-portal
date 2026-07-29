@@ -1,0 +1,39 @@
+---
+title: AudioSpectrumInfo
+description: 用于获取音频频谱数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_audiospectrumdata
+  sourcePath: html-docs/rtc/Android/API/class_audiospectrumdata.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audiospectrumdata__prototype"></a>
+
+```text
+public class AudioSpectrumInfo {
+  private float[] audioSpectrumData;
+  private int dataLength;
+}
+```
+
+<a id="class_audiospectrumdata__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="audiospectrumdata"></a>
+<Parameter name="audioSpectrumData">
+
+音频频谱数据。声网将音频频率划分为 256 个频率域，并通过该参数报告每个频率域的能量值。每个能量值的取值范围为 [-300, 1]，单位为 dBFS。
+
+</Parameter>
+<a id="datalength"></a>
+<Parameter name="dataLength">
+
+音频频谱数据的长度，固定为 256。
+
+</Parameter>
+</ParameterList>

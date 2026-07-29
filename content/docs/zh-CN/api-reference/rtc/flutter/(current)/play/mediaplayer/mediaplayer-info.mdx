@@ -1,0 +1,379 @@
+---
+title: 播放信息获取
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/toc_mediaplayer_info
+  sourcePath: html-docs/rtc/Flutter/API/toc_mediaplayer_info.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_mediaplayer_info"></a>
+
+<a id="api_imediaplayer_getaudiobufferdelay"></a>
+
+<a id="ariaid-title2"></a>
+
+## getAudioBufferDelay
+
+获取播放媒体文件时的音频缓冲延迟。
+
+<a id="api_imediaplayer_getaudiobufferdelay__prototype"></a>
+
+```text
+Future<int> getAudioBufferDelay();
+```
+
+<a id="api_imediaplayer_getaudiobufferdelay__detailed_desc"></a>
+
+<a id="api_imediaplayer_getaudiobufferdelay__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="delayms"></a>
+<Parameter name="delayMs">
+
+输出参数，表示播放媒体文件时的音频缓冲延迟，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_getaudiobufferdelay__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getduration"></a>
+
+<a id="ariaid-title3"></a>
+
+## getDuration
+
+获取媒体文件总时长。
+
+<a id="api_imediaplayer_getduration__prototype"></a>
+
+```text
+Future<int> getDuration();
+```
+
+<a id="api_imediaplayer_getduration__detailed_desc"></a>
+
+<a id="api_imediaplayer_getduration__return_values"></a>
+
+### 返回值
+
+媒体文件总时长（毫秒）。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmediaplayerid"></a>
+
+<a id="ariaid-title4"></a>
+
+## getMediaPlayerId
+
+获取播放器 ID。
+
+<a id="api_imediaplayer_getmediaplayerid__prototype"></a>
+
+```text
+int getMediaPlayerId();
+```
+
+<a id="api_imediaplayer_getmediaplayerid__detailed_desc"></a>
+
+<a id="api_imediaplayer_getmediaplayerid__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回播放器 ID。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getmute"></a>
+
+<a id="ariaid-title5"></a>
+
+## getMute
+
+获取当前播放的媒体文件是否静音。
+
+<a id="api_imediaplayer_getmute__prototype"></a>
+
+```text
+Future<bool> getMute();
+```
+
+<a id="api_imediaplayer_getmute__detailed_desc"></a>
+
+<a id="api_imediaplayer_getmute__return_values"></a>
+
+### 返回值
+
+- true：当前播放的媒体文件为静音。
+- false：当前播放的媒体文件没有静音。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayoutvolume"></a>
+
+<a id="ariaid-title6"></a>
+
+## getPlayoutVolume
+
+获取当前本地播放音量。
+
+<a id="api_imediaplayer_getplayoutvolume__prototype"></a>
+
+```text
+Future<int> getPlayoutVolume();
+```
+
+<a id="api_imediaplayer_getplayoutvolume__detailed_desc"></a>
+
+<a id="api_imediaplayer_getplayoutvolume__return_values"></a>
+
+### 返回值
+
+返回当前本地播放音量，取值范围从 0 到 100：
+
+- 0: 无声。
+- 100: （默认）媒体文件的原始播放音量。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplayposition"></a>
+
+<a id="ariaid-title7"></a>
+
+## getPlayPosition
+
+获取当前播放进度。
+
+<a id="api_imediaplayer_getplayposition__prototype"></a>
+
+```text
+Future<int> getPlayPosition();
+```
+
+<a id="api_imediaplayer_getplayposition__detailed_desc"></a>
+
+<a id="api_imediaplayer_getplayposition__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回当前播放进度（毫秒）。
+- &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer"></a>
+
+<a id="ariaid-title8"></a>
+
+## getPlaySrc
+
+获取播放的媒体资源的路径。
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__prototype"></a>
+
+```text
+Future<String> getPlaySrc();
+```
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__detailed_desc"></a>
+
+<a id="api_imediaplayer_getplaysrc_imediaplayer__return_values"></a>
+
+### 返回值
+
+播放的媒体资源的路径。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getpublishsignalvolume"></a>
+
+<a id="ariaid-title9"></a>
+
+## getPublishSignalVolume
+
+获取远端用户听到的音量。
+
+<a id="api_imediaplayer_getpublishsignalvolume__prototype"></a>
+
+```text
+Future<int> getPublishSignalVolume();
+```
+
+<a id="api_imediaplayer_getpublishsignalvolume__detailed_desc"></a>
+
+<a id="api_imediaplayer_getpublishsignalvolume__return_values"></a>
+
+### 返回值
+
+- ≥ 0: 播放文件的远端播放音量。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstate"></a>
+
+<a id="ariaid-title10"></a>
+
+## getState
+
+获取播放器当前状态。
+
+<a id="api_imediaplayer_getstate__prototype"></a>
+
+```text
+Future<MediaPlayerState> getState();
+```
+
+<a id="api_imediaplayer_getstate__detailed_desc"></a>
+
+<a id="api_imediaplayer_getstate__return_values"></a>
+
+### 返回值
+
+播放器当前状态，详见 [MediaPlayerState](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerstate)。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreamcount"></a>
+
+<a id="ariaid-title11"></a>
+
+## getStreamCount
+
+获取当前媒体文件中媒体流的数量。
+
+<a id="api_imediaplayer_getstreamcount__prototype"></a>
+
+```text
+Future<int> getStreamCount();
+```
+
+<a id="api_imediaplayer_getstreamcount__detailed_desc"></a>
+
+:::note
+注： 请在 [open](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-open#api_imediaplayer_open) 后并收到 [onPlayerSourceStateChanged](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-observer#callback_imediaplayersourceobserver_onplayersourcestatechanged) 回调报告播放状态为 `playerStateOpenCompleted` 后再调用该方法。
+:::
+
+<a id="api_imediaplayer_getstreamcount__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回该媒体文件中媒体流的数量。
+- &lt; 0: 方法调用失败，详见 [MediaPlayerReason](/zh-CN/api-reference/rtc/flutter/enum-mediaplayerreason)。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="api_imediaplayer_getstreaminfo"></a>
+
+<a id="ariaid-title12"></a>
+
+## getStreamInfo
+
+通过媒体流的索引值获取媒体流信息。
+
+<a id="api_imediaplayer_getstreaminfo__prototype"></a>
+
+```text
+Future<PlayerStreamInfo> getStreamInfo(int index);
+```
+
+<a id="api_imediaplayer_getstreaminfo__detailed_desc"></a>
+
+<a id="api_imediaplayer_getstreaminfo__timing"></a>
+
+### 调用时机
+
+你需要在 [getStreamCount](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 后调用该方法。
+
+<a id="api_imediaplayer_getstreaminfo__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="index"></a>
+<Parameter name="index">
+
+媒体流索引值。该参数的值需小于 [getStreamCount](/zh-CN/api-reference/rtc/flutter/play/mediaplayer/mediaplayer-info#api_imediaplayer_getstreamcount) 的返回值。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaplayer_getstreaminfo__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回媒体流信息，详见 [PlayerStreamInfo](/zh-CN/api-reference/rtc/flutter/class-playerstreaminfo)。
+- 方法调用失败，返回 `NULL`。
+
+### 所属接口类
+
+- [MediaPlayer](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayer)
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats"></a>
+
+<a id="ariaid-title13"></a>
+
+## onPlayerPlaybackStats
+
+报告当前播放的媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__prototype"></a>
+
+```text
+final void Function(PlayerPlaybackStats stats)? onPlayerPlaybackStats;
+```
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__detailed_desc"></a>
+
+当媒体资源开始播放后，SDK 会每秒触发一次该回调，报告媒体资源的相关信息。
+
+<a id="callback_imediaplayersourceobserver_onplayerplaybackstats__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="stats"></a>
+<Parameter name="stats">
+
+媒体资源的相关信息，详见 [PlayerPlaybackStats](/zh-CN/api-reference/rtc/flutter/class-playerplaybackstats)。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [MediaPlayerSourceObserver](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imediaplayersourceobserver)

@@ -1,0 +1,287 @@
+---
+title: RtcStats
+description: 用于统计通话会话相关数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_rtcstats
+  sourcePath: html-docs/rtc/Cpp/API/class_rtcstats.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_rtcstats__prototype"></a>
+
+```text
+struct RtcStats {
+  unsigned int duration;
+  unsigned int txBytes;
+  unsigned int rxBytes;
+  unsigned int txAudioBytes;
+  unsigned int txVideoBytes;
+  unsigned int rxAudioBytes;
+  unsigned int rxVideoBytes;
+  unsigned short txKBitRate;
+  unsigned short rxKBitRate;
+  unsigned short rxAudioKBitRate;
+  unsigned short txAudioKBitRate;
+  unsigned short rxVideoKBitRate;
+  unsigned short txVideoKBitRate;
+  unsigned short lastmileDelay;
+  unsigned int userCount;
+  double cpuAppUsage;
+  double cpuTotalUsage;
+  int gatewayRtt;
+  double memoryAppUsageRatio;
+  double memoryTotalUsageRatio;
+  int memoryAppUsageInKbytes;
+  int connectTimeMs;
+  int firstAudioPacketDuration;
+  int firstVideoPacketDuration;
+  int firstVideoKeyFramePacketDuration;
+  int packetsBeforeFirstKeyFramePacket;
+  int firstAudioPacketDurationAfterUnmute;
+  int firstVideoPacketDurationAfterUnmute;
+  int firstVideoKeyFramePacketDurationAfterUnmute;
+  int firstVideoKeyFrameDecodedDurationAfterUnmute;
+  int firstVideoKeyFrameRenderedDurationAfterUnmute;
+  int txPacketLossRate;
+  int rxPacketLossRate;
+  int lanAccelerateState;
+};
+```
+
+<a id="class_rtcstats__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="duration"></a>
+<Parameter name="duration">
+
+本地用户的通话时长（秒），为聚合值。
+
+</Parameter>
+<a id="txbytes"></a>
+<Parameter name="txBytes">
+
+发送的字节总数。
+
+</Parameter>
+<a id="rxbytes"></a>
+<Parameter name="rxBytes">
+
+接收的字节总数。
+
+</Parameter>
+<a id="txaudiobytes"></a>
+<Parameter name="txAudioBytes">
+
+发送的音频字节总数，为聚合值。
+
+</Parameter>
+<a id="txvideobytes"></a>
+<Parameter name="txVideoBytes">
+
+发送的视频字节总数，为聚合值。
+
+</Parameter>
+<a id="rxaudiobytes"></a>
+<Parameter name="rxAudioBytes">
+
+接收的音频字节总数，为聚合值。
+
+</Parameter>
+<a id="rxvideobytes"></a>
+<Parameter name="rxVideoBytes">
+
+接收的视频字节总数，为聚合值。
+
+</Parameter>
+<a id="txkbitrate"></a>
+<Parameter name="txKBitRate">
+
+发送本地视频流的实际码率（Kbps）。
+
+</Parameter>
+<a id="rxkbitrate"></a>
+<Parameter name="rxKBitRate">
+
+接收的总码率（Kbps）。
+
+</Parameter>
+<a id="rxaudiokbitrate"></a>
+<Parameter name="rxAudioKBitRate">
+
+接收音频的码率（Kbps）。
+
+</Parameter>
+<a id="txaudiokbitrate"></a>
+<Parameter name="txAudioKBitRate">
+
+发送音频的码率（Kbps）。
+
+</Parameter>
+<a id="rxvideokbitrate"></a>
+<Parameter name="rxVideoKBitRate">
+
+接收视频的码率（Kbps）。
+
+</Parameter>
+<a id="txvideokbitrate"></a>
+<Parameter name="txVideoKBitRate">
+
+发送视频的码率（Kbps）。
+
+</Parameter>
+<a id="lastmiledelay"></a>
+<Parameter name="lastmileDelay">
+
+客户端到服务器的网络延迟（毫秒）。
+
+</Parameter>
+<a id="usercount"></a>
+<Parameter name="userCount">
+
+频道内的用户数量。
+
+</Parameter>
+<a id="cpuappusage"></a>
+<Parameter name="cpuAppUsage">
+
+应用的 CPU 使用率（%）。
+
+:::note
+注：
+
+- 在 [onLeaveChannel](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+- 自 Android 8.1 起，受系统限制无法获取该值。
+:::
+
+</Parameter>
+<a id="cputotalusage"></a>
+<Parameter name="cpuTotalUsage">
+
+系统的 CPU 使用率（%）。在 Windows 多核环境下，该值为平均 CPU 使用率，计算方式为：(100 - 任务管理器中的系统空闲进度)/100。
+
+:::note
+注：
+
+- 在 [onLeaveChannel](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onleavechannel) 回调中，该值始终为 0。
+- 自 Android 8.1 起，受系统限制无法获取该值。
+:::
+
+</Parameter>
+<a id="gatewayrtt"></a>
+<Parameter name="gatewayRtt">
+
+客户端到本地路由器的往返时延（毫秒）。
+
+:::note
+注： 该属性在 iOS 14 及以上版本默认禁用，iOS 14 以下版本默认启用。如需在 iOS 14 及以上版本启用，请[联系技术支持](https://ticket.shengwang.cn/)。在 Android 上，需在 `AndroidManifest.xml` 文件中 `</application>` 后添加 `android.permission.ACCESS_WIFI_STATE` 权限。
+:::
+
+</Parameter>
+<a id="memoryappusageratio"></a>
+<Parameter name="memoryAppUsageRatio">
+
+应用占用的内存比例（%）。
+
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
+:::
+
+</Parameter>
+<a id="memorytotalusageratio"></a>
+<Parameter name="memoryTotalUsageRatio">
+
+系统占用的内存比例（%）。
+
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
+:::
+
+</Parameter>
+<a id="memoryappusageinkbytes"></a>
+<Parameter name="memoryAppUsageInKbytes">
+
+应用占用的内存大小（KB）。
+
+:::note
+注： 该值仅供参考，受系统限制可能无法获取。
+:::
+
+</Parameter>
+<a id="connecttimems"></a>
+<Parameter name="connectTimeMs">
+
+从 SDK 开始连接到连接建立之间的时长（毫秒）。值为 0 表示无效。
+
+</Parameter>
+<a id="firstaudiopacketduration"></a>
+<Parameter name="firstAudioPacketDuration">
+
+应用开始连接到频道到接收到首个音频包之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideopacketduration"></a>
+<Parameter name="firstVideoPacketDuration">
+
+应用开始连接到频道到接收到首个视频包之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideokeyframepacketduration"></a>
+<Parameter name="firstVideoKeyFramePacketDuration">
+
+应用开始连接到频道到接收到首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="packetsbeforefirstkeyframepacket"></a>
+<Parameter name="packetsBeforeFirstKeyFramePacket">
+
+接收到首个视频关键帧前的视频包数量。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstaudiopacketdurationafterunmute"></a>
+<Parameter name="firstAudioPacketDurationAfterUnmute">
+
+上次取消音频静音到接收到首个音频包之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideopacketdurationafterunmute"></a>
+<Parameter name="firstVideoPacketDurationAfterUnmute">
+
+上次取消视频静音到接收到首个视频包之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideokeyframepacketdurationafterunmute"></a>
+<Parameter name="firstVideoKeyFramePacketDurationAfterUnmute">
+
+上次取消视频静音到接收到首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideokeyframedecodeddurationafterunmute"></a>
+<Parameter name="firstVideoKeyFrameDecodedDurationAfterUnmute">
+
+上次取消视频静音到解码首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="firstvideokeyframerendereddurationafterunmute"></a>
+<Parameter name="firstVideoKeyFrameRenderedDurationAfterUnmute">
+
+上次取消视频静音到渲染首个视频关键帧之间的时长（毫秒）。0 表示该字段不适用。
+
+</Parameter>
+<a id="txpacketlossrate"></a>
+<Parameter name="txPacketLossRate">
+
+应用抗丢包算法前，客户端到声网服务器的丢包率（%）。
+
+</Parameter>
+<a id="rxpacketlossrate"></a>
+<Parameter name="rxPacketLossRate">
+
+使用抗丢包方法前，声网服务器到客户端的丢包率（%）。
+
+</Parameter>
+</ParameterList>

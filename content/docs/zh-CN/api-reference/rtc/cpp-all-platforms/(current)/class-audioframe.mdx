@@ -1,0 +1,105 @@
+---
+title: AudioFrame
+description: 用于描述原始音频帧数据。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/windows/API/class_audioframe
+  sourcePath: html-docs/rtc/Cpp/API/class_audioframe.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_audioframe__prototype"></a>
+
+```text
+struct AudioFrame {
+AUDIO_FRAME_TYPE type;
+int samplesPerChannel;
+agora::rtc::BYTES_PER_SAMPLE bytesPerSample;
+int channels;
+int samplesPerSec;
+void* buffer;
+int64_t renderTimeMs;
+int avsync_type;
+int64_t presentationMs;
+int audioTrackNumber;
+uint32_t rtpTimestamp;
+};
+```
+
+<a id="class_audioframe__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="type"></a>
+<Parameter name="type">
+
+音频帧的类型。详见 [AUDIO_FRAME_TYPE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-audioframetype)。
+
+</Parameter>
+<a id="samplesperchannel"></a>
+<Parameter name="samplesPerChannel">
+
+每个声道中的采样点数量。
+
+</Parameter>
+<a id="bytespersample"></a>
+<Parameter name="bytesPerSample">
+
+每个采样点的字节数。对于 PCM，通常为 16 位（2 字节）。详见 `BYTES_PER_SAMPLE`。
+
+</Parameter>
+<a id="channels"></a>
+<Parameter name="channels">
+
+音频通道数（立体声时为交错格式）。
+
+- 1：单声道。
+- 2：立体声。
+
+</Parameter>
+<a id="samplespersec"></a>
+<Parameter name="samplesPerSec">
+
+每个声道的采样率（每秒采样数）。
+
+</Parameter>
+<a id="buffer"></a>
+<Parameter name="buffer">
+
+输出参数，表示音频帧的数据缓冲区。当使用立体声通道时，数据为交错格式。缓冲区大小计算方式为：samples × channels × bytesPerSample。
+
+</Parameter>
+<a id="rendertimems"></a>
+<Parameter name="renderTimeMs">
+
+外部音频帧的时间戳（毫秒）。你可以使用该时间戳恢复采集顺序，并在视频场景中与视频帧同步，包括使用自定义视频源的场景。
+
+</Parameter>
+<a id="avsync_type"></a>
+<Parameter name="avsync_type">
+
+保留参数，供未来使用。
+
+</Parameter>
+<a id="presentationms"></a>
+<Parameter name="presentationMs">
+
+该音频帧的 PTS 时间戳，用于指示帧的原始 PTS 时间，并通过该时间戳与视频帧同步。
+
+</Parameter>
+<a id="audiotracknumber"></a>
+<Parameter name="audioTrackNumber">
+
+音频轨道编号。
+
+</Parameter>
+<a id="rtptimestamp"></a>
+<Parameter name="rtpTimestamp">
+
+音频帧中第一个采样点的 RTP 时间戳。
+
+</Parameter>
+</ParameterList>

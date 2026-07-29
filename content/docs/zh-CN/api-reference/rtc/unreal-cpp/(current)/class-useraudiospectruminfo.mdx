@@ -1,0 +1,43 @@
+---
+title: UserAudioSpectrumInfo
+description: 远端用户的音频频谱信息。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/unreal-cpp/API/class_useraudiospectruminfo
+  sourcePath: html-docs/rtc/Unreal-cpp/API/class_useraudiospectruminfo.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="class_useraudiospectruminfo__prototype"></a>
+
+```text
+struct UserAudioSpectrumInfo  {
+  agora::rtc::uid_t uid;
+  struct AudioSpectrumData spectrumData;
+
+  UserAudioSpectrumInfo () : uid(0), spectrumData() {}
+  UserAudioSpectrumInfo(agora::rtc::uid_t _uid, const float *data, int length) :
+    uid(_uid) { spectrumData.audioSpectrumData = data; spectrumData.dataLength = length; }
+};
+```
+
+<a id="class_useraudiospectruminfo__parameters"></a>
+
+## 属性
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+</Parameter>
+<a id="spectrumdata"></a>
+<Parameter name="spectrumData">
+
+远端用户的音频频谱数据。详见 [AudioSpectrumData](/zh-CN/api-reference/rtc/unreal-cpp/class-audiospectrumdata)。
+
+</Parameter>
+</ParameterList>

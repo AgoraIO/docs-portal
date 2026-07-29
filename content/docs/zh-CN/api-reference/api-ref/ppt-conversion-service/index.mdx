@@ -1,0 +1,41 @@
+---
+title: PPT 转码服务概览
+description: 使用 RESTful API 生成 Token、发起 PPT 转码并管理转码任务。
+---
+
+PPT 转码服务 RESTful API 用于在服务端生成访问 Token、发起 PPT 转码任务、查询任务状态以及管理待处理任务。
+
+## API 基础信息
+
+- **鉴权**：部分 API 使用 SDK Token 或 Task Token。详见 [RESTful API 鉴权](authentication)。
+- **请求**：请求头 `Content-Type` 为 `application/json`，请求包体使用 JSON。
+- **响应**：响应包体使用 JSON。
+- **Base URL**：`https://api.netless.link`
+
+:::info
+请求 URL 和请求包体区分大小写。PPT 转码服务器会对部分请求格式做兼容，但不保证完全兼容。
+:::
+
+## 调用前准备
+
+PPT 转码服务在技术上已独立于声网互动白板，但调用 PPT 转码服务 RESTful API 所需的 AK、SK 和 SDK Token 仍需通过互动白板服务获取。
+
+调用 API 前，请确保：
+
+- 已在[声网控制台](https://console.shengwang.cn/)开启**文档转图片**或**文档转网页**服务并添加存储配置。详见[开通服务](/zh-CN/solutions/ppt-transcoding/build/setup-and-access/enable-service)。
+- 已为待转码的 PPT 生成一个公网可访问的 URL 地址。
+
+## REST API
+
+- [生成 SDK Token](generate-sdk-token)：使用 AK 和 SK 生成 SDK Token。
+- [生成 Task Token](generate-task-token)：为指定转码任务生成 Task Token。
+- [发起 PPT 转码](start-conversion)：发起一个 PPT 转码任务。
+- [查询待转码任务](list-pending-tasks)：列出未完成转换的所有任务。
+- [查询转码任务进度](query-task)：查询七天内创建的 PPT 转码任务进度。
+- [取消指定的转码任务](cancel-task)：取消指定的文档转换任务。
+- [设置任务优先级](set-task-priority)：将待处理任务移动至任务队列最前或最后。
+
+## 相关页面
+
+- [响应状态码](/zh-CN/solutions/ppt-transcoding/reference/response-code)
+- [PPT 转码服务介绍](/zh-CN/solutions/ppt-transcoding)

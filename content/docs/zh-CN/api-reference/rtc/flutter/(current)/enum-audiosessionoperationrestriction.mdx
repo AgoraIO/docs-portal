@@ -1,0 +1,48 @@
+---
+title: AudioSessionOperationRestriction
+description: SDK 对 Audio Session 的操作权限。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/flutter/API/enum_audiosessionoperationrestriction
+  sourcePath: html-docs/rtc/Flutter/API/enum_audiosessionoperationrestriction.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="enum_audiosessionoperationrestriction__parameters"></a>
+
+## 枚举值
+
+<ParameterList>
+<a id="audiosessionoperationrestrictionnone"></a>
+<Parameter name="audioSessionOperationRestrictionNone">
+
+0: 没有限制，SDK 可以对 Audio Session 进行更改。
+
+</Parameter>
+<a id="audiosessionoperationrestrictionsetcategory"></a>
+<Parameter name="audioSessionOperationRestrictionSetCategory">
+
+1: SDK 不能更改 Audio Session 的 category。
+
+</Parameter>
+<a id="audiosessionoperationrestrictionconfiguresession"></a>
+<Parameter name="audioSessionOperationRestrictionConfigureSession">
+
+2: SDK 不能更改 Audio Session 的 category、mode 或 categoryOptions。
+
+</Parameter>
+<a id="audiosessionoperationrestrictiondeactivatesession"></a>
+<Parameter name="audioSessionOperationRestrictionDeactivateSession">
+
+4: 离开频道时，SDK 会保持 Audio Session 处于活动状态，例如在后台播放音频。
+
+</Parameter>
+<a id="audiosessionoperationrestrictionall"></a>
+<Parameter name="audioSessionOperationRestrictionAll">
+
+128: 完全限制 SDK 对 Audio Session 的操作权限，SDK 不能再对 Audio Session 进行任何更改。
+
+</Parameter>
+</ParameterList>

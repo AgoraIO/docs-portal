@@ -1,0 +1,108 @@
+---
+title: 自定义音频采集和渲染
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_audio_custom_capturenrendering
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_audio_custom_capturenrendering.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_custom_capturenrendering"></a>
+
+<a id="api_imediaengine_createcustomaudiotrack"></a>
+
+<a id="ariaid-title2"></a>
+
+## createCustomAudioTrack
+
+创建一个自定义音频采集轨道。
+
+<a id="api_imediaengine_createcustomaudiotrack__prototype"></a>
+
+```text
+public abstract createCustomAudioTrack(trackType: Constants.AudioTrackType, config: AudioTrackConfig): number;
+```
+
+<a id="api_imediaengine_createcustomaudiotrack__detailed_desc"></a>
+
+### 详情
+
+:::caution
+注意： 该方法需要在加入频道前调用。
+:::
+
+如需在频道中发布自定义采集音频，可参考以下步骤：
+
+1. 调用该方法创建音频轨道并获得音频轨道 ID。
+2. 调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 publishCustomAudioTrackId 设置为你想要发布的音频轨道 ID，并将 publishCustomAudioTrack 设置为 `true`。
+3. 调用 将 trackId 指定为步骤 2 中指定的音频轨道 ID，即可实现在频道内发布对应的自定义音频源。
+
+<a id="api_imediaengine_createcustomaudiotrack__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="tracktype"></a>
+<Parameter name="trackType">
+
+自定义音频轨道类型。详见 [AudioTrackType](/zh-CN/api-reference/rtc/harmonyos/enum-audiotracktype)。
+
+:::caution
+注意： 如指定 DIRECT，则必须在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 `publishMicrophoneTrack` 设为 `false`，否则加入频道失败并返回错误码 -2.
+:::
+
+</Parameter>
+<a id="config"></a>
+<Parameter name="config">
+
+自定义音频轨道配置。详见 [AudioTrackConfig](/zh-CN/api-reference/rtc/harmonyos/class-audiotrackconfig)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_createcustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回音频轨道 ID 作为该音频轨道的唯一标识。
+- 方法调用失败，返回 0xffffffff。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+<a id="api_imediaengine_destroycustomaudiotrack"></a>
+
+<a id="ariaid-title3"></a>
+
+## destroyCustomAudioTrack
+
+销毁指定的音频轨道。
+
+<a id="api_imediaengine_destroycustomaudiotrack__prototype"></a>
+
+```text
+public abstract destroyCustomAudioTrack(trackId: number): number;
+```
+
+<a id="api_imediaengine_destroycustomaudiotrack__detailed_desc"></a>
+
+### 详情
+
+<a id="api_imediaengine_destroycustomaudiotrack__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="trackid"></a>
+<Parameter name="trackId">
+
+调用 [createCustomAudioTrack](/zh-CN/api-reference/rtc/harmonyos/audio/audio-custom-capturenrendering#api_imediaengine_createcustomaudiotrack) 方法返回的自定义音频轨道 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_imediaengine_destroycustomaudiotrack__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

@@ -1,0 +1,495 @@
+---
+title: "组件相关"
+---
+
+## 删除组件
+
+删除指定组件。
+
+灵动课堂会将这个变化同步到所有端，以此来实现你自己的扩展业务。
+
+接口原型：
+
+-   方法：DELETE
+-   接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-widget-restful-html-0-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-widget-restful-html-0-4-3" /> |
+
+<Slot for="api-widget-restful-html-0-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-widget-restful-html-0-4-3">
+
+Widget uuid。长度在 64 字符以内。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### 请求包体参数
+
+| 参数         | 类型       | 是否必填 | 描述            |
+| :----------- |:---------|:-----|:--------------|
+| `cause`      | Object   | 非必填  | 本次删除原因。       |
+
+### 请求示例
+
+```shell
+curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget' \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'Authorization: agora token={educationToken}' \
+--data-raw '{
+  "cause": {}
+}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-widget-restful-html-1-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+
+<Slot for="api-widget-restful-html-1-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610167740309
+}
+```
+
+## 设置 Widget 房间属性
+
+设置指定 Widget 的房间属性。
+
+你可以对 Widget 设置任意房间属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现你自己的扩展业务。详见[如何设置自定义用户属性和课堂属性？](/zh-CN/reference/faq/integration/agora_class_custom_properties)。
+
+接口原型：
+
+-   方法：PUT
+-   请求路径：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-widget-restful-html-2-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-widget-restful-html-2-4-3" /> |
+
+<Slot for="api-widget-restful-html-2-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-widget-restful-html-2-4-3">
+
+Widget uuid。长度在 64 字符以内。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### 请求包体参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `extra` | Object | 非必填 | Widget 属性。 |
+| `cause` | Object | 非必填 | 更新原因。 |
+| `state` | Integer | 非必填 | <Slot name="api-widget-restful-html-3-3-3" /> |
+| `ownerUserUuid` | String | 非必填 | Widget 所属用户。如果填写了该参数，在 widget 所属用户离线后，widget 会被自动删除。 |
+
+<Slot for="api-widget-restful-html-3-3-3">
+
+Widget 的活跃状态：
+
+      - `0`：关闭
+      - `1`：开启
+
+</Slot>
+
+### 请求示例
+
+```shell
+curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget' \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'Authorization: agora token={educationToken}' \
+--data-raw '{
+  "properties": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "cause": {}
+}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-widget-restful-html-4-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+
+<Slot for="api-widget-restful-html-4-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610167740309
+}
+```
+
+## 删除 Widget 房间属性
+
+删除指定 Widget 的属性。
+
+你可以删除任意 Widget 属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现你自己的扩展业务。设置方式同课堂属性和用户属性，详见[如何设置自定义用户属性和课堂属性？](/zh-CN/reference/faq/integration/agora_class_custom_properties)
+
+接口原型：
+
+-   方法：DELETE
+-   接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}/extra`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-widget-restful-html-5-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-widget-restful-html-5-4-3" /> |
+
+<Slot for="api-widget-restful-html-5-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-widget-restful-html-5-4-3">
+
+Widget uuid。长度在 64 字符以内。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### 请求包体参数
+
+| 参数         | 类型        | 是否必填 | 描述                              |
+| :----------- | :---------- |:-----| :-------------------------------- |
+| `properties` | String [] | 必填   | 需删除的 widget 属性数组，即 `extra` 字段的值。 |
+| `cause`      | Object      | 非必填  | 删除原因。                |
+
+### 请求示例
+
+```shell
+curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget/extra' \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'Authorization: agora token={educationToken}' \
+--data-raw '{
+  "properties": ["key-path1", "key-path2"],
+  "cause": {}
+}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-widget-restful-html-6-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+
+<Slot for="api-widget-restful-html-6-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610167740309
+}
+```
+
+## 设置 Widget 用户属性
+
+设置指定 Widget 的用户属性。
+
+你可以对 widget 设置用户属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现你自己的扩展业务。设置方式同课堂属性和用户属性，详见[如何设置自定义用户属性和课堂属性？](/zh-CN/reference/faq/integration/agora_class_custom_properties)
+
+接口原型：
+
+-   方法：PUT
+-   请求路径：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}/users/{userUuid}`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-widget-restful-html-7-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-widget-restful-html-7-4-3" /> |
+| `userUuid` | String | 必填 | 用户 UUID。这是用户的唯一标识符，也是登录 RTM 系统时所使用的用户 ID。长度在 64 字符以内。 |
+
+<Slot for="api-widget-restful-html-7-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-widget-restful-html-7-4-3">
+
+Widget uuid。长度在 64 字符以内。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### 请求包体参数
+
+| 参数         | 类型   | 是否必填       | 描述                               |
+| :----------- | :----- |:-----------|:--------------------------------- |
+| `properties` | Object | 必填         | 需设置的 Widget 用户属性。 |
+| `cause`      | Object | 非必填   | 更新原因。 |
+
+### 请求示例
+
+```shell
+curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget/users/test_user' \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'Authorization: agora token={educationToken}' \
+--data-raw '{
+  "properties": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "cause": {}
+}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-widget-restful-html-8-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+
+<Slot for="api-widget-restful-html-8-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610167740309
+}
+```
+
+## 删除 Widget 用户属性
+
+删除指定 Widget 的用户属性。
+
+你可以删除 widget 的用户属性，灵动课堂会将这个属性的变更同步到所有端，以此来实现你自己的扩展业务。设置方式同课堂属性和用户属性，详见[如何设置自定义用户属性和课堂属性？](/zh-CN/reference/faq/integration/agora_class_custom_properties)
+
+接口原型：
+
+-   方法：DELETE
+-   接入点：`/{region}/edu/apps/{appId}/v2/rooms/{roomUuid}/widgets/{widgetUuid}/users/{userUuid}`
+
+### 请求参数
+
+#### URL 参数
+
+| 参数 | 类型 | 是否必填 | 描述 |
+| --- | --- | --- | --- |
+| `region` | String | 必填 | <Slot name="api-widget-restful-html-9-1-3" /> |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
+| `widgetUuid` | String | 必填 | <Slot name="api-widget-restful-html-9-4-3" /> |
+| `userUuid` | String | 必填 | 用户 UUID。这是用户的唯一标识符，也是登录 RTM 系统时所使用的用户 ID。长度在 64 字符以内。 |
+
+<Slot for="api-widget-restful-html-9-1-3">
+
+服务区域，可设为如下值：
+
+- `cn`：中国大陆
+- `ap`：亚太
+- `na`：北美
+- `eu`：欧洲
+
+:::warning[注意]
+对于同一课堂，服务端接口调用的区域需要与客户端课堂创建的区域一致，否则会报告“房间不存在”的错误。
+:::
+
+</Slot>
+
+<Slot for="api-widget-restful-html-9-4-3">
+
+Widget uuid。长度在 64 字符以内。以下为支持的字符集范围（共 89 个字符）:
+
+- 26 个小写英文字母 a-Z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`
+
+</Slot>
+
+#### 请求包体参数
+
+| 参数         | 类型        | 是否必填       | 描述                                   |
+| :----------- | :---------- |:-----------| :------------------------------------- |
+| `properties` | String [] | 必填         | 需删除的 Widget 用户属性。 |
+| `cause`      | Object      | 非必填   | 删除原因。 |
+
+### 请求示例
+
+```shell
+curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_class/widgets/test_widget/users/test_user' \
+-H 'Content-Type: application/json;charset=UTF-8' \
+-H 'Authorization: agora token={educationToken}' \
+--data-raw '{
+  "properties": ["key1","key2"],
+  "cause": {}
+}'
+```
+
+### 响应参数
+
+| 参数 | 类型 | 描述 |
+| --- | --- | --- |
+| `code` | Integer | <Slot name="api-widget-restful-html-10-1-2" /> |
+| `msg` | String | 接口响应的文字信息。 |
+| `ts` | Number | 当前服务端的 Unix 时间戳，UTC 时间，单位为毫秒。 |
+
+<Slot for="api-widget-restful-html-10-1-2">
+
+响应状态码：
+
+- `0`: 请求成功。
+- 非 `0`: 请求失败。详见[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+
+</Slot>
+
+### 响应示例
+
+```json
+{
+  "msg": "Success",
+  "code": 0,
+  "ts": 1610167740309
+}
+```
