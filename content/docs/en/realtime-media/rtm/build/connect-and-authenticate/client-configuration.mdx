@@ -384,9 +384,7 @@ The SDK does not support configuring both links to use the UDP protocol simultan
 
 In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable SDK log output and configure the log level and file size when initializing the Signaling client instance.
 
-#### Swift
-
-```swift
+```swift tab="Swift" tabGroup="rtm-client-language"
 do {
     let logConfig = AgoraRtmLogConfig()
     logConfig.level = .error
@@ -405,23 +403,7 @@ do {
 }
 ```
 
-Choose the log level from the following:
-
-| Enumeration value | Description   |
-|----------|------------------------|
-| `none`    | `0x0000`: Do not output any logs. |
-| `info`    | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
-| `warn`    | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`.|
-| `error`   | `0x0004`: Only output logs of levels `fatal` and `error`.       |
-| `fatal`   | `0x0008`: Only output logs at the `fatal` level. |
-
-:::info
-When you release your app to production, set the log level to `info`.
-:::
-
-#### Objective-C
-
-```objc
+```objc tab="Objective-C" tabGroup="rtm-client-language"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 // set log config
@@ -443,16 +425,16 @@ if (rtm != nil) {
 
 Choose the log level from the following:
 
-| Enumeration value | Description   |
-|----------|------------------------|
-| `AgoraRtmLogLevelNone`    | `0x0000`: Do not output any logs. |
-| `AgoraRtmLogLevelInfo`    | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
-| `AgoraRtmLogLevelWarn`    | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.|
-| `AgoraRtmLogLevelError`   | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.       |
-| `AgoraRtmLogLevelFatal`   | `0x0008`: Only output logs at the `FATAL` level. |
+| Swift | Objective-C | Description |
+|---|---|---|
+| `none` | `AgoraRtmLogLevelNone` | `0x0000`: Do not output any logs. |
+| `info` | `AgoraRtmLogLevelInfo` | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
+| `warn` | `AgoraRtmLogLevelWarn` | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`. |
+| `error` | `AgoraRtmLogLevelError` | `0x0004`: Only output logs of levels `fatal` and `error`. |
+| `fatal` | `AgoraRtmLogLevelFatal` | `0x0008`: Only output logs at the `fatal` level. |
 
 :::info
-When your app is released to production, set the log level to `AgoraRtmLogLevelInfo`.
+When you release your app to production, set the log level to `info` in Swift or `AgoraRtmLogLevelInfo` in Objective-C.
 :::
 
 ## Reference
@@ -556,9 +538,7 @@ The SDK does not support configuring both links to use the UDP protocol simultan
 
 In the development and testing phase of your app, you may need to output more detailed information to locate and fix problems. Enable SDK log output and configure the log level and file size when initializing the Signaling client instance.
 
-#### Swift
-
-```swift
+```swift tab="Swift" tabGroup="rtm-client-language"
 do {
     let logConfig = AgoraRtmLogConfig()
     logConfig.level = .error
@@ -577,23 +557,7 @@ do {
 }
 ```
 
-Choose the log level from the following:
-
-| Enumeration value | Description   |
-|----------|------------------------|
-| `none`    | `0x0000`: Do not output any logs. |
-| `info`    | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
-| `warn`    | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`.|
-| `error`   | `0x0004`: Only output logs of levels `fatal` and `error`.       |
-| `fatal`   | `0x0008`: Only output logs at the `fatal` level. |
-
-:::info
-When you release your app to production, set the log level to `info`.
-:::
-
-#### Objective-C
-
-```objc
+```objc tab="Objective-C" tabGroup="rtm-client-language"
 AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 
 // set log config
@@ -615,16 +579,16 @@ if (rtm != nil) {
 
 Choose the log level from the following:
 
-| Enumeration value | Description   |
-|----------|------------------------|
-| `AgoraRtmLogLevelNone`    | `0x0000`: Do not output any logs. |
-| `AgoraRtmLogLevelInfo`    | `0x0001`: Output logs of levels `FATAL`, `ERROR`, `WARN`, and `INFO`. Best practice is to set the log level to this option. |
-| `AgoraRtmLogLevelWarn`    | `0x0002`: Only output logs of levels `FATAL`, `ERROR`, and `WARN`.|
-| `AgoraRtmLogLevelError`   | `0x0004`: Only output logs of levels `FATAL` and `ERROR`.       |
-| `AgoraRtmLogLevelFatal`   | `0x0008`: Only output logs at the `FATAL` level. |
+| Swift | Objective-C | Description |
+|---|---|---|
+| `none` | `AgoraRtmLogLevelNone` | `0x0000`: Do not output any logs. |
+| `info` | `AgoraRtmLogLevelInfo` | `0x0001`: Output logs of levels `fatal`, `error`, `warn`, and `info`. Best practice is to set the log level to this option. |
+| `warn` | `AgoraRtmLogLevelWarn` | `0x0002`: Only output logs of levels `fatal`, `error`, and `warn`. |
+| `error` | `AgoraRtmLogLevelError` | `0x0004`: Only output logs of levels `fatal` and `error`. |
+| `fatal` | `AgoraRtmLogLevelFatal` | `0x0008`: Only output logs at the `fatal` level. |
 
 :::info
-When your app is released to production, set the log level to `AgoraRtmLogLevelInfo`.
+When you release your app to production, set the log level to `info` in Swift or `AgoraRtmLogLevelInfo` in Objective-C.
 :::
 
 ## Reference
