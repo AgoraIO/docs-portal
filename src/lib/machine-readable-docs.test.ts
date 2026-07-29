@@ -1,6 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
+  createMachineReadableEntryArtifact,
   filterMachineReadableDocsPages,
+  getMachineReadableEntryRoute,
   getMachineReadableLocale,
   isMachineReadableDocsPath,
   isMachineReadableLocale,
@@ -34,5 +36,45 @@ describe('machine-readable docs filters', () => {
       { path: 'en/ai/index.mdx' },
       { url: '/en/api-reference/api-ref/conversational-ai/join' },
     ]);
+  });
+
+  it('publishes an English entry alias only for the global deployment', () => {
+    expect(getMachineReadableEntryRoute('global')).toEqual({
+      markdownPath: '/en.md',
+      sourcePath: '/en/introduction',
+    });
+    expect(getMachineReadableEntryRoute('cn')).toBeNull();
+  });
+
+  it('builds the English entry artifact from the configured docs home', async () => {
+    const renderMarkdown = vi.fn(async (page: { body: string }) => page.body);
+
+    await expect(
+      createMachineReadableEntryArtifact({
+        pages: [
+          { body: '# Introduction', url: '/en/introduction' },
+          { body: '# Other page', url: '/en/other' },
+        ],
+        region: 'global',
+        renderMarkdown,
+      }),
+    ).resolves.toEqual({
+      content: '# Introduction',
+      path: '/en.md',
+    });
+    expect(renderMarkdown).toHaveBeenCalledOnce();
+  });
+
+  it('does not build an entry artifact for the CN deployment', async () => {
+    const renderMarkdown = vi.fn(async () => '# Chinese introduction');
+
+    await expect(
+      createMachineReadableEntryArtifact({
+        pages: [{ url: '/zh-CN/introduction' }],
+        region: 'cn',
+        renderMarkdown,
+      }),
+    ).resolves.toBeNull();
+    expect(renderMarkdown).not.toHaveBeenCalled();
   });
 });
