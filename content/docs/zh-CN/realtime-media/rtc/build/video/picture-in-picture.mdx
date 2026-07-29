@@ -80,7 +80,7 @@ class MainActivity : AgoraPIPFlutterActivity()
 4. 勾选 **Audio, AirPlay, and Picture in Picture**。
 
 :::info[信息]
-如果你的业务需要开启在多任务模式下采集本地摄像头画面的功能，请参考[如何开启 iOS 多任务采集](/zh-CN/api-reference/faq/integration/multitasking)。
+如果你的业务需要开启在多任务模式下采集本地摄像头画面的功能，请参考[如何开启 iOS 多任务采集](/zh-CN/reference/faq/integration/multitasking)。
 :::
 
 </TabsContent>
@@ -301,7 +301,7 @@ await _pip.dispose();
 - Android 平台上，进入画中画后通常需要根据状态调整页面 UI；许多应用会在画中画激活时仅保留视频区域。
 - Android 12 及以上系统支持应用在进入后台时自动进入画中画；更早版本通常需要在生命周期中显式调用 `pipStart()`。
 - `pipStart()` 不保证在所有时机都能成功触发，通常在应用进入 `inactive` 状态时调用更稳定。
-- 画中画不会绕过 Android 的后台限制。如果需要在后台持续采集或播放音视频，请结合前台服务完成适配；否则在部分 Android 版本上可能出现切后台后采集或播放中断的问题。详见[Android 后台限制说明](/zh-CN/api-reference/faq/quality/android_background)。
+- 画中画不会绕过 Android 的后台限制。如果需要在后台持续采集或播放音视频，请结合前台服务完成适配；否则在部分 Android 版本上可能出现切后台后采集或播放中断的问题。详见[Android 后台限制说明](/zh-CN/reference/faq/quality/android_background)。
 - Android 上 `pipStop()` 的行为通常是将任务移至后台，而不是退出画中画并恢复当前页面；恢复全屏通常由用户通过系统画中画窗口操作完成。
 - 请区分会话级释放和控制器级释放：结束当前画中画会话时调用 `pipDispose()`；页面销毁、离开频道且不再复用画中画控制器时，再调用 `dispose()`。
 
@@ -401,7 +401,7 @@ class MainActivity : AgoraPIPActivity() {
 }
 ```
 
-- 如果你希望应用进入后台或进入画中画后仍持续采集或播放音视频，请同时完成前台服务配置。所需权限、声明和集成方式请参考[Android 后台限制](/zh-CN/api-reference/faq/quality/android_background)。
+- 如果你希望应用进入后台或进入画中画后仍持续采集或播放音视频，请同时完成前台服务配置。所需权限、声明和集成方式请参考[Android 后台限制](/zh-CN/reference/faq/quality/android_background)。
 
 :::info[信息]
 根据 Android 版本不同，进入画中画的方式有所区别：
@@ -424,7 +424,7 @@ class MainActivity : AgoraPIPActivity() {
 4. 勾选 **Audio, AirPlay, and Picture in Picture**。
 
 :::info[信息]
-如果你的业务需要开启在多任务模式下采集本地摄像头画面的功能，请参考[如何开启 iOS 多任务采集](/zh-CN/api-reference/faq/integration/multitasking)。
+如果你的业务需要开启在多任务模式下采集本地摄像头画面的功能，请参考[如何开启 iOS 多任务采集](/zh-CN/reference/faq/integration/multitasking)。
 
 当前 React Native SDK 示例未直接封装 `multitaskingCameraAccessEnabled` 的配置；如果你的业务必须在画中画期间保留本地摄像头采集，还需要额外进行原生侧适配。
 :::
@@ -656,7 +656,7 @@ pip.release();
 
 - Android 平台上，进入画中画后通常需要根据状态调整页面 UI。
 - Android 12 及以上系统支持应用在进入后台时自动进入画中画；更早版本通常需要在 Activity 生命周期中显式处理。继承 `AgoraPIPActivity` 可简化这部分适配工作。
-- 画中画不会绕过 Android 的后台限制。如果需要在后台持续采集或播放音视频，请结合前台服务完成适配；否则在部分 Android 版本上可能出现切后台后采集或播放中断的问题。详见[Android 后台限制说明](/zh-CN/api-reference/faq/quality/android_background)。
+- 画中画不会绕过 Android 的后台限制。如果需要在后台持续采集或播放音视频，请结合前台服务完成适配；否则在部分 Android 版本上可能出现切后台后采集或播放中断的问题。详见[Android 后台限制说明](/zh-CN/reference/faq/quality/android_background)。
 - Android 上 `pipStop` 的行为是将任务移至后台，而不是退出画中画并恢复页面；通常由用户通过系统画中画窗口关闭或恢复应用。
 - 请区分会话级释放和控制器级释放：结束当前画中画会话时调用 `pipDispose`，页面销毁或控制器不再复用时再调用 `release`。
 

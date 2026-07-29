@@ -59,6 +59,14 @@ _migration:
 
 查看 API。
 `;
+    const rootMeta = JSON.stringify({
+      pages: [
+        'api',
+        '[SDK 下载](/zh-CN/reference/sdks)',
+        '[Recipe](/zh-CN/reference/recipes)',
+        '[常见问题](/zh-CN/reference/faq)',
+      ],
+    });
     await fs.mkdir(path.join(oldRoot, path.dirname(sourcePath)), {
       recursive: true,
     });
@@ -69,6 +77,7 @@ _migration:
     for (const [filePath, contents] of [
       [targetPath, page],
       [overviewPath, overview],
+      ['content/docs/zh-CN/api-reference/meta.json', rootMeta],
     ]) {
       await fs.mkdir(path.join(repoRoot, path.dirname(filePath)), {
         recursive: true,

@@ -181,8 +181,8 @@ function listHrefFor(match) {
   const params = new URLSearchParams(query);
   const folder = CATEGORY_TO_FOLDER[params.get('category') ?? ''];
   return folder
-    ? `/zh-CN/api-reference/faq/${folder}`
-    : '/zh-CN/api-reference/faq';
+    ? `/zh-CN/reference/faq/${folder}`
+    : '/zh-CN/reference/faq';
 }
 
 function articleGroups(pattern, first, second, third) {

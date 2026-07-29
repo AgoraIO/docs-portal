@@ -147,7 +147,7 @@ describe('resolveZhCnApiReferenceBreadcrumb', () => {
   it('does not claim non-catalog reference pages', () => {
     expect(
       resolveZhCnApiReferenceBreadcrumb({
-        activePath: '/zh-CN/api-reference/faq',
+        activePath: '/zh-CN/reference/faq',
         title: '常见问题',
       }),
     ).toBeNull();

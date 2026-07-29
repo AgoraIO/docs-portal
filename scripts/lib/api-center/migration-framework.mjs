@@ -433,7 +433,7 @@ export function rewriteLegacyHref(
       ? `#${stableAnchorId(decodeURIComponent(url.hash.slice(1)))}`
       : '';
     return {
-      href: `${faqTarget ?? '/zh-CN/api-reference/faq'}${fragment}`,
+      href: `${faqTarget ?? '/zh-CN/reference/faq'}${fragment}`,
       warning: faqTarget
         ? null
         : createWarning(
@@ -599,7 +599,7 @@ function resolveLegacyFaqHref(url, routeMap) {
   const slug = segments.at(-1);
   if (faqIndex < 0 || !slug) return null;
   if (slug === 'list' || faqIndex === segments.length - 1) {
-    return '/zh-CN/api-reference/faq';
+    return '/zh-CN/reference/faq';
   }
   return routeMap.get(`faq:${decodeURIComponent(slug)}`) ?? null;
 }

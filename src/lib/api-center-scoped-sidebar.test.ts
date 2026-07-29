@@ -39,7 +39,38 @@ async function loadApiReferencePayload(slugs: string[]) {
   return payload;
 }
 
+async function loadReferencePayload(slugs: string[]) {
+  const payload = await loadDocsPagePayload('zh-CN', 'reference', slugs);
+  if (!payload || 'redirectUrl' in payload) {
+    throw new Error(
+      `expected docs payload for /zh-CN/reference/${slugs.join('/')}`,
+    );
+  }
+  return payload;
+}
+
 describe('API Center scoped sidebars', () => {
+  it('places API Reference between Solutions and Reference in the zh-CN tabs', async () => {
+    const payload = await loadApiReferencePayload(['api']);
+
+    expect(payload.tabs).toEqual([
+      expect.objectContaining({ id: 'introduction', title: '介绍' }),
+      expect.objectContaining({ id: 'ai', title: '对话式 AI 引擎' }),
+      expect.objectContaining({ id: 'realtime-media', title: '实时互动' }),
+      expect.objectContaining({ id: 'solutions', title: '解决方案' }),
+      expect.objectContaining({
+        id: 'api-reference',
+        title: 'API 参考',
+        url: '/zh-CN/api-reference/api',
+      }),
+      expect.objectContaining({
+        id: 'reference',
+        title: '参考文档',
+        url: '/zh-CN/reference/sdks',
+      }),
+    ]);
+  });
+
   it('keeps product entries out of the Reference sidebar', async () => {
     const sidebar = await loadApiReferenceSidebar(['overview']);
     const titles = collectTitles(sidebar);
@@ -47,7 +78,7 @@ describe('API Center scoped sidebars', () => {
       node.title ? [node.title] : [],
     );
     expect(titles.filter((title) => title === 'API 参考')).toHaveLength(1);
-    expect(titles).toEqual(['API 参考', 'SDK 下载', 'Recipe', '常见问题']);
+    expect(titles).toEqual(['API 参考']);
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
     expect(titles).not.toEqual(
@@ -59,16 +90,12 @@ describe('API Center scoped sidebars', () => {
         '灵动课堂',
       ]),
     );
-    expect(rootTitles).toEqual([
-      'API 参考',
-      'SDK 下载',
-      'Recipe',
-      '常见问题',
-    ]);
+    expect(rootTitles).toEqual(['API 参考']);
   });
 
-  it('keeps the same non-product navigation on the Recipes page', async () => {
-    const sidebar = await loadApiReferenceSidebar(['recipes']);
+  it('keeps the reference resources together in the Reference tab', async () => {
+    const payload = await loadReferencePayload(['recipes']);
+    const sidebar = payload.sidebar as SidebarNode[];
     const titles = collectTitles(sidebar);
     const rootTitles = sidebar.flatMap((node) =>
       node.title ? [node.title] : [],
@@ -76,13 +103,10 @@ describe('API Center scoped sidebars', () => {
 
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
-    expect(titles).toEqual(['API 参考', 'SDK 下载', 'Recipe', '常见问题']);
-    expect(rootTitles).toEqual([
-      'API 参考',
-      'SDK 下载',
-      'Recipe',
-      '常见问题',
-    ]);
+    expect(titles).toEqual(
+      expect.arrayContaining(['SDK 下载', 'Demo', '常见问题']),
+    );
+    expect(rootTitles).toEqual(['SDK 下载', 'Demo', '常见问题']);
   });
 
   it('uses the generated RTC Android current-version categories', async () => {
@@ -145,7 +169,7 @@ describe('API Center scoped sidebars', () => {
     expect(titles).toEqual([label]);
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title: label,
     });
   });
@@ -189,7 +213,7 @@ describe('API Center scoped sidebars', () => {
     );
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title: 'RESTful API',
     });
   });
@@ -210,7 +234,7 @@ describe('API Center scoped sidebars', () => {
     );
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title: 'RESTful API',
     });
   });
@@ -239,7 +263,7 @@ describe('API Center scoped sidebars', () => {
 
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title,
     });
   });
@@ -263,10 +287,10 @@ describe('API Center scoped sidebars', () => {
     const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
     expect(titles).toEqual(expect.arrayContaining(expectedTitles));
-    expect(titles).not.toContain('Recipe');
+    expect(titles).not.toContain('Demo');
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title: '本地服务端录制',
     });
   });
@@ -513,7 +537,7 @@ describe('API Center scoped sidebars', () => {
     expect(titles.filter((title) => title === '场景化 API')).toHaveLength(1);
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
-      backLabel: '参考文档',
+      backLabel: 'API 参考',
       title: platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
     });
   });

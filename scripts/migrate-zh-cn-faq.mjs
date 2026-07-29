@@ -19,7 +19,7 @@ const DEFAULT_SOURCE_ROOTS = [
 ].filter(Boolean);
 
 const FAQ_SOURCE_DIR = 'docs-faq';
-const FAQ_TARGET_ROOT = 'content/docs/zh-CN/api-reference/faq';
+const FAQ_TARGET_ROOT = 'content/docs/zh-CN/reference/faq';
 const FAQ_EN_ROOT = 'content/docs/en/api-reference/faq';
 const REPORT_DIR = 'docs/migration/generated/zh-cn-faq-migration';
 const FAQ_DATA_TARGET = 'src/components/faq/faq-data.zh-cn.ts';
@@ -247,7 +247,7 @@ async function main() {
 
     const item = {
       category: target.category,
-      href: `/zh-CN/api-reference/faq/${target.folder}/${target.stem}`,
+      href: `/zh-CN/reference/faq/${target.folder}/${target.stem}`,
       platforms: normalizeLabels(frontmatter.platforms, platformLabels),
       products: normalizeLabels(frontmatter.products, productLabels),
       summary: firstSummary(body),

@@ -45,7 +45,7 @@ describe('FaqLanding', () => {
     expect(screen.getByPlaceholderText('搜索全部常见问题')).toBeVisible();
     expect(screen.getByRole('link', { name: /集成类/ })).toHaveAttribute(
       'href',
-      '/zh-CN/api-reference/faq/integration',
+      '/zh-CN/reference/faq/integration',
     );
   });
 });

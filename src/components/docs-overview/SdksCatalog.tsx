@@ -73,7 +73,7 @@ const catalogCopy = {
     },
   },
   'zh-CN': {
-    catalogPath: '/zh-CN/api-reference/sdks',
+    catalogPath: '/zh-CN/reference/sdks',
     copyButton: '复制',
     copiedButton: '已复制',
     copyInstallCommand: '复制集成命令',

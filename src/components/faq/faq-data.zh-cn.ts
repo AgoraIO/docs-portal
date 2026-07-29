@@ -76,7 +76,7 @@ export const zhCnFaqProducts = [
 export const zhCnFaqItems: FaqItem[] = [
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/billing_account',
+    href: '/zh-CN/reference/faq/account/billing_account',
     platforms: ['全部平台'],
     products: ['全部产品'],
     summary: '本文介绍声网的账单发布、结算方式和账户冻结规则。',
@@ -84,7 +84,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/billing_basis',
+    href: '/zh-CN/reference/faq/account/billing_basis',
     platforms: ['全部平台'],
     products: ['全部产品', '本地服务端录制', '实时互动', '水晶球'],
     summary:
@@ -93,7 +93,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/billing_free',
+    href: '/zh-CN/reference/faq/account/billing_free',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动', '云端录制'],
     summary:
@@ -102,7 +102,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/billing_package',
+    href: '/zh-CN/reference/faq/account/billing_package',
     platforms: ['全部平台'],
     products: ['全部产品'],
     summary: '1. 前往控制台创建账号、登录并创建声网项目。',
@@ -110,7 +110,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/console_account_faq',
+    href: '/zh-CN/reference/faq/account/console_account_faq',
     platforms: ['全部平台'],
     products: ['全部产品'],
     summary: '本文介绍如何处理控制台使用过程中的常见问题。',
@@ -118,7 +118,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'account-and-billing',
-    href: '/zh-CN/api-reference/faq/account/coupon_code',
+    href: '/zh-CN/reference/faq/account/coupon_code',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '本文介绍如何在购买套餐包时使用优惠抵扣码。',
@@ -126,7 +126,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/abnormal_exit',
+    href: '/zh-CN/reference/faq/integration/abnormal_exit',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -135,7 +135,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/acquire_file_directory',
+    href: '/zh-CN/reference/faq/integration/acquire_file_directory',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -144,7 +144,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/agora_class_custom_properties',
+    href: '/zh-CN/reference/faq/integration/agora_class_custom_properties',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -153,7 +153,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/allow_haptics',
+    href: '/zh-CN/reference/faq/integration/allow_haptics',
     platforms: ['全部平台', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -162,7 +162,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/android_audio_routing_change',
+    href: '/zh-CN/reference/faq/integration/android_audio_routing_change',
     platforms: ['全部平台', 'Android'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -171,7 +171,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/android_startaudiomixing_permission',
+    href: '/zh-CN/reference/faq/integration/android_startaudiomixing_permission',
     platforms: ['全部平台', 'Android'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -181,7 +181,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/appid_to_token',
+    href: '/zh-CN/reference/faq/integration/appid_to_token',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -190,7 +190,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/audience_event',
+    href: '/zh-CN/reference/faq/integration/audience_event',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -199,7 +199,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/bucket_region',
+    href: '/zh-CN/reference/faq/integration/bucket_region',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary: '目前云端录制支持以下云存储厂商：',
@@ -207,7 +207,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/call_duration',
+    href: '/zh-CN/reference/faq/integration/call_duration',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -216,7 +216,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/camera_exposure_focus',
+    href: '/zh-CN/reference/faq/integration/camera_exposure_focus',
     platforms: ['全部平台', 'Android', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -225,7 +225,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/cant_upload_courseware',
+    href: '/zh-CN/reference/faq/integration/cant_upload_courseware',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -234,7 +234,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/channel',
+    href: '/zh-CN/reference/faq/integration/channel',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -243,7 +243,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/chat_issues',
+    href: '/zh-CN/reference/faq/integration/chat_issues',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -252,7 +252,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/class_custom_ui',
+    href: '/zh-CN/reference/faq/integration/class_custom_ui',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -261,7 +261,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/class_packaging',
+    href: '/zh-CN/reference/faq/integration/class_packaging',
     platforms: ['全部平台', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary: '使用 Mac 电脑打包灵动课堂 Windows 安装包的步骤如下：',
@@ -269,7 +269,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/class_recording_fails',
+    href: '/zh-CN/reference/faq/integration/class_recording_fails',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary: '发生录制失败时，你可以参考如下步骤排查故障原因：',
@@ -277,7 +277,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/classroom_statuses',
+    href: '/zh-CN/reference/faq/integration/classroom_statuses',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary: '灵动课堂有以下几种课堂状态：',
@@ -285,7 +285,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/cmd_control_record',
+    href: '/zh-CN/reference/faq/integration/cmd_control_record',
     platforms: ['全部平台', '服务端 C++', '服务端 Java'],
     products: ['全部产品', '本地服务端录制'],
     summary: '在使用命令行录制过程中，你可以参考如下内容控制录制进程。',
@@ -293,7 +293,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/cocoapods_problems',
+    href: '/zh-CN/reference/faq/integration/cocoapods_problems',
     platforms: ['全部平台', 'iOS', 'macOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -302,7 +302,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/common_mistakes_flexible_classroom',
+    href: '/zh-CN/reference/faq/integration/common_mistakes_flexible_classroom',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary: '如果你在运行灵动课堂 Web 项目时碰到以下报错：',
@@ -310,7 +310,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/console_error_web',
+    href: '/zh-CN/reference/faq/integration/console_error_web',
     platforms: ['全部平台', 'JavaScript'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -319,7 +319,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/convoai_cloud_recording',
+    href: '/zh-CN/reference/faq/integration/convoai_cloud_recording',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '对话式 AI 引擎'],
     summary:
@@ -328,7 +328,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/dynamic_or_static_library',
+    href: '/zh-CN/reference/faq/integration/dynamic_or_static_library',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -337,7 +337,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/dynamic_storage_path',
+    href: '/zh-CN/reference/faq/integration/dynamic_storage_path',
     platforms: [
       '全部平台',
       'Android',
@@ -355,7 +355,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/electron_faq',
+    href: '/zh-CN/reference/faq/integration/electron_faq',
     platforms: ['全部平台', 'Electron'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -364,7 +364,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/fail_to_upload',
+    href: '/zh-CN/reference/faq/integration/fail_to_upload',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -373,7 +373,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/flutter_ios_build',
+    href: '/zh-CN/reference/faq/integration/flutter_ios_build',
     platforms: ['全部平台', 'iOS', 'Flutter'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -383,7 +383,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/flutter_pod',
+    href: '/zh-CN/reference/faq/integration/flutter_pod',
     platforms: ['全部平台', 'Flutter'],
     products: ['全部产品', '实时互动'],
     summary: '在 Flutter 项目中运行 pod install 时，遇到以下错误：',
@@ -391,7 +391,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/framework_cannot_be_opened',
+    href: '/zh-CN/reference/faq/integration/framework_cannot_be_opened',
     platforms: ['全部平台', 'macOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -400,7 +400,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/get_channel_info',
+    href: '/zh-CN/reference/faq/integration/get_channel_info',
     platforms: ['全部平台', '服务端 Java'],
     products: ['全部产品', '实时互动'],
     summary: '声网目前只支持在服务端通过 RESTful API 获取频道相关信息。',
@@ -408,7 +408,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/high_availability',
+    href: '/zh-CN/reference/faq/integration/high_availability',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -417,7 +417,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/ios_app_unity_reports_error',
+    href: '/zh-CN/reference/faq/integration/ios_app_unity_reports_error',
     platforms: ['全部平台', 'Unity'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -426,7 +426,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/ios_sign',
+    href: '/zh-CN/reference/faq/integration/ios_sign',
     platforms: [
       '全部平台',
       'iOS',
@@ -442,7 +442,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/java_call_cpp',
+    href: '/zh-CN/reference/faq/integration/java_call_cpp',
     platforms: ['全部平台', 'Android', 'Windows'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -451,7 +451,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/judge_voice_video_call',
+    href: '/zh-CN/reference/faq/integration/judge_voice_video_call',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -460,7 +460,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/kick_user',
+    href: '/zh-CN/reference/faq/integration/kick_user',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -469,7 +469,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/mini_program',
+    href: '/zh-CN/reference/faq/integration/mini_program',
     platforms: ['全部平台', '小程序'],
     products: ['全部产品', '实时互动'],
     summary: '本文汇总 RTC 小程序 SDK 常见问题和解决方法。',
@@ -477,7 +477,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/mirror_mode',
+    href: '/zh-CN/reference/faq/integration/mirror_mode',
     platforms: ['全部平台', 'Android', 'iOS', 'Windows', 'macOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -486,7 +486,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/mobile_video_profile',
+    href: '/zh-CN/reference/faq/integration/mobile_video_profile',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -495,7 +495,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/mp4_cannot_play',
+    href: '/zh-CN/reference/faq/integration/mp4_cannot_play',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -504,7 +504,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/multi_language_support',
+    href: '/zh-CN/reference/faq/integration/multi_language_support',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -513,7 +513,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/multitasking',
+    href: '/zh-CN/reference/faq/integration/multitasking',
     platforms: ['全部平台', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -522,7 +522,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/music_pause',
+    href: '/zh-CN/reference/faq/integration/music_pause',
     platforms: ['全部平台', 'Android'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -531,7 +531,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/ncs_vs_query',
+    href: '/zh-CN/reference/faq/integration/ncs_vs_query',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制', '云端转码'],
     summary:
@@ -540,7 +540,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/no_music_unity_objects',
+    href: '/zh-CN/reference/faq/integration/no_music_unity_objects',
     platforms: ['全部平台', 'Unity'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -549,7 +549,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/obtain_restful_api_id',
+    href: '/zh-CN/reference/faq/integration/obtain_restful_api_id',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -558,7 +558,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/pod_error',
+    href: '/zh-CN/reference/faq/integration/pod_error',
     platforms: ['全部平台', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -567,7 +567,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/recording_mode',
+    href: '/zh-CN/reference/faq/integration/recording_mode',
     platforms: ['全部平台', '服务端 C++', '服务端 Java'],
     products: ['全部产品', '本地服务端录制', '云端录制'],
     summary:
@@ -576,7 +576,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/recording_player',
+    href: '/zh-CN/reference/faq/integration/recording_player',
     platforms: ['全部平台', '服务端 Java', '服务端 C++'],
     products: ['全部产品', '本地服务端录制'],
     summary: '根据选择的录制模式不同，在录制结束后生成的录制文件也不一样。',
@@ -584,7 +584,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/restful_api_call_frequency',
+    href: '/zh-CN/reference/faq/integration/restful_api_call_frequency',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动', '融合 CDN'],
     summary:
@@ -593,7 +593,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/return_404',
+    href: '/zh-CN/reference/faq/integration/return_404',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -602,7 +602,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/rtc_rtm_token',
+    href: '/zh-CN/reference/faq/integration/rtc_rtm_token',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动', '实时消息'],
     summary:
@@ -611,7 +611,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/rtm2_integration_issue',
+    href: '/zh-CN/reference/faq/integration/rtm2_integration_issue',
     platforms: ['全部平台', 'JavaScript'],
     products: ['全部产品', '实时消息'],
     summary:
@@ -620,7 +620,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/rtm2_rtc_integration_issue',
+    href: '/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue',
     platforms: [
       '全部平台',
       'Windows',
@@ -637,7 +637,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/set_enabled_set_muted',
+    href: '/zh-CN/reference/faq/integration/set_enabled_set_muted',
     platforms: ['全部平台', 'JavaScript'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -646,7 +646,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/set_log_file',
+    href: '/zh-CN/reference/faq/integration/set_log_file',
     platforms: ['全部平台', 'iOS', 'Android', 'macOS', 'Windows', 'JavaScript'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -655,7 +655,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/stop_class',
+    href: '/zh-CN/reference/faq/integration/stop_class',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -664,7 +664,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/string_uid',
+    href: '/zh-CN/reference/faq/integration/string_uid',
     platforms: [
       '全部平台',
       'iOS',
@@ -680,7 +680,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/system_crash_info',
+    href: '/zh-CN/reference/faq/integration/system_crash_info',
     platforms: ['全部平台', 'iOS', 'Android', 'macOS', 'Windows'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -689,7 +689,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/system_volume',
+    href: '/zh-CN/reference/faq/integration/system_volume',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -698,7 +698,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/token_cohost',
+    href: '/zh-CN/reference/faq/integration/token_cohost',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -707,7 +707,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/token_related_issues',
+    href: '/zh-CN/reference/faq/integration/token_related_issues',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -716,7 +716,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/turn_off_3a_config',
+    href: '/zh-CN/reference/faq/integration/turn_off_3a_config',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary:
@@ -725,7 +725,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/unreal_permissions',
+    href: '/zh-CN/reference/faq/integration/unreal_permissions',
     platforms: ['全部平台', 'Unreal (C++)', 'Unreal (Blueprint)'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -734,7 +734,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/video_enhancement',
+    href: '/zh-CN/reference/faq/integration/video_enhancement',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -743,7 +743,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/webgl_context',
+    href: '/zh-CN/reference/faq/integration/webgl_context',
     platforms: ['全部平台', 'Electron'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -753,7 +753,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/whiteboard_cors',
+    href: '/zh-CN/reference/faq/integration/whiteboard_cors',
     platforms: ['全部平台'],
     products: ['全部产品', '互动白板', 'Fastboard'],
     summary:
@@ -762,7 +762,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/whiteboard_export_pdf',
+    href: '/zh-CN/reference/faq/integration/whiteboard_export_pdf',
     platforms: ['全部平台', 'JavaScript'],
     products: ['全部产品', '互动白板'],
     summary:
@@ -771,7 +771,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
-    href: '/zh-CN/api-reference/faq/integration/window_sharing_win7',
+    href: '/zh-CN/reference/faq/integration/window_sharing_win7',
     platforms: ['全部平台', 'Windows'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -780,7 +780,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/api-reference/faq/other/android_noaudio',
+    href: '/zh-CN/reference/faq/other/android_noaudio',
     platforms: ['全部平台', 'Android'],
     products: ['全部产品', '实时互动'],
     summary: '可能是因为没有正确退出 WorkerThread 导致。',
@@ -788,7 +788,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/api-reference/faq/other/chatroom',
+    href: '/zh-CN/reference/faq/other/chatroom',
     platforms: ['全部平台'],
     products: ['全部产品', '声动语聊'],
     summary: '本文总结使用声动语聊方案时可能遇到的常见问题和解决方法。',
@@ -796,7 +796,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/api-reference/faq/other/ios_privacy_manifest',
+    href: '/zh-CN/reference/faq/other/ios_privacy_manifest',
     platforms: [
       '全部平台',
       'iOS',
@@ -813,7 +813,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/api-reference/faq/other/macos_15_beta',
+    href: '/zh-CN/reference/faq/other/macos_15_beta',
     platforms: ['全部平台', 'macOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -822,7 +822,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/api-reference/faq/other/privacyinfortm',
+    href: '/zh-CN/reference/faq/other/privacyinfortm',
     platforms: ['全部平台', 'iOS', 'Unity'],
     products: ['全部产品', '实时消息'],
     summary:
@@ -831,7 +831,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/audio_format',
+    href: '/zh-CN/reference/faq/product/audio_format',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -840,7 +840,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/call_api_in_browser',
+    href: '/zh-CN/reference/faq/product/call_api_in_browser',
     platforms: ['全部平台', 'RESTful'],
     products: ['全部产品', '云端录制'],
     summary:
@@ -849,7 +849,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/capacity',
+    href: '/zh-CN/reference/faq/product/capacity',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -858,7 +858,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/differ_agora_cdn',
+    href: '/zh-CN/reference/faq/product/differ_agora_cdn',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -867,7 +867,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/recording_concurrence',
+    href: '/zh-CN/reference/faq/product/recording_concurrence',
     platforms: ['全部平台', '服务端 Java', '服务端 C++'],
     products: ['全部产品', '本地服务端录制'],
     summary: '对于本地服务端录制，我们测试了以下云主机配置下的录制并发性能：',
@@ -875,7 +875,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'general-product-inquiry',
-    href: '/zh-CN/api-reference/faq/product/streaming_difference',
+    href: '/zh-CN/reference/faq/product/streaming_difference',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '你可通过下表快速了解不同直播场景的区别。',
@@ -883,7 +883,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/adjust_music_volume',
+    href: '/zh-CN/reference/faq/quality/adjust_music_volume',
     platforms: ['全部平台', 'iOS', 'Android'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -892,7 +892,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/android_background',
+    href: '/zh-CN/reference/faq/quality/android_background',
     platforms: ['全部平台', 'Android'],
     products: ['全部产品', '实时互动'],
     summary: '- Android 设备锁屏 1 分钟内，远端音频无声或看不到视频。',
@@ -901,7 +901,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_freeze',
+    href: '/zh-CN/reference/faq/quality/audio_freeze',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -910,7 +910,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_low',
+    href: '/zh-CN/reference/faq/quality/audio_low',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '- 请检查接收方的系统音量是否已调大。',
@@ -918,7 +918,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_noaudio',
+    href: '/zh-CN/reference/faq/quality/audio_noaudio',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '请依次按照以下解决方案排查问题。',
@@ -926,7 +926,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_noise',
+    href: '/zh-CN/reference/faq/quality/audio_noise',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -935,7 +935,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_role',
+    href: '/zh-CN/reference/faq/quality/audio_role',
     platforms: ['全部平台', 'iOS', 'Android'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -944,7 +944,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/audio_video_issues_in_classroom',
+    href: '/zh-CN/reference/faq/quality/audio_video_issues_in_classroom',
     platforms: ['全部平台', 'Android', 'iOS', 'JavaScript', 'Electron'],
     products: ['全部产品', '灵动课堂'],
     summary: '请确认浏览器摄像头或麦克风的权限是否打开，步骤参考以下截图：',
@@ -952,7 +952,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/device_occupied',
+    href: '/zh-CN/reference/faq/quality/device_occupied',
     platforms: ['全部平台', 'Android', 'JavaScript'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -961,7 +961,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/flutter_debug',
+    href: '/zh-CN/reference/faq/quality/flutter_debug',
     platforms: ['全部平台', 'Flutter'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -971,7 +971,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/harmonyos_background',
+    href: '/zh-CN/reference/faq/quality/harmonyos_background',
     platforms: ['全部平台', 'HarmonyOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -980,7 +980,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/ios_background',
+    href: '/zh-CN/reference/faq/quality/ios_background',
     platforms: ['全部平台', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -989,7 +989,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/ios_bluetooth',
+    href: '/zh-CN/reference/faq/quality/ios_bluetooth',
     platforms: ['全部平台', 'Android', 'iOS'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -998,7 +998,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/optimize_video_rendering',
+    href: '/zh-CN/reference/faq/quality/optimize_video_rendering',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:
@@ -1007,7 +1007,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/record_file_issue',
+    href: '/zh-CN/reference/faq/quality/record_file_issue',
     platforms: ['全部平台', '服务端 Java', '服务端 C++'],
     products: ['全部产品', '本地服务端录制'],
     summary:
@@ -1016,7 +1016,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/record_split',
+    href: '/zh-CN/reference/faq/quality/record_split',
     platforms: ['全部平台', '服务端 Java', '服务端 C++'],
     products: ['全部产品', '本地服务端录制'],
     summary:
@@ -1025,7 +1025,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/record_status_error',
+    href: '/zh-CN/reference/faq/quality/record_status_error',
     platforms: ['全部平台', '服务端 Java', '服务端 C++'],
     products: ['全部产品', '本地服务端录制'],
     summary:
@@ -1034,7 +1034,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/sei',
+    href: '/zh-CN/reference/faq/quality/sei',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动', '旁路推流'],
     summary:
@@ -1043,7 +1043,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/video_bighead',
+    href: '/zh-CN/reference/faq/quality/video_bighead',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '这种情况一般是由于视频尺寸与显示视窗尺寸不一致，有下面几种情况：',
@@ -1051,7 +1051,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/video_blank',
+    href: '/zh-CN/reference/faq/quality/video_blank',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '常见的视频黑屏问题有以下三种情况：',
@@ -1059,7 +1059,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/video_blur',
+    href: '/zh-CN/reference/faq/quality/video_blur',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '视频模糊一般是由视频码率或分辨率过低导致。',
@@ -1067,7 +1067,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/video_camera',
+    href: '/zh-CN/reference/faq/quality/video_camera',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary: '摄像头打开失败有多种原因，请按以下步骤检查：',
@@ -1075,7 +1075,7 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'quality-issues',
-    href: '/zh-CN/api-reference/faq/quality/video_freeze',
+    href: '/zh-CN/reference/faq/quality/video_freeze',
     platforms: ['全部平台'],
     products: ['全部产品', '实时互动'],
     summary:

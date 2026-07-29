@@ -60,7 +60,7 @@ describe('faq-filter', () => {
       '/en/api-reference/faq/account',
     );
     expect(categoryHref('account-and-billing', 'zh-CN')).toBe(
-      '/zh-CN/api-reference/faq/account',
+      '/zh-CN/reference/faq/account',
     );
   });
 });
