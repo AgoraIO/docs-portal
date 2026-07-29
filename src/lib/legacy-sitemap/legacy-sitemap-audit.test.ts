@@ -28,8 +28,16 @@ type DocsFilesystemIndex = {
   routeToFile: Map<string, string>;
 };
 
+const manualLegacyUrls = new Set([
+  'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
+]);
+
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
+  const compatibilityUrls = [
+    ...sitemapUrls,
+    ...Array.from(manualLegacyUrls, parseLegacyUrl),
+  ];
   const typedReviewReport = reviewReport as LegacySitemapReviewReport;
   const docsFilesystemIndex = buildDocsFilesystemIndex();
   const docsContentUrls = docsFilesystemIndex.contentUrls;
@@ -78,10 +86,10 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('stores only non-native redirect rules in redirects.json', () => {
-    const nativeUrls = sitemapUrls.filter((url) =>
+    const nativeUrls = compatibilityUrls.filter((url) =>
       docsContentUrls.has(url.path),
     );
-    const redirectedUrls = sitemapUrls.filter(
+    const redirectedUrls = compatibilityUrls.filter(
       (url) => !docsContentUrls.has(url.path),
     );
 
@@ -110,7 +118,9 @@ describe('legacy sitemap compatibility audit', () => {
   it('does not keep stale redirect records outside the sitemap snapshot', () => {
     const sitemapHrefs = new Set(sitemapUrls.map((url) => url.href));
     const staleRules = legacySitemapRedirectConfig.rules.filter(
-      (rule) => !sitemapHrefs.has(rule.legacyUrl),
+      (rule) =>
+        !sitemapHrefs.has(rule.legacyUrl) &&
+        !manualLegacyUrls.has(rule.legacyUrl),
     );
 
     expect(staleRules).toEqual([]);
@@ -160,8 +170,8 @@ describe('legacy sitemap compatibility audit', () => {
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 657,
-      totalLegacyUrls: sitemapUrls.length,
+      semanticPageMatch: 658,
+      totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });
     const reportUrls = new Set(
@@ -191,19 +201,23 @@ describe('legacy sitemap compatibility audit', () => {
   });
 });
 
+function parseLegacyUrl(href: string): LegacySitemapUrl {
+  const url = new URL(href);
+
+  return {
+    href,
+    path: url.pathname,
+    search: url.search,
+  };
+}
+
 function readLegacySitemapUrls(): LegacySitemapUrl[] {
   const sitemapPath = join(process.cwd(), 'src/lib/legacy-sitemap/sitemap.xml');
   const xml = readFileSync(sitemapPath, 'utf8');
 
-  return Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => {
-    const url = new URL(match[1]);
-
-    return {
-      href: match[1],
-      path: url.pathname,
-      search: url.search,
-    };
-  });
+  return Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) =>
+    parseLegacyUrl(match[1]),
+  );
 }
 
 const reviewedRedirectTargets = [

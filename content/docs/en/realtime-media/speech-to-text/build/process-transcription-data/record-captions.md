@@ -15,7 +15,7 @@ Since Cloud Recording and transcription tasks operate on different servers, you 
 
 To follow this procedure, you must:
 
-- Have a valid [Agora Account](https://console.agora.io).
+- Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
 server. For details, see [Agora account management](/en/introduction/account).

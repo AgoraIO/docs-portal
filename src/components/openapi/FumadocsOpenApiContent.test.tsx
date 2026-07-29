@@ -5,13 +5,16 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import type { Document } from 'fumadocs-openapi';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { act } from 'react';
 import { describe, expect, it } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
-type ClientApiOperation = NonNullable<ClientApiPageProps['operations']>[number];
+type Document = Extract<
+  OpenAPIPageProps,
+  { payload: unknown }
+>['payload']['bundled'];
+type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
@@ -69,6 +72,14 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    expect(
+      screen
+        .getByRole('tab', { name: 'cURL' })
+        .closest('.openapi-request-examples'),
+    ).not.toHaveAttribute('data-markdown-ignore');
+    expect(
+      screen.getByText('Response example').closest('.openapi-response-example'),
+    ).not.toHaveAttribute('data-markdown-ignore');
   });
 
   it('uses explicit x-codeSamples without adding default generated language tabs', async () => {
@@ -143,6 +154,7 @@ describe('FumadocsOpenApiContent', () => {
     const curlTab = await screen.findByRole('tab', { name: 'curl' });
     const requestExamples = curlTab.closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
+    expect(requestExamples).toHaveAttribute('data-markdown-ignore');
     const examplesScope = within(requestExamples as HTMLElement);
     expect(
       examplesScope.getByRole('tab', { name: 'curl' }),
@@ -1283,7 +1295,7 @@ describe('FumadocsOpenApiContent', () => {
               description: operationDescriptionMarkdown,
               method: 'post',
               path: '/v2/projects/{appid}/agents/{agentId}/instructions',
-            } as ClientApiOperation,
+            } as OpenApiOperationItem,
           ],
           showDescription: true,
           payload: {
@@ -2207,6 +2219,7 @@ describe('FumadocsOpenApiContent', () => {
     const [gutter, nameColumn] = Array.from(nameHeading.children);
 
     expect(nameHeading.textContent).not.toContain('\u00a0');
+    expect(nameHeading).not.toHaveAttribute('data-markdown-ignore');
     expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
     expect(gutter.textContent).toBe('');
     expect(gutter.querySelector('button')).toBeNull();

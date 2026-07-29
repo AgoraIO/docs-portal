@@ -3,10 +3,6 @@ title: "Voice Activity Detection (Beta)"
 description: "Integrate the Voice Activity Detection (VAD) extension to detect the probability of human voice and background music in audio."
 ---
 
-:::note
-This feature is supported only on Web.
-:::
-
 The Voice Activity Detection (VAD) plugin analyzes audio streams in real-time to detect the probability of human voice and background music. This enables you to implement features like automatic muting during silence, smart audio recording, noise suppression, and adaptive audio processing. The extension is compatible with Web SDK v4.15.0 and above.
 
 <PlatformStructured platform="web">
@@ -39,17 +35,17 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 1. Install the [VAD plugin](https://www.npmjs.com/package/agora-extension-vad) from npm.
 
-   Run the following command to install the VAD plugin:
+   1. Run the following command to install the VAD plugin:
 
-   ```shell
-   npm install agora-extension-vad
-   ```
+      ```shell
+      npm install agora-extension-vad
+      ```
 
-   Import the VAD module in your JavaScript or TypeScript file:
+   2. Import the VAD module in your JavaScript or TypeScript file:
 
-   ```ts
-   import { VADExtension } from "agora-extension-vad";
-   ```
+      ```ts
+      import { VADExtension } from "agora-extension-vad";
+      ```
 
 2. Deploy Wasm files.
 
@@ -95,7 +91,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
 
 3. Register the plugin.
 
-   Call the <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link> method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
+   Call the [`AgoraRTC.registerExtensions`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions) method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
 
    :::warning
 
@@ -152,7 +148,7 @@ Follow these steps to install, configure, and use the VAD plugin in your project
       });
       ```
 
-   2. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
+   2. Inject the plugin into the audio processing pipeline by calling the SDK's [`pipe`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe) method and specify the `processorDestination` property.
 
       ```ts
       // Create an audio track

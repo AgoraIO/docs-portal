@@ -1,11 +1,10 @@
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
-import type { MethodInformation, RenderContext } from 'fumadocs-openapi';
-import type {
-  CodeUsageGeneratorRegistry,
-  InlineCodeUsageGenerator,
-} from 'fumadocs-openapi/requests/generators';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { createClientAPIPage } from 'fumadocs-openapi/ui/create-client';
+import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
+import {
+  type CreateOpenAPIPageOptions,
+  createOpenAPIPage,
+  type OpenAPIPageProps,
+} from 'fumadocs-openapi/ui';
 import {
   CodeBlockTab,
   CodeBlockTabs,
@@ -66,19 +65,23 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
 const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
 const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
 
-const ClientAPIPage = createClientAPIPage({
+const OpenAPIPage = createOpenAPIPage({
   content: {
     renderAPIExampleLayout: (slots) => (
-      <OpenApiRightExamplesLayout slots={slots} />
+      <OpenApiRightExamplesLayout
+        slots={{
+          ...slots,
+          usageTabs: (
+            <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
+          ),
+        }}
+      />
     ),
-    renderAPIExampleUsageTabs: (generators, ctx) => (
-      <OpenApiCodeSampleUsageTabs generators={generators} ctx={ctx} />
-    ),
-    renderOperationLayout: (slots, ctx, method) => (
+    renderOperationLayout: (slots, { ctx, operation }) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
-            ...(method as OpenApiOperation),
+            ...(operation as OpenApiOperation),
             __documentSecurity: ctx.schema.dereferenced.security,
             __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
@@ -99,7 +102,7 @@ const ClientAPIPage = createClientAPIPage({
         anchorPrefix={getOpenApiSchemaAnchorPrefix(options)}
         document={ctx.schema.dereferenced}
         readOnly={options.readOnly}
-        renderMarkdown={ctx.renderMarkdown}
+        renderMarkdown={renderOpenApiMarkdown}
         root={options.root}
         writeOnly={options.writeOnly}
       />
@@ -107,8 +110,14 @@ const ClientAPIPage = createClientAPIPage({
   },
 });
 
-function getGeneratedCodeSampleOverrides(method: MethodInformation) {
-  return method['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
+type GenerateCodeSamplesOptions = Parameters<
+  NonNullable<CreateOpenAPIPageOptions['generateCodeSamples']>
+>[0];
+
+function getGeneratedCodeSampleOverrides({
+  operation,
+}: GenerateCodeSamplesOptions) {
+  return operation['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
 }
 
 export function FumadocsOpenApiContent({
@@ -116,7 +125,7 @@ export function FumadocsOpenApiContent({
   pageProps,
 }: {
   className?: string;
-  pageProps: ClientApiPageProps;
+  pageProps: OpenAPIPageProps;
 }) {
   const operation = getCurrentOperation(pageProps);
 
@@ -135,7 +144,7 @@ export function FumadocsOpenApiContent({
           operation={operation}
           position="before-description"
         />
-        <ClientAPIPage {...pageProps} />
+        <OpenAPIPage {...pageProps} />
       </OpenApiSourceOperationContext.Provider>
     </div>
   );
@@ -305,11 +314,14 @@ function OpenApiRightExamplesLayout({
 }) {
   const operation = useContext(OpenApiOperationContext);
   const hasGroupedSamples = getOpenApiCodeSampleGroups(operation).length > 0;
+  const hasExplicitSamples =
+    hasGroupedSamples || getOpenApiCodeSamples(operation).length > 0;
 
   return (
     <div className="openapi-right-examples prose-no-margin space-y-3">
       <OpenApiRightSection
         className="openapi-request-examples"
+        excludeFromMarkdownParity={hasExplicitSamples}
         title="Request examples"
       >
         {hasGroupedSamples ? null : slots.selector}
@@ -328,10 +340,12 @@ function OpenApiRightExamplesLayout({
 function OpenApiRightSection({
   children,
   className,
+  excludeFromMarkdownParity = false,
   title,
 }: {
   children: ReactNode;
   className?: string;
+  excludeFromMarkdownParity?: boolean;
   title: string;
 }) {
   return (
@@ -340,6 +354,7 @@ function OpenApiRightSection({
         'openapi-right-section border-fd-border border-t pt-3 first:border-t-0 first:pt-0',
         className,
       )}
+      data-markdown-ignore={excludeFromMarkdownParity ? '' : undefined}
     >
       <h3 className="mb-2 font-semibold text-fd-foreground text-sm">{title}</h3>
       {children}
@@ -391,14 +406,18 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   return (
     <div className="not-prose flex flex-row items-center gap-2.5 rounded-xl border bg-fd-card p-3 text-fd-card-foreground">
       {method ? (
-        <span className="rounded-md bg-fd-primary px-2 py-1 font-semibold text-[0.6875rem] text-fd-primary-foreground uppercase">
-          {method}
-        </span>
+        <div>
+          <span className="rounded-md bg-fd-primary px-2 py-1 font-semibold text-[0.6875rem] text-fd-primary-foreground uppercase">
+            {method}
+          </span>
+        </div>
       ) : null}
       {endpoint ? (
-        <code className="flex-1 overflow-auto text-nowrap text-[0.8125rem] text-fd-muted-foreground">
-          {endpoint}
-        </code>
+        <div className="flex-1 overflow-auto">
+          <code className="text-nowrap text-[0.8125rem] text-fd-muted-foreground">
+            {endpoint}
+          </code>
+        </div>
       ) : null}
     </div>
   );
@@ -448,8 +467,12 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
 }
 
 function getCurrentOperation(
-  pageProps: ClientApiPageProps,
+  pageProps: OpenAPIPageProps,
 ): OpenApiOperation | undefined {
+  if (!('payload' in pageProps)) {
+    return undefined;
+  }
+
   const operation = pageProps.operations?.at(0);
   const pathItem = operation
     ? getRecord(pageProps.payload.bundled.paths)?.[operation.path]
@@ -622,12 +645,14 @@ function OpenApiResponseBodySchemas({
         {responses.map((response) => (
           <div key={response.statusCode}>
             <div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
-              <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 font-medium text-fd-foreground text-xs">
-                {response.statusCode}
-              </code>
-              <span className="font-mono text-fd-muted-foreground text-xs">
+              <div>
+                <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 font-medium text-fd-foreground text-xs">
+                  {response.statusCode}
+                </code>
+              </div>
+              <div className="font-mono text-fd-muted-foreground text-xs">
                 application/json
-              </span>
+              </div>
             </div>
             {response.description ? (
               <div className="prose-no-margin mb-3 text-fd-muted-foreground text-sm">
@@ -694,18 +719,24 @@ function OpenApiFieldList({
               key={`${title}:${field.name}`}
             >
               <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <code className="font-medium text-fd-primary">
-                  {field.name}
-                </code>
-                <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-                {field.required ? (
-                  <span className="font-medium text-red-500">*</span>
-                ) : (
-                  <span className="text-fd-muted-foreground">?</span>
-                )}
-                <span className="font-mono text-fd-muted-foreground text-xs">
+                <div>
+                  <code className="font-medium text-fd-primary">
+                    {field.name}
+                  </code>
+                </div>
+                <div>
+                  <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+                </div>
+                <div>
+                  {field.required ? (
+                    <span className="font-medium text-red-500">*</span>
+                  ) : (
+                    <span className="text-fd-muted-foreground">?</span>
+                  )}
+                </div>
+                <div className="font-mono text-fd-muted-foreground text-xs">
                   {field.type}
-                </span>
+                </div>
               </div>
               {field.description ? (
                 <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
@@ -725,11 +756,9 @@ function OpenApiFieldList({
 }
 
 function OpenApiCodeSampleUsageTabs({
-  ctx,
-  generators,
+  defaultUsageTabs,
 }: {
-  ctx: RenderContext;
-  generators: CodeUsageGeneratorRegistry;
+  defaultUsageTabs: ReactNode;
 }) {
   const operation = useContext(OpenApiOperationContext);
   const groups = getOpenApiCodeSampleGroups(operation);
@@ -739,7 +768,7 @@ function OpenApiCodeSampleUsageTabs({
     return (
       <OpenApiCodeSampleGroupSelector
         groups={groups}
-        renderCodeBlock={ctx.renderCodeBlock}
+        renderCodeBlock={renderOpenApiCodeBlock}
       />
     );
   }
@@ -747,48 +776,13 @@ function OpenApiCodeSampleUsageTabs({
   if (samples.length > 0) {
     return (
       <OpenApiCodeSampleTabs
-        renderCodeBlock={ctx.renderCodeBlock}
+        renderCodeBlock={renderOpenApiCodeBlock}
         samples={samples}
       />
     );
   }
 
-  return <OpenApiDefaultUsageTabs ctx={ctx} generators={generators} />;
-}
-
-function OpenApiDefaultUsageTabs({
-  ctx,
-  generators,
-}: {
-  ctx: RenderContext;
-  generators: CodeUsageGeneratorRegistry;
-}) {
-  const entries = Array.from(generators.map().entries());
-  const UsageTab = ctx.clientBoundary.UsageTab;
-
-  if (entries.length === 0) {
-    return null;
-  }
-
-  return (
-    <CodeBlockTabs
-      defaultValue={entries[0]?.[0]}
-      groupId="fumadocs_openapi_requests"
-    >
-      <CodeBlockTabsList>
-        {entries.map(([id, item]) => (
-          <CodeBlockTabsTrigger key={id} value={id}>
-            {item.label ?? item.lang}
-          </CodeBlockTabsTrigger>
-        ))}
-      </CodeBlockTabsList>
-      {entries.map(([id, item]) => (
-        <CodeBlockTab key={id} value={id}>
-          <UsageTab id={id} lang={item.lang} _client={item._client} />
-        </CodeBlockTab>
-      ))}
-    </CodeBlockTabs>
-  );
+  return defaultUsageTabs;
 }
 
 function getOpenApiCodeSampleGroups(operation?: OpenApiOperation) {
@@ -818,7 +812,7 @@ function OpenApiCodeSampleTabs({
   renderCodeBlock,
   samples,
 }: {
-  renderCodeBlock: RenderContext['renderCodeBlock'];
+  renderCodeBlock: (lang: string, source: string) => ReactNode;
   samples: OpenApiResolvedCodeSample[];
 }) {
   const [selectedSampleValue, setSelectedSampleValue] = useState('');
@@ -863,7 +857,7 @@ function OpenApiCodeSampleGroupSelector({
   renderCodeBlock,
 }: {
   groups: OpenApiResolvedCodeSampleGroup[];
-  renderCodeBlock: RenderContext['renderCodeBlock'];
+  renderCodeBlock: (lang: string, source: string) => ReactNode;
 }) {
   const [selectedTitle, setSelectedTitle] = useState(groups[0]?.title ?? '');
   const [selectedSampleValue, setSelectedSampleValue] = useState('');
@@ -1091,15 +1085,15 @@ function OpenApiMetadata({ items }: { items: OpenApiMetadataItem[] }) {
   return (
     <div className="mt-2 flex flex-wrap gap-2">
       {items.map(({ label, value }) => (
-        <span
+        <div
           className="inline-flex min-w-0 items-start gap-1 rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 text-xs"
           key={`${label}:${value}`}
         >
-          <span className="font-medium text-fd-foreground">{label}</span>
-          <code className="min-w-0 truncate text-fd-muted-foreground">
-            {value}
-          </code>
-        </span>
+          <div className="font-medium text-fd-foreground">{label}</div>
+          <div className="min-w-0 truncate text-fd-muted-foreground">
+            <code>{value}</code>
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -1473,19 +1467,25 @@ function OpenApiSchemaRowItem({
             </button>
           ) : null}
         </span>
-        <span className="openapi-schema-property-name-column min-w-0">
+        <div className="openapi-schema-property-name-column min-w-0">
           {nameCode}
-        </span>
-        <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-        <OpenApiSchemaRequiredBadge required={row.required} />
-        <span className="font-mono text-fd-muted-foreground text-xs">
+        </div>
+        <div>
+          <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+        </div>
+        <div>
+          <OpenApiSchemaRequiredBadge required={row.required} />
+        </div>
+        <div className="font-mono text-fd-muted-foreground text-xs">
           {row.type}
           {row.nullable ? ' | null' : ''}
-        </span>
+        </div>
         {row.deprecated ? (
-          <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-            Deprecated
-          </span>
+          <div>
+            <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
+              Deprecated
+            </span>
+          </div>
         ) : null}
       </div>
       {row.description ? (
@@ -1558,6 +1558,10 @@ function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {
     rangeMetadata,
     rangeMetadata ? null : getConstraintTuple('Minimum', row.minimum),
     rangeMetadata ? null : getConstraintTuple('Maximum', row.maximum),
+    getConstraintTuple('Min length', row.minLength),
+    getConstraintTuple('Max length', row.maxLength),
+    getConstraintTuple('Min items', row.minItems),
+    getConstraintTuple('Max items', row.maxItems),
     row.pattern ? ['Pattern', row.pattern] : null,
     row.example !== undefined
       ? ['Example', formatOpenApiSchemaValue(row.example)]
@@ -1781,6 +1785,10 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
     .result as ReactNode;
 
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
+}
+
+function renderOpenApiCodeBlock(lang: string, source: string) {
+  return renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``);
 }
 
 function createOpenApiMarkdownProcessor() {

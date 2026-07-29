@@ -4,6 +4,16 @@
   "framework": null,
   "redirects": [
     {
+      "source": "/doc/:path*",
+      "destination": "https://doc.shengwang.cn/doc/:path*",
+      "statusCode": 308
+    },
+    {
+      "source": "/api-ref/:path*",
+      "destination": "https://doc.shengwang.cn/api-ref/:path*",
+      "statusCode": 308
+    },
+    {
       "source": "/cn",
       "destination": "/en",
       "statusCode": 301
@@ -149,10 +159,17 @@
       "statusCode": 301
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/((?!_build/|assets/|__static/|images/|openapi/|llms/|favicon.ico|robots.txt|sitemap.xml|llms.txt|llms-full.txt).*)",
-      "destination": "/index.html"
+      "src": "^/en/((?!.*\\.md/?$).+?)/?$",
+      "dest": "/en/$1.md",
+      "has": [
+        {
+          "type": "header",
+          "key": "Accept",
+          "value": ".*text/markdown.*"
+        }
+      ]
     }
   ]
 }

@@ -3,7 +3,7 @@ title: "Analytics REST API reference"
 description: "Agora Analytics REST APIs for call quality, usage, and real-time monitoring metrics."
 ---
 
-Before working with the RESTful APIs, review the Agora Analytics features in [Agora Console](https://console.agora.io) to gain a visual understanding of the quality and usage metrics that are available. For details, see the following user guides:
+Before working with the RESTful APIs, review the Agora Analytics features in [Agora Console](https://console.agora.io/) to gain a visual understanding of the quality and usage metrics that are available. For details, see the following user guides:
 
 - [Call Inspector](#call-inspector)
 - [Data Insights](#data-insights)

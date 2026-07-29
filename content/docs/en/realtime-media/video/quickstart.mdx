@@ -4368,16 +4368,16 @@ In addition to using `npm` to install the Web SDK, you can also use the followin
 
 * In the project HTML file, add the following tag to obtain the SDK from CDN:
 
-    ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
-    ```
+  ```html
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
+  ```
 
 
 * Download the Video SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
 
-    ```html
-    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.5.js"></script>
-    ```
+  ```html
+  <script src="./AgoraRTC_N-4.24.6.js"></script>
+  ```
 
 Visit the [Download](/en/api-reference/sdks?product=video&platform=web) page to obtain the link for the latest SDK version.
 
@@ -7493,7 +7493,7 @@ import {
 
 ### Initialize the client
 
-Use the `createClient` method provided by the SDK to create a client object for the `` component. Wrap the `` component with `` to enable state management and access operation-related hooks.
+Use the `createClient` method provided by the SDK to create a client object for the `<AgoraRTCProvider />` component. Wrap the `<Basics />` component with `<AgoraRTCProvider />` to enable state management and access operation-related hooks.
 
 
 For Video Calling, set the `mode` property of `ClientConfig` to `"rtc"`.

@@ -3,13 +3,13 @@ title: "Receive webhook notifications"
 description: "Receive notification of channel events in real time."
 ---
 
-A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Broadcast Streaming events. With Notifications, you can subscribe to Broadcast Streaming events and receive notifications in real time.
+A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about RTC events. With Notifications, you can subscribe to RTC events and receive notifications in real time.
 
 ## Understand the tech
 
 Using Agora Console you subscribe to specific events for your project and configure the URL of the webhooks to receive these events. Agora sends notifications of your events to your webhook every time they occur. Your server authenticates the notification and returns `200 Ok` to confirm reception. You use the information in the JSON payload of each notification to give the best user experience to your users.
 
-The following figure illustrates the workflow when Notifications is enabled for the specific Broadcast Streaming events you subscribe to:
+The following figure illustrates the workflow when Notifications is enabled for the specific RTC events you subscribe to:
 
 **Channel events notification workflow**
 
@@ -206,15 +206,15 @@ To do this, take the following steps:
 
 To enable Webhook notifications for RTC channel events:
 
-1. In [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar and switch to the **Webhooks** tab.
+1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
 1. Select **New Webhook**.
 
-1. In the **Product** dropdown, select **RTC**.
+1. From the **Product** dropdown, select **RTC**.
 
     ![RTC Webhooks](/console-tmp/webhook-rtc.png)
 
-1. Copy the **Secret** for the notification type. You use this secret to [Add signature verification](#add-signature-verification).
+1. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
 
 1. Fill in the following:
 

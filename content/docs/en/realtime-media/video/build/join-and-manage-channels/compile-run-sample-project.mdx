@@ -101,27 +101,32 @@ This page shows how to compile, configure, and run the Video SDK Unreal (Bluepri
 - Node 16 or later
 - The following, depending onyourtarget platform:
 
-<CodeBlockTabs defaultValue="tab1">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="tab1">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="tab2">iOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-host-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="tab1">
+<TabsContent value="android">
+
 - A machine running macOS, Windows, or Linux
     - [Java Development Kit (JDK) 11](https://openjdk.org/projects/jdk/11/) or later
     - Latest version of Android Studio
     - A physical or virtual mobile device running Android 5.0 or later
-</CodeBlockTab>
 
-<CodeBlockTab value="tab2">
+</TabsContent>
+
+<TabsContent value="ios">
+
 - A machine running macOS
     - Xcode 10 or later
     - CocoaPods
         - A physical or virtual mobile device running iOS 9.0 or later.
             If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
-</CodeBlockTab>
-</CodeBlockTabs>
+
+</TabsContent>
+</Tabs>
+
 </PlatformStructured>
 <PlatformStructured platform="javascript">
 - A [supported browser](../../reference/supported-platforms#desktop-browsers).
@@ -609,13 +614,14 @@ If you have enabled joining with only the App ID for your project, leave the App
 <PlatformStructured platform="blueprint">
 In the Unreal Editor, you can compile and run the sample project at the main level or any sublevel.
 
-<CodeBlockTabs defaultValue="Main level">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="Main level">Main Level</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="sub level">Sub Level</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="Main level">
+<TabsList>
+  <TabsTrigger value="Main level">Main Level</TabsTrigger>
+  <TabsTrigger value="sub level">Sub Level</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="Main level">
+<TabsContent value="Main level">
+
 1. In the path of the Blueprint API example, double-click **AgoraBPExample.uproject** to open the project.
 
 1. Double-click **MainLevel**, then click **Compile** and run the sample project. You see the following interface:
@@ -629,9 +635,11 @@ In the Unreal Editor, you can compile and run the sample project at the main lev
     ![](https://assets-docs.agora.io/images/video-sdk/run-compile-blueprint-tab-1-2.png)
 
 1. To test various audio and video interaction use-cases, connect to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html), or install and run the sample project on a second device. Make sure you use the same App ID on both devices. When you join the same channel from two devices, you can see and hear each other.
-</CodeBlockTab>
 
-<CodeBlockTab value="sub level">
+</TabsContent>
+
+<TabsContent value="sub level">
+
 1. In the path of the Blueprint API example,, double-click **AgoraBPExample.uproject** to open the project.
 
     ![](https://assets-docs.agora.io/images/video-sdk/run-compile-blueprint-tab-2-1.png)
@@ -649,8 +657,10 @@ In the Unreal Editor, you can compile and run the sample project at the main lev
 1. Click **JoinChannel** to join the channel. You see yourself in the local view.
 
 1. To test various audio and video interaction use-cases, connect to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html), or install and run the sample project on a second device. Make sure you use the same App ID on both devices. When you join the same channel from two devices, you can see and hear each other.
-</CodeBlockTab>
-</CodeBlockTabs>
+
+</TabsContent>
+</Tabs>
+
 </PlatformStructured>
 <PlatformStructured platform="android">
 1. Open the `/API-Examples/Android/APIExample` folder in Android Studio.
@@ -805,13 +815,14 @@ In the Unreal Editor, you can compile and run the sample project at the main lev
 <PlatformStructured platform="unreal">
 In the Unreal Editor, you can compile and run the sample project at the main level or any sublevel.
 
-<CodeBlockTabs defaultValue="Main level">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="Main level">Main Level</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="sub level">Sub Level</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="Main level">
+<TabsList>
+  <TabsTrigger value="Main level">Main Level</TabsTrigger>
+  <TabsTrigger value="sub level">Sub Level</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="Main level">
+<TabsContent value="Main level">
+
 1. In the C++ API example folder, double-click `AgoraExample.uproject` to open the project.
 
 1. Double-click **MainLevel**, then click **Compile** and **Run** the sample project. On Windows, you see the following interface:
@@ -825,9 +836,11 @@ In the Unreal Editor, you can compile and run the sample project at the main lev
     ![](https://assets-docs.agora.io/images/video-sdk/run-compile-unreal-tab-1-step-4.png)
 
 1. To test various audio and video interaction use-cases, connect to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html), or install and run the sample project on a second device. Make sure you use the same App ID on both devices. When you join the same channel from two devices, you can see and hear each other.
-</CodeBlockTab>
 
-<CodeBlockTab value="sub level">
+</TabsContent>
+
+<TabsContent value="sub level">
+
 1. In the C++ API example folder, double-click `AgoraExample.uproject` to open the project.
 
 1. Choose **BasicVideoCallScene** as an example, double-click the sub-level in the Content Browser, and then click the  **BP_AgoraActor** blueprint in the **World Outliner panel**. Fill in the App ID, temporary token, and channel name of your project in the **Details panel**.
@@ -841,8 +854,10 @@ In the Unreal Editor, you can compile and run the sample project at the main lev
 1. Click **JoinChannel** to join the channel. You see yourself in the local view.
 
 1. To test various audio and video interaction use-cases, connect to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html), or install and run the sample project on a second device. Make sure you use the same App ID on both devices. When you join the same channel from two devices, you can see and hear each other.
-</CodeBlockTab>
-</CodeBlockTabs>
+
+</TabsContent>
+</Tabs>
+
 </PlatformStructured>
 <PlatformStructured platform="web">
 1. From the menu, choose the feature or use-case you want to experience.

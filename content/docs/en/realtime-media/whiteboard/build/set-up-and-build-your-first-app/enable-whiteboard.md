@@ -14,15 +14,18 @@ Before you enable Interactive Whiteboard, ensure that you have:
 
 ## Enable Interactive Whiteboard
 
-To enable Interactive Whiteboard, in [Agora Console](https://console.agora.io) go to **Project Settings**, switch to the **Services** tab, select **Whiteboard**, and turn on the **Active** toggle.
+To enable Interactive Whiteboard:
+
+1. Log in to [Agora Console](https://console.agora.io). 
+1. Select **RTC services** from the sidebar. 
+1. Find **Whiteboard**, and turn on the **Active** toggle.
+1. Click the settings icon to open the configuration panel. The Interactive Whiteboard panel provides security credentials and services configuration.
 
 ![Interactive Whiteboard settings on the Services page](/console-tmp/whiteboard-config.png)
 
-The Interactive Whiteboard panel provides security credentials and services configuration.
-
 ## Get security credentials for your whiteboard project
 
-Under **Security**, the panel provides the following credentials:
+Under **Basic Information**, the panel provides the following credentials:
 
 - **App Identifier**: The unique App Identifier required for initializing the Whiteboard SDK.
 - **Access Key** and **Secret Key**: A pair of keys you use to generate whiteboard tokens. See [Generate token using an app server](../authenticate-users/generate-token-app-server.mdx).

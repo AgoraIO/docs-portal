@@ -73,6 +73,8 @@ const FumadocsImage = defaultMdxComponents.img;
 const RouterFumadocsAnchor = createLink(FumadocsAnchor);
 const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
+const MdxTabLabelsContext = createContext<Record<string, string>>({});
+const MdxTabLabelContext = createContext<string | undefined>(undefined);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -174,6 +176,11 @@ function collectTabValues(children: ReactNode, values: string[] = []) {
     }
 
     const element = child as TabValueElement;
+
+    if (element.type === Tabs) {
+      return;
+    }
+
     const value = element.props.value;
 
     if (typeof value === 'string' && !values.includes(value)) {
@@ -184,6 +191,59 @@ function collectTabValues(children: ReactNode, values: string[] = []) {
   });
 
   return values;
+}
+
+function collectTabLabels(
+  children: ReactNode,
+  labels: Record<string, string> = {},
+) {
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) {
+      return;
+    }
+
+    const element = child as TabValueElement;
+
+    if (element.type === Tabs) {
+      return;
+    }
+
+    const value = element.props.value;
+    const label = getStaticTabLabel(element.props.children);
+
+    if (
+      element.type === FumadocsTabsTrigger &&
+      typeof value === 'string' &&
+      label
+    ) {
+      labels[value] = label;
+    }
+
+    collectTabLabels(element.props.children, labels);
+  });
+
+  return labels;
+}
+
+function getStaticTabLabel(children: ReactNode): string | undefined {
+  const label = Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string' || typeof child === 'number') {
+        return String(child);
+      }
+
+      if (isValidElement(child)) {
+        return (
+          getStaticTabLabel((child as TabValueElement).props.children) ?? ''
+        );
+      }
+
+      return '';
+    })
+    .join('')
+    .trim();
+
+  return label || undefined;
 }
 
 function useTabValues({
@@ -267,6 +327,15 @@ function Tabs({
   ...props
 }: TabsRootProps) {
   const values = useTabValues({ children, items });
+  const labels = useMemo(() => {
+    const collected = collectTabLabels(children);
+
+    for (const item of items ?? []) {
+      collected[escapeTabValue(item)] ??= item;
+    }
+
+    return collected;
+  }, [children, items]);
   const { safeValue, setSafeValue } = useSafeTabValue({
     defaultValue,
     onValueChange,
@@ -275,16 +344,18 @@ function Tabs({
   });
 
   return (
-    <ControlledFumadocsTabs
-      {...props}
-      className={cn('bg-fd-card', className)}
-      defaultValue={defaultValue}
-      items={items}
-      onValueChange={setSafeValue}
-      value={safeValue}
-    >
-      {children}
-    </ControlledFumadocsTabs>
+    <MdxTabLabelsContext value={labels}>
+      <ControlledFumadocsTabs
+        {...props}
+        className={cn('bg-fd-card', className)}
+        defaultValue={defaultValue}
+        items={items}
+        onValueChange={setSafeValue}
+        value={safeValue}
+      >
+        {children}
+      </ControlledFumadocsTabs>
+    </MdxTabLabelsContext>
   );
 }
 
@@ -546,17 +617,47 @@ function Pre({ className, ...props }: PreProps) {
 }
 
 function TabsContent({
+  children,
   className,
   ...props
 }: ComponentProps<typeof FumadocsTabsContent>) {
+  const tabValue = typeof props.value === 'string' ? props.value : undefined;
+  const tabLabels = useContext(MdxTabLabelsContext);
+  const tabLabel = tabValue ? tabLabels[tabValue] : undefined;
+
   return (
-    <FumadocsTabsContent
-      className={cn(
-        '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
-        className,
-      )}
-      {...props}
-    />
+    <MdxTabLabelContext value={tabLabel}>
+      <FumadocsTabsContent
+        className={cn(
+          '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
+          className,
+        )}
+        forceMount
+        {...props}
+      >
+        {children}
+      </FumadocsTabsContent>
+    </MdxTabLabelContext>
+  );
+}
+
+type MdxHeadingLevel = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
+function TabAwareHeading({
+  as,
+  children,
+  ...props
+}: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
+  const tabLabel = useContext(MdxTabLabelContext);
+  const Heading = (defaultMdxComponents[as] ?? as) as ComponentType<
+    ComponentProps<'h2'>
+  >;
+
+  return (
+    <Heading {...props}>
+      {children}
+      {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
+    </Heading>
   );
 }
 
@@ -1048,6 +1149,11 @@ export function getMDXComponents(
   return {
     ...defaultMdxComponents,
     img: ZoomableImage,
+    h2: (props) => <TabAwareHeading as="h2" {...props} />,
+    h3: (props) => <TabAwareHeading as="h3" {...props} />,
+    h4: (props) => <TabAwareHeading as="h4" {...props} />,
+    h5: (props) => <TabAwareHeading as="h5" {...props} />,
+    h6: (props) => <TabAwareHeading as="h6" {...props} />,
     a: createDocsAnchor(context?.contentPath),
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),

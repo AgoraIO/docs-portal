@@ -427,7 +427,7 @@ A token is generated with important information such as App ID, user ID (`uid`),
 </Accordion>
 </Accordions>
 
-The app developer can enable token-based authentication (App Certificate) on [Agora Console](https://console.agora.io). When enabled, all user’s request to join a channel must be done with a valid token.
+The app developer can enable token-based authentication (App Certificate) on [Agora Console](https://console.agora.io/). When enabled, all user’s request to join a channel must be done with a valid token.
 
 <Accordions>
 <Accordion title="Enable token-based authentication">

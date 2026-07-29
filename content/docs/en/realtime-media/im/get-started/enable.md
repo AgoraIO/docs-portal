@@ -3,7 +3,7 @@ title: "Enable and configure Chat"
 description: "Introduces how to enable and configure Agora Chat."
 ---
 
-Before using Chat, you need to enable and configure it through [Agora Console](https://console.agora.io).
+Before using Chat, you need to enable and configure it through [Agora Console](https://console.agora.io/).
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ To enable Chat, make sure that you have the following:
 
 ## Enable Chat
 
-1. Log in to the [Agora Console](https://console.agora.io).
+1. Log in to the [Agora Console](https://console.agora.io/).
 
 2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
 
@@ -62,7 +62,7 @@ Agora Console assigns the following information to each project that enables Cha
 
 Follow these steps to get the project information:
 
-1. Find your Chat-enabled project on the [Project Management](https://console.agora.io/project-management) page on Agora Console and click **Config**.
+1. Find your Chat-enabled project on the [Project Management](https://console.agora.io/legacy/project-management) page on Agora Console and click **Config**.
 2. On the project edit page, find **Chat** and click **Config**.
 3. On the Chat config page, get the values of **Data Center**, **AppKey**, **OrgName**, **AppName**, **WebSocket Address**, and **REST API**.
 
@@ -118,7 +118,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
 ## Change the Chat plan
 
-1. Log in to the [Agora Console](https://console.agora.io).
+1. Log in to the [Agora Console](https://console.agora.io/).
 
 2. In the left navigation bar, click **Package**.
 
@@ -132,7 +132,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
 ## Disable Chat
 
-1. Log in to the [Agora Console](https://console.agora.io).
+1. Log in to the [Agora Console](https://console.agora.io/).
 
 2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
 
@@ -148,7 +148,7 @@ For testing purposes, Agora Console supports generating temporary tokens for Cha
 
 Before unsubscribing Chat, disable all projects that have Chat enabled.
 
-1. Log in to the [Agora Console](https://console.agora.io).
+1. Log in to the [Agora Console](https://console.agora.io/).
 
 2. In the left navigation bar, click **Package**.
 

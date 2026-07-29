@@ -1,0 +1,163 @@
+---
+title: "IP addresses for Cloud Proxy"
+description: "If your app is running inside a restricted network, clear one of the following IP addresses for Cloud Proxy to work effectively."
+---
+
+This guide provides configuration details you need to set up Agora Cloud Proxy services across all supported regions. Cloud Proxy enables secure communication through firewalls by using designated IP addresses and ports.
+:::note
+If you configured cloud proxy settings using an older version of this guide, you may need to update your firewall rules. Refer to the [Cloud proxy migration guide](cloud-proxy-migration-guide.md).
+:::
+## Understand the tech
+
+Agora deploys dedicated servers to run the cloud proxy service. Agora owns the IP addresses and fully controls the traffic on these addresses. The following network infrastructure components support your deployment:
+
+* **Access point networks**: Each access point uses a single cloud-hosted IP address.
+* **Cloud machine networks**: Use single-point IPs for better security.
+* **Physical machine networks**: Use a /28 subnet mask for each network segment.
+* **Regional deployment**: Includes configurations for North America, Europe, India, Japan, Southeast Asia, and China.
+
+## Implementation guidelines
+
+Follow these guidelines to configure cloud proxy settings.
+
+* **Check your SDK version**: Configuration requirements vary depending on the SDK version you're using.
+* **Configure regional IPs**: Add the correct IP addresses for your target regions.
+
+  :::note
+  When adding IP addresses:
+
+  - If you use cloud proxy with [Restricted media zones](../build/secure-and-protect-channels/geofencing.mdx), add only the IP addresses dedicated to your specified region.
+  - If you do not restrict media zones, add all IP addresses to ensure connectivity.
+  :::
+
+* **Open required ports**: Make sure all necessary firewall ports are accessible.
+* **Test connectivity**: Validate your configuration before deploying to production.
+
+To use Agora Cloud Proxy, your end users must first configure their firewall to trust the following IP address and port ranges.
+
+<PlatformStructured platform="android">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-web.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+<include cwd>content/includes/en/cloud-proxy-allowed-ips-native.mdx</include>
+
+</PlatformStructured>
+
+## Best practices
+
+### Regional deployment
+
+- **Global deployments**:
+
+  - Open network segments for all overseas regions to ensure service availability
+  - Especially important for deployments without specific region requirements
+
+### Domain vs IP whitelisting
+
+- **AP and Signaling**:
+
+  Consider the following options
+
+  - Enable domain name whitelisting (eliminates need for HTTPS/WSS IP whitelists)
+  - Configure IP whitelisting
+
+- **Media**:
+
+  - Can only use IP whitelisting. Domain whitelisting is not available.
+
+- **DNS requirements**:
+
+  - Open DNS resolution port `53` in addition to port `443`
+  - Verify connectivity by pinging the provided domain names
+
+### Port configuration requirements
+
+- **TCP/UDP requirements**:
+
+  - TCP port `443`: Required for all configurations
+  - UDP port `443`: Required for Proxy3 only (proxy4/5 only need TCP `443`)
+
+- **Regional considerations**:
+
+  - If your region is uncertain, configure all whitelists
+  - For region-specific deployments like Japan, consider opening the entire region, such as Asia
+
+## Validation and testing
+
+Validate and test your configuration before rolling it out to production.
+
+### Validate configuration
+
+To verify that your Cloud Proxy configuration is working correctly:
+
+1. Enable Cloud Proxy mode in your application (for example, UDP Cloud Proxy)
+2. Join a channel and check for successful connection
+3. Monitor the network quality metrics in your application
+4. Test from multiple geographic locations if possible
+
+### Test performance
+
+To test your configuration:
+
+1. **Identify SDK version**:
+
+   Use the SDK's version identification method to confirm your current version.
+
+2. **Test connectivity**:
+
+   Configure the Cloud Proxy UDP mode and enable the lastmile test to check connectivity.
+
+3. **Monitor performance**:
+
+   - Track latency, packet loss, and jitter
+   - Test across all targeted regions
+
+### Get support
+
+For implementation assistance, contact [support@agora.io](mailto:support@agora.io) with your specific SDK version and region requirements.

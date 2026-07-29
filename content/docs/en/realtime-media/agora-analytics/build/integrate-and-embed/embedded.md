@@ -21,7 +21,7 @@ Follow these steps to embed Agora Analytics in your portal.
 
 To access **Embed Settings**, do the following:
 
-1. Log in to [Agora Console](https://console.agora.io).
+1. Log in to [Agora Console](https://console.agora.io/).
 1. In the navigation panel, click Agora Analytics.
 1. From the user profile menu, select **Embed**.
 

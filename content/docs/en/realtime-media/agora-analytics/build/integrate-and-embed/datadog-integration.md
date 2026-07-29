@@ -11,7 +11,7 @@ This page shows you how to setup DataDog integration with Agora Analytics.
 
 To enable Agora Analytics integration with Datadog:
 
-1. In Agora Console, subscribe to the **Premium** or **Enterprise** [pricing plan](https://console.agora.io/aa/pricing).
+1. In Agora Console, subscribe to the **Premium** or **Enterprise** [pricing plan](https://analytics-lab.agora.io/pricing).
 
 2. In [Agora Analytics](https://analytics-lab.agora.io/), navigate to **Integration > Datadog**.
 

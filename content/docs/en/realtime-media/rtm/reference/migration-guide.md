@@ -19,8 +19,10 @@ For a seamless transition from Signaling `1.x` to `2.x`, refer to the following 
 
 To activate Signaling `2.x`, take the following steps:
 
-1. In [Agora Console](https://console.agora.io), create or select a project.
-1. [Enable and configure Signaling](/en/realtime-media/rtm/manage-agora-account) for the project, including selecting a data center and subscribing to a plan.
+1. Log in to [Agora Console](https://console.agora.io/)
+1. Create a new Agora project or choose an existing project from the project dropdown.
+1. Find **Signaling**. and toggle the switch to enable it.
+1. From the username menu, navigate to **Subscriptions > Signaling** and subscribe to a plan.
 1. Copy the App ID for your project for use in your code.
 
     :::info

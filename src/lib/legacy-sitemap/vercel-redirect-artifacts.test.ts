@@ -34,7 +34,16 @@ describe('legacy redirect Vercel artifacts', () => {
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
     bulkRedirectsPath: string;
     redirects?: VercelRedirect[];
-    rewrites: unknown[];
+    rewrites?: unknown[];
+    routes?: Array<{
+      dest: string;
+      has?: Array<{
+        key: string;
+        type: string;
+        value: string;
+      }>;
+      src: string;
+    }>;
   };
   const bulkRedirects = JSON.parse(
     readFileSync('vercel-legacy-redirects.json', 'utf8'),
@@ -43,7 +52,27 @@ describe('legacy redirect Vercel artifacts', () => {
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
     expect(staticRedirects).toHaveLength(legacyRules.length);
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
-    expect(vercelConfig.rewrites).toHaveLength(1);
+    expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
+    expect(vercelConfig.routes).toContainEqual({
+      dest: '/en/$1.md',
+      has: [
+        {
+          key: 'Accept',
+          type: 'header',
+          value: '.*text/markdown.*',
+        },
+      ],
+      src: '^/en/((?!.*\\.md/?$).+?)/?$',
+    });
+
+    expect(vercelConfig.routes).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
+      ]),
+    );
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
@@ -56,6 +85,19 @@ describe('legacy redirect Vercel artifacts', () => {
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
       preserveQueryParams: true,
       source: '/en/agora-chat/develop/ip_allowlist',
+      statusCode: 301,
+    });
+  });
+
+  it('redirects the legacy Chat RESTful overview to the API reference overview in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/agora-chat/restful-api/restful-overview',
+      ),
+    ).toEqual({
+      destination: '/en/api-reference/api-ref/im',
+      preserveQueryParams: true,
+      source: '/en/agora-chat/restful-api/restful-overview',
       statusCode: 301,
     });
   });
@@ -82,6 +124,23 @@ describe('legacy redirect Vercel artifacts', () => {
           destination: '/en/ai/models/tts/openai',
           source: '/conversational-ai/models/tts/overview',
           statusCode: 301,
+        },
+      ]),
+    );
+  });
+
+  it('keeps legacy passthrough routes working without a catch-all SPA rewrite', () => {
+    expect(vercelConfig.redirects).toEqual(
+      expect.arrayContaining([
+        {
+          destination: 'https://doc.shengwang.cn/doc/:path*',
+          source: '/doc/:path*',
+          statusCode: 308,
+        },
+        {
+          destination: 'https://doc.shengwang.cn/api-ref/:path*',
+          source: '/api-ref/:path*',
+          statusCode: 308,
         },
       ]),
     );

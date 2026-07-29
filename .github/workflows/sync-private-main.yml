@@ -1,0 +1,37 @@
+name: Sync Private Main
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-private-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Mirror public main to private main
+    if: vars.DOCS_PORTAL_REPO_ROLE == 'private'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout private main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Fetch public main
+        run: |
+          git remote add public https://github.com/AgoraIO/docs-portal.git
+          git fetch --no-tags public main:refs/remotes/public/main
+
+      - name: Synchronize private main
+        run: |
+          node scripts/sync-private-main.mjs \
+            --public-repo . \
+            --public-ref refs/remotes/public/main \
+            --private-url origin

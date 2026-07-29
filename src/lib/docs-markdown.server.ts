@@ -71,8 +71,8 @@ export async function getPublicDocsMarkdownResponse({
 
   const isOpenApiPage =
     page?.type === 'openapi' &&
-    'getClientAPIPageProps' in page.data &&
-    typeof page.data.getClientAPIPageProps === 'function';
+    'getOpenAPIPageProps' in page.data &&
+    typeof page.data.getOpenAPIPageProps === 'function';
 
   if (!page || isOpenApiPage) {
     const openApiMarkdown = await getOpenApiMarkdownByContentPath(contentPath);

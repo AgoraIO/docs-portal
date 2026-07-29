@@ -202,7 +202,7 @@ To do this, take the following steps:
 
 ### Set up Webhook notifications
 
-1. In [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar and switch to the **Webhooks** tab.
+1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
 1. Select **New Webhook**.
 

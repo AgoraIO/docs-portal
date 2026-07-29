@@ -21,7 +21,7 @@ import {
   normalizePlatformKey,
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
-import { createPublishedDocsRoutes } from '../src/lib/published-docs-routes.ts';
+import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
 import {
   DOCS_LOCALES,
   isPublishedDocsPath,
@@ -160,12 +160,12 @@ export async function generateStaticDocsPayload() {
     generated += 1;
   }
 
-  const publishedRoutes = createPublishedDocsRoutes({
-    canonicalPaths: canonicalRoutes,
-    platformPages: platformPages.filter((page) =>
-      canonicalPayloads.has(page.url),
-    ),
-  });
+  const { machineReadableRoutes, prerenderRoutes: publishedRoutes } =
+    createStaticDocsRouteSets({
+      canonicalPaths: canonicalRoutes,
+      canonicalPayloads,
+      platformPages,
+    });
   await writeTextFile(
     routesManifestPath,
     `${JSON.stringify(publishedRoutes)}\n`,
@@ -195,7 +195,7 @@ export async function generateStaticDocsPayload() {
 
   const markdownGenerated = await generateStaticMachineReadableDocs({
     platformKeysByPageUrl,
-    publishedRoutes,
+    publishedRoutes: machineReadableRoutes,
   });
   console.log(
     `[static-payload] generated ${markdownGenerated} machine-readable files`,

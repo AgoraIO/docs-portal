@@ -7,7 +7,7 @@ The presence feature enables users to publicly display their online presence sta
 
 This page shows how to use the Chat RESTful APIs to implement presence in your project. Before calling the following methods, ensure that you meet the following:
 - You understand the call frequency limit of the Chat RESTful APIs as described in [Limitations](./limitations#call-limit-of-server-sides).
-- You have activated the presence feature in [Agora Console](https://console.agora.io).
+- You have activated the presence feature in [Agora Console](https://console.agora.io/).
 
 ## Common parameters 
 

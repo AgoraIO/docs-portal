@@ -58,3 +58,28 @@ export function createPublishedDocsRoutes({
 
   return Array.from(routes.values()).sort((a, b) => a.url.localeCompare(b.url));
 }
+
+export function createStaticDocsRouteSets({
+  canonicalPaths,
+  canonicalPayloads,
+  platformPages,
+}: {
+  canonicalPaths: Iterable<string>;
+  canonicalPayloads: ReadonlyMap<string, unknown>;
+  platformPages: Iterable<PlatformPage>;
+}) {
+  const publishedPlatformPages = Array.from(platformPages).filter((page) =>
+    canonicalPayloads.has(page.url),
+  );
+
+  return {
+    machineReadableRoutes: createPublishedDocsRoutes({
+      canonicalPaths: canonicalPayloads.keys(),
+      platformPages: publishedPlatformPages,
+    }),
+    prerenderRoutes: createPublishedDocsRoutes({
+      canonicalPaths,
+      platformPages: publishedPlatformPages,
+    }),
+  };
+}
