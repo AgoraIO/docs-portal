@@ -2939,6 +2939,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `CHANNEL_PRESENCE_NOT_READY` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `CHANNEL_RECEIVER_OFFLINE` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `CHANNEL_JOIN_CANCELED` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `CHANNEL_SUBSCRIBE_CANCELED` | The channel subscription is canceled before it completes. |
 | `-12001` | `STORAGE_OPERATION_FAILED` | Storage operation failed. |
 | `-12002` | `STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `STORAGE_INVALID_METADATA_ITEM` | Invalid Metadata Item. |
@@ -2971,6 +2972,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `PRESENCE_USER_NOT_EXIST` | The user does not exist. |
 | `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence operation timed out. |
 | `-13013` | `PRESENCE_OPERATION_FAILED` | Presence operation failed. |
+| `-13014` | `PRESENCE_INACTIVE` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | The pending Presence request is canceled. |
+| `-13016` | `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `LOCK_OPERATION_FAILED` | Lock operation failed. |
 | `-14002` | `LOCK_OPERATION_TIMEOUT` | Lock operation timed out. |
 | `-14003` | `LOCK_OPERATION_PERFORMING` | Lock operation in progress. |

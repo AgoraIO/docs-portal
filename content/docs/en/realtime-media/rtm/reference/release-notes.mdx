@@ -18,12 +18,40 @@ Starting from v2.2.0, the Signaling SDK and Video/Voice SDK (version 4.3.0 or la
 
 For more information, see [How do I handle issues when integrating the Signaling SDK and Video/Voice SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
+- Signaling SDK v2.3.0 `libaosl.so` version: 1.3.5.
 - Signaling SDK v2.2.8 `libaosl.so` version: 1.3.0.
-- Signaling SDK v2.2.6 `libaosl.so` version: 1.2.13.
-- Signaling SDK v2.2.4 `libaosl.so` version: 1.2.13.
+- Signaling SDK v2.2.7 `libaosl.so` version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 `libaosl.so` version: 1.2.13.
 - Signaling SDK v2.2.2 `libaosl.so` version: 1.0.11.
 - Signaling SDK v2.2.1 `libaosl.so` version: 1.0.11.
 - Signaling SDK v2.2.0 `libaosl.so` version: 1.0.0.17.
+
+### v2.3.0
+
+Released on July 28, 2026.
+
+#### Compatibility changes
+
+This release removes the `onConnectionStateChanged` callback. To listen for connection state changes, use `onLinkStateEvent` instead.
+
+#### Improvements
+
+Included in this release:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+- Adds error codes: `PRESENCE_INACTIVE`, `PRESENCE_PENDING_REQUEST_CANCELLED`, `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.IntervalInfo.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
+- Increases channel subscription speed.
+- Subscription requests made during an abnormal disconnection are now resent automatically after the connection is restored.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Connection state notifications could be incorrect when the app switched to the background before logging in.
+- Reconnecting after a network switch could take a long time.
 
 ### v2.2.8
 
@@ -47,7 +75,7 @@ Included in this release:
 
 #### Issues fixed
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
@@ -137,7 +165,7 @@ This release improves the performance of the basic messaging service during exce
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 - In some use-cases, incorrect token types cause exceptions.
 - In some use-cases, users may receive repeated offline notifications from the same user who has gone offline.
 - After logging in from different devices with the same UID, the connection state may be abnormal.
@@ -237,7 +265,7 @@ This release optimizes the implementation of the following features, which invol
 
 #### Fixed issues
 
-This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
+This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
 ### v2.1.12
 
@@ -252,7 +280,7 @@ This release includes the following improvements:
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
@@ -270,7 +298,7 @@ This release optimizes the response mechanism when subscribing to or joining cha
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In specific use-cases, after logging out of the Signaling system and logging back in, occasional failures occurred when subscribing to or joining channels with the `withPresence=true` setting.
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, the remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
@@ -282,7 +310,7 @@ v2.1.10 was released on March 11, 2024.
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
@@ -309,7 +337,7 @@ This release adds the following improvements:
 
 #### Fixed issues
 
-This release fixed the occasional crash issue when calling the `getOnlineUsers` method to retrieve paginated results.
+This release fixes the occasional crash issue when calling the `getOnlineUsers` method to retrieve paginated results.
 
 ### v2.1.7
 
@@ -366,9 +394,10 @@ Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) b
 
 For more information, see [How do I handle issues when integrating the Signaling SDK and Video SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
+- Signaling SDK v2.3.0 `aosl.xframework` version: 1.3.5.
 - Signaling SDK v2.2.8 `aosl.xframework` version: 1.3.0.
-- Signaling SDK v2.2.6 `aosl.xframework` version: 1.2.13.
-- Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
+- Signaling SDK v2.2.7 `aosl.xframework` version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 
 </TabsContent>
@@ -382,15 +411,44 @@ Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) b
 
 For more information, see [How do I handle issues when integrating the Signaling SDK and Video SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
+- Signaling SDK v2.3.0 `aosl.xframework` version: 1.3.5.
 - Signaling SDK v2.2.8 `aosl.xframework` version: 1.3.0.
-- Signaling SDK v2.2.6 `aosl.xframework` version: 1.2.13.
-- Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
+- Signaling SDK v2.2.7 `aosl.xframework` version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.1 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.0 `aosl.xframework` version: 1.0.0.17.
 
 </TabsContent>
 </Tabs>
+
+### v2.3.0
+
+Released on July 28, 2026.
+
+#### Compatibility changes
+
+This release removes the legacy connection state callback. To listen for connection state changes, use `didReceiveLinkStateEvent` instead.
+
+#### Improvements
+
+Included in this release:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+- Adds error codes: `presenceInactive`/`AgoraRtmErrorPresenceInactive`, `presencePendingRequestCancelled`/`AgoraRtmErrorPresencePendingRequestCancelled`, `presencePendingRequestExceedLimitation`/`AgoraRtmErrorPresencePendingRequestExceedLimitation`, and `channelSubscribeCanceled`/`AgoraRtmErrorChannelSubscribeCanceled`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `AgoraRtmPresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
+- Increases channel subscription speed.
+- Subscription requests made during an abnormal disconnection are now resent automatically after the connection is restored.
+- Optimizes how some configuration parameters are used.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Connection state notifications could be incorrect when the app switched to the background before logging in.
+- Reconnecting after a network switch could take a long time.
 
 ### v2.2.8
 
@@ -401,7 +459,7 @@ Released on February 24, 2026.
 Included in this release:
 
 - The iOS CocoaPods pod name has changed from `AgoraRtm_iOS` to `AgoraRtm`. The new repository supports Mac, visionOS, and iOS architectures simultaneously.
-- Added a `['RtmKit']` subspec version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+- Adds a `['RtmKit']` subspec version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 
     ```ruby
     pod 'AgoraRtm', 'x.y.z', :subspecs => ['RtmKit']
@@ -409,7 +467,7 @@ Included in this release:
 
 #### Issues fixed
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
@@ -722,7 +780,7 @@ This release improves the performance of the basic messaging service during exce
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 - In some use-cases, incorrect token types cause exceptions.
 - In some use-cases, users may receive repeated offline notifications from the same user who has gone offline.
 - After logging in from different devices with the same UID, the connection state may be abnormal.
@@ -836,7 +894,7 @@ This release optimizes the implementation of the following features, which invol
 
 #### Fixed issues
 
-    This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
+    This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
 ### v2.1.12
 
@@ -851,7 +909,7 @@ This release includes the following improvements:
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
@@ -879,7 +937,7 @@ This release optimizes the response mechanism when subscribing to channels with 
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In specific use-cases, after logging out of the Signaling system and logging back in, occasional failures occurred when subscribing to channels with the `withPresence` setting or joining channels with the `withPresence` setting.
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
@@ -891,7 +949,7 @@ v2.1.10 was released on March 11, 2024.
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
@@ -1064,7 +1122,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - Occasional inability to log out of Signaling when the network status changed.
 - Occasional inability to log in to Signaling after logging out when the network status changed.
@@ -1092,9 +1150,10 @@ Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) b
 
 For more information, see [How do I handle issues when integrating the Signaling SDK and Video SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
+- Signaling SDK v2.3.0 `aosl.xframework` version: 1.3.5.
 - Signaling SDK v2.2.8 `aosl.xframework` version: 1.3.0.
-- Signaling SDK v2.2.6 `aosl.xframework` version: 1.2.13.
-- Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
+- Signaling SDK v2.2.7 `aosl.xframework` version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 
 </TabsContent>
@@ -1108,15 +1167,44 @@ Starting from v2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) b
 
 For more information, see [How do I handle issues when integrating the Signaling SDK and Video SDK simultaneously?](/en/api-reference/faq/integration/rtm2_rtc_integration_issue)
 
+- Signaling SDK v2.3.0 `aosl.xframework` version: 1.3.5.
 - Signaling SDK v2.2.8 `aosl.xframework` version: 1.3.0.
-- Signaling SDK v2.2.6 `aosl.xframework` version: 1.2.13.
-- Signaling SDK v2.2.4 `aosl.xframework` version: 1.2.13.
+- Signaling SDK v2.2.7 `aosl.xframework` version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 `aosl.xframework` version: 1.2.13.
 - Signaling SDK v2.2.2 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.1 `aosl.xframework` version: 1.0.11.
 - Signaling SDK v2.2.0 `aosl.xframework` version: 1.0.0.17.
 
 </TabsContent>
 </Tabs>
+
+### v2.3.0
+
+Released on July 28, 2026.
+
+#### Compatibility changes
+
+This release removes the legacy connection state callback. To listen for connection state changes, use `didReceiveLinkStateEvent` instead.
+
+#### Improvements
+
+Included in this release:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+- Adds error codes: `presenceInactive`/`AgoraRtmErrorPresenceInactive`, `presencePendingRequestCancelled`/`AgoraRtmErrorPresencePendingRequestCancelled`, `presencePendingRequestExceedLimitation`/`AgoraRtmErrorPresencePendingRequestExceedLimitation`, and `channelSubscribeCanceled`/`AgoraRtmErrorChannelSubscribeCanceled`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `AgoraRtmPresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
+- Increases channel subscription speed.
+- Subscription requests made during an abnormal disconnection are now resent automatically after the connection is restored.
+- Optimizes how some configuration parameters are used.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Connection state notifications could be incorrect when the app switched to the background before logging in.
+- Reconnecting after a network switch could take a long time.
 
 ### v2.2.8
 
@@ -1127,7 +1215,7 @@ Released on February 24, 2026.
 Included in this release:
 
 - The iOS CocoaPods pod name has changed from `AgoraRtm_iOS` to `AgoraRtm`. The new repository supports Mac, visionOS, and iOS architectures simultaneously.
-- Added a `['RtmKit']` subspec version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+- Adds a `['RtmKit']` subspec version to resolve integration issues when co-integrating with the Video SDK. For details, see [Handle issues when integrating the Signaling SDK and Video SDK simultaneously](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 
     ```ruby
     pod 'AgoraRtm', 'x.y.z', :subspecs => ['RtmKit']
@@ -1135,7 +1223,7 @@ Included in this release:
 
 #### Issues fixed
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
@@ -1448,7 +1536,7 @@ This release improves the performance of the basic messaging service during exce
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 - In some use-cases, incorrect token types cause exceptions.
 - In some use-cases, users may receive repeated offline notifications from the same user who has gone offline.
 - After logging in from different devices with the same UID, the connection state may be abnormal.
@@ -1562,7 +1650,7 @@ This release optimizes the implementation of the following features, which invol
 
 #### Fixed issues
 
-    This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
+    This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
 ### v2.1.12
 
@@ -1577,7 +1665,7 @@ This release includes the following improvements:
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
@@ -1605,7 +1693,7 @@ This release optimizes the response mechanism when subscribing to channels with 
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In specific use-cases, after logging out of the Signaling system and logging back in, occasional failures occurred when subscribing to channels with the `withPresence` setting or joining channels with the `withPresence` setting.
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
@@ -1617,7 +1705,7 @@ v2.1.10 was released on March 11, 2024.
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
@@ -1790,7 +1878,7 @@ If you use the features mentioned in this section, ensure that you modify the im
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - Occasional inability to log out of Signaling when the network status changed.
 - Occasional inability to log in to Signaling after logging out when the network status changed.
@@ -1936,7 +2024,7 @@ This release optimizes the user state of the Presence feature as follows to impr
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When the SDK connection state is `FAILED`, calling the Lock and Storage methods causes the SDK to report an `RTM_ERROR_NOT_LOGIN` error. This release adjusts the error message. Starting from v2.2.1, the SDK reports an `RTM_ERROR_LOGIN_TIMEOUT` error.
 - The subscription to a channel fails during disconnection, and the subscription state is not reset to `unsubscribed` after the network recovers.
@@ -2102,7 +2190,7 @@ This release optimizes the logic of the client-side encryption. When the length 
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 - When the duration of disconnection exceeded the configured value of the `presenceTimeout` parameter, the value of the `reason` parameter reported in the `status` event notification was incorrect.
@@ -2218,7 +2306,7 @@ Signaling version 2.x does not support history and peer-to-peer messages in favo
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - The SDK version information was lost in the log file.
 - The `userId` property of the `GetStateResponse` data type was `null`.
@@ -2238,12 +2326,40 @@ This release fixed the following issues:
 
 Starting from 2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include dynamic library files. If you are using both SDKs, manually delete the dynamic library files of the older version to avoid conflicts.
 
+- Signaling SDK v2.3.0 dynamic library version: 1.3.5.
 - Signaling SDK v2.2.8 dynamic library version: 1.3.0.
-- Signaling SDK v2.2.6 dynamic library version: 1.2.13.
-- Signaling SDK v2.2.4 dynamic library version: 1.2.13.
+- Signaling SDK v2.2.7 dynamic library version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 dynamic library version: 1.2.13.
 - Signaling SDK v2.2.2 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.1 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.0 dynamic library version: 1.0.0.17.
+
+### v2.3.0
+
+Released on July 28, 2026.
+
+#### Compatibility changes
+
+This release removes the `onConnectionStateChanged` callback. To listen for connection state changes, use `onLinkStateEvent` instead.
+
+#### Improvements
+
+Included in this release:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+- Adds error codes: `RTM_ERROR_PRESENCE_INACTIVE`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
+- Increases channel subscription speed.
+- Subscription requests made during an abnormal disconnection are now resent automatically after the connection is restored.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Connection state notifications could be incorrect when the app switched to the background before logging in.
+- Reconnecting after a network switch could take a long time.
 
 ### v2.2.8
 
@@ -2251,7 +2367,7 @@ Released on February 24, 2026.
 
 #### Issues fixed
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
@@ -2337,7 +2453,7 @@ This release improves the business performance of the basic messaging service du
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 - In some use-cases, incorrect token types cause exceptions.
 - In some use-cases, users may receive repeated offline notifications from the same offline user.
 - After logging in from different devices with the same UID, the connection state may be abnormal.
@@ -2493,7 +2609,7 @@ This release optimizes the implementation of certain features, which involves re
 
 #### Fixed issues
 
-This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
+This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
 ### v2.1.12
 
@@ -2508,7 +2624,7 @@ This release includes the following improvements:
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
@@ -2526,7 +2642,7 @@ This release optimizes the response mechanism when subscribing to or joining cha
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In specific use-cases, after logging out of the Signaling system and logging back in, occasional failures occurred when subscribing to or joining channels with the `withPresence=true` setting.
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
@@ -2538,7 +2654,7 @@ v2.1.10 was released on March 11, 2024.
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
@@ -2702,12 +2818,40 @@ This release optimizes the handling logic for expired user status data during re
 
 Starting from 2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) both include dynamic library files. If you are using both SDKs, manually delete the dynamic library files of the older version to avoid conflicts.
 
+- Signaling SDK v2.3.0 dynamic library version: 1.3.5.
 - Signaling SDK v2.2.8 dynamic library version: 1.3.0.
-- Signaling SDK v2.2.6 dynamic library version: 1.2.13.
-- Signaling SDK v2.2.4 dynamic library version: 1.2.13.
+- Signaling SDK v2.2.7 dynamic library version: 1.3.0.
+- Signaling SDK v2.2.3, v2.2.4, v2.2.5, and v2.2.6 dynamic library version: 1.2.13.
 - Signaling SDK v2.2.2 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.1 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.0 dynamic library version: 1.0.0.17.
+
+### v2.3.0
+
+Released on July 28, 2026.
+
+#### Compatibility changes
+
+This release removes the `onConnectionStateChanged` callback. To listen for connection state changes, use `onLinkStateEvent` instead.
+
+#### Improvements
+
+Included in this release:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+- Adds error codes: `RTM_ERROR_PRESENCE_INACTIVE`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
+- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
+- Increases channel subscription speed.
+- Subscription requests made during an abnormal disconnection are now resent automatically after the connection is restored.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Connection state notifications could be incorrect when the app switched to the background before logging in.
+- Reconnecting after a network switch could take a long time.
 
 ### v2.2.8
 
@@ -2715,7 +2859,7 @@ Released on February 24, 2026.
 
 #### Issues fixed
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
@@ -2801,7 +2945,7 @@ This release improves the business performance of the basic messaging service du
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 - In some use-cases, incorrect token types cause exceptions.
 - In some use-cases, users may receive repeated offline notifications from the same offline user.
 - After logging in from different devices with the same UID, the connection state may be abnormal.
@@ -2957,7 +3101,7 @@ This release optimizes the implementation of certain features, which involves re
 
 #### Fixed issues
 
-This release fixed the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
+This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
 ### v2.1.12
 
@@ -2972,7 +3116,7 @@ This release includes the following improvements:
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - During a disconnection with the Signaling system under poor network conditions, the user experienced errors when unsubscribing from a message channel.
 - Under poor network conditions, the user occasionally failed to receive callbacks after a successful login.
@@ -2990,7 +3134,7 @@ This release optimizes the response mechanism when subscribing to or joining cha
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - In specific use-cases, after logging out of the Signaling system and logging back in, occasional failures occurred when subscribing to or joining channels with the `withPresence=true` setting.
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
@@ -3002,7 +3146,7 @@ v2.1.10 was released on March 11, 2024.
 
 #### Fixed issues
 
-This release fixed the following issues:
+This release fixes the following issues:
 
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
@@ -3227,11 +3371,11 @@ v2.2.5 was released on September 25, 2025.
 
 #### Improvements
 
-- Added token renewal timeout error code
+- Adds token renewal timeout error code
 
-    To provide feedback on token renewal operation results, this version added error code `renewTokenTimeout` (-10026).
+    To provide feedback on token renewal operation results, this version adds error code `renewTokenTimeout` (-10026).
 
-- Optimized presence event notification
+- Optimizes presence event notification
 
     When channel data could not be synchronized, the SDK triggers a `Snapshot` event again. After receiving this event, users can update their app's local cache.
 

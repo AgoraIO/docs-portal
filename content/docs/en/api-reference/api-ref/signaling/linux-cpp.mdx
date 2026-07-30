@@ -277,6 +277,7 @@ User presence event.
 | `timeoutUserList` | `UserList` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `UserState*` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
 | `userStateCount` | size_t | Number of users whose status has changed in the previous cycle. |
+| `totalOccupancy` | size_t | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 `SnapshotInfo` contains the following properties:
 
@@ -3326,6 +3327,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `RTM_ERROR_CHANNEL_PRESENCE_NOT_READY` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `RTM_ERROR_CHANNEL_JOIN_CANCELED` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | The channel subscription is canceled before it completes. |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage operation failed. |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | Invalid Metadata Item. |
@@ -3358,6 +3360,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | The user does not exist. |
 | `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence operation timed out. |
 | `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence operation failed. |
+| `-13014` | `RTM_ERROR_PRESENCE_INACTIVE` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` | The pending Presence request is canceled. |
+| `-13016` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock operation failed. |
 | `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock operation timed out. |
 | `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock operation in progress. |

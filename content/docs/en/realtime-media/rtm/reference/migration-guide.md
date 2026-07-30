@@ -46,7 +46,7 @@ You can integrate the Signaling `2.x` SDK into your app either using a CDN or th
 - For `2.x`:
     ```java
     dependencies {
-        // Replace x.y.z with the specific SDK version, e.g., 2.1.9
+        // Replace x.y.z with the specific SDK version, e.g., 2.3.0
         implementation 'io.agora:agora-rtm:x.y.z'
     }
     ```

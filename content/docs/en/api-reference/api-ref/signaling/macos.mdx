@@ -2842,6 +2842,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `AgoraRtmErrorChannelPresenceNotReady` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `AgoraRtmErrorChannelReceiverOffline` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `AgoraRtmErrorChannelJoinCanceled` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `AgoraRtmErrorChannelSubscribeCanceled` | The channel subscription is canceled before it completes. |
 | `-12001` | `AgoraRtmErrorStorageOperationFailed` | Storage operation failed. |
 | `-12002` | `AgoraRtmErrorStorageMetadataItemExceedLimitation` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `AgoraRtmErrorStorageInvalidMetadataItem` | Invalid Metadata Item. |
@@ -2874,6 +2875,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `AgoraRtmErrorPresenceUserNotExist` | The user does not exist. |
 | `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | Presence operation timed out. |
 | `-13013` | `AgoraRtmErrorPresenceOperationFailed` | Presence operation failed. |
+| `-13014` | `AgoraRtmErrorPresenceInactive` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | The pending Presence request is canceled. |
+| `-13016` | `AgoraRtmErrorPresencePendingRequestExceedLimitation` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `AgoraRtmErrorLockOperationFailed` | Lock operation failed. |
 | `-14002` | `AgoraRtmErrorLockOperationTimeout` | Lock operation timed out. |
 | `-14003` | `AgoraRtmErrorLockOperationPerforming` | Lock operation in progress. |
