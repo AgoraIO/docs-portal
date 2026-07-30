@@ -25,7 +25,7 @@ import { docsRoute } from './shared';
 
 const openApiSource = await createLocalizedOpenApiSource();
 
-export const source = loader({
+const fumadocsSource = loader({
   source: multiple({
     docs: docs.toFumadocsSource(),
     openapi: openApiSource,
@@ -47,6 +47,24 @@ export const source = loader({
   },
   plugins: [getOpenApiLoaderPlugin()],
 });
+
+export const source = Object.assign(Object.create(fumadocsSource), {
+  getPage(
+    slugs: Parameters<typeof fumadocsSource.getPage>[0],
+    language?: Parameters<typeof fumadocsSource.getPage>[1],
+  ) {
+    const page = fumadocsSource.getPage(slugs, language);
+
+    if (page || !slugs) {
+      return page;
+    }
+
+    return fumadocsSource.getPage(
+      slugs.map((segment) => encodeURI(segment)),
+      language,
+    );
+  },
+}) as typeof fumadocsSource;
 
 export type PageWithSource = InferPageType<typeof source>;
 
