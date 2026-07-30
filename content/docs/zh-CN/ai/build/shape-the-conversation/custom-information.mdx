@@ -2,6 +2,7 @@
 title: "传递自定义信息"
 description: "了解如何在对话式 AI 引擎中传递自定义信息，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 与智能体对话时，你可能需要从端侧获取用户的说话状态、选中的文字、个性签名、得分等自定义上下文信息，并将这些信息传递给智能体，引导智能体输出更符合用户需求的内容。
 
 本文介绍如何结合 RTM SDK 提供的能力，实现与智能体对话时携带自定义信息。
@@ -16,13 +17,12 @@ description: "了解如何在对话式 AI 引擎中传递自定义信息，包�
 
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
 - 已参考[实现收发消息](/zh-CN/realtime-media/rtm/get-started/quick-start)为你的 App 集成 RTM SDK，并实现基本的收发消息功能。
-- 已参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)对你的大模型进行适配，使其能够处理 `context.presence` 字段中的临时状态信息。
 
 ## 实现方式
 
-### 打开 RTM 开关
+### 启用 RTM
 
-通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM。如果需要让大模型处理 `context.presence` 字段，建议配合[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)使用。
+通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，将 `advanced_features.enable_rtm` 配置设置为 `true` 即可启用 RTM。启用后，智能体会在调用大模型前读取说话用户的临时状态，并将这些状态写入请求中的 `context.presence` 字段。
 
 :::info[信息]
 - 声网推荐启动 RTM 时开启 String UID（`enable_string_uid` 配置为 `true`），并参考 [FAQ](/zh-CN/reference/faq/integration/rtc_rtm_token) 生成同时具备 RTC 和 RTM 权限的 Token，之后传入 `agent_rtc_uid` 字段即可。
@@ -30,60 +30,26 @@ description: "了解如何在对话式 AI 引擎中传递自定义信息，包�
 :::
 
 ```go tab="Go SDK" tabGroup="agent-sdk-language"
-import (
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-)
-
-// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
-agent := baseAgent.WithAdvancedFeatures(&agentkit.AdvancedFeatures{
+// ... 其他智能体配置 ...
+.WithAdvancedFeatures(&agentkit.AdvancedFeatures{
     EnableRtm: Agora.Bool(true),
 })
-
-session := agent.CreateSession(agentkit.CreateSessionOptions{
-    Channel:         "channel_name",
-    AgentUID:        "friday",
-    RemoteUIDs:      []string{"*"},
-    EnableStringUID: Agora.Bool(true),
-})
-
-agentID, err := session.Start(ctx)
+// ... 继续调用 .CreateSession() ...
 ```
 
 ```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-// 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
-const agent = baseAgent
-  .withAdvancedFeatures({ enable_rtm: true });
-
-const session = agent.createSession({
-  name: 'unique_name',
-  channel: 'channel_name',
-  agentUid: 'friday',
-  remoteUids: ['*'],
-  enableStringUid: true,
-});
-
-const agentId = await session.start();
+// ... 其他智能体配置 ...
+.withAdvancedFeatures({ enable_rtm: true })
+// ... 继续调用 .createSession() ...
 ```
 
 ```python tab="Python SDK" tabGroup="agent-sdk-language"
-# 在已配置 STT、LLM、TTS 的 agent 上追加 RTM 开关。
-agent = base_agent.with_advanced_features({
-    'enable_rtm': True,
-})
-
-session = agent.create_session(
-    name='unique_name',
-    channel='channel_name',
-    agent_uid='friday',
-    remote_uids=['*'],
-    enable_string_uid=True,
-)
-
-agent_id = session.start()
+# ... 其他智能体配置 ...
+.with_advanced_features({'enable_rtm': True})
+# ... 继续调用 .create_session() ...
 ```
 
-```shell tab="REST API" tabGroup="agent-sdk-language"
+```bash tab="REST API" tabGroup="agent-sdk-language"
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -119,7 +85,6 @@ curl --request POST \
   }
 }
 '
-
 ```
 
 ### 设置自定义信息
@@ -150,3 +115,7 @@ curl --request POST \
   "model": "deepseek-r1"
 }
 ```
+
+### 适配大模型
+
+启用 RTM 后，智能体只负责把临时状态传递给大模型；大模型是否使用这些信息，取决于你的自定义大模型服务如何处理 `context.presence` 字段。请参考[自定义大模型](/zh-CN/ai/build/custom-model-integration/custom-llm)适配请求解析逻辑，并在提示词或业务逻辑中明确使用所需的临时状态字段。

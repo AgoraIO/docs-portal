@@ -2,6 +2,7 @@
 title: "使用音频模态输出"
 description: "了解对话式 AI 引擎中音频模态输出相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 声网对话式 AI 引擎以音频模态输出。
 
 你可以阅读本文了解如何配置智能体以音频模态输出，并做好接口改造，进而实现上下文管理、字幕对齐、智能体播报等功能。
@@ -21,86 +22,6 @@ description: "了解对话式 AI 引擎中音频模态输出相关内容的适�
 
 - `["audio"]`：以纯音频模态输出。该场景下，你无需配置文本转语音 (TTS) 模块，自定义大模型返回的音频会直接由智能体播放。本文主要介绍该配置下如何使用音频模态。
 - `["text", "audio"]`：以文本和音频模态输出。该场景下会同时存在两种音频，一种是 TTS 模块生成的音频，另一种是自定义大模型发送给智能体的音频。
-
-如果你通过 Agents SDK 接入自定义大模型，可以直接在 `CustomLLM` 上设置输出模态。以下示例展示纯音频输出（`["audio"]`）场景；如果你需要同时输出文本和音频，只需将 `output_modalities` / `outputModalities` 改为 `["text", "audio"]` 即可。
-
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-from agora_agent import Agent, Agora, Area, CustomLLM
-
-client = Agora(
-    area=Area.CN,
-    app_id="your-app-id",
-    app_certificate="your-app-certificate",
-)
-
-agent = Agent(client=client).with_llm(
-    CustomLLM(
-        api_key="your-llm-api-key",
-        base_url="https://your-custom-llm-service/audio/chat/completions",
-        model="your-model-name",
-        input_modalities=["text"],
-        output_modalities=["audio"],
-        params={
-            "audio": {
-                "voice": "alloy",
-                "format": "wav",
-            },
-        },
-    )
-)
-```
-
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-import { AgoraClient, Agent, Area, CustomLLM } from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.CN,
-  appId: 'your-app-id',
-  appCertificate: 'your-app-certificate',
-});
-
-const agent = new Agent({ client }).withLlm(new CustomLLM({
-  apiKey: 'your-llm-api-key',
-  url: 'https://your-custom-llm-service/audio/chat/completions',
-  model: 'your-model-name',
-  inputModalities: ['text'],
-  outputModalities: ['audio'],
-  params: {
-    audio: {
-      voice: 'alloy',
-      format: 'wav',
-    },
-  },
-}));
-```
-
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-import (
-    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-    vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-client := agentkit.NewAgoraClient(agentkit.ClientOptions{
-    AppID:          "your-app-id",
-    AppCertificate: "your-app-certificate",
-})
-
-agent := agentkit.NewAgent(client).WithLlm(
-    vendors.NewCustomLLM(vendors.CustomLLMOptions{
-        APIKey:           "your-llm-api-key",
-        BaseURL:          "https://your-custom-llm-service/audio/chat/completions",
-        Model:            "your-model-name",
-        InputModalities:  []string{"text"},
-        OutputModalities: []string{"audio"},
-        Params: map[string]interface{}{
-            "audio": map[string]interface{}{
-                "voice":  "alloy",
-                "format": "wav",
-            },
-        },
-    }),
-)
-```
 
 ### 按标准改造接口
 

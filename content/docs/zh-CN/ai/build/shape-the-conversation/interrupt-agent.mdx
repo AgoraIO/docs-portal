@@ -2,12 +2,13 @@
 title: "打断智能体"
 description: "了解如何在对话式 AI 引擎中打断智能体，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 与智能体互动期间，你可能需要打断智能体发言来开启新一轮对话。
 
 声网对话式 AI 引擎支持通过以下两种方式打断智能体：
 
 - **语音打断**：系统根据用户的语音输入自动判断并打断智能体说话。
-- **手动打断**：通过调用 RESTful API 或客户端组件 API 主动发起打断请求，实现点击按钮或发送特定命令来打断智能体。
+- **手动打断**：通过 Agents SDK、RESTful API 或客户端组件 API 主动发起打断请求，实现点击按钮或发送特定命令来打断智能体。
 
 本文介绍打断智能体的实现方式。
 
@@ -20,43 +21,55 @@ description: "了解如何在对话式 AI 引擎中打断智能体，包括适�
 - 当语义判定用户未结束发言时，会等待一段时间才最终判定对话结束，此时响应延时会有所增加。
 :::
 
-优雅打断功能默认关闭。通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 即可开启优雅打断。以下示例只展示语音打断相关配置，其他 STT、LLM、TTS 和频道参数请参考[启动和停止智能体](/zh-CN/ai/build/start-stop-agent)。
+优雅打断功能默认关闭。通过 Agents SDK 创建会话或调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时，设置 `turn_detection.config.end_of_speech.mode` 为 `semantic` 即可开启优雅打断。该配置会启用基于语义的结束发言判定，并与开始发言检测共同决定何时打断智能体。
 
-#### 请求示例
+以下示例只展示语音打断相关配置，其他 STT、LLM、TTS 和频道参数请参考[启动和停止智能体](/zh-CN/ai/build/start-stop-agent)。
 
-```go tab="Go SDK" tabGroup="agent-sdk-language"
-import (
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
-)
+#### 配置语音打断
 
-agent := agentkit.NewAgent(client,
-    agentkit.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
-        Mode: Agora.String("default"),
-        Config: &agentkit.TurnDetectionNestedConfig{
-            SpeechThreshold: Agora.Float64(0.5),
-            StartOfSpeech: &agentkit.StartOfSpeechConfig{
-                Mode: Agora.String("vad"),
-                VadConfig: &agentkit.StartOfSpeechVadConfig{
-                    InterruptDurationMs:         Agora.Float64(160),
-                    SpeakingInterruptDurationMs: Agora.Float64(320),
-                    PrefixPaddingMs:             Agora.Float64(800),
-                },
-            },
-            EndOfSpeech: &agentkit.EndOfSpeechConfig{
-                Mode: Agora.String("semantic"),
-                SemanticConfig: &agentkit.EndOfSpeechSemanticConfig{
-                    SilenceDurationMs: Agora.Float64(320),
-                    MaxWaitMs:         Agora.Float64(3000),
-                },
+<Tabs defaultValue="go" groupId="agent-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
+// ... 其他智能体配置 ...
+.WithTurnDetectionConfig(&agentkit.TurnDetectionConfig{
+    Mode: Agora.String("default"),
+    Config: &agentkit.TurnDetectionNestedConfig{
+        SpeechThreshold: Agora.Float64(0.5),
+        StartOfSpeech: &agentkit.StartOfSpeechConfig{
+            Mode: Agora.String("vad"),
+            VadConfig: &agentkit.StartOfSpeechVadConfig{
+                InterruptDurationMs:         Agora.Float64(160),
+                SpeakingInterruptDurationMs: Agora.Float64(320),
+                PrefixPaddingMs:             Agora.Float64(800),
             },
         },
-    }),
-)
+        EndOfSpeech: &agentkit.EndOfSpeechConfig{
+            Mode: Agora.String("semantic"),
+            SemanticConfig: &agentkit.EndOfSpeechSemanticConfig{
+                SilenceDurationMs: Agora.Float64(320),
+                MaxWaitMs:         Agora.Float64(3000),
+            },
+        },
+    },
+})
+// ... 继续调用 .CreateSession() ...
 ```
 
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
-const agent = baseAgent.withTurnDetection({
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// ... 其他智能体配置 ...
+.withTurnDetection({
   mode: 'default',
   config: {
     speech_threshold: 0.5,
@@ -76,11 +89,17 @@ const agent = baseAgent.withTurnDetection({
       },
     },
   },
-});
+})
+// ... 继续调用 .createSession() ...
 ```
 
-```python tab="Python SDK" tabGroup="agent-sdk-language"
-agent = base_agent.with_turn_detection({
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+# ... 其他智能体配置 ...
+.with_turn_detection({
     'mode': 'default',
     'config': {
         'speech_threshold': 0.5,
@@ -101,9 +120,14 @@ agent = base_agent.with_turn_detection({
         },
     },
 })
+# ... 继续调用 .create_session() ...
 ```
 
-```bash tab="REST API" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -178,9 +202,7 @@ curl --request POST \
 '
 ```
 
-#### 响应示例
-
-请求成功时返回 200 状态码，响应体如下：
+如果通过 REST API 创建智能体，请求成功时返回 200 状态码，响应体如下：
 
 ```json
 {
@@ -190,40 +212,61 @@ curl --request POST \
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 ## 手动打断
 
-声网对话式 AI 引擎支持通过调用 RESTful API 或客户端组件 API 主动发起打断请求，从而实现点击按钮或发送特定命令来打断智能体。
+声网对话式 AI 引擎支持主动发起打断请求，从而实现点击按钮或发送特定命令来打断智能体。服务端场景推荐直接调用 Agents SDK 的会话方法；如果你的服务端没有集成 Agents SDK，也可以调用 RESTful API。客户端场景可以使用客户端组件 API。
 
 ### 方案一：在服务端调用打断接口
 
-你可以通过 Agents SDK 或 [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口主动发起打断请求。
+你可以通过 Agents SDK 的会话方法或 [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口主动发起打断请求。两种方式都会停止指定智能体当前的发言和思考过程。
 
-#### 请求示例
+<Tabs defaultValue="go" groupId="agent-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
 
-```go tab="Go SDK" tabGroup="agent-sdk-language"
+<TabsContent value="go">
+
+```go
 if err := session.Interrupt(ctx); err != nil {
     log.Fatal(err)
 }
 ```
 
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
 await session.interrupt();
 ```
 
-```python tab="Python SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
 session.interrupt()
 ```
 
-```bash tab="REST API" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
   --data '{}'
 ```
 
-#### 响应示例
-
-请求成功时返回 200 状态码，响应体如下：
+如果通过 REST API 发起打断，请求成功时返回 200 状态码，响应体如下：
 
 ```json
 {
@@ -232,6 +275,9 @@ curl --request POST \
   "start_ts": 1744877089
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### 方案二：调用客户端组件 API
 
