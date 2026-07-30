@@ -3,39 +3,59 @@ title: 启动和停止智能体
 description: 使用 Agents SDK 或 RESTful API 建立实时语音交互，并控制智能体的启动和停止。
 ---
 
-本文介绍如何通过 Agents SDK 或对话式 AI 引擎 RESTful API 启动和停止一个智能体。
-
-## 理解基本流程
-
-声网对话式 AI 技术让用户可以在频道里和 AI 智能体实时语音互动。一个最基本的流程通常如下：
-
-1. **用户加入 Agora 频道**。
-2. **你的业务后端启动智能体**，并让智能体加入同一个频道。
-3. **用户与智能体实时互动**，对话链路会用到 ASR、LLM、TTS 和声网的低延迟实时传输。
-4. **会话结束时停止智能体**。
-5. **用户退出频道**。
+本文介绍如何通过 Agora Agents SDK 或对话式 AI 引擎 RESTful API 启动和停止一个智能体。
 
 ## 前提条件
 
 开始前，请确保你已经准备好：
 
-- 已准备声网中国区项目并开通对话式 AI。可使用 Agora CLI：
+使用 Agora CLI 创建项目，开启 RTC 和对话式 AI，检查项目状态，并导出本地凭据：
 
-  ```bash
-  agora login --region cn
-  agora project create <project-name> --feature rtc --feature convoai --rtm-data-center CN
-  agora project use <project-name>
-  agora project doctor --feature convoai
-  agora project env --format shell --with-secrets
-  ```
-  
-另外，你还需要已经完成基础的[实时音视频互动](../../realtime-media/rtc/get-started/quick-start.mdx)。
+```bash
+agora login --region cn
+agora project create <project-name> --feature rtc --feature convoai --rtm-data-center CN
+agora project use <project-name>
+agora project doctor --feature convoai
+agora project env --format shell --with-secrets
+```
 
-## 启动智能体
+你还需要准备一个能够加入声网 RTC 频道的客户端应用，例如已完成基础[实时音视频互动](../../realtime-media/rtc/get-started/quick-start.mdx)的应用。
 
-调用 SDK 的 `start()` 方法或 RESTful API 的 `join` 接口即可创建一个智能体实例，并让它加入指定频道。你需要在请求中传入频道名、智能体 UID、远端用户 UID 和模型配置；使用 SDK 且传入 App Certificate 时，SDK 会自动生成所需鉴权。
+## 安装 SDK
 
-```go tab="Go SDK" tabGroup="agent-sdk-language"
+如果你使用 Agents SDK 启动和停止智能体，请选择你的开发语言并安装对应 SDK。
+
+```bash tab="Python SDK" tabGroup="agent-sdk-language"
+pip install agora-agents
+```
+
+```bash tab="TypeScript SDK" tabGroup="agent-sdk-language"
+npm install agora-agents
+```
+
+```bash tab="Go SDK" tabGroup="agent-sdk-language"
+go get github.com/AgoraIO/agora-agents-go/v2@v2.0.0
+```
+
+## 实现方式
+
+### 启动智能体
+
+调用 SDK 的 `start()` 方法或 RESTful API 的 `join` 接口即可创建一个智能体实例，并让它加入指定频道。你需要传入频道名、智能体 UID、远端用户 UID 和模型配置；使用 SDK 且传入 App Certificate 时，SDK 会自动生成所需鉴权。
+
+以下示例使用声网中国区推荐的级联链路配置：凤鸣 ASR、通义千问 LLM 和 MiniMax TTS。如需切换模型，请参考对应的模型文档调整 ASR、LLM 和 TTS 配置。
+
+<Tabs defaultValue="go" groupId="agent-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
 package main
 
 import (
@@ -96,7 +116,11 @@ func main() {
 }
 ```
 
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
 import {
   Agent,
   AgoraClient,
@@ -143,7 +167,11 @@ const agentId = await session.start();
 console.log('Agent started:', agentId);
 ```
 
-```python tab="Python SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
 from agora_agent import (
     Agent,
     Agora,
@@ -192,7 +220,11 @@ agent_id = session.start()
 print('Agent started:', agent_id)
 ```
 
-```bash tab="REST API" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/join \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
@@ -248,7 +280,7 @@ curl --request POST \
   }'
 ```
 
-调用成功后，接口会返回 `200`，响应示例如下：
+如果通过 REST API 创建智能体，请求成功时返回 `200` 状态码，响应体如下：
 
 ```json
 {
@@ -258,34 +290,70 @@ curl --request POST \
 }
 ```
 
-## 停止智能体
+</TabsContent>
+</Tabs>
 
-当用户结束会话时，你的业务后端应调用停止接口，让智能体离开频道：
+### 停止智能体
 
-```go tab="Go SDK" tabGroup="agent-sdk-language"
+当用户结束会话时，你的业务后端应调用 SDK 的 `stop()` 方法或 RESTful API 的 `leave` 接口，让智能体离开频道：
+
+<Tabs defaultValue="go" groupId="agent-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
 if err := session.Stop(ctx); err != nil {
     log.Fatal(err)
 }
 ```
 
-```typescript tab="TypeScript SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
 await session.stop();
 ```
 
-```python tab="Python SDK" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
 session.stop()
 ```
 
-```bash tab="REST API" tabGroup="agent-sdk-language"
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --data '{}'
 ```
 
-## 集成建议
+如果通过 REST API 停止智能体，请求成功时返回 `200` 状态码和空 JSON 对象：
 
-- 在后端统一发起 `join` 和 `leave` 调用，不要把敏感鉴权信息放到客户端。
-- 用业务侧生成的 `name` 或 `labels` 给每个智能体实例打标，方便监控和排障。
-- 结合[运行时事件](handle-runtime-events/event-notifications.mdx)和[事件类型](../reference/event-types.mdx)来确认真实运行状态。
+```json
+// 200 OK
+{}
+```
 
+</TabsContent>
+</Tabs>
+
+## API 参考
+
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
+- [POST 停止对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/leave)
+- [POST 更新智能体配置](/zh-CN/api-reference/api-ref/conversational-ai/update)
+- [GET 查询智能体状态](/zh-CN/api-reference/api-ref/conversational-ai/query)
+- [GET 获取智能体列表](/zh-CN/api-reference/api-ref/conversational-ai/list)
