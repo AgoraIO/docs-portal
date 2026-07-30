@@ -29,21 +29,23 @@ type VercelRedirect = {
   statusCode: number;
 };
 
+type VercelRoute = {
+  dest: string;
+  has?: Array<{
+    key: string;
+    type: string;
+    value: string;
+  }>;
+  src: string;
+};
+
 describe('legacy redirect Vercel artifacts', () => {
   const legacyRules = redirectsConfig.rules as LegacySitemapRedirectRule[];
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
     bulkRedirectsPath: string;
     redirects?: VercelRedirect[];
     rewrites?: unknown[];
-    routes?: Array<{
-      dest: string;
-      has?: Array<{
-        key: string;
-        type: string;
-        value: string;
-      }>;
-      src: string;
-    }>;
+    routes?: VercelRoute[];
   };
   const bulkRedirects = JSON.parse(
     readFileSync('vercel-legacy-redirects.json', 'utf8'),
@@ -56,6 +58,17 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
+    expect(vercelConfig.routes).toContainEqual({
+      dest: '/en.md',
+      has: [
+        {
+          key: 'Accept',
+          type: 'header',
+          value: '.*text/markdown.*',
+        },
+      ],
+      src: '^/(?:en/?)?$',
+    });
     expect(vercelConfig.routes).toContainEqual({
       dest: '/en/$1.md',
       has: [
@@ -73,6 +86,30 @@ describe('legacy redirect Vercel artifacts', () => {
         expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
       ]),
     );
+  });
+
+  it('negotiates only English entry requests that explicitly accept markdown', () => {
+    expect(resolveVercelRoute(vercelConfig.routes, '/', 'text/markdown')).toBe(
+      '/en.md',
+    );
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en', 'text/markdown'),
+    ).toBe('/en.md');
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en/', 'text/markdown'),
+    ).toBe('/en.md');
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/', 'text/html'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en', 'text/html'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en.md', 'text/markdown'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/zh-CN', 'text/markdown'),
+    ).toBeNull();
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
@@ -180,3 +217,27 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(Object.keys(sample ?? {}).sort()).toEqual(['p', 't']);
   });
 });
+
+function resolveVercelRoute(
+  routes: VercelRoute[] | undefined,
+  pathname: string,
+  accept: string,
+) {
+  for (const route of routes ?? []) {
+    if (!new RegExp(route.src).test(pathname)) {
+      continue;
+    }
+
+    const acceptsRequest = (route.has ?? []).every((condition) =>
+      condition.type === 'header' && condition.key.toLowerCase() === 'accept'
+        ? new RegExp(condition.value).test(accept)
+        : false,
+    );
+
+    if (acceptsRequest) {
+      return route.dest;
+    }
+  }
+
+  return null;
+}

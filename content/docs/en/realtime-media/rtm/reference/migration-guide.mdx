@@ -1,0 +1,3473 @@
+---
+title: "Migration guide"
+description: "Migrate from Signaling 1.x to Signaling 2.x"
+---
+
+<PlatformStructured platform="web">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+Agora has redesigned and simplified the API interface to accommodate the industry's most popular Async/Await programming model.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+The SDK package names for Signaling `2.x` and `1.x` are different. Both versions, however, support integration via CDN and npm.
+
+<Tabs defaultValue="cdn" groupId="rtm-web-integration" persist>
+<TabsList>
+  <TabsTrigger value="cdn">Using CDN</TabsTrigger>
+  <TabsTrigger value="npm">Using npm</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cdn">
+
+To use CDN, directly add the following code to your web application or download the SDK file for local reference.
+
+Signaling `2.x` integration:
+
+```javascript
+// Replace x.y.z with the specific SDK version number, such as 2.2.4
+<script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
+```
+
+</TabsContent>
+
+<TabsContent value="npm">
+
+1. Install the SDK via npm package manager in your terminal.
+
+   `npm install agora-rtm-sdk`
+
+2. Import it into your `app.js`.
+
+   `import AgoraRTM from 'agora-rtm-sdk';`
+
+</TabsContent>
+</Tabs>
+
+## Initialize a client instance
+
+Compared to `1.x`, Signaling `2.x` makes significant adjustments to the initialization parameters, adding many new features such as client-side encryption and cloud proxy. For details, see the [API Reference](/en/api-reference/api-ref/signaling). Additionally, Signaling `2.x` optimizes error handling within the `try {...} catch {...}` programming model by categorizing potential errors and using the `ErrorInfo` data structure for callbacks, helping you troubleshoot issues more efficiently. By referencing the [Error Codes](/en/realtime-media/rtm/reference/error-codes) table, you can quickly find the cause of an error and its solution.
+
+- Sample code for Signaling `1.x`:
+
+```javascript
+    let options = {
+      uid: "",
+      token: ""
+    }
+    // Fill in the App ID you obtained from the console
+    const appID = "<Your app ID>";
+    // Fill in your user ID
+    options.uid = "<Your uid>";
+    // Fill in your token
+    options.token = "<Your token>";
+    // Initialize the client instance
+    const rtm = AgoraRTM.createInstance(appID);
+```
+
+- Sample code for Signaling `2.x`:
+
+```javascript
+    // Initialize the client instance
+    const { RTM } = AgoraRTM;
+    // Fill in the App ID you obtained from the console
+    const appId = "your_appId";
+    // Fill in your user ID
+    const userId = "your_userId";
+
+    try {
+      const rtm = new RTM(appId, userId);
+    } catch (status) {
+      console.log(status);
+    }
+```
+
+## Log in to Signaling
+
+Signaling `2.x` adopts the standard Async/Await pattern, enabling support for asynchronous programming. The method for logging into Signaling in `2.x` differs from `1.x`, as follows:
+
+- Sample code for Signaling `1.x`:
+
+```javascript
+    await rtm.login(options)
+```
+
+- Sample code for Signaling `2.x`:
+
+```javascript
+    const token = 'your_token'
+    try {
+      const result = await rtm.login({ token });
+      console.log(result);
+    } catch (status) {
+      console.log(status);
+    }
+```
+
+## Event notifications
+
+Signaling `2.x` redesigns the system event notification model and API interface to offer a more detailed classification and aggregation of event notification types. It also optimizes the payload data structure of event notifications.
+
+The following table lists the types of event notifications in Signaling `2.x`:
+
+| Event Type | Description |
+|:----------|:-------------|
+| `message` | Message Event Notification: Receives all message event notifications from the Message channel and Topic that the user subscribes to. |
+| `presence` | Presence Event Notification: Receives all presence event notifications from the Message channel and Stream channel that the user subscribes to or joins. |
+| `topic` | Topic Change Event Notification: Receives all topic change notifications from the Stream channel that the user joins. |
+| `storage` | Channel and User Metadata Event Notification: Receives all channel metadata event notifications from the Message channel and Stream channel, and user metadata event notifications from subscribed users. |
+| `lock` | Lock Event Notification: Receives all lock event notifications from the Message channel and Stream channel that the user subscribes to or joins. |
+| `status` | Network Connection Status Change Notification: Receives notifications about changes in the client's network connection status. |
+| `linkState` | Receives notifications about changes in the client's network connection status, including information on the state before and after the change, service type, operation type, reason for the change, and channel list. |
+| `tokenPrivilegeWillExpire` | Receives notifications about the impending expiration of the client's token. |
+
+For more information on event notifications and payload data structures, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+The following example shows how to listen for `message` event notifications:
+
+- Signaling `1.x`:
+
+```javascript
+    let channel = rtm.createChannel("demoChannel");
+    channel.on('ChannelMessage', function (message, memberId) {
+      console.log(memberId + ": " + message.text);
+    });
+```
+
+- Signaling `2.x`:
+
+```javascript
+    rtm.addEventListener("message", event => {
+      const channelType = event.channelType;
+      const channelName = event.channelName;
+      const topic = event.topicName;
+      const messageType = event.messageType;
+      const customType = event.customType;
+      const publisher = event.publisher;
+      const message = event.message;
+      const timestamp = event.timestamp;
+    });
+```
+
+Notice the following significant differences:
+
+- In `1.x`, message event notifications are bound to a specific `channel` instance. Users need to first call the `createChannel()` method to create a `channel` instance, and then bind event handlers using `channel.on()`. Multiple channels require multiple bindings. In Signaling `2.x`, message event notifications are bound to the client instance and are set globally. You register callbacks with the `addEventListener()` method, binding only once to listen to all subscribed channels or topics.
+
+- The payload data structure for message event notifications in `1.x` contains limited information, while Signaling `2.x`'s payload data structure includes more detailed information, helping you implement your business logic more effectively.
+
+## Channel messages
+
+In `1.x`, sending channel messages involves the following steps:
+
+1. Create a channel instance
+1. Join the channel
+1. Send a channel message
+
+The drawback of this design is that you cannot send a message without receiving it, as sending and receiving messages are coupled. Signaling `2.x` adopts a new Pub/Sub-based design, decoupling sending and receiving channel messages. You can send messages to a specified channel without joining it, and you can receive messages from a channel simply by subscribing to it. These operations are independent of each other.
+
+- The sample code for `1.x` is as follows:
+
+```javascript
+    let channel = rtm.createChannel("demoChannel");
+    await channel.join();
+    let payload = "Hello World!";
+    await channel.sendMessage({ text: payload }).then(() => {
+        console.log("Channel message:" + payload + " from " + channel.channelId);
+    }
+```
+
+- The sample code for Signaling `2.x` is as follows:
+
+```javascript
+    // Send channel message
+    const payload = "Hello World!";
+    try {
+        const result = await rtm.publish("demoChannel", payload, { channelType: 'MESSAGE' });
+        console.log(result);
+    } catch (status) {
+        console.log(status);
+    }
+
+    // Subscribe to a channel
+    try {
+        const result = await rtm.subscribe("chat_room");
+        console.log(result);
+    } catch (status) {
+        console.log(status);
+    }
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API is used to send messages to a specified user. For example, to send a message to a user with user ID "Tony":
+
+```javascript
+// v1
+rtm.sendMessageToPeer(
+  { text: "test peer message" }, // RtmMessage instance
+  "PeerId" // remote user ID
+)
+.then((sendResult) => {
+  if (sendResult.hasPeerReceived) {
+    // Implement logic for when the remote user has received the message
+  } else {
+    // Implement logic for when the server has received the message but the peer has not
+  }
+})
+.catch((error) => {
+  // Implement logic for peer-to-peer message send failure
+});
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `USER` to send messages to a specific user. Handle incoming messages in the `message` event handler. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```javascript
+// v2.2.1 and later
+rtm
+  .publish(
+    "test peer message",
+    "PeerId", // remote user ID
+    { channelType: "USER" }
+  )
+  .then((sendResult) => {
+    // Implement logic for when the remote user receives the message
+  })
+  .catch((error) => {
+    // Implement logic for publish failure
+  });
+```
+:::info
+To receive peer-to-peer messages, implement the `message` event handler. For User Channel messages, the channel type in the event payload is set to `USER`.
+:::
+## Picture and file messages
+
+For reasons of user data privacy, compliance and cost optimization, Signaling `2.x` no longer directly supports image and file message types. After version `1.5.0`, the related interfaces have been deprecated. However, this does not mean that you cannot use Signaling to transmit and distribute image and file messages. You can build image and file message functions with the help of Signaling `2.x` and third-party object storage services, such as Amazon S3 or Alibaba Cloud OSS. Not only can you get the best factual message transmission experience, you can also implement more flexible technical solutions. For example, CDN static resource acceleration or image and text moderation. The following code sample shows you how to use Signaling `2.x` and Amazon S3 object storage service to build and send image and file messages.
+
+```javascript
+const sendFileMessageAsync = async () => {
+  try {
+    // Use the document-picker component to select a file from the device
+    const result = await DocumentPicker.getDocumentAsync({
+      // You can choose any type of file
+      type: "*/*",
+    });
+
+    if (result.canceled === false) {
+      const file = result.assets[0].file;
+      if (file) {
+        const uploadParams = {
+          // Fill in your bucket name on Amazon S3
+          Bucket: "your-awsbucket",
+          // The key for the file on Amazon S3
+          Key: file.name,
+          Body: file,
+          ContentType: file.type,
+        };
+        // Upload the file to S3
+        s3.upload(uploadParams, (err, data) => {
+          if (err) {
+            console.error("Error uploading file:", err);
+          } else {
+            console.log("File uploaded successfully. S3 URL:", data.Location);
+            // After the file is uploaded successfully, create a custom file message payload
+            const imageMessagePayload = {
+              // File type; the receiver can parse the message structure based on this field
+              type: "File",
+              // Your bucket name on Amazon S3; the receiver needs this to download the file
+              bucket: uploadParams.Bucket,
+              // The key of the file stored on Amazon S3; the receiver needs this to download the file
+              key: uploadParams.Key,
+              // File type
+              contentType: uploadParams.ContentType,
+              // File URL
+              url: data.Location,
+              // Sender's user ID
+              sender: userId,
+            };
+            // Use Signaling 2.x to send the file message payload
+            rtm.publish(channelName, JSON.stringify(imageMessagePayload), {
+              customType: "File",
+              channelType: "MESSAGE",
+            });
+          }
+        });
+      }
+    } else {
+      console.log("Document pick cancelled");
+    }
+  } catch (err) {
+    console.error("Error picking document:", err);
+  }
+};
+```
+:::info[Information]
+When using Amazon S3 for static file storage, set the correct user permissions and access policies in the Amazon S3 console. For more details, see [Access Control Best Practices](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/access-control-best-practices.html).
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `whoNow` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```javascript
+// 2.x
+const options = {
+  includedUserId : true,
+  includedState : true,
+  page : "yourBookMark"
+}
+try {
+  const result = await rtm.presence.whoNow( "chat_room", "MESSAGE", options );
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+Call the `whereNow` method to get a list of channels where a specified user is present in real-time.
+
+```javascript
+// 2.x
+try {
+  const result = await rtm.presence.whereNow( "Tony" );
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+To meet the needs of business use-cases for user status settings, 2.x provides the ability to set temporary user status. You can customize temporary user status using the `setState` method. Users can share custom statuses such as score, game status, location, mood, and mic status.
+
+```javascript
+// 2.x
+var newState = { "mood":"pumped", "isTyping":false};
+
+try {
+  const result = await rtm.Presence.setState("chat_room", "MESSAGE", newState);
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+You can also obtain a user's online status at any time using the `getState` method, or delete a user's status using the `removeState` method. After a user's temporary status changes, Signaling triggers a `REMOTE_STATE_CHANGED` type `presence` event notification. For details, see [User status management](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence).
+
+In Signaling `2.x`, listening for notifications about users joining, leaving, timing out, or changing temporary status in a channel is more convenient. You only need to follow these steps:
+
+1. Implement a Presence event listener
+2. When joining a channel, enable the `withPresence` switch
+
+```javascript
+ // 2.x
+ // Implement a Presence event listener
+rtm.addEventListener("presence", event => {
+  const action = event.eventType;
+  const channelType = event.channelType;
+  const channelName = event.channelName;
+  const publisher = event.publisher;
+  const states = event.stateChanged;
+  const interval = event.interval;
+  const snapshot = event.snapshot;
+ // Your implementation code
+});
+
+// When subscribing to a channel, enable the withPresence switch
+const options ={ withPresence : true };
+try {
+  const result = await rtm.subscribe("chat_room", options);
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+Signaling `2.x` introduces a new design for real-time notifications. There are two modes to deliver Presence event notifications to subscribed users in a channel:
+
+- Real-Time Notification Mode (Announce)
+- Scheduled Notification Mode (Interval)
+
+You can set the condition for switching between these two modes using the **Announce Max** size in the project's console settings. The Scheduled Notification Mode helps prevent event noise caused by too many online users in a channel. For further details, see [Event Notification Modes](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence).
+
+## User metadata and channel metadata
+
+Based on the user and channel attributes functionality in `1.x`, Signaling `2.x` adds capabilities such as version control and lock control, and optimizes the API interface to make the usage simpler. In Signaling `2.x`, user attributes and channel attributes are mounted under the Storage module. The following sample demonstrates how to set channel attributes:
+
+```javascript
+// 2.x
+const properties = {
+  key : "Quantity",
+  value : "20"
+};
+
+const announcement = {
+  key : "Announcement",
+  value : "Welcome to our shop!"
+};
+
+const price = {
+  key : "T-shirt",
+  value : "100"
+};
+
+const data = [properties, announcement, price];
+const options = { addTimeStamp : true, addUserId : true };
+
+try {
+  const result = await rtm.storage.setChannelMetadata("channel1", "MESSAGE", data, options);
+  console.log(JSON.stringify(result));
+} catch (status) {
+  console.log(JSON.stringify(status));
+}
+```
+
+For information on how to obtain, update, and delete channel attributes, and how to use CAS control and lock control, please refer to [Store channel metadata](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata). The use of user attributes is similar to that of channel attributes, see [Store user metadata](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata) for details.
+
+Signaling `2.x` distributes channel attributes and user attributes to users through event notifications of the `storage` type. To listen for storage event notifications:
+
+1. Implement the `storage` event listener
+2. When joining a channel, turn on the `withMetadata` switch
+
+```javascript
+// 2.x
+// Implement a Storage event listener
+rtm.addEventListener("storage", event => {
+  const channelType = event.channelType;
+  const channelName = event.channelName;
+  const publisher = event.publisher;
+  const storageType = event.storageType;
+  const action = event.eventType;
+  const data = event.data;
+ // Your implementation code
+});
+ // When joining a channel, enable the withMetadata switch
+const options ={ withMetadata : false };
+try {
+  const result = await rtm.subscribe("chat_room", options);
+  console.log(result);
+} catch (status) {
+  console.log(status);
+}
+```
+
+## Restrict access area
+
+Signaling supports the access area restriction function to adapt to the laws and regulations of different countries or regions. After enabling the access area restriction function, no matter which region the user uses your app in, the SDK only accesses the Agora server in the specified region. The implementation of access area restriction in Signaling `2.x` is the same as for `1.x`:
+
+```javascript
+AgoraRTM.setArea({ areaCodes: ["GLOBAL"], excludedArea: "CHINA" })
+```
+
+## Other new features
+
+In addition to the functional differences between the above versions, Signaling `2.x` also adds many new features. Choose and use them according to the needs of your project.
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+You can integrate the Signaling `2.x` SDK into your app either using a CDN or through Maven Central. The integration methods are as follows:
+
+- For `1.x`:
+```java
+    dependencies {
+        // Replace x.y.z with the specific SDK version, e.g., 1.5.1
+        implementation 'io.agora.rtm:rtm-sdk:x.y.z'
+    }
+```
+
+- For `2.x`:
+```java
+    dependencies {
+        // Replace x.y.z with the specific SDK version, e.g., 2.3.0
+        // For v2.2.7 and later:
+        implementation 'io.agora.rtm:rtm-sdk:x.y.z'
+        // For v2.2.6 and earlier:
+        // implementation 'io.agora:agora-rtm:x.y.z'
+    }
+```
+:::info[Info]
+Signaling `1.x` uses the package name `rtm-sdk` (`io.agora.rtm:rtm-sdk`). Signaling `2.x` originally used a different package name, `agora-rtm` (`io.agora:agora-rtm`), for versions up to `2.2.6`. Starting from `2.2.7`, `2.x` reuses the `rtm-sdk` package name (`io.agora.rtm:rtm-sdk`).
+:::
+## Initialize an RTM Client instance
+
+Signaling `2.x` makes adjustments to initialization parameters. It introduces new features such as end-to-end encryption, and cloud proxy. Refer to the [API Reference](/en/api-reference/api-ref/signaling) for details. Additionally, `2.x` provides richer error information when invoking interfaces, allowing you to quickly identify issues. Look up [Error Codes](/en/realtime-media/rtm/reference/error-codes) for efficient troubleshooting.
+
+- Sample code for `1.x`:
+```java
+    try {
+        rtmClient = RtmClient.createInstance(getBaseContext(), "your_appId", new RtmClientListener() {
+            @Override
+            public void onConnectionStateChanged(int state, int reason) {
+            }
+
+            @Override
+            public void onMessageReceived(RtmMessage rtmMessage, String peerId) {
+            }
+
+            @Override
+            public void onTokenExpired() {
+            }
+
+            @Override
+            public void onTokenPrivilegeWillExpire() {
+            }
+
+            @Override
+            public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
+            }
+        });
+    } catch (Exception e) {
+        throw new RuntimeException("RTM initialization failed!");
+    }
+```
+
+- Sample code for `2.x`:
+
+```java
+    RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+        .eventListener(eventListener)
+        .build();
+    try {
+        rtmClient = RtmClient.create(rtmConfig);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+```
+
+## Log in to Signaling
+
+The login method for `2.x` differs from `1.x`:
+
+- Sample code for `1.x`:
+
+```java
+    rtmClient.login("your_token", "your_userId", new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Handle login result
+        }
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+```
+
+- Sample code for `2.x`:
+
+```java
+    rtmClient.login("your_token", new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Handle login success
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+```
+
+## Event notifications
+
+Signaling `2.x` has redesigned the system event notification mechanism and API interfaces. It provides more detailed classification and aggregation of event notification types, and optimizes the payload data structure.
+
+`2.x` introduces the following types of event notifications:
+
+| Event Type  | Description |
+|--------------|----------------------------|
+| `onMessageEvent`| Message event notification: Receives notifications for all message events in subscribed Message channels and topics.     |
+| `onPresenceEvent` | User presence and custom state change event notification (Presence event notification): Receives notifications for Presence events in subscribed Message Channels and joined Stream Channels, including user online/offline status, and custom temporary state changes.  |
+| `onTopicEvent`  | Topic change event notification: Receives notifications for Topic changes in joined Stream Channels.    |
+| `onStorageEvent`| Channel and user metadata event notification: Receives notifications for channel Metadata events in subscribed Message channels and joined Stream channels, as well as user metadata events for subscribed users.|
+| `onLockEvent`   | Lock change event notification: Receives notifications for Lock events in subscribed Message channels and joined Stream channels. |
+| `onConnectionStateChanged` | (Deprecated) Network connection state change event notification: Receives notifications for changes in client network connection state. |
+| `onLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
+| `onTokenPrivilegeWillExpire`| Receives notifications when the client's token is about to expire.  |
+
+For more information on event notifications and payload data structures, see [Event listeners](/en/api-reference/api-ref/signaling).
+
+Consider the example of listening to channel message events:
+
+- For `1.x`:
+
+```java
+    rtmChannel = rtmClient.createChannel("channelName", new RtmChannelListener() {
+        @Override
+        public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
+            // Handle message event
+        }
+        // Add other event notifications
+    });
+```
+
+- For `2.x`:
+```java
+    RtmEventListener eventListener = new RtmEventListener() {
+        @Override
+        public void onMessageEvent(MessageEvent event) {
+            // Handle message event
+        }
+        // Add other event notifications
+    };
+
+    // Option 1: Add event listener when initializing RTM Client instance with create method
+    RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+        .eventListener(eventListener)
+        .build();
+    try {
+        rtmClient = RtmClient.create(rtmConfig);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    // Option 2: Add event listener at any time during the app's lifecycle
+    rtmClient.addEventListener(eventListener);
+```
+The comparison demonstrates significant differences:
+
+- In `1.x`, channel message event notifications are bound to specific channel instances. Users need to call the `createChannel()` method to create a `channel` instance, then register the `onMessageReceived` callback to handle events. The SDK notifies the handler through this callback when a message is received. If multiple channels are involved, this process needs to be repeated for each channel. In `2.x`, message event notifications are bound to the client instance globally. You call the `addEventListener()` method to register the callback code once, and it applies to all subscribed channels or topics. This simplifies the implementation for handling message events across multiple channels or topics.
+
+- The payload data structure for message event notifications in `2.x` contains more information, which simplifies implementation of custom business logic.
+
+## Channel messages
+
+In version `1.x`, to send a channel message, you needed to:
+
+- Create a Channel instance
+- Join the channel
+- Send and receive channel messages
+
+The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
+
+- Sample code for `1.x`:
+
+```java
+    // Create channel
+    rtmChannel = rtmClient.createChannel("channelName", new RtmChannelListener() {
+        @Override
+        public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
+            // Handle message event
+        }
+        // Add other event notifications
+    });
+
+    // Join channel
+    rtmChannel.join(new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Handle join channel result
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+
+    // Send message
+    RtmMessage message = rtmClient.createMessage();
+    message.setText("Hello World!");
+    rtmChannel.sendMessage(message, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+            // Handle message send result
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+```
+
+- Sample code for `2.x`:
+
+```java
+    // Send message in Message Channel
+    String message = "Hello world";
+    PublishOptions options = new PublishOptions();
+    options.customType = 'PlainText';
+    rtmClient.publish("channelName", message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Handle message send result
+        }
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+
+    // Subscribe to Message Channel
+    SubscribeOptions options = new SubscribeOptions();
+    options.setWithMessage(true);
+    rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Handle subscribe result
+        }
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Handle errors
+        }
+    });
+
+    // Handle received messages
+    rtmClient.addEventListener(new RtmEventListener() {
+        @Override
+        public void onMessageEvent(MessageEvent event) {
+            String channelName = event.getChannelId();
+            String content = event.getMessage();
+            // Handle received message
+        }
+        // Add other event notifications
+    });
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API sends messages to a specified user. For example, to send a message to the user whose user ID is "Tony":
+
+```java
+// 1.x
+RtmMessage message = rtmClient.createMessage();
+message.setText("Hello World!");
+
+SendMessageOptions options = new SendMessageOptions();
+
+rtmClient.sendMessageToPeer("Tony", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void aVoid) {
+        // Handle success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle failure
+    }
+});
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `RtmChannelType.USER` to send messages to a specific user, and handle incoming messages in the `onMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```java
+// 2.x (v2.2.1 or later)
+PublishOptions options = new PublishOptions();
+options.setChannelType(RtmChannelType.USER);
+options.setCustomType("PlainText");
+
+rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle failure
+    }
+});
+```
+:::info
+To receive peer-to-peer messages, implement the `onMessageEvent` callback. For User Channel messages, the `channelType` field in the `MessageEvent` payload is set to `RtmChannelType.USER`.
+:::
+## Picture and file messages
+
+For reasons of user data privacy, compliance and cost optimization, Signaling `2.x` no longer directly supports image and file message types. After version `1.5.0`, the related interfaces have been removed. However, this does not mean that you cannot use Signaling to transmit and distribute image and file messages. You can build image and file message functions with the help of Signaling `2.x` and third-party object storage services, such as Amazon S3 or Alibaba Cloud OSS. Not only can you get the best factual message transmission experience, you can also implement more flexible technical solutions. For example, CDN static resource acceleration or image and text moderation. The following code sample shows you how to use Signaling `2.x` and Amazon S3 object storage service to build and send image and file messages.
+
+```java
+// 1. Upload the file to Amazon S3
+
+// 2. Notify RTM
+JSONObject jsonObject = new JSONObject();
+// File type, the receiving party can parse the message packet structure based on this field
+jsonObject.put("type", "file");
+// Your bucket name on Amazon S3, the receiving party needs this field to download the file
+jsonObject.put("bucket", "uploadParams.Bucket");
+// The Key under which the file is stored on Amazon S3, the receiving party needs this field to download the file
+jsonObject.put("key", "uploadParams.Key");
+// File content type
+jsonObject.put("contentType", "uploadParams.ContentType");
+// File URL address
+jsonObject.put("url", "data.Location");
+
+PublishOptions options = new PublishOptions();
+rtmClient.publish("receiver", jsonObject.toString(), options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle message send result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+:::info[Information]
+When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `getOnlineUsers` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```java
+// 2.x
+PresenceOptions options = new PresenceOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+options.setPage("yourBookMark");
+
+rtmClient.getPresence().getOnlineUsers("channelName", RtmChannelType.MESSAGE, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        // Handle the getOnlineUsers call result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+Call the `getUserChannels` method to get a list of channels where the specified user is present, in real-time.
+
+```java
+// 2.x
+rtmClient.getPresence().getUserChannels("Tony", new ResultCallback<ArrayList<ChannelInfo>>() {
+    @Override
+    public void onSuccess(ArrayList<ChannelInfo> channels) {
+        // Handle the getUserChannels call result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+To meet the user status requirements of business use-cases, Signaling `2.x` provides temporary user status capabilities. Customize temporary user status through the `setState` method. Users can add their scores, game status, location, mood, and other customized statuses.
+
+```java
+// 2.x
+ArrayList<StateItem> stateItems = new ArrayList<>();
+stateItems.add(new StateItem("mood", "pumped"));
+
+rtmClient.getPresence().setState("channelName", RtmChannelType.MESSAGE, stateItems, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle the setState call result
+    }
+
+    @Override
+        public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+You can retrieve a user's online state at any time by using the `getState` method, or remove your own state by using the `removeState` method. Signaling triggers a `presence` event notification of type `REMOTE_STATE_CHANGED` when a user's temporary state is changed. See the [Presence](/en/realtime-media/rtm/build/manage-presence-and-metadata/presence) guide for details on how to use this feature.
+
+Signaling `2.x` makes it very simple to listen to the real-time notification of users entry, exit, timeout and temporary status changes in a channel. To do this, implement the following steps:
+
+- Implement a Presence event listener
+- Enable the `withPresence` switch when you join the channel
+
+You can add a Presence event listener as follows:
+
+```java
+// 2.x
+// 1. Implement the Presence event listener
+RtmEventListener eventListener = new RtmEventListener() {
+        @Override
+        public void onPresenceEvent(PresenceEvent event) {
+            // Handle Precense event notifications
+        }
+    };
+rtmClient.addEventListener(eventListener);
+
+// 2. When subscribing to a channel, turn on the withPresence switch
+SubscribeOptions options = new SubscribeOptions();
+options.setWithPresence(true);
+rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle message subscription result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
+
+1. Real-time notification mode (Announce)
+1. Scheduled notification mode (Interval)
+
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+## User metadata and channel metadata
+
+Signaling `2.x` retains the full functionality of user metadata and channel metadata, with new capabilities such as versioning and locking. It adds optimized interfaces to make these features easier to use.
+
+In `2.x`, user attributes and channel attributes are mounted under the `Storage` module. To set channel attributes, refer to the following code:
+
+```java
+// 2.x
+// Create a Metadata instance
+Metadata metadata = rtmClient.getStorage().createMetadata();
+// Set Major Revision
+metadata.setMajorRevision(174298270);
+// Add a Metadata Item
+metadata.setMetadataItem(new MetadataItem("Apple", "100", 174298200));
+// Add another Metadata Item
+metadata.setMetadataItem(new MetadataItem("Banana", "200", 174298100));
+// Record the timestamp and user ID when setting Metadata Items
+MetadataOptions options = new MetadataOptions();
+options.setRecordTs(true);
+options.setRecordUserId(true);
+
+rtmClient.getStorage().setChannelMetadata("channelName", RtmChannelType.MESSAGE, metadata, options, "lockName", new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle setChannelMetadata result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
+
+Events for channel attributes and user attributes are distributed to users through `onStorageEvent` type event notifications. To listen to these events:
+
+1. Implement the Storage event listener.
+1. When subscribing to a channel, turn on the `withMetadata` switch.
+
+```java
+// 2.x
+// 1. Implement the Storage event listener
+RtmEventListener eventListener = new RtmEventListener() {
+    @Override
+    public void onStorageEvent(StorageEvent event) {
+        // Handle Storage event notifications
+    }
+
+     // Add other event notifications
+};
+rtmClient.addEventListener(eventListener);
+
+// 2. When subscribing to a channel, turn on the withMetadata switch
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMetadata(true);
+rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle message subscription result
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle errors
+    }
+});
+```
+
+## Restrict access area
+
+Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
+
+- Sample code for `1.x`:
+```java
+    // 1.x
+    RtmServiceContext context = new RtmServiceContext();
+    context.areaCode = RtmAreaCode.AREA_CODE_GLOB;
+    setRtmServiceContext(context);
+```
+
+- Sample code for `2.x`:
+```java
+    // 2.x
+    RtmConfig rtmConfig = new RtmConfig.Builder(appId, userId)
+        .areaCode(EnumSet.of(RtmAreaCode.AS))
+        .eventListener(eventListener)
+        .build();
+```
+
+## Call invitation
+
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management#integrate-callapi) as an alternate approach.
+
+## Other new features
+
+In addition to the enhancements presented in this document, Signaling `2.x` introduces an array of additional features. Choose and implement features that fit the needs of your project. The following table outlines key new features of Signaling `2.x`:
+
+| Module | Function | Signaling `2.x` API Interface |
+|:-------|:---------|:----------------------------|
+| **Setup**| Create Instance| `RtmClient create(RtmConfig config)`|
+|| Destroy Instance| `RtmClient.release()`|
+|| Token Configuration| `login` interface with `token` parameter|
+|| End-to-End Encryption| `RtmEncryptionConfig` with `encryptionMode`, `encryptionKey`, `encryptionSalt` parameters|
+|| Presence Timeout Setting| `RtmConfig` with `presenceTimeout` parameter|
+|| Log Level Setting| `RtmLogConfig` with `level` parameter|
+|| Proxy Configuration| `RtmProxyConfig` with `proxyType`, `server`, `port`, `account`, `password` parameters|
+|| Event Listener| `void addEventListener(RtmEventListener listener)`<br /> `void removeEventListener(RtmEventListener listener)`|
+|| Login Service| `void login(String token, ResultCallback<Void> resultCallback)`|
+|| Logout Service| `void logout(ResultCallback<Void> resultCallback)`|
+| **Channel**| Unsubscribe Channel| `void unsubscribe(String... channelIds)`|
+|| Subscribe Channel| `void subscribe(String channelName, SubscribeOptions options, ResultCallback<Void> resultCallback)`|
+|| Unsubscribe Channel| `void unsubscribe(String channelName, ResultCallback<Void> resultCallback)`|
+|| Create Stream Channel| `StreamChannel createStreamChannel(String channelName)`|
+|| Join Stream Channel| `void join(JoinChannelOptions options, ResultCallback<Void> resultCallback)`|
+|| Leave Stream Channel| `void leave(ResultCallback<Void> resultCallback)`|
+|| Destroy Stream Channel| `streamChannel.release()`|
+| **Topic**| Join Topic| `void joinTopic(String topicName, JoinTopicOptions options, ResultCallback<Void> resultCallback)`|
+|| Publish Topic Message| `void publishTopicMessage(String topicName, String message, TopicMessageOptions options, ResultCallback<Void> resultCallback)`|
+|| Leave Topic| `void leaveTopic(String topicName, ResultCallback<Void> resultCallback)`|
+|| Subscribe Topic| `void subscribeTopic(String topicName, TopicOptions options, ResultCallback<SubscribeTopicResult> resultCallback)`|
+|| Unsubscribe Topic| `void unsubscribeTopic(String topicName, TopicOptions options, ResultCallback<Void> resultCallback)`|
+| **Message**| Send Message| `void publish(String channelName, String message, PublishOptions options, ResultCallback<Void> resultCallback)`|
+| **Presence**| Query Channel's Online Users| `void getOnlineUsers(String channelName, RtmChannelType channelType, ResultCallback<GetOnlineUsersResponse> resultCallback)`|
+|| Query User's Channel| `void getUserChannels(String userId, ResultCallback<GetUserChannelsResponse> resultCallback)`|
+|| Set User's Temporary State| `void setState(String channelName, RtmChannelType channelType, ArrayList<StateItem> items, ResultCallback<Void> resultCallback)`|
+|| Query User Temporary State| `void getState(String channelName, RtmChannelType channelType, String userId, ResultCallback<UserState> resultCallback)`|
+|| Remove User Temporary State| `void removeState(String channelName, RtmChannelType channelType, ArrayList<String> keys, ResultCallback<Void> resultCallback)`|
+| **Storage**| Set Channel Metadata| `void setChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`|
+|| Get Channel Metadata| `void getChannelMetadata(String channelName, RtmChannelType channelType, ResultCallback<Metadata> resultCallback)`|
+|| Remove Channel Metadata| `void removeChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`|
+|| Update Channel Metadata| `void updateChannelMetadata(String channelName, RtmChannelType channelType, Metadata data, MetadataOptions options, String lockName, ResultCallback<Void> resultCallback)`|
+|| Set User Attributes| `void setUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`|
+|| Get User Attributes| `void getUserMetadata(String userId, ResultCallback<Metadata> resultCallback)`|
+|| Remove User Attributes| `void removeUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`|
+|| Update User Attributes| `void updateUserMetadata(String userId, Metadata data, MetadataOptions options, ResultCallback<Void> resultCallback)`|
+|| Subscribe User Attributes| `void subscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`|
+|| Unsubscribe User Attributes| `void unsubscribeUserMetadata(String userId, ResultCallback<Void> resultCallback)`|
+| **Lock**| Set Lock| `void setLock(String channelName, RtmChannelType channelType, String lockName, long ttl, ResultCallback<Void> resultCallback)`|
+|| Acquire Lock| `void acquireLock(String channelName, RtmChannelType channelType, String lockName, boolean retry, ResultCallback<Void> resultCallback)`|
+|| Release Lock| `void releaseLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`|
+|| Revoke Lock| `void revokeLock(String channelName, RtmChannelType channelType, String lockName, String owner, ResultCallback<Void> resultCallback)`|
+|| Query Lock| `void getLocks(String channelName, RtmChannelType channelType, ResultCallback<ArrayList<LockDetail>> resultCallback)`|
+|| Remove Lock| `void removeLock(String channelName, RtmChannelType channelType, String lockName, ResultCallback<Void> resultCallback)`|
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
+
+```objc
+platform :ios, '11.0'
+target 'Your App' do
+  # Replace x.y.z with the specific SDK version, such as 2.2.6
+  pod 'AgoraRtm', 'x.y.z'
+end
+```
+:::warning
+If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+:::
+## Initialize an RTM Client instance
+
+Signaling `2.x` has made significant adjustments to the initialization parameters, adding many new features such as end-to-end encryption, and cloud proxy. For details, refer to the [API reference](/en/api-reference/api-ref/signaling). Additionally, `2.x` has enriched the error information for API calls. You can retrieve error codes, reasons, and API operation names through the `AgoraRtmErrorInfo` data structure, making it easier to [troubleshoot](/en/realtime-media/rtm/reference/error-codes) issues.
+
+- For `1.x`:
+
+```objc
+   self.appID = @"your_appid";
+   _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
+```
+
+- For `2.x`:
+
+```objc
+   AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+   NSError* initError = nil;
+   AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+## Log in to Signaling
+
+The login method for `2.x` differs from `1.x`, as follows:
+
+- For `1.x`:
+
+```objc
+    self.uid = self.UserIDTextField.text;
+    self.token = @"your_token";
+    [_kit loginByToken:(self.token) user:(self.uid) completion:^(AgoraRtmLoginErrorCode errorCode) {
+        if (errorCode != AgoraRtmLoginErrorOk){
+            self.text = [NSString stringWithFormat:@"Login failed for user %@. Code: %ld",self.uid, (long)errorCode];
+            NSLog(@"%@", self.text);
+        }
+        else {
+            NSLog(@"%@", self.text);
+            self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorCode];
+        }
+    }];
+```
+
+- For `2.x`:
+
+```objc
+    [rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Login success!!");
+        } else {
+            NSLog(@"Login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+## Event notifications
+
+Signaling `2.x` has redesigned the system's event notification method and API interface, providing more detailed categorization and aggregation of event notification types, as well as optimizing the payload data structure. Version `2.x` features the following event notification types:
+
+| Event Type | Description|
+|:-----------:|:--------------------- |
+| `didReceiveMessageEvent` | Message event notification: Receive notifications for all message events in subscribed Message channels and topics. |
+| `didReceivePresenceEvent`| User Presence and custom state change event notification (Presence event Notification): Receive notifications for all Presence events in subscribed Message channels and joined Stream channels.|
+| `didReceiveTopicEvent` | Topic change event notification: Receive notifications for all Topic change events in joined Stream channels.  |
+| `didReceiveStorageEvent` | Channel and User Property event notification: Receive notifications for all Channel metadata events in subscribed Message channels and joined Stream channels, and User Metadata events for subscribed users.|
+| `didReceiveLockEvent`| Lock change event notification: Receive notifications for all Lock events in subscribed Message channels and joined Stream channels.|
+| `connectionChangedToState`| (Deprecated) Network connection state change event notification: Receive notifications for changes in client network connection status.|
+| `didReceiveLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
+| `tokenPrivilegeWillExpire`| Receive event notifications when the client token is about to expire. |
+
+For more information on event notifications and payload data structures, see [Event listeners](/en/api-reference/api-ref/signaling).
+
+Examine the following code to observe the differences between the `1.x` and `2.x` implementations.
+
+- For `1.x`:
+
+```objc
+    @interface ChannelListener ()<AgoraRtmChannelDelegate>
+    @end
+
+    @implementation ChannelListener
+    - (void)channel:(AgoraRtmChannel *)channel messageReceived:(AgoraRtmMessage *)message fromMember:(AgoraRtmMember *)member
+        {
+            self.text = [NSString stringWithFormat:@"Message received in channel: %@ from user: %@ content: %@",member.channelId, member.userId, message.text];
+            [self AddMsgToRecord:(self.text)];
+        }
+    @end
+
+    ChannelListener* handler =  [[ChannelListener alloc] init];
+    channel = [rtm createChannelWithId:self.channelID delegate:handler];
+```
+
+- For `2.x`:
+```objc
+    @interface RtmListener : NSObject <AgoraRtmClientDelegate>
+    @end
+
+    @implementation RtmListener
+        // Implementation of the Agora Real-Time Messaging (RTM) client delegate method
+        -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {}
+    @end
+
+    // Approach 1: Adding event listener when initializing the RTM client instance using the initWithAppId method
+    AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+    RtmListener* handler =  [[RtmListener alloc] init];
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+
+    // Approach 2: Adding event listener at any time during the app's lifecycle
+    [rtm addDelegate:handler];
+```
+
+Observe the following differences in the sample code.
+
+- In `1.x`, channel message event notification is bound to specific `channel` instances. Users need to create a `channel` instance by calling the `createChannelWithId:delegate` method, then register the `messageReceived` callback to handle events. The SDK notifies the handler through this callback when a message is received, and it needs to be bound multiple times for multiple channels. In `2.x`, message event notification is bound to the client instance globally. When creating and initializing the `AgoraRtmClientKit` instance, you register the event listener instance once, and it listens to all subscribed channels or topics.
+
+- The payload data structure for `1.x` message event notification contains limited information. The `2.x` payload data structure contains more information, which helps you better implement your business logic.
+
+## Channel messages
+
+In version `1.x`, to send a channel message, you needed to:
+
+- Create a Channel instance
+- Join the channel
+- Send and receive channel messages
+
+The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
+
+- For `1.x`:
+```objc
+    // Create an RTM channel
+    _channel = [_kit createChannelWithId:self.channelID delegate:self];
+
+    // Join the RTM channel
+    [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
+		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
+		    NSLog(@"%@", self.text);
+	    } else {
+		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
+		    NSLog(@"%@", self.text);
+	    }
+    }];
+
+    // Send a channel message
+    [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
+		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
+	    } else {
+		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
+	    }
+    }];
+```
+- For `2.x`:
+
+```objc
+    // Send a channel message
+    NSString* message = @"Hello Agora!";
+    NSString* channel = @"your_channel";
+    [rtm publish:channel message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Publish success!!");
+        } else {
+            NSLog(@"Publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+
+    // Subscribe to a channel
+    AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
+    opt.features = AgoraRtmSubscribeChannelFeatureMessage | AgoraRtmSubscribeChannelFeaturePresence;
+    [rtm subscribeWithChannel:@"your_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Subscribe success!!");
+        } else {
+            NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API sends messages to a specified user. For example, to send a message to the user whose user ID is "Tony":
+
+```objc
+// 1.x
+self.peerMsg = self.PeerMsgTextField.text;
+self.peerID = self.PeerIDTextField.text;
+
+[_kit sendMessage:[[AgoraRtmMessage alloc] initWithText:self.peerMsg] toPeer:self.peerID completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+    if (errorCode == AgoraRtmSendPeerMessageErrorOk)
+    {
+        self.text = [NSString stringWithFormat:@"Message sent from user: %@ to user: %@ content: %@", self.uid, self.peerID, self.peerMsg];
+    }
+    else
+    {
+        self.text = [NSString stringWithFormat:@"Message failed to send from user: %@ to user: %@ content: %@ Error: %ld", self.uid, self.peerID, self.peerMsg, (long)errorCode];
+    }
+
+}];
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `AgoraRtmChannelTypeUser` to send messages to a specific user, and handle incoming messages in the `didReceiveMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```objc
+// v2.2.1 and later
+NSString* message = @"Hello Agora!";
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+
+[rtm publish:user message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+:::info
+To receive peer-to-peer messages, implement the `didReceiveMessageEvent` callback. For User Channel messages, the `channelType` field in the `MessageEvent` payload is set to `AgoraRtmChannelTypeUser`.
+:::
+## Images and file messages
+
+For reasons of user data privacy/protection compliance and cost optimization, Signaling `2.x` no longer directly supports image and file message types. After version `1.5.0`, the related interfaces have been removed. However, this does not mean that you cannot use Signaling to transmit and distribute image and file messages. You can build image and file message functions with the help of Signaling `2.x` and third-party object storage services, such as Amazon S3 or Alibaba Cloud OSS. Not only can you get the best factual message transmission experience, you can also implement more flexible technical solutions. For example, CDN static resource acceleration or image and text moderation.
+
+The following code sample shows you how to use Signaling `2.x` and Amazon S3 object storage service to build and send image and file messages.
+
+```objc
+// After successful file upload, customize the RTM file message payload
+NSString* imageMessagePayload = @"{
+    // File type, the receiver can parse the message packet structure based on this field
+    type:'File',
+    // Your bucket name on Amazon S3, the receiver needs this field to download the file
+    bucket:uploadParams.Bucket,
+    // The key under which the file is stored on Amazon S3, the receiver needs this field to download the file
+    key:uploadParams.Key,
+    // File type
+    contentType:uploadParams.ContentType,
+    // File URL address
+    url:data.Location,
+    // Sender's user ID
+    sender:userId
+    }";
+
+// Use RTM `2.x` to send file message payload
+AgoraRtmPublishOptions* option = [[AgoraRtmPublishOptions alloc] init];
+option.customType = @"File";
+
+[rtm publish:channelName message:imageMessagePayload option:option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"Publish success!!");
+    } else {
+        NSLog(@"Publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+:::info[Information]
+When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `getOnlineUsers` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```objc
+// 2.x
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
+presence_opt.includeState = false;
+presence_opt.includeUserId = false;
+
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getOnlineUsers success!!");
+        int user_count = response.totalOccupancy;
+    } else {
+        NSLog(@"getOnlineUsers failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+You use the `getUserChannels` method to obtain the list of channels in which a specified user is currently present.
+
+```objc
+// 2.x
+[[rtm getPresence] getUserChannels:@"userId" completion:^(AgoraRtmGetUserChannelsResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getUserChannels success!!");
+        int channel_count = response.totalChannel;
+        NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
+    } else {
+        NSLog(@"getUserChannels failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+To meet the user status requirements of business use-cases, Signaling `2.x` provides temporary user status capabilities. Customize temporary user status through the `setState` method. Users can add their scores, game status, location, mood, and other customized statuses.
+
+```objc
+// 2.x
+AgoraRtmStateItem* state1 = [[AgoraRtmStateItem alloc] init];
+state1.key = @"key1";
+state1.value = @"value1";
+AgoraRtmStateItem* state2 = [[AgoraRtmStateItem alloc] init];
+state2.key = @"key2";
+state2.value = @"value2";
+NSArray<AgoraRtmStateItem*>* states = @[state1, state2];
+
+[[rtm getPresence] setState:@"your_channel" channelType:AgoraRtmChannelTypeMessage items:states completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setState success!!");
+    } else {
+        NSLog(@"setState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+You use the `getState` method to retrieve the online status of a user, or the `removeState` method to delete a user's status. After the temporary user state changes, the RTM server triggers the `AgoraRtmPresenceEventTypeRemoteStateChanged` type of `didReceivePresenceEvent` event notification. For specific usage, refer to [Temporary User State](/en/api-reference/api-ref/signaling).
+
+In `2.x`, real-time monitoring of user join, leave, timeout, or temporary status change notifications in a channel is more convenient. Just follow these steps:
+
+1. Implement a Presence event listener.
+2. When joining a channel, enable the `withPresence` switch.
+
+```objc
+// 2.x
+// 1. Implement Presence event listener
+@interface RtmListener : NSObject <AgoraRtmClientDelegate>
+
+@end
+
+@implementation RtmListener
+// Presence event notification
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceivePresenceEvent:(AgoraRtmPresenceEvent *)event {
+    // Implementation code
+}
+@end
+
+// 2. When joining a channel, enable the withPresence switch
+AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
+option.features = AgoraRtmSubscribeChannelFeaturePresence;
+[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
+
+1. Real-time notification mode (Announce)
+1. Scheduled notification mode (Interval)
+
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+## User metadata and channel metadata
+
+Signaling `2.x` retains the full functionality of user metadata and channel metadata, with new capabilities such as versioning and locking. It adds optimized interfaces to make these features easier to use.
+
+In `2.x`, user attributes and channel attributes are mounted under the `Storage` module. To set channel attributes, refer to the following code:
+
+```objc
+// 2.x
+// Create Metadata
+AgoraRtmMetadata* metadata = [[rtm getStorage] createMetadata];
+
+// Set Metadata Items
+AgoraRtmMetadataItem* apple = [[AgoraRtmMetadataItem alloc] init];
+apple.key = @"Apple";
+apple.value = @"100";
+apple.revision = 174298200;
+AgoraRtmMetadataItem* banana = [[AgoraRtmMetadataItem alloc] init];
+banana.key = @"Banana";
+banana.value = @"200";
+banana.revision = 174298100;
+[metadata setMetadataItem:apple];
+[metadata setMetadataItem:banana];
+// Set Major Revision
+[metadata setMajorRevision:174298270]
+
+// Record Timestamp and User ID when setting Metadata Items
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] setChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"lockName" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setChannelMetadata success!!");
+    } else {
+        NSLog(@"setChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
+
+Events for channel and user attributes are distributed to users through events of type `didReceiveStorageEvent`. To listen for `didReceiveStorageEvent` events, refer to the following steps:
+
+1. Implement the Storage event listener.
+2. When joining a channel, enable the `withMetadata` switch.
+
+```objc
+    // 2.x
+    // 1. Implement the Storage event listener
+    @interface RtmListener : NSObject <AgoraRtmClientDelegate>
+    @end
+
+    @implementation RtmListener
+    // Storage event notification
+    -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveStorageEvent:(AgoraRtmStorageEvent *)event {
+        // Implementation code
+    }
+    @end
+
+    // 2. When joining a channel, add the Metadata feature
+    AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
+    option.features = AgoraRtmSubscribeChannelFeatureMetadata;
+    [rtm subscribeWithChannel:@"your_channel" option:option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Subscribe success!!");
+        } else {
+            NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+## Restrict access area
+
+Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
+
+- For `1.x`:
+
+```objc
+    AgoraRtmServiceContext* context = [[AgoraRtmServiceContext alloc] init];
+    context.areaCode = AgoraAreaCodeGLOB;
+    [AgoraRtmKit setRtmServiceContext:context];
+```
+
+- For `2.x`:
+
+```objc
+    AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
+    rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
+```
+
+## Call invitation
+
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management#integrate-callapi) as an alternate approach.
+
+## Other new features
+
+In addition to the enhancements presented in this document, Signaling `2.x` introduces an array of additional features. Choose and implement features that fit the needs of your project. The following table outlines key new features of Signaling `2.x`:
+
+| Module | Function | Signaling `2.x` API Interface |
+|:-------|:---------|:----------------------------|
+| **Setup**| Create Instance | `initWithConfig:delegate:error`|
+| | Destroy Instance| `[rtm destroy]` |
+| | | Token Configuration | `AgoraRtmClientConfig` with `token` parameter |
+| | End-to-End Encryption| `AgoraRtmClientConfig` with `encryptionConfig` parameter |
+| | Presence Timeout Setting| `AgoraRtmClientConfig` with `presenceTimeout` parameter |
+| | Log Level Setting| `AgoraRtmLogConfig` with `level` parameter |
+| | Proxy Configuration| `AgoraRtmProxyConfig` with `proxyType`, `server`, `port`, `account`, `password` parameters |
+| | Event Listener| - `[rtm addDelegate:delegate]`<br /> - `[rtm removeDelegate:delegate]`|
+| | Login Service | `[rtm loginByToken:completion:]`   |
+| | Logout Service| `[rtm logout:completion]` |
+| **Channel** | Subscribe Channel | `[rtm subscribeWithChannel:option:completion]`|
+| | Unsubscribe Channel| `[rtm unsubscribeWithChannel:completion]` |
+| | Create Stream Channel| `[rtm createStreamChannel:error]`  |
+| | Join Stream Channel| `[streamChannel joinWithOption:completion]` |
+| | Leave Stream Channel | `[streamChannel leave]` |
+| | Destroy Stream Channel  | `[streamChannel destroy]` |
+| **Topic**| Join Topic| `[streamChannel joinTopic:withOption:completion]` |
+| | Publish Topic Message| `[streamChannel publishTopicMessage:data:option:completion]`  |
+| | Leave Topic | `[streamChannel leaveTopic:completion]` |
+| | Subscribe Topic | `[streamChannel subscribeTopic:withOption:completion]` |
+| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:withOption:completion]` |
+| **Message** | Send Message| `[rtm publish:message:option:completion]` |
+| **Presence**| Query Channel's Online Users| `[[rtm getPresence] getOnlineUsers:channelType:options:completion]` |
+| | Query User's Channel | `[[rtm getPresence] getUserChannels:completion]` |
+| | Set User's Temporary State| `[[rtm getPresence] setState:channelType:items:completion]`|
+| | Query User Temporary State| `[[rtm getPresence] getState:channelType:userId:completion]`|
+| | Remove User Temporary State | `[[rtm getPresence] removeState:channelType:keys:completion]`  |
+| **Storage** | Set Channel Metadata | `[[rtm getStorage] setChannelMetadata:channelType:data:options:lock:completion]` |
+| | Get Channel Metadata | `[[rtm getStorage] getChannelMetadata:channelType:completion]`  |
+| | Remove Channel Metadata | `[[rtm getStorage] removeChannelMetadata:channelType:data:options:lock:completion]`|
+| | Update Channel Metadata | `[[rtm getStorage] updateChannelMetadata:channelType:data:options:lock:completion]`|
+| | Set User Attributes| `[[rtm getStorage] setUserMetadata:data:options:completion]` |
+| | | Get User Attributes | `[[rtm getStorage] getUserMetadata:completion]` |
+| | Remove User Attributes  | `[[rtm getStorage] removeUserMetadata:data:options:completion]` |
+| | Update User Attributes  | `[[rtm getStorage] updateChannelMetadata:data:options:completion]` |
+| | Subscribe User Attributes | `[[rtm getStorage] subscribeUserMetadata:completion]`|
+| | Unsubscribe User Attributes | `[[rtm getStorage] unsubscribeUserMetadata:completion]` |
+| **Lock** | Set Lock  | `[[rtm getLock] setLock:channelType:lockName:ttl:completion]`|
+| | Acquire Lock| `[[rtm getLock] acquireLock:channelType:lockName:retry:completion]` |
+| | Release Lock| `[[rtm getLock] releaseLock:channelType:lockName:completion]`|
+| | Revoke Lock | `[[rtm getLock] revokeLock:channelType:lockName:userId:completion]` |
+| | Query Lock| `[[rtm getLock] getLocks:channelType:completion]`  |
+| | Remove Lock | `[[rtm getLock] removeLock:channelType:lockName:completion]` |
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
+
+```objc
+platform :ios, '11.0'
+target 'Your App' do
+  # Replace x.y.z with the specific SDK version, such as 2.2.6
+  pod 'AgoraRtm', 'x.y.z'
+end
+```
+:::warning
+If you are using an SDK version earlier than `2.2.0`, change the package name to `AgoraRtm_iOS`.
+:::
+## Initialize an RTM Client instance
+
+Signaling `2.x` has made significant adjustments to the initialization parameters, adding many new features such as end-to-end encryption, and cloud proxy. For details, refer to the [API reference](/en/api-reference/api-ref/signaling). Additionally, `2.x` has enriched the error information for API calls. You can retrieve error codes, reasons, and API operation names through the `AgoraRtmErrorInfo` data structure, making it easier to [troubleshoot](/en/realtime-media/rtm/reference/error-codes) issues.
+
+- For `1.x`:
+
+```objc
+   self.appID = @"your_appid";
+   _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
+```
+
+- For `2.x`:
+
+```objc
+   AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+   NSError* initError = nil;
+   AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+```
+
+## Log in to Signaling
+
+The login method for `2.x` differs from `1.x`, as follows:
+
+- For `1.x`:
+
+```objc
+    self.uid = self.UserIDTextField.text;
+    self.token = @"your_token";
+    [_kit loginByToken:(self.token) user:(self.uid) completion:^(AgoraRtmLoginErrorCode errorCode) {
+        if (errorCode != AgoraRtmLoginErrorOk){
+            self.text = [NSString stringWithFormat:@"Login failed for user %@. Code: %ld",self.uid, (long)errorCode];
+            NSLog(@"%@", self.text);
+        }
+        else {
+            NSLog(@"%@", self.text);
+            self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorCode];
+        }
+    }];
+```
+
+- For `2.x`:
+
+```objc
+    [rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Login success!!");
+        } else {
+            NSLog(@"Login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+## Event notifications
+
+Signaling `2.x` has redesigned the system's event notification method and API interface, providing more detailed categorization and aggregation of event notification types, as well as optimizing the payload data structure. Version `2.x` features the following event notification types:
+
+| Event Type | Description|
+|:-----------:|:--------------------- |
+| `didReceiveMessageEvent` | Message event notification: Receive notifications for all message events in subscribed Message channels and topics. |
+| `didReceivePresenceEvent`| User Presence and custom state change event notification (Presence event Notification): Receive notifications for all Presence events in subscribed Message channels and joined Stream channels.|
+| `didReceiveTopicEvent` | Topic change event notification: Receive notifications for all Topic change events in joined Stream channels.  |
+| `didReceiveStorageEvent` | Channel and User Property event notification: Receive notifications for all Channel metadata events in subscribed Message channels and joined Stream channels, and User Metadata events for subscribed users.|
+| `didReceiveLockEvent`| Lock change event notification: Receive notifications for all Lock events in subscribed Message channels and joined Stream channels.|
+| `connectionChangedToState`| (Deprecated) Network connection state change event notification: Receive notifications for changes in client network connection status.|
+| `didReceiveLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
+| `tokenPrivilegeWillExpire`| Receive event notifications when the client token is about to expire. |
+
+For more information on event notifications and payload data structures, see [Event listeners](/en/api-reference/api-ref/signaling).
+
+Examine the following code to observe the differences between the `1.x` and `2.x` implementations.
+
+- For `1.x`:
+
+```objc
+    @interface ChannelListener ()<AgoraRtmChannelDelegate>
+    @end
+
+    @implementation ChannelListener
+    - (void)channel:(AgoraRtmChannel *)channel messageReceived:(AgoraRtmMessage *)message fromMember:(AgoraRtmMember *)member
+        {
+            self.text = [NSString stringWithFormat:@"Message received in channel: %@ from user: %@ content: %@",member.channelId, member.userId, message.text];
+            [self AddMsgToRecord:(self.text)];
+        }
+    @end
+
+    ChannelListener* handler =  [[ChannelListener alloc] init];
+    channel = [rtm createChannelWithId:self.channelID delegate:handler];
+```
+
+- For `2.x`:
+```objc
+    @interface RtmListener : NSObject <AgoraRtmClientDelegate>
+    @end
+
+    @implementation RtmListener
+        // Implementation of the Agora Real-Time Messaging (RTM) client delegate method
+        -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {}
+    @end
+
+    // Approach 1: Adding event listener when initializing the RTM client instance using the initWithAppId method
+    AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+    RtmListener* handler =  [[RtmListener alloc] init];
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+
+    // Approach 2: Adding event listener at any time during the app's lifecycle
+    [rtm addDelegate:handler];
+```
+
+Observe the following differences in the sample code.
+
+- In `1.x`, channel message event notification is bound to specific `channel` instances. Users need to create a `channel` instance by calling the `createChannelWithId:delegate` method, then register the `messageReceived` callback to handle events. The SDK notifies the handler through this callback when a message is received, and it needs to be bound multiple times for multiple channels. In `2.x`, message event notification is bound to the client instance globally. When creating and initializing the `AgoraRtmClientKit` instance, you register the event listener instance once, and it listens to all subscribed channels or topics.
+
+- The payload data structure for `1.x` message event notification contains limited information. The `2.x` payload data structure contains more information, which helps you better implement your business logic.
+
+## Channel messages
+
+In version `1.x`, to send a channel message, you needed to:
+
+- Create a Channel instance
+- Join the channel
+- Send and receive channel messages
+
+The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
+
+- For `1.x`:
+```objc
+    // Create an RTM channel
+    _channel = [_kit createChannelWithId:self.channelID delegate:self];
+
+    // Join the RTM channel
+    [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
+		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
+		    NSLog(@"%@", self.text);
+	    } else {
+		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
+		    NSLog(@"%@", self.text);
+	    }
+    }];
+
+    // Send a channel message
+    [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
+		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
+	    } else {
+		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
+	    }
+    }];
+```
+- For `2.x`:
+
+```objc
+    // Send a channel message
+    NSString* message = @"Hello Agora!";
+    NSString* channel = @"your_channel";
+    [rtm publish:channel message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Publish success!!");
+        } else {
+            NSLog(@"Publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+
+    // Subscribe to a channel
+    AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
+    opt.features = AgoraRtmSubscribeChannelFeatureMessage | AgoraRtmSubscribeChannelFeaturePresence;
+    [rtm subscribeWithChannel:@"your_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Subscribe success!!");
+        } else {
+            NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API sends messages to a specified user. For example, to send a message to the user whose user ID is "Tony":
+
+```objc
+// 1.x
+self.peerMsg = self.PeerMsgTextField.text;
+self.peerID = self.PeerIDTextField.text;
+
+[_kit sendMessage:[[AgoraRtmMessage alloc] initWithText:self.peerMsg] toPeer:self.peerID completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+    if (errorCode == AgoraRtmSendPeerMessageErrorOk)
+    {
+        self.text = [NSString stringWithFormat:@"Message sent from user: %@ to user: %@ content: %@", self.uid, self.peerID, self.peerMsg];
+    }
+    else
+    {
+        self.text = [NSString stringWithFormat:@"Message failed to send from user: %@ to user: %@ content: %@ Error: %ld", self.uid, self.peerID, self.peerMsg, (long)errorCode];
+    }
+
+}];
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `AgoraRtmChannelTypeUser` to send messages to a specific user, and handle incoming messages in the `didReceiveMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```objc
+// v2.2.1 and later
+NSString* message = @"Hello Agora!";
+NSString* user = @"Tony";
+
+AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+publish_option.channelType = AgoraRtmChannelTypeUser;
+
+[rtm publish:user message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+:::info
+To receive peer-to-peer messages, implement the `didReceiveMessageEvent` callback. For User Channel messages, the `channelType` field in the `MessageEvent` payload is set to `AgoraRtmChannelTypeUser`.
+:::
+## Images and file messages
+
+For reasons of user data privacy/protection compliance and cost optimization, Signaling `2.x` no longer directly supports image and file message types. After version `1.5.0`, the related interfaces have been removed. However, this does not mean that you cannot use Signaling to transmit and distribute image and file messages. You can build image and file message functions with the help of Signaling `2.x` and third-party object storage services, such as Amazon S3 or Alibaba Cloud OSS. Not only can you get the best factual message transmission experience, you can also implement more flexible technical solutions. For example, CDN static resource acceleration or image and text moderation.
+
+The following code sample shows you how to use Signaling `2.x` and Amazon S3 object storage service to build and send image and file messages.
+
+```objc
+// After successful file upload, customize the RTM file message payload
+NSString* imageMessagePayload = @"{
+    // File type, the receiver can parse the message packet structure based on this field
+    type:'File',
+    // Your bucket name on Amazon S3, the receiver needs this field to download the file
+    bucket:uploadParams.Bucket,
+    // The key under which the file is stored on Amazon S3, the receiver needs this field to download the file
+    key:uploadParams.Key,
+    // File type
+    contentType:uploadParams.ContentType,
+    // File URL address
+    url:data.Location,
+    // Sender's user ID
+    sender:userId
+    }";
+
+// Use RTM `2.x` to send file message payload
+AgoraRtmPublishOptions* option = [[AgoraRtmPublishOptions alloc] init];
+option.customType = @"File";
+
+[rtm publish:channelName message:imageMessagePayload option:option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"Publish success!!");
+    } else {
+        NSLog(@"Publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+:::info[Information]
+When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `getOnlineUsers` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```objc
+// 2.x
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
+presence_opt.includeState = false;
+presence_opt.includeUserId = false;
+
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getOnlineUsers success!!");
+        int user_count = response.totalOccupancy;
+    } else {
+        NSLog(@"getOnlineUsers failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+You use the `getUserChannels` method to obtain the list of channels in which a specified user is currently present.
+
+```objc
+// 2.x
+[[rtm getPresence] getUserChannels:@"userId" completion:^(AgoraRtmGetUserChannelsResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getUserChannels success!!");
+        int channel_count = response.totalChannel;
+        NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
+    } else {
+        NSLog(@"getUserChannels failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+To meet the user status requirements of business use-cases, Signaling `2.x` provides temporary user status capabilities. Customize temporary user status through the `setState` method. Users can add their scores, game status, location, mood, and other customized statuses.
+
+```objc
+// 2.x
+AgoraRtmStateItem* state1 = [[AgoraRtmStateItem alloc] init];
+state1.key = @"key1";
+state1.value = @"value1";
+AgoraRtmStateItem* state2 = [[AgoraRtmStateItem alloc] init];
+state2.key = @"key2";
+state2.value = @"value2";
+NSArray<AgoraRtmStateItem*>* states = @[state1, state2];
+
+[[rtm getPresence] setState:@"your_channel" channelType:AgoraRtmChannelTypeMessage items:states completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setState success!!");
+    } else {
+        NSLog(@"setState failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+You use the `getState` method to retrieve the online status of a user, or the `removeState` method to delete a user's status. After the temporary user state changes, the RTM server triggers the `AgoraRtmPresenceEventTypeRemoteStateChanged` type of `didReceivePresenceEvent` event notification. For specific usage, refer to [Temporary User State](/en/api-reference/api-ref/signaling).
+
+In `2.x`, real-time monitoring of user join, leave, timeout, or temporary status change notifications in a channel is more convenient. Just follow these steps:
+
+1. Implement a Presence event listener.
+2. When joining a channel, enable the `withPresence` switch.
+
+```objc
+// 2.x
+// 1. Implement Presence event listener
+@interface RtmListener : NSObject <AgoraRtmClientDelegate>
+
+@end
+
+@implementation RtmListener
+// Presence event notification
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceivePresenceEvent:(AgoraRtmPresenceEvent *)event {
+    // Implementation code
+}
+@end
+
+// 2. When joining a channel, enable the withPresence switch
+AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
+option.features = AgoraRtmSubscribeChannelFeaturePresence;
+[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"subscribe success!!");
+    } else {
+        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
+
+1. Real-time notification mode (Announce)
+1. Scheduled notification mode (Interval)
+
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+## User metadata and channel metadata
+
+Signaling `2.x` retains the full functionality of user metadata and channel metadata, with new capabilities such as versioning and locking. It adds optimized interfaces to make these features easier to use.
+
+In `2.x`, user attributes and channel attributes are mounted under the `Storage` module. To set channel attributes, refer to the following code:
+
+```objc
+// 2.x
+// Create Metadata
+AgoraRtmMetadata* metadata = [[rtm getStorage] createMetadata];
+
+// Set Metadata Items
+AgoraRtmMetadataItem* apple = [[AgoraRtmMetadataItem alloc] init];
+apple.key = @"Apple";
+apple.value = @"100";
+apple.revision = 174298200;
+AgoraRtmMetadataItem* banana = [[AgoraRtmMetadataItem alloc] init];
+banana.key = @"Banana";
+banana.value = @"200";
+banana.revision = 174298100;
+[metadata setMetadataItem:apple];
+[metadata setMetadataItem:banana];
+// Set Major Revision
+[metadata setMajorRevision:174298270]
+
+// Record Timestamp and User ID when setting Metadata Items
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+
+[[rtm getStorage] setChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:@"lockName" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"setChannelMetadata success!!");
+    } else {
+        NSLog(@"setChannelMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
+
+Events for channel and user attributes are distributed to users through events of type `didReceiveStorageEvent`. To listen for `didReceiveStorageEvent` events, refer to the following steps:
+
+1. Implement the Storage event listener.
+2. When joining a channel, enable the `withMetadata` switch.
+
+```objc
+    // 2.x
+    // 1. Implement the Storage event listener
+    @interface RtmListener : NSObject <AgoraRtmClientDelegate>
+    @end
+
+    @implementation RtmListener
+    // Storage event notification
+    -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveStorageEvent:(AgoraRtmStorageEvent *)event {
+        // Implementation code
+    }
+    @end
+
+    // 2. When joining a channel, add the Metadata feature
+    AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
+    option.features = AgoraRtmSubscribeChannelFeatureMetadata;
+    [rtm subscribeWithChannel:@"your_channel" option:option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+        if (errorInfo == nil) {
+            NSLog(@"Subscribe success!!");
+        } else {
+            NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        }
+    }];
+```
+
+## Restrict access area
+
+Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
+
+- For `1.x`:
+
+```objc
+    AgoraRtmServiceContext* context = [[AgoraRtmServiceContext alloc] init];
+    context.areaCode = AgoraAreaCodeGLOB;
+    [AgoraRtmKit setRtmServiceContext:context];
+```
+
+- For `2.x`:
+
+```objc
+    AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
+    rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
+```
+
+## Call invitation
+
+Call Invitation is no longer available in Signaling `2.x`. Use [CallAPI](/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management#integrate-callapi) as an alternate approach.
+
+## Other new features
+
+In addition to the enhancements presented in this document, Signaling `2.x` introduces an array of additional features. Choose and implement features that fit the needs of your project. The following table outlines key new features of Signaling `2.x`:
+
+| Module | Function | Signaling `2.x` API Interface |
+|:-------|:---------|:----------------------------|
+| **Setup**| Create Instance | `initWithConfig:delegate:error`|
+| | Destroy Instance| `[rtm destroy]` |
+| | | Token Configuration | `AgoraRtmClientConfig` with `token` parameter |
+| | End-to-End Encryption| `AgoraRtmClientConfig` with `encryptionConfig` parameter |
+| | Presence Timeout Setting| `AgoraRtmClientConfig` with `presenceTimeout` parameter |
+| | Log Level Setting| `AgoraRtmLogConfig` with `level` parameter |
+| | Proxy Configuration| `AgoraRtmProxyConfig` with `proxyType`, `server`, `port`, `account`, `password` parameters |
+| | Event Listener| - `[rtm addDelegate:delegate]`<br /> - `[rtm removeDelegate:delegate]`|
+| | Login Service | `[rtm loginByToken:completion:]`   |
+| | Logout Service| `[rtm logout:completion]` |
+| **Channel** | Subscribe Channel | `[rtm subscribeWithChannel:option:completion]`|
+| | Unsubscribe Channel| `[rtm unsubscribeWithChannel:completion]` |
+| | Create Stream Channel| `[rtm createStreamChannel:error]`  |
+| | Join Stream Channel| `[streamChannel joinWithOption:completion]` |
+| | Leave Stream Channel | `[streamChannel leave]` |
+| | Destroy Stream Channel  | `[streamChannel destroy]` |
+| **Topic**| Join Topic| `[streamChannel joinTopic:withOption:completion]` |
+| | Publish Topic Message| `[streamChannel publishTopicMessage:data:option:completion]`  |
+| | Leave Topic | `[streamChannel leaveTopic:completion]` |
+| | Subscribe Topic | `[streamChannel subscribeTopic:withOption:completion]` |
+| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:withOption:completion]` |
+| **Message** | Send Message| `[rtm publish:message:option:completion]` |
+| **Presence**| Query Channel's Online Users| `[[rtm getPresence] getOnlineUsers:channelType:options:completion]` |
+| | Query User's Channel | `[[rtm getPresence] getUserChannels:completion]` |
+| | Set User's Temporary State| `[[rtm getPresence] setState:channelType:items:completion]`|
+| | Query User Temporary State| `[[rtm getPresence] getState:channelType:userId:completion]`|
+| | Remove User Temporary State | `[[rtm getPresence] removeState:channelType:keys:completion]`  |
+| **Storage** | Set Channel Metadata | `[[rtm getStorage] setChannelMetadata:channelType:data:options:lock:completion]` |
+| | Get Channel Metadata | `[[rtm getStorage] getChannelMetadata:channelType:completion]`  |
+| | Remove Channel Metadata | `[[rtm getStorage] removeChannelMetadata:channelType:data:options:lock:completion]`|
+| | Update Channel Metadata | `[[rtm getStorage] updateChannelMetadata:channelType:data:options:lock:completion]`|
+| | Set User Attributes| `[[rtm getStorage] setUserMetadata:data:options:completion]` |
+| | | Get User Attributes | `[[rtm getStorage] getUserMetadata:completion]` |
+| | Remove User Attributes  | `[[rtm getStorage] removeUserMetadata:data:options:completion]` |
+| | Update User Attributes  | `[[rtm getStorage] updateChannelMetadata:data:options:completion]` |
+| | Subscribe User Attributes | `[[rtm getStorage] subscribeUserMetadata:completion]`|
+| | Unsubscribe User Attributes | `[[rtm getStorage] unsubscribeUserMetadata:completion]` |
+| **Lock** | Set Lock  | `[[rtm getLock] setLock:channelType:lockName:ttl:completion]`|
+| | Acquire Lock| `[[rtm getLock] acquireLock:channelType:lockName:retry:completion]` |
+| | Release Lock| `[[rtm getLock] releaseLock:channelType:lockName:completion]`|
+| | Revoke Lock | `[[rtm getLock] revokeLock:channelType:lockName:userId:completion]` |
+| | Query Lock| `[[rtm getLock] getLocks:channelType:completion]`  |
+| | Remove Lock | `[[rtm getLock] removeLock:channelType:lockName:completion]` |
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+The SDK package names and integration methods for `2.x` and `1.x` remain the same. See [Project Setup](/en/realtime-media/rtm/quickstart) for details.
+
+## Initialize an RTM Client instance
+
+Signaling `2.x` makes significant adjustments to initialization parameters. It introduces many new features such as end-side encryption and cloud proxy. Refer to [API Reference](/en/api-reference/api-ref/signaling) for more details. Additionally, `2.x` enriches error information for interface calls. You use the `RTM_ERROR_CODE` to retrieve [causes and solutions](/en/realtime-media/rtm/reference/error-codes) for faster troubleshooting.
+
+- For `1.x`:
+
+```cpp
+    class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
+      // ...
+    };
+
+    // Create an RTM instance
+    agora::rtm::IRtmService* p_rs = agora::rtm::createRtmService();
+    rtmService.reset(p_rs, [](agora::rtm::IRtmService* p) {
+        p->release();
+    });
+
+    // Initialize the RTM instance
+    if (rtmService->initialize("your_appId", new RtmEventHandler())) {
+        // Handle initialization errors
+    }
+```
+
+- For `2.x`:
+
+```cpp
+    class RtmEventHandler : public IRtmEventHandler {
+        // ...
+    };
+
+    // Create an RTM instance
+    IRtmClient* rtmClient = createAgoraRtmClient();
+
+    RtmConfig config;
+    config.appId = "your_appid";
+    config.userId = "your_name";
+    config.eventHandler = new RtmEventHandler();
+    // Initialize the RTM instance
+    int ret = rtmClient->initialize(config);
+    if (ret != RTM_ERROR_OK) {
+        // Handle initialization errors
+    }
+```
+
+## Log in to Signaling
+
+The method for logging in to the `2.x` service is different from `1.x`:
+
+- For `1.x`:
+
+```cpp
+    // Method call
+    if (rtmService->login("your_token", "your_userId")) {
+        // Handle login errors
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
+        virtual void onLoginSuccess() override {
+            // Login successful
+        }
+
+        virtual void onLoginFailure(agora::rtm::LOGIN_ERR_CODE errorCode) override {
+            // Login failed
+        }
+
+        // ...
+    };
+```
+
+- For `2.x`:
+
+```cpp
+    // Method call
+    ret = rtmClient->login("your_token");
+    if (ret != RTM_ERROR_OK) {
+        // Handle login errors
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onLoginResult(RTM_ERROR_CODE errorCode) {
+            if (errorCode != RTM_ERROR_OK) {
+                // Login failed
+            } else {
+                // Login successful
+            }
+        }
+
+        // ...
+    };
+```
+
+## Event notifications
+
+Signaling `2.x` has redesigned the system event notification mechanism and API interface. It provides classification and aggregation of event notification types and optimizes the payload data structure.
+Version `2.x` features the following event notification types:
+
+| Event Type | Description |
+|:---------|:--------------------------------|
+| `onMessageEvent` | Message event notification:<br />Receive all message events in the Message Channel and Topics subscribed by the user. |
+| `onPresenceEvent` | Notification of user presence and custom state change events:<br />Receive all user presence and custom status change events in the Message Channel subscribed by the user and the Stream Channel joined by the user. |
+| `onTopicEvent` | Topic change event notification:<br />Receive all Topic change events in the Stream Channel joined by the user. |
+| `onStorageEvent` | Channel metadata and User metadata event notifications:<br />Receive all Channel metadata events in the Message channel subscribed by the user and the Stream channels joined. Receive user metadata events from subscribed users. |
+| `onLockEvent` | Lock change event notification:<br />Receive all Lock events in the Message channels subscribed by the user and the Stream channels joined. |
+| `onConnectionStateChanged`| Network connection status change event notification:<br />Receive events for client network connection status changes. |
+| `onTokenPrivilegeWillExpire` |  Receive event notifications when the client token is about to expire. |
+
+For more information about event notifications and payload data structures, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+Examine the following code to observe the differences between the `1.x` and `2.x` implementations.
+
+- For `1.x`:
+
+```cpp
+    class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
+        public:
+        ChannelEventHandler(string channel) {
+            channel_ = channel;
+        }
+        ~ChannelEventHandler() {}
+
+        virtual void onMessageReceived(const char* userId,
+            const agora::rtm::IMessage *msg) override {
+            // Handle received messages
+        }
+
+        // ...
+    };
+
+    std::string channelName = "channelName";
+    agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
+```
+
+- For `2.x`:
+
+```cpp
+    class RtmEventHandler: public IRtmEventHandler {
+        void onMessageEvent(const MessageEvent &event) {
+            // Handle received messages
+        }
+
+        // ...
+    };
+
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+```
+
+Observe the following differences in the sample code.
+
+- In `1.x`, message event notifications are bound to specific `channel` instances, and users need to call the `createChannel()` method to create a `channel` instance, then register the `onMessageReceived` callback to handle events. The SDK notifies the handler through this callback when messages are received. This process needs to be repeated for multiple channels. In Signaling `2.x`, message event notifications are bound to the client instance globally. This allows listening to all subscribed channels or topics with a single binding.
+
+- The payload data structure for `1.x` message event notification contains limited information. The `2.x` payload data structure contains more information, which helps you better implement your business logic.
+
+## Channel messages
+
+In version `1.x`, to send a channel message, you needed to:
+
+- Create a Channel instance
+- Join the channel
+- Send and receive channel messages
+
+The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
+
+- For `1.x`:
+
+```cpp
+    // Create a channel
+    std::string channelName = "channelName";
+    agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
+
+    // Join the channel
+    channel->join();
+
+    // Send a channel message
+    std::string message = "Hello World!";
+    agora::rtm::IMessage* rtmMessage = rtmService->createMessage();
+    rtmMessage->setText(message.c_str());
+    channel->sendMessage(rtmMessage);
+    rtmMessage->release();
+```
+
+- For `2.x`:
+
+```cpp
+    // Send a channel message
+    std::string message = "hello world";
+    PublishOptions options;
+    options.type = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PlainText";
+
+    uint64_t requestId;
+    int ret = rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to send channel message
+    }
+
+    // Asynchronous callback for sending channel message
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to send message
+            } else {
+                // Message sent successfully
+            }
+        }
+
+        // ...
+    };
+
+    // Subscribe to the channel
+    SubscribeOptions options;
+    options.withMessage = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+
+    // Asynchronous callback for subscribing to the channel
+    class RtmEventHandler : public IRtmEventHandler {
+        void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to subscribe to the channel
+            } else {
+                // Subscribed to the channel successfully
+            }
+        }
+
+        // ...
+    };
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API is used to send messages to a specified user. For example, to send a message to a user with user ID "Tony":
+
+```cpp
+// v1
+std::string message = "Hello World!";
+agora::rtm::IMessage* rtmMessage = rtmService->createMessage();
+rtmMessage->setText(message.c_str());
+
+int ret = rtmService->sendMessageToPeer("Tony", rtmMessage);
+rtmMessage->release();
+
+if (ret) {
+    // Handle message send failure
+}
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `RTM_CHANNEL_TYPE_USER` to send messages to a specific user, and handle incoming messages via the `onMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```cpp
+// v2.2.1 and later
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.channelType = RTM_CHANNEL_TYPE_USER;
+options.customType = "PlainText";
+
+std::string message = "Hello world";
+
+uint64_t requestId;
+rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
+```
+:::info
+To receive peer-to-peer messages, implement the `onMessageEvent` callback. For User Channel messages, the `channelType` field in the message event payload is set to `RTM_CHANNEL_TYPE_USER`.
+:::
+## Picture and file messages
+
+Starting from version 1.5.0, Signaling no longer directly supports the transmission of image and file messages, and the related API has been deprecated. However, you can combine Signaling with third-party object storage services (such as Amazon S3 or Alibaba Cloud OSS) to build image and file message functionality. This approach provides an excellent real-time message transmission experience while allowing for more flexible technical construction solutions, such as implementing CDN static resource acceleration and image text review.
+
+The following sample code shows how to use `2.x` and the Amazon S3 object storage service to build and send image and file messages:
+
+```cpp
+    // 1. Upload the file to Amazon S3
+    // 2. Notify RTM
+    nlohmann::json jsonObject;
+    // File type; the receiving party can parse the message packet structure based on this field
+    jsonObject.put("type", "file");
+    // Your bucket name on Amazon S3; the receiving party needs this field to download the file
+    jsonObject.put("bucket", "uploadParams.Bucket");
+    // The key under which the file is stored on Amazon S3; the receiving party needs this field to download the file
+    jsonObject.put("key", "uploadParams.Key");
+    // Content type of the file
+    jsonObject.put("contentType", "uploadParams.ContentType");
+    // File URL
+    jsonObject.put("url", "data.Location");
+
+    PublishOptions options;
+    uint64_t requestId;
+    int ret = rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to send message
+    }
+```
+:::info[Information]
+When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `getOnlineUsers` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```cpp
+    // 2.x
+    // Method invocation
+    PresenceOptions options;
+    options.includeState = true;
+    options.includeUserId = true;
+    options.page = "yourBookmark";
+
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to query online users
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onGetOnlineUsersResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to query online Users
+            } else {
+                // Handle getOnlineUsers results
+            }
+        }
+        // ...
+    };
+```
+Call `getUserChannels` method to instantly retrieve the list of channels a specified user is in.
+
+```cpp
+    // 2.x
+    // Method invocation
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->whereNow("tony", requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to query user's channels
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
+            if errorCode != RTM_ERROR_OK {
+                // Failed to query user's channels
+            } else {
+                // Handle whereNow results
+            }
+        }
+        // ...
+    };
+```
+
+To meet the user status requirements of business use-cases, Signaling `2.x` provides temporary user status capabilities. Customize temporary user status through the `setState` method. Users can add their scores, game status, location, mood, and other customized statuses.
+
+```cpp
+    // 2.x
+    // Method invocation
+    std::vector<StateItem> stateItems;
+    StateItem item;
+    item.key = "mood";
+    item.value = "pumped";
+    stateItems.push_back(item);
+
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to set state
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPresenceSetStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to set state
+            } else {
+                // State set successfully
+            }
+        }
+        // ...
+    };
+```
+You can also use the `getState` method to retrieve a user's online status or the `removeState` method to delete a user's state. After a user's temporary state changes, the RTM server triggers the `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` type of `onPresenceEvent` event notification. For specific usage, refer to [Temporary User State](/en/api-reference/api-ref/signaling).
+
+In `2.x`, real-time monitoring of user join, leave, timeout, or temporary state change notifications in a channel is more convenient. Just follow these steps:
+
+1. Implement the Presence event listener.
+1. When joining a channel, enable the `withPresence` switch.
+
+```cpp
+    // 2.x
+    // 1. Implement the Presence event listener
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPresenceEvent(const PresenceEvent& event) override {
+            // Handle Presence events
+        }
+        // ...
+    };
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+
+    // 2. When subscribing to a channel, enable the withPresence switch
+    SubscribeOptions options;
+    options.withPresence = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+```
+
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
+
+1. Real-time notification mode (Announce)
+1. Scheduled notification mode (Interval)
+
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+## User metadata and channel metadata
+
+Signaling `2.x` retains the full functionality of user metadata and channel metadata, with new capabilities such as versioning and locking. It adds optimized interfaces to make these features easier to use.
+
+In `2.x`, user attributes and channel attributes are mounted under the `Storage` module. To set channel attributes, refer to the following code:
+
+```cpp
+    // 2.x
+    // Method invocation
+    // Create Metadata
+    IMetadata* metadata = rtm_client->getStorage()->createMetadata();
+    // Set Major Revision
+    metadata->setMajorRevision(174298270);
+    // Set Metadata Item
+    MetadataItem item0;
+    item0.key = "Apple";
+    item0.value = "100";
+    item0.revision = 174298200;
+
+    MetadataItem item1;
+    item1.key = "Banana";
+    item1.value = "200";
+    item1.revision = 174298100;
+
+    metadata->setMetadataItem(item0);
+    metadata->setMetadataItem(item1);
+
+    // Record timestamps and user IDs when setting Metadata Items
+    MetadataOptions options;
+    options.recordTs = true;
+    options.recordUserId = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to set channel properties
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onSetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to set channel properties
+            } else {
+                // Channel properties set successfully
+            }
+            // ...
+        }
+    };
+```
+
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
+
+Events for channel and user attributes are distributed to users through events of type `onStorageEvent`. Follow these steps to listen to `onStorageEvent` event notifications:
+
+1. Implement the Storage event listener.
+1. When joining a channel, enable the `withMetadata` switch.
+
+```cpp
+    // 2.x
+    // 1. Implement the Storage event listener
+    class RtmEventHandler : public IRtmEventHandler {
+        void onStorageEvent(const StorageEvent& event) override {
+            // Handle Storage events
+        }
+        // ...
+    };
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+
+    //  2. When joining a channel, enable the withMetadata switch
+    SubscribeOptions options;
+    options.withMetadata = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+```
+
+## Restrict access area
+
+Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
+
+- For `1.x`:
+
+```cpp
+    // 1.x
+    agora::rtm::RtmServiceContext context;
+    context.areaCode = agora::rtm::AREA_CODE_GLOB;
+    setRtmServiceContext(context);
+```
+
+- For `2.x`:
+
+```cpp
+    // 2.x
+    RtmConfig config;
+    config.areaCode = RTM_AREA_CODE_GLOB;
+```
+
+## Other new features
+
+In addition to the enhancements presented in this document, Signaling `2.x` introduces an array of additional features. Choose and implement features that fit the needs of your project. The following table outlines key new features of Signaling `2.x`:
+
+| Module | Function | Signaling `2.x` API Interface |
+|:-------|:---------|:----------------------------|
+| **Setup** | Create Instance | `new RTM()` |
+| | Initialize an instance | `int initialize(const RtmConfig& config)` |
+| | Destroy an instance | `rtmClient.release()` |
+| | Token login | `int login(const char* token)` |
+| | End-to-end encryption | `encryptionMode`, `encryptionKey`, `encryptionSalt` parameters in `RtmEncryptionConfig` |
+| | Presence timeout setting | `presenceTimeout` parameter in `RTMConfig` |
+| | Log level setting | `level` parameter in `RtmLogConfig` |
+| | Proxy setting | `proxyType`, `server`, `port`, `account`, `password` parameters in `RtmProxyConfig` |
+| | Event Listener | `IRtmEventHandler` |
+| | Login | `int login(const char* token)` |
+| | Logout | `int logout()` |
+| **Channel** | Subscribe channel | `subscribe(const char* channelName, const SubscribeOptions& options, uint64_t& requestId)` |
+| | Unsubscribe channel | `int unsubscribe(const char* channelName)` |
+| | Create stream channel | `IStreamChannel* createStreamChannel(const char* channelName)` |
+| | Join stream channel | `int join(const JoinChannelOptions& options, uint64_t& requestId)` |
+| | Leave stream channel | `int leave(uint64_t& requestId)` |
+| **Topic** | Join topic | `int joinTopic(const char* topic, const JoinTopicOptions& options, uint64_t& requestId)` |
+| | Send topic message | `int publishTopicMessage(const char* topic, const char* message, size_t length, const TopicMessageOptions& option)` |
+| | Leave a topic | `int leaveTopic(const char* topic, uint64_t& requestId)` |
+| | Subscribe from a topic | `int subscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId)` |
+| | Unsubscribe from a topic | `int unsubscribeTopic(const char* topic, const TopicOptions& options)` |
+| **Message** | Send a message | `int publish(const char* channelName, const char* message, const size_t length, const PublishOptions& option, uint64_t& requestId)` |
+| **Presence** | Query channel's online users | `int getOnlineUsers(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId)` |
+| | Query user's channel | `int getUserChannels(const char* userId, uint64_t& requestId)` |
+| | Set user's temporary state | `int setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId)` |
+| | Query user temporary state | `getState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* userId, uint64_t& requestId)` |
+| | Remove user temporary state | `int removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char** keys, size_t count, uint64_t& requestId)` |
+| **Storage** | Set Channel Metadata | `int setChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Get channel metadata | `int getChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)` |
+| | Remove channel metadata | `int removeChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Update channel metadata | `int updateChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Set user attributes | `int setUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Get user attributes | `int getUserMetadata(const char* userId, uint64_t& requestId)` |
+| | Remove user attributes | `int removeUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Update user attributes | `int updateUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Subscribe user attributes | `int subscribeUserMetadata(const char* userId, uint64_t& requestId)` |
+| | Unsubscribe user attributes | `int unsubscribeUserMetadata(const char* userId)` |
+| **Lock** | Set lock | `int setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint32_t ttl, uint64_t& requestId)` |
+| | Acquire lock | `int acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, bool retry, uint64_t& requestId)` |
+| | Release lock | `int releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)` |
+| | Revoke lock | `int revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, const char* owner, uint64_t& requestId)` |
+| | Query lock | `int getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)` |
+| | Remove lock | `int removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)` |
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+This migration guide helps you migrate from Signaling `1.x` to Signaling `2.x`.
+
+In December 2023, Agora released Signaling `2.x` in response to market and industry needs. Signaling `2.x` brings significant innovation to users in terms of:
+
+- **Features coverage**: Signaling `2.x` expands its scope to encompass a broader range of business use-cases through the introduction of functional modules including `Channel`, `Message`, `Topic`, `Presence`, `Storage`, and `Lock`. These additions empower you to shift your attention from fundamental feature implementation to fostering business innovation.
+
+- **Performance improvement**: Signaling `2.x` revamps the backend architecture, enhancing overall performance through optimized network connections. This overhaul results in sustained low-latency, higher reliability, increased concurrency, and seamless scalability for real-time network access. With these advancements, businesses can confidently rely on the backend, to ensure both optimal performance and high-quality service.
+
+- **Experience optimization**: All documents, including user guides and API references, have been optimized and furnished more comprehensive sample code. These enhancements empower developers with a cost-effective learning experience, enable swift integration and improve development efficiency when utilizing the SDK.
+
+For a seamless transition from Signaling `1.x` to `2.x`, refer to the following document. This resource is designed to expedite the migration process, ensuring that you can swiftly leverage the new features in Signaling `2.x` and start reaping their benefits.
+
+## Activate Signaling
+
+To activate Signaling `2.x`, take the following steps:
+
+1. Log in to [Agora Console](https://console.agora.io/v2)
+1. Create a new Agora project or choose an existing project from the project list.
+1. Select the project on the [Project Management](https://console.agora.io/v2/project-management) page and click the pencil icon to configure it.
+1. Go to **All features > Signaling > Basic information** and select a data center in the dropdown.
+1. Go to **Subscriptions > Signaling** and subscribe to a plan.
+1. Copy the App ID for your project for use in your code.
+:::info
+Signaling version `2.x` differs from `1.x` in the support of naming character sets. For example, `2.x` does not support channel names, user names, or topic names that start with `_` or contain `.` characters. When upgrading from `1.x` to `2.x` or using both versions together, be aware of possible incompatibilities caused by character set differences. Best practice is to use the character set supported by `2.x` when migrating. See [Channel naming ](/en/realtime-media/rtm/reference/channel-naming) for the character set supported by `2.x`.
+:::
+## Integrate the SDK
+
+The SDK package names and integration methods for `2.x` and `1.x` remain the same. See [Project Setup](/en/realtime-media/rtm/quickstart) for details.
+
+## Initialize an RTM Client instance
+
+Signaling `2.x` makes significant adjustments to initialization parameters. It introduces many new features such as end-side encryption and cloud proxy. Refer to [API Reference](/en/api-reference/api-ref/signaling) for more details. Additionally, `2.x` enriches error information for interface calls. You use the `RTM_ERROR_CODE` to retrieve [causes and solutions](/en/realtime-media/rtm/reference/error-codes) for faster troubleshooting.
+
+- For `1.x`:
+
+```cpp
+    class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
+      // ...
+    };
+
+    // Create an RTM instance
+    agora::rtm::IRtmService* p_rs = agora::rtm::createRtmService();
+    rtmService.reset(p_rs, [](agora::rtm::IRtmService* p) {
+        p->release();
+    });
+
+    // Initialize the RTM instance
+    if (rtmService->initialize("your_appId", new RtmEventHandler())) {
+        // Handle initialization errors
+    }
+```
+
+- For `2.x`:
+
+```cpp
+    class RtmEventHandler : public IRtmEventHandler {
+        // ...
+    };
+
+    // Create an RTM instance
+    IRtmClient* rtmClient = createAgoraRtmClient();
+
+    RtmConfig config;
+    config.appId = "your_appid";
+    config.userId = "your_name";
+    config.eventHandler = new RtmEventHandler();
+    // Initialize the RTM instance
+    int ret = rtmClient->initialize(config);
+    if (ret != RTM_ERROR_OK) {
+        // Handle initialization errors
+    }
+```
+
+## Log in to Signaling
+
+The method for logging in to the `2.x` service is different from `1.x`:
+
+- For `1.x`:
+
+```cpp
+    // Method call
+    if (rtmService->login("your_token", "your_userId")) {
+        // Handle login errors
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
+        virtual void onLoginSuccess() override {
+            // Login successful
+        }
+
+        virtual void onLoginFailure(agora::rtm::LOGIN_ERR_CODE errorCode) override {
+            // Login failed
+        }
+
+        // ...
+    };
+```
+
+- For `2.x`:
+
+```cpp
+    // Method call
+    ret = rtmClient->login("your_token");
+    if (ret != RTM_ERROR_OK) {
+        // Handle login errors
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onLoginResult(RTM_ERROR_CODE errorCode) {
+            if (errorCode != RTM_ERROR_OK) {
+                // Login failed
+            } else {
+                // Login successful
+            }
+        }
+
+        // ...
+    };
+```
+
+## Event notifications
+
+Signaling `2.x` has redesigned the system event notification mechanism and API interface. It provides classification and aggregation of event notification types and optimizes the payload data structure.
+Version `2.x` features the following event notification types:
+
+| Event Type | Description |
+|:---------|:--------------------------------|
+| `onMessageEvent` | Message event notification:<br />Receive all message events in the Message Channel and Topics subscribed by the user. |
+| `onPresenceEvent` | Notification of user presence and custom state change events:<br />Receive all user presence and custom status change events in the Message Channel subscribed by the user and the Stream Channel joined by the user. |
+| `onTopicEvent` | Topic change event notification:<br />Receive all Topic change events in the Stream Channel joined by the user. |
+| `onStorageEvent` | Channel metadata and User metadata event notifications:<br />Receive all Channel metadata events in the Message channel subscribed by the user and the Stream channels joined. Receive user metadata events from subscribed users. |
+| `onLockEvent` | Lock change event notification:<br />Receive all Lock events in the Message channels subscribed by the user and the Stream channels joined. |
+| `onConnectionStateChanged`| Network connection status change event notification:<br />Receive events for client network connection status changes. |
+| `onTokenPrivilegeWillExpire` |  Receive event notifications when the client token is about to expire. |
+
+For more information about event notifications and payload data structures, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+Examine the following code to observe the differences between the `1.x` and `2.x` implementations.
+
+- For `1.x`:
+
+```cpp
+    class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
+        public:
+        ChannelEventHandler(string channel) {
+            channel_ = channel;
+        }
+        ~ChannelEventHandler() {}
+
+        virtual void onMessageReceived(const char* userId,
+            const agora::rtm::IMessage *msg) override {
+            // Handle received messages
+        }
+
+        // ...
+    };
+
+    std::string channelName = "channelName";
+    agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
+```
+
+- For `2.x`:
+
+```cpp
+    class RtmEventHandler: public IRtmEventHandler {
+        void onMessageEvent(const MessageEvent &event) {
+            // Handle received messages
+        }
+
+        // ...
+    };
+
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+```
+
+Observe the following differences in the sample code.
+
+- In `1.x`, message event notifications are bound to specific `channel` instances, and users need to call the `createChannel()` method to create a `channel` instance, then register the `onMessageReceived` callback to handle events. The SDK notifies the handler through this callback when messages are received. This process needs to be repeated for multiple channels. In Signaling `2.x`, message event notifications are bound to the client instance globally. This allows listening to all subscribed channels or topics with a single binding.
+
+- The payload data structure for `1.x` message event notification contains limited information. The `2.x` payload data structure contains more information, which helps you better implement your business logic.
+
+## Channel messages
+
+In version `1.x`, to send a channel message, you needed to:
+
+- Create a Channel instance
+- Join the channel
+- Send and receive channel messages
+
+The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
+
+- For `1.x`:
+
+```cpp
+    // Create a channel
+    std::string channelName = "channelName";
+    agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
+
+    // Join the channel
+    channel->join();
+
+    // Send a channel message
+    std::string message = "Hello World!";
+    agora::rtm::IMessage* rtmMessage = rtmService->createMessage();
+    rtmMessage->setText(message.c_str());
+    channel->sendMessage(rtmMessage);
+    rtmMessage->release();
+```
+
+- For `2.x`:
+
+```cpp
+    // Send a channel message
+    std::string message = "hello world";
+    PublishOptions options;
+    options.type = RTM_MESSAGE_TYPE_STRING;
+    options.customType = "PlainText";
+
+    uint64_t requestId;
+    int ret = rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to send channel message
+    }
+
+    // Asynchronous callback for sending channel message
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to send message
+            } else {
+                // Message sent successfully
+            }
+        }
+
+        // ...
+    };
+
+    // Subscribe to the channel
+    SubscribeOptions options;
+    options.withMessage = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+
+    // Asynchronous callback for subscribing to the channel
+    class RtmEventHandler : public IRtmEventHandler {
+        void onSubscribeResult(const uint64_t requestId, const char *channelName, RTM_ERROR_CODE errorCode) {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to subscribe to the channel
+            } else {
+                // Subscribed to the channel successfully
+            }
+        }
+
+        // ...
+    };
+```
+
+## Peer-to-peer messaging
+
+In version `1.x`, the peer-to-peer messaging API is used to send messages to a specified user. For example, to send a message to a user with user ID "Tony":
+
+```cpp
+// v1
+std::string message = "Hello World!";
+agora::rtm::IMessage* rtmMessage = rtmService->createMessage();
+rtmMessage->setText(message.c_str());
+
+int ret = rtmService->sendMessageToPeer("Tony", rtmMessage);
+rtmMessage->release();
+
+if (ret) {
+    // Handle message send failure
+}
+```
+
+Starting from v2.2.1, Signaling `2.x` supports User Channels for peer-to-peer messaging. Use the `publish()` method with `channelType` set to `RTM_CHANNEL_TYPE_USER` to send messages to a specific user, and handle incoming messages via the `onMessageEvent` callback. For more information, see [User channels](/en/realtime-media/rtm/build/work-with-channels/user-channel).
+
+```cpp
+// v2.2.1 and later
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.channelType = RTM_CHANNEL_TYPE_USER;
+options.customType = "PlainText";
+
+std::string message = "Hello world";
+
+uint64_t requestId;
+rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
+```
+:::info
+To receive peer-to-peer messages, implement the `onMessageEvent` callback. For User Channel messages, the `channelType` field in the message event payload is set to `RTM_CHANNEL_TYPE_USER`.
+:::
+## Picture and file messages
+
+Starting from version 1.5.0, Signaling no longer directly supports the transmission of image and file messages, and the related API has been deprecated. However, you can combine Signaling with third-party object storage services (such as Amazon S3 or Alibaba Cloud OSS) to build image and file message functionality. This approach provides an excellent real-time message transmission experience while allowing for more flexible technical construction solutions, such as implementing CDN static resource acceleration and image text review.
+
+The following sample code shows how to use `2.x` and the Amazon S3 object storage service to build and send image and file messages:
+
+```cpp
+    // 1. Upload the file to Amazon S3
+    // 2. Notify RTM
+    nlohmann::json jsonObject;
+    // File type; the receiving party can parse the message packet structure based on this field
+    jsonObject.put("type", "file");
+    // Your bucket name on Amazon S3; the receiving party needs this field to download the file
+    jsonObject.put("bucket", "uploadParams.Bucket");
+    // The key under which the file is stored on Amazon S3; the receiving party needs this field to download the file
+    jsonObject.put("key", "uploadParams.Key");
+    // Content type of the file
+    jsonObject.put("contentType", "uploadParams.ContentType");
+    // File URL
+    jsonObject.put("url", "data.Location");
+
+    PublishOptions options;
+    uint64_t requestId;
+    int ret = rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to send message
+    }
+```
+:::info[Information]
+When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
+:::
+## User presence and custom status
+
+In Signaling `1.x`, you can subscribe to or query the online status of multiple users, query the number of users in a channel, or obtain the list of online members in a channel. Signaling `2.x` not only retains these features, but also implements upgrades and extends them. In Signaling `2.x`, these capabilities are redefined and implemented in the Presence module.
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+Presence provides the ability to monitor user online, user offline and user status change notifications. Through the Presence module, you can obtain the following information in real time:
+
+- A user joins or leaves the specified channel
+- Customize temporary user status and its changes
+- Query which channels a specified user has joined or is subscribed to
+- Query which users have joined the specified channel and their temporary status data
+
+Call the `getOnlineUsers` method to query the number of online users in the specified channel, the list of online users, and the temporary status of online users in real-time.
+
+```cpp
+    // 2.x
+    // Method invocation
+    PresenceOptions options;
+    options.includeState = true;
+    options.includeUserId = true;
+    options.page = "yourBookmark";
+
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to query online users
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onGetOnlineUsersResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to query online Users
+            } else {
+                // Handle getOnlineUsers results
+            }
+        }
+        // ...
+    };
+```
+Call `getUserChannels` method to instantly retrieve the list of channels a specified user is in.
+
+```cpp
+    // 2.x
+    // Method invocation
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->whereNow("tony", requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to query user's channels
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
+            if errorCode != RTM_ERROR_OK {
+                // Failed to query user's channels
+            } else {
+                // Handle whereNow results
+            }
+        }
+        // ...
+    };
+```
+
+To meet the user status requirements of business use-cases, Signaling `2.x` provides temporary user status capabilities. Customize temporary user status through the `setState` method. Users can add their scores, game status, location, mood, and other customized statuses.
+
+```cpp
+    // 2.x
+    // Method invocation
+    std::vector<StateItem> stateItems;
+    StateItem item;
+    item.key = "mood";
+    item.value = "pumped";
+    stateItems.push_back(item);
+
+    uint64_t requestId;
+    int ret = rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to set state
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPresenceSetStateResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to set state
+            } else {
+                // State set successfully
+            }
+        }
+        // ...
+    };
+```
+You can also use the `getState` method to retrieve a user's online status or the `removeState` method to delete a user's state. After a user's temporary state changes, the RTM server triggers the `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` type of `onPresenceEvent` event notification. For specific usage, refer to [Temporary User State](/en/api-reference/api-ref/signaling).
+
+In `2.x`, real-time monitoring of user join, leave, timeout, or temporary state change notifications in a channel is more convenient. Just follow these steps:
+
+1. Implement the Presence event listener.
+1. When joining a channel, enable the `withPresence` switch.
+
+```cpp
+    // 2.x
+    // 1. Implement the Presence event listener
+    class RtmEventHandler : public IRtmEventHandler {
+        void onPresenceEvent(const PresenceEvent& event) override {
+            // Handle Presence events
+        }
+        // ...
+    };
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+
+    // 2. When subscribing to a channel, enable the withPresence switch
+    SubscribeOptions options;
+    options.withPresence = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+```
+
+In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
+
+1. Real-time notification mode (Announce)
+1. Scheduled notification mode (Interval)
+
+You can determine the conditions for switching between the two modes through the **Announce Max** parameter in the project settings of the Agora Console. The interval notification mode can prevent noisy events caused by too many online users in the channel. For details, see [Event Listeners](/en/api-reference/api-ref/signaling).
+
+## User metadata and channel metadata
+
+Signaling `2.x` retains the full functionality of user metadata and channel metadata, with new capabilities such as versioning and locking. It adds optimized interfaces to make these features easier to use.
+
+In `2.x`, user attributes and channel attributes are mounted under the `Storage` module. To set channel attributes, refer to the following code:
+
+```cpp
+    // 2.x
+    // Method invocation
+    // Create Metadata
+    IMetadata* metadata = rtm_client->getStorage()->createMetadata();
+    // Set Major Revision
+    metadata->setMajorRevision(174298270);
+    // Set Metadata Item
+    MetadataItem item0;
+    item0.key = "Apple";
+    item0.value = "100";
+    item0.revision = 174298200;
+
+    MetadataItem item1;
+    item1.key = "Banana";
+    item1.value = "200";
+    item1.revision = 174298100;
+
+    metadata->setMetadataItem(item0);
+    metadata->setMetadataItem(item1);
+
+    // Record timestamps and user IDs when setting Metadata Items
+    MetadataOptions options;
+    options.recordTs = true;
+    options.recordUserId = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to set channel properties
+    }
+
+    // Asynchronous callback
+    class RtmEventHandler : public IRtmEventHandler {
+        void onSetChannelMetadataResult(const uint64_t requestId, const char *channelName, RTM_CHANNEL_TYPE channelType, RTM_ERROR_CODE errorCode) override {
+            if (errorCode != RTM_ERROR_OK) {
+                // Failed to set channel properties
+            } else {
+                // Channel properties set successfully
+            }
+            // ...
+        }
+    };
+```
+
+To learn more about how to get, update, and delete channel attributes, how to use version control and lock control, refer to the [Storage](/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata) guide. The use of user attributes is similar to that of channel attributes.
+
+Events for channel and user attributes are distributed to users through events of type `onStorageEvent`. Follow these steps to listen to `onStorageEvent` event notifications:
+
+1. Implement the Storage event listener.
+1. When joining a channel, enable the `withMetadata` switch.
+
+```cpp
+    // 2.x
+    // 1. Implement the Storage event listener
+    class RtmEventHandler : public IRtmEventHandler {
+        void onStorageEvent(const StorageEvent& event) override {
+            // Handle Storage events
+        }
+        // ...
+    };
+    RtmConfig config;
+    config.eventHandler = new RtmEventHandler();
+
+    //  2. When joining a channel, enable the withMetadata switch
+    SubscribeOptions options;
+    options.withMetadata = true;
+
+    uint64_t requestId;
+    int ret = rtmClient->subscribe("channelName", options, requestId);
+    if (ret != RTM_ERROR_OK) {
+        // Failed to subscribe to the channel
+    }
+```
+
+## Restrict access area
+
+Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
+
+- For `1.x`:
+
+```cpp
+    // 1.x
+    agora::rtm::RtmServiceContext context;
+    context.areaCode = agora::rtm::AREA_CODE_GLOB;
+    setRtmServiceContext(context);
+```
+
+- For `2.x`:
+
+```cpp
+    // 2.x
+    RtmConfig config;
+    config.areaCode = RTM_AREA_CODE_GLOB;
+```
+
+## Other new features
+
+In addition to the enhancements presented in this document, Signaling `2.x` introduces an array of additional features. Choose and implement features that fit the needs of your project. The following table outlines key new features of Signaling `2.x`:
+
+| Module | Function | Signaling `2.x` API Interface |
+|:-------|:---------|:----------------------------|
+| **Setup** | Create Instance | `new RTM()` |
+| | Initialize an instance | `int initialize(const RtmConfig& config)` |
+| | Destroy an instance | `rtmClient.release()` |
+| | Token login | `int login(const char* token)` |
+| | End-to-end encryption | `encryptionMode`, `encryptionKey`, `encryptionSalt` parameters in `RtmEncryptionConfig` |
+| | Presence timeout setting | `presenceTimeout` parameter in `RTMConfig` |
+| | Log level setting | `level` parameter in `RtmLogConfig` |
+| | Proxy setting | `proxyType`, `server`, `port`, `account`, `password` parameters in `RtmProxyConfig` |
+| | Event Listener | `IRtmEventHandler` |
+| | Login | `int login(const char* token)` |
+| | Logout | `int logout()` |
+| **Channel** | Subscribe channel | `subscribe(const char* channelName, const SubscribeOptions& options, uint64_t& requestId)` |
+| | Unsubscribe channel | `int unsubscribe(const char* channelName)` |
+| | Create stream channel | `IStreamChannel* createStreamChannel(const char* channelName)` |
+| | Join stream channel | `int join(const JoinChannelOptions& options, uint64_t& requestId)` |
+| | Leave stream channel | `int leave(uint64_t& requestId)` |
+| **Topic** | Join topic | `int joinTopic(const char* topic, const JoinTopicOptions& options, uint64_t& requestId)` |
+| | Send topic message | `int publishTopicMessage(const char* topic, const char* message, size_t length, const TopicMessageOptions& option)` |
+| | Leave a topic | `int leaveTopic(const char* topic, uint64_t& requestId)` |
+| | Subscribe from a topic | `int subscribeTopic(const char* topic, const TopicOptions& options, uint64_t& requestId)` |
+| | Unsubscribe from a topic | `int unsubscribeTopic(const char* topic, const TopicOptions& options)` |
+| **Message** | Send a message | `int publish(const char* channelName, const char* message, const size_t length, const PublishOptions& option, uint64_t& requestId)` |
+| **Presence** | Query channel's online users | `int getOnlineUsers(const char* channelName, RTM_CHANNEL_TYPE channelType, const PresenceOptions& options, uint64_t& requestId)` |
+| | Query user's channel | `int getUserChannels(const char* userId, uint64_t& requestId)` |
+| | Set user's temporary state | `int setState(const char* channelName, RTM_CHANNEL_TYPE channelType, const StateItem* items, size_t count, uint64_t& requestId)` |
+| | Query user temporary state | `getState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* userId, uint64_t& requestId)` |
+| | Remove user temporary state | `int removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, const char** keys, size_t count, uint64_t& requestId)` |
+| **Storage** | Set Channel Metadata | `int setChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Get channel metadata | `int getChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)` |
+| | Remove channel metadata | `int removeChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Update channel metadata | `int updateChannelMetadata(const char* channelName, RTM_CHANNEL_TYPE channelType, const IMetadata* data, const MetadataOptions& options, const char* lockName, uint64_t& requestId)` |
+| | Set user attributes | `int setUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Get user attributes | `int getUserMetadata(const char* userId, uint64_t& requestId)` |
+| | Remove user attributes | `int removeUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Update user attributes | `int updateUserMetadata(const char* userId, const IMetadata* data, const MetadataOptions& options, uint64_t& requestId)` |
+| | Subscribe user attributes | `int subscribeUserMetadata(const char* userId, uint64_t& requestId)` |
+| | Unsubscribe user attributes | `int unsubscribeUserMetadata(const char* userId)` |
+| **Lock** | Set lock | `int setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint32_t ttl, uint64_t& requestId)` |
+| | Acquire lock | `int acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, bool retry, uint64_t& requestId)` |
+| | Release lock | `int releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)` |
+| | Revoke lock | `int revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, const char* owner, uint64_t& requestId)` |
+| | Query lock | `int getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId)` |
+| | Remove lock | `int removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, const char* lockName, uint64_t& requestId)` |
+
+</PlatformStructured>

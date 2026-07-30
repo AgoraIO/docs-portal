@@ -20,6 +20,11 @@
       "statusCode": 301
     },
     {
+      "source": "/skill.md",
+      "destination": "https://raw.githubusercontent.com/AgoraIO/skills/main/skills/agora/SKILL.md",
+      "statusCode": 307
+    },
+    {
       "source": "/conversational-ai/models/asr/overview",
       "destination": "/en/ai/models/asr/deepgram",
       "statusCode": 301
@@ -293,6 +298,21 @@
     }
   ],
   "routes": [
+    {
+      "src": "^/\\.well-known/mcp$",
+      "dest": "/.well-known/mcp.json"
+    },
+    {
+      "src": "^/(?:en/?)?$",
+      "dest": "/en.md",
+      "has": [
+        {
+          "type": "header",
+          "key": "Accept",
+          "value": ".*text/markdown.*"
+        }
+      ]
+    },
     {
       "src": "^/en/((?!.*\\.md/?$).+?)/?$",
       "dest": "/en/$1.md",

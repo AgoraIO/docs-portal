@@ -814,7 +814,7 @@ rtmClient.unsubscribe("exampleChannel") { response, error in
 
 #### Description
 
-Before using a stream channel, call the `` method to create the `AgoraRtmStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
+Before using a stream channel, call the `createStreamChannel` method to create the `AgoraRtmStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
 
 :::info[Information]
 This method only applies to the stream channel.
@@ -822,7 +822,7 @@ This method only applies to the stream channel.
 
 #### Method
 
-Call the `` method as follows:
+Call the `createStreamChannel` method as follows:
 
 ```swift
 createStreamChannel(_ channelName: String) throws -> AgoraRtmStreamChannel
@@ -979,7 +979,7 @@ streamChannel.leave({ res, error in
 
 #### Description
 
-When you no longer need a channel, call the `releaseLock` method to destroy the corresponding stream channel instance and release resources. Calling the `releaseLock` method does not destroy the stream channel. It can be re-joined later by calling `` and `joinTopic` again.
+When you no longer need a channel, call the `releaseLock` method to destroy the corresponding stream channel instance and release resources. Calling the `releaseLock` method does not destroy the stream channel. It can be re-joined later by calling `join` and `joinTopic` again.
 
 :::info[Caution]
 This method only applies to the stream channel. If you don't call `leaveTopic` to leave the channel before directly calling `releaseLock` to destroy the stream channel instance, the SDK automatically calls the `leaveTopic` and triggers the corresponding event.
@@ -3904,7 +3904,7 @@ The event notification types set when joining a channel. You can use bitwise ope
 
 | Value | Description |
 | :----------: | ---------------------------------------------------------- |
-| `` | `0`: No event notifications. |
+| `none` | `0`: No event notifications. |
 | `presence` | `1`: Sets the presence event notification. |
 | `metadata` | `1 &lt;&lt; 1`: Sets the storage event notification.|
 | `lock` | `1 &lt;&lt; 2`: Sets the lock event notification. |
@@ -4102,7 +4102,7 @@ The event notification types set when subscribing to a channel. You can use bitw
 
 | Value | Description |
 | :----------: | ---------------------------------------------------------- |
-| `` | `0`: No event notifications |
+| `none` | `0`: No event notifications |
 | `presence` | `1`: Sets the presence event notification. |
 | `metadata` | `1 &lt;&lt; 1`: Sets the storage event notification.|
 | `message` | `1 &lt;&lt; 2`: Sets the message event notification. |
@@ -4142,12 +4142,12 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | Error code| Error description| Cause and solution |
 | :------ | :---------------------- | :------------------------------------------------------------|
 | `0` | `ok` | Correct call |
-| `-10001` | `notInitialized` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `` method before performing other operations. |
+| `-10001` | `notInitialized` | The SDK is not initialized. Please create an `AgoraRtmClientKit` instance before performing other operations. |
 | `-10002` | `notLogin` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
 | `-10003` | `invalidAppId` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
 | `-10005` | `invalidToken` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |
 | `-10006` | `invalidUserId` | Invalid User ID: <br /> - Check if user ID is empty. <br /> - Check if the user ID contains illegal characters. |
-| `-10007` | `initServiceFailed` | SDK initialization failed. Please reinitialize by calling the `` method. |
+| `-10007` | `initServiceFailed` | SDK initialization failed. Please create a new `AgoraRtmClientKit` instance. |
 | `-10008` | `invalidChannelName` | Invalid channel name: <br /> - Check if the channel name is empty. <br /> - Check if the channel name contains illegal characters. |
 | `-10009` | `tokenExpired` | Token expired. Call `renewToken` to reacquire the Token. |
 | `-10010` | `loginNoServerResources` | Server resources are limited. It is recommended to log in again. |
