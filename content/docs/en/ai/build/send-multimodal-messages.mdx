@@ -54,9 +54,11 @@ This section explains how to send a picture message from your app.
    ```kotlin
    // Create configuration objects for the RTC and RTM instances
    val config = ConversationalAIAPIConfig(
-       rtcEngine = rtcEngineInstance,
-       rtmClient = rtmClientInstance,
-       enableLog = true
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
    )
 
    // Create component instance
@@ -189,7 +191,9 @@ This section explains how to send a picture message from your app.
    let config = ConversationalAIAPIConfig(
        rtcEngine: rtcEngine,
        rtmEngine: rtmEngine,
-       enableLog: true
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
    )
 
    convoAIAPI = ConversationalAIAPIImpl(config: config)
@@ -332,12 +336,15 @@ This section explains how to send a picture message from your app.
    Before joining an RTC channel, create Video SDK and Signaling engine instances and pass them into the toolkit instance.
 
    ```ts
-   ConversationalAIAPI.init({
-       rtcEngine,
-       rtmEngine,
-   })
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
 
-   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
    ```
 
 3. **Subscribe to the channel**

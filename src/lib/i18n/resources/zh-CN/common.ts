@@ -46,6 +46,8 @@ const zhCnCommon = {
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',
+    downloadPage: '下载页面',
+    viewMarkdown: '查看 Markdown',
     viewAsMarkdown: '查看 Markdown',
     openInChatGpt: '在 ChatGPT 中打开',
     openInClaude: '在 Claude 中打开',

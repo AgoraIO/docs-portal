@@ -1081,6 +1081,62 @@ Panics if `Key`, `Speaker`, or `TargetLanguageCode` is empty.
 | `SampleRate` | `*int` | No | Audio sample rate |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
+#### `NewGradiumTTS`
+
+```go
+func NewGradiumTTS(opts GradiumTTSOptions) *GradiumTTS
+```
+
+Panics if `APIKey` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Gradium API key |
+| `URL` | `string` | No | WebSocket endpoint for streaming TTS output |
+| `ModelName` | `string` | No | Gradium TTS model name |
+| `VoiceID` | `string` | No | Gradium voice identifier |
+| `SampleRate` | `*SampleRate` | No | Output sample rate |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Gradium TTS parameters, flattened into `params` |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+
+#### `NewMistralTTS`
+
+```go
+func NewMistralTTS(opts MistralTTSOptions) *MistralTTS
+```
+
+Panics if `APIKey` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Mistral API key |
+| `Model` | `string` | No | Mistral TTS model name |
+| `Voice` | `string` | No | Mistral voice identifier |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Mistral TTS parameters, flattened into `params` |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+
+#### `NewGenericTTS`
+
+```go
+func NewGenericTTS(opts GenericTTSOptions) *GenericTTS
+```
+
+Custom OpenAI-compatible HTTP TTS. `URL` is required and must be an absolute HTTP or HTTPS address that includes a host — this panics if `URL` is missing, badly formatted, or uses a non-HTTP(S) scheme such as `ws`, `wss`, or `ftp`. A valid URL is serialized as `tts.vendor = "generic_http"`.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `URL` | `string` | Yes | The HTTP(S) endpoint of your custom TTS service |
+| `Headers` | `map[string]string` | No | Custom HTTP headers to forward to the TTS service. Omitted from the request if not set |
+| `APIKey` | `string` | No | The API key used to authenticate with the TTS service |
+| `Model` | `string` | No | The TTS model name |
+| `Voice` | `string` | No | The voice name |
+| `Speed` | `*float64` | No | The speech rate |
+| `SampleRate` | `*SampleRate` | No | The sample rate, in Hz, of the output audio. If your TTS service doesn't support multiple sample rates, make sure the returned audio's sample rate matches this value |
+| `ResponseFormat` | `string` | No | The output audio format. Conversational AI Engine currently supports `pcm` |
+| `Instruction` | `string` | No | Instructions for voice style, emotion, or other playback directives |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional parameters passed through to the TTS service. Explicit fields with the same name take precedence |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+
 ### STT vendors
 
 Use with [`WithStt()`](#withsttvendor).

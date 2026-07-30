@@ -87,9 +87,11 @@ In this solution, you use the toolkit APIs to optimize audio settings.
 
    ```kotlin
    val config = ConversationalAIAPIConfig(
-       rtcEngine = rtcEngineInstance,
-       rtmClient = rtmClientInstance,
-       enableLog = true
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
    )
 
    val api = ConversationalAIAPIImpl(config)
@@ -124,7 +126,9 @@ In this solution, you use the toolkit APIs to optimize audio settings.
    let config = ConversationalAIAPIConfig(
        rtcEngine: rtcEngine,
        rtmEngine: rtmEngine,
-       enableLog: true
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
    )
 
    convoAIAPI = ConversationalAIAPIImpl(config: config)
