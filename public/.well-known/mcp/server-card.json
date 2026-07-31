@@ -1,11 +1,29 @@
 {
   "name": "agora-docs-search",
   "version": "1.0.0",
+  "serverInfo": {
+    "name": "algolia-mcp",
+    "version": "1.0.0"
+  },
   "url": "https://mcp.agora.io",
   "transport": "http",
   "description": "Search and retrieve Agora documentation.",
   "capabilities": {
     "tools": true
   },
-  "authentication": "none"
+  "authentication": "none",
+  "tools": [
+    {
+      "name": "algolia_search_for_facet_values"
+    },
+    {
+      "name": "algolia_search_index_agora_api_refapirefcrawler"
+    },
+    {
+      "name": "algolia_search_index_agora_swift_api_ref"
+    },
+    {
+      "name": "algolia_search_index_docs_portal_en"
+    }
+  ]
 }
