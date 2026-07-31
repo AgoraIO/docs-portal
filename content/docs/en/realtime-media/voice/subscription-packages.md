@@ -14,7 +14,7 @@ By default, a new account is assigned the Free package when the first project is
 1. Log in to [Agora Console](https://console.agora.io/).
 1. Click the username at the bottom of the navigation sidebar to open the account popup menu.
 1. Select  **Subscriptions**.
-1. Switch to the **Realtime** tab.
+1. Switch to the **RTC** tab.
 1. Select your package and click **Upgrade** or **Downgrade**.
 
     ![Subscription plans](/console-tmp/subscription-plans.png)

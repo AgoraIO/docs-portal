@@ -138,7 +138,7 @@ To obtain an auth token, [sign up](https://dashboard.ngrok.com/signup) with ngro
 
 ### Set up Webhook notifications
 
-1. In [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar and switch to the **Webhooks** tab.
+1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
 1. Select **New Webhook**.
 

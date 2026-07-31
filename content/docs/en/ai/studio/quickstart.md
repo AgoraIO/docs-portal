@@ -23,8 +23,8 @@ To create your first agent:
 
     <img alt="Create a new agent" src="/console-tmp/create-agent.png" width="600"  />
 
-5. Under **Choose a template**, select the **Blank Template**.
-6. Enter a name for your agent.
+5. Enter a name for your agent.
+6. Under **Choose a template**, select the **Blank Template**.
 7. Select **Create Agent**.
 
     The agent editor opens with a system prompt and pre-configured model settings.
@@ -39,9 +39,9 @@ The agent editor is organized into multiple tabs. For the quickstart, you only n
 
 The agent editor opens with the following prompts:
 
-- **System Prompt**: Defines how your agent behaves.
-- **Greeting Message**: The first thing your agent says when a session starts. Type in a greeting such as `Hello, how can I help you today?`
-- **Failure Message**: Used when the LLM encounters an error or fails to respond.
+- **System prompt**: The base instructions that shape how your agent thinks, speaks, and escalates.
+- **Greeting**: The first assistant message before the live exchange starts. Type in a greeting such as `Hello, how can I help you today?`
+- **Failure message**: The fallback message used when the agent needs a moment or cannot proceed.
 
 ### Review selected models
 

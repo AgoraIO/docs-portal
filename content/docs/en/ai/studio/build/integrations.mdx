@@ -3,21 +3,20 @@ title: Manage integrations
 description: Manage API credentials, knowledge bases, connectors, custom tools, and MCP servers for your agents.
 ---
 
-Use Integrations to centrally manage credentials, knowledge bases, MCP servers, custom tools, and connectors. Store a resource once, then attach it to any agent in the same project.
+Use Integrations to centrally manage knowledge bases, MCP servers, custom tools, and connectors, and use Model Credentials to manage your AI provider API keys. Store a resource once, then attach it to any agent in the same project.
 
 ## Credentials
 
 To save your credentials for a vendor:
 
-1. In the navigation sidebar, select **Integrations**.
-2. At the top of the page, select the **Credentials** tab.
-3. Select **Create Credential**.
+1. In the navigation sidebar, select **Model Credentials**.
+2. Select **Create Credential**.
     ![Add credential dialog](/console-tmp/create-credential.png)
-4. Enter a descriptive **Name** for your credential.
-5. From the **Type** dropdown, select **ASR/STT**, **LLM**, **TTS**, or **MLLM**.
-6. Select the **Vendor** from the dropdown for which you want to add the credential.
-7. Paste your provider's API key and complete any other required parameters.
-8. Select **Create**.
+3. Enter a descriptive **Name** for your credential.
+4. From the **Type** dropdown, select **ASR/STT**, **LLM**, **TTS**, or **MLLM**.
+5. Select the **Vendor** from the dropdown for which you want to add the credential.
+6. Paste your provider's API **Key** and complete any other required fields, such as **Region**, which vary by vendor.
+7. Select **Create**.
 
 After you add a credential, you can select it from the **Credentials** dropdown when customizing your ASR, LLM, TTS, or MLLM configuration for any agent.
 
@@ -29,7 +28,7 @@ Deleting a credential affects all agents that use it. Verify that no active agen
 
 ### Credential security
 
-Credentials stored in Integrations are:
+Credentials stored in Model Credentials are:
 
 - Encrypted and securely stored in your Agora account
 - Only accessible to users with access to your Agora project

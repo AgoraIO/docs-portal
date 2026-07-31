@@ -26,11 +26,11 @@ Use this tab to specify the core instructions that define your agent's identity 
 
 ![Agent editor prompt tab UI](/console-tmp/agent-editor-prompt.png)
 
-- **System Prompt**: Defines how your agent behaves. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design) for guidance on writing effective prompts.
-- **Greeting Message**: The first thing your agent says when a session starts. For example: `Hello! How can I help you today?`
-- **Failure Message**: The message the agent speaks when the LLM fails to respond or returns an error. For example: `Please hold on a second.`
+- **System prompt**: The base instructions that shape how your agent thinks, speaks, and escalates. For example: `You are a helpful customer support assistant.` See [Prompt design](prompt-design) for guidance on writing effective prompts.
+- **Greeting**: The first assistant message before the live exchange starts. For example: `Hello! How can I help you today?`
+- **Failure message**: The fallback message used when the agent needs a moment or cannot proceed. For example: `Please hold on a second.`
 
-See [Template variables](prompt-design#template-variables) to customize the system prompt, greeting message, and failure message for each user.
+Use `{{variable_name}}` in the system prompt, greeting, or failure message to insert dynamic values that match column names in your CSV file. See [Template variables](prompt-design#template-variables) to customize these fields for each user.
 
 ## Models
 
@@ -82,16 +82,17 @@ To use your own API key or to select a vendor or model not available under Agora
 
 Use this tab to configure the hosting region, turn detection, speech detection, selective attention locking, filler words, voice format, and conversation history.
 
+![](/console-tmp/agent-editor-advanced.png)
+
 ### Project
 
 - **Project**: The Agora project used to track your billing and usage.
-- **Hosting Region**: Select the region where your project's data is stored.
+- **App ID**: The unique identifier for the project. Select the copy icon to copy the ID to your clipboard.
+- **Hosting Region**: The region where your project's data is stored.
 
 ### Turn detection
 
-Turn detection controls how the agent manages conversation flow and turn-taking behavior. Use one of the **Quick Presets** to get started quickly, or select **Custom** to configure individual parameters.
-
-![](/console-tmp/turn-detection.png)
+Turn detection controls how the agent manages conversation flow and turn-taking behavior. Use the toggle to enable or disable turn detection, then use one of the **Quick Presets** to get started quickly, or select **Custom** to configure individual parameters.
 
 **Quick Presets:**
 
@@ -104,7 +105,7 @@ Turn detection controls how the agent manages conversation flow and turn-taking 
 
 ### Start of speech
 
-Controls how the system detects when the user starts speaking.
+Controls how the system detects when the user starts speaking. Use the toggle to enable or disable start of speech detection.
 
 ![](/console-tmp/start-of-speech.png)
 

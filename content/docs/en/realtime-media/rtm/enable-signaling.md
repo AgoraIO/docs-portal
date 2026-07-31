@@ -3,74 +3,51 @@ title: "Enable and configure Signaling"
 description: "Enable Signaling for your project and configure presence, storage, and stream channels in Agora Console."
 ---
 
-Before using Signaling, you need to enable it for each app ID in Agora Console and configure its main features.
-
-:::info
-The following steps apply to the new version of Agora Console. If you are using the old one, switch to the new version by clicking **Switch to the new version** at the top of the screen.
-
-:::
+Before you enable Signaling, make sure you have an [Agora account](/en/introduction/account#sign-up-for-an-agora-account) and a [project](/en/introduction/account#your-first-agora-project).
 
 ## Enable Signaling for your project
 
-1. Select your project on the [Projects](https://console.agora.io/) page and click the corresponding pencil icon to configure it.
-
-    ![configure_project](https://assets-docs.agora.io/images/signaling/configure_project.png)
-
-1. Go to **All features** > **Signaling** > **Basic information** and select a data center in the dropdown.
-
-    ![project_settings_signaling](https://assets-docs.agora.io/images/signaling/project_settings_signaling.png)
-
-:::info
-   The data center setting determines the storage location for user state data, channel metadata, and user metadata for your application. Once you select a data center, this setting cannot be changed.
-
+:::info[Note]
+Signaling is enabled by default for all new projects.
 :::
 
-1. Go to **Subscriptions** > **Signaling** and subscribe to a plan.
+To enable Signaling for an existing project, in [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Signaling** card and turn on its toggle.
 
-    ![signaling-pricing-page](https://assets-docs.agora.io/images/signaling/signaling-pricing-plans.png)
+## Configure Signaling
 
-   Once subscribed, you will be able to unsubscribe from the same page.
+To configure Signaling, select the settings icon on the **Signaling** card to open its configuration panel.
 
-:::info
-   To avoid service disruption, ensure that you are subscribed to either a paid package or the Free Package. Using Signaling without an active subscription will result in account suspension.
+![Signaling settings on the Services page](/console-tmp/signaling-config.png)
 
-:::
+The Signaling panel provides the following configuration.
 
-## Presence configuration
+### Presence configuration
 
-To configure presence, go to **All features** > **Signaling** > **Presence Configuration** in Agora Console and set the following:
+Turn on **Enable Presence** to control whether Presence is available for this project, then set:
 
-- **Max number of instant events**
+- **Max number of instant event**: The maximum number of instant notifications sent before Signaling switches to interval mode. The value range is 8–128, with a default of 50. To request a value outside this range, contact [technical support](mailto:support@agora.io).
+- **Timed event notification interval**: How often periodic notifications are sent, in seconds. The value range is 5–300, with a default of 30.
+- **Event notification debounce time**: The interval within which no presence event is triggered if a user quickly leaves and rejoins, in seconds. The default is 2.
 
-    Sets the maximum number of instant notifications that can be sent. After reaching this limit, Signaling switches to interval mode for sending notifications. The value range is 8–128, with a default value of 50. If your specific requirement is beyond this range, contact [technical support](mailto:support@agora.io).
+### Storage configuration
 
-- **Timed event notification interval**
+Turn on **Enable Storage** to enable storage sync and related attribute callbacks, then set:
 
-    Sets how often periodic notifications are sent. The value range is 5–300 seconds, with a default value is 30 seconds.
+- **User attribute callback**: Receive callbacks when user attributes change in real time.
+- **Channel attribute callback**: Receive callbacks when channel attributes are updated by any member.
 
-- **Event notification debounce time**
+### History
 
-    Specifies the time interval within which no presence event is triggered if a user quickly leaves and re-joins. The default value is 2 seconds.
+Turn on **Enable History** to store message history for later retrieval.
 
-   ![signaling-presence-configuration](https://assets-docs.agora.io/images/signaling/signaling-presence-configuration.png)
+### Distributed lock
 
-## Storage configuration
+Turn on **Enable Distributed Lock** to coordinate exclusive access to shared resources across clients.
 
-To configure storage, go to **All features** > **Signaling** > **Storage Configuration** in Agora Console and toggle the following:
+### Activate stream channels
 
-   - **Storage** : Enable/disable storage of user and channel attributes.
-   - **User attribute callback**: Enable/disable callbacks for user attribute changes.
-   - **Channel attribute callback**: Enable/disable callbacks for channel attribute changes.
-   - **Distributed lock**: Enable/disable distributed locks.
+Turn on **Enable Stream Channel** to use ordered, topic-based messaging for time-sensitive event delivery. This setting may require manual review before it becomes fully available.
 
-   ![signaling-storage-configuration](https://assets-docs.agora.io/images/signaling/signaling-storage-configuration.png)
+Select **Save changes** to apply your updates.
 
-## Activate stream channels
-
-The activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
-
-1. Submit a formal request to [support@agora.io](mailto:support@agora.io).
-2. Specifically request activation of the 128-host feature.
-3. Wait for confirmation before implementing Stream Channel features.
-
-For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+For more information on managing other aspects of your Agora account, see [Console setup](/en/introduction/console-setup).

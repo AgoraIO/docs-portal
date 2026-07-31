@@ -17,4 +17,4 @@ In order to follow this procedure you must:
 To enable Media Gateway, take the following steps:
 
 1. Obtain your App ID, App Certificate, Customer ID, and Customer Secret. See [Agora account management](/en/introduction/account) for details.
-2. In [Agora Console](https://console.agora.io), select **Project Settings** from the sidebar, switch to the **Services** tab and find **Media Gateway**. Turn on the **Active** toggle to enable.
+2. In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Media Gateway** card and turn on its toggle.
