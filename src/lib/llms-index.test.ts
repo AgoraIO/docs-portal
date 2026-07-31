@@ -169,6 +169,38 @@ describe('machine-readable docs indexes', () => {
       }),
     ).rejects.toThrow('Missing machine-readable docs artifact');
   });
+
+  it('normalizes encoded Unicode paths before checking emitted artifacts', async () => {
+    const encodedMarkdownPath =
+      '/zh-CN/introduction/terms/%E4%B8%AD%E6%96%87%E7%BF%BB%E8%AF%91/%E5%9B%BA%E5%AE%9A%E7%94%A8%E6%B3%95/%E5%9B%BA%E5%AE%9A%E7%94%A8%E6%B3%95-RTC.md';
+    const publishedRoutes = [
+      {
+        canonicalPath: encodedMarkdownPath.replace(/\.md$/, ''),
+        markdownPath: encodedMarkdownPath,
+        url: encodedMarkdownPath.replace(/\.md$/, ''),
+      },
+    ];
+    const files = createMachineReadableDocsIndexes({
+      baseUrl: 'https://docs.example.com',
+      docsIndex: '',
+      locale: 'zh-CN',
+      publishedRoutes,
+    });
+    const emittedPaths = new Set([
+      ...files.map((file) => file.path),
+      '/zh-CN/introduction/terms/中文翻译/固定用法/固定用法-RTC.md',
+    ]);
+
+    await expect(
+      validateMachineReadableDocsArtifacts({
+        artifactExists: async (path) => emittedPaths.has(path),
+        baseUrl: 'https://docs.example.com',
+        files,
+        locale: 'zh-CN',
+        publishedRoutes,
+      }),
+    ).resolves.toBeUndefined();
+  });
 });
 
 function getMarkdownTargets(markdown: string) {

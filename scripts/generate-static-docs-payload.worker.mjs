@@ -8,6 +8,7 @@ import {
 } from '../src/lib/docs-page.server.ts';
 import {
   createMachineReadableDocsIndexes,
+  normalizeMachineReadableDocsArtifactPath,
   validateMachineReadableDocsArtifacts,
 } from '../src/lib/llms-index.ts';
 import { MACHINE_READABLE_LOCALE } from '../src/lib/machine-readable-docs.ts';
@@ -489,15 +490,12 @@ function stripFrontmatter(markdown) {
 }
 
 async function writePublicRouteFile(route, content) {
-  const relativePath = route.split('/').filter(Boolean).join('/');
-  await writeTextFile(path.join(markdownOutputRoot, relativePath), content);
+  await writeTextFile(getPublicRouteFilePath(route), content);
 }
 
 async function publicRouteFileExists(route) {
-  const relativePath = route.split('/').filter(Boolean).join('/');
-
   try {
-    await fs.access(path.join(markdownOutputRoot, relativePath));
+    await fs.access(getPublicRouteFilePath(route));
     return true;
   } catch (error) {
     if (error?.code === 'ENOENT') {
@@ -506,6 +504,15 @@ async function publicRouteFileExists(route) {
 
     throw error;
   }
+}
+
+function getPublicRouteFilePath(route) {
+  const relativePath = normalizeMachineReadableDocsArtifactPath(route)
+    .split('/')
+    .filter(Boolean)
+    .join('/');
+
+  return path.join(markdownOutputRoot, relativePath);
 }
 
 async function writeTextFile(filePath, content) {
