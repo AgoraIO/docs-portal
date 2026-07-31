@@ -10,52 +10,47 @@ Use Agora Console to manage your projects and account settings. Console settings
 
 ## Project-level view
 
-When you log in to Agora Console, you land on the project-level view for the selected project. Use the **Project** dropdown at the top of the page to switch between projects. Agora creates a default project for you when you create a new account.
+When you log in to Agora Console, you land on the **Home** page for the selected project. Use the **Project** dropdown at the top of the page to switch between projects. Agora creates a default project for you when you create a new account.
 
-![Project Overview page](/console-tmp/project-overview.png)
+![Home page](/console-tmp/project-overview.png)
 
 Use the sidebar to switch between project-level pages.
 
-### Overview 
+### Home
 
-The **Overview** page is the landing page for a project in Agora Console. It shows your project's App ID and certificate, quick links to get started with agents, campaigns, and phone numbers, shortcuts to services, usage, and billing, and a summary of your plan quotas across RTC, Signaling, and Conversational AI.
+The **Home** page is the landing page for a project in Agora Console. It shows quick links to start building an AI agent, RTC services, your project's App ID and certificate, and a summary of your usage and billing across RTC, Signaling, and Conversational AI.
 
-### Project settings
+### Credentials
 
-The **Project Settings** page shows the basic identity and security configuration for the selected project.
+Select **Manage credentials** on the project card, on the **Home** page, to open the **Project credentials** panel. This panel shows the basic identity, security configuration, and credentials for the selected project.
 
 - **Project Name**: An editable, human-readable name for the project. Select **Edit** to rename the project.
 - **Project ID**: An internal ID for your project. This is **not** the App ID.
-- **Status**: The status of your Agora project. You can disable a project here.
-
-#### Credentials
-
+- **Status**: The status of your Agora project. Select **Disable project** to disable it.
 - **App ID**: A unique, non-editable identifier for the project. Select the copy icon to copy the ID to your clipboard.
+- **Primary certificate**: The project's primary server-side secret, used to generate authentication tokens. Enabling the primary certificate (default) secures the project and requires clients to authenticate with a token. Treat the primary certificate like a database password.
+- **Secondary certificate**: An optional fallback certificate used during certificate rotation. Enable it using the **Enable Secondary** button. You can't delete a secondary certificate while it is enabled; disable it first before deleting.
 
-- **Primary Certificate**: The project's primary server-side secret, used to generate authentication tokens. Enabling the primary certificate (default) secures the project and requires clients to authenticate with a token. Treat the primary certificate like a database password.
+You can copy your **App ID** and **Primary certificate** individually, generate a temporary token, or download your Agora `.env` file for use in your projects.
 
-- **Secondary Certificate**: An optional fallback certificate used during certificate rotation. Enable it using the **Add a Certificate** button. You can't delete a secondary certificate while it is enabled; disable it first before deleting.
-
-You can copy your **App ID** and **Primary Certificate** individually or download your Agora `env` file for use in your projects.
-
-![Primary and Secondary Certificate settings](/console-tmp/project-settings.png)
+![Project credentials panel](/console-tmp/project-credentials.png)
 
 **Rotate certificates**
 
 If you suspect your primary certificate has been compromised, rotate it using the secondary certificate. Replacing the primary certificate may impact your live business, so only rotate certificates when necessary.
 
-1. Click **Add a certificate** to enable the secondary certificate.
+1. Select **Add a Certificate** to enable the secondary certificate.
 2. Select **Make Primary** against the secondary certificate to swap the primary and secondary certificates.
-3. Disable the secondary certificate (the original primary certificate).
-4. Once your users have switched to the new certificate, delete the disabled certificate.
+3. Select **Disable Secondary** to disable the secondary certificate (the original primary certificate).
+4. Once your users have switched to the new certificate, select **Delete Secondary** to delete it.
 
 :::warning
 Once deleted, a certificate can't be restored. Before deleting it, confirm that users have switched to the new certificate. Deleting a certificate immediately invalidates all tokens generated with it, and users already connected can't renew their tokens using it.
 :::
 
-#### Services
+### RTC Services
 
-The **Services** tab on the **Project settings** page lists available Agora products and services grouped by category and lets you enable, disable, and configure each one. The page groups products and services into the following categories:
+Select **RTC Services** in the sidebar to view and configure the Agora products and services available for the current project. Services are grouped into the following categories:
 
 - **Intelligence**: Conversational AI Engine, Real-Time Speech-to-Text.
 - **Media**: Cloud Recording, Media Push, Video Screenshot Upload, Media Gateway, Media Pull.
@@ -63,25 +58,31 @@ The **Services** tab on the **Project settings** page lists available Agora prod
 - **Collaboration**: Whiteboard, Flexible Classroom.
 - **Infrastructure**: Cloud Proxy, Co-Host Authentication.
 
-Use the **Active** toggle, at the top of each panel, to enable or disable a service for the selected project. Click the settings icon to open the configuration panel. For an overview of the available configuration options, refer to the specific product documentation.
+Use the toggle on each product panel to enable or disable it for the project. Select the settings icon to open its configuration panel. For an overview of the available configuration options, refer to the specific product documentation.
 
-![Services product list and configuration panel](/console-tmp/realtime-services.png)
+![RTC Services page](/console-tmp/realtime-services.png)
 
-#### Webhooks
+### Webhooks
 
-A webhook is a callback over HTTPS that allows your app or back-end system to receive notifications. Agora calls your webhook endpoint from its servers to send notifications when selected events occur. 
+A webhook is a callback over HTTPS that allows your app or back-end system to receive notifications. Agora calls your webhook endpoint from its servers to send notifications when selected events occur.
+
+Select **Webhooks** in the sidebar to view and manage webhooks for the current project.
+
+![Webhooks page](/console-tmp/webhooks-list.png)
 
 <include cwd>content/includes/en/shared/console/enable-webhooks.mdx</include>
 
 ### Agora analytics
 
-Select **Agora Analytics** in the sidebar to open analytics in a new tab. Use it to track and analyze usage and quality data for RTC and Chat.
+Select **Agora Analytics** in the sidebar to open analytics in a new tab. Use it to track and analyze usage and quality data for RTC and Chat. For details, see [Agora Analytics overview](/en/realtime-media/agora-analytics/product-overview).
 
 ## Account settings
 
-Click the username at the bottom of the navigation sidebar to open the account popup menu. Items in this menu apply to your Agora account and not to any single project. From here, you can edit your profile, manage subscriptions, view billing status and invoices, see usage statistics, quotas, and breakdowns, open the Extensions Marketplace, and manage account-wide preferences.
+Account settings apply across your entire Agora account, not to a single project. **Usage**, **Projects**, and **Billing** are available directly in the sidebar. Access other options by clicking the username at the bottom of the sidebar.
 
-The menu also gives you access to developer and support resources, including documentation, support tickets, and community links, as well as account-wide actions like switching the theme, reverting to the legacy Console, and logging out.
+![Account popup menu](/console-tmp/account-menu.png)
+
+The popup menu shows your current workspace and gives access to **Profile**, **Subscriptions**, **Extensions**, **RESTful API Keys**, and **Settings**. It also gives you access to developer and support resources, including documentation, support tickets, and community links (**Get Support**), as well as account-wide actions like switching the theme (**Theme**), reverting to the legacy Console (**Back to classic console**), and signing out (**Sign out**).
 
 ### Profile
 
@@ -89,14 +90,24 @@ Use the profile page to update your personal and security details such as your n
 
 ### Usage
 
-The **Usage** page shows your account's usage for the current billing cycle.
+Select **Usage** in the sidebar. The **Usage** page shows your account's usage for the current billing cycle.
 
 - **Total Usage**: A summary of RTC minutes, agent minutes, and Signaling messages used in the current billing cycle.
 - **Detailed Usage**: A breakdown of usage by product, filterable by project and date range. Select **View Breakdown** to chart usage over time, and export the data using the download icon.
 
 ![Detailed Usage chart with filters](/console-tmp/usage-detailed.png)
 
-For deeper usage insights, use Agora Analytics.
+For deeper usage insights, use [Agora Analytics](/en/realtime-media/agora-analytics/product-overview).
+
+### Projects
+
+Select **Projects** in the sidebar to view and manage all projects in your account.
+
+- Search projects by name or App ID.
+- Select **Create project** to create a new project.
+- Click the **Actions** menu next to a project to open its **Credentials** panel, or perform other project actions.
+
+![Projects page](/console-tmp/projects-list.png)
 
 ### Subscriptions
 
@@ -108,7 +119,7 @@ For detailed pricing for a specific product, see the product's pricing page.
 
 ### Billing
 
-The **Billing** page shows your available and reserved balance, invoices, transactions, payment methods, and billing information.
+Select **Billing** in the sidebar. The **Billing** page shows your available and reserved balance, invoices, transactions, payment methods, and billing information.
 
 ![Billing page showing balance, invoices, and transactions](/console-tmp/billing.png)
 
@@ -134,6 +145,10 @@ The **Billing** page shows your available and reserved balance, invoices, transa
 ### Extensions
 
 Use the **Extensions** page to browse and manage extensions that add features to your app on top of Agora SDKs.
+
+![Extensions marketplace](/console-tmp/extensions.png)
+
+Select an extension from the list, then click **View details** to open the configuration page.
 
 ### RESTful API keys
 
