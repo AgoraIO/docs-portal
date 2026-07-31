@@ -81,6 +81,18 @@ export function RootDocument({ children }: PropsWithChildren) {
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
       <head>
+        {/*
+          Securiti.ai cookie consent banner.
+          Keep this as the first head script so consent initializes before GTM
+          and other analytics. Security: generate a test tag against the preview
+          URL, then replace this placeholder with the Securiti-provided snippet.
+
+          <script
+            type="text/javascript"
+            src="https://cdn-prod.securiti.ai/consent/<tenant-id>/cookie_banner.js"
+            async
+          />
+        */}
         {googleTagManagerId ? (
           <script
             // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Tag Manager requires its bootstrap snippet to run inline.
