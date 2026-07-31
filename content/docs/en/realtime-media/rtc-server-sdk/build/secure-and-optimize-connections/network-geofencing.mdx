@@ -1,0 +1,162 @@
+---
+title: "Restrict media zones"
+description: "Restrict access to Agora servers in the specified region"
+---
+
+To meet the laws and regulations of different countries or regions, the Agora Video SDK supports geofencing. After enabling geofencing, the SDK only connects to Agora servers within the specified region, regardless of where your app users are located.
+
+For example, if you specify North America as the region for connection, when two users attempt to connect to Agora servers from different locations, the result is as follows:
+
+| Specified region for connection | App user location | Actual region for connection | User experience after connection |
+| --- | --- | --- | --- |
+| North America | North America | North America | Normal |
+| North America | China | North America | There may be a significant impact on user experience. Due to the cross-region public Internet between the designated area and the area where the app user is located, poor quality of the public Internet network affects the audio and video experience. If the servers in the specified area are not available, the SDK reports an error directly. |
+
+:::info
+Restricted media zones is an advanced feature of the SDK. Use it only when required for use-cases with access security restrictions.
+:::
+
+## Implementation
+
+When you specify an access area, audio, video and message data is not accessed from servers outside the specified area.
+
+<PlatformStructured platform="linux-cpp">
+
+To specify the region for connection, when initializing an `IAgoraService` instance by calling `initialize`, set the `areaCode` parameter in `AgoraServiceConfiguration`. The following area codes are available:
+
+- `AREA_CODE_GLOB`: Global (Default)
+- `AREA_CODE_CN`: Mainland China
+- `AREA_CODE_NA`: North America
+- `AREA_CODE_EU`: Europe
+- `AREA_CODE_AS`: Asia, excluding Mainland China
+- `AREA_CODE_JP`: Japan
+- `AREA_CODE_IN`: India
+
+:::info
+Area codes support bitwise operations.
+:::
+
+Refer to the following sample code to specify an access area:
+
+```cpp
+// Create an IAgoraService object
+auto service = createAgoraService();
+
+agora::base::AgoraServiceConfiguration scfg;
+scfg.enableAudioProcessor = true;
+scfg.enableAudioDevice = false;
+scfg.enableVideo = true;
+scfg.useStringUid = false;
+
+// Specify North America as the region for connection
+scfg.areaCode = agora::rtc::AREA_CODE_NA;
+
+// Initialize the IAgoraService instance
+service->initialize(scfg);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+To specify the area for connection, when initializing an `IAgoraService` instance by calling `initialize`, call `AgoraServiceConfig.setAreaCode()`. The following area codes are available:
+
+- `0xFFFFFFFF`: Global (Default)
+- `0x00000001`: Mainland China
+- `0x00000002`: North America
+- `0x00000004`: Europe
+- `0x00000008`: Asia, excluding Mainland China
+- `0x00000010`: Japan
+- `0x00000020`: India
+
+:::info
+Area codes support bitwise operations.
+:::
+
+Refer to the following sample code to specify an access area:
+
+```java
+SDK.load(); // ensure JNI library is loaded
+// Create an AgoraService object
+AgoraService service = new AgoraService();
+if (null == service) {
+    System.out.printf("createAndInitAgoraService fail\n");
+    return;
+}
+AgoraServiceConfig config = new AgoraServiceConfig();
+// Disable the audio device module
+config.setEnableAudioDevice(0);
+// Enable the audio processing module
+config.setEnableAudioProcessor(1);
+// Whether to enable video
+config.setEnableVideo(0);
+// Specify North America as the region for connection
+config.setAreaCode(0x00000002);
+int ret = service.initialize(config);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+
+To specify the access area, set the `area_code` parameter in `AgoraServiceConfig` when calling the `initialize` method to initialize the `AgoraService` instance. The following area codes are available:
+
+- `AREA_CODE_GLOB`: Global (Default)
+- `AREA_CODE_CN`: Mainland China
+- `AREA_CODE_NA`: North America
+- `AREA_CODE_EU`: Europe
+- `AREA_CODE_AS`: Asia, excluding mainland China
+- `AREA_CODE_JP`: Japan
+- `AREA_CODE_IN`: India
+
+:::info
+Area codes support bitwise operations.
+:::
+
+Refer to the following sample code to specify an access area:
+
+```python
+# Create an AgoraService instance
+agora_service = AgoraService()
+
+# Specify access to servers in North America only
+config = AgoraServiceConfig()
+config.appid = appid
+config.area_code = AreaCode.AREA_CODE_NA.value
+
+# Initialize an AgoraService instance
+agora_service.initialize(config)
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
+To specify the access area, set the `AreaCode` parameter in `AgoraServiceConfig` when calling the `initialize` method to initialize the `agoraservice` package. The following area codes are available:
+
+- `AreaCodeGlob`: Global (Default)
+- `AreaCodeCN`: Mainland China
+- `AreaCodeNA`: North America
+- `AreaCodeEU`: Europe
+- `AreaCodeAS`: Asia, excluding mainland China
+- `AreaCodeJP`: Japan
+- `AreaCodeIN`: India
+
+:::info
+Area codes support bitwise operations.
+:::
+
+Refer to the following sample code to specify an access area:
+
+```go
+svcCfg := agoraservice.NewAgoraServiceConfig()
+svcCfg.AppId = appid
+
+// Specify access to North American servers only
+svcCfg.AreaCode = agoraservice.AreaCodeNA
+
+// Initialize the `agoraservice` package
+agoraservice.Initialize(svcCfg)
+```
+
+</PlatformStructured>

@@ -1490,27 +1490,780 @@ Chat UI kit workflow
 - Dart 2.16 or higher.
 
 - If your target platform is iOS:
-    - macOS
-    - Xcode 12.4 or higher with Xcode Command Line Tools
-    - CocoaPods
-    - An iOS emulator or a physical iOS device running iOS 10.0 or higher
+
+  - macOS
+  - Xcode 12.4 or higher with Xcode Command Line Tools
+  - CocoaPods
+  - An iOS emulator or a physical iOS device running iOS 10.0 or higher
 
 - If your target platform is Android:
-    - macOS or Windows
-    - Android Studio 4.0 or higher with JDK 1.8 or higher
-    - An Android emulator or a physical Android device running Android SDK API 21 or higher
+
+  - macOS or Windows
+  - Android Studio 4.0 or higher with JDK 1.8 or higher
+  - An Android emulator or a physical Android device running Android SDK API 21 or higher
 
 ## Project setup
 
+Follow these steps to create the environment necessary to integrate Chat UI Kit into your app:
+
+1. Create a new Flutter project for iOS and Android
+
+   1. In the terminal, run the following command:
+
+      ```bash
+      flutter create uikit_demo --platforms=ios,android -i objc -a java
+      ```
+
+   1. Integrate the UI Kit using [pub.dev](https://pub.dev/packages/agora_chat_uikit) (Recommended)
+
+      Execute the following commands in the `uikit_demo` directory:
+
+      ```bash
+      cd uikit_demo
+
+      flutter pub add agora_chat_uikit
+      flutter pub get
+      ```
+
+1. Add permissions for network and device access
+
+   1. For Android, in `/app/Manifests/AndroidManifest.xml`, add the following permissions after `</application>`:
+
+      ```xml
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+      <uses-permission android:name="android.permission.WAKE_LOCK"/>
+      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+      <uses-permission android:name="android.permission.CAMERA"/>
+      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+      ```
+
+   1. For iOS, open **info** in the project navigation panel, and add the following properties to the [Property List](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6):
+
+      | Key | Type | Value |
+      | --- | --- | --- |
+      | `Privacy - Microphone Usage Description` | String | For microphone access |
+      | `Privacy - Camera Usage Description` | String | For camera access |
+      | `Privacy - Photo Library Usage Description` | String | For photo library access |
+
+1. Prevent code obfuscation
+
+   In the `example/android/app/proguard-rules.pro` file, add the following lines:
+
+   ```java
+   -keep class com.hyphenate.** {*;}
+   -dontwarn  com.hyphenate.**
+   ```
+
 ## Implementation
 
-## Implement peer-to-peer messaging
+This section shows how to use the Chat UI Kit to implement peer-to-peer messaging in your app.
+
+The `agora_chat_uikit` library provides the logic and UI to implement the following Chat functions:
+
+- Send, receive, and display messages
+- Shows the unread message count, and clear messages. Text, image, emoji, file, and audio messages are supported
+- Delete conversations and messages
+- Customize the UI
+
+### Chat UI Kit widgets
+
+| Widget | Function | Description |
+| --- | --- | --- |
+| `ChatUIKit` | Root widget | The root of all widgets in Chat UI Kit. |
+| `ChatConversationsView` | Conversation list | Presents avatar, nickname, last message, unread count, and message time. |
+| `ChatConversationsView` | Delete conversation | Deletes the conversation from the conversation list. |
+| `ChatMessagesView` | Message sender | Sends text, emoji, image, file, and voice messages. |
+| `ChatMessagesView` | Delete messages | Deletes messages. |
+| `ChatMessagesView` | Recall message | Recalls messages sent within 120 seconds. |
+| `ChatMessagesView` | Read mark | Receives a read receipt after a message is retrieved. |
+| `ChatMessagesView` | Message sent state | Displays the status after a message is sent. |
+| `ChatMessagesView` | Display message | Displays one-to-one and group messages with sender, content, time, and status information. |
+
+
+Use the following UI Kit widgets to implement Chat functionality with the associated UI in your projects.
+
+#### `ChatUIKit`
+
+Place a `ChatUIKit` widget at the top of your widget tree to help refresh the `ChatConversationsView` when returning from `ChatMessagesView`.
+
+```dart
+ChatUIKit({
+    super.key,
+    this.child,
+    ChatUIKitTheme? theme,
+});
+```
+
+The `ChatUIKit` widget also enables you to customize the theme settings.
+
+| Property | Description |
+| --- | --- |
+| `theme` | Chat UI Kit theme for setting component styles. If this property is not set, the default style is used. |
+
+#### `ChatMessagesView`
+
+You use `ChatMessagesView` to manage text, images, emojis, files, and voice messages:
+
+- Send and receive messages
+- Delete messages
+- Recall messages
+
+| Property | Description |
+| :-------------- | :----- |
+| `conversation` | The ChatConversation to which the messages belong. |
+| `inputBarTextEditingController` | Text input widget text editing controller. |
+| `background` | The background widget.|
+| `inputBar` | Text input component. If you don't pass in this property, `ChatInputBar` is used by default.|
+| `onTap` | Message bubble click callback.|
+| `onBubbleLongPress` | Callback for holding a message bubble.|
+| `onBubbleDoubleTap` | Callback for double-clicking a message bubble.|
+| `avatarBuilder` | Avatar component builder.|
+| `nicknameBuilder` | Nickname component builder.|
+| `itemBuilder`| Message bubble. If you don't set this property, the default bubble is used. |
+| `moreItems` | Action items displayed after a message bubble is held down. If you return `null` in `onBubbleLongPress`, `moreItems` is used. This property involves three default actions: copy, delete, and recall. |
+| `messageListViewController` | Message list controller. You are advised to use the default value. For details, see `ChatMessageListController`.  |
+| `willSendMessage` | Text message pre-sending callback. This callback needs to return a `ChatMessage` object.  |
+| `onError`| Error callback, such as no permissions.  |
+| `enableScrollBar` | Whether to enable the scroll bar. The scroll bar is enabled by default.  |
+| `needDismissInputWidget` | Callback for dismissing the input widget. If you use a custom input widget, dismiss the input widget when you receive this callback, for example, by calling `FocusNode.unfocus`. See `ChatInputBar`. |
+| `inputBarMoreActionsOnTap` | The callback for clicking the plus symbol next to the input box. You need to return the `ChatBottomSheetItems` list.   |
+
+```dart
+ChatMessagesView({
+  required this.conversation,
+  this.inputBarTextEditingController,
+  this.background,
+  this.inputBar,
+  this.onTap,
+  this.onBubbleLongPress,
+  this.onBubbleDoubleTap,
+  this.avatarBuilder,
+  this.nicknameBuilder,
+  this.itemBuilder,
+  this.moreItems,
+  ChatMessageListController? messageListViewController,
+  this.willSendMessage,
+  this.onError,
+  this.enableScrollBar = true,
+  this.needDismissInputWidget,
+  this.inputBarMoreActionsOnTap,
+  super.key,
+});
+```
+
+#### `ChatConversationsView`
+
+The 'ChatConversationsView' allows you to quickly display and manage the current conversations.
+
+| Property | Description |
+| :-------------- | :----- |
+| `controller` | The `ChatConversationsView` controller. |
+| `itemBuilder` | Conversation list item builder. Return a widget if you need to customize it. |
+| `avatarBuilder` | Avatar builder. If this property is not implemented or you return `null`, the default avatar is used.|
+| `nicknameBuilder` | Nickname builder. If you don't set this property or return `null`, the conversation ID is displayed. |
+| `onItemTap` | The callback of the click event of the conversation list item. |
+| `backgroundWidgetWhenListEmpty` | Background widget when the list is empty. |
+| `enablePullReload` | Whether to enable drop-down refresh. |
+
+
+```dart
+ChatConversationsView({
+  super.key,
+  this.onItemTap,
+  ChatConversationsViewController? controller,
+  this.itemBuilder,
+  this.avatarBuilder,
+  this.nicknameBuilder,
+  this.backgroundWidgetWhenListEmpty,
+  this.enablePullReload = false,
+  this.scrollController,
+  this.reverse = false,
+  this.primary,
+  this.physics,
+  this.shrinkWrap = false,
+  this.cacheExtent,
+  this.dragStartBehavior = DragStartBehavior.down,
+  this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+  this.restorationId,
+  this.clipBehavior = Clip.hardEdge,
+});
+```
+
+### Local integration
+
+The recommended integration method for the Chat UI Kit is using pub.dev. You can also download the project manually for integration. To do this, open the `uikit_demo` project in your IDE and take the following steps:
+
+1. Clone the [Chat UIKit for Flutter](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-flutter) repository.
+
+   ```bash
+   git clone https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-flutter.git
+   ```
+
+1. Add the UI Kit dependency:
+
+   ```yaml
+   dependencies:
+       agora_chat_uikit:
+           path: `<#uikit path#>`
+   ```
+
+1. Replace the code in `lib/main.dart` with the following:
+
+   ```dart
+   import 'package:flutter/material.dart';
+   import 'package:agora_chat_uikit/agora_chat_uikit.dart';
+
+   import 'messages_page.dart';
+
+   class ChatConfig {
+     static const String appKey = "";
+     static const String userId = "";
+     static const String agoraToken = '';
+   }
+
+   void main() async {
+     assert(ChatConfig.appKey.isNotEmpty,
+         "You need to configure AppKey information first.");
+     WidgetsFlutterBinding.ensureInitialized();
+     final options = ChatOptions(
+       appKey: ChatConfig.appKey,
+       autoLogin: false,
+     );
+     await ChatClient.getInstance.init(options);
+     runApp(const MyApp());
+   }
+
+   class MyApp extends StatelessWidget {
+     const MyApp({super.key});
+     @override
+     Widget build(BuildContext context) {
+       return MaterialApp(
+         title: 'Flutter Demo',
+         theme: ThemeData(
+           primarySwatch: Colors.blue,
+         ),
+         builder: (context, child) {
+           // ChatUIKit widget at the top of the widget
+           return ChatUIKit(child: child!);
+         },
+         localizationsDelegates: AppLocalizations.localizationsDelegates,
+         supportedLocales: AppLocalizations.supportedLocales,
+         home: const MyHomePage(title: 'Flutter Demo'),
+       );
+     }
+   }
+
+   class MyHomePage extends StatefulWidget {
+     const MyHomePage({super.key, required this.title});
+
+     final String title;
+
+     @override
+     State<MyHomePage> createState() => _MyHomePageState();
+   }
+
+   class _MyHomePageState extends State<MyHomePage> {
+     ScrollController scrollController = ScrollController();
+     ChatConversation? conversation;
+     String _chatId = "";
+     final List<String> _logText = [];
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text(widget.title),
+         ),
+         body: Container(
+           padding: const EdgeInsets.only(left: 10, right: 10),
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.stretch,
+             mainAxisSize: MainAxisSize.max,
+             children: [
+               const SizedBox(height: 10),
+               const Text("login userId: ${ChatConfig.userId}"),
+               const Text("agoraToken: ${ChatConfig.agoraToken}"),
+               const SizedBox(height: 10),
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                 children: [
+                   Expanded(
+                     flex: 1,
+                     child: ElevatedButton(
+                       onPressed: () {
+                         _signIn();
+                       },
+                       child: const Text("SIGN IN"),
+                     ),
+                   ),
+                   const SizedBox(width: 10),
+                   Expanded(
+                     child: ElevatedButton(
+                       onPressed: () {
+                         _signOut();
+                       },
+                       child: const Text("SIGN OUT"),
+                     ),
+                   ),
+                 ],
+               ),
+               const SizedBox(height: 10),
+               Row(
+                 children: [
+                   Expanded(
+                     child: TextField(
+                       decoration: const InputDecoration(
+                         hintText: "Enter recipient's userId",
+                       ),
+                       onChanged: (chatId) => _chatId = chatId,
+                     ),
+                   ),
+                   const SizedBox(height: 10),
+                   ElevatedButton(
+                     onPressed: () {
+                       pushToChatPage(_chatId);
+                     },
+                     child: const Text("START CHAT"),
+                   ),
+                 ],
+               ),
+               Flexible(
+                 child: ListView.builder(
+                   controller: scrollController,
+                   itemBuilder: (_, index) {
+                     return Text(_logText[index]);
+                   },
+                   itemCount: _logText.length,
+                 ),
+               ),
+             ],
+           ),
+         ),
+       );
+     }
+
+     void pushToChatPage(String userId) async {
+       if (userId.isEmpty) {
+         _addLogToConsole('UserId is null');
+         return;
+       }
+       if (ChatClient.getInstance.currentUserId == null) {
+         _addLogToConsole('user not login');
+         return;
+       }
+       ChatConversation? conv =
+           await ChatClient.getInstance.chatManager.getConversation(userId);
+       Future(() {
+         Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+           return MessagesPage(conv!);
+         }));
+       });
+     }
+
+     void _signIn() async {
+       _addLogToConsole('begin sign in...');
+       if (ChatConfig.agoraToken.isNotEmpty) {
+         try {
+           await ChatClient.getInstance.loginWithAgoraToken(
+             ChatConfig.userId,
+             ChatConfig.agoraToken,
+           );
+         } on ChatError catch (e) {
+           _addLogToConsole('sign in fail: ${e.description}');
+         }
+       } else {
+         _addLogToConsole('sign in fail: The agoraToken cannot both be null.');
+       }
+     }
+
+     void _signOut() async {
+       _addLogToConsole('begin sign out...');
+       try {
+         await ChatClient.getInstance.logout();
+         _addLogToConsole('sign out success');
+       } on ChatError catch (e) {
+         _addLogToConsole('sign out fail: ${e.description}');
+       }
+     }
+
+     void _addLogToConsole(String log) {
+       _logText.add("$_timeString: $log");
+       setState(() {
+         scrollController.jumpTo(scrollController.position.maxScrollExtent);
+       });
+     }
+
+     String get _timeString {
+       return DateTime.now().toString().split(".").first;
+     }
+   }
+   ```
+
+1. To create a `MessagesPage` refer to the following code:
+
+   ```dart
+   import 'package:agora_chat_uikit/agora_chat_uikit.dart';
+   import 'package:flutter/material.dart';
+
+   class MessagesPage extends StatefulWidget {
+     const MessagesPage(this.conversation, {super.key});
+
+     final ChatConversation conversation;
+
+     @override
+     State<MessagesPage> createState() => _MessagesPageState();
+   }
+
+   class _MessagesPageState extends State<MessagesPage> {
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(title: Text(widget.conversation.id)),
+         body: SafeArea(
+           // Message page in uikit.
+           child: ChatMessagesView(
+             conversation: widget.conversation,
+           ),
+         ),
+       );
+     }
+   }
+   ```
 
 ## Test your app
 
-## Next steps
+To test the UI Kit Chat features example:
+
+1. In `example/lib/main.dart`, set the `appKey`, `userId`, and `agoraToken` to valid values.
+
+   ```dart
+   class ChatConfig {
+       static const String appKey = "";
+       static const String userId = "";
+       static const String agoraToken = '';
+   }
+   ```
+
+1. Click **Sign In**. You see a log message confirming sign-in success.
+
+1. Run the app on another device or simulator. Ensure that the `userId` values are unique.
+
+1. On the first device or simulator, enter the user id you just created and click **Start Chat**. You can now start chatting between the two clients.
 
 ## Reference
+
+Refer to the fully featured [AgoraChat-UIKit-flutter](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-flutter) demo app as an implementation reference. To customize the UI Kit, refer to the following information.
+
+### Customize colors
+
+You can set the color when adding `ChatUIKit`.
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      builder: (context, child) {
+        // ChatUIKit widget at the top of the widget
+        return ChatUIKit(
+          // ChatUIKitTheme
+          theme: ChatUIKitTheme(),
+          child: child!,
+        );
+      },
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+```
+
+### Add an avatar
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.conversation.id)),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          avatarBuilder: (context, userId) {
+            // Returns the avatar widget that you want to display.
+            return Container(
+              width: 30,
+              height: 30,
+              color: Colors.red,
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Add a nickname
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.conversation.id)),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          // Returns the nickname widget that you want to display.
+          nicknameBuilder: (context, userId) {
+            return Text(userId);
+          },
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Add the bubble click event
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.conversation.id)),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          // item tap event
+          onTap: (context, message) {
+            bubbleClicked(message);
+            return true;
+          },
+        ),
+      ),
+    );
+  }
+
+  void bubbleClicked(ChatMessage message) {
+    debugPrint('bubble clicked');
+  }
+}
+```
+
+### Customize the message item widget
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.conversation.id)),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          itemBuilder: (context, model) {
+            if (model.message.body.type == MessageType.TXT) {
+              // Custom message bubble
+              return CustomTextItemWidget(
+                model: model,
+                onTap: (context, message) {
+                  bubbleClicked(message);
+                  return true;
+                },
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  void bubbleClicked(ChatMessage message) {
+    debugPrint('bubble clicked');
+  }
+}
+
+// Custom message bubble
+class CustomTextItemWidget extends ChatMessageListItem {
+  const CustomTextItemWidget({super.key, required super.model, super.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    ChatTextMessageBody body = model.message.body as ChatTextMessageBody;
+
+    Widget content = Text(
+      body.content,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 50,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+    return getBubbleWidget(content);
+  }
+}
+
+```
+
+### Customize the input widget
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  late ChatMessageListController _msgController;
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    _msgController = ChatMessageListController(widget.conversation);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.conversation.id)),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          messageListViewController: _msgController,
+          inputBar: customInputWidget(),
+          needDismissInputWidget: () {
+            _focusNode.unfocus();
+          },
+        ),
+      ),
+    );
+  }
+
+  // custom input widget
+  Widget customInputWidget() {
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              focusNode: _focusNode,
+              controller: _textController,
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                final msg = ChatMessage.createTxtSendMessage(
+                    targetId: widget.conversation.id,
+                    content: _textController.text);
+                _textController.text = '';
+                _msgController.sendMessage(msg);
+              },
+              child: const Text('Send'))
+        ],
+      ),
+    );
+  }
+}
+
+```
+
+### Delete all Messages in the current conversation
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  late ChatMessageListController _msgController;
+
+  @override
+  void initState() {
+    super.initState();
+    _msgController = ChatMessageListController(widget.conversation);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.conversation.id),
+        actions: [
+          TextButton(
+              onPressed: () {
+                _msgController.deleteAllMessages();
+              },
+              child: const Text(
+                'Clear',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
+      ),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          messageListViewController: _msgController,
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Customize actions displayed upon a click of the plus symbol in the page
+
+```dart
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.conversation.id),
+      ),
+      body: SafeArea(
+        // Message page in uikit.
+        child: ChatMessagesView(
+          conversation: widget.conversation,
+          // Returns a list of custom events
+          inputBarMoreActionsOnTap: (items) {
+            ChatBottomSheetItem item = ChatBottomSheetItem(
+              type: ChatBottomSheetItemType.normal,
+              onTap: customMoreAction,
+              label: 'more',
+            );
+
+            return items + [item];
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<void> customMoreAction() async {
+    debugPrint('custom action');
+    Navigator.of(context).pop();
+  }
+}
+```
 
 </PlatformStructured>
 
@@ -1540,18 +2293,264 @@ Chat UI kit workflow
 
 ## Prerequisites
 
+### Android
+
+If your target platform is Android:
+
+- macOS 10.15.7 or later, or Windows 10 or later
+- Android Studio 2021.3.1 or later, including JDK 1.8 or later
+- Visual Studio Code latest
+- React Native 0.63.5 or later
+- CocoaPods package management tool if your operating system is macOS.
+- Powershell 5.1 or later if your operating system is Windows.
+- Node.js 16.18.0 or later, including npm package management tool (Homebrew installation is recommended)
+- TypeScript 4.0 or later
+- Yarn 1.22.19 or later
+- Watchman debugging tool
+- npm and related tools
+- Expo 6.0.0 or later
+- A physical or virtual mobile device running Android 6.0 or later
+
+### iOS
+
+If your target platform is iOS:
+
+- macOS 10.15.7 or later
+- Xcode 13.4 or later, including command line tools
+- Objective-C 2.0 or later
+- Visual Studio Code latest
+- React Native 0.63.5 or later
+- Node.js 16.18.0 or later, including npm package management tool (Homebrew installation is recommended)
+- TypeScript 4.0 or later
+- CocoaPods package management tool
+- Yarn 1.22.19 or later
+- Watchman debugging tool
+- npm and related tools
+- Expo 6.0.0 or later
+- A physical or virtual mobile device running iOS 10.0 or later
+
 For more information, see [Setting up the environment](https://reactnative.dev/docs/environment-setup).
 
 ## Project setup
 
+To create a new project using the React Native UI Kit, take the following steps:
+
+1. Create a new React-Native application project
+
+   ```bash
+   npx react-native init RNUIkitQuickExamle --version 0.71.11
+   ```
+
+1. Initialize your project
+
+   ```bash
+   yarn && yarn run env
+   ```
+
+1. Add the required dependencies:
+
+   ```bash
+   yarn add @react-native-async-storage/async-storage \
+   @react-native-camera-roll/camera-roll \
+   @react-native-clipboard/clipboard \
+   @react-native-firebase/app \
+   @react-native-firebase/messaging \
+   react-native-audio-recorder-player \
+   react-native-agora-chat \
+   react-native-agora-chat-uikit \
+   react-native-create-thumbnail \
+   react-native-document-picker \
+   react-native-fast-image \
+   react-native-file-access \
+   react-native-get-random-values \
+   react-native-image-picker \
+   react-native-permissions \
+   react-native-safe-area-context \
+   react-native-screens \
+   react-native-video
+   ```
+
+1. Configure the iOS platform.
+
+   Add the following content to the `ios/Podfile` file:
+
+   ```ruby
+   target 'RNUIkitQuickExamle' do
+
+   pod 'GoogleUtilities', :modular_headers => true
+   pod 'FirebaseCore', :modular_headers => true
+
+   permissions_path = File.join(File.dirname(`node --print "require.resolve('react-native-permissions/package.json')"`), "ios")
+   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
+   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
+   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+
+   end
+   ```
+
+   Add the following content to the `ios/RNUIkitQuickExamle/Info.plist` file:
+
+   ```xml
+   <dict>
+       <key>NSCameraUsageDescription</key>
+       <string></string>
+       <key>NSMicrophoneUsageDescription</key>
+       <string></string>
+       <key>NSPhotoLibraryUsageDescription</key>
+       <string></string>
+   </dict>
+   ```
+
+1. Configure the Android platform.
+
+   Add the following content to the `android/build.gradle` file:
+
+   ```text
+   buildscript {
+       ext {
+           kotlinVersion = '1.6.10'
+           if (findProperty('android.kotlinVersion')) {
+               kotlinVersion = findProperty('android.kotlinVersion')
+           }
+       }
+       dependencies {
+           classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+       }
+   }
+   ```
+
+   Add the following content to the `android/app/src/main/AndroidManifest.xml` file:
+
+   ```xml
+   <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+       <uses-permission android:name="android.permission.INTERNET"/>
+       <uses-permission android:name="android.permission.CAMERA" />
+       <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+       <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+       <uses-permission android:name="android.permission.RECORD_AUDIO" />
+   </manifest>
+   ```
+
 ## Implementation
 
-## Implement peer-to-peer messaging
+To initialize the UI Kit, log in to the server, and enter the chat page, take the following steps:
+
+
+1. Initialize the UI Kit
+
+   ```ts
+   export const App = () => {
+       return (
+           <UikitContainer
+           option={{
+               appKey: appKey,
+               autoLogin: autoLogin,
+               debugModel: debugModel,
+           }}
+           >
+           <NavigationContainer>
+               <Root.Navigator initialRouteName="Main">
+               <Root.Screen name="Main" component={MainScreen} />
+               <Root.Screen name="Chat" component={ChatScreen} />
+               </Root.Navigator>
+           </NavigationContainer>
+           </UikitContainer>
+       );
+   };
+   ```
+
+2. Display Chat details
+
+   ```ts
+   export function ChatScreen({
+   route,
+   }: NativeStackScreenProps<typeof RootParamsList>): JSX.Element {
+       return (
+           <ScreenContainer mode="padding" edges={['right', 'left', 'bottom']}>
+           <ChatFragment
+               screenParams={{
+               params: route.params as any,
+               }}
+           />
+           </ScreenContainer>
+       );
+   }
+   ```
 
 ## Test your app
 
-## Next steps
+To set up and run the React Native Chat UI Kit example app:
+
+1. Clone the [Chat UI Kit for React Native](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn) repository.
+
+   ```bash
+   git clone https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn.git
+   ```
+
+1. Initialize the project by running the following commands in a terminal:
+
+   ```bash
+   yarn && yarn run example-env && yarn run sdk-version
+   ```
+
+1. Configure the necessary parameters.
+
+   1. In the `example` project, open `example/src/env.ts` and fill in the information.
+
+      ```typescript
+      export const test = false; // test mode
+      export const appKey = ''; // from Agora console
+      export const id = ''; // default user id
+      export const ps = ''; // default password or token
+      export const accountType = 'agora';
+      ```
+
+   1. For the `examples/callkit-example` project, add `appKey` and other values to the `examples/callkit-example/src/env.ts` file.
+
+1. Configure the FCM file.
+
+   1. In the `example` project, make the following changes for each platform:
+
+      - For Android, put the **google-services.json** file under the `examples/android/app` folder.
+      - For iOS, move **GoogleService-Info.plist** to the `example/iOS/ChatUikitExample` folder.
+
+   1. In the `examples/callkit-example` project:
+
+      - For Android, move the file **google-services.json** to the `examples/callkit-example/android/app` folder.
+      - For iOS, place **GoogleService-Info.plist** under the `examples/callkit-example/iOS/ChatCallkitExample` folder.
+
+1. Run the sample project
+
+   Execute the following inside a terminal to compile and run the React Native Chat UI Kit example app:
+
+   - For Android:
+
+     ```bash
+     cd example && yarn run Android
+     ```
+
+   - For iOS:
+
+     ```bash
+     cd example && yarn run pods && yarn run iOS
+     ```
 
 ## Reference
+
+- UI Kit Details
+
+  - [UIKit](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn/blob/main/packages/react-native-chat-uikit/README.md)
+  - [UIKit example](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn/blob/main/example/README.md)
+
+  Take a look at the [Quick Start for UIKit](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn) project to experience the fastest and easiest integration.
+
+- CallKit Details
+
+  - [CallKit](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn/blob/main/packages/react-native-chat-callkit/README.md)
+  - [CallKit example](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn/blob/main/examples/callkit-example/README.md)
+
+  Take a look at the [Quick Start for CallKit](https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-rn/tree/main/examples/uikit-quick-start) project to experience the fastest and easiest integration.
 
 </PlatformStructured>

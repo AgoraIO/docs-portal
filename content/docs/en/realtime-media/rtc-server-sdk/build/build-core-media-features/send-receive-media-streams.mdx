@@ -1,0 +1,1471 @@
+---
+title: "Send and receive media streams"
+description: "How to use Server Gateway to send media streams to Video SDK clients and receive media streams from clients."
+---
+
+<PlatformStructured platform="linux-cpp">
+
+This page introduces how to use Server Gateway to send media streams to the client and receive media streams from the client.
+
+## Understand the tech
+
+The following figure shows the basic workflow you implement to send and receive audio and video streams using Server Gateway:
+
+![Basic workflow](https://assets-docs.agora.io/images/server-gateway/send-and-receive-media-streams.svg)
+
+## Prerequisites
+
+Before you begin, ensure your development environment meets the necessary hardware and software requirements and that you have downloaded the latest Server Gateway SDK. See [Integrate the SDK](../../index.mdx).
+
+## Initialize and connect
+
+Before sending and receiving media streams, complete the following steps.
+
+### Initialize the SDK
+
+Call `createAgoraService` and `initialize` to create and initialize an `IAgoraService` object. The `IAgoraService` object persists as long as the server app is running.
+
+The SDK supports user IDs in both integer and string formats. This page demonstrates integer-format user IDs. To learn more about string user IDs, see [Use a string user ID](../build-core-media-features/stringuid.md).
+
+```cpp
+auto service = createAgoraService();
+
+agora::base::AgoraServiceConfiguration scfg;
+scfg.appId = appid;
+scfg.enableAudioProcessor = enableAudioProcessor;
+scfg.enableAudioDevice = enableAudioDevice;
+scfg.enableVideo = enableVideo;
+scfg.useStringUid = enableuseStringUid;
+
+if (service->initialize(scfg) != agora::ERR_OK) {
+    return nullptr;
+}
+```
+
+### Connect to a Video SDK channel
+
+After initializing the SDK, connect to a Video SDK channel:
+
+1. Create an `IRtcConnection` object:
+
+   ```cpp
+   agora::rtc::RtcConnectionConfiguration ccfg;
+   ccfg.autoSubscribeAudio = false;
+   ccfg.autoSubscribeVideo = false;
+   ccfg.clientRoleType = agora::rtc::CLIENT_ROLE_BROADCASTER;
+   agora::agora_refptr<agora::rtc::IRtcConnection> connection =
+       service->createRtcConnection(ccfg);
+   ```
+
+2. Register a connection observer:
+
+   ```cpp
+   auto connObserver = std::make_shared<SampleConnectionObserver>();
+   connection->registerObserver(connObserver.get());
+   ```
+
+3. Connect to the channel:
+
+   ```cpp
+   if (connection->connect(options.appId.c_str(), options.channelId.c_str(),
+                           options.userId.c_str())) {
+       AG_LOG(ERROR, "Failed to connect to Agora channel!");
+       return -1;
+   }
+   ```
+
+## Send media streams to the client
+
+After establishing a connection, follow these steps to send media streams to the client.
+
+### Create a media stream sender
+
+Use the `IMediaNodeFactory` object to create media stream senders:
+
+- `IAudioPcmDataSender`
+- `IVideoFrameSender`
+- `IAudioEncodedFrameSender`
+- `IVideoEncodedImageSender`
+
+1. Create an `IMediaNodeFactory` object:
+
+   ```cpp
+   agora::agora_refptr<agora::rtc::IMediaNodeFactory> factory =
+       service->createMediaNodeFactory();
+   if (!factory) {
+       AG_LOG(ERROR, "Failed to create media node factory!");
+   }
+   ```
+
+2. Create the sender objects you need:
+
+   ```cpp
+   auto audioPcmDataSender = factory->createAudioPcmDataSender();
+   auto videoFrameSender = factory->createVideoFrameSender();
+   auto audioFrameSender = factory->createAudioEncodedFrameSender();
+   auto videoEncodedFrameSender = factory->createVideoEncodedImageSender();
+   ```
+
+3. Create local tracks for publishing:
+
+   ```cpp
+   auto customAudioTrack = service->createCustomAudioTrack(audioPcmDataSender);
+   auto customVideoTrack = service->createCustomVideoTrack(videoFrameSender);
+   ```
+
+### Publish and send media streams
+
+1. Publish the local tracks:
+
+   ```cpp
+   customAudioTrack->setEnabled(true);
+   connection->getLocalUser()->publishAudio(customAudioTrack);
+
+   customVideoTrack->setEnabled(true);
+   connection->getLocalUser()->publishVideo(customVideoTrack);
+   ```
+
+2. Start the sending threads:
+
+   ```cpp
+   std::thread sendAudioThread(
+       SampleSendAudioTask, options, audioFrameSender, std::ref(exitFlag));
+   std::thread sendVideoThread(
+       SampleSendVideoH264Task, options, videoFrameSender, std::ref(exitFlag));
+
+   sendAudioThread.join();
+   sendVideoThread.join();
+   ```
+
+3. Send PCM audio data:
+
+   ```cpp
+   static void SampleSendAudioTask(
+       const SampleOptions& options,
+       agora::agora_refptr<agora::rtc::IAudioPcmDataSender> audioFrameSender,
+       bool& exitFlag) {
+     PacerInfo pacer = {0, 10, std::chrono::steady_clock::now()};
+
+     while (!exitFlag) {
+       sendOnePcmFrame(options, audioFrameSender);
+       waitBeforeNextSend(pacer);
+     }
+   }
+   ```
+
+4. Send H.264 video data:
+
+   ```cpp
+   static void SampleSendVideoH264Task(
+       const SampleOptions& options,
+       agora::agora_refptr<agora::rtc::IVideoEncodedImageSender> videoH264FrameSender,
+       bool& exitFlag) {
+     std::unique_ptr<HelperH264FileParser> h264FileParser(
+         new HelperH264FileParser(options.videoFile.c_str()));
+     h264FileParser->initialize();
+   }
+   ```
+
+## Receive media streams from the client
+
+After establishing the connection, register audio and video data observers based on your requirements:
+
+- `IAudioFrameObserver`
+- `IVideoFrameObserver`
+- `IVideoEncodedImageReceiver`
+
+Example:
+
+```cpp
+// Register audio and video observers according to your use-case.
+```
+
+## Reference
+
+### Next steps
+
+- [Use a string user ID](../build-core-media-features/stringuid.md)
+- [Secure channel encryption](../secure-and-optimize-connections/media-stream-encryption.md)
+- [Restrict media zones](../secure-and-optimize-connections/network-geofencing.md)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+This page introduces how to use the Server Gateway to send media streams to the client and receive media streams from the client.
+
+## Understand the tech
+
+The following figure shows the basic workflow you implement to send and receive audio and video streams using Server Gateway:
+
+![Basic workflow](https://assets-docs.agora.io/images/server-gateway/send-and-receive-media-streams.svg)
+
+## Prerequisites
+
+Before you begin, ensure your development environment meets the necessary hardware and software requirements and that you have downloaded the latest Server Gateway SDK. See [Integrate the SDK](../../index).
+
+## Initialize and connect
+
+Before sending and receiving media streams, complete the following steps:
+
+### Initialize the SDK
+
+Create an `AgoraService` instance and call `initialize`. The `AgoraService` object persists as long as the server app is running.
+
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
+
+```java
+// Import SDK, AgoraService, and AgoraServiceConfig classes for initialization
+import io.agora.rtc.SDK;
+import io.agora.rtc.AgoraService;
+import io.agora.rtc.AgoraServiceConfig;
+
+// Creates an AgoraService object
+SDK.load(); // ensure JNI library load
+AgoraService service = new AgoraService();
+// Initializes the AgoraServiceConfig object
+AgoraServiceConfig config = new AgoraServiceConfig();
+// Enables the audio processing module
+config.setEnableAudioProcessor(1);
+// Disables the audio device module (Normally we do not directly connect audio capture or playback devices to a server)
+config.setEnableAudioDevice(0);
+// Enables video
+config.setEnableVideo(1);
+// Sets Agora App ID
+config.setAppId(appid);
+// Initializes the SDK
+service.initialize(config);
+```
+
+### Connect to the Agora Video SDK Channel
+
+After initializing the SDK, follow these steps to connect to a Video SDK channel.
+
+1. Call `agoraRtcConnCreate` to create an `AgoraRtcConn` object to connect to the Agora Video SDK channel:
+
+   ```java
+   AgoraRtcConn conn = service.agoraRtcConnCreate(null);
+   ```
+
+2. Call `registerObserver` to listen to connection events:
+
+   ```java
+   conn.registerObserver(new ConnObserver());
+   ```
+
+3. Call `connect` to connect to an Agora Video SDK channel:
+
+   ```java
+   conn.connect(token, "test_channel", "1");
+   ```
+
+## Send media streams to the client
+
+To send media streams to the client, refer to the following steps:
+
+### Create a media stream sender
+
+Use the `IMediaNodeFactory` object to create various types of media stream senders:
+
+- `AgoraAudioPcmDataSender`: Sends audio data in PCM format.
+- `AgoraVideoFrameSender`: Sends video data in YUV format.
+- `AgoraAudioEncodedFrameSender`: Sends encoded audio data.
+- `AgoraVideoEncodedImageSender`: Sends encoded video data.
+
+1. Create an `IMediaNodeFactory` object:
+
+   ```java
+   AgoraMediaNodeFactory factory = service.createMediaNodeFactory();
+   ```
+
+2. According to your requirements, create an `AgoraAudioPcmDataSender` object for sending audio in PCM format, an `AgoraVideoFrameSender` object for sending video in YUV format, an `AgoraAudioEncodedFrameSender` object for sending encoded audio, or an `AgoraVideoEncodedImageSender` object for sending encoded video:
+
+   ```java
+   // Creates a sender for PCM audio
+   AgoraAudioPcmDataSender audioFrameSender = factory.createAudioPcmDataSender();
+
+   // Creates a sender for YUV video
+   AgoraVideoFrameSender videoFrameSender = factory.createVideoFrameSender();
+
+   // Creates a sender for encoded audio
+   AgoraAudioEncodedFrameSender audioFrameSender = factory.createAudioEncodedFrameSender();
+
+   // Creates a sender for encoded video
+   AgoraVideoEncodedImageSender imageSender = factory.createVideoEncodedImageSender();
+   ```
+
+3. Create an `AgoraLocalAudioTrack` object and an `AgoraLocalVideoTrack` object, corresponding to the local audio track and local video tracks, for publishing to the channel:
+
+   ```java
+   // Creates a custom audio track that uses a PCM audio stream sender
+   customAudioTrack = service.createCustomAudioTrackPcm(audioFrameSender);
+
+   // Creates a custom audio track that uses an encoded audio stream sender
+   customAudioTrack = service.createCustomAudioTrackEncoded(audioFrameSender,0);
+
+   // Creates a custom video track that uses a YUV video stream sender
+   customVideoTrack = service.createCustomVideoTrackFrame(videoFrameSender);
+
+   // Creates a custom video track that uses encoded video stream sender
+   customVideoTrack = service.createCustomVideoTrackEncoded(videoFrameSender, option);
+   ```
+
+### Send media streams
+
+1. To publish the local audio and video tracks to a Video SDK channel, call the `publishAudio` and `publishVideo` methods of the `AgoraLocalUser` object:
+
+   ```java
+   // Enables and publishes audio and video track
+   customAudioTrack.setEnabled(1);
+   customVideoTrack.setEnabled(1);
+   conn.getLocalUser().publishAudio(customAudioTrack);
+   conn.getLocalUser().publishVideo(customVideoTrack);
+   ```
+
+2. Start the sending thread, which calls the send methods of the audio and video senders:
+
+   ```java
+   pcmSender = new PcmSender(audioFile,audioFrameSender,numOfChannels,sampleRate);
+   h264Sender = new H264Sender(videoFile,1000/fps,0,0,videoFrameSender);
+
+   pcmSender.start();
+   h264Sender.start();
+   ```
+
+3. Send audio and video data. Refer to the following examples to send PCM audio data and H.264 video data:
+
+   Refer to the following code to send PCM audio data:
+
+   ```java
+   // audio thread
+   // send audio data every 10 ms;
+   class PcmSender extends FileSender {
+       private AgoraAudioPcmDataSender audioFrameSender;
+       private static final int INTERVAL = 10; //ms
+       private int channels;
+       private int samplerate;
+       private int bufferSize = 0;
+       private byte[] buffer;
+       public PcmSender(String filepath, AgoraAudioPcmDataSender sender,int channels,int samplerate){
+           super(filepath, INTERVAL);
+           audioFrameSender = sender;
+           this.channels = channels;
+           this.samplerate = samplerate;
+           this.bufferSize = channels * samplerate * 2 * INTERVAL /1000;
+           this.buffer = new byte[this.bufferSize];
+       }
+
+       // sendOneFrame calls the send method of audioFrameSender to send PCM data
+       @Override
+       public void sendOneFrame(byte[] data) {
+           if(data == null) return;
+           audioFrameSender.send(data,(int)System.currentTimeMillis(),sampleRate/(1000/INTERVAL),2,channels,samplerate);
+       }
+
+       @Override
+       public byte[] readOneFrame(FileInputStream fos) {
+           if(fos != null ){
+               try {
+                   int size = fos.read(buffer,0,bufferSize);
+                   if( size <= 0){
+                       reset();
+                       return null;
+                   }
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }
+           return buffer;
+       }
+   }
+   ```
+
+   The following code demonstrates sending video data, using H.264 data as an example:
+
+   ```java
+   class H264Sender extends FileSender {
+       private AgoraVideoEncodedImageSender imageSender;
+       private H264Reader h264Reader;
+       private int lastFrameType = 0;
+       private int height;
+       private int width;
+       private int fps;
+       public H264Sender(String path,int interval, int height,int width, AgoraVideoEncodedImageSender videoEncodedImageSender){
+           super(path,interval,false);
+           this.imageSender = videoEncodedImageSender;
+           this.h264Reader = new H264Reader(path);
+           this.height = height;
+           this.width = width;
+           this.fps = 1000/interval;
+       }
+       // sendOneH264Frame calls the send method of imageSender to send H.264 data.
+       @Override
+       public void sendOneFrame(byte[] data) {
+           if(data == null) return;
+           EncodedVideoFrameInfo info = new EncodedVideoFrameInfo();
+           long currentTime = System.currentTimeMillis();
+           info.setFrameType(lastFrameType);
+           info.setWidth(width);
+           info.setHeight(height);
+           info.setCodecType(Constants.VIDEO_CODEC_H264);
+           info.setCaptureTimeMs(currentTime);
+           info.setRenderTimeMs(currentTime);
+           info.setFramesPerSecond(fps);
+           info.setRotation(0);
+           imageSender.send(data,data.length,info);
+       }
+
+       @Override
+       public byte[] readOneFrame(FileInputStream fos) {
+           int retry = 0;
+           H264Reader.H264Frame frame =  h264Reader.readNextFrame();
+           while ( frame == null && retry < 4){
+               h264Reader.reset();
+               frame = h264Reader.readNextFrame();
+               retry ++;
+           }
+           if( frame != null ) {
+               lastFrameType = frame.frameType;
+               return frame.data;
+           } else {
+               return null;
+           }
+       }
+
+       @Override
+       public void release() {
+           super.release();
+           h264Reader.close();
+       }
+   }
+   ```
+
+:::info
+Set the format of the encoded video data by using the `info` parameter of the `send` method.
+:::
+
+### Disconnect and release resources
+
+After finishing media sending tasks, follow these steps to disconnect from the channel and release resources.
+
+:::info
+It is important to follow the sequence in the sample code to release resources properly.
+:::
+
+1. Call the `unpublishAudio` and `unpublishVideo` methods to stop publishing audio and video:
+
+   ```java
+   if(conn != null) {
+           conn.getLocalUser().unpublishAudio(customAudioTrack);
+           conn.getLocalUser().unpublishVideo(customVideoTrack);
+   }
+   ```
+
+2. Call `unregisterObserver` to unregister the connection observer:
+
+   ```java
+   conn.unregisterObserver();
+   ```
+
+3. Call `disconnect` to disconnect from the Video SDK channel:
+
+   ```java
+   int ret = conn.disconnect();
+   ```
+
+4. Release resources from created objects:
+
+   ```java
+   conn.destroy();
+   ```
+
+## Receive media stream from the client
+
+To receive media streams from the client, refer to the following steps:
+
+### Register video and audio frame observers
+
+Instantiate the video and audio frame observer object, and register the observer by using the member methods of the `ILocalUserObserver` class. After registration is successful, the SDK triggers callbacks when audio or video frames are available.
+
+The `SampleLocalUserObserver` class in the sample code not only includes observer objects from the `IVideoEncodedFrameObserver` class, the `IAudioFrameObserverBase` class, and the `IVideoFrameObserver2` class, and inherits the `ILocalUserObserver` class as well. Use the member methods of the `ILocalUserObserver` class to register video and audio frame observer objects.
+
+```java
+// The SampleLocalUserObserver class inherits the ILocalUserObserver class
+localUserObserver = new SampleLocalUserObserver(conn.getLocalUser());
+conn.getLocalUser().registerObserver(localUserObserver);
+
+// The PcmFrameObserver class inherits the IAudioFrameObserver class
+int ret = conn.getLocalUser().setPlaybackAudioFrameBeforeMixingParameters(numOfChannels, sampleRate);
+if (ret > 0) {
+    System.out.printf("setPlaybackAudioFrameBeforeMixingParameters fail ret=%d\n", ret);
+    return;
+}
+
+// The H264FrameReceiver class inherits the IVideoEncodedImageReceiver class
+h264FrameReceiver = new H264FrameReceiver(videoFile);
+conn.getLocalUser().registerVideoEncodedFrameObserver(new AgoraVideoEncodedFrameObserver(h264FrameReceiver));
+```
+
+`setAudioFrameObserver` and `registerVideoEncodedFrameObserver` are member methods of the `SampleLocalUserObserver` class and can be used to instantiate the `IAudioFrameObserver` class and the `AgoraVideoEncodedFrameObserver` class.
+
+```java
+localUserObserver.setAudioFrameObserver(pcmFrameObserver);
+
+conn.getLocalUser().registerVideoEncodedFrameObserver(new AgoraVideoEncodedFrameObserver(h264FrameReceiver));
+```
+
+### Use callbacks to receive media streams
+
+The following code shows how to receive encoded video, video in YUV format, and audio in PCM format.
+
+```java
+// Receives encoded video by using the onEncodedVideoFrame callback and save the video data in a file
+class H264FrameReceiver extends FileWriter implements IVideoEncodedFrameObserver {
+
+        public H264FrameReceiver(String path) {
+            super(path);
+        }
+
+        @Override
+        public int onEncodedVideoFrame(AgoraVideoEncodedFrameObserver agora_video_encoded_frame_observer, int uid, byte[] image_buffer, long length, EncodedVideoFrameInfo video_encoded_frame_info) {
+            System.out.println("onEncodedVideoFrame success  " + video_encoded_frame_info.getFrameType());
+            writeData(image_buffer, (int) length);
+            return 1;
+        }
+    }
+
+// Receives YUV video by using the onFrame callback and save the video data in a file
+ class YuvFrameObserver extends FileWriter implements IVideoFrameObserver2 {
+
+        public YuvFrameObserver(String path) {
+            super(path);
+        }
+
+        @Override
+        public void onFrame(AgoraVideoFrameObserver2 agora_video_frame_observer2, String channel_id, String remote_uid, VideoFrame frame) {
+            System.out.println("onFrame success  ");
+            writeData(frame.getYBuffer(), frame.getYBuffer().remaining());
+            writeData(frame.getUBuffer(), frame.getUBuffer().remaining());
+            writeData(frame.getVBuffer(), frame.getVBuffer().remaining());
+            return ;
+        }
+}
+
+// Receives PCM audio by using the onPlaybackAudioFrameBeforeMixing callback and save the audio data in a file
+public static class PcmFrameObserver extends FileWriter implements IAudioFrameObserver {
+        public PcmFrameObserver(String outputFilePath) {
+            super(outputFilePath);
+        }
+
+        @Override
+        public int onRecordAudioFrame(AgoraLocalUser agora_local_user, String channel_id, AudioFrame frame) {
+            System.out.println("onRecordAudioFrame success");
+            return 1;
+        }
+
+        @Override
+        public int onPlaybackAudioFrame(AgoraLocalUser agora_local_user, String channel_id, AudioFrame frame) {
+            System.out.println("onPlaybackAudioFrame success");
+            return 1;
+        }
+
+        @Override
+        public int onMixedAudioFrame(AgoraLocalUser agora_local_user, String channel_id, AudioFrame frame) {
+            System.out.println("onMixedAudioFrame success");
+            return 1;
+        }
+
+        @Override
+        public int onPlaybackAudioFrameBeforeMixing(AgoraLocalUser agora_local_user, String channel_id, String uid, AudioFrame audioFrame) {
+            // Write PCM samples
+            int writeBytes = audioFrame.getSamplesPerChannel() * audioFrame.getChannels() * 2;
+            writeData(audioFrame.getBuffer(), writeBytes);
+            return 1;
+        }
+    }
+```
+
+### Disconnect and release resources
+
+When the media receiving task is complete, refer to the following steps to disconnect from the channel.
+
+:::info
+It is important to follow the sequence in the sample code to release resources properly.
+:::
+
+1. Call unset methods to release the video and audio observers.
+
+   ```java
+   // Release video and audio observer
+   localUserObserver.unsetAudioFrameObserver();
+   localUserObserver.unsetVideoFrameObserver();
+   ```
+
+2. Call `disconnect` to disconnect from the channel.
+
+   ```java
+   // Disconnect from the Agora channel
+   int ret = conn.disconnect();
+   if (ret != 0) {
+   System.out.printf("conn.disconnect fail ret=%d\n", ret);
+   }
+   ```
+
+3. Release the created objects.
+
+   ```java
+   // Releases the created objects.
+   conn.destroy();
+   ```
+
+4. When your server app stops running, release the `AgoraService` object.
+
+   ```java
+   // Destroy Agora Service
+   service.destroy();
+   ```
+
+:::info[Development considerations]
+
+- The methods mentioned on this page are all asynchronous and do not block the main thread.
+- When you use the [Agora Video SDK](../../reference/glossary#video-sdk) to communicate with the Server Gateway, set the channel use-case of the Video SDK to `LIVE_BROADCASTING`.
+- When sending audio data in AAC format, you cannot set the sampling rate to 44.1 Kbps.
+
+:::
+
+## References
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+Refer to [Server Gateway API for Java](https://api-ref.agora.io/en/server-gateway-sdk/linux-java/4.x/index.html) to find detailed API and parameter descriptions.
+
+</PlatformStructured>
+
+<PlatformStructured platform="python">
+
+This page introduces how to use the Server Gateway to send media streams to the client and receive media streams from the client.
+
+## Understand the tech
+
+The following figure shows the basic workflow you implement to send and receive audio and video streams using Server Gateway:
+
+![Basic workflow](https://assets-docs.agora.io/images/server-gateway/send-and-receive-media-streams.svg)
+
+## Prerequisites
+
+Before you begin, ensure your development environment meets the necessary hardware and software requirements and that you have downloaded the latest Server Gateway SDK. See [Integrate the SDK](../../index).
+
+## Initialize and connect
+
+Before sending and receiving media streams, complete the following steps:
+
+### Initialize the SDK
+
+Create an `AgoraService` instance and call `initialize`. The `AgoraService` object persists as long as the server app is running.
+
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
+
+```python
+agora_service = AgoraService()
+
+config = AgoraServiceConfig()
+config.audio_scenario = AudioScenarioType.AUDIO_SCENARIO_CHORUS
+config.appid = sample_options.app_id
+agora_service.initialize(config)
+```
+
+### Connect to a Video SDK channel
+
+After initializing the SDK, follow these steps to connect to a Video SDK channel.
+
+1. Call `create_rtc_connection` to create an `RTCConnection` object for connecting to the Video SDK channel:
+
+   ```python
+   con_config = RTCConnConfig(
+       client_role_type=ClientRoleType.CLIENT_ROLE_BROADCASTER,
+       channel_profile=ChannelProfileType.CHANNEL_PROFILE_LIVE_BROADCASTING,
+   )
+   connection = agora_service.create_rtc_connection(con_config)
+   if not connection:
+       logger.error("create connection failed")
+       return
+   ```
+
+2. Call `register_observer` to listen for connection events. The `DYSConnectionObserver` class inherits from the `IRTCConnectionObserver` class.
+
+   ```python
+   # DYSConnectionObserver inherits from the IRTCConnectionObserver class
+   conn_observer = DYSConnectionObserver()
+   connection.register_observer(conn_observer)
+   ```
+
+3. Call `connect` to connect to a channel:
+
+   ```python
+   ret = connection.connect(sample_options.token, channel_id, uid)
+   if ret < 0:
+       logger.error(f"connect failed: {ret}")
+       return
+   ```
+
+## Send media streams to the client
+
+To send media streams to the client, refer to the following steps:
+
+### Create a media stream sender
+
+Use the `MediaNodeFactory` object to create various types of media stream senders:
+
+- `AudioPcmDataSender`: Sends audio data in PCM format.
+- `VideoFrameSender`: Sends video data in YUV format.
+- `AudioEncodedFrameSender`: Sends encoded audio data.
+- `VideoEncodedImageSender`: Sends encoded video data.
+
+1. Create an `MediaNodeFactory` object:
+
+   ```python
+   media_node_factory = agora_service.create_media_node_factory()
+   if not media_node_factory:
+       logger.error("create media node factory failed")
+       return
+   ```
+
+2. According to your requirements, create an `IAudioPcmDataSender` object for sending audio in PCM format, an `IVideoFrameSender` object for sending video in YUV format, an `IAudioEncodedFrameSender` object for sending encoded audio, or an `IVideoEncodedImageSender` object for sending encoded video:
+
+   ```python
+   # Create a sender for transmitting audio data in PCM format
+   pcm_data_sender = media_node_factory.create_audio_pcm_data_sender()
+   if not pcm_data_sender:
+       logger.error("Failed to create PCM data sender")
+       return
+
+   # Create a sender for transmitting encoded audio data
+   audio_sender = media_node_factory.create_audio_encoded_frame_sender()
+   if not audio_sender:
+       logger.error("Failed to create audio sender")
+       return
+
+   # Create a sender for transmitting video data in YUV format
+   video_sender = media_node_factory.create_video_frame_sender()
+   if not video_sender:
+       logger.error("Failed to create video frame sender")
+       return
+
+   # Create a sender for transmitting encoded video data
+   video_sender = media_node_factory.create_video_encoded_image_sender()
+   if not video_sender:
+       logger.error("Failed to create video sender")
+       return
+   ```
+
+3. Create a `LocalAudioTrack` object and a `LocalVideoTrack` object, corresponding to the local audio track and local video tracks, for publishing to the channel:
+
+   ```python
+   # Create a custom audio track using a sender for transmitting audio data in PCM format
+   audio_track = agora_service.create_custom_audio_track_pcm(pcm_data_sender)
+   if not audio_track:
+       logger.error("Failed to create audio track")
+       return
+
+   # Create a custom audio track using a sender for transmitting encoded audio data
+   audio_track = agora_service.create_custom_audio_track_encoded(audio_sender, 1)
+   if not audio_track:
+       logger.error("Failed to create audio track")
+       return
+
+   # Create a custom video track using a sender for transmitting video data in YUV format
+   video_track = agora_service.create_custom_video_track_frame(video_sender)
+   if not video_track:
+       logger.error("Failed to create video track")
+       return
+
+   # Create a custom video track using a sender for transmitting encoded video data
+   video_track = agora_service.create_custom_video_track_encoded(video_sender, sender_options)
+   if not video_track:
+       logger.error("Failed to create video track")
+       return
+   ```
+
+### Send media streams
+
+1. To enable media tracks, call `setEnabled`:
+
+   ```python
+   # Enable the local audio track
+   audio_track.set_enabled(1)
+
+   # Enable the local video track
+   video_track.set_enabled(1)
+   ```
+
+1. Call `publish_audio` and `publish_video` to publish the local audio and video tracks to the channel:
+
+   ```python
+   # Publish the local audio track
+   local_user.publish_audio(audio_track)
+
+   # Publish the local video track
+   local_user.publish_video(video_track)
+   ```
+
+1. Start the audio and video transmission thread:
+
+   ```python
+   async def send(self, sample_options: ExampleOptions, pcm_data_sender, yuv_data_sender):
+   # Create and start the audio transmission task
+   pcm_task = asyncio.create_task(push_pcm_data_from_file(sample_options.sample_rate, sample_options.num_of_channels, pcm_data_sender, sample_options.audio_file, self._exit))
+
+   # Create and start the video transmission task
+   yuv_task = asyncio.create_task(push_yuv_data_from_file(sample_options.width, sample_options.height, sample_options.fps, yuv_data_sender, sample_options.video_file, self._exit))
+
+   # Wait for the audio transmission task to complete
+   await pcm_task
+
+   # Wait for the video transmission task to complete
+   await yuv_task
+
+   logger.info("Transmission finished")
+   ```
+
+1. Send audio and video data. Refer to the following example to send PCM audio data and YUV video data:
+
+   ```python
+   # Send PCM audio data
+   async def push_pcm_data_from_file(sample_rate, num_of_channels, pcm_data_sender: AudioPcmDataSender, audio_file_path, _exit: Event):
+       with open(audio_file_path, "rb") as audio_file:
+           pcm_sendinterval = 0.1
+           pacer_pcm = Pacer(pcm_sendinterval)
+           pcm_count = 0
+           send_size = int(sample_rate * num_of_channels * pcm_sendinterval * 2)
+           frame_buf = bytearray(send_size)
+
+           while not _exit.is_set():
+               success = audio_file.readinto(frame_buf)
+               if not success:
+                   audio_file.seek(0)
+                   continue
+
+               frame = PcmAudioFrame()
+               frame.data = frame_buf
+               frame.timestamp = 0
+               frame.samples_per_channel = int(sample_rate * pcm_sendinterval)
+               frame.bytes_per_sample = 2
+               frame.number_of_channels = num_of_channels
+               frame.sample_rate = sample_rate
+
+               ret = pcm_data_sender.send_audio_pcm_data(frame)
+               pcm_count += 1
+               logger.info(f"Sent PCM: count={pcm_count}, ret={ret}, send_size={send_size}, interval={pcm_sendinterval}")
+
+               await pacer_pcm.apace_interval(0.1)
+
+           frame_buf = None
+   ```
+
+   ```python
+   # Send YUV video data
+   async def push_yuv_data_from_file(width, height, fps, video_sender: VideoFrameSender, video_file_path, _exit: Event):
+       with open(video_file_path, "rb") as video_file:
+           yuv_sendinterval = 1.0 / fps
+           pacer_yuv = Pacer(yuv_sendinterval)
+           yuv_count = 0
+           yuv_len = int(width * height * 3 / 2)
+           frame_buf = bytearray(yuv_len)
+
+           while not _exit.is_set():
+               success = video_file.readinto(frame_buf)
+               if not success:
+                   video_file.seek(0)
+                   continue
+
+               frame = ExternalVideoFrame()
+               frame.buffer = frame_buf
+               frame.type = 1
+               frame.format = 1
+               frame.stride = width
+               frame.height = height
+               frame.timestamp = 0
+               frame.metadata = "hello metadata"
+
+               ret = video_sender.send_video_frame(frame)
+               yuv_count += 1
+               logger.info("Sent YUV: count=%d, ret=%s", yuv_count, ret)
+
+               await pacer_yuv.apace_interval(yuv_sendinterval)
+
+           frame_buf = None
+   ```
+
+## Receive media streams from the client
+
+To receive media streams from the client, refer to the following steps:
+
+1. According to your requirements, call the `register_audio_frame_observer` and `register_video_frame_observer` methods to register audio and video data observers and listen for related callbacks. The SDK supports the following data observers:
+
+   - `IAudioFrameObserver`: Monitors audio data.
+   - `IVideoFrameObserver`: Monitors raw video data.
+   - `IVideoEncodedImageReceiver`: Monitors encoded video data.
+
+   The following code demonstrates registering `IAudioFrameObserver` and `IVideoFrameObserver`:
+
+   ```python
+   # Call the set_playback_audio_frame_before_mixing_parameters method before register_audio_frame_observer to set the audio data sampling rate
+   local_user.set_playback_audio_frame_before_mixing_parameters(1, 16000)
+
+   # The SampleAudioFrameObserver class inherits from IAudioFrameObserver
+   audio_frame_observer = SampleAudioFrameObserver()
+   local_user.register_audio_frame_observer(audio_frame_observer)
+
+   # The SampleVideoFrameObserver class inherits from IVideoFrameObserver
+   video_frame_observer = SampleVideoFrameObserver()
+   local_user.register_video_frame_observer(video_frame_observer)
+   ```
+
+1. When the client starts sending a media stream, the SDK receives the media stream through related callbacks. The following example demonstrates receiving encoded video, YUV-format video, and PCM-format audio:
+
+   ```python
+   # Receive encoded video through the on_encoded_video_frame callback and output it as a file
+   class SampleVideoEncodedFrameObserver(IVideoEncodedFrameObserver):
+       def on_encoded_video_frame(self, uid, image_buffer, length, video_encoded_frame_info):
+           file_path = os.path.join(log_folder, str(uid) + '.h264')
+           with open(file_path, 'ab') as f:
+               f.write(image_buffer[:length])
+           return 1
+
+   # Receive YUV format video through the on_frame callback and output it as a file
+   class SampleVideoFrameObserver(IVideoFrameObserver):
+       def on_frame(self, channel_id, remote_uid, frame:VideoFrame):
+           file_path = os.path.join(log_folder, channel_id + "_" + remote_uid + '.yuv')
+           y_size = frame.y_stride * frame.height
+           uv_size = (frame.u_stride * frame.height) // 2  # Corrected the comment to explain the division
+           with open(file_path, 'ab') as f:
+               f.write(frame.y_buffer[:y_size])
+               f.write(frame.u_buffer[:uv_size])
+               f.write(frame.v_buffer[:uv_size])
+           return 1
+
+   # Receive PCM format audio through the on_playback_audio_frame_before_mixing callback and output it as a file
+   class SampleAudioFrameObserver(IAudioFrameObserver):
+       def on_playback_audio_frame_before_mixing(self, agora_local_user, channelId, uid, audio_frame:AudioFrame):
+           file_path = os.path.join(log_folder, channelId + "_" + uid + '.pcm')
+           with open(file_path, "ab") as f:
+               f.write(audio_frame.buffer)
+           return 1
+   ```
+
+## Stop sending and receiving media streams
+
+When you no longer need to send or receive media streams, follow these steps:
+
+1. To stop sending media streams:
+
+   * Call `unpublish_audio` and `unpublish_video` to stop publishing audio and video tracks.
+   * Call `set_enabled` to disable the local audio and video tracks.
+
+   ```python
+   local_user.unpublish_audio(audio_track)
+   local_user.unpublish_video(video_track)
+   audio_track.set_enabled(0)
+   video_track.set_enabled(0)
+   ```
+
+1. To stop receiving media streams, call `unregister_audio_frame_observer` and `unregister_video_frame_observer` to unregister the audio and video data observers.
+
+   ```python
+   local_user.unregister_audio_frame_observer(audio_frame_observer)
+   local_user.unregister_video_frame_observer(video_frame_observer)
+   ```
+
+## Disconnect and release resources
+
+After completing your media sending and receiving tasks, follow these steps to disconnect from the channel and release resources.
+
+:::info
+It is important to follow the sequence in the sample code to release resources properly.
+:::
+
+1. Call `disconnect` to disconnect from the channel.
+
+   ```python
+   ret = connection.disconnect()
+   if ret < 0:
+       logger.error(f"disconnect failed: {ret}")
+       return
+   ```
+
+1. Call `unregister_observer` to unregister the connection event observer.
+
+   ```python
+   connection.unregister_observer()
+   ```
+
+1. Release the created objects.
+
+   ```python
+   connection.release()
+   agora_service.release()
+   ```
+
+## Test the implementation
+
+To test your project, follow these steps:
+
+1. Fill in the following parameters:
+
+   - **appId**: The App ID of your Agora project.
+   - **channelId**: A valid channel name, for example, `test_example`.
+   - **userId**: Your user ID, for example, `6`.
+   - **audioFile**: The storage path of the audio data file, for example, `./test_data/demo.pcm`. To facilitate testing, Agora provides [test data](https://download.agora.io/demo/test/test_data_202408221437.zip), that you can download and decompress to the `Agora-Python-Server-SDK` path.
+   - **sampleRate**: The audio sampling rate, for example, `16000`.
+   - **numOfChannels**: The number of audio channels, for example, `1`.
+
+   ```python
+   # Assume your Python file path is Desktop/videocall.py
+   python Desktop/videocall.py --appId=0a****************************99 --channelId=test_dys --userId=6 --audioFile=./test_data/demo.pcm --sampleRate=16000 --numOfChannels=1
+   ```
+
+1. Run your Python script from the terminal.
+
+1. Open the [Agora Live Interactive Web Demo](https://webdemo-global.agora.io/index.html), fill in the initialization settings, and simulate a client in the browser. Use the same App ID you specified earlier.
+
+1. Select **Basic Video Calling**, fill in the same channel name you specified earlier in the **Channel** field, and click **Create Client** and **Join Channel** in that order.
+
+1. After successfully joining the channel, you can start streaming. When there is a user streaming in the channel, the Web Demo automatically fills in the user ID of the streaming user in the input box under **Step 4: Subscribe & Play**. Click the **Subscribe & Play** button to subscribe to the streaming user.
+
+:::info
+Due to limitations of the Web Demo, follow these steps based on your use case:
+
+- **To test server-sent streams**: First, join the channel on the Web, then run the project on the server to send the streams.
+
+- **To test server-received streams**: Run the project on the server to connect to the channel first, then join the channel on the Web and send the streams.
+
+:::
+
+## Sample project
+
+Agora provides an open-source server-side [sample project](https://github.com/AgoraIO-Extensions/Agora-Python-Server-SDK) for your reference. Download it or view the source code for a more complete example.
+
+</PlatformStructured>
+
+<PlatformStructured platform="go">
+
+This page introduces how to use the Server Gateway to send media streams to the client and receive media streams from the client.
+
+## Understand the tech
+
+The following figure shows the basic workflow you implement to send and receive audio and video streams using Server Gateway:
+
+![Basic workflow](https://assets-docs.agora.io/images/server-gateway/send-and-receive-media-streams.svg)
+
+## Prerequisites
+
+Before you begin, ensure your development environment meets the necessary hardware and software requirements and that you have downloaded the latest Server Gateway SDK. See [Integrate the SDK](../../index).
+
+## Initialize and connect
+
+Before sending and receiving media streams, complete the following steps:
+
+### Initialize the SDK
+
+Import `agoraservice` and  call `initialize` to create and initialize an `agoraservice` object instance. The object persists as long as the server app is running.
+
+The SDK supports user IDs in both integer and string formats. This page demonstrates use of user IDs in integer format where the character set consists of only digits. To learn more about using string user IDs, see [Using a string user ID](../build-core-media-features/stringuid.md).
+
+```go
+package main
+
+import (
+  agoraservice "github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK/v2/go_sdk/agoraservice"
+)
+
+func main() {
+    svcCfg := agoraservice.NewAgoraServiceConfig()
+    // Set EnableVideo to true to send and receive video
+    svcCfg.EnableVideo = true
+    svcCfg.AppId = appid
+    // Initialize only once globally
+    agoraservice.Initialize(svcCfg)
+}
+```
+
+### Connect to a Video SDK channel
+
+After initializing the SDK, follow these steps to connect to a Video SDK channel.
+
+1. Call `NewRtcConnection` to create an `RtcConnection` object for connecting to an Agora Video SDK channel:
+
+   :::info
+   Set `AutoSubscribeAudio: true` and `AutoSubscribeVideo: true` to automatically subscribe to audio and video data when creating a connection. Alternatively, call the `SubscribeAudio` and `SubscribeVideo` methods at any time after creating a connection to subscribe to audio and video data. This guide uses `AutoSubscribeAudio: true` and `AutoSubscribeVideo: true` as an example.
+   :::
+
+   ```go
+   conCfg := agoraservice.RtcConnectionConfig{
+       AutoSubscribeAudio: true,
+       AutoSubscribeVideo: true,
+       ClientRole:         agoraservice.ClientRoleBroadcaster,
+       ChannelProfile:     agoraservice.ChannelProfileLiveBroadcasting,
+   }
+   con := agoraservice.NewRtcConnection(&conCfg)
+   ```
+
+2. Call `RegisterObserver` to listen for connection events:
+
+   ```go
+   conSignal := make(chan struct{})
+   conHandler := &agoraservice.RtcConnectionObserver{
+       OnConnected: func(con *agoraservice.RtcConnection, info *agoraservice.RtcConnectionInfo, reason int) {
+           fmt.Printf("Connected, reason %d\n", reason)
+           conSignal <- struct{}{}
+       },
+       OnDisconnected: func(con *agoraservice.RtcConnection, info *agoraservice.RtcConnectionInfo, reason int){
+           fmt.Printf("Disconnected, reason %d\n", reason)
+       },
+       OnConnecting: func(con *agoraservice.RtcConnection, conInfo *agoraservice.RtcConnectionInfo, reason int) {
+           fmt.Printf("Connecting, reason %d\n", reason)
+       },
+       OnReconnecting: func(con *agoraservice.RtcConnection, conInfo *agoraservice.RtcConnectionInfo, reason int) {
+           fmt.Printf("Reconnecting, reason %d\n", reason)
+       },
+       OnReconnected: func(con *agoraservice.RtcConnection, conInfo *agoraservice.RtcConnectionInfo, reason int) {
+           fmt.Printf("Reconnected, reason %d\n", reason)
+       },
+       OnConnectionLost: func(con *agoraservice.RtcConnection, conInfo *agoraservice.RtcConnectionInfo) {
+           fmt.Printf("Connection lost\n")
+       },
+       OnConnectionFailure: func(con *agoraservice.RtcConnection, conInfo *agoraservice.RtcConnectionInfo, errCode int) {
+           fmt.Printf("Connection failure, error code %d\n", errCode)
+       },
+       OnUserJoined: func(con *agoraservice.RtcConnection, uid string) {
+           fmt.Println("user joined, " + uid)
+       },
+       OnUserLeft: func(con *agoraservice.RtcConnection, uid string, reason int) {
+           fmt.Println("user left, " + uid)
+       },
+   }
+   con.RegisterObserver(conHandler)
+
+   ```
+
+3. Call `Connect` to establish a connection to an Video SDK channel. Provide the following parameters:
+
+   - `token`: The RTC token. If your project has an App Certificate enabled, provide the token (see [Get Temporary Token](../manage-agora-account.md#generate-temporary-tokens)). If not, pass an empty string.
+   - `channelName`: A valid channel name.
+   - `userId`: A numeric local user ID.
+
+   ```go
+   con.Connect(token, channelName, userId)
+   // Wait for connection to succeed
+   <-conSignal
+   ```
+
+## Send media streams to the client
+
+After establishing a connection, follow these steps to send media streams to the client:
+
+### Create a media stream sender
+
+1. Call `NewMediaNodeFactory` to create a `MediaNodeFactory` object.
+
+   ```go
+   mediaNodeFactory := agoraservice.NewMediaNodeFactory()
+   ```
+
+2. Use the `MediaNodeFactory` object to create audio and video data senders according to your use-case. The following senders are supported:
+
+   - `AudioPcmDataSender`: Sends audio data in PCM format.
+   - `VideoFrameSender`: Sends video data in YUV format.
+   - `AudioEncodedFrameSender`: Sends encoded audio data.
+   - `VideoEncodedImageSender`: Sends encoded video data.
+
+   Refer to the following code to create senders for transmitting PCM audio data and YUV video data:
+
+   ```go
+   // Create a sender to transmit audio data in PCM format
+   audioSender := mediaNodeFactory.NewAudioPcmDataSender()
+   defer audioSender.Release()
+   // Create a sender to transmit video data in YUV format
+   videoSender := mediaNodeFactory.NewVideoFrameSender()
+   defer videoSender.Release()
+   ```
+
+3. Use the audio and video data senders to create `LocalAudioTrack` and `LocalVideoTrack` objects corresponding to the local audio and video track respectively.
+
+   ```go
+   // Create a custom audio track (using a sender to transmit audio data in PCM format)
+   audioTrack := agoraservice.NewCustomAudioTrackPcm(audioSender)
+   // If the audio track is no longer needed, call the Release method to free resources
+   defer audioTrack.Release()
+   // Create a custom video track (using a sender to transmit video data in YUV format)
+   videoTrack := agoraservice.NewCustomVideoTrackFrame(videoSender)
+   // If the video track is no longer needed, call the Release method to free resources
+   defer videoTrack.Release()
+   ```
+
+### Send media streams
+
+1. To the enable local audio and video tracks, call `SetEnabled`:
+
+   ```go
+   // Enable the local audio track
+   audioTrack.SetEnabled(true)
+
+   // Enable the local video track
+   videoTrack.SetEnabled(true)
+   ```
+
+1. Call `PublishAudio` and `PublishVideo` to publish the local audio and video tracks to the Video SDK channel:
+
+   ```go
+   // Publish the local audio track
+   localUser.PublishAudio(audioTrack)
+
+   // Publish the local video track
+   localUser.PublishVideo(videoTrack)
+   ```
+
+1. To send PCM audio data, call the `SendAudioPcmData` method of the `AudioPcmDataSender` object:
+
+   ```go
+   frame := agoraservice.AudioFrame{
+       Type:              agoraservice.AudioFrameTypePCM16,
+       SamplesPerChannel: 160,
+       BytesPerSample:    2,
+       Channels:          1,
+       SamplesPerSec:     16000,
+       Buffer:            make([]byte, 320),
+       RenderTimeMs:      0,
+   }
+
+   file, err := os.Open("./test.pcm")
+   if err != nil {
+       fmt.Println("Error opening file:", err)
+       return
+   }
+   defer file.Close()
+
+   firstSendTime := time.Now()
+   for !(*bStop) {
+       shouldSendCount := int(time.Since(firstSendTime).Milliseconds()/10) - (sendCount - 18)
+       for i := 0; i < shouldSendCount; i++ {
+           dataLen, err := file.Read(frame.Buffer)
+           if err != nil || dataLen < 320 {
+               fmt.Println("Finished reading file:", err)
+               file.Seek(0, 0)
+               i--
+               continue
+           }
+
+           sendCount++
+           ret := sender.SendAudioPcmData(&frame)
+           fmt.Printf("SendAudioPcmData %d ret: %d\n", sendCount, ret)
+       }
+       fmt.Printf("Sent %d frames this time\n", shouldSendCount)
+       time.Sleep(50 * time.Millisecond)
+   }
+   ```
+
+1. Call `SetVideoEncoderConfiguration` to set video encoding parameters, and then call `SendVideoFrame` to send YUV video data.
+
+   ```go
+   // Set video encoding parameters such as resolution, frame rate, and bitrate
+   videoTrack.SetVideoEncoderConfiguration(&agoraservice.VideoEncoderConfiguration{
+       CodecType:         agoraservice.VideoCodecTypeH264,
+       Width:             320,
+       Height:            240,
+       Framerate:         30,
+       Bitrate:           500,
+       MinBitrate:        100,
+       OrientationMode:   agoraservice.OrientationModeAdaptive,
+       DegradePreference: 0,
+   })
+   w := SendYuvWidth
+   h := SendYuvHeight
+   dataSize := w * h * 3 / 2
+   data := make([]byte, dataSize)
+   // Open YUV file
+   file, err := os.Open(SendYuvPath)
+   if err != nil {
+       fmt.Printf("task %d Error opening file: %s\n", taskCtx.id, err.Error())
+       return
+   }
+   defer file.Close()
+   // Loop to read and send YUV file
+   ticker := time.NewTicker(33 * time.Millisecond)
+   for {
+       select {
+       case <-ticker.C:
+           dataLen, err := file.Read(data)
+           if err != nil || dataLen < dataSize {
+               file.Seek(0, 0)
+               continue
+           }
+           yuvSender.SendVideoFrame(&agoraservice.ExternalVideoFrame{
+               Type:      agoraservice.VideoBufferRawData,
+               Format:    agoraservice.VideoPixelI420,
+               Buffer:    data,
+               Stride:    w,
+               Height:    h,
+               Timestamp: 0,
+           })
+       case <-ctx.Done():
+           fmt.Printf("task %d video sender finished\n", taskCtx.id)
+           return
+       }
+   }
+   ```
+
+## Receive media streams from the client
+
+After establishing the connection, call `RegisterAudioFrameObserver` and `RegisterVideoFrameObserver` to register audio and video data observers based on your requirements. This allows you to listen for audio and video data callbacks.
+
+- `AudioFrameObserver`: Observes audio data.
+- `VideoFrameObserver`: Observes raw video data.
+- `VideoEncodedFrameObserver`: Observes encoded video data.
+
+The following code samples demonstrate receiving PCM audio data and YUV video data.
+
+### Receive the audio stream
+
+When the client starts sending audio data, receive PCM audio data through the `OnPlaybackAudioFrameBeforeMixing` callback:
+
+   ```go
+   audioObserver := &agoraservice.AudioFrameObserver{
+       OnPlaybackAudioFrameBeforeMixing: func(localUser *agoraservice.LocalUser, channelId string, userId string, frame *agoraservice.AudioFrame) bool {
+           // Add processing logic
+           fmt.Printf("Playback audio frame before mixing, from userId %s\n", userId)
+           return true
+       },
+   }
+   localUser := con.GetLocalUser()
+   // Call SetPlaybackAudioFrameBeforeMixingParameters to set the audio data sampling rate before RegisterAudioFrameObserver
+   localUser.SetPlaybackAudioFrameBeforeMixingParameters(1, 16000)
+   // Register the audio data observer
+   localUser.RegisterAudioFrameObserver(audioObserver)
+   ```
+
+### Receive the video stream
+
+When the client starts sending video data, receive YUV video data through the `OnFrame` callback.
+
+   ```go
+   videoObserver := &agoraservice.VideoFrameObserver{
+       OnFrame: func(channelId string, userId string, frame *agoraservice.VideoFrame) bool {
+           // Add processing logic
+           fmt.Printf("recv video frame, from channel %s, user %s\n", channelId, userId)
+           return true
+       },
+   }
+   localUser := con.GetLocalUser()
+   // Register the video data observer
+   localUser.RegisterVideoFrameObserver(videoObserver)
+   ```
+
+## Stop receiving media stream from the client
+
+When you no longer need to send or receive media streams, follow these steps:
+
+1. To stop publishing audio and video tracks, call `UnpublishAudio` and `UnpublishVideo`:
+
+   ```go
+   localUser.UnpublishAudio(audioTrack)
+   localUser.UnpublishVideo(videoTrack)
+   ```
+
+2. To disable the local audio and video tracks, call `SetEnabled`:
+
+   ```go
+   audioTrack.SetEnabled(false)
+   videoTrack.SetEnabled(false)
+   ```
+
+3. To free the resources used by audio and video tracks, audio and video senders, and media node factories, call the `Release` method in the following sequence:
+
+   ```go
+   // Release the audio track
+   defer audioTrack.Release()
+   // Release the audio sender
+   defer audioSender.Release()
+   // Release the video track
+   defer videoTrack.Release()
+   // Release the video sender
+   defer videoSender.Release()
+   // Release the media node factory
+   defer mediaNodeFactory.Release()
+   ```
+
+4. To stop receiving the media streams, call `UnregisterAudioFrameObserver` and `UnregisterVideoFrameObserver` to unregister the audio and video data observers.
+
+   ```go
+   localUser.UnregisterAudioFrameObserver(audioObserver)
+   localUser.UnregisterVideoFrameObserver(videoObserver)
+   ```
+
+## Disconnect and release resources
+
+After completing your media sending and receiving tasks, follow these steps to disconnect from the channel and release resources.
+
+:::info
+It is important to follow the sequence in the sample code to release resources properly.
+:::
+
+1. Call `disconnect` to disconnect from the channel:
+
+   ```go
+   con.Disconnect()
+   ```
+
+1. To stop receiving media streams, unregister the observer by calling `UnregisterObserver`:
+
+   ```go
+   con.UnregisterObserver()
+   ```
+
+1. Call the `Release` method to free the `RTCConnection` object.
+
+   ```go
+   defer con.Release()
+   ```
+
+1. When your server app stops running, release the `agoraService` object.
+
+   ```go
+   defer agoraservice.Release()
+   ```
+
+## Test the implementation
+
+Follow these steps to test your project:
+
+1. Run the following command in the terminal to compile your Go project:
+
+   ```bash
+   # Enter the SDK directory
+   cd go_rtc_sdk
+   # Clean up and update the project dependencies
+   go mod tidy
+   # Compile the project
+   go build
+   ```
+
+1. Open the [Agora Live Interactive Web Demo](https://webdemo-global.agora.io/index.html), fill in the initialization settings, and simulate a client in the browser. Use the same App ID you specified earlier.
+
+1. Select **Basic Video Calling**, fill in the same channel name you specified earlier in the **Channel** field, and click **Create Client** and **Join Channel** in that order.
+
+1. After successfully joining the channel, you can start streaming. When there is a user streaming in the channel, the Web Demo automatically fills in the user ID of the streaming user in the input box under **Step 4: Subscribe & Play**. Click the **Subscribe & Play** button to subscribe to the streaming user.
+
+:::info
+Due to limitations of the Web Demo, follow these steps based on your use case:
+
+- **To test server-sent streams**: First, join the channel on the Web, then run the project on the server to send the streams.
+
+- **To test server-received streams**: Run the project on the server to connect to the channel first, then join the channel on the Web and send the streams.
+
+:::
+
+## Sample project
+
+Agora provides an open-source server-side [sample project](https://github.com/AgoraIO-Extensions/Agora-Golang-Server-SDK) for your reference. Download it or view the source code for a more complete example.
+
+</PlatformStructured>
