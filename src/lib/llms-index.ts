@@ -19,6 +19,30 @@ export type MachineReadableDocsIndexFile = {
   path: string;
 };
 
+export function normalizeMachineReadableDocsArtifactPath(path: string) {
+  return path
+    .split('/')
+    .map((segment) => {
+      try {
+        const decoded = decodeURI(segment);
+
+        if (
+          decoded === '.' ||
+          decoded === '..' ||
+          decoded.includes('/') ||
+          decoded.includes('\\')
+        ) {
+          return segment;
+        }
+
+        return decoded;
+      } catch {
+        return segment;
+      }
+    })
+    .join('/');
+}
+
 type IndexEntry = {
   label: string;
   markdownUrl: string;
@@ -140,12 +164,14 @@ export async function validateMachineReadableDocsArtifacts({
       .map((route) => `${normalizedBaseUrl}${route.markdownPath}`),
   );
 
-  const artifactPaths = new Set([
-    ...files.map((file) => file.path),
-    ...publishedRoutes
-      .filter((route) => route.url.startsWith(`/${locale}/`))
-      .map((route) => route.markdownPath),
-  ]);
+  const artifactPaths = new Set(
+    [
+      ...files.map((file) => file.path),
+      ...publishedRoutes
+        .filter((route) => route.url.startsWith(`/${locale}/`))
+        .map((route) => route.markdownPath),
+    ].map(normalizeMachineReadableDocsArtifactPath),
+  );
 
   for (const path of artifactPaths) {
     if (!(await artifactExists(path))) {
