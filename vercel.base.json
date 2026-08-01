@@ -2,6 +2,26 @@
   "buildCommand": "bun run build",
   "outputDirectory": "dist/client",
   "framework": null,
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</en/api-reference>; rel=\"service-doc\", </llms.txt>; rel=\"describedby\""
+        }
+      ]
+    },
+    {
+      "source": "/en",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</en/api-reference>; rel=\"service-doc\", </llms.txt>; rel=\"describedby\""
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/doc/:path*",

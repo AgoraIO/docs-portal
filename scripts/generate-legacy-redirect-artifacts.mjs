@@ -32,6 +32,7 @@ const vercelConfig = {
   framework: baseConfig.framework,
   bulkRedirectsPath: 'vercel-legacy-redirects.json',
   ...createRedirectsConfig(baseConfig.redirects, queryRedirects),
+  ...(baseConfig.headers ? { headers: baseConfig.headers } : {}),
   ...(baseConfig.routes ? { routes: baseConfig.routes } : {}),
   ...(baseConfig.rewrites ? { rewrites: baseConfig.rewrites } : {}),
 };
