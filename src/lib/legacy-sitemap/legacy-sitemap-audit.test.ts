@@ -32,6 +32,8 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/Interactive%20Broadcast/cloud_proxy_web_ng',
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
 ]);
+const apiRefRedirectAuditEvidence =
+  'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md';
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
@@ -121,7 +123,8 @@ describe('legacy sitemap compatibility audit', () => {
     const staleRules = legacySitemapRedirectConfig.rules.filter(
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
-        !manualLegacyUrls.has(rule.legacyUrl),
+        !manualLegacyUrls.has(rule.legacyUrl) &&
+        !rule.evidence.includes(apiRefRedirectAuditEvidence),
     );
 
     expect(staleRules).toEqual([]);
@@ -129,7 +132,7 @@ describe('legacy sitemap compatibility audit', () => {
 
   it('targets existing new docs portal pages', () => {
     const missingTargets = legacySitemapRedirectConfig.rules
-      .map((rule) => rule.target)
+      .map((rule) => stripHash(rule.target))
       .filter((target) => !docsPortalUrls.has(target));
 
     expect(missingTargets).toEqual([]);
@@ -402,11 +405,15 @@ function buildDocsFilesystemIndex(): DocsFilesystemIndex {
   return { contentUrls, routeToFile };
 }
 
+function stripHash(url: string) {
+  return url.split('#', 1)[0];
+}
+
 function getDocsPortalUrls(docsFilesystemIndex: DocsFilesystemIndex) {
   const urls = new Set(docsFilesystemIndex.contentUrls);
   const missingTargets = new Set(
     legacySitemapRedirectConfig.rules
-      .map((rule) => rule.target)
+      .map((rule) => stripHash(rule.target))
       .filter((target) => !urls.has(target)),
   );
 
