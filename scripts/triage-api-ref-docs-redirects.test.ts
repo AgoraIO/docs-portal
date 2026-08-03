@@ -131,8 +131,7 @@ describe('triage-api-ref-docs-redirects', () => {
     const parsed = parseApiRefDocsLinksReport(sampleReport);
     const markdown = renderTriageMarkdown(parsed, {
       generatedAt: '2026-08-03T14:00:00.000Z',
-      sourceReportPath:
-        'docs/agents/reports/2026-08-03-api-ref-docs-links.md',
+      sourceReportPath: 'docs/agents/reports/2026-08-03-api-ref-docs-links.md',
     });
 
     expect(markdown).toContain(
