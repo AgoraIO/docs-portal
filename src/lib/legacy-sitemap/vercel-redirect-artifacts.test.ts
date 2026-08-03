@@ -139,6 +139,21 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects legacy Interactive Broadcast Cloud Proxy links in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) =>
+          rule.source === '/en/Interactive%20Broadcast/cloud_proxy_web_ng',
+      ),
+    ).toEqual({
+      destination:
+        '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
+      preserveQueryParams: true,
+      source: '/en/Interactive%20Broadcast/cloud_proxy_web_ng',
+      statusCode: 301,
+    });
+  });
+
   it('redirects locale-less conversational AI model overview links before app routing', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([

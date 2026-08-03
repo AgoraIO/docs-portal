@@ -29,6 +29,7 @@ type DocsFilesystemIndex = {
 };
 
 const manualLegacyUrls = new Set([
+  'https://docs.agora.io/en/Interactive%20Broadcast/cloud_proxy_web_ng',
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
 ]);
 
@@ -170,7 +171,7 @@ describe('legacy sitemap compatibility audit', () => {
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 658,
+      semanticPageMatch: 659,
       totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });
