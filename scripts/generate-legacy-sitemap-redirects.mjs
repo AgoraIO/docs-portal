@@ -7,9 +7,30 @@ const REDIRECTS_PATH = 'src/lib/legacy-sitemap/redirects.json';
 const REVIEW_REPORT_PATH = 'src/lib/legacy-sitemap/review-report.json';
 const SNAPSHOT_DOWNLOADED_AT = '2026-06-29';
 
-const MANUAL_LEGACY_URLS = [
-  'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
-];
+const MANUAL_LEGACY_REDIRECTS = {
+  'https://docs.agora.io/en/Voice/autoplay_policy_web_ng':
+    '/en/realtime-media/voice/build/optimize-and-operate/autoplay',
+  'https://docs.agora.io/en/ai/reference/release-notes': '/en/ai/release-notes',
+  'https://docs.agora.io/en/cloud-recording/get-started/getstarted':
+    '/en/realtime-media/cloud-recording/rest-quickstart',
+  'https://docs.agora.io/en/flexible-classroom/overview/supported-platforms':
+    '/en/realtime-media/flexible-classroom/reference/supported-platforms',
+  'https://docs.agora.io/en/help/account-and-billing/console_account_faq':
+    '/en/api-reference/faq/account/console_account_faq',
+  'https://docs.agora.io/en/help/integration-issues/acquire_file_directory':
+    '/en/api-reference/faq/integration/acquire_file_directory',
+  'https://docs.agora.io/en/help/other-issues/android_noaudio':
+    '/en/api-reference/faq/other/android_noaudio',
+  'https://docs.agora.io/en/help/quality-issues/track_ended':
+    '/en/api-reference/faq/quality/track_ended',
+  'https://docs.agora.io/en/interactive-whiteboard/develop/authentication-workflow':
+    '/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow',
+  'https://docs.agora.io/en/sdks': '/en/api-reference/sdks',
+  'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview':
+    '/en/realtime-media/interactive-live-streaming/product-overview',
+};
+
+const MANUAL_LEGACY_URLS = Object.keys(MANUAL_LEGACY_REDIRECTS);
 
 const PRODUCT_MAPPINGS = {
   'agora-analytics': {
@@ -712,6 +733,7 @@ function buildRedirects(routes) {
 
     const candidates = candidateRoutes(routes, info.product);
     const match =
+      manualTarget(info, routeSet) ||
       exactTarget(info, routeSet) ||
       curatedTarget(info, routeSet) ||
       leafTarget(info, candidates) ||
@@ -789,6 +811,25 @@ function getRouteSet(routes) {
   }
 
   return routeSet;
+}
+
+function manualTarget(info, routeSet) {
+  const target = MANUAL_LEGACY_REDIRECTS[info.href];
+
+  if (!target || !routeSet.has(target)) {
+    return null;
+  }
+
+  return {
+    target,
+    type: 'semantic-page-match',
+    confidence: 'high',
+    evidence: [
+      `manual high-confidence mapping from ${info.legacyPath} to ${target}`,
+      'target exists in the current English docs inventory',
+      'legacy URL was observed outside the persisted sitemap snapshot',
+    ],
+  };
 }
 
 function exactTarget(info, routeSet) {
