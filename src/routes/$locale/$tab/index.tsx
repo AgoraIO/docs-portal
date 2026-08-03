@@ -107,6 +107,7 @@ function TabIndexPage() {
   const {
     activePath,
     activeTab,
+    analyticsPageContext,
     analyticsPageType,
     body,
     breadcrumb,
@@ -126,6 +127,7 @@ function TabIndexPage() {
     <DocsContent
       activePath={activePath}
       activeTab={activeTab}
+      analyticsPageContext={analyticsPageContext}
       analyticsPageType={analyticsPageType}
       body={body}
       breadcrumb={breadcrumb}

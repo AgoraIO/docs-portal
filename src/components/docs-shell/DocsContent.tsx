@@ -19,6 +19,7 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { DocsPageAnalyticsContext } from '@/lib/analytics/docs-page-context';
 import {
   captureDocsPageViewed,
   captureDocsTocClicked,
@@ -79,6 +80,7 @@ type DocsArticleReturnLink = {
 export function DocsContent({
   activePath,
   activeTab,
+  analyticsPageContext,
   analyticsPageType,
   body,
   breadcrumb = [],
@@ -96,6 +98,7 @@ export function DocsContent({
 }: {
   activePath?: string;
   activeTab?: string;
+  analyticsPageContext?: DocsPageAnalyticsContext;
   analyticsPageType?: DocsPageType;
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
@@ -156,17 +159,19 @@ export function DocsContent({
 
   useEffect(() => {
     registerDocsPageContext({
-      contentId: activePath,
+      ...analyticsPageContext,
       contentKind: analyticsContentKind,
       locale: currentLocale,
-      navSection: activeTab,
-      pageType: analyticsPageType,
+      pageType: analyticsPageContext?.pageType ?? analyticsPageType,
+      pathname: analyticsPageContext?.pathname ?? activePath,
+      tab: activeTab,
     });
     captureDocsPageViewed({ locale: currentLocale });
   }, [
     activePath,
     activeTab,
     analyticsContentKind,
+    analyticsPageContext,
     analyticsPageType,
     currentLocale,
   ]);

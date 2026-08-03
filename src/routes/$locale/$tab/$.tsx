@@ -132,6 +132,7 @@ function Page() {
   const {
     activePath,
     activeTab,
+    analyticsPageContext,
     analyticsPageType,
     body,
     breadcrumb,
@@ -164,6 +165,7 @@ function Page() {
     <DocsContent
       activePath={activePath}
       activeTab={activeTab}
+      analyticsPageContext={analyticsPageContext}
       analyticsPageType={analyticsPageType}
       body={body}
       breadcrumb={breadcrumb}

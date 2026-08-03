@@ -211,12 +211,56 @@ describe('PostHog analytics', () => {
     );
 
     registerDocsPageContext({
-      contentId: '/en/realtime-media/video/get-started-sdk',
+      contentId: 'realtime-media/video/get-started-sdk',
       contentKind: 'mdx',
+      journeyStage: 'get-started',
       locale: 'en',
-      navSection: 'realtime-media',
+      navSection: 'get-started',
+      navSectionTitle: 'Get started',
       pageType: 'task-guide',
+      pathname: '/en/realtime-media/video/get-started-sdk',
+      tab: 'realtime-media',
+      title: 'Quickstart',
+      version: 'current',
     });
+    captureDocsPageViewed({ locale: 'en' });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith('docs_page_viewed', {
+      content_id: 'realtime-media/video/get-started-sdk',
+      content_kind: 'mdx',
+      deploy_version: '253dabcc',
+      docs_content_kind: 'mdx',
+      docs_environment: 'development',
+      docs_locale: 'en',
+      docs_page_type: 'task-guide',
+      docs_pathname: '/en/realtime-media/video/get-started-sdk',
+      docs_platform: 'web',
+      docs_product: 'video',
+      docs_tab: 'realtime-media',
+      environment: 'development',
+      journey_stage: 'get-started',
+      locale: 'en',
+      nav_section: 'get-started',
+      nav_section_title: 'Get started',
+      page_type: 'task-guide',
+      pathname: '/en/realtime-media/video/get-started-sdk',
+      platform: 'web',
+      product: 'video',
+      tab: 'realtime-media',
+      title: 'Quickstart',
+      version: 'current',
+    });
+  });
+
+  it('does not substitute legacy dimensions for missing canonical taxonomy', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
     captureDocsPageViewed({ locale: 'en' });
 
     await vi.waitFor(() => {
@@ -226,10 +270,9 @@ describe('PostHog analytics', () => {
     expect(captureMock).toHaveBeenCalledWith(
       'docs_page_viewed',
       expect.objectContaining({
-        content_id: '/en/realtime-media/video/get-started-sdk',
-        deploy_version: '253dabcc',
-        journey_stage: 'task-guide',
-        nav_section: 'realtime-media',
+        content_id: 'unknown',
+        journey_stage: 'unknown',
+        nav_section: 'unknown',
       }),
     );
   });

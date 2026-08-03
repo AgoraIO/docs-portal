@@ -1,6 +1,6 @@
 import { PLATFORM_DATASET_KEY } from '../platforms/preference';
 import { isKnownPlatform, normalizePlatformKey } from '../platforms/registry';
-import type { DocsPageType } from './docs-page-type';
+import { type DocsPageType, inferDocsPageType } from './docs-page-type';
 
 export type { DocsPageType } from './docs-page-type';
 export { DOCS_PAGE_TYPES } from './docs-page-type';
@@ -20,13 +20,17 @@ export type DocsFeedbackValue = 'yes' | 'no';
 type RegisteredDocsPageContext = {
   contentId?: string;
   contentKind?: string;
+  journeyStage?: string;
   locale: string;
   navSection?: string;
+  navSectionTitle?: string;
   pageType?: DocsPageType;
   pathname?: string;
   platform?: string;
   product?: string;
   tab?: string;
+  title?: string;
+  version?: string;
 };
 
 type StructuredEventProperties = Record<
@@ -80,16 +84,30 @@ export function captureDocsPageViewed({ locale }: { locale: string }) {
   const context = getDocsPageContext(locale);
 
   captureStructuredDocsEvent('docs_page_viewed', locale, {
-    content_id: registeredPageContext?.contentId ?? context.docs_pathname,
+    content_id: registeredPageContext?.contentId ?? 'unknown',
+    content_kind: context.docs_content_kind,
     deploy_version: toSafePropertyValue(
       import.meta.env.VITE_DEPLOY_VERSION,
       'unknown',
     ),
-    journey_stage: context.docs_page_type,
+    environment: context.docs_environment,
+    journey_stage: registeredPageContext?.journeyStage ?? 'unknown',
+    locale: context.docs_locale,
     nav_section: toSafePropertyValue(
       registeredPageContext?.navSection,
-      context.docs_tab,
+      'unknown',
     ),
+    nav_section_title:
+      registeredPageContext?.navSectionTitle ??
+      registeredPageContext?.navSection ??
+      'unknown',
+    page_type: context.docs_page_type,
+    pathname: context.docs_pathname,
+    platform: context.docs_platform,
+    product: context.docs_product,
+    tab: context.docs_tab,
+    title: registeredPageContext?.title ?? 'unknown',
+    version: registeredPageContext?.version ?? 'current',
   });
 }
 
@@ -310,41 +328,6 @@ function inferDocsProduct(parts: string[], tab: string) {
   }
 
   return toSafePropertyValue(tab, 'unknown');
-}
-
-function inferDocsPageType(pathname: string): DocsPageType {
-  const normalized = pathname.toLowerCase();
-  const parts = normalized.split('/').filter(Boolean);
-  const leaf = parts.at(-1) ?? '';
-
-  if (/(release|changelog|download|sunset|deprecat)/.test(normalized)) {
-    return 'release-download';
-  }
-
-  if (/(faq|troubleshoot|error|issue|failure|debug)/.test(normalized)) {
-    return 'faq-troubleshooting';
-  }
-
-  if (
-    normalized.includes('/api-reference/') ||
-    /(^|\/)(sdk-reference|api-reference)(\/|$)/.test(normalized)
-  ) {
-    return 'sdk-api-reference';
-  }
-
-  if (
-    /(quick[-_]?start|get-started|setup|enable|integrat|implement|build|migrat|call-api|run-)/.test(
-      normalized,
-    )
-  ) {
-    return 'task-guide';
-  }
-
-  if (parts.length <= 2 || leaf === 'index') {
-    return 'navigation-landing';
-  }
-
-  return 'concept-explanation';
 }
 
 function getSafePlatformFromLocation() {

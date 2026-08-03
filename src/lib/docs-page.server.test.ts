@@ -2491,6 +2491,7 @@ Web body
       ...basePage,
       data: {
         ...basePage.data,
+        analyticsPageType: 'task-guide' as const,
         info: {
           fullPath:
             '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
@@ -3418,6 +3419,16 @@ Web body
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/realtime-media/video/quickstart',
     );
+    expect(videoPayload.analyticsPageContext).toEqual({
+      contentId: 'realtime-media/video/get-started-sdk',
+      journeyStage: 'get-started',
+      navSection: 'get-started',
+      navSectionTitle: 'Get started',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/video/get-started-sdk',
+      title: 'Quickstart',
+      version: 'current',
+    });
   });
 
   it('redirects moved Device Kit docs pages to their new product paths', async () => {

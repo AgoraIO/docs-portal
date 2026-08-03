@@ -185,6 +185,16 @@ describe('DocsContent', () => {
       <DocsContent
         activePath="/en/realtime-media/video/get-started-sdk"
         activeTab="realtime-media"
+        analyticsPageContext={{
+          contentId: 'realtime-media/video/get-started-sdk',
+          journeyStage: 'get-started',
+          navSection: 'get-started',
+          navSectionTitle: 'Get started',
+          pageType: 'task-guide',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+          title: 'Quickstart',
+          version: 'current',
+        }}
         analyticsPageType="task-guide"
         contentPath="en/realtime-media/video/get-started-sdk.mdx"
         slug="get-started-sdk"
@@ -196,11 +206,17 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(registerDocsPageContextMock).toHaveBeenCalledWith({
-        contentId: '/en/realtime-media/video/get-started-sdk',
+        contentId: 'realtime-media/video/get-started-sdk',
         contentKind: 'mdx',
+        journeyStage: 'get-started',
         locale: 'en',
-        navSection: 'realtime-media',
+        navSection: 'get-started',
+        navSectionTitle: 'Get started',
         pageType: 'task-guide',
+        pathname: '/en/realtime-media/video/get-started-sdk',
+        tab: 'realtime-media',
+        title: 'Quickstart',
+        version: 'current',
       });
     });
     expect(captureDocsPageViewedMock).toHaveBeenCalledOnce();

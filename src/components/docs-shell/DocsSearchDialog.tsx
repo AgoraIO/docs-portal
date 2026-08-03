@@ -377,6 +377,32 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
+  const handleScopeChange = useCallback(
+    (nextScopeId: string | null) => {
+      if (nextScopeId === scopeId) {
+        return;
+      }
+
+      latestSearchRequestRef.current += 1;
+      pendingLocalCompletionRef.current = null;
+      setScopeId(nextScopeId);
+    },
+    [scopeId],
+  );
+  const handlePlatformFilterChange = useCallback(
+    (nextPlatform: string | null) => {
+      const normalizedPlatform = nextPlatform as PlatformKey | null;
+      if (normalizedPlatform === platformFilter) {
+        return;
+      }
+
+      latestSearchRequestRef.current += 1;
+      pendingLocalCompletionRef.current = null;
+      setPlatformFilter(normalizedPlatform);
+    },
+    [platformFilter],
+  );
+
   async function handleSelect(url: string, rank?: number) {
     if (hasQuery && rank !== undefined) {
       captureDocsSearchResultClicked({
@@ -575,7 +601,7 @@ export function DocsSearchDialog({
                 allLabel={t('docs.searchAllProducts')}
                 emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
-                onChange={setScopeId}
+                onChange={handleScopeChange}
                 searchPlaceholder={t('docs.searchFilterProducts')}
                 value={scopeId}
               />
@@ -584,7 +610,7 @@ export function DocsSearchDialog({
               allLabel={t('docs.searchAllPlatforms')}
               emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
-              onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
+              onChange={handlePlatformFilterChange}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
             />
