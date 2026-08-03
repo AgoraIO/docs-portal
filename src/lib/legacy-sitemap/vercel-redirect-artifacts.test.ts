@@ -152,6 +152,61 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects high-traffic legacy English URLs to their current pages', () => {
+    const expectedRedirects = [
+      {
+        destination: '/en/api-reference/sdks',
+        source: '/en/sdks',
+      },
+      {
+        destination: '/en/api-reference/faq/integration/acquire_file_directory',
+        source: '/en/help/integration-issues/acquire_file_directory',
+      },
+      {
+        destination: '/en/api-reference/faq/other/android_noaudio',
+        source: '/en/help/other-issues/android_noaudio',
+      },
+      {
+        destination: '/en/api-reference/faq/quality/track_ended',
+        source: '/en/help/quality-issues/track_ended',
+      },
+      {
+        destination: '/en/api-reference/faq/account/console_account_faq',
+        source: '/en/help/account-and-billing/console_account_faq',
+      },
+      {
+        destination:
+          '/en/realtime-media/interactive-live-streaming/product-overview',
+        source: '/en/solutions/interactive-live-streaming/product-overview',
+      },
+      {
+        destination:
+          '/en/realtime-media/flexible-classroom/reference/supported-platforms',
+        source: '/en/flexible-classroom/overview/supported-platforms',
+      },
+      {
+        destination:
+          '/en/realtime-media/voice/build/optimize-and-operate/autoplay',
+        source: '/en/Voice/autoplay_policy_web_ng',
+      },
+      {
+        destination:
+          '/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow',
+        source: '/en/interactive-whiteboard/develop/authentication-workflow',
+      },
+    ];
+
+    for (const expected of expectedRedirects) {
+      expect(
+        bulkRedirects.find((rule) => rule.source === expected.source),
+      ).toEqual({
+        ...expected,
+        preserveQueryParams: true,
+        statusCode: 301,
+      });
+    }
+  });
+
   it('redirects locale-less conversational AI model overview links before app routing', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([
