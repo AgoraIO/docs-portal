@@ -6,6 +6,7 @@ import {
   parseMcpToolsResponse,
   validateDiscoveryDocuments,
   validateMcpServiceMetadata,
+  validateSep2127ServerCard,
 } from './validate-agent-discovery';
 
 const CANONICAL_SKILL_URL =
@@ -18,6 +19,7 @@ describe('agent discovery artifacts', () => {
   const mcpServerCard = readJson('public/.well-known/mcp/server-card.json');
   const mcpServerCards = readJson('public/.well-known/mcp/server-cards.json');
   const skillsIndex = readJson('public/.well-known/agent-skills/index.json');
+  const sep2127ServerCard = readJson('public/.well-known/mcp-server-card');
 
   it('advertises the public Agora MCP server through current discovery contracts', () => {
     expect(mcpDiscovery).toEqual({
@@ -49,6 +51,47 @@ describe('agent discovery artifacts', () => {
       { name: 'algolia_search_index_docs_portal_en' },
     ]);
     expect(mcpServerCards).toEqual({ servers: [mcpServerCard] });
+  });
+
+  it('publishes a spec-compliant SEP-2127 MCP server card', () => {
+    expect(sep2127ServerCard).toMatchObject({
+      name: 'io.agora/docs-search',
+      remotes: [
+        {
+          supportedProtocolVersions: ['2025-06-18'],
+          type: 'streamable-http',
+          url: 'https://mcp.agora.io',
+        },
+      ],
+    });
+
+    expect(() =>
+      validateSep2127ServerCard({ mcpDiscovery, sep2127ServerCard }),
+    ).not.toThrow();
+    expect(() =>
+      validateSep2127ServerCard({
+        mcpDiscovery,
+        sep2127ServerCard: { ...sep2127ServerCard, name: 'no-slash-name' },
+      }),
+    ).toThrow('reverse-DNS');
+    expect(() =>
+      validateSep2127ServerCard({
+        mcpDiscovery,
+        sep2127ServerCard: {
+          ...sep2127ServerCard,
+          remotes: [{ ...sep2127ServerCard.remotes[0], url: 'https://drift.example' }],
+        },
+      }),
+    ).toThrow('different endpoint');
+    expect(() =>
+      validateSep2127ServerCard({
+        mcpDiscovery,
+        sep2127ServerCard: {
+          ...sep2127ServerCard,
+          remotes: [{ ...sep2127ServerCard.remotes[0], supportedProtocolVersions: ['2024-01-01'] }],
+        },
+      }),
+    ).toThrow('protocol version');
   });
 
   it('advertises the canonical Agora Skill with content integrity metadata', () => {

@@ -34,6 +34,12 @@ type SkillsIndex = {
   skills?: Array<{ digest: string; url: string }>;
 };
 
+type Sep2127ServerCard = {
+  name: string;
+  remotes?: Array<{ supportedProtocolVersions?: string[]; url: string }>;
+  version: string;
+};
+
 type McpJsonRpcPayload<T> = {
   error?: unknown;
   result?: T;
@@ -87,6 +93,33 @@ export function validateDiscoveryDocuments({
     skillDigest: actualDigest,
     skillUrl: skill.url,
   };
+}
+
+export function validateSep2127ServerCard({
+  mcpDiscovery,
+  sep2127ServerCard,
+}: {
+  mcpDiscovery: McpDiscovery;
+  sep2127ServerCard: Sep2127ServerCard;
+}) {
+  if (!/^[^/]+\/[^/]+$/.test(sep2127ServerCard.name)) {
+    throw new Error(
+      `MCP server card name "${sep2127ServerCard.name}" is not in reverse-DNS/server-name format.`,
+    );
+  }
+
+  const [remote] = sep2127ServerCard.remotes ?? [];
+  if (!remote || remote.url !== mcpDiscovery.url) {
+    throw new Error(
+      'MCP server card (SEP-2127) advertises a different endpoint than MCP discovery.',
+    );
+  }
+
+  if (!remote.supportedProtocolVersions?.includes(MCP_PROTOCOL_VERSION)) {
+    throw new Error(
+      `MCP server card (SEP-2127) does not list the live MCP protocol version ${MCP_PROTOCOL_VERSION}.`,
+    );
+  }
 }
 
 export function parseMcpInitializeResponse(body: string): McpInitializeResult {
@@ -148,6 +181,7 @@ async function run() {
     mcpServerCards,
     skillsIndex,
     compatibilityDiscovery,
+    sep2127ServerCard,
   ] = baseUrl
     ? await Promise.all([
         fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp.json`),
@@ -159,6 +193,7 @@ async function run() {
           `${baseUrl}/.well-known/agent-skills/index.json`,
         ),
         fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp`),
+        fetchJson<Sep2127ServerCard>(`${baseUrl}/.well-known/mcp-server-card`),
       ])
     : await Promise.all([
         readJson<McpDiscovery>('public/.well-known/mcp.json'),
@@ -166,11 +201,13 @@ async function run() {
         readJson<McpServerCards>('public/.well-known/mcp/server-cards.json'),
         readJson<SkillsIndex>('public/.well-known/agent-skills/index.json'),
         readJson<McpDiscovery>('public/.well-known/mcp.json'),
+        readJson<Sep2127ServerCard>('public/.well-known/mcp-server-card'),
       ]);
 
   if (JSON.stringify(mcpDiscovery) !== JSON.stringify(compatibilityDiscovery)) {
     throw new Error('The MCP compatibility endpoint does not match mcp.json.');
   }
+  validateSep2127ServerCard({ mcpDiscovery, sep2127ServerCard });
 
   const [skill] = skillsIndex.skills ?? [];
   if (!skill) {

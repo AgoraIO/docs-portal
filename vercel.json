@@ -297,6 +297,44 @@
       "statusCode": 301
     }
   ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</en/api-reference>; rel=\"service-doc\", </llms.txt>; rel=\"describedby\", </.well-known/api-catalog>; rel=\"api-catalog\""
+        }
+      ]
+    },
+    {
+      "source": "/en",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "</en/api-reference>; rel=\"service-doc\", </llms.txt>; rel=\"describedby\", </.well-known/api-catalog>; rel=\"api-catalog\""
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/api-catalog",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/linkset+json"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/mcp-server-card",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    }
+  ],
   "routes": [
     {
       "src": "^/\\.well-known/mcp$",
