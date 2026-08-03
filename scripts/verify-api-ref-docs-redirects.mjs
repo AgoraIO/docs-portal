@@ -154,14 +154,15 @@ function verifyVercelRedirect({
 
 function queryConditionsMatch(has = [], legacySearch = '') {
   const query = parseLegacySearch(legacySearch);
+  const queryConditions = has.filter((condition) => condition.type === 'query');
 
-  return Object.entries(query).every(([key, value]) =>
-    has.some(
-      (condition) =>
-        condition.type === 'query' &&
-        condition.key === key &&
-        condition.value === value,
-    ),
+  return (
+    queryConditions.length === Object.keys(query).length &&
+    Object.entries(query).every(([key, value]) =>
+      queryConditions.some(
+        (condition) => condition.key === key && condition.value === value,
+      ),
+    )
   );
 }
 
@@ -196,7 +197,9 @@ async function main() {
     vercelConfig,
   ] = await Promise.all([
     fs.readFile(DEFAULT_TRIAGE_REPORT, 'utf8'),
-    fs.readFile('src/lib/legacy-sitemap/redirects.json', 'utf8').then(JSON.parse),
+    fs
+      .readFile('src/lib/legacy-sitemap/redirects.json', 'utf8')
+      .then(JSON.parse),
     fs
       .readFile('src/lib/legacy-sitemap/static-redirects.json', 'utf8')
       .then(JSON.parse),

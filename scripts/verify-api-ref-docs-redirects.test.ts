@@ -34,7 +34,8 @@ const redirectsConfig = {
       preserveSearch: false,
     },
     {
-      legacyUrl: 'https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor',
+      legacyUrl:
+        'https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor',
       legacyPath: '/en/hash/legacy',
       legacySearch: '?platform=Android',
       target: '/en/current/hash#new-anchor',
@@ -101,7 +102,8 @@ describe('verify-api-ref-docs-redirects', () => {
       decision: 'add-301',
       legacyPath: '/en/hash/legacy',
       legacySearch: '?platform=Android',
-      legacyUrl: 'https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor',
+      legacyUrl:
+        'https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor',
       proposedTarget: '/en/current/hash#new-anchor',
     });
   });
@@ -125,7 +127,8 @@ describe('verify-api-ref-docs-redirects', () => {
         rules: [
           ...redirectsConfig.rules,
           {
-            legacyUrl: 'https://docs.agora.io/en/missing/target#legacy-fragment',
+            legacyUrl:
+              'https://docs.agora.io/en/missing/target#legacy-fragment',
             legacyPath: '/en/missing/target',
             target: '/en/current/wrong',
             preserveSearch: true,
@@ -161,6 +164,54 @@ describe('verify-api-ref-docs-redirects', () => {
 
     expect(result).toContain(
       'Vercel redirect preserves query that should be stripped: https://docs.agora.io/en/query/legacy?platform=Web',
+    );
+  });
+
+  it('rejects query redirects that require extra query conditions', () => {
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects: bulkRedirects.filter(
+        (rule) => rule.source !== '/en/hash/legacy',
+      ),
+      redirectsConfig,
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig: {
+        redirects: [
+          {
+            source: '/en/query/legacy',
+            destination: '/en/current/query-web',
+            has: [
+              {
+                type: 'query',
+                key: 'platform',
+                value: 'Web',
+              },
+              {
+                type: 'query',
+                key: 'product',
+                value: 'rtc',
+              },
+            ],
+            statusCode: 301,
+          },
+          {
+            source: '/en/hash/legacy',
+            destination: '/en/current/hash#new-anchor',
+            has: [
+              {
+                type: 'query',
+                key: 'platform',
+                value: 'Android',
+              },
+            ],
+            statusCode: 301,
+          },
+        ],
+      },
+    });
+
+    expect(result).toContain(
+      'Vercel redirect artifact missing: https://docs.agora.io/en/query/legacy?platform=Web',
     );
   });
 });
