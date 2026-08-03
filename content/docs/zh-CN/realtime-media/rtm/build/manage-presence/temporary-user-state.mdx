@@ -162,6 +162,46 @@ try {
 
 你可能需要获取某个用户在指定频道中设置的临时用户状态。当你作为 App 管理员时，此功能就显得非常有用。此时，你可以使用 `presence.getstate` 方法来实现。
 
+<PlatformStructured platform="android">
+
+:::info[远端状态查询]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行远端用户 `getState` 查询。大频道优化模式下，即使目标用户不在客户端当前持续同步的 512 名成员范围内，SDK 也会通过远端查询获取结果。应用仍需处理正常的异步失败结果。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+:::info[远端状态查询]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行远端用户 `getState` 查询。大频道优化模式下，即使目标用户不在客户端当前持续同步的 512 名成员范围内，SDK 也会通过远端查询获取结果。应用仍需处理正常的异步失败结果。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+:::info[远端状态查询]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行远端用户 `getState` 查询。大频道优化模式下，即使目标用户不在客户端当前持续同步的 512 名成员范围内，SDK 也会通过远端查询获取结果。应用仍需处理正常的异步失败结果。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+:::info[远端状态查询]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行远端用户 `getState` 查询。大频道优化模式下，即使目标用户不在客户端当前持续同步的 512 名成员范围内，SDK 也会通过远端查询获取结果。应用仍需处理正常的异步失败结果。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+:::info[远端状态查询]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行远端用户 `getState` 查询。大频道优化模式下，即使目标用户不在客户端当前持续同步的 512 名成员范围内，SDK 也会通过远端查询获取结果。应用仍需处理正常的异步失败结果。
+:::
+
+</PlatformStructured>
+
 ```csharp tab="C#" tabGroup="rtm-build-manage-presence-temporary-user-state-3" showLineNumbers
 var (status,response) = await rtmClient.GetPresence().GetStateAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "Tony");
 if (status.Error)

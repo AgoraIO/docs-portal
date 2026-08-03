@@ -46,7 +46,7 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
     ...
     dependencies {
         ...
-        // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
+        // 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
         // 对于 2.2.7 及之后版本
         implementation 'cn.shengwang.rtm:android-java:x.y.z'
         // 对于 2.2.6 及之前版本
@@ -665,9 +665,10 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
   ```ruby
   platform :ios, '11.0'
   target 'Your App' do
-  # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.7
-  # 对于 2.2.7 及之后的版本:
-  pod 'ShengwangRtm', 'x.y.z'
+  # 对于 2.2.8 及之后的版本:
+  pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+  # 对于 2.2.7 版本:
+  # pod 'ShengwangRtm', 'x.y.z'
   # 对于 2.2.6 及之前的版本:
   # pod 'AgoraRtm', 'x.y.z'
 

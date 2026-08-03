@@ -2,6 +2,73 @@
 title: "发版说明"
 description: "查看对话式 AI 引擎的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
+## v2.10
+
+该版本于 2026 年 7 月 22 日发布。
+
+### 新增特性
+
+#### 支持通过 OpenAI TTS 协议接入自研或第三方 TTS 引擎
+
+该版本在 Agora Agents SDK 中新增 `GenericTTS` vendor。只要你的 TTS 服务兼容 OpenAI TTS 协议，即可通过 SDK 将自研 TTS、私有化部署 TTS 或第三方 TTS 服务接入为对话式智能体的语音合成模块，便于集成到实时对话流程中。详见[通过 Agents SDK 接入自定义 TTS](/zh-CN/ai/build/custom-model-integration/custom-tts-agent)。
+
+如果你直接调用 RESTful API 创建智能体，也可以使用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口新增的 `generic_http` TTS 配置。详见[通过 RESTful API 接入自定义 TTS](/zh-CN/ai/build/custom-model-integration/custom-tts)。
+
+#### 客户端组件支持手动控制用户说话开始和结束
+
+对话式 AI 引擎客户端组件新增手动 SoS/EoS 能力。你可以在 Android、iOS 和 Web 客户端通过组件 API 向智能体发送手动开始说话和结束说话信令，并监听服务端返回的处理结果。该能力适用于 AI 面试、互动答题、对讲机等需要由端侧显式控制用户回合边界的场景。详见[手动控制说话开始和结束](/zh-CN/ai/build/shape-the-conversation/manual-turn-control)。
+
+### API 变更
+
+#### 新增
+
+- Agora Agents SDK：
+  - Go SDK 新增 [`NewGenericTTS`](/zh-CN/api-reference/conversational-ai/agent-go#newgenerictts)。
+  - Python SDK 新增 [`GenericTTS`](/zh-CN/api-reference/conversational-ai/agent-python#generictts)。
+  - TypeScript SDK 新增 [`GenericTTS`](/zh-CN/api-reference/conversational-ai/agent-typescript#generictts)。
+- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)：
+  - `tts.vendor` 新增 `generic_http` 取值。
+  - `tts.url` 新增 TTS 服务地址配置，仅当 `tts.vendor` 为 `generic_http` 时需要配置。
+  - `tts.headers` 新增 TTS 请求头配置，仅当 `tts.vendor` 为 `generic_http` 时需要配置。
+  - `tts.params` 新增 `generic_http` TTS 配置参数。
+
+**Android 客户端组件 API**
+
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualeos)
+- [`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualsosevent)
+- [`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentmanualeosevent)
+- [`UserManualEventPayload`](/zh-CN/api-reference/conversational-ai/android/struct#usermanualeventpayload)
+- [`UserManualSosEvent`](/zh-CN/api-reference/conversational-ai/android/struct#usermanualsosevent)
+- [`UserManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/struct#usermanualeosevent)
+- [`AgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/android/struct#agentmanualeospayload)
+- [`AgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/struct#agentmanualeosevent)
+
+**iOS 客户端组件 API**
+
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualeos)
+- [`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualsosevent)
+- [`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentmanualeosevent)
+- [`UserManualEventPayload`](/zh-CN/api-reference/conversational-ai/ios/struct#usermanualeventpayload)
+- [`UserManualSosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#usermanualsosevent)
+- [`UserManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#usermanualeosevent)
+- [`AgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/ios/struct#agentmanualeospayload)
+- [`AgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#agentmanualeosevent)
+
+**Web 客户端组件 API**
+
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualeos)
+- [`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents) 新增 `USER_MANUAL_SOS_RESULT`、`USER_MANUAL_EOS_RESULT` 和 `AGENT_MANUAL_EOS_RESULT` 事件。
+- [`TUserManualEventPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tusermanualeventpayload)
+- [`TUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/web/struct#tusermanualsosevent)
+- [`TUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/web/struct#tusermanualeosevent)
+- [`TAgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmanualeospayload)
+- [`TAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmanualeosevent)
+
 ## v2.9
 
 该版本于 2026 年 7 月 1 日发布。

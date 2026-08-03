@@ -516,7 +516,24 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
       - `error`：错误结束。
       - `ignored`：被忽略。
       - `interrupted`：被中断。
-    - `metadata`：元数据对象。
+    - `metadata`：元数据对象。根据 `type` 字段的不同，包含以下字段：
+      - `ok`：包含 `playback_duration_ms`，表示语音播放时长（ms）。
+      - `interrupted`：包含 `caused_by`，表示轮次中断原因，包括以下值：
+        - `start_of_speech`：新一条语音请求开始。
+        - `api_speak`：API 调用说话。
+        - `api_think`：API 调用思考。
+        - `api_interrupt`：调用打断智能体接口。
+        - `api_leave`：调用停止对话式智能体接口离开频道。
+        - `user_no_longer_present`：智能体检测不到可订阅用户。
+      - `ignored`：包含 `caused_by`，表示轮次忽略原因，包括以下值：
+        - `semantic`：语义规则判断无需响应。
+        - `keywords`：未命中轮次开始检测关键词。
+        - `disable`：对话轮次检测功能设置为不可打断。
+        - `no_asr_result`：未识别到 ASR 结果。
+      - `error`：包含 `reason`，表示错误类型，可能包含以下值：
+        - `LLM_REQUEST_ERR`：LLM 请求错误。
+        - `TTS_REQUEST_ERR`：TTS 请求错误。
+        - `INTERNAL_ERR`：内部错误。
 
 </Slot>
 

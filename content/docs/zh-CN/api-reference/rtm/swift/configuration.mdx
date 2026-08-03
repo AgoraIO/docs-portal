@@ -35,7 +35,7 @@ AgoraRtmClientConfig(
     protocolType: AgoraRtmProtocolType,
     logConfig: AgoraRtmLogConfig?,
     encryptionConfig: AgoraRtmEncryptionConfig?,
-    privateConfig: AgoraRtmPrivateConfig?
+    privateConfig: AgoraRtmPrivateConfig?,
     callbackQueue: DispatchQueue?
 )
 ```
@@ -349,6 +349,7 @@ rtmClient.removeDelegate(messageDelegate)
 | `leaveUserList` | `NSArray<NSString *>` | 在上一个周期内离开频道的用户列表。 |
 | `timeoutUserList` | `NSArray<NSString *>` | 在上一个周期内加入频道超时的用户列表。 |
 | `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | int32 | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `AgoraRtmUserState` 数据类型包含以下属性：
 

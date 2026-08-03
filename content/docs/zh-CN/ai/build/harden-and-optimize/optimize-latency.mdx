@@ -2,9 +2,7 @@
 title: "优化端到端对话延迟"
 description: "了解如何在对话式 AI 引擎中优化端到端对话延迟，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-在与智能体对话的场景中，延迟是影响用户体验的关键因素。
-
-本文帮助你理解和优化与对话式智能体的端到端对话延迟，从而提升用户体验。
+在与智能体对话的场景中，延迟是影响用户体验的关键因素。本文帮助你理解和优化与对话式智能体的端到端对话延迟，从而提升用户体验。
 
 ## 理解延迟构成
 
@@ -113,10 +111,10 @@ func onAgentMetrics(agentUserId: String, metrics: Metric) {
 
 ```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.AGENT_METRICS, 
+  EConversationalAIAPIEvents.AGENT_METRICS,
   (agentUserId: string, metrics: Metric) => {
     console.log(`[${metrics.type}] ${metrics.name}: ${metrics.value}ms`);
-    
+
     if (metrics.type === 'TOTAL') {
       console.log(`Total delay for turn: ${metrics.value}ms`);
     }
@@ -177,15 +175,15 @@ LLM 通常是延迟贡献最高的模块。优化 LLM 可以显著降低整体�
 在创建智能体时，可通过阅读 ASR/LLM/TTS 供应商文档，了解供应商提供的参数，结合实际场景进行参数调优。以下为一些通用的优化思路：
 
 - LLM
-  - **选择小型模型**： 如 `gpt-4o-mini`、`claude-3-haiku` 等，通常比大型模型响应更快。
-  - **限制 max_tokens**： 减少生成的最大 Token 数可以降低 TTFS（首句延迟）。
+  - **选择小型模型**: 如 `gpt-4o-mini`、`claude-3-haiku` 等，通常比大型模型响应更快。
+  - **限制 max_tokens**: 减少生成的最大 Token 数可以降低 TTFS（首句延迟）。
 - ASR
-  - **使用供应商推荐的采样率**： 使用供应商推荐的采样率（如 16kHz），避免不必要的重采样。
-  - **限制语言模型**： 使用 `phrases` 或 `context` 参数提供领域特定词汇，提高识别速度。
+  - **使用供应商推荐的采样率**: 使用供应商推荐的采样率（如 16kHz），避免不必要的重采样。
+  - **限制语言模型**: 使用 `phrases` 或 `context` 参数提供领域特定词汇，提高识别速度。
   - **禁用非必要功能**：部分供应商提供输出标点符号、语气等高级参数，可根据实际场景禁用以提高响应速度。
 - TTS
-  - **选择更快的模式**： 部分 TTS 提供 `turbo` 或 `low-latency` 等模式，通常比默认模式响应更快。
-  - **选择更快的音色**： 部分 TTS 提供不同复杂度的输出音色可选，选择复杂度较低的音色可以减少生成时间。
+  - **选择更快的模式**: 部分 TTS 提供 `turbo` 或 `low-latency` 等模式，通常比默认模式响应更快。
+  - **选择更快的音色**: 部分 TTS 提供不同复杂度的输出音色可选，选择复杂度较低的音色可以减少生成时间。
   - **禁用非必要功能**：部分供应商提供语气、情感高级参数，可根据实际场景禁用以提高响应速度。
 
 以下为优化 LLM 参数的示例：
@@ -209,7 +207,7 @@ LLM 通常是延迟贡献最高的模块。优化 LLM 可以显著降低整体�
 
 ### 2. 优化 RTC 模块延迟
 
-RTC 延迟包括音频采集、编码、网络传输、解码、播放等环节。优化 RTC 延迟需要在客户端配置适合 AI 对话的音频场景和音频参数。
+RTC 延迟包括音频采集、编码、网络传输、解码、播放等环节。优化 RTC 延迟需要在客户端进行音频设置。
 
 #### 使用 AI 对话场景
 
@@ -219,68 +217,53 @@ RTC 延迟包括音频采集、编码、网络传输、解码、播放等环节�
 - 更低的音频采集和播放延迟
 - 针对 AI 语音特征的音频处理
 
-你可以通过以下任一方式配置 AI 对话场景：
-
-<Tabs defaultValue="Android" groupId="rtc-latency-platform" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-**方式一：使用客户端组件 API（推荐）**
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
+// 方式一：使用客户端组件 API（推荐）
 val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
+    rtcEngine = rtcEngine,
+    rtmClient = rtmClient,
+    renderMode = TranscriptRenderMode.Word,
+    enableLog = true,
+    enableRenderModeFallback = true
 )
+
 val api = ConversationalAIAPIImpl(config)
 
 // 加载最佳音频设置
 api.loadAudioSettings()
 ```
 
-**方式二：直接设置 RTC SDK**
-
 ```kotlin
+// 方式二：直接设置 RTC SDK
 val config = RtcEngineConfig()
 config.mAudioScenario = Constants.AUDIO_SCENARIO_AI_CLIENT
 rtcEngine = RtcEngine.create(config)
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-**方式一：使用客户端组件 API（推荐）**
-
-```swift
+```swift tab="iOS" tabGroup="language"
+// 方式一：使用客户端组件 API（推荐）
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine,
     rtmEngine: rtmEngine,
-    enableLog: true
+    renderMode: .words,
+    enableLog: true,
+    enableRenderModeFallback: true
 )
+
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 
 // 加载最佳音频设置
 convoAIAPI.loadAudioSettings()
 ```
 
-**方式二：直接设置 RTC SDK**
-
 ```swift
+// 方式二：直接设置 RTC SDK
 let config = AgoraRtcEngineConfig()
 config.audioScenario = .aiClient
 rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 ```
 
-</TabsContent>
-</Tabs>
-
-详细的音频参数、插件集成和版本兼容说明请见[优化音频设置](/zh-CN/ai/build/harden-and-optimize/audio-setup)。
+详细的优化音频设置请见[优化音频设置](/zh-CN/ai/build/harden-and-optimize/audio-setup)。
 
 ## 延迟优化检查清单
 
@@ -288,23 +271,23 @@ rtcEngine = AgoraRtcEngineKit.sharedEngine(with: config, delegate: delegate)
 
 ### 服务端优化
 
-- **选择低延迟的 LLM 模型**：参考[对话式 AI 引擎适配各主流模型的实时性能数据](https://www.shengwang.cn/duihua/benchmark/overview)选择延迟表现优秀的模型
-- **启用流式响应**：确保 `stream: true`
-- **选择低延迟的 ASR/TTS 供应商**：使用 `turbo` 或 `low-latency` 等模式
-- **优化地理部署**：将 ASR、LLM、TTS 部署在同一区域
+- [ ] **选择低延迟的 LLM 模型**: 参考[对话式 AI 引擎适配各主流模型的实时性能数据](https://www.shengwang.cn/duihua/benchmark/overview)选择延迟表现优秀的模型
+- [ ] **启用流式响应**: 确保 `stream: true`
+- [ ] **选择低延迟的 ASR/TTS 供应商**: 使用 `turbo` 或 `low-latency` 等模式
+- [ ] **优化地理部署**: 将 ASR、LLM、TTS 部署在同一区域
 
 ### 客户端优化
 
-- **使用 AI 对话场景**：设置 `AUDIO_SCENARIO_AI_CLIENT`（RTC SDK 4.5.1+）
-- **加载最佳音频设置**：调用客户端组件的 `loadAudioSettings()` 方法
-- **集成必需的音频插件**：确保集成 AI 降噪和 AI 回声消除插件
-- **优化网络条件**：确保用户网络连接稳定，考虑使用 SD-RTN™ 优化网络传输
+- [ ] **使用 AI 对话场景**: 设置 `AUDIO_SCENARIO_AI_CLIENT`（RTC SDK 4.5.1+）
+- [ ] **加载最佳音频设置**: 调用客户端组件的 `loadAudioSettings()` 方法
+- [ ] **集成必需的音频插件**: 确保集成 AI 降噪和 AI 回声消除插件
+- [ ] **优化网络条件**: 确保用户网络连接稳定，考虑使用 SD-RTN™ 优化网络传输
 
 ### 监控和分析
 
-- **实时监听延迟指标**：通过客户端组件或 NCS 获取每轮对话的延迟数据
-- **识别延迟瓶颈**：分析哪个模块的延迟贡献最大
-- **持续优化**：根据实际数据调整配置，进行 A/B 测试
+- [ ] **实时监听延迟指标**: 通过客户端组件或 NCS 获取每轮对话的延迟数据
+- [ ] **识别延迟瓶颈**: 分析哪个模块的延迟贡献最大
+- [ ] **持续优化**: 根据实际数据调整配置，进行 A/B 测试
 
 ## 延迟与质量的权衡
 

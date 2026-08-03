@@ -190,11 +190,6 @@ RtmEventListener eventListener = new RtmEventListener() {
       }
 
       @Override
-      public void onConnectionStateChange(String channelName, RtmConstants.RtmConnectionState state,
-          RtmConstants.RtmConnectionChangeReason reason) {
-      }
-
-      @Override
       public void onLinkStateEvent(LinkStateEvent event) {
           // Your link state change event handler
       }
@@ -320,15 +315,6 @@ do {
     }
 }
 
-// triggered when connection state changed
-- (void)rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {
-    if (channelName != nil) {
-        NSLog(@"stream channel connection changed now state is %d change reason is %d",state, reason);
-    } else {
-        NSLog(@"rtm client connection changed now state is %d change reason is %d",state, reason);
-    }
-}
-
 // triggered when link state changed
 - (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLinkStateEvent:(AgoraRtmLinkStateEvent *)event {
     if (event.serviceType == AgoraRtmServiceTypeStream) {
@@ -351,7 +337,6 @@ AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg deleg
 class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) override {}
     void onTopicEvent(const TopicEvent &event) override {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) override {}
     void onLinkStateEvent(const LinkStateEvent& event) override {}
     void onLoginResult(RTM_ERROR_CODE errorCode) override {}
     void onStorageEvent(const StorageEvent &event) override {}

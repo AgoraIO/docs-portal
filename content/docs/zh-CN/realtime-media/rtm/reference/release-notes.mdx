@@ -13,12 +13,51 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 
 具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)
 
+- 2.3.0 RTM SDK `libaosl.so` 库版本为 1.3.5。
 - 2.2.8 RTM SDK `libaosl.so` 库版本为 1.3.0。
 - 2.2.7 RTM SDK `libaosl.so` 库版本为 1.3.0。
 - 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `libaosl.so` 库版本为 1.2.13。
 - 2.2.2 RTM SDK `libaosl.so` 库版本为 1.0.11。
 - 2.2.1 RTM SDK `libaosl.so` 库版本为 1.0.11。
 - 2.2.0 RTM SDK `libaosl.so` 库版本为 1.0.0.17。
+
+## 2.3.0 版
+
+该版本于 2026 年 7 月 28 日发布。
+
+### 升级必看
+
+#### 移除旧连接状态回调
+
+该版本移除 `onConnectionStateChanged` 回调。监听连接状态变化时，请改用 `onLinkStateEvent`。
+
+### 改进
+
+#### Presence 服务支持控制台开关
+
+声网控制台支持开启或关闭 Presence 服务，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和 API 调用才会生效。
+
+#### 新增错误码
+
+该版本新增以下错误码：
+
+- `PRESENCE_INACTIVE` (-13014)：Presence 服务未开启或当前不可用。
+- `PRESENCE_PENDING_REQUEST_CANCELLED` (-13015)：Presence 待处理请求已取消。
+- `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` (-13016)：Presence 待处理请求数量超过限制。
+- `CHANNEL_SUBSCRIBE_CANCELED` (-11040)：频道订阅尚未完成时被取消。
+
+#### 其它改进
+
+- 优化控制台创建项目时的体验流程，取消在创建通用项目时配置服务区域，改为在功能配置中开启。
+- 优化登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `PresenceEvent.IntervalInfo.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 加快订阅频道的速度。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+
+### 问题修复
+
+- 修复了未登录情况下切到后台，可能导致连接状态通知不正确的问题。
+- 修复了网络切换场景下重新连接服务耗时较长的问题。
 
 ## 2.2.8 版
 
@@ -816,12 +855,52 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)
 
+- 2.3.0 RTM SDK `aosl.xframework` 库版本为 1.3.5。
 - 2.2.8 RTM SDK `aosl.xframework` 库版本为 1.3.0。
 - 2.2.7 RTM SDK `aosl.xframework` 库版本为 1.3.0。
 - 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `aosl.xframework` 库版本为 1.2.13。
 - 2.2.2 RTM SDK `aosl.xframework` 库版本为 1.0.11。
 - 2.2.1 RTM SDK `aosl.xframework` 库版本为 1.0.11。
 - 2.2.0 RTM SDK `aosl.xframework` 库版本为 1.0.0.17。
+
+## 2.3.0 版
+
+该版本于 2026 年 7 月 28 日发布。
+
+### 升级必看
+
+#### 移除旧连接状态回调
+
+该版本移除旧连接状态回调。监听连接状态变化时，请改用 `didReceiveLinkStateEvent`。
+
+### 改进
+
+#### Presence 服务支持控制台开关
+
+声网控制台支持开启或关闭 Presence 服务，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和 API 调用才会生效。
+
+#### 新增错误码
+
+该版本新增以下错误码：
+
+- `AgoraRtmErrorPresenceInactive` (-13014)：Presence 服务未开启或当前不可用。
+- `AgoraRtmErrorPresencePendingRequestCancelled` (-13015)：Presence 待处理请求已取消。
+- `AgoraRtmErrorPresencePendingRequestExceedLimitation` (-13016)：Presence 待处理请求数量超过限制。
+- `AgoraRtmErrorChannelSubscribeCanceled` (-11040)：频道订阅尚未完成时被取消。
+
+#### 其它改进
+
+- 优化控制台创建项目时的体验流程，取消在创建通用项目时配置服务区域，改为在功能配置中开启。
+- 优化登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `AgoraRtmPresenceEvent.interval.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 加快订阅频道的速度。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+- 优化了部分配置参数的使用方式。
+
+### 问题修复
+
+- 修复了未登录情况下切到后台，可能导致连接状态通知不正确的问题。
+- 修复了网络切换场景下重新连接服务耗时较长的问题。
 
 ## 2.2.8 版
 
@@ -2220,7 +2299,40 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)
 
+- 2.3.0 RTM SDK `libaosl.so` 库版本为 1.3.5。
 - 2.2.8 RTM SDK `libaosl.so` 库版本为 1.3.0。
+
+## 2.3.0 版
+
+该版本于 2026 年 7 月 28 日发布。
+
+### 改进
+
+#### Presence 服务支持控制台开关
+
+声网控制台支持开启或关闭 Presence 服务，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和 API 调用才会生效。
+
+#### 新增错误码
+
+该版本新增以下错误码：
+
+- `PRESENCE_INACTIVE` (-13014)：Presence 服务未开启或当前不可用。
+- `PRESENCE_PENDING_REQUEST_CANCELLED` (-13015)：Presence 待处理请求已取消。
+- `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` (-13016)：Presence 待处理请求数量超过限制。
+- `CHANNEL_SUBSCRIBE_CANCELED` (-11040)：频道订阅尚未完成时被取消。
+
+#### 其它改进
+
+- 优化控制台创建项目时的体验流程，取消在创建通用项目时配置服务区域，改为在功能配置中开启。
+- 优化登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `PresenceEvent.interval.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 加快订阅频道的速度。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+
+### 问题修复
+
+- 修复了未登录情况下切到后台，可能导致连接状态通知不正确的问题。
+- 修复了网络切换场景下重新连接服务耗时较长的问题。
 
 ## 2.2.8 版
 
@@ -2889,12 +3001,51 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 自 2.2.0 起，RTM SDK 和 RTC SDK（4.3.0 及以上版本）都包含动态库文件。如果你同时使用了 RTM 和 RTC SDK，为避免冲突，请手动删除更低版本的动态库文件。
 
+- 2.3.0 RTM SDK 动态库版本为 1.3.5。
 - 2.2.8 RTM SDK 动态库版本为 1.3.0。
 - 2.2.7 RTM SDK 动态库版本为 1.3.0。
 - 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK 动态库版本为 1.2.13。
 - 2.2.2 RTM SDK 动态库版本为 1.0.11。
 - 2.2.1 RTM SDK 动态库版本为 1.0.11。
 - 2.2.0 RTM SDK 动态库版本为 1.0.0.17。
+
+## 2.3.0 版
+
+该版本于 2026 年 7 月 28 日发布。
+
+### 升级必看
+
+#### 移除旧连接状态回调
+
+该版本移除 `onConnectionStateChanged` 回调。监听连接状态变化时，请改用 `onLinkStateEvent`。
+
+### 改进
+
+#### Presence 服务支持控制台开关
+
+声网控制台支持开启或关闭 Presence 服务，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和 API 调用才会生效。
+
+#### 新增错误码
+
+该版本新增以下错误码：
+
+- `RTM_ERROR_PRESENCE_INACTIVE` (-13014)：Presence 服务未开启或当前不可用。
+- `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` (-13015)：Presence 待处理请求已取消。
+- `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` (-13016)：Presence 待处理请求数量超过限制。
+- `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` (-11040)：频道订阅尚未完成时被取消。
+
+#### 其它改进
+
+- 优化控制台创建项目时的体验流程，取消在创建通用项目时配置服务区域，改为在功能配置中开启。
+- 优化登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `PresenceEvent.interval.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 加快订阅频道的速度。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+
+### 问题修复
+
+- 修复了未登录情况下切到后台，可能导致连接状态通知不正确的问题。
+- 修复了网络切换场景下重新连接服务耗时较长的问题。
 
 ## 2.2.8 版
 
@@ -3396,10 +3547,48 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 具体的集成指南可以参考[如何处理同时集成 RTM SDK 和 RTC SDK 遇到的问题？](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)
 
+- 2.3.0 RTM SDK `aosl.xframework` 库版本为 1.3.5。
 - 2.2.8 RTM SDK `aosl.xframework` 库版本为 1.3.0。
 - 2.2.7 RTM SDK `aosl.xframework` 库版本为 1.3.0。
 - 2.2.3、2.2.4、2.2.5、2.2.6 RTM SDK `aosl.xframework` 库版本为 1.2.13。
 - 2.2.2 RTM SDK `aosl.xframework` 库版本为 1.0.11。
+
+## 2.3.0 版
+
+该版本于 2026 年 7 月 28 日发布。
+
+### 升级必看
+
+#### 移除旧连接状态回调
+
+该版本移除旧连接状态回调。监听连接状态变化时，请改用 `didReceiveLinkStateEvent`。
+
+#### Presence 服务支持控制台开关
+
+声网控制台支持开启或关闭 Presence 服务，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和 API 调用才会生效。
+
+#### 新增错误码
+
+该版本新增以下错误码：
+
+- `presenceInactive` (-13014)：Presence 服务未开启或当前不可用。
+- `presencePendingRequestCancelled` (-13015)：Presence 待处理请求已取消。
+- `presencePendingRequestExceedLimitation` (-13016)：Presence 待处理请求数量超过限制。
+- `channelSubscribeCanceled` (-11040)：频道订阅尚未完成时被取消。
+
+#### 其它改进
+
+- 优化控制台创建项目时的体验流程，取消在创建通用项目时配置服务区域，改为在功能配置中开启。
+- 优化登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `AgoraRtmPresenceEvent.interval.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 加快订阅频道的速度。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+- 优化了部分配置参数的使用方式。
+
+### 问题修复
+
+- 修复了未登录情况下切到后台，可能导致连接状态通知不正确的问题。
+- 修复了网络切换场景下重新连接服务耗时较长的问题。
 
 ## 2.2.8 版
 

@@ -105,6 +105,7 @@ rtmConfig.logConfig = logConfig;
 | `-11035` | `CHANNEL_RECEIVER_OFFLINE_BUT_STORE_SUCCEEDED` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
 | `-11036` | `CHANNEL_RECEIVER_OFFLINE_AND_STORE_FAILED` | 接收端已下线，但历史消息存储失败。 |
 | `-11037` | `CHANNEL_MESSAGE_DELIVERED_BUT_STORE_FAILED` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-11040` | `CHANNEL_SUBSCRIBE_CANCELED` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误。 |
 | `-12001` | `STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
 | `-12002` | `STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
@@ -137,6 +138,9 @@ rtmConfig.logConfig = logConfig;
 | `-13011` | `PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
 | `-13012` | `PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
 | `-13013` | `PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
+| `-13016` | `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `LOCK_OPERATION_FAILED` | Lock 操作失败。 |
 | `-14002` | `LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
 | `-14003` | `LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
@@ -408,6 +412,7 @@ rtm_cfg.logConfig = log_cfg;
 | `-11035` | `AgoraRtmErrorChannelReceiverOfflineButMessageStoreSucceeded` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
 | `-11036` | `AgoraRtmErrorChannelReceiverOfflineAndMessageStoreFailed` | 接收端已下线，但历史消息存储失败。 |
 | `-11037` | `AgoraRtmErrorChannelMessageDeliveredButStoreFailed` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-11040` | `AgoraRtmErrorChannelSubscribeCanceled` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误。 |
 | `-12001` | `AgoraRtmErrorStorageOperationFailed` | Storage 操作失败。 |
 | `-12002` | `AgoraRtmErrorStorageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `AgoraRtmErrorStorageInvalidMetadataItem` | 无效 Metadata Item。 |
@@ -440,6 +445,9 @@ rtm_cfg.logConfig = log_cfg;
 | `-13011` | `AgoraRtmErrorPresenceUserNotExist` | 该用户不存在。 |
 | `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | Presence 操作超时。 |
 | `-13013` | `AgoraRtmErrorPresenceOperationFailed` | Presence 操作失败。 |
+| `-13014` | `AgoraRtmErrorPresenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
+| `-13016` | `AgoraRtmErrorPresencePendingRequestExceedLimitation` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `AgoraRtmErrorLockOperationFailed` | Lock 操作失败。 |
 | `-14002` | `AgoraRtmErrorLockOperationTimeout` | Lock 操作超时。 |
 | `-14003` | `AgoraRtmErrorLockOperationPerforming` | Lock 操作进行中。 |
@@ -1010,6 +1018,7 @@ try {
 | `-11035` |  | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
 | `-11036` |  | 接收端已下线，但历史消息存储失败。 |
 | `-11037` |  | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-11040` | `CHANNEL_SUBSCRIBE_CANCELED` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误。 |
 | `-12001` |  | Storage 操作失败。 |
 | `-12002` |  | Storage Metadata Item 数量超出限制。 |
 | `-12003` |  | 无效 Metadata Item。 |
@@ -1042,6 +1051,9 @@ try {
 | `-13011` |  | 该用户不存在。 |
 | `-13012` |  | Presence 操作超时。 |
 | `-13013` |  | Presence 操作失败。 |
+| `-13014` | `PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13015` | `PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
+| `-13016` | `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` |  | Lock 操作失败。 |
 | `-14002` |  | Lock 操作超时。 |
 | `-14003` |  | Lock 操作进行中。 |
@@ -1878,6 +1890,7 @@ if (!rtmClient_ || errorCode != 0) {
 | `-11035` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_BUT_STORE_SUCCEEDED` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
 | `-11036` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_AND_STORE_FAILED` | 接收端已下线，但历史消息存储失败。 |
 | `-11037` | `RTM_ERROR_CHANNEL_MESSAGE_DELIVERED_BUT_STORE_FAILED` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误。 |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
@@ -1910,6 +1923,9 @@ if (!rtmClient_ || errorCode != 0) {
 | `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | 该用户不存在。 |
 | `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence 操作超时。 |
 | `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence 操作失败。 |
+| `-13014` | `RTM_ERROR_PRESENCE_INACTIVE` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13015` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
+| `-13016` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock 操作失败。 |
 | `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock 操作超时。 |
 | `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock 操作进行中。 |
@@ -2177,6 +2193,7 @@ config.logConfig?.level = .error
 | `-11035` | `channelReceiverOfflineButMessageStoreSucceeded` | 接收端已下线，且消息成功保存至历史消息，待接收端上线后可查看消息。 |
 | `-11036` | `channelReceiverOfflineAndMessageStoreFailed` | 接收端已下线，但历史消息存储失败。 |
 | `-11037` | `channelMessageDeliveredButStoreFailed` | 消息成功发送到接收端，但历史消息存储失败。 |
+| `-11040` | `channelSubscribeCanceled` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误。 |
 | `-12001` | `storageOperationFailed` | Storage 操作失败。 |
 | `-12002` | `storageMetadataItemExceedLimitation` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `storageInvalidMetadataItem` | 无效 Metadata Item。 |
@@ -2209,6 +2226,9 @@ config.logConfig?.level = .error
 | `-13011` | `presenceUserNotExist` | 该用户不存在。 |
 | `-13012` | `presenceOperationTimeout` | Presence 操作超时。 |
 | `-13013` | `presenceOperationFailed` | Presence 操作失败。 |
+| `-13014` | `presenceInactive` | Presence 服务未开启或当前不可用。请检查声网控制台是否已开启 Presence 服务开关；未开启时，Presence 相关 API 和依赖 Presence 的订阅选项不可用。 |
+| `-13015` | `presencePendingRequestCancelled` | Presence 待处理请求已取消。调用 Presence 相关 API 后，如果请求完成前被取消，会返回该错误。 |
+| `-13016` | `presencePendingRequestExceedLimitation` | Presence 待处理请求数量超过限制。请等待已有请求完成后重试。 |
 | `-14001` | `lockOperationFailed` | Lock 操作失败。 |
 | `-14002` | `lockOperationTimeout` | Lock 操作超时。 |
 | `-14003` | `lockOperationPerforming` | Lock 操作进行中。 |

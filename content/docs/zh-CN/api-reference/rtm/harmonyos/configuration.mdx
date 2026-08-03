@@ -212,7 +212,6 @@ const config: RtmConfig = {
 :::info[信息]
 - 该方法需要在 RTM 的其他 API 之前调用。
 - 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
-- RTM Client 采用单例模式，多次创建会返回同一个实例。
 :::
 
 ### 接口方法
@@ -419,6 +418,7 @@ rtmClient.removeEventListener('storage');
 | `leave` | string[] | 在上一个周期内离开频道的用户 ID 列表。 |
 | `timeout` | string[] | 在上一个周期内加入频道超时的用户 ID 列表。 |
 | `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | number | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `UserState` 数据类型包含以下属性：
 

@@ -135,9 +135,6 @@ paths:
                             - `fengming`：（默认）声网凤鸣 ASR。
                             - `tencent`：腾讯 ASR。
                             - `microsoft`：微软 ASR。
-                            - `xfyun`：(Beta) 讯飞云传统语音转写识别服务。
-                            - `xfyun_bigmodel`：(Beta) 讯飞云语音识别大模型服务。
-                            - `xfyun_dialect`：(Beta) 讯飞云方言自由说识别服务。
                         params:
                           $ref: '#/components/schemas/asr_params'
                           description: |
@@ -161,6 +158,7 @@ paths:
                             - `cosyvoice`：(Beta) 阿里云 CosyVoice TTS
                             - `bytedance_duplex`：火山引擎双向流式 TTS
                             - `stepfun`：(Beta) 阶跃星辰 TTS
+                            - `generic_http`：(Beta) 通过 OpenAI TTS 协议接入自研或第三方 TTS 引擎。详见[通过 RESTful API 接入自定义 TTS](/zh-CN/ai/build/custom-model-integration/custom-tts)。
                         skip_patterns:
                           type: array
                           description: |
@@ -225,8 +223,14 @@ paths:
 
                             - 你可以单独配置该字段，走原有实时 TTS 开场白路径。
                             - 也可以在配置 `greeting_audio_url` 时，将该字段作为录音开场白的兜底文本。
-                            - 当 `greeting_configs.interruptable = true` 且录音开场白被用户打断时，系统会结合 `greeting_message` 估算已播报的文本片段，并将其注入短期记忆以保持对话上下文连贯。
+                            - 当 `greeting_interruptable = true` 且录音开场白被用户打断时，系统会结合 `greeting_message` 估算已播报的文本片段，并将其注入短期记忆以保持对话上下文连贯。
                         
+                        greeting_interruptable:
+                          type: boolean
+                          description: |
+                            智能体问候语是否可被打断：
+                            - `true`：（默认）可打断，遵循全局打断配置 (`interruption`)。
+                            - `false`：不可打断，问候语会完整播放；播放期间识别到的用户 ASR 文本会被静默接收，待问候语结束后拼接为单轮 user 消息，再统一送入大模型进行一次推理和回复。
                         greeting_audio_url:
                           type: string
                           maxLength: 2048
@@ -262,12 +266,6 @@ paths:
                               maximum: 5000
                               default: 0
                               description: 智能体问候语播报延迟时间 (ms)，取值范围为 [0, 5000]。配置后，智能体问候语会在用户加入频道后等待指定时间再播报。
-                            interruptable:
-                              type: boolean
-                              description: |
-                                智能体问候语是否可被打断：
-                                - `true`：（默认）可打断，遵循全局打断配置 (`interruption`)。
-                                - `false`：不可打断，问候语会完整播放；播放期间识别到的用户 ASR 文本会被静默接收，待问候语结束后拼接为单轮 user 消息，再统一送入大模型进行一次推理和回复。
                             audio_download_timeout_ms:
                               type: integer
                               minimum: 200
@@ -782,9 +780,9 @@ paths:
               #             content: You are a helpful chatbot.
               #         greeting_audio_url: 'https://cdn.example.com/audio/standard-welcome.mp3'
               #         greeting_message: 您好，感谢拨打声网客服热线。我们检测到您的套餐即将到期，请问需要为您办理续费吗？
+              #         greeting_interruptable: true
               #         greeting_configs:
               #           delay_ms: 600
-              #           interruptable: true
               #           audio_download_timeout_ms: 1000
               #         failure_message: 抱歉，我无法回答这个问题。
               #         max_history: 32
@@ -822,9 +820,9 @@ paths:
               #         api_key: xxx
               #         greeting_audio_url: 'https://cdn.example.com/audio/brand-intro.pcm'
               #         greeting_message: 您好，欢迎致电XX银行，我是您的智能助手小惠，请问有什么可以帮助您？
+              #         greeting_interruptable: false
               #         greeting_configs:
               #           delay_ms: 0
-              #           interruptable: false
               #           uninterruptible_asr_policy: merge_reply
               #           audio_download_timeout_ms: 1000
               #           audio_pcm_sample_rate: 16000
@@ -926,10 +924,10 @@ paths:
                         - role: system
                           content: 'You are a professional AI assistant. User name is {{user_name}}.'
                       greeting_message: '您好{{user_name}}，我是{{company_name}}的智能助手，有什么可以帮您？'
+                      greeting_interruptable: false
                       greeting_configs:
                         mode: single_every
                         delay_ms: 500
-                        interruptable: false
                       failure_message: 抱歉，系统出现问题，请稍后再试。
                       max_history: 64
                       input_modalities:
@@ -1900,6 +1898,7 @@ paths:
                                 - `greeting`：因智能体播报问候语而开始。
                                 - `silence_timeout`：因智能体静音超时而开始。
                                 - `api_speak`：因调用[播报自定义信息](/zh-CN/api-reference/api-ref/conversational-ai/speak)接口播报信息而开始。
+                                - `api_think`：因 API 调用思考而开始。
                             metadata:
                               $ref: '#/components/schemas/sos_metadata'
                               description: 开始附加元数据，根据 `type` 字段的不同，包含不同的字段。
@@ -1980,16 +1979,13 @@ components:
       name: Authorization
       in: header
       description: |
-       发送 HTTP 请求时，你需要从以下鉴权方式中任选其一：
-        1. **（推荐）使用 RTC Token**：将用于声网对话式 AI 引擎项目使用的 RTC Token 填入 `Authorization` 字段。你可以选择以下方式获取 Token：
-            - 测试环境下，你可以从[声网控制台](https://console.shengwang.cn/)为你的项目生成临时 Token（有效期为 24 小时）。
-            - 生产环境下，你可以参考[使用 Token 鉴权](/zh-CN/ai/build/http-basic-auth#使用-rtc-token-鉴权推荐)部署 Token 服务器以生成 Token。
-              - 传参示例：`Authorization: agora token="007abcxxxxxxx123"`
-        2. **使用 Basic Auth**：参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
-              - 传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
+        发送 HTTP 请求时，你需要使用 Basic Auth。参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
+
+        传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
       required: true
       schema:
         type: string
+        example: Basic NDI1OTQ3N2I4MzYy...YwZjA=
     appid:
       name: appid
       in: path
@@ -2319,13 +2315,14 @@ components:
             轮次中断原因：
             - `start_of_speech`：新一条语音请求开始。
             - `api_speak`：因调用[播报自定义信息](/zh-CN/api-reference/api-ref/conversational-ai/speak)接口播报信息而中断。
+            - `api_think`：因 API 调用思考而中断。
             - `api_interrupt`：因调用[打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)接口而中断。
             - `api_leave`：因调用[停止对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/leave)接口离开频道而中断。
             - `user_no_longer_present`：因智能体检测不到可订阅用户而中断。
         transport:
           type: string
           description: |
-            传输协议（`caused_by` 为 `api_speak` 或 `api_interrupt` 时返回）：
+            传输协议（`caused_by` 为 `api_speak`、`api_interrupt` 或 `api_think` 时返回）：
             - `http`：HTTP 协议。
             - `rtm`：通过 RTM Presence 通道传输。
     eos_metadata_ignored:
@@ -2340,6 +2337,7 @@ components:
             - `semantic`：在[创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时开启优雅打断功能（`turn_detection.config.end_of_speech.mode` 为 `semantic`）后，因语义规则判断无需响应而被忽略。
             - `keywords`：在[创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)时开启基于关键词的对话开始检测功能（`turn_detection.config.start_of_speech.mode` 为 `keywords`）后，因未命中轮次开始检测关键词导致该轮对话被忽略。
             - `disable`：因对话轮次检测功能设置为不可打断，导致该轮对话被忽略。
+            - `no_asr_result`：因未识别到 ASR 结果，导致该轮对话被忽略。
     eos_metadata_error:
       title: error
       type: object
@@ -2350,6 +2348,7 @@ components:
           description: |
             错误类型，可能包含以下值：
             - `LLM_REQUEST_ERR`：LLM 请求错误。
+            - `TTS_REQUEST_ERR`：TTS 请求错误。
             - `INTERNAL_ERR`：内部错误。
         details:
           type: string
@@ -2363,6 +2362,7 @@ components:
         - $ref: '#/components/schemas/sos_metadata_greeting'
         - $ref: '#/components/schemas/sos_metadata_silence_timeout'
         - $ref: '#/components/schemas/sos_metadata_api_speak'
+        - $ref: '#/components/schemas/sos_metadata_api_think'
     sos_metadata_voice_input:
       title: voice_input
       type: object
@@ -2403,6 +2403,10 @@ components:
             传输协议：
             - `http`：HTTP 协议。
             - `rtm`：通过 RTM Presence 通道传输。
+    sos_metadata_api_think:
+      title: api_think
+      type: object
+      description: API 调用思考附加元数据。
     asr_params:
       title: params
       description: |-
@@ -2411,9 +2415,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/asr_tencent'
         - $ref: '#/components/schemas/asr_microsoft'
-        - $ref: '#/components/schemas/asr_xfyun'
-        - $ref: '#/components/schemas/asr_xfyun_bigmodel'
-        - $ref: '#/components/schemas/asr_xfyun_dialect'
     asr_tencent:
       title: Tencent
       type: object
@@ -2427,49 +2428,6 @@ components:
             "secret_key": secret_key,
             "engine_model_type": "16k_zh",
             "voice_id": "TBgVFCsxdn3i2DGt",
-        }
-        ```
-    asr_xfyun:
-      title: xfyun
-      type: object
-      additionalProperties: {}
-      description: |-
-        讯飞云传统语音转写识别服务，具体协议详见[讯飞官方文档](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html)。以下为示例：
-        ```json
-        "params": {
-            "api_key": "XFYUN_ASR_API_KEY",
-            "app_id": "XFYUN_ASR_APP_ID",
-            "api_secret": "XFYUN_ASR_API_SECRET",
-            "language": "zh_cn"
-        }
-        ```
-    asr_xfyun_bigmodel:
-      title: xfyun_bigmodel
-      type: object
-      additionalProperties: {}
-      description: |-
-        讯飞云语音识别大模型服务，具体协议详见[讯飞官方文档](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html)。以下为示例：
-        ```json
-        "params": {
-            "api_key": "XFYUN_ASR_BIGMODEL_API_KEY",
-            "app_id": "XFYUN_ASR_BIGMODEL_APP_ID",
-            "api_secret": "XFYUN_ASR_BIGMODEL_API_SECRET",
-            "language_name": "cn",
-            "language":"mix"
-        }
-        ```
-    asr_xfyun_dialect:
-      title: xfyun_dialect
-      type: object
-      additionalProperties: {}
-      description: |-
-        讯飞云方言自由说识别服务，具体协议详见[讯飞官方文档](https://www.xfyun.cn/doc/spark/asr_llm/rtasr_llm.html)。以下为示例：
-        ```json
-        "params": {
-            "app_id": "XFYUN_ASR_DIALOG_APP_ID",
-            "access_key_id": "XFYUN_ASR_DIALOG_ACCESS_KEY_ID",
-            "access_key_secret":"XFYUN_ASR_DIALOG_ACCESS_KEY_SECRET",
-            "language": "zh-CN"
         }
         ```
     asr_microsoft:
@@ -2529,7 +2487,7 @@ components:
       type: object
       additionalProperties: {}
       description: |-
-        Spatius 数字人配置参数。以下为示例：
+        Spatius 数字人配置参数，具体协议详见[Spatius 官方文档](https://docs.spatius.ai/agora-convoai/convo-ai-agent)。以下为示例：
         ```json
         "params": {
             "spatius_api_key": "spatius_api_key",
@@ -2546,10 +2504,10 @@ components:
         - `spatius_app_id`：（必需）String。Spatius App ID。
         - `spatius_avatar_id`：（必需）String。要渲染的数字人形象 ID。
         - `agora_uid`：（必需）String。Avatar Publisher 的 Agora UID，必须独立于用户 UID 和 Agent UID。
-        - `agora_token`：（可选）String。为 `agora_uid` 在目标频道生成的 RTC Token。
+        - `agora_token`：（必需）String。为 `agora_uid` 在目标频道生成的 RTC Token。
         - `region`：（可选）String。Spatius 服务节点。中国大陆场景可设为 `cn-beijing`。
         - `sample_rate`：（可选）Integer。音频采样率，建议与 `tts.params.audio_setting.sample_rate` 保持一致，通常为 `16000` 或 `24000`。
-        - `session_expire_minutes`：（可选）Integer。Spatius 会话有效时长，单位为分钟，默认为 `30`。
+        - `session_expire_minutes`：（可选）Integer。Spatius token 有效时长，单位为分钟，默认为 `30`。
     filler_words_trigger_config:
       title: config
       description: |-

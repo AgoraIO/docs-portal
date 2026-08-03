@@ -427,7 +427,7 @@ client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => {
 </Tabs>
 
 :::info[信息]
-`*.rtnsvc.com`、`*.edge.rtnsvc.com`、`*.rtesvc.com` 和 `*.edge.rtesvc.com` 为 Simulcast 功能相关域名。只有使用 Simulcast 功能的业务，才需要在防火墙中额外配置这些域名。
+为提升公网访问质量，建议在防火墙白名单中添加上述域名。
 :::
 
 ### 端口
@@ -499,17 +499,25 @@ client.join("<YOUR TOKEN>", "<YOUR CHANNEL>").then(() => {
 
 参考以下步骤设置防火墙，即可在网络受限的环境下使用声网的服务：
 
-1. 把以下域名添加到防火墙的白名单中：
+1. 根据你集成的小程序 SDK 版本，把对应域名添加到防火墙的白名单中：
 
-    ```shell
-   	miniapp.agoraio.cn
-   	miniapp-1.agoraio.cn
-   	miniapp-2.agoraio.cn
-   	miniapp-3.agoraio.cn
-   	miniapp-4.agoraio.cn
-   	uni-webcollector.agora.io
-   	miniapp.agoraio.cn
-    ```
+   ```text tab="v2.5.3 及以上版本" tabGroup="mini-program-sdk-version"
+   miniapp.agoraio.cn
+   uap-ap-web-1.agora.io
+   uap-ap-web-2.agoraio.cn
+   uap-ap-web-3.agora.io
+   uap-ap-web-4.agoraio.cn
+   report-ad.agoralab.co
+   rest-argus-ad.agoralab.co
+   ```
+
+   ```text tab="v2.4.6 及以下版本" tabGroup="mini-program-sdk-version"
+   miniapp.agoraio.cn
+   miniapp-1.agoraio.cn
+   miniapp-2.agoraio.cn
+   miniapp-3.agoraio.cn
+   miniapp-4.agoraio.cn
+   ```
 
 2. 开放以下端口且不对 IP 地址设限：
 

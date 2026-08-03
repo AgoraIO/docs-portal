@@ -152,7 +152,10 @@ paths:
       description: 更新实时转录翻译任务配置。
       x-docs-sections:
         - position: after-description
-          markdown: 通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。
+          markdown: |-
+            通过 [`join`](join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。
+
+            调用该方法更新转写语言、翻译语言、订阅用户等配置不会重置空闲超时计时器，也不会重置任务最长运行时长计时器。上述计时器的起点固定为任务创建完成时刻。
       operationId: update
       security:
         - Basic Auth: []
@@ -337,11 +340,15 @@ components:
         maxIdleTime:
           type: integer
           description: |
-            可选，最大频道空闲时间，单位为秒。取值范围 [5,2592000]，默认为 30 秒。
-            超出最大频道空闲时间后，转写会自动结束。
-            > 频道空闲：直播频道内无任何主播，或通信频道内无任何用户。
-          minimum: 5
-          maximum: 2592000
+            可选，最大频道空闲时间，单位为秒。
+            - 取值范围 [0,259200]，默认为 30 秒。
+            - `maxIdleTime=0` 表示禁用空闲自动结束。
+            - 超出最大频道空闲时间后，任务会自动结束。
+
+            > - 频道空闲：直播频道内无任何主播，或通信频道内无任何用户。
+            > - 平台还会限制单次任务的最长运行时间，上限为 72 小时（259200 秒）。任务达到该上限后会被强制结束，即使 `maxIdleTime` 为 0 也不例外。
+          minimum: 0
+          maximum: 259200
           default: 30
         rtcConfig:
           $ref: '#/components/schemas/RtcConfig'
@@ -491,6 +498,8 @@ components:
             可选，推送至频道内的字幕数据的编码格式。
             - `true`：使用 JSON 格式推送字幕，数据经过 gzip 压缩（带宽更小，但需解码）。
             - `false`：使用 Protobuf 格式推送字幕（默认）。数据体积更小，适合对传输效率要求高的场景。
+
+            使用 Soniox 供应商时，同一次更新可能同时包含已稳定的前缀片段和仍会变化的后缀片段。JSON 和 Protobuf 两种协议格式都可能在单条消息中携带多个片段。详见[解析转写数据](/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf)。
     CaptionConfig:
       type: object
       description: 可选，字幕录制配置。

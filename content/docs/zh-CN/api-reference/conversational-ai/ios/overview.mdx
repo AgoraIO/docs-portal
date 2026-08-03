@@ -1,13 +1,14 @@
 ---
 title: "API 概览"
 ---
-
 ## ConversationalAIAPI
 
 | API | 描述 |
 |---|---|
 |[`chat`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#chat) | 向智能体发送消息以进行处理。|
 |[`interrupt`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#interrupt) | 打断智能体当前正在进行的语音或任务处理。|
+|[`manualSOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualsos) | 发送手动 SoS 信令。|
+|[`manualEOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualeos) | 发送手动 EoS 信令。|
 |[`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#loadaudiosettings) | 设置音频最佳实践参数以获得更佳性能。|
 |[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#subscribemessage) | 订阅频道消息。|
 |[`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#unsubscribemessage) | 取消订阅频道消息。|
@@ -21,6 +22,9 @@ title: "API 概览"
 |---|---|
 |[`onMessageError`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onmessageerror) | 消息处理错误回调。|
 |[`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onmessagereceiptupdated) | 消息回执更新回调。|
+|[`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualsosevent) | 手动 SoS 结果回调。|
+|[`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualeosevent) | 手动 EoS 结果回调。|
+|[`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentmanualeosevent) | 服务端超限自动 EoS 通知回调。|
 |[`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentstatechanged) | 智能体状态变化回调。|
 |[`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentlisteningchanged) | 智能体倾听状态变化回调。|
 |[`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentthinkingchanged) | 智能体思考状态变化回调。|

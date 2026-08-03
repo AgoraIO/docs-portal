@@ -1,7 +1,6 @@
 ---
 title: "API 概览"
 ---
-
 ## IConversationalAIAPI
 
 | API | 描述 |
@@ -12,6 +11,8 @@ title: "API 概览"
 |[`subscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#subscribemessage) | 订阅频道以接收智能体对话事件。|
 |[`unsubscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#unsubscribemessage) | 取消订阅频道并停止接收事件。|
 |[`interrupt`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#interrupt) | 打断智能体当前发言。|
+|[`manualSOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualsos) | 发送手动 SoS 信令。|
+|[`manualEOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualeos) | 发送手动 EoS 信令。|
 |[`loadAudioSettings`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#loadaudiosettings) | 设置音频参数以优化对话性能。|
 |[`destroy`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#destroy) | 销毁 `API` 实例并释放资源。|
 
@@ -21,6 +22,9 @@ title: "API 概览"
 |---|---|
 |[`onMessageError`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onmessageerror) | 消息处理出错回调。|
 |[`onMessageReceiptUpdated`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onmessagereceiptupdated) | 消息回执更新回调。|
+|[`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualsosevent) | 手动 SoS 结果回调。|
+|[`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualeosevent) | 手动 EoS 结果回调。|
+|[`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentmanualeosevent) | 服务端超限自动 EoS 通知回调。|
 |[`onAgentStateChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentstatechanged) | 智能体状态变化回调。|
 |[`onAgentListeningChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentlisteningchanged) | 智能体倾听状态变化回调。|
 |[`onAgentThinkingChanged`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentthinkingchanged) | 智能体思考状态变化回调。|

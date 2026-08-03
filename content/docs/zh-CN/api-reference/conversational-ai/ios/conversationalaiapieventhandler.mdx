@@ -1,7 +1,6 @@
 ---
 title: "ConversationalAIAPIEventHandler 类"
 ---
-
 <a id="onmessageerror"></a>
 ## onMessageError
 
@@ -37,6 +36,66 @@ title: "ConversationalAIAPIEventHandler 类"
 | --- | --- | --- |
 | `agentUserId` | `String` | 智能体的 RTM 用户 ID。 |
 | `messageReceipt` | `MessageReceipt` | 消息回执对象。详见 [`MessageReceipt`](/zh-CN/api-reference/conversational-ai/ios/struct#messagereceipt)。 |
+
+<a id="onusermanualsosevent"></a>
+## onUserManualSosEvent
+
+```swift
+@objc optional func onUserManualSosEvent(agentUserId: String, event: UserManualSosEvent)
+```
+
+手动 SoS 结果回调。
+
+该回调用于接收服务端返回的手动 SoS 处理结果。服务端成功和失败都会通过该回调返回，业务侧可根据 `event.payload.success` 判断结果。
+
+该回调有默认空实现，已有接入方无需强制实现。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID。 |
+| `event` | `UserManualSosEvent` | 手动 SoS 事件对象。详见 [`UserManualSosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#usermanualsosevent)。 |
+
+<a id="onusermanualeosevent"></a>
+## onUserManualEosEvent
+
+```swift
+@objc optional func onUserManualEosEvent(agentUserId: String, event: UserManualEosEvent)
+```
+
+手动 EoS 结果回调。
+
+该回调用于接收服务端返回的手动 EoS 处理结果。服务端成功和失败都会通过该回调返回，业务侧可根据 `event.payload.success` 判断结果。
+
+该回调有默认空实现，已有接入方无需强制实现。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID。 |
+| `event` | `UserManualEosEvent` | 手动 EoS 事件对象。详见 [`UserManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#usermanualeosevent)。 |
+
+<a id="onagentmanualeosevent"></a>
+## onAgentManualEosEvent
+
+```swift
+@objc optional func onAgentManualEosEvent(agentUserId: String, event: AgentManualEosEvent)
+```
+
+服务端超限自动 EoS 通知回调。
+
+当用户单轮音频持续时间超过服务端阈值时，服务端会主动结束当前用户发言，并通过该回调通知客户端。该事件不是 `manualEOS()` 的调用结果。
+
+该回调有默认空实现，已有接入方无需强制实现。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID。 |
+| `event` | `AgentManualEosEvent` | 服务端超限自动 EoS 事件对象。详见 [`AgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/struct#agentmanualeosevent)。 |
 
 <a id="onagentstatechanged"></a>
 ## onAgentStateChanged
