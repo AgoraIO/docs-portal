@@ -7,7 +7,7 @@ Agora uses Protocol Buffers (protobuf) to serialize transcription data. Protobuf
 
 ## Understand the tech
 
-Agora Real-Time STT provides the `SttMessage.proto` file that defines the message format for speech-to-text conversion. This format serializes transcribed text data into an efficient transmission format, such as binary or JSON, for transmission through the data stream. This guide explains how to generate target language code using the Protobuf Compiler `protoc`, deserialize the received data stream, and extract specific text fields from the deserialized data structure.
+Agora Real-Time STT supports transmitting transcription and translation results through the data stream in either Protobuf or JSON format. Protobuf is used by default. If you set `enableJsonProtocol` to `true` when calling [`join`](/en/api-reference/api-ref/speech-to-text/join), the service uses JSON format instead. This guide explains how to parse both Protobuf and JSON data on the receiving end, and how to extract specific text fields from the parsed data structure.
 
 ## Prerequisites
 
@@ -31,6 +31,8 @@ Since the format of Protobuf may vary across versions, best practice is to ensur
 :::
 
 ## Parse transcription data using Protobuf
+
+This section explains how to use `protoc` to generate sample code in different languages to deserialize received Protobuf data. If you use JSON format instead, skip directly to [JSON protocol data structure](#json-protocol-data-structure) to parse the messages.
 
 Follow these steps to write a script that calls the `protoc` compiler to generate code in different languages.
 
@@ -523,13 +525,83 @@ Indicates whether this sentence is the final translation result.
 | `culture`  | string   | The source language of the transcription.     |
 | `words`    | repeated | An array of transcription results. |
 
+:::info
+When using the Soniox provider, a single Protobuf `Text` message can carry multiple segments. For example, the `words[]` array in a transcription message or the `trans[]` array in a translation message can have a length greater than `1`. Do not assume that a single data stream message contains only one transcription or translation segment.
+:::
+
+### JSON protocol data structure
+
+If you set `enableJsonProtocol` to `true` when calling [`join`](/en/api-reference/api-ref/speech-to-text/join), the service pushes caption data in JSON format instead. The top-level JSON object contains a `transcript` or `translation` field:
+
+- `transcript`: The transcription result.
+- `translation`: The translation result.
+
+When using the Soniox provider, the JSON protocol uses `results[]` to explicitly carry one or more segments. For a single segment, `results[]` has a length of `1`. For a mixed result, a single message can contain both a stabilized prefix segment and a segment that may still change, in which case `results[]` has a length greater than `1`.
+
+:::caution
+This is a breaking change to the JSON client protocol. If your client uses the JSON protocol, you must upgrade it together with the server. After upgrading, do not assume that a single data stream message corresponds to only one transcription or translation segment. Iterate over `results[]` to process each segment, and handle messages where `results[]` is an empty array.
+:::
+
+#### `transcript` fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `uid` | Number | The user ID of the audio stream. |
+| `textTs` | Number | The primary timestamp for this batch of transcription results, taken from the `text_id` of the first segment. |
+| `offset` | Number | The start time of this batch of transcription results, in milliseconds. |
+| `duration` | Number | The duration of this batch of transcription results, in milliseconds. |
+| `language` | String | The source language of the first transcription segment. |
+| `text` | String | The transcription text. |
+| `isFinal` | Boolean | Whether the transcription text is the final result. |
+| `sentenceId` | Number | The sentence-level aggregation unit ID. Indicates that the transcription segments in `results[]` belong to the same sentence or aggregation round. |
+| `results` | Array | An array of transcription segments. See [`transcript.results` fields](#transcriptresults-fields). |
+
+#### `transcript.results` fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `text` | String | The text of the current transcription segment. |
+| `isFinal` | Boolean | Whether the current transcription segment is the final result. |
+| `offset` | Number | The start time of the current transcription segment, in milliseconds. |
+| `duration` | Number | The duration of the current transcription segment, in milliseconds. |
+
+#### `translation` fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `uid` | Number | The user ID of the audio stream. |
+| `textTs` | Number | The primary timestamp for this batch of translation results, taken from the `text_id` of the first translation segment. |
+| `offset` | Number | The start time of this batch of translation results, in milliseconds. |
+| `duration` | Number | The duration of this batch of translation results, in milliseconds. |
+| `isFinal` | Boolean | Whether the translation result is the final result. |
+| `sentenceId` | Number | The sentence-level aggregation unit ID. Indicates that the translation segments in `results[]` belong to the same sentence or aggregation round. |
+| `results0` | Object | The translation result field retained for backward compatibility. Its structure is unchanged. |
+| `results` | Array | An array of translation segments. See [`translation.results` fields](#translationresults-fields). |
+| `original_transcript` | Object | The original transcription result. Present only when returning the original text is enabled. |
+
+#### `translation.results` fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `language` | String | The target language of the translation. |
+| `texts` | Array | An array of translated texts for the current segment. |
+| `isFinal` | Boolean | Whether the current translation segment is the final result. |
+
+#### `original_transcript` fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `language` | String | The source language of the original text. |
+| `text` | String | The merged original text. |
+| `results` | Array | An array of original text segments. Each item includes `text` and `isFinal`. |
+
 ### Translate and transcribe examples
 
-This section shows sample output from the STT service for transcribed and translated sentences.
+This section shows sample output from the STT service for transcribed and translated sentences, in both Protobuf and JSON format.
 
 #### Transcribe
 
-<Tabs items={["Protobuf", "JSON"]}>
+<Tabs items={["Protobuf", "JSON", "JSON (mixed)"]}>
 <Tab>
 
 ```js
@@ -552,13 +624,75 @@ time: 1753359518654
 ```json
 {
     "transcript": {
-        "uid": 222,
-        "language": "zh-CN",
-        "text": "北选手",
-        "isFinal": false,
-        "offset": 1751438272384,
-        "duration": 760,
-        "textTs": 1751438273939
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 200,
+        "language": "en-US",
+        "text": "Hello.",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": [
+            {
+                "text": "Hello.",
+                "isFinal": true,
+                "offset": 1000,
+                "duration": 200
+            }
+        ]
+    }
+}
+```
+
+</Tab>
+
+<Tab>
+
+The following example shows a single JSON message that contains both a stabilized prefix segment and a segment that may still change:
+
+```json
+{
+    "transcript": {
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 500,
+        "language": "en-US",
+        "text": "Hello.",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": [
+            {
+                "text": "Hello.",
+                "isFinal": true,
+                "offset": 1000,
+                "duration": 200
+            },
+            {
+                "text": "How",
+                "isFinal": false,
+                "offset": 1300,
+                "duration": 200
+            }
+        ]
+    }
+}
+```
+
+After sending a message that contains `results[]`, the service also sends a follow-up message with `results` set to an empty array:
+
+```json
+{
+    "transcript": {
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 500,
+        "language": "en-US",
+        "text": "Hello.",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": []
     }
 }
 ```
@@ -597,22 +731,76 @@ original_transcript {
 
 ```json
 {
-  "translation": {
-      "uid": 222,
-      "isFinal": true,
-      "offset": 1751438270274,
-      "duration": 1320,
-      "textTs": 1751438272825,
-      "results0": {
-          "language": "ja-JP",
-          "texts": [
-              "4月13日。 "
-          ]
-      },
-      "original_transcript": {
-          "language": "zh-CN",
-          "text": "4月13日。"
-      }
+    "translation": {
+        "uid": 42,
+        "isFinal": true,
+        "offset": 1000,
+        "duration": 500,
+        "textTs": 1710000012345,
+        "sentenceId": 1710000012000,
+        "results0": {
+            "language": "es-ES",
+            "texts": [
+                "Hola."
+            ]
+        },
+        "results": [
+            {
+                "language": "es-ES",
+                "texts": [
+                    "Hola."
+                ],
+                "isFinal": true
+            },
+            {
+                "language": "es-ES",
+                "texts": [
+                    "Mundo."
+                ],
+                "isFinal": false
+            }
+        ],
+        "original_transcript": {
+            "language": "en-US",
+            "text": "Hello.",
+            "results": [
+                {
+                    "text": "Hello.",
+                    "isFinal": true
+                },
+                {
+                    "text": "world",
+                    "isFinal": false
+                }
+            ]
+        }
+    }
+}
+```
+
+After sending a message that contains `results[]`, the service also sends a follow-up message with `results` set to an empty array:
+
+```json
+{
+    "translation": {
+        "uid": 42,
+        "isFinal": true,
+        "offset": 1000,
+        "duration": 500,
+        "textTs": 1710000012345,
+        "sentenceId": 1710000012000,
+        "results0": {
+            "language": "es-ES",
+            "texts": [
+                "Hola."
+            ]
+        },
+        "results": [],
+        "original_transcript": {
+            "language": "en-US",
+            "text": "Hello.",
+            "results": []
+        }
     }
 }
 ```
