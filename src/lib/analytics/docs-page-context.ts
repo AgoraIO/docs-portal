@@ -1,23 +1,25 @@
 import type { DocsPageType } from './docs-page-type';
 
-export type DocsPageAnalyticsContext = {
-  contentId: string;
-  journeyStage: string;
-  navSection: string;
-  navSectionTitle: string;
-  pageType: DocsPageType;
-  pathname: string;
-  title: string;
-  version: string;
-};
-
-const NAV_SECTION_TITLES: Record<string, string> = {
+const NAV_SECTION_TITLES = {
   build: 'Build',
   'get-started': 'Get started',
   learn: 'Learn',
   overview: 'Overview',
   reference: 'Reference',
   troubleshoot: 'Troubleshooting',
+} as const;
+
+export type DocsNavSection = keyof typeof NAV_SECTION_TITLES;
+
+export type DocsPageAnalyticsContext = {
+  contentId: string;
+  journeyStage: DocsNavSection;
+  navSection: DocsNavSection;
+  navSectionTitle: string;
+  pageType: DocsPageType;
+  pathname: string;
+  title: string;
+  version: string;
 };
 
 export function createDocsPageAnalyticsContext({
@@ -56,7 +58,10 @@ function normalizeContentId(sourcePath: string) {
     .replace(/\/index$/i, '');
 }
 
-function inferCanonicalNavSection(pathname: string, pageType: DocsPageType) {
+function inferCanonicalNavSection(
+  pathname: string,
+  pageType: DocsPageType,
+): DocsNavSection {
   const normalized = pathname.toLowerCase();
 
   if (

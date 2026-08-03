@@ -63,6 +63,18 @@ const loadPages = async () => [
   },
 ];
 
+function createDeferredSearch() {
+  const resolvers: Array<(value: never[]) => void> = [];
+  const search = vi.fn(
+    () =>
+      new Promise<never[]>((resolve) => {
+        resolvers.push(resolve);
+      }),
+  );
+
+  return { resolvers, search };
+}
+
 describe('DocsSearchDialog', () => {
   beforeEach(() => {
     analyticsMocks.captureDocsSearchCompleted.mockReset();
@@ -411,13 +423,7 @@ describe('DocsSearchDialog', () => {
   it('does not report an in-flight Algolia request after the product filter changes', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
-    const deferreds: Array<(value: never[]) => void> = [];
-    const search = vi.fn(
-      () =>
-        new Promise<never[]>((resolve) => {
-          deferreds.push(resolve);
-        }),
-    );
+    const { resolvers, search } = createDeferredSearch();
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
       search,
@@ -467,13 +473,13 @@ describe('DocsSearchDialog', () => {
     await act(async () => {
       voiceOption.click();
       expect(search).toHaveBeenCalledTimes(1);
-      deferreds[0]([]);
+      resolvers[0]([]);
     });
     expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
 
     await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
     await act(async () => {
-      deferreds[1]([]);
+      resolvers[1]([]);
     });
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
@@ -482,6 +488,68 @@ describe('DocsSearchDialog', () => {
       locale: 'en',
       platformFilter: null,
       productScope: 'product:voice',
+      provider: 'algolia',
+      queryLength: 3,
+      resultCount: 0,
+      status: 'success',
+    });
+  });
+
+  it('does not report an in-flight Algolia request after the platform filter changes', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    const { resolvers, search } = createDeferredSearch();
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search,
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'vad' } },
+    );
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+
+    fireEvent.click(
+      await screen.findByRole('combobox', { name: 'All platforms' }),
+    );
+    const androidOption = await screen.findByText('Android');
+    await act(async () => {
+      androidOption.click();
+      expect(search).toHaveBeenCalledTimes(1);
+      resolvers[0]([]);
+    });
+    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
+
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+    await act(async () => {
+      resolvers[1]([]);
+    });
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+      locale: 'en',
+      platformFilter: 'android',
+      productScope: null,
       provider: 'algolia',
       queryLength: 3,
       resultCount: 0,
@@ -653,13 +721,7 @@ describe('DocsSearchDialog', () => {
     // Hand out a controllable promise per search call so we can leave the first
     // request in flight while the second fires, then resolve the (superseded)
     // first one — the exact race that flips fumadocs' isLoading off early.
-    const deferreds: Array<(value: never[]) => void> = [];
-    const search = vi.fn(
-      () =>
-        new Promise<never[]>((resolve) => {
-          deferreds.push(resolve);
-        }),
-    );
+    const { resolvers, search } = createDeferredSearch();
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
       search,
@@ -700,7 +762,7 @@ describe('DocsSearchDialog', () => {
     // finally() flips fumadocs' isLoading off). The second is still pending, so
     // we must stay in the loading state — no empty message.
     await act(async () => {
-      deferreds[0]([]);
+      resolvers[0]([]);
     });
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     expect(screen.getByTestId('search-loading')).toBeInTheDocument();
@@ -708,7 +770,7 @@ describe('DocsSearchDialog', () => {
 
     // Once the latest request settles empty, the message is correct.
     await act(async () => {
-      deferreds[1]([]);
+      resolvers[1]([]);
     });
     expect(
       await screen.findByText('No matching pages found.'),

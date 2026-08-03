@@ -377,17 +377,20 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
+  const invalidateCurrentSearch = useCallback(() => {
+    latestSearchRequestRef.current += 1;
+    pendingLocalCompletionRef.current = null;
+  }, []);
   const handleScopeChange = useCallback(
     (nextScopeId: string | null) => {
       if (nextScopeId === scopeId) {
         return;
       }
 
-      latestSearchRequestRef.current += 1;
-      pendingLocalCompletionRef.current = null;
+      invalidateCurrentSearch();
       setScopeId(nextScopeId);
     },
-    [scopeId],
+    [invalidateCurrentSearch, scopeId],
   );
   const handlePlatformFilterChange = useCallback(
     (nextPlatform: string | null) => {
@@ -396,11 +399,10 @@ export function DocsSearchDialog({
         return;
       }
 
-      latestSearchRequestRef.current += 1;
-      pendingLocalCompletionRef.current = null;
+      invalidateCurrentSearch();
       setPlatformFilter(normalizedPlatform);
     },
-    [platformFilter],
+    [invalidateCurrentSearch, platformFilter],
   );
 
   async function handleSelect(url: string, rank?: number) {
