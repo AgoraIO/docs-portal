@@ -420,142 +420,112 @@ describe('DocsSearchDialog', () => {
     });
   });
 
-  it('does not report an in-flight Algolia request after the product filter changes', async () => {
-    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
-    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
-    const { resolvers, search } = createDeferredSearch();
-    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
-      deps: ['mock-algolia'],
-      search,
-    });
-    const rootRoute = createRootRoute({ component: () => <Outlet /> });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
-      component: () => (
-        <AppProviders>
-          <DocsSearchDialog
-            loadPages={loadPages}
-            locale="en"
-            mode="desktop"
-            productScopes={[
-              {
-                description: 'Real-time voice.',
-                group: 'Realtime Media',
-                id: 'product:voice',
-                label: 'Voice Calling',
-                scope: { field: 'product', value: 'voice' },
-              },
-            ]}
-          />
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/en/introduction/about-agora'],
-      }),
-    });
-
-    render(<RouterProvider router={router} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
-    fireEvent.input(
-      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-      { target: { value: 'vad' } },
-    );
-    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
-
-    fireEvent.click(
-      await screen.findByRole('combobox', { name: 'All products' }),
-    );
-    const voiceOption = await screen.findByText('Voice Calling');
-    await act(async () => {
-      voiceOption.click();
-      expect(search).toHaveBeenCalledTimes(1);
-      resolvers[0]([]);
-    });
-    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
-
-    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
-    await act(async () => {
-      resolvers[1]([]);
-    });
-    await waitFor(() => {
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
-    });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
+  it.each([
+    {
+      filterKind: 'product',
+      filterName: 'All products',
+      optionName: 'Voice Calling',
       platformFilter: null,
       productScope: 'product:voice',
-      provider: 'algolia',
-      queryLength: 3,
-      resultCount: 0,
-      status: 'success',
-    });
-  });
-
-  it('does not report an in-flight Algolia request after the platform filter changes', async () => {
-    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
-    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
-    const { resolvers, search } = createDeferredSearch();
-    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
-      deps: ['mock-algolia'],
-      search,
-    });
-    const rootRoute = createRootRoute({ component: () => <Outlet /> });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
-      component: () => (
-        <AppProviders>
-          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/en/introduction/about-agora'],
-      }),
-    });
-
-    render(<RouterProvider router={router} />);
-    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
-    fireEvent.input(
-      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
-      { target: { value: 'vad' } },
-    );
-    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
-
-    fireEvent.click(
-      await screen.findByRole('combobox', { name: 'All platforms' }),
-    );
-    const androidOption = await screen.findByText('Android');
-    await act(async () => {
-      androidOption.click();
-      expect(search).toHaveBeenCalledTimes(1);
-      resolvers[0]([]);
-    });
-    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
-
-    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
-    await act(async () => {
-      resolvers[1]([]);
-    });
-    await waitFor(() => {
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
-    });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
+    },
+    {
+      filterKind: 'platform',
+      filterName: 'All platforms',
+      optionName: 'Android',
       platformFilter: 'android',
       productScope: null,
-      provider: 'algolia',
-      queryLength: 3,
-      resultCount: 0,
-      status: 'success',
-    });
-  });
+    },
+  ])(
+    'does not report an in-flight Algolia request after the $filterKind filter changes',
+    async ({
+      filterKind,
+      filterName,
+      optionName,
+      platformFilter,
+      productScope,
+    }) => {
+      vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+      vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+      const { resolvers, search } = createDeferredSearch();
+      vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+        deps: ['mock-algolia'],
+        search,
+      });
+      const rootRoute = createRootRoute({ component: () => <Outlet /> });
+      const docsRoute = createRoute({
+        getParentRoute: () => rootRoute,
+        path: '/$locale/$tab/$slug',
+        component: () => (
+          <AppProviders>
+            <DocsSearchDialog
+              loadPages={loadPages}
+              locale="en"
+              mode="desktop"
+              productScopes={
+                filterKind === 'product'
+                  ? [
+                      {
+                        description: 'Real-time voice.',
+                        group: 'Realtime Media',
+                        id: 'product:voice',
+                        label: 'Voice Calling',
+                        scope: { field: 'product', value: 'voice' },
+                      },
+                    ]
+                  : []
+              }
+            />
+          </AppProviders>
+        ),
+      });
+      const router = createRouter({
+        routeTree: rootRoute.addChildren([docsRoute]),
+        history: createMemoryHistory({
+          initialEntries: ['/en/introduction/about-agora'],
+        }),
+      });
+
+      render(<RouterProvider router={router} />);
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'Search docs' }),
+      );
+      fireEvent.input(
+        await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+        { target: { value: 'vad' } },
+      );
+      await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+
+      fireEvent.click(
+        await screen.findByRole('combobox', { name: filterName }),
+      );
+      const filterOption = await screen.findByText(optionName);
+      await act(async () => {
+        filterOption.click();
+        expect(search).toHaveBeenCalledTimes(1);
+        resolvers[0]([]);
+      });
+      expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
+
+      await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+      await act(async () => {
+        resolvers[1]([]);
+      });
+      await waitFor(() => {
+        expect(
+          analyticsMocks.captureDocsSearchCompleted,
+        ).toHaveBeenCalledOnce();
+      });
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+        locale: 'en',
+        platformFilter,
+        productScope,
+        provider: 'algolia',
+        queryLength: 3,
+        resultCount: 0,
+        status: 'success',
+      });
+    },
+  );
 
   it('uses Algolia search when configured and does not load the static page index', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
