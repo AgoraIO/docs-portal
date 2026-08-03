@@ -11,7 +11,7 @@ Released on August 5, 2026
 
 #### New features
 
-Included in this release:
+Included in this release: 
 
 - **New webhook event for an expiring RTC Token**
 
