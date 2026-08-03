@@ -7,6 +7,8 @@ const UNRESOLVED_DECISIONS = new Set([
   'update-api-ref-source',
   'no-equivalent',
 ]);
+const API_REF_AUDIT_EVIDENCE =
+  'API Reference link audit row marked add-301/high';
 
 export function parseTriageRows(markdown) {
   return markdown
@@ -58,9 +60,25 @@ export function verifyApiRefRedirectTriage({
 }) {
   const errors = [];
   const triageRows = parseTriageRows(triageMarkdown);
+  const add301HighKeys = new Set(
+    triageRows
+      .filter((row) => row.decision === 'add-301' && row.confidence === 'high')
+      .map(pathSearchKey),
+  );
   const sourceRulesByPathSearch = new Map(
     redirectsConfig.rules.map((rule) => [pathSearchKey(rule), rule]),
   );
+
+  for (const rule of redirectsConfig.rules) {
+    if (
+      hasApiRefAuditEvidence(rule) &&
+      !add301HighKeys.has(pathSearchKey(rule))
+    ) {
+      errors.push(
+        `API Reference audit redirect is not add-301/high in triage: ${rule.legacyUrl}`,
+      );
+    }
+  }
 
   for (const row of triageRows) {
     const sourceRule = sourceRulesByPathSearch.get(pathSearchKey(row));
@@ -107,6 +125,12 @@ export function verifyApiRefRedirectTriage({
   return errors;
 }
 
+function hasApiRefAuditEvidence(rule) {
+  return (rule.evidence ?? []).some((item) =>
+    item.includes(API_REF_AUDIT_EVIDENCE),
+  );
+}
+
 function verifyStaticRedirect({ errors, row, sourceRule, staticRedirects }) {
   const staticRule = staticRedirects.find(
     (rule) =>
@@ -145,11 +169,12 @@ function verifyVercelRedirect({
   );
 
   if (bulkRule) {
-    if (Boolean(bulkRule.preserveQueryParams) !== sourceRule.preserveSearch) {
-      errors.push(
-        `Vercel redirect preserveQueryParams mismatch for ${row.legacyUrl}: expected ${sourceRule.preserveSearch}, got ${Boolean(bulkRule.preserveQueryParams)}`,
-      );
-    }
+    verifyVercelPreserveQueryParams({
+      errors,
+      row,
+      rule: bulkRule,
+      sourceRule,
+    });
     return;
   }
 
@@ -163,6 +188,24 @@ function verifyVercelRedirect({
 
   if (!queryRule) {
     errors.push(`Vercel redirect artifact missing: ${row.legacyUrl}`);
+    return;
+  }
+
+  verifyVercelPreserveQueryParams({ errors, row, rule: queryRule, sourceRule });
+}
+
+function verifyVercelPreserveQueryParams({ errors, row, rule, sourceRule }) {
+  if (!Object.hasOwn(rule, 'preserveQueryParams')) {
+    errors.push(
+      `Vercel redirect preserveQueryParams missing for ${row.legacyUrl}: expected ${sourceRule.preserveSearch}`,
+    );
+    return;
+  }
+
+  if (rule.preserveQueryParams !== sourceRule.preserveSearch) {
+    errors.push(
+      `Vercel redirect preserveQueryParams mismatch for ${row.legacyUrl}: expected ${sourceRule.preserveSearch}, got ${rule.preserveQueryParams}`,
+    );
   }
 }
 

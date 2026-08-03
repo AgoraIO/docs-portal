@@ -111,6 +111,7 @@ function createVercelRedirects(rules) {
           value,
         })),
         statusCode: 301,
+        preserveQueryParams: rule.preserveSearch,
       });
     }
   }

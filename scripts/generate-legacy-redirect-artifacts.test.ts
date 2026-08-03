@@ -174,6 +174,7 @@ describe('generate-legacy-redirect-artifacts', () => {
         },
       ],
       statusCode: 301,
+      preserveQueryParams: false,
     });
   });
 });

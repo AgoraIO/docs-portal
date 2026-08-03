@@ -108,6 +108,7 @@ const vercelConfig = {
         },
       ],
       statusCode: 301,
+      preserveQueryParams: false,
     },
   ],
 };
@@ -170,6 +171,34 @@ describe('verify-api-ref-docs-redirects', () => {
     );
   });
 
+  it('rejects API Reference audit redirects that are not add-301/high triage rows', () => {
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects,
+      redirectsConfig: {
+        rules: [
+          ...redirectsConfig.rules,
+          {
+            legacyUrl: 'https://docs.agora.io/en/covered/legacy?platform=Web',
+            legacyPath: '/en/covered/legacy',
+            legacySearch: '?platform=Web',
+            target: '/en/current/wrong',
+            preserveSearch: false,
+            evidence: [
+              'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md',
+            ],
+          },
+        ],
+      },
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig,
+    });
+
+    expect(result).toContain(
+      'API Reference audit redirect is not add-301/high in triage: https://docs.agora.io/en/covered/legacy?platform=Web',
+    );
+  });
+
   it('rejects Vercel bulk redirects that preserve removed legacy query strings', () => {
     const result = verifyApiRefRedirectTriage({
       bulkRedirects: [
@@ -189,6 +218,24 @@ describe('verify-api-ref-docs-redirects', () => {
 
     expect(result).toContain(
       'Vercel redirect preserveQueryParams mismatch for https://docs.agora.io/en/query/legacy?platform=Web: expected false, got true',
+    );
+  });
+
+  it('rejects Vercel query redirects that omit explicit preserveQueryParams', () => {
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects,
+      redirectsConfig,
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig: {
+        redirects: vercelConfig.redirects.map(
+          ({ preserveQueryParams: _preserveQueryParams, ...rule }) => rule,
+        ),
+      },
+    });
+
+    expect(result).toContain(
+      'Vercel redirect preserveQueryParams missing for https://docs.agora.io/en/query/legacy?platform=Web: expected false',
     );
   });
 
@@ -255,6 +302,25 @@ describe('verify-api-ref-docs-redirects', () => {
 
     expect(result).toContain(
       'Vercel redirect preserveQueryParams mismatch for https://docs.agora.io/en/path-only/legacy: expected true, got false',
+    );
+  });
+
+  it('rejects Vercel bulk redirects that omit explicit preserveQueryParams', () => {
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects: bulkRedirects.map(
+        ({ preserveQueryParams: _preserveQueryParams, ...rule }) =>
+          rule.source === '/en/path-only/legacy'
+            ? rule
+            : { ...rule, preserveQueryParams: _preserveQueryParams },
+      ),
+      redirectsConfig,
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig,
+    });
+
+    expect(result).toContain(
+      'Vercel redirect preserveQueryParams missing for https://docs.agora.io/en/path-only/legacy: expected true',
     );
   });
 });

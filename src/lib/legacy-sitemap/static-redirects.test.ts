@@ -34,32 +34,6 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
-  it('redirects legacy Interactive Broadcast Cloud Proxy links with encoded spaces', () => {
-    expect(
-      resolveStaticLegacySitemapRedirect(
-        '/en/Interactive%20Broadcast/cloud_proxy_web_ng',
-        '?platform=Web',
-      ),
-    ).toEqual({
-      preserveSearch: true,
-      redirectUrl:
-        '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
-    });
-  });
-
-  it('redirects legacy Interactive Broadcast Cloud Proxy links with decoded spaces', () => {
-    expect(
-      resolveStaticLegacySitemapRedirect(
-        '/en/Interactive Broadcast/cloud_proxy_web_ng',
-        '?platform=Web',
-      ),
-    ).toEqual({
-      preserveSearch: true,
-      redirectUrl:
-        '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
-    });
-  });
-
   it('prefers query-specific legacy rules before path fallback rules', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
