@@ -1,3 +1,5 @@
+import { PLATFORM_DATASET_KEY } from '../platforms/preference';
+import { isKnownPlatform, normalizePlatformKey } from '../platforms/registry';
 import type { DocsPageType } from './docs-page-type';
 
 export type { DocsPageType } from './docs-page-type';
@@ -6,6 +8,7 @@ export { DOCS_PAGE_TYPES } from './docs-page-type';
 type PostHogClient = typeof import('posthog-js').default;
 
 const POSTHOG_HOST = 'https://us.i.posthog.com';
+const LOCATION_DETAIL_PROPERTY_NAME = /(^|_)(hash|search)$/i;
 const SAFE_PROPERTY_VALUE = /^[a-z0-9][a-z0-9._:-]{0,63}$/i;
 const URL_PROPERTY_NAME = /(href|referrer|url)$/i;
 
@@ -15,8 +18,10 @@ let registeredPageContext: RegisteredDocsPageContext | null = null;
 export type DocsFeedbackValue = 'yes' | 'no';
 
 type RegisteredDocsPageContext = {
+  contentId?: string;
   contentKind?: string;
   locale: string;
+  navSection?: string;
   pageType?: DocsPageType;
   pathname?: string;
   platform?: string;
@@ -44,8 +49,39 @@ export function captureDocsPageFeedback({
   locale: string;
   value: DocsFeedbackValue;
 }) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const { hash, pathname, search } = window.location;
+
   captureStructuredDocsEvent('docs_page_feedback', locale, {
+    hash,
+    locale,
+    pathname,
+    search,
     value,
+  });
+}
+
+export function captureDocsPageViewed({ locale }: { locale: string }) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const context = getDocsPageContext(locale);
+
+  captureStructuredDocsEvent('docs_page_viewed', locale, {
+    content_id: registeredPageContext?.contentId ?? context.docs_pathname,
+    deploy_version: toSafePropertyValue(
+      import.meta.env.VITE_DEPLOY_VERSION,
+      'unknown',
+    ),
+    journey_stage: context.docs_page_type,
+    nav_section: toSafePropertyValue(
+      registeredPageContext?.navSection,
+      context.docs_tab,
+    ),
   });
 }
 
@@ -71,13 +107,15 @@ export function captureDocsSearchCompleted({
   provider,
   queryLength,
   resultCount,
+  status,
 }: {
   locale: string;
   platformFilter?: string | null;
   productScope?: string | null;
   provider: 'algolia' | 'local';
   queryLength: number;
-  resultCount: number;
+  resultCount?: number;
+  status: 'error' | 'success';
 }) {
   captureStructuredDocsEvent('docs_search_completed', locale, {
     platform_filter: toSafePropertyValue(platformFilter),
@@ -85,6 +123,7 @@ export function captureDocsSearchCompleted({
     query_length: queryLength,
     result_count: resultCount,
     search_provider: provider,
+    search_status: status,
   });
 }
 
@@ -252,11 +291,14 @@ function getDocsPageContext(locale: string) {
 
 function inferDocsProduct(parts: string[], tab: string) {
   if (tab === 'realtime-media' || tab === 'solutions') {
-    return toSafePropertyValue(parts[2], tab);
+    const product = parts[2];
+    return !product || product === 'index' || product === 'overview'
+      ? tab
+      : toSafePropertyValue(product, tab);
   }
 
   if (tab === 'api-reference') {
-    return toSafePropertyValue(parts[3] ?? parts[2], tab);
+    return parts[2] === 'api-ref' ? toSafePropertyValue(parts[3], tab) : tab;
   }
 
   return toSafePropertyValue(tab, 'unknown');
@@ -298,8 +340,27 @@ function inferDocsPageType(pathname: string): DocsPageType {
 }
 
 function getSafePlatformFromLocation() {
-  const platform = new URLSearchParams(window.location.search).get('platform');
-  return toSafePropertyValue(platform, 'unknown');
+  const datasetPlatform = normalizePlatformKey(
+    document.documentElement.dataset[PLATFORM_DATASET_KEY] ?? '',
+  );
+
+  if (isKnownPlatform(datasetPlatform)) {
+    return datasetPlatform;
+  }
+
+  const pathPlatform = normalizePlatformKey(
+    window.location.pathname.split('/').filter(Boolean).at(-1) ?? '',
+  );
+
+  if (isKnownPlatform(pathPlatform)) {
+    return pathPlatform;
+  }
+
+  const queryPlatform = normalizePlatformKey(
+    new URLSearchParams(window.location.search).get('platform') ?? '',
+  );
+
+  return isKnownPlatform(queryPlatform) ? queryPlatform : 'unknown';
 }
 
 function getSafeLinkTarget(href: string) {
@@ -377,6 +438,10 @@ function sanitizeAnalyticsProperties(
 }
 
 function sanitizeAnalyticsValue(key: string, value: unknown): unknown {
+  if (typeof value === 'string' && LOCATION_DETAIL_PROPERTY_NAME.test(key)) {
+    return '';
+  }
+
   if (typeof value === 'string' && URL_PROPERTY_NAME.test(key)) {
     return stripUrlQueryAndHash(value);
   }

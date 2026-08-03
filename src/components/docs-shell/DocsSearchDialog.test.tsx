@@ -161,6 +161,7 @@ describe('DocsSearchDialog', () => {
         provider: 'local',
         queryLength: 2,
         resultCount: 1,
+        status: 'success',
       });
     });
 
@@ -282,6 +283,17 @@ describe('DocsSearchDialog', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+      locale: 'en',
+      platformFilter: null,
+      productScope: null,
+      provider: 'local',
+      queryLength: 8,
+      status: 'error',
+    });
   });
 
   it('scopes the Algolia query to a product when a product filter is chosen', async () => {
@@ -539,9 +551,11 @@ describe('DocsSearchDialog', () => {
     // First query fires after the debounce and stays in flight.
     fireEvent.input(input, { target: { value: 'sta' } });
     await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
     // Second query fires while the first is still pending.
     fireEvent.input(input, { target: { value: 'star' } });
     await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
 
     // Resolve the superseded first request (its result is discarded, but its
     // finally() flips fumadocs' isLoading off). The second is still pending, so
@@ -551,6 +565,7 @@ describe('DocsSearchDialog', () => {
     });
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     expect(screen.getByTestId('search-loading')).toBeInTheDocument();
+    expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
 
     // Once the latest request settles empty, the message is correct.
     await act(async () => {
@@ -559,6 +574,18 @@ describe('DocsSearchDialog', () => {
     expect(
       await screen.findByText('No matching pages found.'),
     ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+      locale: 'en',
+      platformFilter: null,
+      productScope: null,
+      provider: 'algolia',
+      queryLength: 4,
+      resultCount: 0,
+      status: 'success',
+    });
   });
 
   it('updates the footer detail as the highlighted result changes', async () => {

@@ -16,6 +16,7 @@ describe('PostHog analytics', () => {
     vi.unstubAllEnvs();
     initMock.mockClear();
     captureMock.mockClear();
+    delete document.documentElement.dataset.docsPlatform;
     window.history.replaceState(
       {},
       '',
@@ -94,6 +95,8 @@ describe('PostHog analytics', () => {
           },
         ],
         $referrer: 'https://example.com/search?q=private',
+        hash: '#overview',
+        search: '?token=secret',
       },
     });
 
@@ -106,12 +109,14 @@ describe('PostHog analytics', () => {
         },
       ],
       $referrer: 'https://example.com/search',
+      hash: '',
+      search: '',
     });
     expect(JSON.stringify(event)).not.toContain('secret');
     expect(JSON.stringify(event)).not.toContain('private');
   });
 
-  it('captures English docs feedback without URL query or fragment data', async () => {
+  it('preserves the legacy docs feedback fields alongside structured context', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
 
     const { captureDocsPageFeedback } = await import('./posthog');
@@ -134,10 +139,12 @@ describe('PostHog analytics', () => {
       docs_platform: 'web',
       docs_product: 'video',
       docs_tab: 'realtime-media',
+      hash: '#start',
+      locale: 'en',
+      pathname: '/en/realtime-media/video/quickstart',
+      search: '?platform=web&token=secret',
       value: 'yes',
     });
-    expect(JSON.stringify(captureMock.mock.calls[0])).not.toContain('#start');
-    expect(JSON.stringify(captureMock.mock.calls[0])).not.toContain('secret');
   });
 
   it('adds registered English docs context to structured events', async () => {
@@ -158,6 +165,7 @@ describe('PostHog analytics', () => {
       provider: 'algolia',
       queryLength: 14,
       resultCount: 3,
+      status: 'success',
     });
 
     await vi.waitFor(() => {
@@ -178,7 +186,126 @@ describe('PostHog analytics', () => {
       query_length: 14,
       result_count: 3,
       search_provider: 'algolia',
+      search_status: 'success',
     });
+  });
+
+  it('captures the canonical docs page view dimensions from registered context', async () => {
+    vi.stubEnv('VITE_DEPLOY_VERSION', '253dabcc');
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed, registerDocsPageContext } = await import(
+      './posthog'
+    );
+
+    registerDocsPageContext({
+      contentId: '/en/realtime-media/video/get-started-sdk',
+      contentKind: 'mdx',
+      locale: 'en',
+      navSection: 'realtime-media',
+      pageType: 'task-guide',
+    });
+    captureDocsPageViewed({ locale: 'en' });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_page_viewed',
+      expect.objectContaining({
+        content_id: '/en/realtime-media/video/get-started-sdk',
+        deploy_version: '253dabcc',
+        journey_stage: 'task-guide',
+        nav_section: 'realtime-media',
+      }),
+    );
+  });
+
+  it('reads the current docs platform from the pathname', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/video/get-started-sdk/android',
+    );
+
+    const { captureDocsSearchOpened } = await import('./posthog');
+
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_opened',
+      expect.objectContaining({ docs_platform: 'android' }),
+    );
+  });
+
+  it('reads the active default or preferred platform from the shared dataset', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/video/get-started-sdk',
+    );
+
+    const { syncPlatformDataset } = await import('../platforms/preference');
+    const { captureDocsSearchOpened } = await import('./posthog');
+
+    syncPlatformDataset('ios');
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_opened',
+      expect.objectContaining({ docs_platform: 'ios' }),
+    );
+  });
+
+  it('keeps tab landing pages at the tab-level product classification', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    const { captureDocsSearchOpened } = await import('./posthog');
+
+    window.history.replaceState({}, '', '/en/realtime-media/overview');
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    window.history.replaceState({}, '', '/en/api-reference/sdks');
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock.mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({ docs_product: 'realtime-media' }),
+    );
+    expect(captureMock.mock.calls[1]?.[1]).toEqual(
+      expect.objectContaining({ docs_product: 'api-reference' }),
+    );
   });
 
   it('strips query strings and fragments from tracked link targets', async () => {

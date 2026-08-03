@@ -20,6 +20,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
+  captureDocsPageViewed,
   captureDocsTocClicked,
   type DocsPageType,
   registerDocsPageContext,
@@ -76,6 +77,8 @@ type DocsArticleReturnLink = {
 };
 
 export function DocsContent({
+  activePath,
+  activeTab,
   analyticsPageType,
   body,
   breadcrumb = [],
@@ -91,6 +94,8 @@ export function DocsContent({
   title,
   toc,
 }: {
+  activePath?: string;
+  activeTab?: string;
   analyticsPageType?: DocsPageType;
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
@@ -151,11 +156,20 @@ export function DocsContent({
 
   useEffect(() => {
     registerDocsPageContext({
+      contentId: activePath,
       contentKind: analyticsContentKind,
       locale: currentLocale,
+      navSection: activeTab,
       pageType: analyticsPageType,
     });
-  }, [analyticsContentKind, analyticsPageType, currentLocale]);
+    captureDocsPageViewed({ locale: currentLocale });
+  }, [
+    activePath,
+    activeTab,
+    analyticsContentKind,
+    analyticsPageType,
+    currentLocale,
+  ]);
 
   useEffect(() => {
     if (!isMdxBody) {

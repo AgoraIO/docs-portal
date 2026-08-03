@@ -112,13 +112,15 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
+  const algoliaEnabled = Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
-  const lastTrackedSearchRef = useRef<string | null>(null);
+  const currentSearchRef = useRef('');
+  const latestSearchRequestRef = useRef(0);
   const searchClient = useMemo(() => {
     const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -138,9 +140,48 @@ export function DocsSearchDialog({
     return {
       ...base,
       async search(query: string) {
+        const requestId = latestSearchRequestRef.current + 1;
+        latestSearchRequestRef.current = requestId;
         setPendingRequests((count) => count + 1);
         try {
-          return await base.search(query);
+          const results = await base.search(query);
+
+          if (
+            latestSearchRequestRef.current === requestId &&
+            currentSearchRef.current === query.trim()
+          ) {
+            captureDocsSearchCompleted({
+              locale: searchLocale,
+              platformFilter,
+              productScope: scopeId,
+              provider: algoliaEnabled ? 'algolia' : 'local',
+              queryLength: query.trim().length,
+              ...(searchIndexFailed
+                ? {}
+                : {
+                    resultCount: Array.isArray(results) ? results.length : 0,
+                  }),
+              status: searchIndexFailed ? 'error' : 'success',
+            });
+          }
+
+          return results;
+        } catch (error) {
+          if (
+            latestSearchRequestRef.current === requestId &&
+            currentSearchRef.current === query.trim()
+          ) {
+            captureDocsSearchCompleted({
+              locale: searchLocale,
+              platformFilter,
+              productScope: scopeId,
+              provider: algoliaEnabled ? 'algolia' : 'local',
+              queryLength: query.trim().length,
+              status: 'error',
+            });
+          }
+
+          throw error;
         } finally {
           setPendingRequests((count) => count - 1);
         }
@@ -150,10 +191,13 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaIndexName,
     algoliaSearchApiKey,
+    algoliaEnabled,
     pages,
     platformFilter,
     searchScope,
+    searchIndexFailed,
     searchLocale,
+    scopeId,
   ]);
   const searchDeps = useMemo(
     () =>
@@ -188,6 +232,7 @@ export function DocsSearchDialog({
     },
     searchDeps,
   );
+  currentSearchRef.current = search.trim();
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
@@ -199,7 +244,6 @@ export function DocsSearchDialog({
   const [debouncePending, setDebouncePending] = useState(false);
   // `algoliaConfig` is a fresh object every render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const algoliaEnabled = Boolean(algoliaConfig);
   useEffect(() => {
     if (!algoliaEnabled || search.trim() === '') {
       setDebouncePending(false);
@@ -225,46 +269,6 @@ export function DocsSearchDialog({
     }
   }, [search]);
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
-  useEffect(() => {
-    if (!(hasQuery && !isBusy)) {
-      return;
-    }
-
-    const resultCount = isSearchUnavailable
-      ? 0
-      : normalizedSearchResults.length;
-    const trackingKey = JSON.stringify([
-      search.trim(),
-      platformFilter,
-      scopeId,
-      resultCount,
-      isSearchUnavailable,
-    ]);
-
-    if (lastTrackedSearchRef.current === trackingKey) {
-      return;
-    }
-
-    lastTrackedSearchRef.current = trackingKey;
-    captureDocsSearchCompleted({
-      locale: searchLocale,
-      platformFilter,
-      productScope: scopeId,
-      provider: algoliaEnabled ? 'algolia' : 'local',
-      queryLength: search.trim().length,
-      resultCount,
-    });
-  }, [
-    algoliaEnabled,
-    hasQuery,
-    isBusy,
-    isSearchUnavailable,
-    normalizedSearchResults.length,
-    platformFilter,
-    scopeId,
-    search,
-    searchLocale,
-  ]);
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>

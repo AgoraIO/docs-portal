@@ -29,9 +29,11 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
           locale,
           source: anchor.closest('[data-testid="docs-feedback"]')
             ? 'feedback'
-            : anchor.closest('article')
-              ? 'article'
-              : 'navigation',
+            : anchor.closest('[aria-label="Breadcrumb"]')
+              ? 'breadcrumb'
+              : anchor.closest('article')
+                ? 'article'
+                : 'navigation',
         });
       }
 

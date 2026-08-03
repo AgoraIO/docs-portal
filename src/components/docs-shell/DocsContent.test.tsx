@@ -25,19 +25,28 @@ import { DocsCopyMenu } from './docs-copy-menu';
 
 const clipboardWriteText = vi.fn();
 const fetchMock = vi.fn();
-const { captureDocsPageFeedbackMock } = vi.hoisted(() => ({
+const {
+  captureDocsLinkClickedMock,
+  captureDocsPageFeedbackMock,
+  captureDocsPageViewedMock,
+  registerDocsPageContextMock,
+} = vi.hoisted(() => ({
+  captureDocsLinkClickedMock: vi.fn(),
   captureDocsPageFeedbackMock: vi.fn(),
+  captureDocsPageViewedMock: vi.fn(),
+  registerDocsPageContextMock: vi.fn(),
 }));
 
 vi.mock('@/lib/analytics/posthog', () => ({
   captureDocsCodeCopied: vi.fn(),
   captureDocsFeedbackIssueClicked: vi.fn(),
   captureDocsFeedbackOpened: vi.fn(),
-  captureDocsLinkClicked: vi.fn(),
+  captureDocsLinkClicked: captureDocsLinkClickedMock,
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  captureDocsPageViewed: captureDocsPageViewedMock,
   captureDocsTocClicked: vi.fn(),
   initializePostHog: vi.fn(),
-  registerDocsPageContext: vi.fn(),
+  registerDocsPageContext: registerDocsPageContextMock,
 }));
 
 vi.mock('./DocsContentBody', () => ({
@@ -143,7 +152,10 @@ describe('DocsContent', () => {
   });
 
   beforeEach(() => {
+    captureDocsLinkClickedMock.mockReset();
+    captureDocsPageViewedMock.mockReset();
     fetchMock.mockReset();
+    registerDocsPageContextMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
@@ -166,6 +178,33 @@ describe('DocsContent', () => {
 
     await screen.findByRole('heading', { level: 1, name: 'SDKs' });
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
+  });
+
+  it('registers canonical server context before capturing a docs page view', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/realtime-media/video/get-started-sdk"
+        activeTab="realtime-media"
+        analyticsPageType="task-guide"
+        contentPath="en/realtime-media/video/get-started-sdk.mdx"
+        slug="get-started-sdk"
+        title="Quickstart"
+        toc={[]}
+      />,
+      '/en/realtime-media/quickstart',
+    );
+
+    await waitFor(() => {
+      expect(registerDocsPageContextMock).toHaveBeenCalledWith({
+        contentId: '/en/realtime-media/video/get-started-sdk',
+        contentKind: 'mdx',
+        locale: 'en',
+        navSection: 'realtime-media',
+        pageType: 'task-guide',
+      });
+    });
+    expect(captureDocsPageViewedMock).toHaveBeenCalledOnce();
+    expect(captureDocsPageViewedMock).toHaveBeenCalledWith({ locale: 'en' });
   });
 
   it('keeps a single-item breadcrumb that differs from the page title', async () => {
@@ -228,6 +267,39 @@ describe('DocsContent', () => {
       within(breadcrumb).getByRole('link', { name: 'Introduction' }),
     ).toHaveAttribute('href', '/en/introduction');
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
+  });
+
+  it('classifies breadcrumb link clicks separately from article links', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'Introduction',
+            url: '/en/introduction',
+          },
+          {
+            title: 'About Agora',
+            url: '/en/introduction/about-agora',
+          },
+        ]}
+        contentPath="en/introduction/about-agora.md"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    fireEvent.click(
+      within(await screen.findByLabelText('Breadcrumb')).getByRole('link', {
+        name: 'Introduction',
+      }),
+    );
+
+    expect(captureDocsLinkClickedMock).toHaveBeenCalledWith({
+      href: expect.stringContaining('/en/introduction'),
+      locale: 'en',
+      source: 'breadcrumb',
+    });
   });
 
   it('renders English last updated metadata below the page title', async () => {
