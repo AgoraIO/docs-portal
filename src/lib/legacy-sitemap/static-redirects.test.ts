@@ -34,6 +34,15 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it('redirects the moved AI release notes page to its current URL', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect('/en/ai/reference/release-notes'),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/ai/release-notes',
+    });
+  });
+
   it('prefers query-specific legacy rules before path fallback rules', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
