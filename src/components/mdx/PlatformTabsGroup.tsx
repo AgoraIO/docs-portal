@@ -16,6 +16,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { captureDocsPlatformChanged } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
@@ -133,6 +134,12 @@ export function PlatformTabsGroup({
     parsedPlatforms,
     syncPath: shouldSyncPlatformPath,
   });
+  const handleTrackedPlatformChange = useTrackedPlatformChange({
+    activePlatform,
+    handlePlatformChange,
+    locale,
+    source: 'inline',
+  });
 
   if (activePlatform === undefined) {
     return null;
@@ -163,7 +170,7 @@ export function PlatformTabsGroup({
           <PlatformTabs
             activePlatform={activePlatform}
             locale={locale}
-            onValueChange={handlePlatformChange}
+            onValueChange={handleTrackedPlatformChange}
             platforms={parsedPlatforms}
           />
         </div>
@@ -196,6 +203,12 @@ export function PlatformHeaderTabs({
     parsedPlatforms,
     syncPath: true,
   });
+  const handleTrackedPlatformChange = useTrackedPlatformChange({
+    activePlatform,
+    handlePlatformChange,
+    locale,
+    source: 'header',
+  });
 
   if (parsedPlatforms.length <= 1 || activePlatform === undefined) {
     return null;
@@ -206,10 +219,44 @@ export function PlatformHeaderTabs({
       <PlatformHeaderTabsList
         activePlatform={activePlatform}
         locale={locale}
-        onValueChange={handlePlatformChange}
+        onValueChange={handleTrackedPlatformChange}
         platforms={parsedPlatforms}
       />
     </div>
+  );
+}
+
+function useTrackedPlatformChange({
+  activePlatform,
+  handlePlatformChange,
+  locale,
+  source,
+}: {
+  activePlatform: PlatformKey | undefined;
+  handlePlatformChange: (nextPlatform: string) => void;
+  locale: AppLocale;
+  source: 'header' | 'inline';
+}) {
+  const trackedPlatformRef = useRef(activePlatform);
+
+  useEffect(() => {
+    trackedPlatformRef.current = activePlatform;
+  }, [activePlatform]);
+
+  return useCallback(
+    (nextPlatform: string) => {
+      if (trackedPlatformRef.current !== nextPlatform) {
+        trackedPlatformRef.current = nextPlatform as PlatformKey;
+        captureDocsPlatformChanged({
+          locale,
+          platform: nextPlatform,
+          source,
+        });
+      }
+
+      handlePlatformChange(nextPlatform);
+    },
+    [handlePlatformChange, locale, source],
   );
 }
 

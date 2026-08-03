@@ -1883,6 +1883,7 @@ Web body
     expect(payload).toMatchObject({
       activePath: '/en/api-reference/api-ref/conversational-ai/join',
       activeTab: 'api-reference',
+      analyticsPageType: 'sdk-api-reference',
       body: {
         kind: 'openapi',
         pageProps: {

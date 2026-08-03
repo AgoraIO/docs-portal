@@ -19,6 +19,11 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  captureDocsTocClicked,
+  type DocsPageType,
+  registerDocsPageContext,
+} from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
@@ -71,6 +76,7 @@ type DocsArticleReturnLink = {
 };
 
 export function DocsContent({
+  analyticsPageType,
   body,
   breadcrumb = [],
   contentPath,
@@ -85,6 +91,7 @@ export function DocsContent({
   title,
   toc,
 }: {
+  analyticsPageType?: DocsPageType;
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
@@ -140,6 +147,15 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
+  const analyticsContentKind = isOpenApiBody ? 'openapi' : 'mdx';
+
+  useEffect(() => {
+    registerDocsPageContext({
+      contentKind: analyticsContentKind,
+      locale: currentLocale,
+      pageType: analyticsPageType,
+    });
+  }, [analyticsContentKind, analyticsPageType, currentLocale]);
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -715,7 +731,8 @@ export function DocsTableOfContents({
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(
@@ -855,6 +872,7 @@ export function DocsTableOfContents({
     items.length > 0 ? (
       <TocLinks
         items={items}
+        locale={currentLocale}
         onHeadingClick={scrollToHeading}
         primaryActiveUrl={primaryActiveUrl}
         visibleUrls={visibleUrls}
@@ -930,12 +948,14 @@ export function DocsTableOfContents({
 
 function TocLinks({
   items,
+  locale,
   onHeadingClick,
   primaryActiveUrl,
   variant,
   visibleUrls,
 }: {
   items: TOCItemType[];
+  locale: AppLocale;
   onHeadingClick: (url: string) => void;
   primaryActiveUrl: string;
   variant: 'mobile' | 'rail';
@@ -1014,6 +1034,12 @@ function TocLinks({
               }
 
               event.preventDefault();
+              captureDocsTocClicked({
+                anchor: item.url,
+                depth: item.depth,
+                locale,
+                variant,
+              });
               onHeadingClick(item.url);
             }}
             ref={

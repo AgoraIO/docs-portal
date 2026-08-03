@@ -19,6 +19,17 @@ import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
+const analyticsMocks = vi.hoisted(() => ({
+  captureDocsSearchCompleted: vi.fn(),
+  captureDocsSearchOpened: vi.fn(),
+  captureDocsSearchResultClicked: vi.fn(),
+}));
+
+vi.mock('@/lib/analytics/posthog', () => ({
+  ...analyticsMocks,
+  initializePostHog: vi.fn(),
+}));
+
 vi.mock('@/lib/search/algolia-client', () => ({
   createAlgoliaDocsClient: vi.fn(() => ({
     deps: ['mock-algolia'],
@@ -36,6 +47,9 @@ const loadPages = async () => [
 
 describe('DocsSearchDialog', () => {
   beforeEach(() => {
+    analyticsMocks.captureDocsSearchCompleted.mockReset();
+    analyticsMocks.captureDocsSearchOpened.mockReset();
+    analyticsMocks.captureDocsSearchResultClicked.mockReset();
     vi.unstubAllEnvs();
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
@@ -134,7 +148,30 @@ describe('DocsSearchDialog', () => {
     );
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
+    expect(analyticsMocks.captureDocsSearchOpened).toHaveBeenCalledWith({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+        locale: 'en',
+        platformFilter: null,
+        productScope: null,
+        provider: 'local',
+        queryLength: 2,
+        resultCount: 1,
+      });
+    });
+
     fireEvent.click(screen.getByText('Quick Start'));
+
+    expect(analyticsMocks.captureDocsSearchResultClicked).toHaveBeenCalledWith({
+      href: '/en/ai/get-started/quickstart',
+      locale: 'en',
+      queryLength: 2,
+      rank: 1,
+    });
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(

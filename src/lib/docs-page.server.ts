@@ -1,6 +1,7 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import type { DocsPageType } from './analytics/docs-page-type';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import {
@@ -428,6 +429,11 @@ export async function loadDocsPagePayload(
         pageProps: await openApiPage.data.getOpenAPIPageProps(),
       }
     : mdxBody;
+  const analyticsPageType: DocsPageType | undefined = isOpenApiPage
+    ? 'sdk-api-reference'
+    : 'analyticsPageType' in page.data && page.data.analyticsPageType
+      ? (page.data.analyticsPageType as DocsPageType)
+      : undefined;
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(
       new Set([
@@ -445,6 +451,7 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    ...(analyticsPageType ? { analyticsPageType } : {}),
     body,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&

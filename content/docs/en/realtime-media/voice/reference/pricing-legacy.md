@@ -1,4 +1,5 @@
 ---
+analyticsPageType: concept-explanation
 title: "Legacy pricing"
 description: "This page documents Agora's previous pricing model based on monthly billing. It remains available for reference during the transition to the new prepaid packages."
 ---

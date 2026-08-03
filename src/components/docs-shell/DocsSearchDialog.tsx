@@ -20,6 +20,11 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import {
+  captureDocsSearchCompleted,
+  captureDocsSearchOpened,
+  captureDocsSearchResultClicked,
+} from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -113,6 +118,7 @@ export function DocsSearchDialog({
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
+  const lastTrackedSearchRef = useRef<string | null>(null);
   const searchClient = useMemo(() => {
     const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -219,6 +225,46 @@ export function DocsSearchDialog({
     }
   }, [search]);
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
+  useEffect(() => {
+    if (!(hasQuery && !isBusy)) {
+      return;
+    }
+
+    const resultCount = isSearchUnavailable
+      ? 0
+      : normalizedSearchResults.length;
+    const trackingKey = JSON.stringify([
+      search.trim(),
+      platformFilter,
+      scopeId,
+      resultCount,
+      isSearchUnavailable,
+    ]);
+
+    if (lastTrackedSearchRef.current === trackingKey) {
+      return;
+    }
+
+    lastTrackedSearchRef.current = trackingKey;
+    captureDocsSearchCompleted({
+      locale: searchLocale,
+      platformFilter,
+      productScope: scopeId,
+      provider: algoliaEnabled ? 'algolia' : 'local',
+      queryLength: search.trim().length,
+      resultCount,
+    });
+  }, [
+    algoliaEnabled,
+    hasQuery,
+    isBusy,
+    isSearchUnavailable,
+    normalizedSearchResults.length,
+    platformFilter,
+    scopeId,
+    search,
+    searchLocale,
+  ]);
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -262,7 +308,16 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
-  async function handleSelect(url: string) {
+  async function handleSelect(url: string, rank?: number) {
+    if (hasQuery && rank !== undefined) {
+      captureDocsSearchResultClicked({
+        href: url,
+        locale: searchLocale,
+        queryLength: search.trim().length,
+        rank,
+      });
+    }
+
     setOpen(false);
     await navigate({
       to: url,
@@ -270,12 +325,17 @@ export function DocsSearchDialog({
   }
 
   const handleOpenChange = useCallback(
-    async (nextOpen: boolean) => {
+    async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
       setOpen(nextOpen);
       // Re-arm the cascade each time the dialog opens; clear it on close.
       setStaggerArmed(nextOpen);
 
       if (nextOpen) {
+        captureDocsSearchOpened({
+          locale: searchLocale,
+          mode,
+          trigger,
+        });
         // Refresh the recent list from storage on each open, dropping the page
         // the user is currently on (offering it back to them makes no sense).
         const currentPath =
@@ -319,7 +379,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
+    [algoliaConfig, loadPages, mode, pages.length, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -340,7 +400,7 @@ export function DocsSearchDialog({
       }
 
       event.preventDefault();
-      void handleOpenChange(true);
+      void handleOpenChange(true, 'keyboard');
     }
 
     document.addEventListener('keydown', handleKeyDown);
@@ -404,7 +464,7 @@ export function DocsSearchDialog({
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
-          onClick={() => void handleOpenChange(true)}
+          onClick={() => void handleOpenChange(true, 'button')}
           size="icon"
           variant="ghost"
         >
@@ -414,7 +474,7 @@ export function DocsSearchDialog({
         <Button
           aria-label={t('docs.search')}
           className="docs-shell-search-trigger"
-          onClick={() => void handleOpenChange(true)}
+          onClick={() => void handleOpenChange(true, 'button')}
           size="sm"
           variant="outline"
         >
@@ -531,7 +591,7 @@ export function DocsSearchDialog({
                     <CommandItem
                       className={cn('items-start', stagger.className)}
                       key={page.id ?? page.url}
-                      onSelect={() => void handleSelect(page.url)}
+                      onSelect={() => void handleSelect(page.url, index + 1)}
                       style={stagger.style}
                       value={page.id ?? page.url}
                     >
