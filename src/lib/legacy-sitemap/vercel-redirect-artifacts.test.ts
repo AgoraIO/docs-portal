@@ -139,6 +139,19 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects the moved AI release notes page in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/ai/reference/release-notes',
+      ),
+    ).toEqual({
+      destination: '/en/ai/release-notes',
+      preserveQueryParams: true,
+      source: '/en/ai/reference/release-notes',
+      statusCode: 301,
+    });
+  });
+
   it('redirects locale-less conversational AI model overview links before app routing', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([
