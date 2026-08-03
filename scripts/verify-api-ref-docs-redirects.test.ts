@@ -11,6 +11,7 @@ const triageMarkdown = `# API Reference docs.agora.io Redirect Triage
 | Legacy URL | Occurrences | Status | Legacy redirect | Source API refs | Anchor texts | Proposed target | Decision | Confidence | Evidence | Notes |
 | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | https://docs.agora.io/en/path-only/legacy | 3 | 404 | legacy redirect missing | https://api-ref.agora.io/source-a.html | Path only | /en/current/path-only | add-301 | high | target verified | preserve query |
+| https://docs.agora.io/en/pipe/legacy | 1 | 404 | legacy redirect missing | https://api-ref.agora.io/source-pipe.html | Audio \\| Video | /en/current/pipe | add-301 | high | target verified | escaped pipe |
 | https://docs.agora.io/en/query/legacy?platform=Web | 2 | 404 | legacy redirect missing | https://api-ref.agora.io/source-b.html | Query | /en/current/query-web | add-301 | high | target verified | query encoded in target |
 | https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor | 1 | 404 | legacy redirect missing | https://api-ref.agora.io/source-c.html | Hash | /en/current/hash#new-anchor | add-301 | high | target verified | hash redirect |
 | https://docs.agora.io/en/hash/legacy?platform=Android#old_anchor | 1 | 404 | legacy redirect missing | https://api-ref.agora.io/source-c.html | Hash | /en/current/hash#new-anchor | add-301 | high | target verified | merged hash redirect |
@@ -32,6 +33,12 @@ const redirectsConfig = {
       legacySearch: '?platform=Web',
       target: '/en/current/query-web',
       preserveSearch: false,
+    },
+    {
+      legacyUrl: 'https://docs.agora.io/en/pipe/legacy',
+      legacyPath: '/en/pipe/legacy',
+      target: '/en/current/pipe',
+      preserveSearch: true,
     },
     {
       legacyUrl:
@@ -56,6 +63,10 @@ const staticRedirects = [
     t: '/en/current/query-web',
   },
   {
+    p: '/en/pipe/legacy',
+    t: '/en/current/pipe',
+  },
+  {
     p: '/en/hash/legacy',
     q: '?platform=Android',
     s: 0,
@@ -75,6 +86,12 @@ const bulkRedirects = [
     destination: '/en/current/hash#new-anchor',
     statusCode: 301,
     preserveQueryParams: false,
+  },
+  {
+    source: '/en/pipe/legacy',
+    destination: '/en/current/pipe',
+    statusCode: 301,
+    preserveQueryParams: true,
   },
 ];
 
@@ -105,6 +122,14 @@ describe('verify-api-ref-docs-redirects', () => {
       legacyUrl:
         'https://docs.agora.io/en/hash/legacy?platform=Android#old-anchor',
       proposedTarget: '/en/current/hash#new-anchor',
+    });
+    expect(parseTriageRows(triageMarkdown)).toContainEqual({
+      confidence: 'high',
+      decision: 'add-301',
+      legacyPath: '/en/pipe/legacy',
+      legacySearch: '',
+      legacyUrl: 'https://docs.agora.io/en/pipe/legacy',
+      proposedTarget: '/en/current/pipe',
     });
   });
 
@@ -163,7 +188,7 @@ describe('verify-api-ref-docs-redirects', () => {
     });
 
     expect(result).toContain(
-      'Vercel redirect preserves query that should be stripped: https://docs.agora.io/en/query/legacy?platform=Web',
+      'Vercel redirect preserveQueryParams mismatch for https://docs.agora.io/en/query/legacy?platform=Web: expected false, got true',
     );
   });
 
@@ -212,6 +237,24 @@ describe('verify-api-ref-docs-redirects', () => {
 
     expect(result).toContain(
       'Vercel redirect artifact missing: https://docs.agora.io/en/query/legacy?platform=Web',
+    );
+  });
+
+  it('rejects Vercel bulk redirects that strip preserved query strings', () => {
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects: bulkRedirects.map((rule) =>
+        rule.source === '/en/path-only/legacy'
+          ? { ...rule, preserveQueryParams: false }
+          : rule,
+      ),
+      redirectsConfig,
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig,
+    });
+
+    expect(result).toContain(
+      'Vercel redirect preserveQueryParams mismatch for https://docs.agora.io/en/path-only/legacy: expected true, got false',
     );
   });
 });

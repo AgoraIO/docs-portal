@@ -29,10 +29,24 @@ export function parseTriageRows(markdown) {
 }
 
 function splitTableRow(line) {
-  return line
-    .slice(1, -1)
-    .split('|')
-    .map((cell) => cell.trim());
+  const cells = [];
+  let current = '';
+  const row = line.slice(1, -1);
+
+  for (let index = 0; index < row.length; index += 1) {
+    const char = row[index];
+
+    if (char === '|' && row[index - 1] !== '\\') {
+      cells.push(current.trim());
+      current = '';
+      continue;
+    }
+
+    current += char;
+  }
+
+  cells.push(current.trim());
+  return cells.map((cell) => cell.replace(/\\\|/g, '|'));
 }
 
 export function verifyApiRefRedirectTriage({
@@ -131,9 +145,9 @@ function verifyVercelRedirect({
   );
 
   if (bulkRule) {
-    if (!sourceRule.preserveSearch && bulkRule.preserveQueryParams) {
+    if (Boolean(bulkRule.preserveQueryParams) !== sourceRule.preserveSearch) {
       errors.push(
-        `Vercel redirect preserves query that should be stripped: ${row.legacyUrl}`,
+        `Vercel redirect preserveQueryParams mismatch for ${row.legacyUrl}: expected ${sourceRule.preserveSearch}, got ${Boolean(bulkRule.preserveQueryParams)}`,
       );
     }
     return;
