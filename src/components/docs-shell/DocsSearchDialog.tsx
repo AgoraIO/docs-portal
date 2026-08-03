@@ -108,6 +108,8 @@ export function DocsSearchDialog({
   const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
   const searchIndexFailed =
     pagesState?.locale === searchLocale && pagesState.status === 'error';
+  const localSearchStatus =
+    pagesState?.locale === searchLocale ? pagesState.status : 'loading';
   const algoliaConfig = getAlgoliaSearchConfig();
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
@@ -121,6 +123,49 @@ export function DocsSearchDialog({
   const [pendingRequests, setPendingRequests] = useState(0);
   const currentSearchRef = useRef('');
   const latestSearchRequestRef = useRef(0);
+  const localSearchStatusRef = useRef(localSearchStatus);
+  localSearchStatusRef.current = localSearchStatus;
+  const pendingLocalCompletionRef = useRef<{
+    query: string;
+    requestId: number;
+  } | null>(null);
+  const isLatestSearch = useCallback((query: string, requestId: number) => {
+    return (
+      latestSearchRequestRef.current === requestId &&
+      currentSearchRef.current === query.trim()
+    );
+  }, []);
+  const captureLatestCompletedSearch = useCallback(
+    ({
+      query,
+      requestId,
+      resultCount,
+      status,
+    }: {
+      query: string;
+      requestId: number;
+      resultCount?: number;
+      status: 'error' | 'success';
+    }) => {
+      const normalizedQuery = query.trim();
+
+      if (!isLatestSearch(normalizedQuery, requestId)) {
+        return;
+      }
+
+      captureDocsSearchCompleted({
+        locale: searchLocale,
+        platformFilter,
+        productScope: scopeId,
+        provider: algoliaEnabled ? 'algolia' : 'local',
+        queryLength: normalizedQuery.length,
+        ...(resultCount === undefined ? {} : { resultCount }),
+        status,
+      });
+      pendingLocalCompletionRef.current = null;
+    },
+    [algoliaEnabled, isLatestSearch, platformFilter, scopeId, searchLocale],
+  );
   const searchClient = useMemo(() => {
     const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -145,41 +190,44 @@ export function DocsSearchDialog({
         setPendingRequests((count) => count + 1);
         try {
           const results = await base.search(query);
+          const completionStatus = algoliaEnabled
+            ? 'success'
+            : localSearchStatus === 'loading'
+              ? localSearchStatusRef.current === 'error'
+                ? 'error'
+                : null
+              : localSearchStatus === 'error'
+                ? 'error'
+                : 'success';
 
-          if (
-            latestSearchRequestRef.current === requestId &&
-            currentSearchRef.current === query.trim()
-          ) {
-            captureDocsSearchCompleted({
-              locale: searchLocale,
-              platformFilter,
-              productScope: scopeId,
-              provider: algoliaEnabled ? 'algolia' : 'local',
-              queryLength: query.trim().length,
-              ...(searchIndexFailed
-                ? {}
-                : {
+          if (completionStatus) {
+            captureLatestCompletedSearch({
+              query,
+              requestId,
+              ...(completionStatus === 'success'
+                ? {
                     resultCount: Array.isArray(results) ? results.length : 0,
-                  }),
-              status: searchIndexFailed ? 'error' : 'success',
+                  }
+                : {}),
+              status: completionStatus,
             });
+          } else if (
+            localSearchStatusRef.current === 'loading' &&
+            isLatestSearch(query, requestId)
+          ) {
+            pendingLocalCompletionRef.current = {
+              query,
+              requestId,
+            };
           }
 
           return results;
         } catch (error) {
-          if (
-            latestSearchRequestRef.current === requestId &&
-            currentSearchRef.current === query.trim()
-          ) {
-            captureDocsSearchCompleted({
-              locale: searchLocale,
-              platformFilter,
-              productScope: scopeId,
-              provider: algoliaEnabled ? 'algolia' : 'local',
-              queryLength: query.trim().length,
-              status: 'error',
-            });
-          }
+          captureLatestCompletedSearch({
+            query,
+            requestId,
+            status: 'error',
+          });
 
           throw error;
         } finally {
@@ -192,12 +240,13 @@ export function DocsSearchDialog({
     algoliaIndexName,
     algoliaSearchApiKey,
     algoliaEnabled,
+    captureLatestCompletedSearch,
+    isLatestSearch,
     pages,
     platformFilter,
+    localSearchStatus,
     searchScope,
-    searchIndexFailed,
     searchLocale,
-    scopeId,
   ]);
   const searchDeps = useMemo(
     () =>
@@ -233,6 +282,22 @@ export function DocsSearchDialog({
     searchDeps,
   );
   currentSearchRef.current = search.trim();
+  useEffect(() => {
+    if (algoliaEnabled || localSearchStatus !== 'error') {
+      return;
+    }
+
+    const pendingCompletion = pendingLocalCompletionRef.current;
+    if (!pendingCompletion) {
+      return;
+    }
+
+    pendingLocalCompletionRef.current = null;
+    captureLatestCompletedSearch({
+      ...pendingCompletion,
+      status: 'error',
+    });
+  }, [algoliaEnabled, captureLatestCompletedSearch, localSearchStatus]);
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';

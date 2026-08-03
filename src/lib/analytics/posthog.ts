@@ -54,14 +54,22 @@ export function captureDocsPageFeedback({
   }
 
   const { hash, pathname, search } = window.location;
-
-  captureStructuredDocsEvent('docs_page_feedback', locale, {
+  const legacyProperties = {
     hash,
     locale,
     pathname,
     search,
     value,
-  });
+  };
+
+  if (locale !== 'en') {
+    void getPostHogClient().then((posthog) => {
+      posthog?.capture('docs_page_feedback', legacyProperties);
+    });
+    return;
+  }
+
+  captureStructuredDocsEvent('docs_page_feedback', locale, legacyProperties);
 }
 
 export function captureDocsPageViewed({ locale }: { locale: string }) {
@@ -340,20 +348,20 @@ function inferDocsPageType(pathname: string): DocsPageType {
 }
 
 function getSafePlatformFromLocation() {
-  const datasetPlatform = normalizePlatformKey(
-    document.documentElement.dataset[PLATFORM_DATASET_KEY] ?? '',
-  );
-
-  if (isKnownPlatform(datasetPlatform)) {
-    return datasetPlatform;
-  }
-
   const pathPlatform = normalizePlatformKey(
     window.location.pathname.split('/').filter(Boolean).at(-1) ?? '',
   );
 
   if (isKnownPlatform(pathPlatform)) {
     return pathPlatform;
+  }
+
+  const datasetPlatform = normalizePlatformKey(
+    document.documentElement.dataset[PLATFORM_DATASET_KEY] ?? '',
+  );
+
+  if (isKnownPlatform(datasetPlatform)) {
+    return datasetPlatform;
   }
 
   const queryPlatform = normalizePlatformKey(
@@ -428,17 +436,26 @@ function removeUndefinedProperties(properties: StructuredEventProperties) {
 
 function sanitizeAnalyticsProperties(
   properties: Record<string, unknown>,
+  preserveLocationDetails = false,
 ): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(properties).map(([key, value]) => [
       key,
-      sanitizeAnalyticsValue(key, value),
+      sanitizeAnalyticsValue(key, value, preserveLocationDetails),
     ]),
   );
 }
 
-function sanitizeAnalyticsValue(key: string, value: unknown): unknown {
-  if (typeof value === 'string' && LOCATION_DETAIL_PROPERTY_NAME.test(key)) {
+function sanitizeAnalyticsValue(
+  key: string,
+  value: unknown,
+  preserveLocationDetails: boolean,
+): unknown {
+  if (
+    !preserveLocationDetails &&
+    typeof value === 'string' &&
+    LOCATION_DETAIL_PROPERTY_NAME.test(key)
+  ) {
     return '';
   }
 
@@ -499,7 +516,10 @@ function getPostHogClient() {
           event?.properties
             ? {
                 ...event,
-                properties: sanitizeAnalyticsProperties(event.properties),
+                properties: sanitizeAnalyticsProperties(
+                  event.properties,
+                  event.event === 'docs_page_feedback',
+                ),
               }
             : event,
         capture_pageview: 'history_change',

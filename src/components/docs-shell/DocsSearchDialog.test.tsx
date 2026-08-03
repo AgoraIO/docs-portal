@@ -24,6 +24,13 @@ const analyticsMocks = vi.hoisted(() => ({
   captureDocsSearchOpened: vi.fn(),
   captureDocsSearchResultClicked: vi.fn(),
 }));
+const oramaClientMocks = vi.hoisted(() => ({
+  actualCreate: undefined as
+    | typeof import('@/lib/search/orama-client').createOramaDocsClient
+    | undefined,
+  create:
+    vi.fn<typeof import('@/lib/search/orama-client').createOramaDocsClient>(),
+}));
 
 vi.mock('@/lib/analytics/posthog', () => ({
   ...analyticsMocks,
@@ -36,6 +43,17 @@ vi.mock('@/lib/search/algolia-client', () => ({
     search: vi.fn(),
   })),
 }));
+
+vi.mock('@/lib/search/orama-client', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/lib/search/orama-client')>();
+  oramaClientMocks.actualCreate = actual.createOramaDocsClient;
+  oramaClientMocks.create.mockImplementation(actual.createOramaDocsClient);
+  return {
+    ...actual,
+    createOramaDocsClient: oramaClientMocks.create,
+  };
+});
 
 const loadPages = async () => [
   {
@@ -50,6 +68,10 @@ describe('DocsSearchDialog', () => {
     analyticsMocks.captureDocsSearchCompleted.mockReset();
     analyticsMocks.captureDocsSearchOpened.mockReset();
     analyticsMocks.captureDocsSearchResultClicked.mockReset();
+    if (oramaClientMocks.actualCreate) {
+      oramaClientMocks.create.mockReset();
+      oramaClientMocks.create.mockImplementation(oramaClientMocks.actualCreate);
+    }
     vi.unstubAllEnvs();
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
@@ -249,10 +271,27 @@ describe('DocsSearchDialog', () => {
   });
 
   it('explains that page search is unavailable when lazy page loading fails', async () => {
+    const resolveLocalSearch: Array<(value: never[]) => void> = [];
+    const localSearch = vi.fn<(query: string) => Promise<never[]>>(
+      () =>
+        new Promise<never[]>((resolve) => {
+          resolveLocalSearch.push(resolve);
+        }),
+    );
+    oramaClientMocks.create.mockReturnValue({
+      deps: ['delayed-local'],
+      search: localSearch,
+    });
     const rootRoute = createRootRoute({
       component: () => <Outlet />,
     });
-    const loadPagesFailure = vi.fn().mockRejectedValue(new Error('not found'));
+    let rejectLoadPages: ((reason?: unknown) => void) | undefined;
+    const loadPagesFailure = vi.fn(
+      () =>
+        new Promise<never[]>((_, reject) => {
+          rejectLoadPages = reject;
+        }),
+    );
     const docsRoute = createRoute({
       getParentRoute: () => rootRoute,
       path: '/$locale/$tab/$slug',
@@ -276,13 +315,28 @@ describe('DocsSearchDialog', () => {
     // message rather than a "no matches" message or a crash.
     fireEvent.input(
       await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'any' } },
+    );
+    await waitFor(() => expect(localSearch).toHaveBeenCalledOnce());
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
       { target: { value: 'anything' } },
     );
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).not.toHaveBeenCalled();
+      expect(localSearch).toHaveBeenCalledTimes(2);
+    });
+    await act(async () => {
+      rejectLoadPages?.(new Error('not found'));
+    });
     expect(
-      await screen.findByText('Search index unavailable.'),
-    ).toBeInTheDocument();
+      await screen.findAllByText('Search index unavailable.'),
+    ).not.toHaveLength(0);
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
+    await act(async () => {
+      resolveLocalSearch[1]?.([]);
+    });
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
     });
@@ -294,6 +348,10 @@ describe('DocsSearchDialog', () => {
       queryLength: 8,
       status: 'error',
     });
+    await act(async () => {
+      resolveLocalSearch[0]?.([]);
+    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
   });
 
   it('scopes the Algolia query to a product when a product filter is chosen', async () => {

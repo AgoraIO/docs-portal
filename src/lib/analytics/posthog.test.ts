@@ -145,6 +145,18 @@ describe('PostHog analytics', () => {
       search: '?platform=web&token=secret',
       value: 'yes',
     });
+
+    const config = initMock.mock.calls[0]?.[1];
+    const event = config.before_send({
+      event: 'docs_page_feedback',
+      properties: captureMock.mock.calls[0]?.[1],
+    });
+    expect(event.properties).toEqual(
+      expect.objectContaining({
+        hash: '#start',
+        search: '?platform=web&token=secret',
+      }),
+    );
   });
 
   it('adds registered English docs context to structured events', async () => {
@@ -230,8 +242,10 @@ describe('PostHog analytics', () => {
       '/en/realtime-media/video/get-started-sdk/android',
     );
 
+    const { syncPlatformDataset } = await import('../platforms/preference');
     const { captureDocsSearchOpened } = await import('./posthog');
 
+    syncPlatformDataset('ios');
     captureDocsSearchOpened({
       locale: 'en',
       mode: 'desktop',
@@ -338,7 +352,7 @@ describe('PostHog analytics', () => {
     );
   });
 
-  it('does not capture new structured events on Chinese pages', async () => {
+  it('keeps legacy feedback while skipping new structured events on Chinese pages', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
     window.history.replaceState({}, '', '/zh-CN/ai/get-started/quickstart');
 
@@ -355,8 +369,16 @@ describe('PostHog analytics', () => {
       locale: 'zh-CN',
       value: 'no',
     });
-    await Promise.resolve();
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
 
-    expect(captureMock).not.toHaveBeenCalled();
+    expect(captureMock).toHaveBeenCalledWith('docs_page_feedback', {
+      hash: '',
+      locale: 'zh-CN',
+      pathname: '/zh-CN/ai/get-started/quickstart',
+      search: '',
+      value: 'no',
+    });
   });
 });
