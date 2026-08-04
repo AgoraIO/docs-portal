@@ -17,7 +17,7 @@ hotfixes from `AgoraIO/shengwang-doc-source` to the `CN-NEWDOC` branch in
 | Source history reviewed through | `474985f901fffffd4ffed27ed35a060f986bdb98` (`Release 0.0.506`; only `data/version.ts`, excluded) |
 | Target base used for this batch | `AgoraIO/docs-portal` `CN-NEWDOC` at `4d40e7989180ac4c6b523d34e5be211ade8149a8` |
 | Target hotfix PR | [AgoraIO/docs-portal#940](https://github.com/AgoraIO/docs-portal/pull/940) |
-| Target migration commit | `0980aa851273c84ed9d5e2f4b438ce391acb57b6` |
+| Target migration commits | `0980aa851273c84ed9d5e2f4b438ce391acb57b6` (initial hotfixes); `237a2dc6b78426f787fabd58cf91a0e11c2d2f54` (content-audit hotfixes) |
 | Checkpoint status | Effective after target PR #940 merges into `CN-NEWDOC` |
 
 The next hotfix PR audit starts after merged timestamp
@@ -35,6 +35,9 @@ Migrated after confirming the content was absent from `CN-NEWDOC`:
   [#2031](https://github.com/AgoraIO/shengwang-doc-source/pull/2031)
 - [#2033](https://github.com/AgoraIO/shengwang-doc-source/pull/2033) through
   [#2049](https://github.com/AgoraIO/shengwang-doc-source/pull/2049)
+- [#2052](https://github.com/AgoraIO/shengwang-doc-source/pull/2052) through
+  [#2054](https://github.com/AgoraIO/shengwang-doc-source/pull/2054)
+- [#2057](https://github.com/AgoraIO/shengwang-doc-source/pull/2057)
 - [#2058](https://github.com/AgoraIO/shengwang-doc-source/pull/2058)
 - [#2061](https://github.com/AgoraIO/shengwang-doc-source/pull/2061)
 
@@ -43,10 +46,11 @@ Checked and not migrated:
 | Source PR | Decision |
 | --- | --- |
 | [#2032](https://github.com/AgoraIO/shengwang-doc-source/pull/2032) | Already present in `CN-NEWDOC`: the `getPlaybackDevices` API page already contains the Safari 18.4 and iOS Safari 26 support note. |
-| [#2052](https://github.com/AgoraIO/shengwang-doc-source/pull/2052) | Content-audit fix already handled separately; excluded from this hotfix batch. |
-| [#2053](https://github.com/AgoraIO/shengwang-doc-source/pull/2053) | Content-audit fix already handled separately; excluded from this hotfix batch. |
-| [#2054](https://github.com/AgoraIO/shengwang-doc-source/pull/2054) | Content-audit fix already handled separately; excluded from this hotfix batch. |
-| [#2057](https://github.com/AgoraIO/shengwang-doc-source/pull/2057) | Content-audit fix already handled separately; excluded from this hotfix batch. |
+
+PRs #2052, #2053, #2054, and #2057 were initially excluded based on the
+assumption that the content-audit work had already reached the target. A
+second comparison against `CN-NEWDOC` plus target PR #940 confirmed the exact
+changes were absent, so they were migrated in target commit `237a2dc6b`.
 
 Source-only generated release artifacts and agent knowledge-base metadata were
 also excluded. This includes direct commit
