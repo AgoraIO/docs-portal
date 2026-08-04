@@ -4,7 +4,9 @@ import { useDocsContent } from '@/lib/source.browser';
 
 export function DocsContentBody({ contentPath }: { contentPath: string }) {
   const content = useDocsContent(contentPath, {
-    components: getMDXComponents(getOverviewMDXComponents(), { contentPath }),
+    components: getMDXComponents(getOverviewMDXComponents(contentPath), {
+      contentPath,
+    }),
   });
 
   return (

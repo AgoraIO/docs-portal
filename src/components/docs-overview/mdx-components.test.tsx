@@ -65,6 +65,9 @@ type OverviewLinkBannerComponent = ComponentType<{
   href: string;
   title: string;
 }>;
+type OverviewActionsComponent = ComponentType<{
+  actions: Array<{ href: string; label: string }>;
+}>;
 type OverviewImageCardGridComponent = ComponentType<{
   children: ReactNode;
   columns?: 'three' | 'two';
@@ -142,6 +145,63 @@ type RecipesCatalogComponent = ComponentType<{
 }>;
 
 describe('overview MDX components', () => {
+  it('renders compact overview actions with working internal and external links', () => {
+    const components = getOverviewMDXComponents('zh-CN/ai/aigc/index.mdx');
+    const OverviewActions =
+      components.OverviewActions as OverviewActionsComponent;
+
+    render(
+      <OverviewActions
+        actions={[
+          {
+            href: '/zh-CN/reference/sdks?product=video',
+            label: '下载',
+          },
+          {
+            href: 'https://console.shengwang.cn/marketplace/list/all',
+            label: '购买插件',
+          },
+        ]}
+      />,
+    );
+
+    const downloadsLink = screen.getByRole('link', { name: '下载' });
+    expect(downloadsLink).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/sdks?product=video',
+    );
+    expect(downloadsLink).not.toHaveAttribute('target');
+
+    const marketplaceLink = screen.getByRole('link', { name: '购买插件' });
+    expect(marketplaceLink).toHaveAttribute(
+      'href',
+      'https://console.shengwang.cn/marketplace/list/all',
+    );
+    expect(marketplaceLink).toHaveAttribute('target', '_blank');
+    expect(marketplaceLink).toHaveAttribute('rel', 'noreferrer noopener');
+  });
+
+  it('does not render overview actions outside approved overview pages', () => {
+    const components = getOverviewMDXComponents(
+      'zh-CN/realtime-media/rtc/reference/billing.mdx',
+    );
+    const OverviewActions =
+      components.OverviewActions as OverviewActionsComponent;
+
+    render(
+      <OverviewActions
+        actions={[
+          {
+            href: '/zh-CN/reference/sdks?product=video',
+            label: '下载',
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.queryByRole('link', { name: '下载' })).toBeNull();
+  });
+
   it('renders solution cards as overview widgets', () => {
     const components = getOverviewMDXComponents();
     const SolutionCardGrid =
@@ -537,8 +597,7 @@ describe('overview MDX components', () => {
 
   it('omits the recipe count when the gallery has no results', () => {
     const components = getOverviewMDXComponents();
-    const RecipesGallery =
-      components.RecipesGallery as RecipesCatalogComponent;
+    const RecipesGallery = components.RecipesGallery as RecipesCatalogComponent;
 
     render(
       <RecipesGallery
