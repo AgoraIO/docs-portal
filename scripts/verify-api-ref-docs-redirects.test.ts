@@ -140,8 +140,8 @@ describe('verify-api-ref-docs-redirects', () => {
     expect(
       rows.filter((row) => row.decision === 'needs-target-from-owner'),
     ).toEqual([]);
-    expect(add301HighRows).toHaveLength(48);
-    expect(add301HighPathSearchKeys.size).toBe(43);
+    expect(add301HighRows).toHaveLength(49);
+    expect(add301HighPathSearchKeys.size).toBe(44);
   });
 
   it('parses triage rows with path, query, and hash split out', () => {
