@@ -192,6 +192,7 @@ describe('DocsContent', () => {
           navSectionTitle: 'Get started',
           pageType: 'task-guide',
           pathname: '/en/realtime-media/video/get-started-sdk',
+          product: 'video',
           title: 'Quickstart',
           version: 'current',
         }}
@@ -206,6 +207,7 @@ describe('DocsContent', () => {
 
     await waitFor(() => {
       expect(registerDocsPageContextMock).toHaveBeenCalledWith({
+        canonicalProduct: 'video',
         contentId: 'realtime-media/video/get-started-sdk',
         contentKind: 'mdx',
         journeyStage: 'get-started',

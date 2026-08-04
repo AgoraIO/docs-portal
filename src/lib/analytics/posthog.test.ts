@@ -211,6 +211,7 @@ describe('PostHog analytics', () => {
     );
 
     registerDocsPageContext({
+      canonicalProduct: 'video',
       contentId: 'realtime-media/video/get-started-sdk',
       contentKind: 'mdx',
       journeyStage: 'get-started',
@@ -254,6 +255,39 @@ describe('PostHog analytics', () => {
       title: 'Quickstart',
       version: 'current',
     });
+  });
+
+  it('keeps legacy docs_product while publishing the canonical product', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState({}, '', '/en/ai/get-started/quickstart');
+
+    const { captureDocsPageViewed, registerDocsPageContext } = await import(
+      './posthog'
+    );
+
+    registerDocsPageContext({
+      canonicalProduct: 'voice-agent',
+      contentId: 'ai/get-started/quickstart',
+      journeyStage: 'get-started',
+      locale: 'en',
+      navSection: 'get-started',
+      pageType: 'task-guide',
+      pathname: '/en/ai/get-started/quickstart',
+      tab: 'ai',
+    });
+    captureDocsPageViewed({ locale: 'en' });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_page_viewed',
+      expect.objectContaining({
+        docs_product: 'ai',
+        product: 'voice-agent',
+      }),
+    );
   });
 
   it('does not substitute legacy dimensions for missing canonical taxonomy', async () => {

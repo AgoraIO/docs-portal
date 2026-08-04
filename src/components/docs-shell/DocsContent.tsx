@@ -159,12 +159,18 @@ export function DocsContent({
 
   useEffect(() => {
     registerDocsPageContext({
-      ...analyticsPageContext,
+      canonicalProduct: analyticsPageContext?.product,
+      contentId: analyticsPageContext?.contentId,
       contentKind: analyticsContentKind,
+      journeyStage: analyticsPageContext?.journeyStage,
       locale: currentLocale,
+      navSection: analyticsPageContext?.navSection,
+      navSectionTitle: analyticsPageContext?.navSectionTitle,
       pageType: analyticsPageContext?.pageType ?? analyticsPageType,
       pathname: analyticsPageContext?.pathname ?? activePath,
       tab: activeTab,
+      title: analyticsPageContext?.title,
+      version: analyticsPageContext?.version,
     });
     captureDocsPageViewed({ locale: currentLocale });
   }, [

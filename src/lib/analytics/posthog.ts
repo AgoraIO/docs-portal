@@ -18,6 +18,7 @@ let registeredPageContext: RegisteredDocsPageContext | null = null;
 export type DocsFeedbackValue = 'yes' | 'no';
 
 type RegisteredDocsPageContext = {
+  canonicalProduct?: string;
   contentId?: string;
   contentKind?: string;
   journeyStage?: string;
@@ -27,7 +28,6 @@ type RegisteredDocsPageContext = {
   pageType?: DocsPageType;
   pathname?: string;
   platform?: string;
-  product?: string;
   tab?: string;
   title?: string;
   version?: string;
@@ -104,7 +104,7 @@ export function captureDocsPageViewed({ locale }: { locale: string }) {
     page_type: context.docs_page_type,
     pathname: context.docs_pathname,
     platform: context.docs_platform,
-    product: context.docs_product,
+    product: registeredPageContext?.canonicalProduct ?? context.docs_product,
     tab: context.docs_tab,
     title: registeredPageContext?.title ?? 'unknown',
     version: registeredPageContext?.version ?? 'current',
@@ -294,8 +294,7 @@ function getDocsPageContext(locale: string) {
   const parts = pathname.split('/').filter(Boolean);
   const docsLocale = registeredPageContext?.locale ?? parts[0] ?? locale;
   const tab = registeredPageContext?.tab ?? parts[1] ?? 'unknown';
-  const product =
-    registeredPageContext?.product ?? inferDocsProduct(parts, tab);
+  const product = inferDocsProduct(parts, tab);
   const platform =
     registeredPageContext?.platform ?? getSafePlatformFromLocation();
 

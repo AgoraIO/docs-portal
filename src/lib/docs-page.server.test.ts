@@ -3426,6 +3426,7 @@ Web body
       navSectionTitle: 'Get started',
       pageType: 'task-guide',
       pathname: '/en/realtime-media/video/get-started-sdk',
+      product: 'video',
       title: 'Quickstart',
       version: 'current',
     });
