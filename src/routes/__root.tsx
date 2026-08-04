@@ -10,6 +10,9 @@ import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import { appDescription, appName } from '@/lib/shared';
 import appCss from '@/styles/app.css?url';
 
+/*
+ * Direct GTM loading is temporarily disabled while Securiti.ai manages tags.
+ *
 function getGoogleTagManagerScript(containerId: string) {
   return `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -17,6 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${containerId}');`;
 }
+*/
 
 export const rootHead = {
   meta: [
@@ -76,45 +80,53 @@ function RootComponent() {
 }
 
 export function RootDocument({ children }: PropsWithChildren) {
-  const googleTagManagerId = import.meta.env.VITE_GTM_ID;
+  // const googleTagManagerId = import.meta.env.VITE_GTM_ID;
 
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
       <head>
+        {/* TEST ONLY: Securiti.ai owns consent, GTM, and PostHog loading. */}
+        <script
+          src="https://cdn-prod.securiti.ai/consent/cookie-consent-sdk-loader.js"
+          data-tenant-uuid="b373a629-85bf-440d-824a-a86fc32ae3e9"
+          data-domain-uuid="7ba04bfc-c10b-4f3a-80d5-bf9ed910b46f"
+          data-backend-url="https://app.securiti.ai"
+          data-securiti-staging-mode="true"
+          data-skip-css="false"
+          defer
+        />
         {/*
-          Securiti.ai cookie consent banner.
-          Keep this as the first head script so consent initializes before GTM
-          and other analytics. Security: generate a test tag against the preview
-          URL, then replace this placeholder with the Securiti-provided snippet.
+          Direct GTM loading is temporarily disabled while Securiti.ai manages
+          tags.
 
-          <script
-            type="text/javascript"
-            src="https://cdn-prod.securiti.ai/consent/<tenant-id>/cookie_banner.js"
-            async
-          />
+          {googleTagManagerId ? (
+            <script
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Tag Manager requires its bootstrap snippet to run inline.
+              dangerouslySetInnerHTML={{
+                __html: getGoogleTagManagerScript(googleTagManagerId),
+              }}
+            />
+          ) : null}
         */}
-        {googleTagManagerId ? (
-          <script
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Tag Manager requires its bootstrap snippet to run inline.
-            dangerouslySetInnerHTML={{
-              __html: getGoogleTagManagerScript(googleTagManagerId),
-            }}
-          />
-        ) : null}
         <HeadContent />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        {googleTagManagerId ? (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}`}
-              title="Google Tag Manager"
-              height="0"
-              width="0"
-              style={{ display: 'none', visibility: 'hidden' }}
-            />
-          </noscript>
-        ) : null}
+        {/*
+          Direct GTM fallback is temporarily disabled while Securiti.ai manages
+          tags.
+
+          {googleTagManagerId ? (
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${googleTagManagerId}`}
+                title="Google Tag Manager"
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+              />
+            </noscript>
+          ) : null}
+        */}
         {children}
         <Scripts />
       </body>

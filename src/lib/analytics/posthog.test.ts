@@ -16,6 +16,7 @@ describe('PostHog analytics', () => {
     vi.unstubAllEnvs();
     initMock.mockClear();
     captureMock.mockClear();
+    delete window.posthog;
     window.history.replaceState({}, '', '/en/introduction?platform=web#start');
   });
 
@@ -49,18 +50,15 @@ describe('PostHog analytics', () => {
     });
   });
 
-  it('captures docs feedback with the current route properties', async () => {
-    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
-
+  it('captures docs feedback through the Securiti-managed PostHog client', async () => {
+    window.posthog = {
+      capture: captureMock,
+    };
     const { captureDocsPageFeedback } = await import('./posthog');
 
     captureDocsPageFeedback({
       locale: 'en',
       value: 'yes',
-    });
-
-    await vi.waitFor(() => {
-      expect(captureMock).toHaveBeenCalledTimes(1);
     });
 
     expect(captureMock).toHaveBeenCalledWith('docs_page_feedback', {
