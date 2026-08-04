@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import type { ComponentType, ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
@@ -142,6 +148,50 @@ type RecipesCatalogComponent = ComponentType<{
   showTags?: boolean;
   stackFilterLabel: string;
   stackQueryParam?: string;
+}>;
+type DemoGalleryComponent = ComponentType<{
+  allPlatformsLabel: string;
+  allProductsLabel: string;
+  allTagsLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: Array<{
+    description: string;
+    href: string;
+    imageAlt: string;
+    imageSrc: string;
+    platforms: string[];
+    products: string[];
+    releaseDate: string;
+    tags: string[];
+    title: string;
+    version: string;
+  }>;
+  platformFilterLabel: string;
+  platformLabel: string;
+  productFilterLabel: string;
+  productLabel: string;
+  releaseDateLabel: string;
+  resultCountLabel: string;
+  searchPlaceholder: string;
+  tagFilterLabel: string;
+  versionLabel: string;
+}>;
+type DemoPlatformTabsComponent = ComponentType<{
+  children: ReactNode;
+  defaultValue: string;
+  platforms: Array<{ label: string; value: string }>;
+}>;
+type DemoPlatformComponent = ComponentType<{
+  children: ReactNode;
+  value: string;
+}>;
+type DemoMediaComponent = ComponentType<{
+  imageAlt: string;
+  imageSrc: string;
+  qrCodeAlt: string;
+  qrCodeSrc: string;
+  qrLabel: string;
 }>;
 
 describe('overview MDX components', () => {
@@ -593,6 +643,157 @@ describe('overview MDX components', () => {
     expect(
       screen.getByText('No recipes match the current filters.'),
     ).toBeVisible();
+  });
+
+  it('renders Demo images and filters cards by supported platform', () => {
+    const components = getOverviewMDXComponents();
+    const DemoGallery = components.DemoGallery as DemoGalleryComponent;
+
+    render(
+      <DemoGallery
+        allPlatformsLabel="全部平台"
+        allProductsLabel="全部产品"
+        allTagsLabel="全部标签"
+        clearFiltersLabel="清除筛选"
+        emptyMessage="没有符合条件的 Demo。"
+        items={[
+          {
+            description: '泛娱乐全场景体验。',
+            href: '/zh-CN/reference/demo/shengdong-entertainment',
+            imageAlt: '声动互娱 Demo 封面',
+            imageSrc:
+              'https://assets-docs.agora.io/images/demo/shengdong-entertainment-cover.jpg',
+            platforms: ['iOS', 'Android'],
+            products: ['实时互动 RTC'],
+            releaseDate: '2023-12-27',
+            tags: ['语聊房'],
+            title: '声动互娱',
+            version: '4.6.0',
+          },
+          {
+            description: '多框架 Web 前端 Demo 合集。',
+            href: '/zh-CN/reference/demo/rtm-web-demo',
+            imageAlt: '实时消息 RTM Web Demo 封面',
+            imageSrc:
+              'https://assets-docs.agora.io/images/demo/rtm-web-demo-cover.png',
+            platforms: ['Web'],
+            products: ['实时消息 RTM'],
+            releaseDate: '2026-04-10',
+            tags: ['SDK 示例'],
+            title: '实时消息 RTM Web Demo',
+            version: '2.2.3',
+          },
+        ]}
+        platformFilterLabel="平台"
+        platformLabel="平台"
+        productFilterLabel="产品与 SDK"
+        productLabel="产品"
+        releaseDateLabel="发布时间"
+        resultCountLabel="个 Demo"
+        searchPlaceholder="搜索 Demo"
+        tagFilterLabel="标签"
+        versionLabel="版本"
+      />,
+    );
+
+    expect(screen.getByAltText('声动互娱 Demo 封面')).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/demo/shengdong-entertainment-cover.jpg',
+    );
+    expect(screen.getByRole('link', { name: /声动互娱/ })).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/demo/shengdong-entertainment',
+    );
+    expect(screen.getByText('2 个 Demo')).toBeVisible();
+    expect(screen.getAllByText('产品：')[0]).toHaveClass(
+      'shrink-0',
+      'whitespace-nowrap',
+    );
+
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: 'Web' },
+    });
+
+    expect(
+      screen.queryByRole('link', { name: /声动互娱/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /实时消息 RTM Web Demo/ }),
+    ).toBeVisible();
+    expect(screen.getByText('1 个 Demo')).toBeVisible();
+  });
+
+  it('renders the Demo platform switcher and keeps the selected platform in the URL', async () => {
+    window.history.replaceState({}, '', '/zh-CN/reference/demo/agora-lab');
+
+    const components = getOverviewMDXComponents();
+    const DemoPlatformTabs =
+      components.DemoPlatformTabs as DemoPlatformTabsComponent;
+    const DemoPlatform = components.DemoPlatform as DemoPlatformComponent;
+
+    render(
+      <DemoPlatformTabs
+        defaultValue="ios"
+        platforms={[
+          { label: 'iOS', value: 'ios' },
+          { label: 'Android', value: 'android' },
+        ]}
+      >
+        <DemoPlatform value="ios">iOS Demo</DemoPlatform>
+        <DemoPlatform value="android">Android Demo</DemoPlatform>
+      </DemoPlatformTabs>,
+    );
+
+    expect(screen.getByRole('tablist', { name: '选择平台' })).toBeVisible();
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(screen.getByText('iOS Demo')).toBeVisible();
+
+    fireEvent.mouseDown(screen.getByRole('tab', { name: 'Android' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+
+    await waitFor(() =>
+      expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      ),
+    );
+    expect(screen.getByText('Android Demo')).toBeVisible();
+    expect(window.location.search).toBe('?platform=android');
+  });
+
+  it('stacks Demo media on small screens and uses one row from sm', () => {
+    const components = getOverviewMDXComponents();
+    const DemoMedia = components.DemoMedia as DemoMediaComponent;
+
+    const { container } = render(
+      <DemoMedia
+        imageAlt="声网实验室 iOS Demo 界面"
+        imageSrc="https://assets-docs.agora.io/images/demo/agora-lab-ios.webp"
+        qrCodeAlt="声网实验室 iOS Demo 二维码"
+        qrCodeSrc="https://assets-docs.agora.io/images/demo/agora-lab-ios-qr.png"
+        qrLabel="iOS 平台扫码体验"
+      />,
+    );
+
+    expect(container.firstElementChild).toHaveClass(
+      'flex',
+      'flex-col',
+      'sm:flex-row',
+    );
+    expect(screen.getByAltText('声网实验室 iOS Demo 界面')).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/demo/agora-lab-ios.webp',
+    );
+    expect(screen.getByAltText('声网实验室 iOS Demo 二维码')).toHaveAttribute(
+      'src',
+      'https://assets-docs.agora.io/images/demo/agora-lab-ios-qr.png',
+    );
+    expect(screen.getByText('iOS 平台扫码体验')).toBeVisible();
   });
 
   it('omits the recipe count when the gallery has no results', () => {

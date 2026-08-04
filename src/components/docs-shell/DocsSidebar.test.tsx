@@ -89,10 +89,10 @@ const referenceNodes: DocsSidebarNode[] = [
     url: '/zh-CN/reference/sdks',
   },
   {
-    id: 'recipes',
+    id: 'demo',
     title: 'Demo',
     type: 'page',
-    url: '/zh-CN/reference/recipes',
+    url: '/zh-CN/reference/demo',
   },
   {
     children: [
@@ -235,7 +235,7 @@ describe('DocsSidebar', () => {
     ).not.toBeInTheDocument();
 
     rerenderSidebar({
-      activePath: '/zh-CN/reference/recipes',
+      activePath: '/zh-CN/reference/demo',
       resetKey: 'reference',
       sidebarNodes: referenceNodes,
     });

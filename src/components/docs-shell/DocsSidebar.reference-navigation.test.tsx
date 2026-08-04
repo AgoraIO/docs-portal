@@ -43,10 +43,10 @@ const referenceNodes: DocsSidebarNode[] = [
     url: '/zh-CN/reference/sdks',
   },
   {
-    id: 'recipes',
+    id: 'demo',
     title: 'Demo',
     type: 'page',
-    url: '/zh-CN/reference/recipes',
+    url: '/zh-CN/reference/demo',
   },
   {
     children: [

@@ -94,7 +94,7 @@ describe('API Center scoped sidebars', () => {
   });
 
   it('keeps the reference resources together in the Reference tab', async () => {
-    const payload = await loadReferencePayload(['recipes']);
+    const payload = await loadReferencePayload(['demo']);
     const sidebar = payload.sidebar as SidebarNode[];
     const titles = collectTitles(sidebar);
     const rootTitles = sidebar.flatMap((node) =>

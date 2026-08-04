@@ -1,10 +1,12 @@
 import {
   ActivityIcon,
+  AppleIcon,
   AppWindowIcon,
   ArrowDownToLineIcon,
   ArrowRightIcon,
   ArrowUpFromLineIcon,
   ArrowUpRightIcon,
+  AtomIcon,
   AudioLinesIcon,
   BarChart3Icon,
   BlocksIcon,
@@ -15,9 +17,12 @@ import {
   CpuIcon,
   CuboidIcon,
   FilmIcon,
+  Globe2Icon,
   GraduationCapIcon,
   HardDriveIcon,
+  LaptopIcon,
   MessagesSquareIcon,
+  MonitorIcon,
   MonitorSmartphoneIcon,
   NetworkIcon,
   NewspaperIcon,
@@ -27,6 +32,7 @@ import {
   RadioTowerIcon,
   ServerCogIcon,
   SmartphoneChargingIcon,
+  SmartphoneIcon,
   TerminalSquareIcon,
   TicketIcon,
   TvIcon,
@@ -38,6 +44,7 @@ import {
   lazy,
   type ReactNode,
   useDeferredValue,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -47,6 +54,12 @@ import {
   ReferenceSearchInput,
 } from '@/components/reference-center/ReferenceFilterControls';
 import { Button } from '@/components/ui/button';
+import {
+  Tabs as UiTabs,
+  TabsContent as UiTabsContent,
+  TabsList as UiTabsList,
+  TabsTrigger as UiTabsTrigger,
+} from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 
 const SdksCatalog = lazy(() =>
@@ -128,6 +141,10 @@ export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
     CapabilityGroupCard,
     CapabilityGroupGrid,
     CapabilityMatrix,
+    DemoGallery,
+    DemoMedia,
+    DemoPlatform,
+    DemoPlatformTabs,
     HelpHub,
     OverviewImageCard,
     OverviewImageCardGrid,
@@ -184,6 +201,149 @@ function OverviewActions({ actions }: { actions: OverviewAction[] }) {
 
 function HiddenOverviewActions(_props: { actions: OverviewAction[] }) {
   return null;
+}
+
+type DemoPlatformOption = {
+  label: string;
+  value: string;
+};
+
+const demoPlatformIcons = {
+  android: SmartphoneIcon,
+  electron: AtomIcon,
+  ios: AppleIcon,
+  macos: LaptopIcon,
+  web: Globe2Icon,
+  windows: MonitorIcon,
+};
+
+export function DemoPlatformTabs({
+  ariaLabel = '选择平台',
+  children,
+  defaultValue,
+  platforms,
+}: {
+  ariaLabel?: string;
+  children: ReactNode;
+  defaultValue: string;
+  platforms: DemoPlatformOption[];
+}) {
+  const values = useMemo(
+    () => new Set(platforms.map((platform) => platform.value)),
+    [platforms],
+  );
+  const fallbackValue = values.has(defaultValue)
+    ? defaultValue
+    : platforms.at(0)?.value;
+  const [activePlatform, setActivePlatform] = useState(fallbackValue);
+
+  useEffect(() => {
+    const queryPlatform = new URLSearchParams(window.location.search).get(
+      'platform',
+    );
+
+    if (queryPlatform && values.has(queryPlatform)) {
+      setActivePlatform(queryPlatform);
+    }
+  }, [values]);
+
+  if (!activePlatform) {
+    return null;
+  }
+
+  const changePlatform = (nextPlatform: string) => {
+    setActivePlatform(nextPlatform);
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('platform', nextPlatform);
+    window.history.replaceState(window.history.state, '', url);
+  };
+
+  return (
+    <UiTabs
+      className="my-6 gap-0"
+      onValueChange={changePlatform}
+      value={activePlatform}
+    >
+      <UiTabsList
+        aria-label={ariaLabel}
+        className="not-prose h-auto min-h-[46px] max-w-full justify-start gap-2 overflow-x-auto overflow-y-hidden rounded-full bg-muted p-1.5"
+      >
+        {platforms.map((platform) => {
+          const PlatformIcon =
+            demoPlatformIcons[
+              platform.value.toLowerCase() as keyof typeof demoPlatformIcons
+            ];
+
+          return (
+            <UiTabsTrigger
+              className="h-[34px] min-w-[88px] rounded-full border border-transparent px-5 text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-none"
+              key={platform.value}
+              value={platform.value}
+            >
+              {PlatformIcon ? (
+                <PlatformIcon aria-hidden className="size-4" />
+              ) : null}
+              {platform.label}
+            </UiTabsTrigger>
+          );
+        })}
+      </UiTabsList>
+      {children}
+    </UiTabs>
+  );
+}
+
+export function DemoPlatform({
+  children,
+  value,
+}: {
+  children: ReactNode;
+  value: string;
+}) {
+  return (
+    <UiTabsContent className="mt-6" value={value}>
+      {children}
+    </UiTabsContent>
+  );
+}
+
+export function DemoMedia({
+  imageAlt,
+  imageSrc,
+  qrCodeAlt,
+  qrCodeSrc,
+  qrLabel,
+}: {
+  imageAlt: string;
+  imageSrc: string;
+  qrCodeAlt: string;
+  qrCodeSrc: string;
+  qrLabel: string;
+}) {
+  return (
+    <div className="not-prose my-6 flex flex-col items-start gap-x-6 gap-y-3 sm:flex-row">
+      <img
+        alt={imageAlt}
+        className="h-auto max-h-[500px] min-w-0 max-w-full shrink rounded-lg object-contain object-left"
+        decoding="async"
+        loading="lazy"
+        src={imageSrc}
+      />
+      <figure className="m-0 w-[120px] shrink-0">
+        <img
+          alt={qrCodeAlt}
+          className="block size-[120px]"
+          decoding="async"
+          loading="lazy"
+          src={qrCodeSrc}
+        />
+        <figcaption className="mt-2 text-center text-xs text-muted-foreground">
+          {qrLabel}
+        </figcaption>
+      </figure>
+    </div>
+  );
 }
 
 function CardGrid({ children }: { children: ReactNode }) {
@@ -747,6 +907,19 @@ export type RecipeCatalogItem = {
   tone?: SolutionCardTone;
 };
 
+export type DemoCatalogItem = {
+  description: string;
+  href: string;
+  imageAlt: string;
+  imageSrc: string;
+  platforms: string[];
+  products: string[];
+  releaseDate: string;
+  tags: string[];
+  title: string;
+  version: string;
+};
+
 function SolutionCard({
   actions = [],
   description,
@@ -865,6 +1038,249 @@ function SolutionCard({
     <a className={cardClasses} href={href}>
       {content}
     </a>
+  );
+}
+
+export function DemoGallery({
+  allPlatformsLabel,
+  allProductsLabel,
+  allTagsLabel,
+  clearFiltersLabel,
+  emptyMessage,
+  items,
+  platformFilterLabel,
+  platformLabel,
+  productFilterLabel,
+  productLabel,
+  releaseDateLabel,
+  resultCountLabel,
+  searchPlaceholder,
+  tagFilterLabel,
+  versionLabel,
+}: {
+  allPlatformsLabel: string;
+  allProductsLabel: string;
+  allTagsLabel: string;
+  clearFiltersLabel: string;
+  emptyMessage: string;
+  items: DemoCatalogItem[];
+  platformFilterLabel: string;
+  platformLabel: string;
+  productFilterLabel: string;
+  productLabel: string;
+  releaseDateLabel: string;
+  resultCountLabel: string;
+  searchPlaceholder: string;
+  tagFilterLabel: string;
+  versionLabel: string;
+}) {
+  const [query, setQuery] = useState('');
+  const [activeTag, setActiveTag] = useState(allTagsLabel);
+  const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const [activePlatform, setActivePlatform] = useState(allPlatformsLabel);
+  const deferredQuery = useDeferredValue(query);
+
+  const tags = useMemo(
+    () => [
+      allTagsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.tags)),
+    ],
+    [allTagsLabel, items],
+  );
+  const products = useMemo(
+    () => [
+      allProductsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.products)),
+    ],
+    [allProductsLabel, items],
+  );
+  const platforms = useMemo(
+    () => [
+      allPlatformsLabel,
+      ...getUniqueValues(items.flatMap((item) => item.platforms)),
+    ],
+    [allPlatformsLabel, items],
+  );
+
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeRecipeFilterValue(deferredQuery);
+
+    return items.filter((item) => {
+      if (activeTag !== allTagsLabel && !item.tags.includes(activeTag)) {
+        return false;
+      }
+      if (
+        activeProduct !== allProductsLabel &&
+        !item.products.includes(activeProduct)
+      ) {
+        return false;
+      }
+      if (
+        activePlatform !== allPlatformsLabel &&
+        !item.platforms.includes(activePlatform)
+      ) {
+        return false;
+      }
+      if (!normalizedQuery) {
+        return true;
+      }
+
+      return normalizeRecipeFilterValue(
+        [
+          item.title,
+          item.description,
+          item.releaseDate,
+          item.version,
+          ...item.tags,
+          ...item.products,
+          ...item.platforms,
+        ].join(' '),
+      ).includes(normalizedQuery);
+    });
+  }, [
+    activePlatform,
+    activeProduct,
+    activeTag,
+    allPlatformsLabel,
+    allProductsLabel,
+    allTagsLabel,
+    deferredQuery,
+    items,
+  ]);
+
+  const hasActiveFilters =
+    query.length > 0 ||
+    activeTag !== allTagsLabel ||
+    activeProduct !== allProductsLabel ||
+    activePlatform !== allPlatformsLabel;
+
+  const resetFilters = () => {
+    setQuery('');
+    setActiveTag(allTagsLabel);
+    setActiveProduct(allProductsLabel);
+    setActivePlatform(allPlatformsLabel);
+  };
+
+  return (
+    <section className="not-prose my-8 flex flex-col gap-6">
+      <div className="flex flex-col gap-4 border-border border-b pb-5">
+        <ReferenceSearchInput
+          onChange={setQuery}
+          placeholder={searchPlaceholder}
+          value={query}
+        />
+        <div className="flex flex-wrap items-end gap-3">
+          <ReferenceFilterSelect
+            label={tagFilterLabel}
+            onChange={setActiveTag}
+            options={tags.map((tag) => ({ label: tag, value: tag }))}
+            value={activeTag}
+          />
+          <ReferenceFilterSelect
+            label={productFilterLabel}
+            onChange={setActiveProduct}
+            options={products.map((product) => ({
+              label: product,
+              value: product,
+            }))}
+            value={activeProduct}
+          />
+          <ReferenceFilterSelect
+            label={platformFilterLabel}
+            onChange={setActivePlatform}
+            options={platforms.map((platform) => ({
+              label: platform,
+              value: platform,
+            }))}
+            value={activePlatform}
+          />
+          {hasActiveFilters ? (
+            <Button onClick={resetFilters} type="button" variant="ghost">
+              {clearFiltersLabel}
+            </Button>
+          ) : null}
+          {filteredItems.length > 0 ? (
+            <span className="ml-auto self-end text-sm text-muted-foreground">
+              {filteredItems.length} {resultCountLabel}
+            </span>
+          ) : null}
+        </div>
+      </div>
+
+      {filteredItems.length === 0 ? (
+        <div className="rounded-lg border border-dashed border-border bg-muted/35 p-8 text-center text-sm text-muted-foreground">
+          {emptyMessage}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {filteredItems.map((item) => (
+            <a
+              className="group relative overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+              href={item.href}
+              key={item.href}
+            >
+              <div className="aspect-[7/4] overflow-hidden border-border border-b bg-muted">
+                <img
+                  alt={item.imageAlt}
+                  className="size-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  src={item.imageSrc}
+                />
+              </div>
+              <span className="absolute top-3 right-3 flex size-8 items-center justify-center rounded-full bg-background/90 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
+                <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+              <div className="p-5">
+                <h2 className="m-0 text-base font-semibold text-foreground">
+                  {item.title}
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {item.description}
+                </p>
+                <dl className="mt-4 grid gap-1 text-xs text-muted-foreground">
+                  <div className="flex gap-1">
+                    <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                      {platformLabel}：
+                    </dt>
+                    <dd className="m-0">{item.platforms.join('、')}</dd>
+                  </div>
+                  <div className="flex gap-1">
+                    <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                      {productLabel}：
+                    </dt>
+                    <dd className="m-0">{item.products.join('、')}</dd>
+                  </div>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1">
+                    <div className="flex gap-1">
+                      <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                        {releaseDateLabel}：
+                      </dt>
+                      <dd className="m-0">{item.releaseDate}</dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt className="shrink-0 whitespace-nowrap font-medium text-foreground">
+                        {versionLabel}：
+                      </dt>
+                      <dd className="m-0">{item.version}</dd>
+                    </div>
+                  </div>
+                </dl>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {item.tags.map((tag) => (
+                    <span
+                      className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                      key={tag}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 

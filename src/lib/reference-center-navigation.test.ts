@@ -5,7 +5,7 @@ describe('reference center navigation', () => {
   it.each([
     ['/zh-CN/api-reference/api', 'api'],
     ['/zh-CN/reference/sdks', 'reference'],
-    ['/zh-CN/reference/recipes/python-quickstart', 'reference'],
+    ['/zh-CN/reference/demo/shengdong-entertainment', 'reference'],
     ['/zh-CN/reference/faq/integration/system_volume', 'reference'],
   ] as const)('resolves %s to the %s context', (activePath, context) => {
     expect(getDocsSidebarMode(activePath, 'zh-CN')).toBe(context);

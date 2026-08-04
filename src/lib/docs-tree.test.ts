@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  getPrevNextLinks,
   getProductScopes,
   getSidebarBreadcrumb,
   getSidebarEntries,
@@ -227,6 +228,67 @@ const groupedSidebarTree: Root = {
 };
 
 describe('docs tree helpers', () => {
+  it('deduplicates repeated URLs in previous and next links', () => {
+    const tree: Root = {
+      children: [
+        {
+          $id: 'sdks',
+          name: 'SDK downloads',
+          type: 'page',
+          url: '/zh-CN/reference/sdks',
+        },
+        {
+          $id: 'demo-link',
+          name: 'Demo',
+          type: 'page',
+          url: '/zh-CN/reference/demo',
+        },
+        {
+          $id: 'demo-folder',
+          children: [
+            {
+              $id: 'demo-child',
+              name: 'Demo child',
+              type: 'page',
+              url: '/zh-CN/reference/demo/example',
+            },
+          ],
+          index: {
+            $id: 'demo-index',
+            name: 'Demo',
+            type: 'page',
+            url: '/zh-CN/reference/demo',
+          },
+          name: 'Demo pages',
+          type: 'folder',
+        },
+      ],
+      name: 'Reference',
+    };
+
+    const deduplicatedExpected = {
+      next: {
+        title: 'Demo child',
+        url: '/zh-CN/reference/demo/example',
+      },
+      previous: {
+        title: 'SDK downloads',
+        url: '/zh-CN/reference/sdks',
+      },
+    };
+
+    expect(getPrevNextLinks(tree, '/zh-CN/reference/demo')).toEqual({
+      next: undefined,
+      previous: {
+        title: 'SDK downloads',
+        url: '/zh-CN/reference/sdks',
+      },
+    });
+    expect(getPrevNextLinks(tree, '/zh-CN/reference/demo', () => true)).toEqual(
+      deduplicatedExpected,
+    );
+  });
+
   it('builds tab summaries from nested root folders', () => {
     expect(getTabSummaries(nestedRootTree)).toEqual([
       {
