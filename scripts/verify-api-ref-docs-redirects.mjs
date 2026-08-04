@@ -178,7 +178,7 @@ function verifyVercelRedirect({
     return;
   }
 
-  const queryRule = (vercelConfig.redirects ?? []).find(
+  const configRule = (vercelConfig.redirects ?? []).find(
     (rule) =>
       normalizePath(rule.source) === normalizePath(sourceRule.legacyPath) &&
       rule.destination === sourceRule.target &&
@@ -186,12 +186,41 @@ function verifyVercelRedirect({
       queryConditionsMatch(rule.has, sourceRule.legacySearch),
   );
 
-  if (!queryRule) {
-    errors.push(`Vercel redirect artifact missing: ${row.legacyUrl}`);
+  if (configRule) {
+    if (!sourceRule.preserveSearch) {
+      errors.push(
+        `Vercel config redirect preserves a query that should be removed: ${row.legacyUrl}`,
+      );
+    }
     return;
   }
 
-  verifyVercelPreserveQueryParams({ errors, row, rule: queryRule, sourceRule });
+  const routes = vercelConfig.routes ?? [];
+  const queryRouteIndex = routes.findIndex(
+    (route) =>
+      routeSourceMatches(route.src, sourceRule.legacyPath) &&
+      route.headers?.Location === sourceRule.target &&
+      (route.status ?? route.statusCode) === 301 &&
+      queryConditionsMatch(route.has, sourceRule.legacySearch),
+  );
+
+  if (queryRouteIndex !== -1) {
+    if (sourceRule.preserveSearch) {
+      errors.push(
+        `Vercel redirect route removes a query that should be preserved: ${row.legacyUrl}`,
+      );
+    }
+
+    const markdownRouteIndex = routes.findIndex(isMarkdownNegotiationRoute);
+    if (markdownRouteIndex !== -1 && queryRouteIndex > markdownRouteIndex) {
+      errors.push(
+        `Vercel query redirect must precede Markdown negotiation routes: ${row.legacyUrl}`,
+      );
+    }
+    return;
+  }
+
+  errors.push(`Vercel redirect artifact missing: ${row.legacyUrl}`);
 }
 
 function verifyVercelPreserveQueryParams({ errors, row, rule, sourceRule }) {
@@ -219,6 +248,26 @@ function queryConditionsMatch(has = [], legacySearch = '') {
       queryConditions.some(
         (condition) => condition.key === key && condition.value === value,
       ),
+    )
+  );
+}
+
+function routeSourceMatches(source, legacyPath) {
+  try {
+    return new RegExp(source).test(normalizePath(legacyPath));
+  } catch {
+    return false;
+  }
+}
+
+function isMarkdownNegotiationRoute(route) {
+  return (
+    route.dest?.endsWith('.md') &&
+    (route.has ?? []).some(
+      (condition) =>
+        condition.type === 'header' &&
+        condition.key.toLowerCase() === 'accept' &&
+        condition.value.includes('text/markdown'),
     )
   );
 }

@@ -45,8 +45,37 @@
       "statusCode": 301
     },
     {
-      "source": "/cn/whiteboard/file_conversion_overview",
-      "destination": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview",
+      "source": "/cn/All/faq/audio_format",
+      "destination": "/en/api-reference/faq/product/audio_format",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/Agora Platform/transcoding",
+      "destination": "/en/realtime-media/transcoding",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/chat-sdk/data-insights",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-insights",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/chat-sdk/data-metrics",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-metrics",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/datadog-integration",
+      "destination": "/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration",
+      "statusCode": 301
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/cn/whiteboard/file_conversion_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview"
+      },
       "has": [
         {
           "type": "query",
@@ -54,12 +83,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/cn/whiteboard/whiteboard_file_conversion",
-      "destination": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task",
+      "src": "^/cn/whiteboard/whiteboard_file_conversion/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task"
+      },
       "has": [
         {
           "type": "query",
@@ -67,12 +97,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Agora Platform/get_appid_token",
-      "destination": "/en/introduction/account#generate-temporary-tokens",
+      "src": "^/en/Agora Platform/get_appid_token/?$",
+      "headers": {
+        "Location": "/en/introduction/account#generate-temporary-tokens"
+      },
       "has": [
         {
           "type": "query",
@@ -80,12 +111,13 @@
           "value": "All Platforms"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Agora Platform/terms",
-      "destination": "/en/introduction/core-concepts#app-id",
+      "src": "^/en/Agora Platform/terms/?$",
+      "headers": {
+        "Location": "/en/introduction/core-concepts#app-id"
+      },
       "has": [
         {
           "type": "query",
@@ -93,12 +125,13 @@
           "value": "All Platforms"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/android",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/android"
+      },
       "has": [
         {
           "type": "query",
@@ -106,12 +139,13 @@
           "value": "android"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint"
+      },
       "has": [
         {
           "type": "query",
@@ -119,12 +153,13 @@
           "value": "blueprint"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/electron",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/electron"
+      },
       "has": [
         {
           "type": "query",
@@ -132,12 +167,13 @@
           "value": "electron"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/flutter",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/flutter"
+      },
       "has": [
         {
           "type": "query",
@@ -145,12 +181,13 @@
           "value": "flutter"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/ios",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/ios"
+      },
       "has": [
         {
           "type": "query",
@@ -158,12 +195,13 @@
           "value": "ios"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/javascript",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/javascript"
+      },
       "has": [
         {
           "type": "query",
@@ -171,12 +209,13 @@
           "value": "react-js"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/macos",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/macos"
+      },
       "has": [
         {
           "type": "query",
@@ -184,12 +223,13 @@
           "value": "macos"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/react-native",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/react-native"
+      },
       "has": [
         {
           "type": "query",
@@ -197,12 +237,13 @@
           "value": "react-native"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/unity",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/unity"
+      },
       "has": [
         {
           "type": "query",
@@ -210,12 +251,13 @@
           "value": "unity"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/unreal",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/unreal"
+      },
       "has": [
         {
           "type": "query",
@@ -223,12 +265,13 @@
           "value": "unreal"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/web",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/web"
+      },
       "has": [
         {
           "type": "query",
@@ -236,12 +279,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/windows",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/windows"
+      },
       "has": [
         {
           "type": "query",
@@ -249,12 +293,13 @@
           "value": "windows"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/flexible-classroom/develop/record-a-class",
-      "destination": "/en/realtime-media/flexible-classroom/build/enable-teaching-features/record-a-class",
+      "src": "^/en/flexible-classroom/develop/record-a-class/?$",
+      "headers": {
+        "Location": "/en/realtime-media/flexible-classroom/build/enable-teaching-features/record-a-class"
+      },
       "has": [
         {
           "type": "query",
@@ -262,12 +307,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/flexible-classroom/reference/classroom-api",
-      "destination": "/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#set-the-recording-state",
+      "src": "^/en/flexible-classroom/reference/classroom-api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#set-the-recording-state"
+      },
       "has": [
         {
           "type": "query",
@@ -275,12 +321,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Interactive Broadcast/cdn_streaming_web",
-      "destination": "/en/realtime-media/media-push/get-started/enable-media-push",
+      "src": "^/en/Interactive Broadcast/cdn_streaming_web/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
       "has": [
         {
           "type": "query",
@@ -288,12 +335,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Interactive Broadcast/cdn_streaming_windows",
-      "destination": "/en/realtime-media/media-push/get-started/enable-media-push",
+      "src": "^/en/Interactive Broadcast/cdn_streaming_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
       "has": [
         {
           "type": "query",
@@ -301,12 +349,13 @@
           "value": "Windows"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Interactive Broadcast/cloud_proxy_web_ng",
-      "destination": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy",
+      "src": "^/en/Interactive Broadcast/cloud_proxy_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy"
+      },
       "has": [
         {
           "type": "query",
@@ -314,12 +363,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Interactive Broadcast/in-call_quality_windows",
-      "destination": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring",
+      "src": "^/en/Interactive Broadcast/in-call_quality_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring"
+      },
       "has": [
         {
           "type": "query",
@@ -327,12 +377,13 @@
           "value": "Windows"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Interactive Broadcast/set_subscribing_state",
-      "destination": "/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows",
+      "src": "^/en/Interactive Broadcast/set_subscribing_state/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows"
+      },
       "has": [
         {
           "type": "query",
@@ -340,12 +391,13 @@
           "value": "Windows"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/interactive-live-streaming/develop/product-workflow",
-      "destination": "/en/api-reference/faq/integration/set_enabled_set_muted",
+      "src": "^/en/interactive-live-streaming/develop/product-workflow/?$",
+      "headers": {
+        "Location": "/en/api-reference/faq/integration/set_enabled_set_muted"
+      },
       "has": [
         {
           "type": "query",
@@ -353,12 +405,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/interactive-whiteboard/develop/enable-whiteboard",
-      "destination": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project",
+      "src": "^/en/interactive-whiteboard/develop/enable-whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project"
+      },
       "has": [
         {
           "type": "query",
@@ -366,12 +419,13 @@
           "value": "android"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Recording/cloudproxy_recording",
-      "destination": "/en/realtime-media/on-premise-recording/build/connect-through-a-firewall/cloud-proxy",
+      "src": "^/en/Recording/cloudproxy_recording/?$",
+      "headers": {
+        "Location": "/en/realtime-media/on-premise-recording/build/connect-through-a-firewall/cloud-proxy"
+      },
       "has": [
         {
           "type": "query",
@@ -379,12 +433,13 @@
           "value": "Linux"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Recording/token",
-      "destination": "/en/realtime-media/on-premise-recording/build/set-up-authentication/authentication-workflow",
+      "src": "^/en/Recording/token/?$",
+      "headers": {
+        "Location": "/en/realtime-media/on-premise-recording/build/set-up-authentication/authentication-workflow"
+      },
       "has": [
         {
           "type": "query",
@@ -392,12 +447,13 @@
           "value": "All Platforms"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/android",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/android"
+      },
       "has": [
         {
           "type": "query",
@@ -405,12 +461,13 @@
           "value": "android"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/flutter",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/flutter"
+      },
       "has": [
         {
           "type": "query",
@@ -418,12 +475,13 @@
           "value": "flutter"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/ios",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/ios"
+      },
       "has": [
         {
           "type": "query",
@@ -431,12 +489,13 @@
           "value": "ios"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/linux-cpp",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/linux-cpp"
+      },
       "has": [
         {
           "type": "query",
@@ -444,12 +503,13 @@
           "value": "linux-cpp"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/macos",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/macos"
+      },
       "has": [
         {
           "type": "query",
@@ -457,12 +517,13 @@
           "value": "macos"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/react-native",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/react-native"
+      },
       "has": [
         {
           "type": "query",
@@ -470,12 +531,13 @@
           "value": "react-native"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/unity",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/unity"
+      },
       "has": [
         {
           "type": "query",
@@ -483,12 +545,13 @@
           "value": "unity"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/web",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/web"
+      },
       "has": [
         {
           "type": "query",
@@ -496,12 +559,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/windows-cpp",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/windows-cpp"
+      },
       "has": [
         {
           "type": "query",
@@ -509,12 +573,13 @@
           "value": "windows"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/video-calling/overview/migration-guide",
-      "destination": "/en/realtime-media/video/reference/migration-guide",
+      "src": "^/en/video-calling/overview/migration-guide/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/reference/migration-guide"
+      },
       "has": [
         {
           "type": "query",
@@ -522,12 +587,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/video-calling/reference/supported-platforms",
-      "destination": "/en/realtime-media/video/reference/supported-platforms",
+      "src": "^/en/video-calling/reference/supported-platforms/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/reference/supported-platforms"
+      },
       "has": [
         {
           "type": "query",
@@ -535,12 +601,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Video/beauty_effect_web_ng",
-      "destination": "/en/realtime-media/video/build/apply-video-effects/beauty-effect",
+      "src": "^/en/Video/beauty_effect_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/apply-video-effects/beauty-effect"
+      },
       "has": [
         {
           "type": "query",
@@ -548,12 +615,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Video/channel_encryption_web_ng",
-      "destination": "/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption",
+      "src": "^/en/Video/channel_encryption_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption"
+      },
       "has": [
         {
           "type": "query",
@@ -561,12 +629,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Video/noise_reduction_web_ng",
-      "destination": "/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression",
+      "src": "^/en/Video/noise_reduction_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression"
+      },
       "has": [
         {
           "type": "query",
@@ -574,12 +643,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Video/token_server",
-      "destination": "/en/realtime-media/video/build/authenticate-users/deploy-token-server",
+      "src": "^/en/Video/token_server/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/authenticate-users/deploy-token-server"
+      },
       "has": [
         {
           "type": "query",
@@ -587,12 +657,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Video/virtual_background_web_ng",
-      "destination": "/en/realtime-media/video/build/apply-video-effects/virtual-background",
+      "src": "^/en/Video/virtual_background_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/apply-video-effects/virtual-background"
+      },
       "has": [
         {
           "type": "query",
@@ -600,12 +671,13 @@
           "value": "Web"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/Voice/token",
-      "destination": "/en/realtime-media/voice/build/set-up-token-authentication/deploy-token-server",
+      "src": "^/en/Voice/token/?$",
+      "headers": {
+        "Location": "/en/realtime-media/voice/build/set-up-token-authentication/deploy-token-server"
+      },
       "has": [
         {
           "type": "query",
@@ -613,12 +685,13 @@
           "value": "All Platforms"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/enable_whiteboard",
-      "destination": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard",
+      "src": "^/en/whiteboard/enable_whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard"
+      },
       "has": [
         {
           "type": "query",
@@ -631,12 +704,13 @@
           "value": "7b951120-9d0b-11eb-934a-83674cc9d04a"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/enable_whiteboard",
-      "destination": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project",
+      "src": "^/en/whiteboard/enable_whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project"
+      },
       "has": [
         {
           "type": "query",
@@ -644,12 +718,13 @@
           "value": "Android"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/file_conversion_overview",
-      "destination": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview",
+      "src": "^/en/whiteboard/file_conversion_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview"
+      },
       "has": [
         {
           "type": "query",
@@ -657,12 +732,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/whiteboard_file_conversion",
-      "destination": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task",
+      "src": "^/en/whiteboard/whiteboard_file_conversion/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task"
+      },
       "has": [
         {
           "type": "query",
@@ -670,12 +746,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/whiteboard_room_management",
-      "destination": "/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post",
+      "src": "^/en/whiteboard/whiteboard_room_management/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post"
+      },
       "has": [
         {
           "type": "query",
@@ -683,12 +760,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/whiteboard_screenshot",
-      "destination": "/en/api-reference/api-ref/whiteboard/screenshots",
+      "src": "^/en/whiteboard/whiteboard_screenshot/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/screenshots"
+      },
       "has": [
         {
           "type": "query",
@@ -696,12 +774,13 @@
           "value": "RESTful"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
+      "status": 301
     },
     {
-      "source": "/en/whiteboard/whiteboard_token_overview",
-      "destination": "/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow",
+      "src": "^/en/whiteboard/whiteboard_token_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow"
+      },
       "has": [
         {
           "type": "query",
@@ -709,11 +788,8 @@
           "value": "Android"
         }
       ],
-      "statusCode": 301,
-      "preserveQueryParams": false
-    }
-  ],
-  "routes": [
+      "status": 301
+    },
     {
       "src": "^/\\.well-known/mcp$",
       "dest": "/.well-known/mcp.json"

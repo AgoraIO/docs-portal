@@ -18,21 +18,28 @@ const staticRedirectsPath = path.join(
 const bulkRedirectsPath = path.join(repoRoot, 'vercel-legacy-redirects.json');
 const vercelBasePath = path.join(repoRoot, 'vercel.base.json');
 const vercelPath = path.join(repoRoot, 'vercel.json');
+const VERCEL_BULK_REDIRECT_LIMIT = 1_000;
+const VERCEL_CONFIG_REDIRECT_LIMIT = 2_048;
 const checkOnly = process.argv.includes('--check');
 
 const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
 
 const staticRedirects = createStaticRedirects(redirectsConfig.rules);
-const { bulkRedirects, queryRedirects, querySplitPaths } =
-  createVercelRedirects(redirectsConfig.rules);
+const {
+  bulkRedirects,
+  configRedirects,
+  overflowRedirects,
+  queryRedirectRoutes,
+  querySplitPaths,
+} = createVercelRedirects(redirectsConfig.rules);
 const vercelConfig = {
   buildCommand: baseConfig.buildCommand,
   outputDirectory: baseConfig.outputDirectory,
   framework: baseConfig.framework,
   bulkRedirectsPath: 'vercel-legacy-redirects.json',
-  ...createRedirectsConfig(baseConfig.redirects, queryRedirects),
-  ...(baseConfig.routes ? { routes: baseConfig.routes } : {}),
+  ...createRedirectsConfig(baseConfig.redirects, configRedirects),
+  ...createRoutesConfig(queryRedirectRoutes, baseConfig.routes),
   ...(baseConfig.rewrites ? { rewrites: baseConfig.rewrites } : {}),
 };
 
@@ -46,7 +53,8 @@ console.log(
   [
     `[legacy-redirects] static fallback rules: ${staticRedirects.length}`,
     `[legacy-redirects] Vercel bulk redirects: ${bulkRedirects.length}`,
-    `[legacy-redirects] Vercel query redirects: ${queryRedirects.length}`,
+    `[legacy-redirects] Vercel config overflow redirects: ${overflowRedirects.length}`,
+    `[legacy-redirects] Vercel query redirect routes: ${queryRedirectRoutes.length}`,
     `[legacy-redirects] query-split paths: ${querySplitPaths.length}`,
   ].join('\n'),
 );
@@ -72,7 +80,7 @@ function createVercelRedirects(rules) {
   }
 
   const bulkRedirects = [];
-  const queryRedirects = [];
+  const queryRedirectRoutes = [];
   const querySplitPaths = [];
 
   for (const [legacyPath, pathRules] of rulesByPath) {
@@ -102,23 +110,49 @@ function createVercelRedirects(rules) {
         );
       }
 
-      queryRedirects.push({
-        source: legacyPath,
-        destination: rule.target,
+      queryRedirectRoutes.push({
+        src: createRouteSource(legacyPath),
+        headers: {
+          Location: rule.target,
+        },
         has: Object.entries(query).map(([key, value]) => ({
           type: 'query',
           key,
           value,
         })),
-        statusCode: 301,
-        preserveQueryParams: rule.preserveSearch,
+        status: 301,
       });
     }
   }
 
+  const sortedBulkRedirects = bulkRedirects.sort(compareVercelRedirects);
+  const overflowCount = Math.max(
+    0,
+    sortedBulkRedirects.length - VERCEL_BULK_REDIRECT_LIMIT,
+  );
+  const overflowRedirects = sortedBulkRedirects
+    .filter((redirect) => redirect.preserveQueryParams)
+    .slice(0, overflowCount);
+
+  if (overflowRedirects.length < overflowCount) {
+    throw new Error(
+      `Vercel bulk redirects exceed the ${VERCEL_BULK_REDIRECT_LIMIT} rule limit and ${overflowCount - overflowRedirects.length} rules cannot move to vercel.json without changing query behavior`,
+    );
+  }
+
+  const overflowSet = new Set(overflowRedirects);
+  const configOverflowRedirects = overflowRedirects.map(
+    ({ preserveQueryParams: _preserveQueryParams, ...redirect }) => redirect,
+  );
+  const configRedirects = configOverflowRedirects.sort(compareVercelRedirects);
+
   return {
-    bulkRedirects: bulkRedirects.sort(compareVercelRedirects),
-    queryRedirects: queryRedirects.sort(compareVercelRedirects),
+    bulkRedirects: sortedBulkRedirects.filter(
+      (redirect) => !overflowSet.has(redirect),
+    ),
+    configRedirects,
+    overflowRedirects: configOverflowRedirects,
+    queryRedirectRoutes: queryRedirectRoutes.sort(compareVercelRoutes),
     querySplitPaths: querySplitPaths.sort(),
   };
 }
@@ -135,9 +169,26 @@ function getBulkRedirectPreserveQueryParams(pathRules) {
   return false;
 }
 
-function createRedirectsConfig(baseRedirects = [], queryRedirects) {
-  const redirects = [...baseRedirects, ...queryRedirects];
+function createRedirectsConfig(baseRedirects = [], configRedirects) {
+  const redirects = [...baseRedirects, ...configRedirects];
+
+  if (redirects.length > VERCEL_CONFIG_REDIRECT_LIMIT) {
+    throw new Error(
+      `Vercel config redirects exceed the ${VERCEL_CONFIG_REDIRECT_LIMIT} rule limit`,
+    );
+  }
+
   return redirects.length > 0 ? { redirects } : {};
+}
+
+function createRoutesConfig(queryRedirectRoutes, baseRoutes = []) {
+  const routes = [...queryRedirectRoutes, ...baseRoutes];
+  return routes.length > 0 ? { routes } : {};
+}
+
+function createRouteSource(source) {
+  const escapedSource = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return `^${escapedSource}/?$`;
 }
 
 function parseLegacySearch(search) {
@@ -169,6 +220,13 @@ function compareVercelRedirects(a, b) {
   return (
     a.source.localeCompare(b.source) ||
     a.destination.localeCompare(b.destination)
+  );
+}
+
+function compareVercelRoutes(a, b) {
+  return (
+    a.src.localeCompare(b.src) ||
+    a.headers.Location.localeCompare(b.headers.Location)
   );
 }
 
