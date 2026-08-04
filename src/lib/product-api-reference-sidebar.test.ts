@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
 
@@ -56,6 +57,27 @@ function findTopLevelSection(
   );
 }
 
+function findPage(
+  nodes: SidebarNode[],
+  title: string,
+  url: string,
+): SidebarNode | undefined {
+  for (const node of nodes) {
+    if (node.type === 'page' && node.title === title && node.url === url) {
+      return node;
+    }
+
+    if (node.children) {
+      const found = findPage(node.children, title, url);
+      if (found) {
+        return found;
+      }
+    }
+  }
+
+  return undefined;
+}
+
 async function loadSidebar(
   locale: 'en' | 'zh-CN',
   tab: string,
@@ -84,20 +106,25 @@ describe('product API reference sidebar links', () => {
     ['media-pull', '/zh-CN/api-reference/api-ref/media-pull'],
     ['rtmp-gateway', '/zh-CN/api-reference/api-ref/rtmp-gateway'],
     ['fusion-cdn', '/zh-CN/api-reference/api-ref/fusion-cdn'],
-  ])('adds a RESTful API leaf to the Chinese %s realtime-media reference section', async (productSlug, url) => {
-    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [productSlug]);
-    const reference = findSection(sidebar, ['参考', '参考信息']);
+  ])(
+    'reads the service API leaf from the Chinese %s realtime-media metadata',
+    async (productSlug, url) => {
+      const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+        productSlug,
+      ]);
+      const reference = findSection(sidebar, ['参考', '参考信息']);
 
-    const restApiNode = reference?.children?.find(
-      (child) => child.title === 'RESTful API',
-    );
+      const restApiNode = reference?.children?.find(
+        (child) => child.title === '服务端 API',
+      );
 
-    expect(restApiNode).toMatchObject({
-      title: 'RESTful API',
-      type: 'page',
-      url,
-    });
-  });
+      expect(restApiNode).toMatchObject({
+        title: '服务端 API',
+        type: 'page',
+        url,
+      });
+    },
+  );
 
   it.each([
     ['ai', [], 'conversational-ai'],
@@ -151,7 +178,7 @@ describe('product API reference sidebar links', () => {
     }
   });
 
-  it('adds the RTC client API link before its RESTful API link', async () => {
+  it('adds the RTC client API link before its metadata service API link', async () => {
     const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
     const reference = findSection(sidebar, ['参考', '参考信息']);
 
@@ -167,7 +194,7 @@ describe('product API reference sidebar links', () => {
         url: '/zh-CN/api-reference/api',
       },
       {
-        title: 'RESTful API',
+        title: '服务端 API',
         type: 'page',
         url: '/zh-CN/api-reference/api-ref/rtc',
       },
@@ -185,44 +212,72 @@ describe('product API reference sidebar links', () => {
     ).toBe(false);
   });
 
-  it('adds a RESTful API leaf to nested Chinese whiteboard reference sections', async () => {
-    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
-      'whiteboard',
-      'whiteboard-sdk',
-    ]);
-    const reference = findSection(sidebar, ['参考', '参考信息']);
+  it.each(['whiteboard-sdk', 'fastboard-sdk'])(
+    'reads the service API leaf from Chinese whiteboard %s metadata',
+    async (sdkSlug) => {
+      const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+        'whiteboard',
+        sdkSlug,
+      ]);
+      const url = '/zh-CN/api-reference/api-ref/whiteboard/restful';
+      const restApiNode = findPage(sidebar, '服务端 API', url);
 
-    const restApiNode = reference?.children?.find(
-      (child) => child.title === 'RESTful API',
-    );
-
-    expect(restApiNode).toMatchObject({
-      title: 'RESTful API',
-      type: 'page',
-      url: '/zh-CN/api-reference/api-ref/whiteboard/restful',
-    });
-  });
+      expect(restApiNode).toMatchObject({
+        title: '服务端 API',
+        type: 'page',
+        url,
+      });
+    },
+  );
 
   it.each([
-    ['ppt-transcoding', '/zh-CN/api-reference/api-ref/ppt-conversion-service'],
-    ['voip-call', '/zh-CN/api-reference/api-ref/voip-callkit'],
     [
-      'flexible-classroom',
+      ['ppt-transcoding'],
+      '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+    ],
+    [
+      ['flexible-classroom'],
       '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
     ],
-  ])('adds a RESTful API leaf to the Chinese %s solutions reference section', async (productSlug, url) => {
-    const sidebar = await loadSidebar('zh-CN', 'solutions', [productSlug]);
-    const reference = findSection(sidebar, ['参考', '参考信息']);
+    [['meeting'], '/zh-CN/api-reference/meeting/restful/api/create-room'],
+    [
+      ['online-ktv', 'ktv-scenario'],
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
+    ],
+    [
+      ['online-ktv', 'online-ktv-sdk'],
+      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+    ],
+  ])(
+    'reads the service API leaf from the Chinese %s solutions metadata',
+    async (slugs, url) => {
+      const sidebar = await loadSidebar('zh-CN', 'solutions', slugs);
+      const restApiNode = findPage(sidebar, '服务端 API', url);
 
-    const restApiNode = reference?.children?.find(
-      (child) => child.title === 'RESTful API',
-    );
+      expect(restApiNode).toMatchObject({
+        title: '服务端 API',
+        type: 'page',
+        url,
+      });
+    },
+  );
 
-    expect(restApiNode).toMatchObject({
-      title: 'RESTful API',
-      type: 'page',
-      url,
-    });
+  it('reads the two VoIP service API leaves from product metadata', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'solutions', ['voip-call']);
+    const reference = findSection(sidebar, ['参考']);
+
+    expect(reference?.children?.slice(0, 2)).toMatchObject([
+      {
+        title: '呼叫小程序 API',
+        type: 'page',
+        url: '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
+      },
+      {
+        title: 'License 管理 API',
+        type: 'page',
+        url: '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
+      },
+    ]);
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {
@@ -236,7 +291,7 @@ describe('product API reference sidebar links', () => {
     });
   });
 
-  it('adds a RESTful API leaf to the Chinese AI engine reference section only', async () => {
+  it('reads the service API leaf from Chinese AI engine metadata only', async () => {
     const sidebar = await loadSidebar('zh-CN', 'ai', []);
     const engineSection = findTopLevelSection(sidebar, ['对话式 AI 引擎']);
     const reference = engineSection?.children
@@ -254,8 +309,7 @@ describe('product API reference sidebar links', () => {
       url: '/zh-CN/api-reference/api',
     });
     expect(reference?.children?.[1]).toMatchObject({
-      linked: true,
-      title: 'RESTful API',
+      title: '服务端 API',
       type: 'page',
       url: '/zh-CN/api-reference/api-ref/conversational-ai',
     });
@@ -275,5 +329,90 @@ describe('product API reference sidebar links', () => {
             child.title === '客户端 API'),
       ) ?? false,
     ).toBe(false);
+  });
+
+  it.each([
+    [
+      'content/docs/zh-CN/ai/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/rtc/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/rtc',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/rtm/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/signaling/publish',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/speech-to-text/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/speech-to-text',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/cloud-recording/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/cloud-recording',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/transcoding/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/cloud-transcoding',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/usage-analytics/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/agora-analytics',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/media-push/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/media-push',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/media-pull/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/media-pull',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/rtmp-gateway/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/rtmp-gateway',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/fusion-cdn/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/fusion-cdn',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/danmaku/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/danmaku',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    ],
+    [
+      'content/docs/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    ],
+    [
+      'content/docs/zh-CN/solutions/ppt-transcoding/reference/meta.json',
+      '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+    ],
+    [
+      'content/docs/zh-CN/solutions/flexible-classroom/reference/meta.json',
+      '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+    ],
+    [
+      'content/docs/zh-CN/solutions/meeting/reference/meta.json',
+      '/zh-CN/api-reference/meeting/restful/api/create-room',
+    ],
+    [
+      'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/reference/meta.json',
+      '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
+    ],
+    [
+      'content/docs/zh-CN/solutions/online-ktv/online-ktv-sdk/reference/meta.json',
+      '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+    ],
+  ])('declares the service API link in %s', (metaPath, url) => {
+    const meta = JSON.parse(readFileSync(metaPath, 'utf8')) as {
+      pages: unknown[];
+    };
+
+    expect(meta.pages).toContain(`[服务端 API](${url})`);
   });
 });
