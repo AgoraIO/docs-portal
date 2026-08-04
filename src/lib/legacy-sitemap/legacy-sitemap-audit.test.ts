@@ -29,7 +29,17 @@ type DocsFilesystemIndex = {
 };
 
 const manualLegacyUrls = new Set([
+  'https://docs.agora.io/en/Voice/autoplay_policy_web_ng',
+  'https://docs.agora.io/en/ai/reference/release-notes',
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
+  'https://docs.agora.io/en/flexible-classroom/overview/supported-platforms',
+  'https://docs.agora.io/en/help/account-and-billing/console_account_faq',
+  'https://docs.agora.io/en/help/integration-issues/acquire_file_directory',
+  'https://docs.agora.io/en/help/other-issues/android_noaudio',
+  'https://docs.agora.io/en/help/quality-issues/track_ended',
+  'https://docs.agora.io/en/interactive-whiteboard/develop/authentication-workflow',
+  'https://docs.agora.io/en/sdks',
+  'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview',
 ]);
 
 describe('legacy sitemap compatibility audit', () => {
@@ -170,7 +180,7 @@ describe('legacy sitemap compatibility audit', () => {
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 658,
+      semanticPageMatch: 668,
       totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });

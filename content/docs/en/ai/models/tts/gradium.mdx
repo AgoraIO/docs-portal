@@ -1,0 +1,131 @@
+---
+title: Gradium
+description: >
+ Integrate Gradium TTS with the Conversational AI Engine.
+---
+
+Gradium provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
+
+### Sample configuration
+
+The following examples show how to configure Gradium TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GradiumTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(GradiumTTS(
+        api_key='<GRADIUM_API_KEY>',
+        url='wss://api.gradium.ai/api/speech/tts',
+        model_name='default',
+        voice_id='<GRADIUM_VOICE_ID>',
+        sample_rate=16000,
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GradiumTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new GradiumTTS({
+    apiKey: '<GRADIUM_API_KEY>',
+    url: 'wss://api.gradium.ai/api/speech/tts',
+    modelName: 'default',
+    voiceId: '<GRADIUM_VOICE_ID>',
+    sampleRate: 16000,
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+sampleRate := vendors.SampleRate16kHz
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewGradiumTTS(vendors.GradiumTTSOptions{
+        APIKey:     "<GRADIUM_API_KEY>",
+        URL:        "wss://api.gradium.ai/api/speech/tts",
+        ModelName:  "default",
+        VoiceID:    "<GRADIUM_VOICE_ID>",
+        SampleRate: &sampleRate,
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "gradium",
+  "params": {
+    "api_key": "<GRADIUM_API_KEY>",
+    "url": "wss://api.gradium.ai/api/speech/tts",
+    "model_name": "default",
+    "voice_id": "<GRADIUM_VOICE_ID>",
+    "sample_rate": 16000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Gradium documentation](https://docs.gradium.ai/guides/text-to-speech).
+:::
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Gradium API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://api.gradium.ai/api/speech/tts`.
+  </Parameter>
+  <Parameter name="model_name" type="string" required={false}>
+    The TTS model to use. For example, `default`.
+  </Parameter>
+  <Parameter name="voice_id" type="string" required={false}>
+    The voice identifier to use.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" required={false}>
+    The audio sample rate in Hz. For example, `16000`.
+  </Parameter>
+</ParameterList>

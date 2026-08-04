@@ -51,9 +51,11 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 
    ```kotlin
    val config = ConversationalAIAPIConfig(
-       rtcEngine = rtcEngineInstance,
-       rtmClient = rtmClientInstance,
-       enableLog = true
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
    )
 
    val api = ConversationalAIAPIImpl(config)
@@ -139,7 +141,9 @@ The toolkit exposes callback methods that let you listen for various agent-relat
    let config = ConversationalAIAPIConfig(
        rtcEngine: rtcEngine,
        rtmEngine: rtmEngine,
-       enableLog: true
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
    )
 
    convoAIAPI = ConversationalAIAPIImpl(config: config)
@@ -226,12 +230,15 @@ The toolkit exposes callback methods that let you listen for various agent-relat
 2. **Create a toolkit instance**
 
    ```tsx
-   ConversationalAIAPI.init({
-       rtcEngine,
-       rtmEngine,
-   })
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
 
-   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
    ```
 
 3. **Register events**

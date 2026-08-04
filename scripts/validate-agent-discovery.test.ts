@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   parseMcpInitializeResponse,
+  parseMcpToolsResponse,
   validateDiscoveryDocuments,
+  validateMcpServiceMetadata,
 } from './validate-agent-discovery';
 
 const CANONICAL_SKILL_URL =
@@ -14,6 +16,7 @@ const CANONICAL_SKILL_DIGEST =
 describe('agent discovery artifacts', () => {
   const mcpDiscovery = readJson('public/.well-known/mcp.json');
   const mcpServerCard = readJson('public/.well-known/mcp/server-card.json');
+  const mcpServerCards = readJson('public/.well-known/mcp/server-cards.json');
   const skillsIndex = readJson('public/.well-known/agent-skills/index.json');
 
   it('advertises the public Agora MCP server through current discovery contracts', () => {
@@ -34,10 +37,18 @@ describe('agent discovery artifacts', () => {
       authentication: 'none',
       capabilities: { tools: true },
       name: 'agora-docs-search',
+      serverInfo: { name: 'algolia-mcp', version: '1.0.0' },
       transport: 'http',
       url: 'https://mcp.agora.io',
       version: '1.0.0',
     });
+    expect(mcpServerCard.tools).toEqual([
+      { name: 'algolia_search_for_facet_values' },
+      { name: 'algolia_search_index_agora_api_refapirefcrawler' },
+      { name: 'algolia_search_index_agora_swift_api_ref' },
+      { name: 'algolia_search_index_docs_portal_en' },
+    ]);
+    expect(mcpServerCards).toEqual({ servers: [mcpServerCard] });
   });
 
   it('advertises the canonical Agora Skill with content integrity metadata', () => {
@@ -78,6 +89,7 @@ describe('agent discovery artifacts', () => {
       validateDiscoveryDocuments({
         mcpDiscovery,
         mcpServerCard,
+        mcpServerCards,
         skillBody,
         skillsIndex: {
           ...skillsIndex,
@@ -89,6 +101,7 @@ describe('agent discovery artifacts', () => {
       validateDiscoveryDocuments({
         mcpDiscovery,
         mcpServerCard,
+        mcpServerCards,
         skillBody: `${skillBody}drift`,
         skillsIndex: {
           ...skillsIndex,
@@ -96,6 +109,19 @@ describe('agent discovery artifacts', () => {
         },
       }),
     ).toThrow('canonical Skill digest');
+
+    expect(() =>
+      validateDiscoveryDocuments({
+        mcpDiscovery,
+        mcpServerCard,
+        mcpServerCards: { servers: [] },
+        skillBody,
+        skillsIndex: {
+          ...skillsIndex,
+          skills: [{ ...skillsIndex.skills[0], digest }],
+        },
+      }),
+    ).toThrow('MCP server card endpoints');
 
     expect(
       parseMcpInitializeResponse(
@@ -105,6 +131,46 @@ describe('agent discovery artifacts', () => {
       protocolVersion: '2025-06-18',
       serverInfo: { name: 'algolia-mcp', version: '1.0.0' },
     });
+  });
+
+  it('detects drift between the server card and the live MCP service', () => {
+    const initialized = parseMcpInitializeResponse(
+      '{"result":{"protocolVersion":"2025-06-18","serverInfo":{"name":"algolia-mcp","version":"1.0.0"}},"jsonrpc":"2.0","id":1}',
+    );
+    const liveTools = [
+      { name: 'algolia_search_for_facet_values' },
+      { name: 'algolia_search_index_agora_api_refapirefcrawler' },
+      { name: 'algolia_search_index_agora_swift_api_ref' },
+      { name: 'algolia_search_index_docs_portal_en' },
+    ];
+    const listedTools = parseMcpToolsResponse(
+      `event: message\ndata: ${JSON.stringify({
+        id: 2,
+        jsonrpc: '2.0',
+        result: { tools: liveTools },
+      })}\n`,
+    );
+
+    expect(() =>
+      validateMcpServiceMetadata({ initialized, listedTools, mcpServerCard }),
+    ).not.toThrow();
+    expect(() =>
+      validateMcpServiceMetadata({
+        initialized: {
+          ...initialized,
+          serverInfo: { ...initialized.serverInfo, version: '2.0.0' },
+        },
+        listedTools,
+        mcpServerCard,
+      }),
+    ).toThrow('serverInfo');
+    expect(() =>
+      validateMcpServiceMetadata({
+        initialized,
+        listedTools: listedTools.slice(1),
+        mcpServerCard,
+      }),
+    ).toThrow('tool metadata');
   });
 });
 

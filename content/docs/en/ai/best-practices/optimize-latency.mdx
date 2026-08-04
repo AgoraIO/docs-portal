@@ -1,8 +1,6 @@
 ---
 title: Optimize latency
 description: Optimize end-to-end conversation latency by tuning LLM, ASR, and TTS components, geographic deployment, and RTC settings.
-last_update:
-  date: 2026-05-21
 ---
 Latency is a key factor affecting user experience in conversational AI agent scenarios. This guide helps you understand and optimize conversation latency to improve user experience.
 
@@ -317,9 +315,11 @@ Agora RTC SDK 4.5.1 and later supports the AI conversation scenario (`AUDIO_SCEN
 
 ```kotlin
 val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
+    rtcEngine = rtcEngine,
+    rtmClient = rtmClient,
+    renderMode = TranscriptRenderMode.Word,
+    enableLog = true,
+    enableRenderModeFallback = true
 )
 val api = ConversationalAIAPIImpl(config)
 
@@ -345,7 +345,9 @@ rtcEngine = RtcEngine.create(config)
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine,
     rtmEngine: rtmEngine,
-    enableLog: true
+    renderMode: .words,
+    enableLog: true,
+    enableRenderModeFallback: true
 )
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 
