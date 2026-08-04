@@ -56,6 +56,18 @@ function checkArtifacts(root: string) {
   );
 }
 
+function generateArtifacts(root: string) {
+  return execFileSync(
+    process.execPath,
+    [path.join(root, 'scripts/generate-legacy-redirect-artifacts.mjs')],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
+}
+
 function checkArtifactsFailure(root: string) {
   try {
     checkArtifacts(root);
@@ -82,7 +94,7 @@ describe('generate-legacy-redirect-artifacts', () => {
     await writeFile(vercelPath, `${JSON.stringify(config)}\n`, 'utf8');
 
     expect(checkArtifacts(root)).toContain(
-      '[legacy-redirects] Vercel query redirects:',
+      '[legacy-redirects] Vercel query redirect routes:',
     );
   });
 
@@ -109,5 +121,112 @@ describe('generate-legacy-redirect-artifacts', () => {
     expect(checkArtifactsFailure(root)).toContain(
       'vercel-legacy-redirects.json is out of date',
     );
+  });
+
+  it('keeps query-specific preserveSearch false rules out of bulk redirects', async () => {
+    const root = await createFixture();
+    const redirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/redirects.json',
+    );
+    const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
+
+    redirectsConfig.rules.push({
+      legacyUrl: 'https://docs.agora.io/en/query-only/source?platform=Web',
+      legacyPath: '/en/query-only/source',
+      legacySearch: '?platform=Web',
+      target: '/en/query-only/target',
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: ['fixture'],
+      preserveSearch: false,
+    });
+    await writeFile(
+      redirectsPath,
+      `${JSON.stringify(redirectsConfig, null, 2)}\n`,
+      'utf8',
+    );
+
+    expect(generateArtifacts(root)).toContain(
+      '[legacy-redirects] Vercel query redirect routes:',
+    );
+
+    const bulkRedirects = JSON.parse(
+      await readFile(path.join(root, 'vercel-legacy-redirects.json'), 'utf8'),
+    );
+    const vercelConfig = JSON.parse(
+      await readFile(path.join(root, 'vercel.json'), 'utf8'),
+    );
+
+    expect(bulkRedirects).not.toContainEqual(
+      expect.objectContaining({
+        source: '/en/query-only/source',
+      }),
+    );
+    expect(vercelConfig.routes).toContainEqual({
+      src: '^/en/query-only/source/?$',
+      headers: {
+        Location: '/en/query-only/target',
+      },
+      has: [
+        {
+          type: 'query',
+          key: 'platform',
+          value: 'Web',
+        },
+      ],
+      status: 301,
+    });
+    expect(vercelConfig.redirects).not.toContainEqual(
+      expect.objectContaining({ source: '/en/query-only/source' }),
+    );
+  });
+
+  it('spills query-preserving redirects beyond the bulk limit into vercel.json', async () => {
+    const root = await createFixture();
+    const redirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/redirects.json',
+    );
+    const rules = Array.from({ length: 1_001 }, (_, index) => ({
+      legacyUrl: `https://docs.agora.io/en/overflow/source-${index}`,
+      legacyPath: `/en/overflow/source-${index}`,
+      target: `/en/overflow/target-${index}`,
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: ['fixture'],
+      preserveSearch: true,
+    }));
+    await writeFile(
+      redirectsPath,
+      `${JSON.stringify({ rules }, null, 2)}\n`,
+      'utf8',
+    );
+
+    expect(generateArtifacts(root)).toContain(
+      '[legacy-redirects] Vercel bulk redirects: 1000',
+    );
+
+    const bulkRedirects = JSON.parse(
+      await readFile(path.join(root, 'vercel-legacy-redirects.json'), 'utf8'),
+    );
+    const vercelConfig = JSON.parse(
+      await readFile(path.join(root, 'vercel.json'), 'utf8'),
+    );
+    const generatedRedirects = [
+      ...bulkRedirects,
+      ...vercelConfig.redirects.filter((redirect: { source: string }) =>
+        redirect.source.startsWith('/en/overflow/'),
+      ),
+    ];
+
+    expect(bulkRedirects).toHaveLength(1_000);
+    expect(generatedRedirects).toHaveLength(1_001);
+    expect(
+      vercelConfig.redirects.some(
+        (redirect: Record<string, unknown>) =>
+          'preserveQueryParams' in redirect,
+      ),
+    ).toBe(false);
   });
 });

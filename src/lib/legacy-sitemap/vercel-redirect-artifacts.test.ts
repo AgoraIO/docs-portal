@@ -30,13 +30,15 @@ type VercelRedirect = {
 };
 
 type VercelRoute = {
-  dest: string;
+  dest?: string;
   has?: Array<{
     key: string;
     type: string;
     value: string;
   }>;
+  headers?: Record<string, string>;
   src: string;
+  status?: number;
 };
 
 describe('legacy redirect Vercel artifacts', () => {
@@ -55,6 +57,16 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(staticRedirects).toHaveLength(legacyRules.length);
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('stays within Vercel redirect limits and schema', () => {
+    expect(bulkRedirects.length).toBeLessThanOrEqual(1_000);
+    expect(vercelConfig.redirects?.length ?? 0).toBeLessThanOrEqual(2_048);
+    expect(vercelConfig.redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ preserveQueryParams: expect.anything() }),
+      ]),
+    );
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
@@ -251,16 +263,18 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
+  it('strips legacy queries with conditional Vercel redirect routes', () => {
     expect(
       bulkRedirects.some(
         (rule) =>
           rule.source === '/en/broadcast-streaming/overview/release-notes',
       ),
     ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location:
+          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      },
       has: [
         {
           key: 'platform',
@@ -268,8 +282,8 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
+      src: '^/en/broadcast-streaming/overview/release-notes/?$',
+      status: 301,
     });
   });
 
