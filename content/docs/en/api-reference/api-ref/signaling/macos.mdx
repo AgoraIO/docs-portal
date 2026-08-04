@@ -1328,7 +1328,7 @@ After successfully calling this method, the SDK triggers a `didReceiveMessageEve
 
 Signaling provides event notifications for messages, states, and event changes. By listening for callbacks, you can receive messages and events within subscribed channels. As an example, the code snippet below shows how to receive messages from the user channel.
 - Adding during initialization:
-```objc
+    ```objc
     @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1348,10 +1348,10 @@ Signaling provides event notifications for messages, states, and event changes. 
     RtmListener* handler =  [[RtmListener alloc] init];
     NSError* initError = nil;
     AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
-```
+    ```
 - Adding at any time:
 
-```objc
+    ```objc
     @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1368,7 +1368,7 @@ Signaling provides event notifications for messages, states, and event changes. 
 
     RtmListener* handler =  [[RtmListener alloc] init];
     [rtm addDelegate:handler];
-```
+    ```
 
 For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
 

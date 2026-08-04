@@ -74,7 +74,7 @@ Compared to `1.x`, Signaling `2.x` makes significant adjustments to the initiali
 
 - Sample code for Signaling `1.x`:
 
-```javascript
+    ```javascript
     let options = {
       uid: "",
       token: ""
@@ -87,11 +87,11 @@ Compared to `1.x`, Signaling `2.x` makes significant adjustments to the initiali
     options.token = "<Your token>";
     // Initialize the client instance
     const rtm = AgoraRTM.createInstance(appID);
-```
+    ```
 
 - Sample code for Signaling `2.x`:
 
-```javascript
+    ```javascript
     // Initialize the client instance
     const { RTM } = AgoraRTM;
     // Fill in the App ID you obtained from the console
@@ -104,7 +104,7 @@ Compared to `1.x`, Signaling `2.x` makes significant adjustments to the initiali
     } catch (status) {
       console.log(status);
     }
-```
+    ```
 
 ## Log in to Signaling
 
@@ -112,13 +112,13 @@ Signaling `2.x` adopts the standard Async/Await pattern, enabling support for as
 
 - Sample code for Signaling `1.x`:
 
-```javascript
+    ```javascript
     await rtm.login(options)
-```
+    ```
 
 - Sample code for Signaling `2.x`:
 
-```javascript
+    ```javascript
     const token = 'your_token'
     try {
       const result = await rtm.login({ token });
@@ -126,7 +126,7 @@ Signaling `2.x` adopts the standard Async/Await pattern, enabling support for as
     } catch (status) {
       console.log(status);
     }
-```
+    ```
 
 ## Event notifications
 
@@ -151,16 +151,16 @@ The following example shows how to listen for `message` event notifications:
 
 - Signaling `1.x`:
 
-```javascript
+    ```javascript
     let channel = rtm.createChannel("demoChannel");
     channel.on('ChannelMessage', function (message, memberId) {
       console.log(memberId + ": " + message.text);
     });
-```
+    ```
 
 - Signaling `2.x`:
 
-```javascript
+    ```javascript
     rtm.addEventListener("message", event => {
       const channelType = event.channelType;
       const channelName = event.channelName;
@@ -171,7 +171,7 @@ The following example shows how to listen for `message` event notifications:
       const message = event.message;
       const timestamp = event.timestamp;
     });
-```
+    ```
 
 Notice the following significant differences:
 
@@ -191,18 +191,18 @@ The drawback of this design is that you cannot send a message without receiving 
 
 - The sample code for `1.x` is as follows:
 
-```javascript
+    ```javascript
     let channel = rtm.createChannel("demoChannel");
     await channel.join();
     let payload = "Hello World!";
     await channel.sendMessage({ text: payload }).then(() => {
         console.log("Channel message:" + payload + " from " + channel.channelId);
     }
-```
+    ```
 
 - The sample code for Signaling `2.x` is as follows:
 
-```javascript
+    ```javascript
     // Send channel message
     const payload = "Hello World!";
     try {
@@ -219,7 +219,7 @@ The drawback of this design is that you cannot send a message without receiving 
     } catch (status) {
         console.log(status);
     }
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -528,30 +528,27 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 You can integrate the Signaling `2.x` SDK into your app either using a CDN or through Maven Central. The integration methods are as follows:
 
 - For `1.x`:
-```java
+    ```java
     dependencies {
         // Replace x.y.z with the specific SDK version, e.g., 1.5.1
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
     }
-```
+    ```
 
 - For `2.x`:
-```java
+    ```java
     dependencies {
         // Replace x.y.z with the specific SDK version, e.g., 2.3.0
-        // For v2.2.7 and later:
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
-        // For v2.2.6 and earlier:
-        // implementation 'io.agora:agora-rtm:x.y.z'
     }
-```
+    ```
 
 ## Initialize an RTM Client instance
 
 Signaling `2.x` makes adjustments to initialization parameters. It introduces new features such as end-to-end encryption, and cloud proxy. Refer to the [API Reference](/en/api-reference/api-ref/signaling) for details. Additionally, `2.x` provides richer error information when invoking interfaces, allowing you to quickly identify issues. Look up [Error Codes](/en/realtime-media/rtm/reference/error-codes) for efficient troubleshooting.
 
 - Sample code for `1.x`:
-```java
+    ```java
     try {
         rtmClient = RtmClient.createInstance(getBaseContext(), "your_appId", new RtmClientListener() {
             @Override
@@ -577,11 +574,11 @@ Signaling `2.x` makes adjustments to initialization parameters. It introduces ne
     } catch (Exception e) {
         throw new RuntimeException("RTM initialization failed!");
     }
-```
+    ```
 
 - Sample code for `2.x`:
 
-```java
+    ```java
     RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
         .eventListener(eventListener)
         .build();
@@ -590,7 +587,7 @@ Signaling `2.x` makes adjustments to initialization parameters. It introduces ne
     } catch (Exception e) {
         e.printStackTrace();
     }
-```
+    ```
 
 ## Log in to Signaling
 
@@ -598,7 +595,7 @@ The login method for `2.x` differs from `1.x`:
 
 - Sample code for `1.x`:
 
-```java
+    ```java
     rtmClient.login("your_token", "your_userId", new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -609,11 +606,11 @@ The login method for `2.x` differs from `1.x`:
             // Handle errors
         }
     });
-```
+    ```
 
 - Sample code for `2.x`:
 
-```java
+    ```java
     rtmClient.login("your_token", new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -625,7 +622,7 @@ The login method for `2.x` differs from `1.x`:
             // Handle errors
         }
     });
-```
+    ```
 
 ## Event notifications
 
@@ -650,7 +647,7 @@ Consider the example of listening to channel message events:
 
 - For `1.x`:
 
-```java
+    ```java
     rtmChannel = rtmClient.createChannel("channelName", new RtmChannelListener() {
         @Override
         public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
@@ -658,10 +655,10 @@ Consider the example of listening to channel message events:
         }
         // Add other event notifications
     });
-```
+    ```
 
 - For `2.x`:
-```java
+    ```java
     RtmEventListener eventListener = new RtmEventListener() {
         @Override
         public void onMessageEvent(MessageEvent event) {
@@ -682,7 +679,7 @@ Consider the example of listening to channel message events:
 
     // Option 2: Add event listener at any time during the app's lifecycle
     rtmClient.addEventListener(eventListener);
-```
+    ```
 The comparison demonstrates significant differences:
 
 - In `1.x`, channel message event notifications are bound to specific channel instances. Users need to call the `createChannel()` method to create a `channel` instance, then register the `onMessageReceived` callback to handle events. The SDK notifies the handler through this callback when a message is received. If multiple channels are involved, this process needs to be repeated for each channel. In `2.x`, message event notifications are bound to the client instance globally. You call the `addEventListener()` method to register the callback code once, and it applies to all subscribed channels or topics. This simplifies the implementation for handling message events across multiple channels or topics.
@@ -701,7 +698,7 @@ The disadvantage to this design is that you cannot independently send messages. 
 
 - Sample code for `1.x`:
 
-```java
+    ```java
     // Create channel
     rtmChannel = rtmClient.createChannel("channelName", new RtmChannelListener() {
         @Override
@@ -738,11 +735,11 @@ The disadvantage to this design is that you cannot independently send messages. 
             // Handle errors
         }
     });
-```
+    ```
 
 - Sample code for `2.x`:
 
-```java
+    ```java
     // Send message in Message Channel
     String message = "Hello world";
     PublishOptions options = new PublishOptions();
@@ -782,7 +779,7 @@ The disadvantage to this design is that you cannot independently send messages. 
         }
         // Add other event notifications
     });
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -1057,21 +1054,21 @@ rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
 Signaling supports the restricted access area feature to comply with the laws and regulations of different countries or regions. After turning on the restricted access area feature, no matter which area the user uses your app from, the SDK will only access the Agora server in the geographical specified area. Signaling `1.x` implements access area limitation as follows.
 
 - Sample code for `1.x`:
-```java
+    ```java
     // 1.x
     RtmServiceContext context = new RtmServiceContext();
     context.areaCode = RtmAreaCode.AREA_CODE_GLOB;
     setRtmServiceContext(context);
-```
+    ```
 
 - Sample code for `2.x`:
-```java
+    ```java
     // 2.x
     RtmConfig rtmConfig = new RtmConfig.Builder(appId, userId)
         .areaCode(EnumSet.of(RtmAreaCode.AS))
         .eventListener(eventListener)
         .build();
-```
+    ```
 
 ## Call invitation
 
@@ -1177,18 +1174,18 @@ Signaling `2.x` has made significant adjustments to the initialization parameter
 
 - For `1.x`:
 
-```objc
-   self.appID = @"your_appid";
-   _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
-```
+    ```objc
+    self.appID = @"your_appid";
+    _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
+    ```
 
 - For `2.x`:
 
-```objc
-   AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
-   NSError* initError = nil;
-   AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
-```
+    ```objc
+    AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+    ```
 
 ## Log in to Signaling
 
@@ -1196,7 +1193,7 @@ The login method for `2.x` differs from `1.x`, as follows:
 
 - For `1.x`:
 
-```objc
+    ```objc
     self.uid = self.UserIDTextField.text;
     self.token = @"your_token";
     [_kit loginByToken:(self.token) user:(self.uid) completion:^(AgoraRtmLoginErrorCode errorCode) {
@@ -1209,11 +1206,11 @@ The login method for `2.x` differs from `1.x`, as follows:
             self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorCode];
         }
     }];
-```
+    ```
 
 - For `2.x`:
 
-```objc
+    ```objc
     [rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
         if (errorInfo == nil) {
             NSLog(@"Login success!!");
@@ -1221,7 +1218,7 @@ The login method for `2.x` differs from `1.x`, as follows:
             NSLog(@"Login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
         }
     }];
-```
+    ```
 ## Event notifications
 
 Signaling `2.x` has redesigned the system's event notification method and API interface, providing more detailed categorization and aggregation of event notification types, as well as optimizing the payload data structure. Version `2.x` features the following event notification types:
@@ -1243,7 +1240,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
 - For `1.x`:
 
-```objc
+    ```objc
     @interface ChannelListener ()<AgoraRtmChannelDelegate>
     @end
 
@@ -1257,10 +1254,10 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     ChannelListener* handler =  [[ChannelListener alloc] init];
     channel = [rtm createChannelWithId:self.channelID delegate:handler];
-```
+    ```
 
 - For `2.x`:
-```objc
+    ```objc
     @interface RtmListener : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1278,7 +1275,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     // Approach 2: Adding event listener at any time during the app's lifecycle
     [rtm addDelegate:handler];
-```
+    ```
 
 Observe the following differences in the sample code.
 
@@ -1297,33 +1294,33 @@ In version `1.x`, to send a channel message, you needed to:
 The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
 
 - For `1.x`:
-```objc
-    // Create an RTM channel
-    _channel = [_kit createChannelWithId:self.channelID delegate:self];
+    ```objc
+        // Create an RTM channel
+        _channel = [_kit createChannelWithId:self.channelID delegate:self];
 
-    // Join the RTM channel
-    [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
-	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
-		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
-		    NSLog(@"%@", self.text);
-	    } else {
-		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
-		    NSLog(@"%@", self.text);
-	    }
-    }];
+        // Join the RTM channel
+        [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+    	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
+    		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
+    		    NSLog(@"%@", self.text);
+    	    } else {
+    		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
+    		    NSLog(@"%@", self.text);
+    	    }
+        }];
 
-    // Send a channel message
-    [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
-		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
-	    } else {
-		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
-	    }
-    }];
-```
+        // Send a channel message
+        [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+    	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
+    		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
+    	    } else {
+    		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
+    	    }
+        }];
+    ```
 - For `2.x`:
 
-```objc
+    ```objc
     // Send a channel message
     NSString* message = @"Hello Agora!";
     NSString* channel = @"your_channel";
@@ -1345,7 +1342,7 @@ The disadvantage to this design is that you cannot independently send messages. 
             NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
         }
     }];
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -1612,20 +1609,20 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 - For `1.x`:
 
-```objc
+    ```objc
     AgoraRtmServiceContext* context = [[AgoraRtmServiceContext alloc] init];
     context.areaCode = AgoraAreaCodeGLOB;
     [AgoraRtmKit setRtmServiceContext:context];
-```
+    ```
 
 - For `2.x`:
 
-```objc
+    ```objc
     AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
     rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
     NSError* initError = nil;
     AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
-```
+    ```
 
 ## Call invitation
 
@@ -1730,18 +1727,18 @@ Signaling `2.x` has made significant adjustments to the initialization parameter
 
 - For `1.x`:
 
-```objc
-   self.appID = @"your_appid";
-   _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
-```
+    ```objc
+    self.appID = @"your_appid";
+    _kit = [[AgoraRtmKit alloc] initWithAppId:self.appID delegate:self];
+    ```
 
 - For `2.x`:
 
-```objc
-   AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
-   NSError* initError = nil;
-   AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
-```
+    ```objc
+    AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+    NSError* initError = nil;
+    AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+    ```
 
 ## Log in to Signaling
 
@@ -1749,7 +1746,7 @@ The login method for `2.x` differs from `1.x`, as follows:
 
 - For `1.x`:
 
-```objc
+    ```objc
     self.uid = self.UserIDTextField.text;
     self.token = @"your_token";
     [_kit loginByToken:(self.token) user:(self.uid) completion:^(AgoraRtmLoginErrorCode errorCode) {
@@ -1762,11 +1759,11 @@ The login method for `2.x` differs from `1.x`, as follows:
             self.text = [NSString stringWithFormat:@"Login successful for user %@. Code: %ld",self.uid, (long)errorCode];
         }
     }];
-```
+    ```
 
 - For `2.x`:
 
-```objc
+    ```objc
     [rtm loginByToken:@"token" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
         if (errorInfo == nil) {
             NSLog(@"Login success!!");
@@ -1774,7 +1771,7 @@ The login method for `2.x` differs from `1.x`, as follows:
             NSLog(@"Login failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
         }
     }];
-```
+    ```
 ## Event notifications
 
 Signaling `2.x` has redesigned the system's event notification method and API interface, providing more detailed categorization and aggregation of event notification types, as well as optimizing the payload data structure. Version `2.x` features the following event notification types:
@@ -1796,7 +1793,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
 - For `1.x`:
 
-```objc
+    ```objc
     @interface ChannelListener ()<AgoraRtmChannelDelegate>
     @end
 
@@ -1810,10 +1807,10 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     ChannelListener* handler =  [[ChannelListener alloc] init];
     channel = [rtm createChannelWithId:self.channelID delegate:handler];
-```
+    ```
 
 - For `2.x`:
-```objc
+    ```objc
     @interface RtmListener : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1831,7 +1828,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     // Approach 2: Adding event listener at any time during the app's lifecycle
     [rtm addDelegate:handler];
-```
+    ```
 
 Observe the following differences in the sample code.
 
@@ -1850,33 +1847,33 @@ In version `1.x`, to send a channel message, you needed to:
 The disadvantage to this design is that you cannot independently send messages. You must also receive messages because sending and receiving is coupled. Signaling `2.x` adopts a new Pub/Sub-based model designed to decouple sending and receiving messages. When sending messages, you only need to publish to the specified channel without joining the channel. To receive channel messages, you only need to subscribe to the specified channel. The two operations are independent.
 
 - For `1.x`:
-```objc
-    // Create an RTM channel
-    _channel = [_kit createChannelWithId:self.channelID delegate:self];
+    ```objc
+        // Create an RTM channel
+        _channel = [_kit createChannelWithId:self.channelID delegate:self];
 
-    // Join the RTM channel
-    [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
-	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
-		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
-		    NSLog(@"%@", self.text);
-	    } else {
-		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
-		    NSLog(@"%@", self.text);
-	    }
-    }];
+        // Join the RTM channel
+        [_channel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+    	    if (errorCode == AgoraRtmJoinChannelErrorOk) {
+    		    self.text = [NSString stringWithFormat:@"Successfully joined channel %@. Code: %ld", self.channelID, (long)errorCode];
+    		    NSLog(@"%@", self.text);
+    	    } else {
+    		    self.text = [NSString stringWithFormat:@"Failed to join channel %@. Code: %ld", self.channelID, (long)errorCode];
+    		    NSLog(@"%@", self.text);
+    	    }
+        }];
 
-    // Send a channel message
-    [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
-		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
-	    } else {
-		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
-	    }
-    }];
-```
+        // Send a channel message
+        [_channel sendMessage:[[AgoraRtmMessage alloc] initWithText:self.channelMsg] sendMessageOptions:self.options completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+    	    if (errorCode == AgoraRtmSendChannelMessageErrorOk) {
+    		    self.text = [NSString stringWithFormat:@"Message sent to channel %@: %@", self.channelID, self.channelMsg];
+    	    } else {
+    		    self.text = [NSString stringWithFormat:@"Message failed to send to channel %@: %@ ErrorCode: %ld", self.channelID, self.channelMsg, (long)errorCode];
+    	    }
+        }];
+    ```
 - For `2.x`:
 
-```objc
+    ```objc
     // Send a channel message
     NSString* message = @"Hello Agora!";
     NSString* channel = @"your_channel";
@@ -1898,7 +1895,7 @@ The disadvantage to this design is that you cannot independently send messages. 
             NSLog(@"Subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
         }
     }];
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -2165,20 +2162,20 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 - For `1.x`:
 
-```objc
+    ```objc
     AgoraRtmServiceContext* context = [[AgoraRtmServiceContext alloc] init];
     context.areaCode = AgoraAreaCodeGLOB;
     [AgoraRtmKit setRtmServiceContext:context];
-```
+    ```
 
 - For `2.x`:
 
-```objc
+    ```objc
     AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:_appID userId:_uid];
     rtm_config.areaCode = AgoraRtmAreaCodeGLOB;
     NSError* initError = nil;
     AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config delegate:self error:&initError];
-```
+    ```
 
 ## Call invitation
 
@@ -2273,7 +2270,7 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
       // ...
     };
@@ -2288,11 +2285,11 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
     if (rtmService->initialize("your_appId", new RtmEventHandler())) {
         // Handle initialization errors
     }
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler : public IRtmEventHandler {
         // ...
     };
@@ -2309,7 +2306,7 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
     if (ret != RTM_ERROR_OK) {
         // Handle initialization errors
     }
-```
+    ```
 
 ## Log in to Signaling
 
@@ -2317,7 +2314,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // Method call
     if (rtmService->login("your_token", "your_userId")) {
         // Handle login errors
@@ -2335,11 +2332,11 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
         // ...
     };
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // Method call
     ret = rtmClient->login("your_token");
     if (ret != RTM_ERROR_OK) {
@@ -2358,7 +2355,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
         // ...
     };
-```
+    ```
 
 ## Event notifications
 
@@ -2381,7 +2378,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
         public:
         ChannelEventHandler(string channel) {
@@ -2399,11 +2396,11 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     std::string channelName = "channelName";
     agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler: public IRtmEventHandler {
         void onMessageEvent(const MessageEvent &event) {
             // Handle received messages
@@ -2414,7 +2411,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     RtmConfig config;
     config.eventHandler = new RtmEventHandler();
-```
+    ```
 
 Observe the following differences in the sample code.
 
@@ -2434,7 +2431,7 @@ The disadvantage to this design is that you cannot independently send messages. 
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // Create a channel
     std::string channelName = "channelName";
     agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
@@ -2448,11 +2445,11 @@ The disadvantage to this design is that you cannot independently send messages. 
     rtmMessage->setText(message.c_str());
     channel->sendMessage(rtmMessage);
     rtmMessage->release();
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // Send a channel message
     std::string message = "hello world";
     PublishOptions options;
@@ -2500,7 +2497,7 @@ The disadvantage to this design is that you cannot independently send messages. 
 
         // ...
     };
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -2786,20 +2783,20 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // 1.x
     agora::rtm::RtmServiceContext context;
     context.areaCode = agora::rtm::AREA_CODE_GLOB;
     setRtmServiceContext(context);
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // 2.x
     RtmConfig config;
     config.areaCode = RTM_AREA_CODE_GLOB;
-```
+    ```
 
 ## Other new features
 
@@ -2890,7 +2887,7 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
       // ...
     };
@@ -2905,11 +2902,11 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
     if (rtmService->initialize("your_appId", new RtmEventHandler())) {
         // Handle initialization errors
     }
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler : public IRtmEventHandler {
         // ...
     };
@@ -2926,7 +2923,7 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
     if (ret != RTM_ERROR_OK) {
         // Handle initialization errors
     }
-```
+    ```
 
 ## Log in to Signaling
 
@@ -2934,7 +2931,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // Method call
     if (rtmService->login("your_token", "your_userId")) {
         // Handle login errors
@@ -2952,11 +2949,11 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
         // ...
     };
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // Method call
     ret = rtmClient->login("your_token");
     if (ret != RTM_ERROR_OK) {
@@ -2975,7 +2972,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
         // ...
     };
-```
+    ```
 
 ## Event notifications
 
@@ -2998,7 +2995,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
         public:
         ChannelEventHandler(string channel) {
@@ -3016,11 +3013,11 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     std::string channelName = "channelName";
     agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     class RtmEventHandler: public IRtmEventHandler {
         void onMessageEvent(const MessageEvent &event) {
             // Handle received messages
@@ -3031,7 +3028,7 @@ Examine the following code to observe the differences between the `1.x` and `2.x
 
     RtmConfig config;
     config.eventHandler = new RtmEventHandler();
-```
+    ```
 
 Observe the following differences in the sample code.
 
@@ -3051,7 +3048,7 @@ The disadvantage to this design is that you cannot independently send messages. 
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // Create a channel
     std::string channelName = "channelName";
     agora::rtm::IChannel * channel = rtmService->createChannel(channelName, new ChannelEventHandler(channelName));
@@ -3065,11 +3062,11 @@ The disadvantage to this design is that you cannot independently send messages. 
     rtmMessage->setText(message.c_str());
     channel->sendMessage(rtmMessage);
     rtmMessage->release();
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // Send a channel message
     std::string message = "hello world";
     PublishOptions options;
@@ -3117,7 +3114,7 @@ The disadvantage to this design is that you cannot independently send messages. 
 
         // ...
     };
-```
+    ```
 
 ## Peer-to-peer messaging
 
@@ -3403,20 +3400,20 @@ Signaling supports the restricted access area feature to comply with the laws an
 
 - For `1.x`:
 
-```cpp
+    ```cpp
     // 1.x
     agora::rtm::RtmServiceContext context;
     context.areaCode = agora::rtm::AREA_CODE_GLOB;
     setRtmServiceContext(context);
-```
+    ```
 
 - For `2.x`:
 
-```cpp
+    ```cpp
     // 2.x
     RtmConfig config;
     config.areaCode = RTM_AREA_CODE_GLOB;
-```
+    ```
 
 ## Other new features
 

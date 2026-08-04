@@ -701,64 +701,64 @@ Refer to the following sample code for sending messages:
 
 * String message:
 
-```swift tab="Swift"
-let message = "Hello Agora!"
-    let channel = "your_channel"
+    ```swift tab="Swift"
+    let message = "Hello Agora!"
+        let channel = "your_channel"
 
-    rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
-        if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
-        } else {
-            print("success")
-        }
-    })
-```
+        rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
+            if error != nil {
+                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            } else {
+                print("success")
+            }
+        })
+    ```
 
-```objc tab="Objective-C"
-NSString* message = @"Hello Agora!";
-    NSString* channel = @"your_channel";
-    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
-    publish_option.storeInHistory = YES;
-    [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-        if (errorInfo == nil) {
-            NSLog(@"publish success!!");
-        } else {
-            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-        }
-    }];
-```
+    ```objc tab="Objective-C"
+    NSString* message = @"Hello Agora!";
+        NSString* channel = @"your_channel";
+        AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+        publish_option.storeInHistory = YES;
+        [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+            if (errorInfo == nil) {
+                NSLog(@"publish success!!");
+            } else {
+                NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+            }
+        }];
+    ```
 
 * Binary message:
 
-```swift tab="Swift"
-let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
-    let myDataFromBytes = Data(byteArray)
-    let channel = "your_channel"
+    ```swift tab="Swift"
+    let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
+        let myDataFromBytes = Data(byteArray)
+        let channel = "your_channel"
 
-    // Publish the binary data to the specified channel
-    rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
-        if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
-        } else {
-            print("success")
-        }
-    })
-```
+        // Publish the binary data to the specified channel
+        rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
+            if error != nil {
+                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            } else {
+                print("success")
+            }
+        })
+    ```
 
-```objc tab="Objective-C"
-unsigned char byte_array[5] = {0,1,2,3,4};
-    NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
-    NSString* channel = @"your_channel";
-    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
-    publish_option.storeInHistory = YES;
-    [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-        if (errorInfo == nil) {
-            NSLog(@"publish success!!");
-        } else {
-            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-        }
-    }];
-```
+    ```objc tab="Objective-C"
+    unsigned char byte_array[5] = {0,1,2,3,4};
+        NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+        NSString* channel = @"your_channel";
+        AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+        publish_option.storeInHistory = YES;
+        [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+            if (errorInfo == nil) {
+                NSLog(@"publish success!!");
+            } else {
+                NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+            }
+        }];
+    ```
 
 :::info
 Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
@@ -1050,64 +1050,64 @@ Refer to the following sample code for sending messages:
 
 * String message:
 
-```swift tab="Swift"
-let message = "Hello Agora!"
-    let channel = "your_channel"
+    ```swift tab="Swift"
+    let message = "Hello Agora!"
+        let channel = "your_channel"
 
-    rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
-        if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
-        } else {
-            print("success")
-        }
-    })
-```
+        rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
+            if error != nil {
+                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            } else {
+                print("success")
+            }
+        })
+    ```
 
-```objc tab="Objective-C"
-NSString* message = @"Hello Agora!";
-    NSString* channel = @"your_channel";
-    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
-    publish_option.storeInHistory = YES;
-    [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-        if (errorInfo == nil) {
-            NSLog(@"publish success!!");
-        } else {
-            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-        }
-    }];
-```
+    ```objc tab="Objective-C"
+    NSString* message = @"Hello Agora!";
+        NSString* channel = @"your_channel";
+        AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+        publish_option.storeInHistory = YES;
+        [rtm publish:channel message:message option:publish_option completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+            if (errorInfo == nil) {
+                NSLog(@"publish success!!");
+            } else {
+                NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+            }
+        }];
+    ```
 
 * Binary message:
 
-```swift tab="Swift"
-let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
-    let myDataFromBytes = Data(byteArray)
-    let channel = "your_channel"
+    ```swift tab="Swift"
+    let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // Represents the string "Hello"
+        let myDataFromBytes = Data(byteArray)
+        let channel = "your_channel"
 
-    // Publish the binary data to the specified channel
-    rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
-        if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
-        } else {
-            print("success")
-        }
-    })
-```
+        // Publish the binary data to the specified channel
+        rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
+            if error != nil {
+                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            } else {
+                print("success")
+            }
+        })
+    ```
 
-```objc tab="Objective-C"
-unsigned char byte_array[5] = {0,1,2,3,4};
-    NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
-    NSString* channel = @"your_channel";
-    AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
-    publish_option.storeInHistory = YES;
-    [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-        if (errorInfo == nil) {
-            NSLog(@"publish success!!");
-        } else {
-            NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-        }
-    }];
-```
+    ```objc tab="Objective-C"
+    unsigned char byte_array[5] = {0,1,2,3,4};
+        NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
+        NSString* channel = @"your_channel";
+        AgoraRtmPublishOptions* publish_option = [[AgoraRtmPublishOptions alloc] init];
+        publish_option.storeInHistory = YES;
+        [rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+            if (errorInfo == nil) {
+                NSLog(@"publish success!!");
+            } else {
+                NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+            }
+        }];
+    ```
 
 :::info
 Signaling currently supports only string and binary message formats. To send other types of data such as a JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](../send-and-receive-messages/message-payload-structuring).
