@@ -87,11 +87,11 @@ video-element-visible-status(data?: [CheckVideoVisibleResult](/zh-CN/api-referen
 
 :::info[自从]
 *4.8.0*
+:::
 
 提示 HTML `<video>` 标签的可见状态和不可见原因。SDK 每 30 秒触发一次该事件。
 
 调用 `remoteVideoTrack.play` 后 SDK 会创建 [HTML `<video>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video) 标签用于播放视频轨道。当 `remoteVideoTrack.isPlaying` 为 `true` 却看不到图像时，你可通过此事件来进行问题排查。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="data" optional>
@@ -140,9 +140,9 @@ processorDestination: IBaseProcessor
 
 :::info[自从]
 *4.13.0*
+:::
 
 远端视频轨道上当前媒体处理链路的最终节点。
-:::
 
 <a id="trackmediatype"></a>
 
@@ -171,11 +171,11 @@ getCurrentFrameData(): ImageData
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取当前渲染的视频帧数据。
 
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack#play) 则返回空数据。
-:::
 
 <ApiReturns>
 
@@ -384,9 +384,10 @@ getVideoElementVisibleStatus(): [CheckVideoVisibleResult](/zh-CN/api-reference/r
 
 </ApiSignature>
 
-- @自从
+:::info[自从]
 
-     *4.8.0*
+*4.8.0*
+:::
 
 获取 HTML `<video>` 标签的可见状态和不可见原因。
 
@@ -690,9 +691,9 @@ pipe(processor: IBaseProcessor): IBaseProcessor
 
 :::info[自从]
 *4.13.0*
+:::
 
 将 `Processor` 注入远端视频轨道。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="processor" type="IBaseProcessor" required>
@@ -828,9 +829,9 @@ unpipe(): void
 
 :::info[自从]
 *4.13.0*
+:::
 
 取消远端视频轨道上注入的 `Processor`。
-:::
 
 <ApiReturns>
 

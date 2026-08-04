@@ -676,6 +676,7 @@ setEnabled(enabled: boolean): Promise&lt;void&gt;
 
 :::info[自从]
 *4.0.0*
+:::
 
 启用/禁用该轨道。
 
@@ -684,7 +685,6 @@ setEnabled(enabled: boolean): Promise&lt;void&gt;
 > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
 > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="enabled" type="boolean" required>
@@ -721,12 +721,12 @@ setMuted(muted: boolean): Promise&lt;void&gt;
 
 :::info[自从]
 *4.0.0*
+:::
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 
 > - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="muted" type="boolean" required>

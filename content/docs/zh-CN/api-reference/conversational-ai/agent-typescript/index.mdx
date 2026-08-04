@@ -338,7 +338,7 @@ import { AgentSession } from 'agora-agents';
 
 会话状态会按以下流程推进：
 
-```
+```text
 idle ──► starting ──► running ──► stopping ──► stopped
                          │
                          ▼
@@ -662,6 +662,7 @@ new MicrosoftCNTTS<SR extends MicrosoftCNSampleRate>(options: MicrosoftCNTTSOpti
 #### GenericTTS
 
 自定义 OpenAI 兼容 HTTP TTS。`url` 必填，且必须是 HTTP 或 HTTPS 绝对地址；缺失 `url`、地址格式错误或使用 `ws:`、`wss:` 等非 HTTP(S) 协议时，constructor 会抛出错误。合法地址会序列化为 `tts.vendor = "generic_http"`。
+
 ```typescript
 new GenericTTS(options: GenericTTSOptions)
 ```

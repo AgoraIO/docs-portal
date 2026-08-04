@@ -5,6 +5,30 @@ title: "概览"
 
 智能体会加入用户所在的 RTC 频道，并结合 ASR、LLM、TTS 和可选的多模态能力完成“听懂用户、理解上下文、生成回答、用语音回复”的完整闭环。你无需从零搭建实时传输、智能体运行时和模型编排链路，可以把精力放在业务场景、对话体验和模型行为设计上。
 
+## 立即体验
+
+<Cards columns={2}>
+  <Card
+    title={
+      <span style={{ display: 'grid', gridTemplateColumns: '140px minmax(0, 1fr)', columnGap: '16px', alignItems: 'start' }}>
+        <span
+          role="img"
+          aria-label="对话式 AI Playground"
+          style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/conversational-ai/playground.png)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+        />
+        <span style={{ display: 'block' }}>
+          <span style={{ display: 'block', fontSize: '18px', fontWeight: 600, lineHeight: 1.7 }}>对话式 AI 引擎核心功能</span>
+          <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', fontWeight: 400, lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>进入声网控制台的 Playground，体验与 AI 智能体的对话互动。</span>
+          <span style={{ display: 'block', marginTop: '16px' }}>
+            <a style={{ display: 'inline-flex', color: '#0085ff', fontSize: '14px', fontWeight: 500 }} href="https://console.shengwang.cn/product/ConversationAI?tab=Playground">在线体验</a>
+          </span>
+        </span>
+      </span>
+    }
+    style={{ padding: '12px', borderRadius: '4px' }}
+  />
+</Cards>
+
 ## 快速开始
 
 根据你的开发目标选择入口：如果要在 App 或服务端产品中接入语音智能体，从 Agent SDK 开始；如果要在智能硬件上验证端到端语音对话链路，从 R1 示例开始。
@@ -19,6 +43,11 @@ title: "概览"
     title="跑通 R1 示例 Demo"
     href="/zh-CN/ai/device-kit/build/run-r1-demo"
     description="适用于智能硬件和 IoT 设备。运行 R1 示例，验证 Server 端、App 端和 Device 端的端到端语音对话链路。"
+  />
+  <Card
+    title="使用 RESTful API 创建智能体"
+    href="/zh-CN/ai/get-started/quick-start"
+    description="从服务端调用 RESTful API，完成鉴权、创建智能体、查询状态和停止智能体。"
   />
 </Cards>
 

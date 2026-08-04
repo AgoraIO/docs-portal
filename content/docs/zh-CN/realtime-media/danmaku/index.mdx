@@ -13,12 +13,80 @@ description: "了解弹幕玩法的核心能力、适用场景、接入路径和
 | Windows 端开播                       | 本地安装玩法包.exe，启动玩法将自己的画面通过屏幕共享分享给观众。 | 通过发送弹幕指令，如 1、2、红、蓝、或者送礼影响游戏进程。 |
 | 移动端 (iOS/Android) 云渲染开播 | 无需安装玩法包，App 服务端调用获取云游戏列表，启动云游戏服务。        | 通过发送弹幕指令，如 1、2、红、蓝、或者送礼影响游戏进程。 |
 
+## 立即体验
+
+<Cards columns={2}>
+  <Card
+    title={
+      <span style={{ display: 'grid', gridTemplateColumns: 'clamp(140px, 24%, 160px) minmax(0, 1fr) auto', columnGap: '16px', alignItems: 'start' }}>
+        <span
+          role="img"
+          aria-label="声动互娱弹幕玩法"
+          style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/instant-experience.png)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+        />
+        <span style={{ display: 'block' }}>
+          <span style={{ display: 'block', fontSize: '18px', fontWeight: 600, lineHeight: 1.7 }}>声动互娱</span>
+          <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', fontWeight: 400, lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>主播发起当前直播间、语聊房内组队，带领观众进行跨阵营对决。</span>
+          <span style={{ display: 'flex', flexWrap: 'wrap', columnGap: '16px', rowGap: '4px', marginTop: '16px' }}>
+            <a style={{ display: 'inline-flex', color: '#0085ff', fontSize: '14px', fontWeight: 500 }} href="https://www.pgyer.com/yvTznS">Android Demo 体验</a>
+            <a style={{ display: 'inline-flex', color: '#0085ff', fontSize: '14px', fontWeight: 500 }} href="https://testflight.apple.com/join/cSfas2be">iOS Demo 体验</a>
+          </span>
+        </span>
+        <span className="hidden md:flex" style={{ gap: '12px', alignItems: 'center' }}>
+          <span
+            role="img"
+            aria-label="Android Demo 二维码"
+            style={{ display: 'block', width: '104px', height: '104px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/android-qrcode.png)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+          />
+          <span
+            role="img"
+            aria-label="iOS Demo 二维码"
+            style={{ display: 'block', width: '104px', height: '104px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/ios-qrcode.png)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+          />
+        </span>
+      </span>
+    }
+    className="col-span-full"
+    style={{ padding: '12px', borderRadius: '4px' }}
+  />
+</Cards>
+
 ## 开始构建
 
 <Cards>
-  <Card title="快速开始" href="/zh-CN/realtime-media/danmaku/get-started/start-danmaku-mobile" description="运行示例或完成最小可用集成，快速验证核心流程。" />
+  <Card title="移动端快速开始" href="/zh-CN/realtime-media/danmaku/get-started/start-danmaku-mobile" description="通过 iOS 或 Android App 使用云渲染开播弹幕玩法。" />
+  <Card title="Windows 快速开始" href="/zh-CN/realtime-media/danmaku/get-started/start-danmaku-windows" description="在 Windows 设备上完成弹幕玩法开播接入。" />
   <Card title="构建功能" href="/zh-CN/realtime-media/danmaku/build/setup-and-access/authorization" description="按业务任务接入核心能力，并完成生产环境配置。" />
   <Card title="参考信息" href="/zh-CN/realtime-media/danmaku/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+</Cards>
+
+### 常用参考
+
+<Cards columns={3}>
+  <a href="/zh-CN/realtime-media/danmaku/reference/base-url" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', border: '1px solid var(--color-fd-border)', borderRadius: '4px', color: 'inherit', textDecoration: 'none' }}>
+    <span role="img" aria-label="HTTP 基础鉴权示意图" style={{ display: 'block', width: '100%', height: '132px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/base-url.png)', backgroundPosition: 'center', backgroundSize: 'cover' }} />
+    <span style={{ display: 'block', flexGrow: 1, padding: '12px 24px 24px' }}>
+      <span style={{ display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
+        <span style={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.5 }}>Base URL 说明</span>
+        <span style={{ height: '20px', borderRadius: '8px 8px 8px 0', padding: '4px 5px 0', background: '#f04438', color: '#fff', fontSize: '12px', fontWeight: 700, lineHeight: 1, transform: 'scale(0.8)', transformOrigin: 'left top' }}>HOT</span>
+      </span>
+      <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>了解调用弹幕玩法服务端 API 时的 Base URL 填写注意事项。</span>
+    </span>
+  </a>
+  <a href="/zh-CN/realtime-media/danmaku/build/setup-and-access/enable-service" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', border: '1px solid var(--color-fd-border)', borderRadius: '4px', color: 'inherit', textDecoration: 'none' }}>
+    <span role="img" aria-label="开通服务示意图" style={{ display: 'block', width: '100%', height: '132px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/enable-service.png)', backgroundPosition: 'center', backgroundSize: 'cover' }} />
+    <span style={{ display: 'block', flexGrow: 1, padding: '12px 24px 24px' }}>
+      <span style={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.5 }}>开通服务</span>
+      <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>了解在声网控制台创建项目并获取开发参数。</span>
+    </span>
+  </a>
+  <a href="/zh-CN/realtime-media/danmaku/reference/response-code" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', border: '1px solid var(--color-fd-border)', borderRadius: '4px', color: 'inherit', textDecoration: 'none' }}>
+    <span role="img" aria-label="响应状态码示意图" style={{ display: 'block', width: '100%', height: '132px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/danmaku/response-code.png)', backgroundPosition: 'center', backgroundSize: 'cover' }} />
+    <span style={{ display: 'block', flexGrow: 1, padding: '12px 24px 24px' }}>
+      <span style={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.5 }}>响应状态码</span>
+      <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>查看调用弹幕玩法服务端 API 时可能收到的状态码及处理建议。</span>
+    </span>
+  </a>
 </Cards>
 
 ## 方案优势
