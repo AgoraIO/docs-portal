@@ -45,7 +45,10 @@ _migration:
 <a id="agoraconnectionstatefailed"></a>
 <Parameter name="AgoraConnectionStateFailed">
 
-（5）：SDK 无法连接到声网边缘服务器或加入频道。该状态表示 SDK 停止尝试重连。你必须调用 [leaveChannel:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel) 离开频道。可调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 重新加入频道。如果 SDK 被声网边缘服务器通过 RESTful API 禁止加入频道，会触发 `connectionChangedToState:reason:` 回调。
+（5）：SDK 无法连接声网边缘服务器或加入频道，并停止重连。用户被服务端踢出、Token 失效或鉴权失败时，回调报告的 `reason` 可能不同，但进入该状态后的恢复流程一致：
+
+- [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2) 场景：先调用 [leaveChannel:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel)，等待 [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/macos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调报告 `AgoraConnectionStateDisconnected`（1），再使用有效的新 Token 调用 [joinChannelByToken\:channelId\:uid\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_joinchannel2)。如果未先离开频道，该方法会返回 -17（`AgoraErrorCodeJoinChannelRejected`）。
+- [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 场景：针对对应的 [AgoraRtcConnection](/zh-CN/api-reference/rtc/macos/class-rtcconnection) 调用 [leaveChannelEx\:leaveChannelBlock:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_leavechannelex)，等待该连接进入 `AgoraConnectionStateDisconnected`（1），再使用有效的新 Token 调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex)。如需只清理该连接，请使用 [leaveChannelEx\:leaveChannelBlock:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_leavechannelex)；调用 [leaveChannel:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_leavechannel) 会离开当前加入的所有频道。
 
 </Parameter>
 </ParameterList>

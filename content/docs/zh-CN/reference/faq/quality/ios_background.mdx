@@ -13,16 +13,16 @@ iOS 设备锁屏或将 App 切换至后台后，无法听到音频，且视频�
 
 当使用 SDK 采集视频时，无法在后台采集视频；但你可以参考以下操作步骤，使 App 在后台仍可采集音频。
 
-1. 在 Xcode 的项目设置中，在 **Signing & Capabilities** 中点击 **+** 符号，增加 **Background Modes**，然后勾选 **Audio, Airplay, and Picture in Picture** 和 **Background processing**，如下图所示。
+1. 在 Xcode 的项目设置中，在 **Signing & Capabilities** 中点击 **+** 符号，增加 **Background Modes**，然后勾选 **Audio, AirPlay, and Picture in Picture**，如下图所示。
 
-![后台模式](https://web-cdn.agora.io/docs-portal/img/rtc/ios-backgroundmodes.png)
+   ![后台模式](/img/rtc/ios-backgroundmodes.png)
 
 2. 确保 App 在前台时的音频采集状态正常：
-    - 用户（通信场景）或主播（直播场景）已加入频道。
-    - 已收到 `localAudioStateChanged` 回调，且 `state` 为 `AgoraAudioLocalStateRecording`，表示本地的音频采集设备状态正常。
+   - 用户（通信场景）或主播（直播场景）已加入频道。
+   - 已收到 `localAudioStateChanged` 回调，且 `state` 为 `AgoraAudioLocalStateRecording`，表示本地的音频采集设备状态正常。
 
-      :::info[信息]
-      由于音频模块为默认开启，你只需确保没有调用 `disableAudio` 或 `disableLocalAudio` 方法关闭音频采集即可。
-      :::
+     :::info[信息]
+     由于音频模块为默认开启，你只需确保没有调用 `disableAudio` 方法关闭音频采集即可。
+     :::
 
 3. 将 App 切换至后台，音频采集已恢复正常。
