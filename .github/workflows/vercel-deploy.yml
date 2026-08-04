@@ -166,6 +166,15 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: bun install --frozen-lockfile
 
+      - name: Debug secret presence
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        run: |
+          echo "ORG ID length: ${#VERCEL_ORG_ID}"
+          echo "PROJECT ID length: ${#VERCEL_PROJECT_ID}"
+          echo "TOKEN length: ${#VERCEL_TOKEN}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
       - name: Pull Vercel preview environment
         if: steps.preview-context.outputs.should_deploy == 'true'
         run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
