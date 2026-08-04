@@ -55,13 +55,123 @@ description: "了解实时互动 RTC 的核心能力、适用场景、接入路�
 
 ## 开始构建
 
-<Cards>
-  <Card title="快速开始" href="/zh-CN/realtime-media/rtc/get-started/quick-start" description="运行示例或完成最小可用集成，快速验证核心流程。" />
-  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=video" description="按平台选择实时互动视频 SDK、语音 SDK 和可用历史版本。" />
-  <Card title="构建功能" href="/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service" description="按业务任务接入核心能力，并完成生产环境配置。" />
-  <Card title="参考信息" href="/zh-CN/realtime-media/rtc/reference/release-notes" description="查看版本、计费、限制、错误码、API 和兼容性说明。" />
+### 平台文档
+
+<a id="常用平台入口" />
+
+选择开发平台，直接进入对应 SDK 的快速开始。
+
+<Cards columns={4} className="gap-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 9.75rem), 1fr))' }}>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=android">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/android.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Android</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=ios">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/ios.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">iOS</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=macos">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/macos.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">macOS</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=web">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/js.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Web</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=windows">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://doc.shengwang.cn/img/platforms/windows.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Windows</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=harmonyos">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/harmonyOS.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">HarmonyOS</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=mini-program">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/min-program.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">小程序</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=electron">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/electron.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Electron</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=unity">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/unity.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Unity</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=flutter">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/flutter.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Flutter</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=react-native">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/react-native.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">React Native</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=unreal">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/unreal-engine.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Unreal Engine</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=blueprint">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/unreal-engine.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Unreal Blueprint</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtc/get-started/quick-start?platform=react">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/js.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">React</span>
+  </a>
 </Cards>
 
+**更多入口**
+
+<Cards>
+  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=video" description="按平台选择实时互动视频 SDK、语音 SDK 和可用历史版本。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service" description="按业务任务接入核心能力，并完成生产环境配置。" />
+  <Card title="客户端 API" href="/zh-CN/api-reference/api?product=rtc&apiType=client" description="按平台查找全部 RTC 客户端接口。" />
+  <Card title="RESTful API" href="/zh-CN/api-reference/api-ref/rtc" description="查看 RTC 频道管理等服务端 RESTful API。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtc/reference/release-notes" description="查看版本、计费、限制、错误码和兼容性说明。" />
+</Cards>
+
+### 立即体验
+
+<Cards columns={2}>
+  <Card
+    title={
+      <span style={{ display: 'grid', gridTemplateColumns: '120px minmax(0, 1fr)', columnGap: '16px', alignItems: 'start' }}>
+        <span
+          role="img"
+          aria-label="实时音视频 API 示例项目"
+          style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/rtc/api-examples.jpg)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+        />
+        <span style={{ display: 'block' }}>
+          <span style={{ display: 'block', fontSize: '18px', fontWeight: 600, lineHeight: 1.7 }}>实时音视频核心功能</span>
+          <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', fontWeight: 400, lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>快速跑通 API 示例项目，体验实时音视频核心功能。</span>
+          <span style={{ display: 'block', marginTop: '16px' }}>
+            <a style={{ display: 'inline-flex', color: '#0085ff', fontSize: '14px', fontWeight: 500 }} href="/zh-CN/realtime-media/rtc/get-started/run-demo">跑通示例项目</a>
+          </span>
+        </span>
+      </span>
+    }
+    style={{ padding: '12px', borderRadius: '4px' }}
+  />
+  <Card
+    title={
+      <span style={{ display: 'grid', gridTemplateColumns: '120px minmax(0, 1fr)', columnGap: '16px', alignItems: 'start' }}>
+        <span
+          role="img"
+          aria-label="Web Demo"
+          style={{ width: '100%', aspectRatio: '4 / 3', borderRadius: '4px', backgroundImage: 'url(https://assets-docs.agora.io/images/overview/rtc/web-demo.jpg)', backgroundPosition: 'center', backgroundSize: 'cover' }}
+        />
+        <span style={{ display: 'block' }}>
+          <span style={{ display: 'block', fontSize: '18px', fontWeight: 600, lineHeight: 1.7 }}>Web Demo</span>
+          <span style={{ display: 'block', marginTop: '8px', fontSize: '14px', fontWeight: 400, lineHeight: 1.7, color: 'var(--color-fd-muted-foreground)' }}>快速体验 Web SDK 的基础和进阶功能以及插件使用。</span>
+          <span style={{ display: 'block', marginTop: '16px' }}>
+            <a style={{ display: 'inline-flex', color: '#0085ff', fontSize: '14px', fontWeight: 500 }} href="https://webdemo.agora.io/index.html">Web Demo</a>
+          </span>
+        </span>
+      </span>
+    }
+    style={{ padding: '12px', borderRadius: '4px' }}
+  />
+</Cards>
 
 <a name="benefits"/>
 
@@ -175,7 +285,6 @@ description: "了解实时互动 RTC 的核心能力、适用场景、接入路�
 
 | 特性 | 声网指标 |
 | --- | --- |
-| 集成 SDK 后的 App 增量 | 详见[下载](/zh-CN/realtime-media/rtc/reference/downloads) |
 | 集成 SDK 后的 App 增量 | 详见[下载](/zh-CN/realtime-media/rtc/reference/downloads) |
 | 多主播视频互动 | 32 人（其中视频互动 17 人） |
 | 单频道最多观众人数 | 100 万 |
