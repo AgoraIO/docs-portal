@@ -526,7 +526,7 @@ Indicates whether this sentence is the final translation result.
 | `words`    | repeated | An array of transcription results. |
 
 :::info
-When using the Soniox provider, a single Protobuf `Text` message can carry multiple segments. For example, the `words[]` array in a transcription message or the `trans[]` array in a translation message can have a length greater than `1`. Do not assume that a single data stream message contains only one transcription or translation segment.
+When using the [ARES](/en/ai/models/asr/ares) provider, a single Protobuf `Text` message can carry multiple segments. For example, the `words[]` array in a transcription message or the `trans[]` array in a translation message can have a length greater than `1`. Do not assume that a single data stream message contains only one transcription or translation segment.
 :::
 
 ### JSON protocol data structure
@@ -536,7 +536,7 @@ If you set `enableJsonProtocol` to `true` when calling [`join`](/en/api-referenc
 - `transcript`: The transcription result.
 - `translation`: The translation result.
 
-When using the Soniox provider, the JSON protocol uses `results[]` to explicitly carry one or more segments. For a single segment, `results[]` has a length of `1`. For a mixed result, a single message can contain both a stabilized prefix segment and a segment that may still change, in which case `results[]` has a length greater than `1`.
+When using the [ARES](/en/ai/models/asr/ares) provider, the JSON protocol uses `results[]` to explicitly carry one or more segments. For a single segment, `results[]` has a length of `1`. For a mixed result, a single message can contain both a stabilized prefix segment and a segment that may still change, in which case `results[]` has a length greater than `1`.
 
 :::caution
 This is a breaking change to the JSON client protocol. If your client uses the JSON protocol, you must upgrade it together with the server. After upgrading, do not assume that a single data stream message corresponds to only one transcription or translation segment. Iterate over `results[]` to process each segment, and handle messages where `results[]` is an empty array.
