@@ -73,7 +73,52 @@ const FaqCategory = lazy(() =>
   })),
 );
 
-export function getOverviewMDXComponents(): MDXComponents {
+const overviewActionContentPaths = new Set([
+  'zh-CN/ai/aigc/index.mdx',
+  'zh-CN/ai/index.mdx',
+  'zh-CN/realtime-media/cloud-recording/index.mdx',
+  'zh-CN/realtime-media/content-moderation/index.mdx',
+  'zh-CN/realtime-media/danmaku/index.mdx',
+  'zh-CN/realtime-media/fusion-cdn/index.mdx',
+  'zh-CN/realtime-media/local-server-recording/index.mdx',
+  'zh-CN/realtime-media/marketplace/index.mdx',
+  'zh-CN/realtime-media/media-pull/index.mdx',
+  'zh-CN/realtime-media/media-push/index.mdx',
+  'zh-CN/realtime-media/rtc-server-sdk/index.mdx',
+  'zh-CN/realtime-media/rtc/index.mdx',
+  'zh-CN/realtime-media/rtmp-gateway/index.mdx',
+  'zh-CN/realtime-media/rtsa/index.mdx',
+  'zh-CN/realtime-media/sdk-extensions/metakit/index.mdx',
+  'zh-CN/realtime-media/sdk-extensions/portrait-rhythm/index.mdx',
+  'zh-CN/realtime-media/speech-to-text/index.mdx',
+  'zh-CN/realtime-media/transcoding/index.mdx',
+  'zh-CN/realtime-media/usage-analytics/index.mdx',
+  'zh-CN/realtime-media/whiteboard/fastboard-sdk/index.mdx',
+  'zh-CN/realtime-media/whiteboard/whiteboard-sdk/index.mdx',
+  'zh-CN/solutions/chatroom/sdk/index.mdx',
+  'zh-CN/solutions/chatroom/uikit/index.mdx',
+  'zh-CN/solutions/flexible-classroom/index.mdx',
+  'zh-CN/solutions/game-voice/index.mdx',
+  'zh-CN/solutions/meeting/index.mdx',
+  'zh-CN/solutions/meta-world/index.mdx',
+  'zh-CN/solutions/one-to-one-live/custom-signaling/index.mdx',
+  'zh-CN/solutions/one-to-one-live/rtm/index.mdx',
+  'zh-CN/solutions/online-ktv/auikaraoke/index.mdx',
+  'zh-CN/solutions/online-ktv/ktv-scenario/index.mdx',
+  'zh-CN/solutions/online-ktv/online-ktv-sdk/index.mdx',
+  'zh-CN/solutions/ppt-transcoding/index.mdx',
+  'zh-CN/solutions/showroom/index.mdx',
+  'zh-CN/solutions/status-page/index.mdx',
+  'zh-CN/solutions/voip-call/index.mdx',
+]);
+
+export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
+  const ScopedOverviewActions = overviewActionContentPaths.has(
+    contentPath ?? '',
+  )
+    ? OverviewActions
+    : HiddenOverviewActions;
+
   return {
     ApiReferenceCards,
     CardGrid,
@@ -86,6 +131,7 @@ export function getOverviewMDXComponents(): MDXComponents {
     HelpHub,
     OverviewImageCard,
     OverviewImageCardGrid,
+    OverviewActions: ScopedOverviewActions,
     OverviewLinkBanner,
     OverviewSpotlightCard,
     OverviewSpotlightGrid,
@@ -98,6 +144,46 @@ export function getOverviewMDXComponents(): MDXComponents {
     ToolkitGroup,
     ToolkitItem,
   } satisfies MDXComponents;
+}
+
+type OverviewAction = {
+  href: string;
+  label: string;
+};
+
+function OverviewActions({ actions }: { actions: OverviewAction[] }) {
+  if (actions.length === 0) {
+    return null;
+  }
+
+  return (
+    <nav aria-label="相关资源" className="not-prose my-5 flex flex-wrap gap-3">
+      {actions.map((action) => {
+        const external = isExternalHref(action.href);
+
+        return (
+          <Button
+            asChild
+            key={`${action.label}-${action.href}`}
+            variant="outline"
+          >
+            <a
+              className="border-primary text-primary hover:border-primary hover:bg-primary/5 hover:text-primary"
+              href={action.href}
+              rel={external ? 'noreferrer noopener' : undefined}
+              target={external ? '_blank' : undefined}
+            >
+              {action.label}
+            </a>
+          </Button>
+        );
+      })}
+    </nav>
+  );
+}
+
+function HiddenOverviewActions(_props: { actions: OverviewAction[] }) {
+  return null;
 }
 
 function CardGrid({ children }: { children: ReactNode }) {

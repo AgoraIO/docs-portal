@@ -2091,111 +2091,6 @@ const PRODUCT_API_REFERENCE_LINKS = [
     title: 'RESTful API',
     url: '/en/api-reference/api-ref/whiteboard',
   },
-  {
-    locale: 'zh-CN',
-    productSlug: 'rtc',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/rtc',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'rtm',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/signaling/publish',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'speech-to-text',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/speech-to-text',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'cloud-recording',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/cloud-recording',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'transcoding',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/cloud-transcoding',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'usage-analytics',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/agora-analytics',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'media-push',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/media-push',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'media-pull',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/media-pull',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'rtmp-gateway',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/rtmp-gateway',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'fusion-cdn',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/fusion-cdn',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'whiteboard',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/whiteboard/restful',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'danmaku',
-    tab: 'realtime-media',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/danmaku',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'ppt-transcoding',
-    tab: 'solutions',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/ppt-conversion-service',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'voip-call',
-    tab: 'solutions',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/api-ref/voip-callkit',
-  },
-  {
-    locale: 'zh-CN',
-    productSlug: 'flexible-classroom',
-    tab: 'solutions',
-    title: 'RESTful API',
-    url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
-  },
 ] as const;
 
 type ProductApiReferenceLink = (typeof PRODUCT_API_REFERENCE_LINKS)[number];
@@ -2374,10 +2269,7 @@ function getProductApiReferenceLink(activePath?: string) {
   );
 }
 
-function isProductReferenceSectionTitle(
-  title: string,
-  locale: ProductApiReferenceLink['locale'],
-) {
+function isProductReferenceSectionTitle(title: string, locale: AppLocale) {
   return locale === 'zh-CN'
     ? title === '参考' || title === '参考信息'
     : title === 'Reference';
@@ -2597,7 +2489,7 @@ function buildAiProductSidebar(
       return !node.url.includes('/ai/choose-your-path/');
     });
 
-    return addAiRestApiReferenceSidebarItem(filteredNodes);
+    return addAiApiReferenceSidebarItems(filteredNodes);
   }
 
   const conversationalAiApiReferenceSection = findTopLevelSidebarSection(
@@ -2618,14 +2510,23 @@ function buildAiProductSidebar(
   const isZhCn = aiOverview.url.startsWith('/zh-CN/');
   const aiLocalePrefix = isZhCn ? '/zh-CN' : '/en';
   const restApiUrl = `${aiLocalePrefix}/api-reference/api-ref/conversational-ai`;
-
-  const restApiPage = {
-    id: restApiUrl,
-    linked: true,
-    title: 'RESTful API',
-    type: 'page',
-    url: restApiUrl,
-  } satisfies DocsSidebarPageNode;
+  const metadataServerApiPage = isZhCn
+    ? (referenceSection.children.find(
+        (child): child is DocsSidebarPageNode =>
+          child.type === 'page' && child.title === '服务端 API',
+      ) ?? null)
+    : null;
+  const restApiPage =
+    metadataServerApiPage ??
+    (!isZhCn
+      ? ({
+          id: restApiUrl,
+          linked: true,
+          title: 'RESTful API',
+          type: 'page',
+          url: restApiUrl,
+        } satisfies DocsSidebarPageNode)
+      : null);
   const clientApiPage = isZhCn
     ? createZhCnClientApiReferencePage('conversational-ai')
     : null;
@@ -2649,19 +2550,20 @@ function buildAiProductSidebar(
   const referenceTrailingChildren = referenceSection.children.filter(
     (child) =>
       !(
-        child.type === 'page' &&
-        (child.url === '/en/ai/reference/event-types' ||
-          child.url === '/zh-CN/ai/reference/event-types' ||
-          child.url === '/en/ai/reference/restful-api' ||
-          child.url === '/zh-CN/ai/reference/restful-api' ||
-          child.url === '/en/ai/reference/server-sdk' ||
-          child.url === '/en/ai/reference/client-toolkit' ||
-          child.url === '/zh-CN/ai/reference/server-sdk' ||
-          child.url === '/zh-CN/ai/reference/client-toolkit' ||
-          child.url === '/en/ai/release-notes' ||
-          child.url === '/zh-CN/ai/release-notes' ||
-          child.url === '/en/ai/reference/release-notes' ||
-          child.url === '/zh-CN/ai/reference/release-notes')
+        child === metadataServerApiPage ||
+        (child.type === 'page' &&
+          (child.url === '/en/ai/reference/event-types' ||
+            child.url === '/zh-CN/ai/reference/event-types' ||
+            child.url === '/en/ai/reference/restful-api' ||
+            child.url === '/zh-CN/ai/reference/restful-api' ||
+            child.url === '/en/ai/reference/server-sdk' ||
+            child.url === '/en/ai/reference/client-toolkit' ||
+            child.url === '/zh-CN/ai/reference/server-sdk' ||
+            child.url === '/zh-CN/ai/reference/client-toolkit' ||
+            child.url === '/en/ai/release-notes' ||
+            child.url === '/zh-CN/ai/release-notes' ||
+            child.url === '/en/ai/reference/release-notes' ||
+            child.url === '/zh-CN/ai/reference/release-notes'))
       ),
   );
 
@@ -2669,7 +2571,7 @@ function buildAiProductSidebar(
     ...stripSidebarSectionMeta(referenceSection),
     children: [
       ...(clientApiPage ? [clientApiPage] : []),
-      restApiPage,
+      ...(restApiPage ? [restApiPage] : []),
       serverSdkTypescriptPage,
       ...referenceLeadingChildren,
       ...stripSidebarSectionMetaFromNodes(referenceTrailingChildren),
@@ -2729,7 +2631,7 @@ function buildAiProductSidebar(
   ];
 }
 
-function addAiRestApiReferenceSidebarItem(
+function addAiApiReferenceSidebarItems(
   nodes: DocsSidebarNode[],
 ): DocsSidebarNode[] {
   const locale = getSidebarLocale(nodes);
@@ -2739,19 +2641,22 @@ function addAiRestApiReferenceSidebarItem(
   }
 
   const restApiUrl = `/${locale}/api-reference/api-ref/conversational-ai`;
-  const restApiPage = {
-    id: restApiUrl,
-    linked: true,
-    title: 'RESTful API',
-    type: 'page',
-    url: restApiUrl,
-  } satisfies DocsSidebarPageNode;
+  const restApiPage =
+    locale === 'en'
+      ? ({
+          id: restApiUrl,
+          linked: true,
+          title: 'RESTful API',
+          type: 'page',
+          url: restApiUrl,
+        } satisfies DocsSidebarPageNode)
+      : null;
   const clientApiPage =
     locale === 'zh-CN'
       ? createZhCnClientApiReferencePage('conversational-ai')
       : null;
   const existingUrls = new Set([
-    restApiUrl,
+    ...(restApiPage ? [restApiUrl] : []),
     `/${locale}/ai/reference/restful-api`,
     `/${locale}/api-reference/api-ref/conversational-ai/authentication`,
     `/${locale}/api-reference/conversational-ai/rest-api`,
@@ -2768,9 +2673,12 @@ function addAiRestApiReferenceSidebarItem(
 
     return {
       ...node,
-      children: addAiRestApiReferenceToReferenceSection(
+      children: addAiApiReferenceToReferenceSection(
         node.children,
-        [...(clientApiPage ? [clientApiPage] : []), restApiPage],
+        [
+          ...(clientApiPage ? [clientApiPage] : []),
+          ...(restApiPage ? [restApiPage] : []),
+        ],
         existingUrls,
         locale,
       ),
@@ -2778,7 +2686,7 @@ function addAiRestApiReferenceSidebarItem(
   });
 }
 
-function addAiRestApiReferenceToReferenceSection(
+function addAiApiReferenceToReferenceSection(
   nodes: DocsSidebarNode[],
   apiReferencePages: DocsSidebarPageNode[],
   existingUrls: Set<string>,
@@ -2806,7 +2714,7 @@ function addAiRestApiReferenceToReferenceSection(
 
     return {
       ...node,
-      children: addAiRestApiReferenceToReferenceSection(
+      children: addAiApiReferenceToReferenceSection(
         node.children,
         apiReferencePages,
         existingUrls,
