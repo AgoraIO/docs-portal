@@ -141,6 +141,17 @@ describe('generate-legacy-redirect-artifacts', () => {
       evidence: ['fixture'],
       preserveSearch: false,
     });
+    redirectsConfig.rules.push({
+      legacyUrl:
+        'https://docs.agora.io/en/Space%20Product/query-source?platform=Web',
+      legacyPath: '/en/Space Product/query-source',
+      legacySearch: '?platform=Web',
+      target: '/en/space-product/query-target',
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: ['fixture'],
+      preserveSearch: false,
+    });
     await writeFile(
       redirectsPath,
       `${JSON.stringify(redirectsConfig, null, 2)}\n`,
@@ -166,6 +177,19 @@ describe('generate-legacy-redirect-artifacts', () => {
     expect(vercelConfig.redirects).toContainEqual({
       source: '/en/query-only/source',
       destination: '/en/query-only/target',
+      has: [
+        {
+          type: 'query',
+          key: 'platform',
+          value: 'Web',
+        },
+      ],
+      statusCode: 301,
+      preserveQueryParams: false,
+    });
+    expect(vercelConfig.redirects).toContainEqual({
+      source: '/en/Space%20Product/query-source',
+      destination: '/en/space-product/query-target',
       has: [
         {
           type: 'query',
