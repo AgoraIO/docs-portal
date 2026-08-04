@@ -17,11 +17,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 1. https://docs.agora.io/en/media-push/develop/restful-api
 
 - Path: /en/media-push/develop/restful-api
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/media-push/reference/rest-api
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -79,11 +79,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 2. https://docs.agora.io/en/help/general-product-inquiry/audio_format#extended-audio-file-formats
 
 - Path: /en/help/general-product-inquiry/audio_format
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/help/general-product-inquiry/audio_format
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -116,11 +116,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 3. https://docs.agora.io/en/conversational-ai/overview/product-overview
 
 - Path: /en/conversational-ai/overview/product-overview
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/ai
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -142,7 +142,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/video-calling/overview/migration-guide?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -155,7 +155,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/video-calling/reference/supported-platforms?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -164,11 +164,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 6. https://docs.agora.io/en/Interactive%20Broadcast/chrome_screensharing_plugin
 
 - Path: /en/Interactive%20Broadcast/chrome_screensharing_plugin
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/chrome_screensharing_plugin
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -178,11 +178,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 7. https://docs.agora.io/en/help/integration-issues/set_enabled_set_muted
 
 - Path: /en/help/integration-issues/set_enabled_set_muted
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/help/integration-issues/set_enabled_set_muted
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -200,7 +200,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Agora%20Platform/terms?platform=All%20Platforms
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -217,7 +217,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Agora%20Platform/get_appid_token?platform=All%20Platforms
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -234,7 +234,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Video/token_server?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -247,11 +247,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 11. https://docs.agora.io/en/faq/string
 
 - Path: /en/faq/string
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/faq/string
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -268,7 +268,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/cdn_streaming_web?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -282,7 +282,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/cdn_streaming_web?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -296,7 +296,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Video/channel_encryption_web_ng?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -308,11 +308,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 15. https://docs.agora.io/en/
 
 - Path: /en/
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -326,7 +326,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/cloud_proxy_web_ng?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -340,7 +340,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/reference/supported-platforms?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -354,11 +354,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 18. https://docs.agora.io/en/video-calling/troubleshooting/error-codes
 
 - Path: /en/video-calling/troubleshooting/error-codes
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/reference/error-codes
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1776,11 +1776,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 19. https://docs.agora.io/en/signaling/overview/product-overview
 
 - Path: /en/signaling/overview/product-overview
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/rtm
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1801,11 +1801,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 20. https://docs.agora.io/en/video-calling/token-authentication/deploy-token-server
 
 - Path: /en/video-calling/token-authentication/deploy-token-server
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/build/authenticate-users/deploy-token-server
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1892,11 +1892,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 21. https://docs.agora.io/en/media-push/get-started/enable-media-push
 
 - Path: /en/media-push/get-started/enable-media-push
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/media-push/get-started/enable-media-push
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1940,7 +1940,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/build/optimize-and-operate/app-size-optimization?platform=android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1951,11 +1951,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 23. https://docs.agora.io/en/video-calling/overview/pricing
 
 - Path: /en/video-calling/overview/pricing
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/reference/pricing
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1971,11 +1971,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 24. https://docs.agora.io/en/video-calling/advanced-features/screen-sharing
 
 - Path: /en/video-calling/advanced-features/screen-sharing
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/build/capture-and-render-video/screen-sharing
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -1992,11 +1992,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 25. https://docs.agora.io/en/video-calling/enhance-call-quality/configure-video-encoding
 
 - Path: /en/video-calling/enhance-call-quality/configure-video-encoding
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/build/capture-and-render-video/custom-video
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2012,11 +2012,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 26. https://docs.agora.io/en/video-calling/overview/pricing#%E6%9E%81%E9%80%9F%E7%9B%B4%E6%92%AD%E8%A7%82%E4%BC%97%E8%B4%B9%E7%94%A8
 
 - Path: /en/video-calling/overview/pricing
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/video/reference/pricing
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2029,7 +2029,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/interactive-live-streaming/develop/product-workflow?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2047,7 +2047,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Video/virtual_background_web_ng?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2060,7 +2060,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Video/noise_reduction_web_ng?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2073,7 +2073,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Video/beauty_effect_web_ng?platform=Web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2086,7 +2086,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/cdn_streaming_windows?platform=Windows
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2103,11 +2103,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 32. https://docs.agora.io/en/Agora%20Platform/transcoding
 
 - Path: /en/Agora%20Platform/transcoding
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Agora%20Platform/transcoding
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2117,11 +2117,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 33. https://docs.agora.io/cn/All/faq/audio_format
 
 - Path: /cn/All/faq/audio_format
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/cn/All/faq/audio_format
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2137,7 +2137,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/token_server?platform=Windows
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2156,7 +2156,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/set_subscribing_state?platform=Windows
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2166,11 +2166,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 36. https://docs.agora.io/en/faq/sei
 
 - Path: /en/faq/sei
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/faq/sei
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2183,7 +2183,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/im/reference/error-codes?platform=ios
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2197,7 +2197,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/im/reference/error-codes?platform=android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2211,7 +2211,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/enable_whiteboard?platform=Android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2225,7 +2225,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/whiteboard_room_management?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2238,7 +2238,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/interactive-whiteboard/develop/enable-whiteboard?platform=android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2253,7 +2253,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/realtime-media/whiteboard/reference/file-conversion-overview-deprecated?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2268,7 +2268,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect covered
 - HTTP status: 200
 - Final URL: https://docs.agora.io/en/api-reference/api-ref/whiteboard/file-conversion-deprecated?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2282,7 +2282,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/whiteboard_file_conversion?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2299,7 +2299,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/whiteboard_screenshot?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2312,7 +2312,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/cn/whiteboard/file_conversion_overview?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2325,7 +2325,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/enable_whiteboard?platform=Android&versionId=7b951120-9d0b-11eb-934a-83674cc9d04a
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2339,7 +2339,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/whiteboard_room_management?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2354,7 +2354,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/cn/whiteboard/whiteboard_file_conversion?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2367,7 +2367,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/whiteboard_token_overview?platform=Android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2380,7 +2380,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/file_conversion_overview?platform=RESTful
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2393,7 +2393,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/whiteboard/enable_whiteboard?platform=Android
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2402,11 +2402,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 53. https://docs.agora.io/en/agora-class/faq/agora_class_custom_properties
 
 - Path: /en/agora-class/faq/agora_class_custom_properties
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/agora-class/faq/agora_class_custom_properties
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2422,7 +2422,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/flexible-classroom/develop/record-a-class?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2436,7 +2436,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/flexible-classroom/reference/classroom-api?platform=web
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2446,11 +2446,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 56. https://docs.agora.io/en/Interactive%20Broadcast/token_server
 
 - Path: /en/Interactive%20Broadcast/token_server
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/token_server
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2463,7 +2463,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Voice/token?platform=All%20Platforms
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2476,7 +2476,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Recording/cloudproxy_recording?platform=Linux
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2494,7 +2494,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Recording/token?platform=All%20Platforms
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2510,7 +2510,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Recording/token?platform=All%20Platforms
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2520,11 +2520,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 61. https://docs.agora.io/en/faq/recording_video_profile
 
 - Path: /en/faq/recording_video_profile
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/faq/recording_video_profile
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2538,7 +2538,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/in-call_quality_windows?platform=Windows
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2551,7 +2551,7 @@ Generated at: 2026-08-03T13:47:30.731Z
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/in-call_quality_windows?platform=Windows
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2560,11 +2560,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 64. https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_warn_code.html
 
 - Path: /en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_warn_code.html
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_warn_code.html
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2573,11 +2573,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 65. https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_error_code.html
 
 - Path: /en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_error_code.html
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/Interactive%20Broadcast/API%20Reference/java/classio_1_1agora_1_1rtc_1_1_i_rtc_engine_event_handler_1_1_error_code.html
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |
@@ -2587,11 +2587,11 @@ Generated at: 2026-08-03T13:47:30.731Z
 ### 66. https://docs.agora.io/en/faq/recording_player
 
 - Path: /en/faq/recording_player
-- Query: 
+- Query:
 - Legacy redirect: legacy redirect missing
 - HTTP status: 404
 - Final URL: https://docs.agora.io/en/faq/recording_player
-- Error: 
+- Error:
 
 | Group | Entry | Source API Reference page | Anchor text | Raw href |
 | --- | --- | --- | --- | --- |

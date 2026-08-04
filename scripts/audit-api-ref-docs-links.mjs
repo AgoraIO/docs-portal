@@ -542,6 +542,57 @@ function applyStatusResult(groupedLink, statusResult) {
   }
 }
 
+/**
+ * @typedef {object} ApiRefEntry
+ * @property {string} [groupTitle]
+ * @property {string} [entryTitle]
+ * @property {string} [entryUrl]
+ * @property {string} [scopeUrl]
+ */
+
+/**
+ * @typedef {object} DocsLinkOccurrence
+ * @property {string} groupTitle
+ * @property {string} entryTitle
+ * @property {string} entryUrl
+ * @property {string} sourceUrl
+ * @property {string} anchorText
+ * @property {string} rawHref
+ * @property {string} resolvedDocsUrl
+ * @property {string} docsPathname
+ * @property {string} docsSearch
+ * @property {boolean} [legacyRedirectCovered]
+ * @property {number} [status]
+ * @property {string} [statusText]
+ * @property {string} [contentType]
+ * @property {string} [finalUrl]
+ * @property {string} [error]
+ */
+
+/**
+ * @typedef {object} ApiRefPageError
+ * @property {string} sourceUrl
+ * @property {number} [status]
+ * @property {string} [statusText]
+ * @property {string} [contentType]
+ * @property {string} [message]
+ */
+
+/**
+ * @typedef {object} ApiRefEntryReport
+ * @property {ApiRefEntry} entry
+ * @property {number} [pagesVisited]
+ * @property {DocsLinkOccurrence[]} [docsLinkOccurrences]
+ * @property {ApiRefPageError[]} [pageErrors]
+ */
+
+/**
+ * @param {{
+ *   generatedAt?: string,
+ *   entries?: ApiRefEntryReport[],
+ *   legacyRedirectCoverageChecker?: (docsUrl: string) => boolean,
+ * }} [options]
+ */
 export function buildAuditReport({
   generatedAt = new Date().toISOString(),
   entries = [],
