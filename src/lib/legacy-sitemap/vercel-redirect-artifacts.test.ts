@@ -268,6 +268,7 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
+      preserveQueryParams: false,
       source: '/en/broadcast-streaming/overview/release-notes',
       statusCode: 301,
     });

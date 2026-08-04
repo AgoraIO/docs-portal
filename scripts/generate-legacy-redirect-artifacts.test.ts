@@ -56,6 +56,18 @@ function checkArtifacts(root: string) {
   );
 }
 
+function generateArtifacts(root: string) {
+  return execFileSync(
+    process.execPath,
+    [path.join(root, 'scripts/generate-legacy-redirect-artifacts.mjs')],
+    {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
+}
+
 function checkArtifactsFailure(root: string) {
   try {
     checkArtifacts(root);
@@ -109,5 +121,60 @@ describe('generate-legacy-redirect-artifacts', () => {
     expect(checkArtifactsFailure(root)).toContain(
       'vercel-legacy-redirects.json is out of date',
     );
+  });
+
+  it('keeps query-specific preserveSearch false rules out of bulk redirects', async () => {
+    const root = await createFixture();
+    const redirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/redirects.json',
+    );
+    const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
+
+    redirectsConfig.rules.push({
+      legacyUrl: 'https://docs.agora.io/en/query-only/source?platform=Web',
+      legacyPath: '/en/query-only/source',
+      legacySearch: '?platform=Web',
+      target: '/en/query-only/target',
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: ['fixture'],
+      preserveSearch: false,
+    });
+    await writeFile(
+      redirectsPath,
+      `${JSON.stringify(redirectsConfig, null, 2)}\n`,
+      'utf8',
+    );
+
+    expect(generateArtifacts(root)).toContain(
+      '[legacy-redirects] Vercel query redirects:',
+    );
+
+    const bulkRedirects = JSON.parse(
+      await readFile(path.join(root, 'vercel-legacy-redirects.json'), 'utf8'),
+    );
+    const vercelConfig = JSON.parse(
+      await readFile(path.join(root, 'vercel.json'), 'utf8'),
+    );
+
+    expect(bulkRedirects).not.toContainEqual(
+      expect.objectContaining({
+        source: '/en/query-only/source',
+      }),
+    );
+    expect(vercelConfig.redirects).toContainEqual({
+      source: '/en/query-only/source',
+      destination: '/en/query-only/target',
+      has: [
+        {
+          type: 'query',
+          key: 'platform',
+          value: 'Web',
+        },
+      ],
+      statusCode: 301,
+      preserveQueryParams: false,
+    });
   });
 });
