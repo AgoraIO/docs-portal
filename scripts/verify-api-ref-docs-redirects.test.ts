@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   parseTriageRows,
@@ -113,7 +114,36 @@ const vercelConfig = {
   ],
 };
 
+type TriageRow = {
+  confidence: string;
+  decision: string;
+  legacyPath: string;
+  legacySearch?: string;
+};
+
 describe('verify-api-ref-docs-redirects', () => {
+  it('keeps the current API Reference triage owner targets resolved', () => {
+    const currentTriage = readFileSync(
+      'docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md',
+      'utf8',
+    );
+    const rows = parseTriageRows(currentTriage) as TriageRow[];
+    const add301HighRows = rows.filter(
+      (row) => row.decision === 'add-301' && row.confidence === 'high',
+    );
+    const add301HighPathSearchKeys = new Set(
+      add301HighRows.map(
+        (row) => `${row.legacyPath}\0${row.legacySearch ?? ''}`,
+      ),
+    );
+
+    expect(
+      rows.filter((row) => row.decision === 'needs-target-from-owner'),
+    ).toEqual([]);
+    expect(add301HighRows).toHaveLength(48);
+    expect(add301HighPathSearchKeys.size).toBe(43);
+  });
+
   it('parses triage rows with path, query, and hash split out', () => {
     expect(parseTriageRows(triageMarkdown)).toContainEqual({
       confidence: 'high',
