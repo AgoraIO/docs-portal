@@ -2,9 +2,33 @@
 title: "发版说明"
 description: "查看实时转录的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
-## v7.2.2
-
 本文介绍实时转录翻译服务的版本更新说明。
+
+## v7.2.3
+
+该版本于 2026 年 7 月 20 日发布。
+
+### 新增特性
+
+#### 新增 RTC Token 即将过期 Webhook 事件
+
+该版本新增 [`104 token will expire`](/zh-CN/realtime-media/speech-to-text/reference/ncs-events#104-token-will-expire) 事件。当实时转录翻译引擎使用的 RTC Token 距离过期还有 30 秒时，消息通知服务会向你的业务服务器发送预警通知。如果 RTC Token 的有效期小于或等于 30 秒，平台不会发送该事件。该事件仅用于提前通知，不会触发任务结束，也不会改变任务的最终状态。
+
+### 升级必看
+
+#### 空闲超时和任务最长运行时长规则更新
+
+该版本更新了 [`maxIdleTime`](/zh-CN/api-reference/api-ref/speech-to-text/join#request.body.maxIdleTime) 参数规则：取值范围调整为 `[0,259200]` 秒，`0` 表示禁用空闲自动结束。
+
+任务还存在与空闲超时相互独立的最长运行时长上限，默认为 72 小时。到达最长运行时长后，任务会被强制结束，即使 `maxIdleTime` 为 `0` 也不例外。因任务达到最长运行时长上限而退出时，[`102 agent left`](/zh-CN/realtime-media/speech-to-text/reference/ncs-events#102-agent-left) 事件中的 `message` 字段返回 `Task exceeded maximum lifetime`。
+
+#### 转录和翻译结果支持同时返回稳定片段和实时片段
+
+转录和翻译结果可能在同一次更新中同时包含已稳定的前缀片段和仍会变化的实时片段。为承载该场景，`transcript` 和 `translation` 消息新增 `results[]` 字段，用于返回一个或多个片段。单片段场景下 `results[]` 长度为 `1`；mixed 场景下 `results[]` 长度可能大于 `1`。
+
+如果你的客户端启用了 JSON 协议，请遍历 `results[]` 处理每个片段，并兼容 `results[]` 为空数组的消息。Protobuf 协议字段不变，但单次消息也可能承载多个片段。字段说明和示例见 [JSON 协议数据结构](/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf#json-协议数据结构)。
+
+## v7.2.2
 
 该版本于 2026 年 5 月 22 日发布。
 

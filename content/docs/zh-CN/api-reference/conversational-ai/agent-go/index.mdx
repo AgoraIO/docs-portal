@@ -2,6 +2,7 @@
 title: "API 概览"
 description: "声网对话式 AI Go SDK 的完整 API 参考。"
 ---
+
 ## client.NewClient
 
 client.NewClient是 SDK 的入口。使用给定的请求选项创建新的 API client。所有 sub-client 共享同一套配置。
@@ -152,7 +153,7 @@ func WithPool(pool *core.Pool) *core.AreaRequestOption
 
 ### Sub-clients
 
-`client.NewClient` 也暴露原始 API client，便于访问尚未被 AgentKit 高层能力封装的接口。大多数场景下，建议优先使用 [agentkit layer](#agentkitnewagent)。
+`client.NewClient` 也暴露原始 API client，便于访问尚未被 AgentKit 高层能力封装的接口。大多数场景下，建议优先使用 [agentkit layer](#agentkit-newagent)。
 
 | Field | Type | Description |
 |---|---|---|
@@ -192,15 +193,17 @@ import Agora "github.com/AgoraIO/agora-agents-go/v2"
 | `Agora.UUID` | `func(uuid.UUID) *uuid.UUID` | — |
 | `Agora.Time` | `func(time.Time) *time.Time` | — |
 
+
 ## agentkit.NewAgent
 
 `Agent` 是一个不可变的配置对象。每个 vendor chaining method 都会返回一个新的 `*Agent`，原对象永远不会被修改。建议在应用启动时定义一个 agent，并在每次用户对话时基于它创建 session。
 
-从 `agentkit/cn` 导入 agent 构建器，从 `agentkit/cn/vendors` 导入 CN 专属 vendor：
+从 `agentkit/cn` 导入 agent 构建器，从 `agentkit/cn/vendors` 导入 CN 专属 vendor；如需自定义 LLM，从 `agentkit/vendors` 导入 common vendor：
 
 ```go
 import (
     agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+    commonvendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
     vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
 )
 ```
@@ -252,11 +255,11 @@ agent := agentkit.NewAgent(client,
 
 Vendor 方法调用在 `NewAgent` 返回的 `*Agent` 上。每个方法都会返回一个**新的** `*Agent`，原对象永远不会被修改。
 
-vendor 全部从 `agentkit/cn/vendors` 取用。
+CN 专属 vendor 从 `agentkit/cn/vendors` 取用；可在 CN 场景复用的 common/custom vendor 从 `agentkit/vendors` 取用。
 
 #### `WithLlm(vendor)`
 
-设置 LLM vendor。传入 [`NewAliyun`](#newaliyun)、[`NewBytedance`](#newbytedance)、[`NewDeepSeek`](#newdeepseek) 或 [`NewTencentLLM`](#newtencentllm) 的实例。
+设置 LLM vendor。传入 [`NewAliyun`](#newaliyun)、[`NewBytedance`](#newbytedance)、[`NewDeepSeek`](#newdeepseek)、[`NewTencentLLM`](#newtencentllm) 或 [`NewCustomLLM`](#newcustomllm) 的实例。
 
 ```go
 func (a *Agent) WithLlm(vendor vendors.LLM) *Agent
@@ -280,7 +283,7 @@ func (a *Agent) WithStt(vendor vendors.STT) *Agent
 
 #### `WithAvatar(vendor)`
 
-设置 avatar vendor。当前提供 [`NewSensetimeAvatar`](#newsensetimeavatar)。如果已经配置了 TTS，且其采样率与 avatar 所需采样率不一致，则会 **panic**。
+设置 avatar vendor。当前提供 [`NewSensetimeAvatar`](#newsensetimeavatar) 和 [`NewSpatiusAvatar`](#newspatiusavatar)。如果已经配置了 TTS，且其采样率与 avatar 所需采样率不一致，则会 **panic**。
 
 ```go
 func (a *Agent) WithAvatar(vendor vendors.Avatar) *Agent
@@ -323,7 +326,6 @@ func (a *Agent) ToProperties(opts ToPropertiesOptions) (*Agora.StartAgentsReques
 ```
 
 **在以下情况下会返回 error：**
-
 - 未提供 `Token`，且也未提供 `AppID` + `AppCertificate`
 - 在级联模式下：未配置 LLM 或 TTS
 - 配置序列化失败
@@ -707,11 +709,12 @@ response, err := session.Raw().List(ctx, &Agora.ListAgentsRequest{
 
 ## Vendors
 
-所有 vendor constructor 都位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors`，配合 `agentkit/cn` 的 `WithStt()`、`WithLlm()`、`WithTts()`、`WithAvatar()` 链式方法使用。
+CN 专属 vendor constructor 位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors`；可在 CN 场景复用的 common/custom vendor constructor 位于 `github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors`。这些 vendor 配合 `agentkit/cn` 的 `WithStt()`、`WithLlm()`、`WithTts()`、`WithAvatar()` 链式方法使用。
 
 ```go
 import (
     agentkit "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn"
+    commonvendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
     vendors "github.com/AgoraIO/agora-agents-go/v2/agentkit/cn/vendors"
 )
 ```
@@ -740,17 +743,9 @@ type Avatar interface {
 }
 ```
 
-<a id="newtencentllm"></a>
-
-<a id="newdeepseek"></a>
-
-<a id="newbytedance"></a>
-
-<a id="newaliyun"></a>
-
 ### LLM vendors
 
-LLM vendor 全部基于 OpenAI 兼容协议（`style = "openai"`），共享同一套 `OpenAIOptions`，区别仅在于内部写入的 `vendor` 标识。四个 constructor 都要求 `APIKey`、`Model` 和 `BaseURL`，否则 panic。
+LLM vendor 全部基于 OpenAI 兼容协议（`style = "openai"`），共享同一套 `OpenAIOptions`，区别仅在于内部写入的 `vendor` 标识。这些 constructor 都要求 `APIKey`、`Model` 和 `BaseURL`，否则 panic。
 
 | Constructor | `vendor` 值 | 说明 |
 |---|---|---|
@@ -758,15 +753,18 @@ LLM vendor 全部基于 OpenAI 兼容协议（`style = "openai"`），共享同�
 | `NewBytedance(opts)` | `bytedance` | 字节跳动火山引擎（豆包，如 `doubao-seed-1-6`） |
 | `NewDeepSeek(opts)` | `deepseek` | DeepSeek（如 `deepseek-chat`） |
 | `NewTencentLLM(opts)` | `tencent` | 腾讯混元（如 `hunyuan-turbos-latest`） |
+| `commonvendors.NewCustomLLM(opts)` | `custom` | 任意 OpenAI 兼容协议的 LLM |
 
 ```go
 func NewAliyun(opts AliyunOptions) *Aliyun
 func NewBytedance(opts BytedanceOptions) *Bytedance
 func NewDeepSeek(opts DeepSeekOptions) *DeepSeek
 func NewTencentLLM(opts TencentLLMOptions) *TencentLLM
+func NewCustomLLM(opts CustomLLMOptions) *CustomLLM
 ```
 
-`AliyunOptions`、`BytedanceOptions`、`DeepSeekOptions`、`TencentLLMOptions` 均为 `OpenAIOptions` 的类型别名：
+
+`AliyunOptions`、`BytedanceOptions`、`DeepSeekOptions`、`TencentLLMOptions`、`commonvendors.CustomLLMOptions` 均使用 `OpenAIOptions` 字段：
 
 | Field | Type | Required | Description |
 |---|---|---|---|
@@ -830,55 +828,6 @@ func NewMicrosoftSTT(opts MicrosoftSTTOptions) *MicrosoftSTT
 | `Region` | `string` | Yes | Azure 区域 |
 | `Language` | `string` | Yes | 语言代码，例如 `"zh-CN"` |
 | `PhraseList` | `[]string` | No | 提升识别准确率的短语列表 |
-| `AdditionalParams` | `map[string]interface{}` | No | 附加 vendor 参数，合并进 `params` |
-
-#### `NewXfyunSTT`
-
-```go
-func NewXfyunSTT(opts XfyunSTTOptions) *XfyunSTT
-```
-
-科大讯飞标准 STT。如果 `APIKey`、`AppID` 或 `APISecret` 为空，会 panic。
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `APIKey` | `string` | Yes | 讯飞 API key |
-| `AppID` | `string` | Yes | 讯飞 App ID |
-| `APISecret` | `string` | Yes | 讯飞 API secret |
-| `Language` | `string` | No | 语言代码 |
-| `AdditionalParams` | `map[string]interface{}` | No | 附加 vendor 参数，合并进 `params` |
-
-#### `NewXfyunBigModelSTT`
-
-```go
-func NewXfyunBigModelSTT(opts XfyunBigModelSTTOptions) *XfyunBigModelSTT
-```
-
-科大讯飞大模型 STT（`asr.vendor = "xfyun_bigmodel"`）。如果 `APIKey`、`AppID` 或 `APISecret` 为空，会 panic。
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `APIKey` | `string` | Yes | 讯飞 API key |
-| `AppID` | `string` | Yes | 讯飞 App ID |
-| `APISecret` | `string` | Yes | 讯飞 API secret |
-| `LanguageName` | `string` | No | 语种名称 |
-| `Language` | `string` | No | 语言代码 |
-| `AdditionalParams` | `map[string]interface{}` | No | 附加 vendor 参数，合并进 `params` |
-
-#### `NewXfyunDialectSTT`
-
-```go
-func NewXfyunDialectSTT(opts XfyunDialectSTTOptions) *XfyunDialectSTT
-```
-
-科大讯飞方言 STT（`asr.vendor = "xfyun_dialect"`）。如果 `AppID`、`AccessKeyID` 或 `AccessKeySecret` 为空，会 panic。
-
-| Field | Type | Required | Description |
-|---|---|---|---|
-| `AppID` | `string` | Yes | 讯飞 App ID |
-| `AccessKeyID` | `string` | Yes | Access key ID |
-| `AccessKeySecret` | `string` | Yes | Access key secret |
-| `Language` | `string` | No | 方言/语言代码 |
 | `AdditionalParams` | `map[string]interface{}` | No | 附加 vendor 参数，合并进 `params` |
 
 ### TTS vendors
@@ -946,6 +895,28 @@ func NewMicrosoftTTS(opts MicrosoftTTSOptions) *MicrosoftTTS
 | `Volume` | `*float64` | No | 音量 |
 | `AdditionalParams` | `map[string]interface{}` | No | 附加 vendor 参数 |
 | `SkipPatterns` | `[]int` | No | 要跳过的模式 |
+
+#### `NewGenericTTS`
+
+```go
+func NewGenericTTS(opts GenericTTSOptions) *GenericTTS
+```
+
+自定义 OpenAI 兼容 HTTP TTS。`URL` 必填，且必须是包含 host 的 HTTP 或 HTTPS 绝对地址；缺失 `URL` 时会 panic，地址格式错误或使用 `ws`、`wss`、`ftp` 等协议时也会 panic。合法地址会序列化为 `tts.vendor = "generic_http"`。
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `URL` | `string` | Yes | 自定义 TTS 服务的 HTTP(S) endpoint |
+| `Headers` | `map[string]string` | No | 转发给 TTS 服务的自定义 HTTP Header；未设置时不会写入 `headers` |
+| `APIKey` | `string` | No | TTS 服务鉴权 API key |
+| `Model` | `string` | No | TTS 模型名 |
+| `Voice` | `string` | No | 音色名 |
+| `Speed` | `*float64` | No | 语速 |
+| `SampleRate` | `*SampleRate` | No | 输出音频采样率，单位为 Hz。如果你的 TTS 服务暂不支持多采样率，请确保返回音频的采样率与该配置一致。 |
+| `ResponseFormat` | `string` | No | 输出音频格式，当前 ConvoAI 支持 `pcm` |
+| `Instruction` | `string` | No | 语音风格、情绪或其他播报指令。 |
+| `AdditionalParams` | `map[string]interface{}` | No | 附加 provider 参数；同名字段会被非空的显式字段覆盖 |
+| `SkipPatterns` | `[]int` | No | 控制 TTS 跳过特定文本模式 |
 
 #### `NewBytedanceTTS`
 
@@ -1056,6 +1027,27 @@ type SensetimePosition struct {
 }
 ```
 
+#### `NewSpatiusAvatar`
+
+```go
+func NewSpatiusAvatar(opts SpatiusAvatarOptions) *SpatiusAvatar
+```
+
+Spatius 数字人。如果 `SpatiusAPIKey`、`SpatiusAppID`、`SpatiusAvatarID` 或 `AgoraUID` 为空，会 panic。`RequiredSampleRate()` 返回 `SampleRate` 字段值；如果未设置则返回 `0`，即不强制固定 TTS 采样率。
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `SpatiusAPIKey` | `string` | Yes | Spatius API key |
+| `SpatiusAppID` | `string` | Yes | Spatius App ID |
+| `SpatiusAvatarID` | `string` | Yes | Spatius avatar ID |
+| `AgoraUID` | `string` | Yes | Avatar 视频流对应的 UID |
+| `Region` | `string` | No | Spatius 服务区域 |
+| `AgoraToken` | `string` | No | Avatar 鉴权 RTC token |
+| `SampleRate` | `*SampleRate` | No | Avatar 所需 TTS 音频采样率，单位 Hz |
+| `SessionExpireMinutes` | `*int` | No | Spatius 会话过期时间，单位分钟 |
+| `Enable` | `*bool` | No | 启用或关闭 avatar，默认 `true` |
+| `AdditionalParams` | `map[string]interface{}` | No | 附加 Spatius 数字人参数，合并进 `params` |
+
 ## Token utilities
 
 用于生成和管理 token 的辅助函数。
@@ -1112,6 +1104,7 @@ func GenerateRtcTokenWithAccount(opts GenerateRtcTokenWithAccountOptions) (strin
 | `Account` | `string` | Yes | 字符串用户账号 |
 | `Role` | `int` | No | RTC 角色：`RolePublisher` (1) 或 `RoleSubscriber` (2)。默认值：`RolePublisher` |
 | `ExpirySeconds` | `int` | No | token 有效期，单位为秒。默认值：`DefaultExpirySeconds` (86400) |
+
 
 ### `GenerateRtcToken()`
 

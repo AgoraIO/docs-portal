@@ -288,7 +288,7 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.2.8.zip)下载最新版本的 Java SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip)下载最新版本的 Java SDK。
 2. 将 SDK 包内 `sdk` 文件夹中的所有文件拷贝到项目的 `/app/libs` 路径下。
 3. 添加 SDK 引用。在 **Project** 窗口找到 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件并添加如下代码：
 
@@ -361,7 +361,7 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
    ```groovy
    ...
    dependencies {
-       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
+       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
        // 对于 2.2.7 及之后版本:
        implementation 'cn.shengwang.rtm:android-java:x.y.z'
        // 对于 2.2.6 及之前版本:
@@ -382,7 +382,7 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.2.8.zip)下载最新版本的 Objective-C SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip)下载最新版本的 Objective-C SDK。
 2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
 3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
 4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
@@ -400,9 +400,10 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
    ```ruby
    platform :ios, '11.0'
    target 'Your App' do
-      # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
-      # 对于 2.2.7 及之后版本:
-      pod 'ShengwangRtm', 'x.y.z'
+      # 对于 2.2.8 及之后版本:
+      pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+      # 对于 2.2.7 版本:
+      # pod 'ShengwangRtm', 'x.y.z'
       # 对于 2.2.6 及之前版本:
       # pod 'AgoraRtm', 'x.y.z'
       # 如需获取 2.2.0 之前的版本，请将包名修改为 AgoraRtm_iOS
@@ -425,7 +426,7 @@ https://github.com/AgoraIO/AgoraRtm_Apple.git
 </TabsContent>
 </Tabs>
 
-[点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.2.8.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
 
 - 将 `/rtm/sdk/libagora_rtm_sdk.so` 文件复制到项目的 `lib` 目录下。
 - 将 `/rtm/sdk/high_level_api/include` 路径下的所有 `*.h` 文件复制到项目的 `include` 目录下。
@@ -465,7 +466,7 @@ yarn add agora-react-native-rtm
 npm i --save agora-react-native-rtm
 ```
 
-[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip)下载最新版本的 HarmonyOS SDK。
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip)下载最新版本的 HarmonyOS SDK。
 
 下载完成后，解压 SDK 包，你将获得一个 `.har` 文件，这是 HarmonyOS 的静态共享包格式。
 

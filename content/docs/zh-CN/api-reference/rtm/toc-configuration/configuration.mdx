@@ -292,7 +292,7 @@ try {
 
 RtmEventListener
 
-RTM 总共有 8 种事件通知类型，如下表所示：
+RTM 总共有 7 种事件通知类型，如下表所示：
 
 |                事件类型   | 描述         |
 | ---- | ------ |
@@ -301,7 +301,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 |        <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code>         | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span>                      |
 |     <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code>      | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span>       |
 |          <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code>          | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span>    |
-|        <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code>         | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/ios/enumv.android#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/ios/enumv.android#connectionreason)。</span> |
 |        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="onTokenPrivilegeWillExpire">onTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>    |
 
@@ -341,11 +340,6 @@ rtmConfig.eventListener = new RtmEventListener {
     @Override
     public void onStorageEvent(StorageEvent event) {
         // Your storage event handler
-    }
-
-    @Override
-    public void onConnectionStateChanged(String channelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
-        // Your connection state change event handler
     }
 
     @Override
@@ -443,6 +437,7 @@ rtmClient.removeEventListener(listener);
 | `leaveUserList` | `ArrayList<String>` | 在上一个周期内离开频道的用户列表。 |
 | `timeoutUserList` | `ArrayList<String>` | 在上一个周期内加入频道超时的用户列表。 |
 | `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | int | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `SnapshotInfo` 数据类型包含以下属性：
 
@@ -1539,7 +1534,6 @@ const config: RtmConfig = {
 :::info[信息]
 - 该方法需要在 RTM 的其他 API 之前调用。
 - 为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。
-- RTM Client 采用单例模式，多次创建会返回同一个实例。
 :::
 
 ### 接口方法
@@ -1750,6 +1744,7 @@ rtmClient.removeEventListener('storage');
 | `leave` | string[] | 在上一个周期内离开频道的用户 ID 列表。 |
 | `timeout` | string[] | 在上一个周期内加入频道超时的用户 ID 列表。 |
 | `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | number | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `UserState` 数据类型包含以下属性：
 
@@ -2159,8 +2154,8 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 方法 |  描述 |
 | --------------- |  -------- |
-| `init`             | 禁止不填参数就初始化 `AgoraRtmProxyConfig` 实例。 |
-| `initWithServer`             | 初始化 `AgoraRtmProxyConfig` 实例时必须填入 `server`、`port` 和 `proxyType` 参数。 |
+| `init`             | 初始化 `AgoraRtmProxyConfig` 实例，字段使用默认值。 |
+| `initWithServer`             | 使用 `server`、`port` 和 `proxyType` 初始化 `AgoraRtmProxyConfig` 实例。 |
 
 | 属性  | 类型             |  是否必填  |  默认值  | 描述  |
 |-----------|----------------|--------|-------| ----------- |
@@ -2213,7 +2208,10 @@ log_config.level= AgoraRtmLogLevelError;
 log_config.filePath= @"your_path";
 log_config.fileSizeInKB = 512;
 
-AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] initWithServer:@"your_proxy_server" port:8080 proxyType:AgoraRtmProxyTypeHttp];
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server";
+proxy_config.port = 8080;
 proxy_config.account = @"username";
 proxy_config.password = @"password";
 
@@ -2279,7 +2277,7 @@ AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg deleg
 
 AgoraRtmClientDelegate
 
-RTM 总共有 8 种事件通知类型，如下表所示：
+RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型   | 描述                      |
 |--------------| ---------- |
@@ -2288,7 +2286,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 | <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="didReceiveTopicEvent">didReceiveTopicEvent</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`AgoraRtmTopicEvent`](#agorartmtopicevent)。</span>                |
 | <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="didReceiveStorageEvent">didReceiveStorageEvent</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`AgoraRtmStorageEvent`](#agorartmstorageevent)。</span>  |
 | <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="didReceiveLockEvent">didReceiveLockEvent</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`AgoraRtmLockEvent`](#agorartmlockevent)。</span>   |
-| <code className="index-group-item-rtmeventlistener index-api-onconnection" id="connectionChangedToState">connectionChangedToState</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmClientConnectionState`](/zh-CN/api-reference/rtm/ios/enumv.ios#connectionstate) 和 [`AgoraRtmClientConnectionChangeReason`](/zh-CN/api-reference/rtm/ios/enumv.ios#connectionreason)。</span>              |
 |        <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="didReceiveLinkStateEvent">didReceiveLinkStateEvent</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`AgoraRtmLinkStateEvent`](#agorartmlinkstateevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
 
@@ -2322,9 +2319,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 
 // triggered when token will expire
 -(void) rtmKit:(AgoraRtmClientKit *)rtmKit tokenPrivilegeWillExpire:(NSString *)channel {}
-
-// triggered when connection state changed
--(void) rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {}
 
 // triggered when link state changed
 - (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLinkStateEvent:(AgoraRtmLinkStateEvent *)event {}
@@ -2416,6 +2410,7 @@ removeDelegate
 | `leaveUserList` | `NSArray<NSString *>` | 在上一个周期内离开频道的用户列表。 |
 | `timeoutUserList` | `NSArray<NSString *>` | 在上一个周期内加入频道超时的用户列表。 |
 | `userStateList` | `ArrayList<UserState>` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | int | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `AgoraRtmUserState` 数据类型包含以下属性：
 

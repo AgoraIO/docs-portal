@@ -2,9 +2,7 @@
 title: "发送图片消息"
 description: "了解对话式 AI 引擎中发送图片消息相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
-与智能体互动期间，你可能需要在端侧上传图片或发送图片消息来辅助智能体理解用户意图。
-
-本文介绍如何使用对话式 AI 引擎客户端组件的能力在 App 中发送图片消息给大模型，并在后续与智能体对话时自动引用图片内容，让大模型根据图片内容生成更符合用户需求的回复。
+与智能体互动期间，你可能需要在端侧上传图片或发送图片消息来辅助智能体理解用户意图。本文介绍如何使用对话式 AI 引擎客户端组件的能力在 App 中发送图片消息给大模型，并在后续与智能体对话时自动引用图片内容，让大模型根据图片内容生成更符合用户需求的回复。
 
 ## 技术原理
 
@@ -36,109 +34,180 @@ description: "了解对话式 AI 引擎中发送图片消息相关内容的适�
 
 ### 集成组件
 
-<Tabs defaultValue="Android" groupId="language" persist>
+<Tabs defaultValue="android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="Android">
+<TabsContent value="android">
 
-将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="convoaiApi" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi" />
-</Cards>
+<Tabs defaultValue="maven" groupId="android-install-method" persist>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
 
 </TabsContent>
 
-<TabsContent value="iOS">
+<TabsContent value="source">
 
-将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="ConversationalAIAPI" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI" />
-</Cards>
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-将 `conversational-ai-api` 文件拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="conversational-ai-api" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api" />
+        <Cards>
+  <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
 </Cards>
 
 </TabsContent>
 </Tabs>
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+在 `Podfile` 中添加如下依赖：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.9.0`：
+
+```text
+https://github.com/AgoraIO/agent-client-toolkit-swift.git
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="web-install-method" persist>
+<TabsList>
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
+
+根据你的项目类型安装组件依赖。
+
+- Vanilla JS / TypeScript：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0
+  ```
+
+- React：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  ```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
 
 ### 初始化组件
 
 为 RTC 和 RTM 实例创建配置对象，之后创建组件实例：
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
-// 为 RTC 和 RTM 实例创建配置对象
+```kotlin tab="Android" tabGroup="language"
 val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
+    rtcEngine = rtcEngine,
+    rtmClient = rtmClient,
+    renderMode = TranscriptRenderMode.Word,
+    enableLog = true,
+    enableRenderModeFallback = true
 )
-// 创建组件实例
+
 val api = ConversationalAIAPIImpl(config)
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
-// 为 RTC 和 RTM 实例创建配置对象
+```swift tab="iOS" tabGroup="language"
 let config = ConversationalAIAPIConfig(
-    rtcEngine: rtcEngine, 
+    rtcEngine: rtcEngine,
     rtmEngine: rtmEngine,
-    enableLog: true
+    renderMode: .words,
+    enableLog: true,
+    enableRenderModeFallback: true
 )
-/// 创建组件实例
+
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
 
-</TabsContent>
+```typescript tab="Web" tabGroup="language"
+const config: IConversationalAIAPIConfig = {
+  rtcEngine: rtcEngine,
+  rtmEngine: rtmEngine,
+  renderMode: ETranscriptHelperMode.WORD,
+  enableLog: true,
+  enableRenderModeFallback: true,
+};
 
-<TabsContent value="Web">
-
-```typescript
-// 为 RTC 和 RTM 实例创建配置对象
-ConversationalAIAPI.init({
-    rtcEngine,
-    rtmEngine,
-    })
-
-// 获取 API 实例（单例）
-const conversationalAIAPI = ConversationalAIAPI.getInstance()
+const conversationalAIAPI = await ConversationalAIAPI.init(config);
 ```
-
-</TabsContent>
-
-</Tabs>
 
 ### 注册回调
 
-<Tabs defaultValue="Android" groupId="language" persist>
+<Tabs defaultValue="android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="Android">
+<TabsContent value="android">
 
 调用 `addHandler` 方法注册回调：
 
@@ -148,7 +217,7 @@ api.addHandler(covEventHandler)
 
 </TabsContent>
 
-<TabsContent value="iOS">
+<TabsContent value="ios">
 
 调用 `addHandler` 方法注册回调：
 
@@ -158,7 +227,7 @@ convoAIAPI.addHandler(handler: self)
 
 </TabsContent>
 
-<TabsContent value="Web">
+<TabsContent value="web">
 
 ```typescript
 // 监听消息回执更新
@@ -174,16 +243,7 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, onMessageError)
 
 智能体的相关事件通过 RTM 频道消息传递，你需要在开始智能体会话前调用 `subscribeMessage` 订阅频道消息，以接收智能体相关事件。
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 api.subscribeMessage("channelName") { error ->
     if (error != null) {
         // 处理错误
@@ -191,35 +251,23 @@ api.subscribeMessage("channelName") { error ->
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("订阅失败： \(error.message)")
+        print("订阅失败: \(error.message)")
     } else {
         print("订阅成功")
     }
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.subscribeMessage(channel_name)
 ```
 
-</TabsContent>
-
-</Tabs>
-
 ### 智能体加入频道
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+调用 [POST 创建对话式智能体](../convoai/operations/start-agent)接口，并完成以下参数设置：
 
 - `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
 - `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
@@ -236,16 +284,7 @@ conversationalAIAPI.subscribeMessage(channel_name)
 `chat` 接口的 `completion` 回调仅表示发送请求是否成功，不代表消息实际处理状态。
 :::
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 val uuid = "unique-image-id-123" // 生成唯一的图片标识符
 val imageUrl = "https://example.com/image.jpg" // 图片的 HTTP/HTTPS URL
 
@@ -258,11 +297,7 @@ api.chat("agentUserId", ImageMessage(uuid = uuid, imageUrl = imageUrl)) { error 
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 let uuid = UUID().uuidString
 let imageUrl = "https://example.com/image.jpg"
 let message = ImageMessage(uuid: uuid, url: imageUrl)
@@ -275,11 +310,7 @@ self.convoAIAPI.chat(agentUserId: "\(agentUid)", message: message) { [weak self]
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 import { EChatMessageType } from '@/conversational-ai-api/type'
 
 // 发送图片消息
@@ -290,10 +321,6 @@ await conversationalAIAPI.chat(`${agent_rtc_uid}`, {
         })
 ```
 
-</TabsContent>
-
-</Tabs>
-
 ### 处理图片发送状态
 
 图片消息发送的成功和失败分别通过图片消息回执 `onMessageReceiptUpdated` 和图片消息出错回调 `onMessageError` 确认，你需要根据图片的 `uuid` 来区分不同的图片消息。
@@ -302,16 +329,7 @@ await conversationalAIAPI.chat(`${agent_rtc_uid}`, {
 
 当收到 `onMessageReceiptUpdated` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送成功：
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceipt) {
     if (receipt.chatMessageType == ChatMessageType.Image) {
         try {
@@ -319,7 +337,7 @@ override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceip
             // 检查是否包含 uuid 字段
             if (json.has("uuid")) {
                 val receivedUuid = json.getString("uuid")
-                
+
                 // 如果 uuid 匹配，说明此图片发送成功
                 if (receivedUuid == "your-sent-uuid") {
                     Log.d("ImageSend", "Image sent successfully: $receivedUuid")
@@ -333,11 +351,7 @@ override fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceip
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 struct PictureInfo: Codable {
     let uuid: String
 }
@@ -362,15 +376,11 @@ public func onMessageReceiptUpdated(agentUserId: String, messageReceipt: Message
         print("Failed to parse message string from image info message")
         return
     }
-      
+
   }
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 import { TMessageReceipt, EModuleType, EConversationalAIAPIEvents } from '@/conversational-ai-api/type'
 
 // 处理图片消息的发送状态
@@ -395,24 +405,11 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_RECEIPT_UPDATED, (agen
 })
 ```
 
-</TabsContent>
-
-</Tabs>
-
 #### 图片发送失败
 
 当收到 `onMessageError` 回调时，需要解析回调中的 JSON 消息，获取图片的 `uuid` 以确认图片发送失败：
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 override fun onMessageError(agentUserId: String, error: MessageError) {
     if (error.chatMessageType == ChatMessageType.Image) {
         try {
@@ -434,11 +431,7 @@ override fun onMessageError(agentUserId: String, error: MessageError) {
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 struct ImageUploadError: Codable {
     let code: Int
     let message: String
@@ -457,9 +450,9 @@ public func onMessageError(agentUserId: String, error: MessageError) {
             if !errorResponse.success {
                 let errorMessage = errorResponse.error?.message ?? "Unknown error"
                 let errorCode = errorResponse.error?.code ?? 0
-                
+
                 addLog("<<< [ImageUploadError] Image upload failed: \(errorMessage) (code: \(errorCode))")
-                
+
                 // 更新 UI 显示发送失败状态
                 DispatchQueue.main.async { [weak self] in
                     self?.messageView.viewModel.updateImageMessage(uuid: errorResponse.uuid, state: .failed)
@@ -472,11 +465,7 @@ public func onMessageError(agentUserId: String, error: MessageError) {
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 import { EConversationalAIAPIEvents, EChatMessageType } from '@/conversational-ai-api/type';
 
 conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, (agentUserId, error) => {
@@ -494,24 +483,11 @@ conversationalAIAPI.on(EConversationalAIAPIEvents.MESSAGE_ERROR, (agentUserId, e
  })
 ```
 
-</TabsContent>
-
-</Tabs>
-
 ### 取消订阅频道消息
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放回调事件相关资源。
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 api.unsubscribeMessage("channelName") { error ->
     if (error != null) {
         // 处理错误
@@ -519,69 +495,36 @@ api.unsubscribeMessage("channelName") { error ->
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("取消订阅失败： \(error.message)")
+        print("取消订阅失败: \(error.message)")
     } else {
         print("取消订阅成功")
     }
 }
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
-
-</TabsContent>
-
-</Tabs>
 
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-```kotlin
+```kotlin tab="Android" tabGroup="language"
 api.destroy()
 ```
 
-</TabsContent>
-
-<TabsContent value="iOS">
-
-```swift
+```swift tab="iOS" tabGroup="language"
 convoAIAPI.destroy()
 ```
 
-</TabsContent>
-
-<TabsContent value="Web">
-
-```typescript
+```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.destroy()
 ```
-
-</TabsContent>
-
-</Tabs>
 
 ## 参考信息
 
@@ -593,63 +536,16 @@ conversationalAIAPI.destroy()
   <Card title="Conversational-AI-Demo" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/" />
 </Cards>
 
-### 组件结构
-
-客户端组件文件夹的结构和各文件作用如下：
-
-:::info[信息]
-以下文件和文件夹即为集成客户端组件所需全部内容，无需拷贝其他文件。
-:::
-
-<Tabs defaultValue="Android" groupId="language" persist>
-<TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="Android">
-
-- `IConversationalAIAPI.kt` — API 接口及相关数据结构和枚举
-- `ConversationalAIAPIImpl.kt` — ConversationalAI API 主要实现逻辑
-- `ConversationalAIUtils.kt` — 工具函数与事件回调管理
-- `subRender/`
-    - `v3/` — 字幕部分模块
-        - `TranscriptionController.kt` — 字幕控制器
-        - `MessageParser.kt` — 消息解析器
-
-</TabsContent>
-
-<TabsContent value="iOS">
-
-- `ConversationalAIAPI.swift` — API 接口及相关数据结构和枚举
-- `ConversationalAIAPIImpl.swift` — ConversationalAI API 主要实现逻辑
-- `Transcription/`
-    - `TranscriptionController.swift` — 字幕控制器
-
-</TabsContent>
-
-<TabsContent value="Web">
-
-- `index.ts` — API 类
-- `type.ts` — API 接口及相关数据结构和枚举
-- `utils/index.ts` — API 工具函数
-- `utils/events.ts` — 事件管理类，可以拓展该类以轻松实现事件监听和播报
-- `utils/sub-render.ts` — 字幕部分模块
-
-</TabsContent>
-</Tabs>
-
 ### API 参考
 
-<Tabs defaultValue="Android" groupId="language" persist>
+<Tabs defaultValue="android" groupId="language" persist>
 <TabsList>
-  <TabsTrigger value="Android">Android</TabsTrigger>
-  <TabsTrigger value="iOS">iOS</TabsTrigger>
-  <TabsTrigger value="Web">Web</TabsTrigger>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
 </TabsList>
 
-<TabsContent value="Android">
+<TabsContent value="android">
 
 - [`addHandler`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#addhandler)
 - [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#subscribemessage)
@@ -661,7 +557,7 @@ conversationalAIAPI.destroy()
 
 </TabsContent>
 
-<TabsContent value="iOS">
+<TabsContent value="ios">
 
 - [`addHandler`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#addhandler)
 - [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#subscribemessage)
@@ -673,7 +569,7 @@ conversationalAIAPI.destroy()
 
 </TabsContent>
 
-<TabsContent value="Web">
+<TabsContent value="web">
 
 - [`IConversationalAIAPIEventHandler`](/zh-CN/api-reference/conversational-ai/web/struct#iconversationalaiapieventhandlers)
 - [`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents)

@@ -43,6 +43,7 @@ description: "查看实时转录的消息通知事件类型，了解关键概念
 | :--- | :--- | :--- | :--- |
 | [101](#101) | `agent joined` | 实时转录翻译引擎加入成功时发送。 | 服务加入频道。 |
 | [102](#102) | `agent left` | 实时转录翻译引擎离开成功时发送。 | 服务离开频道。 |
+| [104](#104) | `token will expire` | 实时转录翻译引擎使用的 RTC Token 即将过期时发送。 | RTC Token 即将过期预警。 |
 | [200](#200) | `M3U8 file upload succeed` | 单个 M3U8 索引文件创建并上传完成时发送。若上传多个 M3U8 文件，则会多次回调。 | 单个 M3U8 索引文件上传成功。 |
 | [201](#201) | `transcript upload succeed` | 所有 M3U8 和 VTT 文件上传完成时发送。 | 所有 M3U8 和 VTT 文件上传成功。 |
 | [202](#202) | `transcript upload failed` | M3U8 或 VTT 文件上传完成，但部分或全部文件上传失败时发送。 | M3U8 或 VTT 文件上传失败。 |
@@ -97,6 +98,7 @@ description: "查看实时转录的消息通知事件类型，了解关键概念
 
       - `OK`：服务正常退出频道。
       - `Idle for too long`：由于任务长时间无活动而超时退出。
+      - `Task exceeded maximum lifetime`：由于任务达到最长运行时长上限而退出。
       - `RTC connection error`：由于 RTC 连接异常导致退出。
       - `Fatal ASR error`：ASR 模块错误导致退出。
       - `Fatal Translation error`：翻译模块错误导致退出。
@@ -124,6 +126,17 @@ description: "查看实时转录的消息通知事件类型，了解关键概念
     "start_ts": 1750235971,
     "status": "STOPPED",
     "stop_ts": 1750235984
+}
+```
+
+```json tab="任务运行超限" tabGroup="102"
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "Task exceeded maximum lifetime",
+    "start_ts": 1750235971,
+    "status": "STOPPED",
+    "stop_ts": 1750495171
 }
 ```
 
@@ -159,6 +172,35 @@ description: "查看实时转录的消息通知事件类型，了解关键概念
     "stop_ts": 1750235984
 }
 ```
+
+<a id="104"></a>
+### 104 token will expire
+
+`eventType` 为 `104` 表示实时转录翻译引擎使用的 RTC Token 即将过期。当 RTC Token 距离过期还有 30 秒时，消息通知服务会向你的业务服务器发送该事件。如果 RTC Token 的有效期小于或等于 30 秒，平台不会发送该事件。`payload` 中包含以下字段：
+
+| 字段 | 数据类型 | 含义 |
+| :--- | :--- | :--- |
+| `agent_id` | String | 实时转录翻译智能体 ID。 |
+| `name` | String | 创建任务时传入的服务唯一标识。 |
+| `start_ts` | Number | 任务创建的时间戳（秒）。 |
+| `channel` | String | 频道名称。 |
+| `message` | String | RTC Token 即将过期提醒。固定值：`token will expire!`。 |
+
+`payload` 示例：
+
+```json
+{
+    "agent_id": "agent_id",
+    "name": "agora-test",
+    "start_ts": 1750235971,
+    "channel": "stt_ncs93369",
+    "message": "token will expire!"
+}
+```
+
+:::info[信息]
+`104` 事件仅用于提前通知 RTC Token 即将过期，不会触发任务结束，不会改变任务的最终状态，也不替代现有 RTC 连接错误处理链路。
+:::
 
 <a id="200"></a>
 ### 200 M3U8 file upload succeed

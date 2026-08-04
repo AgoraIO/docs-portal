@@ -34,7 +34,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.2.8.zip)下载最新版本的 Java SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip)下载最新版本的 Java SDK。
 2. 将 SDK 包内 `sdk` 文件夹中的所有文件拷贝到项目的 `/app/libs` 路径下。
 3. 添加 SDK 引用。在 **Project** 窗口找到 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件并添加如下代码：
 
@@ -107,7 +107,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
    ```groovy
    ...
    dependencies {
-       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
+       // 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
        // 对于 2.2.7 及之后版本:
        implementation 'cn.shengwang.rtm:android-java:x.y.z'
        // 对于 2.2.6 及之前版本:
@@ -337,6 +337,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
    import androidx.appcompat.app.AppCompatActivity;
 
    import io.agora.rtm.ErrorInfo;
+   import io.agora.rtm.LinkStateEvent;
    import io.agora.rtm.LockEvent;
    import io.agora.rtm.MessageEvent;
    import io.agora.rtm.PresenceEvent;
@@ -478,8 +479,8 @@ private RtmEventListener eventListener = new RtmEventListener() {
     }
 
     @Override
-    public void onConnectionStateChanged(String mChannelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
-        String text = "Connection state changed to " + state + ", Reason: " + reason + "\n";
+    public void onLinkStateEvent(LinkStateEvent event) {
+        String text = "Link state event: " + event + "\n";
         writeToMessageHistory(text);
     }
 };
@@ -626,6 +627,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
   import androidx.appcompat.app.AppCompatActivity;
 
   import io.agora.rtm.ErrorInfo;
+  import io.agora.rtm.LinkStateEvent;
   import io.agora.rtm.LockEvent;
   import io.agora.rtm.MessageEvent;
   import io.agora.rtm.PresenceEvent;
@@ -671,8 +673,8 @@ mRtmClient.logout(new ResultCallback<Void>() {
           }
 
           @Override
-          public void onConnectionStateChanged(String mChannelName, RtmConstants.RtmConnectionState state, RtmConstants.RtmConnectionChangeReason reason) {
-              String text = "Connection state changed to " + state + ", Reason: " + reason + "\n";
+          public void onLinkStateEvent(LinkStateEvent event) {
+              String text = "Link state event: " + event + "\n";
               writeToMessageHistory(text);
           }
       };
@@ -906,7 +908,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.2.8.zip)下载最新版本的 Objective-C SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip)下载最新版本的 Objective-C SDK。
 2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
 3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
 4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
@@ -924,9 +926,10 @@ mRtmClient.logout(new ResultCallback<Void>() {
    ```ruby
    platform :ios, '11.0'
    target 'Your App' do
-      # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
-      # 对于 2.2.7 及之后版本:
-      pod 'ShengwangRtm', 'x.y.z'
+      # 对于 2.2.8 及之后版本:
+      pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+      # 对于 2.2.7 版本:
+      # pod 'ShengwangRtm', 'x.y.z'
       # 对于 2.2.6 及之前版本:
       # pod 'AgoraRtm', 'x.y.z'
       # 如需获取 2.2.0 之前的版本，请将包名修改为 AgoraRtm_iOS
@@ -2065,7 +2068,7 @@ try {
 
 ### 1. 获取 SDK
 
-[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip)下载最新版本的 HarmonyOS SDK。
+[点击此处](https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip)下载最新版本的 HarmonyOS SDK。
 
 下载完成后，解压 SDK 包，你将获得一个 `.har` 文件，这是 HarmonyOS 的静态共享包格式。
 
@@ -4549,7 +4552,7 @@ void main() async {
    └── lib
    ```
 
-2. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.2.8.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
+2. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip)下载最新版本的 C++ SDK 并解压。将 SDK 包中的如下文件复制到项目的对应目录下：
 
 - 将 `/rtm/sdk/libagora_rtm_sdk.so` 文件复制到项目的 `lib` 目录下。
 - 将 `/rtm/sdk/high_level_api/include` 路径下的所有 `*.h` 文件复制到项目的 `include` 目录下。
@@ -4777,10 +4780,6 @@ void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
   cbPrint("onLogoutResult, request id: %lld, errorCode: %d", requestId, errorCode);
 }
 
-void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) override {
-  cbPrint("onConnectionStateChanged, channelName: %s, state: %d, reason: %d", channelName, state, reason);
-}
-
 void onLinkStateEvent(const LinkStateEvent& event) override {
   cbPrint("onLinkStateEvent, state: %d -> %d, operation: %d, reason code: %d, reason: %s", event.previousState, event.currentState, event.operation, event.reasonCode, event.reason);
 }
@@ -4926,10 +4925,6 @@ public:
 
   void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
     cbPrint("onLogoutResult, request id: %lld, errorCode: %d", requestId, errorCode);
-  }
-
-  void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) override {
-    cbPrint("onConnectionStateChanged, channelName: %s, state: %d, reason: %d", channelName, state, reason);
   }
 
   void onLinkStateEvent(const LinkStateEvent& event) override {
@@ -5187,7 +5182,7 @@ int main(int argc, const char * argv[]) {
 
 <TabsContent value="cdn">
 
-1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.2.8.zip)下载最新版本的 Objective-C SDK。
+1. [点击此处](https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip)下载最新版本的 Objective-C SDK。
 2. 复制 SDK 包中 `/libs` 路径下所有的 `xcframework` 文件至项目路径下。
 3. 打开 Xcode，进入 **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content** 菜单。
 4. 点击 **+ > Add Other… > Add Files** 添加所有的 `xcframework` 文件，并确保添加的动态库 **Embed** 属性设置为 **Embed & Sign**。
@@ -5205,9 +5200,10 @@ int main(int argc, const char * argv[]) {
    ```ruby
    platform :ios, '11.0'
    target 'Your App' do
-      # 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.8
-      # 对于 2.2.7 及之后版本:
-      pod 'ShengwangRtm', 'x.y.z'
+      # 对于 2.2.8 及之后版本:
+      pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+      # 对于 2.2.7 版本:
+      # pod 'ShengwangRtm', 'x.y.z'
       # 对于 2.2.6 及之前版本:
       # pod 'AgoraRtm', 'x.y.z'
       # 如需获取 2.2.0 之前的版本，请将包名修改为 AgoraRtm_iOS

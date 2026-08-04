@@ -1,0 +1,153 @@
+---
+title: "通过 RESTful API 接入自定义 TTS"
+description: "准备兼容 OpenAI TTS 协议的服务，并通过 generic_http 配置将其接入对话式 AI 引擎。"
+---
+## 功能简介
+
+通过接入自定义文本转语音 (TTS) 服务，你可以将自研 TTS、私有化部署 TTS 或第三方 TTS 服务作为对话式智能体的语音合成模块。本文介绍如何准备兼容 OpenAI TTS 协议的 HTTP 服务，并在创建对话式智能体时通过 `generic_http` TTS 配置接入该服务。
+
+## 实现原理
+
+声网对话式 AI 引擎通过扩展的 OpenAI TTS 协议调用你的 TTS 服务。调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口时，将 `tts.vendor` 设置为 `generic_http` 并配置 TTS 服务地址后，智能体会在需要播报文本时向该地址发起 HTTP 请求。
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现了与 AI 智能体对话互动的基本逻辑。
+- 准备好可被声网对话式 AI 引擎访问的 TTS HTTP 服务。
+- 确保 TTS 服务支持 HTTP/1.1 或更高版本，生产环境建议使用 HTTPS。
+- 确保 TTS 服务能够返回 PCM 格式音频数据。
+
+## 实现步骤
+
+### 1. 准备 TTS 服务接口
+
+你的 TTS 服务需要提供一个兼容 OpenAI TTS 协议的 HTTP 接口。基础要求如下：
+
+- 请求方法：`POST`
+- 请求路径：`/audio/speech`
+- 请求 Header：支持通过 `Authorization: Bearer <api_key>` 鉴权
+- 请求 Body：JSON 格式
+- 响应 Body：PCM 音频数据流
+
+请求体示例如下：
+
+```json
+{
+  "model": "your-tts-model",
+  "input": "欢迎使用声网对话式 AI 服务。",
+  "voice": "alloy",
+  "speed": 1.0,
+  "sample_rate": 16000,
+  "response_format": "pcm",
+  "instruction": "calm"
+}
+```
+
+请求体字段说明如下：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `input` | String | 待合成的文本内容。由声网对话式 AI 引擎根据智能体回复自动传入。 |
+| `model` | String | TTS 模型名称。如果你的 TTS 服务不区分模型，可以忽略该字段。 |
+| `voice` | String | 音色名称。如果你的 TTS 服务不区分音色，可以忽略该字段。 |
+| `speed` | Number | 语速。 |
+| `sample_rate` | Integer | 输出音频采样率，单位为 Hz，默认值为 `16000`。 |
+| `response_format` | String | 输出音频格式，默认值为 `pcm`。当前仅支持 `pcm`。 |
+| `instruction` | String | 语音风格、情绪或其他播报指令。 |
+
+:::warning[注意]
+如果你的 TTS 服务不支持多采样率，请确保实际返回音频的采样率与创建智能体时配置的 `tts.params.sample_rate` 一致。
+:::
+
+### 2. 验证 TTS 服务响应
+
+你可以先使用 curl 验证 TTS 服务是否能正常返回 PCM 音频流：
+
+```bash
+curl --request POST \
+  --url https://your-tts-service.example.com/v1/audio/speech \
+  --header 'Authorization: Bearer <your_tts_api_key>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "model": "your-tts-model",
+    "input": "欢迎使用声网对话式 AI 服务。",
+    "voice": "alloy",
+    "speed": 1.0,
+    "sample_rate": 16000,
+    "response_format": "pcm"
+  }' \
+  --output test.pcm
+```
+
+服务成功处理请求后，应以 HTTP 分块传输编码（Chunked Transfer Encoding）的方式流式返回合成后的 PCM 音频数据。
+
+如果请求失败，建议返回标准 HTTP 错误状态码，并在响应体中携带 JSON 格式错误信息。例如：
+
+```json
+{
+  "error": {
+    "message": "Incorrect API key provided.",
+    "type": "invalid_request_error",
+    "param": null,
+    "code": "invalid_api_key"
+  }
+}
+```
+
+### 3. 配置智能体使用自定义 TTS
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口时，在 `tts` 模块中将 `vendor` 设置为 `generic_http`，并配置你的 TTS 服务地址和参数。以下仅展示 `properties.tts` 配置：
+
+```json
+{
+  "tts": {
+    "vendor": "generic_http",
+    "url": "https://your-tts-service.example.com/v1/audio/speech",
+    "headers": {
+      "Authorization": "Bearer <your_tts_api_key>"
+    },
+    "params": {
+      "model": "your-tts-model",
+      "voice": "alloy",
+      "speed": 1.0,
+      "sample_rate": 16000,
+      "response_format": "pcm",
+      "instruction": "calm",
+      "enable_request_id": false
+    }
+  }
+}
+```
+
+`generic_http` 相关配置说明如下：
+
+| 配置路径 | 类型 | 是否必需 | 默认值 | 说明 |
+| --- | --- | --- | --- | --- |
+| `tts.vendor` | String | 是 | - | 设置为 `generic_http`，表示使用自定义 TTS 服务。 |
+| `tts.url` | String | 是 | - | TTS 服务地址，要求兼容 OpenAI TTS 协议。 |
+| `tts.headers` | Object | 否 | - | 调用 TTS 服务时携带的请求头，常用于配置 `Authorization`。 |
+| `tts.params` | Object | 否 | - | TTS 请求参数。除本文列出的字段外，还支持按需配置其他字段，系统会将其透传给 TTS 服务。 |
+| `tts.params.api_key` | String | 否 | - | TTS 服务鉴权 API key。如果配置该字段，系统会在调用 TTS 服务时自动携带 `Authorization: Bearer <api_key>`。 |
+| `tts.params.model` | String | 否 | - | TTS 模型名称。 |
+| `tts.params.voice` | String | 否 | - | 音色名称。如果你的 TTS 服务暂不支持多音色，可以忽略该参数。 |
+| `tts.params.speed` | Number | 否 | - | 语速。 |
+| `tts.params.sample_rate` | Integer | 否 | `16000` | 输出音频采样率，单位为 Hz。如果你的 TTS 服务暂不支持多采样率，请确保返回音频的采样率与该配置一致。 |
+| `tts.params.response_format` | String | 否 | `pcm` | 输出音频格式。当前仅支持 `pcm`。 |
+| `tts.params.instruction` | String | 否 | - | 语音风格、情绪或其他播报指令。 |
+| `tts.params.enable_request_id` | Boolean | 否 | `false` | 是否在 TTS 请求体中附带 `request_id`、`request_seq_id` 和 `request_end`。 |
+
+:::info[信息]
+`tts.headers.Authorization` 和 `tts.params.api_key` 至少配置一个。如果同时配置，系统优先使用 `tts.headers.Authorization`。
+:::
+
+### 4. 按需接收请求标识
+
+如果你的 TTS 服务需要区分同一轮播报中的多次请求，可以将 `tts.params.enable_request_id` 设置为 `true`。开启后，系统会在发送给 TTS 服务的请求体中附带以下字段：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `request_id` | String | 单次 TTS 请求的唯一标识。 |
+| `request_seq_id` | Integer | 同一轮播报内的请求序号，从 `0` 开始递增。 |
+| `request_end` | Boolean | 是否为同一轮播报的最后一次请求。 |

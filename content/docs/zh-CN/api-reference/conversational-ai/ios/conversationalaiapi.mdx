@@ -1,7 +1,6 @@
 ---
 title: "ConversationalAIAPI 类"
 ---
-
 <a id="chat"></a>
 ## chat
 
@@ -53,7 +52,53 @@ title: "ConversationalAIAPI 类"
 | `agentUserId` | `String` | 智能体的 RTM 用户 ID，必须全局唯一。 |
 | `completion` | `(ConversationalAIAPIError?) -> Void` | 操作完成时的回调函数。你可以通过该回调的 `error` 参数得知操作的结果或错误信息，详见 [`ConversationalAIAPIError`](/zh-CN/api-reference/conversational-ai/ios/struct#conversationalaiapierror)。 |
 
-<a id="loadaudiosettings"></a>
+<a id="manualsos"></a>
+## manualSOS
+
+```swift
+@objc func manualSOS(agentUserId: String, completion: @escaping (String, ConversationalAIAPIError?) -> Void)
+```
+
+通过 RTM 向智能体发送手动 SoS 信令，显式声明当前用户开始说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，组件会在 `completion` 中返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- `completion` 只表示 RTM publish 是否成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `onUserManualSosEvent` 或 `onUserManualEosEvent` 回调结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+- 常见失败原因包括：当前 mode 配置不允许手动信令、当前不存在可标记的活跃用户发言、同一轮内重复提交已生效的手动 SoS 或手动 EoS。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID，必须全局唯一。 |
+| `completion` | `@escaping (String, ConversationalAIAPIError?) -> Void` | 操作完成时调用的回调函数。第一个参数为本次请求的唯一标识符 `requestId`；第二个参数为错误信息，成功时返回 `nil`。该回调仅表示 RTM publish 是否成功。 |
+
+<a id="manualeos"></a>
+## manualEOS
+
+```swift
+@objc func manualEOS(agentUserId: String, completion: @escaping (String, ConversationalAIAPIError?) -> Void)
+```
+
+通过 RTM 向智能体发送手动 EoS 信令，显式声明当前用户结束说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，组件会在 `completion` 中返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- `completion` 只表示 RTM publish 是否成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `onUserManualSosEvent` 或 `onUserManualEosEvent` 回调结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+- 常见失败原因包括：当前 mode 配置不允许手动信令、当前不存在可标记的活跃用户发言、同一轮内重复提交已生效的手动 SoS 或手动 EoS。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID，必须全局唯一。 |
+| `completion` | `@escaping (String, ConversationalAIAPIError?) -> Void` | 操作完成时调用的回调函数。第一个参数为本次请求的唯一标识符 `requestId`；第二个参数为错误信息，成功时返回 `nil`。该回调仅表示 RTM publish 是否成功。 |
 
 <a id="loadaudiosettings[1/2]"></a>
 ## loadAudioSettings[1/2]
@@ -99,9 +144,9 @@ rtcEngine.joinChannel(byToken: token, channelId: channelName, info: nil, uid: us
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `secnario` | `AgoraAudioScenario` | <Slot name="conversationalaiapi-ios-html-2-1-2" /> |
+| `secnario` | `AgoraAudioScenario` | <Slot name="conversationalaiapi-ios-html-4-1-2" /> |
 
-<Slot for="conversationalaiapi-ios-html-2-1-2">
+<Slot for="conversationalaiapi-ios-html-4-1-2">
 
 音频场景，详见 [`AgoraAudioScenario`](/zh-CN/api-reference/rtc/ios/enum-audioscenariotype#AgoraAudioScenario)。
     :::warning[注意]

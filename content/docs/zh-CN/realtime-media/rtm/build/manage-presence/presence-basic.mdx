@@ -8,6 +8,46 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 - 获取在线用户所在频道列表
 - 动态监控在线用户临时状态变更
 
+<PlatformStructured platform="android">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
 ## 获取频道内在线用户
 
 在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `presence.whonow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
@@ -17,6 +57,46 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 :::
 
 获取到这些初始信息后，你可以通过 `config.onpresenceevent` 事件通知实时更新频道中在线用户信息。
+
+<PlatformStructured platform="android">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
 
 下面是查询频道内在线用户列表及其临时状态的示例代码：
 
@@ -224,6 +304,46 @@ try {
 ```
 
 `presence.whonow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `presence.nextpage` 字段包含下一页数据的书签。你需要在每次查询后判断 `presence.nextpageresult` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `presence.nextpageresult` 的值填入 `presence.whonow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `presence.nextpageresult` 的值为空便是最后一页。例如：
+
+<PlatformStructured platform="android">
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+</PlatformStructured>
 
 ```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-3" showLineNumbers
 var options = new PresenceOptions();

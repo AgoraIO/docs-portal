@@ -246,7 +246,7 @@ if (!rtmClient_ || errorCode != 0) {
 
 ### 接口描述
 
-RTM 总共有 8 种事件通知类型，如下表所示：
+RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型 | 描述 |
 | --- | --- |
@@ -255,7 +255,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 | <code className="index-group-item-rtmeventlistener index-api-ontopicevent" id="onTopicEvent">onTopicEvent</code> | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。详见 [`TopicEvent`](#topicevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onstorageevent" id="onStorageEvent">onStorageEvent</code> | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。详见 [`StorageEvent`](#storageevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onlockevent" id="onLockEvent">onLockEvent</code> | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。详见 [`LockEvent`](#lockevent)。</span> |
-| <code className="index-group-item-rtmeventlistener index-api-onconnection" id="onConnectionStateChanged">onConnectionStateChanged</code> | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。详见 [SDK 连接状态](/zh-CN/api-reference/rtm/cpp/enumv#connectionstate)和 [SDK 连接状态改变原因](/zh-CN/api-reference/rtm/cpp/enumv#connectionreason)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-onlinkstateevent" id="onLinkStateEvent">onLinkStateEvent</code> | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。详见 [`LinkStateEvent`](#linkstateevent)。</span> |
 | <code className="index-group-item-rtmeventlistener index-api-ontokenwillexpire" id="onTokenPrivilegeWillExpire">onTokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span> |
 
@@ -268,7 +267,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) {}
     void onLoginResult(RTM_ERROR_CODE errorCode) {}
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
@@ -325,6 +323,7 @@ config.eventHandler = new RtmEventHandler();
 | `timeoutUserList` | `UserList` | 在上一个周期内加入频道超时的用户列表。 |
 | `userStateList` | `UserState*` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
 | `userStateCount` | size_t | 在上一个周期内状态变更的用户数量。 |
+| `totalOccupancy` | size_t | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
 
 `SnapshotInfo` 数据类型包含以下属性：
 

@@ -118,13 +118,17 @@ localSpatial.initialize(localSpatialAudioConfig);
 
 ### 设置音频属性和场景
 
+:::warning[注意]
+在 Android 平台实现空间音频时，你需要在初始化空间音频引擎后设置音频属性和音频场景，以获得预期的音质效果。
+:::
+
 1. 调用 `setAudioProfile`，将 `profile` 设置为你预期的音频编码属性。
-1. 调用 `setAudioScenario`，将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`，以获得预期的音质效果。
+2. 调用 `setAudioScenario`，将 `scenario` 设置为 `AUDIO_SCENARIO_GAME_STREAMING`，以获得预期的音质效果。
 
 ```java
- engine.setAudioProfile(io.agora.rtc2.Constants.AUDIO_PROFILE_MUSIC_STANDARD);
- engine.setAudioScenario(io.agora.rtc2.Constants.AUDIO_SCENARIO_GAME_STREAMING);
- ```
+engine.setAudioProfile(io.agora.rtc2.Constants.AUDIO_PROFILE_MUSIC_STANDARD);
+engine.setAudioScenario(io.agora.rtc2.Constants.AUDIO_SCENARIO_GAME_STREAMING);
+```
 
 ### 设置音频接收范围
 

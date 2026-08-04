@@ -1,7 +1,6 @@
 ---
 title: "ConversationalAIAPI 类"
 ---
-
 用于通过声网的 RTC 和 RTM 服务管理对话式 AI 引擎交互的类。
 
 :::info[信息]
@@ -116,8 +115,6 @@ public subscribeMessage(channel: string)
 | --- | --- | --- |
 | `channel` | `string` | 要订阅消息的频道名。 |
 
-<a id="unsubscribemessage"></a>
-
 <a id="unsubscribe"></a>
 ## unsubscribe
 
@@ -181,3 +178,55 @@ public async interrupt(agentUserId: string)
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `agentUserId` | `string` | 要中断的智能体的用户 ID。 |
+
+<a id="manualsos"></a>
+## manualSOS
+
+```typescript
+public async manualSOS(agentUserId: string): Promise<string>
+```
+
+通过 RTM 向智能体发送手动 SoS 信令，显式声明当前用户开始说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，方法返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- 方法返回成功只表示 RTM publish 成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `USER_MANUAL_SOS_RESULT` 或 `USER_MANUAL_EOS_RESULT` 事件结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体的唯一标识符。 |
+
+#### 返回值
+
+方法调用成功，返回一个 `Promise<string>`，其解析值为本次请求对应的 `requestId`。该返回结果仅表示 RTM publish 成功，不代表服务端已处理成功。
+
+<a id="manualeos"></a>
+## manualEOS
+
+```typescript
+public async manualEOS(agentUserId: string): Promise<string>
+```
+
+通过 RTM 向智能体发送手动 EoS 信令，显式声明当前用户结束说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，方法返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- 方法返回成功只表示 RTM publish 成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `USER_MANUAL_SOS_RESULT` 或 `USER_MANUAL_EOS_RESULT` 事件结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体的唯一标识符。 |
+
+#### 返回值
+
+方法调用成功，返回一个 `Promise<string>`，其解析值为本次请求对应的 `requestId`。该返回结果仅表示 RTM publish 成功，不代表服务端已处理成功。

@@ -4,7 +4,7 @@ description: "了解如何在实时转录中解析转写数据，包括适用场
 ---
 Protobuf（全称 [Protocol Buffers](https://protobuf.dev)）是由 Google 开发的一种高效的、跨语言的序列化数据格式，支持多种编程语言，包括 C++、Java、Python、Go 等，可在不同系统间进行数据交换。具有高效、灵活和易于使用的特点。
 
-声网实时转录翻译使用 Protobuf 并通过一个 [SttMessage.proto](#sttmessageproto-文件说明) 文件定义实时转录翻译的消息格式，然后将转写后的文本数据序列化为高效的传输格式（例如二进制或 json），并通过数据流进行传输。本文介绍接收端如何在收到数据流后，通过 Protobuf Compiler（protoc）生成目标语言的代码并对收到的数据进行反序列化。你可以从反序列化后的数据结构中提取具体的文本字段。
+声网实时转录翻译支持使用 Protobuf 或 JSON 格式通过数据流传输转写和翻译结果。默认使用 Protobuf 格式；如果调用 [`join`](/zh-CN/api-reference/api-ref/speech-to-text/join) 时将 `enableJsonProtocol` 设置为 `true`，则使用 JSON 格式。本文介绍接收端如何解析 Protobuf 和 JSON 数据，并从解析后的数据结构中提取具体的文本字段。
 
 ## 前提条件
 
@@ -20,11 +20,11 @@ Protobuf（全称 [Protocol Buffers](https://protobuf.dev)）是由 Google 开�
 - 一个有效的声网账号以及声网项目。请确保你的项目已开通实时转录翻译功能，并参考[开通服务](/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service)从声网控制台获得以下信息：
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
-- 作为主播加入频道发流。你可以参考[实现纯语音互动](/zh-CN/realtime-media/rtc/get-started/quick-start)来在频道中发流。
+- 作为主播加入频道发流。你可以参考[实现纯语音互动](/zh-CN/realtime-media/rtc/build/audio/audio-quick-start)来在频道中发流。
 
 ## 实现流程
 
-本节介绍接收端如何使用 protoc 编译生成不同语言的示例代码来反序列化接收到的数据。
+本节介绍接收端如何使用 protoc 编译生成不同语言的示例代码来反序列化接收到的 Protobuf 数据。如果你使用 JSON 格式，可直接参考[JSON 协议数据结构](#json-协议数据结构)解析消息。
 
 ### 使用 protoc 生成源代码
 
@@ -460,13 +460,92 @@ message OriginalTranscript {
 | `culture`  | `string`   | 转写的源语言。 |
 | `words`    | `repeated` | 转写结果的数组，详见 `Word` 消息类型。 |
 
+:::info[信息]
+使用 Soniox 供应商时，单次 Protobuf `Text` 消息可能承载多个片段。例如，转写消息中的 `words[]` 或翻译消息中的 `trans[]` 长度可能大于 `1`。客户端不应假设一次数据流消息只包含一个转写或翻译片段。
+:::
+
+### JSON 协议数据结构
+
+如果调用 [`join`](/zh-CN/api-reference/api-ref/speech-to-text/join) 时将 `enableJsonProtocol` 设置为 `true`，服务会使用 JSON 格式推送字幕数据。JSON 消息的顶层对象包含 `transcript` 或 `translation` 字段：
+
+- `transcript`：转写结果。
+- `translation`：翻译结果。
+
+使用 Soniox 供应商时，JSON 协议改为使用 `results[]` 显式承载一个或多个片段。单片段场景下 `results[]` 长度为 `1`；mixed 场景下，单条消息可能同时包含已稳定的前缀片段和仍会变化的后缀片段，此时 `results[]` 长度大于 `1`。
+
+:::warning[注意]
+这是 JSON 客户端协议的不兼容变更。如果你的客户端启用了 JSON 协议，需要与服务端一起升级。升级后不要再假设一次数据流消息只对应一个转写或翻译片段，请遍历 `results[]` 处理每个片段，并兼容 `results[]` 为空数组的消息。
+:::
+
+#### transcript 字段
+
+| 字段 | 类型 | 含义 |
+| :--- | :--- | :--- |
+| `uid` | Number | 用户的音频流 ID。 |
+| `textTs` | Number | 这批转写结果的主时间戳，取首个片段对应的 `text_id`。 |
+| `offset` | Number | 这批转写结果的起始时间，单位为毫秒。 |
+| `duration` | Number | 这批转写结果的时长，单位为毫秒。 |
+| `language` | String | 首个转写片段的源语言。 |
+| `text` | String | 转写文本。 |
+| `isFinal` | Boolean | 转写文本是否为最终结果。 |
+| `sentenceId` | Number | 句级聚合单元 ID，表示 `results[]` 中的转写片段归属于同一句或同一轮句级聚合单元。 |
+| `results` | Array | 转写片段数组。详见 [transcript.results 字段](#transcriptresults-字段)。 |
+
+#### transcript.results 字段
+
+| 字段 | 类型 | 含义 |
+| :--- | :--- | :--- |
+| `text` | String | 当前转写片段的文本。 |
+| `isFinal` | Boolean | 当前转写片段是否为最终结果。 |
+| `offset` | Number | 当前转写片段的起始时间，单位为毫秒。 |
+| `duration` | Number | 当前转写片段的时长，单位为毫秒。 |
+
+#### translation 字段
+
+| 字段 | 类型 | 含义 |
+| :--- | :--- | :--- |
+| `uid` | Number | 用户的音频流 ID。 |
+| `textTs` | Number | 这批翻译结果的主时间戳，取首个翻译片段对应的 `text_id`。 |
+| `offset` | Number | 这批翻译结果的起始时间，单位为毫秒。 |
+| `duration` | Number | 这批翻译结果的时长，单位为毫秒。 |
+| `isFinal` | Boolean | 翻译结果是否为最终结果。 |
+| `sentenceId` | Number | 句级聚合单元 ID，表示 `results[]` 中的翻译片段归属于同一句或同一轮句级聚合单元。 |
+| `results0` | Object | 兼容旧版本的翻译结果字段，结构保持不变。 |
+| `results` | Array | 翻译片段数组。详见 [translation.results 字段](#translationresults-字段)。 |
+| `original_transcript` | Object | 原文转写结果。仅在开启原文返回时出现。 |
+
+#### translation.results 字段
+
+| 字段 | 类型 | 含义 |
+| :--- | :--- | :--- |
+| `language` | String | 翻译的目标语言。 |
+| `texts` | Array | 当前翻译片段的译文数组。 |
+| `isFinal` | Boolean | 当前翻译片段是否为最终结果。 |
+
+#### original_transcript 字段
+
+| 字段 | 类型 | 含义 |
+| :--- | :--- | :--- |
+| `language` | String | 原文的源语言。 |
+| `text` | String | 合并后的原文文本。 |
+| `results` | Array | 原文片段数组，字段包括 `text` 和 `isFinal`。|
+
 ### 示例数据
 
-本节提供 `transcribe` 和 `translate` 两种数据类型的示例。
+本节提供 Protobuf 和 JSON 格式下 `transcribe` 和 `translate` 两种数据类型的示例。
 
 **transcribe**
 
-```protobuf tab="protobuf" tabGroup="example"
+<Tabs defaultValue="Protobuf" groupId="transcribe-example" persist>
+<TabsList>
+  <TabsTrigger value="Protobuf">protobuf</TabsTrigger>
+  <TabsTrigger value="JSON">json</TabsTrigger>
+  <TabsTrigger value="JSON-mixed">json mixed</TabsTrigger>
+</TabsList>
+
+<TabsContent value="Protobuf">
+
+```protobuf
 time: 1753359518654
 words {
   text: "Hello, how are you?"
@@ -479,23 +558,92 @@ text_ts: 1753359520754
 sentence_id: 1753359518654
 ```
 
-```json tab="json" tabGroup="example"
+</TabsContent>
+
+<TabsContent value="JSON">
+
+```json
 {
     "transcript": {
-        "uid": 222,
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 200,
         "language": "zh-CN",
-        "text": "北选手",
-        "isFinal": false,
-        "offset": 1751438272384,
-        "duration": 760,
-        "textTs": 1751438273939
+        "text": "你好。",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": [
+            {
+                "text": "你好。",
+                "isFinal": true,
+                "offset": 1000,
+                "duration": 200
+            }
+        ]
     }
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="JSON-mixed">
+
+以下示例表示同一条 JSON 消息同时包含已稳定的前缀片段和仍会变化的后缀片段：
+
+```json
+{
+    "transcript": {
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 500,
+        "language": "zh-CN",
+        "text": "你好。",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": [
+            {
+                "text": "你好。",
+                "isFinal": true,
+                "offset": 1000,
+                "duration": 200
+            },
+            {
+                "text": "你",
+                "isFinal": false,
+                "offset": 1300,
+                "duration": 200
+            }
+        ]
+    }
+}
+```
+
+发送包含 `results[]` 的消息后，服务还会再发送一条 `results` 为空数组的消息：
+
+```json
+{
+    "transcript": {
+        "uid": 42,
+        "textTs": 1710000012345,
+        "offset": 1000,
+        "duration": 500,
+        "language": "zh-CN",
+        "text": "你好。",
+        "isFinal": true,
+        "sentenceId": 1710000012000,
+        "results": []
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
 **translate**
 
-```protobuf tab="protobuf" tabGroup="example"
+```protobuf tab="protobuf" tabGroup="translate-example"
 time: 1753359518654
 duration_ms: 770
 data_type: "translate"
@@ -515,23 +663,77 @@ original_transcript {
 }
 ```
 
-```json tab="json" tabGroup="example"
+```json tab="json" tabGroup="translate-example"
+{
+        "translation": {
+            "uid": 42,
+            "isFinal": true,
+            "offset": 1000,
+            "duration": 500,
+            "textTs": 1710000012345,
+            "sentenceId": 1710000012000,
+            "results0": {
+                "language": "en-US",
+                "texts": [
+                    "Hello."
+                ]
+            },
+            "results": [
+                {
+                    "language": "en-US",
+                    "texts": [
+                        "Hello."
+                    ],
+                    "isFinal": true
+                },
+                {
+                    "language": "en-US",
+                    "texts": [
+                        "World."
+                    ],
+                    "isFinal": false
+                }
+            ],
+            "original_transcript": {
+                "language": "zh-CN",
+                "text": "你好。",
+                "results": [
+                    {
+                        "text": "你好。",
+                        "isFinal": true
+                    },
+                    {
+                        "text": "世界",
+                        "isFinal": false
+                    }
+                ]
+            }
+        }
+}
+```
+
+发送包含 `results[]` 的消息后，服务还会再发送一条 `results` 为空数组的消息：
+
+```json
 {
     "translation": {
-        "uid": 222,
+        "uid": 42,
         "isFinal": true,
-        "offset": 1751438270274,
-        "duration": 1320,
-        "textTs": 1751438272825,
+        "offset": 1000,
+        "duration": 500,
+        "textTs": 1710000012345,
+        "sentenceId": 1710000012000,
         "results0": {
-            "language": "ja-JP",
+            "language": "en-US",
             "texts": [
-                "4月13日。 "
+                "Hello."
             ]
         },
+        "results": [],
         "original_transcript": {
             "language": "zh-CN",
-            "text": "4月13日。"
+            "text": "你好。",
+            "results": []
         }
     }
 }

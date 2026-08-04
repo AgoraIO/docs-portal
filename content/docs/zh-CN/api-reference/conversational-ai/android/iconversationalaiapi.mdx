@@ -1,7 +1,6 @@
 ---
 title: "IConversationalAIAPI 类"
 ---
-
 <a id="chat"></a>
 ## chat
 
@@ -101,6 +100,54 @@ fun interrupt(agentUserId: String, completion: (error: ConversationalAIAPIError?
 | `agentUserId` | `String` | 智能体用户 ID。 |
 | `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 异步回调函数。调用成功时，`error` 为 null；调用失败时，`error` 为非 null，包含错误信息，详见 [`ConversationalAIAPIError`](/zh-CN/api-reference/conversational-ai/android/struct#conversationalaiapierror)。 |
 
+<a id="manualsos"></a>
+## manualSOS
+
+```kotlin
+fun manualSOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
+```
+
+通过 RTM 向智能体发送手动 SoS 信令，显式声明当前用户开始说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，组件会在 `completion` 中返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- `completion` 只表示 RTM publish 是否成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `onUserManualSosEvent` 或 `onUserManualEosEvent` 回调结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+- 常见失败原因包括：当前 mode 配置不允许手动信令、当前不存在可标记的活跃用户发言、同一轮内重复提交已生效的手动 SoS 或手动 EoS。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `completion` | `(requestId: String, error: ConversationalAIAPIError?) -> Unit` | 异步回调函数。`requestId` 为本次请求的唯一标识符；调用成功时，`error` 为 null；调用失败时，`error` 为非 null。该回调仅表示 RTM publish 是否成功。 |
+
+<a id="manualeos"></a>
+## manualEOS
+
+```kotlin
+fun manualEOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
+```
+
+通过 RTM 向智能体发送手动 EoS 信令，显式声明当前用户结束说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，组件会在 `completion` 中返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- `completion` 只表示 RTM publish 是否成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `onUserManualSosEvent` 或 `onUserManualEosEvent` 回调结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+- 常见失败原因包括：当前 mode 配置不允许手动信令、当前不存在可标记的活跃用户发言、同一轮内重复提交已生效的手动 SoS 或手动 EoS。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `completion` | `(requestId: String, error: ConversationalAIAPIError?) -> Unit` | 异步回调函数。`requestId` 为本次请求的唯一标识符；调用成功时，`error` 为 null；调用失败时，`error` 为非 null。该回调仅表示 RTM publish 是否成功。 |
+
 <a id="loadaudiosettings"></a>
 ## loadAudioSettings
 
@@ -118,9 +165,9 @@ fun loadAudioSettings(scenario: Int = Constants.AUDIO_SCENARIO_AI_CLIENT)
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `scenario` | `Int` | <Slot name="iconversationalaiapi-android-html-6-1-2" /> |
+| `scenario` | `Int` | <Slot name="iconversationalaiapi-android-html-8-1-2" /> |
 
-<Slot for="iconversationalaiapi-android-html-6-1-2">
+<Slot for="iconversationalaiapi-android-html-8-1-2">
 
 音频场景，默认值为 `AUDIO_SCENARIO_AI_CLIENT`。
 

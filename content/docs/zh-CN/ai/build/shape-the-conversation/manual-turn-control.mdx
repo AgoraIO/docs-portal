@@ -4,47 +4,32 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 ---
 当你的业务场景不适合依赖服务端自动判定用户何时开始说话或结束说话时，可以使用手动 SoS/EoS 能力，由客户端显式声明用户回合边界。该能力适用于 AI 面试、互动答题、对讲机模式等需要“按下开始、点击提交”的交互。本文介绍如何通过创建智能体配置和客户端组件接口，实现手动控制用户说话边界。
 
-:::info[信息]
-- 手动 SoS/EoS 依赖 RTM。使用前必须同时开启 `advanced_features.enable_rtm = true`，并将 `parameters.data_channel` 设为 `rtm`。
-- `manual` 模式只控制用户回合边界，不等同于“打断智能体说话”。如果你要中断智能体当前播报，请参考[打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)。
-- 公开接口不支持 `manual_config`。`manual` 模式下无需传入额外配置。
-:::
+## 集成流程
 
-## 适用场景
+手动轮次控制需要同时配置智能体启动参数和客户端组件：
 
-手动控制用户说话边界适用于以下场景：
+```text
+启动 Agent 时配置 manual 模式
+→ 客户端初始化 toolkit 并订阅 RTM 消息
+→ 注册手动 SoS/EoS 结果回调
+→ 用户点击开始/提交时调用 manualSOS/manualEOS
+```
 
-- **AI 面试**：候选人单次回答时间较长，过程中可能包含停顿、思考和语气词。业务侧可保留自动 SoS，只在用户点击“提交答案”时触发手动 EoS，减少误判结束说话导致的抢话。
-- **互动答题**：在需要由用户点击“开始作答”或“提交答案”的场景中，可通过手动 SoS/EoS 显式控制回答边界，避免答题过程中的停顿被误判为回答结束。
-- **对讲机模式**：在 PTT 类场景中，业务侧通常需要同时控制“开始说话”和“结束说话”，避免服务端根据静音或语义自动切分回合。
+## 选择控制模式
 
-## 功能介绍
+`start_of_speech.mode` 和 `end_of_speech.mode` 是两个独立配置。先根据交互选择需要手动控制的边界：
 
-手动轮次控制包含两个独立能力：
+| 业务场景 | `start_of_speech.mode` | `end_of_speech.mode` | 客户端调用 |
+|---|---|---|---|
+| 用户可自由开始说话，但需要点击“提交答案” | `vad` | `manual` | 只调用 `manualEOS` |
+| 用户点击或按下后开始说话，结束由服务端自动判停 | `manual` | `vad` | 只调用 `manualSOS` |
+| 按住说话、松开发送、对讲机模式 | `manual` | `manual` | 先调用 `manualSOS`，再调用 `manualEOS` |
 
-- **手动 SoS**：客户端显式声明“用户开始说话”。
-- **手动 EoS**：客户端显式声明“用户说完了”。
+如果只把 `end_of_speech.mode` 设为 `manual`，则服务端仍会通过 VAD 自动识别用户开始说话；业务只需要在用户点击提交时调用 `manualEOS`。
 
-两者可分别开启：
+如果只把 `start_of_speech.mode` 设为 `manual`，则服务端只会在客户端调用 `manualSOS` 后开始接收本轮用户音频；结束说话仍由 VAD 自动识别，业务不需要调用 `manualEOS`。
 
-- 仅 `end_of_speech.mode = "manual"`：适合“开始说话仍交给 VAD、结束说话由用户主动提交”的场景。
-- 同时设置 `start_of_speech.mode = "manual"` 和 `end_of_speech.mode = "manual"`：适合完整的 PTT 或对讲机模式。
-
-## 实现原理
-
-手动 SoS/EoS 的底层通过 RTM 点对点消息完成：
-
-- 手动 SoS 的外层 `customType` 为 `user.manual_sos`
-- 手动 EoS 的外层 `customType` 为 `user.manual_eos`
-- 外层消息格式统一为 `customType + publisher + message`
-- 内层 `message` 为 JSON 字符串，至少包含 `request_id`
-
-`request_id` 用于把服务端成功/失败回调与原始请求精确关联，建议业务侧为每次请求生成唯一值。
-
-:::info[信息]
-- 客户端主动发送手动 SoS/EoS 请求时，需要通过外层 `customType` 区分 `user.manual_sos` 和 `user.manual_eos`。
-- 服务端回调时，端侧无需依赖外层 `customType` 区分事件类型，可直接解析内层 `message` 中的 `event_type` 字段进行处理。
-:::
+如果同时把 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`，则服务端只会在客户端调用 `manualSOS` 后开始接收本轮用户音频，并在客户端调用 `manualEOS` 后提交本轮发言。
 
 ## 前提条件
 
@@ -55,19 +40,22 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 - 已参考[实现对话式智能体](/zh-CN/ai/get-started/quick-start)实现与智能体对话的基本逻辑。
 - 确保 RTC 可用、RTM 已登录，且 RTC 和 RTM 实例的生命周期大于组件的生命周期。组件内部不负责维护 RTC，RTM 的初始化、生命周期以及鉴权/登录状态的逻辑。
 
-此外，请确保：
-
-- 你的 RTC Token 同时具备 RTC 和 RTM 权限。
-- 已完成 RTM SDK 的基础集成，并可正常收发 RTM 消息。
-- 已在创建智能体时启用 RTM。
-
 ## 实现手动控制用户说话开始和结束
 
 ### 创建智能体时开启手动轮次控制
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，开启 RTM，并根据业务场景将 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`。
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 接口时，开启 RTM，并根据业务场景将需要手动控制的一侧设为 `manual`。
 
-如果你只需要手动控制结束说话，可以保留自动 SoS，仅将 `end_of_speech.mode` 设为 `manual`：
+<Tabs defaultValue="manual-eos" groupId="manual-turn-control-mode" persist>
+<TabsList>
+  <TabsTrigger value="manual-eos">仅手动控制 EoS</TabsTrigger>
+  <TabsTrigger value="manual-sos">仅手动控制 SoS</TabsTrigger>
+  <TabsTrigger value="manual-sos-eos">手动控制 SoS 和 EoS</TabsTrigger>
+</TabsList>
+
+<TabsContent value="manual-eos">
+
+如果你只需要手动控制结束说话，可以保留自动 SoS，仅将 `end_of_speech.mode` 设为 `manual`。
 
 ```json
 {
@@ -105,7 +93,51 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 }
 ```
 
-如果你需要完整的对讲机模式，则同时将 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`：
+</TabsContent>
+
+<TabsContent value="manual-sos">
+
+如果你只需要手动控制开始说话，可以将 `start_of_speech.mode` 设为 `manual`，并保留自动 EoS。
+
+```json
+{
+  "name": "manual-sos-agent",
+  "properties": {
+    "channel": "channel_name",
+    "token": "token",
+    "agent_rtc_uid": "0",
+    "remote_rtc_uids": ["123"],
+    "advanced_features": {
+      "enable_rtm": true
+    },
+    "turn_detection": {
+      "mode": "default",
+      "config": {
+        //highlight-start
+        "start_of_speech": {
+          "mode": "manual"
+        },
+        "end_of_speech": {
+          "mode": "vad",
+          "vad_config": {
+            "silence_duration_ms": 480
+          }
+        }
+      }
+    },
+    "parameters": {
+      "data_channel": "rtm"
+    }
+    //highlight-end
+  }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="manual-sos-eos">
+
+如果你需要完整的对讲机模式，则同时将 `start_of_speech.mode` 和 `end_of_speech.mode` 设为 `manual`。
 
 ```json
 {
@@ -138,11 +170,12 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 ### 集成并初始化客户端组件
 
-先完成组件集成，再使用 RTC 和 RTM 实例初始化客户端组件：
-
-<a id="组件结构"></a>
+先完成组件集成：
 
 <Tabs defaultValue="android" groupId="language" persist>
 <TabsList>
@@ -153,38 +186,132 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 
 <TabsContent value="android">
 
-将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="convoaiApi" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi" />
-</Cards>
+<Tabs defaultValue="maven" groupId="android-install-method" persist>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+在 Android 项目的 `build.gradle` 文件中添加如下依赖：
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
 
 </TabsContent>
 
-<TabsContent value="ios">
+<TabsContent value="source">
 
-将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="ConversationalAIAPI" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI" />
-</Cards>
+将 `convoaiApi` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
 
-</TabsContent>
-
-<TabsContent value="web">
-
-将 `conversational-ai-api` 文件拷贝到你的项目中，并在后续调用组件 API 前引入组件。你可以前往[组件结构](#组件结构)了解各个文件作用。
-    <Cards>
-  <Card title="conversational-ai-api" href="https://github.com/Shengwang-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api" />
+        <Cards>
+  <Card title="agent-client-toolkit-kotlin" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main" />
 </Cards>
 
 </TabsContent>
 </Tabs>
 
+</TabsContent>
+
+<TabsContent value="ios">
+
+<Tabs defaultValue="cocoapods" groupId="ios-install-method" persist>
+<TabsList>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="swiftpm">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cocoapods">
+
+在 `Podfile` 中添加如下依赖：
+
+```ruby
+pod 'agent-client-toolkit-swift', '2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="swiftpm">
+
+在 Xcode 中添加如下 Package URL，并将版本指定为 tag `2.9.0`：
+
+```text
+https://github.com/AgoraIO/agent-client-toolkit-swift.git
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `ConversationalAIAPI` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-swift" href="https://github.com/AgoraIO/agent-client-toolkit-swift/tree/source/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+
+<TabsContent value="web">
+
+<Tabs defaultValue="package" groupId="web-install-method" persist>
+<TabsList>
+  <TabsTrigger value="package">Package Manager</TabsTrigger>
+  <TabsTrigger value="source">源码集成</TabsTrigger>
+</TabsList>
+
+<TabsContent value="package">
+
+根据你的项目类型安装组件依赖。
+
+- Vanilla JS / TypeScript：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0
+  ```
+
+- React：
+
+  ```shell
+  pnpm add agora-agent-client-toolkit@2.9.0 agora-agent-client-toolkit-react@2.9.0
+  ```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+将 `conversational-ai-api` 文件夹拷贝到你的项目中，并在后续调用组件 API 前引入组件。
+
+        <Cards>
+  <Card title="agent-client-toolkit-ts" href="https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-ts/tree/main" />
+</Cards>
+
+</TabsContent>
+</Tabs>
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+如果在 Android 或 iOS 项目中同时集成多个声网 SDK 时出现库冲突，请参考[多 SDK 库冲突处理](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue)。
+:::
+
+然后使用已有的 RTC 和 RTM 实例初始化客户端组件。
+
 ```kotlin tab="Android" tabGroup="language"
 val config = ConversationalAIAPIConfig(
-    rtcEngine = rtcEngineInstance,
-    rtmClient = rtmClientInstance,
-    enableLog = true
+    rtcEngine = rtcEngine,
+    rtmClient = rtmClient,
+    renderMode = TranscriptRenderMode.Word,
+    enableLog = true,
+    enableRenderModeFallback = true
 )
+
 val api = ConversationalAIAPIImpl(config)
 ```
 
@@ -192,44 +319,48 @@ val api = ConversationalAIAPIImpl(config)
 let config = ConversationalAIAPIConfig(
     rtcEngine: rtcEngine,
     rtmEngine: rtmEngine,
-    enableLog: true
+    renderMode: .words,
+    enableLog: true,
+    enableRenderModeFallback: true
 )
+
 convoAIAPI = ConversationalAIAPIImpl(config: config)
 ```
 
 ```typescript tab="Web" tabGroup="language"
-ConversationalAIAPI.init({
-  rtcEngine,
-  rtmEngine,
-})
+const config: IConversationalAIAPIConfig = {
+  rtcEngine: rtcEngine,
+  rtmEngine: rtmEngine,
+  renderMode: ETranscriptHelperMode.WORD,
+  enableLog: true,
+  enableRenderModeFallback: true,
+};
 
-const conversationalAIAPI = ConversationalAIAPI.getInstance()
+const conversationalAIAPI = await ConversationalAIAPI.init(config);
 ```
 
 ### 注册消息回调并订阅频道消息
 
-手动 SoS/EoS 的处理结果通过专用回调或事件返回：
-
-你需要先注册这些回调或事件，再订阅智能体所在频道的消息：
+手动 SoS/EoS 的处理结果通过专用回调或事件返回，你需要先注册这些回调或事件，再订阅智能体所在频道的消息：
 
 ```kotlin tab="Android" tabGroup="language"
 api.addHandler(object : IConversationalAIAPIEventHandler {
     override fun onUserManualSosEvent(agentUserId: String, event: UserManualSosEvent) {
-        // 处理手动 SOS 结果
+        // 处理手动 SOS 结果。event.payload.success 表示服务端是否接受。
     }
 
     override fun onUserManualEosEvent(agentUserId: String, event: UserManualEosEvent) {
-        // 处理手动 EOS 结果
+        // 处理手动 EOS 结果。
     }
 
-    override fun onAssistantManualEosEvent(agentUserId: String, event: AssistantManualEosEvent) {
-        // 处理服务端超限自动 EOS 通知
+    override fun onAgentManualEosEvent(agentUserId: String, event: AgentManualEosEvent) {
+        // 处理服务端因超限等原因触发的自动 EOS 通知。
     }
 })
 
 api.subscribeMessage("channelName") { error ->
     if (error != null) {
-        // 处理错误
+        // 处理订阅失败
     }
 }
 ```
@@ -238,61 +369,65 @@ api.subscribeMessage("channelName") { error ->
 convoAIAPI.addHandler(handler: self)
 
 func onUserManualSosEvent(agentUserId: String, event: UserManualSosEvent) {
-    // 处理手动 SOS 结果
+    // 处理手动 SOS 结果。event.payload.success 表示服务端是否接受。
 }
 
 func onUserManualEosEvent(agentUserId: String, event: UserManualEosEvent) {
-    // 处理手动 EOS 结果
+    // 处理手动 EOS 结果。
 }
 
-func onAssistantManualEosEvent(agentUserId: String, event: AssistantManualEosEvent) {
-    // 处理服务端超限自动 EOS 通知
+func onAgentManualEosEvent(agentUserId: String, event: AgentManualEosEvent) {
+    // 处理服务端因超限等原因触发的自动 EOS 通知。
 }
 
 convoAIAPI.subscribeMessage(channelName: channelName) { error in
     if let error = error {
-        print("订阅失败： \(error.message)")
+        print("订阅失败: \(error.message)")
     }
 }
 ```
 
 ```typescript tab="Web" tabGroup="language"
 import {
-  EConversationalAIAPIEvents,
-  TUserManualSosEvent,
-  TUserManualEosEvent,
-  TAssistantManualEosEvent,
-} from '@/conversational-ai-api/type'
+  AgoraVoiceAIEvents,
+  type UserManualSosEvent,
+  type UserManualEosEvent,
+  type AgentManualEosEvent,
+} from 'agora-agent-client-toolkit'
 
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.USER_MANUAL_SOS_EVENT,
-  (agentUserId: string, event: TUserManualSosEvent) => {
-    // 处理手动 SOS 结果
+  AgoraVoiceAIEvents.USER_MANUAL_SOS,
+  (agentUserId: string, event: UserManualSosEvent) => {
+    // 处理手动 SOS 结果。event.payload.success 表示服务端是否接受。
   }
 )
 
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.USER_MANUAL_EOS_EVENT,
-  (agentUserId: string, event: TUserManualEosEvent) => {
-    // 处理手动 EOS 结果
+  AgoraVoiceAIEvents.USER_MANUAL_EOS,
+  (agentUserId: string, event: UserManualEosEvent) => {
+    // 处理手动 EOS 结果。
   }
 )
 
 conversationalAIAPI.on(
-  EConversationalAIAPIEvents.ASSISTANT_MANUAL_EOS_EVENT,
-  (agentUserId: string, event: TAssistantManualEosEvent) => {
-    // 处理服务端超限自动 EOS 通知
+  AgoraVoiceAIEvents.AGENT_MANUAL_EOS,
+  (agentUserId: string, event: AgentManualEosEvent) => {
+    // 处理服务端因超限等原因触发的自动 EOS 通知。
   }
 )
 
 conversationalAIAPI.subscribeMessage(channelName)
 ```
 
+:::info[信息]
+这些回调用于接收服务端对手动 SoS/EoS 请求的处理结果。你可以根据回调中的 `event`、`requestId` 和错误信息实现自己的业务逻辑。如需查看相关接口和事件说明，请参考[客户端组件 API](#客户端组件-api)。
+:::
+
 ### 让智能体加入频道
 
-创建智能体后，让智能体加入与你的用户相同的频道：
+创建智能体后，让智能体加入与你的用户相同的 RTC 频道：
 
-调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
+调用 [POST 创建对话式智能体](../convoai/operations/start-agent)接口，并完成以下参数设置：
 
 - `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
 - `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
@@ -303,185 +438,71 @@ conversationalAIAPI.subscribeMessage(channelName)
 
 ### 在用户开始说话时发送手动 SoS
 
-当业务确认用户开始说话时，调用 `manualSOS`：
+仅当 `start_of_speech.mode = "manual"` 时需要调用 `manualSOS`。如果你使用 VAD 自动 SoS，可以跳过这一步。
 
 ```kotlin tab="Android" tabGroup="language"
-api.manualSOS(
-    agentUserId = "agentUserId",
-    requestId = "sos-req-20260612-001"
-) { error ->
+api.manualSOS(agentUserId = "agentUserId") { requestId, error ->
     if (error != null) {
-        Log.e("ManualSOS", "发送失败： ${error.errorMessage}")
+        Log.e("ManualSOS", "发送失败: ${error.errorMessage}, requestId=$requestId")
+    } else {
+        Log.i("ManualSOS", "已发送 SOS, requestId=$requestId")
     }
 }
 ```
 
 ```swift tab="iOS" tabGroup="language"
-convoAIAPI.manualSOS(
-    agentUserId: agentUid,
-    requestId: "sos-req-20260612-001"
-) { error in
+convoAIAPI.manualSOS(agentUserId: agentUid) { requestId, error in
     if let error = error {
-        print("发送失败： \(error.message)")
+        print("发送失败: \(error.message), requestId=\(requestId)")
+    } else {
+        print("已发送 SOS, requestId=\(requestId)")
     }
 }
 ```
 
 ```typescript tab="Web" tabGroup="language"
-await conversationalAIAPI.manualSOS(agentUserId, {
-  requestId: "sos-req-20260612-001",
-})
+const requestId = await conversationalAIAPI.manualSOS(
+  agentUserId,
+  'sos-req-20260612-001'
+)
 ```
 
-手动 SoS 生效后：
-
-- 智能体进入用户说话状态，开始接收后续音频帧做 ASR。
-- 在此之前到达的音频不会被计入本轮用户发言。
-- 仅当 `start_of_speech.mode = "manual"` 时才会被服务端处理；否则会收到失败回调。
+手动 SoS 生效后，服务端开始把后续音频计入本轮用户发言。在此之前到达的音频不会计入本轮。
 
 ### 在用户结束说话时发送手动 EoS
 
-当业务确认用户说完后，调用 `manualEOS`：
+仅当 `end_of_speech.mode = "manual"` 时需要调用 `manualEOS`。如果你使用 VAD 自动 EoS，可以跳过这一步。
 
 ```kotlin tab="Android" tabGroup="language"
-api.manualEOS(
-    agentUserId = "agentUserId",
-    requestId = "eos-req-20260612-001"
-) { error ->
+api.manualEOS(agentUserId = "agentUserId") { requestId, error ->
     if (error != null) {
-        Log.e("ManualEOS", "发送失败： ${error.errorMessage}")
+        Log.e("ManualEOS", "发送失败: ${error.errorMessage}, requestId=$requestId")
+    } else {
+        Log.i("ManualEOS", "已发送 EOS, requestId=$requestId")
     }
 }
 ```
 
 ```swift tab="iOS" tabGroup="language"
-convoAIAPI.manualEOS(
-    agentUserId: agentUid,
-    requestId: "eos-req-20260612-001"
-) { error in
+convoAIAPI.manualEOS(agentUserId: agentUid) { requestId, error in
     if let error = error {
-        print("发送失败： \(error.message)")
+        print("发送失败: \(error.message), requestId=\(requestId)")
+    } else {
+        print("已发送 EOS, requestId=\(requestId)")
     }
 }
 ```
 
 ```typescript tab="Web" tabGroup="language"
-await conversationalAIAPI.manualEOS(agentUserId, {
-  requestId: "eos-req-20260612-001",
-})
+const requestId = await conversationalAIAPI.manualEOS(
+  agentUserId,
+  'eos-req-20260612-001'
+)
 ```
 
-手动 EoS 生效后：
+手动 EoS 生效后，服务端会按现有链路提交 ASR、触发 LLM 推理，并在后续生成回复。该信号只表示“用户当前发言段结束”，不等同于整个 turn 立即结束。
 
-- 智能体按现有链路提交 ASR、触发 LLM 推理，并在后续生成回复。
-- 该信号只表示“用户当前发言段结束”，不等同于整个 turn 立即结束。
-- 仅当 `end_of_speech.mode = "manual"` 时才会被服务端处理；否则会收到失败回调。
-
-## 开发注意事项
-
-### 处理成功和失败回调
-
-下文展示的是服务端返回的原始 RTM `message` 解码后结构；如果你使用客户端组件，上述原始结构会被进一步映射为平台对应的事件对象或事件参数。
-
-成功回调的内层 `message` 解码后为统一事件结构：
-
-```json
-{
-  "event_id": "a1b2c3d4",
-  "event_type": "user.manual_sos.result",
-  "event_ms": 1710000000100,
-  "payload": {
-    "success": true,
-    "turn_id": 23,
-    "request_id": "sos-req-20260612-001"
-  }
-}
-```
-
-手动 EoS 成功时，`event_type` 为 `user.manual_eos.result`。其中：
-
-- `event_id`：事件唯一 ID。
-- `event_type`：事件类型。
-- `event_ms`：事件发送时间，单位为毫秒。
-- `payload.success`：请求是否处理成功。成功时为 `true`，失败时为 `false`。
-- `payload.turn_id`：本次请求关联的对话轮次 ID。
-- `payload.request_id`：与你发送请求时传入的 `request_id` 对应。
-
-客户端组件会将服务端返回的 `event_type` 映射为专用回调或事件。若你绕过客户端组件直接消费原始 RTM 消息，建议以 `message` 中的 `event_type` 为准区分 `user.manual_sos.result`、`user.manual_eos.result` 和 `assistant.manual_eos.result`，而不是依赖外层 RTM 消息的 `customType`。
-
-失败回调的内层 `message` 同样采用统一事件结构：
-
-```json
-{
-  "event_id": "i9j0k1l2",
-  "event_type": "user.manual_eos.result",
-  "event_ms": 1710000005200,
-  "payload": {
-    "success": false,
-    "request_id": "eos-req-20260612-001",
-    "error_message": "Current mode is not manual."
-  }
-}
-```
-
-处理失败回调时，建议至少根据以下字段做分支：
-
-- `payload.request_id`：关联原始请求。
-- `payload.error_message`：查看具体描述。
-
-常见失败场景包括：
-
-- 当前对应 mode 不是 `manual`。
-- 当前不存在可标记的活跃用户发言。
-- 同一轮内重复提交已生效的手动 SoS 或手动 EoS。
-
-当前协议仅返回 `error_message` 原始字符串，客户端应保留原值。以下为当前常见返回值示例，后续可能扩展：
-
-| `error_message` | 含义 | 常见触发场景 |
-|---|---|---|
-| `Current mode is not manual.` | 当前对应 mode 配置不允许手动信令。 | 未开启对应的 `manual` 模式。 |
-| `No turns available for EOS labeling.` | 当前没有可用于 EoS 标记的用户发言。 | 重复提交 EoS，或当前 turn 已提交。 |
-| `No turns available for SOS labeling.` | 当前没有可用于 SoS 标记的用户发言。 | 重复提交 SoS，或当前已处于录音中。 |
-
-### 处理服务端自动 EoS 通知
-
-当 `end_of_speech.mode = "manual"` 且服务端触发 `max_speech_duration_ms` 上限保护时，即使客户端没有主动调用 `manualEOS`，也会收到一条自动 EoS 通知。
-
-其内层 `message` 解码后示例如下：
-
-```json
-{
-  "event_id": "q7r8s9t0",
-  "event_type": "assistant.manual_eos.result",
-  "event_ms": 1710000060000,
-  "payload": {
-    "reason": "Audio duration exceeded the max_audio_duration_ms limit.",
-    "max_duration_ms": 600000,
-    "turn_id": 23
-  }
-}
-```
-
-收到该事件表示：
-
-- 服务端已主动结束当前用户发言段。
-- 后续仍会按正常链路进入 ASR commit、LLM 推理和 TTS 回复。
-- 业务侧可据此提示用户“已达到单轮最长说话时长限制”。
-
-### 集成建议
-
-- 如果你的场景只需要防止用户长停顿被误判，优先考虑“VAD 自动 SoS + 手动 EoS”。
-- 如果你的场景是按钮按住说话、松开发送，建议同时使用手动 SoS 和手动 EoS。
-- 为每次手动 SoS/EoS 请求生成唯一 `request_id`，便于做幂等和重试。
-
-## 相关信息
-
-- [打断智能体](/zh-CN/ai/build/shape-the-conversation/interrupt-agent)
-- [监听智能体事件](/zh-CN/ai/build/handle-runtime-events/event-notifications)
-- [获取智能体状态](/zh-CN/ai/build/handle-runtime-events/get-agent-state)
-- [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)
-
-## 销毁组件实例
+### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
@@ -496,3 +517,51 @@ convoAIAPI.destroy()
 ```typescript tab="Web" tabGroup="language"
 conversationalAIAPI.destroy()
 ```
+
+## API 参考
+
+### 客户端组件 API
+
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`addHandler`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#addhandler)
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#subscribemessage)
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#manualeos)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#destroy)
+- [`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualsosevent)
+- [`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapieventhandler#onagentmanualeosevent)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`addHandler`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#addhandler)
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#subscribemessage)
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualeos)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#destroy)
+- [`onUserManualSosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualsosevent)
+- [`onUserManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onusermanualeosevent)
+- [`onAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapieventhandler#onagentmanualeosevent)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#subscribemessage)
+- [`manualSOS`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos)
+- [`manualEOS`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualeos)
+- [`destroy`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#destroy)
+- [`EConversationalAIAPIEvents`](/zh-CN/api-reference/conversational-ai/web/enum#econversationalaiapievents)
+
+</TabsContent>
+</Tabs>

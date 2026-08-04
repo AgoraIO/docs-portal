@@ -384,7 +384,7 @@ describe('fumadocs openapi source', () => {
         {
           description: '更新实时转录翻译任务配置。',
           prose:
-            '通过 [`join`](./join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。',
+            '通过 [`join`](join) 方法开始转写任务后，你可以发起 `update` 请求更新转写任务配置。',
         },
       ],
       [

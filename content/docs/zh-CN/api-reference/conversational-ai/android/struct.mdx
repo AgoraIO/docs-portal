@@ -1,7 +1,6 @@
 ---
 title: "结构体"
 ---
-
 <a id="messagereceipt"></a>
 ## MessageReceipt
 
@@ -80,6 +79,113 @@ data class MessageError(
 | `code` | `Int` | 用于识别特定错误情况的错误码。 |
 | `message` | `String` | 错误描述信息，提供详细错误解释，通常为包含资源信息的 JSON 字符串。 |
 | `timestamp` | `Long` | 事件发生的时间戳（自 1970 年 1 月 1 日 UTC 起的毫秒数）。 |
+
+<a id="usermanualeventpayload"></a>
+## UserManualEventPayload
+
+```kotlin
+data class UserManualEventPayload(
+    val success: Boolean,
+    val requestId: String,
+    val turnId: Long?,
+    val errorMessage: String?
+)
+```
+
+手动 SoS/EoS 通用载荷。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `success` | `Boolean` | 服务端是否成功处理本次手动信令。 |
+| `requestId` | `String` | 请求 ID，与调用 `manualSOS` 或 `manualEOS` 后在 `completion` 中返回的 `requestId` 对应。 |
+| `turnId` | `Long?` | 关联的对话轮次 ID。若服务端失败回调未携带 `turn_id`，则该字段为 null。 |
+| `errorMessage` | `String?` | 服务端返回的原始错误信息。成功时通常为 null。 |
+
+<a id="usermanualsosevent"></a>
+## UserManualSosEvent
+
+```kotlin
+data class UserManualSosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: UserManualEventPayload
+)
+```
+
+手动 SoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `String` | 事件唯一 ID。 |
+| `timestamp` | `Long` | 事件时间戳，单位为毫秒。 |
+| `payload` | `UserManualEventPayload` | 事件载荷。详见 [`UserManualEventPayload`](/zh-CN/api-reference/conversational-ai/android/struct#usermanualeventpayload)。 |
+
+<a id="usermanualeosevent"></a>
+## UserManualEosEvent
+
+```kotlin
+data class UserManualEosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: UserManualEventPayload
+)
+```
+
+手动 EoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `String` | 事件唯一 ID。 |
+| `timestamp` | `Long` | 事件时间戳，单位为毫秒。 |
+| `payload` | `UserManualEventPayload` | 事件载荷。详见 [`UserManualEventPayload`](/zh-CN/api-reference/conversational-ai/android/struct#usermanualeventpayload)。 |
+
+<a id="agentmanualeospayload"></a>
+## AgentManualEosPayload
+
+```kotlin
+data class AgentManualEosPayload(
+    val reason: String,
+    val maxDurationMs: Long,
+    val turnId: Long
+)
+```
+
+服务端超限自动 EoS 载荷。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `reason` | `String` | 服务端自动结束当前用户发言的原因。 |
+| `maxDurationMs` | `Long` | 当前配置的单轮最大音频时长，单位为毫秒。 |
+| `turnId` | `Long` | 关联的对话轮次 ID。 |
+
+<a id="agentmanualeosevent"></a>
+## AgentManualEosEvent
+
+```kotlin
+data class AgentManualEosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: AgentManualEosPayload
+)
+```
+
+服务端超限自动 EoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `String` | 事件唯一 ID。 |
+| `timestamp` | `Long` | 事件时间戳，单位为毫秒。 |
+| `payload` | `AgentManualEosPayload` | 事件载荷。详见 [`AgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/android/struct#agentmanualeospayload)。 |
 
 <a id="chatmessage"></a>
 ## ChatMessage
@@ -257,9 +363,9 @@ data class ConversationalAIAPIConfig(
 | `rtcEngine` | `RtcEngine` | 用于音视频通信的引擎实例。详见 `RtcEngine`。 |
 | `rtmClient` | `RtmClient` | 用于实时消息通信的客户端实例。详见 `RtmClient`。 |
 | `renderMode` | `TranscriptRenderMode` | 转写渲染模式，默认为按词渲染。详见 [`TranscriptRenderMode`](/zh-CN/api-reference/conversational-ai/android/enum#transcriptrendermode)。 |
-| `enableLog` | `Boolean` | <Slot name="struct-android-html-9-4-2" /> |
+| `enableLog` | `Boolean` | <Slot name="struct-android-html-14-4-2" /> |
 
-<Slot for="struct-android-html-9-4-2">
+<Slot for="struct-android-html-14-4-2">
 
 是否启用日志记录：
 
@@ -299,10 +405,10 @@ sealed class ConversationalAIAPIError : Exception() {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `errorCode` | `Int` | <Slot name="struct-android-html-10-1-2" /> |
+| `errorCode` | `Int` | <Slot name="struct-android-html-15-1-2" /> |
 | `errorMessage` | `String` | 错误信息，返回具体的错误描述内容。 |
 
-<Slot for="struct-android-html-10-1-2">
+<Slot for="struct-android-html-15-1-2">
 
 错误码：
 

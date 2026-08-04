@@ -327,7 +327,7 @@ describe('SdksCatalog', () => {
       within(signalingCard).getByRole('link', { name: '下载 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip',
     );
   });
 
@@ -349,10 +349,10 @@ describe('SdksCatalog', () => {
       within(signalingCard).getByRole('link', { name: '下载 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
+      'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
     );
     expect(
-      within(signalingCard).getByText('f88b55a96cd975494d9592ba3ffe08d8'),
+      within(signalingCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
     ).toBeVisible();
   });
 
@@ -433,19 +433,19 @@ describe('SdksCatalog', () => {
     const voiceCard = screen.getByRole('article', { name: '语音 SDK' });
 
     expect(
-      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.5'),
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
     ).toBeVisible();
     expect(
       within(voiceCard).getByRole('link', { name: '直接下载' }),
     ).toHaveAttribute(
       'href',
-      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip',
+      'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
     );
     expect(
       within(voiceCard).getByRole('link', { name: '包管理器 ↗' }),
     ).toHaveAttribute(
       'href',
-      'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5',
+      'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
     );
     expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
     expect(

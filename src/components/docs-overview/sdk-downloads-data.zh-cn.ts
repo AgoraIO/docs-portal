@@ -369,8 +369,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于低延时消息、信令、状态同步和频道管理的 SDK",
         "versions": [
           {
+            "id": "2.3.0-rtm-sdk-android",
+            "label": "版本 2.3.0（最新）",
+            "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip",
+            "md5": "7f46400148ee312c1d1bd78f96efca0a",
+            "packageName": "cn.shengwang.rtm:android-java / cn.shengwang.rtm:android-java-lite",
+            "releaseDate": "2026 年 7 月 20 日"
+          },
+          {
             "id": "2.2.8-rtm-sdk-android",
-            "label": "版本 2.2.8（最新）",
+            "label": "版本 2.2.8",
             "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.2.8.zip",
             "md5": "2893634c7f24e4fc6945955f4753f13f",
             "packageName": "io.agora:agora-rtm",
@@ -956,8 +964,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于低延时消息、信令、状态同步和频道管理的 SDK",
         "versions": [
           {
+            "id": "2.3.0-rtm-sdk-ios",
+            "label": "版本 2.3.0（最新）",
+            "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip",
+            "md5": "2f6c0c6ee5fdc5b714848b2106f1ead6",
+            "packageName": "ShengWang-Rtm",
+            "releaseDate": "2026 年 7 月 20 日"
+          },
+          {
             "id": "2.2.8-rtm-sdk-ios",
-            "label": "版本 2.2.8（最新）",
+            "label": "版本 2.2.8",
             "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.2.8.zip",
             "md5": "02e29fb1003a507702ea0ad9ad0e941b",
             "packageName": "AgoraRtm",
@@ -1209,8 +1225,15 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于 Web 端音视频通话、互动直播和极速直播的实时互动 SDK",
         "versions": [
           {
+            "id": "4.24.6-video-sdk-web",
+            "label": "版本 4.24.6（最新）",
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip",
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6",
+            "releaseDate": "2026 年 7 月 13 日"
+          },
+          {
             "id": "4.24.5-video-sdk-web",
-            "label": "版本 4.24.5（最新）",
+            "label": "版本 4.24.5",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip",
             "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5",
             "releaseDate": "2026 年 6 月 24 日"
@@ -1514,8 +1537,14 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)",
         "versions": [
           {
+            "id": "4.24.6-voice-sdk-web",
+            "label": "版本 4.24.6（最新）",
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip",
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6"
+          },
+          {
             "id": "4.24.5-voice-sdk-web",
-            "label": "版本 4.24.5（最新）",
+            "label": "版本 4.24.5",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_5_FULL.zip",
             "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.5"
           },
@@ -2097,8 +2126,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于低延时消息、信令、状态同步和频道管理的 SDK",
         "versions": [
           {
+            "id": "2.3.0-rtm-sdk-windows",
+            "label": "版本 2.3.0（最新）",
+            "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip",
+            "md5": "f7376f0ebc759f5d33c3c66102f2ca28",
+            "packageName": "libagora_rtm_sdk",
+            "releaseDate": "2026 年 7 月 20 日"
+          },
+          {
             "id": "2.2.8-rtm-sdk-windows",
-            "label": "版本 2.2.8（最新）",
+            "label": "版本 2.2.8",
             "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Windows_v2.2.8.zip",
             "md5": "b57b2bd538118ae78c17eaf48be9dd7f",
             "packageName": "libagora_rtm_sdk",
@@ -2754,8 +2791,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于 Linux 端低延时消息、信令、状态同步和频道管理的 SDK",
         "versions": [
           {
+            "id": "2.3.0-rtm-sdk-linux-cpp",
+            "label": "版本 2.3.0 C++（最新）",
+            "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip",
+            "md5": "9a8ee5f8deda76e23eea80f5b3c5a453",
+            "packageName": "libagora_rtm_sdk",
+            "releaseDate": "2026 年 7 月 20 日"
+          },
+          {
             "id": "2.2.8-rtm-sdk-linux-cpp",
-            "label": "版本 2.2.8 C++（最新）",
+            "label": "版本 2.2.8 C++",
             "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip",
             "md5": "f88b55a96cd975494d9592ba3ffe08d8",
             "packageName": "libagora_rtm_sdk",
@@ -2921,8 +2966,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于低延时消息、信令、状态同步和频道管理的 SDK",
         "versions": [
           {
+            "id": "2.3.0-rtm-sdk-harmonyos",
+            "label": "版本 2.3.0（最新）",
+            "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip",
+            "md5": "472fcb84b5671a60a50d508c32b5c1f7",
+            "packageName": "AgoraRtmSDK.har",
+            "releaseDate": "2026 年 7 月 20 日"
+          },
+          {
             "id": "2.2.8-rtm-sdk-harmonyos",
-            "label": "版本 2.2.8（最新）",
+            "label": "版本 2.2.8",
             "downloadLink": "https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.2.8.zip",
             "md5": "9cdca555d23b7798edf92d4edb09014f",
             "packageName": "libagora_rtm_sdk",

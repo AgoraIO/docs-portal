@@ -2,6 +2,7 @@
 title: "API 概览"
 description: "声网对话式 AI TypeScript SDK 的完整 API 参考，包括 AgoraClient、Agent、AgentSession 以及各类 vendor 类。"
 ---
+
 ## AgoraClient
 
 `AgoraClient` 是 SDK 的入口，用于管理区域路由、鉴权和 API 访问。
@@ -39,7 +40,7 @@ const client = new AgoraClient(options: AgoraClient.Options);
 | `authToken` | `"token"` |
 | Neither | `"app-credentials"` |
 
-各鉴权模式的详细说明可参考[实现 HTTP 鉴权](/zh-CN/api-reference/conversational-ai/rest-api/user-guides/http-basic-auth)。
+各鉴权模式的详细说明可参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth)。
 
 ### Properties
 
@@ -146,8 +147,8 @@ new Agent<TTSSampleRate extends number = number>(options?: AgentOptions)
 
 `instructions`、`greeting`、`failureMessage`、`maxHistory`、`greetingConfigs` 是兼容性字段。新代码应在 LLM vendor 上配置这些值，以匹配核心请求 schema。
 
-:::info
-`AgentOptions` 支持泛型参数（`AgentOptions<TArea>`）。当 client 使用 `Area.CN` 时，SDK 会据此提示可用的 vendor，但不会强制校验 vendor 与区域是否匹配。
+:::info[信息]
+`AgentOptions` 支持泛型参数（`AgentOptions&lt;TArea&gt;`）。当 client 使用 `Area.CN` 时，SDK 会据此提示可用的 vendor，但不会强制校验 vendor 与区域是否匹配。
 :::
 
 ### Builder methods
@@ -523,10 +524,9 @@ vendor 类均从 `agora-agents` 导入。将这些 vendor 实例传给 [Agent bu
 import {
   AliyunLLM, BytedanceLLM, DeepSeekLLM, TencentLLM, CustomLLM,
   MiniMaxCNTTS, TencentTTS, BytedanceTTS, MicrosoftCNTTS,
-  CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS,
+  CosyVoiceTTS, BytedanceDuplexTTS, StepFunTTS, GenericTTS,
   FengmingSTT, TencentSTT, MicrosoftCNSTT,
-  XfyunSTT, XfyunBigModelSTT, XfyunDialectSTT,
-  SensetimeAvatar,
+  SensetimeAvatar, SpatiusAvatar,
 } from 'agora-agents';
 ```
 
@@ -572,7 +572,7 @@ const llm = new AliyunLLM({
 | `greetingConfigs` | `LlmGreetingConfigs` | No | 问候语播放配置 |
 | `templateVariables` | `Record<string, string>` | No | 消息模板变量 |
 
-:::info
+:::info[信息]
 自定义 LLM 路由复用 `CustomLLM`，因此即便是 BYOK 路径，`apiKey`、`model`、`url` 均为必填。
 :::
 
@@ -586,17 +586,6 @@ MiniMax TTS 为 BYOK，始终要求 `key` 和 `model`。此外必须提供 `voic
 
 ```typescript
 new MiniMaxCNTTS(options: MiniMaxCNTTSOptions)
-```
-
-```typescript
-import { MiniMaxCNTTS } from 'agora-agents';
-
-const tts = new MiniMaxCNTTS({
-  key: 'your-minimax-key',
-  model: 'speech-01-turbo',
-  voiceSetting: { voice_id: 'female-shaonv' },
-  audioSetting: { sample_rate: 16000 },
-});
 ```
 
 | Option | Type | Required | Description |
@@ -669,6 +658,27 @@ new MicrosoftCNTTS<SR extends MicrosoftCNSampleRate>(options: MicrosoftCNTTSOpti
 | `volume` | `number` | No | 音量 |
 | `skipPatterns` | `number[]` | No | 跳过括号内容的规则配置 |
 | `additionalParams` | `Record<string, unknown>` | No | 附加 Microsoft TTS 参数 |
+
+#### GenericTTS
+
+自定义 OpenAI 兼容 HTTP TTS。`url` 必填，且必须是 HTTP 或 HTTPS 绝对地址；缺失 `url`、地址格式错误或使用 `ws:`、`wss:` 等非 HTTP(S) 协议时，constructor 会抛出错误。合法地址会序列化为 `tts.vendor = "generic_http"`。
+```typescript
+new GenericTTS(options: GenericTTSOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `url` | `string` | Yes | 自定义 TTS 服务的 HTTP(S) endpoint |
+| `headers` | `Record<string, string>` | No | 转发给 TTS 服务的自定义 HTTP Header；未设置时不会写入 `headers` |
+| `apiKey` | `string` | No | TTS 服务鉴权 API key |
+| `model` | `string` | No | TTS 模型名 |
+| `voice` | `string` | No | 音色名 |
+| `speed` | `number` | No | 语速 |
+| `sampleRate` | `number` | No | 输出音频采样率，单位为 Hz。如果你的 TTS 服务暂不支持多采样率，请确保返回音频的采样率与该配置一致。 |
+| `responseFormat` | `"pcm"` | No | 输出音频格式；当前 ConvoAI 支持 `pcm` |
+| `instruction` | `string` | No | 语音风格、情绪或其他播报指令 |
+| `additionalParams` | `Record<string, unknown>` | No | 透传给 TTS 服务的其他参数；同名字段会被显式字段覆盖 |
+| `skipPatterns` | `number[]` | No | 控制 TTS 跳过特定文本模式 |
 
 #### CosyVoiceTTS
 
@@ -757,58 +767,9 @@ new MicrosoftCNSTT(options: MicrosoftCNSTTOptions)
 | `phraseList` | `string[]` | No | 提升识别准确率的短语列表 |
 | `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
 
-#### XfyunSTT
-
-科大讯飞标准 STT（`asr.vendor = "xfyun"`）。
-
-```typescript
-new XfyunSTT(options: XfyunSTTOptions)
-```
-
-| Option | Type | Required | Description |
-|---|---|---|---|
-| `apiKey` | `string` | Yes | 讯飞 API key |
-| `appId` | `string` | Yes | 讯飞 App ID |
-| `apiSecret` | `string` | Yes | 讯飞 API secret |
-| `language` | `string` | Yes | 语言代码 |
-| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
-
-#### XfyunBigModelSTT
-
-科大讯飞大模型 STT（`asr.vendor = "xfyun_bigmodel"`）。
-
-```typescript
-new XfyunBigModelSTT(options: XfyunBigModelSTTOptions)
-```
-
-| Option | Type | Required | Description |
-|---|---|---|---|
-| `apiKey` | `string` | Yes | 讯飞 API key |
-| `appId` | `string` | Yes | 讯飞 App ID |
-| `apiSecret` | `string` | Yes | 讯飞 API secret |
-| `languageName` | `string` | Yes | 语种名称 |
-| `language` | `string` | Yes | 语言代码 |
-| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
-
-#### XfyunDialectSTT
-
-科大讯飞方言 STT（`asr.vendor = "xfyun_dialect"`）。
-
-```typescript
-new XfyunDialectSTT(options: XfyunDialectSTTOptions)
-```
-
-| Option | Type | Required | Description |
-|---|---|---|---|
-| `appId` | `string` | Yes | 讯飞 App ID |
-| `accessKeyId` | `string` | Yes | Access key ID |
-| `accessKeySecret` | `string` | Yes | Access key secret |
-| `language` | `string` | Yes | 方言/语言代码 |
-| `additionalParams` | `Record<string, unknown>` | No | 附加 vendor 参数，合并进 `params` |
-
 ### Avatar vendors
 
-与 [`withAvatar()`](#withavatarvendor) 配合使用。`SensetimeAvatar` 直接接收数字人发布者的 `agoraUid` 和 `agoraToken`，其 `requiredSampleRate` 为 `0`，即不强制要求特定的 TTS 采样率。
+与 [`withAvatar()`](#withavatarvendor) 配合使用。数字人 vendor 会声明所需 TTS 采样率；如果返回 `0`，则不强制要求特定的 TTS 采样率。
 
 #### SensetimeAvatar
 
@@ -827,6 +788,27 @@ new SensetimeAvatar(options: SensetimeAvatarOptions)
 | `agoraToken` | `string` | No | 数字人鉴权所用的 RTC token |
 | `enable` | `boolean` | No | 是否启用数字人。默认值：`true` |
 | `additionalParams` | `Record<string, unknown>` | No | 附加商汤数字人参数，合并进 `params` |
+
+#### SpatiusAvatar
+
+Spatius 数字人。如果 `spatiusApiKey`、`spatiusAppId`、`spatiusAvatarId` 或 `agoraUid` 为空，构造函数会抛出错误。
+
+```typescript
+new SpatiusAvatar(options: SpatiusAvatarOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `spatiusApiKey` | `string` | Yes | Spatius API key |
+| `spatiusAppId` | `string` | Yes | Spatius App ID |
+| `spatiusAvatarId` | `string` | Yes | Spatius avatar ID |
+| `agoraUid` | `string` | Yes | Avatar 视频流对应的 UID |
+| `region` | `string` | No | Spatius 服务区域 |
+| `agoraToken` | `string` | No | Avatar 鉴权 RTC token |
+| `sampleRate` | `16000 \| 24000` | No | 写入 Spatius vendor 参数的音频采样率，单位 Hz |
+| `sessionExpireMinutes` | `number` | No | Spatius 会话过期时间，单位分钟 |
+| `enable` | `boolean` | No | 是否启用数字人。默认值：`true` |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 Spatius 数字人参数，合并进 `params` |
 
 ## Token utilities
 

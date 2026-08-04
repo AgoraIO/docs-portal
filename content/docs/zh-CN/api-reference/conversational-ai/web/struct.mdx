@@ -1,7 +1,6 @@
 ---
 title: "结构体"
 ---
-
 <a id="iconversationalaiapieventhandlers"></a>
 ## IConversationalAIAPIEventHandlers
 
@@ -41,6 +40,113 @@ export type TMessageReceipt = {
 | `messageType` | `EChatMessageType` | 消息的类型。详见 [`EChatMessageType`](/zh-CN/api-reference/conversational-ai/web/enum#echatmessagetype)。 |
 | `message` | `string` | 消息的内容。 |
 | `turnId` | `number` | 会话轮次的唯一标识符。 |
+
+<a id="tusermanualeventpayload"></a>
+## TUserManualEventPayload
+
+```typescript
+export type TUserManualEventPayload = {
+  success: boolean
+  requestId: string
+  turnId?: number
+  errorMessage?: string
+}
+```
+
+手动 SoS/EoS 通用载荷。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `success` | `boolean` | 服务端是否成功处理本次手动信令。 |
+| `requestId` | `string` | 请求 ID，与调用 `manualSOS` 或 `manualEOS` 后返回的 `requestId` 对应。 |
+| `turnId` | `number` | 关联的对话轮次 ID。服务端失败回调未携带 `turn_id` 时可为空。 |
+| `errorMessage` | `string` | 服务端返回的原始错误信息。成功时通常为空。 |
+
+<a id="tusermanualsosevent"></a>
+## TUserManualSosEvent
+
+```typescript
+export type TUserManualSosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TUserManualEventPayload
+}
+```
+
+手动 SoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `string` | 事件唯一 ID。 |
+| `timestamp` | `number` | 事件时间戳，单位为毫秒。 |
+| `payload` | `TUserManualEventPayload` | 事件载荷。详见 [`TUserManualEventPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tusermanualeventpayload)。 |
+
+<a id="tusermanualeosevent"></a>
+## TUserManualEosEvent
+
+```typescript
+export type TUserManualEosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TUserManualEventPayload
+}
+```
+
+手动 EoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `string` | 事件唯一 ID。 |
+| `timestamp` | `number` | 事件时间戳，单位为毫秒。 |
+| `payload` | `TUserManualEventPayload` | 事件载荷。详见 [`TUserManualEventPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tusermanualeventpayload)。 |
+
+<a id="tagentmanualeospayload"></a>
+## TAgentManualEosPayload
+
+```typescript
+export type TAgentManualEosPayload = {
+  reason: string
+  maxDurationMs: number
+  turnId: number
+}
+```
+
+服务端超限自动 EoS 载荷。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `reason` | `string` | 服务端自动结束当前用户发言的原因。 |
+| `maxDurationMs` | `number` | 当前配置的单轮最大音频时长，单位为毫秒。 |
+| `turnId` | `number` | 关联的对话轮次 ID。 |
+
+<a id="tagentmanualeosevent"></a>
+## TAgentManualEosEvent
+
+```typescript
+export type TAgentManualEosEvent = {
+  eventId: string
+  timestamp: number
+  payload: TAgentManualEosPayload
+}
+```
+
+服务端超限自动 EoS 事件对象。
+
+#### 成员参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `eventId` | `string` | 事件唯一 ID。 |
+| `timestamp` | `number` | 事件时间戳，单位为毫秒。 |
+| `payload` | `TAgentManualEosPayload` | 事件载荷。详见 [`TAgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmanualeospayload)。 |
 
 <a id="ichatmessagebase"></a>
 ## IChatMessageBase
