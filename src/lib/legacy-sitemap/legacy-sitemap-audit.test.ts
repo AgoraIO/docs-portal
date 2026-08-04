@@ -34,6 +34,12 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
   'https://docs.agora.io/en/flexible-classroom/overview/supported-platforms',
   'https://docs.agora.io/en/help/account-and-billing/console_account_faq',
+  'https://docs.agora.io/en/help/integration-issues/recording_mode',
+  'https://docs.agora.io/en/help/integration-issues/system_volume',
+  'https://docs.agora.io/help/account-and-billing/billing_account',
+  'https://docs.agora.io/help/integration-issues/agora_class_custom_properties',
+  'https://docs.agora.io/help/integration-issues/token_cohost',
+  'https://docs.agora.io/help/integration-issues/token_related_issues',
   'https://docs.agora.io/en/help/integration-issues/acquire_file_directory',
   'https://docs.agora.io/en/help/other-issues/android_noaudio',
   'https://docs.agora.io/en/help/quality-issues/track_ended',
@@ -41,6 +47,35 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/sdks',
   'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview',
 ]);
+
+const reviewedHelpFaqRedirectTargets = [
+  {
+    legacyUrl: 'https://docs.agora.io/en/help/integration-issues/recording_mode',
+    target: '/en/api-reference/faq/integration/recording_mode',
+  },
+  {
+    legacyUrl: 'https://docs.agora.io/en/help/integration-issues/system_volume',
+    target: '/en/api-reference/faq/integration/system_volume',
+  },
+  {
+    legacyUrl: 'https://docs.agora.io/help/account-and-billing/billing_account',
+    target: '/en/api-reference/faq/account/billing_account',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/help/integration-issues/agora_class_custom_properties',
+    target: '/en/api-reference/faq/integration/agora_class_custom_properties',
+  },
+  {
+    legacyUrl: 'https://docs.agora.io/help/integration-issues/token_cohost',
+    target: '/en/api-reference/faq/integration/token_cohost',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/help/integration-issues/token_related_issues',
+    target: '/en/api-reference/faq/integration/token_related_issues',
+  },
+];
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
@@ -125,6 +160,22 @@ describe('legacy sitemap compatibility audit', () => {
     expect(missingRedirects).toEqual([]);
   });
 
+  it('has redirect records for reviewed legacy Help and FAQ URLs', () => {
+    for (const { legacyUrl, target } of reviewedHelpFaqRedirectTargets) {
+      const url = new URL(legacyUrl);
+
+      expect(
+        resolveLegacySitemapRedirectPath(url.pathname, url.search),
+      ).toEqual(
+        expect.objectContaining({
+          confidence: 'high',
+          target,
+          type: 'semantic-page-match',
+        }),
+      );
+    }
+  });
+
   it('does not keep stale redirect records outside the sitemap snapshot', () => {
     const sitemapHrefs = new Set(sitemapUrls.map((url) => url.href));
     const staleRules = legacySitemapRedirectConfig.rules.filter(
@@ -180,7 +231,7 @@ describe('legacy sitemap compatibility audit', () => {
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 668,
+      semanticPageMatch: 674,
       totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });
@@ -315,6 +366,11 @@ const reviewedRedirectTargets = [
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/models/asr/amazon',
     target: '/en/ai/models/asr/openai',
+  },
+  {
+    legacyUrl:
+      'https://docs.agora.io/en/conversational-ai/overview/release-notes',
+    target: '/en/ai/release-notes',
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/overview/pricing',
