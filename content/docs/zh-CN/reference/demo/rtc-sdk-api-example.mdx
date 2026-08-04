@@ -1,0 +1,523 @@
+---
+title: "RTC SDK API 示例"
+description: "这个示例包含了使用声网 RTC SDK 的各种示例项目，你可以进入不同平台的项目进行试用或参考源代码。"
+---
+
+这个开源示例项目演示了 Agora 音视频 SDK 的部分 API 使用示例，以帮助开发者更好地理解和运用 Agora 音视频 SDK 的 API。
+
+## Demo 信息
+
+- 平台：iOS、Android、macOS、Windows、Web、Electron
+- 产品：实时互动 RTC
+- 发布时间：2024-04-01
+- 版本：4.6.0
+- 标签：SDK 示例、美颜、屏幕共享
+
+<DemoPlatformTabs
+  defaultValue="ios"
+  platforms={[
+    { label: "iOS", value: "ios" },
+    { label: "Android", value: "android" },
+    { label: "macOS", value: "macos" },
+    { label: "Windows", value: "windows" },
+    { label: "Web", value: "web" },
+    { label: "Electron", value: "electron" },
+  ]}
+>
+
+<DemoPlatform value="ios">
+
+![RTC SDK API 示例 iOS Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-ios.jpg)
+
+<Cards>
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample" />
+</Cards>
+
+### 环境准备
+
+- Xcode 13.0+
+- iOS 真机设备
+- 不支持模拟器
+
+### 运行示例程序
+
+#### 安装依赖库
+
+切换到 **iOS** 目录，运行以下命令使用 CocoaPods 安装依赖，Agora 视频 SDK 会在安装后自动完成集成。
+
+#### 使用 CocoaPods
+
+[安装 CocoaPods](https://guides.cocoapods.org/using/getting-started.html)
+
+```text
+pod install
+```
+
+运行后确认 `APIExample.xcworkspace` 正常生成即可。
+
+#### 创建声网账号并获取 App ID
+
+在编译和启动示例程序前，你需要先获取一个可用的 App ID：
+
+1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+4. 如果开启了 Token，需要获取 App 证书并设置给 `certificate`
+5. 打开 `APIExample.xcworkspace` 并编辑 `KeyCenter.swift`，将你的 App ID 和 App 证书分别替换到 `<#Your APPID#>` 与 `<#YOUR Certificate#>`
+
+```text
+    /**
+     Agora 给应用程序开发人员分配 App ID，以识别项目和组织。如果组织中有多个完全分开的应用程序，例如由不同的团队构建，
+     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个App ID。
+     进入声网控制台(https://console.agora.io/)，创建一个项目，进入项目配置页，即可看到APP ID。
+   */
+    static let AppId: String = <# YOUR APPID#>
+
+    /**
+     Agora 提供 App certificate 用以生成 Token。您可以在您的服务器部署并生成 Token，或者使用控制台生成临时的 Token。
+     进入声网控制台(https://console.agora.io/)，创建一个带证书鉴权的项目，进入项目配置页，即可看到APP证书。
+     注意：如果项目没有开启证书鉴权，这个字段留空。
+    */
+    static var Certificate: String? = <#YOUR Certificate#>
+```
+
+然后你就可以使用 `APIExample.xcworkspace` 编译并运行项目了。
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+<DemoPlatform value="android">
+
+![RTC SDK API 示例 Android Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-android.jpg)
+
+<Cards>
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android/APIExample" />
+</Cards>
+
+### 环境准备
+
+- Android Studio 3.0+
+- Android 真机设备
+- 支持模拟器
+
+### 运行示例程序
+
+这个段落主要讲解了如何编译和运行实例程序。
+
+#### 创建声网账号并获取 App ID
+
+在编译和启动示例程序前，你需要先获取一个可用的 App ID：
+
+1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+4. 复制后台的 **App 证书** 并备注，稍后启动应用时会用到它
+
+5. 打开 `Android/APIExample` 并编辑 `app/src/main/res/values/string-configs.xml`，将你的 App ID、App 证书分别替换为 `Your App Id` 和 `YOUR APP CERTIFICATE`
+
+```text
+    // 声网APP ID。
+    <string name="agora_app_id" translatable="false">YOUR APP ID</string>
+    // 声网APP证书。如果项目没有开启证书鉴权，这个字段留空。
+    <string name="agora_app_certificate" translatable="false">YOUR APP CERTIFICATE</string>
+```
+
+然后你就可以编译并运行项目了。
+
+#### 美颜配置
+
+> 第三方美颜集成使用了[美颜场景化API库](https://github.com/AgoraIO-Community/BeautyAPI)
+
+本项目包含第三方美颜集成示例，在没有配置资源和证书的情况下，默认是无法启用的。资源证书配置方法如下：
+
+##### 商汤美颜
+
+1. 联系商汤客服获取美颜sdk下载链接以及证书
+2. 解压美颜sdk，并将以下资源复制到对应路径
+
+| 商汤SDK文件/目录                                                           | 项目路径                                                     |
+|----------------------------------------------------------------------|----------------------------------------------------------|
+| Android/models                                                       | app/src/main/assets/beauty_sensetime/models              |
+| Android/smaple/SenseMeEffects/app/src/main/assets/sticker_face_shape | app/src/main/assets/beauty_sensetime/sticker_face_shape  |
+| Android/smaple/SenseMeEffects/app/src/main/assets/style_lightly      | app/src/main/assets/beauty_sensetime/style_lightly       |
+| Android/smaple/SenseMeEffects/app/src/main/assets/makeup_lip         | app/src/main/assets/beauty_sensetime/makeup_lip          |
+| SenseME.lic                                                          | app/src/main/assets/beauty_sensetime/license/SenseME.lic |
+
+##### 相芯美颜
+
+1. 联系相芯客服获取美颜资源以及证书
+2. 将美颜资源及证书放到对应路径下
+
+| 美颜资源                 | 项目路径                                                                           |
+|----------------------|--------------------------------------------------------------------------------|
+| 美妆资源(如naicha.bundle) | app/src/main/assets/beauty_faceunity/makeup                                    |
+| 贴纸资源(如fashi.bundle)  | app/src/main/assets/beauty_faceunity/sticker                                   |
+| 证书authpack.java      | app/src/main/java/io/agora/api/example/examples/advanced/beauty/authpack.java  |
+
+##### 字节美颜
+
+1. 联系字节客服获取美颜sdk下载链接以及证书
+2. 解压字节/火山美颜资源并复制以下文件/目录到对应路径下
+
+| 字节SDK文件/目录                                       | 项目路径                                                  |
+|--------------------------------------------------|-------------------------------------------------------|
+| resource/LicenseBag.bundle                       | app/src/main/assets/beauty_bytedance           |
+| resource/ModelResource.bundle                    | app/src/main/assets/beauty_bytedance           |
+| resource/ComposeMakeup.bundle                    | app/src/main/assets/beauty_bytedance           |
+| resource/StickerResource.bundle                  | app/src/main/assets/beauty_bytedance           |
+| resource/StickerResource.bundle                  | app/src/main/assets/beauty_bytedance           |
+
+3.
+修改app/src/main/java/io/agora/api/example/examples/advanced/beauty/ByteDanceBeauty.java文件里LICENSE_NAME为申请到的证书文件名
+
+#### 对于Agora Extension开发者
+
+从4.0.0SDK开始，Agora SDK支持插件系统和开放的云市场帮助开发者发布自己的音视频插件，本项目包含了一个SimpleFilter示例，默认是禁用的状态，如果需要开启编译和使用需要完成以下步骤：
+
+1. 下载 [opencv](https://agora-adc-artifacts.s3.cn-north-1.amazonaws.com.cn/androidLibs/opencv4.zip) 解压后复制到 Android/APIExample/agora-simple-filter/src/main/jniLibs
+2. 手动下载[Agora SDK包](/zh-CN/reference/sdks?product=video&platform=android), 解压后将c++动态库（包括架构文件夹）copy到Android/APIExample/agora-simple-filter/src/main/agoraLibs
+
+```text
+Android/APIExample/agora-simple-filter/src/main/agoraLibs
+├── arm64-v8a
+├── armeabi-v7a
+├── x86
+└── x86_64
+```
+
+3. 修改Android/APIExample/gradle.properties配置文件中simpleFilter值为true
+
+#### 自定义加密
+
+本项目包含自定义加密示例，默认是不启用的。配置方法如下：
+
+1. 手动下载[Agora SDK包](/zh-CN/reference/sdks?product=video&platform=android), 解压后将c++动态库（包括架构文件夹）copy到Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
+
+```text
+Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
+├── arm64-v8a
+├── armeabi-v7a
+├── x86
+└── x86_64
+```
+
+2. 修改Android/APIExample/gradle.properties配置文件中streamEncrypt值为true
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+<DemoPlatform value="macos">
+
+![RTC SDK API 示例 macOS Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-macos.jpg)
+
+<Cards>
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS" />
+</Cards>
+
+### 环境准备
+
+- Xcode 13.0+
+
+### 运行示例程序
+
+这个段落主要讲解了如何编译和运行实例程序。
+
+#### 安装依赖库
+
+切换到 **macOS** 目录，运行以下命令使用 CocoaPods 安装依赖，Agora 视频 SDK 会在安装后自动完成集成。
+
+使用 CocoaPods
+
+[安装 CocoaPods](https://guides.cocoapods.org/using/getting-started.html)
+
+```text
+pod install
+```
+
+运行后确认 `APIExample.xcworkspace` 正常生成即可。
+
+#### 创建声网账号并获取 App ID
+
+在编译和启动示例程序前，你需要先获取一个可用的 App ID：
+
+1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+4. 如果开启了 Token，需要获取 App 证书并设置给 `certificate`
+
+5. 打开 `APIExample.xcworkspace` 并编辑 `KeyCenter.swift`，将你的 App ID 和 App 证书分别替换到 `<#Your APPID#>` 与 `<#YOUR Certificate#>`
+
+```text
+    /**
+     Agora 给应用程序开发人员分配 App ID，以识别项目和组织。如果组织中有多个完全分开的应用程序，例如由不同的团队构建，
+     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个App ID。
+     进入声网控制台(https://console.agora.io/)，创建一个项目，进入项目配置页，即可看到APP ID。
+   */
+    static let AppId: String = <# YOUR APPID#>
+
+    /**
+     Agora 提供 App certificate 用以生成 Token。您可以在您的服务器部署并生成 Token，或者使用控制台生成临时的 Token。
+     进入声网控制台(https://console.agora.io/)，创建一个带证书鉴权的项目，进入项目配置页，即可看到APP证书。
+     注意：如果项目没有开启证书鉴权，这个字段留空。
+    */
+    static var Certificate: String? = <#YOUR Certificate#>
+```
+
+然后你就可以使用 `APIExample.xcworkspace` 编译并运行项目了。
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+<DemoPlatform value="windows">
+
+![RTC SDK API 示例 Windows Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-windows.jpg)
+
+<Cards>
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows" />
+</Cards>
+
+本开源项目使用 **C++** 语言
+
+### 环境准备
+
+* Visual Studio 2013（或更高版本），默认支持 Visual Studio 2017。
+* Windows 7（或更高版本）。
+
+**注意**：使用其他版本需要自行修改该配置，编译 Release 版本还需要安装兼容 Windows XP 的相关插件。
+
+
+### 运行示例程序
+
+这个段落主要讲解了如何编译和运行实例程序。
+
+#### 创建声网账号并获取 App ID
+
+在编译和启动示例程序前，你需要先获取一个可用的 App ID：
+
+1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+4. 在项目页面生成临时 **Access Token**（24 小时内有效）并备注，注意生成的 Token 只能适用于对应的频道名。
+
+5. 将 App ID 内容替换至 `APP_ID` 宏定义中
+
+```text
+    #define APP_ID _T("Your App ID")
+    #define APP_TOKEN _T("Your Token")
+```
+6. （可选）你也可以在 `Debug/Release` 目录下创建一个 `AppId.ini` 文件以配置应用程序的 App ID，并将 `AppId` 的值修改为刚才申请的 App ID。
+```text
+    [AppID]
+    AppID=xxxxxxxxxxxxxxxxxxx
+```
+
+#### 编译项目
+
+**这个开源示例项目使用了 Agora RTC SDK、DirectShow SDK、MediaPlayer SDK。**
+
+你可以通过直接运行 `APIExample/installThirdParty.bat` 来自动下载依赖并配置环境。配置完成后，使用 Visual Studio 2017 打开项目，选择 x86 版本进行编译即可运行。
+
+### 基础场景
+
+#### 直播互动
+
+* 切换角色
+* 支持1v1，1v3, 1v8, 1v15
+* 进出频道
+* 显示本地和远端视频
+
+### 进阶场景
+
+#### 旁路推流
+
+* 加入频道后添加rtmp推流地址
+* 移除推流地址
+* 推流回调处理状态信息显示
+
+#### 插入媒体流
+
+* 加入频道后inject 媒体流
+* 显示插入状态回调信息
+* 插入成功，收到一个666加入回调。本地mute 666的视频和音频（也可以不mute）
+* 移除插入流
+
+#### 视频MetaData
+
+* 加入频道，发送视频流
+* 发送视频SEI信息，最大1024B
+* 接收视频SEI信息
+* 清除SEI信息
+
+
+#### 共享屏幕
+
+* 进入频道，枚举所有可见窗口
+* 选择一个可见窗口
+* 录制屏幕
+* 停止录制
+
+#### 美颜
+
+* 设置明暗对比等级
+* 设置明亮度
+* 设置红润度
+* 设置平滑度
+
+#### 美声
+
+* 设置音效或者美声
+
+#### 音频设置
+
+* 设置音频参数
+* 设置场景
+* 设置频道内的音频设置
+
+#### 音频混合
+
+* 设置音频路径
+* 设置播放次数
+* 设置是否仅仅本地播放
+* 设置是否替换麦克风音频
+
+#### 自定义摄像头采集
+
+* 摄像头采集使用DirectShow
+* 枚举所有图像采集设备和类型
+* 创建图像采集过滤器
+* 开始采集摄像头数据
+* SDK获取摄像头数据
+* 停止采集摄像头数据
+
+#### 处理视频原始数据
+
+* 注册视频观察者
+* 实现了对原始图像进行灰度处理，和模糊处理
+* 在onCaptureVideoFrame中对视频帧进行处理
+
+
+#### 自定义音频采集
+
+* 音频采集使用DirectShow
+* 枚举所有音频采集设备和类型
+* 创建音频采集过滤器
+* 开始采集麦克风数据
+* SDK获取麦克风数据
+* 停止采集麦克风数据
+
+
+#### 处理音频原始数据
+
+* 注册音频观察者
+* 在onRecordAudioFrame中对音频帧进行处理
+
+
+#### 自定义媒体加密
+
+* 注册数据包观察者
+* 在onSendAudioPacket中对音频流发送前进行加密
+* 在onSendVideoPacket中对视频流发送前进行加密
+* 在onReceiveAudioPacket中对音频流接收后进行解密
+* 在onReceiveVideoPacket中对视频流接收后进行解密
+
+#### 媒体播放器组件
+
+* 使用 MediaPlayer Kit 打开、播放媒体。
+* 使用 `MediaPlayerExtensions` 向 Agora RTC Engine 的频道推流。
+* 使用 `IMediaPlayerObserver` 处理 MediaPlayer 的回调事件，例如打开、播放。
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+<DemoPlatform value="web">
+
+![RTC SDK API 示例 Web Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-web.jpg)
+
+<Cards>
+  <Card title="立即体验" href="https://webdemo.agora.io" />
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/API-Examples-Web" />
+</Cards>
+
+### 示例项目（使用 jQuery 和 Bootstrap）
+
+| 功能 | 示例项目位置 |
+| --- | --- |
+| 基础示例 | [`/src/example/basic`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/basic) |
+| 进阶示例 | [`/src/example/advanced`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/advanced) |
+| 插件示例 | [`/src/example/plugin`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/plugin) |
+| 其他示例 | [`/src/example/others`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/others) |
+| Vue 框架示例 | [`/src/example/framework/vue`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/framework/vue) |
+| React 框架示例 | [`/src/example/framework/react`](https://gitee.com/agoraio-community/API-Examples-Web/tree/main/src/example/framework/react) |
+
+
+#### 如何运行示例项目
+
+##### 前提条件
+
+- 你必须使用 SDK 支持的浏览器运行示例项目。关于支持的浏览器列表，参考[浏览器兼容性和已知问题](/zh-CN/realtime-media/rtc/reference/browser-compatibility?platform=web)。
+
+##### 运行步骤
+
+1. 在项目根路径运行下面的命令安装依赖项。
+
+   ```shell
+   npm install
+   ```
+
+2. 运行下面的命令启动示例项目。
+
+   ```shell
+   npm run dev
+   ```
+
+3. 在浏览器中打开 `http://localhost:3001/index.html`。
+
+4. 在示例项目设置页面上，输入 App ID 和 App 证书，然后点击设置按钮。
+
+   - 关于 App ID 和 App 证书的获取方法，参考[开通 RTC 服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service?platform=web)。
+
+### 参考
+
+- [Web SDK 4.x 产品概述](/zh-CN/realtime-media/rtc?platform=web)
+- [Web SDK 4.x API 参考](/zh-CN/api-reference/rtc/web/overview)
+- [基于本仓库部署的在线 demo](https://webdemo.agora.io/)
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+<DemoPlatform value="electron">
+
+![RTC SDK API 示例 Electron Demo 界面](https://assets-docs.agora.io/images/demo/rtc-sdk-api-example-electron.png)
+
+<Cards>
+  <Card title="Demo 源码" href="https://gitee.com/agoraio-community/Electron-SDK/tree/main/example" />
+</Cards>
+
+### 启动方法
+
+#### 创建声网账号并获取 App ID
+
+在编译和启动示例程序前，你需要先获取一个可用的 App ID：
+
+1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+
+接下来执行以下命令
+
+```bash
+cd example
+yarn
+yarn start
+```
+
+开发者：上海声网科技有限公司
+
+</DemoPlatform>
+
+</DemoPlatformTabs>

@@ -1418,7 +1418,8 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
 
 const ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS: Array<[string, string]> = [
   ['api-reference/sdks', '/zh-CN/reference/sdks'],
-  ['api-reference/recipes', '/zh-CN/reference/recipes'],
+  ['api-reference/recipes', '/zh-CN/reference/demo'],
+  ['reference/recipes', '/zh-CN/reference/demo'],
   ['api-reference/faq', '/zh-CN/reference/faq'],
   [
     'realtime-media/recording/cloud-recording',

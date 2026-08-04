@@ -1,0 +1,62 @@
+---
+title: "实时消息 RTM Web Demo"
+description: "基于 Agora RTM SDK 的多框架 Web 前端 Demo 合集，覆盖主流技术栈，帮助开发者快速理解并集成实时消息能力。"
+---
+
+基于 Agora RTM SDK 的多框架前端 Demo 合集，覆盖主流 Web 前端技术栈，帮助开发者快速理解并集成实时消息能力。每个 Demo 均实现了用户登录、私聊消息、频道消息、多端互踢处理等核心功能，并提供统一的共享工具库，避免重复实现。项目采用分层架构设计，将 RTM SDK 封装为薄封装层，通过 EventEmitter 解耦 SDK 与业务逻辑，支持跨组件的消息状态管理。
+
+## Demo 信息
+
+- 平台：Web
+- 产品：实时消息 RTM
+- 发布时间：2026-04-10
+- 版本：2.2.3
+- 标签：SDK 示例
+
+![实时消息 RTM Web Demo 界面](https://assets-docs.agora.io/images/demo/rtm-web-demo-web.png)
+
+<Cards>
+  <Card title="Demo 源码" href="https://github.com/AgoraIO-Community/WebRTM-Integration-Demo/tree/master" />
+</Cards>
+
+### 环境准备
+
+- Node.js v22
+- 在 [声网控制台](https://console.shengwang.cn/overview) 获取 App ID 和 App 证书
+- 在对应项目目录复制并填写环境变量
+
+```bash
+cp .env.example .env
+# 编辑 .env，填入 App ID 和 App Certificate
+```
+
+### 运行示例程序
+
+该示例覆盖多个 Web 前端框架项目，你可以进入对应目录安装依赖并启动开发环境。
+
+#### 通用启动方式
+
+```bash
+cd demos/<项目目录>
+npm install
+npm run dev
+```
+
+#### Electron 项目启动方式
+
+Electron 项目需要两个终端。
+
+```bash
+cd demos/electron/vue  # 或 electron/react
+npm install
+
+# 终端 1
+npm run dev
+
+# 终端 2（等待终端 1 启动完成后执行）
+NODE_ENV=development npm run electron
+```
+
+更新时间：2026 年 4 月 10 日
+
+开发者：上海声网科技有限公司

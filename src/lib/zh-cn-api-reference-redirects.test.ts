@@ -6,7 +6,7 @@ describe('zh-CN rehomed API reference redirects', () => {
     [['sdks'], '/zh-CN/reference/sdks'],
     [
       ['recipes', 'python-quickstart'],
-      '/zh-CN/reference/recipes/python-quickstart',
+      '/zh-CN/reference/demo/python-quickstart',
     ],
     [
       ['faq', 'integration', 'system_volume'],
@@ -22,6 +22,15 @@ describe('zh-CN rehomed API reference redirects', () => {
       ).toBe(expected);
     },
   );
+
+  it('redirects the previous Reference recipes path to Demo', () => {
+    expect(
+      resolveZhCnProductIaRedirect('zh-CN', 'reference', [
+        'recipes',
+        'python-quickstart',
+      ]),
+    ).toBe('/zh-CN/reference/demo/python-quickstart');
+  });
 
   it.each([
     [

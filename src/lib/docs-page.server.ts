@@ -2345,7 +2345,7 @@ function getProductLegacyApiReferenceUrls(link: ProductApiReferenceLink) {
 function isRecipesPath(path?: string) {
   return (
     path?.startsWith('/en/api-reference/recipes') ||
-    path?.startsWith('/zh-CN/reference/recipes') ||
+    path?.startsWith('/zh-CN/reference/demo') ||
     false
   );
 }

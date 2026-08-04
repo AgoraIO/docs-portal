@@ -572,16 +572,26 @@ export function getPrevNextLinks(
 ) {
   if (!isValidPageUrl) {
     const neighbours = findNeighbour(root, currentUrl);
+    const next =
+      neighbours.next?.url === currentUrl ? undefined : neighbours.next;
+    const previous =
+      neighbours.previous?.url === currentUrl ? undefined : neighbours.previous;
 
     return {
-      next: neighbours.next ? mapPageLink(neighbours.next) : undefined,
-      previous: neighbours.previous
-        ? mapPageLink(neighbours.previous)
-        : undefined,
+      next: next ? mapPageLink(next) : undefined,
+      previous: previous ? mapPageLink(previous) : undefined,
     };
   }
 
-  const pages = collectPageTreeItems(root, isValidPageUrl);
+  const seenUrls = new Set<string>();
+  const pages = collectPageTreeItems(root, isValidPageUrl).filter((item) => {
+    if (seenUrls.has(item.url)) {
+      return false;
+    }
+
+    seenUrls.add(item.url);
+    return true;
+  });
   const index = pages.findIndex((item) => item.url === currentUrl);
 
   const next = index >= 0 ? pages[index + 1] : undefined;

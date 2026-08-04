@@ -15,8 +15,8 @@ export function getDocsSidebarMode(
   }
   if (
     normalizedPath === '/zh-CN/reference/sdks' ||
-    normalizedPath === '/zh-CN/reference/recipes' ||
-    normalizedPath.startsWith('/zh-CN/reference/recipes/') ||
+    normalizedPath === '/zh-CN/reference/demo' ||
+    normalizedPath.startsWith('/zh-CN/reference/demo/') ||
     normalizedPath === '/zh-CN/reference/faq' ||
     normalizedPath.startsWith('/zh-CN/reference/faq/')
   ) {
