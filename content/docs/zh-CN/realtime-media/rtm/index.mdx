@@ -11,11 +11,52 @@ RTM 适合和 RTC、白板、云端录制、业务服务等能力组合使用。
 
 ## 开始构建
 
+### 平台文档
+
+选择开发平台，直接进入对应 SDK 的快速开始。
+
+<Cards columns={4} className="gap-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 9.75rem), 1fr))' }}>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=web">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/js.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">JavaScript</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=android">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/java.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Java</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=ios">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/ios.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Objective-C</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=swift">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/ios.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Swift</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=cpp">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/cpp.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">C++</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=harmonyos">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/harmonyOS.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">HarmonyOS</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=unity">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/unity.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Unity</span>
+  </a>
+  <a data-card className="group inline-flex max-w-full items-center gap-2.5 rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:border-foreground/20 hover:bg-muted/30" style={{ minHeight: '3.5rem' }} href="/zh-CN/realtime-media/rtm/get-started/quick-start?platform=flutter">
+    <span aria-hidden="true" className="size-7 shrink-0 rounded-md" style={{ backgroundImage: 'url(https://assets-docs.agora.io/images/api-reference/platforms/flutter.svg)', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'contain' }} />
+    <span className="truncate font-medium text-foreground">Flutter</span>
+  </a>
+</Cards>
+
+**更多入口**
+
 <Cards>
-  <Card title="快速开始" href="/zh-CN/realtime-media/rtm/get-started/quick-start" description="实现登录、订阅频道和收发消息，快速验证最小可用链路。" />
-  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=signaling" description="按平台选择实时消息 RTM SDK 和可用历史版本。" />
-  <Card title="构建功能" href="/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup" description="配置应用、管理频道、发送消息、同步状态并接入鉴权。" />
-  <Card title="参考信息" href="/zh-CN/realtime-media/rtm/reference/release-notes" description="查看版本、平台支持、错误码、配额、安全和迁移说明。" />
+  <Card title="下载 SDK" href="/zh-CN/reference/sdks?product=signaling" description="按平台选择 RTM SDK 和可用历史版本。" />
+  <Card title="构建功能" href="/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup" description="配置应用、管理频道、发送消息并接入鉴权。" />
+  <Card title="客户端 API" href="/zh-CN/api-reference/api?product=rtm&apiType=client" description="按平台查找全部 RTM 客户端接口。" />
+  <Card title="参考信息" href="/zh-CN/realtime-media/rtm/reference/release-notes" description="查看版本、平台支持、错误码、配额和迁移说明。" />
 </Cards>
 
 ## RTM 应用场景
