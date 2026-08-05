@@ -3463,7 +3463,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/build/connect-across-channels/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/connect-across-channels/receive-notifications.mdx':
-    '2026-08-04T11:48:04.000Z',
+    '2026-08-04T12:17:21.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/connection-status-management.mdx':
     '2026-06-26T06:37:16.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/audio-mixing-and-sound-effects.mdx':
@@ -3591,7 +3591,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-08-05T05:46:18.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -4661,7 +4661,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/build/connect-across-channels/meta.json':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/connect-across-channels/receive-notifications.mdx':
-    '2026-08-04T11:48:04.000Z',
+    '2026-08-04T12:17:21.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/audio-mixing-and-sound-effects.mdx':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/audio-strength-stream-selection.mdx':
@@ -6374,7 +6374,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/build/optimize-and-operate/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/video/build/optimize-and-operate/receive-notifications.mdx':
-    '2026-08-04T11:48:04.000Z',
+    '2026-08-04T12:17:21.000Z',
   'content/docs/en/realtime-media/video/build/optimize-frame-rendering.mdx':
     '2026-06-16T02:51:20.000Z',
   'content/docs/en/realtime-media/video/build/optimize-multihost-video.mdx':
@@ -6404,7 +6404,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/end-to-end-encryption.mdx':
     '2026-06-28T02:47:54.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-08-05T05:46:18.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -6651,7 +6651,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/voice/build/optimize-and-operate/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/voice/build/optimize-and-operate/receive-notifications.mdx':
-    '2026-08-04T11:48:04.000Z',
+    '2026-08-04T12:17:21.000Z',
   'content/docs/en/realtime-media/voice/build/placeholder.md':
     '2026-06-16T06:51:37.000Z',
   'content/docs/en/realtime-media/voice/build/pre-call-tests.mdx':

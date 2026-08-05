@@ -3,581 +3,269 @@ title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption method to your app."
 ---
 
-Media stream encryption refers to encrypting audio and video streams in an app using a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by the app developer. Encryption ensures that only the authorized users in a channel see and hear each other. Video SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
+Media stream encryption encrypts audio and video streams with a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by your app server. Encryption ensures that only authorized users in a channel can see and hear each other. RTC SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
 
 This article describes how to integrate Agora built-in media stream encryption into your app.
 
 ## Understand the tech
 
-The following figure illustrates the process of data transfer with media stream encryption enabled.
+The following figure illustrates data transfer with media stream encryption enabled.
 
 **Data transfer process**
 
-![EncryptMediaStream](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+<PlatformStructured platform="android">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+![Encrypted media stream transfer process for Web](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
 
 ## Prerequisites
+
 Ensure that you have implemented the [SDK quickstart](/en/realtime-media/video/get-started-sdk) in your project.
 
 ## Implement media stream encryption
 
 <PlatformStructured platform="android">
-To add built-in media stream encryption to your app, refer to the following steps:
 
-1. Generate a key and salt on your server
+To add built-in media stream encryption to your app, refer to the following steps.
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+1. Generate a key and salt on your server.
 
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Obtain a String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the `AES_128_GCM2` or `AES_256_GCM2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```java
-   import java.util.Base64;
-
-   byte[] getEncryptionKdfSaltFromServer() {
-     String base64Salt = "EncryptionKdfSaltInBase64Strings";
-     return Base64.getDecoder().decode(base64Salt);
-   }
-
-   // Create an EncryptionConfig instance
-   EncryptionConfig config = new EncryptionConfig();
-   // Set the encryption mode to AES_128_GCM2
-   config.encryptionMode = EncryptionMode.AES_128_GCM2;
-   // Obtain the Base64-encoded salt from the server
-   config.encryptionKdfSalt = getEncryptionKdfSaltFromServer();
-   // Obtain the String type key from the server
-   config.encryptionKey = getEncryptionKeyFromServer();
-   int ret = rtcEngine.enableEncryption(true, config);
-   if (ret != 0) {
-     showAlert("Error", "enableEncryption call failed: " + ret + ", please check your params");
-   }
+   ```bash
+   openssl rand -hex 32
    ```
 
-### Development considerations
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
 
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+
+```java tab="Java" tabGroup="encryption-android"
+// Noise-free sample values must come from your server.
+String encryptionKey = getEncryptionKeyFromServer();
+byte[] encryptionKdfSalt = getEncryptionSaltFromServer();
+
+EncryptionConfig config = new EncryptionConfig();
+config.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2;
+config.encryptionKey = encryptionKey;
+config.encryptionKdfSalt = encryptionKdfSalt;
+
+int result = rtcEngine.enableEncryption(true, config);
+```
+
+```kotlin tab="Kotlin" tabGroup="encryption-android"
+// Noise-free sample values must come from your server.
+val encryptionKey = getEncryptionKeyFromServer()
+val encryptionKdfSalt = getEncryptionSaltFromServer()
+
+val config = EncryptionConfig().apply {
+  encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2
+  this.encryptionKey = encryptionKey
+  this.encryptionKdfSalt = encryptionKdfSalt
+}
+
+val result = rtcEngine.enableEncryption(true, config)
+```
+
+## Reference
+
+### Sample project
+
+- [ChannelEncryption](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/ChannelEncryption.java)
 
 ### API reference
 
 - [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
 - [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_encryptionconfig.html)
-- [`EncryptionMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/namespaceagora_1_1rtc.html#a8fbe0baa82fa7db7ad7276f1fdb5cc53)
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-To add built-in media stream encryption to your app, refer to the following steps:
 
-1. Generate a key and salt on your server
+To add built-in media stream encryption to your app, refer to the following steps.
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+1. Generate a key and salt on your server.
 
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. To manually add the encryption library to your project:
-
-      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora Video SDK package to your project folder.
-
-      1. Open Xcode, go to **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content**.
-
-      1. Click **`+`** and choose **Add Other...**, then add `AgoraRtcCryptoLoader.framework`.
-
-      1. To ensure that the dynamic library's signature is consistent with the app's signature, set the **Embed** attribute of the dynamic library to **Embed & Sign**.
-
-      :::warning[note]
-      Apple requires that an app's extension not contain dynamic libraries. If you need to integrate the SDK into a dynamic library within an extension, change the file's status to **Do Not Embed**.
-      :::
-
-   1. To import the `AgoraRtcCryptoLoader` library, add the following line to the `ViewController.swift` file:
-
-      ```swift
-      import AgoraRtcCryptoLoader
-      ```
-
-   1. Get the String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```swift
-   func getEncryptionSaltFromServer() -> Data {
-       let base64Salt = "EncryptionKdfSaltInBase64Strings"
-       return Data(base64Encoded: base64Salt)!
-   }
-
-   let config = AgoraEncryptionConfig()
-   config.encryptionMode = .AES128GCM2
-   config.encryptionKdfSalt = getEncryptionSaltFromServer()
-   config.encryptionKey = getEncryptionKeyFromServer()
-   let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
-   if ret != 0 {
-       self.showAlert(title: "Error", message: "enableEncryption call failed: \\(ret), please check your params")
-   }
+   ```bash
+   openssl rand -hex 32
    ```
 
-### Development considerations
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
 
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
+
+```swift
+import AgoraRtcCryptoLoader
+
+func getEncryptionSaltFromServer() -> Data {
+  let base64Salt = "EncryptionKdfSaltInBase64Strings"
+  return Data(base64Encoded: base64Salt)!
+}
+
+let config = AgoraEncryptionConfig()
+config.encryptionMode = .AES128GCM2
+config.encryptionKdfSalt = getEncryptionSaltFromServer()
+config.encryptionKey = getEncryptionKeyFromServer()
+
+let result = agoraKit.enableEncryption(true, encryptionConfig: config)
+if result != 0 {
+  print("enableEncryption failed: \(result)")
+}
+```
+
+## Reference
+
+### Sample project
+
+- [StreamEncryption for iOS](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption)
+- [StreamEncryption for macOS](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/StreamEncryption)
 
 ### API reference
 
 - [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:))
-- [`AgoraEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraencryptionconfig/)
+- [`AgoraEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraencryptionconfig)
+
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-To add built-in media stream encryption to your app, refer to the following steps:
 
-1. Generate a key and salt on your server
+To add built-in media stream encryption to your app, refer to the following steps.
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+1. Generate a key and salt on your server.
 
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. To manually add the encryption library to your project:
-
-      1. Copy the `AgoraRtcCryptoLoader.framework` file from the Agora Video SDK package to your project folder.
-
-      1. Open Xcode, go to **TARGETS > Project Name > General > Frameworks, Libraries, and Embedded Content**.
-
-      1. Click **`+`** and choose **Add Other...**, then add `AgoraRtcCryptoLoader.framework`.
-
-      1. To ensure that the dynamic library's signature is consistent with the app's signature, set the **Embed** attribute of the dynamic library to **Embed & Sign**.
-
-   1. To import the `AgoraRtcCryptoLoader` library, add the following line to the `ViewController.swift` file:
-
-      ```swift
-      import AgoraRtcCryptoLoader
-      ```
-
-   1. Get the String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```swift
-   func getEncryptionSaltFromServer() -> Data {
-       let base64Salt = "EncryptionKdfSaltInBase64Strings"
-       return Data(base64Encoded: base64Salt)!
-   }
-
-   let config = AgoraEncryptionConfig()
-   config.encryptionMode = .AES128GCM2
-   config.encryptionKdfSalt = getEncryptionSaltFromServer()
-   config.encryptionKey = getEncryptionKeyFromServer()
-   let ret = agoraKit.enableEncryption(true, encryptionConfig: config)
-   if ret != 0 {
-       self.showAlert(title: "Error", message: "enableEncryption call failed: \\(ret), please check your params")
-   }
+   ```bash
+   openssl rand -hex 32
    ```
 
-### Development considerations
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
 
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
+
+```swift
+import AgoraRtcCryptoLoader
+
+func getEncryptionSaltFromServer() -> Data {
+  let base64Salt = "EncryptionKdfSaltInBase64Strings"
+  return Data(base64Encoded: base64Salt)!
+}
+
+let config = AgoraEncryptionConfig()
+config.encryptionMode = .AES128GCM2
+config.encryptionKdfSalt = getEncryptionSaltFromServer()
+config.encryptionKey = getEncryptionKeyFromServer()
+
+let result = agoraKit.enableEncryption(true, encryptionConfig: config)
+if result != 0 {
+  print("enableEncryption failed: \(result)")
+}
+```
+
+## Reference
+
+### Sample project
+
+- [StreamEncryption for iOS](https://github.com/AgoraIO/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/StreamEncryption)
+- [StreamEncryption for macOS](https://github.com/AgoraIO/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/StreamEncryption)
 
 ### API reference
 
-- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:))
-- [`AgoraEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoraencryptionconfig/)
-</PlatformStructured>
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/enableencryption(_:encryptionconfig:))
+- [`AgoraEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraencryptionconfig)
 
-<PlatformStructured platform="windows">
-To add built-in media stream encryption to your app, refer to the following steps:
-
-1. Generate a key and salt on your server
-
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
-
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Get the String key and Base64-encoded salt from the server.
-
-   1. Convert salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the `AES_128_GCM2` or `AES_256_GCM2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```cpp
-   #include <boost/algorithm/string/trim.hpp>
-   #include <boost/archive/iterators/base64_from_binary.hpp>
-   #include <boost/archive/iterators/binary_from_base64.hpp>
-   #include <boost/archive/iterators/transform_width.hpp>
-   #include <boost/range/algorithm/copy.hpp>
-
-   namespace detail {
-       using Base64FromBinary = boost::archive::iterators::base64_from_binary<
-           boost::archive::iterators::transform_width<const char*, 6, 8>>;
-
-       using BinaryFromBase64 = boost::archive::iterators::transform_width<
-           boost::archive::iterators::binary_from_base64<std::string::const_iterator>,
-           8, 6>;
-   }
-
-   void decodeBase64(const std::string& encoded, std::vector<uint8_t>& out) {
-       auto unpadded = encoded;
-       const auto num_padded = std::count(begin(encoded), end(encoded), '=');
-       std::replace(begin(unpadded), end(unpadded), '=', 'A');
-
-       std::string decoded{
-           detail::BinaryFromBase64{begin(unpadded)},
-           detail::BinaryFromBase64{begin(unpadded) + unpadded.length()}};
-
-       decoded.erase(end(decoded) - num_padded, end(decoded));
-       std::copy(begin(decoded), end(decoded), out.begin());
-   }
-
-   int enableEncryption() {
-       std::string secret;
-       std::string kdfSaltBase64;
-       std::vector<uint8_t> kdfSalt(32, 0);
-       if (!getSecretAndSaltFromSever(secret, kdfSaltBase64)) return -1;
-       if (rtcEngine) {
-           decodeBase64(kdfSaltBase64, kdfSalt);
-           agora::rtc::EncryptionConfig config;
-           config.encryptionMode = AES_128_GCM2;
-           config.encryptionKey = secret.c_str();
-           memcpy(config.encryptionKdfSalt, kdfSalt.data(), sizeof(config.encryptionKdfSalt));
-           return rtcEngine->enableEncryption(true, config);
-       }
-       return -1;
-   }
-   ```
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
-- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_encryptionconfig.html)
-</PlatformStructured>
-
-<PlatformStructured platform="electron">
-To add built-in media stream encryption to your app, refer to the following steps:
-
-1. Generate a key and salt on your server
-
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
-
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Obtain a String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the `AES_128_GCM2` or `AES_256_GCM2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```typescript
-   enableEncryption = () => {
-     const encryptionMode = EncryptionMode.Aes128Xts;
-     const encryptionKey = '';
-     const encryptionKdfSalt = new Array(32).fill(1, 0, 32);
-     if (!encryptionKey) {
-       this.error("encryptionKey is invalid");
-       return;
-     }
-     rtcEngine.enableEncryption(true, {
-       encryptionMode,
-       encryptionKey,
-       encryptionKdfSalt,
-     });
-   };
-   ```
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-To add built-in media stream encryption to your app, refer to the following steps:
-
-1. Generate a key and salt on your server
-
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
-
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Obtain a String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `Uint8List`.
-
-   1. Before joining the channel, call `enableEncryption` to set the `aes128Gcm2` or `aes256Gcm2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```dart
-   import 'dart:convert';
-   import 'dart:typed_data';
-   import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-
-   Future<void> enableEncryption(RtcEngine rtcEngine) async {
-     final String encryptionKdfSaltBase64 = await Server.getEncryptionKdfSaltBase64();
-     final String encryptionSecret = await Server.getEncryptionSecret();
-     final Uint8List encryptionKdfSalt = base64Decode(encryptionKdfSaltBase64);
-
-     final config = EncryptionConfig(
-       encryptionMode: EncryptionMode.aes128Gcm2,
-       encryptionKey: encryptionSecret,
-       encryptionKdfSalt: encryptionKdfSalt,
-     );
-
-     await rtcEngine.enableEncryption(enabled: true, config: config);
-   }
-   ```
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
-- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_encryptionconfig.html)
-</PlatformStructured>
-
-<PlatformStructured platform="react-native">
-To add built-in media stream encryption to your app, refer to the following steps:
-
-1. Generate a key and salt on your server
-
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
-
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Obtain a String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `enableEncryption` to set the `AES_128_GCM2` or `AES_256_GCM2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```typescript
-   enableEncryption = () => {
-     const encryptionMode = EncryptionMode.Aes128Xts;
-     const encryptionKey = '';
-     const encryptionKdfSalt = new Array(32).fill(1, 0, 32);
-     if (!encryptionKey) {
-       this.error("encryptionKey is invalid");
-       return;
-     }
-     rtcEngine.enableEncryption(true, {
-       encryptionMode,
-       encryptionKey,
-       encryptionKdfSalt,
-     });
-   };
-   ```
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-To add built-in media stream encryption to your app, refer to the following steps:
-
-1. Generate a key and salt on your server
-
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
-
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
-
-     ```shell
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
-
-2. Implement client-side logic
-
-   1. Obtain a String key and Base64-encoded salt from the server.
-
-   1. Convert the salt from Base64 to `uint8_t`.
-
-   1. Before joining the channel, call `EnableEncryption` to set the `AES_128_GCM2` or `AES_256_GCM2` encryption mode, and pass the key and salt to the SDK.
-
-   :::warning[note]
-   - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-   - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-   :::
-
-   To implement this logic, refer to the following code:
-
-   ```csharp
-   string secret;
-   byte[] kdfSal;
-   ENCRYPTION_MODE EncrytionMode = ENCRYPTION_MODE.AES_128_GCM2;
-   var config = new EncryptionConfig
-   {
-       encryptionMode = EncrytionMode,
-       encryptionKey = secret,
-       encryptionKdfSalt = kdfSal
-   };
-   var nRet = RtcEngine.EnableEncryption(true, config);
-   Debug.Log("EnableEncryption: " + nRet);
-   ```
-
-### Development considerations
-
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
-
-### API reference
-
-- [`EnableEncryption`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-This section shows you how to add built-in media stream encryption to your app.
 
-Video SDK supports the following encryption modes:
+RTC SDK for Web supports the following encryption modes:
 
 - `"aes-128-xts"`: 128-bit AES encryption, XTS mode.
 - `"aes-256-xts"`: 256-bit AES encryption, XTS mode.
@@ -587,92 +275,352 @@ Video SDK supports the following encryption modes:
 - `"sm4-128-ecb"`: 128-bit SM4 encryption, ECB mode.
 
 Available only in Web SDK v4.5.0 and higher:
+
 - `"aes-128-gcm2"`: 128-bit AES encryption, GCM mode, salted.
 - `"aes-256-gcm2"`: 256-bit AES encryption, GCM mode, salted.
 
-For maximum security, best practice is to set the encryption mode to `"aes-128-gcm2"` or `"aes-256-gcm2"`, and specify an encryption key and salt. If you choose another encryption mode, you only need to specify the encryption key.
+For maximum security, set the encryption mode to `"aes-128-gcm2"` or `"aes-256-gcm2"` and specify an encryption key and salt. If you choose another encryption mode, you only need to specify the encryption key.
 
-To add built-in media stream encryption to your app, refer to the following steps:
+1. Generate a key and salt on your server.
 
-1. Generate a key and salt on your server
+   ```bash
+   openssl rand -hex 32
+   ```
 
-   - To generate a random 32-byte hexadecimal key on your server as a string, refer to the following `OpenSSL` command:
+   ```bash
+   openssl rand -base64 32
+   ```
 
-     ```bash
-     # Generate a 32-byte hexadecimal key
-     openssl rand -hex 32
-     ```
+2. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
 
-   - To generate a random Base64-encoded, 32-byte salt on your server, refer to the following `OpenSSL` command:
+   ```typescript
+   function base64ToUint8Array(base64Str: string): Uint8Array {
+     const raw = window.atob(base64Str);
+     const result = new Uint8Array(new ArrayBuffer(raw.length));
 
-     ```bash
-     # Generate a Base64-encoded, 32-byte salt
-     openssl rand -base64 32
-     ```
+     for (let i = 0; i < raw.length; i += 1) {
+       result[i] = raw.charCodeAt(i);
+     }
 
-2. Implement client-side logic
+     return result;
+   }
 
-  1. Obtain a String key and Base64-encoded salt from the server.
+   function hexToAscii(hexValue: string) {
+     let result = '';
+     for (let i = 0; i < hexValue.length; i += 2) {
+       result += String.fromCharCode(parseInt(hexValue.slice(i, i + 2), 16));
+     }
+     return result;
+   }
 
-  1. Before joining a channel, call `AgoraRTCClient.setEncryptionConfig` to select the encryption mode and specify the encryption key and salt.
+   const [secretFromServer, saltFromServer] = await getSecretAndSaltFromServer();
+   const secret = hexToAscii(secretFromServer);
+   const salt = base64ToUint8Array(saltFromServer);
 
-  1. When you call `setEncryptionConfig`, the web client:
+   client.setEncryptionConfig('aes-256-gcm2', secret, salt);
+   ```
 
-     * Converts the key from Hex to ASCII, before passing it to the Video SDK.
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-     * Converts the salt from Base64 to Uint8Array, before passing it to the Video SDK.
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
 
-  :::note
-  - All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
-    - To ensure security, best practice is to use a new key and salt each time you enable media stream encryption.
-  :::
-
-  To implement this logic, refer to the following code:
-
-  ```javascript
-  // Declare a utility function to convert Base64 to Uint8Array
-  function base64ToUint8Array(base64Str: string): Uint8Array {
-    const raw = window.atob(base64Str);
-    const result = new Uint8Array(new ArrayBuffer(raw.length));
-
-    for (let i = 0; i < raw.length; i += 1) {
-      result[i] = raw.charCodeAt(i);
-    }
-
-    return result;
-  }
-
-  // Declare a utility function to convert Hex to ASCII
-  function hex2ascii(hexx) {
-    const hex = hexx.toString();//force conversion
-    let str = '';
-    for (let i = 0; i < hex.length; i += 2)
-      str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-  }
-
-  async function getSecretAndSalt() {
-    // Retrieve the key and salt value from the server
-    let [secret, salt] = await getSecretAndSaltFromServer();
-    salt = base64ToUint8Array(salt);
-    secret = hex2ascii(secret);
-    return [secret, salt];
-  }
-
-  let [secret, salt] = await getSecretAndSalt();
-
-  // Set the encryption scheme to AES-256-GCM2 and pass in secret and salt
-  client.setEncryptionConfig("aes-256-gcm2", secret, salt);
-  ```
-
-  The sample code refers to the local `client` object created using `AgoraRTC.createClient`.
+## Reference
 
 ### Development considerations
 
-The media stream encryption feature is supported in both communication and live broadcasting use-cases. However, in the live broadcasting use-case, Agora does not support pushing the encrypted media stream to CDN.
+The media stream encryption feature is supported in both communication and live broadcasting use cases. However, Agora does not support pushing encrypted media streams to CDN.
 
 ### API reference
 
 - [`setEncryptionConfig`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setencryptionconfig)
 - [`EncryptionMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#encryptionmode)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+To add built-in media stream encryption to your app, refer to the following steps.
+
+1. Generate a key and salt on your server.
+
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
+
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+
+```cpp
+int enableEncryption() {
+  std::string secret = getEncryptionKeyFromServer();
+  std::vector<uint8_t> kdfSalt = getEncryptionSaltFromServer();
+
+  agora::rtc::EncryptionConfig config;
+  config.encryptionMode = AES_128_GCM2;
+  config.encryptionKey = secret.c_str();
+  memcpy(config.encryptionKdfSalt, kdfSalt.data(), sizeof(config.encryptionKdfSalt));
+
+  return rtcEngine->enableEncryption(true, config);
+}
+```
+
+## Reference
+
+### Sample project
+
+- [AgoraMediaEncryption](https://github.com/AgoraIO/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/MediaEncrypt)
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/windows/4.x/API/class_encryptionconfig.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+To add built-in media stream encryption to your app, refer to the following steps.
+
+1. Generate a key and salt on your server.
+
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
+
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
+
+```typescript
+const encryptionMode = EncryptionMode.Aes128Gcm2;
+const encryptionKey = await getEncryptionKeyFromServer();
+const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
+
+if (!encryptionKey) {
+  throw new Error('encryptionKey is invalid');
+}
+
+rtcEngine.enableEncryption(true, {
+  encryptionMode,
+  encryptionKey,
+  encryptionKdfSalt,
+});
+```
+
+## Reference
+
+### Sample projects
+
+- [Electron encryption example](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/Encryption/Encryption.tsx)
+- [React Native encryption example](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/Encryption/Encryption.tsx)
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_encryptionconfig.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+To add built-in media stream encryption to your app, refer to the following steps.
+
+1. Generate a key and salt on your server.
+
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
+
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `Uint8List`, and call `enableEncryption` before joining a channel. Set the encryption mode to `aes128Gcm2` or `aes256Gcm2` and pass the key and salt to the SDK.
+
+```dart
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+
+Future<void> enableEncryption(RtcEngine rtcEngine) async {
+  final String encryptionKdfSaltBase64 =
+      await Server.getEncryptionKdfSaltBase64();
+  final String encryptionSecret = await Server.getEncryptionSecret();
+  final Uint8List encryptionKdfSalt = base64Decode(encryptionKdfSaltBase64);
+
+  final config = EncryptionConfig(
+    encryptionMode: EncryptionMode.aes128Gcm2,
+    encryptionKey: encryptionSecret,
+    encryptionKdfSalt: encryptionKdfSalt,
+  );
+
+  await rtcEngine.enableEncryption(enabled: true, config: config);
+}
+```
+
+## Reference
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_encryptionconfig.html)
+- [`EncryptionMode`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_encryptionmode.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+To add built-in media stream encryption to your app, refer to the following steps.
+
+1. Generate a key and salt on your server.
+
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
+
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
+
+```typescript
+const encryptionMode = EncryptionMode.Aes128Gcm2;
+const encryptionKey = await getEncryptionKeyFromServer();
+const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
+
+if (!encryptionKey) {
+  throw new Error('encryptionKey is invalid');
+}
+
+rtcEngine.enableEncryption(true, {
+  encryptionMode,
+  encryptionKey,
+  encryptionKdfSalt,
+});
+```
+
+## Reference
+
+### Sample projects
+
+- [Electron encryption example](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/advanced/Encryption/Encryption.tsx)
+- [React Native encryption example](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/Encryption/Encryption.tsx)
+
+### API reference
+
+- [`enableEncryption`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_encryptionconfig.html)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+To add built-in media stream encryption to your app, refer to the following steps.
+
+1. Generate a key and salt on your server.
+
+   To generate a random 32-byte hexadecimal key on your server as a string, run:
+
+   ```bash
+   openssl rand -hex 32
+   ```
+
+   To generate a random Base64-encoded, 32-byte salt on your server, run:
+
+   ```bash
+   openssl rand -base64 32
+   ```
+
+2. Implement client-side logic.
+
+:::note
+All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+
+To ensure security, use a new key and salt each time you enable media stream encryption.
+:::
+
+Obtain the string key and 32-byte salt from your server, and call `EnableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+
+```csharp
+string secret = GetEncryptionKeyFromServer();
+byte[] kdfSalt = GetEncryptionSaltFromServer();
+
+var config = new EncryptionConfig
+{
+  encryptionMode = ENCRYPTION_MODE.AES_128_GCM2,
+  encryptionKey = secret,
+  encryptionKdfSalt = kdfSalt
+};
+
+var result = RtcEngine.EnableEncryption(true, config);
+Debug.Log("EnableEncryption: " + result);
+```
+
+## Reference
+
+### Sample project
+
+- [EncryptionSample](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/blob/main/API-Example-Unity/Assets/API-Example/Examples/Advanced/SetEncryption/EncryptionSample.cs)
+
+### API reference
+
+- [`EnableEncryption`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enableencryption)
+- [`EncryptionConfig`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_encryptionconfig.html)
+
 </PlatformStructured>

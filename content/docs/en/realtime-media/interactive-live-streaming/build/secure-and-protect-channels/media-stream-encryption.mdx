@@ -3,9 +3,7 @@ title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption method to your app."
 ---
 
-Media stream encryption encrypts audio and video streams with a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by your app server. Encryption ensures that only authorized users in a channel can see and hear each other.
-
-<PlatformStructured platform="android">
+Media stream encryption encrypts audio and video streams with a unique [key](https://en.wikipedia.org/wiki/Public_key_certificate) and [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) controlled by your app server. Encryption ensures that only authorized users in a channel can see and hear each other. RTC SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
 
 This article describes how to integrate Agora built-in media stream encryption into your app.
 
@@ -15,13 +13,67 @@ The following figure illustrates data transfer with media stream encryption enab
 
 **Data transfer process**
 
+<PlatformStructured platform="android">
+
 ![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+![Encrypted media stream transfer process for Web](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
+
+</PlatformStructured>
 
 ## Prerequisites
 
 Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
 
 ## Implement media stream encryption
+
+<PlatformStructured platform="android">
 
 To add built-in media stream encryption to your app, refer to the following steps.
 
@@ -91,22 +143,6 @@ val result = rtcEngine.enableEncryption(true, config)
 
 <PlatformStructured platform="ios">
 
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
-
 To add built-in media stream encryption to your app, refer to the following steps.
 
 1. Generate a key and salt on your server.
@@ -167,22 +203,6 @@ if result != 0 {
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
 
 To add built-in media stream encryption to your app, refer to the following steps.
 
@@ -245,23 +265,7 @@ if result != 0 {
 
 <PlatformStructured platform="web">
 
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process for Web](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess-web.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
-
-Video SDK for Web supports the following encryption modes:
+RTC SDK for Web supports the following encryption modes:
 
 - `"aes-128-xts"`: 128-bit AES encryption, XTS mode.
 - `"aes-256-xts"`: 256-bit AES encryption, XTS mode.
@@ -337,22 +341,6 @@ The media stream encryption feature is supported in both communication and live 
 
 <PlatformStructured platform="windows">
 
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
-
 To add built-in media stream encryption to your app, refer to the following steps.
 
 1. Generate a key and salt on your server.
@@ -407,22 +395,6 @@ int enableEncryption() {
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
 
 To add built-in media stream encryption to your app, refer to the following steps.
 
@@ -481,22 +453,6 @@ rtcEngine.enableEncryption(true, {
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
 
 To add built-in media stream encryption to your app, refer to the following steps.
 
@@ -557,22 +513,6 @@ Future<void> enableEncryption(RtcEngine rtcEngine) async {
 
 <PlatformStructured platform="react-native">
 
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
-
 To add built-in media stream encryption to your app, refer to the following steps.
 
 1. Generate a key and salt on your server.
@@ -630,22 +570,6 @@ rtcEngine.enableEncryption(true, {
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-
-This article describes how to integrate Agora built-in media stream encryption into your app.
-
-## Understand the tech
-
-The following figure illustrates data transfer with media stream encryption enabled.
-
-**Data transfer process**
-
-![Encrypted media stream transfer process](https://assets-docs.agora.io/images/video-sdk/encrypt_media_streams_dataTransferProcess.svg)
-
-## Prerequisites
-
-Ensure that you have implemented the [SDK quickstart](../../index.mdx) in your project.
-
-## Implement media stream encryption
 
 To add built-in media stream encryption to your app, refer to the following steps.
 
