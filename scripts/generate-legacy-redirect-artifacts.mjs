@@ -92,7 +92,7 @@ function createVercelRedirects(rules) {
     if (targets.size === 1 && bulkRedirectPreserveQueryParams !== null) {
       const [firstRule] = pathRules;
       bulkRedirects.push({
-        source: legacyPath,
+        source: encodeVercelPath(legacyPath),
         destination: firstRule.target,
         statusCode: 301,
         preserveQueryParams: bulkRedirectPreserveQueryParams,
@@ -187,8 +187,15 @@ function createRoutesConfig(queryRedirectRoutes, baseRoutes = []) {
 }
 
 function createRouteSource(source) {
-  const escapedSource = source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escapedSource = encodeVercelPath(source).replace(
+    /[.*+?^${}()|[\]\\]/g,
+    '\\$&',
+  );
   return `^${escapedSource}/?$`;
+}
+
+function encodeVercelPath(source) {
+  return encodeURI(source);
 }
 
 function parseLegacySearch(search) {
