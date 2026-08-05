@@ -212,7 +212,7 @@ jobs:
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
           MAIN_PREVIEW_ALIAS: ${{ vars.VERCEL_MAIN_PREVIEW_ALIAS || 'docs-portal-mocha.vercel.app' }}
-        run: vercel alias set "$DEPLOY_URL" "$MAIN_PREVIEW_ALIAS" --token="${{ secrets.VERCEL_TOKEN }}"
+        run: vercel alias set "$DEPLOY_URL" "$MAIN_PREVIEW_ALIAS" --token="${{ secrets.VERCEL_TOKEN }}" --team="$VERCEL_ORG_ID"
 
       - name: Write workflow summary
         if: steps.preview-context.outputs.should_deploy == 'true'
