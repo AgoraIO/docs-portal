@@ -9,27 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
-import { Route as LocaleTabRouteRouteImport } from './routes/$locale/$tab/route'
-import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
-import { Route as DocSplatRouteImport } from './routes/doc/$'
 import { Route as LlmsSplatRouteImport } from './routes/llms/$'
+import { Route as DocSplatRouteImport } from './routes/doc/$'
+import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
+import { Route as LocaleTabRouteRouteImport } from './routes/$locale/$tab/route'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
-import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 import { Route as Char91__staticChar93DocsSearchSplatRouteImport } from './routes/[__static]/docs-search/$'
+import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
-  id: '/llms-full.txt',
-  path: '/llms-full.txt',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
@@ -37,9 +32,14 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocaleIndexRoute = LocaleIndexRouteImport.update({
@@ -47,14 +47,9 @@ const LocaleIndexRoute = LocaleIndexRouteImport.update({
   path: '/$locale/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LocaleTabRouteRoute = LocaleTabRouteRouteImport.update({
-  id: '/$locale/$tab',
-  path: '/$locale/$tab',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiRefSplatRoute = ApiRefSplatRouteImport.update({
-  id: '/api-ref/$',
-  path: '/api-ref/$',
+const LlmsSplatRoute = LlmsSplatRouteImport.update({
+  id: '/llms/$',
+  path: '/llms/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocSplatRoute = DocSplatRouteImport.update({
@@ -62,19 +57,19 @@ const DocSplatRoute = DocSplatRouteImport.update({
   path: '/doc/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LlmsSplatRoute = LlmsSplatRouteImport.update({
-  id: '/llms/$',
-  path: '/llms/$',
+const ApiRefSplatRoute = ApiRefSplatRouteImport.update({
+  id: '/api-ref/$',
+  path: '/api-ref/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocaleTabRouteRoute = LocaleTabRouteRouteImport.update({
+  id: '/$locale/$tab',
+  path: '/$locale/$tab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LocaleTabIndexRoute = LocaleTabIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LocaleTabRouteRoute,
-} as any)
-const LocaleTabSplatRoute = LocaleTabSplatRouteImport.update({
-  id: '/$',
-  path: '/$',
   getParentRoute: () => LocaleTabRouteRoute,
 } as any)
 const Char91__staticChar93DocsSearchSplatRoute =
@@ -83,6 +78,11 @@ const Char91__staticChar93DocsSearchSplatRoute =
     path: '/__static/docs-search/$',
     getParentRoute: () => rootRouteImport,
   } as any)
+const LocaleTabSplatRoute = LocaleTabSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => LocaleTabRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -185,18 +185,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/llms-full.txt': {
-      id: '/llms-full.txt'
-      path: '/llms-full.txt'
-      fullPath: '/llms-full.txt'
-      preLoaderRoute: typeof LlmsFullDottxtRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/llms.txt': {
@@ -206,11 +199,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/llms-full.txt': {
+      id: '/llms-full.txt'
+      path: '/llms-full.txt'
+      fullPath: '/llms-full.txt'
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$locale/': {
@@ -220,18 +220,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/$locale/$tab': {
-      id: '/$locale/$tab'
-      path: '/$locale/$tab'
-      fullPath: '/$locale/$tab'
-      preLoaderRoute: typeof LocaleTabRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api-ref/$': {
-      id: '/api-ref/$'
-      path: '/api-ref/$'
-      fullPath: '/api-ref/$'
-      preLoaderRoute: typeof ApiRefSplatRouteImport
+    '/llms/$': {
+      id: '/llms/$'
+      path: '/llms/$'
+      fullPath: '/llms/$'
+      preLoaderRoute: typeof LlmsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/doc/$': {
@@ -241,11 +234,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/llms/$': {
-      id: '/llms/$'
-      path: '/llms/$'
-      fullPath: '/llms/$'
-      preLoaderRoute: typeof LlmsSplatRouteImport
+    '/api-ref/$': {
+      id: '/api-ref/$'
+      path: '/api-ref/$'
+      fullPath: '/api-ref/$'
+      preLoaderRoute: typeof ApiRefSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$locale/$tab': {
+      id: '/$locale/$tab'
+      path: '/$locale/$tab'
+      fullPath: '/$locale/$tab'
+      preLoaderRoute: typeof LocaleTabRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$locale/$tab/': {
@@ -255,19 +255,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleTabIndexRouteImport
       parentRoute: typeof LocaleTabRouteRoute
     }
-    '/$locale/$tab/$': {
-      id: '/$locale/$tab/$'
-      path: '/$'
-      fullPath: '/$locale/$tab/$'
-      preLoaderRoute: typeof LocaleTabSplatRouteImport
-      parentRoute: typeof LocaleTabRouteRoute
-    }
     '/__static/docs-search/$': {
       id: '/__static/docs-search/$'
       path: '/__static/docs-search/$'
       fullPath: '/__static/docs-search/$'
       preLoaderRoute: typeof Char91__staticChar93DocsSearchSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/$locale/$tab/$': {
+      id: '/$locale/$tab/$'
+      path: '/$'
+      fullPath: '/$locale/$tab/$'
+      preLoaderRoute: typeof LocaleTabSplatRouteImport
+      parentRoute: typeof LocaleTabRouteRoute
     }
   }
 }
