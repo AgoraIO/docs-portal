@@ -49,6 +49,10 @@ The Agora message notification service supports the following events for the spe
 | ----------- | -------------- | --- |
 | `101`       | `agent joined` | The agent joins the channel. |
 | `102`       | `agent left`   | The agent leaves the channel.   |
+| `104`       | `token will expire` | The RTC Token used by the agent is about to expire. |
+| `200`       | `M3U8 file upload succeed` | A single M3U8 index file is created and uploaded successfully. If multiple M3U8 files are uploaded, this event is sent once per file. |
+| `201`       | `transcript upload succeed` | All M3U8 and VTT files finish uploading successfully. |
+| `202`       | `transcript upload failed` | M3U8 or VTT file uploads finish, but some or all files fail to upload. |
 
 #### Event 101: Agent joined
 
@@ -81,11 +85,11 @@ The `eventType` value `102` indicates that an agent left the channel. The `paylo
 | `stop_ts`  | `Number` | The timestamp (in milliseconds) when the task ended.          |
 | `channel`  | `String` | The name of the channel the agent was in.    |
 | `status`   | `String` | The status of the task:<br/>= `STOPPED`: The task ended normally or due to idle timeout.<br/>- `FAILED`: The task failed.       |
-| `message`  | `String` | The reason the agent exited the channel:<br/>- `OK`: The agent exited normally.<br/>- `Idle for too long`: The task timed out due to inactivity.<br/>- `RTC connection error`: The agent exited due to a connection error.<br/>- `Fatal ASR error`: The task exited because of an ASR module error.<br/>- `Fatal Translation error`: The task exited due to a translation module error. |
+| `message`  | `String` | The reason the agent exited the channel:<br/>- `OK`: The agent exited normally.<br/>- `Idle for too long`: The task timed out due to inactivity.<br/>- `Task exceeded maximum lifetime`: The task ended because it reached the maximum task lifetime.<br/>- `RTC connection error`: The agent exited due to a connection error.<br/>- `Fatal ASR error`: The task exited because of an ASR module error.<br/>- `Fatal Translation error`: The task exited due to a translation module error. |
 
 **Example**:
 
-<Tabs items={["Normal stop", "Idle timeout", "Connection error", "ASR error", "Translation error"]}>
+<Tabs items={["Normal stop", "Idle timeout", "Lifetime exceeded", "Connection error", "ASR error", "Translation error"]}>
 <Tab>
 
 ```json
@@ -111,6 +115,21 @@ The `eventType` value `102` indicates that an agent left the channel. The `paylo
     "start_ts": 1750235971,
     "status": "STOPPED",
     "stop_ts": 1750235984
+}
+```
+
+</Tab>
+
+<Tab>
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "message": "Task exceeded maximum lifetime",
+    "start_ts": 1750235971,
+    "status": "STOPPED",
+    "stop_ts": 1750495171
 }
 ```
 
@@ -161,6 +180,126 @@ The `eventType` value `102` indicates that an agent left the channel. The `paylo
 
 </Tab>
 </Tabs>
+
+#### Event 104: Token will expire
+
+The `eventType` value `104` indicates that the RTC Token used by the Real-Time STT engine is about to expire. The Notifications service sends this event to your server when the RTC Token has 30 seconds remaining before it expires. If the RTC Token's validity period is 30 seconds or less, the platform does not send this event. The `payload` contains the following fields:
+
+| Field      | Type     | Description  |
+| ---------- | -------- | ---- |
+| `agent_id` | `String` | The task ID associated with the agent.       |
+| `name`     | `String` | The unique service identifier passed in when the task was created.        |
+| `start_ts` | `Number` | The timestamp (in seconds) when the task was created.          |
+| `channel`  | `String` | The name of the channel.    |
+| `message`  | `String` | A reminder that the RTC Token is about to expire. Fixed value: `token will expire!`. |
+
+**Example**:
+
+```json
+{
+    "agent_id": "agent_id",
+    "name": "agora-test",
+    "start_ts": 1750235971,
+    "channel": "stt_ncs93369",
+    "message": "token will expire!"
+}
+```
+
+:::info
+Event `104` is for advance notification only. It does not end the task, change the task's final status, or replace the existing RTC connection error handling flow.
+:::
+
+#### Event 200: M3U8 file upload succeeded
+
+The `eventType` value `200` indicates that Agora has successfully uploaded a single M3U8 playlist file. Agora sends this event after each M3U8 index file is created and uploaded. If multiple M3U8 files are uploaded, this event is sent once per file. The `payload` contains the following fields:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `agent_id` | String | The task ID associated with the agent. |
+| `channel` | String | The name of the channel. |
+| `file_name` | String | The name of the M3U8 file. |
+| `file_creation_ts` | Int64 | The Unix timestamp (in milliseconds) when the M3U8 file was created. |
+| `message` | String | `A STT transcript m3u8 file was successfully generated & uploaded`. Indicates that Agora has successfully generated and uploaded the M3U8 file. |
+
+**Example**:
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+    "file_creation_ts": 1234567891000,
+    "message": "A STT transcript m3u8 file was successfully generated & uploaded"
+}
+```
+
+#### Event 201: Transcript upload succeeded
+
+The `eventType` value `201` indicates that Agora has successfully uploaded all M3U8 and VTT files. Agora sends this event after all M3U8 and VTT files finish uploading. The `payload` contains the following fields:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `agent_id` | String | The task ID associated with the agent. |
+| `channel` | String | The name of the channel. |
+| `file_name` | String | The name of the M3U8 file. |
+| `file_creation_ts` | Int64 | The Unix timestamp (in milliseconds) when the M3U8 file was created. |
+| `message` | String | `STT transcript upload succeeded.` Indicates that Agora has successfully uploaded all M3U8 and VTT files. |
+
+**Example**:
+
+```json
+{
+    "agent_id": "agent_id",
+    "channel": "stt_ncs93369",
+    "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+    "file_creation_ts": 1234567891000,
+    "message": "STT transcript upload succeeded."
+}
+```
+
+#### Event 202: Transcript upload failed
+
+The `eventType` value `202` indicates that one or more M3U8 or VTT files have failed to upload. Agora sends this event when M3U8 or VTT file uploads finish, but some or all files fail to upload. The `payload` contains the following fields:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `agent_id` | String | The task ID associated with the agent. |
+| `channel` | String | The name of the channel. |
+| `succeed_file_list` | Array\<Object\> | The list of files that uploaded successfully. Each object includes:<br/>- `file_name`: The file name.<br/>- `file_creation_ts`: The Unix timestamp (in milliseconds) when the file was created. |
+| `failed_file_list` | Array\<Object\> | The list of files that failed to upload. Each object includes:<br/>- `file_name`: The file name.<br/>- `file_creation_ts`: The Unix timestamp (in milliseconds) when the file was created.<br/>- `message`: The reason the upload failed. |
+| `message` | String | `STT transcript upload failed.` Indicates that one or more M3U8 or VTT files have failed to upload. |
+
+**Example**:
+
+```json
+{
+    "agent_id": "xxx",
+    "channel": "xxx",
+    "succeed_file_list": [
+        {
+            "file_name": "prefix/1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891000
+        },
+        {
+            "file_name": "prefix/zh-CN_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001
+        }
+    ],
+    "failed_file_list": [
+        {
+            "file_name": "prefix/ja-JP_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001,
+            "message": "last failed reason xxx"
+        },
+        {
+            "file_name": "prefix/fr-FH_1NT29X0TOHQVO6JL1HJE118VBLXNS4SD_agora_rtc_test.m3u8",
+            "file_creation_ts": 1234567891001,
+            "message": "last failed reason xxx"
+        }
+    ],
+    "message": "STT transcript upload failed."
+}
+```
 
 ## v5.x and v6.x
 
