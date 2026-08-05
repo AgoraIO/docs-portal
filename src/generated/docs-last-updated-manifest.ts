@@ -3591,7 +3591,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-08-05T05:46:18.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -6595,7 +6595,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/end-to-end-encryption.mdx':
     '2026-06-28T02:47:54.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-08-05T05:46:18.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
