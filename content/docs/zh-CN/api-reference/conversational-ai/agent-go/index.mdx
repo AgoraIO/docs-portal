@@ -153,7 +153,7 @@ func WithPool(pool *core.Pool) *core.AreaRequestOption
 
 ### Sub-clients
 
-`client.NewClient` 也暴露原始 API client，便于访问尚未被 AgentKit 高层能力封装的接口。大多数场景下，建议优先使用 [agentkit layer](#agentkit-newagent)。
+`client.NewClient` 也暴露原始 API client，便于访问尚未被 AgentKit 高层能力封装的接口。大多数场景下，建议优先使用 [agentkit layer](#agentkitnewagent)。
 
 | Field | Type | Description |
 |---|---|---|
@@ -259,7 +259,7 @@ CN 专属 vendor 从 `agentkit/cn/vendors` 取用；可在 CN 场景复用的 co
 
 #### `WithLlm(vendor)`
 
-设置 LLM vendor。传入 [`NewAliyun`](#newaliyun)、[`NewBytedance`](#newbytedance)、[`NewDeepSeek`](#newdeepseek)、[`NewTencentLLM`](#newtencentllm) 或 [`NewCustomLLM`](#newcustomllm) 的实例。
+设置 LLM vendor。传入 [`NewAliyun`](#llm-vendors)、[`NewBytedance`](#llm-vendors)、[`NewDeepSeek`](#llm-vendors)、[`NewTencentLLM`](#llm-vendors) 或 [`NewCustomLLM`](#llm-vendors) 的实例。
 
 ```go
 func (a *Agent) WithLlm(vendor vendors.LLM) *Agent
