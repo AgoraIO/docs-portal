@@ -225,7 +225,7 @@ rtcEngine.joinChannel(rtcToken: token, channelName: channelName, uid: uid, isInd
 
 ##### 智能体加入频道
 
-调用 [POST 创建对话式智能体](../convoai/operations/start-agent)接口，并完成以下参数设置：
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口，并完成以下参数设置：
 
 - `advanced_features.enable_rtm: true` —— （必选）启动 RTM 服务
 - `parameters.data_channel: "rtm"` —— （必选）开启 RTM 数据传输通道
@@ -269,7 +269,7 @@ convoAIAPI.destroy()
 为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
 
 1. **设置音频场景**：在初始化引擎时将音频场景设置为 AI 对话场景。你也可以在加入频道前调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频场景设置为 AI 对话场景。
-2. **设置音频相关参数**：在加入频道前和音频路由变化（触发 [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#onAudioRouteChanged) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
+2. **设置音频相关参数**：在加入频道前和音频路由变化（触发 [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
 
 :::warning[注意]
 由于 4.3.1 \~ 4.5.0 版本的 SDK 不支持 AI 对话场景，可修改音频场景为合唱场景 (`AUDIO_SCENARIO_CHORUS`) 以提升音频体验，但无法对齐 4.5.1 及以上版本的音频体验。如需获得最佳音频体验，请升级 SDK 至 4.5.1 及以上版本。
@@ -372,7 +372,7 @@ fun joinChannel(rtcToken: String, channelName: String, uid: Int, isIndependent: 
 为获得最佳 AI 对话音频体验，你需要完成以下音频相关设置：
 
 1. **设置音频场景**：在初始化引擎时将音频场景设置为 AI 对话场景。你也可以在加入频道前调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario) 方法将音频场景设置为 AI 对话场景。
-2. **设置音频相关参数**：在加入频道前和音频路由发生变化（触发 [`rtcEngine:didAudioRouteChanged:`](https://doc.shengwang.cn/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcEngine:didAudioRouteChanged:) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
+2. **设置音频相关参数**：在加入频道前和音频路由发生变化（触发 [`rtcEngine:didAudioRouteChanged:`](/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcenginedidaudioroutechanged) 回调）时，调用 [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters) 方法设置音频相关参数。主要包括音频 3A（回声消除（AEC）、降噪（ANS）和增益控制（AGC））插件的开关，以及音频采样率、音频处理模式等设置。各参数推荐设定的值参考示例代码。
 
 :::warning[注意]
 由于 4.3.1 \~ 4.5.0 版本的 SDK 不支持 AI 对话场景，可修改音频场景为合唱场景 (`AgoraAudioScenarioChorus`) 以提升音频体验，但无法对齐 4.5.1 及以上版本的音频体验。如需获得最佳音频体验，请升级 SDK 至 4.5.1 及以上版本。
@@ -512,7 +512,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 - [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario)
 - [`setParameters`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_setparameters)
-- [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#onAudioRouteChanged)
+- [`onAudioRouteChanged`](/zh-CN/api-reference/rtc/android/device-management/audio-route#callback_irtcengineeventhandler_onaudioroutingchanged)
 
 </TabsContent>
 
@@ -520,7 +520,7 @@ extension RTCManager: AgoraRtcEngineDelegate {
 
 - [`setAudioScenario`](/zh-CN/api-reference/rtc/ios/audio/audio-basic#api_irtcengine_setaudioscenario)
 - [`setParameters`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_setparameters)
-- [`rtcEngine:didAudioRouteChanged:`](https://doc.shengwang.cn/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcEngine:didAudioRouteChanged:)
+- [`rtcEngine:didAudioRouteChanged:`](/zh-CN/api-reference/rtc/ios/device-management/audio-route#rtcenginedidaudioroutechanged)
 
 </TabsContent>
 </Tabs>
