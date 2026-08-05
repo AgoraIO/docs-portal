@@ -7,7 +7,7 @@ description: "New features, improvements and resolved issues for Real-time STT."
 
 ### v7.2.3
 
-Released on August 5, 2026
+Released on July 30, 2026
 
 #### New features
 
