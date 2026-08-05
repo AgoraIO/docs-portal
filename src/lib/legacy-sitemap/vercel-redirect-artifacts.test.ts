@@ -30,13 +30,15 @@ type VercelRedirect = {
 };
 
 type VercelRoute = {
-  dest: string;
+  dest?: string;
   has?: Array<{
     key: string;
     type: string;
     value: string;
   }>;
+  headers?: Record<string, string>;
   src: string;
+  status?: number;
 };
 
 describe('legacy redirect Vercel artifacts', () => {
@@ -55,6 +57,16 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(staticRedirects).toHaveLength(legacyRules.length);
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('stays within Vercel redirect limits and schema', () => {
+    expect(bulkRedirects.length).toBeLessThanOrEqual(1_000);
+    expect(vercelConfig.redirects?.length ?? 0).toBeLessThanOrEqual(2_048);
+    expect(vercelConfig.redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ preserveQueryParams: expect.anything() }),
+      ]),
+    );
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
@@ -139,6 +151,74 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('redirects the moved AI release notes page in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/ai/reference/release-notes',
+      ),
+    ).toEqual({
+      destination: '/en/ai/release-notes',
+      preserveQueryParams: true,
+      source: '/en/ai/reference/release-notes',
+      statusCode: 301,
+    });
+  });
+
+  it('redirects high-traffic legacy English URLs to their current pages', () => {
+    const expectedRedirects = [
+      {
+        destination: '/en/api-reference/sdks',
+        source: '/en/sdks',
+      },
+      {
+        destination: '/en/api-reference/faq/integration/acquire_file_directory',
+        source: '/en/help/integration-issues/acquire_file_directory',
+      },
+      {
+        destination: '/en/api-reference/faq/other/android_noaudio',
+        source: '/en/help/other-issues/android_noaudio',
+      },
+      {
+        destination: '/en/api-reference/faq/quality/track_ended',
+        source: '/en/help/quality-issues/track_ended',
+      },
+      {
+        destination: '/en/api-reference/faq/account/console_account_faq',
+        source: '/en/help/account-and-billing/console_account_faq',
+      },
+      {
+        destination:
+          '/en/realtime-media/interactive-live-streaming/product-overview',
+        source: '/en/solutions/interactive-live-streaming/product-overview',
+      },
+      {
+        destination:
+          '/en/realtime-media/flexible-classroom/reference/supported-platforms',
+        source: '/en/flexible-classroom/overview/supported-platforms',
+      },
+      {
+        destination:
+          '/en/realtime-media/voice/build/optimize-and-operate/autoplay',
+        source: '/en/Voice/autoplay_policy_web_ng',
+      },
+      {
+        destination:
+          '/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow',
+        source: '/en/interactive-whiteboard/develop/authentication-workflow',
+      },
+    ];
+
+    for (const expected of expectedRedirects) {
+      expect(
+        bulkRedirects.find((rule) => rule.source === expected.source),
+      ).toEqual({
+        ...expected,
+        preserveQueryParams: true,
+        statusCode: 301,
+      });
+    }
+  });
+
   it('redirects locale-less conversational AI model overview links before app routing', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([
@@ -183,16 +263,18 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
+  it('strips legacy queries with conditional Vercel redirect routes', () => {
     expect(
       bulkRedirects.some(
         (rule) =>
           rule.source === '/en/broadcast-streaming/overview/release-notes',
       ),
     ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location:
+          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      },
       has: [
         {
           key: 'platform',
@@ -200,8 +282,8 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
+      src: '^/en/broadcast-streaming/overview/release-notes/?$',
+      status: 301,
     });
   });
 

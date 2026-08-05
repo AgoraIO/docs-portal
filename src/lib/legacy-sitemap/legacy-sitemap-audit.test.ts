@@ -29,8 +29,20 @@ type DocsFilesystemIndex = {
 };
 
 const manualLegacyUrls = new Set([
+  'https://docs.agora.io/en/Voice/autoplay_policy_web_ng',
+  'https://docs.agora.io/en/ai/reference/release-notes',
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
+  'https://docs.agora.io/en/flexible-classroom/overview/supported-platforms',
+  'https://docs.agora.io/en/help/account-and-billing/console_account_faq',
+  'https://docs.agora.io/en/help/integration-issues/acquire_file_directory',
+  'https://docs.agora.io/en/help/other-issues/android_noaudio',
+  'https://docs.agora.io/en/help/quality-issues/track_ended',
+  'https://docs.agora.io/en/interactive-whiteboard/develop/authentication-workflow',
+  'https://docs.agora.io/en/sdks',
+  'https://docs.agora.io/en/solutions/interactive-live-streaming/product-overview',
 ]);
+const apiRefRedirectAuditEvidence =
+  'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md';
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
@@ -120,7 +132,8 @@ describe('legacy sitemap compatibility audit', () => {
     const staleRules = legacySitemapRedirectConfig.rules.filter(
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
-        !manualLegacyUrls.has(rule.legacyUrl),
+        !manualLegacyUrls.has(rule.legacyUrl) &&
+        !rule.evidence.includes(apiRefRedirectAuditEvidence),
     );
 
     expect(staleRules).toEqual([]);
@@ -128,7 +141,7 @@ describe('legacy sitemap compatibility audit', () => {
 
   it('targets existing new docs portal pages', () => {
     const missingTargets = legacySitemapRedirectConfig.rules
-      .map((rule) => rule.target)
+      .map((rule) => stripHash(rule.target))
       .filter((target) => !docsPortalUrls.has(target));
 
     expect(missingTargets).toEqual([]);
@@ -170,7 +183,7 @@ describe('legacy sitemap compatibility audit', () => {
       native: 0,
       productFallback: 8,
       renamedPage: 39,
-      semanticPageMatch: 658,
+      semanticPageMatch: 668,
       totalLegacyUrls: compatibilityUrls.length,
       unavailable: 0,
     });
@@ -401,11 +414,15 @@ function buildDocsFilesystemIndex(): DocsFilesystemIndex {
   return { contentUrls, routeToFile };
 }
 
+function stripHash(url: string) {
+  return url.split('#', 1)[0];
+}
+
 function getDocsPortalUrls(docsFilesystemIndex: DocsFilesystemIndex) {
   const urls = new Set(docsFilesystemIndex.contentUrls);
   const missingTargets = new Set(
     legacySitemapRedirectConfig.rules
-      .map((rule) => rule.target)
+      .map((rule) => stripHash(rule.target))
       .filter((target) => !urls.has(target)),
   );
 
