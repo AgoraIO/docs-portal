@@ -4,6 +4,8 @@ description: Customize your agent using advanced configuration options in Agent 
 ---
 This guide covers the configuration options available in the agent editor. The editor is organized into four tabs: **Prompt**, **Models**, **Advanced**, and **Actions**.
 
+If you want help exploring or debugging your project through natural language, see [Concierge](concierge).
+
 ## Prerequisites
 
 Follow the [quickstart](../quickstart) to create your first Agent Studio agent.
@@ -143,6 +145,14 @@ The Actions tab is where you connect your agent to external data and services.
 
 A knowledge base provides your agent with additional context from reference documents. Click **+ Add Knowledge Base** to select or create a knowledge base. See [Add knowledge base](integrations#knowledge-bases).
 
+### Custom Tools
+
+Custom Tools let your agent call reusable HTTP endpoints that you defined in **Integration**. Click **+ Add Custom Tools** to attach one or more tools to this agent. See [Custom Tools](custom-tools).
+
+### Connector
+
+Connectors let your agent use built-in integrations managed in **Integration**. Attach HubSpot when your agent needs CRM contact or ticket workflows. See [HubSpot Connector](hubspot-connector).
+
 ### MCP Server
 
 MCP servers enable your agent to call tools provided by external services. Click **+ Add MCP Server** to select or create an MCP server. See [Add MCP server](integrations#mcp-servers).
@@ -150,5 +160,8 @@ MCP servers enable your agent to call tools provided by external services. Click
 ## Next steps
 
 - [Manage integrations](integrations): Manage credentials, MCP servers, and knowledge bases for reuse across agents
+- [Custom Tools](custom-tools): Create reusable HTTP tools and attach them to agents
+- [HubSpot Connector](hubspot-connector): Connect HubSpot for contacts and tickets workflows
+- [Concierge](concierge): Work with your project through natural language
 - [Test your agent](test-agent): Learn more about testing features and troubleshooting agent behavior
 - [Publish your agent](../deploy/deploy-agent): Publish your agent to production

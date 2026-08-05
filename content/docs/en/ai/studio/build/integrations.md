@@ -2,7 +2,7 @@
 title: Manage integrations
 description: Manage API credentials, knowledge bases and MCPs in Agent Studio.
 ---
-Agent Studio provides centralized management of credentials, MCP servers, and knowledge bases through the **Integration** interface. Store and reuse API keys and configuration settings for your LLM, ASR, and TTS providers across all agents, making it easy to update provider settings in one place.
+Agent Studio provides centralized management of credentials, connectors, Custom Tools, MCP servers, and knowledge bases through the **Integration** interface. Store reusable resources once, then attach them to agents in same project.
 
 ## Credentials
 
@@ -40,6 +40,32 @@ Credentials stored in **Integrations** are:
 - Rotate API keys regularly according to your security policies
 - Delete unused credentials to minimize security exposure
 :::
+
+## Connectors
+
+Connectors provide built-in integrations that agents can use without building your own HTTP or MCP layer.
+
+Currently available:
+
+- [HubSpot Connector](hubspot-connector): Connect HubSpot and attach it to agents that need contact and ticket workflows
+
+After you connect a connector here, attach it to an agent from the agent editor **Actions** tab.
+
+## Custom Tools
+
+Custom Tools let you define reusable HTTP tools for your agents.
+
+To create a Custom Tool:
+
+1. From the left sidebar, select **Integration**.
+2. At the top of the page, select **Custom Tools**.
+3. Click **Add Custom Tool**.
+4. Configure the request, function schema, and optional body template.
+5. Save the tool.
+
+After you create a Custom Tool, attach it to an agent from the agent editor **Actions** tab.
+
+See [Custom Tools](custom-tools) for full setup guidance.
 
 ## Knowledge bases
 
