@@ -119,6 +119,18 @@ function createPayload(
   return {
     activePath: '/en/introduction/about',
     activeTab: 'introduction',
+    analyticsPageContext: {
+      contentId: 'introduction/about',
+      journeyStage: 'unknown',
+      navSection: 'unknown',
+      navSectionTitle: 'unknown',
+      pageType: 'concept-explanation',
+      pathname: '/en/introduction/about',
+      product: 'unknown',
+      title: 'About',
+      version: 'current',
+    },
+    analyticsPageType: 'concept-explanation',
     body: overrides.body,
     breadcrumb: [],
     contentPath: 'docs/en/about.mdx',

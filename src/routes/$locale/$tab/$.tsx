@@ -130,6 +130,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 function Page() {
   const params = Route.useParams();
   const {
+    activePath,
+    activeTab,
+    analyticsPageContext,
+    analyticsPageType,
     body,
     breadcrumb,
     contentPath,
@@ -159,6 +163,10 @@ function Page() {
 
   return (
     <DocsContent
+      activePath={activePath}
+      activeTab={activeTab}
+      analyticsPageContext={analyticsPageContext}
+      analyticsPageType={analyticsPageType}
       body={body}
       breadcrumb={breadcrumb}
       contentPath={contentPath}

@@ -45,8 +45,123 @@
       "statusCode": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/android",
+      "source": "/cn/All/faq/audio_format",
+      "destination": "/en/api-reference/faq/product/audio_format",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/Agora Platform/transcoding",
+      "destination": "/en/realtime-media/transcoding",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/chat-sdk/data-insights",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-insights",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/chat-sdk/data-metrics",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-metrics",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/datadog-integration",
+      "destination": "/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/alarm",
+      "destination": "/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/alarm",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/call-search",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/call-search",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/data-insight",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/data-insight-plus",
+      "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight-plus",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/embedded",
+      "destination": "/en/realtime-media/agora-analytics/build/integrate-and-embed/embedded",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/analyze/video-voice-sdk/monitor",
+      "destination": "/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/monitor",
+      "statusCode": 301
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/cn/whiteboard/file_conversion_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/cn/whiteboard/whiteboard_file_conversion/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Agora Platform/get_appid_token/?$",
+      "headers": {
+        "Location": "/en/introduction/account#generate-temporary-tokens"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "All Platforms"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Agora Platform/terms/?$",
+      "headers": {
+        "Location": "/en/introduction/core-concepts#app-id"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "All Platforms"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/android"
+      },
       "has": [
         {
           "type": "query",
@@ -54,11 +169,13 @@
           "value": "android"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint"
+      },
       "has": [
         {
           "type": "query",
@@ -66,11 +183,13 @@
           "value": "blueprint"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/electron",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/electron"
+      },
       "has": [
         {
           "type": "query",
@@ -78,11 +197,13 @@
           "value": "electron"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/flutter",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/flutter"
+      },
       "has": [
         {
           "type": "query",
@@ -90,11 +211,13 @@
           "value": "flutter"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/ios",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/ios"
+      },
       "has": [
         {
           "type": "query",
@@ -102,11 +225,13 @@
           "value": "ios"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/javascript",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/javascript"
+      },
       "has": [
         {
           "type": "query",
@@ -114,11 +239,13 @@
           "value": "react-js"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/macos",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/macos"
+      },
       "has": [
         {
           "type": "query",
@@ -126,11 +253,13 @@
           "value": "macos"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/react-native",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/react-native"
+      },
       "has": [
         {
           "type": "query",
@@ -138,11 +267,13 @@
           "value": "react-native"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/unity",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/unity"
+      },
       "has": [
         {
           "type": "query",
@@ -150,11 +281,13 @@
           "value": "unity"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/unreal",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/unreal"
+      },
       "has": [
         {
           "type": "query",
@@ -162,11 +295,13 @@
           "value": "unreal"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/web",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/web"
+      },
       "has": [
         {
           "type": "query",
@@ -174,11 +309,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/broadcast-streaming/overview/release-notes",
-      "destination": "/en/realtime-media/broadcast-streaming/reference/release-notes/windows",
+      "src": "^/en/broadcast-streaming/overview/release-notes/?$",
+      "headers": {
+        "Location": "/en/realtime-media/broadcast-streaming/reference/release-notes/windows"
+      },
       "has": [
         {
           "type": "query",
@@ -186,11 +323,125 @@
           "value": "windows"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/android",
+      "src": "^/en/flexible-classroom/develop/record-a-class/?$",
+      "headers": {
+        "Location": "/en/realtime-media/flexible-classroom/build/enable-teaching-features/record-a-class"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/flexible-classroom/reference/classroom-api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/flexible-classroom/classroom-rest-api#set-the-recording-state"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive Broadcast/cdn_streaming_web/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive Broadcast/cdn_streaming_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive Broadcast/cloud_proxy_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive Broadcast/in-call_quality_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive Broadcast/set_subscribing_state/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/interactive-live-streaming/develop/product-workflow/?$",
+      "headers": {
+        "Location": "/en/api-reference/faq/integration/set_enabled_set_muted"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/interactive-whiteboard/develop/enable-whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project"
+      },
       "has": [
         {
           "type": "query",
@@ -198,11 +449,55 @@
           "value": "android"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/flutter",
+      "src": "^/en/Recording/cloudproxy_recording/?$",
+      "headers": {
+        "Location": "/en/realtime-media/on-premise-recording/build/connect-through-a-firewall/cloud-proxy"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Linux"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Recording/token/?$",
+      "headers": {
+        "Location": "/en/realtime-media/on-premise-recording/build/set-up-authentication/authentication-workflow"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "All Platforms"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/android"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "android"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/flutter"
+      },
       "has": [
         {
           "type": "query",
@@ -210,11 +505,13 @@
           "value": "flutter"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/ios",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/ios"
+      },
       "has": [
         {
           "type": "query",
@@ -222,11 +519,13 @@
           "value": "ios"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/linux-cpp",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/linux-cpp"
+      },
       "has": [
         {
           "type": "query",
@@ -234,11 +533,13 @@
           "value": "linux-cpp"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/macos",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/macos"
+      },
       "has": [
         {
           "type": "query",
@@ -246,11 +547,13 @@
           "value": "macos"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/react-native",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/react-native"
+      },
       "has": [
         {
           "type": "query",
@@ -258,11 +561,13 @@
           "value": "react-native"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/unity",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/unity"
+      },
       "has": [
         {
           "type": "query",
@@ -270,11 +575,13 @@
           "value": "unity"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/web",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/web"
+      },
       "has": [
         {
           "type": "query",
@@ -282,11 +589,13 @@
           "value": "web"
         }
       ],
-      "statusCode": 301
+      "status": 301
     },
     {
-      "source": "/en/signaling/reference/api",
-      "destination": "/en/api-reference/api-ref/signaling/windows-cpp",
+      "src": "^/en/signaling/reference/api/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/windows-cpp"
+      },
       "has": [
         {
           "type": "query",
@@ -294,10 +603,223 @@
           "value": "windows"
         }
       ],
-      "statusCode": 301
-    }
-  ],
-  "routes": [
+      "status": 301
+    },
+    {
+      "src": "^/en/video-calling/overview/migration-guide/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/reference/migration-guide"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/video-calling/reference/supported-platforms/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/reference/supported-platforms"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Video/beauty_effect_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/apply-video-effects/beauty-effect"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Video/channel_encryption_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Video/noise_reduction_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Video/token_server/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/authenticate-users/deploy-token-server"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Video/virtual_background_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/apply-video-effects/virtual-background"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Voice/token/?$",
+      "headers": {
+        "Location": "/en/realtime-media/voice/build/set-up-token-authentication/deploy-token-server"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "All Platforms"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/enable_whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Android"
+        },
+        {
+          "type": "query",
+          "key": "versionId",
+          "value": "7b951120-9d0b-11eb-934a-83674cc9d04a"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/enable_whiteboard/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Android"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/file_conversion_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/whiteboard_file_conversion/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/whiteboard_room_management/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/whiteboard_screenshot/?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/whiteboard/screenshots"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "RESTful"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/whiteboard/whiteboard_token_overview/?$",
+      "headers": {
+        "Location": "/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Android"
+        }
+      ],
+      "status": 301
+    },
     {
       "src": "^/\\.well-known/mcp$",
       "dest": "/.well-known/mcp.json"
