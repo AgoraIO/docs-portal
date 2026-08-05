@@ -14,7 +14,7 @@ This article introduces the key processes and concepts you need to know to use A
 
 #### Agora Console
 
-[Agora Console](https://console.agora.io/v2) is the main dashboard where you manage your Agora projects and services. Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an [Agora Account](https://console.agora.io/v2), you use the Agora Console to perform the following tasks:
+[Agora Console](https://console.agora.io/) is the main dashboard where you manage your Agora projects and services. Agora Console provides an intuitive interface for developers to query and manage their Agora account. After registering an [Agora Account](https://console.agora.io/), you use the Agora Console to perform the following tasks:
 
 -   Manage the account
 -   Create and configure Agora projects and services
@@ -32,7 +32,7 @@ Agora uses the following basic concepts:
 
 ### App ID
 
-The App ID is a random string generated within [Agora Console](https://console.agora.io/v2) when you create a new project. You can create multiple projects in your account; each project has a different App ID. This App ID enables your app users to communicate securely with each other. When you initialize Agora Engine in your app, you pass the App ID as an argument. The App ID is also used to create the authentication tokens that ensure secure communication in a channel. You [retrieve your App ID](https://console.agora.io/v2/project-management) using Agora Console.
+The App ID is a random string generated within [Agora Console](https://console.agora.io/) when you create a new project. You can create multiple projects in your account; each project has a different App ID. This App ID enables your app users to communicate securely with each other. When you initialize Agora Engine in your app, you pass the App ID as an argument. The App ID is also used to create the authentication tokens that ensure secure communication in a channel. You [retrieve your App ID](https://console.agora.io/legacy/project-management) using Agora Console.
 
 Agora uses this App ID to identify each app, provide billing and other statistical data services.
 

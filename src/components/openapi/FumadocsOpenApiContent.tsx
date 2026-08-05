@@ -1,11 +1,10 @@
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
-import type { MethodInformation, RenderContext } from 'fumadocs-openapi';
-import type {
-  CodeUsageGeneratorRegistry,
-  InlineCodeUsageGenerator,
-} from 'fumadocs-openapi/requests/generators';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
-import { createClientAPIPage } from 'fumadocs-openapi/ui/create-client';
+import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
+import {
+  type CreateOpenAPIPageOptions,
+  createOpenAPIPage,
+  type OpenAPIPageProps,
+} from 'fumadocs-openapi/ui';
 import {
   CodeBlockTab,
   CodeBlockTabs,
@@ -66,19 +65,23 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
 const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
 const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
 
-const ClientAPIPage = createClientAPIPage({
+const OpenAPIPage = createOpenAPIPage({
   content: {
     renderAPIExampleLayout: (slots) => (
-      <OpenApiRightExamplesLayout slots={slots} />
+      <OpenApiRightExamplesLayout
+        slots={{
+          ...slots,
+          usageTabs: (
+            <OpenApiCodeSampleUsageTabs defaultUsageTabs={slots.usageTabs} />
+          ),
+        }}
+      />
     ),
-    renderAPIExampleUsageTabs: (generators, ctx) => (
-      <OpenApiCodeSampleUsageTabs generators={generators} ctx={ctx} />
-    ),
-    renderOperationLayout: (slots, ctx, method) => (
+    renderOperationLayout: (slots, { ctx, operation }) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
-            ...(method as OpenApiOperation),
+            ...(operation as OpenApiOperation),
             __documentSecurity: ctx.schema.dereferenced.security,
             __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
@@ -99,7 +102,7 @@ const ClientAPIPage = createClientAPIPage({
         anchorPrefix={getOpenApiSchemaAnchorPrefix(options)}
         document={ctx.schema.dereferenced}
         readOnly={options.readOnly}
-        renderMarkdown={ctx.renderMarkdown}
+        renderMarkdown={renderOpenApiMarkdown}
         root={options.root}
         writeOnly={options.writeOnly}
       />
@@ -107,8 +110,14 @@ const ClientAPIPage = createClientAPIPage({
   },
 });
 
-function getGeneratedCodeSampleOverrides(method: MethodInformation) {
-  return method['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
+type GenerateCodeSamplesOptions = Parameters<
+  NonNullable<CreateOpenAPIPageOptions['generateCodeSamples']>
+>[0];
+
+function getGeneratedCodeSampleOverrides({
+  operation,
+}: GenerateCodeSamplesOptions) {
+  return operation['x-codeSamples']?.length ? removeGeneratedCodeSamples : [];
 }
 
 export function FumadocsOpenApiContent({
@@ -116,7 +125,7 @@ export function FumadocsOpenApiContent({
   pageProps,
 }: {
   className?: string;
-  pageProps: ClientApiPageProps;
+  pageProps: OpenAPIPageProps;
 }) {
   const operation = getCurrentOperation(pageProps);
 
@@ -135,7 +144,7 @@ export function FumadocsOpenApiContent({
           operation={operation}
           position="before-description"
         />
-        <ClientAPIPage {...pageProps} />
+        <OpenAPIPage {...pageProps} />
       </OpenApiSourceOperationContext.Provider>
     </div>
   );
@@ -458,8 +467,12 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
 }
 
 function getCurrentOperation(
-  pageProps: ClientApiPageProps,
+  pageProps: OpenAPIPageProps,
 ): OpenApiOperation | undefined {
+  if (!('payload' in pageProps)) {
+    return undefined;
+  }
+
   const operation = pageProps.operations?.at(0);
   const pathItem = operation
     ? getRecord(pageProps.payload.bundled.paths)?.[operation.path]
@@ -743,11 +756,9 @@ function OpenApiFieldList({
 }
 
 function OpenApiCodeSampleUsageTabs({
-  ctx,
-  generators,
+  defaultUsageTabs,
 }: {
-  ctx: RenderContext;
-  generators: CodeUsageGeneratorRegistry;
+  defaultUsageTabs: ReactNode;
 }) {
   const operation = useContext(OpenApiOperationContext);
   const groups = getOpenApiCodeSampleGroups(operation);
@@ -757,7 +768,7 @@ function OpenApiCodeSampleUsageTabs({
     return (
       <OpenApiCodeSampleGroupSelector
         groups={groups}
-        renderCodeBlock={ctx.renderCodeBlock}
+        renderCodeBlock={renderOpenApiCodeBlock}
       />
     );
   }
@@ -765,48 +776,13 @@ function OpenApiCodeSampleUsageTabs({
   if (samples.length > 0) {
     return (
       <OpenApiCodeSampleTabs
-        renderCodeBlock={ctx.renderCodeBlock}
+        renderCodeBlock={renderOpenApiCodeBlock}
         samples={samples}
       />
     );
   }
 
-  return <OpenApiDefaultUsageTabs ctx={ctx} generators={generators} />;
-}
-
-function OpenApiDefaultUsageTabs({
-  ctx,
-  generators,
-}: {
-  ctx: RenderContext;
-  generators: CodeUsageGeneratorRegistry;
-}) {
-  const entries = Array.from(generators.map().entries());
-  const UsageTab = ctx.clientBoundary.UsageTab;
-
-  if (entries.length === 0) {
-    return null;
-  }
-
-  return (
-    <CodeBlockTabs
-      defaultValue={entries[0]?.[0]}
-      groupId="fumadocs_openapi_requests"
-    >
-      <CodeBlockTabsList>
-        {entries.map(([id, item]) => (
-          <CodeBlockTabsTrigger key={id} value={id}>
-            {item.label ?? item.lang}
-          </CodeBlockTabsTrigger>
-        ))}
-      </CodeBlockTabsList>
-      {entries.map(([id, item]) => (
-        <CodeBlockTab key={id} value={id}>
-          <UsageTab id={id} lang={item.lang} _client={item._client} />
-        </CodeBlockTab>
-      ))}
-    </CodeBlockTabs>
-  );
+  return defaultUsageTabs;
 }
 
 function getOpenApiCodeSampleGroups(operation?: OpenApiOperation) {
@@ -836,7 +812,7 @@ function OpenApiCodeSampleTabs({
   renderCodeBlock,
   samples,
 }: {
-  renderCodeBlock: RenderContext['renderCodeBlock'];
+  renderCodeBlock: (lang: string, source: string) => ReactNode;
   samples: OpenApiResolvedCodeSample[];
 }) {
   const [selectedSampleValue, setSelectedSampleValue] = useState('');
@@ -881,7 +857,7 @@ function OpenApiCodeSampleGroupSelector({
   renderCodeBlock,
 }: {
   groups: OpenApiResolvedCodeSampleGroup[];
-  renderCodeBlock: RenderContext['renderCodeBlock'];
+  renderCodeBlock: (lang: string, source: string) => ReactNode;
 }) {
   const [selectedTitle, setSelectedTitle] = useState(groups[0]?.title ?? '');
   const [selectedSampleValue, setSelectedSampleValue] = useState('');
@@ -1809,6 +1785,10 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
     .result as ReactNode;
 
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
+}
+
+function renderOpenApiCodeBlock(lang: string, source: string) {
+  return renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``);
 }
 
 function createOpenApiMarkdownProcessor() {

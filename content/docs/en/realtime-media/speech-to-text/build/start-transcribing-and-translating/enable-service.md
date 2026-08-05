@@ -13,7 +13,7 @@ This page explains how to enable Real-Time STT on the client's side. For more in
 
 To follow this procedure, you must:
 
-- Have a valid [Agora Account](https://console.agora.io/v2).
+- Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
 server. For details, see [Agora account management](/en/realtime-media/rtc/manage-agora-account).

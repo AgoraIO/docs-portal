@@ -29,21 +29,25 @@ type VercelRedirect = {
   statusCode: number;
 };
 
+type VercelRoute = {
+  dest?: string;
+  has?: Array<{
+    key: string;
+    type: string;
+    value: string;
+  }>;
+  headers?: Record<string, string>;
+  src: string;
+  status?: number;
+};
+
 describe('legacy redirect Vercel artifacts', () => {
   const legacyRules = redirectsConfig.rules as LegacySitemapRedirectRule[];
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
     bulkRedirectsPath: string;
     redirects?: VercelRedirect[];
     rewrites?: unknown[];
-    routes?: Array<{
-      dest: string;
-      has?: Array<{
-        key: string;
-        type: string;
-        value: string;
-      }>;
-      src: string;
-    }>;
+    routes?: VercelRoute[];
   };
   const bulkRedirects = JSON.parse(
     readFileSync('vercel-legacy-redirects.json', 'utf8'),
@@ -55,7 +59,28 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(vercelConfig.rewrites).toBeUndefined();
   });
 
+  it('stays within Vercel redirect limits and schema', () => {
+    expect(bulkRedirects.length).toBeLessThanOrEqual(1_000);
+    expect(vercelConfig.redirects?.length ?? 0).toBeLessThanOrEqual(2_048);
+    expect(vercelConfig.redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ preserveQueryParams: expect.anything() }),
+      ]),
+    );
+  });
+
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
+    expect(vercelConfig.routes).toContainEqual({
+      dest: '/en.md',
+      has: [
+        {
+          key: 'Accept',
+          type: 'header',
+          value: '.*text/markdown.*',
+        },
+      ],
+      src: '^/(?:en/?)?$',
+    });
     expect(vercelConfig.routes).toContainEqual({
       dest: '/en/$1.md',
       has: [
@@ -75,6 +100,30 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
+  it('negotiates only English entry requests that explicitly accept markdown', () => {
+    expect(resolveVercelRoute(vercelConfig.routes, '/', 'text/markdown')).toBe(
+      '/en.md',
+    );
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en', 'text/markdown'),
+    ).toBe('/en.md');
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en/', 'text/markdown'),
+    ).toBe('/en.md');
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/', 'text/html'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en', 'text/html'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/en.md', 'text/markdown'),
+    ).toBeNull();
+    expect(
+      resolveVercelRoute(vercelConfig.routes, '/zh-CN', 'text/markdown'),
+    ).toBeNull();
+  });
+
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
     expect(
       bulkRedirects.find(
@@ -87,6 +136,122 @@ describe('legacy redirect Vercel artifacts', () => {
       source: '/en/agora-chat/develop/ip_allowlist',
       statusCode: 301,
     });
+  });
+
+  it('redirects the legacy Chat RESTful overview to the API reference overview in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/agora-chat/restful-api/restful-overview',
+      ),
+    ).toEqual({
+      destination: '/en/api-reference/api-ref/im',
+      preserveQueryParams: true,
+      source: '/en/agora-chat/restful-api/restful-overview',
+      statusCode: 301,
+    });
+  });
+
+  it('redirects the moved AI release notes page in production', () => {
+    expect(
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/ai/reference/release-notes',
+      ),
+    ).toEqual({
+      destination: '/en/ai/release-notes',
+      preserveQueryParams: true,
+      source: '/en/ai/reference/release-notes',
+      statusCode: 301,
+    });
+  });
+
+  it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
+    expect(vercelConfig.routes).toEqual(
+      expect.arrayContaining([
+        {
+          src: '^/en/Agora%20Platform/get_appid_token/?$',
+          headers: {
+            Location: '/en/introduction/account#generate-temporary-tokens',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+        {
+          src: '^/en/Agora%20Platform/terms/?$',
+          headers: {
+            Location: '/en/introduction/core-concepts#app-id',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+      ]),
+    );
+  });
+
+  it('redirects high-traffic legacy English URLs to their current pages', () => {
+    const expectedRedirects = [
+      {
+        destination: '/en/api-reference/sdks',
+        source: '/en/sdks',
+      },
+      {
+        destination: '/en/api-reference/faq/integration/acquire_file_directory',
+        source: '/en/help/integration-issues/acquire_file_directory',
+      },
+      {
+        destination: '/en/api-reference/faq/other/android_noaudio',
+        source: '/en/help/other-issues/android_noaudio',
+      },
+      {
+        destination: '/en/api-reference/faq/quality/track_ended',
+        source: '/en/help/quality-issues/track_ended',
+      },
+      {
+        destination: '/en/api-reference/faq/account/console_account_faq',
+        source: '/en/help/account-and-billing/console_account_faq',
+      },
+      {
+        destination:
+          '/en/realtime-media/interactive-live-streaming/product-overview',
+        source: '/en/solutions/interactive-live-streaming/product-overview',
+      },
+      {
+        destination:
+          '/en/realtime-media/flexible-classroom/reference/supported-platforms',
+        source: '/en/flexible-classroom/overview/supported-platforms',
+      },
+      {
+        destination:
+          '/en/realtime-media/voice/build/optimize-and-operate/autoplay',
+        source: '/en/Voice/autoplay_policy_web_ng',
+      },
+      {
+        destination:
+          '/en/realtime-media/whiteboard/build/authenticate-users/authentication-workflow',
+        source: '/en/interactive-whiteboard/develop/authentication-workflow',
+      },
+    ];
+
+    for (const expected of expectedRedirects) {
+      expect(
+        bulkRedirects.find((rule) => rule.source === expected.source),
+      ).toEqual({
+        ...expected,
+        preserveQueryParams: true,
+        statusCode: 301,
+      });
+    }
   });
 
   it('redirects locale-less conversational AI model overview links before app routing', () => {
@@ -133,16 +298,18 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
+  it('strips legacy queries with conditional Vercel redirect routes', () => {
     expect(
       bulkRedirects.some(
         (rule) =>
           rule.source === '/en/broadcast-streaming/overview/release-notes',
       ),
     ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location:
+          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      },
       has: [
         {
           key: 'platform',
@@ -150,8 +317,8 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
+      src: '^/en/broadcast-streaming/overview/release-notes/?$',
+      status: 301,
     });
   });
 
@@ -167,3 +334,27 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(Object.keys(sample ?? {}).sort()).toEqual(['p', 't']);
   });
 });
+
+function resolveVercelRoute(
+  routes: VercelRoute[] | undefined,
+  pathname: string,
+  accept: string,
+) {
+  for (const route of routes ?? []) {
+    if (!new RegExp(route.src).test(pathname)) {
+      continue;
+    }
+
+    const acceptsRequest = (route.has ?? []).every((condition) =>
+      condition.type === 'header' && condition.key.toLowerCase() === 'accept'
+        ? new RegExp(condition.value).test(accept)
+        : false,
+    );
+
+    if (acceptsRequest) {
+      return route.dest;
+    }
+  }
+
+  return null;
+}

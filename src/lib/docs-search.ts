@@ -1,4 +1,5 @@
 export type SearchEntry = {
+  breadcrumbs?: string[];
   content?: string;
   description?: string;
   objectType?: 'docs' | 'openapi';

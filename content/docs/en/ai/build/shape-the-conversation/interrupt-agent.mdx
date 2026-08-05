@@ -269,8 +269,6 @@ Before you begin, make sure you:
 - Implement the basic logic to communicate with a conversational AI agent.
 - Ensure that the RTC engine instance is initialized and the app is logged in to Signaling. The toolkit does not handle initialization, lifecycle management, authentication, or login for RTC SDK or Signaling.
 
-#### Integrate the toolkit
-
 <Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
   <TabsTrigger value="android">Android</TabsTrigger>
@@ -280,16 +278,17 @@ Before you begin, make sure you:
 
 <TabsContent value="android">
 
-1. Copy the [`convoaiApi`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
-
+1. Add the toolkit to your project using Maven or source code. See [Install the Android toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#installation).
 2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```kotlin
    // Create a configuration object for the RTC and RTM instances
    val config = ConversationalAIAPIConfig(
-       rtcEngine = rtcEngineInstance,
-       rtmClient = rtmClientInstance,
-       enableLog = true
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
    )
 
    // Create the component instance
@@ -321,8 +320,7 @@ Before you begin, make sure you:
 
 <TabsContent value="ios">
 
-1. Copy the [`ConversationalAIAPI`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/iOS/Scenes/ConvoAI/ConvoAI/ConvoAI/Classes/ConversationalAIAPI) folder to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
-
+1. Add the toolkit to your project using CocoaPods, Swift Package Manager, or source code. See [Install the iOS toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#installation).
 2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```swift
@@ -330,7 +328,9 @@ Before you begin, make sure you:
    let config = ConversationalAIAPIConfig(
        rtcEngine: rtcEngine,
        rtmEngine: rtmEngine,
-       enableLog: true
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
    )
 
    // Create the component instance
@@ -368,19 +368,21 @@ Before you begin, make sure you:
 
 <TabsContent value="web">
 
-1. Copy the [`conversational-ai-api`](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Web/Scenes/VoiceAgent/src/conversational-ai-api) file to your project and import it before calling API methods. Refer to the [component structure](#component-structure) to understand the role of each file.
-
+1. Add the toolkit to your project using a package manager or source code. See [Install the Web toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#installation).
 2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
 
    ```ts
    // Create a configuration object for the RTC and RTM instances
-   ConversationalAIAPI.init({
-       rtcEngine,
-       rtmEngine,
-   })
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
 
-   // Get the API instance (singleton)
-   const conversationalAIAPI = ConversationalAIAPI.getInstance()
+   // Initialize the component instance
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
    ```
 
 3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
@@ -412,52 +414,6 @@ Before you begin, make sure you:
 
 Agora provides a [sample project](https://github.com/AgoraIO-Community/Conversational-AI-Demo/) for your reference. Download or view the source code for a complete example.
 
-### Component structure
-
-The structure of the client component folder and the functions of each file are as follows:
-
-:::info[Info]
-Copy only the following files and folders to integrate the client component. You do not need to copy other files.
-:::
-
-<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
-<TabsList>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="web">Web</TabsTrigger>
-</TabsList>
-
-<TabsContent value="android">
-
-- `IConversationalAIAPI.kt`: API interface and related data structures and enumerations
-- `ConversationalAIAPIImpl.kt`: ConversationalAI API main implementation logic
-- `ConversationalAIUtils.kt`: Tool functions and event callback management
-- `subRender/`
-    - `v3/`: Transcript module
-        - `TranscriptionController.kt`: Transcript controller
-        - `MessageParser.kt`: Message parser
-
-</TabsContent>
-
-<TabsContent value="ios">
-
-- `ConversationalAIAPI.swift`: API interface and related data structures and enumerations
-- `ConversationalAIAPIImpl.swift`: ConversationalAI API main implementation logic
-- `Transcription/`
-    - `TranscriptionController.swift`: Transcript controller
-
-</TabsContent>
-
-<TabsContent value="web">
-
-- `index.ts`: API Class
-- `type.ts`: API interface and related data structures and enumerations
-- `utils/index.ts`: API utility functions
-- `utils/events.ts`: Event management class, which can be extended to easily implement event monitoring and broadcasting
-- `utils/sub-render.ts`: Transcript module
-
-</TabsContent>
-</Tabs>
 ### API reference
 
 #### RESTful API

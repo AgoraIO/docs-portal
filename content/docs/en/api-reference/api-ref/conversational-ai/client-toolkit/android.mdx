@@ -3,6 +3,37 @@ title: Android toolkit API
 description: Android toolkit API reference for Conversational AI Engine.
 ---
 
+## Installation
+
+Add the toolkit to your project using Maven or by copying the source code.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="maven">Maven</TabsTrigger>
+  <TabsTrigger value="source">Source code</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven">
+
+Add the following dependency to your app-level `build.gradle` file:
+
+```groovy
+implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'
+```
+
+</TabsContent>
+
+<TabsContent value="source">
+
+Copy the [`conversational-ai`](https://github.com/AgoraIO-Conversational-AI/agent-client-toolkit-kotlin/tree/main/conversational-ai) module into your project, then import the toolkit before calling its APIs.
+
+</TabsContent>
+</Tabs>
+
+:::info
+If you encounter library conflicts when integrating multiple Agora SDKs in your Android project, see [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+:::
+
 The [Android toolkit API](https://github.com/AgoraIO-Community/Conversational-AI-Demo/tree/main/Android/scenes/convoai/src/main/java/io/agora/scene/convoai/convoaiApi) for Conversational AI Engine provides the following classes and methods.
 
 ## IConversationalAIAPI class
@@ -15,6 +46,8 @@ The [Android toolkit API](https://github.com/AgoraIO-Community/Conversational-AI
 | [`subscribeMessage`](#subscribemessage)  | Subscribes to a channel to receive agent conversation events.               |
 | [`unsubscribeMessage`](#unsubscribemessage)| Unsubscribes from the channel and stops receiving events.                   |
 | [`interrupt`](#interrupt)         | Interrupts the agent’s speech.                     |
+| [`manualSOS`](#manualsos) | Sends a manual Start of Speech (SoS) signal to the agent. |
+| [`manualEOS`](#manualeos) | Sends a manual End of Speech (EoS) signal to the agent. |
 | [`loadAudioSettings`](#loadaudiosettings) | Sets audio parameters to optimize agent conversation performance.           |
 | [`destroy`](#destroy)           | Destroys the API instance and releases resources.         |
 
@@ -100,6 +133,48 @@ fun interrupt(agentUserId: String, completion: (error: ConversationalAIAPIError?
 | `agentUserId`   | `String`                       | Agent user ID.       |
 | `completion`    | `(error: ConversationalAIAPIError?) -> Unit`           | Callback. `error` is `null` on success or contains error info if the call fails. See [`ConversationalAIAPIError`](#conversationalaiapierror). |
 
+### `manualSOS`
+
+Sends a manual Start of Speech (SoS) signal to the agent over RTM, explicitly declaring that the current user has started speaking.
+
+```kotlin
+fun manualSOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
+- `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `String` | Agent user ID. |
+| `completion`  | `(requestId: String, error: ConversationalAIAPIError?) -> Unit` | Callback function. `requestId` is the unique identifier for this request. `error` is `null` if the call succeeds, and non-null if it fails. This callback only indicates whether the RTM publish succeeded. |
+
+### `manualEOS`
+
+Sends a manual End of Speech (EoS) signal to the agent over RTM, explicitly declaring that the current user has finished speaking.
+
+```kotlin
+fun manualEOS(agentUserId: String, completion: (requestId: String, error: ConversationalAIAPIError?) -> Unit)
+```
+
+Keep the following in mind when calling this method:
+
+- The component generates `requestId` internally. After the request is sent, the component returns the `requestId` for this request in `completion`. Your app can store this value to correlate it with the server-side callback.
+- `completion` only indicates whether the RTM publish succeeded — it does not indicate that the server processed the request successfully.
+- Whether the server successfully processed the request is determined by the subsequent [`onUserManualSosEvent`](#onusermanualsosevent) or [`onUserManualEosEvent`](#onusermanualeosevent) callback.
+- The client does not check locally whether manual mode is enabled. Mode validation is handled by the server.
+- Common failure reasons include: the current mode configuration does not allow manual signaling, there is no active user speech to mark, or a manual SoS or EoS that has already taken effect is resubmitted within the same turn.
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `String` | Agent user ID. |
+| `completion`  | `(requestId: String, error: ConversationalAIAPIError?) -> Unit` | Callback function. `requestId` is the unique identifier for this request. `error` is `null` if the call succeeds, and non-null if it fails. This callback only indicates whether the RTM publish succeeded. |
+
 ### `loadAudioSettings`
 
 Sets audio parameters to optimize the agent’s conversation performance.
@@ -132,6 +207,9 @@ fun destroy()
 |------------------------|----------------------------------|
 | [`onMessageError`](#onmessageerror) | Message processing error callback. |
 | [`onMessageReceiptUpdated`](#onmessagereceiptupdated) | Message receipt update callback. |
+| [`onUserManualSosEvent`](#onusermanualsosevent) | Manual SoS result callback. |
+| [`onUserManualEosEvent`](#onusermanualeosevent) | Manual EoS result callback. |
+| [`onAgentManualEosEvent`](#onagentmanualeosevent) | Server-triggered automatic EoS notification callback. |
 | [`onAgentStateChanged`](#onagentstatechanged)  | Called when the agent’s status changes.          |
 | [`onAgentListeningChanged`](#onagentlisteningchanged) | Called when the agent's listening state changes. |
 | [`onAgentThinkingChanged`](#onagentthinkingchanged)   | Called when the agent's thinking state changes.  |
@@ -169,6 +247,57 @@ fun onMessageReceiptUpdated(agentUserId: String, receipt: MessageReceipt)
 |---------------|-------------------|------------------------------------|
 | `agentUserId`   | `String`          | Agent user ID. |
 | `receipt`       | `MessageReceipt`  | Message receipt information. See `MessageReceipt` for details. |
+
+### `onUserManualSosEvent`
+
+Manual SoS result callback.
+
+Receives the server's processing result for a manual SoS request. Both success and failure results are returned through this callback — check `event.payload.success` to determine the outcome.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```kotlin
+fun onUserManualSosEvent(agentUserId: String, event: UserManualSosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | Agent user ID. |
+| `event`       | `UserManualSosEvent` | Manual SoS event object. See [`UserManualSosEvent`](#usermanualsosevent). |
+
+### `onUserManualEosEvent`
+
+Manual EoS result callback.
+
+Receives the server's processing result for a manual EoS request. Both success and failure results are returned through this callback — check `event.payload.success` to determine the outcome.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```kotlin
+fun onUserManualEosEvent(agentUserId: String, event: UserManualEosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | Agent user ID. |
+| `event`       | `UserManualEosEvent` | Manual EoS event object. See [`UserManualEosEvent`](#usermanualeosevent). |
+
+### `onAgentManualEosEvent`
+
+Server-triggered automatic EoS notification callback.
+
+Triggered when a user's single speaking turn exceeds the server-side duration threshold. In this case, the server ends the current user's turn on its own and notifies the client through this callback. This event is not a result of calling `manualEOS()`.
+
+This callback has a default empty implementation, so existing integrations do not need to implement it.
+
+```kotlin
+fun onAgentManualEosEvent(agentUserId: String, event: AgentManualEosEvent)
+```
+
+| Parameter     | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `agentUserId` | `String`          | Agent user ID. |
+| `event`       | `AgentManualEosEvent` | Server-triggered automatic EoS event object. See [`AgentManualEosEvent`](#agentmanualeosevent). |
 
 ### `onAgentStateChanged`
 
@@ -468,6 +597,98 @@ data class MessageError(
 | `message`           | `String`          | Error description providing detailed explanation, usually a JSON string containing resource information. |
 | `timestamp`         | `Long`            | Timestamp of when the event occurred (milliseconds since January 1, 1970 UTC). |
 
+### `UserManualEventPayload`
+
+Common payload for manual SoS/EoS events.
+
+```kotlin
+data class UserManualEventPayload(
+    val success: Boolean,
+    val requestId: String,
+    val turnId: Long?,
+    val errorMessage: String?
+)
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `success` | `Boolean` | Whether the server successfully processed this manual signal. |
+| `requestId` | `String` | Request ID, corresponding to the `requestId` returned in `completion` after calling `manualSOS` or `manualEOS`. |
+| `turnId` | `Long?` | The associated conversation turn ID. `null` if the server's failure callback does not include a `turn_id`. |
+| `errorMessage` | `String?` | The raw error message returned by the server. Usually `null` on success. |
+
+### `UserManualSosEvent`
+
+Represents a manual SoS event.
+
+```kotlin
+data class UserManualSosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: UserManualEventPayload
+)
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `Long` | Event timestamp in milliseconds. |
+| `payload` | `UserManualEventPayload` | Event payload. See [`UserManualEventPayload`](#usermanualeventpayload). |
+
+### `UserManualEosEvent`
+
+Represents a manual EoS event.
+
+```kotlin
+data class UserManualEosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: UserManualEventPayload
+)
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `Long` | Event timestamp in milliseconds. |
+| `payload` | `UserManualEventPayload` | Event payload. See [`UserManualEventPayload`](#usermanualeventpayload). |
+
+### `AgentManualEosPayload`
+
+Payload for a server-triggered automatic EoS event.
+
+```kotlin
+data class AgentManualEosPayload(
+    val reason: String,
+    val maxDurationMs: Long,
+    val turnId: Long
+)
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `reason` | `String` | The reason the server automatically ended the current user's turn. |
+| `maxDurationMs` | `Long` | The configured maximum duration, in milliseconds, for a single speaking turn. |
+| `turnId` | `Long` | The associated conversation turn ID. |
+
+### `AgentManualEosEvent`
+
+Represents a server-triggered automatic EoS event.
+
+```kotlin
+data class AgentManualEosEvent(
+    val eventId: String,
+    val timestamp: Long,
+    val payload: AgentManualEosPayload
+)
+```
+
+| Parameter   | Type                  | Description  |
+|-------------|-----------------------|--------------|
+| `eventId` | `String` | Unique event ID. |
+| `timestamp` | `Long` | Event timestamp in milliseconds. |
+| `payload` | `AgentManualEosPayload` | Event payload. See [`AgentManualEosPayload`](#agentmanualeospayload). |
+
 ### `Transcript`
 Represents a full transcribed message used to render the UI.
 
@@ -498,7 +719,8 @@ data class ConversationalAIAPIConfig(
     val rtcEngine: RtcEngine,
     val rtmClient: RtmClient,
     val renderMode: TranscriptRenderMode = TranscriptRenderMode.Word,
-    val enableLog: Boolean = false
+    val enableLog: Boolean = true,
+    val enableRenderModeFallback: Boolean = true
 )
 ```
 
@@ -507,7 +729,8 @@ data class ConversationalAIAPIConfig(
 | `rtcEngine`  | `RtcEngine`              | Audio/video engine instance. See [`RtcEngine`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#class_irtcengine).     |
 | `rtmClient`  | `RtmClient`              | Real-time messaging client. See the [Signaling Android API reference](https://api-ref.agora.io/en/signaling-sdk/android/2.x/index.html).       |
 | `renderMode` | `TranscriptRenderMode`| Transcript rendering style. Default: word-by-word. See [`TranscriptRenderMode`](#transcriptrendermode). |
-| `enableLog`  | `Boolean`                | Enables logging if `true`. Default is `false`.    |
+| `enableLog`  | `Boolean`                | Enables logging if `true`. When `true`, logs are written to the RTC SDK log file. Default is `true`.    |
+| `enableRenderModeFallback` | `Boolean` | Whether to automatically fall back to text rendering when `renderMode` is set to word-level but the server doesn't provide word-level timing data. If `true` (default), the component falls back to text mode automatically. If `false`, the component stays in word mode regardless — this can result in no transcript being displayed if the server doesn't support word-level transcription. |
 
 
 

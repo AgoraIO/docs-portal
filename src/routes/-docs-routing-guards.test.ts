@@ -41,6 +41,7 @@ import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
   payloadSupportsPlatform,
+  preserveRedirectSearch,
 } from './$locale/$tab/$';
 import { Route as TabIndexRoute } from './$locale/$tab/index';
 import { Route as LocaleIndexRoute } from './$locale/index';
@@ -68,6 +69,18 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
   return {
     activePath: '/en/realtime-media/rtm/build/presence',
     activeTab: 'realtime-media',
+    analyticsPageContext: {
+      contentId: 'realtime-media/rtm/build/presence',
+      journeyStage: 'unknown',
+      navSection: 'unknown',
+      navSectionTitle: 'unknown',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/rtm/build/presence',
+      product: 'unknown',
+      title: 'Presence',
+      version: 'current',
+    },
+    analyticsPageType: 'task-guide',
     body: {
       contentPath: 'en/realtime-media/rtm/build/presence.mdx',
       kind: 'mdx',
@@ -211,6 +224,21 @@ describe('docs route locale guards', () => {
     }
 
     throw new Error('expected loader to reject with redirect');
+  });
+
+  it('drops legacy fragments when redirecting query-specific legacy docs pages', () => {
+    expect(
+      preserveRedirectSearch(
+        '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring',
+        {
+          hash: 'statistics-of-remote-video-streams',
+          searchStr: '?platform=Windows',
+        },
+        false,
+      ),
+    ).toBe(
+      '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring',
+    );
   });
 
   it('recognizes legacy query-string platform values for docs pages', () => {

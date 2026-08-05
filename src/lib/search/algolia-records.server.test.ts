@@ -1,9 +1,73 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildAlgoliaContentDocsRecords,
+  buildAlgoliaOpenApiRecord,
   classifySearchCategory,
   extractDocSearchContent,
   toPlainText,
 } from './algolia-records.server';
+
+describe('buildAlgoliaContentDocsRecords', () => {
+  it('indexes only page-tree-visible docs with real breadcrumbs', async () => {
+    const visibleUrl = '/en/realtime-media/voice/reference/pricing';
+    const hiddenUrl = '/en/realtime-media/voice/reference/billing-policies';
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'Voice pricing details.',
+          title: 'Pricing',
+          url: visibleUrl,
+        },
+        {
+          content: 'Billing and account policies.',
+          title: 'Policies',
+          url: hiddenUrl,
+        },
+      ],
+      new Map([
+        [
+          'en',
+          new Map([
+            [
+              visibleUrl,
+              ['RTC', 'Build Live Interaction', 'Voice Calling', 'Reference'],
+            ],
+          ]),
+        ],
+      ]),
+    );
+
+    expect(records.some((record) => record.url === hiddenUrl)).toBe(false);
+    expect(
+      records.find((record) => record.url === visibleUrl)?.breadcrumbs,
+    ).toEqual(['RTC', 'Build Live Interaction', 'Voice Calling', 'Reference']);
+  });
+});
+
+describe('buildAlgoliaOpenApiRecord', () => {
+  it('uses canonical page-tree breadcrumbs for generated endpoints', () => {
+    const breadcrumbs = [
+      'Reference',
+      'API reference',
+      'All SDK versions',
+      'Conversational AI',
+    ];
+    const record = buildAlgoliaOpenApiRecord({
+      breadcrumbs,
+      content: 'Start an agent.',
+      laneId: 'conversational-ai',
+      locale: 'en',
+      method: 'post',
+      operationId: 'start-agent',
+      path: '/v2/projects/{appid}/join',
+      tab: 'api-reference',
+      title: 'Start an agent',
+      url: '/en/api-reference/api-ref/conversational-ai/join',
+    });
+
+    expect(record.breadcrumbs).toEqual(breadcrumbs);
+  });
+});
 
 describe('extractDocSearchContent', () => {
   const markdown = [

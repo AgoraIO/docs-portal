@@ -1,6 +1,11 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
-import type { ClientApiPageProps } from 'fumadocs-openapi/ui/create-client';
+import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { createDocsPageAnalyticsContext } from './analytics/docs-page-context';
+import {
+  type DocsPageType,
+  inferDocsPageType,
+} from './analytics/docs-page-type';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import {
@@ -12,7 +17,7 @@ import {
   resolveDocsNavScope,
 } from './docs-nav-scope';
 import { getSourceSlugs } from './docs-routing';
-import { getSearchEntryMetadata } from './docs-search';
+import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -54,6 +59,7 @@ import {
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
   type source as docsSource,
@@ -341,7 +347,7 @@ export async function loadDocsPagePayload(
 
   const pageTree = getCanonicalPageTree(source, locale);
   const supportedLocale = toSupportedLocale(locale);
-  const openApiPage = isOpenApiPageWithClientProps(page) ? page : null;
+  const openApiPage = isOpenApiPageWithProps(page) ? page : null;
   const isOpenApiPage = openApiPage !== null;
   const openApiRoute =
     isOpenApiPage && supportedLocale
@@ -424,9 +430,23 @@ export async function loadDocsPagePayload(
   const body = isOpenApiPage
     ? {
         kind: 'openapi' as const,
-        pageProps: await openApiPage.data.getClientAPIPageProps(),
+        pageProps: await openApiPage.data.getOpenAPIPageProps(),
       }
     : mdxBody;
+  const configuredAnalyticsPageType: DocsPageType | undefined = isOpenApiPage
+    ? 'sdk-api-reference'
+    : 'analyticsPageType' in page.data && page.data.analyticsPageType
+      ? (page.data.analyticsPageType as DocsPageType)
+      : undefined;
+  const analyticsPageType =
+    configuredAnalyticsPageType ?? inferDocsPageType(page.url);
+  const analyticsPageContext = createDocsPageAnalyticsContext({
+    pageType: analyticsPageType,
+    pathname: page.url,
+    sourcePath: page.path,
+    title,
+    version: sidebarHeader?.versionSwitcher?.currentId,
+  });
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(
       new Set([
@@ -444,6 +464,8 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    analyticsPageContext,
+    analyticsPageType,
     body,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&
@@ -505,7 +527,9 @@ export async function loadDocsPagePayload(
   };
 }
 
-export async function loadDocsSearchIndex(locale: string) {
+export async function loadDocsSearchIndex(
+  locale: string,
+): Promise<SearchEntry[]> {
   const supportedLocale = toSupportedLocale(locale);
 
   if (!supportedLocale || !isPublishedDocsLocale(supportedLocale)) {
@@ -513,27 +537,37 @@ export async function loadDocsSearchIndex(locale: string) {
   }
 
   const { source } = await import('./source.server');
+  const searchNavigation = buildDocsSearchNavigation(
+    getCanonicalPageTree(source, supportedLocale),
+  );
   const pages = await Promise.all(
-    getCanonicalSourcePages(source.getPages(locale)).map(async (item) => {
-      const content = await readSearchText(item);
+    getCanonicalSourcePages(source.getPages(locale))
+      .filter(
+        (item) => item.type !== 'openapi' && searchNavigation.has(item.url),
+      )
+      .map(async (item) => {
+        const content = await readSearchText(item);
 
-      return {
-        content,
-        description: item.data.description,
-        ...getSearchEntryMetadata(item.url, content),
-        title: item.data.title ?? item.slugs.at(-1) ?? item.url,
-        url: item.url,
-      };
-    }),
+        return {
+          breadcrumbs: searchNavigation.get(item.url) ?? [],
+          content,
+          description: item.data.description,
+          ...getSearchEntryMetadata(item.url, content),
+          title: item.data.title ?? item.slugs.at(-1) ?? item.url,
+          url: item.url,
+        };
+      }),
   );
   const existingUrls = new Set(pages.map((page) => page.url));
   const openApiPages = (await getOpenApiMarkdownPages())
     .filter(
       (page) =>
         page.url.startsWith(`/${supportedLocale}/`) &&
-        !existingUrls.has(page.url),
+        !existingUrls.has(page.url) &&
+        searchNavigation.has(page.url),
     )
     .map((page) => ({
+      breadcrumbs: searchNavigation.get(page.url) ?? [],
       content: page.markdown,
       ...getSearchEntryMetadata(page.url, page.markdown, 'openapi'),
       title: page.title,
@@ -1153,15 +1187,15 @@ function hasPageText(page: PageWithSource): page is PageWithSource & {
   return 'getText' in page.data && typeof page.data.getText === 'function';
 }
 
-function isOpenApiPageWithClientProps(
+function isOpenApiPageWithProps(
   page: PageWithSource,
 ): page is PageWithSource & {
-  data: { getClientAPIPageProps: () => Promise<ClientApiPageProps> };
+  data: { getOpenAPIPageProps: () => Promise<OpenAPIPageProps> };
 } {
   return (
     page.type === 'openapi' &&
-    'getClientAPIPageProps' in page.data &&
-    typeof page.data.getClientAPIPageProps === 'function'
+    'getOpenAPIPageProps' in page.data &&
+    typeof page.data.getOpenAPIPageProps === 'function'
   );
 }
 

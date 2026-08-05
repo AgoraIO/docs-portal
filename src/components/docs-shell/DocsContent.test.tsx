@@ -25,13 +25,28 @@ import { DocsCopyMenu } from './docs-copy-menu';
 
 const clipboardWriteText = vi.fn();
 const fetchMock = vi.fn();
-const { captureDocsPageFeedbackMock } = vi.hoisted(() => ({
+const {
+  captureDocsLinkClickedMock,
+  captureDocsPageFeedbackMock,
+  captureDocsPageViewedMock,
+  registerDocsPageContextMock,
+} = vi.hoisted(() => ({
+  captureDocsLinkClickedMock: vi.fn(),
   captureDocsPageFeedbackMock: vi.fn(),
+  captureDocsPageViewedMock: vi.fn(),
+  registerDocsPageContextMock: vi.fn(),
 }));
 
 vi.mock('@/lib/analytics/posthog', () => ({
+  captureDocsCodeCopied: vi.fn(),
+  captureDocsFeedbackIssueClicked: vi.fn(),
+  captureDocsFeedbackOpened: vi.fn(),
+  captureDocsLinkClicked: captureDocsLinkClickedMock,
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  captureDocsPageViewed: captureDocsPageViewedMock,
+  captureDocsTocClicked: vi.fn(),
   initializePostHog: vi.fn(),
+  registerDocsPageContext: registerDocsPageContextMock,
 }));
 
 vi.mock('./DocsContentBody', () => ({
@@ -137,7 +152,10 @@ describe('DocsContent', () => {
   });
 
   beforeEach(() => {
+    captureDocsLinkClickedMock.mockReset();
+    captureDocsPageViewedMock.mockReset();
     fetchMock.mockReset();
+    registerDocsPageContextMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
@@ -160,6 +178,51 @@ describe('DocsContent', () => {
 
     await screen.findByRole('heading', { level: 1, name: 'SDKs' });
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
+  });
+
+  it('registers canonical server context before capturing a docs page view', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/realtime-media/video/get-started-sdk"
+        activeTab="realtime-media"
+        analyticsPageContext={{
+          contentId: 'realtime-media/video/get-started-sdk',
+          journeyStage: 'get-started',
+          navSection: 'get-started',
+          navSectionTitle: 'Get started',
+          pageType: 'task-guide',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+          product: 'video',
+          title: 'Quickstart',
+          version: 'current',
+        }}
+        analyticsPageType="task-guide"
+        contentPath="en/realtime-media/video/get-started-sdk.mdx"
+        slug="get-started-sdk"
+        title="Quickstart"
+        toc={[]}
+      />,
+      '/en/realtime-media/quickstart',
+    );
+
+    await waitFor(() => {
+      expect(registerDocsPageContextMock).toHaveBeenCalledWith({
+        canonicalProduct: 'video',
+        contentId: 'realtime-media/video/get-started-sdk',
+        contentKind: 'mdx',
+        journeyStage: 'get-started',
+        locale: 'en',
+        navSection: 'get-started',
+        navSectionTitle: 'Get started',
+        pageType: 'task-guide',
+        pathname: '/en/realtime-media/video/get-started-sdk',
+        tab: 'realtime-media',
+        title: 'Quickstart',
+        version: 'current',
+      });
+    });
+    expect(captureDocsPageViewedMock).toHaveBeenCalledOnce();
+    expect(captureDocsPageViewedMock).toHaveBeenCalledWith({ locale: 'en' });
   });
 
   it('keeps a single-item breadcrumb that differs from the page title', async () => {
@@ -222,6 +285,39 @@ describe('DocsContent', () => {
       within(breadcrumb).getByRole('link', { name: 'Introduction' }),
     ).toHaveAttribute('href', '/en/introduction');
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
+  });
+
+  it('classifies breadcrumb link clicks separately from article links', async () => {
+    renderWithRouter(
+      <DocsContent
+        breadcrumb={[
+          {
+            title: 'Introduction',
+            url: '/en/introduction',
+          },
+          {
+            title: 'About Agora',
+            url: '/en/introduction/about-agora',
+          },
+        ]}
+        contentPath="en/introduction/about-agora.md"
+        slug="about-agora"
+        title="About Agora"
+        toc={[]}
+      />,
+    );
+
+    fireEvent.click(
+      within(await screen.findByLabelText('Breadcrumb')).getByRole('link', {
+        name: 'Introduction',
+      }),
+    );
+
+    expect(captureDocsLinkClickedMock).toHaveBeenCalledWith({
+      href: expect.stringContaining('/en/introduction'),
+      locale: 'en',
+      source: 'breadcrumb',
+    });
   });
 
   it('renders English last updated metadata below the page title', async () => {
@@ -838,7 +934,7 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('renders copy page menu actions for AI tools, MCP, and markdown', async () => {
+  it('renders copy page menu actions as a compact ordered list', async () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
@@ -853,7 +949,30 @@ describe('DocsContent', () => {
       { button: 0 },
     );
 
-    expect(await screen.findByText('AI tools')).toBeInTheDocument();
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
+    expect(
+      screen
+        .getAllByRole('menuitem')
+        .map((item) => item.textContent?.replace(/\s+/g, ' ').trim()),
+    ).toEqual([
+      'Download Page',
+      'View Markdown',
+      'Open in ChatGPT',
+      'Open in Claude',
+    ]);
+
+    expect(
+      screen.queryByRole('menuitem', { name: 'Copy Page' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'Download Page' }),
+    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
+    expect(
+      screen.getByRole('menuitem', { name: 'Download Page' }),
+    ).toHaveAttribute('download', 'introduction-about-agora.md');
+    expect(
+      screen.getByRole('menuitem', { name: 'View Markdown' }),
+    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
     expect(
       screen.getByRole('menuitem', { name: 'Open in ChatGPT' }),
     ).toHaveAttribute(
@@ -866,21 +985,24 @@ describe('DocsContent', () => {
       'href',
       expect.stringContaining('https://claude.ai/new?q='),
     );
+    expect(screen.queryByText('AI tools')).not.toBeInTheDocument();
+    expect(screen.queryByText('MCP')).not.toBeInTheDocument();
+    expect(screen.queryByText('Other')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'Connect to Cursor' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
+      screen.queryByRole('menuitem', { name: 'Connect to Cursor' }),
+    ).not.toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'Connect to VS Code' }),
-    ).toHaveAttribute('href', '/en/introduction/agora-mcp');
+      screen.queryByRole('menuitem', { name: 'Connect to VS Code' }),
+    ).not.toBeInTheDocument();
     expect(
-      screen.getByRole('menuitem', { name: 'View as Markdown' }),
-    ).toHaveAttribute('href', '/en/introduction/about-agora.md');
+      screen.queryByRole('menuitem', { name: 'Copy MCP config' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('menuitem', { name: 'Copy MCP command' }),
+    ).not.toBeInTheDocument();
   });
 
-  it('copies MCP config and command from the copy page menu', async () => {
-    clipboardWriteText.mockReset();
-    clipboardWriteText.mockResolvedValue(undefined);
-
+  it('does not lock page scrolling when opening the copy page menu', async () => {
     renderWithRouter(
       <DocsCopyMenu
         locale="en"
@@ -895,34 +1017,32 @@ describe('DocsContent', () => {
       { button: 0 },
     );
 
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Config' }),
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
+    expect(document.body).not.toHaveAttribute('data-scroll-locked');
+  });
+
+  it('closes the copy page menu when the page scrolls', async () => {
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="en"
+        markdownUrl="/en/introduction/about-agora.md"
+        slug="introduction/about-agora"
+        title="About Agora"
+      />,
     );
-    await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenCalledWith(`{
-  "mcpServers": {
-    "agora-docs": {
-      "url": "https://mcp.agora.io"
-    }
-  }
-}`);
-    });
 
     fireEvent.pointerDown(
-      screen.getByRole('button', { name: 'Copy Page more actions' }),
+      await screen.findByRole('button', { name: 'Copy Page more actions' }),
       { button: 0 },
     );
-    fireEvent.click(
-      await screen.findByRole('menuitem', { name: 'Copy MCP Command' }),
-    );
+
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
+
+    fireEvent.scroll(window);
+
     await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenLastCalledWith(
-        `code --add-mcp '{"name":"agora-docs","url":"https://mcp.agora.io"}'`,
-      );
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
     });
-    expect(
-      screen.getByRole('button', { name: 'Copy Page' }),
-    ).not.toHaveAttribute('data-copied');
   });
 
   it('copies the markdown content from the primary copy button', async () => {
@@ -1874,11 +1994,12 @@ describe('DocsTocRail', () => {
 });
 
 describe('DocsPageFeedback placement', () => {
-  it('captures helpfulness feedback without changing the local pressed state', async () => {
+  it('captures helpfulness feedback with a prominent reversible selection', async () => {
     renderWithRouter(
       <DocsMainColumn locale="en">
         <article>Body</article>
       </DocsMainColumn>,
+      '/en/introduction/about-agora',
     );
 
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
@@ -1889,6 +2010,8 @@ describe('DocsPageFeedback placement', () => {
     fireEvent.click(yesButton);
 
     expect(yesButton).toHaveAttribute('aria-pressed', 'true');
+    expect(yesButton).toHaveAttribute('data-variant', 'default');
+    expect(noButton).toHaveAttribute('data-variant', 'outline');
     expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
       locale: 'en',
       value: 'yes',
@@ -1897,7 +2020,9 @@ describe('DocsPageFeedback placement', () => {
     fireEvent.click(noButton);
 
     expect(yesButton).toHaveAttribute('aria-pressed', 'false');
+    expect(yesButton).toHaveAttribute('data-variant', 'outline');
     expect(noButton).toHaveAttribute('aria-pressed', 'true');
+    expect(noButton).toHaveAttribute('data-variant', 'default');
     expect(captureDocsPageFeedbackMock).toHaveBeenLastCalledWith({
       locale: 'en',
       value: 'no',

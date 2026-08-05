@@ -3405,13 +3405,13 @@ This page shows you how to optimize the size of apps with integrated Video SDK.
 ### Remove unnecessary extensions
 Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios-and-macos">iOS and macOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="flutter-target-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios-and-macos">iOS and macOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 If your target platform is Android, use Gradle's `packagingOptions.exclude` properties to exclude unnecessary extension dynamic libraries from the final `APK` or `AAR` file. Removing these files during the packaging process reduces the app size and improves app performance.
 
@@ -3433,9 +3433,9 @@ android {
 }
 ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios-and-macos">
+<TabsContent value="ios-and-macos">
 
 If your target platform is iOS or macOS, follow these steps to reduce the size of your app:
 
@@ -3486,9 +3486,9 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
     ![reduce app size step 2](https://assets-docs.agora.io/images/video-sdk/reduce-app-size-flutter-step-2.png)
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Reference
 
@@ -4076,13 +4076,13 @@ This page shows you how to optimize the size of apps with integrated Video SDK.
 ### Remove unnecessary extensions
 Video SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
-<CodeBlockTabs defaultValue="android">
-<CodeBlockTabsList>
-  <CodeBlockTabsTrigger value="android">Android</CodeBlockTabsTrigger>
-  <CodeBlockTabsTrigger value="ios-and-macos">iOS and macOS</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+<Tabs defaultValue="android" groupId="react-native-target-os" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios-and-macos">iOS and macOS</TabsTrigger>
+</TabsList>
 
-<CodeBlockTab value="android">
+<TabsContent value="android">
 
 If your target platform is Android, use Gradle's `packagingOptions.exclude` properties to exclude unnecessary extension dynamic libraries from the final `APK` or `AAR` file. Removing these files during the packaging process reduces the app size and improves app performance.
 
@@ -4104,9 +4104,9 @@ android {
 }
 ```
 
-</CodeBlockTab>
+</TabsContent>
 
-<CodeBlockTab value="ios-and-macos">
+<TabsContent value="ios-and-macos">
 
 If your target platform is iOS or macOS, follow these steps to reduce the size of your app:
 
@@ -4157,9 +4157,9 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
     ![reduce app size step 2](https://assets-docs.agora.io/images/video-sdk/reduce-app-size-flutter-step-2.png)
 
-</CodeBlockTab>
+</TabsContent>
 
-</CodeBlockTabs>
+</Tabs>
 
 ## Reference
 

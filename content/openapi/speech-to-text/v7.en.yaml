@@ -365,7 +365,11 @@ paths:
       description: Updates the configuration of a Real-time STT task.
       x-docs-sections:
         - position: after-description
-          markdown: Use this method to update the configuration of a Real-time STT task.
+          markdown: >-
+            Use this method to update the configuration of a Real-time STT task. Updating the
+            transcription languages, translation languages, or subscribed users does not reset the
+            idle-timeout timer or the maximum task lifetime timer. Both timers start from the
+            moment the task was created.
         - title: Response
           position: before-response-body
           markdown: >-
@@ -714,11 +718,17 @@ components:
         maxIdleTime:
           type: integer
           description: >-
-            Maximum channel idle time, in seconds. When the specified time is exceeded, the
-            transcription task ends automatically. Idle time means that there is no host in a live
+            Maximum channel idle time, in seconds. Value range: [0,259200]. Set `maxIdleTime` to
+            `0` to disable automatic termination due to idle time. When the specified time is
+            exceeded, the task ends automatically. Idle time means that there is no host in a live
             broadcast channel, or there is no user in a communication channel.
-          minimum: 5
-          maximum: 2592000
+
+
+            Independent of `maxIdleTime`, every task also has a maximum lifetime of 72 hours
+            (259200 seconds). Once a task reaches this limit, Agora terminates it, even if
+            `maxIdleTime` is `0`.
+          minimum: 0
+          maximum: 259200
           default: 30
         rtcConfig:
           $ref: "#/components/schemas/RtcConfig"
@@ -886,6 +896,12 @@ components:
 
             - `false`: Use Protobuf to push subtitles (default). The data volume is smaller.
             Suitable for scenarios with high transmission efficiency requirements.
+
+
+            A single update can contain both a stabilized prefix
+            segment and a segment that may still change. Both JSON and Protobuf formats can carry
+            multiple segments in a single message. For details, see [Parse transcription
+            data](/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data).
     CaptionConfig:
       type: object
       description: Subtitle recording configuration.

@@ -6,9 +6,6 @@ description: 'The API reference guide for the Fastboard SDK.'
 This page provides the API reference for the Fastboard SDK.
 
 <PlatformStructured platform="android">
-## Understand the tech
-
-This section provides the API reference for the Fastboard SDK on Android.
 
 ## Reference
 
@@ -24,13 +21,37 @@ Get the `Fastboard` object.
 
 The Fastboard SDK does not support initializing a `Fastboard` instance directly. To get the `Fastboard` object, you need to add the `FastboardView` object to the app's layout, and then call the `getFastboard` method.
 
+**Note**
+
+Call this method to obtain the `Fastboard` object before calling other APIs.
+
+**Returns**
+
+The `Fastboard` object is returned when the method call is successful.
+
 ## Fastboard class
+
+The Fastboard class provides methods for creating `FastRoom` objects.
 
 ### createFastRoom
 
 ```java
 public FastRoom createFastRoom(FastRoomOptions roomOptions)
 ```
+
+Create a `FastRoom` object.
+
+**Note**
+
+Call this method after obtaining the `Fastboard` object.
+
+**Parameters**
+
+- `roomOptions`: Configuration options for the whiteboard room. See [FastRoomOptions](#roomoptions) for details.
+
+**Returns**
+
+A `FastRoom` object is returned when the method call is successful.
 
 ### preloadWhiteboardView
 
@@ -40,11 +61,17 @@ public static void preloadWhiteboardView() {
 }
 ```
 
+Preload the whiteboard view.
+
+This method only takes effect when `autoPreload` in [`FastboardConfig`](#fastboardconfig) is set to `false`. Successfully calling this method will consume memory to perform one whiteboard view preload, improving the speed of joining rooms next time.
+
 ### destroy
 
 ```java
 public void destroy()
 ```
+
+Destroy the room and release resources.
 
 ### setConfig
 
@@ -52,7 +79,17 @@ public void destroy()
 public static void setConfig(FastboardConfig config)
 ```
 
+Modifies the auxiliary configuration of the `Fastboard` object.
+
+**Parameters**
+
+- `config`: The auxiliary configuration of the `Fastboard` object. See [FastboardConfig](#fastboardconfig).
+
+<a id="roomoptions" />
+
 ### FastRoomOptions
+
+Whiteboard room configuration options.
 
 ```java
 public class FastRoomOptions {
@@ -61,17 +98,62 @@ public class FastRoomOptions {
      private final String token;
      private final String uid;
      private final boolean writable;
+
      private final FastRegion fastRegion;
+
+     private Float containerSizeRatio;
+
+     private FastUserPayload userPayload;
+
+     public FastRoomOptions(String appId, String uuid, String token, String uid, FastRegion fastRegion) {
+         this(appId, uuid, token, uid, fastRegion, true);
+     }
+
+     public FastRoomOptions(String appId, String uuid, String token, String uid, FastRegion fastRegion, boolean writable) {
+         this.appId = appId;
+         this.uuid = uuid;
+         this.token = token;
+         this.uid = uid;
+         this.fastRegion = fastRegion;
+         this.writable = writable;
+     }
 }
 ```
 
+The `FastRoomOptions` class contains the following properties:
+
+- `appId`: String. App Identifier for the interactive whiteboard project. For details, see [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).
+- `uuid`: String. The UUID of the room, which is the unique identifier of the room. For details, see [Create a room (POST)](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post) for the value of the `uuid` parameter in the response package body after the request is successful.
+- `token`: String. Room Token of the room, used for user authentication when joining the room. It can be obtained in the following ways:
+
+  - Call the [Generate a room token (POST)](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post) RESTful API.
+  - Build a token generator at your app server. See [Generate a token at app server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).
+
+- `uid`: String. The unique identifier of a user in string format. The maximum length is 1,024 bytes. Ensure that the `uid` of each user in the same room is unique.
+- `writable`: boolean. Whether the user joins the whiteboard room in interactive mode:
+
+  - `true`: Join the whiteboard room in interactive mode, that is, with read and write permissions.
+  - `false`: Join the whiteboard room in subscription mode, that is, with read-only permission.
+
+- `fastRegion`: The data center, which must be the same as the data center you chose when [creating the whiteboard room](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post). See [FastRegion](#fastregion).
+- `containerSizeRatio`: Float. In the local display window, the aspect ratio of the content is `0.56` by default, which is `9:16`.
+- `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload) for details.
+
+<a id="fastregion" />
+
 ### FastRegion
 
-- `CN_HZ`
-- `US_SV`
-- `SG`
-- `IN_MUM`
-- `EU`
+Data center, containing the following enumeration values:
+
+- `CN_HZ`: Hangzhou, China, the service area covers East Asia, Southeast Asia, and other areas not covered by the data center.
+
+- `US_SV`: Silicon Valley, USA, the service area covers North America and South America.
+
+- `SG`: Singapore, the service area covers Singapore, East Asia, and Southeast Asia.
+
+- `IN_MUM`: Mumbai, India, the service area covers India.
+
+- `EU`: London, UK, the service area covers Europe.
 
 ### FastUserPayload
 
@@ -79,8 +161,23 @@ public class FastRoomOptions {
 public class FastUserPayload {
      private final String nickName;
      private final String avatar;
+
+     public FastUserPayload(String nickName) {
+         this(nickName, null);
+     }
+
+     public FastUserPayload(String nickName, String avatar) {
+         this.nickName = nickName;
+         this.avatar = avatar;
+     }
 }
 ```
+
+`FastUserPayload` object, used to store the user information displayed on the cursor, contains the following member variables:
+
+- `nickName`: String. The user's nickname displayed on the user's cursor.
+
+- `avatar`: String. (Optional) The user avatar displayed on the user cursor, the URL address corresponding to the avatar should be passed in.
 
 ### FastboardConfig
 
@@ -92,7 +189,22 @@ public class FastboardConfig {
 }
 ```
 
+The auxiliary configuration class of the `Fastboard` object, including the following attributes:
+
+- `enablePreload`: Boolean. Whether to enable whiteboard preloading:
+
+  - `true`: Enable whiteboard preloading.
+  - `false`: (Default) Disable whiteboard preloading.
+
+- `preloadCount`: Integer. The number of WebViews to preload, defaults to `0`. The actual effect of this attribute is limited by the memory capacity. You need to adjust the settings appropriately according to the actual situation.
+- `autoPreload`: Boolean. This property only takes effect when `enablePreload` is `true`. Whether to enable automatic preloading:
+
+  - `true`: (Default) Enable automatic preloading. After enabling, whiteboard views will be automatically preloaded to improve loading speed, but will occupy additional memory.
+  - `false`: Disable automatic preloading. After disabling, you can call [`preloadWhiteboardView`](#preloadwhiteboardview) to manually perform preloading.
+
 ## FastRoom class
+
+The `FastRoom` class provides methods for managing interactive whiteboard real-time rooms.
 
 ### join [1/2]
 
@@ -100,11 +212,309 @@ public class FastboardConfig {
 public void join()
 ```
 
+Join a whiteboard room.
+
+**Note**
+
+This method needs to be called after the `FastRoom` object is successfully created.
+
 ### join [2/2]
 
 ```java
 public void join(@Nullable OnRoomReadyCallback onRoomReadyCallback)
 ```
+
+Join a whiteboard room.
+
+**Note**
+
+This method needs to be called after the `FastRoom` object is successfully created.
+
+**Parameters**
+
+- `onRoomReadyCallback`: [OnRoomReadyCallback](#roomready) interface instance. Passing in `null` means not to register the interface.
+
+<a id="roomready" />
+
+### OnRoomReadyCallback
+
+The `OnRoomReadyCallback` interface is used to send room event notifications to the app and includes the following member methods:
+
+```java
+void onRoomReady(FastRoom fastRoom);
+```
+
+Room ready callback.
+
+**Parameters**
+
+- `fastRoom`: `FastRoom` object.
+
+### isReady
+
+```java
+public boolean isReady()
+```
+
+Get whether the room is ready.
+
+After calling the `join` method, you need to call this method to get whether the room is ready. After the room is ready, other methods in the `FastRoom` class can be called to operate the whiteboard.
+
+**Returns**
+
+Is the room ready?
+
+- `true`: ready.
+- `false`: Not ready yet.
+
+### isWritable
+
+```java
+public boolean isWritable()
+```
+
+Get whether the local user's current interactive whiteboard real-time room is in interactive mode.
+
+**Returns**
+
+Get whether the local user is in interactive mode:
+
+- `true`: interactive mode, that is, with read and write permissions.
+- `false`: Subscription mode, that is, with read-only permissions.
+
+### redo
+
+```java
+public void redo()
+```
+
+Redo, that is, roll back the undo operation.
+
+### setWritable [1/2]
+
+```java
+public void setWritable(boolean writable)
+```
+
+Set whether the user is in interactive mode in the room.
+
+**Note**
+
+This method needs to be called after the room is ready.
+
+**Parameters**
+
+- `writable`: whether the user is in interactive mode in the room:
+
+  - `true`: interactive mode, that is, with read and write permissions.
+  - `false`: Subscription mode, that is, with read-only permissions.
+
+### setWritable [2/2]
+
+```java
+public void setWritable(boolean writable, FastResult<Boolean> result)
+```
+
+Set whether the user is in interactive mode in the room.
+
+**Note**
+
+This method needs to be called after the room is ready.
+
+**Parameters**
+
+- `writable`: whether the user is in interactive mode in the room:
+
+  - `true`: interactive mode, that is, with read and write permissions.
+  - `false`: Subscription mode, that is, with read-only permissions.
+
+- `result`: The result of the `setWritable` method call. See [FastResult](#result) for details. Passing in the `FastResult` instance, the SDK will trigger the callback implemented in the `FastResult` interface and report whether the `setWritable` method call is successful; passing in `null` means not to listen to the callback.
+
+### registerApp
+
+Registers a third-party window application to the whiteboard room.
+
+```java
+public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result)
+```
+
+This method allows you to register external applications that can run as independent windows within the whiteboard.
+
+Registration supports two methods:
+
+1. **Local script registration**: Uses local JavaScript code (recommended for its high reliability)
+2. **Remote package registration**: Uses a remote URL (may fail due to network issues)
+
+:::warning[Caution]
+
+- You must complete the registration before joining the room to ensure the application loads correctly.
+- Ensure that all clients use the same version of the application to avoid runtime issues.
+- Register the application before joining the room.
+- Registered applications can be added to the room using `getRoom().addApp()`.
+
+:::
+
+**Parameters**
+
+- `params`: Registration parameters, including app configurations. See [FastRegisterAppParams](#fastregisterappparams) for details.
+- `result`: The result of the `registerApp` method call. See [FastResult](#result) for details. If you pass a `FastResult` instance, the SDK triggers the callback implemented in the `FastResult` interface to report whether the `registerApp` method call was successful. Passing `null` means the callback is not listened to.
+
+### FastRegisterAppParams
+
+A configuration class for registering third-party window app parameters.
+
+```java
+public class FastRegisterAppParams {
+    private String javascriptString;
+    private String kind;
+    private String url;
+    private Map<String, Object> appOptions;
+    private String variable;
+
+    public FastRegisterAppParams(String javascriptString, String kind, String variable, Map<String, Object> appOptions) {
+        this.javascriptString = javascriptString;
+        this.kind = kind;
+        this.appOptions = appOptions;
+        this.variable = variable;
+    }
+
+    public FastRegisterAppParams(String url, String kind, Map<String, Object> appOptions) {
+        this.url = url;
+        this.kind = kind;
+        this.appOptions = appOptions;
+    }
+
+    public String getJavascriptString() {
+        return javascriptString;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Map<String, Object> getAppOptions() {
+        return appOptions;
+    }
+
+    public String getVariable() {
+        return variable;
+    }
+}
+```
+
+The `FastRegisterAppParams` class provides two registration methods:
+
+1. **Local script registration**: Registers using a local JavaScript string (recommended for its high reliability)
+
+   - Use the `FastRegisterAppParams(String javascriptString, String kind, String variable, Map<String, Object> appOptions)` constructor
+
+2. **Remote package registration**: Registers using a published package's URL (may fail due to network issues)
+
+   - Use the `FastRegisterAppParams(String url, String kind, Map<String, Object> appOptions)` constructor
+
+The `FastRegisterAppParams` class includes the following properties:
+
+- `javascriptString`: String. Local JavaScript script code for local script registration.
+- `kind`: String. The name of the registered app, representing the type name of the app.
+- `url`: String. The URL address of the remote registration package for remote package registration.
+- `appOptions`: Map&lt;String, Object&gt;. Parameters passed during the initialization of the app instance. This configuration is not synchronized to other clients and is considered a local setting, often used to toggle debug mode.
+- `variable`: String. The variable name mounted on the window, appearing as `window.variable` after mounting.
+
+### undo
+
+```java
+public void undo()
+```
+
+Undo the previous operation.
+
+### setStrokeColor
+
+```java
+public void setStrokeColor(@ColorInt int color)
+```
+
+Set the line color.
+
+**Parameters**
+
+- `color`: Integer. Line color, RGB format, for example `0x0000FF` means blue
+
+### setAppliance
+
+```java
+public void setAppliance(FastAppliance fastAppliance)
+```
+
+Set the currently used whiteboard tool.
+
+**Parameters**
+
+- `fastAppliance`: Whiteboard tool. See [FastAppliance](#appliance) for details.
+
+<a id="appliance" />
+
+### FastAppliance
+
+Whiteboard tool, containing the following enumeration values:
+
+- `CLICKER(Appliance.CLICKER)`: Click tool. Currently mainly used for clicking content on HTML5 files.
+
+- `SELECTOR(Appliance.SELECTOR)`: Select tool.
+
+- `HAND(Appliance.HAND)`: Grab tool, used to move the view.
+
+- `PENCIL(Appliance.PENCIL)`: Pencil.
+
+- `RECTANGLE(Appliance.RECTANGLE)`: Rectangle tool.
+
+- `ELLIPSE(Appliance.ELLIPSE)`: Ellipse tool.
+
+- `TEXT(Appliance.TEXT)`: text tool.
+
+- `ERASER(Appliance.ERASER)`: Eraser tool.
+
+- `PENCIL_ERASER(Appliance.PENCIL_ERASER)`: Pencil eraser tool, used to erase local pencil strokes.
+
+- `LASER_POINTER(Appliance.LASER_POINTER)`: Laser pointer.
+
+- `ARROW(Appliance.ARROW)`: Arrow.
+
+- `STRAIGHT(Appliance.STRAIGHT)`: Straight line.
+
+- `PENTAGRAM(Appliance.SHAPE, ShapeType.Pentagram)`: Pentagram.
+
+- `RHOMBUS(Appliance.SHAPE, ShapeType.Rhombus)`: rhombus.
+
+- `TRIANGLE(Appliance.SHAPE, ShapeType.Triangle)`: triangle.
+
+- `BUBBLE(Appliance.SHAPE, ShapeType.SpeechBalloon)`: Speech bubble.
+
+- `OTHER_CLEAR()`: Clear the whiteboard content.
+
+### setStrokeWidth
+
+```java
+public void setStrokeWidth(int width)
+```
+
+Set the width of the line.
+
+**Parameters**
+
+- `width`: Integer. Line width (px).
+
+### cleanScene
+
+```java
+public void cleanScene()
+```
+
+Clear the whiteboard content.
 
 ### setWritable
 
@@ -112,11 +522,14 @@ public void join(@Nullable OnRoomReadyCallback onRoomReadyCallback)
 public void setWritable(boolean writable)
 ```
 
-### registerApp
+Set whether the user is in interactive mode in the room.
 
-```java
-public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result)
-```
+**Parameters**
+
+- `writable`: boolean. Whether the user is in interactive mode:
+
+  - `true`: interactive mode, that is, with read and write permissions.
+  - `false`: Subscription mode, that is, with read-only permissions.
 
 ### insertImage
 
@@ -124,11 +537,28 @@ public void registerApp(FastRegisterAppParams params, FastResult<Boolean> result
 public void insertImage(String url, int width, int height)
 ```
 
+Insert picture.
+
+This method can insert and display the specified network image onto the current whiteboard page.
+
+**Parameters**
+
+- `url`: String. The URL address of the image. Please ensure that the app client can access the URL, otherwise the image will not be displayed properly.
+- `width`: Integer. The width of the image (px).
+- `height`: Integer. The height of the image (px).
+
 ### insertVideo
 
 ```java
 public void insertVideo(String url, String title)
 ```
+
+Insert and play audio and video in the whiteboard sub-window.
+
+**Parameters**
+
+- `url`: URL address of audio and video files. Please ensure that the app client can access the URL, otherwise the audio and video files cannot be loaded normally.
+- `title`: window title.
 
 ### insertStaticDoc
 
@@ -136,23 +566,572 @@ public void insertVideo(String url, String title)
 public void insertStaticDoc(DocPage[] pages, String title, FastResult<String> result)
 ```
 
+Inserts a static document into a whiteboard subwindow.
+
+**Parameters**
+
+- `pages`: DocPage array. The page settings for the inserted document. See [DocPage](#docpage).
+- `title`: String. The title of the subwindow.
+- `result`: An object that implements the `FastResult` interface, used to handle the result of the method call. The SDK will use this object to report the result of the operation. If you do not need to listen to the callback, please pass in `null`.
+
+### DocPage
+
+```java
+public class DocPage {
+    private String src;
+    private String preview;
+    private Double width;
+    private Double height;
+}
+```
+
+A class for configuring the page settings for inserting documents. Includes the following attributes
+
+- `src`: String. The address of the image or dynamic PPT page.
+
+  - Image: URL address, which can be generated by yourself or by the document conversion function. You can get the address from the image field returned by the query conversion task progress. Make sure the App client can access the URL, otherwise the image cannot be loaded normally.
+  - Dynamic PPT page: URI address generated by the document conversion function.
+
+- `preview`: String. (Optional) URL address of the image or dynamic PPT preview image. The URL address of the dynamic PPT preview image can be obtained from the preview field returned by the query document conversion progress. After passing in, the preview image will be displayed on the left side of the App. Make sure the App client can access the URL, otherwise the preview image cannot be loaded normally.
+- `width`: Integer. The width of the inserted document in the whiteboard (px).
+- `height`: Integer. The height of the inserted document in the whiteboard (px).
+
 ### insertPptx
 
 ```java
 public void insertPptx(String taskUuid, String prefixUrl, String title, FastResult<String> result)
 ```
 
+Insert a dynamic document in a whiteboard sub-window.
+
+This method can insert dynamic HTML web pages converted by the document conversion function.
+
+**Parameters**
+
+- `taskUUID`: String. The Task UUID of the document conversion task, which is the value of the `uuid` field in the response body when the initiate document conversion task request is successful.
+- `prefixUrl`: String. The prefix path of the converted result file address, which is the value of the `prefix` field in the response body when the query document conversion progress request is successful.
+- `title`: String. The title of the sub-window.
+- `result`: An object that implements the `FastResult` interface, used to handle the result of the method call. The SDK will use this object to report the result of the operation. If you do not need to listen to the callback, please pass in `null`.
+
 ### insertDocs
 
 ```java
 public void insertDocs(FastInsertDocParams params, FastResult<String> result)
 ```
+
+**Note**
+
+This method is deprecated since v1.6.0. Use [insertStaticDoc](#insertstaticdoc) or [insertPptx](#insertpptx) instead.
+
+Insert and display documents in the whiteboard subwindow.
+
+After successfully initiating the [document conversion task](/en/api-reference/api-ref/whiteboard/file-conversion), you can call this method and pass in the relevant parameters of the converted document. The SDK will automatically create a sub-window, insert and display the converted document in pages.
+
+**Parameters**
+
+- `params`: Insert the parameter settings of the document. See [FastInsertDocParams](#docparams) for details.
+- `result`: `insertDocs` method call result. See [FastResult](#result) for details. Passing in the `FastResult` instance, the SDK will trigger the callback implemented in the `FastResult` interface and report whether the `insertDocs` method call is successful; passing in `null` means not to listen to the callback.
+
+<a id="docparams" />
+
+### FastInsertDocParams
+
+Document parameter settings.
+
+```java
+public class FastInsertDocParams {
+     private String taskUUID;
+     private String taskToken;
+     private FastRegion region;
+     private ConverterType converterType;
+     private String fileType;
+     private Boolean dynamicDoc;
+     private String title;
+}
+```
+
+The `FastInsertDocParams` class contains the following properties:
+
+- `taskUUID`: String. Task UUID of the document conversion task, that is, [Initiate document conversion task API](/en/api-reference/api-ref/whiteboard/file-conversion). When the request is successful, the uuid parameter in the response package body value.
+- `taskToken`: String. The Task Token of the document conversion task must be consistent with the Task Token passed in when [Initiate document conversion task](/en/api-reference/api-ref/whiteboard/file-conversion).
+- `converterType`: enumeration. The version of the document conversion service, the values are as follows:
+
+  - `Projector`: new version. For details, see [New version of document conversion service](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview).
+  - `WhiteboardConverter`: legacy (default). For details, see [Old version of the document conversion service](/en/realtime-media/whiteboard/reference/file-conversion-overview-deprecated).
+
+- `fileType`: String. Document type:
+
+  - `pdf`: static document.
+  - `pptx`: dynamic document.
+
+- `dynamicDoc`: boolean. Whether the document conversion task type is a dynamic conversion task.
+- `title`: String. Window title.
+
+### setFastStyle
+
+```java
+public void setFastStyle(FastStyle style)
+```
+
+Style the whiteboard user interface.
+
+**Parameters**
+
+- `style`: The style of the whiteboard user interface. See [FastStyle](#faststyle) for details.
+
+<a id="faststyle" />
+
+### FastStyle
+
+Whiteboard user interface style.
+
+```java
+public class FastStyle {
+     private int mainColor;
+     private boolean darkMode;
+
+     public FastStyle() {
+     }
+
+     public int getMainColor() {
+         return mainColor;
+     }
+
+     public void setMainColor(@ColorInt int color) {
+         this.mainColor = color;
+     }
+
+     public boolean isDarkMode() {
+         return darkMode;
+     }
+
+     public void setDarkMode(boolean darkMode) {
+         this.darkMode = darkMode;
+     }
+
+     public FastStyle copy() {
+         FastStyle style = new FastStyle();
+         style.mainColor = mainColor;
+         style.darkMode = darkMode;
+         return style;
+     }
+}
+```
+
+The `FastStyle` class contains the following member methods:
+
+**getMainColor**
+
+Gets the theme color of the whiteboard user interface.
+
+**Returns**
+
+The theme color for the whiteboard user interface.
+
+**setMainColor**
+
+Set the theme color of the whiteboard user interface.
+
+This method can set the color of some button borders and prompt text when the whiteboard is loaded.
+
+**Parameters**
+
+- `color`: The theme color of the whiteboard user interface, RGB format, for example `0x0000FF` means blue.
+
+**isDarkMode**
+
+Gets whether the whiteboard user interface is in dark mode.
+
+**Returns**
+
+- `true`: Whiteboard user interface is in dark mode.
+- `false`: The whiteboard user interface is in light mode.
+
+**setDarkMode**
+
+Set the whiteboard user interface to dark mode.
+
+**Parameters**
+
+- `darkMode`: whether to use dark mode:
+
+  - `true`: dark mode.
+  - `false`: light mode.
+
+### setResource
+
+```java
+public void setResource(FastResource fastResource)
+```
+
+Set resources related to whiteboard color.
+
+**Parameters**
+
+- `fastResource`: Whiteboard color-related resources. See [FastResource](#fastresource) for details.
+
+<a id="fastresource" />
+
+### FastResource
+
+Resources related to whiteboard colors.
+
+```java
+public class FastResource {
+     @ColorInt
+     public int getBackgroundColor(boolean darkMode) {
+         return color(darkMode
+                 ? R.color.fast_dark_mode_bg
+                 : R.color.fast_light_mode_bg
+         );
+     }
+
+     @ColorInt
+     public int getBoardBackgroundColor(boolean darkMode) {
+         return getBackgroundColor(darkMode);
+     }
+}
+```
+
+Contains the following member methods, all of which can be overridden to customize colors:
+
+**getBackgroundColor**
+
+Get the background color of the whiteboard control.
+
+**Parameters**
+
+- `darkMode`: boolean. Whether the background color of the whiteboard control is dark mode:
+
+  - `true`: dark mode.
+  - `false`: light mode.
+
+**Returns**
+
+Hexadecimal color value.
+
+**getBoardBackgroundColor**
+
+Get the whiteboard background color.
+
+**Note**
+
+If you do not override this method, `getBackgroundColor` will be called by default.
+
+**Parameters**
+
+- `darkMode`: boolean. Whether the whiteboard background color is dark mode:
+
+  - `true`: dark mode.
+  - `false`: light mode.
+
+**Returns**
+
+Hexadecimal color value.
+
+## FastUiSettings class
+
+The `FastUiSettings` class provides methods for setting up the whiteboard user interface.
+
+### showRoomController
+
+```java
+public void showRoomController(ControllerId... ids)
+```
+
+Demonstrates controls on a whiteboard user interface.
+
+**Parameters**
+
+- `ids`: The identifier of the control. See [ControllerId](#controllerId) for details.
+
+### hideRoomController
+
+```java
+public void hideRoomController(ControllerId... ids)
+```
+
+Hides controls on the whiteboard user interface.
+
+**Parameters**
+
+- `ids`: The identifier of the control. See [ControllerId](#controllerId) for details.
+
+<a id="controllerId" />
+
+### ControllerId
+
+Controls on the whiteboard user interface, including the following enumeration values:
+
+- `RedoUndo`: redo and undo buttons.
+- `ToolBox`: Toolbar.
+- `PageIndicator`: Page indicator.
+
+### setToolsExpandAppliances
+
+```java
+public static void setToolsExpandAppliances(List<List<FastAppliance>> toolsExpandAppliances)
+```
+
+Sets the tool set included in the toolbar in expanded mode.
+
+If the default toolbar provided by Fastboard SDK cannot meet your needs, you can call this method to customize the tools contained in the toolbar and set the toolbar to expand mode. You can pass in a secondary tool list in this method. The elements in the primary list will be expanded and displayed on the toolbar, and the elements in the secondary list will be collapsed.
+
+After successfully calling the `setToolsExpandAppliances` method, if you need to switch the toolbar to collapsed mode, you can call [setToolboxExpand](#settoolboxexpand).
+
+**Note**
+
+This method needs to be called before joining the whiteboard room.
+
+**Parameters**
+
+- `toolsExpandAppliances`: Tools included in the toolbar in expanded mode. See [FastAppliance](#appliance) for details.
+
+**Example**
+
+```java
+ArrayList<List<FastAppliance>> config = new ArrayList<>();
+config.add(Arrays.asList(
+         FastAppliance.CLICKER,
+         FastAppliance.PENCIL,
+         FastAppliance.TEXT,
+         FastAppliance.SELECTOR,
+         FastAppliance.ERASER
+));
+config.add(Arrays.asList(FastAppliance.SELECTOR));
+config.add(Arrays.asList(FastAppliance.PENCIL));
+config.add(Arrays.asList(FastAppliance.TEXT));
+config.add(Arrays.asList(FastAppliance.ERASER));
+config.add(Arrays.asList(
+         FastAppliance.STRAIGHT,
+         FastAppliance.ARROW,
+         FastAppliance.RECTANGLE,
+         FastAppliance.ELLIPSE,
+         FastAppliance.PENTAGRAM,
+         FastAppliance.RHOMBUS,
+         FastAppliance.BUBBLE,
+         FastAppliance.TRIANGLE
+));
+config.add(Arrays.asList(FastAppliance.OTHER_CLEAR));
+
+FastUiSettings.setToolsExpandAppliances(config);
+```
+
+### setToolsCollapseAppliances
+
+```java
+public static void setToolsCollapseAppliances(List<FastAppliance> toolsCollapseAppliances)
+```
+
+Sets the tool set included in the toolbar in collapsed mode.
+
+If the default toolbar provided by Fastboard SDK cannot meet your needs, you can call this method to customize the tools included in the toolbar and set the toolbar to fold mode. You can pass in a first-level tool list in this method, and the elements in the list will be collapsed on the toolbar by default.
+
+After successfully calling the `setToolsCollapseAppliances` method, if you need to switch the toolbar to expanded mode, you can call [setToolboxExpand](#settoolboxexpand).
+
+**Note**
+
+This method needs to be called before joining the whiteboard room.
+
+**Parameters**
+
+- `toolsCollapseAppliances`: Tools included in the whiteboard toolbar. See [FastAppliance](#appliance) for details.
+
+**Example**
+
+```java
+ArrayList<FastAppliance> collapseAppliances = new ArrayList<>();
+collapseAppliances.add(FastAppliance.PENCIL);
+collapseAppliances.add(FastAppliance.ERASER);
+collapseAppliances.add(FastAppliance.ARROW);
+collapseAppliances.add(FastAppliance.SELECTOR);
+collapseAppliances.add(FastAppliance.TEXT);
+collapseAppliances.add(FastAppliance.OTHER_CLEAR);
+
+FastUiSettings.setToolsCollapseAppliances(collapseAppliances);
+```
+
+### setToolsColors
+
+```java
+public static void setToolsColors(List<Integer> toolsColors)
+```
+
+Set the color used by the whiteboard tool.
+
+This method sets the color of graphics, lines, or text drawn using the whiteboard tool.
+
+**Note**
+
+This method needs to be called before joining the whiteboard room.
+
+**Parameters**
+
+- `toolsColors`: Color of whiteboard tools, RGB format, for example `0x0000FF` means blue.
+
+### setStrokeRange
+
+```java
+public void setStrokeRange(int min, int max)
+```
+
+Sets the range for the line width slider in the toolbox.
+
+This method configures the minimum and maximum values of the line width slider in the toolbox extension panel. Users can adjust the line width within this range when using drawing tools like pencils, rectangles, circles, etc. The default range is [1, 24].
+
+:::warning[Caution]
+
+- The line width slider will be restricted to the specified range.
+- If the current line width exceeds the new range, it will be constrained within the new range.
+- This setting affects all drawing tools that support line width adjustments.
+
+:::
+
+**Parameters**
+
+- `min`: int. The minimum value for the line width (inclusive).
+- `max`: int. The maximum value for the line width (inclusive).
+
+### setToolboxEdgeMargin
+
+```java
+public void setToolboxEdgeMargin(int margin)
+```
+
+Set the margins between the whiteboard toolbar and the sides.
+
+The definition of the margin is determined by the toolbar position set in `setToolboxGravity`:
+
+- The toolbar is located on the left side of the whiteboard: the margin refers to the distance between the left side of the toolbar and the left side of the whiteboard.
+- The toolbar is located on the right side of the whiteboard: the margin refers to the distance between the right side of the toolbar and the right side of the whiteboard.
+
+**Parameters**
+
+- `margin`: Integer. The distance between the toolbar and the side of the whiteboard, in `px`.
+
+### setToolboxGravity
+
+```java
+public void setToolboxGravity(int gravity)
+```
+
+Set the position of the toolbar on the whiteboard.
+
+**Parameters**
+
+- `gravity`: The position of the toolbar on the whiteboard:
+
+  - `Gravity.LEFT`: left.
+  - `Gravity.RIGHT`: Right.
+
+<a id="settoolboxexpand" />
+
+### setToolboxExpand
+
+```java
+public void setToolboxExpand(boolean expand)
+```
+
+Set whether to expand the toolbar.
+
+The default display state of the toolbar is related to the device. It is expanded by default on tablets and collapsed by default on mobile phones. You can call this method to modify the display state of the toolbar.
+
+**Parameters**
+
+- `expand`: Whether to expand the toolbar:
+
+  - `true`: expand.
+  - `false`: fold.
+
+## FastLogger Class
+
+The `FastLogger` class provides a flexible whiteboard runtime log recording tool that can easily record four different levels of log information: `debug`, `info`, `warn`, and `error`. The `FastLogger` class uses a `Logger` interface and provides a default implementation `DefaultLogger` to use the system's `Log` class.
+
+### setLogger
+
+```java
+public static void setLogger(Logger logger)
+```
+
+Set custom logger.
+
+**Parameters**
+
+- `logger`: The logger instance. If you need to customize the logger, you need to pass in an implementation class of the `Logger` interface, see [`Logger`](#logger); passing in `null` will result in using the system default logger.
+
+### Logger
+
+Logger specification, including recording methods for all log levels.
+
+### debug
+
+```java
+static void debug(String msg)
+```
+
+Records a debug log.
+
+**Parameters**
+
+- `msg`: String. Log message.
+
+### info
+
+```java
+static void info(String msg)
+```
+
+Records an info log.
+
+**Parameters**
+
+- `msg`: String. Log message.
+
+### warn
+
+```java
+static void warn(String msg)
+```
+
+Records a warn log.
+
+**Parameters**
+
+- `msg`: String. Log message.
+
+### error
+
+```java
+static void error(String msg)
+```
+
+Records an error.
+
+**Parameters**
+
+- `msg`: String. Log message.
+
+<a id="result" />
+
+## FastResult
+
+The result of the method call.
+
+```java
+public interface FastResult<T> {
+   void onSuccess(T value);
+   void onError(Exception exception);
+}
+```
+
+The `FastResult` interface reports the results of method calls and includes the following callback methods:
+
+- `onSuccess`: callback when the method call is successful.
+- `onError`: callback when an error occurs.
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-## Understand the tech
-
-This section provides the API reference for the Fastboard SDK on iOS.
 
 ## Reference
 
@@ -166,7 +1145,19 @@ public class func createFastRoom(withFastRoomConfig config: FastRoomConfiguratio
 
 Create a `FastRoom` instance.
 
-### FastRoomConfiguration
+**Parameters**
+
+- `config`: Configuration of `FastRoom` instance. See [FastRoomConfiguration](#roomconfig) for details.
+
+**Returns**
+
+A `FastRoom` object is returned when the method call is successful.
+
+<a id="roomconfig" />
+
+#### FastRoomConfiguration
+
+`FastRoomConfiguration` class provides methods to initialize `FastRoomConfiguration` instances.
 
 ```swift
 public init(appIdentifier: String,
@@ -177,24 +1168,70 @@ public init(appIdentifier: String,
                  userPayload: FastUserPayload? = nil)
 ```
 
-### Region
+**Parameters**
 
-- `CN`
-- `US`
-- `SG`
-- `IN`
-- `EU`
+- `appIdentifier`: String. App Identifier for the interactive whiteboard project. For details, see [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).
+- `roomUUID`: String. The UUID of the room, which is the unique identifier of the room. For details, see [Create a room (POST)](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post) The value of the `uuid` parameter in the response package body after the request is successful.
+- `roomToken`: String. Room Token of the room, used for user authentication when joining the room. It can be obtained in the following ways:
 
-### FastUserPayload
+  - Call the [Generate a room token (POST)](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post) RESTful API.
+  - Use code to generate it on the app server. For details, see [Generate a Token at App Server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).
+
+- `region`: data center. See [`Region`](#region) for details.
+- `userUID`: String. The user's UID, that is, the user's unique identifier, in string format, cannot exceed 1024 bytes. Please ensure that each user in the same room has a unique UID.
+- `userPayload`: User information displayed by the user's cursor, including the user's nickname and avatar. See [`FastUserPayload`](#fastuserpayload-ios) for details.
+
+<a id="region" />
+
+#### Region
+
+Data center, containing the following enumerations:
+
+- `CN`: Hangzhou, China. The service area covers East Asia, Southeast Asia, and other areas not covered by the data center.
+- `US`: Silicon Valley, USA, service area covers North America and South America.
+- `SG`: Singapore, the service area covers Singapore, East Asia, and Southeast Asia.
+- `IN`: Mumbai, India, service area covers India.
+- `EU`: Europe (Frankfurt), service area covers Europe.
+
+<a id="fastuserpayload-ios" />
+
+#### FastUserPayload
 
 ```swift
 public class FastUserPayload: NSObject {
-    let nickName: String?
-    let avatar: String?
+     let nickName: String?
+     let avatar: String?
+
+     var dic: [String: String] {
+         var r = [String: String]()
+         if let nickName = nickName { r["nickName"] = nickName }
+         if let avatar = avatar { r["avatar"] = avatar }
+         return r
+     }
+
+     public init(nickName: String) {
+         self.nickName = nickName
+         self.avatar = nil
+         super.init()
+     }
+
+     public init(nickName: String, avatar: String) {
+         self.nickName = nickName
+         self.avatar = avatar
+         super.init()
+     }
 }
 ```
 
+`FastUserPayload` class, used to store user information displayed on the cursor, contains the following properties:
+
+- `nickName`: String. (Optional) The user's nickname displayed on the user's cursor.
+
+- `avatar`: String. (Optional) The user avatar displayed on the user cursor, the URL address corresponding to the avatar should be passed in.
+
 ## FastRoom class
+
+The `FastRoom` class provides methods for managing interactive whiteboard real-time rooms.
 
 ### joinRoom
 
@@ -202,11 +1239,23 @@ public class FastUserPayload: NSObject {
 public func joinRoom(completionHandler: ((Result<WhiteRoom, FastRoomError>)->Void)? = nil)
 ```
 
+Join a whiteboard room.
+
+**Note**
+
+This method needs to be called after creating the `FastRoom` object.
+
+**Parameters**
+
+- `completionHandler`: method call result callback. Passing in `nil` means not to register a callback.
+
 ### disconnectRoom
 
 ```swift
 public func disconnectRoom()
 ```
+
+Leave the whiteboard room.
 
 ### insertImg
 
@@ -214,11 +1263,28 @@ public func disconnectRoom()
 public func insertImg(_ src: URL, imageSize: CGSize)
 ```
 
+Insert picture.
+
+This method can insert and display the specified network image onto the current whiteboard page.
+
+**Parameters**
+
+- `src`: String. The URL address of the image. Please ensure that the app client can access the URL, otherwise the image will not be displayed properly.
+- `imageSizewidth`: CGSize. The size of the image.
+
 ### insertMedia
 
 ```swift
 public func insertMedia(_ src: URL, title: String, completionHandler: ((String)->Void)? = nil)
 ```
+
+Insert and play audio and video in the whiteboard sub-window.
+
+**Parameters**
+
+- `src`: String. URL address of audio and video files. Please ensure that the app client can access the URL, otherwise the audio and video files cannot be loaded normally.
+- `title`: String. Window title.
+- `completionHandler`: method call result callback. Passing in `nil` means not to register a callback.
 
 ### insertPptx
 
@@ -228,8 +1294,21 @@ public func insertPptx(
      url: String,
      title: String,
      completionHandler: ((String)->Void)? = nil
- )
+)
 ```
+
+Insert and display dynamic documents in the whiteboard sub-window.
+
+Dynamic documents refer to HTML web pages converted from PPTX format files through [Agora Interactive Whiteboard Document Conversion Service](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview). The converted file will retain the animation effects in the source file.
+
+Successfully [Initiate document conversion task](/en/api-reference/api-ref/whiteboard/file-conversion) and call [Query document conversion task progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task). After obtaining the document conversion result, you can call this method and pass in the obtained document conversion result. After a successful call, the SDK automatically creates a sub-window to insert and display the converted document per page.
+
+**Parameters**
+
+- `uuid`: uuid of the conversion task, the unique identifier of the conversion task.
+- `url`: Conversion result file address prefix path.
+- `title`: window title when inserting.
+- `completionHandler`: method call result callback. Passing in `nil` means not to register a callback.
 
 ### insertStaticDocument
 
@@ -239,25 +1318,263 @@ public func insertStaticDocument(_ pages: [WhitePptPage],
                                       completionHandler: ((String)->Void)? = nil)
 ```
 
+Insert and display static documents in the whiteboard sub-window.
+
+Static documents refer to files converted from PPT, PPTX, DOC, DOCX, and PDF formats through [Agora File Conversion Service](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview) into still images in the PNG or JPG/JPEG format.
+
+Successfully [initiate document conversion task](/en/api-reference/api-ref/whiteboard/file-conversion) and call [Query document conversion task progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task). After obtaining the document conversion result, you can call this method and pass in the obtained document conversion result. The SDK automatically creates a sub-window and inserts and displays the converted document in pages.
+
+**Parameters**
+
+- `pages`: Converted file list. For details, see [Query Document Conversion Task Progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task). The `convertedFileList` parameter in the response package body returned after a successful request.
+- `title`: Window title.
+- `completionHandler`: Method call result callback. Passing in `nil` means not to register a callback.
+
 ### followSystemPencilBehavior
 
 ```swift
 public static var followSystemPencilBehavior
 ```
 
+(iPad only) Set whether Apple Pencil behavior follows the system default when using a whiteboard:
+
+- `YES`: Follow the system default settings. In this state, users can use the Apple Pencil's system default functions to operate the whiteboard, such as double-clicking to switch the current tool to the eraser, double-clicking to display the palette, and using Apple Pencil to doodle.
+- `NO`: Do not follow the system default settings. In this state, the system default functions of Apple Pencil are unavailable.
+
 ## FastRoomThemeManager class
+
+The `FastRoomThemeManager` class provides methods for setting the theme of the whiteboard user interface.
 
 ### apply
 
 ```swift
 public func apply(_ theme: FastRoomThemeAsset)
 ```
+
+Apply whiteboard theme.
+
+Fastboard SDK follows the system's theme settings by default on iOS 13.0 or above, and uses the light theme by default on iOS 13.0 or earlier. If the default theme settings cannot meet your needs, you can call this method to apply a predefined theme or a custom theme provided by the SDK.
+
+**Parameters**
+
+- `theme`: Whiteboard theme.
+
+  - Predefined themes:
+
+    - `FastRoomDefaultTheme.defaultLightTheme`: light theme.
+    - `FastRoomDefaultTheme.defaultDarkTheme`: dark theme.
+    - `FastRoomDefaultTheme.defaultAutoTheme`: automatic theme, which follows the system theme setting. This option is only available on iOS 13.0 or above.
+
+  - Custom theme: see [FastRoomThemeAsset](#themeasset) for details.
+
+**Example**
+
+- Apply predefined dark theme:
+
+  ```swift
+  FastRoomThemeManager.shared.apply(FastRoomDefaultTheme.defaultDarkTheme)
+  ```
+
+- Apply a custom theme:
+
+  ```swift
+  let white = FastRoomWhiteboardAssets(whiteboardBackgroundColor: .green, containerColor: .yellow)
+
+  let control = FastRoomControlBarAssets(backgroundColor: .blue, borderColor: .gray, effectStyle: .init(style: .regular))
+
+  let panel = FastRoomPanelItemAssets(normalIconColor: .black, selectedIconColor: .systemRed, highlightBgColor: .cyan, subOpsIndicatorColor: .yellow, pageTextLabelColor: .orange)
+
+  let theme = FastRoomThemeAsset(whiteboardAssets: white, controlBarAssets: control, panelItemAssets: panel)
+
+  FastRoomThemeManager.shared.apply(theme)
+  ```
+
+<a id="themeasset" />
+
+#### FastRoomThemeAsset
+
+Whiteboard theme style.
+
+```swift
+open class FastRoomThemeAsset: NSObject {
+    @objc
+    public init(whiteboardAssets: FastRoomWhiteboardAssets,
+                controlBarAssets: FastRoomControlBarAssets,
+                panelItemAssets: FastRoomPanelItemAssets) {
+        self.whiteboardAssets = whiteboardAssets
+        self.controlBarAssets = controlBarAssets
+        self.panelItemAssets = panelItemAssets
+    }
+
+    @objc
+    open var whiteboardAssets: FastRoomWhiteboardAssets
+
+    @objc
+    open var controlBarAssets: FastRoomControlBarAssets
+
+    @objc
+    open var panelItemAssets: FastRoomPanelItemAssets
+}
+```
+
+The `FastRoomThemeAsset` class contains the following properties:
+
+- `whiteboardAssets`: Whiteboard style. See [FastRoomWhiteboardAssets](#whiteboardassets) for details.
+- `controlBarAssets`: The style of the control bar. See [FastRoomControlBarAssets](#controlbarassets) for details.
+- `panelItemAssets`: The style of the button. See [FastRoomPanelItemAssets](#panelitemassets) for details.
+
+<a id="whiteboardassets" />
+
+##### FastRoomWhiteboardAssets
+
+Whiteboard style.
+
+```swift
+open class FastRoomWhiteboardAssets: NSObject {
+    @objc
+    public init(whiteboardBackgroundColor: UIColor, containerColor: UIColor) {
+        self.whiteboardBackgroundColor = whiteboardBackgroundColor
+        self.containerColor = containerColor
+    }
+
+    @objc
+    open var whiteboardBackgroundColor: UIColor
+
+    @objc
+    open var containerColor: UIColor
+}
+```
+
+The `FastRoomWhiteboardAssets` class contains the following properties:
+
+- `whiteboardBackgroundColor`: Whiteboard background color.
+- `containerColor`: The color of the HTML container where the whiteboard is mounted.
+
+<a id="controlbarassets" />
+
+##### FastRoomControlBarAssets
+
+The style of the control bar.
+
+```swift
+open class FastRoomControlBarAssets: NSObject {
+    @objc
+    public init(backgroundColor: UIColor, borderColor: UIColor, effectStyle: UIBlurEffect? = nil) {
+        self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
+        self.effectStyle = effectStyle
+    }
+
+    @objc
+    var backgroundColor: UIColor
+
+    @objc
+    var borderColor: UIColor
+
+    @objc
+    var effectStyle: UIBlurEffect?
+}
+```
+
+`FastRoomControlBarAssets` contains the following properties:
+
+- `backgroundColor`: The background color of the control bar.
+- `borderColor`: Control the color of the bar border.
+- `effectStyle`: frosted glass effect. See [UIBlurEffect](https://developer.apple.com/documentation/uikit/uiblureffect) for details.
+
+<a id="panelitemassets" />
+
+##### FastRoomPanelItemAssets
+
+Assets for buttons.
+
+```swift
+open class FastRoomPanelItemAssets: NSObject {
+     @objc
+     public init(normalIconColor: UIColor,
+                 selectedIconColor: UIColor,
+                 selectedIconBgColor: UIColor,
+                 highlightColor: UIColor,
+                 highlightBgColor: UIColor,
+                 disableColor: UIColor,
+                 subOpsIndicatorColor: UIColor,
+                 pageTextLabelColor: UIColor,
+                 selectedBackgroundCornerradius: CGFloat,
+                 selectedBackgroundEdgeinset: UIEdgeInsets) {
+         self.normalIconColor = normalIconColor
+         self.selectedIconColor = selectedIconColor
+         self.selectedIconBgColor = selectedIconBgColor
+         self.highlightColor = highlightColor
+         self.highlightBgColor = highlightBgColor
+         self.disableColor = disableColor
+         self.subOpsIndicatorColor = subOpsIndicatorColor
+         self.pageTextLabelColor = pageTextLabelColor
+         self.selectedBackgroundCornerRadius = selectedBackgroundCornerradius
+         self.selectedBackgroundEdgeinset = selectedBackgroundEdgeinset
+     }
+
+     @objc
+     open var selectedBackgroundCornerRadius: CGFloat
+
+     @objc
+     open var selectedBackgroundEdgeinset: UIEdgeInsets
+
+     @objc
+     open var normalIconColor: UIColor
+
+     @objc
+     open var selectedIconColor: UIColor
+
+     @objc
+     open var selectedIconBgColor: UIColor
+
+     @objc
+     open var highlightColor: UIColor
+
+     @objc
+     open var highlightBgColor: UIColor
+
+     @objc
+     open var disableColor: UIColor
+
+     @objc
+     open var subOpsIndicatorColor: UIColor
+
+     @objc
+     open var pageTextLabelColor: UIColor
+}
+```
+
+The `FastRoomPanelItemAssets` class contains the following properties:
+
+- `normalIconColor`: The color of the button icon in the normal state (that is, when the button is not selected).
+- `selectedIconColor`: The color of the button icon in the selected state.
+- `selectedIconBgColor`: The background color of the button in the selected state.
+- `highlightColor`: The color of the button icon in the highlighted state (that is, when the button is pressed).
+- `highlightBgColor`: The background color of the button when it is highlighted (that is, when the button is pressed).
+- `disableColor`: The color of the button in the unclickable state.
+- `subOpsIndicatorColor`: The color of the drop-down button.
+- `pageTextLabelColor`: The color of the page number.
+- `selectedBackgroundCornerradius`: background rounded corners in the selected state.
+- `selectedBackgroundEdgeinset`: The background padding of the selected state.
+
+## FastRoomDefaultOperationItem class
+
+The `FastRoomDefaultOperationItem` class is used to customize the operation components on the whiteboard user interface.
+
+### defaultColors
+
+```swift
+public static var defaultColors: [UIColor]
+```
+
+The default color collection for the palette.
+
+You can pass a custom `[UIColor]` object in this property to modify the color collection of the palette. The set of palette colors set by this property applies to tools such as pencils, text, and graphics.
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-## Understand the tech
-
-This section provides the API reference for the Fastboard SDK on Web.
 
 ## Reference
 
@@ -267,11 +1584,32 @@ This section provides the API reference for the Fastboard SDK on Web.
 createFastboard(options: FastboardOptions): Promise;
 ```
 
+Creates a `FastboardApp` instance.
+
+**Parameters**
+
+- `options`: Object. Configuration options for the `FastboardApp` instance. See [`FastboardOptions`](#fastboardoptions).
+
+**Returns**
+
+The `FastboardApp` instance when the method call succeeds.
+
 ## createUI
 
 ```typescript
 createUI(app?: FastboardApp | null, div?: Element): UI;
 ```
+
+Creates a set of built-in UI components for Fastboard.
+
+**Parameters**
+
+- `app`: Object. The `FastboardApp` instance.
+- `div`: HTML Element. The HTML element to contain the `FastboardApp` object.
+
+**Returns**
+
+The `UI` component. See [`UI`](#ui).
 
 ## createReplayUI
 
@@ -279,11 +1617,26 @@ createUI(app?: FastboardApp | null, div?: Element): UI;
 createReplayUI(player?: FastboardPlayer | null, div?: Element): ReplayUI;
 ```
 
+Creates a set of built-in UI components that enables replay mode.
+
+**Parameters**
+
+- `player`: The `FastboardPlayer` instance.
+- `div`: HTML Element. The HTML element to contain the `FastboardPlayer` object.
+
+**Returns**
+
+The `ReplayUI` component. See [`ReplayUI`](#replayui).
+
 ### canOperate
 
 ```typescript
 get canOperate(): boolean
 ```
+
+Gets whether the room is operable.
+
+Checks if the current room is in interactive mode (`writable`) and the room connection state is connected (`connected`).
 
 ## mount
 
@@ -294,17 +1647,67 @@ mount(app: FastboardApp, div: HTMLDivElement, options?: MountProps): {
 };
 ```
 
+:::info
+Agora does not recommend this method since v0.3.6. Use [`createUI`](#createui) instead.
+:::
+
+Mounts the `FastboardApp` object to the HTML element.
+
+**Parameters**
+
+- `app`: Object. The `FastboardApp` instance, which is returned by the `createFastboard` method.
+- `div`: HTMLElement. The HTML element to contain the `FastboardApp` object.
+- `options`: (Optional) Object. Configuration options for the whiteboard user interface (UI). See  [`MountProps`](#mountprops).
+
+**Returns**
+
+The following functions when the method call succeeds:
+
+- `update`: Updates the whiteboard UI, which has the following parameters:
+
+  - `props`: Configuration options. See [`MountProps`](#mountprops).
+
+- `destroy`: Unmounts the `FastboardApp` object.
+
 ## dispatchDocsEvent
 
 ```typescript
-export function dispatchDocsEvent(
-  fastboard: FastboardApp | WindowManager,
-  event: "prevPage" | "nextPage" | "prevStep" | "nextStep" | "jumpToPage",
-  options: DocsEventOptions = {}
-)
+  export function dispatchDocsEvent(
+    fastboard: FastboardApp | WindowManager,
+    event: "prevPage" | "nextPage" | "prevStep" | "nextStep" | "jumpToPage",
+    options: DocsEventOptions = {}
+  )
 ```
 
+Send events to a specified doc.
+
+This method only applies to docs inserted by [`insertDocs`](#insertdocs-13).
+
+**Parameters**
+
+- `fastboard`: [`FastboardApp`](#createfastboard) or [`WindowManager`](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount) object. The object you wish to send events to.
+- `event`: String. The event type. Only the following values are allowed.
+
+  - `prevPage`: To the previous page.
+  - `nextPage`: To the next page.
+  - `prevStep`: To the previous step. This event equals to `prevPage` when sent to static docs.
+  - `nextStep`: To the next step. This event equals to `nextPage` when sent to static docs.
+  - `jumpToPage`: To a specified pagecount. You need to specify the pagecount by passing in `options`.
+
+- `options`: (Optional)`DocsEventOptions`. Event options, used to specify the pagecount and the target doc. See [`DocsEventOptions`](#docseventoptions). `options` is empty by default, meaning sending events to the docs with the focus.
+
+**Returns**
+
+- `true`: Success.
+- `false`: Failure. The reason of failure
+
 ## FastboardApp class
+
+The `FastboardApp` class provides methods to manage the `FastboardApp` object.
+
+**Note**
+
+Call methods in this class after successfully creating a `FastboardApp` object using `createFastboard`.
 
 ### undo
 
@@ -312,16 +1715,34 @@ export function dispatchDocsEvent(
 undo(): void
 ```
 
+Undoes the previous action.
+
 ### redo
 
 ```typescript
 redo(): void
 ```
 
+Redoes an undone action.
+
 ### moveCamera
 
 ```typescript
 moveCamera(camera: Partial<Camera>): void
+```
+
+Adjusts the view.
+
+**Parameters**
+
+- camera: Object. The view configuration. See [`Camera`](#camera).
+
+**Example**
+
+Move the view so that the center of the HTML element is exactly aligned with the center of the whiteboard and the scale is 100%:
+
+```typescript
+app.moveCamera({ centerX: 0, centerY: 0, scale: 1 });
 ```
 
 ### moveCameraToContain
@@ -330,11 +1751,24 @@ moveCamera(camera: Partial<Camera>): void
 moveCameraToContain(rect: Rectangle): void;
 ```
 
+Adjusts the view to ensure the complete display of the specified rectangle area.
+
+**Parameters**
+
+- `rect`: Settings of the rectangle area. See [`Rectangle`](#rectangle).
+
 ### setAppliance
 
 ```typescript
 setAppliance(appliance: ApplianceNames, shape?: ShapeType): void;
 ```
+
+Sets the whiteboard tool currently in use.
+
+**Parameters**
+
+- `appliance`: The name of the whiteboard tool. See [`ApplianceNames`](#appliance-web).
+- `shape`: (Optional) The shape type. See [`ShapeType`](#shape). You can use this parameter to choose a shape when setting `appliance` as `shape`.
 
 ### setStrokeWidth
 
@@ -342,11 +1776,23 @@ setAppliance(appliance: ApplianceNames, shape?: ShapeType): void;
 setStrokeWidth(strokeWidth: number): void
 ```
 
+Sets the stroke width.
+
+**Parameters**
+
+- `strokeWidth`: Number. The stroke width (px).
+
 ### setStrokeColor
 
 ```typescript
 setStrokeColor(strokeColor: Color): void
 ```
+
+Sets the stroke color.
+
+**Parameters**
+
+- `strokeColor`: The stroke color in RGB format. For example, `[0, 0, 255]` represents blue. See [`Color`](#color).
 
 ### setTextColor
 
@@ -354,11 +1800,56 @@ setStrokeColor(strokeColor: Color): void
 setTextColor(textColor: Color): void
 ```
 
+Sets the text color.
+
+**Parameters**
+
+- `textColor`: The text color in RGB format. For example, `[0, 0, 255]` represents blue. See [`Color`](#color).
+
+### toggleDottedLine
+
+```typescript
+toggleDottedLine(force?: boolean)
+```
+
+Toggles the drawing style of the Pencil tool.
+
+When `force` is not passed, the method toggles between drawing solid and dotted lines. For example, if the Pencil tool is currently drawing solid lines, calling `toggleDottedLine()` will switch it to drawing dotted lines; if it is currently drawing dotted lines, calling `toggleDottedLine()` will switch it to drawing solid lines.
+
+**Parameters**
+
+- `force`: Boolean (optional). Forces the drawing style to switch:
+
+  - `true`: Switches to drawing dotted lines.
+  - `false`: Switches to drawing solid lines.
+
+### setPencilEraserSize
+
+```typescript
+setPencilEraserSize(size: number)
+```
+
+Sets the size of the Pencil Eraser tool.
+
+**Parameters**
+
+- `size`: Number. The size of the pencil eraser, supports the following values:
+
+  - `1`: (Default)Small.
+  - `2`: Medium.
+  - `3`: Large.
+
 ### setTextSize
 
 ```typescript
 setTextSize(textSize: number): void
 ```
+
+Sets the font size of the text.
+
+**Parameters**
+
+- `textSize`: Number. The font size of the text.
 
 ### insertImage
 
@@ -366,11 +1857,36 @@ setTextSize(textSize: number): void
 async insertImage(url: string, crossOrigin?: boolean | string)
 ```
 
+Inserts an image.
+
+This method can insert and display the specified network image on the current whiteboard page. The inserted image is centered by default in the current view.
+
+**Parameters**
+
+- `url`: String. The URL address of the image. Ensure your app clients can access the URL; otherwise, the image cannot be displayed.
+- `crossOrigin`: Boolean (optional). Whether to enable Cross-Origin Resource Sharing (CORS) for the inserted image:
+
+  - `true`: (Default) Enable CORS.
+  - `false`: Disable CORS.
+
 ### insertMedia
 
 ```typescript
 insertMedia(title: string, src: string): Promise<string | undefined>
 ```
+
+Inserts and plays audio and video in the whiteboard sub-window.
+
+**Parameters**
+
+- `title`: The title of the sub-window.
+- `src`: The URL address of the audio or video file. Make sure your app clients can access the URL; otherwise, the audio or video file cannot be loaded properly.
+
+**Returns**
+
+The identifier of the extension when the method call succeeds.
+
+<a id="insertdocs-13" />
 
 ### insertDocs [1/2]
 
@@ -378,11 +1894,95 @@ insertMedia(title: string, src: string): Promise<string | undefined>
 insertDocs(title: string, response: ProjectorResponse): Promise<string | undefined>;
 ```
 
+Since v0.3.8.
+
+Inserts and displays a document in the whiteboard sub-window. This method applies to the [new file conversion service](/en/realtime-media/whiteboard/build/display-files-and-manage-scenes/file-conversion-overview).
+
+After successfully launching a file conversion task and calling the [Query file conversion progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task) to get the file conversion result, you can call this method and pass in the obtained file conversion result. After a successful call, the SDK automatically creates a sub-window to insert and display the converted document per page.
+
+**Parameters**
+
+- `title`: The title of the sub-window.
+- `response`: The response body returned when the call of the [Query file conversion progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task) succeeds.
+
+**Returns**
+
+The identifier of the extension when the method call succeeds.
+
 ### insertDocs [2/2]
 
 ```typescript
 insertDocs(params: InsertDocsParams): Promise<string | undefined>;
 ```
+
+Inserts and displays a document in the whiteboard sub-window.
+
+After successfully [launching a file conversion task](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion), you can call this method and pass in the parameters of the converted file. After a successful call, the SDK automatically creates a sub-window to insert and display the converted file per page.
+
+**Note**
+Compared with `insertDocs [1/2]`, `insertDocs [2/2]` requires passing in parameters manually instead of the response body acquired by calling the [Query file conversion progress API](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task).
+
+**Parameters**
+
+- `params`: Parameters of the converted file. If the file is a static type, see [`InsertDocsStatic`](#docstatic); if the file is a dynamic type, see [`InsertDocsDynamic`](#docdynamic).
+
+### insertCodeEditor
+
+```typescript
+insertCodeEditor(): Promise<string | undefined>
+```
+
+:::info
+This method is deprecated since v0.3.6. Use `fastboard.manager.addApp({ kind: 'Monaco' })` instead.
+:::
+
+Inserts a code editor.
+
+CodeEditor is a code editing extension developed based on Monaco Editor. By calling `insertCodeEditor`, you can quickly integrate CodeEditor to your whiteboard and use its functions, such as code editing, auto-completion, and debugging.
+
+**Returns**
+
+The identifier of the extension when the method call succeeds.
+
+### insertCountdown
+
+```typescript
+insertCountdown(): Promise<string | undefined>
+```
+
+:::info
+This method is deprecated since v0.3.6. Use `fastboard.manager.addApp({ kind: 'Countdown' })` instead.
+:::
+
+Inserts a timer.
+
+Countdown is a timer extension developed by Agora. By calling `insertCountdown`, you can quickly integrate Countdown to your whiteboard and use it to set, pause, and reset a countdown timer.
+
+**Returns**
+
+The identifier of the extension when the method call succeeds.
+
+### insertGeoGebra
+
+```typescript
+insertGeoGebra(): Promise<string | undefined>
+```
+
+:::info
+This method is deprecated since v0.3.6. Use `fastboard.manager.addApp({ kind: 'GeoGebra' })` instead.
+:::
+
+Inserts a GeoGebra mathematical calculator.
+
+GeoGebra is a mathematical calculator extension developed based on  [GeoGebra](https://www.geogebra.org/). By calling `insertGeoGebra`, you can quickly integrate the GeoGebra extension to your whiteboard and use its functions.
+
+**Note**
+
+The GeoGebra extension in the Fastboard SDK is for demonstration purposes only. For commercial use, contact GeoGebra to apply for a license.
+
+**Returns**
+
+The identifier of the extension when the method call succeeds.
 
 ### removePage
 
@@ -390,9 +1990,502 @@ insertDocs(params: InsertDocsParams): Promise<string | undefined>;
 removePage(index?): Promise<boolean>
 ```
 
+Removes the specified whiteboard page.
+
+**Parameters**
+
+- `index`: Number. The page number of the to-be-removed whiteboard page. If it is left blank, the current page is deleted by default.
+
+**Returns**
+
+`true`: Success.
+
+`false`: Failure.
+
 ### jumpPage
 
 ```typescript
 jumpPage(index: number)
 ```
+
+Jumps to the whiteboard page with the specified page number.
+
+**Parameters**
+
+- `index`: Number. The expected whiteboard page number to jump to. Values greater than the current number of whiteboard pages cannot be passed in.
+
+### destroy
+
+```typescript
+destroy(): void
+```
+
+Destroys the Fastboard instance.
+
+### DocsEventOptions
+
+`DocsEventOptions` includes the following properties:
+
+- `appId`: (Optional) String. Specify the target doc to send events to. If not passed in, the target doc is the doc with the focus.
+- `page`: (Optional) Number. The page number you wish to jump to. The value should be within the range of 1 to the maximum page count of the doc.
+
+## AppsInToolbar class
+
+The `AppsInToolbar` class provides methods to manage the extension buttons on the toolbar.
+
+### push
+
+```typescript
+push(...data: AppInToolbar[]): void;
+```
+
+Adds a extension button at the end of the extension center.
+
+This method supports adding multiple extension buttons at once. The new buttons are added at the end of the extension center.
+
+**Parameters**
+
+- `data`: The extension button. See [`AppInToolbar`](#appintoolbar).
+
+**Example**
+
+```typescript
+// Adds a YouTube button to the extension center.
+// When the button is clicked, insert the Plyr player in the whiteboard and play the specified video.
+apps.push({
+    icon: "https://api.iconify.design/logos:youtube-icon.svg?color=currentColor",
+    kind: "Plyr",
+    label: "YouTube",
+    onClick(app) {
+        app.manager.addApp({
+            kind: "Plyr",
+            options: { title: "YouTube" },
+            attributes: {
+                src: "https://www.youtube.com/embed/bTqVqk7FSmY",
+                provider: "youtube",
+            },
+        });
+    },
+});
+```
+
+### insert
+
+```typescript
+insert(data: AppInToolbar, index: number): void;
+```
+
+Adds a extension button at the specified position.
+
+This method supports adding one button at a time and specifying the position for the new button.
+
+**Parameters**
+
+- `data`: The extension button. See [`AppInToolbar`](#appintoolbar).
+- `index`: The index of the button in the extension center. The value must be greater than or equal to 0.
+
+### delete
+
+```typescript
+delete(filter: (data: AppInToolbar) => boolean): void;
+```
+
+Deletes a specified extension button.
+
+**Parameters**
+
+- `filter`: The `filter()` method, which returns all extension buttons that need to be deleted. You need to pass a callback function to this method to filter out the buttons to be deleted.
+- data: The extension button. See [`AppInToolbar`](#appintoolbar).
+
+### clear
+
+```typescript
+clear(): void;
+```
+
+Deletes all extension buttons.
+
+This method deletes all buttons in the extension center, but does not delete the extension center (**apps**) button on the toolbar. To hide the extension center button on the toolbar, you can use the `options` parameter in the `mount` method to set `config.toolbar.apps.enable` as `false`.
+
+## Type definition
+
+### FastboardOptions
+
+The `FastboardOptions` interface is defined as:
+
+```typescript
+export interface FastboardOptions {
+  sdkConfig: Omit<WhiteWebSdkConfiguration, "useMobXState"> & {
+    region: NonNullable<WhiteWebSdkConfiguration["region"]>;
+  };
+  joinRoom: Omit<JoinRoomParams, "useMultiViews" | "disableNewPencil" | "disableMagixEventDispatchLimit"> & {
+    callbacks?: Partial<Omit<RoomCallbacks, "onCanRedoStepsUpdate" | "onCanUndoStepsUpdate">>;
+  };
+  managerConfig?: Omit<MountParams, "room">;
+  netlessApps?: NetlessApp[];
+  enableAppliancePlugin?: AppliancePluginOptions;
+  enableAppInMainViewPlugin?: true | AppInMainViewOptions;
+}
+```
+
+`FastboardOptions` has the following properties:
+
+- `sdkConfig`: (Required) Object. Configurations for the [WhiteWebSdk](https://github.com/netless-io/fastboard/blob/main/packages/fastboard-core/docs/classes/WhiteWebSdk.md) object, in which you must pass the following parameters:
+
+  - `appIdentifier`: String. The App Identifier of your Interactive Whiteboard project issued by Agora. See [Get security credentials for your whiteboard project](/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/enable-whiteboard#get-security-credentials-for-your-whiteboard-project).
+  - `region`: The data center, which must be the same as the data center you chose when [creating the whiteboard room](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post). The supported values are as follows:
+
+    - `cn-hz`: Hangzhou, China, which provides services to areas not covered by other data centers.
+    - `us-sv`: Silicon Valley, United States, which provides services to North America and South America.
+    - `sg`: Singapore, which provides services to Singapore, East Asia, and Southeast Asia.
+    - `in-mum`: Mumbai, India, which provides services to India.
+    - `gb-lon`: London, United Kingdom, which provides services to Europe.
+
+- `joinRoom`: (Required) Object. Parameters for joining a room:
+
+  - `uid`: String. The unique identifier of a user in string format. The maximum length is 1,024 bytes. Ensure that the `uid` of each user in the same room is unique.
+  - `uuid`: String. The room UUID, that is, the unique identifier of a room. See the value of the `uuid` parameter in the response body after a successful call of [Create a room (POST)](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post).
+  - `roomToken`: String. The room token for user authentication, which can be obtained through one of the following methods:
+
+    - Call the [Generate a room token (POST)](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-rest#generate-a-room-token-post) RESTful API.
+    - Build a token generator at your app server. See [Generate a Token at App Server](/en/realtime-media/whiteboard/build/authenticate-users/generate-token-app-server).
+
+  - `callbacks`: (Optional) Event callbacks for the whiteboard room. See [RoomCallbacks](https://github.com/netless-io/fastboard/blob/main/packages/fastboard-core/docs/modules.md#roomcallbacks) for details.
+
+- `managerConfig`: (Optional) Object. Configuration options for [WindowManager](https://github.com/netless-io/window-manager/blob/master/docs/api.md#mount).
+- `netlessApps`: (Optional) Object. Built-in Fastboard official apps or custom Fastboard apps. See [netless-app](https://github.com/netless-io/netless-app) for details about Fastboard official apps, and see [develop-apps](https://github.com/netless-io/window-manager/blob/master/docs/develop-app.md) for information on developing custom Fastboard apps.
+- `enableAppliancePlugin`: (Optional) Enables the `appliance-plugin` plugin. See [AppliancePluginOptions](https://github.com/netless-io/fastboard/blob/main/docs/en/appliance-plugin.md#configure-parameters) for details.
+- `enableAppInMainViewPlugin`: (Optional) Enables the [@netless/app-in-mainview-plugin](https://www.npmjs.com/package/@netless/app-in-mainview-plugin) plugin, supporting the management of window apps in the main view of the whiteboard:
+
+  - `true`: Enables the plugin with default configuration.
+  - `AppInMainViewOptions`: Enables the plugin with custom configuration. See [AppInMainViewOptions](https://github.com/netless-io/appInMainView/blob/main/README.md#initialize-the-parameter-configuration-of-the-method) for details.
+
+### ReplayUI
+
+A set of UI components for replay mode.
+
+```typescript
+export interface ReplayUI {
+  mount(div: Element, props?: ReplayFastboardProps): ReplayUI;
+  update(props?: ReplayFastboardProps): void;
+  destroy(): void;
+}
+```
+
+`ReplayUI` contains the following functions:
+
+- `mount`: Mounts the `FastboardApp` object to the HTML element.
+
+  - `div`: HTML Element. The HTML element to contain the `FastboardPlayer` object.
+  - `props`: Object. UI configuration. See [`MountProps`](#mountprops).
+
+- `update`: Updates the Fastboard UI when the UI configurations changes.
+
+  - `props`: Object. UI configuration. See [`MountProps`](#mountprops).
+
+- `destroy`: Removes the UI.
+
+### UI
+
+A set of built-in UI components for Fastboard.
+
+```typescript
+export interface UI {
+ mount(div: Element, props?: FastboardProps): UI;
+ update(props?: FastboardProps): void;
+ destroy(): void;
+}
+```
+
+`UI` contains the following functions:
+
+- `mount`: Mounts the `FastboardApp` object to the HTML element.
+
+  - `div`: HTML element. The HTML element to contain the `FastboardApp` object.
+  - `props`: Object. UI configuration. See [`MountProps`](#mountprops).
+
+- `update`: Updates the Fastboard UI when the UI configurations changes.
+
+  - `props`: Object. UI configuration. See [`MountProps`](#mountprops).
+
+- `destroy`: Removes the UI.
+
+<a id="mountprops" />
+
+### MountProps
+
+```typescript
+type MountProps = {
+ app?: FastboardApp | null;
+ theme?: Theme;
+ language?: Language;
+ containerRef?: (container: HTMLDivElement | null) => void;
+ config?: FastboardUIConfig;
+}
+```
+
+UI configuration options.
+
+`MountProps` contains the following properties:
+
+- `app`: The `FastboardApp` object.
+- `theme`: Theme of the UI:
+
+  - `dark`: The dark theme.
+  - `light`: (Default) The light theme.
+
+- `language`: Language of the UI text:
+
+  - `en`: (Default) English.
+  - `zh-CN`: Chinese.
+
+- `containerRef`: The callback triggered when the `FastboardApp` object is successfully mounted to the HTML element:
+
+  - `container`: The HTML element that contains the `FastboardApp` object.
+
+- `config`: Configurations for the UI components. See [`FastboardUIConfig`](#uiconfig).
+
+<a id="uiconfig" />
+
+### FastboardUIConfig
+
+```typescript
+type FastboardUIConfig = { toolbar?: { enable?: boolean; apps?: { enable?: boolean } }; redo_undo?: { enable?: boolean }; zoom_control?: { enable?: boolean }; page_control?: { enable?: boolean }; }
+```
+
+Configurations for the whiteboard UI components.
+
+`FastboardUIConfig` has the following properties:
+
+- `toolbar`: (Optional) The toolbar.
+
+  - `enable`: (Optional) Whether to display the toolbar on the whiteboard UI:
+
+    - `true`:  (default) Display.
+    - `false`: Do not display.
+
+  - `apps`: The extension center.
+
+    - `enable`: (Optional) Whether to display the extension center on the toolbar:
+
+      - `true`: (Default) Display.
+      - `false`: (Default) Do not display.
+
+- `redo_undo`: The redo and undo buttons.
+
+  - `enable`: (Optional) Whether to display the redo and undo buttons on the whiteboard UI:
+
+    - `true`: (Default) Display.
+    - `false`: (Default) Do not display.
+
+- `zoom_control`: The zoom control.
+
+  - `enable`: (Optional) Whether to display the zoom control on the Whiteboard UI:
+
+    - `true`: (Default) Display.
+    - `false`: (Default) Do not display.
+
+- `page_control`: The page control.
+
+  - `enable`: (Optional) Whether to display the page control on the Whiteboard UI:
+
+    - `true`: (Default) Display.
+    - `false`: (Default) Do not display.
+
+### ToolbarConfig
+
+```typescript
+export interface ToolbarConfig {
+  placement?: "left" | "right";
+  items?: ToolbarItem[];
+  collapsed?: boolean;
+  apps?: { enable?: boolean };
+  colors?: Color[];
+}
+```
+
+`ToolbarConfig` contains the following properties:
+
+- `placement`: (Optional) String. The position of the toolbar:
+
+  - `left`: (Default) Left side.
+  - `right`: Right side.
+
+- `items`: (Optional) String[]. The tool buttons displayed on the toolbar. By default, all tools are displayed. The supported values are:
+
+  - `clicker`: Click tool.
+  - `selector`: Selection tool.
+  - `pencil`: Pencil tool.
+  - `text`: Text tool.
+  - `shapes`: Shape tool.
+  - `eraser`: Eraser tool.
+  - `clear`: Clear tool.
+  - `hand`: Hand tool.
+  - `laserPointer`: Laser pointer tool.
+
+- `collapsed`: (Optional) Boolean. Whether the toolbar is collapsed:
+
+  - `true`: Collapsed.
+  - `false`: (Default) Not collapsed.
+
+- `apps`: (Optional) Object. Extension center:
+
+  - `enable`: (Optional) Whether to display the extension center button on the toolbar:
+
+    - `true`: (Default) Display.
+    - `false`: Do not display.
+
+- `colors`: (Optional) Color[]. The colors of UI components. See [`Color`](#color).
+
+<a id="camera" />
+
+### Camera
+
+`Camera` has the following parameters:
+
+- `centerX`: Number. The X coordinate of the center of the HTML element in the whiteboard coordinate system (taking the center of the HTML element as the origin). The default value is 0.
+- `centerY`: Number. The Y coordinate of the center of the HTML element in the whiteboard coordinate system (taking the center of the HTML element as the origin). The default value is 0.
+- `scale`: Number. The scale factor of the view. The default value is 1, which means the scale factor is 100%.
+
+<a id="rectangle" />
+
+### Rectangle
+
+`Rectangle` has the following properties:
+
+- `originX`: Number. The X coordinate of the top left corner of the rectangle area in the whiteboard coordinate system (taking the center of the HTML element as the origin).
+- `originY`: Number. The Y coordinate of the top left corner of the rectangle area in the whiteboard coordinate system (taking the center of the HTML element as the origin).
+- `width`: The width (px) of the rectangle area.
+- `height`: The height (px) of the rectangle area.
+
+<a id="appliance-web" />
+
+### ApplianceNames
+
+`ApplianceNames` has the following enumerators:
+
+- `selector = "selector"`: Selector.
+- `clicker = "clicker"`: Clicker, which can be used for clicking and selecting content on an HTML5 file.
+- `laserPointer = "laserPointer"`: Laser pointer.
+- `pencil = "pencil"`: Pencil.
+- `rectangle = "rectangle"`: Rectangle.
+- `ellipse = "ellipse"`: Ellipse.
+- `shape = "shape"`: Shape.
+- `eraser = "eraser"`: Eraser.
+- `text = "text"`: Text.
+- `straight = "straight"`: Straight line.
+- `arrow = "arrow"`: Arrow
+- `hand = "hand"`: Hand.
+
+<a id="shape" />
+
+### ShapeType
+
+`ShapeType` has the following enumerators:
+
+- `Triangle = "triangle"`: Triangle.
+- `Rhombus = "rhombus"`: Rhombus.
+- `Pentagram = "pentagram"`: Pentagram.
+- `SpeechBalloon = "speechBalloon"`: Speech balloon.
+
+<a id="color" />
+
+### Color
+
+`Color`: Number[]. The color in RGB format. For example, `[0, 0, 255]` represents blue.
+
+<a id="docstatic" />
+
+### InsertDocsStatic
+
+```typescript
+export interface InsertDocsStatic {
+    readonly fileType: "pdf";
+    readonly scenePath: string;
+    readonly scenes: SceneDefinition[];
+    readonly title?: string;
+}
+```
+
+For example:
+
+```typescript
+await fastboard.insertDocs({
+              title: 'test.pdf',
+              fileType: 'pdf',
+              scenePath: '/path/to/scene',
+              scenes: [
+                {
+                  name: '1',
+                  ppt: {
+                    width: 734,
+                    height: 950,
+                    src: 'https://url/to/image.png',
+                  }
+                },
+              ],
+            });
+```
+
+`InsertDocsStatic` has the following properties:
+
+- `fileType`: String. The file type. The supported value is `pdf`, which represents the static file type.
+- `scenePath`: String. The path of the whiteboard scene. Agora suggests you use "`/pdf/uuid`", where `uuid` is the UUID of the file conversion task. You can get `uuid` from the response body when the [Start file conversion (POST) API](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion) call succeeds.
+- `scenes`: SceneDefinition[]. The content to be displayed on the whiteboard scene, that is, the converted file. The `SceneDefinition[]` consists of multiple `SceneDefinition` objects. Each `SceneDefinition` object represents a page of file and must contain the following parameters:
+
+  - `name` : String. A name for this scene.
+  - `ppt`: String. A JSON object containing the following:
+
+    - `height`: Number. The height (px) of the file.
+    - `width`: Number. The width (px) of the file.
+    - `src`: String. The URL address of each page of file, which you can get from the field in the response body when the [Query file conversion progress](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task) API call succeeds.
+
+- `title`: (Optional) String. The title of the sub-window.
+
+<a id="docdynamic" />
+
+### InsertDocsDynamic
+
+```typescript
+export interface InsertDocsDynamic {
+    readonly fileType: "pptx";
+    readonly scenePath: string;
+    readonly taskId: string;
+    readonly title?: string;
+    readonly url?: string;
+   }
+```
+
+`InsertDocsDynamic` has the following properties:
+
+- `fileType`: String. The file type. The supported value is `pptx`, which represents the dynamic file type.
+- `scenePath`: String. The path of the whiteboard scene. Agora suggests that you use "`/pptx/uuid`", where `uuid` is the UUID of the file conversion task. You can get `uuid` from the response body when the [Start file conversion API](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion) call succeeds.
+- `taskId`: String. The UUID of the file conversion task. You can get `uuid` from the response body when the [Start file conversion API](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion) call succeeds.
+- `title`: (Optional) String. The title of the sub-window.
+- `url`: String. The path where you store the converted file. For example, `"https://docs-test-xxx.oss-cn-hangzhou.aliyuncs.com/dynamicConvert"`.
+
+<a id="appintoolbar" />
+
+### AppInToolbar
+
+The extension button.
+
+```typescript
+interface AppInToolbar {
+ kind: string;
+ icon: string;
+ label: string;
+ onClick: (app: FastboardApp) => void;
+}
+```
+
+`AppInToolbar` has the following properties:
+
+- `kind`: String. The unique identifier of the extension button, which can be any string.
+- `icon`: String. The URL of the button icon.
+- `label`: String. The caption of the button, that is, the text displayed underneath the button. Agora recommends that the length should not exceed 12 characters; otherwise, the text cannot displayed completely.
+- `onClick`: The callback triggered when the button is clicked.
+
+  - `app`: the `FastboardApp` object.
+
 </PlatformStructured>
