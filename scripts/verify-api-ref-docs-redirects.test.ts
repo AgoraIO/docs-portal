@@ -83,12 +83,6 @@ const bulkRedirects = [
     preserveQueryParams: true,
   },
   {
-    source: '/en/hash/legacy',
-    destination: '/en/current/hash#new-anchor',
-    statusCode: 301,
-    preserveQueryParams: false,
-  },
-  {
     source: '/en/pipe/legacy',
     destination: '/en/current/pipe',
     statusCode: 301,
@@ -97,10 +91,10 @@ const bulkRedirects = [
 ];
 
 const vercelConfig = {
-  redirects: [
+  routes: [
     {
-      source: '/en/query/legacy',
-      destination: '/en/current/query-web',
+      src: '^/en/query/legacy/?$',
+      headers: { Location: '/en/current/query-web' },
       has: [
         {
           type: 'query',
@@ -108,8 +102,19 @@ const vercelConfig = {
           value: 'Web',
         },
       ],
-      statusCode: 301,
-      preserveQueryParams: false,
+      status: 301,
+    },
+    {
+      src: '^/en/hash/legacy/?$',
+      headers: { Location: '/en/current/hash#new-anchor' },
+      has: [
+        {
+          type: 'query',
+          key: 'platform',
+          value: 'Android',
+        },
+      ],
+      status: 301,
     },
   ],
 };
@@ -251,21 +256,48 @@ describe('verify-api-ref-docs-redirects', () => {
     );
   });
 
-  it('rejects Vercel query redirects that omit explicit preserveQueryParams', () => {
+  it('rejects Vercel query redirect routes without a literal Location', () => {
     const result = verifyApiRefRedirectTriage({
       bulkRedirects,
       redirectsConfig,
       staticRedirects,
       triageMarkdown,
       vercelConfig: {
-        redirects: vercelConfig.redirects.map(
-          ({ preserveQueryParams: _preserveQueryParams, ...rule }) => rule,
+        routes: vercelConfig.routes.map(({ headers, ...route }) =>
+          route.src === '^/en/query/legacy/?$' ? route : { headers, ...route },
         ),
       },
     });
 
     expect(result).toContain(
-      'Vercel redirect preserveQueryParams missing for https://docs.agora.io/en/query/legacy?platform=Web: expected false',
+      'Vercel redirect artifact missing: https://docs.agora.io/en/query/legacy?platform=Web',
+    );
+  });
+
+  it('rejects query redirects after Markdown negotiation routes', () => {
+    const markdownRoute = {
+      src: '^/en/((?!.*\\.md/?$).+?)/?$',
+      dest: '/en/$1.md',
+      has: [
+        {
+          type: 'header',
+          key: 'accept',
+          value: '.*text/markdown.*',
+        },
+      ],
+    };
+    const result = verifyApiRefRedirectTriage({
+      bulkRedirects,
+      redirectsConfig,
+      staticRedirects,
+      triageMarkdown,
+      vercelConfig: {
+        routes: [markdownRoute, ...vercelConfig.routes],
+      },
+    });
+
+    expect(result).toContain(
+      'Vercel query redirect must precede Markdown negotiation routes: https://docs.agora.io/en/query/legacy?platform=Web',
     );
   });
 

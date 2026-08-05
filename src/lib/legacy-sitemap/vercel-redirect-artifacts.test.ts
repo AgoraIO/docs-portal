@@ -17,30 +17,27 @@ type StaticRedirectRule = {
   t: string;
 };
 
+type VercelCondition = {
+  key: string;
+  type: string;
+  value?: string;
+};
+
 type VercelRedirect = {
   destination: string;
-  has?: Array<{
-    key: string;
-    type: string;
-    value: string;
-  }>;
-  missing?: Array<{
-    key: string;
-    type: string;
-  }>;
+  has?: VercelCondition[];
   preserveQueryParams?: boolean;
   source: string;
   statusCode: number;
 };
 
 type VercelRoute = {
-  dest: string;
-  has?: Array<{
-    key: string;
-    type: string;
-    value: string;
-  }>;
+  dest?: string;
+  has?: VercelCondition[];
+  headers?: Record<string, string>;
+  missing?: VercelCondition[];
   src: string;
+  status?: number;
 };
 
 describe('legacy redirect Vercel artifacts', () => {
@@ -59,6 +56,16 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(staticRedirects).toHaveLength(legacyRules.length);
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('stays within Vercel redirect limits and schema', () => {
+    expect(bulkRedirects.length).toBeLessThanOrEqual(1_000);
+    expect(vercelConfig.redirects?.length ?? 0).toBeLessThanOrEqual(2_048);
+    expect(vercelConfig.redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ preserveQueryParams: expect.anything() }),
+      ]),
+    );
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
@@ -255,16 +262,18 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
+  it('strips legacy queries with conditional Vercel redirect routes', () => {
     expect(
       bulkRedirects.some(
         (rule) =>
           rule.source === '/en/broadcast-streaming/overview/release-notes',
       ),
     ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location:
+          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      },
       has: [
         {
           key: 'platform',
@@ -272,96 +281,105 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
-      preserveQueryParams: false,
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
+      src: '^/en/broadcast-streaming/overview/release-notes/?$',
+      status: 301,
     });
   });
 
-  it('keeps owner-approved no-query fallbacks for legacy platform URLs', () => {
-    const fallbackRedirects = [
+  it('redirects legacy platform URLs without a platform query using fallback routes', () => {
+    const expectedFallbackRoutes = [
       {
-        destination: '/en/introduction/account',
-        source: '/en/Agora%20Platform/get_appid_token',
+        src: '^/en/Agora Platform/get_appid_token/?$',
+        headers: {
+          Location: '/en/introduction/account',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination: '/en/introduction/core-concepts',
-        source: '/en/Agora%20Platform/terms',
+        src: '^/en/Agora Platform/terms/?$',
+        headers: {
+          Location: '/en/introduction/core-concepts',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination:
-          '/en/realtime-media/media-push/get-started/enable-media-push',
-        source: '/en/Interactive%20Broadcast/cdn_streaming_web',
+        src: '^/en/Interactive Broadcast/cdn_streaming_web/?$',
+        headers: {
+          Location:
+            '/en/realtime-media/media-push/get-started/enable-media-push',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination:
-          '/en/realtime-media/media-push/get-started/enable-media-push',
-        source: '/en/Interactive%20Broadcast/cdn_streaming_windows',
+        src: '^/en/Interactive Broadcast/cdn_streaming_windows/?$',
+        headers: {
+          Location:
+            '/en/realtime-media/media-push/get-started/enable-media-push',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination:
-          '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
-        source: '/en/Interactive%20Broadcast/cloud_proxy_web_ng',
+        src: '^/en/Interactive Broadcast/cloud_proxy_web_ng/?$',
+        headers: {
+          Location:
+            '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination:
-          '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring',
-        source: '/en/Interactive%20Broadcast/in-call_quality_windows',
+        src: '^/en/Interactive Broadcast/in-call_quality_windows/?$',
+        headers: {
+          Location:
+            '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
       {
-        destination:
-          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute',
-        source: '/en/Interactive%20Broadcast/set_subscribing_state',
+        src: '^/en/Interactive Broadcast/set_subscribing_state/?$',
+        headers: {
+          Location:
+            '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute',
+        },
+        missing: [{ type: 'query', key: 'platform' }],
+        status: 301,
       },
     ];
 
-    for (const expected of fallbackRedirects) {
-      expect(vercelConfig.redirects).toContainEqual({
-        ...expected,
-        missing: [
-          {
-            key: 'platform',
-            type: 'query',
-          },
-        ],
-        preserveQueryParams: false,
-        statusCode: 301,
-      });
-    }
-  });
-
-  it('keeps platform-specific redirects ahead of no-query fallbacks', () => {
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows',
-      has: [
-        {
-          key: 'platform',
-          type: 'query',
-          value: 'Windows',
-        },
-      ],
-      preserveQueryParams: false,
-      source: '/en/Interactive%20Broadcast/set_subscribing_state',
-      statusCode: 301,
-    });
-
-    const platformRedirectIndex = vercelConfig.redirects?.findIndex(
-      (rule) =>
-        rule.source === '/en/Interactive%20Broadcast/set_subscribing_state' &&
-        rule.destination ===
-          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows',
-    );
-    const fallbackRedirectIndex = vercelConfig.redirects?.findIndex(
-      (rule) =>
-        rule.source === '/en/Interactive%20Broadcast/set_subscribing_state' &&
-        rule.destination ===
-          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute',
+    expect(vercelConfig.routes).toEqual(
+      expect.arrayContaining(expectedFallbackRoutes),
     );
 
-    expect(platformRedirectIndex).toBeGreaterThanOrEqual(0);
-    expect(fallbackRedirectIndex).toBeGreaterThanOrEqual(0);
-    expect(platformRedirectIndex).toBeLessThan(fallbackRedirectIndex);
+    const platformRouteIndex = vercelConfig.routes?.findIndex(
+      (route) =>
+        route.src === '^/en/Interactive Broadcast/set_subscribing_state/?$' &&
+        route.headers?.Location ===
+          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows' &&
+        route.has?.some(
+          (condition) =>
+            condition.type === 'query' &&
+            condition.key === 'platform' &&
+            condition.value === 'Windows',
+        ),
+    );
+    const fallbackRouteIndex = vercelConfig.routes?.findIndex(
+      (route) =>
+        route.src === '^/en/Interactive Broadcast/set_subscribing_state/?$' &&
+        route.headers?.Location ===
+          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute' &&
+        route.missing?.some(
+          (condition) =>
+            condition.type === 'query' && condition.key === 'platform',
+        ),
+    );
+
+    expect(platformRouteIndex).toBeGreaterThanOrEqual(0);
+    expect(fallbackRouteIndex).toBeGreaterThan(platformRouteIndex ?? -1);
   });
 
   it('keeps the client fallback manifest compact and audit-free', () => {
