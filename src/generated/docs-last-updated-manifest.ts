@@ -3591,7 +3591,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-08-05T05:46:18.000Z',
+    '2026-08-05T09:34:25.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -4735,7 +4735,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-05T09:34:25.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/meta.json':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -5679,7 +5679,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/core-concepts.mdx':
     '2026-07-27T11:25:46.000Z',
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
-    '2026-07-27T11:25:46.000Z',
+    '2026-08-05T12:04:44.000Z',
   'content/docs/en/realtime-media/rtc/index.md': '2026-06-13T10:37:20.000Z',
   'content/docs/en/realtime-media/rtc/index.mdx': '2026-07-27T11:25:46.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-effects-and-mixing.md':
@@ -5806,7 +5806,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/skills.mdx': '2026-07-24T15:27:38.000Z',
   'content/docs/en/realtime-media/rtc/streaming-quickstart.mdx':
-    '2026-07-24T15:27:38.000Z',
+    '2026-08-05T12:04:44.000Z',
   'content/docs/en/realtime-media/rtc/subscription-packages.mdx':
     '2026-07-24T15:27:38.000Z',
   'content/docs/en/realtime-media/rtc/video/custom-video-processing.md':
@@ -5826,7 +5826,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/video/video-profiles-and-quality.md':
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/voice-quickstart.mdx':
-    '2026-07-24T15:27:38.000Z',
+    '2026-08-05T12:04:44.000Z',
   'content/docs/en/realtime-media/rtm.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtm/beginners-guide.md':
     '2026-06-28T06:33:56.000Z',
@@ -6595,7 +6595,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/end-to-end-encryption.mdx':
     '2026-06-28T02:47:54.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-08-05T05:46:18.000Z',
+    '2026-08-05T09:34:25.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -6852,7 +6852,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/voice/build/receive-notifications.mdx':
     '2026-06-26T06:37:16.000Z',
   'content/docs/en/realtime-media/voice/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-06-30T07:00:49.000Z',
+    '2026-08-05T09:34:25.000Z',
   'content/docs/en/realtime-media/voice/build/secure-and-protect-channels/meta.json':
     '2026-06-26T08:33:22.000Z',
   'content/docs/en/realtime-media/voice/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
