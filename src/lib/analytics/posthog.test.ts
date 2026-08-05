@@ -202,6 +202,30 @@ describe('PostHog analytics', () => {
     });
   });
 
+  it('uses the explicit deployment environment for preview events', async () => {
+    vi.stubEnv('VITE_DEPLOY_ENVIRONMENT', 'preview');
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchOpened } = await import('./posthog');
+
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_opened',
+      expect.objectContaining({
+        docs_environment: 'preview',
+      }),
+    );
+  });
+
   it('captures the canonical docs page view dimensions from registered context', async () => {
     vi.stubEnv('VITE_DEPLOY_VERSION', '253dabcc');
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');

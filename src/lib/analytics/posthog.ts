@@ -303,7 +303,7 @@ function getDocsPageContext(locale: string) {
       registeredPageContext?.contentKind,
       'unknown',
     ),
-    docs_environment: import.meta.env.PROD ? 'production' : 'development',
+    docs_environment: getDocsEnvironment(),
     docs_locale: toSafePropertyValue(docsLocale, 'unknown'),
     docs_page_type:
       registeredPageContext?.pageType ?? inferDocsPageType(pathname),
@@ -312,6 +312,19 @@ function getDocsPageContext(locale: string) {
     docs_product: product,
     docs_tab: toSafePropertyValue(tab, 'unknown'),
   };
+}
+
+function getDocsEnvironment() {
+  const configuredEnvironment = import.meta.env.VITE_DEPLOY_ENVIRONMENT;
+
+  if (
+    configuredEnvironment === 'preview' ||
+    configuredEnvironment === 'production'
+  ) {
+    return configuredEnvironment;
+  }
+
+  return import.meta.env.DEV ? 'development' : 'unknown';
 }
 
 function inferDocsProduct(parts: string[], tab: string) {
