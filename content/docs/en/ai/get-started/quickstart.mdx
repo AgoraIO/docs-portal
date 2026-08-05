@@ -1,4 +1,5 @@
 ---
+analyticsPageType: task-guide
 title: Voice agent quickstart
 description: Build a working voice agent in under five minutes without writing any server code by cloning an officially maintained starter project.
 ---
@@ -83,7 +84,9 @@ Agora project, and write the runtime-specific environment file.
 ```bash
 agora init my-python-demo --template python
 cd my-python-demo
-bun install
+# Set up the web client and Python backend.
+bun run setup
+# Start the web client and Python backend.
 bun run dev
 ```
 
@@ -118,13 +121,30 @@ make dev
 If the agent does not join or transcripts do not appear, run `agora project doctor` to
 check credential validity, feature enablement, and network reachability.
 
+## What just happened
+
+The CLI cloned the selected starter, connected it to your Agora project, and wrote
+the environment configuration required to run the demo locally.
+
+The demo runs a local browser app and server-side agent controls:
+
+- **Browser app**: Captures microphone audio and plays the agent response.
+- **Server-side controls**: Generate tokens and start or stop the agent session.
+
+Agora provides the realtime path between the user and the agent. The user and
+agent join the same Agora channel, and Agora transports low-latency audio and
+session events between them.
+
+The configured models handle the speech pipeline:
+
+1. ASR converts user speech to text.
+2. The LLM reasons over the conversation and generates a response.
+3. TTS converts the response back to speech.
+
 ## Next steps
 
-Explore the following topics:
-
-- [Start and stop an agent](../build/start-stop-agent): Create and end a voice agent session with the REST API.
-- [Use managed mode](../build/custom-model-integration/managed-mode): Start with Agora-managed ASR, LLM, and TTS providers.
-- [Optimize conversation latency](../best-practices/optimize-latency): Tune ASR, LLM, TTS, and deployment choices.
-- [Optimize audio](../best-practices/audio-setup): Apply recommended client audio settings.
-- [REST API reference](/en/api-reference/api-ref/conversational-ai): Review exact request and response shapes.
-- Explore the SDK API references for [TypeScript](/en/api-reference/api-ref/server-sdk/typescript), [Python](/en/api-reference/api-ref/server-sdk/python), and [Go](/en/api-reference/api-ref/server-sdk/go).
+- **[Manage agent sessions](../build/start-stop-agent)**: Start and stop agents with the SDKs or REST API.
+- **[Customize models](../build/custom-model-integration/managed-mode)**: Use managed mode, or connect your own LLM and TTS providers.
+- **[Improve conversation quality](../best-practices/optimize-latency)**: Tune latency, audio settings, interruptions, and turn taking.
+- **[Observe runtime behavior](../build/handle-runtime-events/monitor-agent-runtime)**: Monitor events, transcripts, session history, and failures.
+- **Prepare for production**: Review projects, security, regions, logging, and operational requirements.

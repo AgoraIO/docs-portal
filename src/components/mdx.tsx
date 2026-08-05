@@ -47,6 +47,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { captureDocsCodeTabChanged } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import {
   type NormalizedDocsHref,
@@ -538,6 +539,11 @@ function CodeBlockTabs({
       : undefined;
   const handleValueChange = useCallback(
     (nextValue: string) => {
+      captureDocsCodeTabChanged({
+        locale: 'en',
+        nextLanguage: nextValue,
+      });
+
       if (value === undefined && stateKey) {
         pageState?.setCodeBlockTabValues((current) => {
           if (current[stateKey] === nextValue) {

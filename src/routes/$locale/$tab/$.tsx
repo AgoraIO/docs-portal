@@ -130,6 +130,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 function Page() {
   const params = Route.useParams();
   const {
+    activePath,
+    activeTab,
+    analyticsPageContext,
+    analyticsPageType,
     body,
     breadcrumb,
     contentPath,
@@ -159,6 +163,10 @@ function Page() {
 
   return (
     <DocsContent
+      activePath={activePath}
+      activeTab={activeTab}
+      analyticsPageContext={analyticsPageContext}
+      analyticsPageType={analyticsPageType}
       body={body}
       breadcrumb={breadcrumb}
       contentPath={contentPath}
@@ -176,7 +184,7 @@ function Page() {
   );
 }
 
-function preserveRedirectSearch(
+export function preserveRedirectSearch(
   href: string,
   location: { hash?: string; searchStr?: string },
   preserveSearch = true,
@@ -185,7 +193,17 @@ function preserveRedirectSearch(
     return href;
   }
 
-  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
+  if (!preserveSearch) {
+    return href;
+  }
+
+  const hash = location.hash
+    ? location.hash.startsWith('#')
+      ? location.hash
+      : `#${location.hash}`
+    : '';
+
+  return `${href}${location.searchStr ?? ''}${hash}`;
 }
 
 function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {

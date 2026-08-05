@@ -2,6 +2,35 @@ import { describe, expect, it } from 'vitest';
 import { resolveStaticLegacySitemapRedirect } from './static-redirects';
 
 describe('static legacy sitemap redirects', () => {
+  const legacyHelpFaqRedirects = [
+    [
+      '/en/help/integration-issues/system_volume',
+      '/en/api-reference/faq/integration/system_volume',
+    ],
+    [
+      '/en/help/integration-issues/recording_mode',
+      '/en/api-reference/faq/integration/recording_mode',
+    ],
+    [
+      '/help/account-and-billing/billing_account',
+      '/en/api-reference/faq/account/billing_account',
+    ],
+    [
+      '/help/integration-issues/agora_class_custom_properties',
+      '/en/api-reference/faq/integration/agora_class_custom_properties',
+    ],
+    [
+      '/help/integration-issues/token_cohost',
+      '/en/api-reference/faq/integration/token_cohost',
+    ],
+    [
+      '/help/integration-issues/token_related_issues',
+      '/en/api-reference/faq/integration/token_related_issues',
+    ],
+  ] as const satisfies ReadonlyArray<
+    readonly [legacyPath: string, redirectUrl: string]
+  >;
+
   it('resolves a legacy path without relying on static docs payload files', () => {
     expect(
       resolveStaticLegacySitemapRedirect('/en/agora-chat/develop/ip_allowlist'),
@@ -33,6 +62,25 @@ describe('static legacy sitemap redirects', () => {
       redirectUrl: '/en/api-reference/api-ref/im',
     });
   });
+
+  it('redirects the moved AI release notes page to its current URL', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect('/en/ai/reference/release-notes'),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/ai/release-notes',
+    });
+  });
+
+  it.each(legacyHelpFaqRedirects)(
+    'redirects %s to %s',
+    (legacyPath, redirectUrl) => {
+      expect(resolveStaticLegacySitemapRedirect(legacyPath)).toEqual({
+        preserveSearch: true,
+        redirectUrl,
+      });
+    },
+  );
 
   it('prefers query-specific legacy rules before path fallback rules', () => {
     expect(

@@ -19,6 +19,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
+  captureDocsFeedbackIssueClicked,
+  captureDocsFeedbackOpened,
   captureDocsPageFeedback,
   type DocsFeedbackValue,
 } from '@/lib/analytics/posthog';
@@ -106,6 +108,9 @@ export function DocsPageFeedback({
           <DialogTrigger asChild>
             <Button
               className={cn('h-8 rounded-md px-3 text-xs', compact && 'w-full')}
+              onClick={() =>
+                captureDocsFeedbackOpened({ locale: normalizedLocale })
+              }
               size="sm"
             >
               <MessageSquareTextIcon data-icon="inline-start" />
@@ -163,7 +168,17 @@ export function DocsPageFeedback({
                 <Button variant="outline">{t('docs.feedbackCancel')}</Button>
               </DialogClose>
               <Button asChild>
-                <a href={feedbackUrl} rel="noreferrer" target="_blank">
+                <a
+                  href={feedbackUrl}
+                  onClick={() =>
+                    captureDocsFeedbackIssueClicked({
+                      kind: feedbackKind,
+                      locale: normalizedLocale,
+                    })
+                  }
+                  rel="noreferrer"
+                  target="_blank"
+                >
                   {t('docs.feedbackSubmit')}
                 </a>
               </Button>
