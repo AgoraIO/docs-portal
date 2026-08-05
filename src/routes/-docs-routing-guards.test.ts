@@ -68,6 +68,18 @@ function createPlatformPayload(platforms: string): DocsPagePayload {
   return {
     activePath: '/en/realtime-media/rtm/build/presence',
     activeTab: 'realtime-media',
+    analyticsPageContext: {
+      contentId: 'realtime-media/rtm/build/presence',
+      journeyStage: 'unknown',
+      navSection: 'unknown',
+      navSectionTitle: 'unknown',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/rtm/build/presence',
+      product: 'unknown',
+      title: 'Presence',
+      version: 'current',
+    },
+    analyticsPageType: 'task-guide',
     body: {
       contentPath: 'en/realtime-media/rtm/build/presence.mdx',
       kind: 'mdx',

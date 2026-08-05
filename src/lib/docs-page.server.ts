@@ -1,6 +1,11 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { createDocsPageAnalyticsContext } from './analytics/docs-page-context';
+import {
+  type DocsPageType,
+  inferDocsPageType,
+} from './analytics/docs-page-type';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import {
@@ -428,6 +433,20 @@ export async function loadDocsPagePayload(
         pageProps: await openApiPage.data.getOpenAPIPageProps(),
       }
     : mdxBody;
+  const configuredAnalyticsPageType: DocsPageType | undefined = isOpenApiPage
+    ? 'sdk-api-reference'
+    : 'analyticsPageType' in page.data && page.data.analyticsPageType
+      ? (page.data.analyticsPageType as DocsPageType)
+      : undefined;
+  const analyticsPageType =
+    configuredAnalyticsPageType ?? inferDocsPageType(page.url);
+  const analyticsPageContext = createDocsPageAnalyticsContext({
+    pageType: analyticsPageType,
+    pathname: page.url,
+    sourcePath: page.path,
+    title,
+    version: sidebarHeader?.versionSwitcher?.currentId,
+  });
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(
       new Set([
@@ -445,6 +464,8 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    analyticsPageContext,
+    analyticsPageType,
     body,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&

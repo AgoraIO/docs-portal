@@ -19,6 +19,13 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import type { DocsPageAnalyticsContext } from '@/lib/analytics/docs-page-context';
+import {
+  captureDocsPageViewed,
+  captureDocsTocClicked,
+  type DocsPageType,
+  registerDocsPageContext,
+} from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
@@ -71,6 +78,10 @@ type DocsArticleReturnLink = {
 };
 
 export function DocsContent({
+  activePath,
+  activeTab,
+  analyticsPageContext,
+  analyticsPageType,
   body,
   breadcrumb = [],
   contentPath,
@@ -85,6 +96,10 @@ export function DocsContent({
   title,
   toc,
 }: {
+  activePath?: string;
+  activeTab?: string;
+  analyticsPageContext?: DocsPageAnalyticsContext;
+  analyticsPageType?: DocsPageType;
   body?: DocsContentBodyPayload;
   breadcrumb?: DocsBreadcrumbItem[];
   contentPath?: string;
@@ -140,6 +155,32 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
+  const analyticsContentKind = isOpenApiBody ? 'openapi' : 'mdx';
+
+  useEffect(() => {
+    registerDocsPageContext({
+      canonicalProduct: analyticsPageContext?.product,
+      contentId: analyticsPageContext?.contentId,
+      contentKind: analyticsContentKind,
+      journeyStage: analyticsPageContext?.journeyStage,
+      locale: currentLocale,
+      navSection: analyticsPageContext?.navSection,
+      navSectionTitle: analyticsPageContext?.navSectionTitle,
+      pageType: analyticsPageContext?.pageType ?? analyticsPageType,
+      pathname: analyticsPageContext?.pathname ?? activePath,
+      tab: activeTab,
+      title: analyticsPageContext?.title,
+      version: analyticsPageContext?.version,
+    });
+    captureDocsPageViewed({ locale: currentLocale });
+  }, [
+    activePath,
+    activeTab,
+    analyticsContentKind,
+    analyticsPageContext,
+    analyticsPageType,
+    currentLocale,
+  ]);
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -715,7 +756,8 @@ export function DocsTableOfContents({
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
-  const t = i18n.getFixedT(normalizeLocale(locale) ?? DEFAULT_LOCALE, 'common');
+  const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
+  const t = i18n.getFixedT(currentLocale, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(
@@ -855,6 +897,7 @@ export function DocsTableOfContents({
     items.length > 0 ? (
       <TocLinks
         items={items}
+        locale={currentLocale}
         onHeadingClick={scrollToHeading}
         primaryActiveUrl={primaryActiveUrl}
         visibleUrls={visibleUrls}
@@ -930,12 +973,14 @@ export function DocsTableOfContents({
 
 function TocLinks({
   items,
+  locale,
   onHeadingClick,
   primaryActiveUrl,
   variant,
   visibleUrls,
 }: {
   items: TOCItemType[];
+  locale: AppLocale;
   onHeadingClick: (url: string) => void;
   primaryActiveUrl: string;
   variant: 'mobile' | 'rail';
@@ -1014,6 +1059,12 @@ function TocLinks({
               }
 
               event.preventDefault();
+              captureDocsTocClicked({
+                anchor: item.url,
+                depth: item.depth,
+                locale,
+                variant,
+              });
               onHeadingClick(item.url);
             }}
             ref={

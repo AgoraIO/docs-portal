@@ -5,6 +5,7 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import { DOCS_PAGE_TYPES } from './src/lib/analytics/docs-page-type';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
 import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
@@ -16,6 +17,7 @@ const useDynamicDocsRuntime =
 const scopedDocsFiles = createScopedDocsFiles(process.env.DOCS_DEV_SCOPE ?? '');
 
 const rawDocSchema = z.object({
+  analyticsPageType: z.enum(DOCS_PAGE_TYPES).optional(),
   title: z.string().optional(),
   description: z.string().optional(),
   icon: z.string().optional(),
