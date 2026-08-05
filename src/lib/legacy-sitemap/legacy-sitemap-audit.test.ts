@@ -43,6 +43,8 @@ const manualLegacyUrls = new Set([
 ]);
 const apiRefRedirectAuditEvidence =
   'API Reference link audit row marked add-301/high in docs/agents/reports/2026-08-03-api-ref-docs-redirect-triage.md';
+const ownerApprovedNoQueryFallbackEvidence =
+  'Owner-approved no-query fallback for legacy platform URL on 2026-08-05.';
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
@@ -133,7 +135,8 @@ describe('legacy sitemap compatibility audit', () => {
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
         !manualLegacyUrls.has(rule.legacyUrl) &&
-        !rule.evidence.includes(apiRefRedirectAuditEvidence),
+        !rule.evidence.includes(apiRefRedirectAuditEvidence) &&
+        !rule.evidence.includes(ownerApprovedNoQueryFallbackEvidence),
     );
 
     expect(staleRules).toEqual([]);

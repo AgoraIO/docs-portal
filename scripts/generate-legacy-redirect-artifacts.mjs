@@ -77,11 +77,17 @@ function createVercelRedirects(rules) {
 
   for (const [legacyPath, pathRules] of rulesByPath) {
     const targets = new Set(pathRules.map((rule) => rule.target));
+    const queryRules = pathRules.filter((rule) => rule.legacySearch);
+    const noQueryRules = pathRules.filter((rule) => !rule.legacySearch);
 
     const bulkRedirectPreserveQueryParams =
       getBulkRedirectPreserveQueryParams(pathRules);
 
-    if (targets.size === 1 && bulkRedirectPreserveQueryParams !== null) {
+    if (
+      targets.size === 1 &&
+      bulkRedirectPreserveQueryParams !== null &&
+      !(queryRules.length > 0 && noQueryRules.length > 0)
+    ) {
       const [firstRule] = pathRules;
       bulkRedirects.push({
         source: createVercelSourcePath(legacyPath),
@@ -94,7 +100,9 @@ function createVercelRedirects(rules) {
 
     querySplitPaths.push(legacyPath);
 
-    for (const rule of pathRules) {
+    const queryKeys = getQueryKeys(queryRules);
+
+    for (const rule of queryRules) {
       const query = parseLegacySearch(rule.legacySearch);
       if (!query) {
         throw new Error(
@@ -109,6 +117,19 @@ function createVercelRedirects(rules) {
           type: 'query',
           key,
           value,
+        })),
+        statusCode: 301,
+        preserveQueryParams: rule.preserveSearch,
+      });
+    }
+
+    for (const rule of noQueryRules) {
+      queryRedirects.push({
+        source: createVercelSourcePath(legacyPath),
+        destination: rule.target,
+        missing: queryKeys.map((key) => ({
+          type: 'query',
+          key,
         })),
         statusCode: 301,
         preserveQueryParams: rule.preserveSearch,
@@ -161,6 +182,19 @@ function parseLegacySearch(search) {
   return Object.keys(query).length > 0 ? query : null;
 }
 
+function getQueryKeys(rules) {
+  const keys = new Set();
+
+  for (const rule of rules) {
+    const query = parseLegacySearch(rule.legacySearch);
+    for (const key of Object.keys(query ?? {})) {
+      keys.add(key);
+    }
+  }
+
+  return Array.from(keys).sort();
+}
+
 function compareStaticRedirects(a, b) {
   return (
     a.p.localeCompare(b.p) ||
@@ -172,8 +206,21 @@ function compareStaticRedirects(a, b) {
 function compareVercelRedirects(a, b) {
   return (
     a.source.localeCompare(b.source) ||
+    getVercelRedirectPriority(a) - getVercelRedirectPriority(b) ||
     a.destination.localeCompare(b.destination)
   );
+}
+
+function getVercelRedirectPriority(rule) {
+  if (rule.has) {
+    return 0;
+  }
+
+  if (rule.missing) {
+    return 1;
+  }
+
+  return 2;
 }
 
 function isEquivalentJson(current, expected) {

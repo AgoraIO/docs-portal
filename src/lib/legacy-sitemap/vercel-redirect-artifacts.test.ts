@@ -24,6 +24,10 @@ type VercelRedirect = {
     type: string;
     value: string;
   }>;
+  missing?: Array<{
+    key: string;
+    type: string;
+  }>;
   preserveQueryParams?: boolean;
   source: string;
   statusCode: number;
@@ -272,6 +276,92 @@ describe('legacy redirect Vercel artifacts', () => {
       source: '/en/broadcast-streaming/overview/release-notes',
       statusCode: 301,
     });
+  });
+
+  it('keeps owner-approved no-query fallbacks for legacy platform URLs', () => {
+    const fallbackRedirects = [
+      {
+        destination: '/en/introduction/account',
+        source: '/en/Agora%20Platform/get_appid_token',
+      },
+      {
+        destination: '/en/introduction/core-concepts',
+        source: '/en/Agora%20Platform/terms',
+      },
+      {
+        destination:
+          '/en/realtime-media/media-push/get-started/enable-media-push',
+        source: '/en/Interactive%20Broadcast/cdn_streaming_web',
+      },
+      {
+        destination:
+          '/en/realtime-media/media-push/get-started/enable-media-push',
+        source: '/en/Interactive%20Broadcast/cdn_streaming_windows',
+      },
+      {
+        destination:
+          '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy',
+        source: '/en/Interactive%20Broadcast/cloud_proxy_web_ng',
+      },
+      {
+        destination:
+          '/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring',
+        source: '/en/Interactive%20Broadcast/in-call_quality_windows',
+      },
+      {
+        destination:
+          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute',
+        source: '/en/Interactive%20Broadcast/set_subscribing_state',
+      },
+    ];
+
+    for (const expected of fallbackRedirects) {
+      expect(vercelConfig.redirects).toContainEqual({
+        ...expected,
+        missing: [
+          {
+            key: 'platform',
+            type: 'query',
+          },
+        ],
+        preserveQueryParams: false,
+        statusCode: 301,
+      });
+    }
+  });
+
+  it('keeps platform-specific redirects ahead of no-query fallbacks', () => {
+    expect(vercelConfig.redirects).toContainEqual({
+      destination:
+        '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows',
+      has: [
+        {
+          key: 'platform',
+          type: 'query',
+          value: 'Windows',
+        },
+      ],
+      preserveQueryParams: false,
+      source: '/en/Interactive%20Broadcast/set_subscribing_state',
+      statusCode: 301,
+    });
+
+    const platformRedirectIndex = vercelConfig.redirects?.findIndex(
+      (rule) =>
+        rule.source === '/en/Interactive%20Broadcast/set_subscribing_state' &&
+        rule.destination ===
+          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows',
+    );
+    const fallbackRedirectIndex = vercelConfig.redirects?.findIndex(
+      (rule) =>
+        rule.source === '/en/Interactive%20Broadcast/set_subscribing_state' &&
+        rule.destination ===
+          '/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute',
+    );
+
+    expect(platformRedirectIndex).toBeGreaterThanOrEqual(0);
+    expect(fallbackRedirectIndex).toBeGreaterThanOrEqual(0);
+    expect(platformRedirectIndex).toBeLessThan(fallbackRedirectIndex);
   });
 
   it('keeps the client fallback manifest compact and audit-free', () => {
