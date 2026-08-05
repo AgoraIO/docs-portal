@@ -2,19 +2,23 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   applySecuritiConsentBannerParams,
   CONSENT_SUBJECT_STORAGE_KEY,
+  ensureSecuritiBannerLayoutStyles,
   getConsentSubjectId,
+  SECURITI_BANNER_LAYOUT_STYLE_ID,
 } from './securiti-consent';
 
 describe('Securiti consent subject ID', () => {
   beforeEach(() => {
     window.localStorage.clear();
     delete window.setConsentBannerParams;
+    document.getElementById(SECURITI_BANNER_LAYOUT_STYLE_ID)?.remove();
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
     window.localStorage.clear();
     delete window.setConsentBannerParams;
+    document.getElementById(SECURITI_BANNER_LAYOUT_STYLE_ID)?.remove();
   });
 
   it('creates and reuses a stable anonymous ID in localStorage', () => {
@@ -42,6 +46,18 @@ describe('Securiti consent subject ID', () => {
     );
   });
 
+  it('injects layout styles that allow the opt-out label to wrap', () => {
+    const cleanup = ensureSecuritiBannerLayoutStyles();
+    const style = document.getElementById(SECURITI_BANNER_LAYOUT_STYLE_ID);
+
+    expect(style).not.toBeNull();
+    expect(style?.textContent).toContain('white-space: normal !important');
+    expect(style?.textContent).toContain('#securitiCmpCookiePrefBtn');
+
+    cleanup();
+    expect(document.getElementById(SECURITI_BANNER_LAYOUT_STYLE_ID)).toBeNull();
+  });
+
   it('passes the subject ID to setConsentBannerParams when available', () => {
     const setConsentBannerParams = vi.fn();
     window.setConsentBannerParams = setConsentBannerParams;
@@ -51,6 +67,9 @@ describe('Securiti consent subject ID', () => {
     expect(setConsentBannerParams).toHaveBeenCalledWith({
       uuid: window.localStorage.getItem(CONSENT_SUBJECT_STORAGE_KEY),
     });
+    expect(
+      document.getElementById(SECURITI_BANNER_LAYOUT_STYLE_ID),
+    ).not.toBeNull();
 
     cleanup();
   });
