@@ -25,9 +25,9 @@ Included in this release:
 
   Independent of `maxIdleTime`, every task also has a maximum lifetime, capped at 72 hours. When a task reaches this limit, Agora terminates it, even if `maxIdleTime` is `0`. When a task exits because it reached the maximum lifetime, the [`102 agent left`](/en/api-reference/api-ref/speech-to-text/api-callback-service#event-102-agent-left) event returns `Task exceeded maximum lifetime` in the `message` field.
 
-- **ARES JSON results can return mixed stable and interim segments**
+- **Transcription and translation results can return stable and interim segments together**
 
-  When using the [ARES](/en/ai/models/asr/ares) provider with the JSON protocol enabled, a single update can now contain both a stabilized prefix segment and a segment that may still change. To support this, the `transcript` and `translation` messages add a new `results[]` field that returns one or more segments. For a single segment, `results[]` has a length of `1`; for a mixed result, `results[]` can have a length greater than `1`.
+  Transcription and translation results can now contain both a stabilized prefix segment and a segment that may still change within the same update. To support this, the `transcript` and `translation` messages add a new `results[]` field that returns one or more segments. For a single segment, `results[]` has a length of `1`; for a mixed result, `results[]` can have a length greater than `1`.
 
   If your client uses the JSON protocol, iterate over `results[]` to process each segment, and handle messages where `results[]` is an empty array. The Protobuf protocol fields are unchanged, but a single message can now also carry multiple segments. For field descriptions and examples, see [JSON protocol data structure](/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data#json-protocol-data-structure).
 
