@@ -1704,7 +1704,7 @@ class ViewController: UIViewController {
     // Join the channel with specified options
     func joinChannel() {
         let options = AgoraRtcChannelMediaOptions()
-        // Set the channel profile according to your use case (see the table in Join a channel)
+        // Set the channel profile according to your use case 
         options.channelProfile = .liveBroadcasting
         // Set the user role to .broadcaster (host) or .audience according to your use case
         options.clientRoleType = .broadcaster
@@ -2392,7 +2392,7 @@ class ViewController: NSViewController {
     // Join the channel with specified options
     func joinChannel() {
         let options = AgoraRtcChannelMediaOptions()
-        // Set the channel profile according to your use case (see the table in Join a channel)
+        // Set the channel profile according to your use case
         options.channelProfile = .liveBroadcasting
         // Set the user role to .broadcaster (host) or .audience according to your use case
         options.clientRoleType = .broadcaster
@@ -2717,16 +2717,10 @@ To join a channel, call `join` with the following parameters:
 
 - **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID.
 
-When you join as a host, you can publish local media streams in the channel; you can also subscribe to streams published by other hosts. As an audience member, you may only subscribe to media streams published by hosts. 
+When you join as a host, you can publish local media streams in the channel; you can also subscribe to streams published by other hosts. As an audience member, you may only subscribe to media streams published by hosts.
 
-Set the channel profile, client role, and audience latency level according to your use case:
 
-| Use case | Channel profile | Client role | Latency level |
-|----------|-----------------|-------------|---------------|
-| **Voice calling** | `"rtc"` | — | `2`: Ultra low latency (default) |
-| **Video calling** | `"rtc"` | — | `2`: Ultra low latency (default) |
-| **Interactive live streaming** |  `"live"` | `"host"` or `"audience"` | `2`: Ultra low latency (default) |
-| **Broadcast streaming** | `"live"` | `"host"` or `"audience"` | `1`: Low latency |
+The `mode` and `role` you set when you [Initialize an instance of `AgoraRTCClient`](#initialize-an-instance-of-agorartcclient) determine what a user can do after joining.
 
 ```javascript
 // Join a channel and publish local media
@@ -3845,7 +3839,7 @@ std::string CAgoraQuickStartDlg::cs2utf8(CString str) {
 
 void CAgoraQuickStartDlg::joinChannel(const char* token, const char* channelName) {
     ChannelMediaOptions options;
-    // Set the channel profile according to your use case (see the table in Join a channel)
+    // Set the channel profile according to your use case
     options.channelProfile = CHANNEL_PROFILE_LIVE_BROADCASTING;
     // Set the user role to CLIENT_ROLE_BROADCASTER (host) or CLIENT_ROLE_AUDIENCE according to your use case
     options.clientRoleType = CLIENT_ROLE_BROADCASTER;
@@ -5897,8 +5891,8 @@ const App = () => {
             if (isHost) {
                 // Join the channel as a broadcaster
                 agoraEngineRef.current?.joinChannel(token, channelName, localUid, {
-                    // Set channel profile to live broadcast
-                    channelProfile: ChannelProfileType.ChannelProfileCommunication,
+                    // Set the channel profile according to your use case 
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
                     // Set user role to broadcaster
                     clientRoleType: ClientRoleType.ClientRoleBroadcaster,
                     // Publish audio collected by the microphone
@@ -5913,10 +5907,12 @@ const App = () => {
             } else {
                 // Join the channel as an audience
                 agoraEngineRef.current?.joinChannel(token, channelName, localUid, {
-                    // Set channel profile to live broadcast
-                    channelProfile: ChannelProfileType.ChannelProfileCommunication,
+                    // Set the channel profile according to your use case
+                    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
                     // Set user role to audience
                     clientRoleType: ClientRoleType.ClientRoleAudience,
+                    // Only takes effect for the audience role
+                    audienceLatencyLevel: AudienceLatencyLevelType.AudienceLatencyLevelLowLatency,
                     // Do not publish audio collected by the microphone
                     publishMicrophoneTrack: false,
                     // Do not publish video collected by the camera

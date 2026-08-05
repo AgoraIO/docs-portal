@@ -294,73 +294,73 @@ const reviewedRedirectTargets = [
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=android',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/android',
+      '/en/realtime-media/rtc/reference/release-notes/android',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=ios',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+      '/en/realtime-media/rtc/reference/release-notes/ios',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=macos',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/macos',
+      '/en/realtime-media/rtc/reference/release-notes/macos',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=web',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/web',
+      '/en/realtime-media/rtc/reference/release-notes/web',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=windows',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/windows',
+      '/en/realtime-media/rtc/reference/release-notes/windows',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=electron',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/electron',
+      '/en/realtime-media/rtc/reference/release-notes/electron',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=flutter',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/flutter',
+      '/en/realtime-media/rtc/reference/release-notes/flutter',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-native',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/react-native',
+      '/en/realtime-media/rtc/reference/release-notes/react-native',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=react-js',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      '/en/realtime-media/rtc/reference/release-notes/javascript',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unity',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/unity',
+      '/en/realtime-media/rtc/reference/release-notes/unity',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=unreal',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/unreal',
+      '/en/realtime-media/rtc/reference/release-notes/unreal',
   },
   {
     legacyUrl:
       'https://docs.agora.io/en/broadcast-streaming/overview/release-notes?platform=blueprint',
     target:
-      '/en/realtime-media/broadcast-streaming/reference/release-notes/blueprint',
+      '/en/realtime-media/rtc/reference/release-notes/blueprint',
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/develop/presets',

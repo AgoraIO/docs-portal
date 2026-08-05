@@ -936,7 +936,7 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
-    'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
+    'video/quickstart': `/${locale}/realtime-media/rtc/get-started-sdk`,
     'cloud-recording/pricing-webpage-recording': `/${locale}/realtime-media/cloud-recording/reference/pricing-webpage-recording`,
     'whiteboard/overview': `/${locale}/realtime-media/whiteboard`,
     'whiteboard/overview/account-settlement': `/${locale}/realtime-media/whiteboard/reference/account-settlement`,
@@ -1344,6 +1344,11 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
     productSlug: 'on-premise-recording',
     title: 'API reference',
     url: '/en/api-reference/api-ref/on-premise-recording',
+  },
+  {
+    productSlug: 'rtc',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
   },
   {
     productSlug: 'rtm',

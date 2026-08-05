@@ -222,8 +222,7 @@ describe('legacy redirect Vercel artifacts', () => {
         source: '/en/help/account-and-billing/console_account_faq',
       },
       {
-        destination:
-          '/en/realtime-media/interactive-live-streaming/product-overview',
+        destination: '/en/realtime-media/rtc',
         source: '/en/solutions/interactive-live-streaming/product-overview',
       },
       {
@@ -233,7 +232,7 @@ describe('legacy redirect Vercel artifacts', () => {
       },
       {
         destination:
-          '/en/realtime-media/voice/build/optimize-and-operate/autoplay',
+          '/en/realtime-media/rtc/build/optimize-and-operate/autoplay',
         source: '/en/Voice/autoplay_policy_web_ng',
       },
       {
@@ -308,7 +307,7 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(vercelConfig.routes).toContainEqual({
       headers: {
         Location:
-          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+          '/en/realtime-media/rtc/reference/release-notes/javascript',
       },
       has: [
         {
