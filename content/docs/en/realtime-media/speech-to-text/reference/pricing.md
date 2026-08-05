@@ -35,7 +35,13 @@ A standby fee of $0.99 per 1,000 minutes is charged if Real-Time STT is enabled 
 
 ## Language identification fee
 
-Real-Time STT supports dynamic language detection when two or more languages are enabled for a channel or specific hosts. The Language Identification (LID) duration is the same as the transcription duration.
+Real-Time STT supports dynamic language detection when two or more languages are enabled for a channel or specific hosts. LID fees are determined by the language configuration applied to each host:
+
+- If the top-level `languages` field contains only one language, LID is not enabled and no LID fee is charged.
+- If the top-level `languages` field contains two or more languages and `uidLanguagesConfig` is not set, LID is enabled and LID fees apply.
+- If the top-level `languages` field contains two or more languages, but `uidLanguagesConfig` assigns only one language to each host, LID is not enabled for those hosts and no LID fee is charged for them.
+
+The Language Identification (LID) duration is the same as the transcription duration.
 
 |Billing item|Usage, minutes per month |Pricing, US$/1,000 minutes|
 |:-------------------|:--------------------:|:--------------------------:|
