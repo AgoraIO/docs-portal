@@ -50,11 +50,6 @@
       "statusCode": 301
     },
     {
-      "source": "/en/Agora Platform/transcoding",
-      "destination": "/en/realtime-media/transcoding",
-      "statusCode": 301
-    },
-    {
       "source": "/en/agora-analytics/analyze/chat-sdk/data-insights",
       "destination": "/en/realtime-media/agora-analytics/build/explore-and-analyze-data/chat-data-insights",
       "statusCode": 301
@@ -98,6 +93,11 @@
       "source": "/en/agora-analytics/analyze/video-voice-sdk/monitor",
       "destination": "/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/monitor",
       "statusCode": 301
+    },
+    {
+      "source": "/en/agora-analytics/get-started/activation",
+      "destination": "/en/realtime-media/agora-analytics/activation",
+      "statusCode": 301
     }
   ],
   "routes": [
@@ -130,7 +130,7 @@
       "status": 301
     },
     {
-      "src": "^/en/Agora Platform/get_appid_token/?$",
+      "src": "^/en/Agora%20Platform/get_appid_token/?$",
       "headers": {
         "Location": "/en/introduction/account#generate-temporary-tokens"
       },
@@ -144,7 +144,7 @@
       "status": 301
     },
     {
-      "src": "^/en/Agora Platform/terms/?$",
+      "src": "^/en/Agora%20Platform/terms/?$",
       "headers": {
         "Location": "/en/introduction/core-concepts#app-id"
       },
@@ -354,76 +354,6 @@
       "status": 301
     },
     {
-      "src": "^/en/Interactive Broadcast/cdn_streaming_web/?$",
-      "headers": {
-        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
-      },
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "Web"
-        }
-      ],
-      "status": 301
-    },
-    {
-      "src": "^/en/Interactive Broadcast/cdn_streaming_windows/?$",
-      "headers": {
-        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
-      },
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "Windows"
-        }
-      ],
-      "status": 301
-    },
-    {
-      "src": "^/en/Interactive Broadcast/cloud_proxy_web_ng/?$",
-      "headers": {
-        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy"
-      },
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "Web"
-        }
-      ],
-      "status": 301
-    },
-    {
-      "src": "^/en/Interactive Broadcast/in-call_quality_windows/?$",
-      "headers": {
-        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring"
-      },
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "Windows"
-        }
-      ],
-      "status": 301
-    },
-    {
-      "src": "^/en/Interactive Broadcast/set_subscribing_state/?$",
-      "headers": {
-        "Location": "/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows"
-      },
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "Windows"
-        }
-      ],
-      "status": 301
-    },
-    {
       "src": "^/en/interactive-live-streaming/develop/product-workflow/?$",
       "headers": {
         "Location": "/en/api-reference/faq/integration/set_enabled_set_muted"
@@ -447,6 +377,76 @@
           "type": "query",
           "key": "platform",
           "value": "android"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%20Broadcast/cdn_streaming_web/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%20Broadcast/cdn_streaming_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-push/get-started/enable-media-push"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%20Broadcast/cloud_proxy_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Web"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%20Broadcast/in-call_quality_windows/?$",
+      "headers": {
+        "Location": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
+        }
+      ],
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%20Broadcast/set_subscribing_state/?$",
+      "headers": {
+        "Location": "/en/realtime-media/video/build/control-audio-and-devices/volume-control-and-mute/windows"
+      },
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "Windows"
         }
       ],
       "status": 301

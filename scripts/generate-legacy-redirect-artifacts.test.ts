@@ -182,6 +182,72 @@ describe('generate-legacy-redirect-artifacts', () => {
     );
   });
 
+  it('encodes Vercel redirect paths that contain spaces', async () => {
+    const root = await createFixture();
+    const redirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/redirects.json',
+    );
+    const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
+
+    redirectsConfig.rules.push(
+      {
+        legacyUrl: 'https://docs.agora.io/en/Space%20Path/query?platform=All',
+        legacyPath: '/en/Space Path/query',
+        legacySearch: '?platform=All',
+        target: '/en/current/query-target',
+        type: 'semantic-page-match',
+        confidence: 'high',
+        evidence: ['fixture'],
+        preserveSearch: false,
+      },
+      {
+        legacyUrl: 'https://docs.agora.io/en/Space%20Path/bulk',
+        legacyPath: '/en/Space Path/bulk',
+        target: '/en/current/bulk-target',
+        type: 'semantic-page-match',
+        confidence: 'high',
+        evidence: ['fixture'],
+        preserveSearch: true,
+      },
+    );
+    await writeFile(
+      redirectsPath,
+      `${JSON.stringify(redirectsConfig, null, 2)}\n`,
+      'utf8',
+    );
+
+    generateArtifacts(root);
+
+    const bulkRedirects = JSON.parse(
+      await readFile(path.join(root, 'vercel-legacy-redirects.json'), 'utf8'),
+    );
+    const vercelConfig = JSON.parse(
+      await readFile(path.join(root, 'vercel.json'), 'utf8'),
+    );
+
+    expect(bulkRedirects).toContainEqual({
+      source: '/en/Space%20Path/bulk',
+      destination: '/en/current/bulk-target',
+      statusCode: 301,
+      preserveQueryParams: true,
+    });
+    expect(vercelConfig.routes).toContainEqual({
+      src: '^/en/Space%20Path/query/?$',
+      headers: {
+        Location: '/en/current/query-target',
+      },
+      has: [
+        {
+          type: 'query',
+          key: 'platform',
+          value: 'All',
+        },
+      ],
+      status: 301,
+    });
+  });
+
   it('spills query-preserving redirects beyond the bulk limit into vercel.json', async () => {
     const root = await createFixture();
     const redirectsPath = path.join(

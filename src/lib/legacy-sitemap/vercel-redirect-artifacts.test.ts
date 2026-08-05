@@ -164,6 +164,41 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
+    expect(vercelConfig.routes).toEqual(
+      expect.arrayContaining([
+        {
+          src: '^/en/Agora%20Platform/get_appid_token/?$',
+          headers: {
+            Location: '/en/introduction/account#generate-temporary-tokens',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+        {
+          src: '^/en/Agora%20Platform/terms/?$',
+          headers: {
+            Location: '/en/introduction/core-concepts#app-id',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+      ]),
+    );
+  });
+
   it('redirects high-traffic legacy English URLs to their current pages', () => {
     const expectedRedirects = [
       {
