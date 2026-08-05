@@ -1,9 +1,9 @@
 ---
 title: "RTC SDK API 示例"
-description: "这个示例包含了使用声网 RTC SDK 的各种示例项目，你可以进入不同平台的项目进行试用或参考源代码。"
+description: "该示例集合展示声网 RTC SDK 在不同平台上的常用 API 用法，你可以运行示例或参考源代码。"
 ---
 
-这个开源示例项目演示了 Agora 音视频 SDK 的部分 API 使用示例，以帮助开发者更好地理解和运用 Agora 音视频 SDK 的 API。
+该开源项目展示声网 RTC SDK 在不同平台上的常用 API 用法，帮助你快速运行示例并参考具体实现。
 
 ## Demo 信息
 
@@ -59,23 +59,23 @@ pod install
 
 在编译和启动示例程序前，你需要先获取一个可用的 App ID：
 
-1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
-2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
-3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
-4. 如果开启了 Token，需要获取 App 证书并设置给 `certificate`
-5. 打开 `APIExample.xcworkspace` 并编辑 `KeyCenter.swift`，将你的 App ID 和 App 证书分别替换到 `<#Your APPID#>` 与 `<#YOUR Certificate#>`
+1. 在[声网控制台](https://console.shengwang.cn/signin/)创建开发者账号。
+2. 在左侧导航栏中选择 **项目 > 项目列表**。
+3. 复制项目的 **App ID**，稍后启动应用时需要使用。
+4. 如果项目启用了 Token 鉴权，复制 **App 证书**，稍后将其赋值给 `Certificate`。
+5. 打开 `APIExample.xcworkspace` 并编辑 `KeyCenter.swift`，将 App ID 和 App 证书分别替换到 `<# YOUR APPID#>` 与 `<#YOUR Certificate#>`。
 
 ```text
     /**
      Agora 给应用程序开发人员分配 App ID，以识别项目和组织。如果组织中有多个完全分开的应用程序，例如由不同的团队构建，
-     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个App ID。
-     进入声网控制台(https://console.agora.io/)，创建一个项目，进入项目配置页，即可看到APP ID。
+     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个 App ID。
+     进入声网控制台（https://console.shengwang.cn/），创建一个项目，进入项目配置页，即可看到 App ID。
    */
     static let AppId: String = <# YOUR APPID#>
 
     /**
-     Agora 提供 App certificate 用以生成 Token。您可以在您的服务器部署并生成 Token，或者使用控制台生成临时的 Token。
-     进入声网控制台(https://console.agora.io/)，创建一个带证书鉴权的项目，进入项目配置页，即可看到APP证书。
+     声网提供 App 证书用于生成 Token。你可以在服务器部署 Token 生成服务，或者使用控制台生成临时 Token。
+     进入声网控制台（https://console.shengwang.cn/），创建一个启用证书鉴权的项目，进入项目配置页，即可看到 App 证书。
      注意：如果项目没有开启证书鉴权，这个字段留空。
     */
     static var Certificate: String? = <#YOUR Certificate#>
@@ -103,23 +103,22 @@ pod install
 
 ### 运行示例程序
 
-这个段落主要讲解了如何编译和运行实例程序。
+本节介绍如何编译和运行示例程序。
 
 #### 创建声网账号并获取 App ID
 
 在编译和启动示例程序前，你需要先获取一个可用的 App ID：
 
-1. 在 [声网控制台](https://console.shengwang.cn/signin/)创建一个开发者账号
-2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
-3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
-4. 复制后台的 **App 证书** 并备注，稍后启动应用时会用到它
-
-5. 打开 `Android/APIExample` 并编辑 `app/src/main/res/values/string-configs.xml`，将你的 App ID、App 证书分别替换为 `Your App Id` 和 `YOUR APP CERTIFICATE`
+1. 在[声网控制台](https://console.shengwang.cn/signin/)创建开发者账号。
+2. 在左侧导航栏中选择 **项目 > 项目列表**。
+3. 复制项目的 **App ID**，稍后启动应用时需要使用。
+4. 复制项目的 **App 证书**，稍后启动应用时需要使用。如果项目未启用证书鉴权，可跳过此步骤。
+5. 打开 `Android/APIExample` 并编辑 `app/src/main/res/values/string-configs.xml`，将 App ID 和 App 证书分别替换为 `YOUR APP ID` 和 `YOUR APP CERTIFICATE`。
 
 ```text
-    // 声网APP ID。
+    // 声网 App ID。
     <string name="agora_app_id" translatable="false">YOUR APP ID</string>
-    // 声网APP证书。如果项目没有开启证书鉴权，这个字段留空。
+    // 声网 App 证书。如果项目没有开启证书鉴权，这个字段留空。
     <string name="agora_app_certificate" translatable="false">YOUR APP CERTIFICATE</string>
 ```
 
@@ -127,56 +126,54 @@ pod install
 
 #### 美颜配置
 
-> 第三方美颜集成使用了[美颜场景化API库](https://github.com/AgoraIO-Community/BeautyAPI)
+第三方美颜集成使用[美颜场景化 API 库](https://github.com/AgoraIO-Community/BeautyAPI)。
 
-本项目包含第三方美颜集成示例，在没有配置资源和证书的情况下，默认是无法启用的。资源证书配置方法如下：
+本项目包含第三方美颜集成示例。使用示例前，需要按以下说明配置美颜资源和证书。
 
 ##### 商汤美颜
 
-1. 联系商汤客服获取美颜sdk下载链接以及证书
-2. 解压美颜sdk，并将以下资源复制到对应路径
+1. 联系商汤技术支持，获取美颜 SDK 下载链接和证书。
+2. 解压美颜 SDK，并将以下资源复制到对应路径。
 
-| 商汤SDK文件/目录                                                           | 项目路径                                                     |
-|----------------------------------------------------------------------|----------------------------------------------------------|
-| Android/models                                                       | app/src/main/assets/beauty_sensetime/models              |
-| Android/smaple/SenseMeEffects/app/src/main/assets/sticker_face_shape | app/src/main/assets/beauty_sensetime/sticker_face_shape  |
-| Android/smaple/SenseMeEffects/app/src/main/assets/style_lightly      | app/src/main/assets/beauty_sensetime/style_lightly       |
-| Android/smaple/SenseMeEffects/app/src/main/assets/makeup_lip         | app/src/main/assets/beauty_sensetime/makeup_lip          |
-| SenseME.lic                                                          | app/src/main/assets/beauty_sensetime/license/SenseME.lic |
+| 商汤 SDK 文件或目录 | 项目路径 |
+| --- | --- |
+| `Android/models` | `app/src/main/assets/beauty_sensetime/models` |
+| `Android/smaple/SenseMeEffects/app/src/main/assets/sticker_face_shape` | `app/src/main/assets/beauty_sensetime/sticker_face_shape` |
+| `Android/smaple/SenseMeEffects/app/src/main/assets/style_lightly` | `app/src/main/assets/beauty_sensetime/style_lightly` |
+| `Android/smaple/SenseMeEffects/app/src/main/assets/makeup_lip` | `app/src/main/assets/beauty_sensetime/makeup_lip` |
+| `SenseME.lic` | `app/src/main/assets/beauty_sensetime/license/SenseME.lic` |
 
 ##### 相芯美颜
 
-1. 联系相芯客服获取美颜资源以及证书
-2. 将美颜资源及证书放到对应路径下
+1. 联系相芯技术支持，获取美颜资源和证书。
+2. 将美颜资源和证书复制到对应路径。
 
-| 美颜资源                 | 项目路径                                                                           |
-|----------------------|--------------------------------------------------------------------------------|
-| 美妆资源(如naicha.bundle) | app/src/main/assets/beauty_faceunity/makeup                                    |
-| 贴纸资源(如fashi.bundle)  | app/src/main/assets/beauty_faceunity/sticker                                   |
-| 证书authpack.java      | app/src/main/java/io/agora/api/example/examples/advanced/beauty/authpack.java  |
+| 美颜资源 | 项目路径 |
+| --- | --- |
+| 美妆资源（如 `naicha.bundle`） | `app/src/main/assets/beauty_faceunity/makeup` |
+| 贴纸资源（如 `fashi.bundle`） | `app/src/main/assets/beauty_faceunity/sticker` |
+| 证书 `authpack.java` | `app/src/main/java/io/agora/api/example/examples/advanced/beauty/authpack.java` |
 
 ##### 字节美颜
 
-1. 联系字节客服获取美颜sdk下载链接以及证书
-2. 解压字节/火山美颜资源并复制以下文件/目录到对应路径下
+1. 联系字节技术支持，获取美颜 SDK 下载链接和证书。
+2. 解压字节火山美颜资源，并将以下文件或目录复制到对应路径。
 
-| 字节SDK文件/目录                                       | 项目路径                                                  |
-|--------------------------------------------------|-------------------------------------------------------|
-| resource/LicenseBag.bundle                       | app/src/main/assets/beauty_bytedance           |
-| resource/ModelResource.bundle                    | app/src/main/assets/beauty_bytedance           |
-| resource/ComposeMakeup.bundle                    | app/src/main/assets/beauty_bytedance           |
-| resource/StickerResource.bundle                  | app/src/main/assets/beauty_bytedance           |
-| resource/StickerResource.bundle                  | app/src/main/assets/beauty_bytedance           |
+| 字节 SDK 文件或目录 | 项目路径 |
+| --- | --- |
+| `resource/LicenseBag.bundle` | `app/src/main/assets/beauty_bytedance` |
+| `resource/ModelResource.bundle` | `app/src/main/assets/beauty_bytedance` |
+| `resource/ComposeMakeup.bundle` | `app/src/main/assets/beauty_bytedance` |
+| `resource/StickerResource.bundle` | `app/src/main/assets/beauty_bytedance` |
 
-3.
-修改app/src/main/java/io/agora/api/example/examples/advanced/beauty/ByteDanceBeauty.java文件里LICENSE_NAME为申请到的证书文件名
+3. 在 `app/src/main/java/io/agora/api/example/examples/advanced/beauty/ByteDanceBeauty.java` 文件中，将 `LICENSE_NAME` 设置为申请到的证书文件名。
 
-#### 对于Agora Extension开发者
+#### 面向插件开发者
 
-从4.0.0SDK开始，Agora SDK支持插件系统和开放的云市场帮助开发者发布自己的音视频插件，本项目包含了一个SimpleFilter示例，默认是禁用的状态，如果需要开启编译和使用需要完成以下步骤：
+自 RTC SDK 4.0.0 起，SDK 支持插件系统。本项目包含一个默认禁用的 `SimpleFilter` 示例。如需编译并运行该示例，请完成以下步骤：
 
-1. 下载 [opencv](https://agora-adc-artifacts.s3.cn-north-1.amazonaws.com.cn/androidLibs/opencv4.zip) 解压后复制到 Android/APIExample/agora-simple-filter/src/main/jniLibs
-2. 手动下载[Agora SDK包](/zh-CN/reference/sdks?product=video&platform=android), 解压后将c++动态库（包括架构文件夹）copy到Android/APIExample/agora-simple-filter/src/main/agoraLibs
+1. 下载 [OpenCV](https://agora-adc-artifacts.s3.cn-north-1.amazonaws.com.cn/androidLibs/opencv4.zip)，解压后复制到 `Android/APIExample/agora-simple-filter/src/main/jniLibs`。
+2. 手动下载[声网视频 SDK](/zh-CN/reference/sdks?product=video&platform=android)，解压后将 C++ 动态库及架构文件夹复制到 `Android/APIExample/agora-simple-filter/src/main/agoraLibs`。
 
 ```text
 Android/APIExample/agora-simple-filter/src/main/agoraLibs
@@ -186,13 +183,13 @@ Android/APIExample/agora-simple-filter/src/main/agoraLibs
 └── x86_64
 ```
 
-3. 修改Android/APIExample/gradle.properties配置文件中simpleFilter值为true
+3. 在 `Android/APIExample/gradle.properties` 文件中，将 `simpleFilter` 的值设置为 `true`。
 
 #### 自定义加密
 
 本项目包含自定义加密示例，默认是不启用的。配置方法如下：
 
-1. 手动下载[Agora SDK包](/zh-CN/reference/sdks?product=video&platform=android), 解压后将c++动态库（包括架构文件夹）copy到Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
+1. 手动下载[声网视频 SDK](/zh-CN/reference/sdks?product=video&platform=android)，解压后将 C++ 动态库及架构文件夹复制到 `Android/APIExample/agora-stream-encrypt/src/main/agoraLibs`。
 
 ```text
 Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
@@ -202,7 +199,7 @@ Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
 └── x86_64
 ```
 
-2. 修改Android/APIExample/gradle.properties配置文件中streamEncrypt值为true
+2. 在 `Android/APIExample/gradle.properties` 文件中，将 `streamEncrypt` 的值设置为 `true`。
 
 开发者：上海声网科技有限公司
 
@@ -222,7 +219,7 @@ Android/APIExample/agora-stream-encrypt/src/main/agoraLibs
 
 ### 运行示例程序
 
-这个段落主要讲解了如何编译和运行实例程序。
+本节介绍如何编译和运行示例程序。
 
 #### 安装依赖库
 
@@ -252,14 +249,14 @@ pod install
 ```text
     /**
      Agora 给应用程序开发人员分配 App ID，以识别项目和组织。如果组织中有多个完全分开的应用程序，例如由不同的团队构建，
-     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个App ID。
-     进入声网控制台(https://console.agora.io/)，创建一个项目，进入项目配置页，即可看到APP ID。
+     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个 App ID。
+     进入声网控制台（https://console.shengwang.cn/），创建一个项目，进入项目配置页，即可看到 App ID。
    */
     static let AppId: String = <# YOUR APPID#>
 
     /**
-     Agora 提供 App certificate 用以生成 Token。您可以在您的服务器部署并生成 Token，或者使用控制台生成临时的 Token。
-     进入声网控制台(https://console.agora.io/)，创建一个带证书鉴权的项目，进入项目配置页，即可看到APP证书。
+     声网提供 App 证书用于生成 Token。你可以在服务器部署 Token 生成服务，或者使用控制台生成临时 Token。
+     进入声网控制台（https://console.shengwang.cn/），创建一个启用证书鉴权的项目，进入项目配置页，即可看到 App 证书。
      注意：如果项目没有开启证书鉴权，这个字段留空。
     */
     static var Certificate: String? = <#YOUR Certificate#>
@@ -291,7 +288,7 @@ pod install
 
 ### 运行示例程序
 
-这个段落主要讲解了如何编译和运行实例程序。
+本节介绍如何编译和运行示例程序。
 
 #### 创建声网账号并获取 App ID
 
