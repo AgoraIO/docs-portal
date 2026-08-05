@@ -155,5 +155,15 @@ function preserveRedirectSearch(
     return href;
   }
 
-  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
+  if (!preserveSearch) {
+    return href;
+  }
+
+  const hash = location.hash
+    ? location.hash.startsWith('#')
+      ? location.hash
+      : `#${location.hash}`
+    : '';
+
+  return `${href}${location.searchStr ?? ''}${hash}`;
 }
