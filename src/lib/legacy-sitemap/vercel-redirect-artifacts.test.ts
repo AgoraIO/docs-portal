@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import gscObservedRedirects from './gsc-observed-redirects.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -54,7 +55,9 @@ describe('legacy redirect Vercel artifacts', () => {
   ) as VercelRedirect[];
 
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
-    expect(staticRedirects).toHaveLength(legacyRules.length);
+    expect(staticRedirects).toHaveLength(
+      legacyRules.length + gscObservedRedirects.length,
+    );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
   });
@@ -296,6 +299,52 @@ describe('legacy redirect Vercel artifacts', () => {
         },
       ]),
     );
+  });
+
+  it('redirects observed legacy URLs with trailing slashes before app routing', () => {
+    expect(bulkRedirects).toEqual(
+      expect.arrayContaining([
+        {
+          destination:
+            '/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit',
+          preserveQueryParams: true,
+          source: '/en/interactive-whiteboard/get-started/get-started-uikit/',
+          statusCode: 301,
+        },
+        {
+          destination: '/en/realtime-media/voice/core-concepts',
+          preserveQueryParams: true,
+          source: '/en/voice-calling/overview/core-concepts/',
+          statusCode: 301,
+        },
+      ]),
+    );
+  });
+
+  it('publishes confirmed GSC 404 targets as bulk redirects', () => {
+    expect(bulkRedirects).toContainEqual({
+      destination: '/en/api-reference/faq/product/browser_support',
+      preserveQueryParams: true,
+      source: '/en/help/general-product-inquiry/browser_support',
+      statusCode: 301,
+    });
+  });
+
+  it('maps legacy Voice release notes queries to platform routes', () => {
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location: '/en/realtime-media/voice/reference/release-notes/flutter',
+      },
+      has: [
+        {
+          key: 'platform',
+          type: 'query',
+          value: 'flutter',
+        },
+      ],
+      src: '^/en/voice-calling/overview/release-notes/?$',
+      status: 301,
+    });
   });
 
   it('strips legacy queries with conditional Vercel redirect routes', () => {
