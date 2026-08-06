@@ -1204,7 +1204,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.3.0.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_iOS/tree/2.3.0',
           },
           {
             id: '2.2.8-rtm-sdk-ios',
@@ -1212,7 +1212,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.2.8.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_iOS/tree/2.2.8',
           },
           {
             id: '2.2.6-rtm-sdk-ios',
@@ -2530,7 +2530,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.3.0.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_macOS/tree/2.3.0',
           },
           {
             id: '2.2.8-rtm-sdk-macos',
@@ -2538,7 +2538,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.2.8.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_macOS/tree/2.2.8',
           },
           {
             id: '2.2.6-rtm-sdk-macos',

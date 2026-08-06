@@ -28,7 +28,7 @@ For more information, see [How do I handle issues when integrating the Signaling
 
 ### v2.3.0
 
-Released on July 28, 2026.
+Released on August 6, 2026.
 
 #### Compatibility changes
 
@@ -40,7 +40,12 @@ Included in this release:
 
 - You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
 - Adds error codes: `PRESENCE_INACTIVE`, `PRESENCE_PENDING_REQUEST_CANCELLED`, `PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
-- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- The Agora Console project creation flow no longer requires you to configure a service region upfront. This is a workflow change only and doesn't affect service quality.
+
+    :::info
+    You must select a region when you enable Message History or Metadata Storage. This selection cannot be changed.
+    :::
+
 - Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
 - Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.IntervalInfo.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
 - Increases channel subscription speed.
@@ -424,7 +429,7 @@ For more information, see [How do I handle issues when integrating the Signaling
 
 ### v2.3.0
 
-Released on July 28, 2026.
+Released on August 6, 2026.
 
 #### Compatibility changes
 
@@ -436,7 +441,12 @@ Included in this release:
 
 - You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
 - Adds error codes: `presenceInactive`/`AgoraRtmErrorPresenceInactive`, `presencePendingRequestCancelled`/`AgoraRtmErrorPresencePendingRequestCancelled`, `presencePendingRequestExceedLimitation`/`AgoraRtmErrorPresencePendingRequestExceedLimitation`, and `channelSubscribeCanceled`/`AgoraRtmErrorChannelSubscribeCanceled`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
-- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- The Agora Console project creation flow no longer requires you to configure a service region upfront. This is a workflow change only and doesn't affect service quality.
+
+    :::info
+    You must select a region when you enable Message History or Metadata Storage. This selection cannot be changed.
+    :::
+
 - Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
 - Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `AgoraRtmPresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
 - Increases channel subscription speed.
@@ -1180,7 +1190,7 @@ For more information, see [How do I handle issues when integrating the Signaling
 
 ### v2.3.0
 
-Released on July 28, 2026.
+Released on August 6, 2026.
 
 #### Compatibility changes
 
@@ -1192,7 +1202,12 @@ Included in this release:
 
 - You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
 - Adds error codes: `presenceInactive`/`AgoraRtmErrorPresenceInactive`, `presencePendingRequestCancelled`/`AgoraRtmErrorPresencePendingRequestCancelled`, `presencePendingRequestExceedLimitation`/`AgoraRtmErrorPresencePendingRequestExceedLimitation`, and `channelSubscribeCanceled`/`AgoraRtmErrorChannelSubscribeCanceled`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
-- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- The Agora Console project creation flow no longer requires you to configure a service region upfront. This is a workflow change only and doesn't affect service quality.
+
+    :::info
+    You must select a region when you enable Message History or Metadata Storage. This selection cannot be changed.
+    :::
+
 - Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
 - Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `AgoraRtmPresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
 - Increases channel subscription speed.
@@ -2336,7 +2351,7 @@ Starting from 2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) bo
 
 ### v2.3.0
 
-Released on July 28, 2026.
+Released on August 6, 2026.
 
 #### Compatibility changes
 
@@ -2348,7 +2363,12 @@ Included in this release:
 
 - You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
 - Adds error codes: `RTM_ERROR_PRESENCE_INACTIVE`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
-- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- The Agora Console project creation flow no longer requires you to configure a service region upfront. This is a workflow change only and doesn't affect service quality.
+
+    :::info
+    You must select a region when you enable Message History or Metadata Storage. This selection cannot be changed.
+    :::
+
 - Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
 - Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
 - Increases channel subscription speed.
@@ -2828,7 +2848,7 @@ Starting from 2.2.0, the Signaling SDK and Video SDK (version 4.3.0 or later) bo
 
 ### v2.3.0
 
-Released on July 28, 2026.
+Released on August 6, 2026.
 
 #### Compatibility changes
 
@@ -2840,7 +2860,12 @@ Included in this release:
 
 - You can now enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
 - Adds error codes: `RTM_ERROR_PRESENCE_INACTIVE`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED`, `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION`, and `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED`. For error code descriptions and solutions, see [Error Codes](/en/realtime-media/rtm/reference/error-codes).
-- The Agora Console project creation flow no longer requires you to configure a service region upfront; you can enable it in feature configuration instead.
+- The Agora Console project creation flow no longer requires you to configure a service region upfront. This is a workflow change only and doesn't affect service quality.
+
+    :::info
+    You must select a region when you enable Message History or Metadata Storage. This selection cannot be changed.
+    :::
+
 - Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness.
 - Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list.
 - Increases channel subscription speed.
