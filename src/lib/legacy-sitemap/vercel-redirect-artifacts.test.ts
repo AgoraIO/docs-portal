@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import gscObservedRedirects from './gsc-observed-redirects.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -30,13 +31,15 @@ type VercelRedirect = {
 };
 
 type VercelRoute = {
-  dest: string;
+  dest?: string;
   has?: Array<{
     key: string;
     type: string;
     value: string;
   }>;
+  headers?: Record<string, string>;
   src: string;
+  status?: number;
 };
 
 describe('legacy redirect Vercel artifacts', () => {
@@ -52,9 +55,21 @@ describe('legacy redirect Vercel artifacts', () => {
   ) as VercelRedirect[];
 
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
-    expect(staticRedirects).toHaveLength(legacyRules.length);
+    expect(staticRedirects).toHaveLength(
+      legacyRules.length + gscObservedRedirects.length,
+    );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
+  });
+
+  it('stays within Vercel redirect limits and schema', () => {
+    expect(bulkRedirects.length).toBeLessThanOrEqual(1_000);
+    expect(vercelConfig.redirects?.length ?? 0).toBeLessThanOrEqual(2_048);
+    expect(vercelConfig.redirects).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ preserveQueryParams: expect.anything() }),
+      ]),
+    );
   });
 
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
@@ -150,6 +165,41 @@ describe('legacy redirect Vercel artifacts', () => {
       source: '/en/ai/reference/release-notes',
       statusCode: 301,
     });
+  });
+
+  it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
+    expect(vercelConfig.routes).toEqual(
+      expect.arrayContaining([
+        {
+          src: '^/en/Agora%20Platform/get_appid_token/?$',
+          headers: {
+            Location: '/en/introduction/account#generate-temporary-tokens',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+        {
+          src: '^/en/Agora%20Platform/terms/?$',
+          headers: {
+            Location: '/en/introduction/core-concepts#app-id',
+          },
+          has: [
+            {
+              key: 'platform',
+              type: 'query',
+              value: 'All Platforms',
+            },
+          ],
+          status: 301,
+        },
+      ]),
+    );
   });
 
   it('redirects high-traffic legacy English URLs to their current pages', () => {
@@ -251,16 +301,64 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
-  it('keeps query-split paths in Vercel config redirects instead of bulk redirects', () => {
+  it('redirects observed legacy URLs with trailing slashes before app routing', () => {
+    expect(bulkRedirects).toEqual(
+      expect.arrayContaining([
+        {
+          destination:
+            '/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-uikit',
+          preserveQueryParams: true,
+          source: '/en/interactive-whiteboard/get-started/get-started-uikit/',
+          statusCode: 301,
+        },
+        {
+          destination: '/en/realtime-media/voice/core-concepts',
+          preserveQueryParams: true,
+          source: '/en/voice-calling/overview/core-concepts/',
+          statusCode: 301,
+        },
+      ]),
+    );
+  });
+
+  it('publishes confirmed GSC 404 targets as bulk redirects', () => {
+    expect(bulkRedirects).toContainEqual({
+      destination: '/en/api-reference/faq/product/browser_support',
+      preserveQueryParams: true,
+      source: '/en/help/general-product-inquiry/browser_support',
+      statusCode: 301,
+    });
+  });
+
+  it('maps legacy Voice release notes queries to platform routes', () => {
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location: '/en/realtime-media/voice/reference/release-notes/flutter',
+      },
+      has: [
+        {
+          key: 'platform',
+          type: 'query',
+          value: 'flutter',
+        },
+      ],
+      src: '^/en/voice-calling/overview/release-notes/?$',
+      status: 301,
+    });
+  });
+
+  it('strips legacy queries with conditional Vercel redirect routes', () => {
     expect(
       bulkRedirects.some(
         (rule) =>
           rule.source === '/en/broadcast-streaming/overview/release-notes',
       ),
     ).toBe(false);
-    expect(vercelConfig.redirects).toContainEqual({
-      destination:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+    expect(vercelConfig.routes).toContainEqual({
+      headers: {
+        Location:
+          '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      },
       has: [
         {
           key: 'platform',
@@ -268,8 +366,8 @@ describe('legacy redirect Vercel artifacts', () => {
           value: 'react-js',
         },
       ],
-      source: '/en/broadcast-streaming/overview/release-notes',
-      statusCode: 301,
+      src: '^/en/broadcast-streaming/overview/release-notes/?$',
+      status: 301,
     });
   });
 

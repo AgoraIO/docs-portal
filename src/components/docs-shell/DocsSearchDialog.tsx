@@ -20,6 +20,11 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import {
+  captureDocsSearchCompleted,
+  captureDocsSearchOpened,
+  captureDocsSearchResultClicked,
+} from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -103,16 +108,64 @@ export function DocsSearchDialog({
   const pages = pagesState?.locale === searchLocale ? pagesState.pages : [];
   const searchIndexFailed =
     pagesState?.locale === searchLocale && pagesState.status === 'error';
+  const localSearchStatus =
+    pagesState?.locale === searchLocale ? pagesState.status : 'loading';
   const algoliaConfig = getAlgoliaSearchConfig();
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
+  const algoliaEnabled = Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
+  const currentSearchRef = useRef('');
+  const latestSearchRequestRef = useRef(0);
+  const localSearchStatusRef = useRef(localSearchStatus);
+  localSearchStatusRef.current = localSearchStatus;
+  const pendingLocalCompletionRef = useRef<{
+    query: string;
+    requestId: number;
+  } | null>(null);
+  const isLatestSearch = useCallback((query: string, requestId: number) => {
+    return (
+      latestSearchRequestRef.current === requestId &&
+      currentSearchRef.current === query.trim()
+    );
+  }, []);
+  const captureLatestCompletedSearch = useCallback(
+    ({
+      query,
+      requestId,
+      resultCount,
+      status,
+    }: {
+      query: string;
+      requestId: number;
+      resultCount?: number;
+      status: 'error' | 'success';
+    }) => {
+      const normalizedQuery = query.trim();
+
+      if (!isLatestSearch(normalizedQuery, requestId)) {
+        return;
+      }
+
+      captureDocsSearchCompleted({
+        locale: searchLocale,
+        platformFilter,
+        productScope: scopeId,
+        provider: algoliaEnabled ? 'algolia' : 'local',
+        queryLength: normalizedQuery.length,
+        ...(resultCount === undefined ? {} : { resultCount }),
+        status,
+      });
+      pendingLocalCompletionRef.current = null;
+    },
+    [algoliaEnabled, isLatestSearch, platformFilter, scopeId, searchLocale],
+  );
   const searchClient = useMemo(() => {
     const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
@@ -132,9 +185,51 @@ export function DocsSearchDialog({
     return {
       ...base,
       async search(query: string) {
+        const requestId = latestSearchRequestRef.current + 1;
+        latestSearchRequestRef.current = requestId;
         setPendingRequests((count) => count + 1);
         try {
-          return await base.search(query);
+          const results = await base.search(query);
+          const completionStatus = algoliaEnabled
+            ? 'success'
+            : localSearchStatus === 'loading'
+              ? localSearchStatusRef.current === 'error'
+                ? 'error'
+                : null
+              : localSearchStatus === 'error'
+                ? 'error'
+                : 'success';
+
+          if (completionStatus) {
+            captureLatestCompletedSearch({
+              query,
+              requestId,
+              ...(completionStatus === 'success'
+                ? {
+                    resultCount: Array.isArray(results) ? results.length : 0,
+                  }
+                : {}),
+              status: completionStatus,
+            });
+          } else if (
+            localSearchStatusRef.current === 'loading' &&
+            isLatestSearch(query, requestId)
+          ) {
+            pendingLocalCompletionRef.current = {
+              query,
+              requestId,
+            };
+          }
+
+          return results;
+        } catch (error) {
+          captureLatestCompletedSearch({
+            query,
+            requestId,
+            status: 'error',
+          });
+
+          throw error;
         } finally {
           setPendingRequests((count) => count - 1);
         }
@@ -144,8 +239,12 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaIndexName,
     algoliaSearchApiKey,
+    algoliaEnabled,
+    captureLatestCompletedSearch,
+    isLatestSearch,
     pages,
     platformFilter,
+    localSearchStatus,
     searchScope,
     searchLocale,
   ]);
@@ -182,6 +281,23 @@ export function DocsSearchDialog({
     },
     searchDeps,
   );
+  currentSearchRef.current = search.trim();
+  useEffect(() => {
+    if (algoliaEnabled || localSearchStatus !== 'error') {
+      return;
+    }
+
+    const pendingCompletion = pendingLocalCompletionRef.current;
+    if (!pendingCompletion) {
+      return;
+    }
+
+    pendingLocalCompletionRef.current = null;
+    captureLatestCompletedSearch({
+      ...pendingCompletion,
+      status: 'error',
+    });
+  }, [algoliaEnabled, captureLatestCompletedSearch, localSearchStatus]);
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
@@ -193,7 +309,6 @@ export function DocsSearchDialog({
   const [debouncePending, setDebouncePending] = useState(false);
   // `algoliaConfig` is a fresh object every render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const algoliaEnabled = Boolean(algoliaConfig);
   useEffect(() => {
     if (!algoliaEnabled || search.trim() === '') {
       setDebouncePending(false);
@@ -262,7 +377,44 @@ export function DocsSearchDialog({
     [platformOptions, searchLocale],
   );
 
-  async function handleSelect(url: string) {
+  const invalidateCurrentSearch = useCallback(() => {
+    latestSearchRequestRef.current += 1;
+    pendingLocalCompletionRef.current = null;
+  }, []);
+  const handleScopeChange = useCallback(
+    (nextScopeId: string | null) => {
+      if (nextScopeId === scopeId) {
+        return;
+      }
+
+      invalidateCurrentSearch();
+      setScopeId(nextScopeId);
+    },
+    [invalidateCurrentSearch, scopeId],
+  );
+  const handlePlatformFilterChange = useCallback(
+    (nextPlatform: string | null) => {
+      const normalizedPlatform = nextPlatform as PlatformKey | null;
+      if (normalizedPlatform === platformFilter) {
+        return;
+      }
+
+      invalidateCurrentSearch();
+      setPlatformFilter(normalizedPlatform);
+    },
+    [invalidateCurrentSearch, platformFilter],
+  );
+
+  async function handleSelect(url: string, rank?: number) {
+    if (hasQuery && rank !== undefined) {
+      captureDocsSearchResultClicked({
+        href: url,
+        locale: searchLocale,
+        queryLength: search.trim().length,
+        rank,
+      });
+    }
+
     setOpen(false);
     await navigate({
       to: url,
@@ -270,12 +422,17 @@ export function DocsSearchDialog({
   }
 
   const handleOpenChange = useCallback(
-    async (nextOpen: boolean) => {
+    async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
       setOpen(nextOpen);
       // Re-arm the cascade each time the dialog opens; clear it on close.
       setStaggerArmed(nextOpen);
 
       if (nextOpen) {
+        captureDocsSearchOpened({
+          locale: searchLocale,
+          mode,
+          trigger,
+        });
         // Refresh the recent list from storage on each open, dropping the page
         // the user is currently on (offering it back to them makes no sense).
         const currentPath =
@@ -319,7 +476,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
+    [algoliaConfig, loadPages, mode, pages.length, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -340,7 +497,7 @@ export function DocsSearchDialog({
       }
 
       event.preventDefault();
-      void handleOpenChange(true);
+      void handleOpenChange(true, 'keyboard');
     }
 
     document.addEventListener('keydown', handleKeyDown);
@@ -404,7 +561,7 @@ export function DocsSearchDialog({
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
-          onClick={() => void handleOpenChange(true)}
+          onClick={() => void handleOpenChange(true, 'button')}
           size="icon"
           variant="ghost"
         >
@@ -414,7 +571,7 @@ export function DocsSearchDialog({
         <Button
           aria-label={t('docs.search')}
           className="docs-shell-search-trigger"
-          onClick={() => void handleOpenChange(true)}
+          onClick={() => void handleOpenChange(true, 'button')}
           size="sm"
           variant="outline"
         >
@@ -446,7 +603,7 @@ export function DocsSearchDialog({
                 allLabel={t('docs.searchAllProducts')}
                 emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
-                onChange={setScopeId}
+                onChange={handleScopeChange}
                 searchPlaceholder={t('docs.searchFilterProducts')}
                 value={scopeId}
               />
@@ -455,7 +612,7 @@ export function DocsSearchDialog({
               allLabel={t('docs.searchAllPlatforms')}
               emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
-              onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
+              onChange={handlePlatformFilterChange}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
             />
@@ -531,7 +688,7 @@ export function DocsSearchDialog({
                     <CommandItem
                       className={cn('items-start', stagger.className)}
                       key={page.id ?? page.url}
-                      onSelect={() => void handleSelect(page.url)}
+                      onSelect={() => void handleSelect(page.url, index + 1)}
                       style={stagger.style}
                       value={page.id ?? page.url}
                     >

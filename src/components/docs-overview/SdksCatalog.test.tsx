@@ -49,7 +49,7 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.7'),
     ).toBeVisible();
     expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'aria-selected',
@@ -61,7 +61,7 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(voiceCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
+      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.7'),
     ).toBeVisible();
   });
 
