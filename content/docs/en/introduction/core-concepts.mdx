@@ -6,15 +6,29 @@ description: Ideas that are central to developing with Agora.
 
 Voice Agents are real-time AI experiences where users speak naturally with an AI system. On Agora, voice agents listen, reason over the conversation, and respond with low-latency speech inside a live session.
 
-RTC (Real-Time Communication) refers to real-time communication technology, that allows almost instant exchange of audio, video, and other data between the sender and the receiver.
+RTC (Real-Time Communication) technology allows almost instant exchange of audio, video, and other media data between the sender and the receiver.
 
-Agora SDKs provide real-time audio and video interaction services, with multi-platform and multi-device support. This includes high-definition video calls, voice-only calls, interactive live streaming, as well as one-on-one and multi-group chats.
+Agora Signaling, formerly known as RTM, provides real-time delivery of messages, presence, metadata, transcripts, state updates, and control events. In many voice agent experiences, RTC carries the live audio path, while Signaling carries the events and data that coordinate the experience.
+
+Agora SDKs provide real-time audio, video, and messaging interaction services, with multi-platform and multi-device support. This includes high-definition video calls, voice-only calls, interactive live streaming, real-time messaging, as well as one-on-one and multi-group chats.
 
 This article introduces the key processes and concepts you need to know to use Agora SDKs.
 
+## Before you start
+
+Most quickstarts and guides ask for the same values:
+
+| Value | What it identifies |
+| --- | --- |
+| [App ID](#app-id) | The Agora project that your app belongs to. |
+| [App Certificate](#app-certificate) | The secret used to enable token authentication. |
+| [Token](#token) | A dynamic key that grants a user permission to access a channel. |
+| [Channel](#channel) | The live space, identified by a channel name, where users interact. |
+| [UID](#user-id-uid) | The unique user identity of one participant in a channel. |
+
 ## Using the Agora Console
 
-To use Agora SDKs, create an audio and video project in the Agora Console first. See [Agora account management](/en/introduction/account) for details.
+To use Agora SDKs, create a project in the Agora Console first. See [Agora account management](/en/introduction/account) for details.
 
 ![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 
@@ -34,7 +48,7 @@ Agora also provides RESTful APIs that you use to implement features such as crea
 
 ## General concepts
 
-Agora uses the following basic concepts:
+Agora uses the following basic concepts across its SDKs and cloud services:
 
 ### App ID
 
@@ -52,7 +66,7 @@ To use your App certificate for setting up a token server, see [Deploy a token s
 
 ### Token
 
-A token is a dynamic key that is used by the Agora authentication server to check user permissions. You use Agora Console to generate a temporary token for testing purposes during the development process. In a production environment, you implement a token server in your security infrastructure to control access to your channels.
+A token is a dynamic key that is used by the Agora authentication server to check user permissions. A token is usually scoped to a channel, a UID, a product capability, and an expiration time. You use Agora Console to generate a temporary token for testing purposes during the development process. In a production environment, you implement a token server in your security infrastructure to control access to your channels.
 
 After obtaining the App ID, App Certificate, and Token in the Agora Console, you can start implementing basic audio and video communication in your app.
 
@@ -87,7 +101,7 @@ After successfully publishing a stream, the SDK continues sending media data to 
 
 Subscribing is the act of receiving media streams published by remote users to the channel. A user receives audio and video data from other users by subscribing to one or more of their streams. You either directly play the subscribed streams or process incoming data for other purposes such as recording or capturing screenshots.
 
-### User ID
+### User ID (UID)
 
 A User ID (UID) identifies a user in a channel. Each user in a channel should have a unique user ID. If you do not specify a user ID when the user joins a channel, a UID is automatically generated and assigned to the user.
 
