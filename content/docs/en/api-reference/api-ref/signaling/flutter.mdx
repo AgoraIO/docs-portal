@@ -665,12 +665,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call is successful, the second item in the tuple returns data of type `RenewTokenResult`, defined as follows:
-```dart
-  class RenewTokenResult {
-      final RtmServiceType serverType; // Service type
-      final String channelName; // Channel name
-  }
-```
+    ```dart
+    class RenewTokenResult {
+        final RtmServiceType serverType; // Service type
+        final String channelName; // Channel name
+    }
+    ```
 
 ## Channels
 
@@ -750,11 +750,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `SubscribeResult` type data, defined as follows:
-```dart
-  class SubscribeResult {
-      final String channelName; // The channel of the current operation
-  }
-```
+    ```dart
+    class SubscribeResult {
+        final String channelName; // The channel of the current operation
+    }
+    ```
 
 ### unsubscribeTopic
 
@@ -805,11 +805,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple will return a `UnsubscribeResult` type data, defined as follows:
-```dart
-  class UnsubscribeResult {
-      final String channelName; // The channel of the current operation
-  }
-```
+    ```dart
+    class UnsubscribeResult {
+        final String channelName; // The channel of the current operation
+    }
+    ```
 
 ### createAgoraRtmClient
 
@@ -931,12 +931,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple will return a `JoinResult` type data, defined as follows:
-```dart
-  class JoinResult {
-      final String channelName; // The channel of the current operation
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class JoinResult {
+        final String channelName; // The channel of the current operation
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### leaveTopic
 
@@ -985,12 +985,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple will return a `LeaveResult` type data, defined as follows:
-```dart
-  class LeaveResult {
-      final String channelName; // The channel of the current operation
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class LeaveResult {
+        final String channelName; // The channel of the current operation
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### releaseLock
 
@@ -1112,14 +1112,14 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `JoinTopicResult` object, defined as follows:
-```dart
-  class JoinTopicResult {
-      final String channelName; // Channel name
-      final String userId; // Current userId
-      final String topic; // Topic name
-      final String meta; // Additional metadata
-  }
-```
+    ```dart
+    class JoinTopicResult {
+        final String channelName; // Channel name
+        final String userId; // Current userId
+        final String topic; // Topic name
+        final String meta; // Additional metadata
+    }
+    ```
 
 ### publishTextMessage
 
@@ -1191,12 +1191,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `PublishTopicMessageResult` object, defined as follows:
-```dart
-  class PublishTopicMessageResult {
-      final String channelName; // Channel name
-      final String topic; // Topic name
-  }
-```
+    ```dart
+    class PublishTopicMessageResult {
+        final String channelName; // Channel name
+        final String topic; // Topic name
+    }
+    ```
 
 ### publishBinaryMessage
 
@@ -1260,12 +1260,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `PublishTopicMessageResult` object, defined as follows:
-```dart
-  class PublishTopicMessageResult {
-      final String channelName; // Channel name
-      final String topic; // Topic name
-  }
-```
+    ```dart
+    class PublishTopicMessageResult {
+        final String channelName; // Channel name
+        final String topic; // Topic name
+    }
+    ```
 
 ### leaveTopic
 
@@ -1315,14 +1315,14 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `LeaveTopicResult` object, defined as follows:
-```dart
-  class LeaveTopicResult {
-      final String channelName; // Channel name
-      final String userId; // User ID
-      final String topic; // Topic name
-      final String meta; // Additional metadata
-  }
-```
+    ```dart
+    class LeaveTopicResult {
+        final String channelName; // Channel name
+        final String userId; // User ID
+        final String topic; // Topic name
+        final String meta; // Additional metadata
+    }
+    ```
 
 ### subscribeTopic
 
@@ -1393,15 +1393,15 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `SubscribeTopicResult` object, defined as follows:
-```dart
-  class SubscribeTopicResult {
-      final String channelName; // Channel name
-      required this.userId; // User ID
-      final String topic; // Topic name
-      final List<String> succeedUsers; // List of successfully subscribed users
-      final List<String> failedUsers; // List of users that failed to subscribe
-  }
-```
+    ```dart
+    class SubscribeTopicResult {
+        final String channelName; // Channel name
+        required this.userId; // User ID
+        final String topic; // Topic name
+        final List<String> succeedUsers; // List of successfully subscribed users
+        final List<String> failedUsers; // List of users that failed to subscribe
+    }
+    ```
 
 ### unsubscribeTopic
 
@@ -1468,12 +1468,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `UnsubscribeTopicResult` object, defined as follows:
-```dart
-  class UnsubscribeTopicResult {
-      final String channelName; // Channel name
-      final String topic; // Topic name
-  }
-```
+    ```dart
+    class UnsubscribeTopicResult {
+        final String channelName; // Channel name
+        final String topic; // Topic name
+    }
+    ```
 
 ### getSubscribedUserList
 
@@ -1520,13 +1520,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `GetSubscribedUserListResult` object, defined as follows:
-```dart
-  class GetSubscribedUserListResult {
-      final String channelName; // Channel name
-      final String topic; // Topic name
-      final UserList users; // List of successfully subscribed users
-  }
-```
+    ```dart
+    class GetSubscribedUserListResult {
+        final String channelName; // Channel name
+        final String topic; // Topic name
+        final UserList users; // List of successfully subscribed users
+    }
+    ```
 
 ## Messages
 
@@ -1776,7 +1776,7 @@ By calling the `getOnlineUsers` method, you can query real-time information abou
 You can call the `getOnlineUsers` method as follows:
 
 ```dart
-Future<(RtmStatus, WhoNowResult?) whoNow(
+Future<(RtmStatus, GetOnlineUsersResult?)> getOnlineUsers(
     String channelName,
     RtmChannelType channelType,
     {
@@ -1829,13 +1829,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `GetOnlineUsersResult` type data, which is defined as follows:
-```dart
-  class GetOnlineUsersResult {
-      final List<UserState> userStateList; // List of user temporary states
-      final int count; // Length of the user temporary state list
-      final String nextPage; // Bookmark for the next page of data
-  }
-```
+    ```dart
+    class GetOnlineUsersResult {
+        final List<UserState> userStateList; // List of user temporary states
+        final int count; // Length of the user temporary state list
+        final String nextPage; // Bookmark for the next page of data
+    }
+    ```
 
 ### getUserChannels
 
@@ -1883,12 +1883,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `GetUserChannelsResult` type data, which is defined as follows:
-```dart
-  class GetUserChannelsResult {
-      final List<ChannelInfo> channels; // List of channel information
-      final int count; // Length of the user temporary state list
-  }
-```
+    ```dart
+    class GetUserChannelsResult {
+        final List<ChannelInfo> channels; // List of channel information
+        final int count; // Length of the user temporary state list
+    }
+    ```
 
 ### setState
 
@@ -2008,11 +2008,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item in the tuple returns a `GetStateResult` type data, which is defined as follows:
-```dart
-  class GetStateResult {
-      final UserState state; // User temporary state data
-  }
-```
+    ```dart
+    class GetStateResult {
+        final UserState state; // User temporary state data
+    }
+    ```
 
 ### removeState
 
@@ -2186,12 +2186,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call is successful, the second item of the tuple returns a `SetChannelMetadataResult` type data, defined as follows:
-```dart
-  class SetChannelMetadataResult {
-      final String channelName; // The channel being operated on
-      final RtmChannelType channelType; // The type of the channel being operated on
-  }
-```
+    ```dart
+    class SetChannelMetadataResult {
+        final String channelName; // The channel being operated on
+        final RtmChannelType channelType; // The type of the channel being operated on
+    }
+    ```
 
 ### getChannelMetadata
 
@@ -2246,13 +2246,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call is successful, the second item of the tuple returns a `GetChannelMetadataResult` type data, defined as follows:
-```dart
-  class GetChannelMetadataResult {
-      final String channelName; // The channel being operated on
-      final RtmChannelType channelType; // The type of the channel being operated on
-      final Metadata data; // Metadata data
-  }
-```
+    ```dart
+    class GetChannelMetadataResult {
+        final String channelName; // The channel being operated on
+        final RtmChannelType channelType; // The type of the channel being operated on
+        final Metadata data; // Metadata data
+    }
+    ```
 
 ### removeChannelMetadata
 
@@ -2343,12 +2343,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call is successful, the second item of the tuple returns a `RemoveChannelMetadataResult` type data, defined as follows:
-```dart
-  class RemoveChannelMetadataResult {
-      final String channelName; // The channel being operated on
-      final RtmChannelType channelType; // The type of the channel being operated on
-  }
-```
+    ```dart
+    class RemoveChannelMetadataResult {
+        final String channelName; // The channel being operated on
+        final RtmChannelType channelType; // The type of the channel being operated on
+    }
+    ```
 
 ### updateChannelMetadata
 
@@ -2440,12 +2440,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call is successful, the second item of the tuple returns a `UpdateChannelMetadataResult` type data, defined as follows:
-```dart
-  class UpdateChannelMetadataResult {
-      final String channelName; // The channel being operated on
-      final RtmChannelType channelType; // The type of the channel being operated on
-  }
-```
+    ```dart
+    class UpdateChannelMetadataResult {
+        final String channelName; // The channel being operated on
+        final RtmChannelType channelType; // The type of the channel being operated on
+    }
+    ```
 
 ### setUserMetadata
 
@@ -2542,11 +2542,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `SetUserMetadataResult` object, defined as follows:
-```dart
-  class SetUserMetadataResult {
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class SetUserMetadataResult {
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### getUserMetadata
 
@@ -2594,12 +2594,12 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `GetUserMetadataResult` object, defined as follows:
-```dart
-  class GetUserMetadataResult {
-      final String userId; // The user ID of the current operation
-      final Metadata data; // User metadata
-  }
-```
+    ```dart
+    class GetUserMetadataResult {
+        final String userId; // The user ID of the current operation
+        final Metadata data; // User metadata
+    }
+    ```
 
 ### removeUserMetadata
 
@@ -2679,11 +2679,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `RemoveUserMetadataResult` object, defined as follows:
-```dart
-  class RemoveUserMetadataResult {
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class RemoveUserMetadataResult {
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### updateUserMetadata
 
@@ -2769,11 +2769,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `UpdateUserMetadataResult` object, defined as follows:
-```dart
-  class UpdateUserMetadataResult {
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class UpdateUserMetadataResult {
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### subscribeUserMetadata
 
@@ -2823,11 +2823,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `SubscribeUserMetadataResult` object, defined as follows:
-```dart
-  class SubscribeUserMetadataResult {
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class SubscribeUserMetadataResult {
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### unsubscribeUserMetadata
 
@@ -2875,11 +2875,11 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `UnsubscribeUserMetadataResult` object, defined as follows:
-```dart
-  class UnsubscribeUserMetadataResult {
-      final String userId; // The user ID of the current operation
-  }
-```
+    ```dart
+    class UnsubscribeUserMetadataResult {
+        final String userId; // The user ID of the current operation
+    }
+    ```
 
 ### MetadataItem
 
@@ -2961,13 +2961,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `SetLockResult` object, defined as follows:
-```dart
-  class SetLockResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final String lockName; // Lock name
-  }
-```
+    ```dart
+    class SetLockResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final String lockName; // Lock name
+    }
+    ```
 
 ### acquireLock
 
@@ -3026,14 +3026,14 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns an `AcquireLockResult` object, defined as follows:
-```dart
-  class AcquireLockResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final String lockName; // Lock name
-      final String errorDetails; // Error details
-  }
-```
+    ```dart
+    class AcquireLockResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final String lockName; // Lock name
+        final String errorDetails; // Error details
+    }
+    ```
 
 ### releaseLock
 
@@ -3090,13 +3090,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `ReleaseLockResult` object, defined as follows:
-```dart
-  class ReleaseLockResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final String lockName; // Lock name
-  }
-```
+    ```dart
+    class ReleaseLockResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final String lockName; // Lock name
+    }
+    ```
 
 ### revokeLock
 
@@ -3154,13 +3154,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `RevokeLockResult` object, defined as follows:
-```dart
-  class RevokeLockResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final String lockName; // Lock name
-  }
-```
+    ```dart
+    class RevokeLockResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final String lockName; // Lock name
+    }
+    ```
 
 ###
 
@@ -3213,14 +3213,14 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `GetLocksResult` object, defined as follows:
-```dart
-  class GetLocksResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final List<LockDetail> lockDetailList; // Lock details
-      final int count; // Lock count
-  }
-```
+    ```dart
+    class GetLocksResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final List<LockDetail> lockDetailList; // Lock details
+        final int count; // Lock count
+    }
+    ```
 
 ### removeLock
 
@@ -3275,13 +3275,13 @@ class RtmStatus {
 
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `RemoveLockResult` object, defined as follows:
-```dart
-  class RemoveLockResult {
-      final String channelName; // Channel name
-      final RtmChannelType channelType; // Channel type
-      final String lockName; // Lock name
-  }
-```
+    ```dart
+    class RemoveLockResult {
+        final String channelName; // Channel name
+        final RtmChannelType channelType; // Channel type
+        final String lockName; // Lock name
+    }
+    ```
 
 ## Enumerated types
 
@@ -3310,53 +3310,6 @@ Channel types.
 | `message` | `1`: Message channel. |
 | `stream` | `2`: Stream channel. |
 | `user` | `3`: User Channel. |
-
-#### RtmConnectionChangeReason
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `connecting` | `0`: The SDK is connecting with the server. |
-| `joinSuccess` | `1`: The SDK has joined the channel successfully. |
-| `interrupted` | `2`: The connection between the SDK and the server is interrupted. |
-| `bannedByServer` | `3`: The connection between the SDK and the server is banned by the server. |
-| `joinFailed` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `leaveChannel` | `5`: The SDK has left the channel. |
-| `invalidAppId` | `6`: The connection failed because the App ID is not valid. |
-| `invalidChannelName` | `7`: The connection failed because the channel name is not valid. |
-| `invalidToken` | `8`: The connection failed because the token is not valid. |
-| `tokenExpired` | `9`: The connection failed because the token is expired. |
-| `rejectedByServer` | `10`: The connection is rejected by server. |
-| `settingProxyServer` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `renewToken` | `12`: The connection state changed because the token is renewed. |
-| `clientIpAddressChanged` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `keepAliveTimeout` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `rejoinSuccess` | `15`: The user has rejoined the channel successfully. |
-| `lost` | `16`: The connection between the SDK and the server is lost. |
-| `echoTest` | `17`: The connection state changes due to the echo test. |
-| `clientIpAddressChangedByUser` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `sameUidLogin` | `19`: The user joined the same channel from different devices with the same UID. |
-| `tooManyBroadcasters` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `licenseValidationFailure` | `21`: The license validation failed. |
-| `certificationVerifyFailure` | `22`: The server certificate validation failed. |
-| `streamChannelNotAvailable` | `23`: The stream channel does not exist. |
-| `inconsistentAppid` | `24`: The App ID does not match the token. |
-| `loginSuccess` | `10001`: The SDK logs in to the Signaling system. |
-| `logout` | `10002`: The SDK logs out from the Signaling system. |
-| `presenceNotReady` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### RtmConnectionState
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `disconnected` | `1`: The SDK has disconnected with the server. |
-| `connecting` | `2`: The SDK is connecting with the server. |
-| `connected` | `3`: The SDK has connected with the server. |
-| `reconnecting` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `failed` | `5`: The SDK failed to connect with the server. |
 
 #### RtmLinkStateChangeReason
 

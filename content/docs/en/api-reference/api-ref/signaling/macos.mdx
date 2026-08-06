@@ -100,14 +100,14 @@ You need to keep your Proxy username and password safe. The Signaling SDK does n
 
 `AgoraRtmProxyConfig` contains the following properties:
 
-| Methods | Description |
-| :---------------: | -------- |
-| `init` | Prevents users from initializing the `AgoraRtmProxyConfig` instance without providing the required parameters. |
-| `initWithServer` | Requires users to provide the `server`, `port`, and `proxyType` parameters during initializing the `AgoraRtmProxyConfig` instance. |
+| Methods |  Description |
+| -------------- |  -------- |
+| `init` | Initializes the `AgoraRtmProxyConfig` instance with default field values.|
+| `initWithServer`  | Initializes the `AgoraRtmProxyConfig` instance with `server`, `port`, and `proxyType`. |
 
 | Properties | Type | Required | Default | Description |
 |:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
-| `proxyType` | `AgoraRtmProxyType` | Optional | `AgoraRtmProxyTypeNone` | Proxy protocol type. See [`AgoraRtmProxyType`](#enumvproxytyp-e). |
+| `proxyType` | `AgoraRtmProxyType` | Optional | `AgoraRtmProxyTypeNone` | Proxy protocol type. See [`AgoraRtmProxyType`](#agorartmproxytype). |
 | `server` | NSString | Required | - | Proxy server domain name or IP address. |
 | `port` | unsigned short | Optional | - | Proxy listening port. |
 | `account` | NSString | Optional | - | Proxy login account. |
@@ -146,7 +146,7 @@ AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@
 AgoraRtmEncryptionConfig* encryptionConfig = [[AgoraRtmEncryptionConfig alloc] init];
 encryptionConfig.encryptionKey = @"you_encryption_key";
 encryptionConfig.encryptionMode = AgoraRtmEncryptionAES256GCM;
-unsigned char bytes[32] = ;
+unsigned char bytes[32] = { /*your salt values */ };
 encryptionConfig.encryptionSalt = [NSData dataWithBytes:bytes length:32];
 
 AgoraRtmLogConfig* log_config = [[AgoraRtmLogConfig alloc] init];
@@ -154,7 +154,10 @@ log_config.level= AgoraRtmLogLevelError;
 log_config.filePath= @"your_path";
 log_config.fileSizeInKB = 512;
 
-AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] initWithServer:@"your_proxy_server" port:8080 proxyType:AgoraRtmProxyTypeHttp];
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server";
+proxy_config.port = 8080;
 proxy_config.account = @"username";
 proxy_config.password = @"password";
 
@@ -216,7 +219,7 @@ AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg deleg
 #### DescriptionAgoraRtmClientDelegate
 Signaling event notifications.
 
-Signaling has a total of 8 types of event notifications, as shown in the following table:
+Signaling has a total of 7 types of event notifications, as shown in the following table:
 
 | Event Type | Description |
 |:----------:|------------------------------|
@@ -225,7 +228,6 @@ Signaling has a total of 8 types of event notifications, as shown in the followi
 | `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. See [`AgoraRtmTopicEvent`](#configtopiceven-t) |
 | `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`AgoraRtmStorageEvent`](#configstorageeven-t) |
 | `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmLockEvent`](#configlockeven-t) |
-| `connectionChangedToState` | (Deprecated) Receive event notifications when client connection status changes. For details, see [`AgoraRtmClientConnectionState`](#enumvconnectionstat-e) and [`AgoraRtmClientConnectionChangeReason`](#enumvconnectionreaso-n). |
 | `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. See [`AgoraRtmLinkStateEvent`](#configlinkstateeven-t). |
 | `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
@@ -262,9 +264,7 @@ When initializing the Signaling client instance using the `initWithConfig` metho
  // triggered when token will expire
 -(void) rtmKit:(AgoraRtmClientKit *)rtmKit tokenPrivilegeWillExpire:(NSString *)channel {}
 
- // triggered when connection state changed
--(void) rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {}
-
+ 
  // triggered when link state changed
 - (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveLinkStateEvent:(AgoraRtmLinkStateEvent *)event {}
 @end
@@ -350,6 +350,7 @@ The `AgoraRtmPresenceIntervalInfo` data type contains the following properties:
 | `leaveUserList` | `NSArray&lt;NSString *&gt;` | List of users who left the channel in the previous cycle. |
 | `timeoutUserList` | `NSArray&lt;NSString *&gt;` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `ArrayList&lt;UserState&gt;` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+| `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 The `AgoraRtmUserState` data type contains the following properties:
 
@@ -1327,7 +1328,7 @@ After successfully calling this method, the SDK triggers a `didReceiveMessageEve
 
 Signaling provides event notifications for messages, states, and event changes. By listening for callbacks, you can receive messages and events within subscribed channels. As an example, the code snippet below shows how to receive messages from the user channel.
 - Adding during initialization:
-```objc
+    ```objc
     @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1347,10 +1348,10 @@ Signaling provides event notifications for messages, states, and event changes. 
     RtmListener* handler =  [[RtmListener alloc] init];
     NSError* initError = nil;
     AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
-```
+    ```
 - Adding at any time:
 
-```objc
+    ```objc
     @interface RtmHandler : NSObject <AgoraRtmClientDelegate>
     @end
 
@@ -1367,7 +1368,7 @@ Signaling provides event notifications for messages, states, and event changes. 
 
     RtmListener* handler =  [[RtmListener alloc] init];
     [rtm addDelegate:handler];
-```
+    ```
 
 For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
 
@@ -2531,50 +2532,6 @@ Channel types.
 | `AgoraRtmChannelTypeStream` | `2`: Stream channel. |
 | `AgoraRtmChannelTypeUser` | `3`: User Channel. |
 
-#### AgoraRtmClientConnectionChangeReason
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `AgoraRtmClientConnectionChangedConnecting` | `0`: The SDK is connecting with the server. |
-| `AgoraRtmClientConnectionChangedJoinSuccess` | `1`: The SDK has joined the channel successfully. |
-| `AgoraRtmClientConnectionChangedInterrupted` | `2`: The connection between the SDK and the server is interrupted. |
-| `AgoraRtmClientConnectionChangedBannedByServer` | `3`: The connection between the SDK and the server is banned by the server. |
-| `AgoraRtmClientConnectionChangedJoinFailed` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `AgoraRtmClientConnectionChangedLeaveChannel` | `5`: The SDK has left the channel. |
-| `AgoraRtmClientConnectionChangedInvalidAppId` | `6`: The connection failed because the App ID is not valid. |
-| `AgoraRtmClientConnectionChangedInvalidChannelName` | `7`: The connection failed because the channel name is not valid. |
-| `AgoraRtmClientConnectionChangedInvalidToken` | `8`: The connection failed because the token is not valid. |
-| `AgoraRtmClientConnectionChangedTokenExpired` | `9`: The connection failed because the token is expired. |
-| `AgoraRtmClientConnectionChangedRejectedByServer` | `10`: The connection is rejected by server. |
-| `AgoraRtmClientConnectionChangedSettingProxyServer` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `AgoraRtmClientConnectionChangedRenewToken` | `12`: The connection state changed because the token is renewed. |
-| `AgoraRtmClientConnectionChangedClientIpAddressChanged` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `AgoraRtmClientConnectionChangedKeepAliveTimeout` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `AgoraRtmClientConnectionChangedRejoinSuccess` | `15`: The user has rejoined the channel successfully. |
-| `AgoraRtmClientConnectionChangedChangedLost` | `16`: The connection between the SDK and the server is lost. |
-| `AgoraRtmClientConnectionChangedEchoTest` | `17`: The connection state changes due to the echo test. |
-| `AgoraRtmClientConnectionChangedClientIpAddressChangedByUser` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `AgoraRtmClientConnectionChangedSameUidLogin` | `19`: The user joined the same channel from different devices with the same UID. |
-| `AgoraRtmClientConnectionChangedTooManyBroadcasters` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `AgoraRtmClientConnectionChangedStreamChannelNotAvailable` | `22`: The stream channel does not exist. |
-| `AgoraRtmClientConnectionChangedLoginSuccess` | `10001`: The SDK logs in to the Signaling system. |
-| `AgoraRtmClientConnectionChangedLogout` | `10002`: The SDK logs out from the Signaling system. |
-| `AgoraRtmClientConnectionChangedPresenceNotReady` | `10003`: Presence service is not ready. You need to call the `loginByToken` method again to log in to the RTM system and re-execute all operations on the SDK. |
-
-#### AgoraRtmClientConnectionState
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `AgoraRtmClientConnectionStateDisconnected` | `1`: The SDK has disconnected with the server. |
-| `AgoraRtmClientConnectionStateConnecting` | `2`: The SDK is connecting with the server. |
-| `AgoraRtmClientConnectionStateConnected` | `3`: The SDK has connected with the server. |
-| `AgoraRtmClientConnectionStateReconnecting` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `AgoraRtmClientConnectionStateFailed` | `5`: The SDK failed to connect with the server. |
-
 #### AgoraRtmEncryptionMode
 
 Encryption mode.
@@ -2885,6 +2842,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `AgoraRtmErrorChannelPresenceNotReady` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `AgoraRtmErrorChannelReceiverOffline` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `AgoraRtmErrorChannelJoinCanceled` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `AgoraRtmErrorChannelSubscribeCanceled` | The channel subscription is canceled before it completes. |
 | `-12001` | `AgoraRtmErrorStorageOperationFailed` | Storage operation failed. |
 | `-12002` | `AgoraRtmErrorStorageMetadataItemExceedLimitation` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `AgoraRtmErrorStorageInvalidMetadataItem` | Invalid Metadata Item. |
@@ -2917,6 +2875,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `AgoraRtmErrorPresenceUserNotExist` | The user does not exist. |
 | `-13012` | `AgoraRtmErrorPresenceOperationTimeout` | Presence operation timed out. |
 | `-13013` | `AgoraRtmErrorPresenceOperationFailed` | Presence operation failed. |
+| `-13014` | `AgoraRtmErrorPresenceInactive` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `AgoraRtmErrorPresencePendingRequestCancelled` | The pending Presence request is canceled. |
+| `-13016` | `AgoraRtmErrorPresencePendingRequestExceedLimitation` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `AgoraRtmErrorLockOperationFailed` | Lock operation failed. |
 | `-14002` | `AgoraRtmErrorLockOperationTimeout` | Lock operation timed out. |
 | `-14003` | `AgoraRtmErrorLockOperationPerforming` | Lock operation in progress. |
