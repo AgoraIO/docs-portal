@@ -276,7 +276,7 @@ describe('docs content regressions', () => {
     const content = readDoc('ai/build/shape-the-conversation/filler-words.mdx');
 
     expect(content).toContain(
-      '[MCP servers](/en/api-reference/api-ref/conversational-ai/join#properties-llm-mcp-servers)',
+      '[MCP servers](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers)',
     );
     expect(content).not.toContain(
       '[MCP servers](../../api-reference/conversational-ai/rest-api/agent/join#properties-llm-mcp-servers)',
