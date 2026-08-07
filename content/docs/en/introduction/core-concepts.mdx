@@ -103,7 +103,11 @@ Subscribing is the act of receiving media streams published by remote users to t
 
 ### User ID (UID)
 
-A User ID (UID) identifies a user in a channel. Each user in a channel should have a unique user ID. If you do not specify a user ID when the user joins a channel, a UID is automatically generated and assigned to the user.
+A User ID (UID) uniquely identifies a user within an Agora service. Both RTC and Signaling (formerly RTM) use UIDs, but the UID format, identity scope, and session behavior differ between the two services.
+
+In RTC, the UID is an integer that uniquely identifies a user within a channel. When joining a channel, you can assign a specific UID or let Agora generate one automatically by passing `0` or, where supported, `null`. Each user in the same channel must have a unique UID. If multiple users join the same channel with the same UID, unexpected behavior may occur. Agora services and components use the UID to identify and manage the user within that channel.
+
+In Signaling, the UID is a unique string supplied with the App ID when initializing the SDK. It identifies the user when logging in to Signaling and throughout the session, including for billing and online status notifications. Because the UID is associated with the user during initialization, the user only needs to provide the channel name when joining a channel. The same UID cannot be logged in to Signaling from multiple devices at the same time. If another client logs in with an active UID, the previously connected client is disconnected and receives a notification.
 
 ### User role
 
