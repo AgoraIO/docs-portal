@@ -1,5 +1,13 @@
 import { ChevronDownIcon, DownloadIcon } from 'lucide-react';
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
@@ -57,6 +65,9 @@ const catalogCopy = {
     copyButton: 'Copy',
     copiedButton: 'Copied',
     copyInstallCommand: 'Copy install command',
+    installCommandScrollDescription:
+      'The command extends beyond the current width. Scroll horizontally to view it in full.',
+    installCommandScrollLabel: 'Horizontally scrollable install command',
     directDownload: 'Direct download',
     downloadSdk: 'Download SDK',
     md5: 'MD5',
@@ -77,6 +88,9 @@ const catalogCopy = {
     copyButton: '复制',
     copiedButton: '已复制',
     copyInstallCommand: '复制集成命令',
+    installCommandScrollDescription:
+      '命令超出当前宽度，可横向滚动查看完整内容。',
+    installCommandScrollLabel: '可横向滚动的集成命令',
     directDownload: '直接下载',
     downloadSdk: '下载 SDK',
     md5: 'MD5',
@@ -746,9 +760,11 @@ function InstallArea({
     return (
       <div className="mt-3 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
-          <code className="min-w-0 flex-1 whitespace-pre-wrap break-all font-mono text-[0.82rem] text-foreground">
-            {command.command}
-          </code>
+          <ScrollableInstallCommand
+            copy={copy}
+            key={command.command}
+            value={command.command}
+          />
           <CopyButton copy={copy} value={command.command} />
         </div>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
@@ -804,6 +820,85 @@ function InstallArea({
         ) : null}
       </div>
       <VersionMetadata copy={copy} version={version} />
+    </div>
+  );
+}
+
+function ScrollableInstallCommand({
+  copy,
+  value,
+}: {
+  copy: CatalogCopy;
+  value: string;
+}) {
+  const scrollRef = useRef<HTMLElement>(null);
+  const descriptionId = useId();
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+
+  const updateOverflowState = useCallback(() => {
+    const element = scrollRef.current;
+    if (!element) {
+      return;
+    }
+
+    const overflow = element.scrollWidth > element.clientWidth + 1;
+    setHasOverflow(overflow);
+    setIsAtEnd(
+      !overflow ||
+        element.scrollLeft + element.clientWidth >= element.scrollWidth - 1,
+    );
+  }, []);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (element) {
+      element.scrollLeft = 0;
+    }
+    updateOverflowState();
+    window.addEventListener('resize', updateOverflowState);
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(updateOverflowState);
+    if (element) {
+      resizeObserver?.observe(element);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateOverflowState);
+      resizeObserver?.disconnect();
+    };
+  }, [updateOverflowState]);
+
+  return (
+    <div
+      className="relative min-w-0 flex-1"
+      data-command-overflow={hasOverflow ? 'true' : 'false'}
+      data-command-scroll-end={isAtEnd ? 'true' : 'false'}
+    >
+      <section
+        aria-describedby={hasOverflow ? descriptionId : undefined}
+        aria-label={copy.installCommandScrollLabel}
+        className="min-w-0 overflow-x-auto overscroll-x-contain rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        onScroll={updateOverflowState}
+        ref={scrollRef}
+        tabIndex={hasOverflow ? 0 : undefined}
+      >
+        <code className="block w-max whitespace-nowrap font-mono text-[0.82rem] text-foreground">
+          {value}
+        </code>
+      </section>
+      <span
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-r from-transparent to-card transition-opacity',
+          hasOverflow && !isAtEnd ? 'opacity-100' : 'opacity-0',
+        )}
+      />
+      <span className="sr-only" id={descriptionId}>
+        {copy.installCommandScrollDescription}
+      </span>
     </div>
   );
 }

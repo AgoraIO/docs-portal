@@ -65,7 +65,7 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
-  it('keeps long install commands inspectable with mobile-sized controls', () => {
+  it('keeps long install commands horizontally inspectable with mobile-sized controls', async () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const agentsCard = screen.getByRole('article', {
@@ -81,9 +81,49 @@ describe('SdksCatalog', () => {
     const copyButton = within(agentsCard).getByRole('button', {
       name: '复制集成命令',
     });
+    const scrollRegion = within(agentsCard).getByRole('region', {
+      name: '可横向滚动的集成命令',
+    });
+
+    Object.defineProperties(scrollRegion, {
+      clientWidth: { configurable: true, value: 160 },
+      scrollWidth: { configurable: true, value: 260 },
+    });
+    fireEvent(window, new Event('resize'));
 
     expect(command).not.toHaveClass('truncate');
-    expect(command).toHaveClass('whitespace-pre-wrap', 'break-all');
+    expect(command).toHaveClass('whitespace-nowrap');
+    expect(command).not.toHaveClass('break-all');
+    expect(scrollRegion).toHaveClass('overflow-x-auto');
+    await waitFor(() => {
+      expect(scrollRegion).toHaveAttribute('tabindex', '0');
+    });
+    expect(scrollRegion).toHaveAccessibleDescription(
+      '命令超出当前宽度，可横向滚动查看完整内容。',
+    );
+    expect(scrollRegion.parentElement).toHaveAttribute(
+      'data-command-overflow',
+      'true',
+    );
+    expect(scrollRegion.parentElement).toHaveAttribute(
+      'data-command-scroll-end',
+      'false',
+    );
+    const overflowCue = scrollRegion.parentElement?.querySelector(
+      '[aria-hidden="true"]',
+    );
+    expect(overflowCue).toHaveClass('opacity-100');
+
+    scrollRegion.scrollLeft = 100;
+    fireEvent.scroll(scrollRegion);
+
+    await waitFor(() => {
+      expect(scrollRegion.parentElement).toHaveAttribute(
+        'data-command-scroll-end',
+        'true',
+      );
+    });
+    expect(overflowCue).toHaveClass('opacity-0');
     expect(typescriptTab).toHaveClass('min-h-11');
     expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
   });
