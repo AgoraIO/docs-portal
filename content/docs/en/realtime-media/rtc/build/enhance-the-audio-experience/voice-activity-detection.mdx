@@ -1,0 +1,289 @@
+---
+title: "Voice Activity Detection (Beta)"
+description: "Integrate the Voice Activity Detection (VAD) extension to detect the probability of human voice and background music in audio."
+---
+
+:::note
+This feature is supported only on Web.
+:::
+
+The Voice Activity Detection (VAD) plugin analyzes audio streams in real-time to detect the probability of human voice and background music. This enables you to implement features like automatic muting during silence, smart audio recording, noise suppression, and adaptive audio processing. The extension is compatible with Web SDK v4.15.0 and above.
+
+<PlatformStructured platform="web">
+## Understand the tech
+
+The Agora Web SDK processes media through the following pipeline:
+
+![VAD Process](https://assets-docs.agora.io/images/extensions-marketplace/vad-flow.svg)
+
+The VAD plugin operates during the preprocessing stage, analyzing audio data in real-time to detect voice activity and background music.
+
+## Prerequisites
+
+Before you begin, make sure:
+
+- Your project integrates the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) using Web SDK v4.15.0 or later.
+- You are using a supported browser:
+  - **Desktop**: Latest Chrome (recommended), Edge, or Firefox
+  - **Safari**: 14.1+ (supported but not recommended due to performance issues)
+- Your system meets performance requirements:
+  - **Single plugin**: Standard hardware is sufficient
+  - **Multiple plugins**: Use an Intel Core i5 (4-core) or equivalent for best performance
+  - **High system load**: Running multiple plugins with heavy CPU usage may cause audio/video to freeze
+
+## Implement the logic
+
+This section shows you how to integrate and use the VAD extension in your project.
+
+Follow these steps to install, configure, and use the VAD plugin in your project:
+
+1. Install the [VAD plugin](https://www.npmjs.com/package/agora-extension-vad) from npm.
+
+   Run the following command to install the VAD plugin:
+
+   ```shell
+   npm install agora-extension-vad
+   ```
+
+   Import the VAD module in your JavaScript or TypeScript file:
+
+   ```ts
+   import { VADExtension } from "agora-extension-vad";
+   ```
+
+2. Deploy Wasm files.
+
+   The VAD plugin requires WebAssembly files to function. Make these files accessible to your web application:
+
+   1. Copy the Wasm files from `node_modules/agora-extension-vad/wasm/` to your application's public assets folder, such as `public/wasm/` or `static/wasm/`. When you create the `VADExtension` object, specify this path so the plugin can load these files.
+
+      Sample file structure:
+
+      ```text
+      your-project/
+      ├── public/
+      │  └── wasm/      // Copy Wasm files here
+      │    ├── file1.wasm
+      │    └── file2.wasm
+      └── src/
+        └── app.js
+      ```
+
+      :::note
+      - **HTTPS required**: Serve Wasm files over HTTPS in production.
+      - **CORS configuration**: If you host Wasm files on a different domain than your app, enable CORS for that domain.
+      - **Same-origin recommended**: For simplicity, host Wasm files on the same domain as your application.
+      :::
+
+   2. Configure Content Security Policy (if applicable).
+
+      If your application uses CSP headers, add the following permissions:
+
+      - For Chrome 97+, Edge 97+, and modern browsers:
+
+        ```html
+        <meta http-equiv="Content-Security-Policy"
+           content="script-src 'self' 'wasm-unsafe-eval' blob:">
+        ```
+
+      - For older browsers (Chrome versions earlier than 97, Edge versions earlier than 97):
+
+        ```html
+        <meta http-equiv="Content-Security-Policy"
+           content="script-src 'self' 'unsafe-eval' blob:">
+        ```
+
+3. Register the plugin.
+
+   Call the <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#registerextensions">`AgoraRTC.registerExtensions`</Link> method and pass the created `VADExtension` instance to register the VAD plugin. You can also listen for events when the Wasm file fails to load.
+
+   :::warning
+
+   Agora recommends that you create only one instance of `VADExtension`.
+
+   :::
+
+   ```ts
+   import AgoraRTC from "agora-rtc-sdk-ng";
+   import { VADExtension } from "agora-extension-vad";
+
+   // Create the VADExtension instance with the public path where the Wasm files are located
+   // Don't include a trailing slash in the path
+   const extension = new VADExtension({ assetsPath: "./wasm" });
+
+   // Check compatibility
+   if (!extension.checkCompatibility()) {
+    console.warn("VAD plugin is not supported");
+    return;
+   }
+
+   // Listen for Wasm file loading failures
+   extension.onloaderror = (error) => {
+    // Handle VAD loading errors
+    console.error("VAD plugin failed to load:", error);
+   };
+
+   // Register the plugin
+   AgoraRTC.registerExtensions([extension]);
+   ```
+
+4. Enable the plugin.
+
+   To enable the VAD plugin:
+
+   1. Call the `createProcessor` method to create an instance of `IVADProcessor`. You can set the plugin to be enabled or disabled by default. If you don't specify a state, the plugin uses the last known state.
+
+      ```ts
+      // Create an IVADProcessor instance
+      const processor = extension.createProcessor();
+
+      // Enable the plugin by default
+      // await processor.enable();
+
+      // Disable the plugin by default
+      // await processor.disable();
+
+      // Optional: Listen for processor overload events
+      processor.on("overload", async () => {
+       console.log("Processor overload detected");
+       // Choose to disable the plugin
+       // await processor.disable();
+       // Or continue processing audio despite the overload
+      });
+      ```
+
+   2. Inject the plugin into the audio processing pipeline by calling the SDK's <Link to = "https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/imicrophoneaudiotrack.html#pipe">`pipe`</Link> method and specify the `processorDestination` property.
+
+      ```ts
+      // Create an audio track
+      const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      // Inject the plugin into the audio processing pipeline
+      audioTrack.pipe(processor).pipe(audioTrack.processorDestination);
+      ```
+
+   3. If the plugin is not enabled by default, call the `enable` method to enable the plugin.
+
+      ```ts
+      await processor.enable();
+      ```
+
+5. Get detection results.
+
+   After you enable the plugin, listen to the `result` event to get the detection results and process them as needed.
+
+   ```ts
+   // Listen to the detection results of the VAD plugin
+   processor.on("result", handleResult);
+
+   function handleResult(result) {
+    // Output voiceProb, which indicates the probability that someone is speaking
+    console.info("voiceProb: ", result.voiceProb);
+    // Output musicProb, which indicates the probability that music is playing
+    console.info("musicProb: ", result.musicProb);
+   }
+   ```
+
+   :::note
+   `voiceProb` and `musicProb` are floating-point numbers from 0 to 1 that represent the probability that someone is speaking and that music is playing.
+   :::
+
+6. Disable the plugin.
+
+   When you no longer need the VAD plugin, call the `disable` method to disable the plugin.
+
+   ```ts
+   await processor.disable();
+   ```
+
+## Reference
+
+This section contains content that completes the information in this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+This section provides the API reference for the Voice Activity Detection extension.
+
+#### `IVADExtension`
+
+##### `checkCompatibility`
+
+Checks whether the current browser supports the VAD plugin. The result returned by this method is for reference only.
+
+```typescript
+checkCompatibility(): boolean;
+```
+
+##### `createProcessor`
+
+Creates an `IVADProcessor` instance.
+
+```typescript
+createProcessor(): IVADProcessor;
+```
+
+##### `onloaderror`
+
+Callback for Wasm dependency file loading failures.
+
+```typescript
+onloaderror?: (error: Error) => void;
+```
+
+#### `IVADProcessor`
+
+##### `kind`
+
+Processor type. Returns either `video` or `audio`.
+
+```typescript
+get kind(): 'video' | 'audio';
+```
+
+##### `enabled`
+
+Indicates whether the plugin is enabled.
+
+```typescript
+get enabled(): boolean;
+```
+
+##### `enable`
+
+Enables the VAD function.
+
+```typescript
+enable(): void | Promise<void>;
+```
+
+##### `disable`
+
+Disables the VAD function.
+
+```typescript
+disable(): void | Promise<void>;
+```
+
+##### `on`
+
+Listens for processor overload events.
+
+```typescript
+on("overload", callback: () => void): void;
+```
+
+#### Type definitions
+
+##### `VADExtensionOptions`
+
+```typescript
+export interface VADExtensionOptions {
+  assetsPath: string;
+}
+```
+
+**Parameters:**
+
+- `assetsPath`: The URL path of the Wasm files that the VAD plugin depends on. Don't end the path with a slash, for example `"./external"`.
+
+The plugin assembles the full path to the Wasm files from the `assetsPath`. If the path is incorrect and the Wasm files fail to load, you receive an `onloaderror` callback.
+</PlatformStructured>

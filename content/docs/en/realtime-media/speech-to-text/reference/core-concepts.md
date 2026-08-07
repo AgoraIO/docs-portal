@@ -29,7 +29,7 @@ Tokens are generated on your server and passed to the client for use in Real-Tim
 
 During development and testing, use the Agora Console to generate temporary tokens. For production environments, implement a token server as part of your security infrastructure to control access to your channels.
 
-For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
+For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server).
 
 ### Channel
 
@@ -37,7 +37,7 @@ A channel organizes users into a group and is identified by a unique channel nam
 
 Channels are created by calling the methods for transmitting real-time data. Agora uses different channels to transmit different types of data:
 
-- A Video SDK channel is used for transmitting audio or video data.
+- An RTC channel is used for transmitting audio or video data.
 
 - A Signaling channel is used for transmitting messaging or signaling data.
 

@@ -1,0 +1,513 @@
+---
+title: "Achieve high audio quality"
+description: "Best practices for optimal audio quality."
+---
+
+<PlatformStructured platform="android">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2) to set the profile to `MUSIC_HIGH_QUALITY_STEREO` (5). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Set the audio profile to MUSIC_HIGH_QUALITY_STEREO
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO);
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Set the audio profile to MUSIC_HIGH_QUALITY_STEREO
+RtcEngine.setAudioProfile(Constants.AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Set audio use-case
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Set the audio scenario to GAME_STREAMING
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.GAME_STREAMING);
+engine = RtcEngine.create(config);
+``` 
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Set the audio scenario to GAME_STREAMING
+config.mAudioScenario = Constants.AudioScenario.getValue(Constants.AudioScenario.GAME_STREAMING)
+engine = RtcEngine.create(config)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Turn off echo cancellation
+engine.setParameters("{\"che.audio.aec.enable\":false}");
+// Turn off noise reduction
+engine.setParameters("{\"che.audio.ans.enable\":false}");
+// Turn off gain control
+engine.setParameters("{\"che.audio.agc.enable\":false}");
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Turn off echo cancellation
+engine.setParameters("{\"che.audio.aec.enable\":false}")
+// Turn off noise reduction
+engine.setParameters("{\"che.audio.ans.enable\":false}")
+// Turn off gain control
+engine.setParameters("{\"che.audio.agc.enable\":false}")
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Set advanced audio options for 2 audio processing channels
+AdvancedAudioOptions options = new AdvancedAudioOptions();
+options.audioProcessingChannels = 2;
+m_lpAgoraEngine.setAdvancedAudioOptions(options);
+``` 
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Set advanced audio options for 2 audio processing channels
+val options = AdvancedAudioOptions()
+options.audioProcessingChannels = 2
+m_lpAgoraEngine.setAdvancedAudioOptions(options)
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)) to set the audio profile to `AgoraAudioProfileMusicHighQuality` (4). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```objc
+(int) setAudioProfile : (AgoraAudioProfile) profile;
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioscenario(_:)) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
+
+```java
+(int) setAudioScenario : (AgoraAudioScenario) scenario;
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
+
+```objc
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setadvancedaudiooptions(_:)) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
+
+```objc
+(int) setAdvancedAudioOptions : (AgoraAdvancedAudioOptions * _Nonnull) options;
+```
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)) to set the audio profile to `AgoraAudioProfileMusicHighQuality(4)`. It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```objc
+(int) setAudioProfile : (AgoraAudioProfile) profile;
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setaudioscenario(_:)) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING(3)`.
+
+```java
+(int) setAudioScenario : (AgoraAudioScenario) scenario;
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setparameters(_:)).
+
+```objc
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [setAdvancedAudioOptions](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setadvancedaudiooptions(_:)) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING(2)`, that is, use two channels to collect and send stereo sound.
+
+```objc
+(int) setAdvancedAudioOptions : (AgoraAdvancedAudioOptions * _Nonnull) options;
+```
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Using default audio encoding 
+
+Call [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack) and in `encoderConfig` pass `"high_quality_stereo"`, RTC SDK's built-in audio encoding configuration. It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+ encoderConfig: "high_quality_stereo"
+}).then(/**...**/);
+```
+
+### Custom audio encoding 
+
+Use the following code example to customize audio encoding properties. This example sets a 48 kHz sampling rate, music encoding, two-channel usage, and a maximum encoding rate of 128 Kbps.
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+ encoderConfig: {
+  sampleRate: 48000,
+  stereo: true,
+  bitrate: 128,
+ },
+}).then(/**...**/);
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable 3A by calling [`createMicrophoneAudioTrack`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack).
+
+```javascript
+AgoraRTC.createMicrophoneAudioTrack({
+ AEC: false, // Turn off echo cancellation
+ AGC: false, // Turn off gain control
+ ANS: false, // Turn off noise reduction
+}).then(/**...**/);
+```
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2) to set the audio profile to `AudioProfileMusicHighQuality` (4) and scenario to `AUDIO_PROFILE_MUSIC_HIGH_QUALITY` (4). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```cpp
+virtual int setAudioProfile(AUDIO_PROFILE_TYPE profile) = 0;
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
+
+```cpp
+virtual int setAudioScenario(AUDIO_SCENARIO_TYPE scenario) = 0;
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+```cpp
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AudioProcessingStereo` (2), that is, use two channels to collect and send stereo sound.
+:::note
+Call this method before calling `joinChannel`, `enableAudio`, and `enableLocalAudio`.
+:::
+```cpp
+virtual int setAdvancedAudioOptions(media::base::AdvancedAudioOptions &options) = 0;
+```
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile) to set the profile to `AudioProfileMusicHighQuality` (4) and scenario to `AudioScenarioGameStreaming` (3). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```typescript
+abstract setAudioProfile(
+  profile: AudioProfileType,
+  scenario?: AudioScenarioType
+ ): number;
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
+
+```typescript
+abstract setAudioScenario(scenario: AudioScenarioType): number;
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+```typescript
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AudioProcessingStereo` (2), that is, use two channels to collect and send stereo sound.
+
+```typescript
+abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
+```
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile) to set the audio profile to `audioProfileMusicHighQuality` (4). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```dart
+Future<void> setAudioProfile(
+  {required AudioProfileType profile,
+  AudioScenarioType scenario = AudioScenarioType.audioScenarioDefault});
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `audioScenarioGameStreaming` (3).
+
+```dart
+Future<void> setAudioScenario(AudioScenarioType scenario);
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+```dart
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
+:::note
+Call this method before calling `joinChannel`, `enableAudio`, and `enableLocalAudio`.
+:::
+```dart
+Future<void> setAdvancedAudioOptions(AdvancedAudioOptions options);
+```
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your app.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile) to set the audio profile to `AudioProfileMusicHighQuality` (4). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```typescript
+abstract setAudioProfile(
+  profile: AudioProfileType,
+  scenario?: AudioScenarioType
+ ): number;
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AudioScenarioGameStreaming` (3).
+
+```typescript
+abstract setAudioScenario(scenario: AudioScenarioType): number;
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`setParameters`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+```typescript
+setParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+setParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+setParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`setAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
+
+```typescript
+abstract setAdvancedAudioOptions(options: AdvancedAudioOptions): number;
+```
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+Some use-cases, such as karaoke sessions, podcasts, and performance-based chats, require a high-quality audio experience. This page shows you how to achieve clear high-definition audio, without noise or interference in your game.
+
+## General settings
+
+To improve the audio quality experience, consider the following:
+
+### Set audio encoding properties
+
+Call [`setAudioProfile` [2/2]](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2) to set the audio profile to `MUSIC_HIGH_QUALITY_STEREO` (5). It uses a 48 kHz sampling rate, music encoding, two channels, and the maximum encoding rate is 128 Kbps.
+
+```csharp
+public abstract int SetAudioProfile(AUDIO_PROFILE_TYPE profile);
+```
+
+### Set audio scenario
+
+Call [`setAudioScenario`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setaudioscenario) to set the audio scenario to high-quality `AUDIO_SCENARIO_GAME_STREAMING` (3).
+
+```csharp
+public abstract int SetAudioScenario(AUDIO_SCENARIO_TYPE scenario);
+```
+
+## Sound card settings
+
+This section only applies to users using sound cards.
+
+### Disable 3A
+
+RTC SDK turns on 3A by default. In audio processing, 3A stands for Acoustic Echo Cancellation (AEC), Active Noise Suppression (ANS), and Automatic Gain Control (AGC). Sound card devices usually provide some built-in audio processing, such as echo and noise cancellation. Currently, if 3A is enabled in the application layer, it may cause over-processing of the audio signal and interference between different algorithms may impact sound quality. Best practice is that users with sound cards disable the 3A function by calling [`SetParameters`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setparameters).
+
+```cpp
+SetParameters("{\"che.audio.aec.enable\":false}") // Turn off echo cancellation
+SetParameters("{\"che.audio.ans.enable\":false}") // Turn off noise reduction
+SetParameters("{\"che.audio.agc.enable\":false}") // Turn off gain control
+```
+
+### Turn on stereo capture
+
+Call [`SetAdvancedAudioOptions`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setadvancedaudiooptions) to set the number of audio pre-processing channels to `AGORA_AUDIO_STEREO_PROCESSING` (2), that is, use two channels to collect and send stereo sound.
+
+```csharp
+public abstract int SetAdvancedAudioOptions(AdvancedAudioOptions options);
+```
+</PlatformStructured>

@@ -19,6 +19,7 @@ const REPO_ROOT = path.resolve(
 const FIXTURE_PATHS = [
   'scripts/generate-legacy-redirect-artifacts.mjs',
   'src/lib/legacy-sitemap/redirects.json',
+  'src/lib/legacy-sitemap/gsc-observed-redirects.json',
   'src/lib/legacy-sitemap/static-redirects.json',
   'vercel-legacy-redirects.json',
   'vercel.base.json',
@@ -254,6 +255,10 @@ describe('generate-legacy-redirect-artifacts', () => {
       root,
       'src/lib/legacy-sitemap/redirects.json',
     );
+    const gscObservedRedirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/gsc-observed-redirects.json',
+    );
     const rules = Array.from({ length: 1_001 }, (_, index) => ({
       legacyUrl: `https://docs.agora.io/en/overflow/source-${index}`,
       legacyPath: `/en/overflow/source-${index}`,
@@ -268,6 +273,7 @@ describe('generate-legacy-redirect-artifacts', () => {
       `${JSON.stringify({ rules }, null, 2)}\n`,
       'utf8',
     );
+    await writeFile(gscObservedRedirectsPath, '[]\n', 'utf8');
 
     expect(generateArtifacts(root)).toContain(
       '[legacy-redirects] Vercel bulk redirects: 1000',

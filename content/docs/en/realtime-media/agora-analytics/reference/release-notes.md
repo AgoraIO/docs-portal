@@ -77,7 +77,7 @@ This release retires the Realtime (Beta) and Real-time Alarm (Beta) features on 
 
 -   Real-time Monitoring: Provides visualized data for multiple call metrics in real time.
 
--   Alert Notifications: Sends alerts to you through e-mails or API callbacks when abnormal metrics or events are detected in your Agora Video SDK projects.
+-   Alert Notifications: Sends alerts to you through e-mails or API callbacks when abnormal metrics or events are detected in your Agora RTC SDK projects.
 
 This release also adds the [Real-time Monitoring RESTful APIs](api.md) to query the real-time scale and quality metrics.
 

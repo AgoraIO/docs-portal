@@ -2579,7 +2579,7 @@ Web body
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
     ).resolves.toEqual({
-      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+      redirectUrl: '/en/realtime-media/rtc/get-started-sdk',
     });
   });
 
@@ -2666,7 +2666,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: true,
-      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+      redirectUrl: '/en/realtime-media/rtc/get-started-sdk',
     });
 
     await expect(
@@ -2704,7 +2704,7 @@ Web body
     ).resolves.toEqual({
       preserveSearch: false,
       redirectUrl:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+        '/en/realtime-media/rtc/reference/release-notes/ios',
     });
 
     await expect(
@@ -2717,7 +2717,7 @@ Web body
     ).resolves.toEqual({
       preserveSearch: false,
       redirectUrl:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+        '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 

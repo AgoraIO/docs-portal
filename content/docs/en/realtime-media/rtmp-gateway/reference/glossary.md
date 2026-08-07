@@ -42,7 +42,7 @@ In real-time audio and video communication, delay refers to the time elapsed fro
 
 ### Dual-stream mode
 
-In dual-stream mode, the Video SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low-bitrate video stream.
+In dual-stream mode, the RTC SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low-bitrate video stream.
 
 ## H
 
@@ -114,7 +114,7 @@ Transcoding is the process of decoding audio and video data and then re-encoding
 
 ### User ID (UID)
 
-In the Agora Video SDK, a user ID identifies a user in the channel.
+In the Agora RTC SDK, a user ID identifies a user in the channel.
 
 ### User role
 
@@ -134,9 +134,9 @@ Video mixing means combining multiple video streams into one.
 
 The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate.
 
-### Video SDK
+### RTC SDK
 
-The Video SDK is an SDK developed by Agora to enable developers to add real-time video and audio interaction to their projects.
+The RTC SDK is an SDK developed by Agora to enable developers to add real-time video and audio interaction to their projects.
 
 ### Voice SDK
 

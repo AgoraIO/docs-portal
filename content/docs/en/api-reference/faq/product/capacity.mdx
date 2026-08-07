@@ -1,8 +1,8 @@
 ---
-title: "How many users can Agora Video SDK support at the same time?"
+title: "How many users can Agora RTC SDK support at the same time?"
 ---
 
-The Agora Video SDK provides real-time audio and video services for many users. The number of concurrent channels is unlimited, and each channel supports up to 1 million concurrent online users.
+The Agora RTC SDK provides real-time audio and video services for many users. The number of concurrent channels is unlimited, and each channel supports up to 1 million concurrent online users.
 
 In most scenarios, Agora recommends limiting the number of users sending audio streams concurrently in a channel to 32. Of these 32 users, up to 17 can also send video streams concurrently. If you use a version of the SDK earlier than v3.0.0, and the channel profile is `setChannelProfile(COMMUNICATION)`, Agora recommends limiting the number of users sending streams concurrently in a channel to 7.
 
@@ -10,4 +10,4 @@ As of v3.7.0, a single channel can support up to 128 concurrent online hosts, wh
 
 - If the number of users sending streams concurrently exceeds the recommended limit, each user in the channel only sees or hears streams equal to the recommended limit, and these streams are assigned at random for each user. For example, if 18 hosts are sending streams concurrently in a live streaming channel, each user sees or hears 17 of the 18 streams, and the missing stream is random.
 - Agora does not provide APIs for limiting the number of users sending streams concurrently. However, you can implement such a limitation in your application layer.
-- To minimize bandwidth consumption and ensure smooth communication in a real-time video streaming scenario with multiple users, Agora recommends referring to [Video for Multiple Users](/en/interactive-live-streaming/core-functionality/join-multiple-channels). If you want to use the 128-host feature, contact [support@agora.io](mailto:support@agora.io) to help with the implementation.
+- To minimize bandwidth consumption and ensure smooth communication in a real-time video streaming scenario with multiple users, Agora recommends referring to [Join multiple channels](/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels). If you want to use the 128-host feature, contact [support@agora.io](mailto:support@agora.io) to help with the implementation.

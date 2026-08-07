@@ -1,6 +1,6 @@
 ---
 title: "Send and receive media streams"
-description: "How to use Server Gateway to send media streams to Video SDK clients and receive media streams from clients."
+description: "How to use Server Gateway to send media streams to RTC SDK clients and receive media streams from clients."
 ---
 
 <PlatformStructured platform="linux-cpp">
@@ -42,9 +42,9 @@ if (service->initialize(scfg) != agora::ERR_OK) {
 }
 ```
 
-### Connect to a Video SDK channel
+### Connect to an RTC SDK channel
 
-After initializing the SDK, connect to a Video SDK channel:
+After initializing the SDK, connect to an RTC SDK channel:
 
 1. Create an `IRtcConnection` object:
 
@@ -237,11 +237,11 @@ config.setAppId(appid);
 service.initialize(config);
 ```
 
-### Connect to the Agora Video SDK Channel
+### Connect to the Agora RTC SDK channel
 
-After initializing the SDK, follow these steps to connect to a Video SDK channel.
+After initializing the SDK, follow these steps to connect to an RTC SDK channel.
 
-1. Call `agoraRtcConnCreate` to create an `AgoraRtcConn` object to connect to the Agora Video SDK channel:
+1. Call `agoraRtcConnCreate` to create an `AgoraRtcConn` object to connect to the Agoran RTC SDK channel:
 
    ```java
    AgoraRtcConn conn = service.agoraRtcConnCreate(null);
@@ -253,7 +253,7 @@ After initializing the SDK, follow these steps to connect to a Video SDK channel
    conn.registerObserver(new ConnObserver());
    ```
 
-3. Call `connect` to connect to an Agora Video SDK channel:
+3. Call `connect` to connect to an Agoran RTC SDK channel:
 
    ```java
    conn.connect(token, "test_channel", "1");
@@ -312,7 +312,7 @@ Use the `IMediaNodeFactory` object to create various types of media stream sende
 
 ### Send media streams
 
-1. To publish the local audio and video tracks to a Video SDK channel, call the `publishAudio` and `publishVideo` methods of the `AgoraLocalUser` object:
+1. To publish the local audio and video tracks to an RTC SDK channel, call the `publishAudio` and `publishVideo` methods of the `AgoraLocalUser` object:
 
    ```java
    // Enables and publishes audio and video track
@@ -467,7 +467,7 @@ It is important to follow the sequence in the sample code to release resources p
    conn.unregisterObserver();
    ```
 
-3. Call `disconnect` to disconnect from the Video SDK channel:
+3. Call `disconnect` to disconnect from the RTC SDK channel:
 
    ```java
    int ret = conn.disconnect();
@@ -628,7 +628,7 @@ It is important to follow the sequence in the sample code to release resources p
 :::info[Development considerations]
 
 - The methods mentioned on this page are all asynchronous and do not block the main thread.
-- When you use the [Agora Video SDK](../../reference/glossary#video-sdk) to communicate with the Server Gateway, set the channel use-case of the Video SDK to `LIVE_BROADCASTING`.
+- When you use the [Agora RTC SDK](../../reference/glossary#rtc-sdk) to communicate with the Server Gateway, set the channel use-case of the RTC SDK to `LIVE_BROADCASTING`.
 - When sending audio data in AAC format, you cannot set the sampling rate to 44.1 Kbps.
 
 :::
@@ -676,11 +676,11 @@ config.appid = sample_options.app_id
 agora_service.initialize(config)
 ```
 
-### Connect to a Video SDK channel
+### Connect to an RTC SDK channel
 
-After initializing the SDK, follow these steps to connect to a Video SDK channel.
+After initializing the SDK, follow these steps to connect to an RTC SDK channel.
 
-1. Call `create_rtc_connection` to create an `RTCConnection` object for connecting to the Video SDK channel:
+1. Call `create_rtc_connection` to create an `RTCConnection` object for connecting to the RTC SDK channel:
 
    ```python
    con_config = RTCConnConfig(
@@ -1090,11 +1090,11 @@ func main() {
 }
 ```
 
-### Connect to a Video SDK channel
+### Connect to an RTC SDK channel
 
-After initializing the SDK, follow these steps to connect to a Video SDK channel.
+After initializing the SDK, follow these steps to connect to an RTC SDK channel.
 
-1. Call `NewRtcConnection` to create an `RtcConnection` object for connecting to an Agora Video SDK channel:
+1. Call `NewRtcConnection` to create an `RtcConnection` object for connecting to an Agoran RTC SDK channel:
 
    :::info
    Set `AutoSubscribeAudio: true` and `AutoSubscribeVideo: true` to automatically subscribe to audio and video data when creating a connection. Alternatively, call the `SubscribeAudio` and `SubscribeVideo` methods at any time after creating a connection to subscribe to audio and video data. This guide uses `AutoSubscribeAudio: true` and `AutoSubscribeVideo: true` as an example.
@@ -1148,7 +1148,7 @@ After initializing the SDK, follow these steps to connect to a Video SDK channel
 
    ```
 
-3. Call `Connect` to establish a connection to an Video SDK channel. Provide the following parameters:
+3. Call `Connect` to establish a connection to an RTC SDK channel. Provide the following parameters:
 
    - `token`: The RTC token. If your project has an App Certificate enabled, provide the token (see [Get Temporary Token](../manage-agora-account.md#generate-temporary-tokens)). If not, pass an empty string.
    - `channelName`: A valid channel name.
@@ -1215,7 +1215,7 @@ After establishing a connection, follow these steps to send media streams to the
    videoTrack.SetEnabled(true)
    ```
 
-1. Call `PublishAudio` and `PublishVideo` to publish the local audio and video tracks to the Video SDK channel:
+1. Call `PublishAudio` and `PublishVideo` to publish the local audio and video tracks to the RTC SDK channel:
 
    ```go
    // Publish the local audio track

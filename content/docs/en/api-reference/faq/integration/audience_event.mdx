@@ -2,7 +2,7 @@
 title: "How can I listen for an audience joining or leaving an interactive live streaming channel?"
 ---
 
-The Agora Video SDK does not provide any callback events that listen for an audience joining or leaving an interactive live streaming channel. However, you can listen for these events using either of the following two approaches:
+The Agora RTC SDK does not provide any callback events that listen for an audience joining or leaving an interactive live streaming channel. However, you can listen for these events using either of the following two approaches:
 
 - By using the event notifications provided by Agora's message notification service.
 - By using the signaling service provided by the Agora Signaling SDK.
@@ -13,7 +13,7 @@ The message notification service enables you to listen for various service event
 
 ### Implementation
 
-1. Enable the [message notification service](/en/video-calling/core-functionality/receive-notifications#enable-notifications).
+1. Enable the [message notification service](/en/realtime-media/rtc/build/optimize-and-operate/receive-notifications#enable-notifications).
 2. Once the service is enabled, the message notification service sends messages to your Server as HTTP/HTTPS POST requests. Listen for the following events of the **Real-Time Communication** service to detect whether an audience joins or leaves an interactive live streaming channel:
 
 | event_type | event_name               | Description                                                        | Field name of payload                         |
@@ -46,14 +46,14 @@ The Agora Signaling SDK aims at providing stable signaling services, such as mai
 
 ### Implementation
 
-By integrating both the Agora Video SDK and the Agora Signaling SDK, you can listen for the callback events of the Signaling SDK to detect the states of the audience in the Video SDK channel:
+By integrating both the Agora RTC SDK and the Agora Signaling SDK, you can listen for the callback events of the Signaling SDK to detect the states of the audience in the RTC SDK channel:
 
-- Let a user join both an Video SDK and a Signaling channel. Ensure that the Video SDK channel and the Signaling channel share the same channel name.
+- Let a user join both an RTC SDK and a Signaling channel. Ensure that the RTC SDK channel and the Signaling channel share the same channel name.
 - Bind the actions of joining both channels in your code logic.
-- As a result, the Signaling SDK reporting that a user has joined the Signaling channel means that the user has joined the Video SDK channel as well. The same applies to a user leaving the channel.
+- As a result, the Signaling SDK reporting that a user has joined the Signaling channel means that the user has joined the RTC SDK channel as well. The same applies to a user leaving the channel.
 
 ### Reference
 
 Refer to the following documents for detailed integration guide and API reference:
 
-- [Receive notifications about channel events](/en/video-calling/core-functionality/receive-notifications)
+- [Receive notifications about channel events](/en/realtime-media/rtc/build/optimize-and-operate/receive-notifications#enable-notifications)

@@ -1,10 +1,10 @@
 ---
-title: "Why do I see a prompt to find local network devices when launching an iOS app integrated with the Agora Video SDK?"
+title: "Why do I see a prompt to find local network devices when launching an iOS app integrated with the Agora RTC SDK?"
 ---
 
 ## Problem
 
-After users upgrade their iOS devices to iOS 14.0, and use an app that integrates the Agora Video SDK for iOS for the first time, users see a prompt for finding local network devices. The following picture shows the pop-up prompt:
+After users upgrade their iOS devices to iOS 14.0, and use an app that integrates the Agora RTC SDK for iOS for the first time, users see a prompt for finding local network devices. The following picture shows the pop-up prompt:
 
 ![](https://web-cdn.agora.io/docs-files/1599797972248)
 
@@ -12,13 +12,13 @@ After users upgrade their iOS devices to iOS 14.0, and use an app that integrate
 
 iOS 14.0 adds a privacy setting relating to local network usage, and your app needs to obtain the **Privacy - Local Network Usage Description** permission from the user to access the user's local network device.
 
-Agora Video SDK for iOS with the version earlier than v3.1.2 detects the connection quality between the client and the user's local router, and reports the round-trip delay between the client and the user's local router by using the [gatewayRtt](https://api-ref.agora.io/en/video-sdk/ios/3.x/Classes/AgoraChannelStats.html#//api/name/gatewayRtt) parameter of the [[reportRtcStats\](https://api-ref.agora.io/en/video-sdk/ios/3.x/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportRtcStats:)](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats) callback. The iOS system determines the connectivity detection as a search for local network devices. Thus, although the app does not connect to any devices on the user's local network, the user sees a prompt to find local network devices when launching an iOS app for the first time.
+Agora RTC SDK for iOS with the version earlier than v3.1.2 detects the connection quality between the client and the user's local router, and reports the round-trip delay between the client and the user's local router by using the [gatewayRtt](https://api-ref.agora.io/en/video-sdk/ios/3.x/Classes/AgoraChannelStats.html#//api/name/gatewayRtt) parameter of the [[reportRtcStats\](https://api-ref.agora.io/en/video-sdk/ios/3.x/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportRtcStats:)](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onrtcstats) callback. The iOS system determines the connectivity detection as a search for local network devices. Thus, although the app does not connect to any devices on the user's local network, the user sees a prompt to find local network devices when launching an iOS app for the first time.
 
 ## Solution
 
 ### Solution one: Use the SDK version v3.1.2 and above
 
-As of v3.1.2, Agora Video SDK for iOS disables the local network connection quality report. If your business does not rely on this function, Agora recommends this solution.
+As of v3.1.2, Agora RTC SDK for iOS disables the local network connection quality report. If your business does not rely on this function, Agora recommends this solution.
 
 Integrate the SDK v3.1.2 and above, and users will not see the prompt to find local network devices. As of v3.1.2, the [gatewayRtt](https://api-ref.agora.io/en/video-sdk/ios/3.x/Classes/AgoraChannelStats.html#//api/name/gatewayRtt) parameter in the [reportRtcStats](https://api-ref.agora.io/en/video-sdk/ios/3.x/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportRtcStats:) callback is invalid (always reports `-1`). Do not use [gatewayRtt](https://api-ref.agora.io/en/video-sdk/ios/3.x/Classes/AgoraChannelStats.html#//api/name/gatewayRtt) to obtain the round-trip delay between the client and the user's local router.
 
