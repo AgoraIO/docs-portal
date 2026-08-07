@@ -5657,7 +5657,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/build/secure-and-protect-channels/end-to-end-encryption.mdx':
     '2026-07-24T15:27:38.000Z',
   'content/docs/en/realtime-media/rtc/build/secure-and-protect-channels/media-stream-encryption.mdx':
-    '2026-07-27T11:25:46.000Z',
+    '2026-08-05T12:14:51.000Z',
   'content/docs/en/realtime-media/rtc/build/secure-and-protect-channels/meta.json':
     '2026-07-24T15:27:38.000Z',
   'content/docs/en/realtime-media/rtc/build/secure-and-protect-channels/prevent-stream-bombing.mdx':
@@ -5826,7 +5826,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/video/video-profiles-and-quality.md':
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/voice-quickstart.mdx':
-    '2026-08-05T12:04:44.000Z',
+    '2026-08-06T09:27:38.000Z',
   'content/docs/en/realtime-media/rtm.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtm/beginners-guide.md':
     '2026-06-28T06:33:56.000Z',

@@ -25,9 +25,9 @@ Before initializing the Signaling client instance, you need to import the Signal
 2. In Unity, click **Assets** &gt; **Import Package** &gt; **Custom Package** to import the SDK.
 3. In your script file, add the following to the list of namespace declarations:
 
-```csharp
-  using Agora.Rtm;
-```
+    ```csharp
+    using Agora.Rtm;
+    ```
 
 ### CreateAgoraRtmClient
 
@@ -354,6 +354,7 @@ User presence event. `PresenceEvent` contains the following properties:
 | `leaveUserList` | string[] | List of users who left the channel in the previous cycle. |
 | `timeoutUserList` | string[] | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `UserState[]` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+| `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 `SnapshotInfo` contains the following properties:
 
@@ -1434,15 +1435,15 @@ Presence applies to both message channels and stream channels.
 IRtmClient
 Signaling client instance
 
-### WhoNowAsync
+### GetOnlineUsersAsync
 
 #### Description
 
-By calling the `WhoNowAsync` method, you can query real-time information about the number of online users, the list of online users, and the temporary state of online users in a specified channel.
+By calling the `GetOnlineUsersAsync` method, you can query real-time information about the number of online users, the list of online users, and the temporary state of online users in a specified channel.
 
 #### Method
 
-You can call the `WhoNowAsync` method as follows:
+You can call the `GetOnlineUsersAsync` method as follows:
 
 ```csharp
 RtmResult<GetOnlineUsersResult> rtmClient.GetPresence().GetOnlineUsersAsync(
@@ -1454,7 +1455,7 @@ RtmResult<GetOnlineUsersResult> rtmClient.GetPresence().GetOnlineUsersAsync(
 
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `channelName` | string | Required | - | Channel name. If you do not fill in the parameter, the `WhoNowAsync` method returns in all online users information in the channel which is accordance with the `RTM_CHANNEL_TYPE` conditions. |
+| `channelName` | string | Required | - | Channel name. If you do not fill in the parameter, the `GetOnlineUsersAsync` method returns in all online users information in the channel which is accordance with the `RTM_CHANNEL_TYPE` conditions. |
 | `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
 | `options` | `PresenceOptions` | Required | - | Query options. |
 
@@ -1488,12 +1489,12 @@ else
 
 #### Return value
 
-The `WhoNowAsync` operation returns a `RtmResult&lt;WhoNowResult&gt;` data type, including the following properties:
+The `GetOnlineUsersAsync` operation returns a `RtmResult&lt;GetOnlineUsersResult&gt;` data type, including the following properties:
 
 | Properties | Type | Description |
 | :--------: | :-----------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
 | `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
-| `Response` | `WhoNowResult` | After the operation succeeds, this property returns a `WhoNowResult` data type. |
+| `Response` | `GetOnlineUsersResult` | After the operation succeeds, this property returns a `GetOnlineUsersResult` data type. |
 
 The `RtmStatus` data type contains the following properties:
 
@@ -1506,11 +1507,11 @@ The `RtmStatus` data type contains the following properties:
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-The `WhoNowResult` data type contains the following properties:
+The `GetOnlineUsersResult` data type contains the following properties:
 
 | Properties | Type | Description |
 | :---------------: | :--------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NextPage` | string | Page number of the next page. Confirm whether there is a next page:<br />- A null value indicates that next page does not exist.<br />- A non-null value indicates that there is a next page. You can fill this value in the `page` property of the `WhoNowAsync` method to query the next page results. |
+| `NextPage` | string | Page number of the next page. Confirm whether there is a next page:<br />- A null value indicates that next page does not exist.<br />- A non-null value indicates that there is a next page. You can fill this value in the `page` property of the `GetOnlineUsersAsync` method to query the next page results. |
 | `UserStateList` | `UserState[]` | List of online users and their temporary state information in a specified channel. |
 | `TotalOccupancy` | int | The list length of `UserStateList`. When you set both `includeUserId` and `includeState` properties in the `GetOnlineUsersOptions` data type to `false`, this value represents the total number of current online users in the channel. |
 
@@ -1528,15 +1529,15 @@ The `UserState[]` data type contains the following properties:
 | `key` | string | Key of the user state. If the specified key already exists, the SDK overwrites the value; if the specified key does not exist, the SDK creates the key-value pair. |
 | `value` | string | Value of the user state. |
 
-### WhereNowAsync
+### GetUserChannelsAsync
 
 #### Description
 
-In use-cases such as statistic analytics and debugging, you may need to know all the channels that a specified user has subscribed to or joined. Call the `WhereNowAsync` method to get the list of channels where the specified user is in real time.
+In use-cases such as statistic analytics and debugging, you may need to know all the channels that a specified user has subscribed to or joined. Call the `GetUserChannelsAsync` method to get the list of channels where the specified user is in real time.
 
 #### Method
 
-You can call the `WhereNowAsync` method as follows:
+You can call the `GetUserChannelsAsync` method as follows:
 
 ```csharp
 RtmResult<GetUserChannelsResult> rtmClient.GetPresence().GetUserChannelsAsync(string userId);
@@ -1571,12 +1572,12 @@ else
 
 #### Return value
 
-The `WhereNowAsync` operation returns a `RtmResult&lt;WhereNowResult&gt;` data type, including the following properties:
+The `GetUserChannelsAsync` operation returns a `RtmResult&lt;GetUserChannelsResult&gt;` data type, including the following properties:
 
 | Properties | Type | Description |
 | :--------: | :-------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------- |
 | `Status` | `RtmStatus` | No matter whether the operation is successful, this property returns a `RtmStatus` data type, including the operation of the state. |
-| `Response` | `WhereNowResult` | After the operation succeeds, this property returns a `WhereNowResult` data type. |
+| `Response` | `GetUserChannelsResult` | After the operation succeeds, this property returns a `GetUserChannelsResult` data type. |
 
 The `RtmStatus` data type contains the following properties:
 
@@ -1589,7 +1590,7 @@ The `RtmStatus` data type contains the following properties:
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-The `WhereNowResult` data type contains the following properties:
+The `GetUserChannelsResult` data type contains the following properties:
 
 | Properties | Type | Description |
 | :------------- | :----------------------: | ------------------------------------------------ |
@@ -1694,7 +1695,7 @@ RtmResult<GetStateResult> rtmClient.GetPresence().GetStateAsync(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | string | Required | User ID of the current user | User ID. |
-| `channelName` | string | Required | - | Channel name. If you do not fill in the parameter, the `WhoNowAsync` method returns in all online users information in the channel which is accordance with the `RTM_CHANNEL_TYPE` conditions. |
+| `channelName` | string | Required | - | Channel name. |
 | `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
 
 #### Basic usage
@@ -3150,51 +3151,6 @@ Channel types.
 | :----------: | ---------------------------------------------------------- |
 | `MESSAGE` | `1`: Message channel. |
 | `STREAM` | `2`: Stream channel. |
-
-#### RTM_CONNECTION_CHANGE_REASON
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `CONNECTING` | `0`: The SDK is connecting with the server. |
-| `JOIN_SUCCESS` | `1`: The SDK has joined the channel successfully. |
-| `INTERRUPTED` | `2`: The connection between the SDK and the server is interrupted. |
-| `BANNED_BY_SERVER` | `3`: The connection between the SDK and the server is banned by the server. |
-| `JOIN_FAILED` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `LEAVE_CHANNEL` | `5`: The SDK has left the channel. |
-| `INVALID_APP_ID` | `6`: The connection failed because the App ID is not valid. |
-| `INVALID_CHANNEL_NAME` | `7`: The connection failed because the channel name is not valid. |
-| `INVALID_TOKEN` | `8`: The connection failed because the token is not valid. |
-| `TOKEN_EXPIRED` | `9`: The connection failed because the token is expired. |
-| `REJECTED_BY_SERVER` | `10`: The connection is rejected by server. |
-| `SETTING_PROXY_SERVER` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `RENEW_TOKEN` | `12`: The connection state changed because the token is renewed. |
-| `CLIENT_IP_ADDRESS_CHANGED` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `KEEP_ALIVE_TIMEOUT` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `REJOIN_SUCCESS` | `15`: The user has rejoined the channel successfully. |
-| `LOST` | `16`: The connection between the SDK and the server is lost. |
-| `ECHO_TEST` | `17`: The connection state changes due to the echo test. |
-| `CLIENT_IP_ADDRESS_CHANGED_BY_USER` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `SAME_UID_LOGIN` | `19`: The user joined the same channel from different devices with the same UID. |
-| `TOO_MANY_BROADCASTERS` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `/` | `22`: The stream channel does not exist. |
-| `INCONSISTENT_APPID` | `23`: The App ID does not match the token. |
-| `/` | `10001`: The SDK logs in to the Signaling system. |
-| `LOGOUT` | `10002`: The SDK logs out from the Signaling system. |
-| `PRESENCE_NOT_READY` | `10003`: Presence service is not ready. You need to call the `LoginAsync` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### RTM_CONNECTION_STATE
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `DISCONNECTED` | `1`: The SDK has disconnected with the server. |
-| `CONNECTING` | `2`: The SDK is connecting with the server. |
-| `CONNECTED` | `3`: The SDK has connected with the server. |
-| `RECONNECTING` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `FAILED` | `5`: The SDK failed to connect with the server. |
 
 #### RTM_ENCRYPTION_MODE
 

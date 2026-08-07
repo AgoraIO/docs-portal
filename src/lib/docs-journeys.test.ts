@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { normalizeDocsHref } from './docs-link-normalize';
@@ -70,10 +70,7 @@ describe('docs journeys', () => {
           contentPath: relativePath,
         });
 
-        if (
-          normalized.kind !== 'internal-doc' &&
-          normalized.kind !== 'root'
-        ) {
+        if (normalized.kind !== 'internal-doc' && normalized.kind !== 'root') {
           continue;
         }
 
@@ -110,9 +107,7 @@ describe('docs journeys', () => {
     expect(quickstart).toMatch(
       /(\.\.\/best-practices\/audio-setup(?:\.md)?|\/en\/ai\/best-practices\/audio-setup)/,
     );
-    expect(quickstart).toContain(
-      '/en/api-reference/api-ref/conversational-ai',
-    );
+    expect(quickstart).toContain('/en/api-reference/api-ref/conversational-ai');
   });
 
   it('connects the Realtime Media home, Voice and Video starts, and RTC API reference path', () => {
@@ -201,6 +196,7 @@ describe('docs journeys', () => {
       title: 'Custom model integration',
       pages: [
         'custom-llm',
+        'custom-tts',
         'audio-output',
         'build-server-client',
         'managed-mode',

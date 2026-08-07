@@ -101,6 +101,10 @@ The following steps apply to the new version of Agora Console. If you are using 
 
 ### Presence configuration
 
+:::info
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 To configure presence, go to **All features** > **Signaling** > **Presence Configuration** in Agora Console and set the following:
 
 - **Max number of instant events**

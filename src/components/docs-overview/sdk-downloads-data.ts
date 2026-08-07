@@ -531,8 +531,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Signaling',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-android',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_JAVA_SDK_for_Android_v2.3.0.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora.rtm/rtm-sdk/2.3.0',
+          },
+          {
             id: '2.2.8-rtm-sdk-android',
-            label: 'Version 2.2.8 (Latest)',
+            label: 'Version 2.2.8',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_JAVA_SDK_for_Android_v2.2.8.zip',
             packageManager:
@@ -1191,12 +1199,20 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Signaling',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-ios',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.3.0.zip',
+            packageManager:
+              'https://github.com/AgoraIO/AgoraRTM_iOS/tree/2.3.0',
+          },
+          {
             id: '2.2.8-rtm-sdk-ios',
-            label: 'Version 2.2.8 (Latest)',
+            label: 'Version 2.2.8',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.2.8.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_iOS/tree/2.2.8',
           },
           {
             id: '2.2.6-rtm-sdk-ios',
@@ -1431,8 +1447,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.7-video-sdk-web',
+            label: 'Version 4.24.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_7_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.7',
+          },
+          {
             id: '4.24.6-video-sdk-web',
-            label: 'Version 4.24.6 (Latest)',
+            label: 'Version 4.24.6',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
             packageManager:
@@ -2078,12 +2102,20 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-macos',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.3.0.zip',
+            packageManager:
+              'https://github.com/AgoraIO/AgoraRTM_macOS/tree/2.3.0',
+          },
+          {
             id: '2.2.8-rtm-sdk-macos',
-            label: 'Version 2.2.8 (Latest)',
+            label: 'Version 2.2.8',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_v2.2.8.zip',
             packageManager:
-              'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
+              'https://github.com/AgoraIO/AgoraRTM_macOS/tree/2.2.8',
           },
           {
             id: '2.2.6-rtm-sdk-macos',
@@ -2631,8 +2663,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-windows',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Windows_v2.3.0.zip',
+          },
+          {
             id: '2.2.8-rtm-sdk-windows',
-            label: 'Version 2.2.8 (Latest)',
+            label: 'Version 2.2.8',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Windows_v2.2.8.zip',
           },
@@ -2947,8 +2985,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Real-Time Messaging',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-linux-cpp',
+            label: 'Version 2.3.0 for C++ (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
+          },
+          {
             id: '2.2.8-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.8 for C++ (Latest)',
+            label: 'Version 2.2.8 for C++',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
           },

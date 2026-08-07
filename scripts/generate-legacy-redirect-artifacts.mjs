@@ -15,6 +15,10 @@ const staticRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/static-redirects.json',
 );
+const gscObservedRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/legacy-sitemap/gsc-observed-redirects.json',
+);
 const bulkRedirectsPath = path.join(repoRoot, 'vercel-legacy-redirects.json');
 const vercelBasePath = path.join(repoRoot, 'vercel.base.json');
 const vercelPath = path.join(repoRoot, 'vercel.json');
@@ -23,16 +27,20 @@ const VERCEL_CONFIG_REDIRECT_LIMIT = 2_048;
 const checkOnly = process.argv.includes('--check');
 
 const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
+const gscObservedRedirects = JSON.parse(
+  await readFile(gscObservedRedirectsPath, 'utf8'),
+);
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
+const artifactRules = [...redirectsConfig.rules, ...gscObservedRedirects];
 
-const staticRedirects = createStaticRedirects(redirectsConfig.rules);
+const staticRedirects = createStaticRedirects(artifactRules);
 const {
   bulkRedirects,
   configRedirects,
   overflowRedirects,
   queryRedirectRoutes,
   querySplitPaths,
-} = createVercelRedirects(redirectsConfig.rules);
+} = createVercelRedirects(artifactRules);
 const vercelConfig = {
   buildCommand: baseConfig.buildCommand,
   outputDirectory: baseConfig.outputDirectory,
