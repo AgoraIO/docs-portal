@@ -972,10 +972,12 @@ describe('DocsContent', () => {
       />,
     );
 
-    fireEvent.pointerDown(
-      await screen.findByRole('button', { name: 'Copy Page more actions' }),
-      { button: 0 },
-    );
+    const moreActionsButton = await screen.findByRole('button', {
+      name: 'Copy Page more actions',
+    });
+    expect(moreActionsButton).toHaveClass('min-h-11', 'min-w-11');
+
+    fireEvent.pointerDown(moreActionsButton, { button: 0 });
 
     expect(await screen.findByText('AI tools')).toBeInTheDocument();
     expect(

@@ -2,10 +2,17 @@ import { getOverviewMDXComponents } from '@/components/docs-overview/mdx-compone
 import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
 import { useDocsContent } from '@/lib/source.browser';
 
-export function DocsContentBody({ contentPath }: { contentPath: string }) {
+export function DocsContentBody({
+  contentPath,
+  locale,
+}: {
+  contentPath: string;
+  locale?: string;
+}) {
   const content = useDocsContent(contentPath, {
     components: getMDXComponents(getOverviewMDXComponents(contentPath), {
       contentPath,
+      locale,
     }),
   });
 

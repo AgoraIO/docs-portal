@@ -487,9 +487,11 @@ describe('DocsShell', () => {
     expect(banner).toHaveAttribute('href', legacyDocsBannerConfig.hrefs.en);
     expect(banner).toHaveAttribute('target', '_blank');
     expect(banner).toHaveAttribute('rel', 'noreferrer');
-    expect(
-      screen.getByRole('button', { name: 'Dismiss legacy docs banner' }),
-    ).toBeVisible();
+    const dismissButton = screen.getByRole('button', {
+      name: 'Dismiss legacy docs banner',
+    });
+    expect(dismissButton).toBeVisible();
+    expect(dismissButton).toHaveClass('size-11', 'sm:size-6');
     expect(screen.getByRole('banner')).toContainElement(banner);
   });
 
@@ -1423,6 +1425,8 @@ describe('DocsShell', () => {
 
     expect(menuButton).toBeInTheDocument();
     expect(mobileSearchButton).toBeInTheDocument();
+    expect(menuButton).toHaveClass('size-11');
+    expect(mobileSearchButton).toHaveClass('size-11');
     expect(mobileSearchButton).not.toHaveTextContent('Search docs');
     expect(screen.getByTestId('docs-tabs-strip')).toHaveClass(
       'hidden',
@@ -1716,6 +1720,114 @@ describe('DocsShell', () => {
       'shrink-0',
       'font-mono',
     );
+  });
+
+  it('keeps linked mobile sections navigable and independently expandable', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/realtime-media/overview',
+        activeTab: 'realtime-media',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            children: [
+              {
+                id: 'rtc-overview',
+                title: '产品概述',
+                type: 'page',
+                url: '/zh-CN/realtime-media/rtc/overview',
+              },
+            ],
+            collapsible: true,
+            id: 'rtc',
+            title: '实时互动 RTC',
+            type: 'section',
+            url: '/zh-CN/realtime-media/rtc',
+          },
+        ],
+        tabs: [
+          {
+            id: 'realtime-media',
+            title: '实时互动',
+            url: '/zh-CN/realtime-media',
+          },
+        ],
+      },
+      '/zh-CN/realtime-media/overview',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const landingLink = within(mobileSheet).getByRole('link', {
+      name: '实时互动 RTC',
+    });
+    const disclosure = within(mobileSheet).getByRole('button', {
+      name: '展开或收起实时互动 RTC子页面',
+    });
+
+    expect(landingLink).toHaveAttribute('href', '/zh-CN/realtime-media/rtc');
+    expect(landingLink).toHaveClass('min-h-11', 'flex-1');
+    expect(disclosure).toHaveAttribute('aria-expanded', 'false');
+    expect(disclosure).toHaveClass('size-11');
+    expect(
+      within(mobileSheet).queryByRole('link', { name: '产品概述' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(disclosure);
+
+    expect(disclosure).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(mobileSheet).getByRole('link', { name: '产品概述' }),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps linked hub sections collapsed when defaultOpen is false', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/reference/faq',
+        activeTab: 'reference',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            children: [
+              {
+                id: 'faq-account',
+                title: '账号问题',
+                type: 'page',
+                url: '/zh-CN/reference/faq/account',
+              },
+            ],
+            collapsible: true,
+            defaultOpen: false,
+            id: 'faq',
+            title: '常见问题',
+            type: 'section',
+            url: '/zh-CN/reference/faq',
+          },
+        ],
+        tabs: [
+          {
+            id: 'reference',
+            title: '参考文档',
+            url: '/zh-CN/reference',
+          },
+        ],
+      },
+      '/zh-CN/reference/faq',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    expect(
+      within(mobileSheet).getByRole('button', {
+        name: '展开或收起常见问题子页面',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(mobileSheet).queryByRole('link', { name: '账号问题' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps mobile docs content in normal page flow instead of a nested scroll viewport', async () => {

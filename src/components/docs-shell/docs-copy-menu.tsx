@@ -200,7 +200,7 @@ export function DocsCopyMenu({
           aria-label={t('docs.copyPage')}
           aria-live="polite"
           className={cn(
-            'h-7 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)]',
+            'min-h-11 gap-1.5 rounded-r-none border-0 px-2.5 text-xs font-medium text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] sm:h-7 sm:min-h-0',
             isPrimaryCopied &&
               'scale-[1.02] bg-emerald-500/12 text-emerald-700 ring-1 ring-emerald-500/35 hover:bg-emerald-500/12 hover:text-emerald-700 dark:text-emerald-300',
           )}
@@ -219,7 +219,7 @@ export function DocsCopyMenu({
         <DropdownMenuTrigger asChild>
           <Button
             aria-label={t('docs.copyPageMoreActions')}
-            className="h-7 rounded-l-none border-0 border-l border-l-[color:var(--line-soft)] px-2 text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] data-[state=open]:text-[color:var(--ink-1)]"
+            className="min-h-11 min-w-11 rounded-l-none border-0 border-l border-l-[color:var(--line-soft)] px-2 text-[color:var(--ink-3)] hover:bg-transparent hover:text-[color:var(--ink-1)] data-[state=open]:text-[color:var(--ink-1)] sm:h-7 sm:min-h-0 sm:min-w-0"
             size="sm"
             variant="ghost"
           >

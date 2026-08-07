@@ -312,14 +312,20 @@ export function DocsContent({
                 initialPlatform={platformTabs?.initialPlatform}
                 value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
               >
-                <DocsContentBody contentPath={resolvedBody.contentPath} />
+                <DocsContentBody
+                  contentPath={resolvedBody.contentPath}
+                  locale={currentLocale}
+                />
               </PlatformTabsPlacementProvider>
             </Suspense>
           ) : null}
           {resolvedBody?.kind === 'platform-group' ? (
             <div className="flex flex-col gap-4" data-platform-group-shell>
               <Suspense fallback={<DocsContentSkeleton />}>
-                <DocsContentBody contentPath={resolvedBody.contentPath} />
+                <DocsContentBody
+                  contentPath={resolvedBody.contentPath}
+                  locale={currentLocale}
+                />
               </Suspense>
               <PlatformTabsPlacementProvider
                 defaultPlatform={platformTabs?.defaultPlatform}
@@ -342,7 +348,10 @@ export function DocsContent({
                     >
                       <div className="prose prose-neutral dark:prose-invert max-w-none">
                         <Suspense fallback={<DocsContentSkeleton />}>
-                          <DocsContentBody contentPath={panel.contentPath} />
+                          <DocsContentBody
+                            contentPath={panel.contentPath}
+                            locale={currentLocale}
+                          />
                         </Suspense>
                       </div>
                     </PlatformPanel>

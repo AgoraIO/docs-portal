@@ -39,6 +39,10 @@ const enCommon = {
     tabsLabel: 'Tabs',
     sectionPickerLabel: 'Section',
     pagesLabel: 'Pages',
+    toggleSectionPages: 'Expand or collapse {{title}} child pages',
+    tableOverflowLabel: 'Horizontally scrollable table',
+    tableOverflowDescription:
+      'The table extends beyond the current width. Scroll horizontally to view more columns.',
     versionSelect: 'Select documentation version',
     versionMenuLabel: 'Documentation versions',
     toc: 'On this page',

@@ -404,6 +404,7 @@ export function DocsSearchDialog({
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
+          className="size-11"
           onClick={() => void handleOpenChange(true)}
           size="icon"
           variant="ghost"
