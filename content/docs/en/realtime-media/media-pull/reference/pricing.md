@@ -15,7 +15,7 @@ Media Pull billing comprises transcoding charges and RTC channel usage charges:
 
 - **Transcoding charges**: Charges for injecting an online media stream into an RTC channel. This charge is not included in Agora's policy of granting 10,000 minutes of free usage per month.
 
-- **RTC channel usage charges**: Charges for injecting an online stream into an RTC channel. These charges are included in real-time communication usage. They may also count toward the voice call audio minutes included in [Agora's 10,000 minutes of free usage per month](/en/realtime-media/voice/reference/billing-policies#free-of-charge-policy).
+- **RTC channel usage charges**: Charges for injecting an online stream into an RTC channel. These charges are included in real-time communication usage. They may also count toward the voice call audio minutes included in [Agora's 10,000 minutes of free usage per month](/en/realtime-media/rtc/reference/billing-policies#free-of-charge-policy).
 
 ## Transcoding charges
 

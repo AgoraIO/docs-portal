@@ -1,12 +1,12 @@
 ---
-title: "Communicate with Video SDK"
-description: "Stream audio and video to and from Video SDK."
+title: "Communicate with RTC SDK"
+description: "Stream audio and video to and from RTC SDK."
 ---
-If your business requires not only high-quality audio and video transmission, but also easy integration, low memory usage, and low power consumption, for applications such as smart cameras and smart doorbells, Agora recommends that you use the Video SDK with the IoT SDK.
+If your business requires not only high-quality audio and video transmission, but also easy integration, low memory usage, and low power consumption, for applications such as smart cameras and smart doorbells, Agora recommends that you use the RTC SDK with the IoT SDK.
 
-The following table shows the data formats supported when the IoT SDK communicates with the Video SDK (v4.x):
+The following table shows the data formats supported when the IoT SDK communicates with the RTC SDK (v4.x):
 
-| Video SDK Type | Supported formats |
+| RTC SDK Type | Supported formats |
 |:---|:---------------|
 | Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native | Audio: G722, G711, Opus, AAC; Video: H.264, JPEG |
 | Web (v4.x) | Audio: G722, G711, Opus; Video: H.264 |
@@ -30,7 +30,7 @@ In IoT SDK, `H.264` video data is sent and received by default.
 
 To send and receive `JPEG` video data, when calling the `agora_rtc_send_video_data` method, set `video_frame_info_t.data_type` to `VIDEO_DATA_TYPE_GENERIC_JPEG`.
 
-## Set up Video SDK for Native/third-party frameworks
+## Set up RTC SDK for Native/third-party frameworks
 
 **Audio**
 
@@ -38,7 +38,7 @@ In Native/third-party framework SDKs (v4.x), `Opus` or `AAC` audio data is sent 
 
 To send and receive `G722` or `G711` audio data, use the following methods:
 
-| Video SDK type | G722 | G711 (PCMA) | G711 (PCMU) |
+| RTC SDK type | G722 | G711 (PCMA) | G711 (PCMU) |
 |---|------|-------|------|
 | Android | `agoraEngine.setAudioProfile(6)` or `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":9}")` | `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":8}")` | `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":0}")` |
 | iOS/macOS | `agoraKit.setAudioProfile(6)` or `agoraKit.setParameters("{\"che.audio. custom_payload_type\":9}")` | `agoraKit.setParameters("{\"che.audio. custom_payload_type\":8}")` | `agoraKit.setParameters("{\"che.audio. custom_payload_type\":0}")` |
@@ -54,7 +54,7 @@ In Native/third-party framework SDKs (v4.x), `H.264` video data is sent and rece
 
 To send and receive `JPEG` video data, use the following methods:
 
-| Video SDK type | Method |
+| RTC SDK type | Method |
 | --- | :----------- |
 | Android | `agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
 | iOS/macOS | `agoraKit.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
@@ -64,11 +64,11 @@ To send and receive `JPEG` video data, use the following methods:
 | Flutter | `await agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
 | React Native | `this.engine.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
 
-## Set up Video SDK for Web
+## Set up RTC SDK for Web
 
 **Audio**
 
-In Video SDK for Web (v4.x), `Opus` audio data is sent and received by default.
+In RTC SDK for Web (v4.x), `Opus` audio data is sent and received by default.
 
 To send and receive `G722`, `G711` audio data, call the following method:
 
@@ -82,8 +82,8 @@ Only the Web SDK version 4.9.0 or higher supports setting the audio encoding for
 
 In Web SDK (v4.x), `VP8` video data is sent and received by default. You call `createClient` to set the video data format to `"h264"`.
 
-## Set up Video SDK for embedded systems
+## Set up RTC SDK for embedded systems
 
-In Video SDK for embedded systems, `Opus` audio data and `H.264` video data are sent and received by default. If you want to receive `JPEG` video data or send and receive `G711` audio data, contact sales-us@agora.io for activation.
+In RTC SDK for embedded systems, `Opus` audio data and `H.264` video data are sent and received by default. If you want to receive `JPEG` video data or send and receive `G711` audio data, contact sales-us@agora.io for activation.
 
-Video SDK for embedded systems does not support sending `JPEG` video data.
+RTC SDK for embedded systems does not support sending `JPEG` video data.

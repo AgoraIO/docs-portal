@@ -91,7 +91,7 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: false,
       redirectUrl:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+        '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 

@@ -1,6 +1,6 @@
 ---
 title: "Real-time monitoring"
-description: "Provides visualized data for multiple call metrics in real time, so that you can track the status of your Agora Video SDK projects and discover when a problem occurs."
+description: "Provides visualized data for multiple call metrics in real time, so that you can track the status of your Agora RTC SDK projects and discover when a problem occurs."
 ---
 
 Real-time Monitoring provides the following features:
@@ -28,7 +28,7 @@ All data on the page, except certain heat maps, refreshes every 20 seconds.
 You can apply the following global settings to the page:
 - Timezone: On the top of the page, select your timezone as **Local** or **UTC**.
 - Project: In the upper-left corner of the left navigation bar, select a project.
-- Product type: In the upper-right corner of the page, select **Native** or **Web Video SDK** from the dropdown menu.
+- Product type: In the upper-right corner of the page, select **Native** or **Web RTC SDK** from the dropdown menu.
 - Auto update: In the upper-right corner of the page, uncheck the box for **Auto Update** to stop the data from automatic refreshing. Agora recommends you do this when investigating the metrics data at a specific moment. To resume automatic refreshing, check the box again.
 
 ### Real-time scale
@@ -129,8 +129,8 @@ To see the specific data, hover your mouse on a bubble.
 | Metric              | Description                                                                                                       |
 |---------------------|-------------------------------------------------------------------------------------------------------------------|
 |Average login time|The average time it takes for a user to join a channel.|
-|Audio freeze rate|Audio freeze rate is not included in the quality metrics of the Agora Video SDK for Web. That is, if you select <strong>Web Video SDK</strong> for product type in the global settings, the heat map chart for audio freeze rate does not display in the real-time scale panel.
-|Video freeze rate|The rate at which video freezing occurs, which equals Total video freezing time ÷ Total video duration. Native: Only video freezing longer than 600 milliseconds is counted. Web Video SDK: Only video freezing longer than 500 milliseconds is counted.|
+|Audio freeze rate|Audio freeze rate is not included in the quality metrics of the Agora RTC SDK for Web. That is, if you select <strong>Web RTC SDK</strong> for product type in the global settings, the heat map chart for audio freeze rate does not display in the real-time scale panel.
+|Video freeze rate|The rate at which video freezing occurs, which equals Total video freezing time ÷ Total video duration. Native: Only video freezing longer than 600 milliseconds is counted. Web RTC SDK: Only video freezing longer than 500 milliseconds is counted.|
 |Network delay rate|The rate at which network delay occurs, which equals Total end-to-end network delay ÷ Total audio and video duration. Only end-to-end network delays longer than 400 milliseconds are counted.|
 
 Both the audio duration and video duration in the table above are [calculated by the number of streams](../../reference/billing-policies.md).

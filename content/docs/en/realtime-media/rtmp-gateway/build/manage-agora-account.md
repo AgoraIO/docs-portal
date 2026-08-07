@@ -75,7 +75,7 @@ To get an App Certificate, do the following:
 
 To ensure communication security, best practice is to use tokens to authenticate the users who log in from your app.
 
-To generate a temporary RTC token for use in your Video SDK projects:
+To generate a temporary RTC token for use in your RTC SDK projects:
 
 1. On the [Projects](https://console.agora.io/legacy/project-management) page, click the pencil icon next to your project.
 2. On the **Security** panel, click **Generate Temp Token**, enter a channel name in the pop-up box, and click **Generate**. Copy the generated RTC token for use in your Media Gateway projects.
@@ -88,4 +88,4 @@ To generate a token for other Agora products:
 4. Click **Generate Token**.
 5. Copy the token and use it in your app.
 
-For more information on managing other aspects of your Agora account, see [Agora console overview](../../broadcast-streaming/reference/console-overview.md).
+For more information on managing other aspects of your Agora account, see [Agora console overview](/en/introduction/console-setup).

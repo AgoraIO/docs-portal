@@ -34,9 +34,9 @@ The following table lists the possible reasons and corresponding solutions:
 
 | Reason | Solution    |
 | :------------ | :----- |
-| The web browser does not fully support WebRTC.  | Use a [Web browser](/en/realtime-media/video/reference/supported-platforms?platform=web) supporting WebRTC. |
+| The web browser does not fully support WebRTC.  | Use a [Web browser](/en/realtime-media/rtc/reference/supported-platforms?platform=web) supporting WebRTC. |
 | The web browser has plugins that prevent WebRTC from getting an ICE candidate on the local device.  | Disable the problematic browser plugins.   |
-| The user's gateway firewall disables the UDP protocol or the UDP ports greater than 10000.  | Disable the firewall or use the [Agora Cloud Proxy](/en/voice-calling/core-functionality/cloud-proxy) service. |
+| The user's gateway firewall disables the UDP protocol or the UDP ports greater than 10000.  | Disable the firewall or use the [Agora Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy) service. |
 | You set the web browser to use the VP8 codec, but the user uses the Safari browser that does not support VP8. | The user can either upgrade the Safari browser to versions later than 12.1, or use the Chrome browser. |
 | You set the web browser to use the H.264 codec, but the user's device hardware does not support H.264.   | Set the web browser to use VP8.  |
 | Connection issues of a network provider.| The user can try switching to a different network, for example, using a cellular data connection. |
@@ -82,7 +82,7 @@ Possible reasons:
 
 ### Solution
 
-- Use a supported [Web browser](/en/video-calling/reference/supported-platforms).
+- Use a supported [Web browser](/en/realtime-media/rtc/reference/supported-platforms/web).
 - Deploy your web app through HTTPS or localhost.
 
 ## Invalid elementID
@@ -126,12 +126,12 @@ A candidate contains the IP address and port information for connecting to a rem
 
 ### Solution
 
-The type of candidates used for connection depends on whether you have enabled [cloud proxy](/en/voice-calling/core-functionality/cloud-proxy) or not. Choose one of the following solutions accordingly.
+The type of candidates used for connection depends on whether you have enabled [cloud proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy) or not. Choose one of the following solutions accordingly.
 
 - If you have enabled cloud proxy, the SDK gets relay candidates from a TURN server. Check whether you have whitelisted the IP addresses and ports that Agora provides for cloud proxy, and ensure that the local client can connect to the TURN server.
 - If you have not enabled cloud proxy, the SDK gets host candidates from the local device. In this case, the error is usually caused by the security settings of the local device.
   - Check whether the browser has any plugins that disable WebRTC.
-  - Ensure that you have enabled UDP in the system firewall, and added the [specified domains and ports](/en/voice-calling/reference/firewall) to the whitelist.
+  - Ensure that you have enabled UDP in the system firewall, and added the [specified domains and ports](/en/realtime-media/rtc/reference/cloud-proxy-allowed-ips) to the whitelist.
 
 ## P2P lost
 

@@ -549,4 +549,22 @@ describe('auditDocsLinks', () => {
     expect(stats.missingRootLinks).toEqual([]);
     expect(stats.missingRelativeMarkdownLinks).toEqual([]);
   }, 120_000);
+
+  it('keeps the IM SDK quickstart downloads link routable', () => {
+    const docsRoot = path.join(process.cwd(), 'content', 'docs');
+    const stats = auditDocsLinks({
+      docsRoot,
+      sourcePaths: ['en/realtime-media/im/get-started-sdk.mdx'],
+    });
+    const downloadsLink = (stats.relativeMarkdownLinks as AuditEntry[]).find(
+      (entry) => entry.href === './reference/downloads',
+    );
+
+    expect(stats.missingRelativeMarkdownLinks).toEqual([]);
+    expect(downloadsLink).toMatchObject({
+      normalizedHref: '/en/realtime-media/im/reference/downloads',
+      resolution: 'exact',
+      resolvedTargetPath: 'en/realtime-media/im/reference/downloads.mdx',
+    });
+  }, 120_000);
 });

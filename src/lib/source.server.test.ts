@@ -50,7 +50,7 @@ describe('fumadocs source loader', () => {
     expect(markdown).toContain(
       'https://www.npmjs.com/package/agora-agents/v/2.3.1',
     );
-    expect(markdown).toContain('#### Video SDK');
+    expect(markdown).toContain('#### RTC SDK');
     expect(markdown).toContain(
       'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_FULL.zip',
     );

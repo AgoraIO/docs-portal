@@ -10,7 +10,7 @@ This page provides release notes for the Extensions Marketplace SDK extensions.
 ## AI Noise Suppression
 
 :::info
-Agora charges additionally for this extension. See [Pricing](/en/realtime-media/voice/reference/pricing-legacy#ai-noise-suppression-pricing).
+Agora charges additionally for this extension. See [Pricing](/en/realtime-media/rtc/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
 ### v2.0.2
@@ -62,13 +62,13 @@ This release adds the following APIs and parameters:
 - **Parameters**:
     - `elapsedTime` in `onoverload`: Reports the time in ms that the extension needs to process one audio frame.
 
-For API details, see [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression).
+For API details, see [AI Noise Suppression](/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression).
 
 #### Compatibility changes
 
 This release brings the following changes:
 
-- AI Noise Suppression supports Agora Video SDK for Web v4.15.0 or later.
+- AI Noise Suppression supports Agora RTC SDK for Web v4.15.0 or later.
 - The extension has Wasm dependencies only. Because JS dependencies are removed, you need to publish the Wasm files located in the `node_modules/agora-extension-ai-denoiser/external` directory again. If you have enabled the Content Security Policy (CSP), you need to modify the CSP configuration.
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
@@ -190,7 +190,7 @@ You can now specify the `fit` property when calling `setOptions`. This sets how 
 
 #### Compatibility changes
 
-Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
+Virtual Background supports Agora RTC SDK for Web v4.15.0 or later.
 
 ### v1.1.1
 
@@ -335,7 +335,7 @@ v1.2.0 was released on April 29, 2024.
 
 #### Improvements
 
-- Added support for Video SDK v4.3.x.
+- Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
 ### v1.0.0
@@ -399,7 +399,7 @@ v1.2.0 was released on April 29, 2024.
 
 #### Improvements
 
-- Added support for Video SDK v4.3.x.
+- Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
 ### v1.0.0

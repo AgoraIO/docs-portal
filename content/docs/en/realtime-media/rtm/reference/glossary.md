@@ -107,7 +107,7 @@ In real-time audio and video communication, delay refers to the time elapsed fro
 
 ###  Dual-stream mode
 
-In the dual-stream mode, the Video SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low bitrate video stream.
+In the dual-stream mode, the RTC SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low bitrate video stream.
 
 ## F
 
@@ -137,11 +137,11 @@ Individual recording mode records audio and video of each UID as separate files.
 
 ### Inject online media stream
 
-Inject online media stream refers to injecting an online media stream in an Interactive Live Streaming channel to share the stream with all users in the channel. The Agora Video SDK provides a method for developers to inject an online mixed audio and video stream or an audio only stream to a channel.
+Inject online media stream refers to injecting an online media stream in an Interactive Live Streaming channel to share the stream with all users in the channel. The Agora RTC SDK provides a method for developers to inject an online mixed audio and video stream or an audio only stream to a channel.
 
 ### Interactive Live Streaming
 
-Enabled by either Agora’s Video SDK or Voice SDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
+Enabled by either Agora’s RTC SDK or Voice SDK, Interactive Live Streaming gives you full control over the streaming experience from a standard one-to-many stream to a highly-interactive live event.
 
 ## J
 
@@ -167,7 +167,7 @@ In dual-stream mode, the SDK transmits two video streams of differing quality at
 
 ### MediaPlayer kit
 
-The mediaplayer kit is a plug-in of the Video SDK to play local and online media resources and publish the media streams to other users in an Interactive Live Streaming channel.
+The mediaplayer kit is a plug-in of the RTC SDK to play local and online media resources and publish the media streams to other users in an Interactive Live Streaming channel.
 
 ### Media stream
 
@@ -251,7 +251,7 @@ Stream mixing means combining multiple media streams into one. It may include th
 
 ### Subscribe
 
-In the Agora Video SDK, subscribing is the action of receiving media streams published to the channel. In the Agora Signaling SDK, subscribing is the action of monitoring the online status of one or multiple Signaling users.
+In the Agora RTC SDK, subscribing is the action of receiving media streams published to the channel. In the Agora Signaling SDK, subscribing is the action of monitoring the online status of one or multiple Signaling users.
 
 ## T
 
@@ -279,11 +279,11 @@ User attributes are tags added to Signaling users, including property names and 
 
 ### User ID (uid)
 
-In the Agora Video SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback. 
+In the Agora RTC SDK, a user ID identifies a user in the channel. The user ID is a 32-bit signed integer, with a value range from -231 to 231-1, that you can specify yourself. If you specify `0` for the user ID when joining a channel, the SDK generates a random number and returns the value in the join channel success callback. 
 
 In the Agora Signaling SDK, a user ID identifies a user in Signaling.
 
-The user ID in the Agora Video SDK and the Agora Signaling SDK are independent of each other.
+The user ID in the Agora RTC SDK and the Agora Signaling SDK are independent of each other.
 
 ### User role
 
@@ -303,7 +303,7 @@ Video mixing means combining multiple video streams into one.
 
 The video profile refers to a set of video attributes, such as resolution, bitrate, and frame rate. 
 
-### Video SDK
+### RTC SDK
 
 An SDK developed by Agora to enable developers to add real-time audio interaction to their projects.
 

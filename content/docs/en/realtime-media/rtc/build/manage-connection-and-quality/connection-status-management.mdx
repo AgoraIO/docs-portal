@@ -1,0 +1,1272 @@
+---
+title: "Connection status management"
+description: "Test network quality and adjust audio and video settings to optimize channel quality"
+---
+
+**Supported platforms:** Web, Android, iOS, macOS, Windows, Unreal Engine, Electron, Flutter, React Native, Unity, and Unreal Blueprint.
+
+In real-time audio and video implementations, the connection state between the app and Agora SDRTN® changes as the client joins or leaves the channel. The connection may also be interrupted due to network or authentication issues.
+
+This page describes the various channel connection states, reasons for state changes, and how to handle these changes to better manage your users and troubleshoot network faults.
+
+## Understand the tech
+
+The following figure shows the various connection states and how the connection state changes between a user joining and leaving a channel:
+
+<PlatformStructured platform="web">
+![Connection State](https://assets-docs.agora.io/images/video-sdk/connection-state-main-web.svg)
+</PlatformStructured>
+
+##### Disconnection and reconnection
+
+During the communication process, if the user is disconnected due to network problems, the SDK automatically enables the disconnection and reconnection mechanism. The following figure shows the callbacks received by the local user `UID1` and the remote user `UID2` when:
+
+* A local user joins the channel
+* A network exception occurs
+* The connection is interrupted
+* The user rejoins the channel
+
+<PlatformStructured platform="android">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="unreal">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-native.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="electron">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-flutter-rn-electron.svg)
+</PlatformStructured>
+
+The following platform-specific timelines explain the reconnection sequence in detail.
+
+<PlatformStructured platform="android">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(CONNECTING, CONNECTING)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(CONNECTED, JOIN_SUCCESS)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(RECONNECTING, INTERRUPTED)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(RECONNECTING, INTERRUPTED)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(RECONNECTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="electron">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(connectionStateConnecting, connectionChangedConnecting)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(connectionStateConnected, connectionChangedJoinSuccess)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(connectionStateFailed, connectionChangedJoinFailed)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(connectionStateConnecting, connectionChangedConnecting)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(connectionStateConnected, connectionChangedJoinSuccess)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(connectionStateFailed, connectionChangedJoinFailed)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="ios">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannelByToken` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannelByToken`, `UID1` joins the channel. At the same time, `UID1` receives `connectionChangedToState(Connecting, Connecting)` callback. After successfully joining the channel, `UID1` receives `connectionChangedToState(Connected, JoinSuccess)` and `didJoinChannel` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `didJoinedOfUid` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `connectionChangedToState(Reconnecting, Interrupted)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `connectionChangedToState(Reconnecting, Interrupted)`, `UID1` receives the `rtcEngineConnectionDidLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `didOfflineOfUid` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `connectionChangedToState(Reconnecting, Interrupted)`, the SDK stops retrying. `UID1` receives the `connectionChangedToState(Failed, JoinFailed)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="macos">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannelByToken` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannelByToken`, `UID1` joins the channel. At the same time, `UID1` receives `connectionChangedToState(Connecting, Connecting)` callback. After successfully joining the channel, `UID1` receives `connectionChangedToState(Connected, JoinSuccess)` and `didJoinChannel` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `didJoinedOfUid` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `connectionChangedToState(Reconnecting, Interrupted)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `connectionChangedToState(Reconnecting, Interrupted)`, `UID1` receives the `rtcEngineConnectionDidLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `didOfflineOfUid` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `connectionChangedToState(Reconnecting, Interrupted)`, the SDK stops retrying. `UID1` receives the `connectionChangedToState(Failed, JoinFailed)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(connectionStateConnecting, connectionChangedConnecting)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(connectionStateConnected, connectionChangedJoinSuccess)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(connectionStateReconnecting, connectionChangedInterrupted)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(connectionStateFailed, connectionChangedJoinFailed)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="unity">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-unity.svg)
+
+In the diagram:
+
+- **T0**: The RTC SDK receives a `JoinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `JoinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `OnConnectionStateChanged(CONNECTION_STATE_CONNECTING, CONNECTION_CHANGED_CONNECTING)` callback. After successfully joining the channel, `UID1` receives `OnConnectionStateChanged(CONNECTION_STATE_CONNECTING, CONNECTION_CHANGED_JOIN_SUCCESS)` and `OnJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `OnUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `OnConnectionStateChanged(CONNECTION_STATE_RECONNECTING, CONNECTION_CHANGED_INTERRUPTED)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `OnConnectionStateChanged(CONNECTION_STATE_RECONNECTING, CONNECTION_CHANGED_INTERRUPTED)`, `UID1` receives the `OnConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `OnConnectionStateChanged(CONNECTION_STATE_RECONNECTING, CONNECTION_CHANGED_INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `OnConnectionStateChanged(CONNECTION_STATE_FAILED, CONNECTION_CHANGED_JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(CONNECTING, CONNECTING)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(CONNECTED, JOIN_SUCCESS)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(RECONNCTING, INTERRUPTED)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="web">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-web.svg)
+
+In the diagram:
+
+- **T0**: The RTC SDK receives a `Client.join` request from `UID1`.
+
+- **T1**: `UID1` successfully joins the channel. `UID1` receives `AgoraRTCClient.on("connection-state-change")` callback reporting "CONNECTING" during joining channel and "CONNECTED" after joining.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `AgoraRTCClient.on("user-joined")` callback.
+
+- **T3**: At some point `UID 1` calls `AgoraRTCClient.publish` to publish the local track.
+
+- **T4**: `UID 2` receives the `AgoraRTCClient.on("user-published")` callback indicating that `UID 1` has published the track. `UID 2` can subscribe to `UID 1`'s track by calling `AgoraRTCClient.subscribe` method.
+
+- **T5**: If the `UID 1` network is interrupted during the communication process, the SDK automatically opens the disconnection and reconnection mechanism.
+
+- **T6**: The SDK triggers `AgoraRTCClient.on("connection-state-change")` callback to report "RECONNECTING" during automatic reconnection.
+
+- **T7**: If the Agora server does not receive the audio/video packet from `UID 1` for 10 consecutive seconds, the server determines that `UID 1` no longer publishes audio/video, and `UID 2` will receive `AgoraRTCClient.on("user-unpublished")` callback.
+
+- **T8**: If the Agora server does not receive a heartbeat packet from `UID 1` for 20 consecutive seconds, the server determines that `UID 1` is offline, and `UID 2` will receive the `AgoraRTCClient.on("user-left")` callback.
+
+- **T9**: After successfully re-establishing the connection, `UID 1` receives the `AgoraRTCClient.on("connection-state-change")` callback reporting as "CONNECTED".
+
+- **T10**: `UID 2` receives the `AgoraRTCClient.on("user-joined")` callback again.
+</PlatformStructured>
+<PlatformStructured platform="windows">
+In the diagram:
+
+- **T0**: The RTC SDK receives a `joinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `joinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `onConnectionStateChanged(CONNECTING, CONNECTING)` callback. After successfully joining the channel, `UID1` receives `onConnectionStateChanged(CONNECTED, JOIN_SUCCESS)` and `onJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `onUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `onConnectionStateChanged(RECONNCTING, INTERRUPTED)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, `UID1` receives the `onConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `onUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `onConnectionStateChanged(RECONNCTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `onConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+<PlatformStructured platform="blueprint">
+![Disconnection Connection](https://assets-docs.agora.io/images/video-sdk/connection-state-blueprint.svg)
+
+In the diagram:
+
+- **T0**: The RTC SDK receives a `JoinChannel` request from `UID1`.
+
+- **T1**: After 200 ms of calling `JoinChannel`, `UID1` joins the channel. At the same time, `UID1` receives `FOnConnectionStateChanged(CONNECTING, CONNECTING)` callback. After successfully joining the channel, `UID1` receives `FOnConnectionStateChanged(CONNECTED, JOIN_SUCCESS)` and `FOnJoinChannelSuccess` callbacks.
+
+- **T2**: Due to the transmission delay between networks, `UID2` observes a delay of about 100 milliseconds for `UID1` to join the channel, and at this point `UID2` receives a `FOnUserJoined` callback.
+
+- **T3**: When `UID1` client's connection deteriorates due to a network issue or some other reason, the RTC SDK automatically tries to rejoin the channel.
+
+- **T4**: If `UID1` does not receive any data from the server for 4 consecutive seconds, `UID1` receives the `FOnConnectionStateChanged(RECONNCTING, INTERRUPTED)` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T5**: If `UID1` does not receive any data from the server for 10 consecutive seconds after receiving `FOnConnectionStateChanged(RECONNCTING, INTERRUPTED)`, `UID1` receives the `FOnConnectionLost` callback. Meanwhile, the RTC SDK continues to try to rejoin the channel.
+
+- **T6**: If `UID2` does not receive any data from `UID1` for 20 consecutive seconds, the RTC SDK determines that `UID1` is offline. So `UID2` receives the `FOnUserOffline` callback.
+
+- **T7**: If `UID1` fails to rejoin the channel for 20 consecutive minutes after receiving `FOnConnectionStateChanged(RECONNCTING, INTERRUPTED)`, the SDK stops retrying. `UID1` receives the `FOnConnectionStateChanged(FAILED, JOIN_FAILED)` callback and the user must exit and then rejoin the channel.
+</PlatformStructured>
+
+## Prerequisites
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) project.
+
+## Implement connection status management
+<PlatformStructured platform="android">
+When the connection state changes, RTC SDK sends an `onConnectionStateChanged` callback. This section shows you how to use the `onConnectionStateChanged` callback to monitor changes in the connection state.
+
+Use the following code in your `IRtcEngineEventHandler` to log the connection state changes and the reason for the state change.
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+
+<TabsContent value="java">
+```java
+public void onConnectionStateChanged(int state, int reason) {
+    super.onConnectionStateChanged(state, reason);
+    Log.i(TAG, "onConnectionStateChanged->" + ", state->" + state
+        + ", reason->" + reason);
+}
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+```kotlin
+override fun onConnectionStateChanged(state: Int, reason: Int) {
+    super.onConnectionStateChanged(state, reason)
+    Log.i(TAG, "onConnectionStateChanged->, state->$state, reason->$reason")
+}
+```
+</TabsContent>
+</Tabs>
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="electron">
+When the connection status changes, RTC SDK triggers the `onConnectionStateChanged` callback. This section describes how to use the `onConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with the Agora Engine event handler, and add the `onConnectionStateChanged` callback to the `IRtcEngineEventHandler` instance initialization.
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+When the connection status changes, RTC SDK triggers the `onConnectionStateChanged` callback. This section describes how to use the `onConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with the Agora Engine event handler, and add the `onConnectionStateChanged` callback to the `RtcEngineEventHandler` instance initialization.
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="ios">
+When the connection status changes, RTC SDK sends a `connectionChangedToState` callback. This section describes how to use the `connectionChangedToState` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with `AgoraRtcEngineDelegate` and copy the following code into the `AgoraRtcEngineDelegate` initialization process:
+``` swift
+func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
+    LogUtils.log(message: "Connection state changed: \(state) \(reason)", level: .info)
+}
+```
+
+The code logs the connection state changes and the reason for the state change.
+The `reason` parameter in `connectionChangedToState` explains why the connection state changed and helps you troubleshoot your network.
+</PlatformStructured>
+<PlatformStructured platform="macos">
+When the connection status changes, RTC SDK sends a `connectionChangedToState` callback. This section describes how to use the `connectionChangedToState` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with `AgoraRtcEngineDelegate` and copy the following code into the `AgoraRtcEngineDelegate` initialization process:
+``` swift
+func rtcEngine(_ engine: AgoraRtcEngineKit, connectionChangedTo state: AgoraConnectionState, reason: AgoraConnectionChangedReason) {
+    LogUtils.log(message: "Connection state changed: \(state) \(reason)", level: .info)
+}
+```
+
+The code logs the connection state changes and the reason for the state change.
+The `reason` parameter in `connectionChangedToState` explains why the connection state changed and helps you troubleshoot your network.
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+When the connection status changes, RTC SDK triggers the `onConnectionStateChanged` callback. This section describes how to use the `onConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with the Agora Engine event handler, and add the `onConnectionStateChanged` callback to the `IRtcEngineEventHandler` instance initialization.
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="unity">
+When the connection status changes, RTC SDK triggers the `OnConnectionStateChanged` callback. This section describes how to use the `OnConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+Use the following code in your `IRtcEngineEventHandler` to log the connection state changes and the reason for the state change.
+```csharp
+internal class UserEventHandler : IRtcEngineEventHandler
+{
+    ...
+    // Callback for channel connection status change
+    public override void OnConnectionStateChanged(RtcConnection connection, CONNECTION_STATE_TYPE state,
+        CONNECTION_CHANGED_REASON_TYPE reason)
+    {
+        _helloVideoTokenAgora._state = state;
+    }
+}
+```
+
+The `state` parameter in `OnConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+When the connection status changes, RTC SDK triggers the `onConnectionStateChanged` callback. This section describes how to use the `onConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with the Agora Engine event handler, and add the `onConnectionStateChanged` callback to the `IRtcEngineEventHandler` instance initialization.
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="windows">
+When the connection status changes, RTC SDK triggers the `onConnectionStateChanged` callback. This section describes how to use the `onConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+In your project, open the file with the Agora Engine event handler, and add the `onConnectionStateChanged` callback to the `IRtcEngineEventHandler` instance initialization.
+
+The `state` parameter in `onConnectionStateChanged` reports the current connection state. The `reason` parameter indicates why the connection state changed to help you troubleshoot your network. See [State description and troubleshooting](#state-description-and-troubleshooting).
+</PlatformStructured>
+<PlatformStructured platform="blueprint">
+When the connection status changes, RTC SDK sends a `FOnConnectionStateChanged` callback. This section describes how to use the `FOnConnectionStateChanged` callback to monitor changes in a channel's connection state.
+
+ 1. Create the `OnConnectionStateChanged` callback function and configure the following parameters:
+
+    |Connection state |Description |Parameter description |
+    |:----------------|:-----------|:---------------------|
+    |`state` |Enum |The current network connection status. |
+    |`reason` |Enum |The reason why the network connection state changed. See [State description and troubleshooting](#state-description-and-troubleshooting). |
+
+ 1. Add a listener for the `OnConnectionStateChanged` callback as shown below:
+
+     ![Channel Connection Event](https://assets-docs.agora.io/images/video-sdk/connection-status-mng-blueprint-channel-connection-event.png)
+
+ 1. When the channel connection state changes and the `OnConnectionStateChanged` callback is triggered, it prints information about the state of the monitored network connection. You can read the current connection state and the reason for the state change from the log which helps you troubleshoot the network.
+
+     ![Channel Connection Log](https://assets-docs.agora.io/images/video-sdk/connection-status-mng-blueprint-channel-connection-log.png)
+</PlatformStructured>
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+<PlatformStructured platform="android">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="android-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="android-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="android-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="android-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="android-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="android-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="android-troubleshooting-2-failed" /> |
+
+<Slot for="android-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="android-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `LOST` (16): The SDK lost connection with the server.
+- `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="android-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="electron">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="electron-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="electron-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="electron-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="electron-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="electron-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="electron-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="electron-troubleshooting-2-failed" /> |
+
+<Slot for="electron-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="electron-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `Lost` (16): The SDK lost connection with the server.
+- `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="electron-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
+- `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/callback_irtcengineeventhandler_onconnectionstatechanged.html)
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="flutter">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="flutter-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="flutter-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="flutter-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="flutter-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="flutter-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="flutter-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="flutter-troubleshooting-2-failed" /> |
+
+<Slot for="flutter-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="flutter-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `Lost` (16): The SDK lost connection with the server.
+- `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="flutter-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
+- `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="ios">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="ios-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannelByToken`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="ios-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+
+<Slot for="ios-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannelByToken`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="ios-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `connectionChangedToState` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="ios-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="ios-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="ios-troubleshooting-2-failed" /> |
+
+<Slot for="ios-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="ios-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `Lost` (16): The SDK lost connection with the server.
+- `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="ios-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
+- `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannelByToken` to rejoin the channel.
+- `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannelByToken` to rejoin the channel.
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannelByToken` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`rtcEngine(_:connectionChangedTo:reason:)`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:connectionchangedto:reason:))
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/getconnectionstate())
+</PlatformStructured>
+<PlatformStructured platform="macos">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="macos-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannelByToken`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `didJoinChannel` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="macos-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannelByToken` to join the channel again. |
+
+<Slot for="macos-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannelByToken`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="macos-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `didRejoinChannel` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `connectionChangedToState(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `connectionChangedToState` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="macos-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="macos-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="macos-troubleshooting-2-failed" /> |
+
+<Slot for="macos-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="macos-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `Lost` (16): The SDK lost connection with the server.
+- `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="macos-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
+- `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannelByToken` to rejoin the channel.
+- `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannelByToken` to rejoin the channel.
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannelByToken` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`rtcEngine(_:connectionChangedTo:reason:)`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:connectionchangedto:reason:))
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/getconnectionstate())
+</PlatformStructured>
+<PlatformStructured platform="react-native">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="react-native-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="react-native-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="react-native-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="react-native-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(connectionStateReconnecting, connectionChangedLost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="react-native-troubleshooting-2-disconnected" /> |
+| **Connecting** | `Connecting` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JoinSuccess` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="react-native-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="react-native-troubleshooting-2-failed" /> |
+
+<Slot for="react-native-troubleshooting-2-disconnected">
+
+- `LeaveChannel` (5): The user leaves the channel.
+- `InvalidToken` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="react-native-troubleshooting-2-reconnecting">
+
+- `Interrupted` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `Lost` (16): The SDK lost connection with the server.
+- `SettingProxyServer` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `ClientIpAddressChanged` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KeepAliveTimeout` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RenewToken` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="react-native-troubleshooting-2-failed">
+
+- `BannedByServer` (3): The user is banned by the server.
+- `JoinFailed` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `InvalidAppId` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `InvalidChannelName` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TokenExpired` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `RejectedByServer` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/callback_irtcengineeventhandler_onconnectionstatechanged.html)
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="unity">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="unity-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `JoinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `OnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="unity-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+
+<Slot for="unity-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `JoinChannel`.
+- After calling `LeaveChannel`.
+
+</Slot>
+
+<Slot for="unity-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `OnRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `OnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `OnConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="unity-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="unity-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="unity-troubleshooting-2-failed" /> |
+
+<Slot for="unity-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="unity-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `LOST` (16): The SDK lost connection with the server.
+- `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="unity-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `LeaveChannel` to leave the current channel and then call `JoinChannel` to rejoin the channel.
+- `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `JoinChannel` to rejoin the channel.
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `JoinChannel` again after the local user has joined the channel.
+  - The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`OnConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`GetConnectionState`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="unreal">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="unreal-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="unreal-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="unreal-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="unreal-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="unreal-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="unreal-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="unreal-troubleshooting-2-failed" /> |
+
+<Slot for="unreal-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="unreal-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `LOST` (16): The SDK lost connection with the server.
+- `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="unreal-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="web">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **DISCONNECTED** | <Slot name="web-states-1-disconnected" /> |
+| **CONNECTING** | Joining. The instantaneous state after calling `join`. |
+| **CONNECTED** | Occurs after the app has successfully joined the channel. At this point the user can publish or subscribe to the audio and video in the channel. |
+| **RECONNECTING** | Occurs when the connection is interrupted due to a network disconnection or switch. The SDK automatically tries to reconnect after an interruption. |
+| **DISCONNECTING** | Disconnecting. This is the state when `leave` is called. |
+
+<Slot for="web-states-1-disconnected">
+
+Connection disconnected. The SDK will not automatically reconnect while in this state. This state indicates that the user is in one of the following stages:
+
+- Has not joined the channel using `join`.
+- Has left the channel using `leave`.
+- Kicked out of the channel by the Agora server or failed to connect.
+
+</Slot>
+
+### API reference
+
+- [`AgoraRTCClient.on("connection-state-change")`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_connection_state_change)
+
+- [`AgoraRTCClient.on("user-joined")`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_user_joined)
+
+- [`AgoraRTCClient.on("user-left")`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_user_left)
+
+- [`AgoraRTCClient.on("user-published")`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_user_published)
+
+- [`AgoraRTCClient.on("user-unpublished")`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#event_user_unpublished)
+</PlatformStructured>
+<PlatformStructured platform="windows">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="windows-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `joinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `onJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="windows-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `leaveChannel` to leave the current channel, and then call `joinChannel` to join the channel again. |
+
+<Slot for="windows-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `joinChannel`.
+- After calling `leaveChannel`.
+
+</Slot>
+
+<Slot for="windows-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `onRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `onConnectionStateChanged(Reconnecting, Lost)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `onConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="windows-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="windows-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="windows-troubleshooting-2-failed" /> |
+
+<Slot for="windows-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="windows-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `LOST` (16): The SDK lost connection with the server.
+- `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="windows-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `leaveChannel` to leave the current channel and then call `joinChannel` to rejoin the channel.
+- `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `joinChannel` to rejoin the channel.
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `joinChannel` again after the local user has joined the channel.
+  - The app called `startEchoTest`, but did not call `stopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`onConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+
+- [`getConnectionState`](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>
+<PlatformStructured platform="blueprint">
+### Connection states
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+The app may have the following connection states before joining, during a session, and after leaving a channel:
+
+|Connection state |Description |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="blueprint-states-1-disconnected" /> |
+| **Connecting** | The transient state after calling `JoinChannel`. |
+| **Connected** | Occurs after the app successfully joins a channel. The SDK also triggers the `FOnJoinChannelSuccess` callback to report that the local client has joined the channel. At this point, the user can publish or subscribe to the audio and video in the channel. |
+| **Reconnecting** | <Slot name="blueprint-states-1-reconnecting" /> |
+| **Failed** | Connection failed. Occurs when the SDK is unable to join a channel for 20 minutes and stops attempting to reconnect to the channel. In this case, call `LeaveChannel` to leave the current channel, and then call `JoinChannel` to join the channel again. |
+
+<Slot for="blueprint-states-1-disconnected">
+
+Initial connection state. Usually occurs:
+
+- Before calling `JoinChannel`.
+- After calling `LeaveChannel`.
+
+</Slot>
+
+<Slot for="blueprint-states-1-reconnecting">
+
+Occurs when the connection is interrupted. The SDK automatically tries to reconnect after an interruption.
+
+- If the client successfully rejoins the channel, the SDK triggers the `FOnRejoinChannelSuccess` callback.
+- If the channel is not rejoined within 10 seconds, the SDK triggers `FOnConnectionStateChanged(RECONNECTING, LOST)`, and continues trying to rejoin the channel.
+
+</Slot>
+
+### State description and troubleshooting
+
+The `reason` parameter in `FOnConnectionStateChanged` describes the reason for the connection state change.
+
+The following table maps the relationships between different connection states and the causes of state change, as well as how to handle the situation when network outages occur:
+
+|Connection state |Description and troubleshooting guide |
+|:-----------------|:-----------|
+| **Disconnected** | <Slot name="blueprint-troubleshooting-2-disconnected" /> |
+| **Connecting** | `CONNECTING` (0): The app is trying to join the Agora channel. |
+| **Connected** | `JOIN_SUCCESS` (1): The app has successfully joined the channel. |
+| **Reconnecting** | <Slot name="blueprint-troubleshooting-2-reconnecting" /> |
+| **Failed** | <Slot name="blueprint-troubleshooting-2-failed" /> |
+
+<Slot for="blueprint-troubleshooting-2-disconnected">
+
+- `LEAVE_CHANNEL` (5): The user leaves the channel.
+- `INVALID_TOKEN` (8):The token is invalid. Please use a valid token to join the channel.
+
+</Slot>
+
+<Slot for="blueprint-troubleshooting-2-reconnecting">
+
+- `INTERRUPTED` (2): When the network connection is interrupted, the SDK automatically reconnects to the channel and the connection state continues to change. For details on how the connection state changes during automatic reconnection, see [Disconnection and reconnection](#disconnection-and-reconnection).
+- `LOST` (16): The SDK lost connection with the server.
+- `SETTING_PROXY_SERVER` (11): The SDK attempts to reconnect because a proxy server is configured.
+- `CLIENT_IP_ADDRESS_CHANGED` (13): The client IP address has changed. If this status code occurs multiple times, prompt the user to rejoin the channel after changing networks.
+- `KEEP_ALIVE_TIMEOUT` (14): The keep-alive connection between the SDK and the server has timed out, causing the SDK to enter an automatic reconnection state.
+- `RENEW_TOKEN` (12): Updating the token has caused a change in the network connection status.
+
+</Slot>
+
+<Slot for="blueprint-troubleshooting-2-failed">
+
+- `BANNED_BY_SERVER` (3): The user is banned by the server.
+- `JOIN_FAILED` (4): The SDK stopped trying to reconnect after continued failed attempts to join the channel for 20 minutes. Call `LeaveChannel` to leave the current channel and then call `JoinChannel` to rejoin the channel.
+- `INVALID_APP_ID` (6): The app ID is invalid. Use a valid app ID to join the channel.
+- `INVALID_CHANNEL_NAME` (7): The channel name is invalid. Please check if the channel name contains illegal characters and use a valid channel name to join the channel.
+- `TOKEN_EXPIRED` (9): The token has expired. Obtain a new token from the app server, and then call `JoinChannel` to rejoin the channel.
+- `REJECTED_BY_SERVER` (10): The user is banned by the server. May also occurs under the following circumstances:
+  - The app calls `JoinChannel` again after the local user has joined the channel.
+  - The app called `StartEchoTest`, but did not call `StopEchoTest` to end the echo test.
+
+</Slot>
+
+### API reference
+
+- [`FOnConnectionStateChanged`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onconnectionstatechanged)
+- [`GetConnectionState`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#api_irtcengine_getconnectionstate)
+</PlatformStructured>

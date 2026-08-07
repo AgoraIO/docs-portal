@@ -8,17 +8,17 @@ The following table lists the support of Agora products for the two solutions:
 
 |Agora Products |Firewall Whitelist |Agora Cloud Proxy|
 |---|:---:|:---:|
-|Video SDK (Native, third-party frameworks) |✘ |✔|
-|Video SDK (Web) |✔ |✔|
+|RTC SDK (Native, third-party frameworks) |✘ |✔|
+|RTC SDK (Web) |✔ |✔|
 |Signaling SDK (Native) | ✔ | ✘ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔|
 |Interactive Gaming SDK | ✘ |✘|
 
 - When using the firewall whitelist, add the domains and ports to the firewall whitelist, and do not set restrictions on IP addresses.
-- When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy)
+- When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy)
 
-### Video SDK (Web)
+### RTC SDK (Web)
 
 Add the following destination domains and the corresponding ports to your firewall whitelist.
 

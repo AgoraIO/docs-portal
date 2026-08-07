@@ -32,11 +32,11 @@ To follow this procedure, you must:
 - Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
-server. For details, see [Agora account management](/en/realtime-media/voice/manage-agora-account).
+server. For details, see [Agora account management](/en/realtime-media/rtc/manage-agora-account).
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../reference/firewall).
 
-- Join a Video SDK channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/voice/quickstart) guide.
+- Join an RTC channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
 
 ## Project setup
 
@@ -219,4 +219,4 @@ You can also refer to the [demo code on Github](https://github.com/AgoraIO-Commu
 
 ### REST API middleware
 
-[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Real-Time STT interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as a middleware to bridge front-end applications using Agora's Video SDK or Voice SDK with Agora's RESTful APIs.
+[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Real-Time STT interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as a middleware to bridge front-end applications using Agora's RTC SDK or Voice SDK with Agora's RESTful APIs.

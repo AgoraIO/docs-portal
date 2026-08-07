@@ -1,6 +1,6 @@
 ---
 title: "Alert notifications"
-description: "Alert Notifications sends alerts to you when abnormal metrics or events are detected in your Agora Video SDK projects."
+description: "Alert Notifications sends alerts to you when abnormal metrics or events are detected in your Agora RTC SDK projects."
 ---
 
 You can receive the alerts through e-mails or API callbacks and take action accordingly.

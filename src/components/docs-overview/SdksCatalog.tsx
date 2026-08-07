@@ -67,10 +67,11 @@ const productFilters = {
     productIds: ['signaling'],
   },
   video: {
-    label: 'Video SDK',
+    label: 'RTC SDK',
     aliases: [
       'video',
       'video-calling',
+      'rtc',
       'rtc-video',
       'interactive-live-streaming',
       'broadcast-streaming',
@@ -79,7 +80,7 @@ const productFilters = {
     productIds: ['video'],
   },
   voice: {
-    label: 'Voice SDK',
+    label: 'RTC Voice SDK',
     aliases: ['voice', 'voice-calling', 'rtc-voice'],
     productIds: ['voice'],
   },
@@ -571,7 +572,7 @@ function productIconKind(productLabel: string): SolutionCardIconKind {
   if (normalized.includes('voice')) {
     return 'voice-calling';
   }
-  if (normalized.includes('video')) {
+  if (normalized.includes('video') || normalized.includes('rtc')) {
     return 'video-calling';
   }
   if (normalized.includes('signaling')) {
