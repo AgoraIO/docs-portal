@@ -423,14 +423,29 @@ export function SdksCatalog({
   const summaryLabel = productFilter
     ? getProductFilterLabel(productFilter, locale)
     : platformLabel;
+  const isEmbedded = Boolean(
+    product || platform || (versionIdPrefixes && versionIdPrefixes.length > 0),
+  );
+  const redesigned = locale === 'zh-CN';
+  const usesCardGrid = redesigned && !isEmbedded;
 
   return (
     <section
-      className="not-prose my-8 flex flex-col gap-3"
+      className={cn(
+        'not-prose my-8',
+        redesigned ? 'gap-4' : 'gap-3',
+        usesCardGrid ? 'grid md:grid-cols-2' : 'flex flex-col',
+      )}
+      data-layout={isEmbedded ? 'embedded' : 'catalog'}
       data-sdk-download-catalog
     >
-      {summaryLabel ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3">
+      {summaryLabel && (!redesigned || !isEmbedded) ? (
+        <div
+          className={cn(
+            'flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3',
+            usesCardGrid && 'md:col-span-2',
+          )}
+        >
           <p className="m-0 text-sm font-medium text-foreground">
             {copy.showing(summaryLabel)}
           </p>
@@ -449,6 +464,7 @@ export function SdksCatalog({
           initialPlatformId={queryFilters.platformId}
           key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
           locale={locale}
+          redesigned={redesigned}
         />
       ))}
     </section>
@@ -460,11 +476,13 @@ function ProductCard({
   group,
   initialPlatformId,
   locale,
+  redesigned,
 }: {
   copy: CatalogCopy;
   group: ProductGroup;
   initialPlatformId: string | null;
   locale: SdkCatalogLocale;
+  redesigned: boolean;
 }) {
   const defaultPlatformId =
     initialPlatformId &&
@@ -487,7 +505,11 @@ function ProductCard({
   return (
     <article
       aria-labelledby={titleId}
-      className="scroll-mt-40 rounded-xl border border-border p-5"
+      className={cn(
+        'scroll-mt-40 rounded-xl border border-border p-5',
+        redesigned &&
+          'flex min-w-0 flex-col bg-card shadow-sm transition-[border-color,box-shadow] hover:border-primary/25 hover:shadow-md',
+      )}
       data-sdk-download-product-id={group.productId}
       id={getSdkDownloadProductSectionId(group.productId)}
     >
@@ -512,7 +534,12 @@ function ProductCard({
 
       <div
         aria-label={copy.platformTabsLabel(group.label)}
-        className="mt-4 flex flex-wrap gap-1 border-border border-b"
+        className={cn(
+          'mt-4 flex gap-1 border-border border-b',
+          redesigned
+            ? 'flex-nowrap overflow-x-auto overscroll-x-contain'
+            : 'flex-wrap',
+        )}
         role="tablist"
       >
         {group.platforms.map((entry) => {
@@ -523,6 +550,7 @@ function ProductCard({
               aria-selected={isActive}
               className={cn(
                 '-mb-px min-h-11 border-b-2 px-3 py-1.5 text-sm transition-colors',
+                redesigned && 'shrink-0',
                 isActive
                   ? 'border-primary font-semibold text-foreground'
                   : 'border-transparent text-muted-foreground hover:text-foreground',
@@ -551,7 +579,10 @@ function ProductCard({
               {copy.versionLabel(group.label)}
             </label>
             <select
-              className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+              className={cn(
+                'appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40',
+                redesigned ? 'min-h-11' : 'h-9',
+              )}
               id={versionId}
               onChange={(event) => setVersionIndex(event.target.value)}
               value={versionIndex}
@@ -578,7 +609,12 @@ function ProductCard({
       </div>
 
       {activeVersion ? (
-        <InstallArea command={command} copy={copy} version={activeVersion} />
+        <InstallArea
+          command={command}
+          copy={copy}
+          redesigned={redesigned}
+          version={activeVersion}
+        />
       ) : null}
     </article>
   );
@@ -750,15 +786,17 @@ function isLatestVersion(version: SdkDownloadVersion) {
 function InstallArea({
   command,
   copy,
+  redesigned,
   version,
 }: {
   command: InstallCommand | null;
   copy: CatalogCopy;
+  redesigned: boolean;
   version: SdkDownloadVersion;
 }) {
   if (command) {
     return (
-      <div className="mt-3 flex flex-col gap-2">
+      <div className={cn('mt-3 flex flex-col gap-2', redesigned && 'flex-1')}>
         <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
           <ScrollableInstallCommand
             copy={copy}
@@ -767,20 +805,35 @@ function InstallArea({
           />
           <CopyButton copy={copy} value={command.command} />
         </div>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+        <div
+          className={cn(
+            'flex flex-wrap items-center gap-x-4 text-sm text-muted-foreground',
+            redesigned ? 'gap-y-2' : 'gap-y-1',
+          )}
+        >
           {version.downloadLink ? (
             <a
-              className="underline underline-offset-2 hover:text-foreground"
+              className={cn(
+                redesigned
+                  ? 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                  : 'underline underline-offset-2 hover:text-foreground',
+              )}
               href={version.downloadLink}
               rel="noreferrer noopener"
               target="_blank"
             >
-              {copy.directDownload}
+              {redesigned ? (
+                <DownloadIcon aria-hidden="true" className="size-4" />
+              ) : null}
+              {redesigned ? copy.downloadSdk : copy.directDownload}
             </a>
           ) : null}
           {version.packageManager ? (
             <a
-              className="underline underline-offset-2 hover:text-foreground"
+              className={cn(
+                'underline underline-offset-2 hover:text-foreground',
+                redesigned && 'inline-flex min-h-11 items-center',
+              )}
               href={version.packageManager}
               rel="noreferrer noopener"
               target="_blank"
@@ -810,7 +863,10 @@ function InstallArea({
         ) : null}
         {version.packageManager ? (
           <a
-            className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            className={cn(
+              'text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground',
+              redesigned && 'inline-flex min-h-11 items-center',
+            )}
             href={version.packageManager}
             rel="noreferrer noopener"
             target="_blank"
