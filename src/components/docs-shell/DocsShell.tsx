@@ -60,8 +60,7 @@ import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
-const DOCS_DESKTOP_GRID_CLASS_NAME =
-  'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
+const DOCS_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)_220px]';
 const DOCS_FILL_DESKTOP_GRID_CLASS_NAME = 'xl:grid-cols-[256px_minmax(0,1fr)]';
 const ENABLED_DOCS_CHROME_LOCALES = new Set<AppLocale>([DEFAULT_LOCALE]);
 export const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_KEY =
@@ -272,7 +271,7 @@ export function DocsShell({
               </a>
               <Button
                 aria-label={dismissLegacyDocsBannerLabel}
-                className="text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)]"
+                className="size-11 text-[color:var(--accent-brand)] hover:bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] hover:text-[color:var(--accent-brand)] sm:size-6"
                 onClick={dismissLegacyDocsBanner}
                 size="icon-xs"
                 type="button"
@@ -296,7 +295,11 @@ export function DocsShell({
                 onOpenChange={setIsMobileSheetOpen}
               >
                 <SheetTrigger asChild>
-                  <Button className="lg:hidden" size="icon" variant="ghost">
+                  <Button
+                    className="size-11 lg:hidden"
+                    size="icon"
+                    variant="ghost"
+                  >
                     <MenuIcon />
                     <span className="sr-only">{t('docs.openMenu')}</span>
                   </Button>
@@ -652,6 +655,9 @@ function MobileSidebar({
                   key={node.id}
                   node={node}
                   onSelectPath={onSelectPath}
+                  sectionDisclosureLabel={(title) =>
+                    t('docs.toggleSectionPages', { title })
+                  }
                 />
               ))}
             </div>
@@ -681,11 +687,13 @@ function MobileSidebarNode({
   depth,
   node,
   onSelectPath,
+  sectionDisclosureLabel,
 }: {
   activePath: string;
   depth: number;
   node: DocsSidebarNode;
   onSelectPath: () => void;
+  sectionDisclosureLabel: (title: string) => string;
 }) {
   if (node.type === 'page') {
     const isActive = node.url === activePath;
@@ -737,9 +745,102 @@ function MobileSidebarNode({
     );
   }
 
+  return (
+    <MobileSidebarSectionNode
+      activePath={activePath}
+      depth={depth}
+      node={node}
+      onSelectPath={onSelectPath}
+      sectionDisclosureLabel={sectionDisclosureLabel}
+    />
+  );
+}
+
+function MobileSidebarSectionNode({
+  activePath,
+  depth,
+  node,
+  onSelectPath,
+  sectionDisclosureLabel,
+}: {
+  activePath: string;
+  depth: number;
+  node: Extract<DocsSidebarNode, { type: 'section' }>;
+  onSelectPath: () => void;
+  sectionDisclosureLabel: (title: string) => string;
+}) {
   const hasActiveChild = node.children.some((child) =>
     isMobileSidebarNodeActive(child, activePath),
   );
+  const shouldRevealActivePath =
+    node.defaultOpen !== false && (hasActiveChild || node.url === activePath);
+  const [isOpen, setIsOpen] = useState(
+    !node.collapsible || shouldRevealActivePath,
+  );
+
+  useEffect(() => {
+    if (shouldRevealActivePath) {
+      setIsOpen(true);
+    }
+  }, [shouldRevealActivePath]);
+
+  if (node.url) {
+    const isActive = node.url === activePath;
+
+    return (
+      <div className="flex min-w-0 max-w-full flex-col gap-1">
+        <div className="flex min-w-0 items-stretch gap-1">
+          <Link
+            aria-current={isActive ? 'page' : undefined}
+            className={cn(
+              mobilePageLinkClassName,
+              'min-h-11 flex-1 items-center',
+              isActive
+                ? mobileActivePageLinkClassName
+                : mobileInactivePageLinkClassName,
+            )}
+            onClick={onSelectPath}
+            params={{}}
+            search={{}}
+            to={node.url}
+          >
+            <span>{node.title.replaceAll('-', ' ')}</span>
+          </Link>
+          {node.children.length > 0 ? (
+            <button
+              aria-expanded={isOpen}
+              aria-label={sectionDisclosureLabel(node.title)}
+              className="flex size-11 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              onClick={() => setIsOpen((value) => !value)}
+              type="button"
+            >
+              <ChevronDownIcon
+                aria-hidden="true"
+                className={cn(
+                  'size-4 transition-transform',
+                  isOpen ? 'rotate-0' : '-rotate-90',
+                )}
+              />
+            </button>
+          ) : null}
+        </div>
+        {isOpen ? (
+          <div className={getMobileSidebarNestedListClassName(depth)}>
+            {node.children.map((child) => (
+              <MobileSidebarNode
+                activePath={activePath}
+                depth={depth + 1}
+                key={child.id}
+                node={child}
+                onSelectPath={onSelectPath}
+                sectionDisclosureLabel={sectionDisclosureLabel}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-w-0 max-w-full flex-col gap-1">
@@ -757,6 +858,7 @@ function MobileSidebarNode({
             key={child.id}
             node={child}
             onSelectPath={onSelectPath}
+            sectionDisclosureLabel={sectionDisclosureLabel}
           />
         ))}
       </div>
@@ -776,6 +878,10 @@ function isMobileSidebarNodeActive(
 ): boolean {
   if (node.type === 'page') {
     return node.url === activePath;
+  }
+
+  if (node.url === activePath) {
+    return true;
   }
 
   return node.children.some((child) =>

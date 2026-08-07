@@ -65,6 +65,29 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
+  it('keeps long install commands inspectable with mobile-sized controls', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const agentsCard = screen.getByRole('article', {
+      name: '对话式 AI 引擎 SDK',
+    });
+    const typescriptTab = within(agentsCard).getByRole('tab', {
+      name: 'TypeScript',
+    });
+
+    fireEvent.click(typescriptTab);
+
+    const command = within(agentsCard).getByText('npm i agora-agents@2.3.1');
+    const copyButton = within(agentsCard).getByRole('button', {
+      name: '复制集成命令',
+    });
+
+    expect(command).not.toHaveClass('truncate');
+    expect(command).toHaveClass('whitespace-pre-wrap', 'break-all');
+    expect(typescriptTab).toHaveClass('min-h-11');
+    expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
+  });
+
   it('only exposes the latest SDK version for download', () => {
     render(<SdksCatalog />);
 

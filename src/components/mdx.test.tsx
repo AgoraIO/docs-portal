@@ -16,7 +16,12 @@ import {
 } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ComponentProps,
+  ComponentType,
+  ReactNode,
+} from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
@@ -87,6 +92,7 @@ type ImageComponent = ComponentType<{
   alt?: string;
   src?: string;
 }>;
+type TableComponent = ComponentType<ComponentProps<'table'>>;
 type LegacyLinkComponent = ComponentType<{
   children: ReactNode;
   to: string;
@@ -263,7 +269,7 @@ describe('common MDX registry', () => {
     const defaults = defaultMdxComponents as Record<string, unknown>;
 
     expect(components.img).not.toBe(defaults.img);
-    expect(components.table).toBe(defaults.table);
+    expect(components.table).not.toBe(defaults.table);
     expect(components.Card).not.toBe(defaults.Card);
     expect(components.Cards).not.toBe(defaults.Cards);
     expect(components.Callout).not.toBe(defaults.Callout);
@@ -289,6 +295,47 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('describes overflowing prose tables and exposes a pre-scroll cue', async () => {
+    const components = getMDXComponents(undefined, { locale: 'zh-CN' });
+    const Table = components.table as TableComponent;
+
+    render(
+      <Table>
+        <tbody>
+          <tr>
+            <td>第一列</td>
+            <td>第二列</td>
+            <td>第三列</td>
+          </tr>
+        </tbody>
+      </Table>,
+    );
+
+    const scrollRegion = screen.getByRole('region', {
+      name: '可横向滚动的表格',
+    });
+    Object.defineProperties(scrollRegion, {
+      clientWidth: { configurable: true, value: 320 },
+      scrollWidth: { configurable: true, value: 640 },
+    });
+    fireEvent(window, new Event('resize'));
+
+    await waitFor(() => {
+      expect(scrollRegion).toHaveAttribute('tabindex', '0');
+    });
+    expect(scrollRegion).toHaveAccessibleDescription(
+      '表格内容超出当前宽度，可横向滚动查看更多列。',
+    );
+    expect(scrollRegion.parentElement).toHaveAttribute(
+      'data-table-overflow',
+      'true',
+    );
+    expect(scrollRegion.parentElement).toHaveAttribute(
+      'data-table-scroll-end',
+      'false',
+    );
   });
 
   it('marks SDK compliance callouts for platform download spacing', () => {

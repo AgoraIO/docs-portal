@@ -508,7 +508,7 @@ function ProductCard({
             <button
               aria-selected={isActive}
               className={cn(
-                '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                '-mb-px min-h-11 border-b-2 px-3 py-1.5 text-sm transition-colors',
                 isActive
                   ? 'border-primary font-semibold text-foreground'
                   : 'border-transparent text-muted-foreground hover:text-foreground',
@@ -746,7 +746,7 @@ function InstallArea({
     return (
       <div className="mt-3 flex flex-col gap-2">
         <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-card px-3.5 py-2.5">
-          <code className="min-w-0 truncate font-mono text-[0.82rem] text-foreground">
+          <code className="min-w-0 flex-1 whitespace-pre-wrap break-all font-mono text-[0.82rem] text-foreground">
             {command.command}
           </code>
           <CopyButton copy={copy} value={command.command} />
@@ -783,7 +783,7 @@ function InstallArea({
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         {version.downloadLink ? (
           <a
-            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
             href={version.downloadLink}
             rel="noreferrer noopener"
             target="_blank"
@@ -849,7 +849,7 @@ function CopyButton({ copy, value }: { copy: CatalogCopy; value: string }) {
   return (
     <button
       aria-label={copied ? copy.copiedButton : copy.copyInstallCommand}
-      className="shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+      className="min-h-11 min-w-11 shrink-0 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);

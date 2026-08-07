@@ -52,6 +52,8 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { normalizeLocale } from '@/lib/i18n/i18n-config';
+import { resources } from '@/lib/i18n/resources';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -63,6 +65,7 @@ import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
   contentPath?: string;
+  locale?: string;
 };
 
 const FumadocsAnchor = defaultMdxComponents.a;
@@ -227,6 +230,71 @@ function DocsCalloutContainer(props: CalloutContainerProps) {
       <FumadocsCalloutContainer {...props} />
     </div>
   );
+}
+
+function createDocsTableComponent(locale?: string) {
+  const normalizedLocale = normalizeLocale(locale) ?? 'en';
+  const copy = resources[normalizedLocale].common.docs;
+
+  return function DocsTable({ className, ...props }: ComponentProps<'table'>) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const descriptionId = useId();
+    const [hasOverflow, setHasOverflow] = useState(false);
+    const [isAtEnd, setIsAtEnd] = useState(false);
+
+    const updateOverflowState = useCallback(() => {
+      const element = scrollRef.current;
+      if (!element) {
+        return;
+      }
+
+      const overflow = element.scrollWidth > element.clientWidth + 1;
+      setHasOverflow(overflow);
+      setIsAtEnd(
+        !overflow ||
+          element.scrollLeft + element.clientWidth >= element.scrollWidth - 1,
+      );
+    }, []);
+
+    useEffect(() => {
+      updateOverflowState();
+      window.addEventListener('resize', updateOverflowState);
+      const resizeObserver =
+        typeof ResizeObserver === 'undefined'
+          ? null
+          : new ResizeObserver(updateOverflowState);
+      if (scrollRef.current) {
+        resizeObserver?.observe(scrollRef.current);
+      }
+
+      return () => {
+        window.removeEventListener('resize', updateOverflowState);
+        resizeObserver?.disconnect();
+      };
+    }, [updateOverflowState]);
+
+    return (
+      <div
+        className="docs-table-container relative my-6"
+        data-table-overflow={hasOverflow ? 'true' : 'false'}
+        data-table-scroll-end={isAtEnd ? 'true' : 'false'}
+      >
+        <section
+          aria-describedby={hasOverflow ? descriptionId : undefined}
+          aria-label={copy.tableOverflowLabel}
+          className="prose-no-margin overflow-auto"
+          onScroll={updateOverflowState}
+          ref={scrollRef}
+          tabIndex={hasOverflow ? 0 : undefined}
+        >
+          <table className={className} {...props} />
+        </section>
+        <span className="sr-only" id={descriptionId}>
+          {copy.tableOverflowDescription}
+        </span>
+      </div>
+    );
+  };
 }
 
 function hasSdkComplianceCalloutTitle(children: ReactNode): boolean {
@@ -1649,6 +1717,7 @@ export function getMDXComponents(
     ...defaultMdxComponents,
     Callout: DocsCallout,
     CalloutContainer: DocsCalloutContainer,
+    table: createDocsTableComponent(context?.locale),
     img: ZoomableImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,

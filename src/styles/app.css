@@ -693,9 +693,9 @@
   .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     max-width: 100%;
     overflow-wrap: anywhere;
@@ -713,9 +713,9 @@
     .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     border-color: var(--docs-prose-inline-code-border);
     background: var(--docs-prose-inline-code-bg);
@@ -1312,6 +1312,31 @@
   max-width: none;
   min-width: 0;
   overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .prose
+    :where(.docs-table-container[data-table-overflow="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2.75rem;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--bg-card));
+    opacity: 1;
+    transition: opacity 160ms ease;
+  }
+
+  .prose
+    :where(.docs-table-container[data-table-scroll-end="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    opacity: 0;
+  }
 }
 
 /* Fumadocs emits paragraph/list margins outside Tailwind layers.
