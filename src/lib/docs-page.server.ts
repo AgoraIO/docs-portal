@@ -1,6 +1,11 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { createDocsPageAnalyticsContext } from './analytics/docs-page-context';
+import {
+  type DocsPageType,
+  inferDocsPageType,
+} from './analytics/docs-page-type';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import {
@@ -428,6 +433,20 @@ export async function loadDocsPagePayload(
         pageProps: await openApiPage.data.getOpenAPIPageProps(),
       }
     : mdxBody;
+  const configuredAnalyticsPageType: DocsPageType | undefined = isOpenApiPage
+    ? 'sdk-api-reference'
+    : 'analyticsPageType' in page.data && page.data.analyticsPageType
+      ? (page.data.analyticsPageType as DocsPageType)
+      : undefined;
+  const analyticsPageType =
+    configuredAnalyticsPageType ?? inferDocsPageType(page.url);
+  const analyticsPageContext = createDocsPageAnalyticsContext({
+    pageType: analyticsPageType,
+    pathname: page.url,
+    sourcePath: page.path,
+    title,
+    version: sidebarHeader?.versionSwitcher?.currentId,
+  });
   const lastUpdated = await resolveDocsLastUpdatedMetadata(
     Array.from(
       new Set([
@@ -445,6 +464,8 @@ export async function loadDocsPagePayload(
   return {
     activePath: page.url,
     activeTab: tab,
+    analyticsPageContext,
+    analyticsPageType,
     body,
     breadcrumb:
       navScope?.scope.meta.sidebarIndexTitle &&
@@ -915,7 +936,7 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
-    'video/quickstart': `/${locale}/realtime-media/video/get-started-sdk`,
+    'video/quickstart': `/${locale}/realtime-media/rtc/get-started-sdk`,
     'cloud-recording/pricing-webpage-recording': `/${locale}/realtime-media/cloud-recording/reference/pricing-webpage-recording`,
     'whiteboard/overview': `/${locale}/realtime-media/whiteboard`,
     'whiteboard/overview/account-settlement': `/${locale}/realtime-media/whiteboard/reference/account-settlement`,
@@ -1323,6 +1344,11 @@ const REALTIME_MEDIA_API_REFERENCE_LINKS = [
     productSlug: 'on-premise-recording',
     title: 'API reference',
     url: '/en/api-reference/api-ref/on-premise-recording',
+  },
+  {
+    productSlug: 'rtc',
+    title: 'RESTful API',
+    url: '/en/api-reference/api-ref/rtc',
   },
   {
     productSlug: 'rtm',

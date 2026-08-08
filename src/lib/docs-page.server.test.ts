@@ -1883,6 +1883,7 @@ Web body
     expect(payload).toMatchObject({
       activePath: '/en/api-reference/api-ref/conversational-ai/join',
       activeTab: 'api-reference',
+      analyticsPageType: 'sdk-api-reference',
       body: {
         kind: 'openapi',
         pageProps: {
@@ -2490,6 +2491,7 @@ Web body
       ...basePage,
       data: {
         ...basePage.data,
+        analyticsPageType: 'task-guide' as const,
         info: {
           fullPath:
             '/virtual/content/docs/en/realtime-media/rtc/quick-start.md',
@@ -2577,7 +2579,7 @@ Web body
     await expect(
       loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
     ).resolves.toEqual({
-      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+      redirectUrl: '/en/realtime-media/rtc/get-started-sdk',
     });
   });
 
@@ -2664,7 +2666,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: true,
-      redirectUrl: '/en/realtime-media/video/get-started-sdk',
+      redirectUrl: '/en/realtime-media/rtc/get-started-sdk',
     });
 
     await expect(
@@ -2702,7 +2704,7 @@ Web body
     ).resolves.toEqual({
       preserveSearch: false,
       redirectUrl:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/ios',
+        '/en/realtime-media/rtc/reference/release-notes/ios',
     });
 
     await expect(
@@ -2715,7 +2717,7 @@ Web body
     ).resolves.toEqual({
       preserveSearch: false,
       redirectUrl:
-        '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+        '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 
@@ -3417,6 +3419,17 @@ Web body
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/realtime-media/video/quickstart',
     );
+    expect(videoPayload.analyticsPageContext).toEqual({
+      contentId: 'realtime-media/video/get-started-sdk',
+      journeyStage: 'get-started',
+      navSection: 'get-started',
+      navSectionTitle: 'Get started',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/video/get-started-sdk',
+      product: 'video',
+      title: 'Quickstart',
+      version: 'current',
+    });
   });
 
   it('redirects moved Device Kit docs pages to their new product paths', async () => {

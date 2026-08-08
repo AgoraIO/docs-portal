@@ -40,21 +40,21 @@ Run the following command to execute the `sample_send_h264_pcm` sample project.
 ./sample_send_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel --videoFile test_data/send_video.h264 --audioFile test_data/send_audio_16k_1ch.pcm
 ```
 
-Replace the parameter value of `--token`, with your Video SDK temporary token. Replace the parameter value of `--channelId` with the value of your Video SDK channel ID.
+Replace the parameter value of `--token`, with your RTC SDK temporary token. Replace the parameter value of `--channelId` with the value of your RTC SDK channel ID.
 
 :::info
-Use the same Video SDK channel ID that you used to generate the temporary token.
+Use the same RTC SDK channel ID that you used to generate the temporary token.
 :::
 
 ### Use the web demo to receive streams sent from the server
 
 To simulate a client receiving data in a browser, use the Agora Web demo.
 
-1. Use a PC or mobile device to open the [Agora Video SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and fill in the following fields:
+1. Use a PC or mobile device to open the [Agora RTC SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and fill in the following fields:
 
     - **APP ID**：Specify your Agora app ID. The ID must be the same as the one you used for your server.
     - **Channel Name**：Specify the same channel name you used for the server.
-    - **Token**: Specify a valid Video SDK temporary token.
+    - **Token**: Specify a valid RTC SDK temporary token.
 
 2. Click **Join** to receive media streams from the server.
 
@@ -73,7 +73,7 @@ Run the following command to launch the `sample_receive_h264_pcm` project.
 ./sample_receive_h264_pcm --token YOUR_RTC_TOKEN --channelId demo_channel
 ```
 
-Replace the parameter value of `--token`, with your Video SDK temporary token. Replace the parameter value of `--channelId` with the value of your Video SDK channel ID.
+Replace the parameter value of `--token`, with your RTC SDK temporary token. Replace the parameter value of `--channelId` with the value of your RTC SDK channel ID.
 
 When the sample project is running, the console outputs the following information:
 
@@ -91,11 +91,11 @@ When the sample project is running, the console outputs the following informatio
 
 ### Use the web demo to send media streams to the server
 
-1. Use a PC or mobile device to open the [Agora Video SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and specify the following fields:
+1. Use a PC or mobile device to open the [Agora RTC SDK Web SDK sample project](https://webdemo.agora.io/basicVideoCall/index.html) and specify the following fields:
 
     - **APP ID**：Specify your Agora app ID. The ID must be the same as the one you used for your server.
     - **Channel Name**：Specify the same channel name you used for the server.
-    - **Token**: Specify a valid Video SDK temporary token.
+    - **Token**: Specify a valid RTC SDK temporary token.
 
 2. Click **Join** to send media streams to the server.
 
@@ -131,7 +131,7 @@ This page shows you how to implement a basic Hello World program after integrati
     rm -r test
     ```
 
-2. Open `my-app/src/main/java/com/mycompany/app/App.java` and enter the following code. Replace `Your Token` and `Your App ID` with a valid Video SDK temporary token and your App ID.
+2. Open `my-app/src/main/java/com/mycompany/app/App.java` and enter the following code. Replace `Your Token` and `Your App ID` with a valid RTC SDK temporary token and your App ID.
 
     ```java
     import io.agora.rtc.SDK;
@@ -176,7 +176,7 @@ This page shows you how to implement a basic Hello World program after integrati
     ```
 
     :::info
-    The channel name you use to connect to the Video SDK channel must be the same as the one you used to generate your Video SDK temporary token. In the following code, the channel name is set to "test_channel". If you use a different channel name to generate your Video SDK temporary token, replace "test_channel" with your own channel name.
+    The channel name you use to connect to the RTC SDK channel must be the same as the one you used to generate your RTC SDK temporary token. In the following code, the channel name is set to "test_channel". If you use a different channel name to generate your RTC SDK temporary token, replace "test_channel" with your own channel name.
     :::
 
 3. Navigate to `my-app` and create a `lib` folder. Get the `linux-sdk` jar file from maven, and extract the files to the `lib` folder.

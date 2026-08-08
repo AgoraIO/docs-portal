@@ -32,7 +32,7 @@ agent = (
     .with_stt(AssemblyAISTT(
         api_key='your-assemblyai-key',
         language='en-US',
-        uri='wss://streaming.assemblyai.com/v3/ws',
+        ws_url='wss://streaming.assemblyai.com/v3/ws',
     ))
     .with_llm(...)  # configure your LLM vendor
     .with_tts(...)  # configure your TTS vendor
@@ -109,7 +109,7 @@ The parameters listed on this page are validated for use with Conversational AI 
  <Parameter name="language" type="string" required={true}>
  The language code for speech recognition.
  </Parameter>
- <Parameter name="uri" type="string" required={false}>
+ <Parameter name="ws_url" type="string" required={false}>
     The WebSocket URL for the AssemblyAI's streaming API. Specify this to target a particular region. For example, `wss://streaming.assemblyai.com/v3/ws`.
   </Parameter>
 </ParameterList>

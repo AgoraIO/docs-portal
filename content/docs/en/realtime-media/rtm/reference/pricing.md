@@ -60,8 +60,8 @@ Each of the following constitutes one message:
 
 **Presence**
 Each of the following constitutes one message:
-- A `whoNow` query
-- A `whereNow` query
+- A `getOnlineUsers` query
+- A `getUserChannels` query
 - Each `setState`, `getState`, or `removeState` call to manage temporary user state
 - Each triggered presence event notification, such as a client entering a channel, leaving a channel, timing out, or changing status.
 - Each received presence event notification. For example, if a client enters a channel and 10 other clients are subscribed to the channel, it sends 1 presence event notification, and the other 10 clients each receive 1 presence event notification, totaling in 11 messages.

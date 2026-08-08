@@ -5,6 +5,32 @@ description: "New features, improvements and resolved issues for Real-time STT."
 
 ## Releases
 
+### v7.2.3
+
+Released on July 30, 2026
+
+#### New features
+
+Included in this release: 
+
+- **New webhook event for an expiring RTC Token**
+
+  This version adds the [`104 token will expire`](/en/api-reference/api-ref/speech-to-text/api-callback-service#event-104-token-will-expire) event. The Notifications service sends this event to your server when the RTC Token used by the Real-Time STT engine has 30 seconds remaining before it expires. Agora does not send this event if the RTC Token's validity period is 30 seconds or less. This event provides advance notification only; it does not end the task or change the task's final status.
+
+#### Upgrade notes
+
+- **Updated idle timeout and maximum task lifetime rules**
+
+  This version updates the rules for the [`maxIdleTime`](/en/api-reference/api-ref/speech-to-text/join) parameter: the valid range changes to `[0,259200]` seconds, and setting `maxIdleTime` to `0` disables automatic termination due to idle time.
+
+  Independent of `maxIdleTime`, every task also has a maximum lifetime, capped at 72 hours. When a task reaches this limit, Agora terminates it, even if `maxIdleTime` is `0`. When a task exits because it reached the maximum lifetime, the [`102 agent left`](/en/api-reference/api-ref/speech-to-text/api-callback-service#event-102-agent-left) event returns `Task exceeded maximum lifetime` in the `message` field.
+
+- **Transcription and translation results can return stable and interim segments together**
+
+  Transcription and translation results can now contain both a stabilized prefix segment and a segment that may still change within the same update. To support this, the `transcript` and `translation` messages add a new `results[]` field that returns one or more segments. For a single segment, `results[]` has a length of `1`; for a mixed result, `results[]` can have a length greater than `1`.
+
+  If your client uses the JSON protocol, iterate over `results[]` to process each segment, and handle messages where `results[]` is an empty array. The Protobuf protocol fields are unchanged, but a single message can now also carry multiple segments. For field descriptions and examples, see [JSON protocol data structure](/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data#json-protocol-data-structure).
+
 ### v7.2.2
 
 Released on May 18, 2026

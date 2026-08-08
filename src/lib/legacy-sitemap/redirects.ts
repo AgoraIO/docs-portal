@@ -49,7 +49,13 @@ export function resolveLegacySitemapRedirectPath(
 }
 
 function normalizeLegacyPath(path: string) {
-  return path.startsWith('/') ? path : `/${path}`;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  try {
+    return decodeURI(normalizedPath);
+  } catch {
+    return normalizedPath;
+  }
 }
 
 function normalizeLegacySearch(search: string | undefined) {

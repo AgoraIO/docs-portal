@@ -161,7 +161,7 @@ Use either of the following methods to integrate Signaling SDK into your project
         ```
 
 :::note
-To integrate Signaling SDK version `2.2.0` or later alongside Video SDK version `4.3.0` or later, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+To integrate Signaling SDK version `2.2.0` or later alongside RTC SDK version `4.3.0` or later, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 :::
 
 ### Create a user interface
@@ -1332,7 +1332,7 @@ Use the following link to integrate the SDK using Swift Package Manager (SPM):
 ```
 
 :::note
-To integrate Signaling SDK version 2.2.0 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+To integrate Signaling SDK version 2.2.0 or above, and RTC SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
 :::
 
 ### Create a user interface
@@ -2852,7 +2852,7 @@ To create a new Flutter project, follow these steps:
     ```
 
     :::note
-    To integrate Signaling SDK version 2.2.1 or above, and Video SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+    To integrate Signaling SDK version 2.2.1 or above, and RTC SDK version 4.3.0 or above at the same time, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     :::
 
 1. To install the dependencies, open the terminal and execute the following command in the project path:
@@ -3281,7 +3281,7 @@ To integrate the Linux C++ Signaling SDK into your project:
 1. [Download](/en/api-reference/sdks?product=signaling&platform=linux) the latest version of the SDK and unzip it.
 
     :::note
-    To integrate Signaling SDK 2.2.1 or later, and Video SDK 4.3.0 or later in the same project, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
+    To integrate Signaling SDK 2.2.1 or later, and RTC SDK 4.3.0 or later in the same project, refer to [handle integration issues](/en/api-reference/faq/integration/rtm2_rtc_integration_issue).
     :::
 
 1. Copy the files in the SDK package to the project folder as follows:
@@ -3369,10 +3369,6 @@ public:
 
   void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
     cbPrint("onLogoutResult, request id: %lld, errorCode: %d", requestId, errorCode);
-  }
-
-  void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) override {
-    cbPrint("onConnectionStateChanged, channelName: %s, state: %d, reason: %d", channelName, state, reason);
   }
 
   void onLinkStateEvent(const LinkStateEvent& event) override {
@@ -3603,10 +3599,6 @@ void onLogoutResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
   cbPrint("onLogoutResult, request id: %lld, errorCode: %d", requestId, errorCode);
 }
 
-void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) override {
-  cbPrint("onConnectionStateChanged, channelName: %s, state: %d, reason: %d", channelName, state, reason);
-}
-
 void onLinkStateEvent(const LinkStateEvent& event) override {
   cbPrint("onLinkStateEvent, state: %d -> %d, operation: %d, reason: %s", event.previousState, event.currentState, event.operation, event.reason);
 }
@@ -3641,10 +3633,10 @@ rtmClient_->login(TOKEN.c_str(), requestId);
 ```
 After you call this method, the SDK triggers the `onLoginResult` callback and returns the API call result.
 
-Use the `login` return value, or listen to the `onConnectionStateChanged` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_CONNECTION_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_CONNECTION_STATE_CONNECTED`.
+Use the `login` return value, or listen to the `onLinkStateEvent` event notification to confirm that login is successful or obtain the error code and cause of login failure. When performing a login operation, the client's network connection state is `RTM_LINK_STATE_CONNECTING`. After a successful login, the state is updated to `RTM_LINK_STATE_CONNECTED`.
 
 :::note[Best practice]
-To continuously monitor the network connection state of the client, best practice is to continue to listen for `onConnectionStateChanged` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
+To continuously monitor the network connection state of the client, best practice is to continue to listen for `onLinkStateEvent` event notifications throughout the life cycle of the application. For further details, see [Event listeners](/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener).
 :::
 
 :::warning

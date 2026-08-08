@@ -39,8 +39,8 @@ AgoraRtmClientConfig(
     appId: String,
     userId: String,
     useStringUserId: Bool,
-    ispPolicyEnabled: Bool,
     multipath: Bool,
+    ispPolicyEnabled: Bool,
     presenceTimeout: UInt32,
     heartbeatInterval: UInt32,
     reconnectTimeout: UInt32,
@@ -49,7 +49,8 @@ AgoraRtmClientConfig(
     protocolType: AgoraRtmProtocolType,
     logConfig: AgoraRtmLogConfig?,
     encryptionConfig: AgoraRtmEncryptionConfig?,
-    privateConfig: AgoraRtmPrivateConfig?
+    privateConfig: AgoraRtmPrivateConfig?,
+    callbackQueue: DispatchQueue?
 )
 ```
 
@@ -88,11 +89,16 @@ Use the `AgoraRtmProxyConfig` instance to set properties related to the client P
 Keep your Proxy username and password safe. The Signaling SDK does not parse, store, or forward your username and password in any way. If you modify the proxy settings while the app is running, the settings take effect only after you rest the Signaling client.
 :::
 
-`AgoraRtmProxyConfig` contains the following properties:
+`AgoraRtmProxyConfig` includes the following methods and properties:
+
+| Methods |  Description |
+| -------------- |  -------- |
+| `init` | Initializes the `AgoraRtmProxyConfig` instance with default field values.|
+| `initWithServer`  | Initializes the `AgoraRtmProxyConfig` instance with `server`, `port`, and `proxyType`. |
 
 | Properties | Type | Required | Default | Description |
 |:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
-| `proxyType` | `AgoraRtmProxyType` | Optional | `none` | Proxy protocol type. See [`AgoraRtmProxyType`](#enumvproxytyp-e). |
+| `proxyType` | `AgoraRtmProxyType` | Optional | `AgoraRtmProxyTypeNone` | Proxy protocol type. See [`AgoraRtmProxyType`](#agorartmproxytype). |
 | `server` | String | Required | - | Proxy server domain name or IP address. |
 | `port` | unsigned short | Optional | - | Proxy listening port. |
 | `account` | String | Optional | - | Proxy login account. |
@@ -193,12 +199,12 @@ Signaling provides the following event notifications types:
 
 | Event Type | Description |
 |:----------------------------:| ------------------------------------------------------------------------------------------------ |
-| `didReceiveMessageEvent` | Receive message event notifications in subscribed message channels and subscribed topics. |
-| `didReceivePresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. |
-| `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. |
-| `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
-| `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. |
-| `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. For details, see [`AgoraRtmLinkStateEvent`](#configlinkstateeven-t). |
+| `didReceiveMessageEvent` | Receive message event notifications in subscribed message channels and subscribed topics. See [AgoraRtmMessageEvent](#agorartmmessageevent). |
+| `didReceivePresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmPresenceEvent`](#agorartmpresenceevent). |
+| `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. See [`AgoraRtmTopicEvent`](#agorartmtopicevent). |
+| `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`AgoraRtmStorageEvent`](#agorartmstorageevent). |
+| `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmLockEvent`](#agorartmlockevent). |
+| `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. See [`AgoraRtmLinkStateEvent`](#agorartmlinkstateevent). |
 | `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -306,6 +312,7 @@ The `AgoraRtmPresenceIntervalInfo` data type contains the following properties:
 | `leaveUserList` | `[String]` | List of users who left the channel in the previous cycle. |
 | `timeoutUserList` | `[String]` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `[UserState]` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+| `totalOccupancy` | int32 | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 The `AgoraRtmUserState` data type contains the following properties:
 
@@ -879,7 +886,7 @@ The `AgoraRtmJoinChannelOption` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :------------: | :-----: | :------: | :----: | ------------------------------------------------------ |
-| `token` | String | Optional | - | The token used for joining a stream channel.<br />- If your project enables token authentication, you can provide either the [RTC temporary token](/en/introduction/account#generate-temporary-tokens) or obtain an RTC token generated by your [token server](/video-calling/token-authentication/deploy-token-server). <br />- If your project does not enable token authentication, you can enter an empty string or the App ID of a project that enables RTC and Signaling services. |
+| `token` | String | Optional | - | The token used for joining a stream channel.<br />- If your project enables token authentication, you can provide either the [RTC temporary token](/en/introduction/account#generate-temporary-tokens) or obtain an RTC token generated by your [token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server). <br />- If your project does not enable token authentication, you can enter an empty string or the App ID of a project that enables RTC and Signaling services. |
 | `features` | `AgoraRtmJoinChannelFeature` | Optional | `[.message, .presence]` | Sets event notification types when joining a channel. You can use bitwise operations to set multiple event notifications simultaneously. The SDK enables the presence event notification by default. |
 
 #### Basic usage
@@ -3880,52 +3887,6 @@ Channel types.
 | `stream` | `2`: Stream channel. |
 | `user` | `3`: User Channel. |
 
-#### AgoraRtmClientConnectionChangeReason
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `connecting` | `0`: The SDK is connecting with the server. |
-| `joinSuccess` | `1`: The SDK has joined the channel successfully. |
-| `interrupted` | `2`: The connection between the SDK and the server is interrupted. |
-| `bannedByServer` | `3`: The connection between the SDK and the server is banned by the server. |
-| `joinFailed` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `leaveChannel` | `5`: The SDK has left the channel. |
-| `invalidAppId` | `6`: The connection failed because the App ID is not valid. |
-| `invalidChannelName` | `7`: The connection failed because the channel name is not valid. |
-| `invalidToken` | `8`: The connection failed because the token is not valid. |
-| `tokenExpired` | `9`: The connection failed because the token is expired. |
-| `rejectedByServer` | `10`: The connection is rejected by server. |
-| `settingProxyServer` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `renewToken` | `12`: The connection state changed because the token is renewed. |
-| `clientIpAddressChanged` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `keepAliveTimeout` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `rejoinSuccess` | `15`: The user has rejoined the channel successfully. |
-| `changedLost` | `16`: The connection between the SDK and the server is lost. |
-| `echoTest` | `17`: The connection state changes due to the echo test. |
-| `clientIpAddressChangedByUser` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `sameUidLogin` | `19`: The user joined the same channel from different devices with the same UID. |
-| `tooManyBroadcasters` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `licenseValidationFailure` | `21`: License verification failed. |
-| `certificationVerifyFailure` | `22`: Server certificate verification failed. |
-| `streamChannelNotAvailable` | `23`: The stream channel does not exist. |
-| `inconsistentAppId` | `24`: App ID and Token do not match. |
-| `loginSuccess` | `10001`: The SDK logs in to the Signaling system. |
-| `logout` | `10002`: The SDK logs out from the Signaling system. |
-| `presenceNotReady` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### AgoraRtmClientConnectionState
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `disconnected` | `1`: The SDK has disconnected with the server. |
-| `connecting` | `2`: The SDK is connecting with the server. |
-| `connected` | `3`: The SDK has connected with the server. |
-| `reconnecting` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `failed` | `5`: The SDK failed to connect with the server. |
 
 #### AgoraRtmEncryptionMode
 
@@ -4239,6 +4200,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `channelPresenceNotReady` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `channelReceiverOffline` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `channelJoinCanceled` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `channelSubscribeCanceled` | The channel subscription is canceled before it completes. |
 | `-12001` | `storageOperationFailed` | Storage operation failed. |
 | `-12002` | `storageMetadataItemExceedLimitation` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `storageInvalidMetadataItem` | Invalid Metadata Item. |
@@ -4271,6 +4233,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `presenceUserNotExist` | The user does not exist. |
 | `-13012` | `presenceOperationTimeout` | Presence operation timed out. |
 | `-13013` | `presenceOperationFailed` | Presence operation failed. |
+| `-13014` | `presenceInactive` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `presencePendingRequestCancelled` | The pending Presence request is canceled. |
+| `-13016` | `presencePendingRequestExceedLimitation` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `lockOperationFailed` | Lock operation failed. |
 | `-14002` | `lockOperationTimeout` | Lock operation timed out. |
 | `-14003` | `lockOperationPerforming` | Lock operation in progress. |

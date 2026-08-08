@@ -74,6 +74,22 @@ function extractLinks(sourceFile: string): OverviewLink[] {
     .map((href) => ({ href, sourceFile }));
 }
 
+function extractSolutionCardTitlesByHeading(sourceFile: string) {
+  const markdown = readDoc(sourceFile);
+  const sections = [
+    ...markdown.matchAll(/^##\s+(.+?)\n([\s\S]*?)(?=^##\s+|$(?![\s\S]))/gm),
+  ];
+
+  return Object.fromEntries(
+    sections.map(([, heading, body]) => [
+      heading,
+      [...body.matchAll(/<SolutionCard\b[\s\S]*?\btitle="([^"]+)"/g)].map(
+        ([, title]) => title,
+      ),
+    ]),
+  );
+}
+
 function isExternalHref(href: string) {
   return /^[a-z][a-z0-9+.-]*:/i.test(href);
 }
@@ -163,6 +179,25 @@ describe('overview entry links', () => {
     );
   });
 
+  it('groups real-time media overview cards by application scenario and supporting capability', () => {
+    expect(
+      extractSolutionCardTitlesByHeading('en/realtime-media/overview.mdx'),
+    ).toMatchObject({
+      'Build live interaction': [
+        'Interactive Live Streaming',
+        'Broadcast Streaming',
+        'Video Calling',
+        'Voice Calling',
+      ],
+      'Extend live interaction': [
+        'Signaling',
+        'Chat',
+        'Whiteboard',
+        'Extensions Marketplace',
+      ],
+    });
+  });
+
   it('uses product-specific titles for product overview pages', () => {
     const expectedTitles = {
       'en/realtime-media/overview.mdx': 'RTC overview',
@@ -170,8 +205,7 @@ describe('overview entry links', () => {
         'Broadcast Streaming overview',
       'en/realtime-media/broadcast-streaming/product-overview.mdx':
         'Broadcast Streaming overview',
-      'en/realtime-media/cloud-recording/index.mdx':
-        'Cloud Recording overview',
+      'en/realtime-media/cloud-recording/index.mdx': 'Cloud Recording overview',
       'en/realtime-media/im/index.mdx': 'Chat overview',
       'en/realtime-media/marketplace/index.mdx':
         'Extensions Marketplace overview',
@@ -179,15 +213,11 @@ describe('overview entry links', () => {
       'en/realtime-media/media-push/index.mdx': 'Media Push overview',
       'en/realtime-media/on-premise-recording/index.mdx':
         'On-Premise Recording overview',
-      'en/realtime-media/rtc-server-sdk/index.mdx':
-        'Server Gateway overview',
+      'en/realtime-media/rtc-server-sdk/index.mdx': 'Server Gateway overview',
       'en/realtime-media/rtm/index.mdx': 'Signaling overview',
-      'en/realtime-media/rtmp-gateway/index.mdx':
-        'Media Gateway overview',
-      'en/realtime-media/speech-to-text/index.mdx':
-        'Speech-to-Text overview',
-      'en/realtime-media/transcoding/index.mdx':
-        'Cloud Transcoding overview',
+      'en/realtime-media/rtmp-gateway/index.mdx': 'Media Gateway overview',
+      'en/realtime-media/speech-to-text/index.mdx': 'Speech-to-Text overview',
+      'en/realtime-media/transcoding/index.mdx': 'Cloud Transcoding overview',
       'en/realtime-media/video/index.mdx': 'Video Calling overview',
       'en/realtime-media/voice/index.mdx': 'Voice Calling overview',
       'en/realtime-media/whiteboard/index.mdx':
@@ -254,8 +284,7 @@ describe('overview entry links', () => {
       'en/api-reference/meta.json': 'Reference overview',
       'en/realtime-media/broadcast-streaming/meta.json':
         'Broadcast Streaming overview',
-      'en/realtime-media/cloud-recording/meta.json':
-        'Cloud Recording overview',
+      'en/realtime-media/cloud-recording/meta.json': 'Cloud Recording overview',
       'en/realtime-media/im/meta.json': 'Chat overview',
       'en/realtime-media/marketplace/meta.json':
         'Extensions Marketplace overview',
@@ -263,19 +292,16 @@ describe('overview entry links', () => {
       'en/realtime-media/media-push/meta.json': 'Media Push overview',
       'en/realtime-media/on-premise-recording/meta.json':
         'On-Premise Recording overview',
-      'en/realtime-media/rtc-server-sdk/meta.json':
-        'Server Gateway overview',
+      'en/realtime-media/rtc-server-sdk/meta.json': 'Server Gateway overview',
       'en/realtime-media/rtm/meta.json': 'Signaling overview',
       'en/realtime-media/rtmp-gateway/meta.json': 'Media Gateway overview',
-      'en/realtime-media/speech-to-text/meta.json':
-        'Speech-to-Text overview',
+      'en/realtime-media/speech-to-text/meta.json': 'Speech-to-Text overview',
       'en/realtime-media/transcoding/meta.json': 'Cloud Transcoding overview',
       'en/realtime-media/video/meta.json': 'Video Calling overview',
       'en/realtime-media/voice/meta.json': 'Voice Calling overview',
       'en/realtime-media/whiteboard/meta.json':
         'Interactive Whiteboard overview',
-      'en/realtime-media/agora-analytics/meta.json':
-        'Agora Analytics overview',
+      'en/realtime-media/agora-analytics/meta.json': 'Agora Analytics overview',
       'en/realtime-media/flexible-classroom/meta.json':
         'Flexible Classroom overview',
       'en/realtime-media/interactive-live-streaming/meta.json':

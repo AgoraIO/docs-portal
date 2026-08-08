@@ -79,7 +79,7 @@ const crypto = require('crypto');
 const msgpack = require('msgpack-lite');
 
 appcert = ""; // Your app certificate from Agora
-channel = ""; // The Video SDK channel name
+channel = ""; // The RTC SDK channel name
 uid = ""; // The UID of the host in the channel
 expiresAfter = 86400; // Valid duration of stream key (seconds)
 
@@ -134,4 +134,4 @@ By default, after Media Gateway receives the pushed stream, it will not transcod
 
 ### REST API middleware
 
-[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Media Gateway interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as middleware to bridge front-end applications using Agora's Video SDK or Voice SDK with Agora's RESTful APIs.
+[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Media Gateway interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as middleware to bridge front-end applications using Agora's RTC SDK or Voice SDK with Agora's RESTful APIs.

@@ -3,7 +3,7 @@ title: "Receive webhook notifications"
 description: "Receive notification of channel events in real time."
 ---
 
-A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Broadcast Streaming events. With Notifications, you can subscribe to Broadcast Streaming events and receive notifications in real time.
+A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about RTC events. With Notifications, you can subscribe to RTC events and receive notifications in real time.
 
 ## Understand the tech
 
@@ -339,7 +339,7 @@ Refer to the following steps to use the `clientSeq` field to enable your server 
 1. Enable Agora Notifications, and subscribe to RTC channel event callbacks. Best practice is to subscribe to the following event types according to your use-case:
 
     * In the `LIVE_BROADCASTING` profile: `103`, `104`, `105`, `106`, `111`, and `112`.
-    * In the `COMMUNICATION` profile: `103`, `104`, `111`, and `112`.
+    * In the `COMMUNICATION` profile: `107`, `108`, `111`, and `112`.
 
 2. Use the channel event callbacks to get the latest status updates about the following at your server:
 

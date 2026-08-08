@@ -32,7 +32,7 @@ Before you start, ensure that you have:
 - Your [Customer ID and Customer Secret](/en/api-reference/api-ref/cloud-transcoding/authentication) for REST API authentication
 - [RTC tokens](/en/introduction/account#generate-temporary-tokens) for your channels (valid for up to 24 hours)
 - A way to test transcoding input streams:
-  - Implement the [Video Calling Quickstart](/en/realtime-media/video/get-started-sdk), or
+  - Implement the [Video Calling Quickstart](/en/realtime-media/rtc/get-started-sdk), or
   - Use the Agora [Web Demo](https://webdemo-global.agora.io/index.html) to simulate audio and video streams
 
 :::info

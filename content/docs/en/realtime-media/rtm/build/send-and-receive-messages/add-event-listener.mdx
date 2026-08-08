@@ -184,12 +184,6 @@ RtmEventListener eventListener = new RtmEventListener() {
     }
 
     @Override
-    public void onConnectionStateChange(String channelName, RtmConstants.RtmConnectionState state,
-            RtmConstants.RtmConnectionChangeReason reason) {
-        // Triggered when the connection state changes
-    }
-
-    @Override
     public void onLinkStateEvent(LinkStateEvent event) {
         // Triggered when the link state changes
     }
@@ -229,14 +223,6 @@ val eventListener = object : RtmEventListener {
 
     override fun onStorageEvent(event: StorageEvent) {
         // Triggered when the subscribed storage info changes
-    }
-
-    override fun onConnectionStateChange(
-        channelName: String,
-        state: RtmConstants.RtmConnectionState,
-        reason: RtmConstants.RtmConnectionChangeReason
-    ) {
-        // Triggered when the connection state changes
     }
 
     override fun onLinkStateEvent(event: LinkStateEvent) {
@@ -284,7 +270,6 @@ Signaling SDK offers the following events:
 | `onLockEvent`             | Receive all lock event notifications in the message channel you have subscribed to and stream channel you have joined. The event payload data contains information such as channel name, channel type, event type, and lock details. |
 | `onLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `onTokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
-| `onConnectionStateChanged` | (Deprecated) Receive event notifications of client network connection status changes, including channel name, connection status, and reason for change.  |
 
 For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
 
@@ -938,7 +923,7 @@ Signaling uses an `IRtmEventHandler` instance to process messages and event noti
 class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) {}
+    void onLinkStateEvent(const LinkStateEvent &event) {}
     void onLoginResult(RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
@@ -976,7 +961,7 @@ Signaling SDK offers the following events:
 | `onTopicEvent`  | Receive notifications of topic change events in all the stream channels you have joined. |
 | `onStorageEvent`| Receive all channel metadata event notifications in all message channels you have subscribed to and stream channels you have joined, as well as user metadata event notifications from all subscribed users. |
 | `onLockEvent`| Receive all lock event notifications in the message channels you have subscribed to and stream channels you have joined.  |
-| `onConnectionStateChanged`| Receive event notifications for client network connection status changes.  |
+| `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
 For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
@@ -1003,7 +988,7 @@ Signaling uses an `IRtmEventHandler` instance to process messages and event noti
 class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) {}
+    void onLinkStateEvent(const LinkStateEvent &event) {}
     void onLoginResult(RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
@@ -1041,7 +1026,7 @@ Signaling SDK offers the following events:
 | `onTopicEvent`  | Receive notifications of topic change events in all the stream channels you have joined. |
 | `onStorageEvent`| Receive all channel metadata event notifications in all message channels you have subscribed to and stream channels you have joined, as well as user metadata event notifications from all subscribed users. |
 | `onLockEvent`| Receive all lock event notifications in the message channels you have subscribed to and stream channels you have joined.  |
-| `onConnectionStateChanged`| Receive event notifications for client network connection status changes.  |
+| `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
 For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.

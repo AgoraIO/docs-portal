@@ -16,22 +16,39 @@ type McpInitializeResult = {
   serverInfo: { name: string; version: string };
 };
 
+type McpTool = {
+  name: string;
+};
+
 type McpServerCard = {
+  serverInfo?: { name: string; version: string };
+  tools?: McpTool[];
   url: string;
+};
+
+type McpServerCards = {
+  servers?: McpServerCard[];
 };
 
 type SkillsIndex = {
   skills?: Array<{ digest: string; url: string }>;
 };
 
+type McpJsonRpcPayload<T> = {
+  error?: unknown;
+  result?: T;
+};
+
 export function validateDiscoveryDocuments({
   mcpDiscovery,
   mcpServerCard,
+  mcpServerCards,
   skillBody,
   skillsIndex,
 }: {
   mcpDiscovery: McpDiscovery;
   mcpServerCard: McpServerCard;
+  mcpServerCards: McpServerCards;
   skillBody: string;
   skillsIndex: SkillsIndex;
 }) {
@@ -51,6 +68,13 @@ export function validateDiscoveryDocuments({
     throw new Error('MCP discovery documents advertise different endpoints.');
   }
 
+  if (
+    mcpServerCards.servers?.length !== 1 ||
+    JSON.stringify(mcpServerCards.servers[0]) !== JSON.stringify(mcpServerCard)
+  ) {
+    throw new Error('MCP server card endpoints advertise different metadata.');
+  }
+
   const publicServer = mcpDiscovery.servers?.find(
     (server) => server.name === 'public',
   );
@@ -66,17 +90,7 @@ export function validateDiscoveryDocuments({
 }
 
 export function parseMcpInitializeResponse(body: string): McpInitializeResult {
-  const payload: {
-    error?: unknown;
-    result?: McpInitializeResult;
-  } = body.trim().startsWith('{')
-    ? JSON.parse(body)
-    : JSON.parse(
-        body
-          .split('\n')
-          .find((line) => line.startsWith('data: '))
-          ?.slice('data: '.length) ?? '',
-      );
+  const payload = parseMcpJsonRpcPayload<McpInitializeResult>(body);
 
   if (payload.error) {
     throw new Error(`MCP initialize failed: ${JSON.stringify(payload.error)}`);
@@ -88,26 +102,71 @@ export function parseMcpInitializeResponse(body: string): McpInitializeResult {
   return payload.result;
 }
 
+export function parseMcpToolsResponse(body: string): McpTool[] {
+  const payload = parseMcpJsonRpcPayload<{ tools?: McpTool[] }>(body);
+
+  if (payload.error) {
+    throw new Error(`MCP tools/list failed: ${JSON.stringify(payload.error)}`);
+  }
+  if (!payload.result?.tools) {
+    throw new Error('MCP tools/list returned incomplete tool metadata.');
+  }
+
+  return payload.result.tools;
+}
+
+export function validateMcpServiceMetadata({
+  initialized,
+  listedTools,
+  mcpServerCard,
+}: {
+  initialized: McpInitializeResult;
+  listedTools: McpTool[];
+  mcpServerCard: McpServerCard;
+}) {
+  if (
+    JSON.stringify(mcpServerCard.serverInfo) !==
+    JSON.stringify(initialized.serverInfo)
+  ) {
+    throw new Error('MCP server card serverInfo does not match initialize.');
+  }
+
+  const advertisedToolNames = (mcpServerCard.tools ?? [])
+    .map((tool) => tool.name)
+    .sort();
+  const listedToolNames = listedTools.map((tool) => tool.name).sort();
+  if (JSON.stringify(advertisedToolNames) !== JSON.stringify(listedToolNames)) {
+    throw new Error('MCP server card tool metadata does not match tools/list.');
+  }
+}
+
 async function run() {
   const baseUrl = getArgument('--base-url')?.replace(/\/$/, '');
-  const [mcpDiscovery, mcpServerCard, skillsIndex, compatibilityDiscovery] =
-    baseUrl
-      ? await Promise.all([
-          fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp.json`),
-          fetchJson<McpServerCard>(
-            `${baseUrl}/.well-known/mcp/server-card.json`,
-          ),
-          fetchJson<SkillsIndex>(
-            `${baseUrl}/.well-known/agent-skills/index.json`,
-          ),
-          fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp`),
-        ])
-      : await Promise.all([
-          readJson<McpDiscovery>('public/.well-known/mcp.json'),
-          readJson<McpServerCard>('public/.well-known/mcp/server-card.json'),
-          readJson<SkillsIndex>('public/.well-known/agent-skills/index.json'),
-          readJson<McpDiscovery>('public/.well-known/mcp.json'),
-        ]);
+  const [
+    mcpDiscovery,
+    mcpServerCard,
+    mcpServerCards,
+    skillsIndex,
+    compatibilityDiscovery,
+  ] = baseUrl
+    ? await Promise.all([
+        fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp.json`),
+        fetchJson<McpServerCard>(`${baseUrl}/.well-known/mcp/server-card.json`),
+        fetchJson<McpServerCards>(
+          `${baseUrl}/.well-known/mcp/server-cards.json`,
+        ),
+        fetchJson<SkillsIndex>(
+          `${baseUrl}/.well-known/agent-skills/index.json`,
+        ),
+        fetchJson<McpDiscovery>(`${baseUrl}/.well-known/mcp`),
+      ])
+    : await Promise.all([
+        readJson<McpDiscovery>('public/.well-known/mcp.json'),
+        readJson<McpServerCard>('public/.well-known/mcp/server-card.json'),
+        readJson<McpServerCards>('public/.well-known/mcp/server-cards.json'),
+        readJson<SkillsIndex>('public/.well-known/agent-skills/index.json'),
+        readJson<McpDiscovery>('public/.well-known/mcp.json'),
+      ]);
 
   if (JSON.stringify(mcpDiscovery) !== JSON.stringify(compatibilityDiscovery)) {
     throw new Error('The MCP compatibility endpoint does not match mcp.json.');
@@ -127,20 +186,46 @@ async function run() {
   const discovery = validateDiscoveryDocuments({
     mcpDiscovery,
     mcpServerCard,
+    mcpServerCards,
     skillBody: await skillResponse.text(),
     skillsIndex,
   });
-  const initializeResponse = await fetch(discovery.mcpUrl, {
-    body: JSON.stringify({
-      id: 1,
-      jsonrpc: '2.0',
-      method: 'initialize',
-      params: {
-        capabilities: {},
-        clientInfo: { name: 'docs-portal-validator', version: '1.0.0' },
-        protocolVersion: MCP_PROTOCOL_VERSION,
-      },
+  const initialized = parseMcpInitializeResponse(
+    await callMcpMethod(discovery.mcpUrl, 1, 'initialize', {
+      capabilities: {},
+      clientInfo: { name: 'docs-portal-validator', version: '1.0.0' },
+      protocolVersion: MCP_PROTOCOL_VERSION,
     }),
+  );
+  const listedTools = parseMcpToolsResponse(
+    await callMcpMethod(discovery.mcpUrl, 2, 'tools/list', {}),
+  );
+  validateMcpServiceMetadata({ initialized, listedTools, mcpServerCard });
+  console.log(
+    `[agent-discovery] Skill ${discovery.skillDigest}; MCP ${initialized.serverInfo.name} ${initialized.serverInfo.version} (${initialized.protocolVersion}); ${listedTools.length} tools`,
+  );
+}
+
+function parseMcpJsonRpcPayload<T>(body: string): McpJsonRpcPayload<T> {
+  if (body.trim().startsWith('{')) {
+    return JSON.parse(body) as McpJsonRpcPayload<T>;
+  }
+
+  const data = body
+    .split('\n')
+    .find((line) => line.startsWith('data: '))
+    ?.slice('data: '.length);
+  return JSON.parse(data ?? '') as McpJsonRpcPayload<T>;
+}
+
+async function callMcpMethod(
+  url: string,
+  id: number,
+  method: string,
+  params: unknown,
+) {
+  const response = await fetch(url, {
+    body: JSON.stringify({ id, jsonrpc: '2.0', method, params }),
     headers: {
       Accept: 'application/json, text/event-stream',
       'Content-Type': 'application/json',
@@ -148,18 +233,10 @@ async function run() {
     },
     method: 'POST',
   });
-  if (!initializeResponse.ok) {
-    throw new Error(
-      `MCP initialize failed with HTTP ${initializeResponse.status}.`,
-    );
+  if (!response.ok) {
+    throw new Error(`MCP ${method} failed with HTTP ${response.status}.`);
   }
-
-  const initialized = parseMcpInitializeResponse(
-    await initializeResponse.text(),
-  );
-  console.log(
-    `[agent-discovery] Skill ${discovery.skillDigest}; MCP ${initialized.serverInfo.name} ${initialized.serverInfo.version} (${initialized.protocolVersion})`,
-  );
+  return response.text();
 }
 
 async function readJson<T>(relativePath: string): Promise<T> {
