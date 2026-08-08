@@ -20,9 +20,18 @@ To ensure high availability of REST services, Agora enables you to switch domain
 
 For example, suppose your business server is located in Europe. You set the primary domain name to `api.agora.io`, and the business server resolves the primary domain to Germany. Germany is in Central Europe, corresponding to `api-eu-central-1.agora.io`. The adjacent region is Western Europe, so you can retry using `api-eu-west-1.agora.io` or `api-eu-west-1.sd-rtn.com`.
 
+## Call frequency limit
+
+For each Agora account, not each App ID, the maximum call frequency is:
+
+- 20 times per second for each API that queries online channel information.
+- 10 times per second for each other API.
+
+If your call frequency exceeds this limit, see [How can I avoid being frequency limited when calling Agora Server RESTful APIs?](/en/api-reference/faq/integration/restful_api_call_frequency) to optimize your call frequency.
+
 ## Precautions
 
-- To avoid exceeding the QPS limit with retry requests, use a backoff strategy. For example, wait 1 second before the first retry, 3 seconds before the second retry, and 6 seconds before the third retry.
+- To avoid exceeding the call frequency limit with retry requests, use a backoff strategy. For example, wait 1 second before the first retry, 3 seconds before the second retry, and 6 seconds before the third retry.
 - If the request fails because of a network problem rather than DNS resolution, skip alternate domain retry and proceed to adjacent domain retry.
 - Before switching to a regional domain name, make sure the REST service you call, such as Channel Management, is deployed in that region.
 
