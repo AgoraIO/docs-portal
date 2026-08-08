@@ -21,7 +21,7 @@ To enable Interactive Whiteboard:
 1. Locate the **Whiteboard** card and turn on its toggle.
 1. Select the settings icon to open the configuration panel. The Interactive Whiteboard panel provides security credentials and services configuration.
 
-![Interactive Whiteboard settings on the Services page](/console-tmp/whiteboard-config.png)
+![Interactive Whiteboard settings on the Services page](https://assets-docs.agora.io/images/console/whiteboard-config.png)
 
 ## Get security credentials for your whiteboard project
 

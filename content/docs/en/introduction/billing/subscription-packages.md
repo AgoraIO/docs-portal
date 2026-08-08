@@ -17,7 +17,7 @@ By default, a new account may be assigned a Free package when the first eligible
 1. Select the tab for the product subscription you want to manage, such as Realtime, Signaling, or Chat.
 1. Select your package and click **Upgrade** or **Downgrade**.
 
-    ![Subscription plans](/console-tmp/subscription-plans.png)
+    ![Subscription plans](https://assets-docs.agora.io/images/console/subscription-plans.png)
 
 For detailed pricing for a specific product, see the product's pricing page.
 

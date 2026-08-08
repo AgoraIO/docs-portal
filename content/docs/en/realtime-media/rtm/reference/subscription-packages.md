@@ -17,7 +17,7 @@ By default, a new account is assigned the Free package when the first project is
 1. Switch to the **Signaling** tab.
 1. Select your package and click **Upgrade** or **Downgrade**.   
 
-![Available packages](/console-tmp/subscription-plans-signaling.png)
+![Available packages](https://assets-docs.agora.io/images/console/subscription-plans-signaling.png)
 
 :::info
 - If you are a non-contracted customer, all packages except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).

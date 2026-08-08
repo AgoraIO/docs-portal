@@ -17,7 +17,7 @@ To enable Signaling for an existing project, in [Agora Console](https://console.
 
 To configure Signaling, select the settings icon on the **Signaling** card to open its configuration panel.
 
-![Signaling settings on the Services page](/console-tmp/signaling-config.png)
+![Signaling settings on the Services page](https://assets-docs.agora.io/images/console/signaling-config.png)
 
 The Signaling panel provides the following configuration.
 

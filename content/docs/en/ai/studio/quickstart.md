@@ -17,11 +17,11 @@ To create your first agent:
 2. Select your project from the dropdown at the top of the page. The agent uses this project's credentials to connect to Agora. Agora bills the usage to this project.
 3. In the navigation sidebar, select **Agents**.
 
-    ![List of agents](/console-tmp/agent-list.png)
+    ![List of agents](https://assets-docs.agora.io/images/console/agent-list.png)
 
 4. Select **Create Agent**.
 
-    <img alt="Create a new agent" src="/console-tmp/create-agent.png" width="600"  />
+    <img alt="Create a new agent" src="https://assets-docs.agora.io/images/console/create-agent.png" width="600"  />
 
 5. Enter a name for your agent.
 6. Under **Choose a template**, select the **Blank Template**.
@@ -29,7 +29,7 @@ To create your first agent:
 
     The agent editor opens with a system prompt and pre-configured model settings.
 
-    ![](/console-tmp/agent-editor-prompt.png)
+    ![](https://assets-docs.agora.io/images/console/agent-editor-prompt.png)
 
 ## Configure your agent
 
@@ -49,7 +49,7 @@ Models determine which ASR, LLM, and TTS services your agent uses to process spe
 
 1. Select the **Models** tab.
 
-    ![](/console-tmp/agent-editor-models.png)
+    ![](https://assets-docs.agora.io/images/console/agent-editor-models.png)
 
 2. Review the pre-selected models for **Automatic Speech Recognition (ASR)**, **Large Language Model (LLM)**, and **Text-to-Speech (TTS)**. Use the default values to create your first agent.
 
