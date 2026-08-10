@@ -15,6 +15,38 @@ beforeEach(() => {
 });
 
 describe('SdksCatalog', () => {
+  it('uses a responsive card grid for the full catalog', () => {
+    const { container } = render(<SdksCatalog locale="zh-CN" />);
+
+    const catalog = container.querySelector('[data-sdk-download-catalog]');
+    expect(catalog).toHaveAttribute('data-layout', 'catalog');
+    expect(catalog).toHaveClass('grid', 'md:grid-cols-2');
+
+    const videoCard = screen.getByRole('article', { name: '视频 SDK' });
+    expect(videoCard).toHaveClass('bg-card', 'shadow-sm');
+  });
+
+  it('keeps a filtered product embed full width without a redundant summary', () => {
+    const { container } = render(
+      <SdksCatalog locale="zh-CN" platform="android" product="video" />,
+    );
+
+    const catalog = container.querySelector('[data-sdk-download-catalog]');
+    expect(catalog).toHaveAttribute('data-layout', 'embedded');
+    expect(catalog).not.toHaveClass('md:grid-cols-2');
+    expect(screen.queryByText('正在显示 视频 SDK')).not.toBeInTheDocument();
+  });
+
+  it('preserves the English embedded summary and spacing', () => {
+    const { container } = render(
+      <SdksCatalog platform="linux" product="signaling" />,
+    );
+
+    const catalog = container.querySelector('[data-sdk-download-catalog]');
+    expect(catalog).toHaveClass('gap-3');
+    expect(screen.getByText('Showing SDKs for Signaling SDK')).toBeVisible();
+  });
+
   it('lists each product once with platform tabs and a default install command', () => {
     render(<SdksCatalog />);
 
@@ -34,6 +66,9 @@ describe('SdksCatalog', () => {
     expect(
       within(videoCard).getByRole('tab', { name: 'Web' }),
     ).toBeInTheDocument();
+    expect(
+      within(videoCard).getByRole('tab', { name: 'Android' }),
+    ).not.toHaveClass('shrink-0');
 
     // No global platform picker remains.
     expect(
@@ -126,6 +161,16 @@ describe('SdksCatalog', () => {
     expect(overflowCue).toHaveClass('opacity-0');
     expect(typescriptTab).toHaveClass('min-h-11');
     expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
+    expect(
+      within(agentsCard).getByRole('tablist', {
+        name: '对话式 AI 引擎 SDK 平台',
+      }),
+    ).toHaveClass('overflow-x-auto');
+
+    const packageManager = within(agentsCard).getByRole('link', {
+      name: '包管理器 ↗',
+    });
+    expect(packageManager).toHaveClass('min-h-11');
   });
 
   it('only exposes the latest SDK version for download', () => {
@@ -172,15 +217,8 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-    const select = within(voiceCard).getByRole('combobox', {
-      name: 'Voice SDK version',
-    }) as HTMLSelectElement;
-    const optionLabels = Array.from(select.options).map(
-      (option) => option.textContent,
-    );
-
-    expect(optionLabels).toContain('v4.6.2');
-    expect(optionLabels).not.toContain('v4.6.2 - Previous');
+    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(within(voiceCard).queryByText(/Previous/)).not.toBeInTheDocument();
   });
 
   it('falls back to a download button when the platform has no derivable command', () => {
@@ -397,7 +435,7 @@ describe('SdksCatalog', () => {
   it('uses prop filters for zh-CN product download pages', () => {
     render(<SdksCatalog locale="zh-CN" platform="linux" product="signaling" />);
 
-    expect(screen.getByText('正在显示 实时消息 SDK')).toBeVisible();
+    expect(screen.queryByText('正在显示 实时消息 SDK')).not.toBeInTheDocument();
     expect(
       screen.queryByRole('article', { name: '视频 SDK' }),
     ).not.toBeInTheDocument();
@@ -428,7 +466,7 @@ describe('SdksCatalog', () => {
       />,
     );
 
-    expect(screen.getByText('正在显示 灵动课堂 SDK')).toBeVisible();
+    expect(screen.queryByText('正在显示 灵动课堂 SDK')).not.toBeInTheDocument();
     expect(screen.getByRole('article', { name: '灵动课堂 SDK' })).toBeVisible();
     expect(
       screen.queryByRole('article', { name: '云课堂 SDK' }),
@@ -443,7 +481,9 @@ describe('SdksCatalog', () => {
       <SdksCatalog locale="zh-CN" platform="electron" product="meeting" />,
     );
 
-    expect(screen.getByText('正在显示 智能云会议引擎 SDK')).toBeVisible();
+    expect(
+      screen.queryByText('正在显示 智能云会议引擎 SDK'),
+    ).not.toBeInTheDocument();
     const meetingCard = screen.getByRole('article', {
       name: '智能云会议引擎 SDK',
     });
@@ -499,7 +539,7 @@ describe('SdksCatalog', () => {
       within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
     ).toBeVisible();
     expect(
-      within(voiceCard).getByRole('link', { name: '直接下载' }),
+      within(voiceCard).getByRole('link', { name: '下载 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
@@ -618,12 +658,20 @@ describe('SdksCatalog', () => {
         "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
       ),
     ).toBeVisible();
-    expect(
-      within(videoCard).getByRole('link', { name: '直接下载' }),
-    ).toHaveAttribute(
+    const downloadLink = within(videoCard).getByRole('link', {
+      name: '下载 SDK',
+    });
+    expect(downloadLink).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
     );
+    expect(downloadLink).toHaveClass('bg-primary', 'min-h-11');
+    expect(
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 版本' }),
+    ).toHaveClass('min-h-11');
+    expect(
+      within(videoCard).getByRole('link', { name: '包管理器 ↗' }),
+    ).toHaveClass('min-h-11');
   });
 
   it('ignores invalid product and platform query values', () => {
