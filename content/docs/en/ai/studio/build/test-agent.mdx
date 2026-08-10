@@ -1,0 +1,82 @@
+---
+title: Test your agent
+description: Test agents and troubleshoot configuration issues before deployment.
+---
+The test interface allows you to test your agent configuration and confirm that your selected models and integrations are functioning together as expected. Use the test panel to refine your system prompts, greeting messages, and provider settings before deployment.
+
+## Run a test call
+
+1. In the navigation sidebar, select **Agents**, then select the agent you want to test.
+1. From the **Action** menu, select **Edit Agent**.
+1. Make sure the models selected on the **Models** tab use an **Agora Managed Key**. If you are using your own API keys, verify that your credentials are valid.
+1. Select the **Test** tab in the right panel. The agent visualizer shows a **Ready to Connect** status.
+1. Select **Start Call**. The agent status changes from **Ready to Connect**, to **Connecting**, to **Connected**.
+    ![Test agent panel](https://assets-docs.agora.io/images/console/test-agent-panel.png)
+1. Speak to your agent and confirm it responds correctly and maintains a conversation without errors.
+1. Select **Hang Up** to end the test call.
+
+## What to test
+
+During testing, verify the following:
+
+- **ASR accuracy**: Speak clearly and check if the agent correctly understands your speech. Review the transcript to verify transcription accuracy. If the agent frequently misunderstands you, consider adjusting ASR parameters or trying a different ASR provider.
+
+- **LLM responses**: Confirm that the agent responds appropriately to your queries. Use the transcript to review the complete conversation flow. If responses are off-topic or unclear, refine your system prompts in the LLM configuration.
+
+- **TTS quality**: Listen to the agent's voice output. If the voice sounds unnatural or has pronunciation issues, adjust TTS settings or select a different voice model.
+
+- **Conversation flow**: Test multi-turn conversations to ensure the agent maintains context and handles follow-up questions correctly.
+
+- **Integrations**: If you have configured an MCP server, knowledge base, Custom Tool, or connector, trigger a conversation that invokes the integration and verify that the agent calls it correctly and returns the expected response.
+
+## Troubleshooting and debugging
+
+If you encounter connectivity or quality issues, refer to the following troubleshooting guide.
+
+### Connection failures
+
+If you cannot connect to the agent:
+
+- Ensure that the selected Agora project has Conversational AI enabled.
+- Check your internet connection.
+- Refresh the page and try again.
+- If the issue persists, verify that all provider API keys are valid.
+
+### Agent doesn't respond
+
+If the agent doesn't respond after you speak:
+
+- Verify that your microphone is enabled and permissions are granted in your browser.
+- Check that the selected models use an Agora Managed Key or have valid credentials.
+- Ensure your API keys are active and have sufficient quota with your providers.
+
+### Poor speech recognition
+
+If the agent frequently misunderstands your speech:
+
+- Speak clearly and reduce background noise.
+- Check that ASR language settings match the language you're speaking.
+- Try adjusting ASR parameters such as model selection or sensitivity.
+- Consider switching to a different ASR provider.
+
+### Out-of-context responses
+
+If the agent provides irrelevant or unexpected responses:
+
+- Review and refine your system prompts in the LLM configuration.
+- Check that the LLM model selected is appropriate for your use case.
+- Verify that your greeting message sets proper context for the conversation.
+
+### Voice quality issues
+
+If the agent's voice sounds distorted or unnatural:
+
+- Check your audio output device.
+- Try selecting a different voice model in TTS settings.
+- Adjust TTS parameters such as sample rate.
+- Consider switching to a different TTS provider.
+
+## Next steps
+
+- [Publish your agent](../deploy/deploy-agent): Publish your tested agent to production environments
+- [Connect your agent](../deploy/connect-agent): Integrate your deployed agent with applications using APIs and webhooks

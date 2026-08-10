@@ -9,7 +9,7 @@ const orderedListTargets = [
   'content/docs/en/ai/studio/deploy/deploy-agent.md',
   'content/docs/en/ai/studio/deploy/import.md',
   'content/docs/en/ai/studio/deploy/inbound.md',
-  'content/docs/en/ai/studio/deploy/sip-trunk.md',
+  'content/docs/en/ai/studio/deploy/sip-trunk.mdx',
   'content/docs/en/ai/studio/observe/analytics.md',
   'content/docs/en/ai/studio/observe/call-history.md',
   'content/docs/en/ai/studio/quickstart.md',

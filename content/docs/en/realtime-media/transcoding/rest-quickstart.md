@@ -7,11 +7,16 @@ This page explains how to call Agora Cloud Transcoding RESTful APIs to implement
 
 ## Prerequisites
 
-Before you start, ensure that you have followed the [Enable Cloud Transcoding](manage-agora-account) guide to:
-  - Set up your Agora account and activate the Cloud Transcoding service
-  - Obtain your App ID from Agora Console
-  - Obtain your Customer ID and Customer Secret for REST API authentication
-  - Generate RTC tokens for your channels (valid for up to 24 hours)
+Before you start, ensure that you have:
+
+- An [Agora account and project](/en/introduction/account)
+- Your [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) from Agora Console
+- Your [Customer ID and Customer Secret](/en/api-reference/api-ref/cloud-transcoding/authentication) for REST API authentication
+- [RTC tokens](/en/introduction/account#generate-temporary-tokens) for your channels (valid for up to 24 hours)
+
+:::info
+Cloud Transcoding must be activated before you can call the RESTful APIs. Contact [Agora technical support](mailto:support@agora.io) to activate it for your project. If you want viewers to receive multiple bitrates, ask support to enable the multi-bitrate service at the same time.
+:::
 
 ## Call a Cloud Transcoding REST API
 

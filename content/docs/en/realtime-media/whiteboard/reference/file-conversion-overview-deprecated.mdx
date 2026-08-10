@@ -64,34 +64,35 @@ You need to use an [Amazon S3](https://aws.amazon.com/s3/?nc2=h_m1) cloud storag
 
 To enable the file-conversion feature, do the following steps:
 
-1. Go to the [Project Management](https://console.agora.io/legacy/project-management) page in Agora Console, find the project that has the whiteboard feature enabled, and click **Edit**.
+1. Log in to [Agora Console](https://console.agora.io). 
+1. Select **RTC Services** from the sidebar. 
+1. Locate the **Whiteboard** card and select the settings icon to open the configuration panel.
 
-2. On the **Edit Project** page, find **Whiteboard**, and click **Config**.
+    ![Interactive Whiteboard settings on the Services page](https://assets-docs.agora.io/images/console/whiteboard-config.png)
 
-3. Under **Services**, select a data center, and click **Config**. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](rest-api/room-management#create-a-room-post) API; otherwise, the service configurations do not take effect.
+3. Under **Service Configuration**, select a data center, and click the settings icon. The data center must be the same as the one you filled in the `region` field when calling the [Create a room](rest-api/room-management#create-a-room-post) API; otherwise, the service configurations does not take effect.
     ![](https://web-cdn.agora.io/docs-files/1658998783322)
 
-4. On the **Services configuration** page, select **Enabled** for **Docs to Picture** or **Docs to web**.
+4. On the **Services configuration** page, enable **Docs to Picture** or **Docs to web**.
      ![](https://web-cdn.agora.io/docs-files/1637660984577)
 
 5. Set up the storage space:
-- Click the arrowhead to the right of **Storage**, and select a previously configured storage space in the drop-down list.
-- Click **Create** to add a new storage space. You need to fill in the following information:
-   - **Name**: (Required) The name of your storage space.
-   - **Vendor**: (Required) The third-party cloud storage vendor.
-   - **Region**: (Required) The location of the data center you specified when creating a bucket.
-   - **accessKey**: (Required) The Access Key provided by the third-party cloud storage vendor, which is used by the vendor to identify visitors.
-   - **secretKey**: (Required) The Secret Key provided by the third-party cloud storage vendor, which is used to authenticate signatures.
-   - **bucket**: (Required) The name of the bucket.
-   - **Storage path**: The path used to save the resources in the storage space. The default is the root directory.
-   - **Domain**: The domain name used to access the third-party cloud storage service.
+    Select a previously configured storage space in the drop-down list or click **Create Storage** to add a new storage space. You need to fill in the following information:
+        - **Name**: (Required) The name of your storage space.
+        - **Cloud Storage Vendor**: (Required) The third-party cloud storage vendor.
+        - **Cloud Storage Region**: (Required) The location of the data center you specified when creating a bucket.
+        - **Access Key**: (Required) The Access Key provided by the third-party cloud storage vendor, which is used by the vendor to identify visitors.
+        - **Secret Key**: (Required) The Secret Key provided by the third-party cloud storage vendor, which is used to authenticate signatures.
+        - **Bucket**: (Required) The name of the bucket.
+        - **Storage path**: The path used to save the resources in the storage space. The default is the root directory.
+        - **Domain**: The domain name used to access the third-party cloud storage service.
 
-   :::info
-- To get the above information about a third-party storage service, see the documentation provided by the vendor.<br />
-   	- You should enable <b>public access</b> or higher permission for third-party storage spaces so that your app clients can access files saved in the space.<br />
-:::
+        :::info
+        - To get the required information about your third-party storage service, see the documentation provided by the vendor.
+        - Enable public access or higher permission for third-party storage spaces so that your app clients can access files saved in the space.
+        :::
 
-7. Click **Save**, read the pop-up prompt carefully, and click **Confirm**.
+7. Click **Create**, read the pop-up prompt carefully, and confirm.
 
 ### Upload the source file
 

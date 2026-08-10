@@ -32,7 +32,7 @@ To follow this procedure, you must:
 - Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
-server. For details, see [Agora account management](/en/realtime-media/rtc/manage-agora-account).
+server. For details, see [Agora account management](/en/introduction/account).
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../reference/firewall).
 
@@ -40,12 +40,12 @@ server. For details, see [Agora account management](/en/realtime-media/rtc/manag
 
 ## Project setup
 
-To enable Real-Time STT before using it for the first time, take the following steps:
+To enable Real-Time STT:
 
-1. Log in to [Agora Console](https://console.agora.io/) and open the **Projects** page.
-2. Find the project for which you want to enable Real-Time STT and click the ✏️ icon.
-3. On the **Edit Project** page, find **Real-Time Speech-to-Text** and click **Enable Real-Time-STT**.
-4. Click **Enable Real-Time STT** and **Confirm**.
+1. Log in to [Agora Console](https://console.agora.io) and select **RTC Services** from the sidebar. 
+1. From the **Project** dropdown, select the project for which you want to enable the service. 
+1. Locate the **Real-Time Speech-to-Text** card and turn on its toggle. 
+1. Read the prompt and select **Confirm** to enable.
 
 Now you can use Agora Real-Time STT and see the usage statistics on the **Usage** page.
 

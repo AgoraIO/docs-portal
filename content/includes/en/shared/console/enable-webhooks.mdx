@@ -1,0 +1,49 @@
+To configure webhooks:
+
+1. In [Agora Console](https://console.agora.io), select **Webhooks** in the sidebar.
+
+1. Select **New Webhook** to open the webhook configuration panel.
+
+    ![Webhook configuration in Agora Console](https://assets-docs.agora.io/images/console/webhook-rtc.png)
+
+1. From the **Product** dropdown, select the product for which you want to set up Webhook notifications.
+
+1. Copy the **Signing secret**. Use this secret to add signature verification.
+
+1. Fill in the following:
+
+   * **Region**: Select the region where your notifications receiving server is located. Agora connects to the nearest Agora node server based on your selection.
+
+   * **Receiving URL**: The `HTTPS` public address of your server that receives the notifications, for example `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`. Only `HTTPS` endpoints are supported.
+
+   * **Subscribe to events**: Select all the events for which you want to receive notifications.
+
+     If the selected events generate a high number of queries per second (QPS), ensure that your server has sufficient processing capacity.
+
+   * **IP whitelist**: If your server is behind a firewall, enable this option, then call the [IP address query API](/en/api-reference/api-ref/rtc/query-ip-address) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
+
+   :::note
+   To reduce the delay in notification delivery, best practice is to activate `HTTP` persistent connection (also called `HTTP` keep-alive) on your server with the following settings:
+
+   * `MaxKeepAliveRequests`: 100 or more
+   * `KeepAliveTimeout`: 10 seconds or more
+   :::
+
+1. Select **Run health check**. Agora performs a health test for your configuration as follows:
+
+   1. The health test generates test events that correspond to your subscribed events, and sends callbacks to your server.
+
+      In test event callbacks, the channelName is `test_webhook`, and the uid is `12121212`.
+
+   1. After receiving each test callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
+
+1. When the health check succeeds, select **Save**.
+
+   If the health check fails, follow the prompt in Agora Console to troubleshoot the error. Common errors include the following:
+
+   | Status code | Error | Description |
+   |---|---|---|
+   | `590` | Request timeout | Your server does not return the status code `200` within 10 seconds. Check whether your server responds to the request properly. If your server responds to the request properly, contact Agora Technical Support to check if the network connection between the Agora Notifications server and your server is working. |
+   | `591` | Domain name unreachable | The domain name is invalid and cannot be resolved to the target IP address. Check whether your server is properly deployed. |
+   | `592` | Certificate error | The Agora Notifications server fails to verify the SSL certificates returned by your server. Check if the SSL certificates of your server are valid. If your server is behind a firewall, check whether you have added all IP addresses of the Agora Notifications server to the firewall's allowed IP list. |
+   | Other | Other response errors | Your server returns a response with a status code other than `200`. See the prompt in Agora Console for the specific status code and error messages. |

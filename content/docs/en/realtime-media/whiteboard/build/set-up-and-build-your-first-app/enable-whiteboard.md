@@ -3,50 +3,44 @@ title: "Enable whiteboard"
 description: "Enable and configure Interactive Whiteboard and its server-side features in Agora Console."
 ---
 
-To use Interactive Whiteboard, you need to enable and configure it in [Agora Console](https://console.agora.io/).
+To use Interactive Whiteboard, enable and configure it for your project in [Agora Console](https://console.agora.io).
 
 ## Prerequisites
 
-Before enabling the whiteboard feature, ensure that you meet the following requirements:
+Before you enable Interactive Whiteboard, ensure that you have:
+
 - A valid Agora account. If you have a Netless account, you must complete the account migration first. See [Migrate from Netless to Agora](../migrate-and-accelerate-development/migration-guide.md).
-- Active Agora projects. If you have not created a project, see [Agora account management](../manage-agora-account.md#create-an-agora-project).
+- An active Agora project. If you have not created a project, see [Agora account management](/en/introduction/account#your-first-agora-project).
 
 ## Enable Interactive Whiteboard
 
-Follow these steps to enable the Interactive Whiteboard in Agora Console:
+To enable Interactive Whiteboard:
 
-1. Log in to [Agora Console](https://console.agora.io/), and click the **Projects** in the navigation panel.
+1. Log in to [Agora Console](https://console.agora.io). 
+1. Select **RTC Services** from the sidebar. 
+1. Locate the **Whiteboard** card and turn on its toggle.
+1. Select the settings icon to open the configuration panel. The Interactive Whiteboard panel provides security credentials and services configuration.
 
-2. On the **My Projects** page, click the **Edit** ✎ icon against the project for which you want to enable Interactive Whiteboard.
-    ![](https://assets-docs.agora.io/images/common/console-configure-project.png)
-
-3. Under **ALL FEATURES**, select **Whiteboard**, and then toggle the **Enable Whiteboard** button.
-    ![Enable Whiteboard](https://assets-docs.agora.io/images/interactive-whiteboard/console-enable-whiteboard.png)
+![Interactive Whiteboard settings on the Services page](https://assets-docs.agora.io/images/console/whiteboard-config.png)
 
 ## Get security credentials for your whiteboard project
 
-After you enable Interactive Whiteboard for your project, you can obtain the following security credentials:
+Under **Basic Information**, the panel provides the following credentials:
 
 - **App Identifier**: The unique App Identifier required for initializing the Whiteboard SDK.
-- **Access Key (AK)** and **Secret Key (SK)**: A pair of keys you use to generate whiteboard tokens. See [Generate token using an app server](../authenticate-users/generate-token-app-server.mdx).
+- **Access Key** and **Secret Key**: A pair of keys you use to generate whiteboard tokens. See [Generate token using an app server](../authenticate-users/generate-token-app-server.mdx).
 - **SDK Token**: An SDK token is a dynamic key. You can generate an [SDK Token](../authenticate-users/authentication-workflow.md) here for development and testing purposes. In a production environment, you generate an SDK Token at your app server either by using the [code samples](../authenticate-users/generate-token-app-server.mdx) or calling the [RESTful API](../authenticate-users/generate-token-rest.md).
 
 To get the security credentials:
 
-1. On the **Projects** page in Agora Console, find the project that has the whiteboard feature enabled, and click **Edit** ✎.
+1. **Copy** ⧉ the **App Identifier**, **Access Key**, and **Secret Key**, and save them to a secure location.
 
-1. Under **ALL FEATURES**, select **Whiteboard**, and then choose **Basic information**.
-
-    ![Security Credentials](https://assets-docs.agora.io/images/interactive-whiteboard/console-security-credentials.png)
-
-3. **Copy** ⧉ the **App Identifier**, **Access Key (AK)**, and **Secret Key (SK)**. Save them to a secure location.
-
-4. Click **Generate**, to generate an SDK token. Read the prompt carefully, and then click **Copy** ⧉. Save the SDK Token to a secure location.
+2. To generate an SDK token, click **Generate Token**, then copy the token immediately and save it to a secure location. You cannot view the token again after you leave the page.
 
     :::warning
     Exposing security credentials can lead to serious risks. To improve security, Agora recommends the following best practices:
 
-    - Avoid sending the Access Key (AK) and Secret Key (SK) to app clients or hard-coding them in the application. Ensure only the app server can read the keys from a secure configuration file.
+    - Avoid sending the Access Key and Secret Key to app clients or hard-coding them in the application. Ensure only the app server can read the keys from a secure configuration file.
 
     - Since SDK tokens generated through the Agora Console have high level permissions, do not send these tokens to app clients to prevent potential security risks.
     :::
@@ -57,7 +51,7 @@ Interactive Whiteboard sets up five [data centers](../../reference/security#netw
 
 - File conversion features:
     - **Docs to Picture**
-    - **Docs to web**
+    - **Docs to Web**
 
     After enabling the file conversion features, you can call the [RESTful APIs](../../reference/rest-api/file-conversion.md) to launch a file conversion task or query the conversion progress.
 
@@ -65,23 +59,14 @@ Interactive Whiteboard sets up five [data centers](../../reference/security#netw
 
 - **Screenshot**. After enabling, you can call the [RESTful APIs](../../reference/rest-api/screenshots.md) to take screenshots.
 
-Follow these steps to enable one or more features and configure the storage settings:
+To enable one or more features and configure the storage settings:
 
-1. On the **My Projects** page in Agora Console, find the project that has the whiteboard feature enabled, and click **Edit** ✎.
+1. Under **Services Configuration**, select a data center and click **Configure**. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](../../reference/rest-api/room-management.md#create-a-room-post) API; otherwise, the service configuration does not take effect.
 
-2. Under **ALL FEATURES**, select **Whiteboard > Whiteboard Services**.
+2. Enable one or more of **Docs to Picture**, **Docs to Web**, or **Screenshot**.
 
-3. On the **Services Configuration** view, select a data center and click **Configure** ✎. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](../../reference/rest-api/room-management.md#create-a-room-post) API; otherwise, the service configurations does not take effect.
-
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-services-configuration.png)
-
-4. On the **Services configuration** page, one or more of **Docs to Picture**, **Docs to web**, or **Screenshot**.
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-configure-service.png)
-
-5. Set up the storage space:
-    - Click the **Storage** dropdown and select a previously configured storage space in the drop-down list or click **Create** to add a new storage space.
-
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-storage.png)
+3. Set up the storage space:
+    - Click the **Storage** dropdown and select a previously configured storage space, or click **Create** to add a new storage space.
 
     To add a new storage space, fill in the following information:
     - **Name**: (Required) The name of your storage space.
@@ -92,8 +77,8 @@ Follow these steps to enable one or more features and configure the storage sett
         - `Huawei Cloud`
 
     - **Region**: (Required) The location of the data center you specified when creating a bucket.
+    - **Access Key**: (Required) The access key provided by the third-party cloud storage vendor, which is used by the vendor to identify visitors.    
     - **Secret Key**: (Required) The secret key provided by the third-party cloud storage vendor, which is used to authenticate signatures.
-    - **Access Key**: (Required) The access key provided by the third-party cloud storage vendor, which is used by the vendor to identify visitors.
     - **Bucket**: (Required) The name of the bucket.
     - **Storage Path**: The path used to save the resources in the storage space. The default is the root directory.
     - **Domain**: The domain name used to access the third-party cloud storage service.
@@ -104,7 +89,7 @@ Follow these steps to enable one or more features and configure the storage sett
 
     Click **Create** to save the storage space parameters.
 
-6. Click **Save** to save the service configuration. Read the prompt carefully, and click **Confirm**.
+4. Click **Save** to save the service configuration. Read the prompt carefully, and click **Confirm**.
 
 ## Reference
 After enabling the Interactive Whiteboard, you can refer to the following documents to use its functions:

@@ -2,20 +2,20 @@
 title: Connect your agent
 description: Integrate your deployed agent into applications using the Conversational AI Engine API.
 ---
-After publishing your agent, you can integrate it into your applications using the Conversational AI Engine API. The **Embed** option in Studio provides a pre-configured API call with your agent's identifiers already populated.
+After publishing your agent, you can integrate it into your applications using the Conversational AI Engine API. The **Embed** option provides a pre-configured API call with your agent's identifiers already populated.
 
 ## Prerequisites
 
-- A published agent
-- Agora [Customer ID and Customer secret](/en/api-reference/api-ref/conversational-ai/authentication#generate-customer-id-and-customer-secret) for API authentication
+- A published agent.
+- Agora [Customer ID and Customer Secret](/en/api-reference/api-ref/conversational-ai/authentication#generate-customer-id-and-customer-secret) for API authentication.
 
 ## Get the embed code
 
 To get the API call for your agent:
 
-1. In Agent Studio, select **Agents** from the sidebar.
-1. From the agent list, open the **Actions** menu for your agent and select **Embed Agent**.
-1. Copy the generated code snippet. It includes your agent's `name`, `pipeline_id`, channel settings, and a valid RTC `token`.
+1. In the navigation sidebar, select **Agents**.
+2. From the agent list, open the **Action** menu for your published agent and select **Embed Agent**.
+3. Copy the generated code snippet. It includes your agent's `name`, `pipeline_id`, channel settings, and a valid RTC `token`.
 
 Use this as the starting point for integrating the agent into your backend service. For full API reference, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
@@ -25,7 +25,7 @@ This endpoint requires [Basic Auth](/en/api-reference/api-ref/conversational-ai/
 
 ## Sample code
 
-The following examples show how to start an agent call using your embed credentials. Replace `<base64Credentials>` with your Base64-encoded Agora Customer ID and Customer secret.
+The following examples show how to start an agent call using your embed credentials. Replace `<base64Credentials>` with your Base64-encoded Agora Customer ID and Customer Secret.
 
 <Tabs defaultValue="rest-api" groupId="ai-rest-sample-language" persist>
 <TabsList>
@@ -115,7 +115,7 @@ fetch('https://api.agora.io/api/conversational-ai-agent/v2/projects/<appid>/join
 </Tabs>
 
 :::info[About pipeline_id]
-The `pipeline_id` in the embed code is the internal identifier for your published agent configuration. It is automatically populated when you copy the embed code from the **Embed Agent** option in Studio.
+The `pipeline_id` in the embed code is the internal identifier for your published agent configuration. It is automatically populated when you copy the embed code from the **Embed Agent** option.
 :::
 
 ## See also

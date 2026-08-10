@@ -27,13 +27,11 @@ On the first day of each month, Agora issues your bill for the previous calendar
 
 To view billing information for your projects:
 
-1. In [Agora Console](https://console.agora.io/), click home.
-
-2. Click **Billing**.
+1. Log in to [Agora Console](https://console.agora.io/) and select **Billing** in the sidebar.
 
     You see the detailed billing information for your projects, including billing period, due date, and amount.
 
-    ![View bills](https://assets-docs.agora.io/images/video-sdk/bills.png)
+    ![Billing page](https://assets-docs.agora.io/images/console/billing.png)
 
 #### Additional charges
 
@@ -81,7 +79,7 @@ After account suspension, none of your projects can access Agora services. To 
 
 1. Add a credit card to your account or top up your balance using a bank account. This unfreezes your account and upgrades it to a paid account.
 
-2. Purchase a [pre-paid monthly package](../subscription-packages.md) or [top-up package](../subscription-packages.md). This option is highly recommended.
+2. Purchase a [pre-paid monthly package](../subscription-packages) or [top-up package](../subscription-packages). This option is highly recommended.
 
 ## Free-of-charge policy
 :::note
@@ -180,7 +178,7 @@ Agora employs the following policies to manage your account balance and ensure u
 
 ### Real-time usage and estimated bill
 
-You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
+You can view your real-time usage and estimated monthly bill at any time by selecting **Billing** in the Agora Console sidebar.
 
 ![bill estimate preview](https://assets-docs.agora.io/images/console/bill-estimate-preview.png)
 
