@@ -1419,6 +1419,7 @@ function OpenApiSchemaRows({
             onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
             renderMarkdown={renderMarkdown}
             row={row}
+            showTopBorder={collapsibleAnchorIds.length > 0 || index > 0}
           />
         );
       })}
@@ -1435,6 +1436,7 @@ function OpenApiSchemaRowItem({
   onExpandedChange,
   renderMarkdown,
   row,
+  showTopBorder,
 }: {
   anchorId: string;
   expandable: boolean;
@@ -1444,6 +1446,7 @@ function OpenApiSchemaRowItem({
   onExpandedChange: (expanded: boolean) => void;
   renderMarkdown: (markdown: string) => ReactNode;
   row: OpenApiSchemaRow;
+  showTopBorder: boolean;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const paddingInlineStart = getOpenApiSchemaRowPaddingInlineStart(row.depth);
@@ -1479,60 +1482,69 @@ function OpenApiSchemaRowItem({
 
   return (
     <div
-      className="scroll-mt-24 border-fd-border border-t py-3 pr-4 text-sm first:border-t-0"
+      className="scroll-mt-24 text-sm"
       data-openapi-schema-row=""
       hidden={hiddenUntilFound}
       id={anchorId}
       ref={rowRef}
-      style={{ paddingInlineStart }}
     >
-      <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
-        <span
-          aria-hidden={!expandable}
-          className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
-        >
-          {expandable ? (
-            <button
-              aria-expanded={expanded}
-              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
-              className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
-              onClick={() => onExpandedChange(!expanded)}
-              type="button"
-            >
-              <span aria-hidden="true" className={chevronClass}>
-                ▶
-              </span>
-            </button>
-          ) : null}
-        </span>
-        <div className="openapi-schema-property-name-column min-w-0">
-          {nameCode}
-        </div>
-        <div>
-          <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-        </div>
-        <div>
-          <OpenApiSchemaRequiredBadge required={row.required} />
-        </div>
-        <div className="font-mono text-fd-muted-foreground text-xs">
-          {row.type}
-          {row.nullable ? ' | null' : ''}
-        </div>
-        {row.deprecated ? (
+      <div
+        className={cn(
+          'border-fd-border py-3 pr-4',
+          showTopBorder && 'border-t',
+        )}
+        style={{ paddingInlineStart }}
+      >
+        <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
+          <span
+            aria-hidden={!expandable}
+            className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
+          >
+            {expandable ? (
+              <button
+                aria-expanded={expanded}
+                aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
+                className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+                onClick={() => onExpandedChange(!expanded)}
+                type="button"
+              >
+                <span aria-hidden="true" className={chevronClass}>
+                  ▶
+                </span>
+              </button>
+            ) : null}
+          </span>
+          <div className="openapi-schema-property-name-column min-w-0">
+            {nameCode}
+          </div>
           <div>
-            <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-              Deprecated
-            </span>
+            <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
+          </div>
+          <div>
+            <OpenApiSchemaRequiredBadge required={row.required} />
+          </div>
+          <div className="font-mono text-fd-muted-foreground text-xs">
+            {row.type}
+            {row.nullable ? ' | null' : ''}
+          </div>
+          {row.deprecated ? (
+            <div>
+              <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
+                Deprecated
+              </span>
+            </div>
+          ) : null}
+        </div>
+        {row.description ? (
+          <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
+            {renderMarkdown(
+              normalizeOpenApiDescriptionMarkdown(row.description),
+            )}
           </div>
         ) : null}
+        <OpenApiInlineCallouts callouts={row.docsCallouts} />
+        <OpenApiSchemaMeta row={row} />
       </div>
-      {row.description ? (
-        <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-          {renderMarkdown(normalizeOpenApiDescriptionMarkdown(row.description))}
-        </div>
-      ) : null}
-      <OpenApiInlineCallouts callouts={row.docsCallouts} />
-      <OpenApiSchemaMeta row={row} />
     </div>
   );
 }
