@@ -1955,9 +1955,11 @@ describe('FumadocsOpenApiContent', () => {
       paddingInlineStart: string,
     ) => {
       const row = document.getElementById(anchorId);
+      const rowContent = row?.firstElementChild;
 
       expect(row).toBeInstanceOf(HTMLElement);
-      expect((row as HTMLElement).style.paddingInlineStart).toBe(
+      expect(rowContent).toBeInstanceOf(HTMLElement);
+      expect((rowContent as HTMLElement).style.paddingInlineStart).toBe(
         paddingInlineStart,
       );
     };
@@ -2241,6 +2243,25 @@ describe('FumadocsOpenApiContent', () => {
     );
     expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
     expect(collapsedChild).not.toBeVisible();
+  });
+
+  it('does not paint row dividers or spacing for collapsed findable fields', async () => {
+    const tree = await renderNestedSchema();
+    const collapsedChild = tree
+      .getByText('sal')
+      .closest('[data-openapi-schema-row]') as HTMLElement;
+
+    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
+    expect(collapsedChild).not.toHaveClass('border-t');
+    expect(collapsedChild).not.toHaveClass('py-3');
+    expect(collapsedChild).not.toHaveClass('pr-4');
+    expect(collapsedChild.style.paddingInlineStart).toBe('');
+
+    const visibleRowContent = collapsedChild.firstElementChild;
+    expect(visibleRowContent).toHaveClass('border-t', 'py-3', 'pr-4');
+    expect(visibleRowContent).toHaveStyle({
+      paddingInlineStart: 'calc(1rem + 48px)',
+    });
   });
 
   it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
