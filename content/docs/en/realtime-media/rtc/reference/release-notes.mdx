@@ -11770,12 +11770,12 @@ v6.3.1 was released on May 9, 2024.
 
    1. Support for capturing and publishing video streams from the third and fourth cameras:
 
-      - `videoSourceCameraThird` (11) and `videoSourceCameraFourth` (12) in [VideoSourceType](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_videosourcetype.html) add support for Android, specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/api_irtcengine_startcameracapture.html).
+      - `videoSourceCameraThird` (11) and `videoSourceCameraFourth` (12) in [VideoSourceType](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/enum_videosourcetype.html) add support for Android, specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startcameracapture).
       - `publishThirdCameraTrack` and `publishFourthCameraTrack` in [ChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_channelmediaoptions.html) add support for Android. Set these parameters to `true` when joining a channel with [joinChannel](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_joinchannel2) to publish video streams captured from the third and fourth cameras.
 
    1. Support for specifying cameras by camera ID:
 
-      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/api_irtcengine_startcameracapture.html) with the specific `cameraId`.
+      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_startcameracapture) with the specific `cameraId`.
 
 1. **Data stream encryption**
 
@@ -13648,12 +13648,12 @@ v4.3.1 was released on May 9, 2024.
 
    1. Support for capturing and publishing video streams from the third and fourth cameras:
 
-      - `VideoSourceCameraThird` (11) and `VideoSourceCameraFourth` (12) in [VideoSourceType](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/enum_videosourcetype.html) add support for Android, specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/api_irtcengine_startcameracapture.html).
+      - `VideoSourceCameraThird` (11) and `VideoSourceCameraFourth` (12) in [VideoSourceType](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/enum_videosourcetype.html) add support for Android, specifically for the third and fourth camera sources. This change allows you to specify up to four camera streams when initiating camera capture by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_startcameracapture).
       - `publishThirdCameraTrack` and `publishFourthCameraTrack` in [ChannelMediaOptions](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_channelmediaoptions.html) add support for Android. Set these parameters to `true` when joining a channel with [joinChannel](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2) to publish video streams captured from the third and fourth cameras.
 
    1. Support for specifying cameras by camera ID:
 
-      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/api_irtcengine_startcameracapture.html) with the specific `cameraId`.
+      A new parameter `cameraId` is added to [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_cameracapturerconfiguration.html). For devices with multiple cameras, where `cameraDirection` cannot identify or access all available cameras, you can obtain the camera ID through Android's native system APIs and specify the desired camera by calling [startCameraCapture](https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_startcameracapture) with the specific `cameraId`.
 
 1. **Data stream encryption**
 
