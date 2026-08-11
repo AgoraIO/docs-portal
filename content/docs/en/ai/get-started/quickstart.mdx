@@ -3,13 +3,13 @@ analyticsPageType: task-guide
 title: Voice agent quickstart
 description: Build a working voice agent in under five minutes without writing any server code by cloning an officially maintained starter project.
 ---
-Set up a working voice agent in under five minutes. This page walks you through installing the Agora skills to give your AI coding assistant the official quickstarts and Agora CLI workflows. You then use the CLI to log in, clone the official starter, and run it locally. You can follow the CLI steps yourself or paste the sample prompt and let your assistant handle setup for you.
+Set up a working voice agent in under five minutes. This page walks you through installing Agora Skills to give your AI coding assistant the official quickstarts and Agora CLI workflows. You then use the CLI to log in, clone the official starter, and run it locally. You can follow the CLI steps yourself or paste the sample prompt and let your assistant handle setup for you.
 
 If you are new to Agora, read [Core concepts](/en/introduction/core-concepts) first to understand how RTC, Signaling, channels, UIDs, and tokens fit together.
 
-### Install Agora skills
+### Install Agora Skills
 
-Agora skills teaches your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the CLI in the next section, or ask your assistant to run the installer for you.
+Agora Skills teach your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the CLI in the next section, or ask your assistant to run the installer for you.
 
 ```bash
 npx skills add AgoraIO/skills
@@ -137,7 +137,7 @@ The demo runs a local browser app and server-side agent controls:
 - **Browser app**: Captures microphone audio and plays the agent response.
 - **Server-side controls**: Generate tokens and start or stop the agent session.
 
-Agora provides the realtime path between the user and the agent. The user and
+Agora provides the real-time path between the user and the agent. The user and
 agent join the same Agora channel, and Agora transports low-latency audio and
 session events between them.
 
@@ -149,10 +149,23 @@ The configured models handle the speech pipeline:
 
 ## Next steps
 
+### Build and customize
+
 - **[Manage agent sessions](../build/start-stop-agent)**: Start and stop agents with the SDKs or REST API.
 - **[Customize models](../build/custom-model-integration/managed-mode)**: Use managed mode, or connect your own LLM and TTS providers.
 - **[Improve conversation quality](../best-practices/optimize-latency)**: Tune latency, audio settings, interruptions, and turn taking.
 - **[Optimize audio setup](../best-practices/audio-setup)**: Set audio profiles, scenarios, and capture behavior for your target clients.
-- **[Observe runtime behavior](../build/handle-runtime-events/monitor-agent-runtime)**: Monitor events, transcripts, session history, and failures.
 - **[Review the API reference](/en/api-reference/api-ref/conversational-ai)**: Check REST and SDK parameters when you move beyond the starter.
-- **Prepare for production**: Review projects, security, regions, logging, and operational requirements.
+
+### Observe and troubleshoot
+
+- **[Monitor runtime behavior](../build/handle-runtime-events/monitor-agent-runtime)**: Choose the client events and webhooks you need for live status, metrics, and backend monitoring.
+- **[Debug agent failures](../build/handle-runtime-events/debug-agent-failures)**: Correlate client callbacks, webhook events, and turn-level data.
+- **[Retrieve conversation history](../build/handle-runtime-events/retrieve-session-history)**: Store messages, timestamps, and per-turn diagnostics after a session.
+
+### Prepare for production
+
+- **[Review security and privacy](/en/introduction/security-privacy)**: Check authentication, encryption, geofencing, compliance, and operational safeguards.
+- **[Restrict where agents run](../best-practices/regional-restrictions)**: Keep agent traffic within the regions your deployment requires.
+- **[Record agent conversations](../best-practices/record-agent-conversation)**: Configure Cloud Recording without disrupting the audio experience.
+- **[Understand pricing](../reference/pricing)**: Review Conversational AI usage and billing before launch.
