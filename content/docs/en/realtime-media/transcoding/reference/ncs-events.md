@@ -75,17 +75,17 @@ When you successfully call [`Create`](/en/api-reference/cloud-transcoding/restfu
 * `state`: String. Cloud transcoding status. For this event, it's `"Transcoder success"`, indicating successful creation and start of cloud transcoding.
 * `createTs`: Number. Unix timestamp (seconds) when the cloud transcoder was created.
 * `transcoder`: JSON Object. Input and output configuration of the cloud transcoder.
- * `inputs`: JSON Array. Audio/video input source configuration.
-   * `rtcChannel`: String. RTC channel name for the audio/video input source.
-   * `rtcUid`: Number. UID corresponding to the audio/video input source.
-   * `audio`: Boolean. Whether audio input source exists (`true`: has audio input, `false`: no audio input).
-   * `video`: Boolean. Whether video input source exists (`true`: has video input, `false`: no video input).
- * `outputs`: JSON Array. Audio/video output configuration.
-   * `rtcChannel`: String. RTC channel name for the output audio/video.
-   * `rtcUid`: Number. UID corresponding to the output audio/video.
-   * `audio`: Boolean. Whether audio output exists (`true`: has audio output, `false`: no audio output).
-   * `video`: Boolean. Whether video output exists (`true`: has video output, `false`: no video output).
- * `userConfigDetail`: String. The `cloudTranscoder.config` value from the Create request.
+    * `inputs`: JSON Array. Audio/video input source configuration.
+        * `rtcChannel`: String. RTC channel name for the audio/video input source.
+        * `rtcUid`: Number. UID corresponding to the audio/video input source.
+        * `audio`: Boolean. Whether audio input source exists (`true`: has audio input, `false`: no audio input).
+        * `video`: Boolean. Whether video input source exists (`true`: has video input, `false`: no video input).
+    * `outputs`: JSON Array. Audio/video output configuration.
+        * `rtcChannel`: String. RTC channel name for the output audio/video.
+        * `rtcUid`: Number. UID corresponding to the output audio/video.
+        * `audio`: Boolean. Whether audio output exists (`true`: has audio output, `false`: no audio output).
+        * `video`: Boolean. Whether video output exists (`true`: has video output, `false`: no video output).
+    * `userConfigDetail`: String. The `cloudTranscoder.config` value from the Create request.
 
 ## 111 `cloud_transcoder_stopped`
 
@@ -142,9 +142,9 @@ This event is triggered when the Cloud Transcoder's runtime state changes after 
 
 * `event`: String. Callback event type. For this event, it's `"cloud_transcoder_status"`, indicating cloud transcoder runtime status change.
 * `state`: String. Cloud transcoding status. Possible values:
- * `"connecting"`: Connecting to Agora business servers.
- * `"running"`: Operating normally, performing cloud transcoding.
- * `"failed"`: Cloud transcoding failed.
+    * `"connecting"`: Connecting to Agora business servers.
+    * `"running"`: Operating normally, performing cloud transcoding.
+    * `"failed"`: Cloud transcoding failed.
 * `createTs`: Number. Unix timestamp (seconds) when the cloud transcoder was created.
 * `updateTs`: Number. Unix timestamp (seconds) when the cloud transcoder status was updated.
 
@@ -203,13 +203,13 @@ This event is triggered after you successfully call [`Update`](/en/api-reference
 * `updateTs`: Number. Unix timestamp (seconds) when the cloud transcoder configuration was updated.
 * `userConfigDetail`: String. Configuration content from the request body (`cloudTranscoder.config`).
 * `transcoder`: JSON Object. Input and output configuration of the cloud transcoder.
- * `inputs`: JSON Array. Audio/video input source configuration.
-   * `rtcChannel`: String. RTC channel name for the audio/video input source.
-   * `rtcUid`: Number. UID corresponding to the audio/video input source.
-   * `audio`: Boolean. Whether audio input source exists (`true`: has audio input, `false`: no audio input).
-   * `video`: Boolean. Whether video input source exists (`true`: has video input, `false`: no video input).
- * `outputs`: JSON Array. Audio/video output configuration.
-   * `rtcChannel`: String. RTC channel name for the output audio/video.
-   * `rtcUid`: Number. UID corresponding to the output audio/video.
-   * `audio`: Boolean. Whether audio output exists (`true`: has audio output, `false`: no audio output).
-   * `video`: Boolean. Whether video output exists (`true`: has video output, `false`: no video output).
+    * `inputs`: JSON Array. Audio/video input source configuration.
+        * `rtcChannel`: String. RTC channel name for the audio/video input source.
+        * `rtcUid`: Number. UID corresponding to the audio/video input source.
+        * `audio`: Boolean. Whether audio input source exists (`true`: has audio input, `false`: no audio input).
+        * `video`: Boolean. Whether video input source exists (`true`: has video input, `false`: no video input).
+    * `outputs`: JSON Array. Audio/video output configuration.
+        * `rtcChannel`: String. RTC channel name for the output audio/video.
+        * `rtcUid`: Number. UID corresponding to the output audio/video.
+        * `audio`: Boolean. Whether audio output exists (`true`: has audio output, `false`: no audio output).
+        * `video`: Boolean. Whether video output exists (`true`: has video output, `false`: no video output).
