@@ -57,7 +57,7 @@ import {
   buildPlatformMarkdownText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
-import type { PlatformKey } from './platforms/registry';
+import { isKnownPlatform, type PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
@@ -73,6 +73,12 @@ const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
 const SDKS_ROOT_SLUG = 'sdks';
+const UNIFIED_RTC_PRODUCT_SLUGS = new Set([
+  'broadcast-streaming',
+  'interactive-live-streaming',
+  'video',
+  'voice',
+]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
@@ -949,7 +955,19 @@ function resolveRealtimeMediaRedirect(
     'whiteboard/overview/whiteboard-fastboard': `/${locale}/realtime-media/whiteboard/whiteboard-fastboard`,
   };
 
-  return redirects[normalizedPath] ?? null;
+  const exactRedirect = redirects[normalizedPath];
+  if (exactRedirect) {
+    return exactRedirect;
+  }
+
+  const [productSlug, ...relativePath] = slugSegments;
+  if (!productSlug || !UNIFIED_RTC_PRODUCT_SLUGS.has(productSlug)) {
+    return null;
+  }
+
+  return `/${locale}/realtime-media/rtc${
+    relativePath.length > 0 ? `/${relativePath.join('/')}` : ''
+  }`;
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
@@ -1081,21 +1099,36 @@ function resolveSolutionsApiReferenceRedirect(
 
 function hasDocsPageForUrl(source: typeof docsSource, url: string) {
   const [locale, tab, ...slugSegments] = url.split('/').filter(Boolean);
-  const slug = slugSegments.at(-1) ?? 'index';
 
   if (!locale || !tab) {
     return false;
   }
 
-  const page = source.getPage(
-    getSourceSlugs({
+  const findPage = (segments: string[]) => {
+    const slug = segments.at(-1) ?? 'index';
+
+    return source.getPage(
+      getSourceSlugs({
+        locale,
+        slug,
+        slugSegments: segments,
+        tab,
+      }),
       locale,
-      slug,
-      slugSegments,
-      tab,
-    }),
-    locale,
-  );
+    );
+  };
+  const directPage = findPage(slugSegments);
+
+  if (directPage) {
+    return !isPlatformGroupPanelPage(directPage, source.getPages(locale));
+  }
+
+  const platformCandidate = slugSegments.at(-1);
+  if (!platformCandidate || !isKnownPlatform(platformCandidate)) {
+    return false;
+  }
+
+  const page = findPage(slugSegments.slice(0, -1));
 
   return Boolean(
     page && !isPlatformGroupPanelPage(page, source.getPages(locale)),

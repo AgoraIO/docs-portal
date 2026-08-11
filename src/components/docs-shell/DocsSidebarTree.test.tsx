@@ -44,6 +44,51 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('reveals and selects the canonical page after a direct platform redirect', async () => {
+    const canonicalPageUrl =
+      '/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression';
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: canonicalPageUrl,
+                title: 'AI Noise Suppression',
+                type: 'page',
+                url: canonicalPageUrl,
+              },
+            ],
+            collapsible: true,
+            id: 'enhance-the-audio-experience',
+            title: 'Enhance the audio experience',
+            type: 'section',
+          },
+        ],
+        collapsible: true,
+        id: 'build',
+        title: 'Build',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, canonicalPageUrl);
+
+    expect(await screen.findByText('Build')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Enhance the audio experience/i }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    const activeLink = screen.getByRole('link', {
+      name: 'AI Noise Suppression',
+    });
+
+    expect(activeLink).toHaveAttribute('aria-current', 'page');
+    expect(
+      activeLink.closest('[data-sidebar="menu-sub-button"]'),
+    ).toHaveAttribute('data-active', 'true');
+  });
+
   it('renders section labels without configured sidebar icons and active page links', async () => {
     const tree: DocsSidebarNode[] = [
       {
