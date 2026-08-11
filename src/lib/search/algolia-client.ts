@@ -115,23 +115,31 @@ export function createAlgoliaDocsClient({
       });
 
       const entries = [];
-      const seenUrls = new Set<string>();
+      const seenResultKeys = new Set<string>();
 
       const apiResult = result.results[1];
       if (apiResult) {
         for (const hit of apiResult.hits as AlgoliaDocsHit[]) {
           const url = getString(hit.url) ?? '';
-          const title =
-            getNestedHighlight(hit, 'hierarchy', 'lvl1') ??
-            getHierarchyValue(hit, 'lvl1') ??
-            url;
-          const identity = `${url}#${getString(hit.objectID) ?? title}`;
+          const plainTitle = getHierarchyValue(hit, 'lvl1') ?? url;
+          const highlightedTitle =
+            getNestedHighlight(hit, 'hierarchy', 'lvl1') ?? plainTitle;
+          const container = getApiReferenceContainer(url, plainTitle);
+          const title = container
+            ? `${container} › ${highlightedTitle}`
+            : highlightedTitle;
+          const resultUrl = getApiReferenceResultUrl(
+            url,
+            plainTitle,
+            container,
+          );
+          const identity = `${resultUrl}#${getString(hit.objectID) ?? title}`;
 
-          if (seenUrls.has(identity)) {
+          if (seenResultKeys.has(identity)) {
             continue;
           }
 
-          seenUrls.add(identity);
+          seenResultKeys.add(identity);
           entries.push({
             content: title,
             id: getString(hit.objectID) ?? identity,
@@ -147,7 +155,7 @@ export function createAlgoliaDocsClient({
               getString(hit.content),
             title,
             type: 'page' as const,
-            url,
+            url: resultUrl,
             version: getString(hit.version),
           });
         }
@@ -160,11 +168,11 @@ export function createAlgoliaDocsClient({
         const section = getString(hit.section);
         const resultUrl = sectionId ? `${url}#${sectionId}` : url;
 
-        if (seenUrls.has(resultUrl)) {
+        if (seenResultKeys.has(resultUrl)) {
           continue;
         }
 
-        seenUrls.add(resultUrl);
+        seenResultKeys.add(resultUrl);
 
         entries.push({
           breadcrumbs: getStringArray(hit.breadcrumbs),
@@ -292,6 +300,58 @@ function getApiReferencePath(hit: Record<string, unknown>) {
 
 function normalizeApiReferencePathSegment(segment: string) {
   return segment.replace(/\bApi\b/g, 'API').replace(/\bSdk\b/g, 'SDK');
+}
+
+const API_REFERENCE_PAGE_KIND_PATTERN =
+  /^(Class|Enumeration|Interface|Namespace|Type)\s/i;
+
+function getApiReferenceContainer(url: string, title: string) {
+  if (API_REFERENCE_PAGE_KIND_PATTERN.test(title)) {
+    return undefined;
+  }
+
+  try {
+    const { pathname } = new URL(url);
+    if (!pathname.includes('/interfaces/')) {
+      return undefined;
+    }
+
+    const basename = pathname
+      .split('/')
+      .at(-1)
+      ?.replace(/\.html$/, '');
+    if (
+      !basename ||
+      title.length <= basename.length ||
+      !title.toLowerCase().endsWith(basename.toLowerCase())
+    ) {
+      return undefined;
+    }
+
+    return title.slice(-basename.length);
+  } catch {
+    return undefined;
+  }
+}
+
+function getApiReferenceResultUrl(
+  url: string,
+  title: string,
+  container?: string,
+) {
+  if (!container) {
+    return url;
+  }
+
+  try {
+    const parsedUrl = new URL(url);
+    if (!parsedUrl.hash) {
+      parsedUrl.hash = title.toLowerCase();
+    }
+    return parsedUrl.toString();
+  } catch {
+    return url;
+  }
 }
 
 function normalizeApiReferencePlatform(platform: string) {

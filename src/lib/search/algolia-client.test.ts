@@ -48,7 +48,7 @@ describe('createAlgoliaDocsClient', () => {
               objectID: 'api-property',
               platform: 'web',
               product: 'video-sdk',
-              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/NetworkQuality.html#uplinkNetworkQuality',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
               version: '4.x',
             },
           ],
@@ -91,8 +91,8 @@ describe('createAlgoliaDocsClient', () => {
       platform: ['web'],
       product: 'video-sdk',
       snippet: 'The <mark>uplinkNetworkQuality</mark> property.',
-      title: '<mark>uplinkNetworkQuality</mark>',
-      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/NetworkQuality.html#uplinkNetworkQuality',
+      title: 'NetworkQuality › <mark>uplinkNetworkQuality</mark>',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#uplinknetworkquality',
       version: '4.x',
     });
     expect(results[1]).toMatchObject({ id: 'guide', objectType: 'docs' });
@@ -173,6 +173,56 @@ describe('createAlgoliaDocsClient', () => {
     expect(results[0]).toMatchObject({
       objectType: 'sdk-api',
       platform: ['javascript'],
+    });
+  });
+
+  it('preserves API page titles and existing member anchors', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [
+        { hits: [] },
+        {
+          hits: [
+            {
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x',
+                lvl1: 'Interface NetworkQuality',
+              },
+              objectID: 'interface-page',
+              platform: 'web',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
+            },
+            {
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x',
+                lvl1: 'uplinkNetworkQuality',
+              },
+              objectID: 'anchored-member',
+              platform: 'web',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#existing-anchor',
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      searchApiKey: 'search-key',
+    });
+
+    const results = await client.search('networkquality');
+
+    expect(results[0]).toMatchObject({
+      title: 'Interface NetworkQuality',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
+    });
+    expect(results[1]).toMatchObject({
+      title: 'NetworkQuality › uplinkNetworkQuality',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#existing-anchor',
     });
   });
 
