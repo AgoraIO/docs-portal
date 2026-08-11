@@ -373,7 +373,7 @@ GET https://api.agora.io/v1/projects/{appId}/cloud-player/players
 
 #### Path parameters
 
-`appId`: (Required) String. Agora provides the [App ID](/en/realtime-media/media-pull/reference/glossary#app=id) when you create a **project** in Agora Console. The App ID identifies each project.
+`appId`: (Required) String. Agora provides the [App ID](/en/realtime-media/media-pull/reference/glossary#app-id) when you create a **project** in Agora Console. The App ID identifies each project.
 
 #### Query parameters
 
