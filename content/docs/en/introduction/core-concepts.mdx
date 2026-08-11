@@ -4,15 +4,15 @@ title: Core concepts
 description: Ideas that are central to developing with Agora.
 ---
 
-Agora products use live sessions to connect people, devices, services, and AI systems. Voice agents, RTC, and Signaling use the same project and authentication foundation, but carry different types of media and data.
+Voice Agents are real-time AI experiences where users speak naturally with an AI system. On Agora, voice agents listen, reason over the conversation, and respond with low-latency speech inside a live session.
 
-- **Voice Agent** enables users to speak naturally with an AI system that listens, reasons over the conversation, and responds with low-latency speech.
-- **RTC (Real-Time Communication)** carries live audio, video, and other media between participants.
-- **Signaling**, formerly known as RTM, carries messages, presence, metadata, transcripts, state updates, and control events.
+RTC (Real-Time Communication) technology allows almost instant exchange of audio, video, and other media data between the sender and the receiver.
 
-In a voice agent experience, RTC typically carries the live audio path, while Signaling carries the events and data that coordinate the session.
+Agora Signaling, formerly known as RTM, provides real-time delivery of messages, presence, metadata, transcripts, state updates, and control events. In many voice agent experiences, RTC carries the live audio path, while Signaling carries the events and data that coordinate the experience.
 
-This page explains the project credentials, channels, participant identities, and media concepts that appear across Agora SDKs and cloud services.
+Agora SDKs provide real-time audio, video, and messaging interaction services, with multi-platform and multi-device support. This includes high-definition video calls, voice-only calls, interactive live streaming, real-time messaging, as well as one-on-one and multi-group chats.
+
+This article introduces the key processes and concepts you need to know to use Agora SDKs.
 
 ## Before you start
 
@@ -26,21 +26,21 @@ Most quickstarts and guides ask for the same values:
 | [Channel](#channel) | The live space, identified by a channel name, where users interact. |
 | [UID](#user-id-uid) | The unique user identity of one participant in a channel. |
 
-## Set up your Agora project
+## Using the Agora Console
 
-Before using an Agora SDK or cloud service, create a project in Agora Console. See [Agora account management](/en/introduction/account) for details.
+To use Agora SDKs, first create a project in Agora Console. See [Agora account management](/en/introduction/account) for details.
 
 ![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
 
-[Agora Console](https://console.agora.io/) is the dashboard where you manage your account, projects, and services. After registering an [Agora account](https://console.agora.io/), use Agora Console to:
+[Agora Console](https://console.agora.io/) is the main dashboard where you manage your Agora projects and services. After registering an [Agora account](https://console.agora.io/), use Agora Console to:
 
-- Manage your account.
-- Create and configure projects and services.
-- Get an App ID.
-- Manage members and roles.
-- Review call quality and usage.
-- Review bills and make payments.
-- Access product resources.
+- Manage the account
+- Create and configure Agora projects and services
+- Get an App ID
+- Manage members and roles
+- Check call quality and usage
+- Check bills and make payments
+- Access product resources
 
 Agora also provides REST APIs for tasks such as creating projects and retrieving usage data programmatically.
 
@@ -64,13 +64,13 @@ To use your App Certificate to set up a token server, see [Deploy a token server
 
 ### Token
 
-A token is a dynamic key that Agora uses to verify user permissions. A token is usually scoped to a channel, a UID, a product capability, and an expiration time. For testing, generate a temporary token in Agora Console. In production, deploy a token server in your security infrastructure to control access to your channels.
+A token is a dynamic key that is used by the Agora authentication server to check user permissions. A token is usually scoped to a channel, a UID, a product capability, and an expiration time. You use Agora Console to generate a temporary token for testing purposes during the development process. In a production environment, you implement a token server in your security infrastructure to control access to your channels.
 
-After obtaining the App ID, App Certificate, and token, initialize the relevant Agora SDK or service and connect it to your project.
+After obtaining the App ID, App Certificate, and token in Agora Console, you can start implementing basic audio and video communication in your app.
 
 ### Channel
 
-A channel is a live space where users interact. Participants who specify the same *channel name* join the same channel. Agora creates the channel when the first participant joins and closes it when the last participant leaves.
+Agora uses the *channel name* to identify a channel. Users who specify the same *channel name* join a common channel and interact with each other. A channel is created when the first user joins. It ceases to exist when the last user leaves.
 
 You create a channel by calling the methods for transmitting real-time data. Agora uses different channels to transmit different types of data. The RTC SDK channel transmits audio or video data, while the Signaling channel transmits messaging or signaling data. The RTC SDK and Signaling channels are independent of each other.
 
@@ -87,17 +87,17 @@ The SDK applies different optimization methods according to the selected channel
 
 ### Stream
 
-A stream is a continuous flow of encoded audio or video data. Users in a channel [publish](#publish) local streams and [subscribe](#subscribe) to remote streams from other users.
+A stream is a sequence of digitally-encoded coherent signals that contains audio or video data. Users in a channel [publish](#publish) local streams and [subscribe](#subscribe) to remote streams from other users.
 
 ### Publish
 
-Publishing sends a user's audio or video data to the channel. A published stream typically contains audio captured from a microphone or video captured from a camera. You can also publish media from other sources, such as an online audio file or the user's screen.
+Publishing is the act of sending a user's audio or video data to the channel. Usually, the published stream is created by the audio data sampled from a microphone or the video data captured by a camera. You can also publish media streams from other sources, such as an online music file or the user's screen.
 
-After publishing a stream, the SDK continues sending its media data to other users in the channel. By publishing local streams and subscribing to remote streams, users communicate with each other in real time.
+After successfully publishing a stream, the SDK continues sending media data to other users in the channel. By publishing the local stream and subscribing to remote streams, users communicate with each other in real time.
 
 ### Subscribe
 
-Subscribing receives media streams published by remote users in the channel. Your app can play subscribed streams directly or process the incoming data for tasks such as recording or capturing screenshots.
+Subscribing is the act of receiving media streams published by remote users in the channel. A user receives audio and video data from other users by subscribing to one or more of their streams. You either directly play the subscribed streams or process incoming data for other purposes such as recording or capturing screenshots.
 
 ### User ID (UID)
 
@@ -111,17 +111,17 @@ In Signaling, the UID is a unique string supplied with the App ID when initializ
 
 A user role is used to define whether users in the channel have permission to publish streams. There are two user roles:
 
-- **Host**: A user who can publish streams in a channel.
-- **Audience**: A user who cannot publish streams in a channel and can only subscribe to remote audio and video streams.
+- Host: A user who can publish streams in a channel.
+- Audience: A user who cannot publish streams in a channel. Users with this role can only subscribe to remote audio and video streams.
 
 ### Connection (RtcConnection)
 
-A connection represents the link between an SDK instance and a channel. When publishing or receiving multiple streams across multiple channels, use a connection to specify the target channel.
+A connection is the link between the SDK and the channel. When you need to publish or receive multiple streams in multiple channels, use a connection to specify the target channel.
 
 <a name="agora-sd-rtn"></a>
 
 ### Agora SDRTN®
 
-Agora SDRTN is the software-defined network that routes Agora real-time media and data. Its globally distributed infrastructure selects transport paths and adapts to changing network conditions to support low-latency delivery.
+Agora SDRTN is the software-defined network that carries real-time media and data for Agora services.
 
 For developers, SDRTN is the transport layer behind Agora SDK connections. Applications continue to work with SDK concepts such as channels, publishing, and subscribing.
