@@ -25,257 +25,257 @@ To implement a media player in your app, follow these steps:
 
 1. After initializing an `RtcEngine` instance, create an `IMediaPlayer` object and register a player observer by calling the `registerPlayerObserver` method.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  mRtcEngine = RtcEngine.create(config);
+    <CodeBlockTab value="java">
+      ```java
+      mRtcEngine = RtcEngine.create(config);
 
-   // Create a media player object
-   mediaPlayer = mRtcEngine.createMediaPlayer();
-   // Register a player observer
-   mediaPlayer.registerPlayerObserver(this);
-  ```
-</CodeBlockTab>
+       // Create a media player object
+       mediaPlayer = mRtcEngine.createMediaPlayer();
+       // Register a player observer
+       mediaPlayer.registerPlayerObserver(this);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  mRtcEngine = RtcEngine.create(config)
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      mRtcEngine = RtcEngine.create(config)
 
-   // Create a media player object
-   mediaPlayer = mRtcEngine.createMediaPlayer()
-   // Register a player observer
-   mediaPlayer.registerPlayerObserver(this)
-  ```
-</CodeBlockTab>
+       // Create a media player object
+       mediaPlayer = mRtcEngine.createMediaPlayer()
+       // Register a player observer
+       mediaPlayer.registerPlayerObserver(this)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 2. Implement the callbacks for the media player observer. Observe the player's state through the `onPlayerStateChanged` callback, get the current media file's playback progress through `onPositionChanged`, and handle player events through the `onPlayerEvent` callback.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  @Override
-    // Observe the player's state
-    public void onPlayerStateChanged(io.agora.mediaplayer.Constants.MediaPlayerState mediaPlayerState, io.agora.mediaplayer.Constants.MediaPlayerError mediaPlayerError) {
-      Log.e(TAG, "onPlayerStateChanged mediaPlayerState " + mediaPlayerState);
-      Log.e(TAG, "onPlayerStateChanged mediaPlayerError " + mediaPlayerError);
-      if (mediaPlayerState.equals(PLAYER_STATE_OPEN_COMPLETED)) {
-        setMediaPlayerViewEnable(true);
-      } else if (mediaPlayerState.equals(PLAYER_STATE_IDLE) || mediaPlayerState.equals(PLAYER_STATE_PLAYBACK_COMPLETED)) {
-        setMediaPlayerViewEnable(false);
-      }
-    }
-
-    @Override
-    // Observe the current playback progress
-    public void onPositionChanged(long position) {
-      Log.e(TAG, "onPositionChanged position " + position);
-      if (playerDuration > 0) {
-        final int result = (int) ((float) position / (float) playerDuration * 100);
-        handler.post(new Runnable() {
-          @Override
-          public void run() {
-            progressBar.setProgress(Long.valueOf(result).intValue());
+    <CodeBlockTab value="java">
+      ```java
+      @Override
+        // Observe the player's state
+        public void onPlayerStateChanged(io.agora.mediaplayer.Constants.MediaPlayerState mediaPlayerState, io.agora.mediaplayer.Constants.MediaPlayerError mediaPlayerError) {
+          Log.e(TAG, "onPlayerStateChanged mediaPlayerState " + mediaPlayerState);
+          Log.e(TAG, "onPlayerStateChanged mediaPlayerError " + mediaPlayerError);
+          if (mediaPlayerState.equals(PLAYER_STATE_OPEN_COMPLETED)) {
+            setMediaPlayerViewEnable(true);
+          } else if (mediaPlayerState.equals(PLAYER_STATE_IDLE) || mediaPlayerState.equals(PLAYER_STATE_PLAYBACK_COMPLETED)) {
+            setMediaPlayerViewEnable(false);
           }
-        });
-      }
-    }
-
-    @Override
-    // Observe player events
-    public void onPlayerEvent(io.agora.mediaplayer.Constants.MediaPlayerEvent mediaPlayerEvent) {
-      Log.e(TAG, " onPlayerEvent mediaPlayerEvent " + mediaPlayerEvent);
-    }
-  ```
-</CodeBlockTab>
-
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Observe the player's state
-    override fun onPlayerStateChanged(
-      mediaPlayerState: io.agora.mediaplayer.Constants.MediaPlayerState,
-      mediaPlayerError: io.agora.mediaplayer.Constants.MediaPlayerError
-    ) {
-      Log.e(TAG, "onPlayerStateChanged mediaPlayerState $mediaPlayerState")
-      Log.e(TAG, "onPlayerStateChanged mediaPlayerError $mediaPlayerError")
-
-      when (mediaPlayerState) {
-        PLAYER_STATE_OPEN_COMPLETED -> setMediaPlayerViewEnable(true)
-        PLAYER_STATE_IDLE, PLAYER_STATE_PLAYBACK_COMPLETED -> setMediaPlayerViewEnable(false)
-      }
-    }
-
-    // Observe the current playback progress
-    override fun onPositionChanged(position: Long) {
-      Log.e(TAG, "onPositionChanged position $position")
-
-      if (playerDuration > 0) {
-        val result = (position.toFloat() / playerDuration.toFloat() * 100).toInt()
-        handler.post {
-          progressBar.progress = result
         }
-      }
-    }
 
-    // Observe player events
-    override fun onPlayerEvent(mediaPlayerEvent: io.agora.mediaplayer.Constants.MediaPlayerEvent) {
-      Log.e(TAG, "onPlayerEvent mediaPlayerEvent $mediaPlayerEvent")
-    }
-  ```
-</CodeBlockTab>
+        @Override
+        // Observe the current playback progress
+        public void onPositionChanged(long position) {
+          Log.e(TAG, "onPositionChanged position " + position);
+          if (playerDuration > 0) {
+            final int result = (int) ((float) position / (float) playerDuration * 100);
+            handler.post(new Runnable() {
+              @Override
+              public void run() {
+                progressBar.setProgress(Long.valueOf(result).intValue());
+              }
+            });
+          }
+        }
 
-</CodeBlockTabs>
+        @Override
+        // Observe player events
+        public void onPlayerEvent(io.agora.mediaplayer.Constants.MediaPlayerEvent mediaPlayerEvent) {
+          Log.e(TAG, " onPlayerEvent mediaPlayerEvent " + mediaPlayerEvent);
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Observe the player's state
+        override fun onPlayerStateChanged(
+          mediaPlayerState: io.agora.mediaplayer.Constants.MediaPlayerState,
+          mediaPlayerError: io.agora.mediaplayer.Constants.MediaPlayerError
+        ) {
+          Log.e(TAG, "onPlayerStateChanged mediaPlayerState $mediaPlayerState")
+          Log.e(TAG, "onPlayerStateChanged mediaPlayerError $mediaPlayerError")
+
+          when (mediaPlayerState) {
+            PLAYER_STATE_OPEN_COMPLETED -> setMediaPlayerViewEnable(true)
+            PLAYER_STATE_IDLE, PLAYER_STATE_PLAYBACK_COMPLETED -> setMediaPlayerViewEnable(false)
+          }
+        }
+
+        // Observe the current playback progress
+        override fun onPositionChanged(position: Long) {
+          Log.e(TAG, "onPositionChanged position $position")
+
+          if (playerDuration > 0) {
+            val result = (position.toFloat() / playerDuration.toFloat() * 100).toInt()
+            handler.post {
+              progressBar.progress = result
+            }
+          }
+        }
+
+        // Observe player events
+        override fun onPlayerEvent(mediaPlayerEvent: io.agora.mediaplayer.Constants.MediaPlayerEvent) {
+          Log.e(TAG, "onPlayerEvent mediaPlayerEvent $mediaPlayerEvent")
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
 3. Call `setupLocalVideo` to render the local media player view.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  VideoCanvas videoCanvas = new VideoCanvas(surfaceView, Constants.RENDER_MODE_HIDDEN, Constants.VIDEO_MIRROR_MODE_AUTO,
-    Constants.VIDEO_SOURCE_MEDIA_PLAYER, mediaPlayer.getMediaPlayerId(), 0);
-    mRtcEngine.setupLocalVideo(videoCanvas);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      VideoCanvas videoCanvas = new VideoCanvas(surfaceView, Constants.RENDER_MODE_HIDDEN, Constants.VIDEO_MIRROR_MODE_AUTO,
+        Constants.VIDEO_SOURCE_MEDIA_PLAYER, mediaPlayer.getMediaPlayerId(), 0);
+        mRtcEngine.setupLocalVideo(videoCanvas);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  val videoCanvas = VideoCanvas(
-     surfaceView,
-     Constants.RENDER_MODE_HIDDEN,
-     Constants.VIDEO_MIRROR_MODE_AUTO,
-     Constants.VIDEO_SOURCE_MEDIA_PLAYER,
-     mediaPlayer.mediaPlayerId,
-     0
-   )
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      val videoCanvas = VideoCanvas(
+         surfaceView,
+         Constants.RENDER_MODE_HIDDEN,
+         Constants.VIDEO_MIRROR_MODE_AUTO,
+         Constants.VIDEO_SOURCE_MEDIA_PLAYER,
+         mediaPlayer.mediaPlayerId,
+         0
+       )
 
-   mRtcEngine.setupLocalVideo(videoCanvas)
-  ```
-</CodeBlockTab>
+       mRtcEngine.setupLocalVideo(videoCanvas)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 4. When joining a channel, use `ChannelMediaOptions` to set the media player ID, publish media player audio and video, and share media resources with remote users in the channel.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  private ChannelMediaOptions options = new ChannelMediaOptions();
+    <CodeBlockTab value="java">
+      ```java
+      private ChannelMediaOptions options = new ChannelMediaOptions();
 
-    // Set up options
-    options.publishMediaPlayerId = mediaPlayer.getMediaPlayerId();
-    options.publishMediaPlayerAudioTrack = true;
-    options.publishMediaPlayerVideoTrack = true;
+        // Set up options
+        options.publishMediaPlayerId = mediaPlayer.getMediaPlayerId();
+        options.publishMediaPlayerAudioTrack = true;
+        options.publishMediaPlayerVideoTrack = true;
 
-    // Join the channel
-    int res = mRtcEngine.joinChannel(accessToken, channelId, 0, options);
-  ```
-</CodeBlockTab>
+        // Join the channel
+        int res = mRtcEngine.joinChannel(accessToken, channelId, 0, options);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  val options = ChannelMediaOptions()
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      val options = ChannelMediaOptions()
 
-   // Set up options
-   options.publishMediaPlayerId = mediaPlayer.mediaPlayerId
-   options.publishMediaPlayerAudioTrack = true
-   options.publishMediaPlayerVideoTrack = true
+       // Set up options
+       options.publishMediaPlayerId = mediaPlayer.mediaPlayerId
+       options.publishMediaPlayerAudioTrack = true
+       options.publishMediaPlayerVideoTrack = true
 
-   // Join the channel
-   val res = mRtcEngine.joinChannel(accessToken, channelId, 0, options)
-  ```
-</CodeBlockTab>
+       // Join the channel
+       val res = mRtcEngine.joinChannel(accessToken, channelId, 0, options)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 5. Use the `open` method to open a local or online media file.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  mediaPlayer.open(url, 0);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      mediaPlayer.open(url, 0);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  mediaPlayer.open(url, 0)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      mediaPlayer.open(url, 0)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 6. Call the `play` method to play the media file.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  mediaPlayer.play();
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      mediaPlayer.play();
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  mediaPlayer?.play()
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      mediaPlayer?.play()
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
-:::warning
+    </CodeBlockTabs>
 
-Call the `play` method to play the media file only after receiving the `onPlayerStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
+    :::warning
+    Call the `play` method to play the media file only after receiving the `onPlayerStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
+    :::
 
-:::
 7. When a user leaves the channel, call `stop` to stop playback, `destroy` to destroy the media player, `unRegisterPlayerObserver` to unregister the player observer, and release allocated resources.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  mediaPlayer.stop();
-   mediaPlayer.destroy();
-   mediaPlayer.unRegisterPlayerObserver(this);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      mediaPlayer.stop();
+       mediaPlayer.destroy();
+       mediaPlayer.unRegisterPlayerObserver(this);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  mediaPlayer.stop()
-   mediaPlayer.destroy()
-   mediaPlayer.unRegisterPlayerObserver(this)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      mediaPlayer.stop()
+       mediaPlayer.destroy()
+       mediaPlayer.unRegisterPlayerObserver(this)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
@@ -412,11 +412,10 @@ To implement a media player in your app, follow these steps:
    ```swift
    let option1 = AgoraRtcChannelMediaOptions()
 
-  // ...
+   // ...
 
-  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
-
-  ```
+   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+   ```
 
 5. Use the `open` method to open a local or online media file.
 
@@ -430,11 +429,9 @@ To implement a media player in your app, follow these steps:
    mediaPlayerKit.play()
    ```
 
-:::warning
-
-Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
-
-:::
+   :::warning
+   Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
+   :::
 7. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```swift
@@ -574,11 +571,10 @@ To implement a media player in your app, follow these steps:
    ```swift
    let option1 = AgoraRtcChannelMediaOptions()
 
-  // ...
+   // ...
 
-  option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
-
-  ```
+   option1.publishMediaPlayerId = .of((Int32)(mediaPlayerKit.getMediaPlayerId()))
+   ```
 
 5. Use the `open` method to open a local or online media file.
 
@@ -592,11 +588,9 @@ To implement a media player in your app, follow these steps:
    mediaPlayerKit.play()
    ```
 
-:::warning
-
-Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
-
-:::
+   :::warning
+   Call the `play` method to play the media file only after receiving the `didChangedToState` callback reporting the player state as `AgoraMediaPlayerStateOpenCompleted`.
+   :::
 7. When a user leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```swift
@@ -839,11 +833,10 @@ To implement a media player in your app, follow these steps:
    }
    ```
 
-:::warning
+   :::warning
+   Call the `play` method to play the media file only after receiving the `onPlayerSourceStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
+   :::
 
-Call the `play` method to play the media file only after receiving the `onPlayerSourceStateChanged` callback reporting the player state as `PLAYER_STATE_OPEN_COMPLETED`.
-
-:::
 7. When a user stops playback or leaves the channel, call `stop` to stop playback, and `destroyMediaPlayer` to release resources.
 
    ```cpp

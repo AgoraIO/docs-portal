@@ -42,171 +42,171 @@ This section explains how to join a second channel as a host after you have alre
 
 1. Declare variables for `RtcEngineEx` and `RtcConnection` objects.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-```java
-private RtcEngineEx engine;
-private RtcConnection rtcConnection2 = new RtcConnection();
-```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+    ```java
+    private RtcEngineEx engine;
+    private RtcConnection rtcConnection2 = new RtcConnection();
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-```kotlin
-private lateinit var engine: RtcEngineEx
-private val rtcConnection2 = RtcConnection()
-```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    private lateinit var engine: RtcEngineEx
+    private val rtcConnection2 = RtcConnection()
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 1. Initialize the engine instance.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-```java
-engine = (RtcEngineEx) RtcEngine.create(config);
-```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+    ```java
+    engine = (RtcEngineEx) RtcEngine.create(config);
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-```kotlin
-engine = RtcEngine.create(config) as RtcEngineEx
-```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    engine = RtcEngine.create(config) as RtcEngineEx
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 1. Join the channel using a random user ID.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-```java
-private boolean joinSecondChannel() {
-   ChannelMediaOptions option = new ChannelMediaOptions();
-   mediaOptions.autoSubscribeAudio = true;
-   mediaOptions.autoSubscribeVideo = true;
-   rtcConnection2.channelId = "channel-2";
-   rtcConnection2.localUid = new Random().nextInt(512)+512;
-   int ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions,
-     iRtcEngineEventHandler2);
-   return (ret == 0);
- }
-```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+    ```java
+    private boolean joinSecondChannel() {
+       ChannelMediaOptions option = new ChannelMediaOptions();
+       mediaOptions.autoSubscribeAudio = true;
+       mediaOptions.autoSubscribeVideo = true;
+       rtcConnection2.channelId = "channel-2";
+       rtcConnection2.localUid = new Random().nextInt(512)+512;
+       int ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions,
+         iRtcEngineEventHandler2);
+       return (ret == 0);
+     }
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-```kotlin
-private fun joinSecondChannel(): Boolean {
-  val mediaOptions = ChannelMediaOptions().apply {
-    autoSubscribeAudio = true
-    autoSubscribeVideo = true
-  }
-  rtcConnection2.channelId = "channel-2"
-  rtcConnection2.localUid = (Random().nextInt(512) + 512)
-  val ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions, iRtcEngineEventHandler2)
-  return ret == 0
-}
-```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    private fun joinSecondChannel(): Boolean {
+      val mediaOptions = ChannelMediaOptions().apply {
+        autoSubscribeAudio = true
+        autoSubscribeVideo = true
+      }
+      rtcConnection2.channelId = "channel-2"
+      rtcConnection2.localUid = (Random().nextInt(512) + 512)
+      val ret = engine.joinChannelEx("your token", rtcConnection2, mediaOptions, iRtcEngineEventHandler2)
+      return ret == 0
+    }
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 1. Listen for events in `rtcConnection2` and set up the remote video in the `onUserJoined` callback.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-```java
-private final IRtcEngineEventHandler iRtcEngineEventHandler2 = new IRtcEngineEventHandler() {
-  @Override
-  public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
-    Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid));
-    showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid));
-  }
-  @Override
-  public void onUserJoined(int uid, int elapsed) {
-    Log.i(TAG, "channel2 onUserJoined->" + uid);
-    showLongToast(String.format("user %d joined!", uid));
-    Context context = getContext();
-    if (context == null) {
-      return;
-    }
-    handler.post(() ->
-    {
-      // Display the remote video stream
-      SurfaceView surfaceView = null;
-      if (fl_remote2.getChildCount() > 0) {
-        fl_remote2.removeAllViews();
+    <CodeBlockTab value="java">
+    ```java
+    private final IRtcEngineEventHandler iRtcEngineEventHandler2 = new IRtcEngineEventHandler() {
+      @Override
+      public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+        Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid));
+        showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid));
       }
-      // Create the rendering view through RtcEngine
-      surfaceView = new SurfaceView(context);
-      surfaceView.setZOrderMediaOverlay(true);
-      // Add the view to the remote container
-      fl_remote2.addView(surfaceView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+      @Override
+      public void onUserJoined(int uid, int elapsed) {
+        Log.i(TAG, "channel2 onUserJoined->" + uid);
+        showLongToast(String.format("user %d joined!", uid));
+        Context context = getContext();
+        if (context == null) {
+          return;
+        }
+        handler.post(() ->
+        {
+          // Display the remote video stream
+          SurfaceView surfaceView = null;
+          if (fl_remote2.getChildCount() > 0) {
+            fl_remote2.removeAllViews();
+          }
+          // Create the rendering view through RtcEngine
+          surfaceView = new SurfaceView(context);
+          surfaceView.setZOrderMediaOverlay(true);
+          // Add the view to the remote container
+          fl_remote2.addView(surfaceView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-      // Set the remote view
-      engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2);
-    });
-  }
-};
-```
-</CodeBlockTab>
-
-<CodeBlockTab value="kotlin">
-```kotlin
-private val iRtcEngineEventHandler2 = object : IRtcEngineEventHandler() {
-  override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
-    Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid))
-    showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid))
-  }
-
-  override fun onUserJoined(uid: Int, elapsed: Int) {
-    Log.i(TAG, "channel2 onUserJoined->$uid")
-    showLongToast("user $uid joined!")
-
-    val context = context
-    if (context == null) {
-      return
-    }
-
-    handler.post {
-      // Display the remote video stream
-      var surfaceView: SurfaceView? = null
-      if (fl_remote2.childCount > 0) {
-        fl_remote2.removeAllViews()
+          // Set the remote view
+          engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2);
+        });
       }
-      // Create the rendering view through RtcEngine
-      surfaceView = SurfaceView(context)
-      surfaceView?.zOrderMediaOverlay = true
-      // Add the view to the remote container
-      fl_remote2.addView(surfaceView, FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+    };
+    ```
+    </CodeBlockTab>
 
-      // Set the remote view
-      engine.setupRemoteVideoEx(VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2)
+    <CodeBlockTab value="kotlin">
+    ```kotlin
+    private val iRtcEngineEventHandler2 = object : IRtcEngineEventHandler() {
+      override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+        Log.i(TAG, String.format("channel2 onJoinChannelSuccess channel %s uid %d", channel2, uid))
+        showLongToast(String.format("onJoinChannelSuccess channel %s uid %d", channel2, uid))
+      }
+
+      override fun onUserJoined(uid: Int, elapsed: Int) {
+        Log.i(TAG, "channel2 onUserJoined->$uid")
+        showLongToast("user $uid joined!")
+
+        val context = context
+        if (context == null) {
+          return
+        }
+
+        handler.post {
+          // Display the remote video stream
+          var surfaceView: SurfaceView? = null
+          if (fl_remote2.childCount > 0) {
+            fl_remote2.removeAllViews()
+          }
+          // Create the rendering view through RtcEngine
+          surfaceView = SurfaceView(context)
+          surfaceView?.zOrderMediaOverlay = true
+          // Add the view to the remote container
+          fl_remote2.addView(surfaceView, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+
+          // Set the remote view
+          engine.setupRemoteVideoEx(VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2)
+        }
+      }
     }
-  }
-}
-```
-</CodeBlockTab>
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
@@ -530,86 +530,86 @@ This section explains how to join a second channel as a host after you have alre
 
 1. Join the second channel
 
-  Call `JoinChannelEx` to join the second channel:
+    Call `JoinChannelEx` to join the second channel:
 
-  ```csharp
-  ChannelMediaOptions options2 = new ChannelMediaOptions();
-  // Automatically subscribe to remote audio
-  options2.autoSubscribeAudio.SetValue(true);
-  // Automatically subscribe to remote video
-  options2.autoSubscribeVideo.SetValue(true);
-  // Publish audio from the microphone
-  options2.publishMicrophoneTrack.SetValue(true);
-  // Publish video from the camera
-  options2.publishCameraTrack.SetValue(true);
-  // Set the user role to broadcaster
-  options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
-  // Join the second channel with a unique user ID
-  ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, UID2), options2);
-  Debug.Log("JoinChannelEx returns: " + ret);
-  ```
+    ```csharp
+    ChannelMediaOptions options2 = new ChannelMediaOptions();
+    // Automatically subscribe to remote audio
+    options2.autoSubscribeAudio.SetValue(true);
+    // Automatically subscribe to remote video
+    options2.autoSubscribeVideo.SetValue(true);
+    // Publish audio from the microphone
+    options2.publishMicrophoneTrack.SetValue(true);
+    // Publish video from the camera
+    options2.publishCameraTrack.SetValue(true);
+    // Set the user role to broadcaster
+    options2.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    // Join the second channel with a unique user ID
+    ret = RtcEngine.JoinChannelEx(_token, new RtcConnection(_channelName, UID2), options2);
+    Debug.Log("JoinChannelEx returns: " + ret);
+    ```
 
 2. Set up remote user video
 
-  Listen for the `OnUserJoined` callback and call `SetForUser` to set up video rendering for the remote user:
+    Listen for the `OnUserJoined` callback and call `SetForUser` to set up video rendering for the remote user:
 
-  ```csharp
-  public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
-  {
-    Debug.Log(string.Format("OnUserJoined uid: {0}, elapsed: {1}", uid, elapsed));
-    // Create a view for the remote user
-    var videoSurface = MakeImageSurface(uid.ToString());
-    // Set up video rendering
-    videoSurface.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
-    // Callback when the Texture size changes
-    videoSurface.OnTextureSizeModify += (int width, int height) =>
+    ```csharp
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
     {
-      var transform = videoSurface.GetComponent<RectTransform>();
-      if (transform)
+      Debug.Log(string.Format("OnUserJoined uid: {0}, elapsed: {1}", uid, elapsed));
+      // Create a view for the remote user
+      var videoSurface = MakeImageSurface(uid.ToString());
+      // Set up video rendering
+      videoSurface.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+      // Callback when the Texture size changes
+      videoSurface.OnTextureSizeModify += (int width, int height) =>
       {
-        // If rendering in a RawImage, set the RawImage size
-        transform.sizeDelta = new Vector2(width / 2, height / 2);
-        transform.localScale = Vector3.one;
+        var transform = videoSurface.GetComponent<RectTransform>();
+        if (transform)
+        {
+          // If rendering in a RawImage, set the RawImage size
+          transform.sizeDelta = new Vector2(width / 2, height / 2);
+          transform.localScale = Vector3.one;
+        }
+        else
+        {
+          // If rendering in a MeshRenderer, set the MeshRenderer size
+          float scale = (float)height / (float)width;
+          videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+        }
+        Debug.Log("OnTextureSizeModify: " + width + " " + height);
+      };
+    }
+
+    private static VideoSurface MakeImageSurface(string goName)
+    {
+      GameObject go = new GameObject { name = goName };
+      // Add RawImage for rendering
+      go.AddComponent<RawImage>();
+      // Make the object draggable
+      go.AddComponent<UIElementDrag>();
+
+      var canvas = GameObject.Find("VideoCanvas");
+      if (canvas != null)
+      {
+        go.transform.parent = canvas.transform;
+        Debug.Log("Video view added");
       }
       else
       {
-        // If rendering in a MeshRenderer, set the MeshRenderer size
-        float scale = (float)height / (float)width;
-        videoSurface.transform.localScale = new Vector3(-1, 1, scale);
+        Debug.Log("Canvas is null, video view not added");
       }
-      Debug.Log("OnTextureSizeModify: " + width + " " + height);
-    };
-  }
 
-  private static VideoSurface MakeImageSurface(string goName)
-  {
-    GameObject go = new GameObject { name = goName };
-    // Add RawImage for rendering
-    go.AddComponent<RawImage>();
-    // Make the object draggable
-    go.AddComponent<UIElementDrag>();
+      // Set transform properties
+      go.transform.Rotate(0f, 0f, 180f);
+      go.transform.localPosition = Vector3.zero;
+      go.transform.localScale = new Vector3(2f, 3f, 1f);
 
-    var canvas = GameObject.Find("VideoCanvas");
-    if (canvas != null)
-    {
-      go.transform.parent = canvas.transform;
-      Debug.Log("Video view added");
+      // Add VideoSurface component
+      var videoSurface = go.AddComponent<VideoSurface>();
+      return videoSurface;
     }
-    else
-    {
-      Debug.Log("Canvas is null, video view not added");
-    }
-
-    // Set transform properties
-    go.transform.Rotate(0f, 0f, 180f);
-    go.transform.localPosition = Vector3.zero;
-    go.transform.localScale = new Vector3(2f, 3f, 1f);
-
-    // Add VideoSurface component
-    var videoSurface = go.AddComponent<VideoSurface>();
-    return videoSurface;
-  }
-  ```
+    ```
 
 ## Reference
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.

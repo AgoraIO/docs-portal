@@ -93,40 +93,40 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+    Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
 
-```java tab="Java" tabGroup="encryption-android"
-// Noise-free sample values must come from your server.
-String encryptionKey = getEncryptionKeyFromServer();
-byte[] encryptionKdfSalt = getEncryptionSaltFromServer();
+    ```java tab="Java" tabGroup="encryption-android"
+    // Noise-free sample values must come from your server.
+    String encryptionKey = getEncryptionKeyFromServer();
+    byte[] encryptionKdfSalt = getEncryptionSaltFromServer();
 
-EncryptionConfig config = new EncryptionConfig();
-config.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2;
-config.encryptionKey = encryptionKey;
-config.encryptionKdfSalt = encryptionKdfSalt;
+    EncryptionConfig config = new EncryptionConfig();
+    config.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2;
+    config.encryptionKey = encryptionKey;
+    config.encryptionKdfSalt = encryptionKdfSalt;
 
-int result = rtcEngine.enableEncryption(true, config);
-```
+    int result = rtcEngine.enableEncryption(true, config);
+    ```
 
-```kotlin tab="Kotlin" tabGroup="encryption-android"
-// Noise-free sample values must come from your server.
-val encryptionKey = getEncryptionKeyFromServer()
-val encryptionKdfSalt = getEncryptionSaltFromServer()
+    ```kotlin tab="Kotlin" tabGroup="encryption-android"
+    // Noise-free sample values must come from your server.
+    val encryptionKey = getEncryptionKeyFromServer()
+    val encryptionKdfSalt = getEncryptionSaltFromServer()
 
-val config = EncryptionConfig().apply {
-  encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2
-  this.encryptionKey = encryptionKey
-  this.encryptionKdfSalt = encryptionKdfSalt
-}
+    val config = EncryptionConfig().apply {
+      encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2
+      this.encryptionKey = encryptionKey
+      this.encryptionKdfSalt = encryptionKdfSalt
+    }
 
-val result = rtcEngine.enableEncryption(true, config)
-```
+    val result = rtcEngine.enableEncryption(true, config)
+    ```
 
 ## Reference
 
@@ -161,32 +161,32 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
+    Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
 
-```swift
-import AgoraRtcCryptoLoader
+    ```swift
+    import AgoraRtcCryptoLoader
 
-func getEncryptionSaltFromServer() -> Data {
-  let base64Salt = "EncryptionKdfSaltInBase64Strings"
-  return Data(base64Encoded: base64Salt)!
-}
+    func getEncryptionSaltFromServer() -> Data {
+      let base64Salt = "EncryptionKdfSaltInBase64Strings"
+      return Data(base64Encoded: base64Salt)!
+    }
 
-let config = AgoraEncryptionConfig()
-config.encryptionMode = .AES128GCM2
-config.encryptionKdfSalt = getEncryptionSaltFromServer()
-config.encryptionKey = getEncryptionKeyFromServer()
+    let config = AgoraEncryptionConfig()
+    config.encryptionMode = .AES128GCM2
+    config.encryptionKdfSalt = getEncryptionSaltFromServer()
+    config.encryptionKey = getEncryptionKeyFromServer()
 
-let result = agoraKit.enableEncryption(true, encryptionConfig: config)
-if result != 0 {
-  print("enableEncryption failed: \(result)")
-}
-```
+    let result = agoraKit.enableEncryption(true, encryptionConfig: config)
+    if result != 0 {
+      print("enableEncryption failed: \(result)")
+    }
+    ```
 
 ## Reference
 
@@ -222,32 +222,32 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
+    Manually add the encryption library to your project or integrate it with CocoaPods, then call `enableEncryption` before joining a channel. Set the encryption mode to `AgoraEncryptionModeAES128GCM2` or `AgoraEncryptionModeAES256GCM2` and pass the key and salt to the SDK.
 
-```swift
-import AgoraRtcCryptoLoader
+    ```swift
+    import AgoraRtcCryptoLoader
 
-func getEncryptionSaltFromServer() -> Data {
-  let base64Salt = "EncryptionKdfSaltInBase64Strings"
-  return Data(base64Encoded: base64Salt)!
-}
+    func getEncryptionSaltFromServer() -> Data {
+      let base64Salt = "EncryptionKdfSaltInBase64Strings"
+      return Data(base64Encoded: base64Salt)!
+    }
 
-let config = AgoraEncryptionConfig()
-config.encryptionMode = .AES128GCM2
-config.encryptionKdfSalt = getEncryptionSaltFromServer()
-config.encryptionKey = getEncryptionKeyFromServer()
+    let config = AgoraEncryptionConfig()
+    config.encryptionMode = .AES128GCM2
+    config.encryptionKdfSalt = getEncryptionSaltFromServer()
+    config.encryptionKey = getEncryptionKeyFromServer()
 
-let result = agoraKit.enableEncryption(true, encryptionConfig: config)
-if result != 0 {
-  print("enableEncryption failed: \(result)")
-}
-```
+    let result = agoraKit.enableEncryption(true, encryptionConfig: config)
+    if result != 0 {
+      print("enableEncryption failed: \(result)")
+    }
+    ```
 
 ## Reference
 
@@ -359,27 +359,27 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+    Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
 
-```cpp
-int enableEncryption() {
-  std::string secret = getEncryptionKeyFromServer();
-  std::vector<uint8_t> kdfSalt = getEncryptionSaltFromServer();
+    ```cpp
+    int enableEncryption() {
+      std::string secret = getEncryptionKeyFromServer();
+      std::vector<uint8_t> kdfSalt = getEncryptionSaltFromServer();
 
-  agora::rtc::EncryptionConfig config;
-  config.encryptionMode = AES_128_GCM2;
-  config.encryptionKey = secret.c_str();
-  memcpy(config.encryptionKdfSalt, kdfSalt.data(), sizeof(config.encryptionKdfSalt));
+      agora::rtc::EncryptionConfig config;
+      config.encryptionMode = AES_128_GCM2;
+      config.encryptionKey = secret.c_str();
+      memcpy(config.encryptionKdfSalt, kdfSalt.data(), sizeof(config.encryptionKdfSalt));
 
-  return rtcEngine->enableEncryption(true, config);
-}
-```
+      return rtcEngine->enableEncryption(true, config);
+    }
+    ```
 
 ## Reference
 
@@ -414,29 +414,29 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
+    Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
 
-```typescript
-const encryptionMode = EncryptionMode.Aes128Gcm2;
-const encryptionKey = await getEncryptionKeyFromServer();
-const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
+    ```typescript
+    const encryptionMode = EncryptionMode.Aes128Gcm2;
+    const encryptionKey = await getEncryptionKeyFromServer();
+    const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
 
-if (!encryptionKey) {
-  throw new Error('encryptionKey is invalid');
-}
+    if (!encryptionKey) {
+      throw new Error('encryptionKey is invalid');
+    }
 
-rtcEngine.enableEncryption(true, {
-  encryptionMode,
-  encryptionKey,
-  encryptionKdfSalt,
-});
-```
+    rtcEngine.enableEncryption(true, {
+      encryptionMode,
+      encryptionKey,
+      encryptionKdfSalt,
+    });
+    ```
 
 ## Reference
 
@@ -472,34 +472,34 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `Uint8List`, and call `enableEncryption` before joining a channel. Set the encryption mode to `aes128Gcm2` or `aes256Gcm2` and pass the key and salt to the SDK.
+    Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `Uint8List`, and call `enableEncryption` before joining a channel. Set the encryption mode to `aes128Gcm2` or `aes256Gcm2` and pass the key and salt to the SDK.
 
-```dart
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+    ```dart
+    import 'dart:convert';
+    import 'dart:typed_data';
+    import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
-Future<void> enableEncryption(RtcEngine rtcEngine) async {
-  final String encryptionKdfSaltBase64 =
-      await Server.getEncryptionKdfSaltBase64();
-  final String encryptionSecret = await Server.getEncryptionSecret();
-  final Uint8List encryptionKdfSalt = base64Decode(encryptionKdfSaltBase64);
+    Future<void> enableEncryption(RtcEngine rtcEngine) async {
+      final String encryptionKdfSaltBase64 =
+          await Server.getEncryptionKdfSaltBase64();
+      final String encryptionSecret = await Server.getEncryptionSecret();
+      final Uint8List encryptionKdfSalt = base64Decode(encryptionKdfSaltBase64);
 
-  final config = EncryptionConfig(
-    encryptionMode: EncryptionMode.aes128Gcm2,
-    encryptionKey: encryptionSecret,
-    encryptionKdfSalt: encryptionKdfSalt,
-  );
+      final config = EncryptionConfig(
+        encryptionMode: EncryptionMode.aes128Gcm2,
+        encryptionKey: encryptionSecret,
+        encryptionKdfSalt: encryptionKdfSalt,
+      );
 
-  await rtcEngine.enableEncryption(enabled: true, config: config);
-}
-```
+      await rtcEngine.enableEncryption(enabled: true, config: config);
+    }
+    ```
 
 ## Reference
 
@@ -531,29 +531,29 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
+    Obtain the string key and Base64-encoded salt from your server, convert the salt to a 32-byte array, and call `enableEncryption` before joining a channel. Set the encryption mode to `Aes128Gcm2` or `Aes256Gcm2` and pass the key and salt to the SDK.
 
-```typescript
-const encryptionMode = EncryptionMode.Aes128Gcm2;
-const encryptionKey = await getEncryptionKeyFromServer();
-const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
+    ```typescript
+    const encryptionMode = EncryptionMode.Aes128Gcm2;
+    const encryptionKey = await getEncryptionKeyFromServer();
+    const encryptionKdfSalt = await getEncryptionSaltBytesFromServer();
 
-if (!encryptionKey) {
-  throw new Error('encryptionKey is invalid');
-}
+    if (!encryptionKey) {
+      throw new Error('encryptionKey is invalid');
+    }
 
-rtcEngine.enableEncryption(true, {
-  encryptionMode,
-  encryptionKey,
-  encryptionKdfSalt,
-});
-```
+    rtcEngine.enableEncryption(true, {
+      encryptionMode,
+      encryptionKey,
+      encryptionKdfSalt,
+    });
+    ```
 
 ## Reference
 
@@ -589,28 +589,28 @@ To add built-in media stream encryption to your app, refer to the following step
 
 2. Implement client-side logic.
 
-:::note
-All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
+    :::note
+    All users in a channel must use the same encryption mode, key, and salt. Discrepancies may lead to unexpected behavior, such as black screens or audio loss.
 
-To ensure security, use a new key and salt each time you enable media stream encryption.
-:::
+    To ensure security, use a new key and salt each time you enable media stream encryption.
+    :::
 
-Obtain the string key and 32-byte salt from your server, and call `EnableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
+    Obtain the string key and 32-byte salt from your server, and call `EnableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
 
-```csharp
-string secret = GetEncryptionKeyFromServer();
-byte[] kdfSalt = GetEncryptionSaltFromServer();
+    ```csharp
+    string secret = GetEncryptionKeyFromServer();
+    byte[] kdfSalt = GetEncryptionSaltFromServer();
 
-var config = new EncryptionConfig
-{
-  encryptionMode = ENCRYPTION_MODE.AES_128_GCM2,
-  encryptionKey = secret,
-  encryptionKdfSalt = kdfSalt
-};
+    var config = new EncryptionConfig
+    {
+      encryptionMode = ENCRYPTION_MODE.AES_128_GCM2,
+      encryptionKey = secret,
+      encryptionKdfSalt = kdfSalt
+    };
 
-var result = RtcEngine.EnableEncryption(true, config);
-Debug.Log("EnableEncryption: " + result);
-```
+    var result = RtcEngine.EnableEncryption(true, config);
+    Debug.Log("EnableEncryption: " + result);
+    ```
 
 ## Reference
 
