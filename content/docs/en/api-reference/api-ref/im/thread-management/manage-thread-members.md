@@ -86,7 +86,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -149,7 +149,7 @@ For the descriptions of the request headers, see [Authorization](#auth).
 
 #### Response body
 
-If the returned HTTP status code is `200`, the request succeeds; otherwise, the request fails, and you can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is `200`, the request succeeds; otherwise, the request fails, and you can refer to [Status codes](#status-codes) for possible causes.
 
 For other fields and descriptions, see [Common parameters](#response).
 
@@ -225,7 +225,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
