@@ -1,5 +1,6 @@
 import type { DocsRedirectPayload } from './docs-page.server';
 import { isKnownPlatform } from './platforms/registry';
+import { resolveUnifiedRtcProductRedirect } from './realtime-media-redirects';
 
 const STATIC_DOCS_BASE = '/__static/docs';
 const STATIC_DOCS_PUBLIC_DIR = '__static/docs';
@@ -120,8 +121,7 @@ type PlatformStaticPayload = {
 export async function resolvePlatformStaticDocsPayload<
   T extends PlatformStaticPayload | DocsRedirectPayload,
 >(input: StaticDocsRouteInput) {
-  const { locale, slugSegments, tab } =
-    canonicalizeStaticDocsRouteInput(input);
+  const { locale, slugSegments, tab } = canonicalizeStaticDocsRouteInput(input);
 
   const payload = await readStaticDocsPayload<T>({
     locale,
@@ -178,6 +178,35 @@ export async function resolvePlatformStaticDocsPayload<
     },
     platform,
   );
+}
+
+export async function resolveStaticUnifiedRtcRedirect(
+  input: StaticDocsRouteInput,
+): Promise<DocsRedirectPayload | null> {
+  const redirectUrl = resolveUnifiedRtcProductRedirect(
+    input.locale,
+    input.tab,
+    input.slugSegments,
+  );
+
+  if (!redirectUrl) {
+    return null;
+  }
+
+  const [locale, tab, ...slugSegments] = redirectUrl.split('/').filter(Boolean);
+  if (!locale || !tab) {
+    return null;
+  }
+
+  const targetPayload = await resolvePlatformStaticDocsPayload({
+    locale,
+    slugSegments,
+    tab,
+  });
+
+  return targetPayload && !('redirectUrl' in targetPayload)
+    ? { redirectUrl }
+    : null;
 }
 
 function clearStalePlatformFallbackToc<T extends PlatformStaticPayload>(

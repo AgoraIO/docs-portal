@@ -182,6 +182,72 @@ describe('docs route locale guards', () => {
     throw new Error('expected loader to reject with notFound');
   });
 
+  it('redirects legacy RTC product URLs while using static docs payloads', async () => {
+    vi.stubEnv('VITE_TSS_SPA_STATIC_EXPERIMENT', 'true');
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        if (
+          url ===
+          '/__static/docs/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression.json'
+        ) {
+          return {
+            json: async () => ({
+              body: {
+                kind: 'mdx',
+                platformTabs: {
+                  canonicalPlatform: 'web',
+                  platforms: '["web","react-native"]',
+                },
+              },
+              markdownUrl:
+                '/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression.md',
+            }),
+            ok: true,
+            status: 200,
+            statusText: 'OK',
+          };
+        }
+
+        return {
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        };
+      }),
+    );
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '',
+          searchStr: '',
+        },
+        params: {
+          _splat:
+            'video/build/enhance-the-audio-experience/ai-noise-suppression/react-native',
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression/react-native',
+          statusCode: 307,
+        },
+        status: 307,
+      });
+      return;
+    } finally {
+      vi.unstubAllEnvs();
+      vi.unstubAllGlobals();
+    }
+
+    throw new Error('expected static docs loader to redirect legacy RTC URL');
+  });
+
   it('redirects supported locale index routes into the introduction tab', async () => {
     try {
       await getLoader(LocaleIndexRoute)({

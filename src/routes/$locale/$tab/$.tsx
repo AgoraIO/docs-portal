@@ -11,6 +11,7 @@ import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
 import {
   resolvePlatformStaticDocsPayload,
+  resolveStaticUnifiedRtcRedirect,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
 import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
@@ -58,6 +59,21 @@ export const Route = createFileRoute('/$locale/$tab/$')({
             legacyRedirect.redirectUrl,
             location,
             legacyRedirect.preserveSearch,
+          ),
+        });
+      }
+
+      const unifiedRtcRedirect = await resolveStaticUnifiedRtcRedirect({
+        locale: params.locale,
+        slugSegments,
+        tab: params.tab,
+      });
+
+      if (unifiedRtcRedirect) {
+        throw redirect({
+          href: preserveRedirectSearch(
+            unifiedRtcRedirect.redirectUrl,
+            location,
           ),
         });
       }

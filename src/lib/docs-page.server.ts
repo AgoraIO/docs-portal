@@ -59,6 +59,7 @@ import {
 } from './platforms/processed-text';
 import { isKnownPlatform, type PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { resolveUnifiedRtcProductRedirect } from './realtime-media-redirects';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -73,13 +74,6 @@ const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
 const RECIPES_ROOT_SLUG = 'recipes';
 const SDKS_ROOT_SLUG = 'sdks';
-const UNIFIED_RTC_PRODUCT_SLUGS = new Set([
-  'broadcast-streaming',
-  'interactive-live-streaming',
-  'video',
-  'voice',
-]);
-
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 
 const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
@@ -942,7 +936,6 @@ function resolveRealtimeMediaRedirect(
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/build-from-scratch': `/${locale}/realtime-media/rtc/quick-start/android/build-from-scratch`,
-    'video/quickstart': `/${locale}/realtime-media/rtc/get-started-sdk`,
     'cloud-recording/pricing-webpage-recording': `/${locale}/realtime-media/cloud-recording/reference/pricing-webpage-recording`,
     'whiteboard/overview': `/${locale}/realtime-media/whiteboard`,
     'whiteboard/overview/account-settlement': `/${locale}/realtime-media/whiteboard/reference/account-settlement`,
@@ -960,14 +953,7 @@ function resolveRealtimeMediaRedirect(
     return exactRedirect;
   }
 
-  const [productSlug, ...relativePath] = slugSegments;
-  if (!productSlug || !UNIFIED_RTC_PRODUCT_SLUGS.has(productSlug)) {
-    return null;
-  }
-
-  return `/${locale}/realtime-media/rtc${
-    relativePath.length > 0 ? `/${relativePath.join('/')}` : ''
-  }`;
+  return resolveUnifiedRtcProductRedirect(locale, tab, slugSegments);
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
