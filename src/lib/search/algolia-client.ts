@@ -11,6 +11,7 @@ type AlgoliaDocsHit = Record<string, unknown> & {
 };
 
 export function createAlgoliaDocsClient({
+  apiReferenceIndexName,
   appId,
   indexName,
   locale,
@@ -18,6 +19,7 @@ export function createAlgoliaDocsClient({
   scope,
   searchApiKey,
 }: {
+  apiReferenceIndexName?: string;
   appId: string;
   indexName: string;
   locale: string;
@@ -29,7 +31,15 @@ export function createAlgoliaDocsClient({
   const client = liteClient(appId, searchApiKey);
 
   return {
-    deps: [appId, indexName, locale, platform, scope, searchApiKey],
+    deps: [
+      appId,
+      indexName,
+      apiReferenceIndexName,
+      locale,
+      platform,
+      scope,
+      searchApiKey,
+    ],
     async search(query) {
       if (query.trim().length === 0) {
         return [];
@@ -76,11 +86,72 @@ export function createAlgoliaDocsClient({
             highlightPostTag: '</mark>',
             highlightPreTag: '<mark>',
           },
+          ...(apiReferenceIndexName && supportsApiReferenceScope(scope)
+            ? [
+                {
+                  type: 'default' as const,
+                  indexName: apiReferenceIndexName,
+                  query,
+                  filters: buildApiReferenceFilters({ platform, scope }),
+                  hitsPerPage: 5,
+                  attributesToHighlight: ['hierarchy.lvl1', 'content'],
+                  attributesToSnippet: ['content:25'],
+                  snippetEllipsisText: '…',
+                  attributesToRetrieve: [
+                    'objectID',
+                    'url',
+                    'content',
+                    'product',
+                    'platform',
+                    'version',
+                    'hierarchy',
+                  ],
+                  highlightPostTag: '</mark>',
+                  highlightPreTag: '<mark>',
+                },
+              ]
+            : []),
         ],
       });
 
       const entries = [];
       const seenUrls = new Set<string>();
+
+      const apiResult = result.results[1];
+      if (apiResult) {
+        for (const hit of apiResult.hits as AlgoliaDocsHit[]) {
+          const url = getString(hit.url) ?? '';
+          const title =
+            getNestedHighlight(hit, 'hierarchy', 'lvl1') ??
+            getHierarchyValue(hit, 'lvl1') ??
+            url;
+          const identity = `${url}#${getString(hit.objectID) ?? title}`;
+
+          if (seenUrls.has(identity)) {
+            continue;
+          }
+
+          seenUrls.add(identity);
+          entries.push({
+            content: title,
+            id: getString(hit.objectID) ?? identity,
+            objectType: 'sdk-api',
+            path: getApiReferencePath(hit),
+            platform: toStringArray(hit.platform)?.map(
+              normalizeApiReferencePlatform,
+            ),
+            product: getString(hit.product),
+            snippet:
+              getSnippet(hit, 'content') ??
+              getHighlight(hit, 'content') ??
+              getString(hit.content),
+            title,
+            type: 'page' as const,
+            url,
+            version: getString(hit.version),
+          });
+        }
+      }
 
       for (const hit of result.results[0].hits as AlgoliaDocsHit[]) {
         const sectionId =
@@ -121,9 +192,9 @@ export function createAlgoliaDocsClient({
         });
       }
 
-      // Ranking is left entirely to Algolia (textual relevance + the category
-      // optionalFilters above); the client no longer re-sorts, so it can't
-      // fight the server ranking (e.g. re-promoting a glossary heading match).
+      // API references are grouped before docs, while each index keeps the
+      // ranking Algolia returned. No client-side sorting can disturb relevance
+      // within either result family.
       return entries;
     },
   };
@@ -147,6 +218,98 @@ function buildFilters({
     .join(' AND ');
 }
 
+const API_REFERENCE_PRODUCTS_BY_DOCS_PRODUCT: Record<string, string[]> = {
+  'flexible-classroom': ['flexible-classroom-sdk'],
+  im: ['chat-sdk'],
+  iot: ['iot-sdk'],
+  'on-premise-recording': ['on-premise-recording-sdk'],
+  rtc: ['video-sdk', 'voice-sdk'],
+  'rtc-server-sdk': ['server-gateway-sdk'],
+  rtm: ['signaling-sdk'],
+  video: ['video-sdk'],
+  voice: ['voice-sdk'],
+  whiteboard: ['interactive-whiteboard-sdk'],
+};
+
+const API_REFERENCE_PLATFORMS_BY_PORTAL_PLATFORM: Record<string, string[]> = {
+  javascript: ['reactjs'],
+  unreal: ['unreal-engine'],
+  windows: ['windows', 'windows-csharp', 'windows-cpp'],
+};
+
+function supportsApiReferenceScope(scope?: DocsSearchScope) {
+  return (
+    !scope ||
+    (scope.field === 'tab' && scope.value === 'api-reference') ||
+    (scope.field === 'product' &&
+      API_REFERENCE_PRODUCTS_BY_DOCS_PRODUCT[scope.value] !== undefined)
+  );
+}
+
+function buildApiReferenceFilters({
+  platform,
+  scope,
+}: {
+  platform?: string;
+  scope?: DocsSearchScope;
+}) {
+  const apiProducts =
+    scope?.field === 'product'
+      ? API_REFERENCE_PRODUCTS_BY_DOCS_PRODUCT[scope.value]
+      : undefined;
+  const apiPlatforms = platform
+    ? (API_REFERENCE_PLATFORMS_BY_PORTAL_PLATFORM[platform] ?? [platform])
+    : undefined;
+
+  return [
+    apiPlatforms
+      ? buildFacetFilter('platform', apiPlatforms, false)
+      : undefined,
+    apiProducts ? buildFacetFilter('product', apiProducts, true) : undefined,
+  ]
+    .filter(Boolean)
+    .join(' AND ');
+}
+
+function buildFacetFilter(field: string, values: string[], quote: boolean) {
+  const filters = values.map(
+    (value) => `${field}:${quote ? `"${value}"` : value}`,
+  );
+
+  return filters.length === 1 ? filters[0] : `(${filters.join(' OR ')})`;
+}
+
+function getApiReferencePath(hit: Record<string, unknown>) {
+  const value = getHierarchyValue(hit, 'lvl0');
+
+  return value
+    ? value
+        .split('❯')
+        .map((segment) => normalizeApiReferencePathSegment(segment.trim()))
+        .filter(Boolean)
+    : [];
+}
+
+function normalizeApiReferencePathSegment(segment: string) {
+  return segment.replace(/\bApi\b/g, 'API').replace(/\bSdk\b/g, 'SDK');
+}
+
+function normalizeApiReferencePlatform(platform: string) {
+  if (platform === 'reactjs') {
+    return 'javascript';
+  }
+
+  if (platform === 'unreal-engine') {
+    return 'unreal';
+  }
+
+  return platform.startsWith('windows-') ? 'windows' : platform;
+}
+
+function getHierarchyValue(hit: Record<string, unknown>, key: string) {
+  return isRecord(hit.hierarchy) ? getString(hit.hierarchy[key]) : undefined;
+}
+
 function isMatched(hit: Record<string, unknown>, key: string) {
   const highlight = hit._highlightResult;
 
@@ -165,6 +328,18 @@ function isMatched(hit: Record<string, unknown>, key: string) {
 
 function getHighlight(hit: Record<string, unknown>, key: string) {
   return getMarkedValue(hit._highlightResult, key);
+}
+
+function getNestedHighlight(
+  hit: Record<string, unknown>,
+  parentKey: string,
+  key: string,
+) {
+  const highlight = hit._highlightResult;
+
+  return isRecord(highlight) && isRecord(highlight[parentKey])
+    ? getMarkedValue(highlight[parentKey], key)
+    : undefined;
 }
 
 function getSnippet(hit: Record<string, unknown>, key: string) {
@@ -193,6 +368,10 @@ function getStringArray(value: unknown) {
   return Array.isArray(value)
     ? value.filter((item): item is string => typeof item === 'string')
     : undefined;
+}
+
+function toStringArray(value: unknown) {
+  return typeof value === 'string' ? [value] : getStringArray(value);
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

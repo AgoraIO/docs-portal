@@ -24,6 +24,8 @@ const enCommon = {
     searchPlaceholder: 'Search docs, APIs, guides...',
     searchEmpty: 'No matching pages found.',
     searchRecent: 'Recent',
+    searchApiReference: 'API Reference',
+    searchDocumentation: 'Documentation',
     searchPrompt: 'Search docs, APIs, and guides.',
     searchUnavailable: 'Search index unavailable.',
     searchLoading: 'Searching...',
