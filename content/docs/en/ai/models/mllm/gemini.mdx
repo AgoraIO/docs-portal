@@ -20,13 +20,6 @@ Set `params.model` to one of the following Gemini Live models:
 | `walkie-talkie` | Preview Gemini Live model. |
 | `clever-chatter` | Preview Gemini Live model. |
 
-:::info[Info]
-`walkie-talkie` and `clever-chatter` are available as an early access preview. To use either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
-
-- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
-- **Header**: `agora-feature: gemini-live`
-:::
-
 ### Sample configuration
 
 The following examples show how to configure Google Gemini Live MLLM (Gemini Developer API) when starting a conversational AI agent.
@@ -100,6 +93,13 @@ agent := agentkit.NewAgent(client).WithMllm(
 </TabsContent>
 
 <TabsContent value="rest-api">
+
+:::info[Important]
+`walkie-talkie` and `clever-chatter` are early access preview models. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
 
 Use the following `mllm` configuration in your request:
 

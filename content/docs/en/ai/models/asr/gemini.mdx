@@ -6,13 +6,6 @@ description: >
 
 Google Gemini provides real-time streaming transcription. Use it as the ASR component in a cascading pipeline with any supported LLM and TTS vendor.
 
-:::info[Info]
-Gemini ASR is available as an early access preview. To use it, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
-
-- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
-- **Header**: `agora-feature: gemini-live`
-:::
-
 ### Sample configuration
 
 The following example shows how to configure Gemini ASR when starting a conversational AI agent.
@@ -87,6 +80,13 @@ agent := agentkit.NewAgent(client).WithStt(
 </TabsContent>
 
 <TabsContent value="rest-api">
+
+:::info[Info]
+Gemini ASR is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
 
 Use the following `asr` configuration in your request:
 
