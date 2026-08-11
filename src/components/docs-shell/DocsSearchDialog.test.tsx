@@ -420,6 +420,74 @@ describe('DocsSearchDialog', () => {
     });
   });
 
+  it('groups SDK API results separately and opens their external links', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      search: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>uplinkNetworkQuality</mark>',
+          id: 'api-property',
+          objectType: 'sdk-api',
+          path: ['API Reference', 'Video SDK', 'Web', '4.x'],
+          platform: ['web'],
+          snippet: 'The uplink network quality.',
+          type: 'page',
+          url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/NetworkQuality.html#uplinkNetworkQuality',
+          version: '4.x',
+        },
+        {
+          content: 'In-call quality monitoring',
+          id: 'guide',
+          objectType: 'docs',
+          path: ['Video Calling', 'Develop'],
+          type: 'page',
+          url: '/en/video-calling/develop/in-call-quality',
+        },
+      ]),
+    });
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/en/introduction/about-agora'],
+      }),
+    });
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'networkquality' } },
+    );
+
+    expect(await screen.findByText('API Reference')).toBeInTheDocument();
+    expect(screen.getByText('Documentation')).toBeInTheDocument();
+    expect(screen.getByText('web')).toBeInTheDocument();
+    expect(screen.getByText('4.x')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByText('uplinkNetworkQuality')[0]);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/NetworkQuality.html#uplinkNetworkQuality',
+      '_blank',
+      'noopener,noreferrer',
+    );
+    expect(navigateSpy).not.toHaveBeenCalled();
+  });
+
   it.each([
     {
       filterKind: 'product',
@@ -609,10 +677,12 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(loadPagesSpy).not.toHaveBeenCalled();
       expect(createAlgoliaDocsClient).toHaveBeenCalledWith({
+        apiReferenceIndexName: 'agora_APIRefSearch',
         appId: 'test-app',
         indexName: 'docs_portal_en',
         locale: 'en',
         platform: undefined,
+        scope: undefined,
         searchApiKey: 'test-search-key',
       });
       expect(navigateSpy).toHaveBeenCalledWith(

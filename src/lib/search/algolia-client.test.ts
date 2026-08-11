@@ -7,6 +7,225 @@ vi.mock('algoliasearch/lite', () => ({
 }));
 
 describe('createAlgoliaDocsClient', () => {
+  it('searches SDK API references alongside docs and normalizes their hierarchy', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [
+        {
+          hits: [
+            {
+              objectID: 'guide',
+              objectType: 'docs',
+              title: 'In-call quality monitoring',
+              url: '/en/realtime-media/video/in-call-quality',
+            },
+          ],
+        },
+        {
+          hits: [
+            {
+              _highlightResult: {
+                content: {
+                  matchLevel: 'full',
+                  value: 'The <mark>uplinkNetworkQuality</mark> property.',
+                },
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>uplinkNetworkQuality</mark>',
+                  },
+                },
+              },
+              _snippetResult: {
+                content: {
+                  value: 'The <mark>uplinkNetworkQuality</mark> property.',
+                },
+              },
+              content: 'The uplinkNetworkQuality property.',
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x',
+                lvl1: 'uplinkNetworkQuality',
+              },
+              objectID: 'api-property',
+              platform: 'web',
+              product: 'video-sdk',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
+              version: '4.x',
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      platform: 'web',
+      scope: { field: 'product', value: 'video' },
+      searchApiKey: 'search-key',
+    });
+
+    const results = await client.search('networkquality');
+
+    expect(searchForHits).toHaveBeenCalledWith({
+      requests: [
+        expect.objectContaining({
+          filters: 'locale:en AND platform:web AND product:"video"',
+          indexName: 'docs_portal_en',
+        }),
+        expect.objectContaining({
+          filters: 'platform:web AND product:"video-sdk"',
+          hitsPerPage: 5,
+          indexName: 'agora_APIRefSearch',
+          query: 'networkquality',
+        }),
+      ],
+    });
+    expect(results).toHaveLength(2);
+    expect(results[0]).toMatchObject({
+      id: 'api-property',
+      objectType: 'sdk-api',
+      path: ['API Reference', 'Video SDK', 'Web', '4.x'],
+      platform: ['web'],
+      product: 'video-sdk',
+      snippet: 'The <mark>uplinkNetworkQuality</mark> property.',
+      title: 'NetworkQuality › <mark>uplinkNetworkQuality</mark>',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#uplinknetworkquality',
+      version: '4.x',
+    });
+    expect(results[1]).toMatchObject({ id: 'guide', objectType: 'docs' });
+  });
+
+  it('does not mix SDK API results into unsupported docs scopes', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [{ hits: [] }],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      scope: { field: 'tab', value: 'ai' },
+      searchApiKey: 'search-key',
+    });
+
+    await client.search('start');
+
+    expect(searchForHits).toHaveBeenCalledWith({
+      requests: [
+        expect.objectContaining({
+          filters: 'locale:en AND tab:"ai"',
+          indexName: 'docs_portal_en',
+        }),
+      ],
+    });
+  });
+
+  it('maps portal RTC and JavaScript filters to API index facets', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [
+        { hits: [] },
+        {
+          hits: [
+            {
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ React.js ❯ 4.x',
+                lvl1: 'NetworkQuality',
+              },
+              objectID: 'react-api',
+              platform: 'reactjs',
+              product: 'video-sdk',
+              url: 'https://api-ref.agora.io/react-api',
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      platform: 'javascript',
+      scope: { field: 'product', value: 'rtc' },
+      searchApiKey: 'search-key',
+    });
+
+    const results = await client.search('networkquality');
+
+    expect(searchForHits).toHaveBeenCalledWith({
+      requests: [
+        expect.objectContaining({
+          filters: 'locale:en AND platform:javascript AND product:"rtc"',
+        }),
+        expect.objectContaining({
+          filters:
+            'platform:reactjs AND (product:"video-sdk" OR product:"voice-sdk")',
+        }),
+      ],
+    });
+    expect(results[0]).toMatchObject({
+      objectType: 'sdk-api',
+      platform: ['javascript'],
+    });
+  });
+
+  it('preserves API page titles and existing member anchors', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [
+        { hits: [] },
+        {
+          hits: [
+            {
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x',
+                lvl1: 'Interface NetworkQuality',
+              },
+              objectID: 'interface-page',
+              platform: 'web',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
+            },
+            {
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x',
+                lvl1: 'uplinkNetworkQuality',
+              },
+              objectID: 'anchored-member',
+              platform: 'web',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#existing-anchor',
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      searchApiKey: 'search-key',
+    });
+
+    const results = await client.search('networkquality');
+
+    expect(results[0]).toMatchObject({
+      title: 'Interface NetworkQuality',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html',
+    });
+    expect(results[1]).toMatchObject({
+      title: 'NetworkQuality › uplinkNetworkQuality',
+      url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html#existing-anchor',
+    });
+  });
+
   it('deduplicates repeated section hits and keeps searchable context fields', async () => {
     const searchForHits = vi.fn().mockResolvedValue({
       results: [
