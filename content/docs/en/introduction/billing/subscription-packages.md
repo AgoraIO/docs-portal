@@ -11,14 +11,15 @@ This page explains how to purchase, and manage subscription and top-up packages.
 
 By default, a new account may be assigned a Free package when the first eligible project is created. You can upgrade to a paid package at any time. Available package tiers, discounts, and unit prices vary by product. To upgrade:
 
-- Log in to [Agora Console](https://console.agora.io/).
-- In the sidebar, click **Subscriptions**.
-- Under **All Subscriptions**, select the product subscription you want to manage, such as RTC, Signaling, Chat, or Agora Analytics.
-- Select your package and click **Subscribe** or **Upgrade**.
+1. Log in to [Agora Console](https://console.agora.io/).
+1. Click the username at the bottom of the navigation sidebar to open the account popup menu.
+1. Select  **Subscriptions**.
+1. Select the tab for the product subscription you want to manage, such as Realtime, Signaling, or Chat.
+1. Select your package and click **Upgrade** or **Downgrade**.
 
-  The following screenshot shows an RTC subscription package as an example:
+    ![Subscription plans](https://assets-docs.agora.io/images/console/subscription-plans.png)
 
-  ![RTC subscription package example](https://assets-docs.agora.io/images/video-sdk/prepaid-packages.png)
+For detailed pricing for a specific product, see the product's pricing page.
 
 :::note
 - For non-contracted customers, most packages can be purchased directly from the Agora Console. Some enterprise or contracted packages may require contacting [Agora sales](mailto:sales@agora.io).

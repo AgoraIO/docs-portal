@@ -1,0 +1,143 @@
+---
+title: Custom Tools
+description: Create reusable HTTP tools, test them, and attach them to agents.
+---
+
+Custom Tools let your agent call your own HTTP endpoints during a conversation. Create the tool once in **Integrations**, then attach it to any agent in the same project.
+
+Use Custom Tools when you already have an HTTP API and want your agent to call it directly.
+
+- Use a **Knowledge Base** for document retrieval.
+- Use an **MCP server** when you already expose tools through MCP.
+- Use a **Connector** when a built-in integration such as HubSpot is available.
+
+## Prerequisites
+
+- An API reachable over `http` or `https`.
+- A host URL that is not `localhost` or a private or internal network address.
+
+## Create a custom tool
+
+1. In the navigation sidebar, select **Integrations**.
+2. Switch to the **Custom Tools** tab.
+3. Select **Add Custom Tool**.
+4. Fill in the tool settings in the **New Custom HTTP Tool** panel.
+
+![New custom tool UI](https://assets-docs.agora.io/images/console/new-custom-tool.png)
+
+## Configure the request
+
+- **Name** (required): Display name for the tool.
+- **Description**: Optional notes describing what the tool does.
+- **Method**: `GET`, `POST`, `PUT`, `PATCH`, or `DELETE`. Defaults to `GET`.
+- **Timeout (ms)**: Maximum wait time for the request. Defaults to `30000`.
+- **Request URL** (required): Target endpoint. Supports placeholders such as `https://api.example.com/items/{{id}}`.
+
+### HTTP headers
+
+Static headers for authentication and configuration.
+
+- Sensitive header names such as `Authorization`, `api-key`, `token`, `secret`, and `cookie` are treated as secrets.
+- Sensitive values are encrypted, and saved values display as `***` in the UI.
+- Put static secrets in headers, not in URL query parameters.
+
+### Query parameters
+
+Query string values appended to the URL. You can use placeholders, for example:
+
+```
+status={{ticket_status}}
+limit={{page_size}}
+```
+
+## Configure function calling
+
+This section tells the LLM when and how to call your tool.
+
+- **Function name** (required): Runtime tool name. Use letters, numbers, and `_`. Must start with a letter or `_`.
+- **Function description** (required): Explains when the agent should call the tool.
+- **Parameters (JSON Schema)** (required): A JSON Schema object that defines the allowed input fields. For example:
+
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "order_id": { "type": "string" },
+      "include_history": { "type": "boolean" }
+    },
+    "required": ["order_id"]
+  }
+  ```
+
+- **Body template (JSON)**: An optional JSON payload sent in the request body. Defaults to `{}`. For example:
+
+  ```json
+  {
+    "order_id": "{{order_id}}",
+    "include_history": "{{include_history}}"
+  }
+  ```
+
+## Placeholder rules
+
+Custom Tools support placeholders in:
+
+- Request URL path
+- HTTP headers
+- Query parameters
+- Body template
+
+Rules:
+
+- Placeholder names must match parameter names from **Parameters (JSON Schema)**.
+- Host names cannot contain placeholders.
+- Unknown placeholders are rejected when you save the tool.
+- Malformed placeholders such as `{{ bad-name }}` are rejected.
+
+## Test the tool
+
+After saving, use the tool test action in **Integrations** to run a request with sample inputs.
+
+Check that:
+
+- The request reaches the correct endpoint.
+- Auth headers work as expected.
+- The response body contains only the data you want the agent to see.
+- The timeout is long enough for normal responses.
+
+## Attach the tool to an agent
+
+Creating a Custom Tool does not make it available to an agent automatically.
+
+1. In the navigation sidebar, select **Agents**.
+2. Select your agent from the list.
+3. From the **Action** menu, select **Edit Agent**.
+4. Go to the **Actions** tab.
+5. Under **Custom Tools**, select **Add Custom Tools**.
+6. Select one or more tools.
+7. Save the agent.
+
+After you attach the custom tool, the LLM can call the tool during test sessions and production conversations.
+
+## Prompting tips
+
+Put usage guidance in your system prompt. For example:
+
+```
+Use `lookup_order` when the user asks about order status. Always confirm the order ID before calling the tool.
+```
+
+## Troubleshooting
+
+| Issue | Solution |
+|---|---|
+| Tool save fails | Check the JSON schema, function name format, and placeholder names. |
+| Tool test fails immediately | Check the URL scheme and public reachability. |
+| Request rejected by your API | Check auth headers, body shape, and query parameters. |
+| Agent never calls the tool | Improve the function description and system prompt so the tool's intent is clear. |
+
+## Next steps
+
+- [Manage integrations](integrations): Manage reusable resources for your workspace
+- [Customize your agent](customize-agent): Attach Custom Tools from the Actions tab
+- [Test your agent](test-agent): Verify tool calling behavior end to end

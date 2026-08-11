@@ -24,6 +24,8 @@ const zhCnCommon = {
     searchPlaceholder: '搜索文档、API、指南...',
     searchEmpty: '没有找到匹配页面。',
     searchRecent: '最近浏览',
+    searchApiReference: 'API Reference',
+    searchDocumentation: '文档',
     searchPrompt: '搜索文档、API 和指南。',
     searchUnavailable: '搜索索引不可用。',
     searchLoading: '正在搜索...',

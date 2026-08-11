@@ -1,0 +1,44 @@
+---
+title: Handle inbound calls
+description: Import a number and associate it with an agent to answer inbound calls.
+---
+After configuring your Twilio SIP trunk for inbound calling, import your phone number and associate it with an agent. Once set up, calls to your number are automatically routed to your agent.
+
+## Prerequisites
+
+- An active Agora account with Conversational AI enabled.
+- A published agent.
+- A Twilio phone number with Elastic SIP Trunk configured for inbound calling. See [Set up SIP trunk](sip-trunk#inbound-calling-setup).
+
+## Import the number
+
+Follow the steps in [Import a phone number](import) to add your Twilio number. After importing, the Origination URI for your number is displayed. Copy this back to your Twilio SIP trunk. See [Set up SIP trunk](sip-trunk#inbound-calling-setup).
+
+## Assign the number to an agent
+
+Follow these steps to associate the number with an agent and configure call handling.
+
+1. In the navigation sidebar, select **Phone Numbers**.
+2. Find the number you imported in the list.
+3. Under the **Associated Agent** column, select **Associate Agent**.
+4. In the **Inbound Settings** panel, use **Assign to Agent** to select the agent you want to associate with the number.
+    ![Inbound Call Settings](https://assets-docs.agora.io/images/console/inbound-settings.png)
+5. Configure the following options:
+    - **Enable transcript**: Enable automatic call transcription.
+    - **Enable recording**: Enable automatic call recording.
+    - **Hang-up Configuration**
+        - **Max Call Duration (seconds)** (required): Maximum length for a conversation. 
+        - **Silence Timeout (seconds)** (required): Call ends after this duration with no response. 
+        - **End call on conversation end**: Hang up when the conversation concludes naturally.
+        - **End call on silence**: The call hangs up automatically if the user is silent for too long.
+    - **Transfer to human**: Configure a phone number destination for call transfers. When enabled, configure the following:
+        - **Transfer destination**: The phone number to transfer the call to. Select **Enforce E.164 format** to require the number to be entered in E.164 format.
+        - **Transfer criteria**: Describe when calls should be transferred to a human. Select **Show Example** for a sample.        
+    - **Post Call Analysis**
+        - **Enable post-call analysis**: Automatically extract structured outputs from calls according to business needs.
+6. Select **Save changes**.
+
+## Next steps
+
+- [Call history](../observe/call-history): Review transcripts and outcomes for inbound calls
+- [Agent analytics](../observe/analytics): Monitor inbound call performance

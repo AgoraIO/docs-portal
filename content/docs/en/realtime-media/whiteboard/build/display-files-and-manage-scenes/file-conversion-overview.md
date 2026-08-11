@@ -81,47 +81,7 @@ Before you launch a file-conversion task, you must upload the source file to a t
 
 ### Enable file conversion
 
-Refer to the following steps:
-
-1. On the **My Projects** page in Agora Console, find the project that has the whiteboard feature enabled, and click **Edit** ✎.
-
-2. Under **ALL FEATURES**, select **Whiteboard > Whiteboard Services**.
-
-3. On the **Services Configuration** view, select a data center and click **Configure** ✎. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](../../reference/rest-api/room-management.md#create-a-room-post) API; otherwise, the service configurations does not take effect.
-
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-services-configuration.png)
-
-4. On the **Services configuration** page, , select **Enabled** for **Docs to Picture** or **Docs to web** to see **Storage** settings.
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-configure-service.png)
-
-5. Set up the storage space:
-    - Click the **Storage** dropdown and select a previously configured storage space in the drop-down list or click **Create** to add a new storage space.
-
-    ![](https://assets-docs.agora.io/images/interactive-whiteboard/console-storage.png)
-
-    To add a new storage space, fill in the following information:
-    - **Name**: (Required) The name of your storage space.
-    - **Vendor**: (Required) The third-party cloud storage vendor. Choose from the following options:
-        - `AWS`
-        - `Alibaba Cloud`
-        - `Google Cloud Platform`
-
-        If your vendor is `Google Cloud Platform`, refer to [Google Cloud Storage configuration](#google-cloud-storage-configuration). If you chose `AWS`, or `Alibaba Cloud`, fill in the following information:
-
-    - **Region**: (Required) The location of the data center you specified when creating a bucket.
-    - **Secret Key**: (Required) The secret key provided by the third-party cloud storage vendor, which is used to authenticate signatures.
-    - **Access Key**: (Required) The access key provided by the third-party cloud storage vendor, which is used by the vendor to identify visitors.
-    - **Bucket**: (Required) The name of the bucket.
-    - **Storage Path**: The path used to save the resources in the storage space. The default is the root directory.
-    - **Domain**: The domain name used to access the third-party cloud storage service.
-
-    To configure storage parameters for GCP, see [Google Cloud Storage configuration](#google-cloud-storage-configuration). To get configuration information for other third-party storage services, see the documentation provided by the vendor.
-
-    You should enable <b>public access</b> or higher permission for third-party storage spaces so that your app clients can access files saved in the space.
-
-    Click **Create** to save the storage space parameters.
-
-6. Click **Save** to save the service configuration. Read the prompt carefully, and click **Confirm**.
+To convert documents on the whiteboard, enable the **Docs to Picture** and **Docs to Web** services for your data centers on the Interactive Whiteboard panel in Agora Console. For details, see [Enable whiteboard server-side features](../set-up-and-build-your-first-app/enable-whiteboard#enable-whiteboard-server-side-features).
 
 ## Start file conversion
 

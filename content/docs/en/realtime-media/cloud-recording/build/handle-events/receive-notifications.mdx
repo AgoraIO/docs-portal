@@ -1,5 +1,5 @@
 ---
-title: "Webhooks"
+title: "Receive webhook notifications"
 description: "Receive notification of channel events in real time."
 ---
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Cloud Recording events. With Notifications, you can subscribe to Cloud Recording events and receive notifications in real time.
@@ -22,8 +22,8 @@ If Notifications receives `200 OK` within 10 seconds of sending the initial noti
 
 To set up and use Notifications, you must have:
 
-- A [valid Agora account](../../get-started/manage-agora-account#create-an-agora-account).
-- An [active Agora project](../../get-started/manage-agora-account#create-an-agora-project).
+- A [valid Agora account](/en/introduction/account#sign-up-for-an-agora-account).
+- An [active Agora project](/en/introduction/account#your-first-agora-project).
 - A computer with Internet access.
 
     If your network access is restricted by a firewall, call the [IP address query API](#ip-address-query-api) to retrieve the Notifications IP addresses , then configure the firewall to allow these IP addresses.
@@ -197,70 +197,49 @@ To do this, take the following steps:
     }
     ```
 
-### Enable Notifications
+### Set up Webhook notifications
 
-To enable Notifications:
+1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
-1. Log in to [Agora Console](https://console.agora.io/). On the **Projects** tab, locate the project for which you want to enable Notifications and click **Edit**.
+1. Select **New Webhook**.
 
-    ![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
+1. In the **Product** dropdown, select **Cloud Recording**.
 
-2. In the **All Features** section, open the **Notifications** tab and click on the service for which you want to enable notifications. The section expands to show configuration options.
+1. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
 
-    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
+1. Fill in the following:
 
-3. Fill in the following information:
+   * **Receiving region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
 
-    * **Event**: Select all the events that you want to subscribe to.
+   * **Receiving URL**: The `HTTPS` public address of your server that receives the notifications, for example `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`. Only `HTTPS` endpoints are supported.
 
-        If the selected events generate a high number of queries per second (QPS), ensure that your server has sufficient processing capacity.
+   * **Subscribed events**: Select all the events that you want to subscribe to.
 
-    * **Receiving Server Region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
+     If the selected events generate a high number of queries per second (QPS), ensure that your server has sufficient processing capacity.
 
-    * **Receiving Server URL Endpoint**: The `HTTPS` public address of your server that receives the notifications. For example, `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`.
+   * **IP whitelist**: If your server is behind a firewall, enable this option, then call the [IP address query API](#ip-address-query-api) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
 
-:::info
-For enhanced security, Notifications no longer supports `HTTP` addresses.
-:::
+   :::note
+   To reduce the delay in notification delivery, best practice is to activate `HTTP` persistent connection (also called `HTTP` keep-alive) on your server with the following settings:
 
-        * To reduce the delay in notification delivery, best practice is to activate `HTTP` persistent connection (also called `HTTP` keep-alive) on your server with the following settings:
+   * `MaxKeepAliveRequests`: 100 or more
+   * `KeepAliveTimeout`: 10 seconds or more
+   :::
 
-            * `MaxKeepAliveRequests`: 100 or more
-            * `KeepAliveTimeout`: 10 seconds or more
+1. Select **Run health check**. Agora performs a health test for your configuration as follows:
 
-    * **Whitelist**: If your server is behind a firewall, check the box here, and ensure that you call the [IP address query API](#ip-address-query-api) to get the IP addresses of the Agora Notifications server and add them to the firewall's allowed IP list.
+   1. The health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server.
 
-    ![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
+   1. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
 
-4. Copy the **Secret** displayed against the product name by clicking the copy icon. You use this secret to [Add signature verification](#add-signature-verification).
+1. When the health check succeeds, select **Save**.
 
-5. Press **Check**. Agora performs a health test for your configuration as follows:
+   If the health check fails, follow the prompt in Agora Console to troubleshoot the error. Common errors include the following:
 
-    1. The Notifications health test generates test events that correspond to your subscribed events, and then sends test event callbacks to your server.
-
-    2. After receiving each test event callback, your server must respond within 10 seconds with a status code of `200`. The response body must be in JSON format.
-
-    3. When the Notifications health test succeeds, read the prompt and press **Apply Settings**. After your configuration is saved, the **Status** of Notifications shows **Enabled**.
-
-        ![Apply Settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
-
-        If the Notifications health test fails, follow the prompt on the Agora Console to troubleshoot the error. Common errors include the following:
-
-        * Request timeout (590): Your server does not return the status code `200` within 10 seconds. Check whether your server responds to the request properly. If your server responds to the request properly, contact Agora Technical Support to check if the network connection between the Agora Notifications server and your server is working.
-
-        * Domain name unreachable (591): The domain name is invalid and cannot be resolved to the target IP address. Check whether your server is properly deployed.
-
-        * Certificate error (592): The Agora Notifications server fails to verify the SSL certificates returned by your server. Check if the SSL certificates of your server are valid. If your server is behind a firewall, check whether you have added all IP addresses of the Agora Notifications server to the firewall's allowed IP list.
-
-        * Other response errors: Your server returns a response with a status code other than `200`. See the prompt on the Agora Console for the specific status code and error messages.
-
-<Accordions>
-  <Accordion title="Video walkthrough">
-    <video src="https://assets-docs.agora.io/images/video-sdk/enable-notifications.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
-        Your browser does not support the <code>video</code> element.
-    </video>
-  </Accordion>
-</Accordions>
+   * Request timeout (590): Your server does not return the status code `200` within 10 seconds. Check whether your server responds to the request properly. If your server responds to the request properly, contact Agora Technical Support to check if the network connection between the Agora Notifications server and your server is working.
+   * Domain name unreachable (591): The domain name is invalid and cannot be resolved to the target IP address. Check whether your server is properly deployed.
+   * Certificate error (592): The Agora Notifications server fails to verify the SSL certificates returned by your server. Check if the SSL certificates of your server are valid. If your server is behind a firewall, check whether you have added all IP addresses of the Agora Notifications server to the firewall's allowed IP list.
+   * Other response errors: Your server returns a response with a status code other than `200`. See the prompt in Agora Console for the specific status code and error messages.
 
 ### Add signature verification
 

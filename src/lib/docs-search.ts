@@ -2,12 +2,13 @@ export type SearchEntry = {
   breadcrumbs?: string[];
   content?: string;
   description?: string;
-  objectType?: 'docs' | 'openapi';
+  objectType?: 'docs' | 'openapi' | 'sdk-api';
   platform?: string[];
   product?: string;
   tab?: string;
   title: string;
   url: string;
+  version?: string;
 };
 
 const SEARCH_PLATFORMS = [
@@ -26,7 +27,10 @@ const SEARCH_PLATFORMS = [
 export function getSearchEntryMetadata(
   url: string,
   content: string,
-  objectType: NonNullable<SearchEntry['objectType']> = 'docs',
+  objectType: Exclude<
+    NonNullable<SearchEntry['objectType']>,
+    'sdk-api'
+  > = 'docs',
 ) {
   const [, tab = '', product = tab] = url.split('/').filter(Boolean);
   const searchableText = `${url}\n${content}`.toLowerCase();

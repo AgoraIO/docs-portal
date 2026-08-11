@@ -23,7 +23,7 @@ After [enabling and configuring Chat Service](../../get-started/enable), the Cha
 
 Follow these steps to view the Chat Usage Insights page:
 
-1. Log in to [Agora Console](https://console.agora.io/), and click **Agora Analytics** > **Chat Usage Insights** in the left menu bar.
+1. In [Agora Console](https://console.agora.io), select **Agora Analytics** in the left navigation to open Agora Analytics in a new tab. From the sidebar, select **Chat > Usage Insights**.
 2. In the upper left corner, select the project you want to view from the drop-down menu.
 3. Click the **Scale Statistics** or **Message Statistics** tab at the top of the page.
 
@@ -70,7 +70,7 @@ Taking the uplink message trends of chat rooms as an example, the pie chart cont
 
 Follow these steps to view the Chat quality insights page:
 
-1. Log in to [Agora Console](https://console.agora.io/), and click **Agora Analytics** > **Chat Quality Insights** in the left menu bar.
+1. In [Agora Console](https://console.agora.io), select **Agora Analytics** in the left navigation to open Agora Analytics in a new tab. From the sidebar, select **Chat > Quality Insights**.
 
 2. In the upper left corner, select the project you want to view from the drop-down menu.
 

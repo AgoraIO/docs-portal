@@ -1,0 +1,102 @@
+---
+title: HubSpot Connector
+description: Connect HubSpot and let your agents work with HubSpot contacts and tickets.
+---
+
+HubSpot Connector lets your agent use your [HubSpot](https://www.hubspot.com/) account during conversations. After you attach the HubSpot connector to an agent, the agent can work with HubSpot contacts and tickets.
+
+## What the connector enables
+
+When HubSpot is attached to an agent, it exposes tools for:
+
+- Listing contacts
+- Searching contacts
+- Getting contact details
+- Creating contacts
+- Updating contacts
+- Deleting contacts
+- Listing tickets
+- Searching tickets
+- Getting ticket details
+- Creating tickets
+- Updating tickets
+- Deleting tickets
+
+## Prerequisites
+
+- A [HubSpot account](https://app.hubspot.com/login).
+- Permission to authorize the HubSpot app for your workspace.
+- An agent in the Agora project where you want to use the connector.
+
+## Connect HubSpot
+
+1. In the navigation sidebar, select **Integrations**.
+2. Open the **Connectors** tab.
+3. Find **HubSpot**.
+4. Select **Connect**.
+    ![](https://assets-docs.agora.io/images/console/connectors.png)
+5. Complete the HubSpot OAuth flow in the new browser tab.
+6. Return to the **Connectors** tab and wait for the connection status to update.
+
+After connection succeeds, HubSpot appears under **Connected**.
+
+## Attach HubSpot to an agent
+
+1. In the navigation sidebar, select **Agents**.
+2. Select your agent from the list.
+3. From the **Action** menu, select **Edit Agent**.
+4. Go to the **Actions** tab.
+5. Under **Connectors**, select **Add connectors**
+6. Select HubSpot.
+7. Save the agent.
+
+After you attach the connector, your agent can call HubSpot tools during testing and live conversations.
+
+## Prompting tips
+
+Tell the agent exactly when to use HubSpot. For example:
+
+```
+When the user asks about ticket status, search HubSpot tickets first. When the user wants to update their contact email, update the HubSpot contact after confirming the new email address.
+```
+
+Good prompt patterns:
+
+- Confirm identity before reading or changing CRM data.
+- Ask for missing fields before create or update operations.
+- Summarize changes after a tool call succeeds.
+- Avoid destructive actions unless the user clearly confirms.
+
+## Test the connector
+
+Use the agent's test panel to verify:
+
+1. The agent can find a known contact.
+2. The agent can find or create a ticket.
+3. The agent handles HubSpot errors gracefully.
+
+If a test fails, check both the agent's prompt and the HubSpot connection status.
+
+## Disconnect HubSpot
+
+1. In the navigation sidebar, select **Integrations**.
+2. Open the **Connectors** tab.
+3. Under **Connected**, find HubSpot.
+4. Select **Disconnect**.
+
+Disconnecting HubSpot removes connector access for agents that depend on it.
+
+## Troubleshooting
+
+| Issue | Solution |
+|---|---|
+| Connect opens the OAuth page but status never changes | Wait a few seconds, then refresh the connection list. |
+| Agent cannot use HubSpot after connection | Make sure the connector is attached to that agent. |
+| Agent gives poor results | Tighten the system prompt with clearer rules for search, create, and update behavior. |
+| Permission issues in HubSpot | Reconnect with an account that has the required HubSpot scopes. |
+
+## Next steps
+
+- [Manage integrations](integrations): Manage connectors and other reusable resources
+- [Customize your agent](customize-agent): Attach connectors from the Actions tab
+- [Test your agent](test-agent): Validate HubSpot-backed workflows before deployment
