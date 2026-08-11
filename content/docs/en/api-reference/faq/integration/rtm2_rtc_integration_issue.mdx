@@ -262,80 +262,80 @@ If you are using a Signaling SDK version prior to 2.2.2, refer to the following 
   1. Add a `packagingOptions` block to the `android` block of your `build.gradle` file to ensure the first matching native library is prioritized during the build process:
 
 
-<Tabs defaultValue="groovy" groupId="build-script">
-<TabsList>
-  <TabsTrigger value="groovy">Groovy</TabsTrigger>
-  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
-</TabsList>
+      <Tabs defaultValue="groovy" groupId="build-script">
+      <TabsList>
+        <TabsTrigger value="groovy">Groovy</TabsTrigger>
+        <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+      </TabsList>
 
-<TabsContent value="groovy">
+      <TabsContent value="groovy">
 
-* **Android Gradle Plugin < 7.x**
+      * **Android Gradle Plugin < 7.x**
 
-          ```text
-          android {
-              packagingOptions {
-                  pickFirst 'lib/x86/libaosl.so'
-                  pickFirst 'lib/x86_64/libaosl.so'
-                  pickFirst 'lib/armeabi-v7a/libaosl.so'
-                  pickFirst 'lib/arm64-v8a/libaosl.so'
-              }
-          }
-          ```
+                ```text
+                android {
+                    packagingOptions {
+                        pickFirst 'lib/x86/libaosl.so'
+                        pickFirst 'lib/x86_64/libaosl.so'
+                        pickFirst 'lib/armeabi-v7a/libaosl.so'
+                        pickFirst 'lib/arm64-v8a/libaosl.so'
+                    }
+                }
+                ```
 
-      * **Android Gradle Plugin 7.x or later (Recommended)**
+            * **Android Gradle Plugin 7.x or later (Recommended)**
 
-          ```text
-          android {
-              packaging {
-                  jniLibs {
-                      pickFirsts += [
-                          "lib/x86/libaosl.so",
-                          "lib/x86_64/libaosl.so",
-                          "lib/armeabi-v7a/libaosl.so",
-                          "lib/arm64-v8a/libaosl.so"
-                      ]
-                  }
-              }
-          }
-          ```
+                ```text
+                android {
+                    packaging {
+                        jniLibs {
+                            pickFirsts += [
+                                "lib/x86/libaosl.so",
+                                "lib/x86_64/libaosl.so",
+                                "lib/armeabi-v7a/libaosl.so",
+                                "lib/arm64-v8a/libaosl.so"
+                            ]
+                        }
+                    }
+                }
+                ```
 
-</TabsContent>
+      </TabsContent>
 
-<TabsContent value="kotlin">
+      <TabsContent value="kotlin">
 
-* **Android Gradle Plugin < 7.x**
+      * **Android Gradle Plugin < 7.x**
 
-          ```kotlin
-          android {
-              packagingOptions {
-                  pickFirst("lib/x86/libaosl.so")
-                  pickFirst("lib/x86_64/libaosl.so")
-                  pickFirst("lib/armeabi-v7a/libaosl.so")
-                  pickFirst("lib/arm64-v8a/libaosl.so")
-              }
-          }
-          ```
+                ```kotlin
+                android {
+                    packagingOptions {
+                        pickFirst("lib/x86/libaosl.so")
+                        pickFirst("lib/x86_64/libaosl.so")
+                        pickFirst("lib/armeabi-v7a/libaosl.so")
+                        pickFirst("lib/arm64-v8a/libaosl.so")
+                    }
+                }
+                ```
 
-      * **Android Gradle Plugin 7.x or later (Recommended)**
+            * **Android Gradle Plugin 7.x or later (Recommended)**
 
-          ```kotlin
-          android {
-              packaging {
-                  jniLibs {
-                      pickFirsts += setOf(
-                          "lib/x86/libaosl.so",
-                          "lib/x86_64/libaosl.so",
-                          "lib/armeabi-v7a/libaosl.so",
-                          "lib/arm64-v8a/libaosl.so"
-                      )
-                  }
-              }
-          }
-          ```
+                ```kotlin
+                android {
+                    packaging {
+                        jniLibs {
+                            pickFirsts += setOf(
+                                "lib/x86/libaosl.so",
+                                "lib/x86_64/libaosl.so",
+                                "lib/armeabi-v7a/libaosl.so",
+                                "lib/arm64-v8a/libaosl.so"
+                            )
+                        }
+                    }
+                }
+                ```
 
-</TabsContent>
-</Tabs>
+      </TabsContent>
+      </Tabs>
 
 
   1. After the Gradle files are synchronized, rebuild the project.
@@ -396,80 +396,80 @@ Select the solution based on your target platform:
     1. When integrating through Maven, add a `packagingOptions` block to the `android` block of your `build.gradle` file to ensure the first matching native library is prioritized during the build process:
 
 
-<Tabs defaultValue="groovy" groupId="build-script">
-<TabsList>
-  <TabsTrigger value="groovy">Groovy</TabsTrigger>
-  <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
-</TabsList>
+        <Tabs defaultValue="groovy" groupId="build-script">
+        <TabsList>
+          <TabsTrigger value="groovy">Groovy</TabsTrigger>
+          <TabsTrigger value="kotlin">Kotlin DSL</TabsTrigger>
+        </TabsList>
 
-<TabsContent value="groovy">
+        <TabsContent value="groovy">
 
-* **Android Gradle Plugin < 7.x**
+        * **Android Gradle Plugin < 7.x**
 
-            ```text
-            android {
-                packagingOptions {
-                    pickFirst 'lib/x86/libaosl.so'
-                    pickFirst 'lib/x86_64/libaosl.so'
-                    pickFirst 'lib/armeabi-v7a/libaosl.so'
-                    pickFirst 'lib/arm64-v8a/libaosl.so'
-                }
-            }
-            ```
-
-        * **Android Gradle Plugin 7.x or later (Recommended)**
-
-            ```text
-            android {
-                packaging {
-                    jniLibs {
-                        pickFirsts += [
-                            "lib/x86/libaosl.so",
-                            "lib/x86_64/libaosl.so",
-                            "lib/armeabi-v7a/libaosl.so",
-                            "lib/arm64-v8a/libaosl.so"
-                        ]
+                    ```text
+                    android {
+                        packagingOptions {
+                            pickFirst 'lib/x86/libaosl.so'
+                            pickFirst 'lib/x86_64/libaosl.so'
+                            pickFirst 'lib/armeabi-v7a/libaosl.so'
+                            pickFirst 'lib/arm64-v8a/libaosl.so'
+                        }
                     }
-                }
-            }
-            ```
+                    ```
 
-</TabsContent>
+                * **Android Gradle Plugin 7.x or later (Recommended)**
 
-<TabsContent value="kotlin">
-
-* **Android Gradle Plugin < 7.x**
-
-            ```kotlin
-            android {
-                packagingOptions {
-                    pickFirst("lib/x86/libaosl.so")
-                    pickFirst("lib/x86_64/libaosl.so")
-                    pickFirst("lib/armeabi-v7a/libaosl.so")
-                    pickFirst("lib/arm64-v8a/libaosl.so")
-                }
-            }
-            ```
-
-        * **Android Gradle Plugin 7.x or later (Recommended)**
-
-            ```kotlin
-            android {
-                packaging {
-                    jniLibs {
-                        pickFirsts += setOf(
-                            "lib/x86/libaosl.so",
-                            "lib/x86_64/libaosl.so",
-                            "lib/armeabi-v7a/libaosl.so",
-                            "lib/arm64-v8a/libaosl.so"
-                        )
+                    ```text
+                    android {
+                        packaging {
+                            jniLibs {
+                                pickFirsts += [
+                                    "lib/x86/libaosl.so",
+                                    "lib/x86_64/libaosl.so",
+                                    "lib/armeabi-v7a/libaosl.so",
+                                    "lib/arm64-v8a/libaosl.so"
+                                ]
+                            }
+                        }
                     }
-                }
-            }
-            ```
+                    ```
 
-</TabsContent>
-</Tabs>
+        </TabsContent>
+
+        <TabsContent value="kotlin">
+
+        * **Android Gradle Plugin < 7.x**
+
+                    ```kotlin
+                    android {
+                        packagingOptions {
+                            pickFirst("lib/x86/libaosl.so")
+                            pickFirst("lib/x86_64/libaosl.so")
+                            pickFirst("lib/armeabi-v7a/libaosl.so")
+                            pickFirst("lib/arm64-v8a/libaosl.so")
+                        }
+                    }
+                    ```
+
+                * **Android Gradle Plugin 7.x or later (Recommended)**
+
+                    ```kotlin
+                    android {
+                        packaging {
+                            jniLibs {
+                                pickFirsts += setOf(
+                                    "lib/x86/libaosl.so",
+                                    "lib/x86_64/libaosl.so",
+                                    "lib/armeabi-v7a/libaosl.so",
+                                    "lib/arm64-v8a/libaosl.so"
+                                )
+                            }
+                        }
+                    }
+                    ```
+
+        </TabsContent>
+        </Tabs>
 
 
     1. After the Gradle files are synchronized, rebuild the project.

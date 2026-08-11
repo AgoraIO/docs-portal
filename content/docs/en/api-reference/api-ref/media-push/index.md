@@ -950,10 +950,10 @@ If the status code is 2XX, the request is successful.
 - `appId`: (Required) String. The App ID provided by Agora. You can get an App ID after creating a project in the Agora console. An App ID is the unique identification of a project.
 
 - `cname`: (Required) String. The Agora channel name. This is the channel to which the stream processed by the Converter belongs. The maximum length of the string is 64 characters, and the following character sets (89 characters in total) are supported:
- - All lowercase English letters (a-z)
- - All uppercase English letters (A-Z)
- - Numbers 0-9 and the space character
- - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
+    - All lowercase English letters (a-z)
+    - All uppercase English letters (A-Z)
+    - Numbers 0-9 and the space character
+    - "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "\<", "=", ".", ">", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ","
 
 #### Query Parameters
 
