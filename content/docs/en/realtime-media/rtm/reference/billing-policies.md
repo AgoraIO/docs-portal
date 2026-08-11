@@ -97,7 +97,7 @@ Agora employs the following policies to manage your account balance and ensure u
 
 ### Real-time usage and estimated bill
 
-You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
+You can view your real-time usage and estimated monthly bill at any time by selecting **Billing** in the Agora Console sidebar.
 
 ![bill estimate preview](https://assets-docs.agora.io/images/console/bill-estimate-preview.png)
 
@@ -190,6 +190,14 @@ Agora is committed to providing support throughout the lifecycle of its products
 
 | Version | Release date | Retirement date |
 |---|---|---|
+| v2.3.0 | July 20, 2026 | July 21, 2029, or 1 year after the release of v2.5.x (whichever comes first) |
+| v2.2.8 | February 12, 2026 | February 13, 2029, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.7 | December 12, 2025 | December 13, 2028, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.6 | October 31, 2025 | November 1, 2028, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.5 | July 1, 2025 | July 2, 2028, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.4 | April 1, 2025 | April 2, 2028, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.3 | March 21, 2025 | March 22, 2028, or 1 year after the release of v2.4.x (whichever comes first) |
+| v2.2.2 | November 6, 2024 | November 7, 2027, or 1 year after the release of v2.4.x (whichever comes first) |
 | v2.2.1 | July 17, 2024 | July 18, 2027, or 1 year after the release of v2.4.x (whichever comes first) |
 | v2.2.0 | April 23, 2024 | April 24, 2027, or 1 year after the release of v2.4.x (whichever comes first) |
 | v2.1.12 | June 7, 2024 | June 8, 2027, or 1 year after the release of v2.3.x (whichever comes first) |

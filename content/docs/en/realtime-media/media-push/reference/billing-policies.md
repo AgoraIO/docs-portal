@@ -89,7 +89,7 @@ After account suspension, none of your projects can access Agora services. To 
 ## Free-of-charge policy
 
 :::info
-Agora offers a new [pricing](/en/realtime-media/video/reference/pricing#subscription-packages) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
+Agora offers a new [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) model. If your account uses this model, you receive a monthly free usage package by default instead of the 10,000 free minutes described below.
 :::
 
 Agora provides each account with 10,000 free minutes per month and deducts them in the following order:
@@ -190,7 +190,7 @@ Agora employs the following policies to manage your account balance and ensure u
 
 ### Real-time usage and estimated bill
 
-You can view your real-time usage and estimated monthly bill at any time directly in the Agora Console.
+You can view your real-time usage and estimated monthly bill at any time by selecting **Billing** in the Agora Console sidebar.
 
 ![bill estimate preview](https://assets-docs.agora.io/images/console/bill-estimate-preview.png)
 

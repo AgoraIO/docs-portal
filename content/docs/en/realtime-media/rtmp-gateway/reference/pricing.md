@@ -7,7 +7,7 @@ This page explains how Agora calculates your monthly bill for use of Media Gatew
 
 ## Cost structure
 
-Agora Media Gateway usage incurs fees when transcoding and streaming media streams to Video SDK channels. Those fees are not included in the 10,000 free minutes per month policy.
+Agora Media Gateway usage incurs fees when transcoding and streaming media streams to RTC SDK channels. Those fees are not included in the 10,000 free minutes per month policy.
 
 ### Streaming without transcoding
 

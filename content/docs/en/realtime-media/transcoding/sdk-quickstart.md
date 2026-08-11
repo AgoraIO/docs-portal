@@ -27,14 +27,17 @@ The following sections show you how to implement this workflow.
 Before you start, ensure that you have:
 
 - [Go](https://go.dev/dl/) 1.18 or higher
-- Followed the [Enable Cloud Transcoding](./build/manage-agora-account) guide to:
-  - Set up your Agora account and activate the Cloud Transcoding service
-  - Obtain your App ID from Agora Console
-  - Obtain your Customer ID and Customer Secret for REST API authentication
-  - Generate RTC tokens for your channels (valid for up to 24 hours)
+- An [Agora account and project](/en/introduction/account)
+- Your [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) from Agora Console
+- Your [Customer ID and Customer Secret](/en/api-reference/api-ref/cloud-transcoding/authentication) for REST API authentication
+- [RTC tokens](/en/introduction/account#generate-temporary-tokens) for your channels (valid for up to 24 hours)
 - A way to test transcoding input streams:
-  - Implement the [Video Calling Quickstart](/en/realtime-media/video/get-started-sdk), or
+  - Implement the [Video Calling Quickstart](/en/realtime-media/rtc/get-started-sdk), or
   - Use the Agora [Web Demo](https://webdemo-global.agora.io/index.html) to simulate audio and video streams
+
+:::info
+Cloud Transcoding must be activated before you can call the RESTful APIs. Contact [Agora technical support](mailto:support@agora.io) to activate it for your project. If you want viewers to receive multiple bitrates, ask support to enable the multi-bitrate service at the same time.
+:::
 
 ## Set up your project
 

@@ -32,20 +32,20 @@ To follow this procedure, you must:
 - Have a valid [Agora Account](https://console.agora.io/).
 
 - Have a valid Agora project with an app ID and a temporary token or a token
-server. For details, see [Agora account management](/en/realtime-media/voice/manage-agora-account).
+server. For details, see [Agora account management](/en/introduction/account).
 
 - Have a computer with access to the internet. If your network has a firewall, follow the steps in [Firewall requirements](../reference/firewall).
 
-- Join a Video SDK channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/voice/quickstart) guide.
+- Join an RTC channel as a host and start streaming. Refer to the [Voice SDK quickstart](/en/realtime-media/rtc/voice-quickstart) guide.
 
 ## Project setup
 
-To enable Real-Time STT before using it for the first time, take the following steps:
+To enable Real-Time STT:
 
-1. Log in to [Agora Console](https://console.agora.io/) and open the **Projects** page.
-2. Find the project for which you want to enable Real-Time STT and click the ✏️ icon.
-3. On the **Edit Project** page, find **Real-Time Speech-to-Text** and click **Enable Real-Time-STT**.
-4. Click **Enable Real-Time STT** and **Confirm**.
+1. Log in to [Agora Console](https://console.agora.io) and select **RTC Services** from the sidebar. 
+1. From the **Project** dropdown, select the project for which you want to enable the service. 
+1. Locate the **Real-Time Speech-to-Text** card and turn on its toggle. 
+1. Read the prompt and select **Confirm** to enable.
 
 Now you can use Agora Real-Time STT and see the usage statistics on the **Usage** page.
 
@@ -219,4 +219,4 @@ You can also refer to the [demo code on Github](https://github.com/AgoraIO-Commu
 
 ### REST API middleware
 
-[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Real-Time STT interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as a middleware to bridge front-end applications using Agora's Video SDK or Voice SDK with Agora's RESTful APIs.
+[Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Real-Time STT interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as a middleware to bridge front-end applications using Agora's RTC SDK or Voice SDK with Agora's RESTful APIs.

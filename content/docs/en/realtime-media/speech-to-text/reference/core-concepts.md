@@ -29,7 +29,7 @@ Tokens are generated on your server and passed to the client for use in Real-Tim
 
 During development and testing, use the Agora Console to generate temporary tokens. For production environments, implement a token server as part of your security infrastructure to control access to your channels.
 
-For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
+For information on setting up a token server for generating and managing tokens, refer to [Deploy a token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server).
 
 ### Channel
 
@@ -37,7 +37,7 @@ A channel organizes users into a group and is identified by a unique channel nam
 
 Channels are created by calling the methods for transmitting real-time data. Agora uses different channels to transmit different types of data:
 
-- A Video SDK channel is used for transmitting audio or video data.
+- An RTC channel is used for transmitting audio or video data.
 
 - A Signaling channel is used for transmitting messaging or signaling data.
 
@@ -63,7 +63,7 @@ Agora SDRTN<sup>®</sup> enables live user engagement through real-time communic
 - Low cost
 ### Agora Console
 
-[Agora Console](https://console.agora.io/) is the main dashboard where you manage your Agora projects and services. Before you can use Agora's SDKs, you must first create a project in the Agora Console. See [Agora account management](./manage-agora-account) for
+[Agora Console](https://console.agora.io/) is the main dashboard where you manage your Agora projects and services. Before you can use Agora's SDKs, you must first create a project in the Agora Console. See [Agora account management](/en/introduction/account) for
   details.
 
 ![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
@@ -79,6 +79,6 @@ Agora Console provides an intuitive interface for developers to query and manage
 - Check bills and make payments
 - Access product resources
 
-See [Agora account management](./manage-agora-account) for details on how to manage all aspects of your Agora account.
+See [Agora account management](/en/introduction/account) for details on how to manage all aspects of your Agora account.
 
 Agora also provides RESTful APIs that you use to implement features such as creating a project and fetching usage numbers programmatically.

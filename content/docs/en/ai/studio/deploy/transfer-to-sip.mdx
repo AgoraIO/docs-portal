@@ -1,0 +1,129 @@
+---
+title: SIP transfer
+description: Configure outbound campaign call transfers to SIP destinations and pass custom SIP headers.
+---
+
+Use this guide when you want outbound campaign calls to transfer from the AI agent to a human destination over SIP instead of a regular phone number.
+
+This feature is configured in **Campaign** call settings.
+
+## Prerequisites
+
+- A deployed agent.
+- An outbound campaign.
+- A SIP transfer destination.
+- If you want dynamic SIP headers, your contact CSV must contain the required columns.
+
+## How it works
+
+When **Transfer Call to Human** is enabled in campaign settings, the agent can escalate a live call to the transfer destination based on your transfer criteria.
+
+You can set:
+
+- **Transfer Type** = `SIP`
+- **Transfer Destination** = SIP address
+- **SIP Headers** = constant or dynamic headers sent with the transfer request
+
+## Configure SIP transfer
+
+1. In the navigation sidebar, select **Outbound Campaigns**.
+2. Create a campaign, or edit a draft campaign.
+3. In **Call Settings**, enable **Transfer to Human**.
+        ![Transfer to human](https://assets-docs.agora.io/images/console/campaign-transfer-call.png)
+4. Set **Transfer Type** to **SIP**.
+5. Enter the **Transfer Destination**.
+6. Enter **Transfer Criteria** to describe when the agent should transfer the call. For example:
+
+    ```
+    Transfer the call when the user explicitly asks for a human agent, or when the request requires account actions that the agent cannot complete.
+    ```
+
+## SIP destination formats
+
+Use one of the following SIP destination formats:
+
+- `sip:031122@112.13.168.197:5060`
+- `sip:112.13.168.197:5060`
+- `sip:user@domain.com:5060`
+
+A value without the `sip:` prefix is also accepted in the UI, but the stored transfer target is normalized as a SIP address.
+
+## Add SIP headers
+
+Use **SIP Headers** when the downstream SIP system expects extra metadata.
+
+Each header has:
+
+- **Name**
+- **Type**: `Constant` or `Dynamic`
+- **Value**
+
+Header names are normalized with the `sip_h_` prefix when sent.
+
+### Constant headers
+
+Use constant headers when every transfer should send the same value. For example:
+
+```
+Name: queue
+Type: Constant
+Value: support-l2
+```
+
+### Dynamic headers
+
+Use dynamic headers when the value should come from a campaign CSV row.
+
+Dynamic values must contain at least one CSV column wrapped in double curly braces. For example:
+
+```
+{{first_name}}
+vip-{{account_tier}}
+{{case_id}}-{{region}}
+```
+
+:::info[Note]
+- Variable names are case-sensitive.
+- Each variable must match an uploaded CSV column name exactly.
+- If the dynamic value is missing or invalid for a contact, that header is omitted from the transfer request.
+:::
+
+## Prepare CSV data for dynamic headers
+
+To use dynamic headers, add matching columns to your contact list. For example:
+
+```
+phone_number,first_name,account_tier,case_id,region
++19168888860,John,gold,C-1024,us-west
+```
+
+Then configure headers as follows:
+
+- `customer_name` → `{{first_name}}`
+- `priority` → `{{account_tier}}`
+- `case_context` → `{{case_id}}-{{region}}`
+
+## Test checklist
+
+Before you launch a campaign, verify:
+
+- The SIP destination is valid.
+- The transfer criteria is clear and specific.
+- Dynamic header variables match CSV columns exactly.
+- A sample transfer reaches the expected SIP system.
+- The receiving system can read the custom SIP headers.
+
+## Troubleshooting
+
+| Issue | Solution |
+|---|---|
+| Transfer destination rejected | Check the SIP address format and port. |
+| Header missing on transferred call | Check the header type, CSV column name, and whether a value exists for that contact. |
+| Transfer never happens | Tighten the transfer criteria in call settings and the agent prompt. |
+| Call transfers to the wrong place | Recheck the destination field and whether you selected **SIP** instead of **Number**. |
+
+## Next steps
+
+- [Set up a campaign](campaign): Build an outbound call flow
+- [Set up SIP trunk](sip-trunk): Prepare telephony for outbound calling
+- [Agent analytics](../observe/analytics): Monitor transfer outcomes after launch

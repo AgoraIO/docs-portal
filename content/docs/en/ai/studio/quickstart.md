@@ -1,60 +1,66 @@
 ---
-title: Quickstart
+title: Create your first agent
 description: Create and test your first AI voice agent in minutes using a pre-built template.
 ---
-This page guides you through creating and testing your first AI voice agent using Agent Studio. In less than 10 minutes, you will have a working agent that you can speak to in the browser. No telephony setup is required.
 
-## Prerequisites
+This page guides you through creating and testing your first AI voice agent. In less than 10 minutes, you will have a working agent that you can speak to in the browser. No telephony setup is required.
 
-Make sure you have the following:
-
-- An active Agora account and project
-- [Enabled Conversational AI](../reference/enable-conversational-ai) for your Agora project
+:::tip[Prefer natural language?]
+Use [Concierge](build/concierge) to build and test an agent by describing what you want instead of following the steps below.
+:::
 
 ## Create an agent
 
 To create your first agent:
 
-1. Log into [Agora Console](https://console.agora.io) and open [Agent Studio](https://console.agora.io/studio).
-    ![](https://assets-docs.agora.io/images/conversational-ai/studio/create-agent.png)
-2. Select **Agents** from the sidebar, then click **Create Agent**.
-3. Select an Agora project from the dropdown. The agent uses this project's credentials to connect to Agora, and usage is billed to this project.
-    ![](https://assets-docs.agora.io/images/conversational-ai/studio/create-agent-template.png)
-4. Under **Choose a template**, select the **Blank Template**.
+1. Log in to [Agora Console](https://console.agora.io).
+2. Select your project from the dropdown at the top of the page. The agent uses this project's credentials to connect to Agora. Agora bills the usage to this project.
+3. In the navigation sidebar, select **Agents**.
+
+    ![List of agents](https://assets-docs.agora.io/images/console/agent-list.png)
+
+4. Select **Create Agent**.
+
+    <img alt="Create a new agent" src="https://assets-docs.agora.io/images/console/create-agent.png" width="600"  />
+
 5. Enter a name for your agent.
-6. Click **Create Agent**.
+6. Under **Choose a template**, select the **Blank Template**.
+7. Select **Create Agent**.
 
-    Studio opens the agent editor with a system prompt and pre-configured model settings.
+    The agent editor opens with a system prompt and pre-configured model settings.
 
-![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-prompt.png)
+    ![](https://assets-docs.agora.io/images/console/agent-editor-prompt.png)
 
 ## Configure your agent
 
-The agent editor is organized into tabs. For the quickstart, you only need to review the **Prompt** tab and the **Models** tab.
+The agent editor is organized into multiple tabs. For the quickstart, you only need to review the **Prompt** tab and the **Models** tab.
 
 ### Review the prompt
 
 The agent editor opens with the following prompts:
 
-1. **System prompt**: It defines how your agent behaves.
-2. **Greeting message**: It is the first thing your agent says when a session starts. Type in a greeting such as `Hello, how can I help you today?`
-3. **Failure message**: It is used when the LLM encounters an error or fails to respond.
+- **System prompt**: The base instructions that shape how your agent thinks, speaks, and escalates.
+- **Greeting**: The first assistant message before the live exchange starts. Type in a greeting such as `Hello, how can I help you today?`
+- **Failure message**: The fallback message used when the agent needs a moment or cannot proceed.
 
 ### Review selected models
 
 Models determine which ASR, LLM, and TTS services your agent uses to process speech, generate responses, and synthesize voice output.
 
-1. Click the **Models** tab.
-    ![](https://assets-docs.agora.io/images/conversational-ai/studio/agent-editor-models.png)
-2. Review the pre-selected models for **Automatic Speech Recognition (ASR)**, **Large Language Model (LLM)**, and **Text-to-Speech (TTS)**. You can use the defaults or select a different vendor-model from the dropdowns.
+1. Select the **Models** tab.
 
-The dropdowns list vendor-model combinations that support Agora Managed Key. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../reference/pricing) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent).
+    ![](https://assets-docs.agora.io/images/console/agent-editor-models.png)
+
+2. Review the pre-selected models for **Automatic Speech Recognition (ASR)**, **Large Language Model (LLM)**, and **Text-to-Speech (TTS)**. Use the default values to create your first agent.
+
+The default models support **Agora Managed Key**. When you use a managed key, Agora provides the API credentials for your selected vendor. You do not need to obtain an API key directly from the vendor. See [Pricing](../reference/pricing) for details. To use your own API key or use a vendor that does not support a managed key, see [Customize your agent](build/customize-agent).
 
 ## Test the agent
 
-1. In the right panel, click **Start Call** to start a test call.
-2. Allow microphone access when prompted.
-3. Speak to the agent to verify it responds correctly.
+1. Select the **Test** tab in the right panel.
+2. Select **Start Call** to start a test call.
+3. Allow microphone access when prompted.
+4. Speak to the agent to verify it responds correctly.
 
 For guidance on what to test and how to troubleshoot issues, see [Test your agent](build/test-agent).
 
@@ -63,4 +69,4 @@ For guidance on what to test and how to troubleshoot issues, see [Test your agen
 You now have a working voice agent. From here you can:
 
 - [Customize your agent](build/customize-agent): Fully configure models, prompts, and advanced settings for your use case
-- [Manage integrations](build/integrations): Manage API credentials, knowledge bases, and MCP servers for reuse across agents
+- [Manage integrations](build/integrations): Manage API credentials, knowledge bases, MCPs, custom tools, and connectors for reuse across agents

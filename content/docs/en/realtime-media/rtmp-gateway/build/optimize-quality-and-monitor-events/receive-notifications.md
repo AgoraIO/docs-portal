@@ -1,5 +1,5 @@
 ---
-title: "Receive notifications about channel events"
+title: "Receive webhook notifications"
 description: "Subscribe to Media Gateway events and receive webhook notifications in real time."
 ---
 A webhook is a user-defined callback over HTTPS that allows your app or back-end system to receive notifications when certain events occur. Agora calls your webhook endpoint from its servers to send notifications about Media Gateway events. With Notifications, you can subscribe to Media Gateway events and receive notifications in real time.
@@ -18,8 +18,8 @@ If Notifications receives `200 OK` within 10 seconds of sending the initial noti
 
 To set up and use Notifications, you must have:
 
-- A [valid Agora account](../manage-agora-account.md)
-- An [active Agora project](../manage-agora-account.md)
+- A [valid Agora account](/en/introduction/account)
+- An [active Agora project](/en/introduction/account)
 - A computer with Internet access
 
 If your network access is restricted by a firewall, call the IP address query API to retrieve the Notifications IP addresses, then configure the firewall to allow those IP addresses. The REST API reference for that endpoint remains out of scope for this prose migration.
@@ -136,16 +136,27 @@ To obtain an auth token, [sign up](https://dashboard.ngrok.com/signup) with ngro
 
 6. Test the server by opening the public URL provided by ngrok and sending a `POST` request to `https://<ngrok_url>/ncsNotify` with the required JSON payload.
 
-## Enable Notifications
+### Set up Webhook notifications
 
-In Agora Console, open your project, configure the webhook URL, and subscribe to the Media Gateway events you need.
+1. In [Agora Console](https://console.agora.io), select **Webhooks** from the sidebar.
 
-Relevant UI screenshots:
+1. Select **New Webhook**.
 
-![Project tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-project-tabs.png)
-![Notification tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-notification-tab.png)
-![Notification configuration tab](https://assets-docs.agora.io/images/video-sdk/enable-ncs-configuration-tab.png)
-![Apply settings](https://assets-docs.agora.io/images/video-sdk/enable-ncs-apply-settings.png)
+1. In the **Product** dropdown, select **Media Gateway**.
+
+1. Copy the **Signing Secret**. You use this secret to [Add signature verification](#add-signature-verification).
+
+1. Fill in the following:
+
+   * **Region**: Select the region where your server that receives the notifications is located. Agora connects to the nearest Agora node server based on your selection.
+
+   * **Receiving URL**: The `HTTPS` public address of your server that receives the notifications, for example `https://1111-123-456-789-99.ap.ngrok.io/ncsNotify`. Only `HTTPS` endpoints are supported.
+
+   * **Subscribe to events**: Select all the events that you want to subscribe to.
+
+   * **IP whitelist**: If your server is behind a firewall, enable this option and add the Agora Notifications server IP addresses to the firewall's allowed IP list.
+
+1. Select **Run health check**, and when it succeeds, select **Save**.
 
 ## Verify Notifications signatures
 

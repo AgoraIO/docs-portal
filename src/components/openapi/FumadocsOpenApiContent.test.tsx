@@ -1955,9 +1955,11 @@ describe('FumadocsOpenApiContent', () => {
       paddingInlineStart: string,
     ) => {
       const row = document.getElementById(anchorId);
+      const rowContent = row?.firstElementChild;
 
       expect(row).toBeInstanceOf(HTMLElement);
-      expect((row as HTMLElement).style.paddingInlineStart).toBe(
+      expect(rowContent).toBeInstanceOf(HTMLElement);
+      expect((rowContent as HTMLElement).style.paddingInlineStart).toBe(
         paddingInlineStart,
       );
     };
@@ -2156,10 +2158,25 @@ describe('FumadocsOpenApiContent', () => {
                               config: {
                                 description: 'Agent runtime settings.',
                                 properties: {
+                                  audio: {
+                                    properties: {
+                                      sal: {
+                                        description: 'Speech activity level.',
+                                        type: 'number',
+                                      },
+                                    },
+                                    type: 'object',
+                                  },
                                   idleTimeout: {
                                     description: 'Idle timeout in seconds.',
                                     type: 'integer',
                                   },
+                                },
+                                type: 'object',
+                              },
+                              unrelated: {
+                                properties: {
+                                  secret: { type: 'string' },
                                 },
                                 type: 'object',
                               },
@@ -2184,7 +2201,7 @@ describe('FumadocsOpenApiContent', () => {
     return within(tree);
   }
 
-  it('shows top-level schema descriptions but hides nested children until expanded', async () => {
+  it('keeps collapsed schema children findable and reveals them on beforematch', async () => {
     const tree = await renderNestedSchema();
 
     expect(tree.getByText('name')).toBeVisible();
@@ -2192,22 +2209,59 @@ describe('FumadocsOpenApiContent', () => {
     expect(tree.getByText('config')).toBeVisible();
     expect(tree.getByText('Agent runtime settings.')).toBeVisible();
 
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    const collapsedChild = tree
+      .getByText('sal')
+      .closest('[data-openapi-schema-row]');
+    const unrelatedChild = tree
+      .getByText('secret')
+      .closest('[data-openapi-schema-row]');
+    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
+    expect(collapsedChild).not.toBeVisible();
+    expect(unrelatedChild).toHaveAttribute('hidden', 'until-found');
+
+    fireEvent(collapsedChild as HTMLElement, new Event('beforematch'));
+
+    expect(collapsedChild).not.toHaveAttribute('hidden');
+    expect(collapsedChild).toBeVisible();
+    expect(
+      tree.getByRole('button', { name: 'Collapse config properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      tree.getByRole('button', { name: 'Collapse audio properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(unrelatedChild).toHaveAttribute('hidden', 'until-found');
+    expect(unrelatedChild).not.toBeVisible();
 
     expect(
       tree.queryByRole('button', { name: 'Expand name properties' }),
     ).not.toBeInTheDocument();
-    fireEvent.click(
-      tree.getByRole('button', { name: 'Expand config properties' }),
-    );
-
     expect(tree.getByText('idleTimeout')).toBeVisible();
     expect(tree.getByText('Idle timeout in seconds.')).toBeVisible();
 
     fireEvent.click(
       tree.getByRole('button', { name: 'Collapse config properties' }),
     );
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
+    expect(collapsedChild).not.toBeVisible();
+  });
+
+  it('does not paint row dividers or spacing for collapsed findable fields', async () => {
+    const tree = await renderNestedSchema();
+    const collapsedChild = tree
+      .getByText('sal')
+      .closest('[data-openapi-schema-row]') as HTMLElement;
+
+    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
+    expect(collapsedChild).not.toHaveClass('border-t');
+    expect(collapsedChild).not.toHaveClass('py-3');
+    expect(collapsedChild).not.toHaveClass('pr-4');
+    expect(collapsedChild.style.paddingInlineStart).toBe('');
+
+    const visibleRowContent = collapsedChild.firstElementChild;
+    expect(visibleRowContent).toHaveClass('border-t', 'py-3', 'pr-4');
+    expect(visibleRowContent).toHaveStyle({
+      paddingInlineStart: 'calc(1rem + 48px)',
+    });
   });
 
   it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
@@ -2262,7 +2316,7 @@ describe('FumadocsOpenApiContent', () => {
   it('expands and collapses every nested field with the schema-wide control', async () => {
     const tree = await renderNestedSchema();
 
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
     fireEvent.click(
       tree.getByRole('button', {
         name: 'Expand all Request Body schema fields',
@@ -2275,7 +2329,7 @@ describe('FumadocsOpenApiContent', () => {
         name: 'Collapse all Request Body schema fields',
       }),
     );
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
     expect(tree.getByText('name')).toBeVisible();
   });
 

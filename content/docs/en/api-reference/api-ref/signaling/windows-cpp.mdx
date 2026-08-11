@@ -202,7 +202,7 @@ if (!rtmClient_ || errorCode != 0) {
 
 #### Description
 
-Signaling has a total of 8 types of event notifications, as shown in the following table:
+Signaling has a total of 7 types of event notifications, as shown in the following table:
 
 | Event Type | Description |
 |:----------:|------------------------------|
@@ -211,7 +211,6 @@ Signaling has a total of 8 types of event notifications, as shown in the followi
 | `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#configtopiceven-t) |
 | `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#configstorageeven-t) |
 | `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#configlockeven-t) |
-| `onConnectionStateChanged` | (Deprecated) Receive event notifications when client connection status changes. For details, see [`RTM_CONNECTION_STATE`](#enumvconnectionstat-e) and [`RTM_CONNECTION_CHANGE_REASON`](#enumvconnectionreaso-n). |
 | `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#configlinkstateeven-t). |
 | `onTokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
@@ -223,13 +222,12 @@ Add an event listener object as follows:
  // only need override the event which you want to receive
 class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
+    void onPresenceEvent(const PresenceEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) {}
     void onLoginResult(RTM_ERROR_CODE errorCode) {}
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent& event) {}
-    ...
 };
 
 RtmConfig config;
@@ -281,6 +279,7 @@ User presence event.
 | `timeoutUserList` | `UserList` | List of users who timed out joining the channel in the previous cycle. |
 | `userStateList` | `UserState*` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
 | `userStateCount` | size_t | Number of users whose status has changed in the previous cycle. |
+| `totalOccupancy` | size_t | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 `SnapshotInfo` contains the following properties:
 
@@ -3044,53 +3043,6 @@ Channel types.
 | `RTM_CHANNEL_TYPE_STREAM` | `2`: Stream channel. |
 | `RTM_CHANNEL_TYPE_USER` | `3`: User Channel. |
 
-#### RTM_CONNECTION_CHANGE_REASON
-
-Reasons causing the change of the connection state.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `RTM_CONNECTION_CHANGED_CONNECTING` | `0`: The SDK is connecting with the server. |
-| `RTM_CONNECTION_CHANGED_JOIN_SUCCESS` | `1`: The SDK has joined the channel successfully. |
-| `RTM_CONNECTION_CHANGED_INTERRUPTED` | `2`: The connection between the SDK and the server is interrupted. |
-| `RTM_CONNECTION_CHANGED_BANNED_BY_SERVER` | `3`: The connection between the SDK and the server is banned by the server. |
-| `RTM_CONNECTION_CHANGED_JOIN_FAILED` | `4`: The SDK fails to join the channel. When the SDK fails to join the channel for more than 20 minutes, this error occurs and the SDK stops reconnecting to the channel. |
-| `RTM_CONNECTION_CHANGED_LEAVE_CHANNEL` | `5`: The SDK has left the channel. |
-| `RTM_CONNECTION_CHANGED_INVALID_APP_ID` | `6`: The connection failed because the App ID is not valid. |
-| `RTM_CONNECTION_CHANGED_INVALID_CHANNEL_NAME` | `7`: The connection failed because the channel name is not valid. |
-| `RTM_CONNECTION_CHANGED_INVALID_TOKEN` | `8`: The connection failed because the token is not valid. |
-| `RTM_CONNECTION_CHANGED_TOKEN_EXPIRED` | `9`: The connection failed because the token is expired. |
-| `RTM_CONNECTION_CHANGED_REJECTED_BY_SERVER` | `10`: The connection is rejected by server. |
-| `RTM_CONNECTION_CHANGED_SETTING_PROXY_SERVER` | `11`: The connection state changed to reconnecting because the SDK has set a proxy server. |
-| `RTM_CONNECTION_CHANGED_RENEW_TOKEN` | `12`: The connection state changed because the token is renewed. |
-| `RTM_CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED` | `13`: The IP address of the client has changed, possibly because the network type, IP address, or port has been changed. |
-| `RTM_CONNECTION_CHANGED_KEEP_ALIVE_TIMEOUT` | `14`: Timeout for the keep-alive of the connection between the SDK and the server. The connection state changes to reconnecting. |
-| `RTM_CONNECTION_CHANGED_REJOIN_SUCCESS` | `15`: The user has rejoined the channel successfully. |
-| `RTM_CONNECTION_CHANGED_LOST` | `16`: The connection between the SDK and the server is lost. |
-| `RTM_CONNECTION_CHANGED_ECHO_TEST` | `17`: The connection state changes due to the echo test. |
-| `RTM_CONNECTION_CHANGED_CLIENT_IP_ADDRESS_CHANGED_BY_USER` | `18`: The local IP address was changed by the user. The connection state changes to reconnecting. |
-| `RTM_CONNECTION_CHANGED_SAME_UID_LOGIN` | `19`: The user joined the same channel from different devices with the same UID. |
-| `RTM_CONNECTION_CHANGED_TOO_MANY_BROADCASTERS` | `20`: The number of hosts in the channel has reached the upper limit. |
-| `RTM_CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE` | `21`: License validation failure. |
-| `RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE` | `22`: The server certificate verification has encountered an error. |
-| `RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE` | `23`: The stream channel does not exist. |
-| `RTM_CONNECTION_CHANGED_INCONSISTENT_APPID` | `24`: The App ID does not match the token. |
-| `RTM_CONNECTION_CHANGED_LOGIN_SUCCESS` | `10001`: The SDK logs in to the Signaling system. |
-| `RTM_CONNECTION_CHANGED_LOGOUT` | `10002`: The SDK logs out from the Signaling system. |
-| `RTM_CONNECTION_CHANGED_PRESENCE_NOT_READY` | `10003`: Presence service is not ready. You need to call the `login` method again to log in to the Signaling system and re-execute all operations on the SDK. |
-
-#### RTM_CONNECTION_STATE
-
-SDK connection states.
-
-| Value | Description |
-| :----------: | ---------------------------------------------------------- |
-| `RTM_CONNECTION_STATE_DISCONNECTED` | `1`: The SDK has disconnected with the server. |
-| `RTM_CONNECTION_STATE_CONNECTING` | `2`: The SDK is connecting with the server. |
-| `RTM_CONNECTION_STATE_CONNECTED` | `3`: The SDK has connected with the server. |
-| `RTM_CONNECTION_STATE_RECONNECTING` | `4`: The connection is lost. The SDK is reconnecting with the server. |
-| `RTM_CONNECTION_STATE_FAILED` | `5`: The SDK failed to connect with the server. |
-
 #### RTM_ENCRYPTION_MODE
 
 Encryption mode.
@@ -3377,6 +3329,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11032` | `RTM_ERROR_CHANNEL_PRESENCE_NOT_READY` | Presence service is not ready. Please rejoin the Stream Channel or resubscribe to the Message Channel. |
 | `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
 | `-11034` | `RTM_ERROR_CHANNEL_JOIN_CANCELED` | The join channel operation has been canceled. After calling the `joinTopic` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | The channel subscription is canceled before it completes. |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage operation failed. |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | Invalid Metadata Item. |
@@ -3409,6 +3362,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-13011` | `RTM_ERROR_PRESENCE_USER_NOT_EXIST` | The user does not exist. |
 | `-13012` | `RTM_ERROR_PRESENCE_OPERATION_TIMEOUT` | Presence operation timed out. |
 | `-13013` | `RTM_ERROR_PRESENCE_OPERATION_FAILED` | Presence operation failed. |
+| `-13014` | `RTM_ERROR_PRESENCE_INACTIVE` | The Presence service is not enabled or is currently unavailable. |
+| `-13015` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_CANCELLED` | The pending Presence request is canceled. |
+| `-13016` | `RTM_ERROR_PRESENCE_PENDING_REQUEST_EXCEED_LIMITATION` | The number of pending Presence requests exceeds the limit. |
 | `-14001` | `RTM_ERROR_LOCK_OPERATION_FAILED` | Lock operation failed. |
 | `-14002` | `RTM_ERROR_LOCK_OPERATION_TIMEOUT` | Lock operation timed out. |
 | `-14003` | `RTM_ERROR_LOCK_OPERATION_PERFORMING` | Lock operation in progress. |

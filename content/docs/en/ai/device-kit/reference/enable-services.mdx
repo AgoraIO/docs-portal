@@ -11,23 +11,7 @@ Create an Agora account and project in Agora Console. Record the App ID for the 
 
 ## Enable Conversational AI
 
-Before using Convo AI Device Kit, enable it for your app ID in Agora Console.
-
-:::info[Note]
-The following steps apply to the new version of Agora Console. If you are using the old version, switch to the new version by clicking **Switch to the new version** at the top of the screen.
-:::
-
-
-1. Navigate to the [Projects](https://api-ref.agora.io) page, locate your project in the **My Projects** list and click the associated ✏️ icon to configure it.
-
-    ![configure_project](https://assets-docs.agora.io/images/signaling/configure_project.png)
-
-1. Under **All features** select **Conversational AI > Configurations** and toggle the switch to **Enable Conversational AI**.
-
-    ![Console](https://assets-docs.agora.io/images/conversational-ai/enable-convo-ai-console.png)
-
-After enabling, you can call the Convo AI Device Kit RESTful API.
-
+Conversational AI Engine is enabled by default for new projects, so no console setup is required. If you're using an older project, verify that Conversational AI Engine is enabled on the **RTC Services** page in [Agora Console](https://console.agora.io/).
 
 Convo AI Device Kit RESTful API requires REST authentication.
 The following REST authentication methods are available:
@@ -39,29 +23,13 @@ The following REST authentication methods are available:
 
 
 :::info
-
 Implement authentication on the server to mitigate the risk of data leakage.
-
 :::
 
 
 ## Implement basic HTTP authentication
 
-### Generate Customer ID and Customer Secret
-
-To generate a set of customer ID and customer secret, do the following:
-
-1. In [Agora Console](https://api-ref.agora.io), click **Developer Toolkit** > **RESTful API**.
-
-    ![RESTful API](https://assets-docs.agora.io/images/common/console-restful-api.png)
-
-2. Click **Add a secret**, and click **OK**. A set of customer ID and customer secret is generated.
-
-3. Click **Download** in the **Customer Secret** column. Read the pop-up window carefully, and save the downloaded `key_and_secret.txt` file in a secure location.
-
-4. Use the customer ID (key) and customer secret (secret) to generate a Base64-encoded credential, and pass the Base64-encoded credential to the `Authorization` parameter in the HTTP request header.
-
-You can download the customer secret from Agora Console only once. Be sure to keep it secure.
+<include cwd>content/includes/en/shared/console/restful-credentials.mdx</include>
 
 ### Generate an authorization header using a third-party tool
 
@@ -76,9 +44,7 @@ Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=
 The following sample code implements basic HTTP authentication and sends a RESTful API request to get the basic information of all your current Agora projects.
 
 :::caution
-
 The Agora RESTful API only supports HTTPS with TLS 1.0, 1.1, or 1.2 for encrypted communication. Requests over plain HTTP are not supported and will fail to connect.
-
 :::
 
 
@@ -403,7 +369,5 @@ namespace Examples.System.Net
 }
 ```
 
-
 </TabsContent>
-
 </Tabs>

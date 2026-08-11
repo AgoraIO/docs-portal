@@ -30,7 +30,7 @@ To learn more about specific use-cases, [contact](mailto:rtm-support@agora.io) t
 
 ## Getting started
 
-To create and set up a project for Signaling in Agora Console, see [Agora account management](./manage-agora-account.md). Browse the following documents to get started with Signaling:
+To create and set up a project for Signaling in Agora Console, see [Agora account management](/en/introduction/account). Browse the following documents to get started with Signaling:
 
 * [SDK quickstart](./index.mdx)
 * [Message channels](./build/work-with-channels/message-channel.mdx)

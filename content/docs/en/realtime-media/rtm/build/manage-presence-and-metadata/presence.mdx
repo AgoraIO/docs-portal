@@ -207,7 +207,7 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
 
 #### Real-time notification mode
 
@@ -339,6 +339,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -348,6 +352,10 @@ Using presence, you can implement the following features:
 To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
 
 After obtaining the initial online users list, update it in real time through `onPresenceEvent` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
@@ -403,6 +411,10 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, objec
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned `result` contains a bookmark for the next page. After each query, check if `result.getNextPage` is empty to determine if there is more data. To retrieve the next page, set the `page` field in `PresenceOptions` to the value of `result.getNextPage`. Repeat this process until `result.getNextPage` is null. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 ```java tab="Java"
 PresenceOptions options =  new PresenceOptions();
@@ -628,6 +640,10 @@ mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, o
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `PRESENCE_USER_NOT_EXIST` error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
 ### Delete status
 
 Each user can set up to 32 key-value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
@@ -675,7 +691,15 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -878,6 +902,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -888,6 +916,10 @@ To obtain a list of online users in a channel, call `getOnlineUsers`. Depending 
 
 :::info
 After obtaining the initial online users list, update it in real time through `didReceivePresenceEvent` event notifications.
+:::
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
 :::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
@@ -939,6 +971,10 @@ presence_opt.includeUserId = true;
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmPresenceOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 </TabsContent>
 </Tabs>
@@ -1138,6 +1174,10 @@ If the queried user is not present in the specified channel, a `presenceUserNotE
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `AgoraRtmErrorPresenceUserNotExist` error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
 </TabsContent>
 </Tabs>
 
@@ -1200,7 +1240,15 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-Set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+Set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -1506,6 +1554,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -1516,6 +1568,10 @@ To obtain a list of online users in a channel, call `getOnlineUsers`. Depending 
 
 :::info
 After obtaining the initial online users list, update it in real time through `didReceivePresenceEvent` event notifications.
+:::
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
 :::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
@@ -1567,6 +1623,10 @@ presence_opt.includeUserId = true;
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmPresenceOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 </TabsContent>
 </Tabs>
@@ -1766,6 +1826,10 @@ If the queried user is not present in the specified channel, a `presenceUserNotE
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `AgoraRtmErrorPresenceUserNotExist` error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
 </TabsContent>
 </Tabs>
 
@@ -1828,7 +1892,15 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-Set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+Set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -2346,7 +2418,7 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
 
 #### Real-time notification mode
 
@@ -2490,6 +2562,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -2499,6 +2575,10 @@ Using presence, you can implement the following features:
 To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
 
 After obtaining the initial online users list, update it in real time through `onPresenceEvent` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
@@ -2532,6 +2612,10 @@ class RtmEventHandler : public IRtmEventHandler {
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned result contains a bookmark for the next page. After each query, check if `nextPage` is not empty to determine if there is more data. To retrieve the next page, set the `page` field in `PresenceOptions` to the value of `nextPage`. Repeat this process until `nextPage` is null. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 ```cpp
 PresenceOptions options;
@@ -2655,6 +2739,10 @@ class RtmEventHandler : public IRtmEventHandler {
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, an error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
 ### Delete status
 
 Each user can set up to 32 key/value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
@@ -2697,7 +2785,15 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -2853,6 +2949,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -2862,6 +2962,10 @@ Using presence, you can implement the following features:
 To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
 
 After obtaining the initial online users list, update it in real time through `onPresenceEvent` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
@@ -2895,6 +2999,10 @@ class RtmEventHandler : public IRtmEventHandler {
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned result contains a bookmark for the next page. After each query, check if `nextPage` is not empty to determine if there is more data. To retrieve the next page, set the `page` field in `PresenceOptions` to the value of `nextPage`. Repeat this process until `nextPage` is null. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 ```cpp
 PresenceOptions options;
@@ -3018,6 +3126,10 @@ class RtmEventHandler : public IRtmEventHandler {
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, an error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
 ### Delete status
 
 Each user can set up to 32 key/value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
@@ -3060,7 +3172,15 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -3420,7 +3540,7 @@ The presence event notification mode determines how subscribed users receive eve
 - `Announce`: Real-time notification mode
 - `Interval`: Scheduled notification mode
 
-You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../manage-agora-account#presence-configuration) for details.
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
 
 #### Real-time notification mode
 

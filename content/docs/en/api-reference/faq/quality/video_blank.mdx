@@ -27,7 +27,7 @@ Before proceeding, ensure that your token is properly set.
 This is likely caused by a video capture failure on the local side. Do the following:
 
 1. Check the camera hardware. Start the built-in video camera to test the recording function.
-2. Check if the camera access permission is enabled. Both Android and iOS have a runtime access permission function under System Settings. See [Add project permissions](/en/interactive-live-streaming/get-started/get-started-sdk#project-setup).
+2. Check if the camera access permission is enabled. Both Android and iOS have a runtime access permission function under System Settings. See [Handle permissions](/en/realtime-media/rtc/get-started-sdk#handle-permissions).
 3. Check if another app is using the camera. Close all apps, restart your phone, and re-check.
 4. If the app enabled the External Source Mode, check the data collected from the external video sources.
 
@@ -37,7 +37,7 @@ This is likely caused by a video capture failure on the remote side or slow down
 
 1. Check if the user disabled the remote video.
 2. Switch to another network to ensure that the problem is not caused by a poor Internet connection.
-3. Check whether the remote user uses the [channel encryption](/en/video-calling/core-functionality/media-stream-encryption) function but the local user doesn't.
+3. Check whether the remote user uses the [Secure channel encryption](/en/realtime-media/rtc/build/secure-and-protect-channels/media-stream-encryption) function but the local user doesn't.
 4. Check whether the remote user can preview their video on their own device. If not, then the cause of the black video probably lies on the remote side. Perform the steps in [Black screen on the local side](#black-screen-on-the-local-side).
 
 **Black screen on both sides**
@@ -50,7 +50,7 @@ This occurs when the video is not rendered correctly or the video function is no
     -     `AParameter apm(*pRTCEngine);`
     -     `nRet = apm->setInt("che.video.renderer.type", 9);`
 4. If the app enables the Other Rendering Method Mode, check for any rendering issue.
-5. Check if you are using the video SDK and not the voice SDK.
+5. Check if you are using the RTC SDK and not the voice SDK.
 6. Check if the local and remote video views are set correctly. For example:
     - Neither the width nor height of the video view are set to 0.
     - The video display window is not covered by any black view.

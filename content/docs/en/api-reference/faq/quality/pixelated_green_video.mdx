@@ -34,10 +34,10 @@ Refer to following sections to troubleshoot.
 
 2. Check the video source and the video renderer:
 
-- If the sender uses a custom source and renderer, check the custom source first and then check the custom renderer. See the sample projects for [custom source](/en/video-calling/advanced-features/custom-video#custom-video-capture) and [custom renderer](/en/video-calling/advanced-features/custom-video#custom-video-rendering).
-- If the sender uses a custom source and an Agora Video SDK renderer, check the custom source. See the [custom source](/en/video-calling/advanced-features/custom-video) sample project.
-- If the sender uses an Agora Video SDK source and a custom renderer, check the custom renderer. See the [custom renderer](/en/video-calling/advanced-features/custom-video) sample project.
-- If the sender uses an Agora Video SDK source and an Agora Video SDK renderer, contact [support@agora.io](mailto:support@agora.io) for technical support.
+- If the sender uses a custom source and renderer, check the custom source first and then check the custom renderer. See the sample projects for [custom source](/en/realtime-media/rtc/build/capture-and-render-video/custom-video#custom-video-capture) and [custom renderer](/en/realtime-media/rtc/build/capture-and-render-video/custom-video#custom-video-rendering).
+- If the sender uses a custom source and an Agora RTC SDK renderer, check the custom source. See the [custom source](/en/realtime-media/rtc/build/capture-and-render-video/custom-video#custom-video-capture) sample project.
+- If the sender uses an Agora RTC SDK source and a custom renderer, check the custom renderer. See the [custom renderer](/en/realtime-media/rtc/build/capture-and-render-video/custom-video#custom-video-rendering) sample project.
+- If the sender uses an Agora RTC SDK source and an Agora RTC SDK renderer, contact [support@agora.io](mailto:support@agora.io) for technical support.
 
 When the sender uses YUV data with the custom renderer, check whether you have mistakenly used the `Stride` parameter and the `width` parameter in [`VideoFrame`](https://api-ref.agora.io/en/video-sdk/cpp/3.x/structagora_1_1media_1_1_i_video_frame_observer_1_1_video_frame.html).
 
@@ -45,7 +45,7 @@ When the sender uses YUV data with the custom renderer, check whether you have m
 
 If pixelated video appears in both the sender and the receiver, you need to [check pixelated video in the sender](#pixelated_sender) first. If pixelated video appears in only the receiver, refer to the following steps to troubleshoot:
 
-1. Regardless of the renderer type, check the sender first. If the sender uses a custom source, you also need to check whether the video data is correctly sent from the custom source to the Video SDK.
+1. Regardless of the renderer type, check the sender first. If the sender uses a custom source, you also need to check whether the video data is correctly sent from the custom source to the RTC SDK.
 2. If the receiver uses custom renderer, check the custom renderer.
 
 When the receiver uses YUV data with the custom renderer, check whether you have mistakenly used the
@@ -60,19 +60,19 @@ Complete the following steps to check the camera, third-party image enhancement 
 3. Check whether the resolution is [recommended by Agora](https://api-ref.agora.io/en/video-sdk/cpp/3.x/structagora_1_1rtc_1_1_video_encoder_configuration.html#af10ca07d888e2f33b34feb431300da69). If not, change the resolution.
 
 - If the sender uses a custom source and renderer, when you use [`setVideoSource`](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#aa240e991d12b5240fc5fd362cbc0d521) to set a custom source, check whether the data formats in `getBufferType` and from `IVideoFrameConsumer` to the SDK are consistent. If the data formats are inconsistent, update the data formats and re-check. Then check the custom renderer.
-- If the sender uses a custom source and an Agora Video SDK renderer, check the custom source. When you use [`setVideoSource`](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#aa240e991d12b5240fc5fd362cbc0d521) to set a custom source, check whether the data formats in `getBufferType` and from `IVideoFrameConsumer` to the SDK are consistent. If the data formats are inconsistent, update the data formats and re-check. Also check whether the video data is correctly sent from the custom source to the SDK.
-- If the sender uses an Agora Video SDK source and a custom renderer, check the custom renderer.
-- If the sender uses an Agora Video SDK source and an Agora Video SDK renderer, please contact [support@agora.io](mailto:support@agora.io) for technical support.
+- If the sender uses a custom source and an Agora RTC SDK renderer, check the custom source. When you use [`setVideoSource`](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#aa240e991d12b5240fc5fd362cbc0d521) to set a custom source, check whether the data formats in `getBufferType` and from `IVideoFrameConsumer` to the SDK are consistent. If the data formats are inconsistent, update the data formats and re-check. Also check whether the video data is correctly sent from the custom source to the SDK.
+- If the sender uses an Agora RTC SDK source and a custom renderer, check the custom renderer.
+- If the sender uses an Agora RTC SDK source and an Agora RTC SDK renderer, please contact [support@agora.io](mailto:support@agora.io) for technical support.
 
-In Android, if you use a custom source in the communication profile, check whether the video data format is Texture. The Agora Video SDK for Android does not support receiving video data in Texture format. You need to update the video data format to YUV and re-check the video.
+In Android, if you use a custom source in the communication profile, check whether the video data format is Texture. The Agora RTC SDK for Android does not support receiving video data in Texture format. You need to update the video data format to YUV and re-check the video.
 
 ### Jagged, green video in the receiver
 
 If jagged, green video appears for both the sender and the receiver, you need to [check jagged, green video in the sender](#green_sender) first. If jagged, green video appears for the receiver only, refer to the following steps to troubleshoot:
 
-- Regardless of the renderer type, check the sender first. If the sender uses a custom source, you also need to check whether the video data is correctly transmitted from the custom source to the Video SDK. When you use [`setVideoSource`](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#aa240e991d12b5240fc5fd362cbc0d521) to set a custom source, check whether the data format in `getBufferType` and from `IVideoFrameConsumer` to the SDK are consistent. If the data format is inconsistent, update the data format and re-check.
+- Regardless of the renderer type, check the sender first. If the sender uses a custom source, you also need to check whether the video data is correctly transmitted from the custom source to the RTC SDK. When you use [`setVideoSource`](https://api-ref.agora.io/en/video-sdk/android/3.x/classio_1_1agora_1_1rtc_1_1_rtc_engine.html#aa240e991d12b5240fc5fd362cbc0d521) to set a custom source, check whether the data format in `getBufferType` and from `IVideoFrameConsumer` to the SDK are consistent. If the data format is inconsistent, update the data format and re-check.
 
-In Android, if you use a custom source in the communication profile, check whether the video data format is Texture. The Agora Video SDK for Android does not support receiving video data in Texture format. You need to update the video data format to YUV and re-check the video.
+In Android, if you use a custom source in the communication profile, check whether the video data format is Texture. The Agora RTC SDK for Android does not support receiving video data in Texture format. You need to update the video data format to YUV and re-check the video.
 
 ## Contact customer support
 
@@ -85,7 +85,7 @@ If the previous steps in this article cannot help you fix this problem, please c
 - Steps to reproduce the problem.
 - Screenshot of the pixelated or jagged, green video.
 - The time frame of the problem.
-- Source and renderer type: Agora Video SDK source, custom source, Agora Video SDK renderer, or custom renderer.
+- Source and renderer type: Agora RTC SDK source, custom source, Agora RTC SDK renderer, or custom renderer.
 - SDK log files. See [How can I set the log file?](/en/api-reference/faq/integration/log)
 
 ### Additional information

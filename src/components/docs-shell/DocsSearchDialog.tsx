@@ -112,6 +112,7 @@ export function DocsSearchDialog({
     pagesState?.locale === searchLocale ? pagesState.status : 'loading';
   const algoliaConfig = getAlgoliaSearchConfig();
   const algoliaAppId = algoliaConfig?.appId;
+  const algoliaApiReferenceIndexName = algoliaConfig?.apiReferenceIndexName;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
   const algoliaEnabled = Boolean(algoliaConfig);
@@ -170,6 +171,7 @@ export function DocsSearchDialog({
     const base =
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
         ? createAlgoliaDocsClient({
+            apiReferenceIndexName: algoliaApiReferenceIndexName,
             appId: algoliaAppId,
             indexName: algoliaIndexName,
             locale: searchLocale,
@@ -237,6 +239,7 @@ export function DocsSearchDialog({
     };
   }, [
     algoliaAppId,
+    algoliaApiReferenceIndexName,
     algoliaIndexName,
     algoliaSearchApiKey,
     algoliaEnabled,
@@ -253,6 +256,7 @@ export function DocsSearchDialog({
       algoliaAppId && algoliaIndexName && algoliaSearchApiKey
         ? [
             algoliaAppId,
+            algoliaApiReferenceIndexName,
             algoliaIndexName,
             algoliaSearchApiKey,
             searchLocale,
@@ -262,6 +266,7 @@ export function DocsSearchDialog({
         : [pages, searchLocale],
     [
       algoliaAppId,
+      algoliaApiReferenceIndexName,
       algoliaIndexName,
       algoliaSearchApiKey,
       pages,
@@ -416,6 +421,11 @@ export function DocsSearchDialog({
     }
 
     setOpen(false);
+    if (isExternalUrl(url)) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
     await navigate({
       to: url,
     });
@@ -511,6 +521,12 @@ export function DocsSearchDialog({
     !hasQuery || isSearchUnavailable
       ? []
       : normalizedSearchResults.map(searchResultToEntry);
+  const rankedApiReferenceEntries = resultEntries
+    .map((page, index) => ({ page, rank: index + 1 }))
+    .filter(({ page }) => page.objectType === 'sdk-api');
+  const rankedDocumentationEntries = resultEntries
+    .map((page, index) => ({ page, rank: index + 1 }))
+    .filter(({ page }) => page.objectType !== 'sdk-api');
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
@@ -675,52 +691,66 @@ export function DocsSearchDialog({
               })}
             </CommandGroup>
           ) : null}
-          {hasQuery ? (
+          {hasQuery && isSearchUnavailable ? (
             <CommandGroup>
-              {isSearchUnavailable ? (
-                <div className="px-2 py-3 text-sm text-muted-foreground">
-                  {t('docs.searchUnavailable')}
-                </div>
-              ) : (
-                resultEntries.map((page, index) => {
-                  const stagger = staggerProps(index);
-                  return (
-                    <CommandItem
-                      className={cn('items-start', stagger.className)}
-                      key={page.id ?? page.url}
-                      onSelect={() => void handleSelect(page.url, index + 1)}
-                      style={stagger.style}
-                      value={page.id ?? page.url}
-                    >
-                      <div className="min-w-0 flex-1 space-y-1.5">
-                        <HighlightedText
-                          className="line-clamp-1 font-medium"
-                          value={page.title}
-                        />
-                        {page.path.length > 0 ? (
-                          <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                            {page.path.join(' › ')}
-                          </div>
-                        ) : null}
-                        {page.context.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {page.context.map((item) => (
-                              <span
-                                className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                                key={`${page.id ?? page.url}:${item}`}
-                              >
-                                <HighlightedText value={item} />
-                              </span>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    </CommandItem>
-                  );
-                })
-              )}
+              <div className="px-2 py-3 text-sm text-muted-foreground">
+                {t('docs.searchUnavailable')}
+              </div>
             </CommandGroup>
           ) : null}
+          {hasQuery
+            ? [
+                {
+                  entries: rankedApiReferenceEntries,
+                  heading: t('docs.searchApiReference'),
+                },
+                {
+                  entries: rankedDocumentationEntries,
+                  heading: t('docs.searchDocumentation'),
+                },
+              ].map(({ entries, heading }) =>
+                entries.length > 0 ? (
+                  <CommandGroup heading={heading} key={heading}>
+                    {entries.map(({ page, rank }) => {
+                      const stagger = staggerProps(rank - 1);
+                      return (
+                        <CommandItem
+                          className={cn('items-start', stagger.className)}
+                          key={page.id ?? page.url}
+                          onSelect={() => void handleSelect(page.url, rank)}
+                          style={stagger.style}
+                          value={page.id ?? page.url}
+                        >
+                          <div className="min-w-0 flex-1 space-y-1.5">
+                            <HighlightedText
+                              className="line-clamp-1 font-medium"
+                              value={page.title}
+                            />
+                            {page.path.length > 0 ? (
+                              <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                                {page.path.join(' › ')}
+                              </div>
+                            ) : null}
+                            {page.context.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {page.context.map((item) => (
+                                  <span
+                                    className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                    key={`${page.id ?? page.url}:${item}`}
+                                  >
+                                    <HighlightedText value={item} />
+                                  </span>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        </CommandItem>
+                      );
+                    })}
+                  </CommandGroup>
+                ) : null,
+              )
+            : null}
         </CommandList>
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
@@ -771,15 +801,18 @@ function searchResultToEntry(result: {
   tab?: unknown;
   title?: unknown;
   url: string;
+  version?: unknown;
 }): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
+  const version = getString(result.version);
 
   return {
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
+      version,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'
@@ -787,6 +820,12 @@ function searchResultToEntry(result: {
         : breadcrumbs?.filter(Boolean).join(' / '),
     ),
     id: getString(result.id),
+    objectType:
+      objectType === 'docs' ||
+      objectType === 'openapi' ||
+      objectType === 'sdk-api'
+        ? objectType
+        : undefined,
     path: getStringArray(result.path) ?? [],
     title:
       typeof result.title === 'string'
@@ -795,7 +834,16 @@ function searchResultToEntry(result: {
           ? result.content
           : result.url,
     url: result.url,
+    version,
   };
+}
+
+function isExternalUrl(url: string) {
+  try {
+    return new URL(url, window.location.href).origin !== window.location.origin;
+  } catch {
+    return false;
+  }
 }
 
 function getString(value: unknown) {

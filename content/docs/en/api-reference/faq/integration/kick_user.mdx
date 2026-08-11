@@ -16,12 +16,12 @@ In real-time audio and video interactions, there are often cases where you need 
 
 **Solution:** Use one of the following approaches:
 
-- Set the valid timestamp of the Token (`privilegeExpiredTs` parameter) to the meeting's end time. After this time, the user is automatically removed from the channel. For details, see [Secure authentication with tokens](/en/video-calling/get-started/authentication-workflow).
+- Set the valid timestamp of the Token (`privilegeExpiredTs` parameter) to the meeting's end time. After this time, the user is automatically removed from the channel. For details, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
 
-- Use the server-side RESTful API to remove users. Track the user ID and channel name in the app, then call the [Create Rule API](/en/video-calling/channel-management-api/endpoint/ban-user-privileges/create-rules) to remove the user from the channel. Set the ban time (`time` parameter) to 0 to allow the user to join other channels afterwards.
+- Use the server-side RESTful API to remove users. Track the user ID and channel name in the app, then call the [Create Rule API](/en/api-reference/api-ref/rtc/create-ban-rule) to remove the user from the channel. Set the ban time (`time` parameter) to 0 to allow the user to join other channels afterwards.
 
 ### Remove a user who violates your policies
 
 **Scenario:** In a live broadcast room, if a connected user makes inappropriate remarks, the host may want to remove the user.
 
-**Solution:** Use the peer-to-peer messaging function of Signaling. Send an offline notification with `sendMessageToPeer`. The user receives this message through the `onMessageReceived` callback, and the client calls the `leaveChannel` method in the Video SDK to leave the channel.
+**Solution:** Use the peer-to-peer messaging function of Signaling. Send an offline notification with `sendMessageToPeer`. The user receives this message through the `onMessageReceived` callback, and the client calls the `leaveChannel` method in the RTC SDK to leave the channel.

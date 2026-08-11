@@ -24,15 +24,15 @@ Before you initialize a Signaling client instance, import the Signaling JavaScri
 
 - Using CDN:
 
-```html
+    ```html
     <script src="your_path_to_signaling_sdk/agora-rtm.x.y.z.min.js"></script>
-```
+    ```
 
 - Using a package manager:
 
-```bash
+    ```bash
     npm install agora-rtm-sdk
-```
+    ```
 
 ### Initialization
 #### Description
@@ -1384,7 +1384,7 @@ try{
 
 #### Return Value
 
-If the method call succeeds, the `WhoNowResponse` response as follows is returned:
+If the method call succeeds, the `getOnlineUsersResponse` response as follows is returned:
 
 ```javascript
 type getOnlineUsersResponse = {
@@ -1430,7 +1430,7 @@ rtm.presence.getUserChannels(userId: string): Promise<GetUserChannelsResponse>;
 
 ```javascript
 try{
-    const result = await rtm.presence.whereNow( "Tony" );
+    const result = await rtm.presence.getUserChannels( "Tony" );
     console.log(result);
 } catch(status){
     console.log(status);
@@ -1439,7 +1439,7 @@ try{
 
 #### Return Value
 
-If the method call succeeds, the `WhereNowResponse` response as follows is returned:
+If the method call succeeds, the `GetUserChannelsResponse` response as follows is returned:
 
 ```javascript
 type GetUserChannelsResponse = {

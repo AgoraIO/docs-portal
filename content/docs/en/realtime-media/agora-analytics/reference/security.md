@@ -63,7 +63,7 @@ Agora provides customers with the Agora On-Premise Recording SDK and Agora Cloud
 
 ### Access authorization
 
-End users can access the Agora SDRTN® using a dynamic key, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
+End users can access the Agora SDRTN® using a dynamic key, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
 
 ### Electronic access controls
 
@@ -138,7 +138,7 @@ To better protect our system and customers, Agora also invites security research
 <Accordions>
 <Accordion title="How do I use an Agora SDK to protect my data security?">
 
-To ensure the security of the transmitted data, Agora services provide the encryption for audio and video data. Customers can use AES-128/AES-256 or other algorithms preset by Agora, or use customized encryption algorithms to achieve encryption, see [Channel Encryption](/en/realtime-media/video/build/secure-and-protect-channels/media-stream-encryption). The encryption key is completely generated and distributed by the customer. Agora recommends that customers use separate keys for each channel to achieve the highest level of data security.
+To ensure the security of the transmitted data, Agora services provide the encryption for audio and video data. Customers can use AES-128/AES-256 or other algorithms preset by Agora, or use customized encryption algorithms to achieve encryption, see [Channel Encryption](/en/realtime-media/rtc/build/secure-and-protect-channels/media-stream-encryption). The encryption key is completely generated and distributed by the customer. Agora recommends that customers use separate keys for each channel to achieve the highest level of data security.
 
 </Accordion>
 </Accordions>
@@ -476,7 +476,7 @@ The media encryption on Web SDK is done via WebRTC standard but the interoperabi
 
 ### Level 4 - Network geofencing
 
-To conform to the laws and regulations of different countries and regions, the Agora Video SDK and the Signaling SDK support network geofencing, which limits the transmission of data to within a specified region.
+To conform to the laws and regulations of different countries and regions, the Agora RTC SDK and the Signaling SDK support network geofencing, which limits the transmission of data to within a specified region.
 
 These SDKs support network geofencing in the following regions: global (default), North America, Europe, Asia (excluding Mainland China), Japan, India, and Mainland China. Once a customer specifies a region using geofencing, no audio, video, or message can access Agora servers outside that region.
 
@@ -484,11 +484,11 @@ These SDKs support network geofencing in the following regions: global (default)
 
 Use this list to quickly check what measures you have or have not taken to best protect the security of you app and users:
 
-1. [Enable token-based authentication](/en/realtime-media/agora-analytics/build/manage-agora-account) on [Agora Console](https://console.agora.io/).
+1. [Enable token-based authentication](/en/introduction/account) on [Agora Console](https://console.agora.io).
 2. Disable *No certificate* in your project management page. Once it is done your app authenticates users with tokens only.
-3. [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server) in your backend services.
+3. [Deploy a token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server) in your backend services.
 4. Protect the token server and only allow the app backend server to connect to the token server.
-5. Set the token expiration date to a reasonable time. See [Deploy a token server](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
+5. Set the token expiration date to a reasonable time. See [Deploy a token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server).
 6. If needed, contact  support@agora.io to enable token privilege and set token per role.
 7. For additional security if needed work with the Agora SA team to customize the token server and modify the token join privilege to a low time, like 5 min. This is more advance and recommended after app development is completed.
 8. Channel encryption key management – generate a random key (secret) per channel at the time of creating the channel, do not reuse encryption keys.
@@ -514,7 +514,7 @@ The following table shows system importance classifications (in descending order
 
 |Classification |Asset Examples|
 |---|---|
-|Core system |Agora SDRTN®, the mail system, and official websites such as [www.agora.io](http://www.agora.io/), [sso.agora.io](http://sso.agora.io/), and `api.agora.io`|
+|Core system |Agora SDRTN®, the mail system, and official websites such as [www.agora.io](http://www.agora.io/), [sso2.agora.io](http://sso2.agora.io/), and `api.agora.io`|
 |General system |Forums and the Developer Portal ([docs.agora.io](https://docs.agora.io/))|
 |Fringe system |Test sites |
 

@@ -1,8 +1,8 @@
 ---
-title: "How do I troubleshoot slow first-frame rendering of remote video when using the Agora Video SDK?"
+title: "How do I troubleshoot slow first-frame rendering of remote video when using the Agora RTC SDK?"
 ---
 
-When using the Agora Video SDK for real-time Video Calling, Interactive Live Streaming, or Broadcast Streaming, some developers observe that the remote video takes too long to display after joining a channel. This delay can negatively impact user experience, especially in scenarios like live broadcasts where quick video display is critical.
+When using the Agora RTC SDK for real-time Video Calling, Interactive Live Streaming, or Broadcast Streaming, some developers observe that the remote video takes too long to display after joining a channel. This delay can negatively impact user experience, especially in scenarios like live broadcasts where quick video display is critical.
 
 ## Why delays occur
 
@@ -13,7 +13,7 @@ The delay in the first frame rendering is usually due to delays across multiple 
 
 ## Solution
 
-Video SDK provides a mechanism to help developers identify which stage of the video rendering pipeline is time-consuming. The `onVideoRenderingTracingResult` callback returns the duration of each stage. By default, durations are calculated from the time `joinChannel` is called. To customize the start time, call `startMediaRenderingTracing`.
+RTC SDK provides a mechanism to help developers identify which stage of the video rendering pipeline is time-consuming. The `onVideoRenderingTracingResult` callback returns the duration of each stage. By default, durations are calculated from the time `joinChannel` is called. To customize the start time, call `startMediaRenderingTracing`.
 
 ### Step 1: Use `startMediaRenderingTracing` before joining
 
@@ -96,7 +96,7 @@ If the difference between decoding and rendering is >200 ms, check whether the r
 
 If your app requires extremely low latency for the first frame, pre-join the channel without subscribing to the stream. When the user triggers the join action, call `startMediaRenderingTracing` and subscribe to the remote stream.
 
-For implementation details, see [Optimize first-frame rendering](/en/video-calling/best-practices/optimize-frame-rendering).
+For implementation details, see [Optimize first-frame rendering](/en/realtime-media/rtc/build/capture-and-render-video/optimize-frame-rendering).
 
 The following table describes each field for this scenario:
 

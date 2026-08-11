@@ -1,0 +1,271 @@
+---
+title: Set up SIP trunk
+description: Configure an Elastic SIP Trunk for inbound and outbound calling.
+---
+This guide walks you through configuring an Elastic SIP Trunk for both inbound calls (customers call your AI agent) and outbound calls (your AI agent calls customers).
+
+## Prerequisites
+
+Before you begin, ensure that you have:
+
+- An active SIP trunk account.
+- A phone number that supports SIP Trunking.
+
+## Understand the setup
+
+Both inbound and outbound calls are supported through Elastic SIP Trunk, but each direction requires different configuration in your SIP trunk and in Agora Console. The table below summarizes the key differences.
+
+|        | Inbound | Outbound |
+|--------|---------|----------|
+| **Use case** | Customer support hotline, IVR replacement, appointment booking | Outbound campaigns, appointment reminders, follow-up calls |
+| **Call direction** | External caller dials your SIP trunk number → SIP trunk routes to Agora → AI Agent answers | Agora initiates call via SIP trunk → SIP trunk connects to external number → AI Agent speaks |
+| **SIP trunk config** | Origination URI (SIP trunk sends calls to Agora) | Termination URI + IP ACL (Agora sends calls to SIP trunk) |
+| **Console config** | Import number → assign to Inbound agent | Import number → use in Campaign or Outbound agent |
+
+## Basic setup
+
+The following steps are required for both inbound and outbound calling.
+
+### Verify your SIP trunk phone number
+
+To confirm your phone number is ready for SIP trunk configuration:
+
+1. Log in to [Twilio Console](https://console.twilio.com/).
+2. Navigate to **Phone Numbers → Manage → Active Numbers**.
+3. Check that the number you want to use is active and supports SIP Trunking.
+4. If you do not have a number, select **Buy a number** and choose a number from the list.
+
+### Create or select an Elastic SIP Trunk
+
+To set up a trunk that handles inbound and outbound calls:
+
+1. Go to **Elastic SIP Trunking → Manage → Trunks** in Twilio Console.
+2. Select **Create a new SIP Trunk** (or select an existing one).
+3. Give it a descriptive name. For example, `Production Trunk`.
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/select-sip-trunk.png)
+
+:::info[Info]
+You can use the same trunk for both inbound and outbound calling or create separate trunks for easier management. Agora recommends using separate trunks if you have different security requirements for inbound and outbound.
+:::
+
+### Assign the phone number to the Elastic SIP Trunk
+
+To link your phone number with the SIP trunk:
+
+1. Go to **Phone Numbers → Manage → Active Numbers**.
+2. Select the phone number.
+3. Under **Voice Calling** settings, set the number to use your Elastic SIP Trunk.
+4. Save changes.
+
+### Check secure trunking setting
+
+To determine which transport protocol to use when you import your number:
+
+1. Open **SIP Trunk → General Settings**.
+2. Locate **Secure Trunking**.
+3. Check whether it is enabled or disabled:
+    - **Enabled**: Choose **TLS** for the Transport Protocol.
+    - **Disabled**: Choose **TCP** or **UDP** for the Transport Protocol.
+4. Save any changes.
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/general-settings.png)
+
+:::caution[Caution]
+The Transport Protocol setting you choose when importing your number must match your SIP trunk's Secure Trunking setting. A mismatch causes calls to fail silently.
+:::
+
+## Outbound calling setup
+
+Complete the following steps to enable your agent to make outbound calls through your SIP trunk phone number.
+
+### Configure the Termination URI
+
+To set up the domain that Agora will use to reach your SIP trunk:
+
+1. In your SIP trunk, go to **Termination**.
+2. Set a custom **Termination SIP URI**. For example: `yourcompany.pstn.twilio.com`.
+3. This domain is required later as the **SIP Trunk Address** when you import the number.
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/termination-uri.png)
+
+### Create an IP Access Control List (Whitelist)
+
+Without correct IP whitelisting, your SIP trunk blocks Agora traffic. To allow Agora's traffic through Twilio, create an Access Control List (ACL) containing the Agora SIP outgoing IPs for your phone number's country code:
+
+<Accordions>
+<Accordion title="+1 (United States)">
+
+```
+49.51.250.59
+49.51.250.76
+```
+
+</Accordion>
+<Accordion title="+52 (Mexico), +54 (Argentina), +55 (Brazil), +56 (Chile), +51 (Peru), +44 (United Kingdom), +33 (France), +49 (Germany), +39 (Italy), +34 (Spain), +61 (Australia), +64 (New Zealand)">
+
+```
+43.157.157.7
+43.157.180.46
+43.157.154.150
+43.157.147.39
+43.157.160.149
+43.157.170.160
+43.157.176.50
+43.157.182.24
+43.157.150.207
+43.157.146.198
+43.157.186.243
+43.157.149.172
+```
+
+</Accordion>
+<Accordion title="+82 (South Korea), +65 (Singapore), +81 (Japan), +91 (India), +886 (Taiwan), +27 (South Africa), +20 (Egypt), +254 (Kenya)">
+
+```
+3.111.249.176
+15.207.132.164
+13.205.109.117
+13.127.230.35
+13.200.127.200
+13.205.242.117
+13.232.246.98
+13.235.159.216
+43.204.61.200
+52.66.173.52
+65.1.195.82
+65.1.38.21
+```
+
+</Accordion>
+</Accordions>
+
+To create the ACL:
+
+1. Go to **Elastic SIP Trunking → Manage → IP Access Control Lists**.
+2. Select **+ Create new Access Control List**.
+3. Give your ACL a descriptive name.
+4. Add the Agora SIP outgoing IPs for your country code, listed above.
+5. Save the Access Control List.
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/access-control-list.png)
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/access-list-configuration.png)
+
+### Add IP Access Control List
+
+1. In your SIP trunk, go to **Termination → Authentication**.
+2. Under **IP Access Control Lists**, select the authentication list you just created. If you do not see the list you created, access it by selecting **View all Authentication lists**.
+3. Select **Save**.
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/ip-access-control-list.png)
+
+    ![](https://assets-docs.agora.io/images/conversational-ai/twilio/authentication.png)
+
+### Credential Lists (Optional)
+
+You can create username and password authentication if required.
+
+- If you do not specify a credential list, you can leave the **SIP Trunk Username** and **SIP Trunk Password** fields blank when you import the number.
+- If you configure a credential list, you must specify the same username and password in the **SIP Trunk Username** and **SIP Trunk Password** fields when you import the number.
+
+To set up a credential list:
+
+1. Under **Authentication**, find **Credential Lists**.
+2. Use the `+` button to create a new list.
+3. Give your list a descriptive name.
+4. Specify a username and password.
+5. Select **Save**.
+
+### Import the outbound number
+
+Once your SIP trunk is configured, import the number. See [Import a phone number](import) for step-by-step instructions. Use your Termination URI as the SIP Trunk Address and match the Transport Protocol to your Secure Trunking setting.
+
+## Inbound calling setup
+
+Complete the following steps to enable customers to call your agent through your SIP trunk phone number.
+
+### Configure Origination URI
+
+1. In your SIP trunk, go to **Origination**.
+2. Select **Add new Origination URI**.
+3. Enter the Agora SIP Origination URI for your region:
+
+    The Origination URI depends on the country code of your phone number. Select the URI for your region and enter it in your SIP trunk.
+
+    - **United States**
+
+        | Transport | URI |
+        |-----------|-----|
+        | TLS | `sip:sbc-us-west-1.viblinx.com:5061` |
+        | TCP/UDP | `sip:sbc-us-west-1.viblinx.com:5060` |
+
+        **Supported country codes**: +1 (United States)
+
+    - **Americas, Europe, Oceania, and Brazil**
+
+        | Transport | URI |
+        |-----------|-----|
+        | TLS | `sip:sbc-sa-east-1.viblinx.com:5061` |
+        | TCP/UDP | `sip:sbc-sa-east-1.viblinx.com:5060` |
+
+        **Supported country codes**: +52 (Mexico), +54 (Argentina), +55 (Brazil), +56 (Chile), +51 (Peru), +44 (United Kingdom), +33 (France), +49 (Germany), +39 (Italy), +34 (Spain), +61 (Australia), +64 (New Zealand)
+
+    - **Asia-Pacific, India, and Africa**
+
+        | Transport | URI |
+        |-----------|-----|
+        | TLS | `sip:sbc-ap-south.viblinx.com:5061` |
+        | TCP/UDP | `sip:sbc-ap-south.viblinx.com:5060` |
+
+        **Supported country codes**: +82 (South Korea), +65 (Singapore), +81 (Japan), +91 (India), +886 (Taiwan), +27 (South Africa), +20 (Egypt), +254 (Kenya)
+
+4. Set Priority to `10` and Weight to `10` (default).
+5. Select **Add**.
+
+### Configure number routing
+
+1. Go to **Phone Numbers → Manage → Active numbers**.
+2. Select the number you want to use for inbound calling.
+3. Under **Voice Configuration → Configure with**, select **SIP Trunk**.
+4. Choose the trunk you created in [Basic setup](#basic-setup).
+5. Select **Save configuration**.
+
+### Import the inbound number
+
+Once SIP trunk origination and routing is configured, import the number and associate it with an agent to answer inbound calls. See [Handle inbound calls](inbound) for step-by-step instructions.
+
+## Configuration checklist
+
+Before testing inbound and outbound calls, make sure you address each item in the checklist:
+
+| Item | Inbound | Outbound |
+|------|---------|----------|
+| Assign phone number to SIP trunk | Required | Required |
+| SIP Trunk Address | Required | Required |
+| Configure Origination URI (SIP trunk → Agora) | Required | Not needed |
+| IP Access Control List | Not needed | Required |
+| Credential List | Not needed | Optional |
+| Secure Trunking setting matches Transport Protocol | Required | Required |
+| Import number | Required | Required |
+| Assign number | Assign to an agent | Assign to a campaign |
+
+## Troubleshooting
+
+If you encounter issues with your SIP trunk setup, use the following table to identify and resolve common problems.
+
+| Symptom | Cause | Solution |
+|---------|-------|----------|
+| Inbound calls don't reach agent | Origination URI not set or incorrect | Verify the Origination URI in your SIP trunk matches what's shown during import |
+| Outbound calls rejected by SIP trunk | IP ACL missing or incomplete | Add all Agora SIP IPs to the SIP trunk IP Access Control List |
+| Calls connect but no audio | Transport mismatch (TLS vs TCP/UDP) | Match the Secure Trunking setting in your SIP trunk with the Transport Protocol setting |
+| One-way audio | Firewall or NAT issue | Ensure Agora SIP IPs are whitelisted on both sides |
+| "403 Forbidden" in SIP trunk logs | Authentication failed | Check Credential List or IP ACL configuration |
+| Call drops after ~30 seconds | SIP session timer timeout | Check SIP trunk timeout settings |
+
+## Next steps
+
+- [Import a phone number](import): Import your configured SIP trunk number
+- [Set up a campaign](campaign): Use your imported number to create an outbound calling campaign
+- [Handle inbound calls](inbound): Associate a number with an agent to answer inbound calls
+- [Publish your agent](deploy-agent): Publish an agent to use with your imported number

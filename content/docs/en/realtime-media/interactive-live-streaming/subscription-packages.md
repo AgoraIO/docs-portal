@@ -1,6 +1,6 @@
 ---
 title: "Subscription packages"
-description: "Provides information\\\\[] on subscription packages."
+description: "Provides information on subscription packages."
 ---
 
 A subscription package is a prepaid billing method. You can purchase a package in the [`Agora Console`](https://console.agora.io/subscriptions/rtc-plans?tab=monthly) to cover usage for the current month.
@@ -9,14 +9,16 @@ This page explains how to purchase, and manage subscription and top-up packages.
 
 ### Purchase and upgrade
 
-By default, a new account is assigned the Free package when the first project is created. You can upgrade at any time to the Starter, Pro, Business, or Business Plus. Higher-tier packages provide greater discounts and lower unit prices. To upgrade:
+By default, a new account is assigned the Free package when the first project is created. You can upgrade at any time to the Starter, Pro, Business, Business Advanced, or Business Plus. Higher-tier packages provide greater discounts and lower unit prices. To select your package:
 
-- Log in to [Agora Console](https://console.agora.io/subscriptions/rtc-plans?tab=monthly).
-- In the sidebar, click **Subscriptions**.
-- Under **All Subscriptions**, click **RTC Prepaid Plans**.
-- Select your package and click **Subscribe**.
+1. Log in to [Agora Console](https://console.agora.io/).
+1. Click the username at the bottom of the navigation sidebar to open the account popup menu.
+1. Select  **Subscriptions**.
+1. Switch to the **RTC** tab.
+1. Select your package and click **Upgrade** or **Downgrade**.
 
-  ![image](https://assets-docs.agora.io/images/video-sdk/prepaid-packages.png)
+    ![Subscription plans](https://assets-docs.agora.io/images/console/subscription-plans.png)
+
 :::note
 - For non-contracted customers, all packages, except the Enterprise package can be purchased directly from the Agora Console. To upgrade to the Enterprise package, contact [Agora sales](mailto:sales@agora.io).
 - You can upgrade sequentially or skip levels. For example, you may upgrade from Starter to Business Plus directly.

@@ -144,8 +144,8 @@ Ensure that the value is different from User Accounts of other users and players
 :::
 
 - `token`: (Optional) String. The authentication token used by the cloud player in the channel. If you do not enable the App Certificate in Agora Console, ignore this field. If you enable the App Certificate in Agora Console, you must pass a value in this field:
-  - For low-security requirements: Use the temporary token generated in Agora Console. For details, see [Generate a Video SDK temporary token](/en/realtime-media/media-pull/build/manage-agora-account#generate-a-temporary-tokens).
-  - For high-security requirements: Use the token generated at your server. For details, see [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/deploy-token-server).
+  - For low-security requirements: Use the temporary token generated in Agora Console. For details, see [Generate an RTC temporary token](/en/introduction/account#generate-temporary-tokens).
+  - For high-security requirements: Use the token generated at your server. For details, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server).
 
 
 
@@ -186,7 +186,7 @@ To avoid creating multiple cloud players that inject the same online media strea
 If you do not set an encryption key or set it to null, built-in encryption is disabled.
 :::
 
-- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/media-stream-encryption).
+- `encryptKdfSalt`: (Optional) String. A 32-byte salt. Agora recommends using OpenSSL to generate this salt on your server. For details, see [Secure channel encryption](/en/realtime-media/rtc/build/secure-and-protect-channels/media-stream-encryption).
 
 
 :::info

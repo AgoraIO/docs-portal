@@ -1,0 +1,475 @@
+---
+title: 'Preload channels'
+description: 'Preloading channels for faster rendering.'
+excluded_platforms: ['react-js', 'blueprint', 'unreal', 'ios', 'macos', 'windows', 'electron', 'flutter', 'react-native', 'unity']
+---
+
+<PlatformStructured platform="web">
+This page explains how to implement channel preloading to achieve near-instant channel entry. By preloading channel information and media streams before users join, you can significantly reduce the time required to render the first video frame and create a smoother viewing experience.
+
+The following video demonstrates the channel preload experience:
+
+<video src="https://assets-docs.agora.io/images/video-sdk/preload.mp4" controls style={{ width: '100%', height: 'auto' }} loop>
+Your browser does not support the <code>video</code> element.
+</video>
+
+The following figure illustrates the best practice when preloading channels:
+
+![preload channels best practice](https://assets-docs.agora.io/images/video-sdk/preload-channels-best-practice.png)
+
+Following these guidelines, you can reduce the first frame loading time for Chrome browsers on Windows and macOS to as low as 300 milliseconds.
+
+## Prerequisites
+
+To test the code used in this page you need to have:
+
+- An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
+- A computer with Internet access.
+  Ensure that no firewall is blocking your network communication.
+- Implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk).
+- A [supported browser](../../reference/supported-platforms#desktop-browsers).
+- Physical media input devices, such as a camera and a microphone.
+- A JavaScript package manager such as [npm](https://www.npmjs.com/package/npm).
+
+## Project setup
+
+No additional project setup is required for Web.
+
+## Implementation
+
+Follow these steps to implement channel preloading:
+
+### Preload channel list
+
+On the channel list page, preload the channels within the user's view area with the `preload` method.
+
+- If the total number of channels does not exceed 10, preload all channels.
+- If the total number of channels exceeds 10, preload only the first 10 channels. If the user scrolls the channel list, wait for the scrolling to stop, then preload the new channels in the user's view area.
+
+To speed up the subsequent joining of the channel, use a [wildcard token](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `preload` method.
+
+### Pre-join individual channels
+
+Implement pre-joining for different mouse interactions:
+
+- Before entering the channel
+
+    When a user hovers over a channel, best practice is to join the channel and subscribe to audio and video before entering. The specific operations include the following:
+
+    - Call `join` to join the channel and subscribe to the host's audio and video streams.
+    - Render the video in advance in a small preview window.
+
+    To speed up joining the channel, use a [wildcard token](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#generate-wildcard-tokens) in the `token` parameter of the `join` method.
+
+- Entering the channel
+
+    To reduce the time it takes to render the first frame of the host's video, enable subscribing to the host's media stream as soon as the user enters the channel. When calling `join`, set `autoSubscribe` to `true` in `options`:
+
+    ```js
+    // Create client
+    const client = AgoraRTC.createClient({
+        mode: 'live',
+        codec: 'vp8',
+        role: 'host',
+    });
+
+    // Enables auto subscription when the client joins a channel
+    await client.join(APP_ID, CNAME, TOKEN, UID / null, {
+        autoSubscribe: true,
+    });
+    ```
+
+    The following table compares the steps from when a user enters the channel to when the host's media stream is rendered, before and after enabling this function:
+
+    | Before | After |
+    |--------|-------|
+    | 1. The user joins the channel.<br />2. The channel sends the host/media information.<br />3. The user subscribes to the media stream in the channel.<br />4. The Agora backend starts sending the media stream in the channel.<br />5. The user waits for the Agora backend to send the media stream, receives it, and renders it locally. | 1. The user joins the channel.<br />2. The Agora backend immediately sends the media stream in the channel.<br />3. The channel sends the host/media information.<br />4. After the user subscribes to the media stream, they can immediately receive and render the media stream locally. |
+
+    ![first-frame-rendring](https://assets-docs.agora.io/images/video-sdk/first-frame-rendering.png)
+
+    :::info[Note]
+
+    Joining a channel incurs additional fees due to the transmission of media streams. See [Pricing](/en/realtime-media/rtc/reference/pricing-legacy#cost-calculation) for details.
+
+    :::
+
+    When a user clicks on the channel in the list, take the following actions:
+
+    - Switch the app interface from the channel list page to the single channel page. Best practice is to add a page switching animation.
+    - Call `IRemoteAudioTrack.play` and `IRemoteVideoTrack.play`. The video needs to be passed in the specified DOM element.
+
+- Leaving without entering
+
+    When a user hovers over a channel but does not click to enter, best practice is to call `leave`.
+
+### Precautions
+
+- Wildcard tokens can speed up the process of joining a channel but may cause room overflow. Decide whether to use wildcard tokens based on your specific needs.
+- Pre-joining channels incurs additional charges.
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+In live streaming applications, a key user experience performance metric is how quickly a viewer can join or switch channels and how fast the remote video stream is rendered on their device. This document explores methods and best practices for reducing first-frame rendering time in apps using RTC SDK and provides sample code for desktop and mobile devices.
+
+## Prerequisites
+
+Before you begin, ensure that you have:
+
+- Implemented the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk).
+- Prepared a token server that can generate [wildcard tokens](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#generate-wildcard-tokens).
+
+## Project setup
+
+Agora provides an open source `VideoLoaderAPI` sample project on GitHub that includes APIs for fast channel loading and switching. To integrate the APIs into your project, copy the following files from the [`videoloaderapi`](https://github.com/AgoraIO-Community/VideoLoaderAPI/tree/main/Android/lib_videoloaderapi/src/main/java/io/agora/videoloaderapi) directory to your project:
+
+```bash
+videoloaderapi/
+├── OnLiveRoomItemTouchEventHandler.kt
+├── OnPageScrollEventHandler.kt
+├── OnPageScrollEventHandler2.kt
+├── OnRoomListScrollEventHandler.kt
+├── VideoLoader.kt
+└── VideoLoaderImpl.kt
+```
+
+:::info[Note]
+
+To facilitate future code upgrades, do not modify the names and paths of these files.
+
+:::
+
+## Implementation
+
+Follow these steps to implement fast channel joining and switching:
+
+### Prepare to use the VideoLoader API
+
+Take the following steps before using the fast joining and fast switching features:
+
+1. Initialize an `RtcEngine` instance.
+
+    Call the `create` method to create and initialize an `RtcEngine` instance:
+
+    ```kotlin
+    // Initialize RtcEngine
+    private val mRtcEngine by lazy {
+        RtcEngine.create(RtcEngineConfig().apply {
+            mContext = applicationContext
+            // Pass in the App Id you obtained from Agora console
+            mAppId = BuildConfig.AGORA_APP_ID
+            mEventHandler = object : IRtcEngineEventHandler() {}
+        })
+    }
+    ```
+
+2. Use a wildcard token.
+
+    To speed up the process of users joining a channel, use a [wildcard token](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#generate-wildcard-tokens). Generate the token on your server and pass it to the client for authentication.
+
+    :::info[Note]
+
+    Using wildcard tokens carries security risks, such as room bombing. Evaluate whether wildcard tokens are appropriate for your use case before implementation.
+
+    :::
+
+### Fast channel joining
+
+This section explains how to create a seamless, instant-opening experience in live broadcast scenarios.
+
+1. Add a UI element for the live broadcast room list.
+
+    Implement a UI element to display a list of live broadcast rooms. The following example uses a `RecyclerView`:
+
+    ```xml
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRooms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="7.5dp"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:paddingBottom="50dp"
+        android:visibility="visible" />
+    ```
+
+1. Listen for scrolling events.
+
+    Create an `OnRoomListScrollEventHandler` instance and register it as a proxy for live room list scroll events in the UI. To create the `OnRoomListScrollEventHandler` instance, pass the following parameters to its constructor:
+
+    - `mRtcEngine`: A previously initialized `RtcEngine` instance.
+    - `localUid`: The uid of the local user.
+
+    The `OnRoomListScrollEventHandler` listens for scroll events in the live broadcast room list and applies best practices encapsulated within the class. It preloads channels for live broadcast rooms that appear on the screen (`preloadChannel`).
+
+    ```kotlin
+    // Code snippet from RoomListActivity
+    class RoomListActivity : AppCompatActivity() {
+        private val mBinding by lazy { ShowRoomListActivityBinding.inflate(LayoutInflater.from(this)) }
+        // Create an OnRoomListScrollEventHandler instance
+        private val onRoomListScrollEventHandler: OnRoomListScrollEventHandler = object : OnRoomListScrollEventHandler(mRtcEngine, RtcEngineInstance.localUid()) {}
+        // Business service module
+        private val mService by lazy { ShowServiceProtocol.getImplInstance() }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            // Set the OnRoomListScrollEventHandler instance to the live room list to listen for scroll events
+            mBinding.rvRooms.addOnScrollListener(onRoomListScrollEventHandler as OnRoomListScrollEventHandler)
+
+            // Get room List
+            mService.getRoomList { roomList ->
+                // After getting the room list, pass the result to the onRoomListScrollEventHandler instance
+                onRoomListScrollEventHandler?.updateRoomList(roomList)
+            }
+        }
+    }
+    ```
+
+1. Listen for touch events.
+
+    Create an `OnLiveRoomItemTouchEventHandler` instance and register it as a proxy for touch events in a single live room UI. To create the `OnLiveRoomItemTouchEventHandler` instance, pass the following parameters to its constructor:
+
+    - `mRtcEngine`: A previously initialized `RtcEngine` instance.
+    - `roomInfo`: A `VideoLoader.RoomInfo` instance.
+
+    The `OnLiveRoomItemTouchEventHandler` instance listens for touch events in a live broadcast room and implements the best practices encapsulated within the class. When a user taps a live room, they enter it automatically. You do not need to explicitly call `joinChannel` or similar methods in the business layer.
+
+    ```kotlin
+    // Code snippet from RoomListActivity
+    class RoomListActivity : AppCompatActivity() {
+        private val mBinding by lazy { ShowRoomListActivityBinding.inflate(LayoutInflater.from(this)) }
+        private lateinit var mRoomAdapter: BindingSingleAdapter<ShowRoomDetailModel, ShowRoomItemBinding>
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            mRoomAdapter = object : BindingSingleAdapter<ShowRoomDetailModel, ShowRoomItemBinding>() {
+                override fun onBindViewHolder(
+                    holder: BindingViewHolder<ShowRoomItemBinding>,
+                    position: Int
+                ) {
+                    // UI for individual live streams
+                    val roomInfo = getItem(position) ?: return
+                    // Create an OnLiveRoomItemTouchEventHandler instance
+                    val onTouchEventHandler = object : OnLiveRoomItemTouchEventHandler(
+                        // Previously initialized RtcEngine instance
+                        mRtcEngine,
+                        // Room Information
+                        VideoLoader.RoomInfo(
+                            roomInfo.roomId,
+                            arrayListOf(
+                                VideoLoader.AnchorInfo(
+                                    roomInfo.roomId,
+                                    roomInfo.ownerId.toInt(),
+                                    // Token mentioned above
+                                    // Sample code for wildcard token
+                                    RtcEngineInstance.generalToken()
+                                )
+                            )
+                        ),
+                        RtcEngineInstance.localUid()
+                    ) {
+                        override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                            when (event!!.action) {
+                                MotionEvent.ACTION_UP -> {
+                                    if (RtcEngineInstance.generalToken() != "") {
+                                        super.onTouch(v, event)
+                                        // Listen to the ACTION_UP event and go to the in-stream page
+                                        goLiveDetailActivity(list, position, roomInfo)
+                                    }
+                                }
+                            }
+                            return true
+                        }
+
+                        // Informs you to render the host screen
+                        override fun onRequireRenderVideo(info: VideoLoader.AnchorInfo): VideoLoader.VideoCanvasContainer? {
+                            // The best time to render the host screen
+                            return ...
+                        }
+                    }
+
+                    // Set the OnLiveRoomItemTouchEventHandler instance to a single live room to listen for touch events
+                    binding.root.setOnTouchListener(onTouchEventHandler)
+                }
+            }
+            mBinding.rvRooms.adapter = mRoomAdapter
+        }
+    }
+    ```
+
+    The `OnLiveRoomItemTouchEventHandler` instance automatically adds the host screen to the container and renders it when it receives the `onRequireRenderVideo` event. To ensure smooth rendering, create a container for the host screen in advance and return it to the handler when the event occurs.
+
+### Fast channel switching
+
+This section explains how to enable viewers to switch live broadcast channels quickly.
+
+1. Implement a UI component for sliding between live broadcast rooms.
+
+    The following example uses a `ViewPager2` element:
+
+    ```xml
+    <androidx.viewpager2.widget.ViewPager2 xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewPager2"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:overScrollMode="never"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:layout_scrollEffect="none"
+        android:layout_height="match_parent" />
+    ```
+
+1. Listen for live room switching events.
+
+    Create an `OnPageScrollEventHandler` instance and register it as the slide event proxy for the `ViewPager2` live broadcast room. To create the `OnPageScrollEventHandler` instance, pass the following parameters to the constructor:
+
+    - `mRtcEngine`: A previously initialized `RtcEngine` instance.
+    - `localUid`: The `uid` of the local user.
+    - `needPreJoin`: Determines whether to prejoin the adjacent live broadcast rooms (above and below the current one). Setting this to `true` improves instant switching but increases resource consumption.
+    - `sliceMode`: Toggles the timing of outputting pictures in the live broadcast room.
+
+    The `OnPageScrollEventHandler` instance implements best practices for managing live broadcast rooms. It listens for the `ViewPager2` slide event of the live broadcast room and optimally switches audio/video subscription behavior between rooms. It triggers the following events at the corresponding `position`:
+
+    - `onPageStartLoading`: Just started loading/displaying the live broadcast room.
+    - `onPageLoaded`: Live room loading/display completed
+    - `onPageLeft`: Left the live broadcast room
+    - `onRequireRenderVideo`: The best time to render the host view of the corresponding live broadcast room. At this time, pass in the container for the host screen of the corresponding live broadcast room. The `OnPageScrollEventHandler` instance adds and renders the host screen on the container.
+
+    ```kotlin
+    // Code snippet from LiveViewPagerActivity
+    class LiveViewPagerActivity : AppCompatActivity() {
+        private val mBinding by lazy { LiveViewPagerActivityBinding.inflate(LayoutInflater.from(this)) }
+        // Use a circular array to store a list of live rooms that a user can switch between
+        private val vpFragments = SparseArray<LiveViewPagerFragment>()
+        // Create OnPageScrollEventHandler instance
+        private var onPageScrollEventHandler: OnPageScrollEventHandler? = object : OnPageScrollEventHandler(
+            // Previously initialized RtcEngine instance
+            RtcEngineInstance.rtcEngine,
+            // Local user's uid
+            RtcEngineInstance.localUid(),
+            // Set whether or not to join the two live rooms adjacent to the current live room ahead of time
+            // If set to true, this results in faster switching, but at an increased cost
+            needPreJoin,
+            // Toggles the timing of the live feed out via the onPageScrollStateChanged event.
+            sliceMode
+        ) {
+            override fun onPageScrollStateChanged(state: Int) {
+                when (state) {
+                    ViewPager2.SCROLL_STATE_SETTLING -> binding.viewPager2.isUserInputEnabled = false
+                    ViewPager2.SCROLL_STATE_IDLE -> binding.viewPager2.isUserInputEnabled = true
+                }
+                super.onPageScrollStateChanged(state)
+            }
+
+            override fun onPageStartLoading(position: Int) {
+                // Notify the corresponding position of the live room to start displaying
+                vpFragments[position]?.startLoadPageSafely()
+            }
+
+            override fun onPageLoaded(position: Int) {
+                // Notify the corresponding position that the live room has been displayed
+                vpFragments[position]?.onPageLoaded()
+            }
+
+            override fun onPageLeft(position: Int) {
+                // Notify the corresponding position that the live room has left
+                vpFragments[position]?.stopLoadPage(true)
+            }
+
+            override fun onRequireRenderVideo(position: Int, info: VideoLoader.AnchorInfo): VideoLoader.VideoCanvasContainer? {
+                // The best time to render the host screen of the corresponding live room, notify the live room of the corresponding position and return the container of the corresponding host screen.
+                return vpFragments[position]?.initAnchorVideoView(info)
+            }
+        }
+
+        // The actions that are performed when an Activity is created are described below.
+        override fun onCreate(savedInstanceState: Bundle?) {
+            // To be added
+            ...
+        }
+    }
+    ```
+
+    Call `updateRoomList` when the Activity is created to pass the initial live broadcast room list to the `onPageScrollEventHandler` instance. Additionally, call `onRoomCreated` within the `createFragment` event of `FragmentStateAdapter` to notify `onPageScrollEventHandler` that the corresponding live room has been created. Add the following code inside `override fun onCreate(savedInstanceState: Bundle?) {}`:
+
+    ```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // When initializing the Activity, pass the initial live room list to the onPageScrollEventHandler instance
+        onPageScrollEventHandler?.updateRoomList(list)
+
+        // Set ViewPager2 to keep at least one page (Fragment) on each side of the current page in memory
+        binding.viewPager2.offscreenPageLimit = 1
+
+        // Create a FragmentStateAdapter to manage pages representing live rooms
+        val fragmentAdapter = object : FragmentStateAdapter(this) {
+            // If ViewPager2 allows sliding, it holds an infinite number of pages
+            // Otherwise, it returns 1, holding only a single page.
+            override fun getItemCount() = if (mScrollable) Int.MAX_VALUE else 1
+
+            // Create a LiveViewPagerFragment for each live feed
+            override fun createFragment(position: Int): Fragment {
+                val roomInfo = if (mScrollable) {
+                    mRoomInfoList[position % mRoomInfoList.size]
+                } else {
+                    mRoomInfoList[selectedRoomIndex]
+                }
+                return LiveViewPagerFragment.newInstance(
+                    roomInfo,
+                    onPageScrollEventHandler as OnPageScrollEventHandler, position
+                ).apply {
+                    // Store the created LiveViewPagerFragment in vpFragments
+                    vpFragments.put(position, this)
+
+                    // Create a list of hosts for the live room
+                    val anchorList = arrayListOf(
+                        VideoLoader.AnchorInfo(
+                            roomInfo.roomId,
+                            roomInfo.ownerId.toInt(),
+                            RtcEngineInstance.generalToken()
+                        )
+                    )
+
+                    // Notify onPageScrollEventHandler that the corresponding room has been created
+                    onPageScrollEventHandler?.onRoomCreated(
+                        position,
+                        VideoLoader.RoomInfo(roomInfo.roomId, anchorList),
+                        position == binding.viewPager2.currentItem
+                    )
+                }
+            }
+        }
+        binding.viewPager2.adapter = fragmentAdapter
+
+        // Set whether the user can manually swipe pages
+        // In a typical live room scenario, viewers can swipe manually, but hosts cannot.
+        binding.viewPager2.isUserInputEnabled = mScrollable
+
+        if (mScrollable) {
+            // If swiping is enabled:
+            // - Register the OnPageScrollEventHandler instance to listen for page change events
+            // - Calculate the latest position
+            binding.viewPager2.registerOnPageChangeCallback(
+                onPageScrollEventHandler as OnPageChangeCallback
+            )
+            binding.viewPager2.setCurrentItem(
+                Int.MAX_VALUE / 2 - Int.MAX_VALUE / 2 % mRoomInfoList.size + selectedRoomIndex,
+                false
+            )
+        } else {
+            // If swiping is disabled, set the current position to 0
+            currLoadPosition = 0
+        }
+    }
+    ```
+
+### Release resources
+
+After using the `VideoLoaderAPI`, you do not need to call `leaveChannel` in the business layer to leave the live broadcast. To release resources, refer to the following sample code:
+
+```kotlin
+VideoLoader.getImplInstance(mRtcEngine).cleanCache()
+VideoLoader.release()
+RtcEngineEx.destroy()
+```
+
+</PlatformStructured>

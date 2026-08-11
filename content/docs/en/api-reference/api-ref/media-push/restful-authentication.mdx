@@ -16,21 +16,7 @@ Implement authentication on the server to mitigate the risk of data leakage.
 
 ## Implement basic HTTP authentication
 
-### Generate Customer ID and Customer Secret
-
-To generate a set of customer ID and customer secret, do the following:
-
-1. In [Agora Console](https://console.agora.io/), click **Developer Toolkit** > **RESTful API**.
-
-    ![RESTful API](https://assets-docs.agora.io/images/common/console-restful-api.png)
-
-2. Click **Add a secret**, and click **OK**. A set of customer ID and customer secret is generated.
-
-3. Click **Download** in the **Customer Secret** column. Read the pop-up window carefully, and save the downloaded `key_and_secret.txt` file in a secure location.
-
-4. Use the customer ID (key) and customer secret (secret) to generate a Base64-encoded credential, and pass the Base64-encoded credential to the `Authorization` parameter in the HTTP request header.
-
-You can download the customer secret from Agora Console only once. Be sure to keep it secure.
+<include cwd>content/includes/en/shared/console/restful-credentials.mdx</include>
 
 ### Generate an authorization header using a third-party tool
 
@@ -62,7 +48,7 @@ import (
   "encoding/base64"
 )
 
-// HTTPS basic authentication example in Golang using the Video SDK Server RESTful API
+// HTTPS basic authentication example in Golang using the RTC SDK Server RESTful API
 func main() {
 
   // Customer ID
@@ -113,7 +99,7 @@ func main() {
 <Tab>
 
 ```js
-// HTTP basic authentication example in node.js using the Video SDK Server RESTful API
+// HTTP basic authentication example in node.js using the RTC SDK Server RESTful API
 const https = require('https')
 // Customer ID
 const customerKey = "Your customer ID"
@@ -217,7 +203,7 @@ curl_close($curl);
 ```python
 # -- coding utf-8 --
 # Python 3
-# HTTP basic authentication example in python using the Video SDK Server RESTful API
+# HTTP basic authentication example in python using the RTC SDK Server RESTful API
 import base64
 import http.client
 
@@ -263,7 +249,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
-// HTTP basic authentication example in Java using the Video SDK Server RESTful API
+// HTTP basic authentication example in Java using the RTC SDK Server RESTful API
 public class Base64Encoding {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -307,7 +293,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-// HTTP basic authentication example in C# using the Video SDK Server RESTful API
+// HTTP basic authentication example in C# using the RTC SDK Server RESTful API
 namespace Examples.System.Net
 {
     public class WebRequestPostExample

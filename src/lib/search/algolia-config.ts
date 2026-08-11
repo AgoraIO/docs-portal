@@ -2,12 +2,16 @@ import { DOCS_REGION } from '../site-region';
 import { getDocsSearchProvider } from './search-provider';
 
 export const DEFAULT_ALGOLIA_INDEX_NAME = 'docs_portal_en';
+export const DEFAULT_ALGOLIA_API_REFERENCE_INDEX_NAME = 'agora_APIRefSearch';
 
 // The index name is overridable via env so a local build can point at a
 // scratch index (e.g. docs_portal_scratch) for verifying index/ranking
 // changes without touching production. Falls back to the prod index.
 export const ALGOLIA_INDEX_NAME =
   import.meta.env.VITE_ALGOLIA_INDEX_NAME || DEFAULT_ALGOLIA_INDEX_NAME;
+export const ALGOLIA_API_REFERENCE_INDEX_NAME =
+  import.meta.env.VITE_ALGOLIA_API_REFERENCE_INDEX_NAME ||
+  DEFAULT_ALGOLIA_API_REFERENCE_INDEX_NAME;
 
 export function getAlgoliaSearchConfig() {
   const appId = import.meta.env.VITE_ALGOLIA_APP_ID;
@@ -23,6 +27,7 @@ export function getAlgoliaSearchConfig() {
   }
 
   return {
+    apiReferenceIndexName: ALGOLIA_API_REFERENCE_INDEX_NAME,
     appId,
     indexName: ALGOLIA_INDEX_NAME,
     searchApiKey,

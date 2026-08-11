@@ -12,7 +12,7 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 ## When to use this path
 
 - You already know you want to build around the OpenAI Realtime API.
-- You need Agora RTC or Video SDK transport in front of that model stack.
+- You need Agora RTC SDK transport in front of that model stack.
 - You are building a browser demo, device-oriented flow, or backend-mediated prototype around OpenAI Realtime.
 
 ## When not to use this path
