@@ -10,6 +10,23 @@ Agora has [partnered with Google Gemini Live](https://ai.google.dev/gemini-api/d
 Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
 :::
 
+### Supported models
+
+Set `params.model` to one of the following Gemini Live models:
+
+| Model | Description |
+| --- | --- |
+| `gemini-3.1-flash-live-preview` | General-purpose Gemini Live model. |
+| `walkie-talkie` | Preview Gemini Live model. |
+| `clever-chatter` | Preview Gemini Live model. |
+
+:::info[Info]
+`walkie-talkie` and `clever-chatter` are available as an early access preview. To use either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
+
 ### Sample configuration
 
 The following examples show how to configure Google Gemini Live MLLM (Gemini Developer API) when starting a conversational AI agent.
@@ -185,8 +202,8 @@ The following examples show the supported configurations for Google Gemini Live.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
      Configuration object for the Gemini Live model.
-    <Parameter name="model" type="string" required={true}>
-      The Gemini Live model identifier.
+    <Parameter name="model" type="string" required={true} possibleValues="gemini-3.1-flash-live-preview, walkie-talkie, clever-chatter">
+      The Gemini Live model identifier. See [Supported models](#supported-models) for available options.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
       System instructions that define the agent's behavior or tone.
