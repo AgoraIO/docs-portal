@@ -568,24 +568,24 @@ Call the `setAudioScenario` method and set the audio scenario to `AgoraAudioScen
 
 1. Combine this with a manual action by the user to make the app turn on screen sharing. There are two ways to do this:
 
-  1. Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
+    1. Prompt the user to long click the **screen recording** button in the **Control Center** on iOS and choose to use the extension you created to start recording.
 
-  2. Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording. The sample code is as follows:
+    2. Use Apple's new [RPSystemBroadcastPickerView](https://developer.apple.com/documentation/replaykit/rpsystembroadcastpickerview) in iOS 12.0 to make the **Enable Screen Sharing** button pop up on the app interface, prompting the user to click the button to start recording. The sample code is as follows:
 
-     ``` swift
-     let frame = CGRect(x: 0, y:0, width: 60, height: 60)
-     systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
-     systemBroadcastPicker?.showsMicrophoneButton = false
-     systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
-     // Get the Bundle Identifier of the main application
-     let bundleId = Bundle.main.bundleIdentifier ?? ""
-     // Set the Extension Name
-     systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
-     ```
+       ``` swift
+       let frame = CGRect(x: 0, y:0, width: 60, height: 60)
+       systemBroadcastPicker = RPSystemBroadcastPickerView(frame: frame)
+       systemBroadcastPicker?.showsMicrophoneButton = false
+       systemBroadcastPicker?.autoresizingMask = [.flexibleTopMargin, .flexibleRightMargin]
+       // Get the Bundle Identifier of the main application
+       let bundleId = Bundle.main.bundleIdentifier ?? ""
+       // Set the Extension Name
+       systemBroadcastPicker?.preferredExtension = "\(bundleId).Agora-ScreenShare-Extension"
+       ```
 
-    :::note
-    `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
-    :::
+      :::note
+      `RPSystemBroadcastPickerView` has some usage limitations and may become invalid in subsequent versions of iOS.
+      :::
 
 ### Publish a screen sharing video stream in a channel
 
@@ -1020,7 +1020,7 @@ AgoraRTC.createScreenVideoTrack({
 
 :::note
 - After you call the method, the end user must check **Share Audio** in the screen sharing popup box for the setting to take effect.
- ![Chrome Screen Share](https://assets-docs.agora.io/images/video-sdk/tmp_screen-sharing-web-chrome.png)
+  ![Chrome Screen Share](https://assets-docs.agora.io/images/video-sdk/tmp_screen-sharing-web-chrome.png)
 - If you choose to share a single app window, the audio cannot be shared.
 :::
 
@@ -1583,10 +1583,10 @@ After you call this method, the audio played by other processes in the system is
   });
   ```
 
-:::info
-To share captured audio during screen sharing, call `enableLoopbackRecording` to enable the sound card capture function and merge the sound played by the sound card with the local audio stream.
+  :::info
+  To share captured audio during screen sharing, call `enableLoopbackRecording` to enable the sound card capture function and merge the sound played by the sound card with the local audio stream.
+  :::
 
-:::
 - To publish both a screen sharing stream and the video stream captured by the local camera simultaneously, add the following code to your project:
 
   ``` typescript
@@ -1830,7 +1830,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
 
 1. Get the screen ID or the window ID
 
-  To get the **Display ID** or **Window ID**, call the `getScreenCaptureSources` method provided in `agora_rtc_engine`.
+    To get the **Display ID** or **Window ID**, call the `getScreenCaptureSources` method provided in `agora_rtc_engine`.
 
     ``` dart
     await rtcEngine.getScreenCaptureSources(
@@ -1839,7 +1839,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
 
 2. Share a specified screen or window
 
-  To share a specified screen on macOS or Windows using **Display ID**, refer to the following code:
+    To share a specified screen on macOS or Windows using **Display ID**, refer to the following code:
 
     ``` dart
     await rtcEngine.startScreenCaptureByDisplayId(
@@ -1851,7 +1851,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
       ));
     ```
 
-  To share a specified window using **Window ID** on macOS or Windows, use the following code:
+    To share a specified window using **Window ID** on macOS or Windows, use the following code:
 
     ``` dart
     await rtcEngine.startScreenCaptureByWindowId(
@@ -1866,7 +1866,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
 
 3. Join the channel and publish a screen sharing stream
 
-  To publish only the screen sharing stream, refer to the following code:
+    To publish only the screen sharing stream, refer to the following code:
 
     ``` dart
     await _engine.joinChannelEx(
@@ -1886,7 +1886,7 @@ When enabling screen sharing on Android, you only need to call the `startScreenC
       ));
     ```
 
-  To publish the screen sharing stream and the video stream captured by local camera simultaneously, add the following code to your project:
+    To publish the screen sharing stream and the video stream captured by local camera simultaneously, add the following code to your project:
 
     ``` dart
     await _engine.joinChannelEx(
@@ -2047,88 +2047,88 @@ Take the following steps to set up your screen sharing project:
 1. Go to your project folder and open the `ios/.xcodeproj` file with Xcode.
 
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
-  1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+    1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-      ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+        ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
-  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
-  1. Modify project settings to implement the screen sharing code logic, and choose one of the following methods according to your business needs:
+    1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.h` files.
+    1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+    1. Modify project settings to implement the screen sharing code logic, and choose one of the following methods according to your business needs:
 
-     - To use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
+       - To use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
-       ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+         ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
-     - To implement additional business logic, refer to the following code to modify the `SampleHandler.h` file:
+       - To implement additional business logic, refer to the following code to modify the `SampleHandler.h` file:
 
-       ```objc
-       #import "SampleHandler.h"
-       #import "AgoraReplayKitExt.h"
-       #import <sys/time.h>
+         ```objc
+         #import "SampleHandler.h"
+         #import "AgoraReplayKitExt.h"
+         #import <sys/time.h>
 
-       @interface SampleHandler ()<AgoraReplayKitExtDelegate>
+         @interface SampleHandler ()<AgoraReplayKitExtDelegate>
 
-       @end
+         @end
 
-       @implementation SampleHandler
+         @implementation SampleHandler
 
-       - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
-        // User request to start broadcasting
-        [[AgoraReplayKitExt shareInstance] start:self];
+         - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+          // User request to start broadcasting
+          [[AgoraReplayKitExt shareInstance] start:self];
 
-       }
+         }
 
-       - (void)broadcastPaused {
-        // User requests to pause the broadcast, screen sharing is paused
-        NSLog(@"broadcastPaused");
-        [[AgoraReplayKitExt shareInstance] pause];
-       }
+         - (void)broadcastPaused {
+          // User requests to pause the broadcast, screen sharing is paused
+          NSLog(@"broadcastPaused");
+          [[AgoraReplayKitExt shareInstance] pause];
+         }
 
-       - (void)broadcastResumed {
-        // User requests to resume broadcasting, screen sharing is resumed
-        NSLog(@"broadcastResumed");
-        [[AgoraReplayKitExt shareInstance] resume];
+         - (void)broadcastResumed {
+          // User requests to resume broadcasting, screen sharing is resumed
+          NSLog(@"broadcastResumed");
+          [[AgoraReplayKitExt shareInstance] resume];
 
-       }
+         }
 
-       - (void)broadcastFinished {
-        // User requests to stop broadcasting
-        NSLog(@"broadcastFinished");
-        [[AgoraReplayKitExt shareInstance] stop];
+         - (void)broadcastFinished {
+          // User requests to stop broadcasting
+          NSLog(@"broadcastFinished");
+          [[AgoraReplayKitExt shareInstance] stop];
 
-       }
+         }
 
-       - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
-        [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
-       }
+         - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+          [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
+         }
 
-       #pragma mark - AgoraReplayKitExtDelegate
+         #pragma mark - AgoraReplayKitExtDelegate
 
-       - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
-        switch (reason) {
-          case AgoraReplayKitExtReasonInitiativeStop:
-            {
-              NSLog(@"AgoraReplayKitExtReasonInitiativeStop");
-            }
-            break;
-          case AgoraReplayKitExtReasonConnectFail:
-            {
-              NSLog(@"AgoraReplayKitExReasonConnectFail");
-            }
-            break;
+         - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
+          switch (reason) {
+            case AgoraReplayKitExtReasonInitiativeStop:
+              {
+                NSLog(@"AgoraReplayKitExtReasonInitiativeStop");
+              }
+              break;
+            case AgoraReplayKitExtReasonConnectFail:
+              {
+                NSLog(@"AgoraReplayKitExReasonConnectFail");
+              }
+              break;
 
-          case AgoraReplayKitExtReasonDisconnect:
-            {
-              NSLog(@"AgoraReplayKitExReasonDisconnect");
-            }
-            break;
-          default:
-            break;
-        }
-       }
+            case AgoraReplayKitExtReasonDisconnect:
+              {
+                NSLog(@"AgoraReplayKitExReasonDisconnect");
+              }
+              break;
+            default:
+              break;
+          }
+         }
 
-       @end
-       ```
+         @end
+         ```
 
 1. Combine the call to `startScreenCapture` with the user's action to enable screen sharing in your app. To do this, use one of the following methods:
 
@@ -2311,84 +2311,84 @@ Take the following steps to set up your screen sharing project:
 1. Package the iOS project in **Unity Editor** and export the Xcode project.
 1. Go to your project folder and open the `unity-iphone/.xcodeproj` folder with Xcode.
 1. Create a **Broadcast Upload Extension** to enable the process of screen sharing:
-  1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
+    1. Navigate to **File > New > Target...**, select **Broadcast Upload Extension** in the popup window, and then click **Next**:
 
-      ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
+        ![Select Broadcast Upload Extension](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-select-broadcast-upload-extension.png)
 
-  1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
-  1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
-  1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
+    1. Fill in the **Product Name** and other information in the popup window, uncheck **Include UI Extension**, and click **Finish**. Xcode automatically creates a folder for the extension that contains the `SampleHandler.m` file.
+    1. Under **Target**, select the newly created extension. Click **General** and set the iOS version to 12.0 or later under **Deployment Info**.
+    1. Modify project settings to implement the screen sharing code logic, and choose one of the following two methods according to your business needs:
 
-     - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
+       - If you only need to use the functionality in the `AgoraReplayKitExtension.xcframework` dynamic library provided by Agora, select **Target** as the extension you just created, and change the **Value** in **Info** corresponding to **NSExtension > NSExtensionPrincipalClass** from **$(PRODUCT_MODULE_NAME}.SampleHandler** to **AgoraReplayKitHandler**:
 
-       ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
+         ![Use AgoraReplayKitHandler](https://assets-docs.agora.io/images/video-sdk/screen-sharing-ios-use-agorareplaykithandler.png)
 
-     - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
+       - If you need to implement some additional business logic, refer to the following code to modify the `SampleHandler.m` file:
 
-       ```objc
-       #import "SampleHandler.h"
-       #import "AgoraReplayKitExt.h"
-       #import <sys/time.h>
+         ```objc
+         #import "SampleHandler.h"
+         #import "AgoraReplayKitExt.h"
+         #import <sys/time.h>
 
-       @interface SampleHandler ()<AgoraReplayKitExtDelegate>
+         @interface SampleHandler ()<AgoraReplayKitExtDelegate>
 
-       @end
+         @end
 
-       @implementation SampleHandler
+         @implementation SampleHandler
 
-       - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
-        [[AgoraReplayKitExt shareInstance] start:self];
+         - (void)broadcastStartedWithSetupInfo:(NSDictionary<NSString *,NSObject *> *)setupInfo {
+          [[AgoraReplayKitExt shareInstance] start:self];
 
-       }
-
-       - (void)broadcastPaused {
-        NSLog(@"broadcastPaused");
-        [[AgoraReplayKitExt shareInstance] pause];
-       }
-
-       - (void)broadcastResumed {
-        NSLog(@"broadcastResumed");
-        [[AgoraReplayKitExt shareInstance] resume];
-
-       }
-
-       - (void)broadcastFinished {
-        NSLog(@"broadcastFinished");
-        [[AgoraReplayKitExt shareInstance] stop];
-
-       }
-
-       - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
-        [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
-       }
-
-       #pragma mark - AgoraReplayKitExtDelegate
-
-       - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
-         switch (reason) {
-           case AgoraReplayKitExtReasonInitiativeStop:
-           {
-
-           }
-           break;
-           case AgoraReplayKitExtReasonConnectFail:
-           {
-
-           }
-           break;
-
-           case AgoraReplayKitExtReasonDisconnect:
-           {
-
-           }
-           break;
-           default:
-           break;
          }
-       }
 
-       @end
-       ```
+         - (void)broadcastPaused {
+          NSLog(@"broadcastPaused");
+          [[AgoraReplayKitExt shareInstance] pause];
+         }
+
+         - (void)broadcastResumed {
+          NSLog(@"broadcastResumed");
+          [[AgoraReplayKitExt shareInstance] resume];
+
+         }
+
+         - (void)broadcastFinished {
+          NSLog(@"broadcastFinished");
+          [[AgoraReplayKitExt shareInstance] stop];
+
+         }
+
+         - (void)processSampleBuffer:(CMSampleBufferRef)sampleBuffer withType:(RPSampleBufferType)sampleBufferType {
+          [[AgoraReplayKitExt shareInstance] pushSampleBuffer:sampleBuffer withType:sampleBufferType];
+         }
+
+         #pragma mark - AgoraReplayKitExtDelegate
+
+         - (void)broadcastFinished:(AgoraReplayKitExt *_Nonnull)broadcast reason:(AgoraReplayKitExtReason)reason {
+           switch (reason) {
+             case AgoraReplayKitExtReasonInitiativeStop:
+             {
+
+             }
+             break;
+             case AgoraReplayKitExtReasonConnectFail:
+             {
+
+             }
+             break;
+
+             case AgoraReplayKitExtReasonDisconnect:
+             {
+
+             }
+             break;
+             default:
+             break;
+           }
+         }
+
+         @end
+         ```
 
 1. Select the extension you created in **TARGETS** and add all frameworks under the path **Frameworks/Agora-RTC-Plugin/Agora-Unity-RTC-SDK/Plugins/iOS/** in **General/Frameworks and Libraries**.
 1. To start screen sharing, call `StartScreenCapture` combined with the user's action. For example, prompt the user to press and hold the **Screen Recording** button in the Control Center on iOS, and select the extension you created to start recording.
@@ -2967,21 +2967,21 @@ Save this configuration for subsequent use when starting screen capture. Refer t
     ![Bind Event to On Clicked](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-create-bind-event-to-on-clicked-node.png)
 
 1. Create and implement the `OnStartScreenShareClicked` callback. When the callback is triggered, the following process is executed:
-  1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
-  1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
+    1. Call the **Stop Screen Capture** method to pause the ongoing screen sharing process.
+    1. Based on the list of available screens and windows saved in the previous steps, find the element that corresponds to the option and determine whether the option is a `ScreenCaptureSourceType_Screen` (screen) or a `ScreenCaptureSourceType_Window` (window) by using the **Type** in the element.
 
-      ![OnStartScreenShareClicked callback](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
+        ![OnStartScreenShareClicked callback](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-on-start-screen-share-clicked.png)
 
-  1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
-  1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
-     - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing camera-captured video streams.
-     - Set **Publish Screen Track** to `AGORA TRUE VALUE` to publish screen-captured video streams.
-     - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
-     - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
-     - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user's role as anchor or audience.
-     - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
+    1. If the shared target is a screen, call **Start Screen Capture by Display Id** to pass in the screen ID and the parameter configuration saved in the previous steps to start capturing the video stream of the specified screen. If the shared target is a window, call **Start Screen Capture by Window Id** to pass in the window ID and the parameter configuration to start capturing the video stream of the specified window. To share a specific region of a screen or window, set the **Region Rect** parameter to the position of the region you want to share relative to the entire screen or window.
+    1. Call **Join Channel** to join the channel and configure the following parameters in **Make ChannelMediaOptions** to publish the captured screen sharing stream:
+       - Set **Publish Camera Track** to `AGORA FALSE VALUE` to cancel publishing camera-captured video streams.
+       - Set **Publish Screen Track** to `AGORA TRUE VALUE` to publish screen-captured video streams.
+       - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
+       - Set **Auto Subscribe Audio** to `AGORA TRUE VALUE` to automatically subscribe to all audio streams.
+       - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` to set the user's role as anchor or audience.
+       - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_LIVE_BROADCASTING`.
 
-     ![Call Join Channel](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-call-join-channel.png)
+       ![Call Join Channel](https://assets-docs.agora.io/images/video-sdk/screen-sharing-blueprint-windows-macos-call-join-channel.png)
 
 #### Stop screen sharing and leave the channel
 
