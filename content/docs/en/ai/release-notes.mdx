@@ -7,6 +7,86 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ## Releases
 
+### v2.11
+
+Released on August 11, 2026.
+
+#### New features
+
+Included in this release:
+
+- **ASR keywords**
+
+  You can now configure keywords to improve ARES's recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Configure keywords using the `AresSTT` vendor in the Agora Agents SDKs, or the `keywords` parameter within the `asr` block directly through the RESTful API. For details, see [Improve ASR accuracy with keywords](build/shape-the-conversation/asr-keywords).
+
+- **New TTS provider**
+
+  - [Typecast](models/tts/typecast)
+
+- **New MLLM provider**
+
+  - [Azure OpenAI Realtime API](models/mllm/azure)
+
+#### Improvements
+
+This release includes the following enhancement.
+
+- **Improved stability for long audio replies**
+
+  This release improves resource protection and error-recovery logic for long streaming audio replies, reducing the likelihood of an abnormal disconnect or failed recovery. As a result, service stability improves for long replies and free-form conversation scenarios.
+
+#### API changes
+
+This release introduces the following changes for ASR keywords and the new TTS and MLLM providers.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`AresSTT`](/en/api-reference/api-ref/server-sdk/python#aresstt): New `keywords` parameter.
+- [`TypecastTTS`](/en/api-reference/api-ref/server-sdk/python#typecasttts): New TTS vendor class.
+- [`AzureOpenAIRealtime`](/en/api-reference/api-ref/server-sdk/python#azureopenairealtime): New MLLM vendor class.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`AresSTT`](/en/api-reference/api-ref/server-sdk/typescript#other-stt-vendors): New `keywords` option.
+- [`TypecastTTS`](/en/api-reference/api-ref/server-sdk/typescript#other-tts-vendors): New TTS vendor class.
+- [`AzureOpenAIRealtime`](/en/api-reference/api-ref/server-sdk/typescript#azureopenairealtime): New MLLM vendor class.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`NewAresSTT`](/en/api-reference/api-ref/server-sdk/go#newaresstt): New `Keywords` field.
+- [`NewTypecastTTS`](/en/api-reference/api-ref/server-sdk/go#newtypecasttts): New TTS vendor constructor.
+- [`NewAzureOpenAIRealtime`](/en/api-reference/api-ref/server-sdk/go#newazureopenairealtime): New MLLM vendor constructor.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`asr.keywords`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-keywords): ASR keywords used to improve recognition accuracy for specific terms. Only available when `asr.vendor` is not set or `ares`.
+
+  - **Updated parameters**
+
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `typecast`: Use Typecast as the TTS provider. See [Typecast](/en/ai/models/tts/typecast).
+    - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-vendor) value `azure`: Use Azure OpenAI Realtime API as the MLLM provider. See [Azure OpenAI Realtime API](/en/ai/models/mllm/azure).
+
+</TabsContent>
+</Tabs>
+
 ### v2.10
 
 Released on July 30, 2026. 

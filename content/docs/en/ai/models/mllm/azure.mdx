@@ -1,0 +1,273 @@
+---
+title: Azure OpenAI Realtime API
+description: >
+ Integrate Azure OpenAI Realtime API MLLM into Conversational AI Engine.
+---
+
+Azure OpenAI Realtime API provides multimodal large language model capabilities with real-time audio processing through Microsoft Azure's infrastructure, enabling natural voice conversations without separate ASR/TTS components.
+
+:::info[Info]
+Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::
+
+### Sample configuration
+
+The following examples show how to configure Azure OpenAI Realtime MLLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import AzureOpenAIRealtime
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(AzureOpenAIRealtime(
+        api_key='your-azure-api-key',
+        url='wss://your-resource-name.openai.azure.com/openai/v1/realtime?model=gpt-realtime-2',
+        model='gpt-realtime-2',
+        voice='alloy',
+        instructions='You are a Conversational AI Agent, developed by Agora.',
+        output_modalities=['audio'],
+        turn_detection={'mode': 'server_vad'},
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AzureOpenAIRealtime } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new AzureOpenAIRealtime({
+    apiKey: 'your-azure-api-key',
+    url: 'wss://your-resource-name.openai.azure.com/openai/v1/realtime?model=gpt-realtime-2',
+    model: 'gpt-realtime-2',
+    voice: 'alloy',
+    instructions: 'You are a Conversational AI Agent, developed by Agora.',
+    outputModalities: ['audio'],
+    turnDetection: { mode: 'server_vad' },
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewAzureOpenAIRealtime(vendors.AzureOpenAIRealtimeOptions{
+        APIKey:           "your-azure-api-key",
+        URL:              "wss://your-resource-name.openai.azure.com/openai/v1/realtime?model=gpt-realtime-2",
+        Model:            "gpt-realtime-2",
+        Voice:            "alloy",
+        Instructions:     "You are a Conversational AI Agent, developed by Agora.",
+        OutputModalities: []string{"audio"},
+        TurnDetection: &agora.MllmTurnDetection{
+            Mode: agora.MllmTurnDetectionModeServerVad.Ptr(),
+        },
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `mllm` configuration in your request:
+
+```json
+"mllm": {
+  "enable": true,
+  "vendor": "azure",
+  "url": "wss://your-resource-name.openai.azure.com/openai/v1/realtime?model=gpt-realtime-2",
+  "api_key": "<azure_api_key>",
+  "output_modalities": ["audio"],
+  "turn_detection": {
+    "mode": "server_vad"
+  },
+  "params": {
+    "model": "gpt-realtime-2",
+    "voice": "alloy",
+    "instructions": "You are a Conversational AI Agent, developed by Agora."
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Turn detection
+
+Add a `turn_detection` block inside the `mllm` object when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join). Unlike other MLLM vendors, `turn_detection` is required for Azure OpenAI Realtime API.
+
+:::info[Info]
+When `mllm.turn_detection` is defined, the top-level `turn_detection` object has no effect.
+:::
+
+The following examples show the supported `turn_detection` configurations for Azure OpenAI Realtime API.
+
+* **Server VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "server_vad",
+    "server_vad_config": {
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "threshold": 0.5
+    }
+  }
+  ```
+
+* **Semantic VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "semantic_vad",
+    "semantic_vad_config": {
+      "eagerness": "auto"
+    }
+  }
+  ```
+
+* **Agora VAD**
+
+  ```json
+  "turn_detection": {
+    "mode": "agora_vad",
+    "agora_vad_config": {
+      "interrupt_duration_ms": 160,
+      "prefix_padding_ms": 800,
+      "silence_duration_ms": 640,
+      "threshold": 0.5
+    }
+  }
+  ```
+
+### Key parameters
+
+<ParameterList title="mllm" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The API key used to authenticate with your Azure OpenAI resource.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The WebSocket URL for your Azure OpenAI Realtime deployment. For example, `wss://your-resource-name.openai.azure.com/openai/v1/realtime?model=gpt-realtime-2`.
+  </Parameter>
+  <Parameter name="messages" type="array[object]" required={false}>
+    An array of conversation history items passed to the model as context. Each item represents a single message in the conversation history.
+
+    <Parameter name="role" type="string" required={true}>
+      The role of the message author. For example, `system` or `user`.
+    </Parameter>
+    <Parameter name="content" type="string" required={true}>
+      The content of the message.
+    </Parameter>
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    Additional Azure OpenAI Realtime configuration parameters.
+    - **Modalities override**: The `modalities` setting in params is overridden by `output_modalities`.
+    - **Turn detection override**: The `turn_detection` setting in `params` is overridden by [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-turn-detection).
+    <Parameter name="model" type="string" required={false}>
+    The model or deployment name. For example, `gpt-realtime-2`.
+    </Parameter>
+    <Parameter name="voice" type="string" required={false}>
+    The voice identifier for audio output. For example, `alloy`.
+    </Parameter>
+    <Parameter name="instructions" type="string" required={false}>
+    System instructions that define the assistant's behavior and personality.
+    </Parameter>
+    <Parameter name="input_audio_transcription" type="object" required={false}>
+    Configuration for audio input transcription.
+      <Parameter name="language" type="string" required={false}>
+      The language of the input audio. Supplying the input language in ISO-639-1 format (For example `en`) improves accuracy and latency.
+      </Parameter>
+      <Parameter name="model" type="string" required={false}>
+      The model to use for transcription.
+      </Parameter>
+      <Parameter name="prompt" type="string" required={false}>
+      An optional text to guide the model's style or continue a previous audio segment.
+      </Parameter>
+    </Parameter>
+  </Parameter>
+  <Parameter name="turn_detection" type="object" required={true}>
+    Turn detection configuration for the MLLM module. Required for Azure OpenAI Realtime API. For a full list of `turn_detection` parameters, see [`mllm.turn_detection`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-turn-detection).
+
+    <Parameter name="mode" type="string" required={false} possibleValues="agora_vad, server_vad, semantic_vad">
+      - `agora_vad`: Agora VAD-based detection.
+      - `server_vad`: Vendor-side VAD-based detection.
+      - `semantic_vad`: Semantic-based detection.
+    </Parameter>
+
+    <Parameter name="agora_vad_config" type="object" required={false}>
+      Configuration for Agora VAD-based turn detection. Applicable when `mode` is `agora_vad`.
+
+      <Parameter name="interrupt_duration_ms" type="integer" required={false}>
+        Minimum duration of speech in milliseconds required to trigger an interruption.
+      </Parameter>
+      <Parameter name="prefix_padding_ms" type="integer" required={false}>
+        Duration of audio in milliseconds to include before the detected speech start.
+      </Parameter>
+      <Parameter name="silence_duration_ms" type="integer" required={false}>
+        Duration of silence in milliseconds required to determine end of speech.
+      </Parameter>
+      <Parameter name="threshold" type="number" required={false}>
+        VAD sensitivity threshold. A higher value reduces false positives.
+      </Parameter>
+    </Parameter>
+
+    <Parameter name="server_vad_config" type="object" required={false}>
+      Configuration for vendor-side VAD-based turn detection. Applicable when `mode` is `server_vad`. Parameters are passed through to the vendor.
+
+      <Parameter name="prefix_padding_ms" type="integer" required={false}>
+        Duration of audio in milliseconds to include before the detected speech start.
+      </Parameter>
+      <Parameter name="silence_duration_ms" type="integer" required={false}>
+        Duration of silence in milliseconds required to determine end of speech.
+      </Parameter>
+      <Parameter name="threshold" type="number" required={false}>
+        VAD sensitivity threshold.
+      </Parameter>
+    </Parameter>
+
+    <Parameter name="semantic_vad_config" type="object" required={false}>
+      Configuration for semantic-based turn detection. Applicable when `mode` is `semantic_vad`.
+
+      <Parameter name="eagerness" type="string" required={false} possibleValues="auto, low, medium, high">
+        Controls how eagerly the model ends its turn.
+      </Parameter>
+    </Parameter>
+  </Parameter>
+  <Parameter name="output_modalities" type="array[string]" defaultValue='["text", "audio"]' required={false}>
+  Output format options: `["text", "audio"]` for both text and voice responses.
+  </Parameter>
+  <Parameter name="max_history" type="integer" required={false}>
+  The number of conversation history messages to cache.
+  </Parameter>
+  <Parameter name="greeting_message" type="string" required={false}>
+  Initial message the agent speaks when a user joins the channel.
+  </Parameter>
+  <Parameter name="failure_message" type="string" required={false}>
+  The message the agent speaks when an error occurs.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+  MLLM provider identifier. Set to `azure` for Azure OpenAI Realtime API.
+  </Parameter>
+</ParameterList>
+
+For comprehensive API reference, real-time capabilities, and detailed parameter descriptions, see the [Azure OpenAI Realtime API documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/realtime-audio).
