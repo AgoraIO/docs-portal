@@ -164,7 +164,7 @@ describe('docs content regressions', () => {
   it('keeps the Ares keywords recipe card in the English recipes index', () => {
     const content = readDoc('api-reference/recipes.mdx');
 
-    expect(content).toContain('title: "Ares Keywords"');
+    expect(content).toContain('title: "ARES Keywords"');
     expect(content).toContain(
       'description: "Use keyword hints to improve ARES recognition of selected terms."',
     );
