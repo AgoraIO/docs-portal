@@ -40,9 +40,7 @@ describe('RootDocument', () => {
     expect(html).not.toContain('securiti.ai');
   });
 
-  it('loads Google Tag Manager when VITE_GTM_ID is set', () => {
-    vi.stubEnv('VITE_GTM_ID', 'GTM-WV38JLKB');
-
+  it('loads Google Tag Manager with the test container ID', () => {
     const html = renderToStaticMarkup(
       <RootDocument>
         <main>Docs</main>
@@ -54,22 +52,5 @@ describe('RootDocument', () => {
       'https://www.googletagmanager.com/ns.html?id=GTM-WV38JLKB',
     );
     expect(html).toContain('<noscript>');
-
-    vi.unstubAllEnvs();
-  });
-
-  it('does not load Google Tag Manager when VITE_GTM_ID is unset', () => {
-    vi.stubEnv('VITE_GTM_ID', undefined);
-
-    const html = renderToStaticMarkup(
-      <RootDocument>
-        <main>Docs</main>
-      </RootDocument>,
-    );
-
-    expect(html).not.toContain('googletagmanager.com');
-    expect(html).not.toContain('<noscript>');
-
-    vi.unstubAllEnvs();
   });
 });

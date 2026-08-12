@@ -75,8 +75,12 @@ function RootComponent() {
   );
 }
 
+// TEST ONLY: hardcoded for this test deployment rather than VITE_GTM_ID,
+// since the preview environment's secret resolves to a different container.
+const TEST_GOOGLE_TAG_MANAGER_ID = 'GTM-WV38JLKB';
+
 export function RootDocument({ children }: PropsWithChildren) {
-  const googleTagManagerId = import.meta.env.VITE_GTM_ID;
+  const googleTagManagerId = TEST_GOOGLE_TAG_MANAGER_ID;
 
   return (
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
