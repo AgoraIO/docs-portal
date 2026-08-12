@@ -14,7 +14,7 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
 });
 
 describe('RootDocument', () => {
-  it('renders the Securiti.ai test loader first in head', () => {
+  it('renders the CookieYes loader first in head', () => {
     const html = renderToStaticMarkup(
       <RootDocument>
         <main>Docs</main>
@@ -24,30 +24,33 @@ describe('RootDocument', () => {
     const head = html.match(/<head>(.*?)<\/head>/s)?.[1] ?? '';
 
     expect(head).toMatch(
-      /<script src="https:\/\/cdn-prod\.securiti\.ai\/consent\/cookie-consent-sdk-loader\.js"/,
+      /<script id="cookieyes" type="text\/javascript" src="https:\/\/cdn-cookieyes\.com\/client_data\/f377600a6d571245c87039fc3a24a5f1\/script\.js"/,
     );
-    const securitiScriptIndex = head.indexOf(
-      '<script src="https://cdn-prod.securiti.ai',
-    );
-    expect(head.slice(0, securitiScriptIndex)).not.toContain('<script');
-    expect(head).toContain(
-      'data-tenant-uuid="b373a629-85bf-440d-824a-a86fc32ae3e9"',
-    );
-    expect(head).toContain(
-      'data-domain-uuid="7ba04bfc-c10b-4f3a-80d5-bf9ed910b46f"',
-    );
-    expect(head).toContain('data-backend-url="https://app.securiti.ai"');
-    expect(head).toContain('data-securiti-staging-mode="true"');
+    const cookieyesScriptIndex = head.indexOf('<script id="cookieyes"');
+    expect(head.slice(0, cookieyesScriptIndex)).not.toContain('<script');
   });
 
-  it('does not load Google Tag Manager directly', () => {
+  it('does not load the Securiti.ai loader', () => {
     const html = renderToStaticMarkup(
       <RootDocument>
         <main>Docs</main>
       </RootDocument>,
     );
 
-    expect(html).not.toContain('googletagmanager.com');
-    expect(html).not.toContain('<noscript>');
+    expect(html).not.toContain('securiti.ai');
+  });
+
+  it('loads Google Tag Manager with the test container ID', () => {
+    const html = renderToStaticMarkup(
+      <RootDocument>
+        <main>Docs</main>
+      </RootDocument>,
+    );
+
+    expect(html).toContain("'script','dataLayer','GTM-WV38JLKB'");
+    expect(html).toContain(
+      'https://www.googletagmanager.com/ns.html?id=GTM-WV38JLKB',
+    );
+    expect(html).toContain('<noscript>');
   });
 });
