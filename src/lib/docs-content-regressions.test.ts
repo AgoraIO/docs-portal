@@ -166,7 +166,7 @@ describe('docs content regressions', () => {
 
     expect(content).toContain('title: "Ares Keywords"');
     expect(content).toContain(
-      'description: "Use keyword hints to improve Ares recognition of selected terms."',
+      'description: "Use keyword hints to improve ARES recognition of selected terms."',
     );
     expect(content).toContain(
       'href: "https://github.com/AgoraIO-Conversational-AI/recipe-agent-stt-vendors/blob/main/README.md#ares-keywords"',
