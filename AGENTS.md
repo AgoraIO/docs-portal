@@ -18,6 +18,30 @@ For content syntax, follow `docs/agents/markdown-authoring-standard.md`. It is t
 - `bun run openapi:sync` copies maintained OpenAPI assets into `public/openapi`.
 - `bun run build` syncs OpenAPI assets and creates the production build.
 
+## Vercel Preview Deploys & Stable Aliases
+
+Do not use bare `npx vercel` for local previews; remote builds can fail the `legacy-redirects:check` step. Prefer the prebuilt flow used by CI:
+
+```bash
+npx vercel pull --yes --environment=preview
+npx vercel build
+npx vercel deploy --prebuilt --archive=tgz
+```
+
+Each deploy gets a unique `*.vercel.app` URL that does not update on the next push. When a feature or partner needs a **stable preview domain**, assign a static alias after deploy (always scope to the `agoraio` team):
+
+```bash
+npx vercel alias set https://<deployment-id>-agoraio.vercel.app <stable-name>.vercel.app --scope agoraio
+```
+
+Example for a long-lived branch preview:
+
+```bash
+npx vercel alias set https://docs-portal-4j75x931n-agoraio.vercel.app docs-portal-banner.vercel.app --scope agoraio
+```
+
+Re-run the alias command after every new deploy so the stable name keeps pointing at the latest build. Do **not** overwrite `docs-portal-mocha.vercel.app` (or `VERCEL_MAIN_PREVIEW_ALIAS`); that alias is reserved for the `main` preview.
+
 ## Coding Style & Naming Conventions
 
 Use TypeScript, React function components, and ESM imports. Biome enforces 2-space indentation and single quotes for JavaScript and TypeScript. Prefer existing local primitives in `src/components/ui` and helpers in `src/lib` before adding new abstractions. Keep generated files such as `src/routeTree.gen.ts` out of manual edits unless route generation requires it.

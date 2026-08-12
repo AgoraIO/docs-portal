@@ -7,6 +7,12 @@ export { DOCS_PAGE_TYPES } from './docs-page-type';
 
 type PostHogClient = typeof import('posthog-js').default;
 
+declare global {
+  interface Window {
+    posthog?: Pick<PostHogClient, 'capture'>;
+  }
+}
+
 const POSTHOG_HOST = 'https://us.i.posthog.com';
 const LOCATION_DETAIL_PROPERTY_NAME = /(^|_)(hash|search)$/i;
 const SAFE_PROPERTY_VALUE = /^[a-z0-9][a-z0-9._:-]{0,63}$/i;
@@ -277,16 +283,28 @@ function captureStructuredDocsEvent(
     return;
   }
 
-  void getPostHogClient().then((posthog) => {
-    if (!posthog) {
-      return;
-    }
+  window.posthog?.capture('docs_page_feedback', {
+    hash,
+    locale,
+    pathname,
+    search,
+    value,
+  });
 
-    posthog.capture(event, {
-      ...context,
-      ...removeUndefinedProperties(properties),
+  /*
+   * Direct PostHog loading is temporarily disabled while Securiti.ai manages
+   * the tag and its cookie.
+   *
+  void getPostHogClient().then((posthog) => {
+    posthog?.capture('docs_page_feedback', {
+      hash,
+      locale,
+      pathname,
+      search,
+      value,
     });
   });
+  */
 }
 
 function getDocsPageContext(locale: string) {
