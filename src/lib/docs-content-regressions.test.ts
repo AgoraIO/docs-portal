@@ -164,9 +164,9 @@ describe('docs content regressions', () => {
   it('keeps the Ares keywords recipe card in the English recipes index', () => {
     const content = readDoc('api-reference/recipes.mdx');
 
-    expect(content).toContain('title: "ARES Keywords"');
+    expect(content).toContain('title: "Ares Keywords"');
     expect(content).toContain(
-      'description: "Use keyword hints to improve ARES recognition of selected terms."',
+      'description: "Use keyword hints to help ARES recognize specific terms more accurately."',
     );
     expect(content).toContain(
       'href: "https://github.com/AgoraIO-Conversational-AI/recipe-agent-stt-vendors/blob/main/README.md#ares-keywords"',
