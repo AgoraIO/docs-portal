@@ -72,6 +72,24 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it('redirects legacy Agora Platform community resources to Discord', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect('/en/AgoraPlatform/community/'),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: 'https://discord.com/invite/QfgBCvuX4d',
+    });
+  });
+
+  it('redirects legacy Agora Platform sample apps to Recipes', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect('/en/AgoraPlatform/sampleapps/'),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/api-reference/recipes',
+    });
+  });
+
   it.each(legacyHelpFaqRedirects)(
     'redirects %s to %s',
     (legacyPath, redirectUrl) => {
@@ -90,8 +108,7 @@ describe('static legacy sitemap redirects', () => {
       ),
     ).toEqual({
       preserveSearch: false,
-      redirectUrl:
-        '/en/realtime-media/rtc/reference/release-notes/javascript',
+      redirectUrl: '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 
