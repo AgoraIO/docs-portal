@@ -1928,22 +1928,26 @@ WHERE ${windowFilter(window)}
 GROUP BY event`;
 }
 
-function journeyPathsQuery(window) {
+export function journeyPathsQuery(window) {
   return `SELECT path, count() AS sessions, sum(path_length) AS pageviews
 FROM (
   SELECT
-    arrayStringConcat(arraySlice(groupArray(pathname ORDER BY first_seen), 1, 5), ' > ') AS path,
-    length(groupArray(pathname ORDER BY first_seen)) AS path_length
+    session_id,
+    arrayStringConcat(
+      arraySlice(arrayMap(item -> item.2, arraySort(groupArray(tuple(first_seen, pathname)))), 1, 5),
+      ' > '
+    ) AS path,
+    count() AS path_length
   FROM (
     SELECT
       properties.$session_id AS session_id,
       properties.$pathname AS pathname,
-      min(timestamp) AS first_seen
+      timestamp AS first_seen
     FROM events
     WHERE event = '$pageview' AND ${humanEnglishFilter(window)}
       AND properties.$session_id IS NOT NULL
       AND properties.$pathname IS NOT NULL
-    GROUP BY session_id, pathname
+    LIMIT 40000
   )
   GROUP BY session_id
   HAVING path_length >= 2

@@ -16,6 +16,7 @@ import {
   normalizeAgentBenchmarkSummary,
   percentile,
   reportPeriod,
+  journeyPathsQuery,
   selectLatestBenchmarks,
   summarizeRemediationBacklog,
   timestampExpression,
@@ -314,6 +315,19 @@ describe('docs quality report generator', () => {
         },
       ],
     });
+  });
+
+  it('builds journey path SQL without nested aggregate timestamp traps', () => {
+    const source = journeyPathsQuery({
+      end: '2026-08-03T00:00:00.000Z',
+      start: '2026-07-06T00:00:00.000Z',
+      windowDays: 28,
+    });
+    expect(source).toContain(
+      'arraySort(groupArray(tuple(first_seen, pathname)))',
+    );
+    expect(source).toContain('GROUP BY session_id');
+    expect(source).not.toContain('min(timestamp) AS first_seen');
   });
 
   it('accepts only complete benchmark batches and selects the latest task batch', () => {
