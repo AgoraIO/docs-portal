@@ -12,9 +12,10 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 ## Start building
 
 <Cards>
-  <Card title="SDK quickstart" href="quickstart.mdx" description="Build and validate a basic IoT SDK integration path." />
+  <Card title="SDK quickstart" href="quickstart.mdx" description="Run the IoT SDK example project to stream audio and video." />
+  <Card title="Build from scratch" href="build-from-scratch.mdx" description="Integrate media streaming and signaling into your own project, step by step." />
   <Card title="Download SDKs" href="/en/api-reference/sdks?product=iot" description="Get the latest IoT SDK package for your target device." />
-  <Card title="Authentication" href="build/set-up-authentication-and-security/authentication-workflow.mdx" description="Secure IoT SDK connections with tokens." />
+  <Card title="Authentication" href="build/authenticate-and-secure-channels/authentication-workflow.mdx" description="Secure IoT SDK connections with tokens." />
   <Card title="API reference" href="/en/api-reference/api-ref" description="Explore IoT SDK API references and related integration surfaces." />
   <Card title="Samples" href="https://github.com/AgoraIO/API-Examples" description="Browse open-source sample projects for IoT workflows." />
 </Cards>
@@ -41,3 +42,32 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
     IoT SDK is interoperable with other Agora products so you can easily build up the companion apps on iOS, Android, or any other platform.
   </FeatureCard>
 </CardGrid>
+
+## Product capability
+
+| Feature | Description |
+|---|---|
+| RTSA SDK interoperability | Supports intercommunication between IoT SDKs using multiple audio and video encoding formats. See `audio_data_type_e` and `video_data_type_e`. |
+| RTC SDK interoperability | Supports bidirectional intercommunication between IoT SDK and RTC Server SDK, RTC Native SDK, RTC third-party framework SDKs, and RTC Web SDK. See [Interoperate with RTC SDK](build/communicate-with-other-sdks/interoperate-with-rtc-sdk.mdx). |
+| Uplink bandwidth prediction and bitrate adaptation | Proposes target bitrate recommendations based on a bandwidth prediction algorithm, and reports whether to increase or decrease bitrate to boost throughput and avoid network congestion. See [Bitrate adaptation](build/manage-connections-and-quality/bitrate-adaptation.mdx). |
+| Key frame | Supports requesting local key frames to improve encoding and decoding efficiency and reduce data storage footprint. See [Key frame](build/manage-connections-and-quality/key-frame.mdx). |
+| Stream state management | Supports flexibly starting and pausing local audio and video publishing and remote audio and video subscription, with status monitoring. See [Manage stream state](build/manage-connections-and-quality/stream-state.mdx). |
+
+## Applicable scenarios
+
+- **Real-time surveillance**: Smart home cameras, vehicle monitoring, and video doorbells, enabling simultaneous viewing from multiple phones and two-way voice communication.
+- **Smart wearables**: Low-power devices such as smart watches, integrated with IoT SDK for real-time audio and video calling.
+
+## Product performance
+
+| Metric | Specification |
+|---|---|
+| Package size | SDK integration adds less than 400 KB. |
+| Memory usage | Less than 2 MB for simultaneous 320 x 240 H.264 stream transmission. |
+| Connectivity rate | Greater than 99%. |
+| Maximum bitrate | Up to 50 Mbps per channel, per user. |
+| Network resilience | Imperceptible recovery under 50% packet loss. |
+
+## Platform compatibility
+
+IoT SDK supports Linux, HarmonyOS, and LiteOS devices. For a full list of supported architectures, operating system versions, and toolchains, see [Supported platforms](reference/supported-platforms.mdx).

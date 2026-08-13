@@ -3,30 +3,45 @@ title: "Release notes"
 description: "Information about changes in each release of IoT SDK."
 ---
 
-<PlatformStructured platform="android">
-
 This page provides the release notes for IoT SDK.
 
-## 1.8.0
+:::info
+IoT SDK for Android no longer receives version updates after v1.8.0. For Android-based device integrations, Agora recommends using the [RTC Java SDK](/en/api-reference/sdks?product=video&platform=android) together with the [RTM Java SDK](/en/api-reference/sdks?product=signaling&platform=android) instead.
+:::
 
-v1.8.0 was released on May 1, 2023.
+## 1.9.7
+
+v1.9.7 was released on November 27, 2025. This release consolidates the key updates introduced from v1.8.0 through v1.9.7. Across the 1.9.x series, the SDK focuses on four areas: more reliable connectivity, more complete messaging and control capabilities, stronger media processing, and easier integration and maintenance. The 1.9.x series expands the SDK from a lightweight media transport stack into a more complete foundation for production IoT deployments.
 
 #### New features
 
-1. Two-way audio and video communication between IoT SDK instances, as well as between
-IoT SDK and RTC SDK for Android, iOS, macOS, Windows, and Web.
+1. **More flexible connection management**: Adds the Connection ID mechanism and the corresponding `agora_rtc_create_connection`, `agora_rtc_destroy_connection`, and `agora_rtc_get_connection_info` APIs, enabling more flexible RTC connection lifecycle management. See [Connection management](../build/manage-connections-and-quality/connection-management.mdx).
 
-2. Providing a target bitrate per bandwidth estimation (BWE) algorithms.
+2. **Built-in license validation**: Adds automatic license validation during channel join and the `on_license_validation_failure` callback for explicit failure reporting. See [License](../build/authenticate-and-secure-channels/license.mdx).
 
-3. Requesting key frames from remote users.
+3. **Reliable messaging and richer control paths**: Adds RDT-based reliable messaging, including `agora_rtc_send_rdt_msg`, `agora_rtc_get_rdt_status_info`, `on_rdt_state`, and `on_rdt_msg`, making it easier to deliver control and device messages reliably. See [Send messages through the RDT channel](../build/send-messages/rdt-messaging.mdx).
 
-4. Muting and unmuting local and remote media streams.
+4. **String UID support**: Adds User Account-based APIs, including `agora_rtc_join_channel_with_user_account`, `agora_rtc_get_user_info_by_user_account`, and `agora_rtc_get_user_info_by_uid`, to support String UID-based identity systems. See [String UID](../build/authenticate-and-secure-channels/string-uid.mdx).
 
-5. Monitoring the transmission state of remote media streams.
+5. **Expanded media and network capabilities**: Adds video rotation reporting, media encryption through `crypto_opt`, configurable audio packet duration through `pcm_duration`, 8 kHz AAC-LC support, downlink AEC, RDT encryption, the `enable_rdt` option, and IPv6 support. See [Codec](../build/configure-media/codec.mdx).
 
-</PlatformStructured>
+6. **More resilient RTM transport**: Adds AUT-based RTM transport to improve RTM reliability in weak-network environments.
 
-<PlatformStructured platform="linux-c">
+#### Improvements
+
+1. **Improved connection resilience**: Adds the `on_reconnecting` callback and refines the behavior of connection-related callbacks, making it easier to detect and handle temporary network interruptions.
+
+2. **More flexible video frame-rate configuration**: Changes `video_frame_info_t.frame_rate` from an enum to an integer. Applications can now configure frame rates from 1 to 60 fps. See [Codec](../build/configure-media/codec.mdx).
+
+3. **Improved audio processing**: Improves audio codec decoupling, jitter buffering, audio mixing, packet-loss handling, and downlink audio processing for real-time conversational scenarios.
+
+4. **Improved RTM stability and usability**: Improves RTM login performance, keepalive behavior, timeout handling, reconnection behavior, and error reporting. The maximum RTM message payload size is now 31 KB.
+
+5. **Improved error handling**: Refines error-code organization and adds the `RTM_MSG_STATE_TIMEOUT` message state.
+
+#### Bugfix
+
+For a full list of bug fixes in this release, see Shengwang's release notes and API diff.
 
 ## 1.8.0
 
@@ -44,5 +59,3 @@ IoT SDK and RTC SDK for Android, iOS, macOS, Windows, and web.
 4. Muting and unmuting local and remote media streams.
 
 5. Monitoring the transmission state of remote media streams.
-
-</PlatformStructured>

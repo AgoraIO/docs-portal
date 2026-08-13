@@ -1,0 +1,67 @@
+---
+title: "Send messages through the RDT channel"
+description: "Send and receive reliable control and device messages using RDT."
+---
+
+Starting with v1.9.4, IoT SDK adds Reliable Data Transmission (RDT), an end-to-end reliable messaging channel built on top of the RTC connection that runs independently from your audio and video streams. Use RDT when a message, such as a device command or a status update, must arrive even under packet loss, rather than the best-effort delivery used for media data.
+
+This feature is available for the Linux C SDK only.
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the [Build from scratch](../../build-from-scratch.mdx) guide for IoT SDK and created a connection, see [connection management](../manage-connections-and-quality/connection-management.mdx).
+
+## Enable RDT
+
+Set `enable_rdt` to `true` in your channel options before joining a channel. Set `auto_connect_rdt` to control whether the SDK establishes the RDT channel automatically when the connection joins the channel.
+
+## Message types
+
+RDT supports two message types with different priority and size limits:
+
+| Type | Priority | Limits |
+|---|---|---|
+| `RDT_STREAM_CMD` | High. Not subject to congestion control. | Up to 100 packets per second; 256 bytes maximum packet size. |
+| `RDT_STREAM_DATA` | Lower. Subject to congestion control. | No packet-count limit; 128 KB maximum packet size. |
+
+## Send a message
+
+Call `agora_rtc_send_rdt_msg` to send a message to a peer on the RDT channel:
+
+```cpp
+int rval = agora_rtc_send_rdt_msg(conn_id, stream_type, data, length);
+```
+
+## Check RDT channel state
+
+Call `agora_rtc_get_rdt_status_info` to query the current state of the RDT channel for a connection.
+
+Handle the `on_rdt_state` callback to detect changes in RDT channel availability. The callback reports one of the following states:
+
+- `RDT_STATE_CLOSED`
+- `RDT_STATE_OPENED`
+- `RDT_STATE_BLOCKED`
+- `RDT_STATE_PENDING`
+- `RDT_STATE_BROKEN`
+
+## Receive messages
+
+Handle the `on_rdt_msg` callback to receive incoming RDT messages, including the connection ID, sender UID, message type, payload, and length.
+
+## Reference
+
+### Error codes
+
+- `RTC_ERR_RDT_USER_NOT_EXIST` (-8)
+- `RTC_ERR_RDT_USER_NOT_READY` (-9)
+- `RTC_ERR_RDT_DATA_BLOCKED` (-10)
+- `RTC_ERR_RDT_CMD_EXCEED_LIMIT` (-11)
+
+### API reference
+
+- [agora_rtc_send_rdt_msg](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [agora_rtc_get_rdt_status_info](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [on_rdt_state](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)
+- [on_rdt_msg](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)

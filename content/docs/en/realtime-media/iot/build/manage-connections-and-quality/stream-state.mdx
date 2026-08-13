@@ -1,0 +1,194 @@
+---
+title: "Manage stream state"
+description: "Mute and unmute local and remote audio and video streams."
+---
+
+Network traffic can be reduced by suspending data transmission when audio or video feed is not required by the receiver. After a user successfully connects to a channel and starts audio and video streaming, they can suspend sending streams to a specific connection or to all connections to flexibly manage the transmission status of audio and video streams. Similarly, the user may suspend receiving a specific or all streams as required.
+
+When a user changes the transmission status of the local audio or video stream, the IoT SDK triggers a corresponding callback to prompt the remote user to suspend or resume sending their audio or video stream.
+
+This page shows you how to mute and unmute local and remote audio and video streams in your IoT SDK app.
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the [Build from scratch](../../build-from-scratch.mdx) project for IoT SDK.
+
+To test the code used in this page you need to have:
+* An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
+* A computer with Internet access.
+    Ensure that no firewall is blocking your network communication.
+
+## Project setup
+
+To create the environment necessary to implement stream state management into your app, open the [Build from scratch](../../build-from-scratch.mdx) IoT SDK project you created previously.
+
+In this example, you use terminal input to mute or unmute local audio and video streams. To set up your project to accept terminal input without blocking code execution, take the following steps:
+
+1. To configure the terminal add the following header to `hello_rtsa.c` after `#include "app_config.h":`
+
+    ```cpp
+    #include <termios.h>
+    ```
+
+1. The default terminal behaviour is to block code execution while waiting for user input and to process the input after a carriage return. To modify this blocking behaviour, add the following function to `hello_rtsa.c` before `app_signal_handler()`:
+
+    ```cpp
+    void nonblock(bool turn_off_canonical)
+    { // Enable or disable non-block mode and canonical mode to read input
+    struct termios ttystate;
+
+    // get the terminal state
+    tcgetattr(STDIN_FILENO, &ttystate);
+
+    if (turn_off_canonical)
+    {
+        // turn off canonical mode
+        ttystate.c_lflag &= ~ICANON;
+        // minimum of number input read.
+        ttystate.c_cc[VMIN] = 1;
+    }
+    else
+    {
+        // turn on canonical mode
+        ttystate.c_lflag |= ICANON;
+    }
+    // set the terminal attributes.
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+    }
+    ```
+
+1. To enable non-blocking mode, add the following line to the top of `main()`:
+
+    ```cpp
+    nonblock(true);
+    ```
+
+1. To disable non-blocking mode on exit, add the following line to `app_signal_handler` after `g_app.b_stop_flag = true;`:
+
+    ```cpp
+    nonblock(false);
+    ```
+
+1. To read non-blocking terminal input, add the following function to `hello_rtsa.c` before `main()`:
+
+    ```cpp
+    int kbhit()
+    { // Read input from the terminal without blocking code execution
+      struct timeval tv;
+      fd_set fds;
+      tv.tv_sec = 0;
+      tv.tv_usec = 0;
+      FD_ZERO(&fds);
+      FD_SET(STDIN_FILENO, &fds); // STDIN_FILENO is 0
+      select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
+      return FD_ISSET(STDIN_FILENO, &fds);
+    }
+    ```
+
+## Implement stream state management
+
+To pause or resume sending local audio and video streams when a key is pressed, add the following code to `main()` after `while (!g_app.b_stop_flag) {`:
+
+```cpp
+char c; // Input character
+int i = kbhit(); // Check if a key was pressed
+
+if (i != 0) // A key was pressed
+{
+  c = fgetc(stdin); // Get the input character
+  if (c == 'a')
+  { // mute/unmute audio
+    is_audio_muted = !is_audio_muted;
+    agora_rtc_mute_local_audio(g_app.conn_id, is_audio_muted);
+    if (is_audio_muted)
+      printf("\nAudio muted\n");
+    else
+      printf("\nAudio unmuted\n");
+  }
+  else if (c == 'v')
+  { // mute/unmute audio
+    is_video_muted = !is_video_muted;
+    agora_rtc_mute_local_video(g_app.conn_id, is_video_muted);
+    if (is_video_muted)
+      printf("\nVideo muted\n");
+    else
+      printf("\nVideo unmuted\n");
+  }
+  else
+  {
+    printf("\nPress <a> to mute/unmute audio \nPress <v> to mute/unmute video\n");
+  }
+  i = 0;
+}
+```
+
+To pause and resume playing remote audio or video streams use `agora_rtc_mute_local_audio` and `agora_rtc_mute_local_video`.
+
+### Handle muting and unmuting notifications for remote streams
+
+When a remote user mutes or unmutes their audio or video stream, you receive notification of these changes. In this example, you write log messages when you receive the `on_user_mute_audio` and `on_user_mute_video` callbacks. Add the following code to `main()`:
+
+```cpp
+static void __on_user_mute_audio(connection_id_t conn_id, uint32_t uid, bool muted)
+{
+LOGI("[conn-%u] audio: uid=%u muted=%d", conn_id, uid, muted);
+}
+
+static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool muted)
+{
+LOGI("[conn-%u] video: uid=%u muted=%d", conn_id, uid, muted);
+}
+```
+
+## Test your implementation
+
+To ensure that you have implemented stream state management into your app:
+
+1. [Generate a temporary token](/en/introduction/account#generate-temporary-tokens) in Agora Console.
+
+2. In your browser, navigate to the [Agora Muting web demo](https://webdemo.agora.io/basicMute/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
+
+3. Compile the sample project
+
+    In the terminal, execute the following commands:
+
+    ```bash
+    cd <project-root>/agora_rtsa_sdk/example
+
+    ./build-x86_64.sh
+    ```
+
+4. Launch the sample app:
+
+    1. In the terminal, navigate to the output folder:
+
+        ```bash
+        cd out/x86_64
+        ```
+
+    1. Launch the compiled app
+
+        ```bash
+        ./hello_rtsa --app-id <your-app-id> --channel-id <your-channel-name> --token <authentication-token>
+        ```
+
+        Remember to insert your app ID, channel name and token in the command.
+
+5. Mute and unmute local audio and video
+
+    * Press `a` on the keyboard; the audio is muted in the web demo app. Press `a` again; the audio is unmuted.
+
+    * Press `v` on the keyboard; the video stops playing in the web demo app. Press `v` again; the video resumes playing.
+
+6. Press **Mute Audio** and **Mute Video** buttons in the web demo app. You see terminal messages informing you of these events.
+
+## Reference
+
+- [on_user_mute_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#ab749491e46ce8d06aa69507ebb630bf9)
+- [on_user_mute_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#a7ba3bed4e4d97a4e39096f07d2333311)
+- [agora_rtc_mute_local_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a28c1dae086be4014ad732a07db248b16)
+- [agora_rtc_mute_local_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a47f116e271b78c0659fcd68a96d34224)
+- [agora_rtc_mute_remote_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a8ad8bfa0e0a46a0c5e7fae11449ab575)
+- [agora_rtc_mute_remote_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a894f5a102c66b20c408bb495ac424efa)

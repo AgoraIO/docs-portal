@@ -1,0 +1,37 @@
+---
+title: "Geofencing"
+description: "Restrict IoT SDK network traffic to a specified geographic region."
+---
+
+To conform to the laws and regulations of different countries and regions, IoT SDK supports network geofencing, which limits transmission of your audio and video data to servers within a specified region. Once you specify a region, no audio or video data can reach Agora servers outside that region.
+
+## Set the area code
+
+You set the region when you initialize the engine, using the `area_code` field of `rtc_service_option_t`:
+
+```cpp
+rtc_service_option_t service_opt;
+service_opt.area_code = AREA_CODE_NA;
+...
+rval = agora_rtc_init(appid, &event_handler, &service_opt);
+```
+
+Choose one of the following area codes. Area codes support bitwise combination.
+
+| Area code | Region |
+|---|---|
+| `AREA_CODE_CN` | Mainland China |
+| `AREA_CODE_NA` | North America |
+| `AREA_CODE_EU` | Europe |
+| `AREA_CODE_AS` | Asia, excluding Mainland China |
+| `AREA_CODE_JP` | Japan |
+| `AREA_CODE_IN` | India |
+| `AREA_CODE_GLOB` | Global (default) |
+
+For a list of the cloud proxy IP ranges for each region, see [Cloud proxy allowed IPs](/en/realtime-media/iot/reference/cloud-proxy-allowed-ips).
+
+## Reference
+
+### API reference
+
+- [agora_rtc_init](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)

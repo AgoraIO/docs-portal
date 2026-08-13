@@ -1,0 +1,378 @@
+---
+title: "Build from scratch"
+description: "Implement media stream and signaling transmission with IoT SDK, step by step."
+---
+
+The Internet of things (IoT) connects physical objects with sensors, processors, and software to enable data exchange with other devices. In related applications, such as apps for smart doorbells and remote monitoring, IoT devices send or receive audio and video streams, and exchange signaling messages, to perform their function. Agora IoT SDK gives you the ability to enable live voice and video streams, and reliable signaling, on IoT devices on a variety of platforms and for many use cases, while also offering a compact SDK size, low memory usage, and low power consumption.
+
+This page shows you how to integrate IoT SDK into your own project from scratch: initialize the SDK, transmit media streams over RTC, transmit signaling messages over RTM, and release resources when you are done. If you only want to see IoT SDK working before you integrate it, use the [Quickstart](quickstart.mdx) instead.
+
+:::info
+IoT SDK for Android no longer receives version updates. For Android-based devices, integrate the [RTC Java SDK](/en/api-reference/sdks?product=video&platform=android) together with the [Signaling Java SDK](/en/api-reference/sdks?product=signaling&platform=android) instead of IoT SDK.
+:::
+
+## Prerequisites
+
+To follow this procedure you need:
+
+* Applied for and activated a device [license](build/authenticate-and-secure-channels/license.mdx). IoT SDK automatically verifies the license when a device joins a channel.
+* A development machine, which can be a computer or an embedded device. This page uses a computer running Ubuntu 18.04 as an example. For the full list of supported operating systems and toolchains, see [Supported platforms](reference/supported-platforms.mdx).
+* An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
+* A [temporary RTC token](/en/introduction/account#generate-temporary-tokens) and a temporary RTM token generated for your project. RTC tokens and RTM tokens use different generation mechanisms and scopes, so you cannot use one in place of the other.
+
+## Project setup
+
+[Download](/en/api-reference/sdks?platform=linux) the SDK package that matches your development environment, and link the IoT SDK library into your own C project. See [Quickstart](quickstart.mdx) for the download and extraction commands if you have not already done this.
+
+## Initialize the SDK
+
+Call `agora_rtc_init` once, before any other IoT SDK call, to initialize the engine. The call takes your App ID, an event handler, and a service options struct:
+
+```c
+agora_rtc_event_handler_t rtc_event_handler = { 0 };
+rtc_service_option_t service_options = { 0 };
+agora_rtc_init(appid, &rtc_event_handler, &service_options);
+```
+
+If your device only sends and receives signaling messages and does not transmit media, you can pass `0` instead of an event handler. To transmit media streams, populate the event handler with callbacks as shown in [Listen for events](#listen-for-events).
+
+## Transmit media streams
+
+### Listen for events
+
+IoT SDK notifies you of important events, such as users joining or leaving a channel and receipt of audio or video data, through callbacks in the event handler. Define the callback functions and register them in `agora_rtc_event_handler_t`:
+
+```c
+static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed) {
+    g_connected_flag = true;
+    agora_rtc_get_connection_info(conn_id, &g_conn_info);
+    printf("[conn-%u] Join the channel %s successfully, uid %u elapsed %d ms\n", conn_id, g_conn_info.channel_name, uid, elapsed);
+}
+
+static void __on_reconnecting(connection_id_t conn_id) {
+    g_connected_flag = false;
+    printf("[conn-%u] connection timeout, reconnecting\n", conn_id);
+}
+
+static void __on_connection_lost(connection_id_t conn_id) {
+    g_connected_flag = false;
+    printf("[conn-%u] Lost connection from the channel\n", conn_id);
+}
+
+static void __on_rejoin_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed_ms) {
+    g_connected_flag = true;
+    printf("[conn-%u] Rejoin the channel successfully, uid %u elapsed %d ms\n", conn_id, uid, elapsed_ms);
+}
+
+static void __on_user_joined(connection_id_t conn_id, uint32_t uid, int elapsed_ms) {
+    printf("[conn-%u] Remote user \"%u\" has joined the channel, elapsed %d ms\n", conn_id, uid, elapsed_ms);
+}
+
+static void __on_user_offline(connection_id_t conn_id, uint32_t uid, int reason) {
+    printf("[conn-%u] Remote user \"%u\" has left the channel, reason %d\n", conn_id, uid, reason);
+}
+
+static void __on_user_mute_audio(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] audio: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+
+static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] video: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+
+static void __on_error(connection_id_t conn_id, int code, const char *msg) {
+    if (code == ERR_SEND_VIDEO_OVER_BANDWIDTH_LIMIT) {
+        printf("Not enough uplink bandwidth. Error msg \"%s\"\n", msg);
+        return;
+    }
+    if (code == ERR_INVALID_APP_ID) {
+        printf("Invalid App ID. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_INVALID_CHANNEL_NAME) {
+        printf("Invalid channel name. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_INVALID_TOKEN || code == ERR_TOKEN_EXPIRED) {
+        printf("Invalid token. Please double check. Error msg \"%s\"\n", msg);
+    } else if (code == ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY) {
+        printf("Dynamic token is enabled but is not provided. Error msg \"%s\"\n", msg);
+    } else {
+        printf("Error %d is captured. Error msg \"%s\"\n", code, msg);
+    }
+    g_stop_flag = true;
+}
+
+static void __on_audio_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const audio_frame_info_t *info_ptr) {
+    // Handle incoming audio data, for example write it to a file or an audio output device
+}
+
+static void __on_mixed_audio_data(connection_id_t conn_id, const void *data, size_t len,
+                                  const audio_frame_info_t *info_ptr) {
+    // Handle incoming mixed audio data
+}
+
+static void __on_video_data(connection_id_t conn_id, const uint32_t uid, uint16_t sent_ts,
+                            const void *data, size_t len, const video_frame_info_t *info_ptr) {
+    // Handle incoming video data, for example write it to a file or a video renderer
+}
+
+static void __on_target_bitrate_changed(connection_id_t conn_id, uint32_t target_bps) {
+    printf("[conn-%u] Bandwidth change detected. Please adjust encoder bitrate to %u kbps\n", conn_id, target_bps / 1000);
+}
+
+static void __on_key_frame_gen_req(connection_id_t conn_id, uint32_t uid, video_stream_type_e stream_type) {
+    printf("[conn-%u] Frame loss detected. Please notify the encoder to generate key frame immediately\n", conn_id);
+}
+
+static void app_init_event_handler(agora_rtc_event_handler_t *event_handler) {
+    event_handler->on_join_channel_success = __on_join_channel_success;
+    event_handler->on_reconnecting = __on_reconnecting;
+    event_handler->on_connection_lost = __on_connection_lost;
+    event_handler->on_rejoin_channel_success = __on_rejoin_channel_success;
+    event_handler->on_user_joined = __on_user_joined;
+    event_handler->on_user_offline = __on_user_offline;
+    event_handler->on_user_mute_audio = __on_user_mute_audio;
+    event_handler->on_user_mute_video = __on_user_mute_video;
+    event_handler->on_target_bitrate_changed = __on_target_bitrate_changed;
+    event_handler->on_key_frame_gen_req = __on_key_frame_gen_req;
+    event_handler->on_video_data = __on_video_data;
+    event_handler->on_error = __on_error;
+    event_handler->on_mixed_audio_data = __on_mixed_audio_data;
+    event_handler->on_audio_data = __on_audio_data;
+}
+```
+
+`on_reconnecting` fires when the connection to the channel times out and IoT SDK starts trying to reconnect. Use it together with `on_rejoin_channel_success` and `on_connection_lost` to track connection state through temporary network interruptions.
+
+Pass the populated event handler to `agora_rtc_init`:
+
+```c
+agora_rtc_event_handler_t event_handler = {0};
+app_init_event_handler(&event_handler);
+
+rtc_service_option_t service_opt = {0};
+service_opt.area_code = DEFAULT_AREA_CODE;
+service_opt.log_cfg.log_path = DEFAULT_SDK_LOG_PATH;
+
+rval = agora_rtc_init(AGORA_APP_ID_FOR_TEST, &event_handler, &service_opt);
+if (rval < 0) {
+    printf("Failed to initialize Agora sdk, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+```
+
+Replace `DEFAULT_AREA_CODE`, `DEFAULT_SDK_LOG_PATH`, and `AGORA_APP_ID_FOR_TEST` with values for your own project. For details on `area_code`, see [Geofencing](build/manage-connections-and-quality/geofencing.mdx).
+
+### Create a connection and join a channel
+
+Call `agora_rtc_create_connection` to create a connection, then configure `rtc_channel_options_t` and call `agora_rtc_join_channel` to join a channel on that connection:
+
+```c
+// Create a connection
+rval = agora_rtc_create_connection(&g_conn_id);
+if (rval < 0) {
+    printf("Failed to create connection, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+rtc_channel_options_t channel_options = { 0 };
+channel_options.auto_subscribe_audio = true;
+channel_options.auto_subscribe_video = true;
+// This example uses the SDK's built-in Opus encoder
+channel_options.audio_codec_opt.audio_codec_type = AUDIO_CODEC_TYPE_OPUS;
+channel_options.audio_codec_opt.pcm_sample_rate = 16000;
+channel_options.audio_codec_opt.pcm_channel_num = 1;
+
+// Join the channel
+rval = agora_rtc_join_channel(g_conn_id, DEFAULT_CHANNEL_NAME, DEFAULT_USER_ID, DEFAULT_TOKEN, &channel_options);
+if (rval < 0) {
+    printf("Failed to join channel \"%s\", reason: %s\n", DEFAULT_CHANNEL_NAME, agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+while (!g_connected_flag) {
+    usleep(100 * 1000);
+}
+```
+
+A single connection can join multiple RTC channels. Every channel the connection has joined receives the audio and video you send on that connection. IoT SDK triggers `on_join_channel_success` when the join succeeds.
+
+Replace `DEFAULT_CHANNEL_NAME`, `DEFAULT_USER_ID`, and `DEFAULT_TOKEN` with values for your own project.
+
+### Send and receive audio and video streams
+
+:::info
+The RTSA Lite SDK does not capture or encode audio and video itself. Your device firmware must interface with the microphone and camera hardware, capture raw data, and encode it before sending. See [Codec](build/configure-media/codec.mdx) for supported formats.
+:::
+
+To send audio, call `agora_rtc_send_audio_data` with a PCM frame:
+
+```c
+static int send_audio_frame(uint8_t *data, uint32_t len) {
+    audio_frame_info_t info = {0};
+    info.data_type = AUDIO_DATA_TYPE_PCM;
+    int rval = agora_rtc_send_audio_data(g_conn_id, data, len, &info);
+    if (rval < 0) {
+        printf("Failed to send audio data, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+    return 0;
+}
+```
+
+To send video, call `agora_rtc_send_video_data` with an H.264 frame:
+
+```c
+static int send_video_frame(uint8_t *data, uint32_t len) {
+    video_frame_info_t info = {0};
+    info.frame_type = VIDEO_FRAME_KEY;
+    info.frame_rate = CONFIG_SEND_FRAME_RATE;
+    info.stream_type = VIDEO_STREAM_HIGH;
+    info.data_type = VIDEO_DATA_TYPE_H264;
+    int rval = agora_rtc_send_video_data(g_conn_id, data, len, &info);
+    if (rval < 0) {
+        printf("Failed to send video data, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+    return 0;
+}
+```
+
+The interval between sends must match your media timing: the video send interval must align with your frame rate, and the audio send interval must match the duration of each audio frame. This example sends audio and video from two threads, each paced independently:
+
+```c
+static void *video_send_thread(void *threadid) {
+    int video_send_interval_ms = 1000 / CONFIG_SEND_FRAME_RATE;
+    void *pacer = pacer_create(video_send_interval_ms);
+    uint32_t frame_count = 0;
+    int num_frames = sizeof(test_video_frames) / sizeof(test_video_frames[0]);
+
+    while (g_connected_flag && !g_stop_flag) {
+        int i = (frame_count++ % num_frames);
+        send_video_frame(test_video_frames[i].data, test_video_frames[i].len);
+        wait_for_next_pace(pacer);
+    }
+
+    pacer_destroy(pacer);
+    return NULL;
+}
+```
+
+```c
+#define CONFIG_PCM_FRAME_LEN (640)
+#define CONFIG_PCM_SAMPLE_RATE (16000)
+#define CONFIG_PCM_CHANNEL_NUM (1)
+#define CONFIG_AUDIO_FRAME_DURATION_MS \
+    (CONFIG_PCM_FRAME_LEN * 1000 / CONFIG_PCM_SAMPLE_RATE / CONFIG_PCM_CHANNEL_NUM / sizeof(int16_t))
+
+static void *audio_send_thread(void *threadid) {
+    int audio_send_interval_ms = CONFIG_AUDIO_FRAME_DURATION_MS;
+    void *pacer = pacer_create(audio_send_interval_ms);
+    uint32_t pcm_offset = 0;
+
+    while (g_connected_flag && !g_stop_flag) {
+        send_audio_frame((uint8_t *)pcm_test_data + pcm_offset, CONFIG_PCM_FRAME_LEN);
+        pcm_offset += CONFIG_PCM_FRAME_LEN;
+        if ((pcm_offset + CONFIG_PCM_FRAME_LEN) > sizeof(pcm_test_data)) {
+            pcm_offset = 0;
+        }
+        wait_for_next_pace(pacer);
+    }
+
+    pacer_destroy(pacer);
+    return NULL;
+}
+```
+
+`test_video_frames` and `pcm_test_data` represent your own encoded video frames and captured PCM audio. Replace them with data from your device's camera and microphone pipeline.
+
+To receive audio and video sent by remote users, implement the `on_audio_data` and `on_video_data` callbacks you registered in [Listen for events](#listen-for-events).
+
+### Leave the channel and destroy the connection
+
+When you are done with a connection, leave the channel and destroy the connection to release its resources:
+
+```c
+agora_rtc_leave_channel(g_conn_id);
+agora_rtc_destroy_connection(g_conn_id);
+```
+
+## Transmit signaling
+
+### Log in to RTM
+
+Call `agora_rtc_login_rtm` to log in to the RTM system on the device, passing an RTM user ID, an RTM token, and an `agora_rtm_handler_t` populated with your signaling callbacks:
+
+```c
+agora_rtm_handler_t rtm_handler = {0};
+rtm_handler.on_rtm_data = __on_rtm_data;
+rtm_handler.on_rtm_event = __on_rtm_event;
+rtm_handler.on_send_rtm_data_result = __on_rtm_send_data_result;
+
+rval = agora_rtc_login_rtm(rtm_uid, token, &rtm_handler);
+if (rval < 0) {
+    printf("login rtm failed\n");
+    goto EXIT;
+}
+```
+
+:::info
+RTM tokens and RTC tokens use different generation mechanisms and scopes. You cannot use an RTC token to log in to RTM, or an RTM token to join an RTC channel.
+:::
+
+### Send and receive signaling messages
+
+Implement the RTM callbacks to receive messages and monitor login and send status:
+
+```c
+static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
+    printf("Receive data[%s] from user[%s] length[%lu]\n", (char *)data, user_id, data_len);
+}
+
+static void __on_rtm_event(const char *user_id, uint32_t event_id, uint32_t event_code) {
+    printf("%s event id[%u], event code[%u]\n", user_id, event_id, event_code);
+    if (event_id == 0 && event_code == 0) {
+        g_rtm_login_success_flag = 1;
+    }
+}
+
+static void __on_rtm_send_data_result(const char *user_id, uint32_t msg_id, uint32_t error_code) {
+    printf("user [%s] msg_id [%u], error_code[%u]\n", user_id, msg_id, error_code);
+}
+```
+
+To send a message to a specific peer, call `agora_rtc_send_rtm_data` with the peer's user ID and your message payload:
+
+```c
+uint32_t g_message_id = 0;
+rval = agora_rtc_send_rtm_data(peer_uid, buffer, rval, &g_message_id);
+if (rval < 0) {
+    printf("send data failed, rval=%d\n", rval);
+    goto EXIT;
+}
+printf("send message_id=%u successfully\n", g_message_id);
+```
+
+### Log out of RTM
+
+When you are done sending signaling messages, log out to release RTM resources:
+
+```c
+agora_rtc_logout_rtm();
+```
+
+## Destroy the SDK instance
+
+When your app shuts down, call `agora_rtc_fini` to release all resources held by the SDK:
+
+```c
+agora_rtc_fini();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [Overview](https://api-ref.agora.io/en/iot-sdk/linux/1.x/index.html)
+
+- [Events](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)

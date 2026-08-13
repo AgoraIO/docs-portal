@@ -1,0 +1,51 @@
+---
+title: "Resources"
+description: "Choose the SDK package that matches your device's architecture, OS, and C library."
+---
+
+Agora publishes a separate Linux C SDK package for each combination of processor architecture, C library, and float ABI. Use this page to identify the package that matches your device before you download the SDK.
+
+## Package naming convention
+
+Each package name follows the pattern `<architecture>-<OS>-<C library><float type>`. For example:
+
+- `aarch64-linux-gnu`: ARMv8 architecture, Linux, glibc, soft-float
+- `armv7a-linux-uclibceabihf`: ARMv7 architecture, Linux, uClibc, hard-float
+
+A package name ending in `hf` uses hard-float; all other packages use soft-float.
+
+## Available packages
+
+| Package | Architecture | C library |
+|---|---|---|
+| `x86_64-linux-gnu` | x86-64 | glibc |
+| `aarch64-linux-gnu` | ARMv8 | glibc |
+| `aarch64-linux-musl` | ARMv8 | musl |
+| `armv7a-linux-gnueabihf` | ARMv7 | glibc (hard-float) |
+| `armv7a-linux-gnueabi` | ARMv7 | glibc (soft-float) |
+| `armv7a-linux-uclibceabihf` | ARMv7 | uClibc (hard-float) |
+| `armv7a-linux-uclibceabi` | ARMv7 | uClibc (soft-float) |
+| `armv7a-linux-musleabihf` | ARMv7 | musl (hard-float) |
+| `armv7a-linux-musleabi` | ARMv7 | musl (soft-float) |
+| `armv6-linux-gnueabihf` | ARMv6 | glibc (hard-float) |
+| `armv6-linux-uclibceabi` | ARMv6 | uClibc (soft-float) |
+| `armv5-linux-gnueabi` | ARMv5 | glibc |
+| `armv5-linux-uclibceabi` | ARMv5 | uClibc |
+| `mipsel-linux-gnueabihf` | MIPS | glibc (hard-float) |
+| `mipsel-linux-uclibceabihf` | MIPS | uClibc (hard-float) |
+| `mipsel-linux-uclibceabi` | MIPS | uClibc (soft-float) |
+| `arm-liteos-eabi` | ARM | LiteOS |
+| `armv7a-harmony-eabi` | ARMv7 | HarmonyOS |
+
+If your target architecture is not listed, contact sales@agora.io for a custom platform build.
+
+## Download the SDK
+
+For download links to the latest SDK build for your platform and architecture, see [SDK downloads](/en/sdks).
+
+## Related pages
+
+- [Quickstart](/en/realtime-media/iot/quickstart)
+- [Build from scratch](/en/realtime-media/iot/build-from-scratch)
+- [Supported platforms](/en/realtime-media/iot/reference/supported-platforms)
+- [License](/en/realtime-media/iot/build/authenticate-and-secure-channels/license)

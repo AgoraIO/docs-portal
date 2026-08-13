@@ -1,0 +1,70 @@
+---
+title: "String UID"
+description: "Identify users with a string-based user account instead of an integer UID."
+---
+
+Starting with v1.9.5, IoT SDK supports User Account-based identity, so you can identify a device or user with a string instead of an integer UID. Use this when your application already maintains string-based user accounts, for example an email address or a device serial number, and you want to reuse the same identifier in Agora channels instead of mapping it to an integer UID yourself.
+
+This feature is available for the Linux C SDK only.
+
+:::info
+The first time a new user account is used, the SDK requests a server-side mapping from the string account to an integer UID, which can add a small amount of latency to that user's initial join.
+:::
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the [Build from scratch](../../build-from-scratch.mdx) guide for IoT SDK.
+
+## Enable String UID
+
+Set `use_string_uid` to `true` in `rtc_service_option_t` before you initialize the SDK:
+
+```cpp
+rtc_service_option_t service_opt = {
+    .use_string_uid = true
+};
+int rval = agora_rtc_init(appid, &event_handler, &service_opt);
+```
+
+Once you enable String UID, every client in the channel must join using a user account. You cannot mix integer UID and String UID clients in the same channel.
+
+## Join a channel with a user account
+
+Create a connection, then call `agora_rtc_join_channel_with_user_account` instead of `agora_rtc_join_channel`:
+
+```cpp
+connection_id_t conn_id = 0;
+const char *user_account = "xxxx";
+
+agora_rtc_create_connection(&conn_id);
+agora_rtc_join_channel_with_user_account(conn_id, "channel-xxx", user_account, token, &channel_opt);
+```
+
+## Look up user information
+
+Once a connection has joined the channel, retrieve information about a peer using either their user account or their integer UID:
+
+- `agora_rtc_get_user_info_by_user_account`: look up a remote user's information by their user account.
+- `agora_rtc_get_user_info_by_uid`: look up a remote user's information by their integer UID.
+
+## Handle user account events
+
+Register handlers for the following callbacks to track user account join, leave, and update events:
+
+- `on_join_channel_success`: the local user account joined successfully.
+- `on_user_joined_with_user_account`: a remote user account joined the channel.
+- `on_user_offline_with_user_account`: a remote user account left the channel.
+- `on_user_info_updated`: a user's account information changed.
+
+## Reference
+
+### API reference
+
+- [agora_rtc_join_channel_with_user_account](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [agora_rtc_get_user_info_by_user_account](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [agora_rtc_get_user_info_by_uid](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [on_user_joined_with_user_account](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)
+- [on_user_offline_with_user_account](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)
+- [on_user_info_updated](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)
