@@ -25,6 +25,8 @@ The limitation for concurrent streams is:
 
 For higher quotas, contact [Agora technical support](mailto:support@agora.io).
 
+If you use [dual-stream high availability](#enable-dual-stream-high-availability), each protected source counts as two streams against this limit: one for the primary push and one for the backup, even while the backup is on standby.
+
 ## Ensure high availability of streaming services
 
 Agora provides alternate domain names to reduce outages caused by regional network failures.
@@ -41,6 +43,64 @@ Best practice:
 1. Use the primary domain based on the geographical location of your source stream.
 2. If the request fails, retry using the same primary domain.
 3. If the retry still fails, try the alternate domain name.
+
+## Enable dual-stream high availability
+
+The domain-retry strategy helps when a single push fails outright. For streams that need continuous protection against degraded quality or a dropped connection mid-broadcast, use dual-stream high availability instead.
+
+With dual-stream high availability, you push the same content to two independent streaming keys bound to the same channel and user ID: one over a primary domain, one over a backup domain. Media Gateway keeps the primary stream active and the backup on standby, and can automatically promote the backup if the primary stream fails or degrades.
+
+### Set up dual streaming
+
+1. Create two custom domains, one with `domainType: 0` (primary) and one with `domainType: 1` (backup). See [Configure a custom RTMPS domain](../build/configure-custom-domains/configure-rtmps-domain.md).
+2. Create two streaming keys bound to the same `channel` and `uid`.
+3. Enable `dualStreaming` for your project:
+
+```bash
+curl --request PUT \
+  --url https://api.agora.io/${region}/v1/projects/${appId}/rtls/ingress/appconfig \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Basic XXXXXX' \
+  --data '{
+    "settings": {
+      "dualStreaming": {
+        "enabled": true,
+        "switchStrategy": 0
+      }
+    }
+  }'
+```
+
+4. Push to both domains at the same time, using the matching streaming key for each:
+
+```
+rtmps://primary-live.example.com/{app}/{primaryStreamKey}
+rtmps://backup-live.example.com/{app}/{backupStreamKey}
+```
+
+### Switch strategies
+
+Set `switchStrategy` in the `dualStreaming` request body to control how Media Gateway decides when to promote the backup stream:
+
+| `switchStrategy` | Name | Behavior |
+| --- | --- | --- |
+| `0` | Failover | Media Gateway promotes the backup stream only when the primary stream disconnects. |
+| `1` | Manual | The backup stream never takes over automatically. Use this if you want to control failover yourself. |
+| `2` | Adaptive | In addition to failover, Media Gateway monitors primary stream video quality and promotes the backup stream if the primary degrades and the backup is healthy. Configure quality thresholds with `qualityThreshold` and `adaptiveSwitchPolicy`. |
+
+With adaptive mode, quality is judged by `freezeRate` (in per-mille, so `30` means 3.0%) against a rolling window of samples. The defaults are:
+
+| Field | Default | Description |
+| --- | --- | --- |
+| `windowCount` | `5` | Number of recent samples evaluated. |
+| `degradeCount` | `3` | Bad samples (above the `high` threshold) within the window before the primary is marked degraded. |
+| `recoverCount` | `3` | Consecutive good samples (below the `low` threshold) before a degraded primary recovers. |
+| `takeoverCount` | `3` | Consecutive good samples the backup needs before it's allowed to take over. |
+| `cooldownMs` | `30000` | Minimum time between takeovers. |
+
+:::note
+Dual-stream failover isn't instantaneous — Media Gateway takes about 10 seconds to detect that the primary stream is inactive — and it only helps if the two streams are genuinely independent. If both streams come from the same encoder or network uplink, a failure on one is likely to affect the other too.
+:::
 
 ## Ensure high availability of REST services
 
