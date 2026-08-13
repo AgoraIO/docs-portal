@@ -375,6 +375,110 @@ describe('DocsShell', () => {
     });
   });
 
+  it('navigates through linked sidebar sections and closes the mobile sheet', async () => {
+    const realtimeCommunicationPath = '/en/realtime-media/rtc';
+    const { router } = renderDocsShell(
+      {
+        activePath: '/en/realtime-media/overview',
+        activeTab: 'realtime-media',
+        sidebar: [
+          {
+            id: 'rtc-overview',
+            title: 'RTC overview',
+            type: 'page',
+            url: '/en/realtime-media/overview',
+          },
+          {
+            children: [],
+            collapsible: true,
+            id: 'realtime-communication',
+            title: 'Realtime Communication',
+            type: 'section',
+            url: realtimeCommunicationPath,
+          },
+        ],
+        tabs: realtimeMediaTabs,
+      },
+      '/en/realtime-media/overview',
+    );
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileDialog = await screen.findByRole('dialog');
+    const linkedSection = within(mobileDialog).getByRole('link', {
+      name: 'Realtime Communication',
+    });
+
+    expect(linkedSection).toHaveAttribute('href', realtimeCommunicationPath);
+
+    fireEvent.click(linkedSection);
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe(realtimeCommunicationPath);
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
+  it('uses shared sidebar normalization and disclosure behavior on mobile', async () => {
+    renderDocsShell({
+      activePath: '/en/ai/overview',
+      activeTab: 'ai',
+      sidebar: [
+        {
+          children: [
+            {
+              id: 'enable-service',
+              title: 'Enable service',
+              type: 'page',
+              url: '/en/ai/enable-service',
+            },
+          ],
+          id: 'getting-started',
+          title: 'Getting Started',
+          type: 'section',
+        },
+        {
+          children: [
+            {
+              id: 'rest-quickstart',
+              title: 'REST quickstart',
+              type: 'page',
+              url: '/en/ai/quick-start',
+            },
+          ],
+          collapsible: true,
+          id: 'sdk-quickstarts',
+          title: 'SDK Quickstarts',
+          type: 'section',
+        },
+      ],
+    });
+
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Open navigation' }),
+    );
+
+    const mobileDialog = await screen.findByRole('dialog');
+    const quickstartsToggle = within(mobileDialog).getByRole('button', {
+      name: 'SDK Quickstarts',
+    });
+
+    expect(quickstartsToggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(mobileDialog).queryByRole('link', { name: 'REST quickstart' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(quickstartsToggle);
+
+    expect(
+      within(mobileDialog).getByRole('link', { name: 'REST quickstart' }),
+    ).toBeInTheDocument();
+  });
+
   it('renders a separate desktop header row and docs tabs strip', async () => {
     renderDocsShell();
 
@@ -1611,7 +1715,8 @@ describe('DocsShell', () => {
       sectionPicker.compareDocumentPosition(currentPageLink) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
-    expect(currentPageLink).toHaveClass('w-full', 'min-w-0', 'overflow-hidden');
+    expect(currentPageLink).toHaveAttribute('data-active', 'true');
+    expect(currentPageLink).toHaveClass('w-full', 'min-h-[28px]');
     expect(currentPageLink).toHaveAttribute('aria-current', 'page');
     expect(currentPageLink.className).toContain(
       'bg-[color:var(--accent-brand-soft)]',
@@ -1619,7 +1724,7 @@ describe('DocsShell', () => {
     expect(currentPageLink.className).toContain(
       'before:bg-[color:var(--accent-brand)]',
     );
-    expect(currentPageLink.className).toContain('focus-visible:ring-[3px]');
+    expect(currentPageLink).toHaveClass('focus-visible:ring-2');
 
     sectionPicker.focus();
     fireEvent.keyDown(sectionPicker, { code: 'Enter', key: 'Enter' });
@@ -1643,7 +1748,7 @@ describe('DocsShell', () => {
     expect(currentSectionItem.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('wraps long mobile sidebar labels and limits nested indentation', async () => {
+  it('uses shared sidebar wrapping and endpoint labels on mobile', async () => {
     const longTabTitle =
       'RealtimeMediaWithAnExtremelyLongUnbrokenMobileNavigationTitle';
     const longSectionTitle =
@@ -1696,29 +1801,27 @@ describe('DocsShell', () => {
       'docs-mobile-section-picker',
     );
     const pickerLabel = within(sectionPicker).getByText(longTabTitle);
-    const sectionLabel = within(mobileSheet)
-      .getByText(longSectionTitle)
-      .closest('p');
+    const sectionLabel = within(mobileSheet).getByTitle(longSectionTitle);
     const pageLink = within(mobileSheet).getByRole('link', {
       name: `${longPageTitle} POST`,
     });
     const pageTitle = within(pageLink).getByText(longPageTitle);
-    const nestedList = sectionLabel?.nextElementSibling;
 
     expect(sectionPicker).toHaveClass('w-full', 'min-w-0', 'justify-between');
     expect(pickerLabel).toHaveClass('min-w-0', 'truncate');
     expect(within(mobileSheet).queryByRole('tablist')).toBeNull();
-    expect(sectionLabel).toBeInstanceOf(HTMLElement);
-    expect(sectionLabel).toHaveAttribute('data-active', 'true');
-    expect(sectionLabel).toHaveClass('max-w-full', '[overflow-wrap:anywhere]');
-    expect(nestedList).toBeInstanceOf(HTMLElement);
-    expect(nestedList).toHaveClass('max-w-full', 'border-l', 'pl-2', 'ml-2');
-    expect(pageLink).toHaveClass(
-      'max-w-full',
-      'overflow-hidden',
-      '[&>span:first-child]:[overflow-wrap:anywhere]',
+    expect(sectionLabel).toHaveClass(
+      'min-w-0',
+      'break-words',
+      'whitespace-normal',
     );
-    expect(pageTitle).toHaveClass('min-w-0', 'flex-1');
+    expect(pageLink).toHaveClass('w-full', 'min-h-[28px]', 'overflow-visible');
+    expect(pageTitle).toHaveAttribute('title', longPageTitle);
+    expect(pageTitle).toHaveClass(
+      'min-w-0',
+      'break-words',
+      'whitespace-normal',
+    );
     expect(within(pageLink).getByText('POST')).toHaveClass(
       'shrink-0',
       'font-mono',
