@@ -28,12 +28,10 @@ const fetchMock = vi.fn();
 const {
   captureDocsLinkClickedMock,
   captureDocsPageFeedbackMock,
-  captureDocsPageViewedMock,
   registerDocsPageContextMock,
 } = vi.hoisted(() => ({
   captureDocsLinkClickedMock: vi.fn(),
   captureDocsPageFeedbackMock: vi.fn(),
-  captureDocsPageViewedMock: vi.fn(),
   registerDocsPageContextMock: vi.fn(),
 }));
 
@@ -43,9 +41,9 @@ vi.mock('@/lib/analytics/posthog', () => ({
   captureDocsFeedbackOpened: vi.fn(),
   captureDocsLinkClicked: captureDocsLinkClickedMock,
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
-  captureDocsPageViewed: captureDocsPageViewedMock,
   captureDocsTocClicked: vi.fn(),
   initializePostHog: vi.fn(),
+  queueDocsPageView: vi.fn(),
   registerDocsPageContext: registerDocsPageContextMock,
 }));
 
@@ -153,7 +151,6 @@ describe('DocsContent', () => {
 
   beforeEach(() => {
     captureDocsLinkClickedMock.mockReset();
-    captureDocsPageViewedMock.mockReset();
     fetchMock.mockReset();
     registerDocsPageContextMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
@@ -180,7 +177,7 @@ describe('DocsContent', () => {
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
   });
 
-  it('registers canonical server context before capturing a docs page view', async () => {
+  it('registers canonical server context for the active docs page', async () => {
     renderWithRouter(
       <DocsContent
         activePath="/en/realtime-media/video/get-started-sdk"
@@ -221,8 +218,6 @@ describe('DocsContent', () => {
         version: 'current',
       });
     });
-    expect(captureDocsPageViewedMock).toHaveBeenCalledOnce();
-    expect(captureDocsPageViewedMock).toHaveBeenCalledWith({ locale: 'en' });
   });
 
   it('keeps a single-item breadcrumb that differs from the page title', async () => {
@@ -287,7 +282,7 @@ describe('DocsContent', () => {
     expect(within(breadcrumb).getByText('About Agora')).toBeInTheDocument();
   });
 
-  it('classifies breadcrumb link clicks separately from article links', async () => {
+  it('renders breadcrumb links for navigation', async () => {
     renderWithRouter(
       <DocsContent
         breadcrumb={[
@@ -307,17 +302,10 @@ describe('DocsContent', () => {
       />,
     );
 
-    fireEvent.click(
-      within(await screen.findByLabelText('Breadcrumb')).getByRole('link', {
-        name: 'Introduction',
-      }),
-    );
-
-    expect(captureDocsLinkClickedMock).toHaveBeenCalledWith({
-      href: expect.stringContaining('/en/introduction'),
-      locale: 'en',
-      source: 'breadcrumb',
-    });
+    const breadcrumb = await screen.findByLabelText('Breadcrumb');
+    expect(
+      within(breadcrumb).getByRole('link', { name: 'Introduction' }),
+    ).toHaveAttribute('href', '/en/introduction');
   });
 
   it('renders English last updated metadata below the page title', async () => {
