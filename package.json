@@ -25,6 +25,8 @@
     "docs:links:classify": "node scripts/classify-doc-link-audit.mjs --out=docs/agents/reports/2026-06-30-doc-link-strict-classification.md",
     "docs:links:classify:check": "node scripts/classify-doc-link-audit.mjs --check --out=docs/agents/reports/2026-06-30-doc-link-strict-classification.md",
     "docs:links:external": "node scripts/audit-doc-links.mjs --check-external --external-concurrency=8 --external-retries=2 --external-timeout=5000",
+    "docs:quality": "node scripts/docs-quality/generate-report.mjs",
+    "docs:quality:test": "bun test ./scripts/docs-quality/generate-report.test.ts",
     "legacy-redirects:generate": "node scripts/generate-legacy-redirect-artifacts.mjs",
     "legacy-redirects:check": "node scripts/generate-legacy-redirect-artifacts.mjs --check",
     "docs:lint:english": "node scripts/audit-english-doc-low-errors.mjs",

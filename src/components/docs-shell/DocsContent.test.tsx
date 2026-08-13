@@ -31,6 +31,7 @@ const { captureDocsPageFeedbackMock } = vi.hoisted(() => ({
 
 vi.mock('@/lib/analytics/posthog', () => ({
   captureDocsPageFeedback: captureDocsPageFeedbackMock,
+  captureDocsPageViewed: vi.fn(),
   initializePostHog: vi.fn(),
 }));
 

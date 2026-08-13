@@ -1,0 +1,235 @@
+{
+  "version": 2,
+  "policyVersion": "2026-08-06",
+  "dashboardUrl": null,
+  "monitoring": {
+    "dataFreshnessHours": 48,
+    "eventHealthDays": 7,
+    "topRouteChecks": 40,
+    "topRoutePortfolioSize": 20
+  },
+  "remediationTargets": {
+    "analytics": "src/lib/analytics/posthog.ts",
+    "performance": "src/routes/$locale/$tab/$.tsx",
+    "redirects": "src/lib/legacy-sitemap/redirects.json",
+    "routeHandler": "src/routes/$locale/$tab/$.tsx"
+  },
+  "instrumentation": {
+    "deployedAt": "2026-08-05T05:31:01.434Z",
+    "gracePeriodDays": 7,
+    "minimumSessions": 100,
+    "minimumPreviousEvents": 20,
+    "degradationRatio": 0.5
+  },
+  "agentBenchmark": {
+    "artifactsPath": ".agent/docs-benchmark-pilot/.artifacts/docs-benchmark",
+    "fallback": [
+      {
+        "batchId": "2026-07-31T09-36-57.699Z-voice-agent-quickstart-claude-a768c5db",
+        "taskId": "voice-agent-quickstart",
+        "completedAt": "2026-08-03T07:09:54.530Z",
+        "byVendor": {
+          "agora": {
+            "failed": 3,
+            "passed": 0,
+            "total": 3,
+            "passRate": 0
+          },
+          "elevenlabs": {
+            "failed": 3,
+            "passed": 0,
+            "total": 3,
+            "passRate": 0
+          },
+          "livekit": {
+            "failed": 2,
+            "passed": 1,
+            "total": 3,
+            "passRate": 0.3333333333333333
+          }
+        },
+        "overall": {
+          "failed": 8,
+          "passed": 1,
+          "total": 9,
+          "passRate": 0.1111111111111111
+        }
+      }
+    ]
+  },
+  "pages": [
+    {
+      "pathname": "/en/introduction",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "cognitiveCategory": "product-selection",
+      "goal": "Choose the correct Agora documentation path without relying on site search."
+    },
+    {
+      "pathname": "/en/ai",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "cognitiveCategory": "product-selection",
+      "goal": "Choose the in-app or device Voice Agent path."
+    },
+    {
+      "pathname": "/en/realtime-media/video/get-started-sdk",
+      "pageType": "task-guide",
+      "selection": "top-traffic",
+      "cognitiveCategory": "platform-selection",
+      "goal": "Build and run the first Video Calling SDK integration."
+    },
+    {
+      "pathname": "/en/realtime-media/overview",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "cognitiveCategory": "product-selection",
+      "goal": "Choose the correct Realtime Media product."
+    },
+    {
+      "pathname": "/en/api-reference",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "cognitiveCategory": "task-sequence",
+      "goal": "Choose SDK, REST API, recipe, or troubleshooting reference."
+    },
+    {
+      "pathname": "/en/realtime-media/video",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "goal": "Choose a Video Calling setup or implementation task."
+    },
+    {
+      "pathname": "/en/ai/get-started/quickstart",
+      "pageType": "task-guide",
+      "selection": "top-traffic",
+      "cognitiveCategory": "prerequisite-and-toolchain",
+      "goal": "Run the official in-app Voice Agent starter and observe the first conversation."
+    },
+    {
+      "pathname": "/en/api-reference/sdks",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "cognitiveCategory": "platform-selection",
+      "goal": "Find and install the correct SDK version for a product and platform."
+    },
+    {
+      "pathname": "/en/realtime-media/voice/quickstart",
+      "pageType": "task-guide",
+      "selection": "top-traffic",
+      "goal": "Build and run the first Voice Calling SDK integration."
+    },
+    {
+      "pathname": "/en/realtime-media/voice",
+      "pageType": "navigation-landing",
+      "selection": "top-traffic",
+      "goal": "Choose a Voice Calling setup or implementation task."
+    },
+    {
+      "pathname": "/en/realtime-media/voice/reference/pricing-legacy",
+      "pageType": "concept-explanation",
+      "selection": "top-traffic",
+      "goal": "Understand which legacy pricing rules apply and where current pricing lives."
+    },
+    {
+      "pathname": "/en/realtime-media/video/build/capture-and-render-video/screen-sharing",
+      "pageType": "task-guide",
+      "selection": "top-traffic",
+      "goal": "Add screen sharing to an existing Video Calling integration."
+    },
+    {
+      "pathname": "/en/realtime-media/iot/reference/licensing",
+      "pageType": "concept-explanation",
+      "selection": "top-traffic",
+      "goal": "Understand and implement IoT device licensing."
+    },
+    {
+      "pathname": "/en/api-reference/api-ref/rtc",
+      "pageType": "sdk-api-reference",
+      "selection": "top-traffic",
+      "goal": "Find the authoritative RTC REST API operation."
+    },
+    {
+      "pathname": "/en/api-reference/recipes",
+      "pageType": "navigation-landing",
+      "selection": "page-type-representative",
+      "goal": "Choose a runnable REST API recipe."
+    },
+    {
+      "pathname": "/en/ai/build/start-stop-agent",
+      "pageType": "task-guide",
+      "selection": "page-type-representative",
+      "goal": "Start and stop a Voice Agent through the REST API."
+    },
+    {
+      "pathname": "/en/introduction/core-concepts",
+      "pageType": "concept-explanation",
+      "selection": "page-type-representative",
+      "cognitiveCategory": "terminology",
+      "goal": "Explain the core concepts needed to choose an Agora integration model."
+    },
+    {
+      "pathname": "/en/api-reference/api-ref/conversational-ai/join",
+      "sourceFile": "content/openapi/conversational-ai/rest-api.en.yaml",
+      "pageType": "sdk-api-reference",
+      "selection": "page-type-representative",
+      "goal": "Extract the complete Start Agent request and success response contract."
+    },
+    {
+      "pathname": "/en/api-reference/faq/integration/mirror_mode",
+      "pageType": "faq-troubleshooting",
+      "selection": "page-type-representative",
+      "goal": "Resolve video mirror-mode behavior for local and remote views."
+    },
+    {
+      "pathname": "/en/realtime-media/voice/reference/release-notes",
+      "pageType": "release-download",
+      "selection": "page-type-representative",
+      "goal": "Find platform-specific release changes and upgrade implications."
+    }
+  ],
+  "benchmarkTasks": [
+    {
+      "id": "video-calling-web-quickstart",
+      "kind": "traffic-derived",
+      "scope": "agora",
+      "status": "planned",
+      "task": "From the English homepage, find and explain the Web Video Calling SDK quickstart, prerequisites, toolchain, and first observable success."
+    },
+    {
+      "id": "voice-calling-web-quickstart",
+      "kind": "traffic-derived",
+      "scope": "agora",
+      "status": "planned",
+      "task": "From the English homepage, find and explain the Web Voice Calling SDK quickstart, prerequisites, toolchain, and first observable success."
+    },
+    {
+      "id": "voice-agent-start-stop-api",
+      "kind": "traffic-derived",
+      "scope": "agora",
+      "status": "planned",
+      "task": "From the English homepage, find the supported REST path to start and stop a Voice Agent and explain how success is verified."
+    },
+    {
+      "id": "voice-agent-quickstart",
+      "kind": "strategic-cross-vendor",
+      "scope": "agora-livekit-elevenlabs",
+      "status": "completed",
+      "task": "Find the official code-based in-app Voice Agent quickstart and recover credentials, toolchain, first success, and citations."
+    },
+    {
+      "id": "rest-api-first-request",
+      "kind": "strategic-cross-vendor",
+      "scope": "agora-livekit-elevenlabs",
+      "status": "planned",
+      "task": "From the English homepage, find REST authentication and produce a correct first official API request with a verifiable response."
+    },
+    {
+      "id": "realtime-audio-troubleshooting",
+      "kind": "strategic-cross-vendor",
+      "scope": "agora-livekit-elevenlabs",
+      "status": "planned",
+      "task": "From the English homepage, diagnose a user who can connect but cannot hear remote audio using only official documentation."
+    }
+  ]
+}
