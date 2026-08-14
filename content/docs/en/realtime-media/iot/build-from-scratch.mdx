@@ -3,9 +3,7 @@ title: "Build from scratch"
 description: "Implement media stream and signaling transmission with IoT SDK, step by step."
 ---
 
-The Internet of things (IoT) connects physical objects with sensors, processors, and software to enable data exchange with other devices. In related applications, such as apps for smart doorbells and remote monitoring, IoT devices send or receive audio and video streams, and exchange signaling messages, to perform their function. Agora IoT SDK gives you the ability to enable live voice and video streams, and reliable signaling, on IoT devices on a variety of platforms and for many use cases, while also offering a compact SDK size, low memory usage, and low power consumption.
-
-This page shows you how to integrate IoT SDK into your own project from scratch: initialize the SDK, transmit media streams over RTC, transmit signaling messages over RTM, and release resources when you are done. If you only want to see IoT SDK working before you integrate it, use the [Quickstart](quickstart.mdx) instead.
+This page shows you how to integrate IoT SDK into your own project from scratch: initialize the SDK, transmit media streams over RTC, send and receive signaling messages, and release resources when you are done. If you only want to see IoT SDK working before you integrate it, use the [Quickstart](quickstart.mdx) instead.
 
 :::info
 IoT SDK for Android no longer receives version updates. For Android-based devices, integrate the [RTC Java SDK](/en/api-reference/sdks?product=video&platform=android) together with the [Signaling Java SDK](/en/api-reference/sdks?product=signaling&platform=android) instead of IoT SDK.
@@ -15,18 +13,18 @@ IoT SDK for Android no longer receives version updates. For Android-based device
 
 To follow this procedure you need:
 
-* Applied for and activated a device [license](build/authenticate-and-secure-channels/license.mdx). IoT SDK automatically verifies the license when a device joins a channel.
-* A development machine, which can be a computer or an embedded device. This page uses a computer running Ubuntu 18.04 as an example. For the full list of supported operating systems and toolchains, see [Supported platforms](reference/supported-platforms.mdx).
+* A device [license](build/authenticate-and-secure-channels/license.mdx) to pass to `license_value` when you initialize the SDK.
+* A computer or an embedded device. This page uses a computer running Ubuntu 18.04 as an example. For the full list of supported operating systems and toolchains, see [Supported platforms](reference/supported-platforms.mdx).
 * An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
 * A [temporary RTC token](/en/introduction/account#generate-temporary-tokens) and a temporary RTM token generated for your project. RTC tokens and RTM tokens use different generation mechanisms and scopes, so you cannot use one in place of the other.
 
 ## Project setup
 
-[Download](/en/api-reference/sdks?platform=linux) the SDK package that matches your development environment, and link the IoT SDK library into your own C project. See [Quickstart](quickstart.mdx) for the download and extraction commands if you have not already done this.
+[Download](/en/api-reference/sdks?platform=linux) the SDK package that matches your development environment, and link the IoT SDK library into your own C project. See [Get the SDK](quickstart.mdx#get-the-sdk) in the Quickstart for the download and extraction commands if you have not already done this.
 
 ## Initialize the SDK
 
-Call `agora_rtc_init` once, before any other IoT SDK call, to initialize the engine. The call takes your App ID, an event handler, and a service options struct:
+Call `agora_rtc_init` before any other IoT SDK call to initialize the engine. The call takes your App ID, an event handler, and a service options struct:
 
 ```c
 agora_rtc_event_handler_t rtc_event_handler = { 0 };
@@ -34,9 +32,11 @@ rtc_service_option_t service_options = { 0 };
 agora_rtc_init(appid, &rtc_event_handler, &service_options);
 ```
 
-If your device only sends and receives signaling messages and does not transmit media, you can pass `0` instead of an event handler. To transmit media streams, populate the event handler with callbacks as shown in [Listen for events](#listen-for-events).
+If your device only sends and receives signaling messages and does not transmit media, you can pass `0` instead of an event handler. To transmit media streams, populate the event handler with callbacks.
 
-## Transmit media streams
+## Implement media streaming
+
+This section shows you how to register event callbacks, join a channel, send and receive audio and video, and leave the channel.
 
 ### Listen for events
 
@@ -163,7 +163,11 @@ Replace `DEFAULT_AREA_CODE`, `DEFAULT_SDK_LOG_PATH`, and `AGORA_APP_ID_FOR_TEST`
 
 ### Create a connection and join a channel
 
-Call `agora_rtc_create_connection` to create a connection, then configure `rtc_channel_options_t` and call `agora_rtc_join_channel` to join a channel on that connection:
+To join a channel:
+
+1. Call `agora_rtc_create_connection` to create a connection.
+2. Configure `rtc_channel_options_t` with your channel settings.
+3. Call `agora_rtc_join_channel` to join a channel on that connection.
 
 ```c
 // Create a connection
@@ -193,15 +197,17 @@ while (!g_connected_flag) {
 }
 ```
 
-A single connection can join multiple RTC channels. Every channel the connection has joined receives the audio and video you send on that connection. IoT SDK triggers `on_join_channel_success` when the join succeeds.
+You can join multiple RTC channels using a single connection. When you send audio or video on a connection, IoT SDK delivers it to every channel joined on that connection. IoT SDK triggers `on_join_channel_success` when the join succeeds.
 
 Replace `DEFAULT_CHANNEL_NAME`, `DEFAULT_USER_ID`, and `DEFAULT_TOKEN` with values for your own project.
 
-### Send and receive audio and video streams
+### Send audio and video
 
 :::info
-The RTSA Lite SDK does not capture or encode audio and video itself. Your device firmware must interface with the microphone and camera hardware, capture raw data, and encode it before sending. See [Codec](build/configure-media/codec.mdx) for supported formats.
+IoT SDK does not capture or encode audio and video itself. Your device firmware must interface with the microphone and camera hardware, capture raw data, and encode it before sending. See [Codec](build/configure-media/codec.mdx) for supported formats.
 :::
+
+#### Send audio
 
 To send audio, call `agora_rtc_send_audio_data` with a PCM frame:
 
@@ -217,6 +223,8 @@ static int send_audio_frame(uint8_t *data, uint32_t len) {
     return 0;
 }
 ```
+
+#### Send video
 
 To send video, call `agora_rtc_send_video_data` with an H.264 frame:
 
@@ -235,6 +243,8 @@ static int send_video_frame(uint8_t *data, uint32_t len) {
     return 0;
 }
 ```
+
+#### Pace audio and video sends
 
 The interval between sends must match your media timing: the video send interval must align with your frame rate, and the audio send interval must match the duration of each audio frame. This example sends audio and video from two threads, each paced independently:
 
@@ -284,6 +294,8 @@ static void *audio_send_thread(void *threadid) {
 
 `test_video_frames` and `pcm_test_data` represent your own encoded video frames and captured PCM audio. Replace them with data from your device's camera and microphone pipeline.
 
+### Receive audio and video
+
 To receive audio and video sent by remote users, implement the `on_audio_data` and `on_video_data` callbacks you registered in [Listen for events](#listen-for-events).
 
 ### Leave the channel and destroy the connection
@@ -295,11 +307,13 @@ agora_rtc_leave_channel(g_conn_id);
 agora_rtc_destroy_connection(g_conn_id);
 ```
 
-## Transmit signaling
+## Implement signaling
 
-### Log in to RTM
+This section shows you how to log in to Signaling, send and receive signaling messages, and log out.
 
-Call `agora_rtc_login_rtm` to log in to the RTM system on the device, passing an RTM user ID, an RTM token, and an `agora_rtm_handler_t` populated with your signaling callbacks:
+### Log in to Signaling
+
+Call `agora_rtc_login_rtm` to log in to Signaling on the device, passing an RTM user ID, an RTM token, and an `agora_rtm_handler_t` populated with your signaling callbacks:
 
 ```c
 agora_rtm_handler_t rtm_handler = {0};
@@ -315,12 +329,12 @@ if (rval < 0) {
 ```
 
 :::info
-RTM tokens and RTC tokens use different generation mechanisms and scopes. You cannot use an RTC token to log in to RTM, or an RTM token to join an RTC channel.
+RTM tokens and RTC tokens use different generation mechanisms and scopes. You cannot use an RTC token to log in to Signaling, or an RTM token to join an RTC channel.
 :::
 
 ### Send and receive signaling messages
 
-Implement the RTM callbacks to receive messages and monitor login and send status:
+Implement the signaling callbacks to receive messages and monitor login and send status:
 
 ```c
 static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
@@ -342,18 +356,21 @@ static void __on_rtm_send_data_result(const char *user_id, uint32_t msg_id, uint
 To send a message to a specific peer, call `agora_rtc_send_rtm_data` with the peer's user ID and your message payload:
 
 ```c
-uint32_t g_message_id = 0;
-rval = agora_rtc_send_rtm_data(peer_uid, buffer, rval, &g_message_id);
-if (rval < 0) {
-    printf("send data failed, rval=%d\n", rval);
-    goto EXIT;
+static int send_rtm_message(const char *peer_uid, const uint8_t *data, uint32_t len) {
+    uint32_t message_id = 0;
+    int rval = agora_rtc_send_rtm_data(peer_uid, data, len, &message_id);
+    if (rval < 0) {
+        printf("send data failed, rval=%d\n", rval);
+        return -1;
+    }
+    printf("send message_id=%u successfully\n", message_id);
+    return 0;
 }
-printf("send message_id=%u successfully\n", g_message_id);
 ```
 
-### Log out of RTM
+### Log out of Signaling
 
-When you are done sending signaling messages, log out to release RTM resources:
+When you are done sending signaling messages, log out to release Signaling resources:
 
 ```c
 agora_rtc_logout_rtm();
