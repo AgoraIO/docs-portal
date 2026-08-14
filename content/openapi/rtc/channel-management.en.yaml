@@ -903,15 +903,14 @@ paths:
                     The time duration (in seconds) to ban the user. Values outside the range
                     [10,86430] are clamped to the nearest bound. Setting this to `0` disables the
                     rule: users are set offline but can rejoin immediately.
-
-                    `time_in_seconds` takes effect. If neither is set, the default ban duration is
-                    60 minutes (3600 seconds).
                   x-docs-callouts:
                     - type: info
                       title: Note
                       position: after-description
                       markdown: |
                         Use either `time` or `time_in_seconds`, not both. If both are set,
+                        `time_in_seconds` takes effect. If neither is set, the default ban duration is
+                        60 minutes (3600 seconds).
                 privileges:
                   type: array
                   items:
@@ -1589,15 +1588,14 @@ paths:
                     The time duration (in minutes) to ban the user. Values outside the range
                     [1,1440] are clamped to the nearest bound. Setting this to `0` disables the
                     rule: users are set offline but can rejoin immediately.
-
-                    `time_in_seconds` takes effect. If neither is set, the default ban duration is
-                    60 minutes (3600 seconds).
                   x-docs-callouts:
                     - type: info
                       title: Note
                       position: after-description
                       markdown: |
                         Use either `time` or `time_in_seconds`, not both. If both are set,
+                        `time_in_seconds` takes effect. If neither is set, the default ban duration is
+                        60 minutes (3600 seconds).
                 time_in_seconds:
                   type: number
                   minimum: 10
