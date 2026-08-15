@@ -1,8 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import { createRequire } from 'node:module';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { describe, expect, it } from 'vitest';
 import {
   applyLegacyHiddenColumnToPathMap,
   createLegacyRenderedVisibilityMatcher,
@@ -21,9 +21,9 @@ describe('sync legacy sidebar hidden pages', () => {
     expect(normalizeLegacyRoute('/api-ref/rtc/android/API/foo.html#bar')).toBe(
       'rtc/android/API/foo',
     );
-    expect(normalizeLegacyRoute('https://docs.example.com/doc/rtc/foo.html')).toBe(
-      '',
-    );
+    expect(
+      normalizeLegacyRoute('https://docs.example.com/doc/rtc/foo.html'),
+    ).toBe('');
   });
 
   it('treats the legacy platform template as an optional route segment', () => {
@@ -44,6 +44,35 @@ describe('sync legacy sidebar hidden pages', () => {
 
     expect(changed).toBe(true);
     expect(JSON.parse(nextRaw).pages).toEqual(['overview', '!hidden']);
+  });
+
+  it('hides nested group entries in place', () => {
+    const { changed, nextRaw } = hidePagesInMeta(
+      `${JSON.stringify(
+        {
+          title: 'Video',
+          pages: [
+            {
+              type: 'group',
+              title: 'Effects',
+              pages: ['advanced-beauty', 'advanced-beauty-legacy'],
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+      ['advanced-beauty-legacy'],
+    );
+
+    expect(changed).toBe(true);
+    expect(JSON.parse(nextRaw).pages).toEqual([
+      {
+        type: 'group',
+        title: 'Effects',
+        pages: ['advanced-beauty', '!advanced-beauty-legacy'],
+      },
+    ]);
   });
 
   it('adds a legacy hidden column to migration rows', () => {
@@ -78,6 +107,55 @@ describe('sync legacy sidebar hidden pages', () => {
       metaPath: '/repo/content/docs/zh-CN/api-reference/rtc/meta.json',
       page: 'response.go',
     });
+  });
+
+  it('resolves path entries declared in an ancestor meta file', () => {
+    const repoRoot = mkdtempSync(join(tmpdir(), 'ancestor-meta-'));
+    const sdkRoot = join(
+      repoRoot,
+      'content',
+      'docs',
+      'zh-CN',
+      'realtime-media',
+      'whiteboard',
+      'fastboard-sdk',
+    );
+    const referenceRoot = join(sdkRoot, 'reference');
+
+    mkdirSync(referenceRoot, { recursive: true });
+    writeFileSync(
+      join(referenceRoot, 'meta.json'),
+      `${JSON.stringify({ pages: ['downloads'] }, null, 2)}\n`,
+    );
+    writeFileSync(
+      join(sdkRoot, 'meta.json'),
+      `${JSON.stringify(
+        {
+          pages: [
+            {
+              type: 'group',
+              pages: ['reference/billing', '!reference/qps-pricing'],
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    try {
+      expect(
+        resolveTargetMetaEntry(
+          join(referenceRoot, 'qps-pricing.mdx'),
+          join(repoRoot, 'content', 'docs', 'zh-CN'),
+        ),
+      ).toEqual({
+        metaPath: join(sdkRoot, 'meta.json'),
+        page: 'reference/qps-pricing',
+      });
+    } finally {
+      rmSync(repoRoot, { recursive: true, force: true });
+    }
   });
 
   it('uses legacy rendering routes rather than treating platform as optional', () => {

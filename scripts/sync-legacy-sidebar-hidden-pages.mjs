@@ -1,8 +1,8 @@
 import { existsSync } from 'node:fs';
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
-import { createRequire } from 'node:module';
 import vm from 'node:vm';
 import { parseCsv, stringifyCsv } from './migration-control-table.mjs';
 
@@ -72,6 +72,44 @@ export function resolveTargetMetaEntry(targetPath, contentRoot) {
   const absoluteTarget = path.resolve(targetPath);
   const absoluteContentRoot = path.resolve(contentRoot);
   const parsed = path.parse(absoluteTarget);
+  const entryPath =
+    parsed.name === 'index'
+      ? path.dirname(absoluteTarget)
+      : path.join(parsed.dir, parsed.name);
+  let ownerDir = parsed.name === 'index' ? path.dirname(entryPath) : parsed.dir;
+  const candidates = [];
+
+  while (isPathInside(absoluteContentRoot, ownerDir)) {
+    candidates.push({
+      metaPath: path.join(ownerDir, 'meta.json'),
+      page: path.relative(ownerDir, entryPath).split(path.sep).join('/'),
+    });
+
+    if (ownerDir === absoluteContentRoot) {
+      break;
+    }
+    ownerDir = path.dirname(ownerDir);
+  }
+
+  for (const candidate of candidates) {
+    if (
+      existsSync(candidate.metaPath) &&
+      metaDeclaresPage(readFileSyncSafe(candidate.metaPath), candidate.page)
+    ) {
+      return candidate;
+    }
+  }
+
+  const nearestExistingCandidate = candidates.find((candidate) =>
+    existsSync(candidate.metaPath),
+  );
+  if (nearestExistingCandidate) {
+    return nearestExistingCandidate;
+  }
+
+  if (candidates.length > 0) {
+    return candidates[0];
+  }
 
   if (parsed.name === 'index') {
     const folderDir = path.dirname(absoluteTarget);
@@ -89,26 +127,24 @@ export function resolveTargetMetaEntry(targetPath, contentRoot) {
 
 export function hidePagesInMeta(raw, pagesToHide) {
   const meta = JSON.parse(raw);
-  const pages = Array.isArray(meta.pages) ? [...meta.pages] : [];
+  if (!Array.isArray(meta.pages)) {
+    return { changed: false, nextRaw: raw };
+  }
+
+  const pagesToHideSet = new Set(pagesToHide);
+  const foundPages = new Set();
   let changed = false;
+  const pages = hidePageEntries(meta.pages, pagesToHideSet, foundPages, () => {
+    changed = true;
+  });
 
   for (const page of pagesToHide) {
-    const hiddenPage = `!${page}`;
-    if (pages.includes(hiddenPage)) {
+    if (foundPages.has(page)) {
       continue;
     }
 
-    const pageIndex = pages.indexOf(page);
-    if (pageIndex >= 0) {
-      pages[pageIndex] = hiddenPage;
-      changed = true;
-      continue;
-    }
-
-    if (Array.isArray(meta.pages)) {
-      pages.push(hiddenPage);
-      changed = true;
-    }
+    pages.push(`!${page}`);
+    changed = true;
   }
 
   if (!changed) {
@@ -120,6 +156,67 @@ export function hidePagesInMeta(raw, pagesToHide) {
     changed: true,
     nextRaw: `${JSON.stringify(meta, null, 2)}\n`,
   };
+}
+
+function hidePageEntries(pages, pagesToHide, foundPages, markChanged) {
+  return pages.map((page) => {
+    if (typeof page === 'string') {
+      if (pagesToHide.has(page)) {
+        foundPages.add(page);
+        markChanged();
+        return `!${page}`;
+      }
+
+      if (page.startsWith('!') && pagesToHide.has(page.slice(1))) {
+        foundPages.add(page.slice(1));
+      }
+
+      return page;
+    }
+
+    if (page && typeof page === 'object' && Array.isArray(page.pages)) {
+      return {
+        ...page,
+        pages: hidePageEntries(
+          page.pages,
+          pagesToHide,
+          foundPages,
+          markChanged,
+        ),
+      };
+    }
+
+    return page;
+  });
+}
+
+function metaDeclaresPage(raw, page) {
+  const meta = JSON.parse(raw);
+  return pageEntriesInclude(meta.pages, page);
+}
+
+function pageEntriesInclude(pages, targetPage) {
+  if (!Array.isArray(pages)) {
+    return false;
+  }
+
+  return pages.some((page) => {
+    if (typeof page === 'string') {
+      return page === targetPage || page === `!${targetPage}`;
+    }
+
+    return pageEntriesInclude(page?.pages, targetPage);
+  });
+}
+
+function isPathInside(root, candidate) {
+  const relative = path.relative(root, candidate);
+  return (
+    relative === '' ||
+    (!relative.startsWith(`..${path.sep}`) &&
+      relative !== '..' &&
+      !path.isAbsolute(relative))
+  );
 }
 
 export function applyLegacyHiddenColumnToPathMap({
@@ -189,7 +286,9 @@ export function applyLegacyHiddenColumnToPathMap({
 }
 
 export async function collectLegacyVisibleRoutes({ legacyRoot, repoRoot }) {
-  const require = createRequire(path.join(repoRoot, 'scripts', 'legacy-nav.js'));
+  const require = createRequire(
+    path.join(repoRoot, 'scripts', 'legacy-nav.js'),
+  );
   const renderedEntryRoutes = collectLegacyRenderedEntryRoutes({
     legacyRoot,
     require,
@@ -281,7 +380,12 @@ export function collectLegacyRenderedEntryRoutes({ legacyRoot, require }) {
   };
 }
 
-function collectProductSidebarRoutes({ product, productRoot, require, routeBase }) {
+function collectProductSidebarRoutes({
+  product,
+  productRoot,
+  require,
+  routeBase,
+}) {
   if (!existsSync(productRoot)) {
     return {
       routes: [],
@@ -325,20 +429,25 @@ function collectProductSidebarRoutes({ product, productRoot, require, routeBase 
   }
 
   if (existsSync(path.join(productRoot, '_homepage_.mdx'))) {
-    const homepageRoute = parseLegacyInternalRoute(`/${routeBase}/${product}/homepage`);
+    const homepageRoute = parseLegacyInternalRoute(
+      `/${routeBase}/${product}/homepage`,
+    );
     if (homepageRoute) {
       routes.push(homepageRoute);
     }
   }
 
   for (const sidebarFile of sidebarFiles) {
-    const [usecaseStr, platformStr = ''] =
-      path.basename(sidebarFile).split('_sidebar_.meta.');
+    const [usecaseStr, platformStr = ''] = path
+      .basename(sidebarFile)
+      .split('_sidebar_.meta.');
     const platformSuffixes = platformStr.split('.').slice(0, -1);
     const matchedPlatforms =
       platformSuffixes.length === 0
         ? platforms
-        : platforms.filter((platform) => platformSuffixes.includes(platform.value));
+        : platforms.filter((platform) =>
+            platformSuffixes.includes(platform.value),
+          );
 
     for (const platform of matchedPlatforms) {
       const moduleValue = require(sidebarFile);
@@ -355,7 +464,10 @@ function collectProductSidebarRoutes({ product, productRoot, require, routeBase 
       for (const item of flattenSidebarItems(expandedItems)) {
         if (typeof item.id === 'string') {
           const parsed = parseLegacyInternalRoute(`/${routeBase}/${item.id}`);
-          if (parsed && routeMatchesUsecase(parsed.route, activeUsecaseValues)) {
+          if (
+            parsed &&
+            routeMatchesUsecase(parsed.route, activeUsecaseValues)
+          ) {
             routes.push(parsed);
           }
         }
@@ -468,7 +580,10 @@ function parseLegacyInternalRoute(value) {
 }
 
 function readFileSyncSafe(filePath) {
-  return createRequire(import.meta.url)('node:fs').readFileSync(filePath, 'utf8');
+  return createRequire(import.meta.url)('node:fs').readFileSync(
+    filePath,
+    'utf8',
+  );
 }
 
 function readdirSyncSafe(dirPath) {
@@ -496,7 +611,9 @@ export async function syncLegacySidebarHiddenPages({
   const isVisibleLegacyRoute = createVisibleRouteMatcher(routes);
   const isVisibleLegacyPathMapRow = createLegacyRenderedVisibilityMatcher({
     legacyRoot,
-    require: createRequire(path.join(repoRoot, 'scripts', 'legacy-rendered.js')),
+    require: createRequire(
+      path.join(repoRoot, 'scripts', 'legacy-rendered.js'),
+    ),
     routes,
   });
   const rawPathMap = await readFile(absolutePathMapPath, 'utf8');
@@ -661,7 +778,9 @@ export function createLegacyRenderedVisibilityMatcher({
       });
     sourceRouteCache.set(row.source_path, cachedRoutes);
 
-    return cachedRoutes.some((route) => isRouteVisible(`/${route.kind}/${route.route}`));
+    return cachedRoutes.some((route) =>
+      isRouteVisible(`/${route.kind}/${route.route}`),
+    );
   };
 }
 
@@ -694,7 +813,9 @@ export function resolveLegacySourceRenderedRoutes({
   const platformSuffixes = nameItems.slice(1);
   const matchedPlatforms =
     platformSuffixes.length > 0
-      ? platforms.filter((platform) => platformSuffixes.includes(platform.value))
+      ? platforms.filter((platform) =>
+          platformSuffixes.includes(platform.value),
+        )
       : platforms;
   const renderedRoutes = [];
 
@@ -922,7 +1043,9 @@ function parseArgs(argv) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const result = await syncLegacySidebarHiddenPages(parseArgs(process.argv.slice(2)));
+  const result = await syncLegacySidebarHiddenPages(
+    parseArgs(process.argv.slice(2)),
+  );
   console.log(
     JSON.stringify(
       {
