@@ -1,10 +1,20 @@
 ---
-title: "SetExternalMediaProjection"
-description: "设置 SDK 外部的 MediaProjection 采集屏幕视频流。"
+title: SetExternalMediaProjection
+description: 设置 SDK 外部的 MediaProjection 采集屏幕视频流。
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_setexternalmediaprojection.html
+  generator: oxygen
+  warnings:
+    - code: generated-fragment-normalized
+      severity: info
+      message: Normalized 1 legacy fragment link(s) to stable local anchors.
 ---
+
 <a id="api_irtcengine_setexternalmediaprojection__prototype"></a>
 
-```csharp
+```text
 public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
 ```
 
@@ -18,7 +28,7 @@ public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
 
 ## 适用场景
 
-如果你具备自行申请 `MediaProjection` 的开发能力，可以直接使用该 `MediaProjection` 取代 SDK 申请的 `MediaProjection`。以下列出两种使用场景：
+如果你具备自行申请 `MediaProjection` 的开发能力，可以直接使用该 `MediaProjection` 取代 SDK 申请的 `MediaProjection` 。以下列出两种使用场景：
 
 - 在定制系统的设备上，可避免系统弹窗（即需要用户授予屏幕采集权限），直接开始采集屏幕视频流。
 - 一个屏幕共享进程中存在一个或多个子进程，避免在子进程中自行创建对象的过程出错而导致采集失败。
@@ -39,13 +49,18 @@ public abstract int SetExternalMediaProjection(IntPtr mediaProjection);
 
 ## 参数
 
-### `mediaProjection`
+<ParameterList>
+<a id="mediaprojection"></a>
+<Parameter name="mediaProjection">
 
 一个 [MediaProjection](https://developer.android.com/reference/android/media/projection/MediaProjection) 对象，用于采集屏幕视频流。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_irtcengine_setexternalmediaprojection__return_values"></a>
 
 ## 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

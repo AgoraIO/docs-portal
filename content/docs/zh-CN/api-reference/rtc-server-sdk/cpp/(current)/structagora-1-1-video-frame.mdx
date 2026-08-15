@@ -1,0 +1,176 @@
+---
+title: agora::VideoFrame结构体 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/structagora_1_1_video_frame.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+视频帧的属性设置。
+
+视频数据的格式为 YUV420。缓冲区给出的是指向指针的指针，该接口不能修改缓冲区的指针，只能修改缓冲区的内容。
+
+## 构造及析构函数说明
+
+<a id="af170c14855af65a7ccfe69c6e5d80b45"></a>
+
+### VideoFrame()
+
+<ApiSignature labels="inline">
+
+agora::VideoFrame::VideoFrame()
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a3c2bded698f506b5c7b50b1bdbe3879c"></a>
+
+### type
+
+<ApiSignature>
+
+[VIDEO_PIXEL_FORMAT](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#a08597f4fe6a0ef1ad7b53538fd27d119) agora::VideoFrame::type
+
+</ApiSignature>
+
+像素格式。
+
+<a id="a95f764eabc9d5673f438d6e1eed4af00"></a>
+
+### width
+
+<ApiSignature>
+
+int agora::VideoFrame::width
+
+</ApiSignature>
+
+视频像素宽度。
+
+<a id="af82ac816a3adf29905680e2a85c3a8df"></a>
+
+### height
+
+<ApiSignature>
+
+int agora::VideoFrame::height
+
+</ApiSignature>
+
+视频像素高度。
+
+<a id="a97660b68dbafdd8c272790111a9af8da"></a>
+
+### yStride
+
+<ApiSignature>
+
+int agora::VideoFrame::yStride
+
+</ApiSignature>
+
+YUV 数据中的 Y 缓冲区的行跨度。
+
+<a id="a067446c91a13045ce2882158cb898536"></a>
+
+### uStride
+
+<ApiSignature>
+
+int agora::VideoFrame::uStride
+
+</ApiSignature>
+
+YUV 数据中的 U 缓冲区的行跨度。
+
+<a id="ae5e8b5cd65799e8feb2a00989ba47f0b"></a>
+
+### vStride
+
+<ApiSignature>
+
+int agora::VideoFrame::vStride
+
+</ApiSignature>
+
+YUV 数据中的 V 缓冲区的行跨度。
+
+<a id="a412819a850aad6ae3e8d85506ae1a521"></a>
+
+### yBuffer
+
+<ApiSignature>
+
+uint8_t* agora::VideoFrame::yBuffer
+
+</ApiSignature>
+
+指向 YUV 数据中的 Y 缓冲区指针的指针。
+
+<a id="aa36c7821340eca2320aaffae463df037"></a>
+
+### uBuffer
+
+<ApiSignature>
+
+uint8_t* agora::VideoFrame::uBuffer
+
+</ApiSignature>
+
+指向 YUV 数据中的 U 缓冲区指针的指针。
+
+<a id="ae914b96ab72d31260b11be68ce2478af"></a>
+
+### vBuffer
+
+<ApiSignature>
+
+uint8_t* agora::VideoFrame::vBuffer
+
+</ApiSignature>
+
+指向 YUV 数据中的 V 缓冲区指针的指针。
+
+<a id="aadaf5bf19dd3d80706bb73a42c60ffdf"></a>
+
+### rotation
+
+<ApiSignature>
+
+int agora::VideoFrame::rotation
+
+</ApiSignature>
+
+在渲染视频前设置该帧的顺时针旋转角度，目前支持 0 度、90 度、180 度，和 270 度。
+
+<a id="aae12f2c8b660aa8a058841fa8b34e1c5"></a>
+
+### renderTimeMs
+
+<ApiSignature>
+
+int64_t agora::VideoFrame::renderTimeMs
+
+</ApiSignature>
+
+外部音频帧的时间戳。该参数为必填。你可以使用该时间戳还原音频帧顺序；在有视频的场景中（包含使用外部视频源的场景），该参数可以帮助实现音视频同步。
+
+<a id="af7e913ad92f37f828ea7e4ecc6e37a14"></a>
+
+### avsync_type
+
+<ApiSignature>
+
+int agora::VideoFrame::avsync_type
+
+</ApiSignature>
+
+保留参数。

@@ -2,14 +2,15 @@
 title: 视频增强
 _migration:
   type: generated-html
-  status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/csharp/API/toc_video_enhance_option
+  status: warning
   sourcePath: html-docs/rtc/Csharp/API/toc_video_enhance_option.html
   generator: oxygen
   warnings:
-    - code: generated-fragment-normalized
-      severity: info
-      message: Normalized 1 legacy fragment link(s) to stable local anchors.
+    - code: unresolved-fragment
+      severity: warning
+      message: >-
+        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
+        links.
 ---
 
 <a id="toc_video_enhance_option"></a>
@@ -200,7 +201,7 @@ public abstract int SetVideoDenoiserOptions(bool enabled, VideoDenoiserOptions o
 <a id="api_irtcengine_setvideodenoiseroptions__advanced"></a>
 
 :::note
-注： 如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option#options) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/class-beautyoptions) 推荐设置如下：
+注： 如果该方法实现的降噪强度无法满足你的需求，声网推荐你调用 [SetBeautyEffectOptions](/zh-CN/api-reference/rtc/csharp-windows/video/video-prenpro/video-enhance-option) 方法启用美颜磨皮功能，以获得更好的视频降噪效果。强效降噪效果的 [BeautyOptions](/zh-CN/api-reference/rtc/csharp-windows/class-beautyoptions) 推荐设置如下：
 
 - lighteningContrastLevel：LIGHTENING_CONTRAST_NORMAL
 - lighteningLevel：0.0

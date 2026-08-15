@@ -1,10 +1,17 @@
 ---
-title: "GetRecordingDefaultDevice [2/2]"
-description: "获取系统默认的音频采集设备及类型。"
+title: GetRecordingDefaultDevice [2/2]
+description: 获取系统默认的音频采集设备及类型。
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc/Csharp/API/api_iaudiodevicemanager_getrecordingdefaultdevice2.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice2__prototype"></a>
 
-```csharp
+```text
  public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string deviceTypeName, ref string deviceName);
 ```
 
@@ -12,29 +19,38 @@ description: "获取系统默认的音频采集设备及类型。"
 
 ## 详情
 
-:::warning[注意]
-该方法仅适用于 macOS。
+:::caution
+注意： 该方法仅适用于 macOS。
 :::
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice2__parameters"></a>
 
 ## 参数
 
-### `deviceId`
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 输出参数，系统默认的音频采集设备 ID。
 
-### `deviceName`
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 输出参数，系统默认的音频采集设备名称。
 
-### `deviceTypeName`
+</Parameter>
+<a id="devicetypename"></a>
+<Parameter name="deviceTypeName">
 
 输出参数，音频设备类型，如：built-in、USB、HDMI 等。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice2__return_values"></a>
 
 ## 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

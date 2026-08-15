@@ -1,0 +1,126 @@
+---
+title: io.agora.rtc.AgoraMediaPacketSender类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/java/classio_1_1agora_1_1rtc_1_1_agora_media_packet_sender.html
+  generator: doxygen
+  warnings:
+    - code: source-only-link-removed
+      severity: info
+      message: >-
+        Rendered unresolved generated-source link
+        /api-ref/rtc-server-sdk/java/_agora_media_packet_sender_8java.html as local text.
+---
+
+<a id="details"></a>
+
+<a id="header-details"></a>
+
+AgoraMediaPacketSender 类。
+
+你可以使用 AgoraMediaPacketSender 类创建换一个 LocalVideoTrack 或 LocalAudioTrack，然后 将媒体包直接发送至轨道。媒体包是包含的包体数据的 RTP/UDP 包。如果轨道被禁用，则数据包会被自动丢弃。
+
+<a id="doc-constructors"></a>
+
+<a id="header-doc-constructors"></a>
+
+## 构造及析构函数说明
+
+<a id="a2959e5467ab5613e7032f0d81ac1513a"></a>
+
+### AgoraMediaPacketSender()
+
+<ApiSignature>
+
+io.agora.rtc.AgoraMediaPacketSender.AgoraMediaPacketSender(long *cptr*)
+
+</ApiSignature>
+
+构造函数。
+
+<a id="doc-func-members"></a>
+
+<a id="header-doc-func-members"></a>
+
+## 成员函数说明
+
+<a id="a440eb2103390649e5d38a7f5685eba3e"></a>
+
+### destroy()
+
+<ApiSignature>
+
+void io.agora.rtc.AgoraMediaPacketSender.destroy()
+
+</ApiSignature>
+
+析构函数。
+
+<a id="a8795574f152afb257f11f2c512f5949f"></a>
+
+### ndestroy()
+
+<ApiSignature labels="private">
+
+native void io.agora.rtc.AgoraMediaPacketSender.ndestroy()
+
+</ApiSignature>
+
+<a id="af5d457675d7f0841260eb9a0224e3ad5"></a>
+
+### send()
+
+<ApiSignature>
+
+native int io.agora.rtc.AgoraMediaPacketSender.send(byte[] *packet*, int *length*, PacketOptions *options*)
+
+</ApiSignature>
+
+将数据包发送至本地轨道。
+
+<ParameterList title="参数">
+<Parameter name="packet">
+
+数据包。
+
+</Parameter>
+<Parameter name="length">
+
+数据大小。
+
+</Parameter>
+<Parameter name="options">
+
+数据包信息。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- true: 方法调用成功。
+- false: 方法调用失败。
+
+<a id="doc-variable-members"></a>
+
+<a id="header-doc-variable-members"></a>
+
+## 类成员变量说明
+
+<a id="ae1acb13f8fed99f5905b349a17d5f6f6"></a>
+
+### cptr
+
+<ApiSignature labels="private">
+
+long io.agora.rtc.AgoraMediaPacketSender.cptr
+
+</ApiSignature>
+
+---
+
+该类的文档由以下文件生成:
+
+- AgoraMediaPacketSender.java

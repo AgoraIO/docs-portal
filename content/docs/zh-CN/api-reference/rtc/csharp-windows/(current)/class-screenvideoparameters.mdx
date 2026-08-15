@@ -1,10 +1,17 @@
 ---
-title: "ScreenVideoParameters"
-description: "共享屏幕流的视频编码配置。"
+title: ScreenVideoParameters
+description: 共享屏幕流的视频编码配置。
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc/Csharp/API/class_screenvideoparameters.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="class_screenvideoparameters__prototype"></a>
 
-```csharp
+```text
 public class ScreenVideoParameters
     {
         public VideoDimensions dimensions { set; get; }
@@ -29,38 +36,52 @@ public class ScreenVideoParameters
 
 ## 属性
 
-### `dimensions`
+<ParameterList>
+<a id="dimensions"></a>
+<Parameter name="dimensions">
 
 视频编码的分辨率。默认值为 1280 × 720。
 
 如果 dimensions 宽高比与屏幕像素值的宽高比不一致，SDK 会按照如下规则调节视频编码分辨率，以 dimensions 是 1280 × 720 为例：
 
 - 当屏幕宽和高的像素值均小于 dimensions 时，例如屏幕像素值为 640 × 360，SDK 以 640 × 360 编码。
-- 当屏幕宽或高的像素值大于 dimensions 时，例如屏幕像素值为 2000 × 1500，SDK 以屏幕像素值的宽高比，即 4:3，取 dimensions 内最大分辨率进行编码，即 960 × 720。
+- 当屏幕宽或高的像素值大于 dimensions 时，例如屏幕像素值为 2000 × 1500，SDK 以屏幕像素值的宽高比，即 4\:3，取 dimensions 内最大分辨率进行编码，即 960 × 720。
 
-:::info[注]
+:::note
+注：
+
 - 屏幕共享流的计费以 dimensions 的值为准：当你未传值时，以 1280 × 720 计费；当你传值时，以你传入的值计费。
-- 该值不代表最终视频输出的方向。详见 ORIENTATION_MODE 了解设置视频方向。
+- 该值不代表最终视频输出的方向。详见 [ORIENTATION_MODE](/zh-CN/api-reference/rtc/csharp-windows/enum-orientationmode) 了解设置视频方向。
 - 视频能否达到 720P 的分辨率取决于设备的性能，在性能配备较低的设备上有可能无法实现。如果采用 720P 分辨率而设备性能跟不上，则有可能出现帧率过低的情况。
 :::
 
-:::info[注]
-在共享文档的场景（SCREEN_SCENARIO_DOCUMENT ）下设置编码分辨率时，选择以下两种方式其中之一。
+:::note
+注： 在共享文档的场景（SCREEN_SCENARIO_DOCUMENT）下设置编码分辨率时，选择以下两种方式其中之一。
 
 - 如果你需要最优的画质，建议将编码分辨率设置为与采集分辨率相同。
 - 如果你希望在画质、带宽和系统性能之间达到相对平衡，则：
+
   - 当采集分辨率大于 1920 × 1080 时，建议编码分辨率不低于 1920 × 1080。
   - 当采集分辨率低于 1920 × 1080 时，建议编码分辨率不低于 1280 × 720。
 :::
 
-### `frameRate`
+</Parameter>
+<a id="framerate"></a>
+<Parameter name="frameRate">
 
 视频编码帧率 (fps)。默认值为 15。
 
-### `bitrate`
+</Parameter>
+<a id="bitrate"></a>
+<Parameter name="bitrate">
 
 视频编码码率 (Kbps)。
 
-### `contentHint`
+</Parameter>
+<a id="contenthint"></a>
+<Parameter name="contentHint">
 
 屏幕共享视频的内容类型。
+
+</Parameter>
+</ParameterList>

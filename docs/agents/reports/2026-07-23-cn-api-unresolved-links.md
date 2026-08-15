@@ -4,7 +4,7 @@
 
 - Active unresolved link occurrences: 0
 - Unapproved legacy doc-host link occurrences: 0
-- Approved legacy fallback link occurrences: 5
+- Approved legacy fallback link occurrences: 3
 - Missing local page occurrences: 0
 - Missing local anchor occurrences: 0
 - Archived unavailable target occurrences: 128
@@ -143,8 +143,6 @@ No active unresolved links remain in published content. Verified legacy fallback
 | `content/docs/zh-CN/realtime-media/rtsa/index.mdx:24` | `/api-ref/rtsa/java/classio_1_1agora_1_1rtc_1_1_agora_rtc_service_1_1_video_data_type` | legacy-page-no-longer-published |
 | `content/docs/zh-CN/solutions/game-voice/get-started/audio-quick-start.mdx:52` | `/zh-CN/solutions/game-voice#产品对比` | removed-section-no-legacy-page |
 | `content/docs/zh-CN/solutions/game-voice/reference/downloads.mdx:12` | `/zh-CN/solutions/game-voice#产品对比` | removed-section-no-legacy-page |
-| `content/docs/zh-CN/realtime-media/rtc/reference/downloads/android.mdx:57` | `https://doc.shengwang.cn/codebox/detail?demo=24&platform=2` | verified-legacy-fallback |
-| `content/docs/zh-CN/realtime-media/rtc/reference/downloads/ios.mdx:66` | `https://doc.shengwang.cn/codebox/detail?demo=24&platform=1` | verified-legacy-fallback |
 | `content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx:313` | `https://docportal.shengwang.cn/cn/video-legacy/release_ios_video?platform=iOS` | verified-legacy-fallback |
 | `content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx:588` | `https://docportal.shengwang.cn/cn/video-legacy/release_mac_video?platform=macOS` | verified-legacy-fallback |
 | `content/docs/zh-CN/realtime-media/rtc/reference/migration-guide.mdx:1158` | `https://docportal.shengwang.cn/cn/video-legacy/release_windows_video?platform=Windows` | verified-legacy-fallback |

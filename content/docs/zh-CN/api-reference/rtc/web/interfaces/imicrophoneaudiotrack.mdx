@@ -3,53 +3,10 @@ title: Interface IMicrophoneAudioTrack
 description: 本地麦克风音频轨道，继承于 LocalAudioTrack，在此之上提供了更换采集设备的功能。
 _migration:
   type: generated-html
-  status: warning
-  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/imicrophoneaudiotrack
+  status: migrated
   sourcePath: html-docs/rtc/Web/interfaces/imicrophoneaudiotrack.html
   generator: typedoc
-  warnings:
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
-    - code: unresolved-link
-      severity: warning
-      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+  warnings: []
 ---
 
 可以通过 [AgoraRTC.createMicrophoneAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createmicrophoneaudiotrack) 来获取。
@@ -140,9 +97,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.10.0*
-:::
 
 本地音频轨道上当前媒体处理链路的最终节点。
+:::
 
 <a id="trackmediatype"></a>
 
@@ -195,7 +152,7 @@ getListeners(event: string): Function[]
 
 </ApiSignature>
 
-Inherited from EventEmitter.getListeners
+Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[getListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#getlisteners)
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -412,7 +369,7 @@ off(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from EventEmitter.off
+Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[off](/zh-CN/api-reference/rtc/web/classes/eventemitter#off)
 
 取消一个指定事件的监听。
 
@@ -463,7 +420,7 @@ on(event: "transceiver-updated", listener: typeof event_transceiver_updated): vo
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-Overrides EventEmitter.on
+Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;track-updated&quot;" required>
@@ -490,7 +447,7 @@ void
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-Overrides EventEmitter.on
+Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
 
 <ParameterList title="Parameters">
 <Parameter name="event" type="&quot;track-ended&quot;" required>
@@ -517,7 +474,7 @@ void
 
 Inherited from [ILocalAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack).[on](/zh-CN/api-reference/rtc/web/interfaces/ilocalaudiotrack#on)
 
-Overrides EventEmitter.on
+Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
 
 添加事件监听器。
 
@@ -554,7 +511,7 @@ once(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from EventEmitter.once
+Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[once](/zh-CN/api-reference/rtc/web/classes/eventemitter#once)
 
 监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -597,9 +554,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.10.0*
-:::
 
 将 `Processor` 注入本地音频轨道。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="processor" type="IAudioProcessor" required>
@@ -659,7 +616,7 @@ removeAllListeners(event?: string): void
 
 </ApiSignature>
 
-Inherited from EventEmitter.removeAllListeners
+Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[removeAllListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#removealllisteners)
 
 指定一个事件，取消其所有的监听。
 
@@ -782,7 +739,6 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 
 :::info[自从]
 *4.0.0*
-:::
 
 启用/禁用该轨道。
 
@@ -791,6 +747,7 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
 > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="enabled" type="boolean" required>
@@ -829,12 +786,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.0.0*
-:::
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 
 > - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/imicrophoneaudiotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="muted" type="boolean" required>
@@ -871,13 +828,13 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.1.0*
-:::
 
 > 注意事项：
 >
 > - 自 v4.7.0 起，该方法不再生效。请改用 [IRemoteAudioTrack.setPlaybackDevice](/zh-CN/api-reference/rtc/web/interfaces/iremoteaudiotrack#setplaybackdevice)。
 
 设置本地播放远端音频流的设备（扬声器）。
+:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceId" type="string" required>
@@ -967,9 +924,9 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.10.0*
-:::
 
 取消本地音频轨道上注入的 `Processor`。
+:::
 
 <ApiReturns>
 

@@ -1,0 +1,138 @@
+---
+title: agora::RefCountedObject< T > 模板类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1_ref_counted_object.html
+  generator: doxygen
+  warnings: []
+---
+
+继承自 T.
+
+<a id="details"></a>
+
+## 详细描述
+
+### template&lt;class T&gt; class agora::RefCountedObject&lt; T &gt;
+
+Agora sample code for wrapping a class that needs to inherit from [RefCountInterface](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-count-interface) in order to be held by [agora::agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr) Usage: agora::agora_refptr&lt;TypeName&gt; ptr = new RefCountedObject&lt;TypeName&gt;(Arg1, Arg2,...);
+
+## 构造及析构函数说明
+
+<a id="ae86cce2ce5e3ee91fdacaf31102696fc"></a>
+
+### RefCountedObject() [1/5]
+
+<ApiSignature labels="inline">
+
+[agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)()
+
+</ApiSignature>
+
+<a id="a774b2610498b31ba97ecc789493dd0ab"></a>
+
+### RefCountedObject() [2/5]
+
+<ApiSignature labels="inline explicit">
+
+[agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)(P0 && *p0*)
+
+</ApiSignature>
+
+<a id="ad7a4ea2fb05eb84a467c48f244ee8241"></a>
+
+### RefCountedObject() [3/5]
+
+<ApiSignature labels="inline explicit">
+
+[agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)(const P0 & *p0*)
+
+</ApiSignature>
+
+<a id="a214335e773743d766553e9d84b28acec"></a>
+
+### RefCountedObject() [4/5]
+
+<ApiSignature labels="inline">
+
+[agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)(P0 && *p0*, P1 && *p1*, Args &&... *args*)
+
+</ApiSignature>
+
+<a id="ab708aaf1d887b3bb957922c91328cf84"></a>
+
+### ~RefCountedObject()
+
+<ApiSignature labels="inline protected virtual">
+
+virtual [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::~[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)()
+
+</ApiSignature>
+
+<a id="af6291a3e6b36c50615932583f907370d"></a>
+
+### RefCountedObject() [5/5]
+
+<ApiSignature labels="private">
+
+[agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)(const [RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt; &)
+
+</ApiSignature>
+
+## 成员函数说明
+
+<a id="ac205ebee715ff1f336b7d033b617cd20"></a>
+
+### AddRef()
+
+<ApiSignature labels="inline virtual">
+
+virtual void [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::AddRef() const
+
+</ApiSignature>
+
+<a id="a100b06b7816bc7eb49840072a93a51ed"></a>
+
+### Release()
+
+<ApiSignature labels="inline virtual">
+
+virtual [agora::RefCountReleaseStatus](/zh-CN/api-reference/rtc-server-sdk/cpp/namespaceagora#ad7412d9f3ea9df5f452273bf6e9226ef) [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::Release() const
+
+</ApiSignature>
+
+<a id="a438e247329bc1313678d9373ac1fbeef"></a>
+
+### HasOneRef()
+
+<ApiSignature labels="inline virtual">
+
+virtual bool [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::HasOneRef() const
+
+</ApiSignature>
+
+Return whether the reference count is one. If the reference count is used in the conventional way, a reference count of 1 implies that the current thread owns the reference and no other thread shares it. This call performs the test for a reference count of one, and performs the memory barrier needed for the owning thread to act on the object, knowing that it has exclusive access to the object.
+
+<a id="a20280c4aee4701c28edccbabd3557db8"></a>
+
+### operator=()
+
+<ApiSignature labels="private">
+
+[RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)& [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::operator=(const [RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt; &)
+
+</ApiSignature>
+
+## 类成员变量说明
+
+<a id="a4608324af37a715ffcaac8220b5dfc5d"></a>
+
+### ref_count_
+
+<ApiSignature labels="mutable protected">
+
+[agora::RefCounter](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counter) [agora::RefCountedObject](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-counted-object)&lt; T &gt;::ref_count_
+
+</ApiSignature>

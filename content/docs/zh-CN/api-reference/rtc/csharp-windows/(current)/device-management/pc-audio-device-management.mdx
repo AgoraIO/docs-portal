@@ -1,10 +1,18 @@
 ---
-title: "桌面端音频设备管理"
-description: "桌面端音频设备管理 API reference."
+title: 桌面端音频设备管理
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc/Csharp/API/toc_pc_audio_device_management.html
+  generator: oxygen
+  warnings: []
 ---
+
 <a id="toc_pc_audio_device_management"></a>
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices"></a>
+
+<a id="ariaid-title2"></a>
 
 ## EnumeratePlaybackDevices
 
@@ -12,7 +20,7 @@ description: "桌面端音频设备管理 API reference."
 
 <a id="api_iaudiodevicemanager_enumerateplaybackdevices__prototype"></a>
 
-```csharp
+```text
 public abstract DeviceInfo[] EnumeratePlaybackDevices();
 ```
 
@@ -29,13 +37,15 @@ public abstract DeviceInfo[] EnumeratePlaybackDevices();
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices"></a>
 
+<a id="ariaid-title3"></a>
+
 ## EnumerateRecordingDevices
 
 获取系统中所有的音频采集设备列表。
 
 <a id="api_iaudiodevicemanager_enumeraterecordingdevices__prototype"></a>
 
-```csharp
+```text
 abstract DeviceInfo[] EnumerateRecordingDevices();
 ```
 
@@ -52,13 +62,15 @@ abstract DeviceInfo[] EnumerateRecordingDevices();
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice"></a>
 
+<a id="ariaid-title4"></a>
+
 ## FollowSystemLoopbackDevice
 
 设置声卡采集设备是否跟随系统默认的播放设备。
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int FollowSystemLoopbackDevice(bool enable);
 ```
 
@@ -70,21 +82,30 @@ public abstract int FollowSystemLoopbackDevice(bool enable);
 
 ### 参数
 
-#### `enable`
+<ParameterList>
+<a id="enable"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的播放设备：
 
-- true：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
-- false：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+<a id="api_iaudiodevicemanager_followsystemloopbackdevice__ul_l4n_jf3_5sb"></a>
+
+- `true`：跟随。当系统默认播放设备发生改变时，SDK 立即跟随切换声卡采集设备。
+- `false`：不跟随。只有当 SDK 使用的声卡采集设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemloopbackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice"></a>
+
+<a id="ariaid-title5"></a>
 
 ## FollowSystemPlaybackDevice
 
@@ -92,7 +113,7 @@ public abstract int FollowSystemLoopbackDevice(bool enable);
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int FollowSystemPlaybackDevice(bool enable);
 ```
 
@@ -104,21 +125,30 @@ public abstract int FollowSystemPlaybackDevice(bool enable);
 
 ### 参数
 
-#### `enable`
+<ParameterList>
+<a id="enable-1"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频播放设备：
 
-- true：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
-- false：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+<a id="api_iaudiodevicemanager_followsystemplaybackdevice__ul_l4n_jf3_5sb"></a>
+
+- `true`：跟随。当系统默认音频播放设备发生改变时，SDK 立即切换音频播放设备。
+- `false`：不跟随。只有当 SDK 使用的音频播放设备被移除后，SDK 才切换至系统默认的音频播放设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemplaybackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice"></a>
+
+<a id="ariaid-title6"></a>
 
 ## FollowSystemRecordingDevice
 
@@ -126,7 +156,7 @@ public abstract int FollowSystemPlaybackDevice(bool enable);
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int FollowSystemRecordingDevice(bool enable);
 ```
 
@@ -138,29 +168,40 @@ public abstract int FollowSystemRecordingDevice(bool enable);
 
 ### 参数
 
-#### `enable`
+<a id="api_iaudiodevicemanager_followsystemrecordingdevice__parml_ywj_tf3_5sb"></a>
+
+<ParameterList>
+<a id="enable-2"></a>
+<Parameter name="enable">
 
 是否跟随系统默认的音频采集设备：
 
-- true：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
-- false：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+<a id="api_iaudiodevicemanager_followsystemrecordingdevice__ul_zwj_tf3_5sb"></a>
+
+- `true`：跟随。当系统默认的音频采集设备改变时，SDK 立即切换音频采集设备。
+- `false`：不跟随。只有当 SDK 使用的音频采集设备被移除后，SDK 才切换至系统默认的音频采集设备。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_followsystemrecordingdevice__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_irtcengine_getaudiodevicemanager"></a>
 
+<a id="ariaid-title7"></a>
+
 ## GetAudioDeviceManager
 
-获取 IAudioDeviceManager 对象，以管理音频设备。
+获取 [IAudioDeviceManager](/zh-CN/api-reference/rtc/csharp-windows/rtc-interface-class#class_iaudiodevicemanager) 对象，以管理音频设备。
 
 <a id="api_irtcengine_getaudiodevicemanager__prototype"></a>
 
-```csharp
+```text
 public abstract IAudioDeviceManager GetAudioDeviceManager();
 ```
 
@@ -172,13 +213,15 @@ public abstract IAudioDeviceManager GetAudioDeviceManager();
 
 <a id="api_iaudiodevicemanager_getloopbackdevice"></a>
 
+<a id="ariaid-title8"></a>
+
 ## GetLoopbackDevice
 
 获取当前的声卡采集设备。
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetLoopbackDevice(ref string deviceId);
 ```
 
@@ -190,18 +233,25 @@ public abstract int GetLoopbackDevice(ref string deviceId);
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid"></a>
+<Parameter name="deviceId">
 
 输出参数，当前声卡采集设备的 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getloopbackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice"></a>
+
+<a id="ariaid-title9"></a>
 
 ## GetPlaybackDefaultDevice [1/2]
 
@@ -209,7 +259,7 @@ public abstract int GetLoopbackDevice(ref string deviceId);
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetPlaybackDefaultDevice(ref string deviceId, ref string deviceName);
 ```
 
@@ -221,22 +271,31 @@ public abstract int GetPlaybackDefaultDevice(ref string deviceId, ref string dev
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-1"></a>
+<Parameter name="deviceId">
 
 输出参数，系统默认的音频播放设备 ID。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename"></a>
+<Parameter name="deviceName">
 
 输出参数，系统默认的音频播放设备名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdefaultdevice__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdevice"></a>
+
+<a id="ariaid-title10"></a>
 
 ## GetPlaybackDevice
 
@@ -244,7 +303,7 @@ public abstract int GetPlaybackDefaultDevice(ref string deviceId, ref string dev
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetPlaybackDevice(ref string deviceId);
 ```
 
@@ -256,18 +315,25 @@ public abstract int GetPlaybackDevice(ref string deviceId);
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-2"></a>
+<Parameter name="deviceId">
 
 输出参数，当前音频播放设备的设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo"></a>
+
+<a id="ariaid-title11"></a>
 
 ## GetPlaybackDeviceInfo [1/2]
 
@@ -275,7 +341,7 @@ public abstract int GetPlaybackDevice(ref string deviceId);
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo__prototype"></a>
 
-```csharp
+```text
 public abstract int GetPlaybackDeviceInfo(ref string deviceId, ref string deviceName);
 ```
 
@@ -287,22 +353,31 @@ public abstract int GetPlaybackDeviceInfo(ref string deviceId, ref string device
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-3"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename-1"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getplaybackdeviceinfo__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute"></a>
+
+<a id="ariaid-title12"></a>
 
 ## GetPlaybackDeviceMute
 
@@ -310,7 +385,7 @@ public abstract int GetPlaybackDeviceInfo(ref string deviceId, ref string device
 
 <a id="api_iaudiodevicemanager_getplaybackdevicemute__prototype"></a>
 
-```csharp
+```text
 public abstract bool GetPlaybackDeviceMute();
 ```
 
@@ -318,10 +393,12 @@ public abstract bool GetPlaybackDeviceMute();
 
 ### 返回值
 
-- true: 播放设备为静音状态。
-- false: 播放设备为非静音状态。
+- `true`: 播放设备为静音状态。
+- `false`: 播放设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume"></a>
+
+<a id="ariaid-title13"></a>
 
 ## GetPlaybackDeviceVolume
 
@@ -329,7 +406,7 @@ public abstract bool GetPlaybackDeviceMute();
 
 <a id="api_iaudiodevicemanager_getplaybackdevicevolume__prototype"></a>
 
-```csharp
+```text
 public abstract int GetPlaybackDeviceVolume();
 ```
 
@@ -341,13 +418,15 @@ public abstract int GetPlaybackDeviceVolume();
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice"></a>
 
+<a id="ariaid-title14"></a>
+
 ## GetRecordingDefaultDevice [1/2]
 
 获取系统默认的音频采集设备。
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string deviceName);
 ```
 
@@ -359,22 +438,31 @@ public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string de
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-4"></a>
+<Parameter name="deviceId">
 
 输出参数，系统默认的音频采集设备 ID。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename-2"></a>
+<Parameter name="deviceName">
 
 输出参数，系统默认的音频采集设备名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdefaultdevice__return_values"></a>
 
 ### 返回值
 
 - 0：方法调用成功。
-- &lt; 0：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdevice"></a>
+
+<a id="ariaid-title15"></a>
 
 ## GetRecordingDevice
 
@@ -382,7 +470,7 @@ public abstract int GetRecordingDefaultDevice(ref string deviceId, ref string de
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int GetRecordingDevice(ref string deviceId);
 ```
 
@@ -394,18 +482,25 @@ public abstract int GetRecordingDevice(ref string deviceId);
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-5"></a>
+<Parameter name="deviceId">
 
 输出参数。当前采集设备的设备 ID。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo"></a>
+
+<a id="ariaid-title16"></a>
 
 ## GetRecordingDeviceInfo [1/2]
 
@@ -413,7 +508,7 @@ public abstract int GetRecordingDevice(ref string deviceId);
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo__prototype"></a>
 
-```csharp
+```text
 public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string deviceName);
 ```
 
@@ -425,22 +520,31 @@ public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string devic
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-6"></a>
+<Parameter name="deviceId">
 
 输出参数，播放设备的设备 ID。
 
-#### `deviceName`
+</Parameter>
+<a id="devicename-3"></a>
+<Parameter name="deviceName">
 
 输出参数，播放设备的设备名称。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_getrecordingdeviceinfo__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute"></a>
+
+<a id="ariaid-title17"></a>
 
 ## GetRecordingDeviceMute
 
@@ -448,7 +552,7 @@ public abstract int GetRecordingDeviceInfo(ref string deviceId, ref string devic
 
 <a id="api_iaudiodevicemanager_getrecordingdevicemute__prototype"></a>
 
-```csharp
+```text
 public abstract bool GetRecordingDeviceMute();
 ```
 
@@ -456,10 +560,12 @@ public abstract bool GetRecordingDeviceMute();
 
 ### 返回值
 
-- true: 采集设备为静音状态。
-- false: 采集设备为非静音状态。
+- `true`: 采集设备为静音状态。
+- `false`: 采集设备为非静音状态。
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume"></a>
+
+<a id="ariaid-title18"></a>
 
 ## GetRecordingDeviceVolume
 
@@ -467,7 +573,7 @@ public abstract bool GetRecordingDeviceMute();
 
 <a id="api_iaudiodevicemanager_getrecordingdevicevolume__prototype"></a>
 
-```csharp
+```text
 public abstract int GetRecordingDeviceVolume();
 ```
 
@@ -483,13 +589,15 @@ public abstract int GetRecordingDeviceVolume();
 
 <a id="api_ivideodevicemanager_setdevice"></a>
 
+<a id="ariaid-title19"></a>
+
 ## SetDevice
 
 通过设备 ID 指定视频采集设备。
 
 <a id="api_ivideodevicemanager_setdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int SetDevice(string deviceIdUTF8);
 ```
 
@@ -497,7 +605,9 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 ### 详情
 
-:::warning[注意]
+:::caution
+注意：
+
 - 插拔设备不会改变设备 ID。
 :::
 
@@ -505,18 +615,25 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 ### 参数
 
-#### `deviceIdUTF8`
+<ParameterList>
+<a id="deviceidutf8"></a>
+<Parameter name="deviceIdUTF8">
 
 设备 ID。可通过调用 [EnumerateVideoDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-video-device-management#api_ivideodevicemanager_enumeratevideodevices) 方法获取。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_ivideodevicemanager_setdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setloopbackdevice"></a>
+
+<a id="ariaid-title20"></a>
 
 ## SetLoopbackDevice
 
@@ -524,7 +641,7 @@ public abstract int SetDevice(string deviceIdUTF8);
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int SetLoopbackDevice(string deviceId);
 ```
 
@@ -536,7 +653,9 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 该方法可以更改当前的音频采集设备，但不改变系统默认的音频采集设备。假设系统默认的音频采集设备是麦克风 1，你在加入频道前调用该方法设置当前的音频路由为声卡 1，如果在此时进行设备检测，SDK 会对声卡 1 做设备检测。检测结束后，当你加入频道时 SDK 依然会选择使用系统默认的音频采集设备，即麦克风 1。
 
-:::info[注]
+:::note
+注：
+
 该方法适用的场景如下：
 
 使用 App A 播放音乐，通过蓝牙耳机播放；同时使用 App B 进行视频会议，通过扬声器播放。
@@ -550,18 +669,25 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-7"></a>
+<Parameter name="deviceId">
 
 指定 SDK 的声卡采集设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setloopbackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevice"></a>
+
+<a id="ariaid-title21"></a>
 
 ## SetPlaybackDevice
 
@@ -569,7 +695,7 @@ SDK 默认采用当前的播放设备作为声卡采集设备，如果想要指�
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int SetPlaybackDevice(string deviceId);
 ```
 
@@ -583,18 +709,25 @@ public abstract int SetPlaybackDevice(string deviceId);
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-8"></a>
+<Parameter name="deviceId">
 
 指定播放设备。由 [EnumeratePlaybackDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumerateplaybackdevices) 获取。插拔设备不会影响 deviceId。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute"></a>
+
+<a id="ariaid-title22"></a>
 
 ## SetPlaybackDeviceMute
 
@@ -602,7 +735,7 @@ public abstract int SetPlaybackDevice(string deviceId);
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__prototype"></a>
 
-```csharp
+```text
 public abstract int SetPlaybackDeviceMute(bool mute);
 ```
 
@@ -610,21 +743,28 @@ public abstract int SetPlaybackDeviceMute(bool mute);
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute"></a>
+<Parameter name="mute">
 
 是否设置播放设备为静音：
 
-- true: 播放设备设为静音。
-- false: 播放设备不设为静音。
+- `true`: 播放设备设为静音。
+- `false`: 播放设备不设为静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume"></a>
+
+<a id="ariaid-title23"></a>
 
 ## SetPlaybackDeviceVolume
 
@@ -632,7 +772,7 @@ public abstract int SetPlaybackDeviceMute(bool mute);
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__prototype"></a>
 
-```csharp
+```text
 public abstract int SetPlaybackDeviceVolume(int volume);
 ```
 
@@ -644,18 +784,25 @@ public abstract int SetPlaybackDeviceVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
 
 播放设备音量。取值范围为 [0,255]。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setplaybackdevicevolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevice"></a>
+
+<a id="ariaid-title24"></a>
 
 ## SetRecordingDevice
 
@@ -663,7 +810,7 @@ public abstract int SetPlaybackDeviceVolume(int volume);
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRecordingDevice(string deviceId);
 ```
 
@@ -677,18 +824,25 @@ public abstract int SetRecordingDevice(string deviceId);
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-9"></a>
+<Parameter name="deviceId">
 
 音频采集设备的 Device ID。可通过 [EnumerateRecordingDevices](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_enumeraterecordingdevices) 获取。插拔设备不会影响 deviceId。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevice__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute"></a>
+
+<a id="ariaid-title25"></a>
 
 ## SetRecordingDeviceMute
 
@@ -696,7 +850,7 @@ public abstract int SetRecordingDevice(string deviceId);
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRecordingDeviceMute(bool mute);
 ```
 
@@ -704,21 +858,28 @@ public abstract int SetRecordingDeviceMute(bool mute);
 
 ### 参数
 
-#### `mute`
+<ParameterList>
+<a id="mute-1"></a>
+<Parameter name="mute">
 
 是否设置音频采集设备静音：
 
-- true: 采集设备静音。
-- false: 采集设备为非静音。
+- `true`: 采集设备静音。
+- `false`: 采集设备为非静音。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicemute__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume"></a>
+
+<a id="ariaid-title26"></a>
 
 ## SetRecordingDeviceVolume
 
@@ -726,7 +887,7 @@ public abstract int SetRecordingDeviceMute(bool mute);
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__prototype"></a>
 
-```csharp
+```text
 public abstract int SetRecordingDeviceVolume(int volume);
 ```
 
@@ -738,18 +899,25 @@ public abstract int SetRecordingDeviceVolume(int volume);
 
 ### 参数
 
-#### `volume`
+<ParameterList>
+<a id="volume-1"></a>
+<Parameter name="volume">
 
 音频采集设备音量。取值范围 [0,255]。0 代表无声，255 代表最大音量。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_setrecordingdevicevolume__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest"></a>
+
+<a id="ariaid-title27"></a>
 
 ## StartAudioDeviceLoopbackTest
 
@@ -757,7 +925,7 @@ public abstract int SetRecordingDeviceVolume(int volume);
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__prototype"></a>
 
-```csharp
+```text
 public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 ```
 
@@ -767,29 +935,38 @@ public abstract int StartAudioDeviceLoopbackTest(int indicationInterval);
 
 该方法测试音频采集和播放设备是否能正常工作。一旦测试开始，音频采集设备会采集本地音频，然后使用音频播放设备播放出来。SDK 会按设置的时间间隔触发两个 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，分别报告音频采集设备（uid = 0）和音频播放设置（uid = 1）的音量信息。
 
-:::warning[注意]
+:::caution
+注意：
+
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
 - 该方法仅在本地进行音频设备测试，不涉及网络连接。
-- 完成测试后，必须调用 StopAudioDeviceLoopbackTest 停止音频设备回路测试。
+- 完成测试后，必须调用 [StopAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stopaudiodeviceloopbacktest) 停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__parameters"></a>
 
 ### 参数
 
-#### `indicationInterval`
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建议设置到大于 200 毫秒。不得少于 10 毫秒，否则会收不到 OnAudioVolumeIndication 回调。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startaudiodeviceloopbacktest__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest"></a>
+
+<a id="ariaid-title28"></a>
 
 ## StartPlaybackDeviceTest
 
@@ -797,7 +974,7 @@ SDK 触发 OnAudioVolumeIndication 回调的时间间隔，单位为毫秒。建
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__prototype"></a>
 
-```csharp
+```text
 public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 ```
 
@@ -811,29 +988,36 @@ public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频播放设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
-:::warning[注意]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
+:::caution
+注意： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stopplaybackdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__parameters"></a>
 
 ### 参数
 
-#### `testAudioFilePath`
+<ParameterList>
+<a id="testaudiofilepath"></a>
+<Parameter name="testAudioFilePath">
 
 音频文件的绝对路径，路径字符串使用 UTF-8 编码格式。
 
 - 支持文件格式: wav、mp3、m4a、aac。
 - 支持文件采样率: 8000、16000、32000、44100、48000。
 
+</Parameter>
+</ParameterList>
+
 <a id="api_iaudiodevicemanager_startplaybackdevicetest__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
+
+<a id="ariaid-title29"></a>
 
 ## StartRecordingDeviceTest
 
@@ -841,7 +1025,7 @@ public abstract int StartPlaybackDeviceTest(string testAudioFilePath);
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__prototype"></a>
 
-```csharp
+```text
 public abstract int StartRecordingDeviceTest(int indicationInterval);
 ```
 
@@ -853,27 +1037,35 @@ public abstract int StartRecordingDeviceTest(int indicationInterval);
 
 该方法和 [StartEchoTest](/zh-CN/api-reference/rtc/csharp-windows/network#api_irtcengine_startechotest3) 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
 
-:::info[注]
-该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+:::note
+注： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [StopRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
 :::
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
 
 ### 参数
 
-#### `indicationInterval`
+<ParameterList>
+<a id="indicationinterval-1"></a>
+<Parameter name="indicationInterval">
 
 SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 OnAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+
+</Parameter>
+</ParameterList>
 
 <a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
 
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
   - -2: 参数设置错误，请重新设置参数。
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest"></a>
+
+<a id="ariaid-title30"></a>
 
 ## StopAudioDeviceLoopbackTest
 
@@ -881,7 +1073,7 @@ SDK 触发 [OnAudioVolumeIndication](/zh-CN/api-reference/rtc/csharp-windows/aud
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__prototype"></a>
 
-```csharp
+```text
 public abstract int StopAudioDeviceLoopbackTest();
 ```
 
@@ -889,10 +1081,12 @@ public abstract int StopAudioDeviceLoopbackTest();
 
 ### 详情
 
-:::warning[注意]
+:::caution
+注意：
+
 - 该方法在加入频道前后都可调用。
 - 该方法仅支持主播角色调用。
-- 在调用 StartAudioDeviceLoopbackTest 后，必须调用该方法停止音频设备回路测试。
+- 在调用 [StartAudioDeviceLoopbackTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startaudiodeviceloopbacktest) 后，必须调用该方法停止音频设备回路测试。
 :::
 
 <a id="api_iaudiodevicemanager_stopaudiodeviceloopbacktest__return_values"></a>
@@ -900,9 +1094,11 @@ public abstract int StopAudioDeviceLoopbackTest();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest"></a>
+
+<a id="ariaid-title31"></a>
 
 ## StopPlaybackDeviceTest
 
@@ -910,7 +1106,7 @@ public abstract int StopAudioDeviceLoopbackTest();
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__prototype"></a>
 
-```csharp
+```text
 public abstract int StopPlaybackDeviceTest();
 ```
 
@@ -920,8 +1116,8 @@ public abstract int StopPlaybackDeviceTest();
 
 该方法用于停止音频播放设备测试。调用 [StartPlaybackDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startplaybackdevicetest) 后，必须调用该方法停止测试。
 
-:::warning[注意]
-该方法需要在加入频道前调用。
+:::caution
+注意： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_iaudiodevicemanager_stopplaybackdevicetest__return_values"></a>
@@ -929,9 +1125,11 @@ public abstract int StopPlaybackDeviceTest();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
+
+<a id="ariaid-title32"></a>
 
 ## StopRecordingDeviceTest
 
@@ -939,7 +1137,7 @@ public abstract int StopPlaybackDeviceTest();
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__prototype"></a>
 
-```csharp
+```text
 public abstract int StopRecordingDeviceTest();
 ```
 
@@ -949,8 +1147,8 @@ public abstract int StopRecordingDeviceTest();
 
 该方法用于停止音频采集设备测试。调用 [StartRecordingDeviceTest](/zh-CN/api-reference/rtc/csharp-windows/device-management/pc-audio-device-management#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
 
-:::info[注]
-该方法需要在加入频道前调用。
+:::note
+注： 该方法需要在加入频道前调用。
 :::
 
 <a id="api_iaudiodevicemanager_stoprecordingdevicetest__return_values"></a>
@@ -958,9 +1156,11 @@ public abstract int StopRecordingDeviceTest();
 ### 返回值
 
 - 0: 方法调用成功。
-- &lt; 0: 方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged"></a>
+
+<a id="ariaid-title33"></a>
 
 ## OnAudioDeviceStateChanged
 
@@ -968,11 +1168,15 @@ public abstract int StopRecordingDeviceTest();
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioDeviceStateChanged(string deviceId, MEDIA_DEVICE_TYPE deviceType, MEDIA_DEVICE_STATE_TYPE deviceState) { }
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__detailed_desc"></a>
+
+### 详情
+
+<a id="callback_irtcengineeventhandler_onaudiodevicestatechanged__desc"></a>
 
 提示系统音频设备状态发生改变，比如耳机被拔出。
 
@@ -980,19 +1184,30 @@ public virtual void OnAudioDeviceStateChanged(string deviceId, MEDIA_DEVICE_TYPE
 
 ### 参数
 
-#### `deviceId`
+<ParameterList>
+<a id="deviceid-10"></a>
+<Parameter name="deviceId">
 
 设备 ID。
 
-#### `deviceType`
+</Parameter>
+<a id="devicetype"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicetype)。
 
-#### `deviceState`
+</Parameter>
+<a id="devicestate"></a>
+<Parameter name="deviceState">
 
 设备状态，详见 [MEDIA_DEVICE_STATE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicestatetype)。
 
+</Parameter>
+</ParameterList>
+
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged"></a>
+
+<a id="ariaid-title34"></a>
 
 ## OnAudioDeviceVolumeChanged
 
@@ -1000,11 +1215,13 @@ public virtual void OnAudioDeviceStateChanged(string deviceId, MEDIA_DEVICE_TYPE
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__prototype"></a>
 
-```csharp
+```text
 public virtual void OnAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int volume, bool muted)
 ```
 
 <a id="callback_irtcengineeventhandler_onaudiodevicevolumechanged__detailed_desc"></a>
+
+### 详情
 
 当音频播放、采集设备或 App 的音量发生改变时，会触发该回调。
 
@@ -1012,17 +1229,26 @@ public virtual void OnAudioDeviceVolumeChanged(MEDIA_DEVICE_TYPE deviceType, int
 
 ### 参数
 
-#### `deviceType`
+<ParameterList>
+<a id="devicetype-1"></a>
+<Parameter name="deviceType">
 
 设备类型定义。详见 [MEDIA_DEVICE_TYPE](/zh-CN/api-reference/rtc/csharp-windows/enum-mediadevicetype)。
 
-#### `volume`
+</Parameter>
+<a id="volume-2"></a>
+<Parameter name="volume">
 
 音量。范围为 [0,255]。
 
-#### `muted`
+</Parameter>
+<a id="muted"></a>
+<Parameter name="muted">
 
 音频设备是否为静音状态：
 
-- true: 音频设备已静音。
-- false: 音频设备未被静音。
+- `true`: 音频设备已静音。
+- `false`: 音频设备未被静音。
+
+</Parameter>
+</ParameterList>

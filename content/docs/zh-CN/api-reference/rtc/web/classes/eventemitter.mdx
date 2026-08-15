@@ -1,0 +1,196 @@
+---
+title: Class EventEmitter
+description: EventEmitter 类提供了定义、触发和处理事件的方式。
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc/Web/classes/eventemitter.html
+  generator: typedoc
+  warnings: []
+---
+
+### Hierarchy
+
+- EventEmitter
+
+  - [IAgoraRTC](/zh-CN/api-reference/rtc/web/interfaces/iagorartc)
+  - [IAgoraRTCClient](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient)
+
+## Index
+
+### Methods
+
+- [getListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#getlisteners)
+- [off](/zh-CN/api-reference/rtc/web/classes/eventemitter#off)
+- [on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+- [once](/zh-CN/api-reference/rtc/web/classes/eventemitter#once)
+- [removeAllListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#removealllisteners)
+
+## Methods
+
+<a id="getlisteners"></a>
+
+### getListeners
+
+<ApiSignature>
+
+getListeners(event: string): Function[]
+
+</ApiSignature>
+
+指定一个事件名，获取当前所有监听这个事件的回调函数。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+事件名称。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+Function[]
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="off"></a>
+
+### off
+
+<ApiSignature>
+
+off(event: string, listener: Function): void
+
+</ApiSignature>
+
+取消一个指定事件的监听。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+指定事件的名称。
+
+</Parameter>
+<Parameter name="listener" type="Function" required>
+
+监听事件时传入的回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="on"></a>
+
+### on
+
+<ApiSignature>
+
+on(event: string, listener: Function): void
+
+</ApiSignature>
+
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+指定事件的名称。
+
+</Parameter>
+<Parameter name="listener" type="Function" required>
+
+传入的回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="once"></a>
+
+### once
+
+<ApiSignature>
+
+once(event: string, listener: Function): void
+
+</ApiSignature>
+
+监听一个指定的事件，当事件触发时会调用传入的回调函数。
+
+当监听后事件第一次触发时，该监听和回调函数就会被立刻移除，也就是只监听一次指定事件。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" required>
+
+指定事件的名称。
+
+</Parameter>
+<Parameter name="listener" type="Function" required>
+
+传入的回调函数。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="removealllisteners"></a>
+
+### removeAllListeners
+
+<ApiSignature>
+
+removeAllListeners(event?: string): void
+
+</ApiSignature>
+
+指定一个事件，取消其所有的监听。
+
+<ParameterList title="Parameters">
+<Parameter name="event" type="string" optional>
+
+指定事件的名称，如果没有指定事件，则取消所有事件的所有监听。
+
+</Parameter>
+</ParameterList>
+
+<ApiReturns>
+
+<ApiReturnType>
+
+void
+
+</ApiReturnType>
+
+</ApiReturns>

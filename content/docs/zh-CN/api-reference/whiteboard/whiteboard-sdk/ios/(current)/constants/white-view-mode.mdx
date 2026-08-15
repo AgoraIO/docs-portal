@@ -1,0 +1,60 @@
+---
+title: WhiteViewMode Constants Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/whiteboard/iOS/Constants/WhiteViewMode.html
+  generator: appledoc
+  warnings: []
+---
+
+| Declared in | WhiteBroadcastState.h |
+| --- | --- |
+
+### WhiteViewMode
+
+视角模式
+
+#### Definition
+
+```text
+typedef NS_ENUM(NSInteger, WhiteViewMode ) {
+  WhiteViewModeFreedom,
+  WhiteViewModeFollower,
+  WhiteViewModeBroadcaster,
+};
+```
+
+#### Constants
+
+**`WhiteViewModeFreedom`**
+
+```text
+（默认）自由模式。
+ 该模式下用户可以主动调整视角，不受其他用户视角模式设置的影响，也不会影响其他用户的视角模式设置。
+ Note：当房间内不存在视角为主播模式的用户时，所有用户的视角都默认为自由模式。
+```
+
+Declared In `WhiteBroadcastState.h`.
+
+**`WhiteViewModeFollower`**
+
+```text
+ 跟随模式。
+ 该模式下用户的视角会跟随主播的视角。
+```
+
+Declared In `WhiteBroadcastState.h`.
+
+**`WhiteViewModeBroadcaster`**
+
+```text
+ 主播模式。
+ 该模式下用户可以主动调整视角，并将自己的视角同步给房间内所有其他用户。
+```
+
+Declared In `WhiteBroadcastState.h`.
+
+#### Declared In
+
+`WhiteBroadcastState.h`
