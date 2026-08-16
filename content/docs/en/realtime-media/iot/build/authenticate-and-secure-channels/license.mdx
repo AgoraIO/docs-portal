@@ -4,13 +4,13 @@ title: "Implement licensing"
 description: "Acquire and use licenses for your IoT devices."
 ---
 
-Agora utilizes a licensing system as a payment method for IoT SDK. Agora grants a device-specific license to bill for its services, with each device having its own unique license. During the licensed period, Agora does not charge for the duration of the call. Typically, IoT SDK device manufacturers predict the sales volume and usage of their devices, buy and activate licenses from Agora, and then embed the license into each device in the form of a single code.
+Agora grants a device-specific license to bill for its services, with each device having its own unique license. During the licensed period, Agora does not charge for the duration of the call. Typically, device manufacturers predict the sales volume and usage of their devices, buy and activate licenses from Agora, and then embed the license into each device in the form of a single code.
 
 ## Understand the tech
 
 The following figure shows the overall process of using an IoT SDK device license:
 
-![IoT SDK device license workflow](https://assets-docs.agora.io/images/iot/iot-licensing.svg)
+![IoT SDK device license workflow](/temp/iot-licensing.svg)
 
 ## Obtain and use a device license
 
@@ -22,31 +22,40 @@ To apply for a license, contact support@agora.io and provide the following infor
 
 | Name | Description |
 |------|------------------------|
-| Category | Device license |
+| Category | **Device license**: Binds the license to a specific device. |
 | Company ID (CID) | A unique identifier assigned by Agora to each company or organization. You can create an Agora account and get your company ID on the **Settings** page of the Agora Console. |
 | License type | Trial license or commercial license. |
-| Stock keeping unit (SKU) | The license capability set, including media capabilities, minute limits, and usage period. |
+| Stock keeping unit (SKU) | The license capability set, including product, media capabilities, minute limits, and usage period. |
 | Validity period | The license validity period, which starts on the day of activation. |
 | Number of applications | The number of licenses you require. |
 | List of license-enabled project IDs (App ID) | An App ID is the unique identifier of a project, which is provided by Agora and subordinate to the CID. You enable the license for a specific App ID. For how to create a project and get the App ID, see [Account](/en/introduction/account#get-the-app-id-and-app-certificate). |
 | Maximum concurrent user (PCU) limit | After enabling the PCU limit, you can limit the maximum number of people who can access the SDK at the same time in the dimension of CID or App ID. |
 
-Use the following details when you fill out the license application:
+Note the following when you fill out the license application:
 
 - **License type**: Choose a trial license or a commercial license. Agora recommends that you use a trial license during integration testing, and switch to a commercial license before the official launch. For further details, see [Trial license and commercial license](#trial-and-commercial-license).
 - **Stock keeping unit (SKU)**: Specify the capability set of the license, including the following parameters:
+  - **Product**: Media Stream Acceleration (RTSA).
   - **License capabilities**: Audio, video, or both audio and video.
   - **Upper limit of license minutes**: Whether to limit the duration for using the license, which is accurate to minutes.
   - **License usage period**: Whether to limit the period for using the license, which is accurate to minutes.
 - **Validity period**: The validity period of the license starts on the day of activation.
-  - **Trial license**: Specify the period in months. Minimum is 3 months.
+  - **Trial license**: Specify the period in days. Minimum is 3 days.
   - **Commercial license**: Specify the period in years. Minimum is 1 year.
+
+### Obtain pre-authorization
+
+To reduce the risk of license theft, Agora requires pre-authorization before you can activate a license. Send your project's App ID and the device's `licenseKey` to support@agora.io to add the device to an activation whitelist. The activation API only succeeds when you pass a whitelisted `licenseKey`. Pre-authorizing a device consumes one license from your purchased quantity.
 
 ### Activate a license
 
-After receiving the Agora license, refer to the information in this section to activate the license. You use the [IoT SDK License Activation](https://documenter.getpostman.com/view/6319646/SVSLr9AM#c8160c19-a234-49fd-a333-7723b7ca53b2) RESTful API for activation.
+After receiving pre-authorization, refer to the information in this section to activate the license.
 
-**Prototype**
+:::info
+The license activation, renewal, and query APIs on this page require [Basic HTTP authentication](/en/api-reference/api-ref/rtc/authentication) and are limited to 10 calls per second per Agora account, not per App ID.
+:::
+
+**Request**
 
 - Method: `POST`
 - Access point: `https://api.agora.io/global/dabiz/license/v2/active`
@@ -58,13 +67,14 @@ The activation request requires the following query parameters:
 | Parameter | Type | Description |
 |-----------|------|--------------|
 | `pid` | String | The license identification defined by SKU, validity period, and category.
-| `licenseKey` | String | The unique ID of the device. For example, the SN number, Mac address, and so on. The string length must be less than 64 bytes. |
+| `licenseKey` | String | The unique ID of the device. For example, the SN number, Mac address, and so on. The string length must be less than 64 bytes. Case-sensitive, and must already be whitelisted through pre-authorization. |
 | `appid` | String | The unique identifier assigned by Agora to your project. |
 
 **Request example**
 
-```text
-https://api.agora.io/global/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=111&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e
+```bash
+curl --location --request POST 'https://api.agora.io/global/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=111&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
+--header 'Authorization: <http_basic_auth>'
 ```
 
 **Response parameters**
@@ -72,24 +82,12 @@ If the status code is `200`, the request is successful, and the response body co
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `license` | String | The value of the active license. |
-| `skuView` | Object | The SKU capability set. |
-
-The `skuView` object contains the following fields:
-
-- `product` (Integer):
-  - `1`: RTC SDK
-  - `2`: IoT SDK
-  - `3`: FPA
-- `name` (String): The name of the SKU
-- `mediaType` (Integer):
-  - `1`: Audio
-  - `2`: Video
-  - `3`: Both audio and video
-- `minutes` (Integer): The maximum duration of the license
-- `period` (String): License usage time period
-
-If the request fails, the status code is not `200`. Follow the returned status code and the `message` field in the response body to troubleshoot errors.
+| `pid` | String | The license identification you passed in the request. |
+| `license` | String | The value of the active license. Case-sensitive. Save this value; you need it for renewal operations. |
+| `licenseKey` | String | The device unique identifier you passed in the request. |
+| `expireTime` | String | The timestamp when the license expires. |
+| `activationTime` | String | The timestamp when the license was activated. |
+| `skuView` | Object | The SKU capability set. Only the `product` field is meaningful; `name`, `mediaType`, `minutes`, and `period` are no longer used. |
 
 **Response example**
 
@@ -97,27 +95,29 @@ The following is a response example for a successful activation request:
 
 ```json
 {
-   "code":200,
-   "data":{
-      "license":"1D65xxxxxxxxxxxxxxxxxxxxxxxx6016",
-      "skuView":{
-         "product":1,
-         "name":"01",
-         "mediaType":1,
-         "minutes":100,
-         "period":"00:00~23:59"
+   "code": 200,
+   "data": {
+      "pid": "E4D6xxxxxxxxxxxxxxxxxxxxxxxx7E79",
+      "license": "1D65xxxxxxxxxxxxxxxxxxxxxxxx6016",
+      "licenseKey": "1234xxxxxxxxxxx1234",
+      "expireTime": 1700000000,
+      "activationTime": 1699000000,
+      "skuView": {
+         "product": 1
       }
    }
 }
 ```
+
+If the request fails, the status code is not `200`. Follow the returned status code and the `message` field in the response body to troubleshoot errors.
 
 ### Use the license
 After successfully activating a license, you write the license to the device and use it in the SDK. Take the following steps to use the license:
 
 1. Receive an activated license from the server.
 2. Write the license to the device. Ensure that the license written to each device is correct and unique. There are two common methods to write the license information to your device:
-    * The license is written to a file on the device that the device reads through a program.
-    * The license is burnt into the device by the manufacturer during production and the device reads it directly.
+    * Write the license to a file on the device, and have your program read it.
+    * The manufacturer burns the license into the device during production, and the device reads it directly.
 3. Device reads license:
     * If the device successfully reads the license, proceed to the next step.
     * If the device fails to read the license, troubleshoot the problem and write the license again.
@@ -143,26 +143,152 @@ After successfully activating a license, you write the license to the device and
 
 ### Check license usage
 
-Check your license usage in [Agora Console](https://console.agora.io/license/usage).
+Check your license usage in [Agora Console](https://console.agora.io).
 
-![license_usage](https://assets-docs.agora.io/images/iot/license_usage.png)
+### Renew a license
+
+Agora recommends renewing a license at least 30 days before it expires, to avoid a service interruption. You can only renew a license once its remaining validity period is shorter than the validity period of the renewal you request.
+
+**Request**
+
+- Method: `POST`
+- Access point: `https://api.agora.io/global/dabiz/license/v2/renew`
+
+**Request parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `appid` | String | Yes | The unique identifier assigned by Agora to your project. |
+| `renewId` | String | No | The license renewal identifier, defined by SKU, validity period, and category. Contact support@agora.io to obtain a `renewId`. If you don't provide one, Agora selects one automatically. |
+| `license` | String | Yes | The license value to renew. Case-sensitive. |
+
+**Request example**
+
+```bash
+curl --location --request POST 'https://api.agora.io/global/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
+--header 'Authorization: <http_basic_auth>'
+```
+
+**Response parameters**
+
+If the status code is `200`, the request is successful, and the response body contains the following parameters:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `licenseKey` | String | The device unique identifier. |
+| `license` | String | The renewed license value. |
+| `renewTimes` | Integer | The number of times this license has been renewed. |
+| `lastRenewTime` | Integer | The timestamp of the most recent renewal. |
+| `activationTime` | Integer | The timestamp when the license was activated. |
+| `expireTime` | Integer | The timestamp when the renewed license expires. |
+
+**Response example**
+
+```json
+{
+  "code": 200,
+  "message": "license renewed successfully",
+  "data": {
+    "licenseKey": "1234xxxxxxxxxxx1234",
+    "license": "85B3xxxxxxxxxxxxxxxxxxxxxxxx656F",
+    "renewTimes": 1,
+    "lastRenewTime": 1700644272,
+    "activationTime": 1699000000,
+    "expireTime": 1705913065
+  }
+}
+```
+
+### Check for expiring licenses
+
+Query which of your licenses are expiring soon so you can renew them in time.
+
+**Request**
+
+- Method: `GET`
+- Access point: `https://api.agora.io/global/dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses`
+
+**Path parameters**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `appId` | String | The unique identifier assigned by Agora to your project. |
+| `pid` | String | The license identification used when you activated the license. |
+
+**Query parameters**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `expiringDay` | Integer | The number of days until expiry to check for. Accepts `60` or `90`. |
+| `page` | Integer | The page number to return. Optional, defaults to `1`. |
+| `size` | Integer | The number of licenses to return per page. Optional, defaults to `100`, maximum `100`. |
+
+**Request example**
+
+```bash
+curl --location --request GET 'https://api.agora.io/global/dabiz/license/v3/projects/{appId}/pids/{pid}/expiringLicenses?expiringDay=90&size=10&page=1' \
+--header 'Authorization: <http_basic_auth>'
+```
+
+**Response parameters**
+
+If the status code is `200`, the request is successful, and the response body contains the following parameters:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `count` | Integer | The number of expiring licenses found. |
+| `licenseInfos` | Array | The list of expiring licenses. Each entry contains `licenseKey` (the device unique identifier), `license` (the expiring license value), `activeTime` (the activation timestamp, in RFC3339 format), and `expireTime` (the expiration timestamp, in RFC3339 format). |
+
+**Response example**
+
+```json
+{
+  "code": 200,
+  "data": {
+    "count": 1,
+    "list": [
+      {
+        "license": "698AxxxxxxxxxxxxxxxxxxxxxxxxEDDB0",
+        "licenseKey": "1234xxxxxxxxxxx1234",
+        "activeTime": "2024-12-02T08:15:39Z",
+        "expireTime": "2024-12-05T08:15:39Z"
+      }
+    ]
+  }
+}
+```
+
+### Check renewal orders
+
+**Request**
+
+- Method: `GET`
+- Access point: `https://api.agora.io/global/dabiz/license/v3/projects/{appId}/renewals`
+
+**Path parameters**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `appId` | String | The unique identifier assigned by Agora to your project. |
+
+**Request example**
+
+```bash
+curl --location --request GET 'https://api.agora.io/global/dabiz/license/v3/projects/{appId}/renewals' \
+--header 'Authorization: <http_basic_auth>'
+```
+
+**Response parameters**
+
+If the status code is `200`, the request is successful, and the response body contains a list of renewal orders. Each order includes `renewId`, `pid`, the renewal type, the renewal duration, `totalCount`, `allocateCount`, and `createTime`.
 
 ## Reference
 
 The content in this section completes the information on this page, or points you to documentation that explains other aspects of this product.
 
-### The license activation RESTful API
-
-To import the license activation API for testing and to obtain sample code for your platform, see the [Postman](https://documenter.getpostman.com/view/6319646/SVSLr9AM#c8160c19-a234-49fd-a333-7723b7ca53b2) IoT License Activation API.
-
 ### Difference between `licenseValue` and `licenseKey`
 
-**`licenseValue`** is the ID of each license.
-There are two ways to query `licenseValue`:
-
-- On the [License Usage](https://console.agora.io/license/usage) page of the Agora Console, click **Export License Details** and view the `licenseValue` in the **License** column of the exported CSV file.
-
-- After successfully calling the activation API, you receive the activated `licenseValue` in the response.
+**`licenseValue`** is the ID of each license. You need this value to renew a license. You receive the activated `licenseValue` in the response when you call the activation API.
 
 **`licenseKey`** is the unique identifier of the device. For example, the SN number, or the Mac address. The string length must be less than 64 bytes. When a user calls the activation API to activate a license for a device, the user consumes the license which is passed in the `licenseKey` parameter. Users can perform pre-authorization operations, so that only the `licenseKey` in the whitelist can successfully activate the license.
 
@@ -170,8 +296,8 @@ There are two ways to query `licenseValue`:
 
 To facilitate development and testing, Agora offers the following types of licenses:
 
-* **Trial license**: For integration-testing and product debugging.
-* **Commercial license**: For the launch stage of the product.
+* **Trial license**: For integration-testing and product debugging. Every developer gets 10 free trial licenses. Minimum validity period is 3 days.
+* **Commercial license**: For the launch stage of the product. Minimum validity period is 1 year.
 
 Best practice is to use a trial license before the product is officially launched. To switch to a commercial license, follow these steps:
 

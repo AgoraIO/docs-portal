@@ -32,6 +32,8 @@ rtc_service_option_t service_options = { 0 };
 agora_rtc_init(appid, &rtc_event_handler, &service_options);
 ```
 
+Only devices initialized with the same App ID can enter the same channel and communicate with each other.
+
 If your device only sends and receives signaling messages and does not transmit media, you can pass `0` instead of an event handler. To transmit media streams, populate the event handler with callbacks.
 
 ## Implement media streaming
@@ -197,9 +199,15 @@ while (!g_connected_flag) {
 }
 ```
 
-You can join multiple RTC channels using a single connection. When you send audio or video on a connection, IoT SDK delivers it to every channel joined on that connection. IoT SDK triggers `on_join_channel_success` when the join succeeds.
+IoT SDK triggers `on_join_channel_success`, which you registered in [Listen for events](#listen-for-events), when the join succeeds. The `while (!g_connected_flag)` loop blocks until that callback sets the flag, so the rest of your code only runs once the connection has actually joined the channel.
 
-Replace `DEFAULT_CHANNEL_NAME`, `DEFAULT_USER_ID`, and `DEFAULT_TOKEN` with values for your own project.
+Users within an RTC channel can transmit data to each other. You can join multiple RTC channels using a single connection. When you send audio or video on a connection, IoT SDK delivers it to every channel joined on that connection.
+
+Replace `DEFAULT_CHANNEL_NAME`, `DEFAULT_USER_ID`, and `DEFAULT_TOKEN` with values for your own project:
+
+* `DEFAULT_CHANNEL_NAME`: The channel to join. Users who join with the same channel name are directed to the same channel.
+* `DEFAULT_USER_ID`: The ID that identifies this user within the channel.
+* `DEFAULT_TOKEN`: The RTC token generated for this user ID and channel name.
 
 ### Send audio and video
 

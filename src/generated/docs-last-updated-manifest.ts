@@ -4842,27 +4842,67 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-27T10:17:29.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/subscription-packages.md':
     '2026-08-10T15:28:51.000Z',
+  'content/docs/en/realtime-media/iot/build-from-scratch.mdx':
+    '2026-08-14T10:05:34.000Z',
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/authentication-workflow.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/license.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/media-stream-encryption.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/meta.json':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/string-uid.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/communicate-with-other-sdks/interoperate-with-rtc-sdk.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/communicate-with-other-sdks/meta.json':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/configure-media/codec.mdx':
+    '2026-08-14T10:05:34.000Z',
+  'content/docs/en/realtime-media/iot/build/configure-media/meta.json':
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/manage-agora-account.md':
     '2026-08-10T15:28:51.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/bitrate-adaptation.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/connection-management.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/geofencing.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/key-frame.mdx':
+    '2026-08-14T10:05:34.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/meta.json':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/stream-state.mdx':
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/meta.json':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/send-messages/data-streams.mdx':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/send-messages/meta.json':
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/build/send-messages/rdt-messaging.mdx':
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow.mdx':
-    '2026-08-11T15:10:41.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/set-up-authentication-and-security/media-stream-encryption.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/iot/build/set-up-authentication-and-security/meta.json':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/stream-and-optimize-media/ensure-channel-quality.mdx':
-    '2026-08-11T15:10:41.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/stream-and-optimize-media/meta.json':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming.mdx':
     '2026-08-10T15:28:51.000Z',
-  'content/docs/en/realtime-media/iot/meta.json': '2026-07-04T12:05:16.000Z',
+  'content/docs/en/realtime-media/iot/meta.json': '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/product-overview.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/quickstart.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-14T10:05:34.000Z',
   'content/docs/en/realtime-media/iot/reference/agora-console-rest-api.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/iot/reference/billing-policies.md':
@@ -4874,23 +4914,25 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/communicate-with-rtc-sdk.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/iot/reference/core-concepts.md':
-    '2026-08-07T06:52:10.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/reference/firewall.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/iot/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/iot/reference/licensing.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/reference/meta.json':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/iot/reference/pricing.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/iot/reference/release-notes.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-08-14T10:05:34.000Z',
   'content/docs/en/realtime-media/iot/reference/security.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/iot/reference/supported-platforms.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-08-13T12:09:23.000Z',
+  'content/docs/en/realtime-media/iot/resources.mdx':
+    '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/marketplace.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/marketplace/build/activefence.mdx':
     '2026-06-22T02:26:50.000Z',
