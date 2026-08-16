@@ -68,7 +68,6 @@ const productFilters = {
     aliases: [
       'video',
       'video-calling',
-      'rtc',
       'rtc-video',
       'interactive-live-streaming',
       'broadcast-streaming',
@@ -80,6 +79,11 @@ const productFilters = {
     label: 'RTC Voice SDK',
     aliases: ['voice', 'voice-calling', 'rtc-voice'],
     productIds: ['voice'],
+  },
+  rtc: {
+    label: 'RTC SDK',
+    aliases: ['rtc', 'realtime-communication'],
+    productIds: ['video', 'voice'],
   },
   whiteboard: {
     label: 'Whiteboard SDKs',
