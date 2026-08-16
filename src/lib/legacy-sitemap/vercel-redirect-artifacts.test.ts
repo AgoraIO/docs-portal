@@ -129,6 +129,25 @@ describe('legacy redirect Vercel artifacts', () => {
     );
   });
 
+  it('redirects legacy Basics third-party compliance pages', () => {
+    expect(vercelConfig.redirects).toEqual(
+      expect.arrayContaining([
+        {
+          destination:
+            '/zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk-third-party',
+          source: '/basics/security/flexible-classroom-sdk-third-party',
+          statusCode: 301,
+        },
+        {
+          destination:
+            '/zh-CN/realtime-media/speech-to-text/reference/third-party-services',
+          source: '/basics/security/speech-to-text-third-party',
+          statusCode: 301,
+        },
+      ]),
+    );
+  });
+
   it('keeps legacy passthrough routes working without a catch-all SPA rewrite', () => {
     expect(vercelConfig.redirects).toEqual(
       expect.arrayContaining([
