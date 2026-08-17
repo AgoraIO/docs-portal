@@ -451,7 +451,7 @@ describe('docs route locale guards', () => {
     } as never)) as Response;
 
     await expect(response.text()).resolves.toContain(
-      '# Agora MCP (/zh-CN/introduction/mcp-integrate)',
+      '# 使用 MCP 集成 (/zh-CN/introduction/mcp-integrate)',
     );
     expect(response.headers.get('Content-Type')).toBe('text/markdown');
   });

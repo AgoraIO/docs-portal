@@ -1,5 +1,5 @@
 ---
-title: "频道元数据"
+title: "Channel Metadata"
 description: "了解如何在实时消息 RTM 中频道元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 Storage 服务为你提供了 Channel Metadata 的能力，可以用来存储和分发你应用中的上下文数据，例如：道具、公告、成员列表和关系链等。Channel Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，频道中的其他人会在 100 ms 内收到此信息。Storage 服务对于 Message Channel 和 Stream Channel 都有效，在使用的时候可以通过 `channelType` 参数区分。
