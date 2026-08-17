@@ -1,17 +1,10 @@
 ---
-title: LocalAccessPointConfiguration
-description: 用于配置本地接入点。
-_migration:
-  type: generated-html
-  status: migrated
-  sourcePath: html-docs/rtc/Cpp/API/class_Localaccesspointconfiguration.html
-  generator: oxygen
-  warnings: []
+title: "LocalAccessPointConfiguration"
+description: "用于配置本地接入点。"
 ---
-
 <a id="class_localaccesspointconfiguration__prototype"></a>
 
-```text
+```cpp
 struct LocalAccessPointConfiguration {
   const char** ipList;
   int ipListSize;
@@ -28,56 +21,37 @@ struct LocalAccessPointConfiguration {
 
 ## 属性
 
-<ParameterList>
-<a id="iplist"></a>
-<Parameter name="ipList">
+### `ipList`
 
 本地接入点的内网 IP 地址列表。你必须在 `ipList` 或 `domainList` 中至少指定一个。
 
-</Parameter>
-<a id="iplistsize"></a>
-<Parameter name="ipListSize">
+### `ipListSize`
 
 本地接入点的内网 IP 地址数量。该值必须与你提供的 IP 地址数量一致。
 
-</Parameter>
-<a id="domainlist"></a>
-<Parameter name="domainList">
+### `domainList`
 
 本地接入点的域名列表。SDK 会根据你提供的域名解析本地接入点的 IP 地址，DNS 解析超时时间为 10 秒。你必须在 `ipList` 或 `domainList` 中至少指定一个。如果同时指定了 IP 地址和域名，SDK 会合并并去重解析出的 IP 地址和指定的 IP 地址，然后随机选择一个用于负载均衡。
 
-</Parameter>
-<a id="domainlistsize"></a>
-<Parameter name="domainListSize">
+### `domainListSize`
 
 本地接入点的域名数量。该值必须与你提供的域名数量一致。
 
-</Parameter>
-<a id="verifydomainname"></a>
-<Parameter name="verifyDomainName">
+### `verifyDomainName`
 
 用于内部证书校验的域名。如果为空，SDK 使用默认域名 `secure-edge.local` 进行证书校验。
 
-</Parameter>
-<a id="mode"></a>
-<Parameter name="mode">
+### `mode`
 
 连接模式，详见 [LOCAL_PROXY_MODE](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-localproxymode)。
 
-</Parameter>
-<a id="advancedconfig"></a>
-<Parameter name="advancedConfig">
+### `advancedConfig`
 
 本地接入点的高级配置选项。详见 [AdvancedConfigInfo](/zh-CN/api-reference/rtc/cpp-all-platforms/class-advancedconfiginfo)。
 
-</Parameter>
-<a id="disableaut"></a>
-<Parameter name="disableAut">
+### `disableAut`
 
 是否禁用 vos-aut：
 
 - true：（默认）禁用 vos-aut。
 - false：不禁用 vos-aut。
-
-</Parameter>
-</ParameterList>

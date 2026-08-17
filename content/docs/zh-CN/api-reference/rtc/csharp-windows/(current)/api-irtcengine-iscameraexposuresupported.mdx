@@ -1,22 +1,10 @@
 ---
-title: IsCameraExposureSupported
-description: 查询当前摄像头是否支持曝光调节。
-_migration:
-  type: generated-html
-  status: warning
-  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_iscameraexposuresupported.html
-  generator: oxygen
-  warnings:
-    - code: unresolved-fragment
-      severity: warning
-      message: >-
-        Removed 2 fragment(s) that could not be mapped uniquely while preserving their local page
-        links.
+title: "IsCameraExposureSupported"
+description: "查询当前摄像头是否支持曝光调节。"
 ---
-
 <a id="api_irtcengine_iscameraexposuresupported__prototype"></a>
 
-```text
+```csharp
 public abstract bool IsCameraExposureSupported();
 ```
 
@@ -24,17 +12,15 @@ public abstract bool IsCameraExposureSupported();
 
 ## 详情
 
-:::caution
-注意：
-
-- 该方法必须在 SDK 触发 [OnLocalVideoStateChanged](/zh-CN/api-reference/rtc/csharp-windows/video/video-basic#callback_irtcengineeventhandler_onlocalvideostatechanged) 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
-- 建议你在调用 [SetCameraExposureFactor](/zh-CN/api-reference/rtc/csharp-windows/device-management/mobile-camera) 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
-- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/csharp-windows/device-management/mobile-camera) 时指定的摄像头。
+:::warning[注意]
+- 该方法必须在 SDK 触发 OnLocalVideoStateChanged 回调，返回本地视频状态为 LOCAL_VIDEO_STREAM_STATE_CAPTURING (1) 之后调用。
+- 建议你在调用 SetCameraExposureFactor 调节曝光系数前，先调用该方法查询当前摄像头是否支持曝光调节。
+- 当你调用该方法时，查询的是当前正在使用的摄像头是否支持曝光调节，即调用 SetCameraCapturerConfiguration 时指定的摄像头。
 :::
 
 <a id="api_irtcengine_iscameraexposuresupported__return_values"></a>
 
 ## 返回值
 
-- `true`：方法调用成功。
-- `false`：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+- true：方法调用成功。
+- false：方法调用失败。 详见 [错误码](/zh-CN/realtime-media/rtc/reference/error-code) 了解详情和解决建议。

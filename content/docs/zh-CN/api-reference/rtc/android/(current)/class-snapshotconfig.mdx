@@ -4,6 +4,7 @@ description: 用于配置截图功能。
 _migration:
   type: generated-html
   status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/android/API/class_snapshotconfig
   sourcePath: html-docs/rtc/Android/API/class_snapshotconfig.html
   generator: oxygen
   warnings: []
@@ -36,7 +37,10 @@ public class SnapshotConfig {
 <a id="position"></a>
 <Parameter name="position">
 
-截图视频帧在视频处理链中的位置，详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。
+截图视频帧在视频处理链中的位置，详见 [VideoModulePosition](/zh-CN/api-reference/rtc/android/enum-videomoduleposition)。具体取值取决于调用 `takeSnapshot` 或 `takeSnapshotEx` 时传入的 `uid`：
+
+- `uid` 为 `0`：`position` 支持 `2`、`4` 和 `8`。
+- `uid` 不为 `0`：`position` 仅支持 `2`。
 
 </Parameter>
 </ParameterList>

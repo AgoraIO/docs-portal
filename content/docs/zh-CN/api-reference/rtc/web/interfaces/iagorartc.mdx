@@ -4,6 +4,7 @@ description: Agora Web SDK 的入口。
 _migration:
   type: generated-html
   status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/iagorartc
   sourcePath: html-docs/rtc/Web/interfaces/iagorartc.html
   generator: typedoc
   warnings: []
@@ -11,7 +12,7 @@ _migration:
 
 ### Hierarchy
 
-- [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter)
+- EventEmitter
 
   - IAgoraRTC
 
@@ -100,9 +101,9 @@ audio-context-state-changed(currState: AudioContextState | "interrupted", prevSt
 
 :::info[自从]
 *4.20.0*
+:::
 
 音频上下文 ([Audio Context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext)) 状态发生改变回调。该回调中的 `"interrupted"` 状态当前只会在 iOS 上触发。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="currState" type="AudioContextState | &quot;interrupted&quot;" required>
@@ -146,6 +147,7 @@ autoplay-failed(): void
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听自动播放失败事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onAutoplayFailed](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onautoplayfailed)。
 
@@ -154,7 +156,6 @@ AgoraRTC.on("autoplay-failed", (info) => {
   console.log("Autoplay failed!", info.state, info.device);
 });
 ```
-:::
 
 <ApiReturns>
 
@@ -178,6 +179,7 @@ camera-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听视频采集设备状态变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onCameraChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#oncamerachanged)。
 
@@ -186,7 +188,6 @@ AgoraRTC.on("camera-changed", (info) => {
   console.log("Camera changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -224,6 +225,7 @@ microphone-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/interfa
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听麦克风设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onMicrophoneChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onmicrophonechanged)。
 
@@ -232,7 +234,6 @@ AgoraRTC.on("microphone-changed", (info) => {
   console.log("Microphone changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -270,6 +271,7 @@ playback-device-changed(deviceInfo: [DeviceInfo](/zh-CN/api-reference/rtc/web/in
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听音频播放设备变化，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onPlaybackDeviceChanged](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onplaybackdevicechanged)。
 
@@ -278,7 +280,6 @@ AgoraRTC.on("playback-device-changed", (info) => {
   console.log("Playback device changed!", info.state, info.device);
 });
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="deviceInfo" required>
@@ -316,6 +317,7 @@ security-policy-violation(): void
 
 :::info[自从]
 *4.18.0*
+:::
 
 如果你需要更灵活地监听触发 CSP 规则事件，推荐通过在 [IAgoraRTC.on](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#on) 方法中传入该回调来代替 [onSecurityPolicyViolation](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#onsecuritypolicyviolation)。
 
@@ -324,7 +326,6 @@ AgoraRTC.on("security-policy-violation", (info) => {
   console.log("Security policy violation!", info.state, info.device);
 });
 ```
-:::
 
 <ApiReturns>
 
@@ -409,6 +410,7 @@ onAutoplayFailed: function
 
 :::info[自从]
 *4.6.0*
+:::
 
 SDK 在音频或视频轨道自动播放失败时触发该回调。
 
@@ -435,7 +437,6 @@ SDK 在音频或视频轨道自动播放失败时触发该回调。
 ```
 
 > 由于自动播放失败后在用户通过手势点击恢复播放之前，`onAutoplayFailed` 只会触发一次，因此在业务代码中不需要像 `onAudioAutoplayFailed` 回调一样维护 `isAutoplayFailed` 状态。
-:::
 
 #### Type declaration
 
@@ -567,6 +568,7 @@ onPlaybackDeviceChanged: function
 
 :::info[自从]
 *4.1.0*
+:::
 
 音频播放设备状态变化回调。
 
@@ -581,7 +583,6 @@ AgoraRTC.onPlaybackDeviceChanged = (info) => {
 **Parameters**
 
 - **deviceInfo**：设备信息，详见 [DeviceInfo](/zh-CN/api-reference/rtc/web/interfaces/deviceinfo)。
-:::
 
 #### Type declaration
 
@@ -621,12 +622,12 @@ onSecurityPolicyViolation: function
 
 :::info[自从]
 *4.15.0*
+:::
 
 触发 CSP 规则回调。
 
 当声网服务相关的资源加载或请求发送因为触发浏览器的 CSP（Content Security Policy，内容安全策略）规则而失败时，SDK 会触发该回调。
  收到该回调后，请及时调整你的 CSP 设置，确保能正常体验声网的服务。
-:::
 
 #### Type declaration
 
@@ -1426,6 +1427,7 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&
 
 :::info[自从]
 *4.1.0*
+:::
 
 该方法枚举可用的音频播放设备，比如扬声器。
 
@@ -1433,7 +1435,6 @@ getPlaybackDevices(skipPermissionCheck?: boolean): Promise&lt;MediaDeviceInfo[]&
 
 > - Chrome、Firefox、Edge 浏览器上支持该方法。Safari 支持情况如下：macOS 上的 Safari 18.4 及以上版本支持该方法；iOS 上的 Safari 26 及以上版本支持该方法。
 > - 调用本方法会暂时打开麦克风以触发浏览器的媒体设备权限申请。在 Chrome 67+ 和 Firefox 70+ 浏览器上，没有媒体设备权限时无法获取到准确的设备信息。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="skipPermissionCheck" type="boolean" optional>
@@ -1648,7 +1649,7 @@ getListeners(event: string): Function[]
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[getListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#getlisteners)
+Inherited from EventEmitter.getListeners
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -1722,7 +1723,7 @@ off(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[off](/zh-CN/api-reference/rtc/web/classes/eventemitter#off)
+Inherited from EventEmitter.off
 
 取消一个指定事件的监听。
 
@@ -1789,7 +1790,7 @@ on(event: "audio-context-state-changed", listener: typeof event_audio_context_st
 
 </ApiSignature>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.18.0*
@@ -1818,7 +1819,7 @@ void
 
 </ApiReturns>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.18.0*
@@ -1847,7 +1848,7 @@ void
 
 </ApiReturns>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.18.0*
@@ -1876,7 +1877,7 @@ void
 
 </ApiReturns>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.18.0*
@@ -1905,7 +1906,7 @@ void
 
 </ApiReturns>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.18.0*
@@ -1934,7 +1935,7 @@ void
 
 </ApiReturns>
 
-Overrides [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[on](/zh-CN/api-reference/rtc/web/classes/eventemitter#on)
+Overrides EventEmitter.on
 
 :::info[自从]
 *4.20.0*
@@ -1973,7 +1974,7 @@ once(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[once](/zh-CN/api-reference/rtc/web/classes/eventemitter#once)
+Inherited from EventEmitter.once
 
 监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -2095,6 +2096,7 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 
 :::info[自从]
 *4.5.0*
+:::
 
 对本地播放的音频启用回声消除。
 
@@ -2109,7 +2111,6 @@ processExternalMediaAEC(element: HTMLMediaElement): void
 ```
 
 > 注意事项：如果本地播放的媒体元素的地址是跨域地址，必须设置 [HTMLMediaElement](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement) 中的 `crossOrigin` 属性为 `"anonymous"` 以允许跨域媒体被重采集。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="element" type="HTMLMediaElement" required>
@@ -2141,9 +2142,9 @@ registerExtensions(extensions: IExtension&lt;any&gt;[]): void
 
 :::info[自从]
 *4.10.0*
+:::
 
 注册插件。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="extensions" type="IExtension &amp; lt;any &amp; gt;[]" required>
@@ -2173,7 +2174,7 @@ removeAllListeners(event?: string): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[removeAllListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#removealllisteners)
+Inherited from EventEmitter.removeAllListeners
 
 指定一个事件，取消其所有的监听。
 
@@ -2236,6 +2237,7 @@ setArea(area: [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)[] | object): voi
 
 :::info[自从]
 *4.2.0*
+:::
 
 设置访问区域。
 
@@ -2249,7 +2251,6 @@ AgoraRTC.setArea({
   areaCode:"NORTH_AMERICA"
 })
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="area" required>

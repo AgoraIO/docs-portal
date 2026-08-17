@@ -3,10 +3,35 @@ title: Agora Web SDK API Reference v4.24.1
 description: SDK 预设的 AudioEncoderConfiguration 配置。
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/globals
   sourcePath: html-docs/rtc/Web/globals.html
   generator: typedoc
-  warnings: []
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/apptype.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/audiocodec.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/enums/videocodec.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/audiotrackinitconfig.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/imagetypeddata.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/rtmconfiguration.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/interfaces/visiblehiddenresult.html.
 ---
 
 ## Index
@@ -14,9 +39,9 @@ _migration:
 ### Enumerations
 
 - [AREAS](/zh-CN/api-reference/rtc/web/enums/areas)
-- [AppType](/zh-CN/api-reference/rtc/web/enums/apptype)
+- AppType
 - [AudienceLatencyLevelType](/zh-CN/api-reference/rtc/web/enums/audiencelatencyleveltype)
-- [AudioCodec](/zh-CN/api-reference/rtc/web/enums/audiocodec)
+- AudioCodec
 - [ChannelMediaRelayError](/zh-CN/api-reference/rtc/web/enums/channelmediarelayerror)
 - [ChannelMediaRelayEvent](/zh-CN/api-reference/rtc/web/enums/channelmediarelayevent)
 - [ChannelMediaRelayState](/zh-CN/api-reference/rtc/web/enums/channelmediarelaystate)
@@ -27,19 +52,19 @@ _migration:
 - [RemoteStreamType](/zh-CN/api-reference/rtc/web/enums/remotestreamtype)
 - [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enums/simulcast-stream-mode)
 - [StreamType](/zh-CN/api-reference/rtc/web/enums/streamtype)
-- [VideoCodec](/zh-CN/api-reference/rtc/web/enums/videocodec)
+- VideoCodec
 - [VideoState](/zh-CN/api-reference/rtc/web/enums/videostate)
 
 ### Classes
 
-- [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter)
+- EventEmitter
 
 ### Interfaces
 
 - [AgoraRTCStats](/zh-CN/api-reference/rtc/web/interfaces/agorartcstats)
 - [AudioEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/audioencoderconfiguration)
 - [AudioSourceOptions](/zh-CN/api-reference/rtc/web/interfaces/audiosourceoptions)
-- [AudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/audiotrackinitconfig)
+- AudioTrackInitConfig
 - [BufferSourceAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/buffersourceaudiotrackinitconfig)
 - [CameraVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/cameravideotrackinitconfig)
 - [ChannelMediaRelayInfo](/zh-CN/api-reference/rtc/web/interfaces/channelmediarelayinfo)
@@ -66,7 +91,7 @@ _migration:
 - [IRemoteTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotetrack)
 - [IRemoteVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iremotevideotrack)
 - [ImageModerationConfiguration](/zh-CN/api-reference/rtc/web/interfaces/imagemoderationconfiguration)
-- [ImageTypedData](/zh-CN/api-reference/rtc/web/interfaces/imagetypeddata)
+- ImageTypedData
 - [InspectConfiguration](/zh-CN/api-reference/rtc/web/interfaces/inspectconfiguration)
 - [LastmileProbeResult](/zh-CN/api-reference/rtc/web/interfaces/lastmileproberesult)
 - [LiveStreamingTranscodingConfig](/zh-CN/api-reference/rtc/web/interfaces/livestreamingtranscodingconfig)
@@ -77,13 +102,13 @@ _migration:
 - [LowStreamParameter](/zh-CN/api-reference/rtc/web/interfaces/lowstreamparameter)
 - [MicrophoneAudioTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/microphoneaudiotrackinitconfig)
 - [NetworkQuality](/zh-CN/api-reference/rtc/web/interfaces/networkquality)
-- [RTMConfiguration](/zh-CN/api-reference/rtc/web/interfaces/rtmconfiguration)
+- RTMConfiguration
 - [RemoteAudioTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remoteaudiotrackstats)
 - [RemoteVideoTrackStats](/zh-CN/api-reference/rtc/web/interfaces/remotevideotrackstats)
 - [ScreenVideoTrackInitConfig](/zh-CN/api-reference/rtc/web/interfaces/screenvideotrackinitconfig)
 - [VideoEncoderConfiguration](/zh-CN/api-reference/rtc/web/interfaces/videoencoderconfiguration)
 - [VideoPlayerConfig](/zh-CN/api-reference/rtc/web/interfaces/videoplayerconfig)
-- [VisibleHiddenResult](/zh-CN/api-reference/rtc/web/interfaces/visiblehiddenresult)
+- VisibleHiddenResult
 
 ### Type aliases
 
@@ -400,6 +425,7 @@ ScreenAudioTrackInitConfig: object
 
 :::info[自从]
 *4.24.1*
+:::
 
 是否禁止本地页面声音采集。
 
@@ -408,13 +434,13 @@ ScreenAudioTrackInitConfig: object
   详见 [restrictOwnAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/restrictOwnAudio)。
 
 > 该参数仅支持 Chrome 141 及以上、Edge 141 及以上和 Opera 125 及以上。
-:::
 
 </Parameter>
 <Parameter name="suppressLocalAudioPlayback" type="boolean" optional>
 
 :::info[自从]
 *4.24.1*
+:::
 
 是否禁止本地播放音频。
 
@@ -424,7 +450,6 @@ ScreenAudioTrackInitConfig: object
 详见 [suppressLocalAudioPlayback](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSupportedConstraints/suppressLocalAudioPlayback)。
 
 > 该参数仅支持 Chrome 109 及以上、Edge 109 及以上和 Opera 95 及以上。
-:::
 
 </Parameter>
 </ParameterList>

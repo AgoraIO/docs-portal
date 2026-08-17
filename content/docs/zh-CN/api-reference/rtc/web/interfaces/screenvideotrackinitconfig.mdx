@@ -4,6 +4,7 @@ description: 创建屏幕共享视频轨道时的配置对象，用于 AgoraRTC.
 _migration:
   type: generated-html
   status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/screenvideotrackinitconfig
   sourcePath: html-docs/rtc/Web/interfaces/screenvideotrackinitconfig.html
   generator: typedoc
   warnings:
@@ -46,13 +47,13 @@ displaySurface: "browser"|"window"|"monitor"
 
 :::info[自从]
 *4.17.1*
+:::
 
 默认选中的共享内容类型，支持设为标签页、应用窗口（如下图）、或屏幕。详见 [displaySurface](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#displaySurface)。
 
 ![Properties](https://wd.imgix.net/image/vvhSqZboQoZZN9wBvoXq72wzGAf1/AaQIUrKKCvoNuaBjvGOM.png?auto=format&w=1600)
 
 > 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
-:::
 
 <a id="electronscreensourceid"></a>
 
@@ -92,6 +93,7 @@ monitorTypeSurfaces: "exclude"|"include"
 
 :::info[自从]
 *4.24.1*
+:::
 
 是否允许分享整个屏幕，包括浏览器页签和窗口选项。
 
@@ -102,7 +104,6 @@ monitorTypeSurfaces: "exclude"|"include"
 
 > - 该参数仅支持 Chrome 119 及以上。
 > - 如果将 `monitorTypeSurface` 设为 `exclude`，则无法将 `displaySurface` 设为 `monitor`，否则会报错。
-:::
 
 <a id="optimizationmode"></a>
 
@@ -112,13 +113,13 @@ optimizationMode: [OptimizationMode](/zh-CN/api-reference/rtc/web/globals#optimi
 
 :::info[自从]
 *4.2.0*
+:::
 
 设置视频传输优化模式。
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
 > 注意事项：该方法只支持 Chrome 浏览器。
-:::
 
 ### param
 
@@ -145,6 +146,7 @@ preferCurrentTab: boolean
 
 :::info[自从]
 *4.23.0*
+:::
 
 是否默认共享当前页面。
 
@@ -152,7 +154,6 @@ preferCurrentTab: boolean
 - `false`: （默认）否。
 
 > 注意事项: 该属性仅支持 Chrome 94 及以上版本、Opera 80 及以上版本。
-:::
 
 <a id="screensourcetype"></a>
 
@@ -174,6 +175,7 @@ selfBrowserSurface: "include"|"exclude"
 
 :::info[自从]
 *4.17.1*
+:::
 
 是否允许用户共享当前标签页：
 
@@ -186,7 +188,6 @@ selfBrowserSurface: "include"|"exclude"
 >
 > - Chrome 107 上该属性的默认值为 `"exclude"`，但 SDK 为保证兼容性将默认值改为了 `"include"`，以免用户升级到 Chrome 107 后无法共享当前标签页。
 > - 该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
-:::
 
 <a id="surfaceswitching"></a>
 
@@ -196,6 +197,7 @@ surfaceSwitching: "include"|"exclude"
 
 :::info[自从]
 *4.17.1*
+:::
 
 是否允许用户动态切换共享的标签页：
 
@@ -205,7 +207,6 @@ surfaceSwitching: "include"|"exclude"
 详见 [surfaceSwitching](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#surfaceSwitching)。
 
 > 注意事项：该属性仅支持 Chrome 107 及以上版本、Edge 107 及以上版本。
-:::
 
 <a id="systemaudio"></a>
 
@@ -215,6 +216,7 @@ systemAudio: "include"|"exclude"
 
 :::info[自从]
 *4.17.1*
+:::
 
 是否允许采集系统音频：
 
@@ -224,7 +226,6 @@ systemAudio: "include"|"exclude"
 详见 [systemAudio](https://developer.chrome.com/docs/web-platform/screen-sharing-controls/#systemAudio)。
 
 > 注意事项：该属性仅支持 Windows 设备上的 Chrome 105 及以上版本、Edge 105 及以上版本。
-:::
 
 <a id="windowaudio"></a>
 
@@ -234,6 +235,7 @@ windowAudio: "exclude"|"system"
 
 :::info[自从]
 *4.24.1*
+:::
 
 共享窗口时是否允许分享窗口音频。
 
@@ -241,4 +243,3 @@ windowAudio: "exclude"|"system"
 - `"system"`：（默认）分享所有系统音频。
 
 详见 [withAudio](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia#windowAudio)。
-:::

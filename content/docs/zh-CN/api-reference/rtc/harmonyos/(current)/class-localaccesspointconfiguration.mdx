@@ -1,56 +1,34 @@
 ---
-title: LocalAccessPointConfiguration
-description: Local Access Point 配置。
-_migration:
-  type: generated-html
-  status: migrated
-  sourcePath: html-docs/rtc/HarmonyOS/API/class_Localaccesspointconfiguration.html
-  generator: oxygen
-  warnings:
-    - code: empty-source-code
-      severity: info
-      message: >-
-        The legacy source code block is empty; its stable anchor was preserved and the empty fence
-        was omitted.
+title: "LocalAccessPointConfiguration"
+description: "Local Access Point 配置。"
 ---
-
 <a id="class_Localaccesspointconfiguration__prototype"></a>
+
+```arkts
+
+```
 
 <a id="class_Localaccesspointconfiguration__parameters"></a>
 
-## 属性
-<ParameterList>
-<a id="iplist"></a>
-<Parameter name="ipList">
+### `ipList`
 
 Local Access Point 的对内 IP 地址列表。ipList 和 domainList 必须至少填一个。
 
-</Parameter>
-<a id="domainlist"></a>
-<Parameter name="domainList">
+### `domainList`
 
 Local Access Point 的域名列表。SDK 会根据你填入的域名解析出 Local Access Point 的 IP 地址。域名解析的超时时间为 10 秒。ipList 和 domainList 必须至少填一个。如果你同时指定 IP 地址和域名，SDK 会将根据域名解析出来的 IP 地址和你指定的 IP 地址合并、去重，然后随机连接一个 IP 来实现负载均衡。
 
-</Parameter>
-<a id="verifydomainname"></a>
-<Parameter name="verifyDomainName">
+### `verifyDomainName`
 
 内网证书验证域名。如果传值为空，则用 SDK 默认的证书验证域名 `secure-edge.local`。
 
-</Parameter>
-<a id="mode"></a>
-<Parameter name="mode">
+### `mode`
 
 连接模式：
 
 - LOCAL_RPOXY_CONNECTIVITY_FIRST (0)：SDK 优先尝试连接指定的声网私有媒体服务器；如果无法连接到指定的声网私有媒体服务器，则连接声网 SD-RTN™。
 - LOCAL_RPOXY_LOCAL_ONLY (1)：SDK 只尝试连接指定的声网私有媒体服务器。
 
-</Parameter>
-<a id="advancedconfig"></a>
-<Parameter name="advancedConfig">
+### `advancedConfig`
 
 Local Access Point 的高级选项。详见 [AdvancedConfigInfo](/zh-CN/api-reference/rtc/harmonyos/class-advancedconfiginfo)。
-
-</Parameter>
-</ParameterList>

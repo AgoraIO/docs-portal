@@ -1,27 +1,16 @@
 ---
-title: EncodedVideoFrameInfo
-description: 外部编码视频帧的信息。
-_migration:
-  type: generated-html
-  status: migrated
-  sourcePath: html-docs/rtc/HarmonyOS/API/class_encodedvideoframeinfo.html
-  generator: oxygen
-  warnings:
-    - code: empty-source-code
-      severity: info
-      message: >-
-        The legacy source code block is empty; its stable anchor was preserved and the empty fence
-        was omitted.
+title: "EncodedVideoFrameInfo"
+description: "外部编码视频帧的信息。"
 ---
-
 <a id="class_encodedvideoframeinfo__prototype"></a>
+
+```arkts
+
+```
 
 <a id="class_encodedvideoframeinfo__parameters"></a>
 
-## 属性
-<ParameterList>
-<a id="codectype"></a>
-<Parameter name="codecType">
+### `codecType`
 
 视频编解码类型：
 
@@ -29,47 +18,35 @@ _migration:
 - H264 (2)：H.264。
 - H265 (3):（默认）H.265。
 
-:::note
-注： 在某些场景（如采集到的视频流分辨率过低、设备性能有限）下，SDK 会自动调整为 H.264 编码格式。
+:::info[注]
+在某些场景（如采集到的视频流分辨率过低、设备性能有限）下，SDK 会自动调整为 H.264 编码格式。
 :::
 
-</Parameter>
-<a id="width"></a>
-<Parameter name="width">
+### `width`
 
 视频帧的宽度 (px)。
 
-</Parameter>
-<a id="height"></a>
-<Parameter name="height">
+### `height`
 
 视频帧的高度 (px)。
 
-</Parameter>
-<a id="framespersecond"></a>
-<Parameter name="framesPerSecond">
+### `framesPerSecond`
 
 每秒的视频帧数。
 
 当该参数不为 `0` 时，你可以用它计算外部编码视频帧的 Unix 时间戳。
 
-</Parameter>
-<a id="frametype"></a>
-<Parameter name="frameType">
+### `frameType`
 
 视频帧的类型：
 
-<a id="class_encodedvideoframeinfo__ul_djl_sqy_4qb"></a>
+- 0：（默认） VIDEO_FRAME_TYPE_BLANK_FRAME，空白帧。
+- 3： VIDEO_FRAME_TYPE_KEY_FRAME，关键帧。
+- 4： VIDEO_FRAME_TYPE_DELTA_FRAME，Delta 帧。
+- 5： VIDEO_FRAME_TYPE_B_FRAME，B 帧。
+- 6： VIDEO_FRAME_TYPE_UNKNOW，未知。
 
-- 0：（默认）VIDEO_FRAME_TYPE_BLANK_FRAME，空白帧。
-- 3：VIDEO_FRAME_TYPE_KEY_FRAME，关键帧。
-- 4：VIDEO_FRAME_TYPE_DELTA_FRAME，Delta 帧。
-- 5：VIDEO_FRAME_TYPE_B_FRAME，B 帧。
-- 6：VIDEO_FRAME_TYPE_UNKNOW，未知。
-
-</Parameter>
-<a id="rotation"></a>
-<Parameter name="rotation">
+### `rotation`
 
 视频帧的旋转信息，取值如下：
 
@@ -78,34 +55,23 @@ _migration:
 - 180：顺时针旋转 180 度。
 - 270：顺时针旋转 270 度。
 
-</Parameter>
-<a id="trackid"></a>
-<Parameter name="trackId">
+### `trackId`
 
 预留参数。
 
 轨道 ID。适用于频道中有多个视频轨道的场景。
 
-</Parameter>
-<a id="capturetimems"></a>
-<Parameter name="captureTimeMs">
+### `captureTimeMs`
 
 采集外部编码视频帧的 Unix 时间戳 (ms)。
 
-</Parameter>
-<a id="uid"></a>
-<Parameter name="uid">
+### `uid`
 
 推送外部编码视频帧的用户 ID。
 
-</Parameter>
-<a id="streamtype"></a>
-<Parameter name="streamType">
+### `streamType`
 
 视频流类型。
 
 - HIGH (0)：视频大流，即高分辨率、高码率视频流。
 - LOW (1)：视频小流，即低分辨率、低码率视频流。
-
-</Parameter>
-</ParameterList>

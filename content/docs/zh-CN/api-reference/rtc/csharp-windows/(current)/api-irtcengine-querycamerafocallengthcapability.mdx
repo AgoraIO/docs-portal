@@ -1,22 +1,10 @@
 ---
-title: QueryCameraFocalLengthCapability
-description: 查询摄像头支持的焦距能力。
-_migration:
-  type: generated-html
-  status: warning
-  sourcePath: html-docs/rtc/Csharp/API/api_irtcengine_querycamerafocallengthcapability.html
-  generator: oxygen
-  warnings:
-    - code: unresolved-fragment
-      severity: warning
-      message: >-
-        Removed 1 fragment(s) that could not be mapped uniquely while preserving their local page
-        links.
+title: "QueryCameraFocalLengthCapability"
+description: "查询摄像头支持的焦距能力。"
 ---
-
 <a id="api_irtcengine_querycamerafocallengthcapability__prototype"></a>
 
-```text
+```csharp
 public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focalLengthInfos, ref int size);
 ```
 
@@ -24,7 +12,7 @@ public abstract int QueryCameraFocalLengthCapability(ref FocalLengthInfo[] focal
 
 ## 详情
 
-如需开启摄像头广角、超广角拍摄模式，建议你先调用该方法查询设备是否具备相应的焦距能力，再根据查询结果调用 [SetCameraCapturerConfiguration](/zh-CN/api-reference/rtc/csharp-windows/device-management/mobile-camera) 调整摄像头的焦距配置，以达到最佳的摄像头采集效果。
+如需开启摄像头广角、超广角拍摄模式，建议你先调用该方法查询设备是否具备相应的焦距能力，再根据查询结果调用 `SetCameraCapturerConfiguration` 调整摄像头的焦距配置，以达到最佳的摄像头采集效果。
 
 <a id="api_irtcengine_querycamerafocallengthcapability__return_values"></a>
 

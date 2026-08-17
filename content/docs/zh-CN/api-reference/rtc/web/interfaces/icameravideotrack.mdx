@@ -3,10 +3,35 @@ title: Interface ICameraVideoTrack
 description: 本地摄像头视频轨道，继承于 LocalVideoTrack，并在此基础上提供了更换采集设备/调整编码参数的功能。
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/javascript/interfaces/icameravideotrack
   sourcePath: html-docs/rtc/Web/interfaces/icameravideotrack.html
   generator: typedoc
-  warnings: []
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/rtc/javascript/classes/eventemitter.html.
 ---
 
 可以通过 [AgoraRTC.createCameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcameravideotrack) 来获取。
@@ -100,9 +125,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.10.0*
+:::
 
 本地视频轨道上当前媒体处理链路的最终节点。
-:::
 
 <a id="trackmediatype"></a>
 
@@ -133,11 +158,11 @@ Overrides [ILocalVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideo
 
 :::info[自从]
 *4.19.0*
+:::
 
 复制当前的视频轨道对象，生成一个新的视频轨道。
 
 在视频会议、在线教育等场景中，你可以用该方法实现同一视频流的两路显示，并为每路显示设置不同的分辨率、帧率、码率等参数。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="config" optional>
@@ -210,11 +235,11 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.1.0*
+:::
 
 获取当前渲染的视频帧数据。
 
 > 只有在播放后才能调用此方法，如果没有调用 [play](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#play) 则返回空数据。
-:::
 
 <ApiReturns>
 
@@ -238,7 +263,7 @@ getListeners(event: string): Function[]
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[getListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#getlisteners)
+Inherited from EventEmitter.getListeners
 
 指定一个事件名，获取当前所有监听这个事件的回调函数。
 
@@ -431,9 +456,10 @@ getVideoElementVisibleStatus(): [CheckVideoVisibleResult](/zh-CN/api-reference/r
 
 Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack).[getVideoElementVisibleStatus](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#getvideoelementvisiblestatus)
 
-- @自从
+:::info[自从]
 
-     *4.8.0*
+*4.8.0*
+:::
 
 获取 HTML `<video>` 标签的可见状态和不可见原因。
 
@@ -465,7 +491,7 @@ off(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[off](/zh-CN/api-reference/rtc/web/classes/eventemitter#off)
+Inherited from EventEmitter.off
 
 取消一个指定事件的监听。
 
@@ -640,7 +666,7 @@ once(event: string, listener: Function): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[once](/zh-CN/api-reference/rtc/web/classes/eventemitter#once)
+Inherited from EventEmitter.once
 
 监听一个指定的事件，当事件触发时会调用传入的回调函数。
 
@@ -683,9 +709,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.10.0*
+:::
 
 将 `Processor` 注入本地视频轨道。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="processor" type="IBaseProcessor" required>
@@ -765,7 +791,7 @@ removeAllListeners(event?: string): void
 
 </ApiSignature>
 
-Inherited from [EventEmitter](/zh-CN/api-reference/rtc/web/classes/eventemitter).[removeAllListeners](/zh-CN/api-reference/rtc/web/classes/eventemitter#removealllisteners)
+Inherited from EventEmitter.removeAllListeners
 
 指定一个事件，取消其所有的监听。
 
@@ -801,6 +827,7 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.17.0*
+:::
 
 替换本地视频轨道。
 
@@ -834,7 +861,6 @@ const newTrack = await navigator.mediaDevices.getUserMedia({audio: true, video: 
 // 替换本地视频轨道，并且停止原有的视频轨道
 await localVideoTrack.replaceTrack(newTrack, true);
 ```
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="track" type="MediaStreamTrack" required>
@@ -952,6 +978,7 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 
 :::info[自从]
 *4.0.0*
+:::
 
 启用/禁用该轨道。
 
@@ -960,7 +987,6 @@ Overrides [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces/ibuf
 > - 禁用轨道不会触发 [LocalTrack.on("track-ended")](/zh-CN/api-reference/rtc/web/interfaces/ilocaltrack#event_track_ended) 事件。
 > - 如果该轨道已发布，禁用轨道后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。重新启用后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="enabled" type="boolean" required>
@@ -1037,12 +1063,12 @@ Inherited from [IBufferSourceAudioTrack](/zh-CN/api-reference/rtc/web/interfaces
 
 :::info[自从]
 *4.0.0*
+:::
 
 如果该轨道已发布，调用 `setMuted(true)` 后，远端会触发 [user-unpublished](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_unpublished) 事件。再调用 `setMuted(false)` 后，远端会触发 [user-published](/zh-CN/api-reference/rtc/web/interfaces/iagorartcclient#event_user_published) 事件。
 
 > - 与 [setEnabled](/zh-CN/api-reference/rtc/web/interfaces/icameravideotrack#setenabled) 相比，调用该方法响应速度更快且不影响视频采集状态，详见 [setEnabled 和 setMuted 有什么区别？](/zh-CN/reference/faq/integration/set_enabled_set_muted)。
 > - `setEnabled` 和 `setMuted` 不能同时调用。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="muted" type="boolean" required>
@@ -1079,13 +1105,13 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.2.0*
+:::
 
 设置视频传输优化模式。
 
 你可以在视频通话、视频直播或屏幕共享过程中调用此方法动态调整视频的传输优化模式。例如你想要把屏幕共享内容从演示文稿切换为视频时，你可以将传输优化模式从 `"detail"` 切换为 `"motion"`，确保视频画面在网络波动时不会出现卡顿。
 
 > 注意事项：该方法只支持 Chrome 浏览器。
-:::
 
 <ParameterList title="Parameters">
 <Parameter name="mode" required>
@@ -1162,9 +1188,9 @@ Inherited from [ICameraVideoTrack](/zh-CN/api-reference/rtc/web/interfaces/icame
 
 :::info[自从]
 *4.10.0*
+:::
 
 取消本地视频轨道上注入的 `Processor`。
-:::
 
 <ApiReturns>
 
