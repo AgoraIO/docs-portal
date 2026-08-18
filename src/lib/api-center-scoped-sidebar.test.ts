@@ -270,6 +270,85 @@ describe('API Center scoped sidebars', () => {
 
   it.each([
     [
+      'cpp',
+      'iagoraservice.cpp',
+      '服务端 C++',
+      '服务端 C++ Legacy',
+      '/zh-CN/api-reference/local-server-recording/cpp/api-overview',
+      '/zh-CN/api-reference/local-server-recording/cpp/legacy/overview',
+    ],
+    [
+      'java',
+      'agoraservice.java',
+      '服务端 Java',
+      '服务端 Java Legacy',
+      '/zh-CN/api-reference/local-server-recording/java/api-overview',
+      '/zh-CN/api-reference/local-server-recording/java/legacy/overview',
+    ],
+  ])(
+    'switches local server recording %s between its current and Legacy APIs',
+    async (
+      platform,
+      currentPage,
+      currentLabel,
+      legacyLabel,
+      currentHref,
+      legacyHref,
+    ) => {
+      const payload = await loadApiReferencePayload([
+        'local-server-recording',
+        platform,
+        currentPage,
+      ]);
+
+      expect(payload.sidebarHeader).toMatchObject({
+        title: '本地服务端录制',
+        versionSwitcher: {
+          currentId: 'current',
+          versions: [
+            {
+              href: currentHref,
+              id: 'current',
+              label: currentLabel,
+            },
+            {
+              href: legacyHref,
+              id: 'legacy',
+              label: legacyLabel,
+            },
+          ],
+        },
+      });
+
+      const legacyPayload = await loadApiReferencePayload([
+        'local-server-recording',
+        platform,
+        'legacy',
+        'overview',
+      ]);
+      expect(legacyPayload.sidebarHeader?.versionSwitcher).toMatchObject({
+        currentId: 'legacy',
+        versions: [
+          { href: currentHref, id: 'current', label: currentLabel },
+          { href: legacyHref, id: 'legacy', label: legacyLabel },
+        ],
+      });
+
+      const legacyTitles = collectTitles(legacyPayload.sidebar as SidebarNode[]);
+      expect(legacyTitles).toEqual([
+        'Legacy API 概览',
+        'API 概览',
+        platform === 'cpp' ? 'IRecordingEngine 类' : 'RecordingSDK 类',
+        platform === 'cpp'
+          ? 'IRecordingEngineEventHandler 类'
+          : 'RecordingEventHandler 类',
+        'RecordingConfig 类',
+      ]);
+    },
+  );
+
+  it.each([
+    [
       ['local-server-recording', 'java', 'agoraservice.java'],
       ['API 概览', 'AgoraService 类', 'AgoraMediaRtcRecorder 类'],
     ],

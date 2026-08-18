@@ -1,6 +1,7 @@
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
+import { isSamePathOrDescendant } from './docs-routing';
 import {
   type DocsSidebarNode,
   getConfiguredIconName,
@@ -72,10 +73,7 @@ export function resolveDocsNavScope({
     return null;
   }
 
-  const ancestors = findFolderAncestorsByUrl(tabNode, activePath);
-  if (!ancestors) {
-    return null;
-  }
+  const ancestors = findFolderAncestorsByUrl(tabNode, activePath) ?? [];
 
   const scopedAncestors = ancestors
     .map((node) => ({ meta: getNodeMeta(node), node }))
@@ -83,7 +81,9 @@ export function resolveDocsNavScope({
       Boolean(item.meta?.navScope),
     );
 
-  const scope = scopedAncestors.at(-1);
+  const scope =
+    scopedAncestors.at(-1) ??
+    findScopeByVersionHref(tabNode, activePath, getNodeMeta);
   if (!scope) {
     return null;
   }
@@ -143,6 +143,35 @@ export function resolveDocsNavScope({
   };
 }
 
+function findScopeByVersionHref(
+  folder: Folder,
+  activePath: string,
+  getNodeMeta: GetDocsNodeMeta,
+): (FolderAncestor & { meta: DocsMeta }) | undefined {
+  const meta = getNodeMeta(folder);
+  if (
+    meta?.navScope?.versions?.some(
+      (version) =>
+        version.href && isSamePathOrDescendant(activePath, version.href),
+    )
+  ) {
+    return { meta, node: folder };
+  }
+
+  for (const child of folder.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+
+    const scope = findScopeByVersionHref(child, activePath, getNodeMeta);
+    if (scope) {
+      return scope;
+    }
+  }
+
+  return undefined;
+}
+
 export function getNavScopeSidebarNodes({
   getNodeMeta,
   root,
@@ -171,6 +200,31 @@ export function getScopedNavScopeSidebarNodes({
   getNodeMeta: GetDocsNodeMeta;
   navScope: DocsNavScopeResolution;
 }): DocsSidebarNode[] {
+  const versionSidebar = navScope.activeVersion?.sidebar;
+  if (versionSidebar) {
+    return versionSidebar.map((entry) =>
+      'pages' in entry
+        ? {
+            children: entry.pages.map(({ title, url }) => ({
+              id: url,
+              title,
+              type: 'page' as const,
+              url,
+            })),
+            collapsible: entry.collapsible ?? true,
+            id: `version-sidebar-${entry.title}`,
+            title: entry.title,
+            type: 'section' as const,
+          }
+        : {
+            id: entry.url,
+            title: entry.title,
+            type: 'page' as const,
+            url: entry.url,
+          },
+    );
+  }
+
   const sidebarRootMeta = getNodeMeta(navScope.sidebarRoot);
   return flattenNavScopeSidebarNodes(navScope.sidebarRoot, getNodeMeta, {
     ...navScope.scope.meta,
@@ -731,16 +785,20 @@ function resolveActiveVersion({
   }
 
   const matches = versions.flatMap((version) => {
-    const node = findVersionFolder(scope, version);
-    if (!node || !nodeContainsUrl(node, activePath)) {
+    const node = findVersionFolder(scope, version) ?? scope;
+    const matchesVersion = version.href
+      ? isSamePathOrDescendant(activePath, version.href)
+      : nodeContainsUrl(node, activePath);
+
+    if (!matchesVersion) {
       return [];
     }
 
-    return [{ ...version, node }];
+    return [{ ...version, node, specificity: version.href?.length ?? 0 }];
   });
 
   return (
-    matches.at(0) ??
+    matches.sort((left, right) => right.specificity - left.specificity).at(0) ??
     versions
       .map((version) => {
         const node = findVersionFolder(scope, version);
@@ -797,6 +855,15 @@ function resolveVersionSwitcherLinks({
 
   return versions.flatMap((version) => {
     const node = findVersionFolder(scope, version);
+    if (version.href) {
+      return [
+        {
+          href: version.href,
+          id: version.id,
+          label: version.label,
+        },
+      ];
+    }
     if (!node) {
       return [];
     }
@@ -903,15 +970,39 @@ function findVersionFolder(
   scope: Folder,
   version: DocsNavScopeVersion,
 ): Folder | null {
-  return (
-    scope.children.find(
-      (child): child is Folder =>
-        child.type === 'folder' &&
-        (String(child.name) === version.path ||
-          String(child.$id ?? '').includes(version.path) ||
-          folderPathMatchesVersion(child, version)),
-    ) ?? null
+  if (version.path === '.') {
+    return scope;
+  }
+
+  return findDescendantFolder(
+    scope,
+    (folder) =>
+      String(folder.name) === version.path ||
+      String(folder.$id ?? '').includes(version.path) ||
+      folderPathMatchesVersion(folder, version),
   );
+}
+
+function findDescendantFolder(
+  folder: Folder,
+  predicate: (folder: Folder) => boolean,
+): Folder | null {
+  for (const child of folder.children) {
+    if (child.type !== 'folder') {
+      continue;
+    }
+
+    if (predicate(child)) {
+      return child;
+    }
+
+    const match = findDescendantFolder(child, predicate);
+    if (match) {
+      return match;
+    }
+  }
+
+  return null;
 }
 
 function folderPathMatchesVersion(
