@@ -17,7 +17,7 @@ When a device attempts to connect to an Agora channel, your app retrieves a toke
 
 Before starting, ensure that you have:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) guide in your project.
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
 
 * Deployed a token server using either of the following guides:
 
@@ -34,36 +34,38 @@ The device requests a token from your authentication server corresponding to the
 
 ```c
 // Join a channel
-rval = agora_rtc_join_channel(g_app.conn_id, config->p_channel, config->uid, p_token,
-                                &channel_options);
+rval = agora_rtc_join_channel(g_conn_id, DEFAULT_CHANNEL_NAME, DEFAULT_USER_ID, p_token, &channel_options);
 if (rval < 0) {
-    LOGE("Failed to join channel \"%s\", reason: %s", config->p_channel, agora_rtc_err_2_str(rval));
+    printf("Failed to join channel \"%s\", reason: %s\n", DEFAULT_CHANNEL_NAME, agora_rtc_err_2_str(rval));
     return -1;
 }
 ```
+
+:::info
+The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
+:::
 
 ### Handle token errors
 
 If a token is invalid, expired, or missing when required, IoT SDK triggers the `on_error` callback with a token-related error code. Handle these codes to detect authentication failures and fetch a fresh token from your token server:
 
 ```c
-static void __on_error(connection_id_t conn_id, int code, const char *msg)
-{
+static void __on_error(connection_id_t conn_id, int code, const char *msg) {
     if (code == ERR_INVALID_TOKEN || code == ERR_TOKEN_EXPIRED) {
-        LOGE("Invalid token. Please double check. Error msg \"%s\"", msg);
+        printf("Invalid token. Please double check. Error msg \"%s\"\n", msg);
     } else if (code == ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY) {
-        LOGE("Dynamic token is enabled but is not provided. Error msg \"%s\"", msg);
+        printf("Dynamic token is enabled but is not provided. Error msg \"%s\"\n", msg);
     } else {
-        LOGW("Error %d is captured. Error msg \"%s\"", code, msg);
+        printf("Error %d is captured. Error msg \"%s\"\n", code, msg);
     }
 }
 ```
 
-To recover from a token error, request a new token from your token server, then call `agora_rtc_join_channel` again with the fresh token.
+To recover from a token error, request a new token from your token server, then call `agora_rtc_join_channel` again with the fresh token. For a full list of token and other error codes, see [Error codes](../../reference/error-codes.mdx#transmission-related-errors).
 
-:::warning
-The user ID and channel name used to join a channel must be consistent with the values used to generate the token.
-:::
+### Renew a token
+
+To renew a token before it expires, without rejoining the channel, request a new token from your token server and pass it to `agora_rtc_renew_token`.
 
 ## Reference
 
@@ -72,4 +74,5 @@ This section contains content that completes the information on this page, or po
 ### API reference
 
 - [agora_rtc_join_channel](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a6c29ff27f04623526a164cf6e5dcd738)
+- [agora_rtc_renew_token](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a87c94a2d518278926807e24592b41336)
 - [on_error](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)

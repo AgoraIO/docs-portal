@@ -3,64 +3,182 @@ title: "Send messages through the RDT channel"
 description: "Send and receive reliable control and device messages using RDT."
 ---
 
-Starting with v1.9.4, IoT SDK adds Reliable Data Transmission (RDT), an end-to-end reliable messaging channel built on top of the RTC connection that runs independently from your audio and video streams. Use RDT when a message, such as a device command or a status update, must arrive even under packet loss, rather than the best-effort delivery used for media data.
+Starting with v1.9.2, IoT SDK adds Reliable Data Transmission (RDT), an end-to-end reliable messaging channel built on top of the RTC connection that runs independently from your audio and video streams. RDT delivers messages reliably and in order, so use it for content that must arrive complete and intact, such as device commands, status updates, or file transfers and downloads, rather than the best-effort delivery used for media data.
 
-This feature is available for the Linux C SDK only.
+## Understand the tech
 
-## Prerequisites
+Within a single RTC connection, you can simultaneously send audio data, video data, and RDT messages.
 
-In order to follow this procedure you must have:
+The following figure shows the RDT connection lifecycle, and how the RDT channel state determines which messages you can send:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) guide for IoT SDK and created a connection, see [connection management](../manage-connections-and-quality/connection-management.mdx).
-
-## Enable RDT
-
-Set `enable_rdt` to `true` in your channel options before joining a channel. Set `auto_connect_rdt` to control whether the SDK establishes the RDT channel automatically when the connection joins the channel.
-
-## Message types
+![RDT messaging call flow](/temp/iot-rdt-messaging.svg)
 
 RDT supports two message types with different priority and size limits:
 
 | Type | Priority | Limits |
 |---|---|---|
 | `RDT_STREAM_CMD` | High. Not subject to congestion control. | Up to 100 packets per second; 256 bytes maximum packet size. |
-| `RDT_STREAM_DATA` | Lower. Subject to congestion control. | No packet-count limit; 128 KB maximum packet size. |
+| `RDT_STREAM_DATA` | Lower. Subject to congestion control. | Up to 4 Mbps per second; 128 KB maximum packet size. No packet-count limit. |
 
-## Send a message
+## Prerequisites
 
-Call `agora_rtc_send_rdt_msg` to send a message to a peer on the RDT channel:
+In order to follow this procedure you must have:
+
+* Implemented the basic IoT SDK functionality and created a connection. See [Build from scratch](../../build-from-scratch.mdx) and [Manage connections](../manage-connections-and-quality/connection-management.mdx).
+
+## Enable RDT
+
+RDT connections are established per remote user, based on the `on_user_joined` and `on_user_offline` callbacks. Only users with the broadcaster role trigger these callbacks. IoT SDK sets every user as a broadcaster by default, so this usually needs no extra configuration, but if you use IoT SDK alongside another SDK, such as RTC SDK, make sure the user's role is also set to broadcaster in that other SDK.
+
+Since v1.9.4, IoT SDK establishes RDT connections automatically (`auto_connect_rdt` defaults to `true`), so you only need to set `enable_rdt` to `true` in `rtc_channel_options_t` before you call `agora_rtc_join_channel` to use RDT. Set `enable_rdt` to `false` if you don't want to use RDT at all.
 
 ```cpp
-int rval = agora_rtc_send_rdt_msg(conn_id, stream_type, data, length);
+int rval;
+connection_id_t conn_id = 0;
+
+rval = agora_rtc_create_connection(&conn_id);
+if (rval < 0) {
+    printf("Failed to create connection, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+rtc_channel_options_t channel_opt = { 0 };
+channel_opt.enable_rdt = true;
+
+rval = agora_rtc_join_channel(conn_id, "channel-xxx", uid, token, &channel_opt);
+if (rval < 0) {
+    printf("Failed to join channel, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
 ```
+
+### Control how RDT connections are established
+
+Use `auto_connect_rdt` in `rtc_channel_options_t` to control whether IoT SDK proactively establishes an RDT connection with each remote user:
+
+- `auto_connect_rdt = true`: IoT SDK automatically establishes an RDT connection with a remote user when it receives `on_user_joined` for that user, and automatically disconnects it when it receives `on_user_offline`.
+- `auto_connect_rdt = false`: IoT SDK doesn't proactively establish RDT connections, but still accepts incoming RDT connection requests from remote users.
+
+```cpp
+rtc_channel_options_t channel_opt = { 0 };
+channel_opt.enable_rdt = true;
+// Configure whether to proactively establish RDT connections.
+// true: establish; false: don't establish (IoT SDK still accepts incoming requests)
+channel_opt.auto_connect_rdt = true;
+```
+
+Set `auto_connect_rdt` based on your use case. For example:
+
+- In IoT scenarios such as smart cameras and doorbells, you typically want every device to exchange RDT messages with every client, but you don't want clients to exchange RDT messages with each other. Set `auto_connect_rdt = true` when a device joins the channel, so it establishes RDT connections with each client, and set `auto_connect_rdt = false` when a client joins the channel, so clients don't establish RDT connections with each other.
+- In office scenarios such as video conferencing and real-time collaboration, you typically want every participant to exchange data with every other participant. Set `auto_connect_rdt = true` for all users, so they establish RDT connections with each other.
 
 ## Check RDT channel state
 
-Call `agora_rtc_get_rdt_status_info` to query the current state of the RDT channel for a connection.
+Handle the `on_rdt_state` callback to track changes in RDT channel availability for a peer:
 
-Handle the `on_rdt_state` callback to detect changes in RDT channel availability. The callback reports one of the following states:
+```cpp
+rdt_state_e g_rdt_state = RDT_STATE_CLOSED;
 
-- `RDT_STATE_CLOSED`
-- `RDT_STATE_OPENED`
-- `RDT_STATE_BLOCKED`
-- `RDT_STATE_PENDING`
-- `RDT_STATE_BROKEN`
+static void __on_rdt_state(connection_id_t conn_id, uint32_t uid, rdt_state_e state)
+{
+    g_rdt_state = state;
+}
+```
+
+The callback reports one of the following states:
+
+| State | Meaning |
+|---|---|
+| `RDT_STATE_CLOSED` | The RDT channel is closed. You can't send or receive messages. |
+| `RDT_STATE_OPENED` | The RDT channel is open. You can send and receive both message types. |
+| `RDT_STATE_BLOCKED` | The send buffer is full. You can still send `RDT_STREAM_CMD` messages, but not `RDT_STREAM_DATA` messages. |
+| `RDT_STATE_PENDING` | IoT SDK is reconnecting the RDT channel. If reconnection succeeds, the state changes to `RDT_STATE_OPENED` and buffered data is preserved. If reconnection fails, the state changes to `RDT_STATE_CLOSED` and buffered data is cleared. |
+| `RDT_STATE_BROKEN` | The RDT channel is broken. IoT SDK attempts to reconnect, but clears any buffered data regardless of whether reconnection succeeds. |
+
+To avoid losing data that's still in transit, call `agora_rtc_get_rdt_status_info` to check the send buffer length (`send_queue_size`) before you send a new message.
+
+## Send a message
+
+Check the RDT channel state before you send, then call `agora_rtc_send_rdt_msg` with the connection ID, the peer's user ID, the message type, and the payload.
+
+To send a high-priority control message:
+
+```cpp
+if (g_rdt_state == RDT_STATE_OPENED || g_rdt_state == RDT_STATE_BLOCKED) {
+    uint8_t cmd[256] = { 0 };
+    int rval = agora_rtc_send_rdt_msg(conn_id, peer_uid, RDT_STREAM_CMD, cmd, sizeof(cmd));
+    if (rval < 0) {
+        printf("Failed to send RDT message, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+}
+```
+
+To send a lower-priority data message:
+
+```cpp
+if (g_rdt_state == RDT_STATE_OPENED) {
+    uint8_t msg[1024] = { 0 };
+    int rval = agora_rtc_send_rdt_msg(conn_id, peer_uid, RDT_STREAM_DATA, msg, sizeof(msg));
+    if (rval < 0) {
+        printf("Failed to send RDT message, reason: %s\n", agora_rtc_err_2_str(rval));
+        return -1;
+    }
+}
+```
+
+`peer_uid` is the user ID of the remote user you're sending to. Use the `on_user_joined` and `on_user_offline` callbacks to track the user IDs of remote users you can send RDT messages to.
+
+If `agora_rtc_send_rdt_msg` fails, see [Error codes](#error-codes) for the possible reasons.
 
 ## Receive messages
 
-Handle the `on_rdt_msg` callback to receive incoming RDT messages, including the connection ID, sender UID, message type, payload, and length.
+Handle the `on_rdt_msg` callback to receive incoming RDT messages:
+
+```cpp
+static void __on_rdt_msg(connection_id_t conn_id, uint32_t uid, rdt_stream_type_e type, const void *msg, size_t len)
+{
+    printf("Received RDT message from uid=%u type=%d len=%zu\n", uid, type, len);
+}
+```
+
+## Disconnect RDT
+
+When you leave the RTC channel, IoT SDK automatically disconnects every RDT connection created within that channel.
+
+To avoid losing data that's still in transit, call `agora_rtc_get_rdt_status_info` to check that `send_queue_size` is `0`, confirming the remote user received all buffered messages, before you leave the channel.
+
+## Sample code
+
+The IoT SDK package includes complete RDT examples. See the full implementation in `hello_rdt.c` and `hello_rdt_multi.c`:
+
+```
+├── agora_rtsa_sdk  # Agora SDK libraries and header files
+└── example
+    └── hello_rdt
+        ├── hello_rdt.c        # Send and receive RDT messages in a single channel
+        └── hello_rdt_multi.c  # Send and receive RDT messages across multiple channels
+```
 
 ## Reference
 
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
 ### Error codes
 
-- `RTC_ERR_RDT_USER_NOT_EXIST` (-8)
-- `RTC_ERR_RDT_USER_NOT_READY` (-9)
-- `RTC_ERR_RDT_DATA_BLOCKED` (-10)
-- `RTC_ERR_RDT_CMD_EXCEED_LIMIT` (-11)
+`agora_rtc_send_rdt_msg` returns the following error codes when a message fails to send:
+
+- `ERR_RDT_USER_NOT_EXIST` (600): the peer user doesn't exist in the channel.
+- `ERR_RDT_USER_NOT_READY` (601): the RDT channel isn't established yet. Wait for `RDT_STATE_OPENED`.
+- `ERR_RDT_DATA_BLOCKED` (602): the send buffer is full. Wait for `RDT_STATE_OPENED`.
+- `ERR_RDT_CMD_EXCEED_LIMIT` (603): you've exceeded the 100 packets-per-second limit for `RDT_STREAM_CMD` messages.
+- `ERR_RDT_DATA_EXCEED_LIMIT` (604): you've exceeded the 4 Mbps per second limit for `RDT_STREAM_DATA` messages.
+
+See the [full error code reference](../../reference/error-codes.mdx#rdt-related-errors) for more error codes.
 
 ### API reference
 
+- [agora_rtc_join_channel](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a6c29ff27f04623526a164cf6e5dcd738)
 - [agora_rtc_send_rdt_msg](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
 - [agora_rtc_get_rdt_status_info](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
 - [on_rdt_state](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)

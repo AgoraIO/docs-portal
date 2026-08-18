@@ -1,5 +1,5 @@
 ---
-title: "Connection management"
+title: "Manage connections"
 description: "Create, inspect, and destroy RTC connections using the Connection ID mechanism."
 ---
 
@@ -11,35 +11,33 @@ This page shows you how to create, inspect, and destroy connections in your IoT 
 
 In order to follow this procedure you must have:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) project for IoT SDK.
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
 
 ## Create a connection
 
 Call `agora_rtc_create_connection` after you initialize the engine and before you join a channel:
 
-```cpp
+```c
 // Create a connection
-rval = agora_rtc_create_connection(&g_app.conn_id);
+rval = agora_rtc_create_connection(&g_conn_id);
 if (rval < 0) {
-    LOGE("Failed to create connection, reason: %s", agora_rtc_err_2_str(rval));
+    printf("Failed to create connection, reason: %s\n", agora_rtc_err_2_str(rval));
     return -1;
 }
 ```
 
-Use `g_app.conn_id` in every subsequent call that is scoped to this connection, such as `agora_rtc_join_channel`, `agora_rtc_send_audio_data`, `agora_rtc_send_video_data`, `agora_rtc_mute_local_audio`, and `agora_rtc_leave_channel`.
+Use `g_conn_id` in every subsequent call that is scoped to this connection, such as `agora_rtc_join_channel`, `agora_rtc_send_audio_data`, `agora_rtc_send_video_data`, `agora_rtc_mute_local_audio`, and `agora_rtc_leave_channel`.
 
 ## Inspect connection info
 
 Call `agora_rtc_get_connection_info` to retrieve details about an active connection, such as the channel it is joined to. This example logs the channel name when the connection successfully joins a channel:
 
-```cpp
-static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed)
-{
-    g_app.b_connected_flag = true;
-    connection_info_t conn_info = { 0 };
-    agora_rtc_get_connection_info(g_app.conn_id, &conn_info);
-    LOGI("[conn-%u] Join the channel %s successfully, uid %u elapsed %d ms", conn_id,
-        conn_info.channel_name, uid, elapsed);
+```c
+static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int elapsed) {
+    g_connected_flag = true;
+    connection_info_t conn_info = {0};
+    agora_rtc_get_connection_info(g_conn_id, &conn_info);
+    printf("[conn-%u] Join the channel %s successfully, uid %u elapsed %d ms\n", conn_id, conn_info.channel_name, uid, elapsed);
 }
 ```
 
@@ -47,13 +45,9 @@ static void __on_join_channel_success(connection_id_t conn_id, uint32_t uid, int
 
 When you are done with a connection, typically when the app shuts down or leaves a channel for good, leave the channel and then destroy the connection to release its resources:
 
-```cpp
-agora_rtc_leave_channel(g_app.conn_id);
-
-// Destroy connection
-agora_rtc_destroy_connection(g_app.conn_id);
-
-// Finalize rtc sdk
+```c
+agora_rtc_leave_channel(g_conn_id);
+agora_rtc_destroy_connection(g_conn_id);
 agora_rtc_fini();
 ```
 

@@ -3,231 +3,86 @@ title: "Secure channel encryption"
 description: "Add Agora built-in media stream encryption to your app."
 ---
 
-Media stream encryption ensures that only authorized users in a channel see and hear each other. Encryption prevents potential eavesdroppers from accessing sensitive and private information shared in a channel. IoT SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission, when required.
+Media stream encryption prevents potential eavesdroppers from accessing sensitive and private information shared in a channel. IoT SDK provides built-in encryption methods that you can use to guarantee data confidentiality during transmission.
 
 This page shows you how to integrate media stream encryption into your app using IoT SDK.
 
 ## Understand the tech
 
-To ensure secure communication, your app uses an SSL [key](https://en.wikipedia.org/wiki/Key_authentication) and a [salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) to encrypt and decrypt
-data in the channel. You use the key and salt to create an encryption configuration. Agora SDRTN® uses the encryption configuration to encrypt a stream and sends it to remote users. When a remote user receives an encrypted media stream, the remote app decrypts it using the same salt and key.
+To ensure secure communication, your app uses an SSL [key](https://en.wikipedia.org/wiki/Key_authentication) and, for some encryption modes, a [salt](<https://en.wikipedia.org/wiki/Salt_(cryptography)>) to encrypt and decrypt data in the channel. Agora SDRTN® uses your key and salt to encrypt a stream and sends it to remote users. When a remote user receives an encrypted media stream, their app decrypts it using the same key and salt.
 
 The following figure shows the call flow for media stream encryption:
 
 ![Encrypt media stream](https://assets-docs.agora.io/images/common/media-stream-encryption.png)
 
-All users in a channel must use the same encryption configuration. You set this up when you initiate the Agora Engine and enable encryption before joining a channel. If you don’t have the correct configuration, you cannot decrypt channel content. Best practice is to have your authentication system generate a new key and salt regularly.
+All users in a channel must use the same encryption mode, key, and salt. You set this configuration before you join a channel.
+
+:::info
+Mismatched encryption configurations between users cause undefined behavior, such as a black screen or lost audio, instead of an explicit error. Best practice is to have your authentication system generate a new key and salt regularly.
+:::
 
 IoT SDK supports the following encryption modes:
 
-* SM4-128-ECB
-* AES_128_ECB
-* AES_128_XTS
-* AES_256_XTS
-* AES-128-GCM
-* AES-256-GCM
-* AES-128-GCM2 (recommended)
-* AES-256-GCM2 (recommended)
+* `AES_128_XTS`
+* `AES_128_ECB`
+* `AES_256_XTS`
+* `SM4_128_ECB`
+* `AES_128_GCM`
+* `AES_256_GCM`
+* `AES_128_GCM2` (recommended)
+* `AES_256_GCM2` (recommended)
 
-Compared to other encryption modes, GCM2 encryption uses a more secure key derivation function and supports salt. If you choose another encryption mode, you only need to set the encryption mode and key.
+`AES_128_GCM2` and `AES_256_GCM2` use a more secure key derivation function and support a salt. For the other modes, you only need to set the encryption mode and key.
 
 ## Prerequisites
 
 To follow this procedure you must have:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) project for IoT SDK.
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
 
 * [OpenSSL](https://www.openssl.org/) v3.0.0 or above.
 
-## Project setup
+## Generate a key and salt
 
-To encrypt media streams in your app, you need to:
+Generate a 16-byte encryption key:
 
-- Open the [Build from scratch](../../build-from-scratch.mdx) IoT SDK project you created previously.
+```bash
+openssl rand -hex 16
+```
 
-- Set up [OpenSSL](https://www.openssl.org/) on your development device.
+If you use `AES_128_GCM2` or `AES_256_GCM2`, also generate a Base64-encoded, 32-byte salt:
 
-## Implement Agora media stream encryption
+```bash
+openssl rand -base64 32
+```
 
-To implement media stream encryption, do the following:
+## Enable encryption
 
-1.  **Add variables to hold the encryption mode, encryption key, and salt**
+Set the `crypto_opt` fields of `rtc_channel_options_t` before you call `agora_rtc_join_channel`:
 
-    Open `<project-root>/agora_rtsa_sdk/example/hello_rtsa/hello_rtsa.c` in your development environment and add the following declarations to `main()` after `char params[512];`:
+```cpp
+rtc_channel_options_t channel_options = { 0 };
 
-    ```c
-    char * encryptionMode; // depends on your choice of an encryption method
-    const char * encryptionKey = "<32-byte key generated through OpenSSL>";
-    const char * encryptionSaltBase64 = "<Base64-encoded, salt generated through OpenSSL>";
-    ```
-1. **Enable encryption**
+// Enable encryption
+channel_options.crypto_opt.enable = true;
+// Set the encryption mode
+channel_options.crypto_opt.mode = AES_128_GCM2;
+// Set the key
+sprintf(channel_options.crypto_opt.key, "%s", key_str);
 
-    Set `enable_aut_encryption` to `true` in the channel options. Add the following line in `main()` after `channel_options.auto_subscribe_video = true`:
+// Set the salt (AES_128_GCM2 and AES_256_GCM2 only)
+uint8_t *salt_bytes = NULL;
+uint32_t salt_bytes_len = 0;
+salt_bytes = util_base64_decode(salt_base64_str, strlen(salt_base64_str), &salt_bytes_len);
+memcpy(channel_options.crypto_opt.salt, salt_bytes, salt_bytes_len);
+free(salt_bytes);
 
-    ```c
-    channel_options.enable_aut_encryption = true;
-    ```
+// Join the channel
+agora_rtc_join_channel(conn_id, channel_name, uid, token, &channel_options);
+```
 
-1. **Set encryption parameters**
-
-    You specify the media stream encryption mode and the related parameters in JSON format by calling `agora_rtc_set_params`. Depending on your choice of an encryption mode, add **one** of the following pieces of code before `agora_rtc_join_channel` function in `main()`:
-
-    - **SM4-128-ECB** encryption
-
-        ```c
-        // set the encryption mode
-        encryptionMode = "SM4-128-ECB";
-
-        // set encryption parameters
-        memset(params, '\0', sizeof(params));
-        snprintf(params, sizeof(params), "{\"rtc.encryption\": {\"enable\": true,\"mode\": \"%s\", \"master_key\": \"%s\" }}", encryptionMode, encryptionKey);
-        rval = agora_rtc_set_params(params);
-        if (rval != 0) {
-            LOGE("set encryption key failed, reason: %s", agora_rtc_err_2_str(rval));
-            return -1;
-        }
-        ```
-
-    - **AES-128-GCM** encryption
-
-        ```c
-        // set the encryption mode
-        encryptionMode = "AES-128-GCM";
-
-        // set encryption parameters
-        memset(params, '\0', sizeof(params));
-        snprintf(params, sizeof(params), "{\"rtc.encryption\": {\"enable\": true,\"mode\": \"%s\", \"master_key\": \"%s\" }}", encryptionMode, encryptionKey);
-        rval = agora_rtc_set_params(params);
-        if (rval != 0) {
-            LOGE("set encryption key failed, reason: %s", agora_rtc_err_2_str(rval));
-            return -1;
-        }
-        ```
-
-    - **AES-128-GCM2** encryption
-
-        ```c
-        // set the encryption mode
-        encryptionMode = "AES-128-GCM2";
-
-        // set encryption parameters
-        memset(params, '\0', sizeof(params));
-        snprintf(params, sizeof(params), "{\"rtc.encryption\": {\"enable\": true,\"mode\": \"%s\", \"master_key\": \"%s\", \"salt\": \"%s\", \"salt_type\": \"BASE64\"}}", encryptionMode, encryptionKey, encryptionSaltBase64);
-        rval = agora_rtc_set_params(params);
-        if (rval != 0) {
-            LOGE("set encryption key failed, reason: %s", agora_rtc_err_2_str(rval));
-            return -1;
-        }
-        ```
-1. **Disable encryption**
-
-    To disable encryption, use the following code:
-
-    ```c
-    // Disable built-in encryption
-    agora_rtc_set_params("{\"rtc.encryption\": {\"enable\": false}}");
-    ```
-
-## Test your implementation
-
-To ensure that you have implemented Agora media stream encryption in your app:
-
-1. Add the 32-byte key to your app:
-
-    1.  Run the following command in a terminal window:
-
-        ```bash
-        openssl rand -hex 32
-        ```
-
-    2.  Paste the key string returned into the `encryptionKey` variable.
-
-2. Add the 64-byte salt to your app:
-
-    1.  Run the following command in your terminal window:
-
-        ```bash
-        openssl rand -base64 32
-        ```
-
-    2.  Paste the salt string returned into the `encryptionSaltBase64` variable.
-
-3.  [Generate a temporary token](/en/introduction/account#generate-temporary-tokens) in Agora Console.
-
-4. Compile the sample project by executing the following commands in a terminal window:
-
-    ```bash
-    cd <project-root>/agora_rtsa_sdk/example
-
-    ./build-x86_64.sh
-    ```
-
-1. Run the sample app by executing the following commands:
-
-    ```bash
-    cd out/x86_64
-
-    ./hello_rtsa --app-id <your-app-id> --channel-id <your-channel-name> --token <authentication-token>
-    ```
-
-    Make sure you insert your app ID, channel ID, and token from Agora Console in to the command.
-
-    On launch, the app joins a channel and shows output similar to the following:
-
-    ```bash
-    [INF] Welcome to RTSA SDK v1.9.0
-    [INF] File parser found: h264
-    [INF] File parser found: pcm
-    [INF] [conn-1] Join the channel demo successfully, uid 2645490531 elapsed 602 ms
-    [INF] [conn-1] Bandwidth change detected. Please adjust encoder bitrate to 499 kbps
-    ```
-
-1. **Test with an unauthorized user**
-
-    In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**. You see the local user video in your browser.
-
-    In the terminal, your compiled app shows a decryption error as the web demo does not have the SSL key and salt for stream encryption and decryption.
-
-    ```bash
-    [INF] [conn-1] Remote user "3674330576" has joined the channel, elapsed 6784 ms
-    [WRN] Error 120 is captured. Error msg "audio:decrypt error"
-    [WRN] Error 120 is captured. Error msg "video:not set"
-    ```
-
-1. **Test with an authorized user**
-
-    Open two Linux terminals. Navigate to `<project-root>/agora_rtsa_sdk/example/out/x86_64` and execute the following command to launch the app from both terminals.
-
-    ```bash
-    ./hello_rtsa --app-id <your-app-id> --channel-id <your-channel-name> --token <authentication-token>
-    ```
-
-    You see that both clients join the same channel and successfully exchange data as they are using the same SSL key and salt.
-
-    Terminal output for User 1:
-
-    ```bash
-    [DBG] [conn-1] on_audio_data, uid 3534962825 sent_ts 28149 data_type 100, len 640
-    [DBG] [conn-1] on_video_data: uid 3534962825 sent_ts 28150 data_type 2 frame_type 4 stream_type 0 len 618
-    [DBG] [conn-1] on_audio_data, uid 3534962825 sent_ts 28169 data_type 100, len 640
-    ```
-
-    Terminal output for User 2:
-
-    ```bash
-    [DBG] [conn-1] on_video_data: uid 2689257578 sent_ts 1494 data_type 2 frame_type 4 stream_type 0 len 160
-    [DBG] [conn-1] on_video_data: uid 2689257578 sent_ts 1534 data_type 2 frame_type 4 stream_type 0 len 189
-    [DBG] [conn-1] on_audio_data, uid 2689257578 sent_ts 1541 data_type 100, len 640
-    ```
-
-Communication between your test devices is now end-to-end encrypted. This prevents data from being read or secretly modified by anyone other than the true sender and recipient.
+`key_str` and `salt_base64_str` are the key and salt you generated in [Generate a key and salt](#generate-a-key-and-salt). If your encryption mode doesn't use a salt, omit the salt-related lines.
 
 ## Reference
 
-This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
-
-### API reference
-
 - [agora_rtc_join_channel](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a6c29ff27f04623526a164cf6e5dcd738)
-
-- [agora_rtc_set_params](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#ae23f30e7f83f36e74f96b938b2c6dd04)

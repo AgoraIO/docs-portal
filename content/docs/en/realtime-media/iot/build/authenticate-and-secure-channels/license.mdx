@@ -128,10 +128,9 @@ After successfully activating a license, you write the license to the device and
     * If the license verification is successful, the user can use the functions of the SDK.
     * If the license verification fails, the SDK kicks the user out of the channel and triggers the `on_license_validation_failure` callback with an error code, so your app can report and handle the failure explicitly:
 
-        ```cpp
-        static void __on_license_validation_failure(connection_id_t conn_id, int reason)
-        {
-            LOGE("License verification failed, reason: %d", reason);
+        ```c
+        static void __on_license_validation_failure(connection_id_t conn_id, int reason) {
+            printf("License verification failed, reason: %d\n", reason);
         }
         ```
 

@@ -30,14 +30,16 @@ A testing license is bundled with the sample project. It is valid for 90 days an
 
 ## Get the SDK
 
-[Download](/en/api-reference/sdks?platform=linux) the SDK package that matches your development machine's architecture, C library, and float ABI. For example, to download and extract the `x86_64-linux-gnu` package from the terminal:
+Agora publishes a separate SDK package for each combination of processor architecture, operating system, C library, and float ABI. The package name encodes these values, for example `armv7a-linux-uclibceabihf` is an ARMv7 package for Linux, built with the uClibc C library and hard-float compilation.
+
+[Download](/en/api-reference/sdks?platform=linux) the package that matches your development machine's architecture, C library, and float ABI. For example, to download and extract the `x86_64-linux-gnu` package from the terminal:
 
 ```bash
 wget https://download.agora.io/rtsasdk/release/Agora-RTSALite-<build-id>-x86_64-linux-gnu-v<version>.tgz
 tar xvf Agora-RTSALite-<build-id>-x86_64-linux-gnu-v<version>.tgz
 ```
 
-Replace `<build-id>` and `<version>` with the values from your downloaded file name. See [Resources](resources.mdx) for the naming convention used across architectures.
+Replace `<build-id>` and `<version>` with the values from your downloaded file name. See [Resources](reference/resources.mdx) for the naming convention used across architectures.
 
 ## Compile the example project
 

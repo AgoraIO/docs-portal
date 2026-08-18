@@ -1,17 +1,46 @@
 ---
-title: "Data streams"
+title: "Send and receive data streams"
 description: "Send and receive custom data alongside your audio and video streams."
 ---
 
-In addition to audio and video, IoT SDK lets you send and receive your own data alongside a channel's media streams. Use a data stream to attach custom, application-specific payloads to a connection, for example sensor readings or device metadata, without needing a separate signaling channel.
-
-This feature is available for the Linux C SDK only.
+In addition to audio and video, IoT SDK lets you send and receive your own data alongside a channel's media streams. Use a data stream to broadcast custom, application-specific payloads to other users in a channel, for example to synchronize state in real time or send control signaling, without needing a separate signaling channel.
 
 ## Prerequisites
 
 In order to follow this procedure you must have:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) guide for IoT SDK and joined a channel using [connection management](../manage-connections-and-quality/connection-management.mdx).
+* Implemented the basic IoT SDK functionality and joined a channel. See [Build from scratch](../../build-from-scratch.mdx) and [Manage connections](../manage-connections-and-quality/connection-management.mdx).
+
+## Initialize and join a channel
+
+Initialize IoT SDK, create a connection, and join a channel:
+
+```cpp
+int rval;
+connection_id_t conn_id = 0;
+
+// Initialize
+rval = agora_rtc_init(appid, &event_handler, &service_opt);
+if (rval < 0) {
+    printf("Failed to initialize Agora SDK, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+// Create a connection
+rval = agora_rtc_create_connection(&conn_id);
+if (rval < 0) {
+    printf("Failed to create connection, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+
+// Join a channel
+rtc_channel_options_t channel_opt = { 0 };
+rval = agora_rtc_join_channel(conn_id, "channel-xxx", uid, token, &channel_opt);
+if (rval < 0) {
+    printf("Failed to join channel, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+```
 
 ## Create a data stream
 
@@ -20,6 +49,10 @@ Call `agora_rtc_create_data_stream` to create a data stream on an active connect
 ```cpp
 int stream_id;
 int rval = agora_rtc_create_data_stream(conn_id, &stream_id, reliable, ordered);
+if (rval < 0) {
+    printf("Failed to create data stream, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
 ```
 
 You configure two properties for each stream:
@@ -29,12 +62,12 @@ You configure two properties for each stream:
 
 The SDK supports the following `reliable`/`ordered` combinations:
 
-| `reliable` | `ordered` | Supported |
-|---|---|---|
-| `true` | `true` | Yes |
-| `true` | `false` | No |
-| `false` | `true` | Yes |
-| `false` | `false` | Yes |
+| `reliable` | `ordered` | Supported | Description |
+|---|---|---|---|
+| `true` | `true` | Yes | Reliable and ordered. |
+| `true` | `false` | No | Reliable without ordering has no practical value, so IoT SDK doesn't allow this combination. |
+| `false` | `true` | Yes | Unreliable but ordered. |
+| `false` | `false` | Yes | Unreliable and unordered. |
 
 You can create up to 5 data streams per client.
 
@@ -44,6 +77,10 @@ Call `agora_rtc_send_stream_message` to send a payload on a stream:
 
 ```cpp
 int rval = agora_rtc_send_stream_message(conn_id, stream_id, data, length);
+if (rval < 0) {
+    printf("Failed to send stream message, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
 ```
 
 Data streams are rate-limited:
@@ -57,19 +94,24 @@ Data streams are rate-limited:
 
 Handle the `on_stream_message` callback to receive data sent by a remote user:
 
-```cpp
-static void __on_stream_message(connection_id_t conn_id, uint32_t uid, int stream_id,
-                                 const char *data, size_t length, uint64_t sent_ts)
-{
-    LOGI("[conn-%u] Received %zu bytes on stream %d from uid %u", conn_id, length, stream_id, uid);
+```c
+static void __on_stream_message(connection_id_t conn_id, uint32_t uid, int stream_id, const char *data, size_t length, uint64_t sent_ts) {
+    printf("[conn-%u] Received %zu bytes on stream %d from uid %u\n", conn_id, length, stream_id, uid);
 }
 ```
 
+## Sample code
+
+The IoT SDK package includes a complete data stream example. See the full implementation in `hello_stream_message.c`:
+
+```
+├── agora_rtsa_sdk  # Agora SDK libraries and header files
+└── example
+    └── hello_stream_message
+        └── hello_stream_message.c  # Use data streams in a single channel
+```
+
 ## Reference
-
-For a complete implementation, see `example/hello_stream_message/hello_stream_message.c` in the SDK package.
-
-### API reference
 
 - [agora_rtc_create_data_stream](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
 - [agora_rtc_send_stream_message](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)

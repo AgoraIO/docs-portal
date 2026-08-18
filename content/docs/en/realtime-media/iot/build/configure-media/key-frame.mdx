@@ -1,0 +1,56 @@
+---
+title: "Send and receive key frames"
+description: "Request and send key frames to resynchronize video streams."
+---
+
+A key frame is a video frame that carries complete decoding information and does not depend on previous frames. Subsequent frames in the same group of pictures (GOP) are delta frames that only encode changes from the previous frame. When a network drops packets, losing part of a delta frame can prevent the receiver from decoding the rest of that GOP, causing video stutter, pixelation, or a green screen. Requesting a fresh key frame resets the video stream to a known state so the receiver can resynchronize and resume playback.
+
+This page shows you how to send key frames and respond to key frame requests in your IoT SDK app.
+
+:::info
+IoT SDK does not provide video capture or encoding. The device firmware must interface with the camera hardware, capture raw video frames, and encode them using platform-specific or customer-provided libraries.
+:::
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
+
+## Send key frames
+
+When you call `agora_rtc_send_video_data` to send a video frame, use the `frame_type` field of `video_frame_info_t` to tell the SDK whether the frame is a key frame or a delta frame:
+
+```cpp
+video_frame_info_t info = { 0 };
+info.frame_type = frame.u.video.is_key_frame ? VIDEO_FRAME_KEY : VIDEO_FRAME_DELTA;
+info.frames_per_sec = config->send_video_frame_rate;
+info.data_type = config->video_data_type;
+// data is the video data
+// len is the length of the video data
+agora_rtc_send_video_data(g_conn_id, data, len, &info);
+```
+
+To improve the experience for viewers who join partway through a stream or recover from packet loss, encode key frames proactively at regular intervals instead of relying only on requests.
+
+When a sender does not send a key frame for a long time, or the key frame is lost or damaged during transmission, IoT SDK triggers the `on_key_frame_gen_req` callback to advise the sender to generate a key frame. In this example, you log a message when you receive the `on_key_frame_gen_req` callback:
+
+```c
+static void __on_key_frame_gen_req(connection_id_t conn_id, uint32_t uid, video_stream_type_e stream_type) {
+    printf("[conn-%u] Frame loss detected. Set a flag for the encoder to generate a key frame\n", conn_id);
+}
+```
+
+## Receive key frames
+
+If the receiving end encounters an error when decoding frames, call `agora_rtc_request_video_key_frame` to request a fresh key frame:
+
+```cpp
+agora_rtc_request_video_key_frame(conn_id, remote_uid, stream_type);
+```
+
+## Reference
+
+- [agora_rtc_send_video_data](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)
+- [agora_rtc_request_video_key_frame](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a74fbf2ac33a8cefce0f02de3eacc2577)
+- [on_key_frame_gen_req](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html)

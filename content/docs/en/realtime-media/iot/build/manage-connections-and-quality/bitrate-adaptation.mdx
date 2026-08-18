@@ -1,11 +1,11 @@
 ---
-title: "Bitrate adaptation"
+title: "Adapt the sending bitrate"
 description: "Adjust the sending bitrate in real time based on network conditions."
 ---
 
-In order to optimize data transmission and avoid network congestion, best practice is to adjust the sending bit rate in real-time according to changes in network conditions.
+To optimize data transmission and avoid network congestion, best practice is to adjust the sending bit rate in real-time according to changes in network conditions.
 
-You configure BandWidth Estimation (BWE) before joining a channel to set the minimum, maximum, and starting bit rate values according to the actual bandwidth and bit rate needs. When the network bandwidth changes, IoT SDK triggers an event to prompt your app to adjust the sending bit rate in real time. The bit rate returned by the callback is the maximum recommended encoding bit rate of the video encoder.
+Configure BandWidth Estimation (BWE) parameters before joining a channel to set the minimum, maximum, and starting bit rate values according to your actual bandwidth and bit rate needs. When the network bandwidth changes, IoT SDK triggers an event to prompt your app to adjust the sending bit rate in real time. The bit rate returned by the callback is the maximum recommended encoding bit rate of the video encoder.
 
 This page shows you how to configure bandwidth estimation and respond to bitrate changes in your IoT SDK app.
 
@@ -13,23 +13,22 @@ This page shows you how to configure bandwidth estimation and respond to bitrate
 
 In order to follow this procedure you must have:
 
-* Implemented the [Build from scratch](../../build-from-scratch.mdx) project for IoT SDK.
-
-To test the code used in this page you need to have:
-* An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
-* A computer with Internet access.
-    Ensure that no firewall is blocking your network communication.
-
-## Project setup
-
-To create the environment necessary to implement bitrate adaptation into your app, open the [Build from scratch](../../build-from-scratch.mdx) IoT SDK project you created previously.
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
 
 ## Configure bandwidth estimation parameters
 
-You configure bandwidth estimation parameters before joining a channel. For example, based on the [definition levels of a webcam](#definition-levels-of-a-webcam), the minimum bit rate value can be set to 400 kbps, and the maximum value can be set to 4200 kbps. The starting value is between the minimum and the maximum value. If the initial encoding is SD, the initial bit rate can be set to 500 kbps, based on the table.
+Configure bandwidth estimation parameters before joining a channel. Suppose your webcam has the following definition levels:
+
+| Level  | Resolution  | Frame rate  | Bit rate range (kbps) |
+| :--- | :--- | :---: | :---: |
+| SD  | L1: 640*360  | 15 | 400 - 800 |
+| HD  | L2: 1280*720  | 15  | 1130 - 2260 |
+| Ultra HD  | L3: 1920*1080  | 15  | 1130 - 4160 |
+
+Based on these levels, set the minimum bit rate value to 400 kbps, and the maximum value to 4200 kbps. Set the starting value between the minimum and the maximum values. If the initial encoding is SD, set the initial bit rate to 500 kbps.
 
 :::info
-You must call `agora_rtc_set_bwe_param` before `agora_rtc_join_channel`. Bandwidth estimation parameters set after joining a channel have no effect.
+Call `agora_rtc_set_bwe_param` before `agora_rtc_join_channel`. Bandwidth estimation parameters set after joining a channel have no effect.
 :::
 
 To specify these parameters, replace the `agora_rtc_set_bwe_param` call in `main()` with the following:
@@ -40,14 +39,18 @@ To specify these parameters, replace the `agora_rtc_set_bwe_param` call in `main
 uint32_t min_bps = 400000;
 uint32_t max_bps = 4200000;
 uint32_t start_bps = 500000;
-rval = agora_rtc_set_bwe_param(min_bps,  max_bps,  start_bps);
+agora_rtc_set_bwe_param(min_bps,  max_bps,  start_bps);
 ```
 
 ## Respond to target bit rate changes
 
 When network bandwidth changes, IoT SDK triggers the `on_target_bitrate_changed` callback to prompt the app to adjust the sending bit rate. The `target_bps` value returned by the callback is the maximum recommended encoding bit rate of the video encoder.
 
-In this example, you use [definition levels of a webcam](#definition-levels-of-a-webcam) to switch resolution depending on the reported target bit rate. To do this, replace the `__on_target_bitrate_changed` handler with the following:
+:::info
+`on_target_bitrate_changed` returns `target_bps` in bits per second (bps). Don't confuse this with kbps or Bytes per second (Bps) when you use it to set your encoder's bitrate.
+:::
+
+This example uses the webcam's definition levels to switch resolution depending on the reported target bit rate. To do this, replace the `__on_target_bitrate_changed` handler with the following:
 
 ```cpp
 int curTargetBitrate, diffTargetBitrate, lastTargetBitrate = 500;
@@ -93,49 +96,7 @@ static void __on_target_bitrate_changed(const char *channel, uint32_t target_bps
 }
 ```
 
-## Configure logging
-
-IoT SDK provides configuration options that you use to customize the location, content and size of log files containing key data of IoT SDK operation. When you set up logging, IoT SDK writes information messages, warnings, and errors regarding activities such as initialization, configuration, connection and disconnection to log files. Log files are useful in detecting and resolving bitrate and channel quality issues.
-
-To customize the location, and content of the log file, add the following code to `main()` before `agora_rtc_init()`:
-
-```cpp
-// Configure log file location and logging level
-service_opt.log_cfg.log_path = config->p_sdk_log_dir;
-service_opt.log_cfg.log_level = RTC_LOG_DEBUG;
-```
-
-## Test your implementation
-
-1. [Generate a temporary token](/en/introduction/account#generate-temporary-tokens) in Agora Console.
-
-2. In your browser, navigate to the [Agora Muting web demo](https://webdemo.agora.io/basicMute/index.html) and update _App ID_, _Channel_, and _Token_ with the values for your temporary token, then click **Join**.
-
-3. Compile and launch the sample project:
-
-    ```bash
-    cd <project-root>/agora_rtsa_sdk/example
-    ./build-x86_64.sh
-    cd out/x86_64
-    ./hello_rtsa --app-id <your-app-id> --channel-id <your-channel-name> --token <authentication-token>
-    ```
-
-    Remember to insert your app ID, channel name and token in the command.
-
-4. Constrain the network bandwidth on your test device to confirm the app adjusts resolution and bitrate in response to the `on_target_bitrate_changed` callback.
-
 ## Reference
 
-### Definition levels of a webcam
-
-| Gear  | Resolution  | Frame rate  | Bit rate range (kbps) |
-| :---: | :--- | :---: | :---: |
-| SD  | L1: 640*360  | 15 | 400 - 800 |
-| HD  | L2: 1280*720  | 15  | 1130 - 2260 |
-| Ultra HD  | L3: 1920*1080  | 15  | 1130 - 4160 |
-
-### API reference
-
 - [agora_rtc_set_bwe_param](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#ae274291aadd1afb9974a4672ed6c2bb8)
-- [on_target_bitrate_changed](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#af3ef06a16cd4cf3aa585dd6ad13ada0b)
-- [rtc_log_level_e](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#abccb8cb27efdca58bafccf4092ccc868)
+- [on_target_bitrate_changed](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#a2cd16998c0834bac5c47c0e2b9f47fcc)
