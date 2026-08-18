@@ -17,8 +17,8 @@ Set `params.model` to one of the following Gemini Live models:
 | Model | Description |
 | --- | --- |
 | `gemini-3.1-flash-live-preview` | General-purpose Gemini Live model. |
-| `walkie-talkie` | Preview Gemini Live model. |
-| `clever-chatter` | Preview Gemini Live model. |
+| `walkie-talkie` | Preview Gemini Live model. See [walkie-talkie and clever-chatter](#walkie-talkie-and-clever-chatter). |
+| `clever-chatter` | Preview Gemini Live model. Supports an additional `thinking_level` parameter. See [walkie-talkie and clever-chatter](#walkie-talkie-and-clever-chatter). |
 
 ### Sample configuration
 
@@ -94,13 +94,6 @@ agent := agentkit.NewAgent(client).WithMllm(
 
 <TabsContent value="rest-api">
 
-:::info[Important]
-`walkie-talkie` and `clever-chatter` are early access preview models. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
-
-- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
-- **Header**: `agora-feature: gemini-live`
-:::
-
 Use the following `mllm` configuration in your request:
 
 ```json
@@ -139,6 +132,135 @@ Use the following `mllm` configuration in your request:
   "vendor": "gemini"
 }
 ```
+
+</TabsContent>
+</Tabs>
+
+### walkie-talkie and clever-chatter
+
+`walkie-talkie` and `clever-chatter` are early access preview models, each with a dedicated SDK vendor class: `GeminiWalkieTalkie` and `GeminiCleverChatter`. Unlike the production Gemini Live vendor shown in [Sample configuration](#sample-configuration), these require the preview client (`AgoraPreview`, `AgoraPreviewClient`, or `NewAgoraPreviewClient`) instead of the standard client. The preview client points requests at the preview endpoint and attaches the required header automatically.
+
+`clever-chatter` additionally supports a `thinking_level` parameter (`low`, `medium`, or `high`) that controls its reasoning budget. `walkie-talkie` does not support this parameter.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Area
+from agora_agent.agentkit.preview import AgoraPreview, GeminiCleverChatter
+
+# Preview-only vendors require AgoraPreview instead of the standard Agora client.
+client = AgoraPreview(
+    area=Area.US,
+    app_id='your-app-id',
+    app_certificate='your-app-certificate',
+)
+
+agent = (
+    Agent(client)
+    .with_mllm(GeminiCleverChatter(
+        api_key='your-google-api-key',
+        voice='Puck',
+        thinking_level='medium',
+    ))
+)
+```
+
+To use `walkie-talkie` instead, import `GeminiWalkieTalkie` and drop `thinking_level`, which it does not support.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AgoraPreviewClient, Area, GeminiCleverChatter } from 'agora-agents';
+
+// Preview-only vendors require AgoraPreviewClient instead of the standard client.
+const client = new AgoraPreviewClient({
+  area: Area.US,
+  appId: 'your-app-id',
+  appCertificate: 'your-app-certificate',
+});
+
+const agent = new Agent({ client })
+  .withMllm(new GeminiCleverChatter({
+    apiKey: 'your-google-api-key',
+    voice: 'Puck',
+    thinkingLevel: 'medium',
+  }));
+```
+
+To use `walkie-talkie` instead, import `GeminiWalkieTalkie` and drop `thinkingLevel`, which it does not support.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+    "github.com/AgoraIO/agora-agents-go/v2/option"
+)
+
+// Preview-only vendors require NewAgoraPreviewClient instead of the standard client.
+client := agentkit.NewAgoraPreviewClient(agentkit.AgoraPreviewClientOptions{
+    AgoraClientOptions: agentkit.AgoraClientOptions{
+        Area:           option.AreaUS,
+        AppID:          "your-app-id",
+        AppCertificate: "your-app-certificate",
+    },
+})
+
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewGeminiCleverChatter(vendors.GeminiCleverChatterOptions{
+        GeminiPreviewMLLMOptions: vendors.GeminiPreviewMLLMOptions{
+            APIKey: "your-google-api-key",
+            Voice:  "Puck",
+        },
+        ThinkingLevel: vendors.GeminiThinkingLevelMedium,
+    }),
+)
+```
+
+To use `walkie-talkie` instead, call `vendors.NewGeminiWalkieTalkie(vendors.GeminiPreviewMLLMOptions{...})`, which has no `ThinkingLevel` field.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+:::info[Important]
+`walkie-talkie` and `clever-chatter` are early access preview models. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
+
+Unlike the production Gemini Live payload, the preview payload repeats `api_key` inside `params`, always includes `params.language`, and defaults `url` to the Gemini Developer API host. Use the following `mllm` configuration in your request:
+
+```json
+"mllm": {
+  "enable": true,
+  "vendor": "gemini",
+  "api_key": "<GOOGLE_GEMINI_API_KEY>",
+  "url": "https://generativelanguage.googleapis.com",
+  "params": {
+    "api_key": "<GOOGLE_GEMINI_API_KEY>",
+    "model": "clever-chatter",
+    "voice": "Puck",
+    "thinking_level": "medium",
+    "language": "en-US"
+  }
+}
+```
+
+To use `walkie-talkie` instead, set `params.model` to `"walkie-talkie"` and remove `params.thinking_level`, which only `clever-chatter` supports.
 
 </TabsContent>
 </Tabs>
