@@ -59,10 +59,26 @@ const docsMetaPageEntrySchema = z.union([
   }),
 ]);
 
+const docsNavScopeSidebarPageSchema = z.object({
+  title: z.string().min(1),
+  url: z.string().min(1),
+});
+
+const docsNavScopeSidebarEntrySchema = z.union([
+  docsNavScopeSidebarPageSchema,
+  z.object({
+    collapsible: z.boolean().optional(),
+    pages: z.array(docsNavScopeSidebarPageSchema).min(1),
+    title: z.string().min(1),
+  }),
+]);
+
 export const docsNavScopeVersionSchema = z.object({
+  href: z.string().min(1).optional(),
   id: z.string().min(1),
   label: z.string().min(1),
   path: z.string().min(1),
+  sidebar: z.array(docsNavScopeSidebarEntrySchema).min(1).optional(),
 });
 
 export const docsNavScopeSchema = z.object({

@@ -1,6 +1,45 @@
 {
   "title": "本地服务端录制",
-  "navScope": {},
+  "navScope": {
+    "defaultVersion": "current",
+    "versions": [
+      {
+        "href": "/zh-CN/api-reference/local-server-recording/java/api-overview",
+        "id": "current",
+        "label": "服务端 Java",
+        "path": "."
+      },
+      {
+        "href": "/zh-CN/api-reference/local-server-recording/java/legacy/overview",
+        "id": "legacy",
+        "label": "服务端 Java Legacy",
+        "path": "legacy",
+        "sidebar": [
+          {
+            "title": "Legacy API 概览",
+            "pages": [
+              {
+                "title": "API 概览",
+                "url": "/zh-CN/api-reference/local-server-recording/java/legacy/overview"
+              },
+              {
+                "title": "RecordingSDK 类",
+                "url": "/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k"
+              },
+              {
+                "title": "RecordingEventHandler 类",
+                "url": "/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler"
+              },
+              {
+                "title": "RecordingConfig 类",
+                "url": "/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "pages": [
     "---API 参考---",
     "api-overview",
@@ -10,7 +49,17 @@
     "irecordervideoframeobserver",
     "struct",
     "enum",
-    "legacy/overview"
+    {
+      "type": "group",
+      "title": "Legacy API 参考",
+      "collapsible": true,
+      "pages": [
+        "legacy/overview",
+        "legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k",
+        "legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler",
+        "legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config"
+      ]
+    }
   ],
   "sidebarLabels": {
     "/zh-CN/api-reference/local-server-recording/java/api-overview": "API 概览",
@@ -20,6 +69,9 @@
     "/zh-CN/api-reference/local-server-recording/java/irecordervideoframeobserver": "IRecorderVideoFrameObserver 类",
     "/zh-CN/api-reference/local-server-recording/java/struct": "结构体",
     "/zh-CN/api-reference/local-server-recording/java/enum": "枚举类",
-    "/zh-CN/api-reference/local-server-recording/java/legacy/overview": "Legacy API 概览"
+    "/zh-CN/api-reference/local-server-recording/java/legacy/overview": "API 概览",
+    "/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1-recording-s-d-k": "IRecordingSDK 类",
+    "/zh-CN/api-reference/local-server-recording/java/legacy/interfaceio-1-1agora-1-1recording-1-1-recording-event-handler": "IRecordingEventHandler 类",
+    "/zh-CN/api-reference/local-server-recording/java/legacy/classio-1-1agora-1-1recording-1-1common-1-1-recording-config": "RecordingConfig 类"
   }
 }

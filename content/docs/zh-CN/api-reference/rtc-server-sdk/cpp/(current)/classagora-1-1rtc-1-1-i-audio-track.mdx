@@ -1,0 +1,195 @@
+---
+title: agora::rtc::IAudioTrack类 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourcePath: html-docs/rtc-server-sdk/cpp/classagora_1_1rtc_1_1_i_audio_track.html
+  generator: doxygen
+  warnings: []
+---
+
+继承自 [agora::RefCountInterface](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1-ref-count-interface).
+
+被 [agora::rtc::ILocalAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-local-audio-track), 以及 [agora::rtc::IRemoteAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-remote-audio-track) 继承.
+
+<a id="details"></a>
+
+## 详细描述
+
+[IAudioTrack](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-track) 类。
+
+## 成员枚举类型说明
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9"></a>
+
+### AudioFilterPosition
+
+<ApiSignature>
+
+enum [agora::rtc::IAudioTrack::AudioFilterPosition](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-track#aaf4feb1ff0066f122c9f0e87e0543ef9)
+
+</ApiSignature>
+
+音频过滤器的作用阶段。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="api-center-table-0" /> | <Slot name="api-center-table-1" /> |
+| <Slot name="api-center-table-2" /> | <Slot name="api-center-table-3" /> |
+| <Slot name="api-center-table-4" /> | <Slot name="api-center-table-5" /> |
+| <Slot name="api-center-table-6" /> | <Slot name="api-center-table-7" /> |
+| <Slot name="api-center-table-8" /> | <Slot name="api-center-table-9" /> |
+| <Slot name="api-center-table-10" /> | <Slot name="api-center-table-11" /> |
+| <Slot name="api-center-table-12" /> | <Slot name="api-center-table-13" /> |
+
+<Slot for="api-center-table-0">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a90801e89a9254918196742a0cca532b7"></a>RecordingLocalPlayback
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+本地播放。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a5c80ae40f5aab963f748f4274d5730e6"></a>PostAudioProcessing
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+音频后处理。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a7f3f487c91932086f551c1056cca58ab"></a>RemoteUserPlayback
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+混音前的远端用户音频。
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a54917ef3578795c7b70fd6bbea9e1f6e"></a>PcmSource
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+PCM 音频源。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a7612217f13f3f44602e72b2dd063d064"></a>PcmSourceSending
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+PCM 音频发送。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9ad7fd9c0051f186442624fc7485a26b60"></a>PcmSourceLocalPlayback
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+PCM 本地播放。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+<a id="aaf4feb1ff0066f122c9f0e87e0543ef9a76f5476e71134352386e8e14476ea6c4"></a>RemoteMixedPlayback
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+混音后的远端用户音频。
+
+</Slot>
+
+## 成员函数说明
+
+<a id="a6d8f8dc69565006f073e28474eb7541c"></a>
+
+### addAudioSink()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IAudioTrack::addAudioSink([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-sink-base) &gt; *sink*, const [AudioSinkWants](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-sink-wants) & *wants*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+添加音频接收模块，用于从音频轨道获取 PCM 数据。
+
+<ParameterList title="参数">
+<Parameter name="sink">
+
+音频接收模块： [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-sink-base) 。
+
+</Parameter>
+<Parameter name="wants">
+
+音频帧发送到接收模块时需要具备的属性。详见 [AudioSinkWants](/zh-CN/api-reference/rtc-server-sdk/cpp/structagora-1-1rtc-1-1-audio-sink-wants) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="a2cd09a744aaf2dcefb9fc9797308937a"></a>
+
+### removeAudioSink()
+
+<ApiSignature labels="pure virtual">
+
+virtual bool agora::rtc::IAudioTrack::removeAudioSink([agora_refptr](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1agora-refptr)&lt; [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-sink-base) &gt; *sink*, aosl_ref_t *ares* = `AOSL_REF_INVALID`)
+
+</ApiSignature>
+
+删除音频接收模块。
+
+<ParameterList title="参数">
+<Parameter name="sink">
+
+音频接收模块： [IAudioSinkBase](/zh-CN/api-reference/rtc-server-sdk/cpp/classagora-1-1rtc-1-1-i-audio-sink-base) 。
+
+</Parameter>
+<Parameter name="ares">
+
+用于 SDK 的生命周期保护，填写默认值即可。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"返回值-1"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
