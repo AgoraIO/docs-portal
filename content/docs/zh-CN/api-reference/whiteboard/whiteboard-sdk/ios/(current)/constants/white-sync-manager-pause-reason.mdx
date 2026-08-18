@@ -18,9 +18,9 @@ _migration:
 ```text
 typedef NS_OPTIONS(NSUInteger, WhiteSyncManagerPauseReason ) {
   WhiteSyncManagerPauseReasonNone = 0,
-  WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering = 1 < < 0,
-  WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering = 1 < < 1,
-  SyncManagerWaitingPauseReasonPlayerPause = 1 < < 2,
+  WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering = 1 << 0,
+  WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering = 1 << 1,
+  SyncManagerWaitingPauseReasonPlayerPause = 1 << 2,
   WhiteSyncManagerPauseReasonInit = WhiteSyncManagerPauseReasonWaitingWhitePlayerBuffering | WhiteSyncManagerPauseReasonWaitingNativePlayerBuffering | SyncManagerWaitingPauseReasonPlayerPause,
 };
 ```
