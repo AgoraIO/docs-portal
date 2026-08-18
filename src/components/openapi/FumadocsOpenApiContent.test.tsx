@@ -268,6 +268,76 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders multiple security scheme descriptions and markdown', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI',
+              },
+              openapi: '3.1.0',
+              components: {
+                securitySchemes: {
+                  basicAuth: {
+                    scheme: 'basic',
+                    type: 'http',
+                    description: 'Basic auth description.',
+                  },
+                  tokenAuth: {
+                    in: 'header',
+                    name: 'Authorization',
+                    type: 'apiKey',
+                    description:
+                      'Token auth description with a [link](https://example.com) and `code`.',
+                  },
+                },
+              },
+              security: [{ tokenAuth: [] }, { basicAuth: [] }],
+              paths: {
+                '/v2/join': {
+                  post: {
+                    operationId: 'join',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Join',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByText('This endpoint requires authentication.'),
+    ).toBeInTheDocument();
+
+    expect(screen.getByText('basicAuth')).toBeInTheDocument();
+    expect(screen.getByText('Basic auth description.')).toBeInTheDocument();
+
+    expect(screen.getByText('tokenAuth')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Token auth description with a/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'link' })).toHaveAttribute(
+      'href',
+      'https://example.com',
+    );
+    expect(screen.getByText('code')).toBeInTheDocument();
+  });
+
   it('renders operation callouts from the bundled source operation', async () => {
     render(
       <FumadocsOpenApiContent
