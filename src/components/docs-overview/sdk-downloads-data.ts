@@ -3051,6 +3051,13 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Linux_v1_5_1.zip',
           },
           {
+            id: '2.3.0-rtm-sdk-linux-java',
+            label:
+              'Version 2.3.0 for Java (Latest) — TODO: confirm download URL before merge',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/TODO_CONFIRM_LINUX_JAVA_2.3.0_URL.zip',
+          },
+          {
             id: '1.5.1-rtm-sdk-linux-java',
             label: 'Version 1.5.1 for Java',
             downloadLink:

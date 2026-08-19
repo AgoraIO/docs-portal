@@ -8,3 +8,4 @@ This section lists the platforms and products you use to develop apps that inter
 | Target architecture       | Minimum version of the operating environment | Minimum operating system version |
 |:------------|:---------|:----------------|
 | armeabi-v7, arm64-v8a, x86, x86-64   | JVM 8      | Android 7.0|
+| x86-64   | JVM 8      | Ubuntu 18.04 or Debian 9.9|

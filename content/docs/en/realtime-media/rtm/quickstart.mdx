@@ -314,7 +314,8 @@ Open the `app/res/values/strings.xml` file and add following string resources:
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, copy the following lines into the `/app/src/main/java/com/example/<projectname>/MainActivity` file and replace `<projectname>` in `package com.example.<projectname>` with the name of your project.
 
-**Complete sample code for Signaling**
+<Accordions>
+<Accordion title="Complete sample code for Signaling">
 
 <CodeBlockTabs defaultValue="java">
 <CodeBlockTabsList>
@@ -734,6 +735,9 @@ class MainActivity : AppCompatActivity() {
 </CodeBlockTab>
 
 </CodeBlockTabs>
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
 
@@ -1581,7 +1585,8 @@ Open the file `ViewController.h` and replace the contents with the following:
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, open `ViewController.m` and replace the contents with the following:
 
-**Complete sample code for real-time Signaling**
+<Accordions>
+<Accordion title="Complete sample code for real-time Signaling">
 
 <CodeBlockTabs defaultValue="swift">
 <CodeBlockTabsList>
@@ -1931,6 +1936,9 @@ message:%@
 </CodeBlockTab>
 
 </CodeBlockTabs>
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
 
@@ -2475,7 +2483,8 @@ Use either of the following methods to integrate Signaling SDK into your project
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, copy the following lines into the `index.html` file:
 
-**Complete sample code for Signaling**
+<Accordions>
+<Accordion title="Complete sample code for Signaling">
 
 ```js
 <!DOCTYPE html>
@@ -2610,6 +2619,9 @@ A complete code sample that implements the basic features of Signaling is presen
 </body>
 </html>
 ```
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
 
@@ -2892,7 +2904,8 @@ To create a new Flutter project, follow these steps:
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, copy the following lines into the `lib/main.dart` file.
 
-**Complete sample code**
+<Accordions>
+<Accordion title="Complete sample code">
 
 ```dart
 import 'package:flutter/material.dart';
@@ -3007,6 +3020,9 @@ void main() async {
   }
 }
 ```
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or to build the demo step-by-step.
 
@@ -3230,6 +3246,481 @@ Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/t
 * [Event listeners](./build/send-and-receive-messages/add-event-listener)
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+## Understand the tech
+
+To use Signaling features in your app, you initialize a Signaling client instance and add event listeners. To connect to Signaling, you login using an authentication token. To send a message to a message channel, you publish the message. Signaling creates a channel when a user subscribes to it. To receive messages other users publish to a channel, your app listens for events.
+
+To create a pub/sub session for Signaling, implement the following steps in your app:
+
+<Accordions>
+  <Accordion title="Signaling workflow">
+    ![Signaling workflow for Linux Java](https://assets-docs.agora.io/images/signaling/get-started-workflow-linux.svg)
+  </Accordion>
+</Accordions>
+
+## Prerequisites
+
+To implement the code presented on this page you need to have:
+
+- An Agora [account](/en/introduction/account#sign-up-for-an-agora-account) and [project](/en/introduction/account#your-first-agora-project).
+- [Enabled Signaling](/en/realtime-media/rtm/enable-signaling) in Agora Console
+
+- A device running Ubuntu 18.04 or Debian 9.9, x86-64 architecture.
+- Java 8 or above.
+- Maven.
+
+- Ensure that a firewall is not blocking your network communication.
+
+:::note
+Signaling 2.x is an enhanced version compared to 1.x with a wide range of new features. It follows a new pricing structure. See [Pricing](/en/realtime-media/rtm/reference/pricing) for details.
+:::
+
+## Project setup
+
+### Create a project
+
+Create the following folder structure for your project:
+
+```bash
+RTM_quickstart/
+├── src/main/java/io/agora/
+└── lib/
+```
+
+### Integrate the SDK
+
+To integrate the Linux Java Signaling SDK into your project:
+
+1. [Download](/en/api-reference/sdks?product=signaling&platform=linux) the latest version of the SDK and unzip it.
+
+1. Copy the `*.so` files and the `*.jar` file from the SDK package to the project's `lib` folder.
+
+1. Create a `pom.xml` file in the `RTM_quickstart` folder with the following content, to build the project with Maven:
+
+    <Accordions>
+    <Accordion title="pom.xml">
+
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <groupId>io.agora</groupId>
+        <artifactId>RTM-Java-Demo</artifactId>
+        <version>1.0-SNAPSHOT</version>
+
+        <properties>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+        </properties>
+
+        <dependencies>
+            <dependency>
+                <groupId>io.agora</groupId>
+                <artifactId>rtm-java</artifactId>
+                <version>x.y.z</version>
+            </dependency>
+        </dependencies>
+
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <executions>
+                        <!-- Attach the shade into the package phase -->
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <mainClass>io.agora.RtmJavaDemo</mainClass>
+                                    </transformer>
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
+    ```
+
+    </Accordion>
+    </Accordions>
+
+    Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+## Implement Signaling
+
+A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, copy the following lines into the `src/main/java/io/agora/RtmJavaDemo.java` file.
+
+<Accordions>
+<Accordion title="Complete sample code for Signaling">
+
+```java
+package io.agora;
+
+import java.util.Scanner;
+import io.agora.rtm.*;
+
+public class RtmJavaDemo {
+    // Pass in your App ID and token
+    private static final String APP_ID = "<Your App ID>";
+    private static final String TOKEN = "<Your token>";
+
+    private RtmClient rtmClient;
+
+    private final RtmEventListener eventListener = new RtmEventListener() {
+        @Override
+        public void onMessageEvent(MessageEvent event) {
+            System.out.println("Message received from " + event.getPublisherId()
+                    + ", Message: " + event.getMessage().getData());
+        }
+
+        @Override
+        public void onPresenceEvent(PresenceEvent event) {
+            System.out.println("Received presence event, user: " + event.getPublisherId()
+                    + ", Event: " + event.getEventType());
+        }
+
+        @Override
+        public void onLinkStateEvent(LinkStateEvent event) {
+            System.out.println("Connection state changed to " + event.getCurrentState()
+                    + ", Reason: " + event.getReason());
+        }
+    };
+
+    private boolean createClient(String userId) {
+        try {
+            RtmConfig config = new RtmConfig.Builder(APP_ID, userId)
+                    .eventListener(eventListener)
+                    .build();
+            rtmClient = RtmClient.create(config);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error creating Signaling client: " + e);
+            return false;
+        }
+    }
+
+    private void login(String token) {
+        rtmClient.login(token, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                System.out.println("Successfully logged in to Signaling!");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                System.out.println("Failed to log in to Signaling: " + errorInfo);
+            }
+        });
+    }
+
+    private void logout() {
+        rtmClient.logout(new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                System.out.println("Successfully logged out.");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                System.out.println("Failed to log out: " + errorInfo);
+            }
+        });
+    }
+
+    private void subscribe(String channelName) {
+        SubscribeOptions options = new SubscribeOptions();
+        options.setWithMessage(true);
+
+        rtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                System.out.println("Successfully subscribed to the channel!");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                System.out.println("Failed to subscribe to the channel: " + errorInfo);
+            }
+        });
+    }
+
+    private void unsubscribe(String channelName) {
+        rtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                System.out.println("Successfully unsubscribed from the channel!");
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                System.out.println("Failed to unsubscribe from the channel: " + errorInfo);
+            }
+        });
+    }
+
+    private void publishMessage(String channelName, String message) {
+        PublishOptions options = new PublishOptions();
+        options.setCustomType("");
+
+        rtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                System.out.println("Message sent to channel " + channelName + ": " + message);
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                System.out.println("Failed to send message to channel " + channelName + ": " + errorInfo);
+            }
+        });
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        RtmJavaDemo demo = new RtmJavaDemo();
+
+        System.out.println("Enter your user ID:");
+        String userId = scanner.nextLine();
+        if (!demo.createClient(userId)) {
+            return;
+        }
+
+        demo.login(TOKEN);
+        Thread.sleep(1000);
+
+        System.out.println("Enter a channel name to subscribe to:");
+        String channelName = scanner.nextLine();
+        demo.subscribe(channelName);
+        Thread.sleep(1000);
+
+        System.out.println("Type a message to publish, or type 'quit' to log out:");
+        String input;
+        while (!(input = scanner.nextLine()).equals("quit")) {
+            demo.publishMessage(channelName, input);
+        }
+
+        demo.unsubscribe(channelName);
+        demo.logout();
+        Thread.sleep(1000);
+        RtmClient.release();
+    }
+}
+```
+
+</Accordion>
+</Accordions>
+
+Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
+
+### Import Agora classes
+
+To use Signaling APIs in your project, import the relevant Agora classes and interfaces:
+
+```java
+import io.agora.rtm.*;
+```
+
+### Initialize the Signaling engine
+
+Before calling any other Signaling SDK API, initialize an `RtmClient` object instance:
+
+```java
+RtmConfig config = new RtmConfig.Builder(APP_ID, userId)
+        .eventListener(eventListener)
+        .build();
+rtmClient = RtmClient.create(config);
+```
+
+### Add an event listener
+
+Add an event listener to receive message, presence, and connection state events:
+
+```java
+private final RtmEventListener eventListener = new RtmEventListener() {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        // Handle incoming messages
+    }
+
+    @Override
+    public void onPresenceEvent(PresenceEvent event) {
+        // Handle presence events
+    }
+
+    @Override
+    public void onLinkStateEvent(LinkStateEvent event) {
+        // Handle connection state changes
+    }
+};
+```
+
+### Log in to Signaling
+
+To log in to Signaling, call `login` and pass in a token:
+
+```java
+rtmClient.login(token, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle login success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle login failure
+    }
+});
+```
+
+### Publish a message
+
+To send a message to a channel, call `publish`. If no user has subscribed to the channel yet, Signaling creates it:
+
+```java
+rtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle publish success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle publish failure
+    }
+});
+```
+
+### Subscribe and unsubscribe
+
+To receive messages published to a channel, call `subscribe`:
+
+```java
+SubscribeOptions options = new SubscribeOptions();
+options.setWithMessage(true);
+
+rtmClient.subscribe(channelName, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle subscribe success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle subscribe failure
+    }
+});
+```
+
+When you no longer need to receive messages from a channel, call `unsubscribe`:
+
+```java
+rtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle unsubscribe success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle unsubscribe failure
+    }
+});
+```
+
+### Log out of Signaling
+
+When you no longer need to use Signaling, log out and release the client instance:
+
+```java
+rtmClient.logout(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        // Handle logout success
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        // Handle logout failure
+    }
+});
+
+RtmClient.release();
+```
+
+## Test Signaling
+
+Take the following steps to test the sample code:
+
+1. Use the [Token Builder](https://agora-token-generator-demo.vercel.app/) to generate a Signaling token:
+
+    1. Select Signaling from the Agora products dropdown.
+    1. Fill in your app ID and app certificate from [Agora Console](https://console.agora.io/). Leave the remaining fields blank.
+    1. Click **Generate Token**.
+
+1. In your code, replace `<Your App ID>` with your app ID from Agora Console and `<Your token>` with the generated token. Make sure Signaling is activated for your project in [Agora Console](https://console.agora.io/).
+
+1. The SDK isn't published to a public Maven repository, so register the `agora-rtm-sdk.jar` file you copied into the `lib` folder as a local dependency:
+
+    ```bash
+    mvn install:install-file -Dfile=lib/agora-rtm-sdk.jar -DgroupId=io.agora -DartifactId=rtm-java -Dversion=x.y.z -Dpackaging=jar
+    ```
+
+    Use the same `x.y.z` version number as in your `pom.xml`.
+
+1. In the terminal, run the following commands to compile the project:
+
+    ```bash
+    mvn clean
+    mvn package
+    ```
+
+1. Set the library path and run the app:
+
+    ```bash
+    export LD_LIBRARY_PATH=<path to your lib folder>
+    java -jar target/RTM-Java-Demo-1.0-SNAPSHOT.jar
+    ```
+
+1. Follow the prompts to log in and **subscribe** to a channel.
+
+1. Run another instance of the app using a different user ID. Follow the prompts to **publish** a message to the same channel that you subscribed to from the other instance.
+
+1. You see the message displayed in the instance that you used to subscribe to the channel.
+
+    Congratulations! You have successfully integrated Signaling into your project.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Token authentication
+
+In this guide you retrieve a temporary token from a [Token Builder](https://agora-token-generator-demo.vercel.app/). To understand how to create an authentication server for development purposes, see [Secure authentication with tokens](./build/connect-and-authenticate/authentication-workflow).
+
+### Sample project
+
+Agora provides an open source [sample project](https://github.com/AgoraIO/RTM2/tree/main/Agora-RTM2-QuickStart-Linux-Java) on GitHub for your reference. Download it or view the source code for a more detailed example.
+
+### API reference
+
+* [API reference](/en/api-reference/api-ref/signaling)
+* [Event listeners](./build/send-and-receive-messages/add-event-listener)
+</PlatformStructured>
+
 <PlatformStructured platform="linux-cpp">
 
 ## Understand the tech
@@ -3324,7 +3815,8 @@ To integrate the Linux C++ Signaling SDK into your project:
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, create a new file named `RTMQuickStart.cpp` in the `RTMProject` folder and add the following code:
 
-**Complete sample code for Signaling**
+<Accordions>
+<Accordion title="Complete sample code for Signaling">
 
 ```cpp
 #include <iostream>
@@ -3554,6 +4046,9 @@ int main(int argc, const char * argv[]) {
   return 0;
 }
 ```
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
 
@@ -3849,7 +4344,8 @@ Your interface should look similar to the following:
 
 A complete code sample that implements the basic features of Signaling is presented here for your reference. To use the sample code, create a new script for the project. In Unity editor, from the **Assets** menu, select **Create**, then **C# Script**. Name the new script file `HelloWorld.cs` and paste the following code in the file:
 
-**Complete sample code for Signaling**
+<Accordions>
+<Accordion title="Complete sample code for Signaling">
 
 ```csharp
 using System.Collections.Generic;
@@ -4317,6 +4813,9 @@ public class HelloWorld : MonoBehaviour
     }
 }
 ```
+
+</Accordion>
+</Accordions>
 
 Follow the implementation steps to understand the core API calls in the sample code or use the snippets in your own code.
 
