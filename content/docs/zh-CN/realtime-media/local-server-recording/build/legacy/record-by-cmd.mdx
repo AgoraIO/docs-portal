@@ -8,7 +8,7 @@ description: "了解如何在本地服务端录制中命令行录制，包括适
 
 ## 前提条件
 
-开始前请确保你已经完成录制 SDK 的环境准备和集成工作，且编译了 SDK 包中的代码示例，详见[集成客户端](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk)。
+开始前请确保你已经完成录制 SDK 的环境准备和集成工作，且编译了 SDK 包中的代码示例，详见[集成客户端](/zh-CN/realtime-media/local-server-recording/build/legacy/integrate-sdk)。
 
 :::info[信息]
 当录制 SDK 加入频道时，相当于一个哑客户端加入频道，因此需要跟声网 RTC SDK 加入相同的频道，并使用相同的 App ID 和频道场景。
@@ -152,7 +152,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
   - `7`：音频和视频混合成一个文件，同时生成 MP4 和 TS 格式文件。录制成功后 SDK 会删除 TS 格式文件。
  具体的播放器支持请参考[录制生成的文件支持哪些播放器？](/zh-CN/reference/faq/integration/recording_player)。
 
-- `layoutMode`：设置视频合流布局。详见[设置合流布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout)。
+- `layoutMode`：设置视频合流布局。详见[设置合流布局](/zh-CN/realtime-media/local-server-recording/build/legacy/set-layout)。
   - `0`：（默认）悬浮布局。第一个加入频道的用户在屏幕上会显示为大视窗，铺满整个画布，其他用户的视频画面会显示为小视窗，从下到上水平排列，最多 4 行，每行 4 个画面，最多支持共 17 个录制画面。
   - `1`：自适应布局。根据用户的数量自动调整每个画面的大小，每个用户的画面大小一致，最多支持 17 个录制画面。
   - `2`：垂直布局。指定一个用户在屏幕左侧显示大视窗画面，其他用户的小视窗画面在右侧垂直排列，最多两列，一列 8 个画面，最多支持共 17 个录制画面。
@@ -163,7 +163,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
   - `1`：高音质，采样率 48 kHz，单声道，编码码率 128 Kbps。
   - `2`：高音质立体声，采样率 48 kHz，双声道，编码码率 192 Kbps。双声道不支持原始音频数据。
 
-- `mixResolution`：如果 `isMixingEnabled` 设为 1，可以通过该参数设置合流视频的分辨率，格式为：`width`，`height`，`fps`，`Kbps`，从左至右分别对应合图的宽、高、帧率和码率。你可以参考[视频属性表](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video#分辨率帧率码率对照表)进行设置。
+- `mixResolution`：如果 `isMixingEnabled` 设为 1，可以通过该参数设置合流视频的分辨率，格式为：`width`，`height`，`fps`，`Kbps`，从左至右分别对应合图的宽、高、帧率和码率。你可以参考[视频属性表](/zh-CN/realtime-media/local-server-recording/build/legacy/set-output-video#分辨率帧率码率对照表)进行设置。
 - `defaultVideoBg`：设置合流模式下画布的默认背景图片的路径，仅支持本地 JPEG 文件。如不设置会显示黑色。
 - `defaultUserBg`：设置合流模式下用户的默认背景图片的路径，仅支持本地 JPEG 文件。如不设置会显示黑色。合流模式下，如果某用户没有视频流，就会显示该图片。
 
@@ -245,8 +245,8 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
 
 在录制过程中，你还可以参考如下文档：
 
-- 录制完成后，你可能需要使用转码脚本将录制的文件进行合成，详见[使用转码脚本](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files)。
-- 如果你希望了解如何通过调用 API 实现录制，可以参考[调用 API 录制](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api)。
+- 录制完成后，你可能需要使用转码脚本将录制的文件进行合成，详见[使用转码脚本](/zh-CN/realtime-media/local-server-recording/build/legacy/merge-files)。
+- 如果你希望了解如何通过调用 API 实现录制，可以参考[调用 API 录制](/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-api)。
 
 - 录制过程中，如果出现错误码或警告码，请参考[警告码](/zh-CN/api-reference/local-server-recording/cpp/legacy/namespaceagora-1-1linuxsdk#a467894afed372a4fe76594a6223869a0)。
 

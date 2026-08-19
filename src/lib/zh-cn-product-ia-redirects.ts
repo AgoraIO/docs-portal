@@ -311,35 +311,35 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/local-server-recording/get-started/enable-service':
     '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/local-server-recording/legacy/collect-logs':
-    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/collect-logs',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/collect-logs',
   'realtime-media/recording/local-server-recording/legacy/composite-mode':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/composite-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/composite-mode',
   'realtime-media/recording/local-server-recording/legacy/docker':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/docker',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/docker',
   'realtime-media/recording/local-server-recording/legacy/individual-mode':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/individual-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/individual-mode',
   'realtime-media/recording/local-server-recording/legacy/integrate-sdk':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/integrate-sdk',
   'realtime-media/recording/local-server-recording/legacy/manage-files':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/manage-files',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/manage-files',
   'realtime-media/recording/local-server-recording/legacy/merge-files':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/merge-files',
   'realtime-media/recording/local-server-recording/legacy/raw-data':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/raw-data',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/raw-data',
   'realtime-media/recording/local-server-recording/legacy/record-by-api':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-api',
   'realtime-media/recording/local-server-recording/legacy/record-by-cmd':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-cmd',
   'realtime-media/recording/local-server-recording/legacy/restore-files':
-    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/restore-files',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/restore-files',
   'realtime-media/recording/local-server-recording/legacy/screenshot':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/screenshot',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/screenshot',
   'realtime-media/recording/local-server-recording/legacy/set-layout':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/set-layout',
   'realtime-media/recording/local-server-recording/legacy/set-output-video':
-    '/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/set-output-video',
   'realtime-media/recording/local-server-recording/legacy/watermark':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/watermark',
+    '/zh-CN/realtime-media/local-server-recording/build/legacy/watermark',
   'realtime-media/recording/local-server-recording/overview/billing':
     '/zh-CN/realtime-media/local-server-recording/reference/billing',
   'realtime-media/recording/local-server-recording/overview/migration-guide':
