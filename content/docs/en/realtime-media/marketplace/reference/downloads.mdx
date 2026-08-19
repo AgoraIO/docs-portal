@@ -2161,19 +2161,21 @@ To use tree shaking, follow these steps to integrate the SDK:
 
 3. Starting from version 4.23.0, you can integrate the functional modules you need as follows:
 
-  **Plan B**
-  ```js
-  // Import core module
+    **Plan B**
+
+    ```js
+    // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import Plan-B module
     import { PlanBConnectionService } from "agora-rtc-sdk-ng/services/planb-connection";
 
     AgoraRTC.use(PlanBConnectionService);
-  ```
+    ```
 
-  **Content moderation**
-  ```js
-  // Import core module
+    **Content moderation**
+
+    ```js
+    // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import real-time moderation (content moderation) module
     import { ImageModerationService } from "agora-rtc-sdk-ng/services/image-moderation";
@@ -2181,27 +2183,29 @@ To use tree shaking, follow these steps to integrate the SDK:
 
     AgoraRTC.use(ImageModerationService)
     .use(ContentInspectService);
-  ```
+    ```
 
-  **Channel media relay**
-  ```js
-  // Import core module
+    **Channel media relay**
+
+    ```js
+    // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import cross-channel media relay module
     import { ChannelMediaRelayService } from "agora-rtc-sdk-ng/services/channel-media-relay";
 
     AgoraRTC.use(ChannelMediaRelayService);
-  ```
+    ```
 
-  **Live streaming**
-  ```js
-  // Import core module
+    **Live streaming**
+
+    ```js
+    // Import core module
     import { AgoraRTC } from "agora-rtc-sdk-ng/esm";
     // Import live streaming service module
     import { LiveStreamingService } from "agora-rtc-sdk-ng/services/live-streaming";
 
     AgoraRTC.use(LiveStreamingService);
-  ```
+    ```
 
 ## Reference
 
@@ -3461,19 +3465,20 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
-  1. Navigate to the **Build Phases** tab.
-  2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
-  3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
+    1. Navigate to the **Build Phases** tab.
+    2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
+    3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-     ```bash
-     $stderr.puts "Removing Unnecessary Frameworks"
-     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-     for framework in frameworks_to_weaklink
-       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-       `rm -Rf "#{framework_path}"`
-     end
-     ```
+        ```bash
+        $stderr.puts "Removing Unnecessary Frameworks"
+        # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+        frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+        for framework in frameworks_to_weaklink
+          framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+          `rm -Rf "#{framework_path}"`
+        end
+        ```
+
     The following figure shows the required steps:
 
     ![reduce app size step 2](https://assets-docs.agora.io/images/video-sdk/reduce-app-size-flutter-step-2.png)
@@ -4120,19 +4125,20 @@ If your target platform is iOS or macOS, follow these steps to reduce the size o
 
 2. To remove unnecessary extensions, follow these steps in Xcode:
 
-  1. Navigate to the **Build Phases** tab.
-  2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
-  3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
+    1. Navigate to the **Build Phases** tab.
+    2. Click the `+` button at the bottom left corner of the **Build Phases** tab and select **New Run Script Phase**.
+    3. Specify Shell as `/usr/bin/ruby` and replace the code part with the following script:
 
-     ```bash
-     $stderr.puts "Removing Unnecessary Frameworks"
-     # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
-     frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
-     for framework in frameworks_to_weaklink
-       framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
-       `rm -Rf "#{framework_path}"`
-     end
-     ```
+        ```bash
+        $stderr.puts "Removing Unnecessary Frameworks"
+        # The extensions listed in frameworks_to_weaklink here should match those in Step 1.
+        frameworks_to_weaklink=["AgoraAiEchoCancellationExtension", "AgoraAiNoiseSuppressionExtension", "AgoraAudioBeautyExtension", "AgoraClearVisionExtension", "AgoraContentInspectExtension", "AgoraDrmLoaderExtension", "AgoraReplayKitExtension", "AgoraSpatialAudioExtension ", "AgoraSuperResolutionExtension", "AgoraVideoQualityAnalyzerExtension", "AgoraVideoSegmentationExtension"]
+        for framework in frameworks_to_weaklink
+          framework_path = "#{ENV['BUILT_PRODUCTS_DIR']}/#{ENV['FRAMEWORKS_FOLDER_PATH']}/#{framework}.framework"
+          `rm -Rf "#{framework_path}"`
+        end
+        ```
+
     The following figure shows the required steps:
 
     ![reduce app size step 2](https://assets-docs.agora.io/images/video-sdk/reduce-app-size-flutter-step-2.png)

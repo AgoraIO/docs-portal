@@ -42,10 +42,10 @@ The Agora RESTful API only supports HTTPS with TLS 1.0, 1.1, or 1.2 for encrypte
 
 - `appId`: (Required) String. Agora provides the [App ID](/en/realtime-media/media-pull/reference/glossary#app-id) when you create a **project** in Agora Console. The App ID identifies each project.
 - `region`: (Required) String. The region that the cloud player was created in. Agora supports the creation of cloud players in different regions. Currently, it supports four regions:
- - `cn`: China Mainland
- - `ap`: Asia Pacific
- - `na`: North America
- - `eu`: Europe
+    - `cn`: China Mainland
+    - `ap`: Asia Pacific
+    - `na`: North America
+    - `eu`: Europe
 
 
 :::info
@@ -83,30 +83,30 @@ If the status code is 2XX, the request succeeds.
 The response body is a JSON Object called `player`, containing the following fields:
 
 - `audioOptions`: (Optional) JSON Object. The audio transcoding configuration of the cloud player. Setting this field to empty or not set means that the audio is not transcoded.
- - `Profile`：Number. Audio profile. Sets the audio profile sample rate, bitrate, encoding mode, and the number of channels.
-   - `0`: Default audio profile.
-     - In the communication profile, the default audio profile represents a sample rate of 32 kHz, audio encoding, mono, and a bitrate of up to 18 Kbps.
-     - In the live broadcasting profile, the default audio profile represents a sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 64 Kbps.
-   - `1`: SPEECH_STANDARD. A sample rate of 32 kHz, audio encoding, mono, and a bitrate of up to 18 Kbps.
-   - `2`: MUSIC_STANDARD. A sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 64 Kbps.
-   - `3`: MUSIC_STANDARD_STEREO. A sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 80 Kbps.
-   - `4`: MUSIC_HIGH_QUALITY. A sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 96 Kbps.
-   - `5`: MUSIC_HIGH_QUALITY_STEREO. A sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 128 Kbps.
+    - `Profile`：Number. Audio profile. Sets the audio profile sample rate, bitrate, encoding mode, and the number of channels.
+        - `0`: Default audio profile.
+            - In the communication profile, the default audio profile represents a sample rate of 32 kHz, audio encoding, mono, and a bitrate of up to 18 Kbps.
+            - In the live broadcasting profile, the default audio profile represents a sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 64 Kbps.
+        - `1`: SPEECH_STANDARD. A sample rate of 32 kHz, audio encoding, mono, and a bitrate of up to 18 Kbps.
+        - `2`: MUSIC_STANDARD. A sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 64 Kbps.
+        - `3`: MUSIC_STANDARD_STEREO. A sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 80 Kbps.
+        - `4`: MUSIC_HIGH_QUALITY. A sample rate of 48 kHz, music encoding, mono, and a bitrate of up to 96 Kbps.
+        - `5`: MUSIC_HIGH_QUALITY_STEREO. A sample rate of 48 kHz, music encoding, stereo, and a bitrate of up to 128 Kbps.
 - `videoOptions`: (Optional) JSON Object. The video transcoding configuration of the cloud player. Setting this field to empty or not set means that the video is not transcoded.
- - `width`: Number. The width (px) of the output video. The value range is [66,1920].
- - `height`: Number. The height (px) of the output video. The value range is [66,1080].
- - `widthHeightAdaption`: Bool. Whether to enable horizontal and vertical screen adaptive mode:
-   - `true`: Enable portrait and landscape adaptive mode. After you enable the adaptive mode, if the source media stream is in landscape mode, the output video width and height are 1280 × 720; if the source media stream is in portrait mode, the output video width and height are 720 × 1280.
-   - `false`: (Default) Do not enable portrait and landscape adaptive mode.
- - `frameRate`: The frameRate (fps) of the output video. The value range is [1,30]. The default value is 15. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
- - `bitrate`: Number. The bitrate (Kbps) of the output video. The value range is [1,10000]. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
- - `codec`: String type. The encoding format of the output video. The following settings are supported:
-   - VP9: Standard VP9.
-   - H.264: (Default) Standard H.264.
-     If set to other value, the default is H.264 video encoding format.
- - `fillMode`: String. The fill mode of the output video:
-   - `fit`: (Default) Scales the video proportionally until it is fully displayed in the viewport.
-   - `fill`: Scales the video proportionally until it fills the viewport.
+    - `width`: Number. The width (px) of the output video. The value range is [66,1920].
+    - `height`: Number. The height (px) of the output video. The value range is [66,1080].
+    - `widthHeightAdaption`: Bool. Whether to enable horizontal and vertical screen adaptive mode:
+        - `true`: Enable portrait and landscape adaptive mode. After you enable the adaptive mode, if the source media stream is in landscape mode, the output video width and height are 1280 × 720; if the source media stream is in portrait mode, the output video width and height are 720 × 1280.
+        - `false`: (Default) Do not enable portrait and landscape adaptive mode.
+    - `frameRate`: The frameRate (fps) of the output video. The value range is [1,30]. The default value is 15. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
+    - `bitrate`: Number. The bitrate (Kbps) of the output video. The value range is [1,10000]. For details, see [Video profile table](/en/realtime-media/cloud-recording/build/customize-the-recording/recording-video-profile#video-profile-table).
+    - `codec`: String type. The encoding format of the output video. The following settings are supported:
+        - VP9: Standard VP9.
+        - H.264: (Default) Standard H.264.
+            If set to other value, the default is H.264 video encoding format.
+    - `fillMode`: String. The fill mode of the output video:
+        - `fit`: (Default) Scales the video proportionally until it is fully displayed in the viewport.
+        - `fill`: Scales the video proportionally until it fills the viewport.
 - `streamUrl`: (Required) String. The RTMP/HTTPS URL of the online media stream. The maximum length of this field is 1024 bytes.
 
 
@@ -155,8 +155,8 @@ When generating a token at your server, the value of `uid` or `account` must be 
 
 - `idleTimeout`: (Optional) Number. The maximum length of time (in seconds) that the cloud player is idle. The "idle" state means that the media stream is not playing. When the idle state exceeds `idleTimeout`, the cloud player is automatically destroyed. The value ranges from 5 to 600. The default value is 300. If the value is less than 5, Agora's server automatically adjusts it to 5; if the value is greater than 600, Agora's server automatically adjusts it to 600.
 - `playTs`: (Optional) Number. The Unix timestamp (in seconds) when the cloud player starts playing the online media stream. The value range of playTs is [`createTs`-86400, `createTs`+300]. The default value is 0, which means the cloud player starts playing the online media stream when the cloud player is successfully created. If the value of `playTs` is not `0`, the following behavior occurs:
- - `playTs` > `createTs`: The cloud player starts playing the online media stream when the time is `playTs`. This is suitable for timing playback with other elements.
- - `playTs` < `createTs`: If the online media stream is a live stream, the cloud player starts playing the live stream when the cloud player is successfully created. If the online media stream is an on-demand stream, the cloud player starts playing the online media stream at the specified time in the stream prior to the creation of the cloud player. This is suitable for error recovery. For example, if the cloud player experiences an error during operation, you can create a new cloud player and set the `playTs` field of new cloud player to the unix timestamp when the old cloud player started to play the online media stream.
+    - `playTs` > `createTs`: The cloud player starts playing the online media stream when the time is `playTs`. This is suitable for timing playback with other elements.
+    - `playTs` < `createTs`: If the online media stream is a live stream, the cloud player starts playing the live stream when the cloud player is successfully created. If the online media stream is an on-demand stream, the cloud player starts playing the online media stream at the specified time in the stream prior to the creation of the cloud player. This is suitable for error recovery. For example, if the cloud player experiences an error during operation, you can create a new cloud player and set the `playTs` field of new cloud player to the unix timestamp when the old cloud player started to play the online media stream.
 - `name`: (Optional) String. The name of the cloud player. The maximum length of this parameter is 64 bytes. Supported character scopes are:
   - All lowercase English letters: a to z.
   - All uppercase English letters: A to Z.
@@ -171,14 +171,14 @@ To avoid creating multiple cloud players that inject the same online media strea
 :::
 
 - `encryptMode`: (Optional) String. Encryption mode. Agora recommends using either the `aes-128-gcm2` or `aes-256-gcm2` encryption mode, both of which support adding a salt and are more secure.
- - `aes-128-xts`: 128-bit AES encryption, XTS mode.
- - `aes-256-xts`: 256-bit AES encryption, XTS mode.
- - `aes-128-ecb`: 128-bit AES encryption, ECB mode.
- - `sm4-128-ecb`: 128-bit SM4 encryption, ECB mode.
- - `aes-128-gcm`: 128-bit AES encryption, GCM mode.
- - `aes-256-gcm`: 256-bit AES encryption, GCM mode.
- - `aes-128-gcm2`: 128-bit AES encryption, GCM mode. Compared to `aes-128-gcm` encryption mode, `aes-128-gcm2` encryption mode is more secure and requires you to set the salt (`encryptKdfSalt`).
- - `aes-256-gcm2`: 256-bit AES encryption, GCM mode. Compared to `aes-256-gcm` encryption mode, `aes-256-gcm2` encryption mode is more secure and requires you to set the salt (`encryptKdfSalt`).
+    - `aes-128-xts`: 128-bit AES encryption, XTS mode.
+    - `aes-256-xts`: 256-bit AES encryption, XTS mode.
+    - `aes-128-ecb`: 128-bit AES encryption, ECB mode.
+    - `sm4-128-ecb`: 128-bit SM4 encryption, ECB mode.
+    - `aes-128-gcm`: 128-bit AES encryption, GCM mode.
+    - `aes-256-gcm`: 256-bit AES encryption, GCM mode.
+    - `aes-128-gcm2`: 128-bit AES encryption, GCM mode. Compared to `aes-128-gcm` encryption mode, `aes-128-gcm2` encryption mode is more secure and requires you to set the salt (`encryptKdfSalt`).
+    - `aes-256-gcm2`: 256-bit AES encryption, GCM mode. Compared to `aes-256-gcm` encryption mode, `aes-256-gcm2` encryption mode is more secure and requires you to set the salt (`encryptKdfSalt`).
 - `encryptKey`: (Optional) String. The encryption key with unlimited length. Agora recommends using a 32-byte key.
 
 
@@ -194,27 +194,27 @@ This parameter is only valid when the encryption mode is set to `aes-128-gcm2` o
 :::
 
 - `repeatTime`: (Optional) Int. Number of media streams played. This parameter applies only to on-demand streams. It can be set to:
- - `1`: (Default) Plays a media resource once.
- - `-1`: Plays media resources in a loop.
- - `N`: User-defined number of media resources to be played. It is an integer and cannot be set to `0`.
+    - `1`: (Default) Plays a media resource once.
+    - `-1`: Plays media resources in a loop.
+    - `N`: User-defined number of media resources to be played. It is an integer and cannot be set to `0`.
 - `seekPosition`: (Optional) Number. Specifies the playback position (seconds) of the on-demand file. The default value is 0, which means play from the beginning of the on-demand file. It must be less than the media resource duration.
 - dataStreamOptions: (Optional) JSON Object. The data stream configuration, which is used to set the SEI information carried by the video frame. This parameter applies only to on-demand streams.
- - `enable`: Set whether to inject the SEI information of Agora DataStream type.
-   - `true`: Inject the SEI information of Agora DataStream type.
-   - `false`: (Default) Do not inject the SEI information of Agora DataStream type.
+    - `enable`: Set whether to inject the SEI information of Agora DataStream type.
+        - `true`: Inject the SEI information of Agora DataStream type.
+        - `false`: (Default) Do not inject the SEI information of Agora DataStream type.
+
     Agora DataStream is a data stream format of JSON type, the example is as follows:
 
-	  ```json
-	  message PositionData {
-		# The length of the on-demand file
+    ```json
+    message PositionData {
+      # The length of the on-demand file
       int32 duration = 1;
-		# The playback position of the on-demand file
+      # The playback position of the on-demand file
       int32 position = 2;
-		# The user ID of the host playing the on-demand file
+      # The user ID of the host playing the on-demand file
       int32 uid = 3;
-      }
-
-	 ```
+    }
+    ```
 
 ### HTTP response
 
@@ -373,7 +373,7 @@ GET https://api.agora.io/v1/projects/{appId}/cloud-player/players
 
 #### Path parameters
 
-`appId`: (Required) String. Agora provides the [App ID](/en/realtime-media/media-pull/reference/glossary#app=id) when you create a **project** in Agora Console. The App ID identifies each project.
+`appId`: (Required) String. Agora provides the [App ID](/en/realtime-media/media-pull/reference/glossary#app-id) when you create a **project** in Agora Console. The App ID identifies each project.
 
 #### Query parameters
 

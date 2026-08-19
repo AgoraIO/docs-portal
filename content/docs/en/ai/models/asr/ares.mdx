@@ -29,12 +29,14 @@ from agora_agent import Agent, AresSTT
 agent = (
     Agent(client)
     .with_stt(AresSTT(
-        language='en-US',
+        keywords=['Agora', 'Conversational AI', 'RTC'],
     ))
     .with_llm(...)  # configure your LLM vendor
     .with_tts(...)  # configure your TTS vendor
 )
 ```
+
+`AresSTT` has no `language` parameter. ARES uses the recognition language set through the agent's turn detection configuration, using `with_turn_detection()`, which defaults to `en-US`.
 
 </TabsContent>
 
@@ -46,11 +48,13 @@ import { Agent, AresSTT } from 'agora-agents';
 // client is your configured Agora client
 const agent = new Agent({ client })
   .withStt(new AresSTT({
-    language: 'en-US',
+    keywords: ['Agora', 'Conversational AI', 'RTC'],
   }))
   .withLlm(/* configure your LLM vendor */)
   .withTts(/* configure your TTS vendor */);
 ```
+
+`AresSTT` has no `language` option. ARES uses the recognition language set through the agent's turn detection configuration, using `withTurnDetection()`, which defaults to `en-US`.
 
 </TabsContent>
 
@@ -62,11 +66,13 @@ import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(
     vendors.NewAresSTT(vendors.AresSTTOptions{
-        Language: "en-US",
+        Keywords: []string{"Agora", "Conversational AI", "RTC"},
     }),
 ).WithLlm(/* configure your LLM vendor */).
   WithTts(/* configure your TTS vendor */)
 ```
+
+`AresSTTOptions` has no `Language` field. ARES uses the recognition language set through the agent's turn detection configuration, using `WithTurnDetection()`, which defaults to `en-US`.
 
 </TabsContent>
 
@@ -77,7 +83,8 @@ Use the following `asr` configuration in your request:
 ```json
 "asr": {
   "vendor": "ares",
-  "language": "en-US"
+  "language": "en-US",
+  "keywords": ["Agora", "Conversational AI", "RTC"]
 }
 ```
 
@@ -93,5 +100,8 @@ Use the following `asr` configuration in your request:
  <Parameter name="language" type="string" required={true}>
   The BCP-47 language tag identifying the primary language used for agent interaction.
   See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
+ </Parameter>
+ <Parameter name="keywords" type="array[string]" required={false}>
+ Keywords used to improve ASR recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Supports up to 128 keywords. See [Configure ASR keywords](../../build/shape-the-conversation/asr-keywords) for details.
  </Parameter>
 </ParameterList>

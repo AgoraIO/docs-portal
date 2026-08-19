@@ -15,7 +15,7 @@ The above callback is in Java. For other programming languages, use the followin
 - Objective-C: The `duration` parameter of the [`reportRtcStats`](https://api-ref.agora.io/en/video-sdk/ios/3.x/Protocols/AgoraRtcEngineDelegate.html#//api/name/rtcEngine:reportRtcStats:) callback.
 - JavaScript: The `Duration` parameter of the `Client.getSessionStats` method.
 
-If the connection is lost under poor network conditions, the calculated duration may be inaccurate. Use [Agora Signaling SDK](/en/signaling/develop/manage-connection-states) or a different signaling system to implement a heartbeat mechanism, and get the disconnected time of the client. You can calculate the user's call duration by subtracting the disconnected time of the client from the call duration obtained from the Agora RTC SDK.
+If the connection is lost under poor network conditions, the calculated duration may be inaccurate. Use [Agora Signaling SDK](/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management) or a different signaling system to implement a heartbeat mechanism, and get the disconnected time of the client. You can calculate the user's call duration by subtracting the disconnected time of the client from the call duration obtained from the Agora RTC SDK.
 
 ### Use Agora Analytics
 

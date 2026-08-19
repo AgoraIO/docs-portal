@@ -54,7 +54,7 @@ In v3.7.x, the SDK provides the `RtcChannel` and `IRtcChannelEventHandler` class
 
 -  The SDK provides a `RtcEngineEx` class to implement multi-channel functions. Combined with the multi-channel capabilities, an `RtcEngine` instance can simultaneously collect multiple audio and video streams and publish them to the remote end to adapt to various business use-cases.
 
-  After calling `joinChannel` to join the first channel, call `joinChannelEx` multiple times to join multiple channels to publish the specified stream to different channels using different user IDs (`localUid`) and `ChannelMediaOptions` settings.
+    After calling `joinChannel` to join the first channel, call `joinChannelEx` multiple times to join multiple channels to publish the specified stream to different channels using different user IDs (`localUid`) and `ChannelMediaOptions` settings.
 
 -  A new `RtcConnection` class is added to represent the connection established by `joinChannel`. A connection is determined by the channel name (`channelId`) and `localUid`. You can control the publishing and subscribing state of different connections through `RtcConnection`. The SDK adds `Ex` in the name of all APIs with a `connection` parameter, corresponding to the `RtcConnection` class, to distinguish them, and gathers these APIs in the `RtcEngineEx` class to implement more multi-stream functions.
 
@@ -70,7 +70,7 @@ Combined with the multi-channel capability, you can also experience the followin
 -  Mix multiple audio streams and publish them to the remote user through one `localUid`.
 -  Mix multiple video streams and publish them to the remote user through one `localUid`.
 
-  `RtcChannel` and `RtcEngine` of v3.7.x are partially duplicated and overlap in their functionality, so 4.x hides the `RtcChannel` and `IRtcChannelEventHandler` classes. See the [JoinMultiChannel](https://github.com/AgoraIO/API-Examples/tree/master/windows/APIExample/APIExample/Advanced/MultiChannel) sample project for more details on how to replace `RtcChannel` with `joinChannel` and `ChannelMediaOptions`. The expected migration cost is one day or less.
+    `RtcChannel` and `RtcEngine` of v3.7.x are partially duplicated and overlap in their functionality, so 4.x hides the `RtcChannel` and `IRtcChannelEventHandler` classes. See the [JoinMultiChannel](https://github.com/AgoraIO/API-Examples/tree/master/windows/APIExample/APIExample/Advanced/MultiChannel) sample project for more details on how to replace `RtcChannel` with `joinChannel` and `ChannelMediaOptions`. The expected migration cost is one day or less.
 
 If you need to continue to use the `RtcChannel` and `IRtcChannelEventHandler` classes, contact [support@agora.io](mailto:support@agora.io). The decision whether to maintain compatibility in a future release is based on your feedback.
 
@@ -354,19 +354,19 @@ The 4.x removes deprecated or unrecommended APIs. Alternatives to the removed AP
 
 -  The following enumerations of audio mixing: Rarely used in v3.7.x.
 
-  -  `AUDIO_MIXING_REASON_STARTED_BY_USER`
+    -  `AUDIO_MIXING_REASON_STARTED_BY_USER`
 
-  -  `AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED`
+    -  `AUDIO_MIXING_REASON_ONE_LOOP_COMPLETED`
 
-  -  `AUDIO_MIXING_REASON_START_NEW_LOOP`
+    -  `AUDIO_MIXING_REASON_START_NEW_LOOP`
 
-  -  `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED`
+    -  `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED`
 
-  -  `AUDIO_MIXING_REASON_STOPPED_BY_USER`
+    -  `AUDIO_MIXING_REASON_STOPPED_BY_USER`
 
-  -  `AUDIO_MIXING_REASON_PAUSED_BY_USER`
+    -  `AUDIO_MIXING_REASON_PAUSED_BY_USER`
 
-  -  `AUDIO_MIXING_REASON_RESUMED_BY_USER`
+    -  `AUDIO_MIXING_REASON_RESUMED_BY_USER`
 
 -  `onAudioMixingFinished`: Use `onAudioMixingStateChanged` instead.
 
@@ -869,19 +869,19 @@ The v4.x removes deprecated or unrecommended APIs. Alternatives to the removed A
 
 -  The following enumerations in `AgoraAudioMixingReasonCode`: Rarely used in v3.7.x.
 
--  `AgoraAudioMixingReasonStartedByUser`
+    -  `AgoraAudioMixingReasonStartedByUser`
 
--  `AgoraAudioMixingReasonOneLoopCompleted`
+    -  `AgoraAudioMixingReasonOneLoopCompleted`
 
--  `AgoraAudioMixingReasonStartNewLoop`
+    -  `AgoraAudioMixingReasonStartNewLoop`
 
--  `AgoraAudioMixingReasonAllLoopsCompleted`
+    -  `AgoraAudioMixingReasonAllLoopsCompleted`
 
--  `AgoraAudioMixingReasonStoppedByUser`
+    -  `AgoraAudioMixingReasonStoppedByUser`
 
--  `AgoraAudioMixingReasonPausedByUser`
+    -  `AgoraAudioMixingReasonPausedByUser`
 
--  `AgoraAudioMixingReasonResumedByUser`
+    -  `AgoraAudioMixingReasonResumedByUser`
 
 -  `rtcEngineLocalAudioMixingDidFinish`: Use `audioMixingStateChanged` instead.
 
@@ -1387,7 +1387,7 @@ Key points:
 
 -  The Video Calling v4.x replaces the `stream-added`, `stream-removed`, and `stream-updated` events with the `user-published` and `user-unpublished` events.
 
-  Pay attention to the `mediaType` parameter of the `user-published` event, which marks the type of the current track the remote user publishes. It can be `"video"` or `"audio"`. If the remote user publishes an audio track and a video track at the same time, the SDK triggers two `user-published` events, in which `mediaType` is `"audio"` and `"video"` respectively.
+    Pay attention to the `mediaType` parameter of the `user-published` event, which marks the type of the current track the remote user publishes. It can be `"video"` or `"audio"`. If the remote user publishes an audio track and a video track at the same time, the SDK triggers two `user-published` events, in which `mediaType` is `"audio"` and `"video"` respectively.
 
 -  In the Video Calling v4.x, `subscribe` returns a `Promise` object representing the eventual completion or failure of the asynchronous operation. When calling `subscribe`, pass a `remoteUser` object. For details, see [AgoraRTCRemoteUser](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcremoteuser.html).
 
@@ -1415,59 +1415,59 @@ The improved events are:
 
 -  **Rename events**
 
-  The Video Calling v4.x ensures the consistency of all event names. For example, Agora renames `onTokenPrivilegeWillExpire` as `token-privilege-will-expire`. Agora also renames several events to ensure developers can better understand how they work. For example, Agora renames `peer-online` and `peer-offline` as `user-joined` and `user-left`, `stream-added` and `stream-removed` as `user-published` and `user-unpublished`.
+    The Video Calling v4.x ensures the consistency of all event names. For example, Agora renames `onTokenPrivilegeWillExpire` as `token-privilege-will-expire`. Agora also renames several events to ensure developers can better understand how they work. For example, Agora renames `peer-online` and `peer-offline` as `user-joined` and `user-left`, `stream-added` and `stream-removed` as `user-published` and `user-unpublished`.
 
 -  **Change the format of parameters in events**
 
-  In the Video Calling v3.x, the parameters of events must be wrapped in an object, while in the Video Calling v4.x, you can directly pass multiple parameters in events.
+    In the Video Calling v3.x, the parameters of events must be wrapped in an object, while in the Video Calling v4.x, you can directly pass multiple parameters in events.
 
-  Take the `"connection-state-change"` event as an example:
+    Take the `"connection-state-change"` event as an example:
 
-  - Using Video SDK v3.x
+    - Using Video SDK v3.x
 
-    ```js
-    client.on("connection-state-change", e => {
-     console.log("current", e.curState, "prev", e.prevState);
-    });
-    ```
+      ```js
+      client.on("connection-state-change", e => {
+       console.log("current", e.curState, "prev", e.prevState);
+      });
+      ```
 
-  - Using Video SDK v4.x
-    ```js
-    client.on("connection-state-change", (curState, prevState) => {
-     console.log("current", curState, "prev", prevState);
-    });
-    ```
+    - Using Video SDK v4.x
+      ```js
+      client.on("connection-state-change", (curState, prevState) => {
+       console.log("current", curState, "prev", prevState);
+      });
+      ```
 -  **Improve the event notification mechanism**
 
-  The Video Calling v4.x improves its event notification mechanism, and does not trigger channel events repeatedly.
+    The Video Calling v4.x improves its event notification mechanism, and does not trigger channel events repeatedly.
 
-  For example, assume that a local user A and remote users B, C, and D joins a channel at the same time, and B, C, and D all publishes their streams. If A suddenly loses connection with the channel due to bad network conditions, the SDK automatically reconnects A to the channel. While A is reconnecting to the channel, B leaves the channel and C unpublishes the stream. My question is, what events that the SDK triggers during the whole process?
+    For example, assume that a local user A and remote users B, C, and D joins a channel at the same time, and B, C, and D all publishes their streams. If A suddenly loses connection with the channel due to bad network conditions, the SDK automatically reconnects A to the channel. While A is reconnecting to the channel, B leaves the channel and C unpublishes the stream. My question is, what events that the SDK triggers during the whole process?
 
-  When A joins the channel, the Video Calling v3.x and Video Calling v4.x trigger the same events:
+    When A joins the channel, the Video Calling v3.x and Video Calling v4.x trigger the same events:
 
-  -  Events indicating B, C, D joining the channel.
+    -  Events indicating B, C, D joining the channel.
 
-  -  Events indicating B, C, D publishing their streams.
+    -  Events indicating B, C, D publishing their streams.
 
-    When A loses connection with the channel due to poor network conditions and reconnects to the channel:
+      When A loses connection with the channel due to poor network conditions and reconnects to the channel:
 
-  -  If A uses the Video Calling v3.x: When A loses connection with the channel due to poor network conditions, the SDK assumes A has left the channel and clears all the states in the channel. When A successfully reconnects to the channel, it receives:
+    -  If A uses the Video Calling v3.x: When A loses connection with the channel due to poor network conditions, the SDK assumes A has left the channel and clears all the states in the channel. When A successfully reconnects to the channel, it receives:
 
-  -  Events indicating C, D joining the channel.
+    -  Events indicating C, D joining the channel.
 
-  -  Events indicating D publishing the stream.
+    -  Events indicating D publishing the stream.
 
-    In the Video Calling v3.x, you can expect to receive the same events multiple times due to disconnection and reconnection, which may cause unexpected problems for dealing with these events on the app level. You need to listen for connection state changes and reset the states on the app level to avoid unexpected problems when receiving these events for the second time.
+      In the Video Calling v3.x, you can expect to receive the same events multiple times due to disconnection and reconnection, which may cause unexpected problems for dealing with these events on the app level. You need to listen for connection state changes and reset the states on the app level to avoid unexpected problems when receiving these events for the second time.
 
-  -  If A uses the Video Calling v4.x: When A loses connection with the channel due to poor network conditions, the SDK assumes that A is still in the channel and does not clear all the states in the channel. When A successfully reconnects to the channel, the SDK only sends A events that are lost during the reconnection process, including:
+    -  If A uses the Video Calling v4.x: When A loses connection with the channel due to poor network conditions, the SDK assumes that A is still in the channel and does not clear all the states in the channel. When A successfully reconnects to the channel, the SDK only sends A events that are lost during the reconnection process, including:
 
-  -  The event indicating B leaving the channel.
+    -  The event indicating B leaving the channel.
 
-  -  The event indicating C unpublishing the stream.
+    -  The event indicating C unpublishing the stream.
 
-      The Video Calling v4.x does not send you the same events repeatedly and ensures your app works properly during reconnection.
+        The Video Calling v4.x does not send you the same events repeatedly and ensures your app works properly during reconnection.
 
-      As these hypothetical examples demonstrate, the event notification mechanism in the Video Calling v4.x is more intuitive and does not need extra work.
+        As these hypothetical examples demonstrate, the event notification mechanism in the Video Calling v4.x is more intuitive and does not need extra work.
 
 ## Core API change list
 
@@ -1481,17 +1481,17 @@ The improved events are:
 
 -  Replace `createStream` with the following methods:
 
-  -  [createMicrophoneAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack)
+    -  [createMicrophoneAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createmicrophoneaudiotrack)
 
-  -  [createCameraVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
+    -  [createCameraVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcameravideotrack)
 
-  -  [createScreenVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createscreenvideotrack)
+    -  [createScreenVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createscreenvideotrack)
 
-  -  [createBufferSourceAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createbuffersourceaudiotrack)
+    -  [createBufferSourceAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createbuffersourceaudiotrack)
 
-  -  [createCustomAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomaudiotrack)
+    -  [createCustomAudioTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomaudiotrack)
 
-  -  [createCustomVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack)
+    -  [createCustomVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack)
 
 ### `Client`
 

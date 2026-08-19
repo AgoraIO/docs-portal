@@ -66,23 +66,23 @@ Suppose UID 1 and UID 2 are in the same channel. When the process of user A gets
 
 - If UID 1 is in iOS or macOS: UID 1 calls the `leaveChannel` method and UID 2 receives a callback:
 
-	- Android, Windows, or Linux: UID 2 receives the `onUserOffline` callback.
-	- iOS or macOS: UID 2 receives the `didOfflineOfUid` callback.
-	- The Web: UID 2 receives the `client.on("peer-leave")` callback.
+    - Android, Windows, or Linux: UID 2 receives the `onUserOffline` callback.
+    - iOS or macOS: UID 2 receives the `didOfflineOfUid` callback.
+    - The Web: UID 2 receives the `client.on("peer-leave")` callback.
 
 - If UID 1 is in Android, Windows, or Linux and user B uses the Native SDK:
 
-	- If UID 1 does not restart the app and rejoin the original channel within 20 seconds, UID 2 receives a callback:
+    - If UID 1 does not restart the app and rejoin the original channel within 20 seconds, UID 2 receives a callback:
 
-   - Android, Windows, or Linux: UID 2 receives the `onUserOffline` callback.
-   - iOS or macOS: UID 2 receives the `didOfflineOfUid` callback.
+        - Android, Windows, or Linux: UID 2 receives the `onUserOffline` callback.
+        - iOS or macOS: UID 2 receives the `didOfflineOfUid` callback.
 
-	- If UID 1 restarts the app and rejoins the original channel within 20 seconds, UID 2 does not receive any callback function.
+    - If UID 1 restarts the app and rejoins the original channel within 20 seconds, UID 2 does not receive any callback function.
 
 - If UID 1 is in Android, Windows, or Linux and UID 2 uses the Web SDK:
 
-	- If UID 1 does not restart the app and rejoin the original channel within 10 seconds, UID 2 receives the` client.on("stream-removed")` callback.
-	- If UID 1 restarts the app and rejoins the original channel, UID 2 does not receive any callback.
+    - If UID 1 does not restart the app and rejoin the original channel within 10 seconds, UID 2 receives the` client.on("stream-removed")` callback.
+    - If UID 1 restarts the app and rejoins the original channel, UID 2 does not receive any callback.
 
 - For the Web SDK, killing a process is equivalent to a user dropping offline.
 - If UID 1 is the last user in the channel, the server destroys the channel in 10 seconds.

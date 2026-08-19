@@ -160,10 +160,14 @@ paths:
           required: true
           schema:
             type: string
-          description: >-
-            Signaling user ID to send a peer-to-peer message. It must not exceed 64 characters in
-            length or be an empty string. Since `user_id` is a URL parameter, the first and last
-            characters must not be a space.
+          description: |-
+            Signaling user ID to send a peer-to-peer message. It must not exceed 64 characters in length or be an empty string. This parameter supports the following characters:
+
+            - All lowercase English letters: `a-z`.
+            - All uppercase English letters: `A-Z`.
+            - All numeric characters: `0-9`.
+            - The space character. (Not recommended): If the user ID contains a space, then the user ID cannot communicate with the Signaling SDK.
+            - Punctuation characters and other symbols, including: `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`, `'`.
           x-docs-callouts:
             - type: info
               title: Note
@@ -199,9 +203,14 @@ paths:
               properties:
                 destination:
                   type: string
-                  description: >-
-                    Signaling user ID to receive a peer-to-peer message. It must not exceed 64
-                    characters in length or be an empty string.
+                  description: |-
+                    Signaling user ID to receive a peer-to-peer message. It must not exceed 64 characters in length or be an empty string. This parameter supports the following characters:
+
+                    - All lowercase English letters: `a-z`.
+                    - All uppercase English letters: `A-Z`.
+                    - All numeric characters: `0-9`.
+                    - The space character. (Not recommended): If the user ID contains a space, then the user ID cannot communicate with the Signaling SDK.
+                    - Punctuation characters and other symbols, including: `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`, `'`.
                 enable_offline_messaging:
                   type: boolean
                   default: false
@@ -367,10 +376,14 @@ paths:
           required: true
           schema:
             type: string
-          description: >-
-            Signaling user ID to send a channel message. It must not exceed 64 characters in length
-            or be an empty string. Since `user_id` is a URL parameter, the first and last characters
-            must not be a space.
+          description: |-
+            Signaling user ID to send a channel message. It must not exceed 64 characters in length or be an empty string. This parameter supports the following characters:
+
+            - All lowercase English letters: `a-z`.
+            - All uppercase English letters: `A-Z`.
+            - All numeric characters: `0-9`.
+            - The space character. (Not recommended): If the user ID contains a space, then the user ID cannot communicate with the Signaling SDK.
+            - Punctuation characters and other symbols, including: `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`, `'`.
           x-docs-callouts:
             - type: info
               title: Note
@@ -389,9 +402,14 @@ paths:
               properties:
                 channel_name:
                   type: string
-                  description: >-
-                    Signaling channel name to receive a channel message. It must not exceed 64
-                    characters in length or be an empty string.
+                  description: |-
+                    Signaling channel name to receive a channel message. It must not exceed 64 characters in length or be an empty string. This parameter supports the following characters:
+
+                    - All lowercase English letters: `a-z`.
+                    - All uppercase English letters: `A-Z`.
+                    - All numeric characters: `0-9`.
+                    - The space character. (Not recommended): If the channel name contains a space, then the API cannot communicate with the Signaling SDK.
+                    - Punctuation characters and other symbols, including: `!`, `#`, `$`, `%`, `&`, `(`, `)`, `+`, `-`, `:`, `;`, `<`, `=`, `.`, `>`, `?`, `@`, `[`, `]`, `^`, `_`, `{`, `}`, `|`, `~`, `,`, `'`.
                 enable_historical_messaging:
                   type: boolean
                   default: false

@@ -89,30 +89,31 @@ Use either of the following methods to add RTC SDK to your project.
       mavenCentral()
     }
     ```
-:::note
-  If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
-:::
+
+    :::note
+    If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+    :::
 
 
 1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
     - Groovy `build.gradle`
 
-     ```json
-     implementation 'io.agora.rtc:voice-sdk:x.y.z'
-     ```
+        ```json
+        implementation 'io.agora.rtc:voice-sdk:x.y.z'
+        ```
 
     - Kotlin `build.gradle.kts`
 
-     ```kotlin
-     implementation("io.agora.rtc:voice-sdk:x.y.z")
-     ```
+        ```kotlin
+        implementation("io.agora.rtc:voice-sdk:x.y.z")
+        ```
 
     Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
-:::note
-  To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
-:::
+    :::note
+    To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+    :::
 
 1. Prevent code obfuscation
 
@@ -131,14 +132,14 @@ Use either of the following methods to add RTC SDK to your project.
 
 1. Open the unzipped file and copy the following files or subfolders to your project path.
 
-  | File or folder        | Project path    |
-  | :---------------------------- | :----------------------- |
-  | `agora-rtc-sdk.jar` file   | `/app/libs/`       |
-  | `arm64-v8a` folder      | `/app/src/main/jniLibs/` |
-  | `armeabi-v7a` folder     | `/app/src/main/jniLibs/` |
-  | `x86` folder         | `/app/src/main/jniLibs/` |
-  | `x86_64` folder        | `/app/src/main/jniLibs/` |
-  | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
+    | File or folder        | Project path    |
+    | :---------------------------- | :----------------------- |
+    | `agora-rtc-sdk.jar` file   | `/app/libs/`       |
+    | `arm64-v8a` folder      | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` folder     | `/app/src/main/jniLibs/` |
+    | `x86` folder         | `/app/src/main/jniLibs/` |
+    | `x86_64` folder        | `/app/src/main/jniLibs/` |
+    | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
 
 1. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
 
@@ -398,160 +399,160 @@ To access the microphone on Android devices, declare the necessary permissions i
 
 1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Voice Calling. In your `MainActivity` file, add the following code:
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  private static final int PERMISSION_REQ_ID = 22;
+    <CodeBlockTab value="java">
+      ```java
+      private static final int PERMISSION_REQ_ID = 22;
 
-    private boolean checkPermissions() {
-      for (String permission : getRequiredPermissions()) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-          return false;
+        private boolean checkPermissions() {
+          for (String permission : getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false;
+            }
+          }
+          return true;
         }
-      }
-      return true;
-    }
 
-    private void requestPermissions() {
-      ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
-    }
-
-    private String[] getRequiredPermissions() {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        return new String[]{
-          Manifest.permission.RECORD_AUDIO,
-          Manifest.permission.READ_PHONE_STATE,
-          Manifest.permission.BLUETOOTH_CONNECT
-        };
-      } else {
-        return new String[]{Manifest.permission.RECORD_AUDIO};
-      }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-      if (checkPermissions()) {
-        startVoiceCalling();
-      }
-    }
-  ```
-</CodeBlockTab>
-
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  private val permissionReqId = 22
-
-    private fun checkPermissions(): Boolean {
-      for (permission in getRequiredPermissions()) {
-        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-          return false
+        private void requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
         }
-      }
-      return true
-    }
-    private fun requestPermissions() {
-      ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
-    }
-    private fun getRequiredPermissions(): Array<String> {
-      return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        arrayOf(
-          Manifest.permission.RECORD_AUDIO,
-          Manifest.permission.READ_PHONE_STATE,
-          Manifest.permission.BLUETOOTH_CONNECT
-        )
-      } else {
-        arrayOf(Manifest.permission.RECORD_AUDIO)
-      }
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-      if (checkPermissions()) {
-        startVoiceCalling()
-      }
-    }
-  ```
-</CodeBlockTab>
 
-</CodeBlockTabs>
+        private String[] getRequiredPermissions() {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return new String[]{
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            };
+          } else {
+            return new String[]{Manifest.permission.RECORD_AUDIO};
+          }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private val permissionReqId = 22
+
+        private fun checkPermissions(): Boolean {
+          for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false
+            }
+          }
+          return true
+        }
+        private fun requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+        }
+        private fun getRequiredPermissions(): Array<String> {
+          return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            )
+          } else {
+            arrayOf(Manifest.permission.RECORD_AUDIO)
+          }
+        }
+        override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
 ### Start and close the app
 
 When a user launches your app, start real-time interaction. When a user closes the app, stop the interaction.
 
 1. In the `onCreate` callback, check whether the app has been granted the required permissions. If the permissions have not been granted, request the required permissions from the user. If permissions are granted, initialize `RtcEngine` and join a channel.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_main);
-      if (checkPermissions()) {
-        startVoiceCalling();
-      } else {
-        requestPermissions();
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      @Override
+        protected void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.activity_main);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          } else {
+            requestPermissions();
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      setContentView(R.layout.activity_main)
-      if (checkPermissions()) {
-        startVoiceCalling()
-      } else {
-        requestPermissions()
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContentView(R.layout.activity_main)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          } else {
+            requestPermissions()
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 2. When a user closes the app, or switches the app to the background, call `leaveChannel` to leave the current channel and release all session-related resources.
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  private void cleanupAgoraEngine() {
-      if (mRtcEngine != null) {
-        mRtcEngine.leaveChannel();
-        mRtcEngine = null;
-      }
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      private void cleanupAgoraEngine() {
+          if (mRtcEngine != null) {
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+          }
+        }
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  private fun cleanupAgoraEngine() {
-      mRtcEngine?.apply {
-        leaveChannel()
-      }
-      mRtcEngine = null
-    }
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private fun cleanupAgoraEngine() {
+          mRtcEngine?.apply {
+            leaveChannel()
+          }
+          mRtcEngine = null
+        }
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ### Complete sample code
 
 A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
@@ -892,13 +893,13 @@ Take the following steps to test the sample code:
 
 1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
 
-1. In Android Studio, click ![image](https://assets-docs.agora.io/images/video-sdk/icon_android_gradle_sync.png) **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+1. In Android Studio, click **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
 
-1. After synchronization is successful, click ![image](https://assets-docs.agora.io/images/video-sdk/icon_android_run.png) **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
+1. After synchronization is successful, click **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
 
-5. Launch the App, grant the recording permission.
+1. Launch the App, grant the recording permission.
 
-6. On a second Android device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
+1. On a second Android device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo.agora.io/basicVideoCall/index.html) to join the same channel and test the following use-cases:
 
     * If users on both devices join the channel as hosts, they can hear each other.
     * If one user joins as host and the other as audience, the audience can hear the host.
@@ -2040,7 +2041,7 @@ To start a Voice Calling session, implement the following steps in your app:
 ## Prerequisites
 
 - A [supported browser](reference/supported-platforms.md).
-  Agora strongly recommends using the latest stable version of Google Chrome.
+    Agora strongly recommends using the latest stable version of Google Chrome.
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 - A microphone
@@ -2088,7 +2089,7 @@ To add Voice Calling to your existing project, take the following steps:
 
 1. Add an HTML file to your project to create a user interface. The UI consists of buttons to join and leave a channel. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones HTML layout.
 
- 1. Include the JavaScript file in your HTML file.
+1. Include the JavaScript file in your HTML file.
 
     ```html
     <script type="module" src="/src/main.js"></script>
@@ -2375,10 +2376,10 @@ Take the following steps to run and test the sample code:
     1. Enter the same app ID, channel name, and temporary token.
 
     Once your friend joins the channel, you can hear each other.
-:::note
-- Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
- - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
-:::
+    :::note
+    - Run the web app on a local server (localhost) for testing purposes only. When deploying to a production environment, use the HTTPS protocol.
+    - Due to browser security policies that restrict HTTP addresses to 127.0.0.1, the Agora Web SDK only supports HTTPS protocol and `http://localhost` (`http://127.0.0.1`). Please do not use the HTTP protocol to access your project, except for `http://localhost` (`http://127.0.0.1`).
+    :::
 ## Reference
 
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
@@ -2438,15 +2439,15 @@ In addition to using `npm` to install the Web SDK, you can also use the followin
 
 * In the project HTML file, add the following tag to obtain the SDK from CDN:
 
-  ```html
-  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
-  ```
+    ```html
+    <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
+    ```
 
 * Download the RTC SDK package locally, save the `.js` files in the SDK package to the project directory, and then add the following tag to the project HTML file:
 
-  ```html
-  <script src="./AgoraRTC_N-4.24.6.js"></script>
-  ```
+    ```html
+    <script src="./AgoraRTC_N-4.24.6.js"></script>
+    ```
 
 Visit the [Download](/en/api-reference/sdks?product=video&platform=web) page to obtain the link for the latest SDK version.
 
@@ -2460,9 +2461,9 @@ Use one of the following solutions to resolve the issue:
 
 * Run the following command to set a temporary environment variable (Recommended):
 
-  ```bash
-  export NODE_OPTIONS=--openssl-legacy-provider
-  ```
+    ```bash
+    export NODE_OPTIONS=--openssl-legacy-provider
+    ```
 
 * Temporarily switch to a lower version of Node.js.
 
@@ -3172,58 +3173,58 @@ Add the RTC SDK to your project using `npm`:
 
     * macOS
 
-     ```json
-     {
-      "name": "electron-demo-app",
-      "version": "0.1.0",
-      "author": "your name",
-      "description": "My Electron app",
-      "main": "main.js",
-      "scripts": {
-       "start": "electron ."
-      },
-      "agora_electron": {
-       "platform": "darwin",
-       "prebuilt": true
-      },
-      "dependencies": {
-       "agora-electron-sdk": "latest"
-      },
-      "devDependencies": {
-       "electron": "latest"
-      }
-     }
-     ```
+        ```json
+        {
+         "name": "electron-demo-app",
+         "version": "0.1.0",
+         "author": "your name",
+         "description": "My Electron app",
+         "main": "main.js",
+         "scripts": {
+          "start": "electron ."
+         },
+         "agora_electron": {
+          "platform": "darwin",
+          "prebuilt": true
+         },
+         "dependencies": {
+          "agora-electron-sdk": "latest"
+         },
+         "devDependencies": {
+          "electron": "latest"
+         }
+        }
+        ```
 
     * Windows
 
-     ```json
-     {
-      "name": "electron-demo-app",
-      "version": "0.1.0",
-      "author": "your name",
-      "description": "My Electron app",
-      "main": "main.js",
-      "scripts": {
-       "start": "electron ."
-      },
-      "agora_electron": {
-       "platform": "win32",
-       "prebuilt": true,
-       "arch": "ia32"
-      },
-      "dependencies": { "agora-electron-sdk": "latest" },
-      "devDependencies": {"electron": "latest" }
-     }
-     ```
+        ```json
+        {
+         "name": "electron-demo-app",
+         "version": "0.1.0",
+         "author": "your name",
+         "description": "My Electron app",
+         "main": "main.js",
+         "scripts": {
+          "start": "electron ."
+         },
+         "agora_electron": {
+          "platform": "win32",
+          "prebuilt": true,
+          "arch": "ia32"
+         },
+         "dependencies": { "agora-electron-sdk": "latest" },
+         "devDependencies": {"electron": "latest" }
+        }
+        ```
 
-     **Configuration parameters**
+    **Configuration parameters**
 
-     - `agora-electron-sdk`: Version number of the Agora Electron SDK. Set to latest for the most recent version, or specify a version number. See [`agora-electron-sdk`](https://www.npmjs.com/package/agora-electron-sdk) on npm for available versions.
-     - `electron`: Electron version number. Versions 5.0.0 and above are supported. For macOS devices with M1 chips, use version 11.0.0 or higher.
-     - `platform` (Optional): Target platform. Set to `darwin` for macOS or `win32` for Windows.
-     - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
-     - `arch` (Optional): Target architecture. Defaults to your system architecture.
+    - `agora-electron-sdk`: Version number of the Agora Electron SDK. Set to latest for the most recent version, or specify a version number. See [`agora-electron-sdk`](https://www.npmjs.com/package/agora-electron-sdk) on npm for available versions.
+    - `electron`: Electron version number. Versions 5.0.0 and above are supported. For macOS devices with M1 chips, use version 11.0.0 or higher.
+    - `platform` (Optional): Target platform. Set to `darwin` for macOS or `win32` for Windows.
+    - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
+    - `arch` (Optional): Target architecture. Defaults to your system architecture.
 
     :::note
     Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
@@ -3233,16 +3234,16 @@ Add the RTC SDK to your project using `npm`:
 
     * macOS
 
-     ```bash
-     npm install
-     ```
+        ```bash
+        npm install
+        ```
 
     * Windows
 
-     ```bash
-     npm install -D --arch=ia32 electron
-     npm install
-     ```
+        ```bash
+        npm install -D --arch=ia32 electron
+        npm install
+        ```
 </TabsContent>
 </Tabs>
 
@@ -3706,7 +3707,7 @@ To start a Voice Calling session, implement the following steps in your app:
 - [Android Studio](https://developer.android.com/studio), IntelliJ, VS Code, or any other IDE that supports Flutter. See [Set up an editor](https://docs.flutter.dev/get-started/editor).
 - Prepare your development and testing environment according to your [target platform](reference/supported-platforms.md).
 
- Run the `flutter doctor` command to confirm that your development environment is set up correctly for Flutter development.
+    Run the `flutter doctor` command to confirm that your development environment is set up correctly for Flutter development.
 
 - A microphone
 
@@ -4206,7 +4207,7 @@ For your target platform, prepare the following:
 - Xcode 10 or later
 - CocoaPods
 - A physical or virtual mobile device running iOS 9.0 or later.
-  If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
+    If you use React Native 0.63 or later, ensure your iOS version is 10.0 or later.
 
 </CodeBlockTab>
 
@@ -5209,12 +5210,12 @@ To start a Voice Calling session, implement the following steps in your app:
 - [Unity Hub](https://unity.com/download) and [Unity Editor](https://unity.com/releases/editor/archive) 2018.4.0 or higher
 - A suitable operating system and compiler for your development platform:
 
-  | Development platform | Operating system version | Compiler version |
-  |:---------------------|:-------------------------|:-----------------|
-  | Android | Android 4.1 or later | Android Studio 4.1 or later |
-  | iOS | iOS 10.15 or later | Xcode 9.0 or later |
-  | macOS | macOS 10.15 or later | Xcode 9.0 or later |
-  | Windows | Windows 7 or later | Microsoft Visual Studio 2017 or later |
+    | Development platform | Operating system version | Compiler version |
+    |:---------------------|:-------------------------|:-----------------|
+    | Android | Android 4.1 or later | Android Studio 4.1 or later |
+    | iOS | iOS 10.15 or later | Xcode 9.0 or later |
+    | macOS | macOS 10.15 or later | Xcode 9.0 or later |
+    | Windows | Windows 7 or later | Microsoft Visual Studio 2017 or later |
 
 - A microphone
 
@@ -5290,10 +5291,10 @@ Before proceeding, create and set up a script to implement Voice Calling and bin
 
     1. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
 
-       ```csharp
-       using UnityEngine;
-       using UnityEngine.UI;
-       ```
+        ```csharp
+        using UnityEngine;
+        using UnityEngine.UI;
+        ```
 1. Bind the script to the canvas.
 
     In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
@@ -5668,15 +5669,15 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
     1. In the **Inspector** panel, rename the button to `Join` and adjust the position coordinates as needed. For example:
 
-     * **Pos X**：`-329`
-     * **Pos Y**: `-172`
+        * **Pos X**：`-329`
+        * **Pos Y**: `-172`
 
     1. Select the **Text** control of the **Join** button , and change the text to `Join` in the **Inspector** panel.
 
     1. Repeat the steps to create a **Leave** button, using the following positions:
 
-     * **Pos X**：`329`
-     * **Pos Y**: `-172`
+        * **Pos X**：`329`
+        * **Pos Y**: `-172`
 
 At this point your UI looks similar to the following:
 
@@ -5758,12 +5759,12 @@ To start a Voice Calling session, implement the following steps in your app:
 - Unreal Engine 4.27 or higher
 - Prepare your development environment according to your target platform and engine version:
 
-   | Dev environment requirements | Other requirements |
-  | :------------------- | :------ |
-  | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
-  | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
-  | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
-  | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) |32-bit Windows only supports Unreal Engine 4 and below. To use Unreal Engine with 32-bit Windows, uncomment the code relating to `Win32` in the `AgoraPluginLibrary.Build.cs` file. |
+    | Dev environment requirements | Other requirements |
+    | :------------------- | :------ |
+    | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
+    | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
+    | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
+    | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) |32-bit Windows only supports Unreal Engine 4 and below. To use Unreal Engine with 32-bit Windows, uncomment the code relating to `Win32` in the `AgoraPluginLibrary.Build.cs` file. |
 
 - Two physical devices for testing
 
@@ -5791,8 +5792,8 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     * **Template**: Select **Blank**.
     * **Project Defaults**:
-     * **Language**: Select **C++**.
-     * **Target Platform**: Select **Desktop**.
+        * **Language**: Select **C++**.
+        * **Target Platform**: Select **Desktop**.
     * **Project Location**: Enter the project files storage path.
     * **Project Name**: Type a suitable name for your project.
 
@@ -5890,34 +5891,34 @@ Add the `SetupSDKEngine` method declaration and implementation to the following 
 
 * `AgoraWidget.h`
 
-  ```cpp
-  // Fill in your app ID
-  FString _appID = "";
-  // Define a global variable for IRtcEngine
-  agora::rtc::IRtcEngine* RtcEngineProxy;
+    ```cpp
+    // Fill in your app ID
+    FString _appID = "";
+    // Define a global variable for IRtcEngine
+    agora::rtc::IRtcEngine* RtcEngineProxy;
 
-  private:
-    // Create and initialize IRtcEngine
-    void SetupSDKEngine();
-  ```
+    private:
+      // Create and initialize IRtcEngine
+      void SetupSDKEngine();
+    ```
 
 * `AgoraWidget.cpp`
 
-  ```cpp
-  void UAgoraWidget::SetupSDKEngine()
-  {
-    agora::rtc::RtcEngineContext RtcEngineContext;
+    ```cpp
+    void UAgoraWidget::SetupSDKEngine()
+    {
+      agora::rtc::RtcEngineContext RtcEngineContext;
 
-    RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
-    RtcEngineContext.eventHandler = this;
+      RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
+      RtcEngineContext.eventHandler = this;
 
-    // Create IRtcEngine instance
-    RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
+      // Create IRtcEngine instance
+      RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
 
-    // Initialize IRtcEngine
-    RtcEngineProxy->initialize(RtcEngineContext);
-  }
-  ```
+      // Initialize IRtcEngine
+      RtcEngineProxy->initialize(RtcEngineContext);
+    }
+    ```
 
 ### Join a channel
 
@@ -5935,39 +5936,39 @@ Add the `Join` method declaration and implementation to the following files:
 
 * `AgoraWidget.h`
 
-  ```cpp
-  // Fill in your channel name
-  FString _channelName = "";
-  // Fill in a valid token
-  FString _token = "";
+    ```cpp
+    // Fill in your channel name
+    FString _channelName = "";
+    // Fill in a valid token
+    FString _token = "";
 
-  UFUNCTION(BlueprintCallable)
-  void Join();
-  UFUNCTION(BlueprintCallable)
-  void Leave();
-  ```
+    UFUNCTION(BlueprintCallable)
+    void Join();
+    UFUNCTION(BlueprintCallable)
+    void Leave();
+    ```
 
 * `AgoraWidget.cpp`
 
   For Voice Calling, set the `channelProfile` to `CHANNEL_PROFILE_COMMUNICATION` and the user role to `CLIENT_ROLE_BROADCASTER`.
 
-  ```cpp
-  void UAgoraWidget::Join()
-  {
-    // Set channel media options
-    agora::rtc::ChannelMediaOptions options;
-    // Automatically subscribe to all audio streams
-    options.autoSubscribeAudio = true;
-    // Publish video captured by the camera
-    options.publishMicrophoneTrack = true;
-    // Set the channel profile to live broadcasting
-    options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
-    // Set the user role as host or audience
-    options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_AUDIENCE;
-    // Join a channel
-    RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName), 0, options);
-  }
-  ```
+    ```cpp
+    void UAgoraWidget::Join()
+    {
+      // Set channel media options
+      agora::rtc::ChannelMediaOptions options;
+      // Automatically subscribe to all audio streams
+      options.autoSubscribeAudio = true;
+      // Publish video captured by the camera
+      options.publishMicrophoneTrack = true;
+      // Set the channel profile to live broadcasting
+      options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+      // Set the user role as host or audience
+      options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_AUDIENCE;
+      // Join a channel
+      RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName), 0, options);
+    }
+    ```
 
 ### Subscribe to RTC SDK events
 
@@ -5975,51 +5976,51 @@ The RTC SDK provides an interface for subscribing to channel events. To use it, 
 
 * `AgoraWidget.h`
 
-  ```cpp
-  // Triggered when the local user leaves a channel
-  void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
+    ```cpp
+    // Triggered when the local user leaves a channel
+    void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
 
-  // Triggered when a remote user joins a channel
-  void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
+    // Triggered when a remote user joins a channel
+    void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
 
-  // Triggered when a remote user leaves a channel
-  void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
+    // Triggered when a remote user leaves a channel
+    void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
 
-  // Triggered when the local user joins a channel
-  void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
-  ```
+    // Triggered when the local user joins a channel
+    void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
+    ```
 
 * `AgoraWidget.cpp`
 
-  ```cpp
-  void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
-  {
-    // Callback when a remote user joins the channel
-    agora::rtc::RtcConnection connection;
-    connection.channelId = TCHAR_TO_ANSI(*_channelName);
-  }
-
-  void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
-  {
-    // Callback when a remote user leaves the channel
-    agora::rtc::RtcConnection connection;
-    connection.channelId = TCHAR_TO_ANSI(*_channelName);
-  }
-
-  void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
-  {
-    // Callback when the local user successfully joins the channel
-    AsyncTask(ENamedThreads::GameThread, =
+    ```cpp
+    void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
     {
-      UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
-    });
-  }
-  void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
-  {
-    // Callback when the local user successfully leaves the channel
+      // Callback when a remote user joins the channel
+      agora::rtc::RtcConnection connection;
+      connection.channelId = TCHAR_TO_ANSI(*_channelName);
+    }
 
-  }
-  ```
+    void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
+    {
+      // Callback when a remote user leaves the channel
+      agora::rtc::RtcConnection connection;
+      connection.channelId = TCHAR_TO_ANSI(*_channelName);
+    }
+
+    void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
+    {
+      // Callback when the local user successfully joins the channel
+      AsyncTask(ENamedThreads::GameThread, =
+      {
+        UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
+      });
+    }
+    void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
+    {
+      // Callback when the local user successfully leaves the channel
+
+    }
+    ```
 
  ### Handle permissions
 
@@ -6049,40 +6050,40 @@ Add the `AndroidPermission` library to obtain device and network permissions:
 
     * `AgoraWidget.h`
 
-     ```cpp
-     private:
-         // Get Android permissions
-         void CheckAndroidPermission();
-     ```
+        ```cpp
+        private:
+            // Get Android permissions
+            void CheckAndroidPermission();
+        ```
 
     * `AgoraWidget.cpp`
 
-       ```cpp
-       void UAgoraWidget::CheckAndroidPermission()
-           {
-           #if PLATFORM_ANDROID
-             FString pathfromName = UGameplayStatics::GetPlatformName();
-             if (pathfromName == "Android")
-             {
-               TArray<FString> AndroidPermission;
-               AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
-               AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
-               AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
-               AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
-               AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
-               UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
-             }
-           #endif
-           }
+        ```cpp
+        void UAgoraWidget::CheckAndroidPermission()
+            {
+            #if PLATFORM_ANDROID
+              FString pathfromName = UGameplayStatics::GetPlatformName();
+              if (pathfromName == "Android")
+              {
+                TArray<FString> AndroidPermission;
+                AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+                AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+                AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+                AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
+                AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
+                UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+              }
+            #endif
+            }
 
-           void UAgoraWidget::NativeConstruct()
-           {
-             Super::NativeConstruct();
-           #if PLATFORM_ANDROID
-             CheckAndroidPermission()
-           #endif
-           }
-       ```
+            void UAgoraWidget::NativeConstruct()
+            {
+              Super::NativeConstruct();
+            #if PLATFORM_ANDROID
+              CheckAndroidPermission()
+            #endif
+            }
+        ```
 
 **iOS and macOS**
 1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](/en/realtime-media/rtc/voice-quickstart)
@@ -6112,20 +6113,20 @@ To leave a channel call `leaveChannel`. Implement the following method:
 
 * `AgoraWidget.h`
 
-  ```cpp
-  UFUNCTION(BlueprintCallable)
-  void Leave();
-  ```
+    ```cpp
+    UFUNCTION(BlueprintCallable)
+    void Leave();
+    ```
 
 * `AgoraWidget.cpp`
 
-  ```cpp
-  void UAgoraWidget::Leave()
-  {
-    // Leave the channel
-    RtcEngineProxy->leaveChannel();
-  }
-  ```
+    ```cpp
+    void UAgoraWidget::Leave()
+    {
+      // Leave the channel
+      RtcEngineProxy->leaveChannel();
+    }
+    ```
 
 ### Release resources
 
@@ -6133,26 +6134,26 @@ When the local user leaves the channel, or exits the game, release memory by cal
 
 * `AgoraWidget.h`
 
-  ```cpp
-  void NativeDestruct() override;
-  ```
+    ```cpp
+    void NativeDestruct() override;
+    ```
 
 * `AgoraWidget.cpp`
 
-  ```cpp
-  void UAgoraWidget::NativeDestruct()
-  {
-    Super::NativeDestruct();
-    if (RtcEngineProxy != nullptr)
+    ```cpp
+    void UAgoraWidget::NativeDestruct()
     {
-      RtcEngineProxy->unregisterEventHandler(this);
-      RtcEngineProxy->release();
-      delete RtcEngineProxy;
+      Super::NativeDestruct();
+      if (RtcEngineProxy != nullptr)
+      {
+        RtcEngineProxy->unregisterEventHandler(this);
+        RtcEngineProxy->release();
+        delete RtcEngineProxy;
 
-      RtcEngineProxy = nullptr;
+        RtcEngineProxy = nullptr;
+      }
     }
-  }
-  ```
+    ```
 
 ### Complete sample code
 
@@ -6403,10 +6404,10 @@ Follow these steps to set up a basic UI for your project or to integrate essenti
 
     1. In **AgoraWidget**, select **COMMON > Button**, drag it to the **Canvas Panel**, and rename it to **JoinBtn**. Adjust the button's size and position on the canvas or use the following sample settings:
 
-     * **Position X**：`300`
-     * **Position Y**: `700`
-     * **Size X**：`240`
-     * **Size Y**: `120`
+        * **Position X**：`300`
+        * **Position Y**: `700`
+        * **Size X**：`240`
+        * **Size Y**: `120`
 
     1. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
 
@@ -6503,12 +6504,12 @@ To start a Voice Calling session, implement the following steps in your app:
 - Unreal Engine 4.27 or higher
 - Prepare your development environment according to your target platform and engine version:
 
-   | Dev environment requirements | Other requirements |
-  | :------------------- | :------ |
-  | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
-  | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
-  | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
-  | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) |32-bit Windows only supports Unreal Engine 4 and below. To use Unreal Engine with 32-bit Windows, uncomment the code relating to `Win32` in the `AgoraPluginLibrary.Build.cs` file. |
+    | Dev environment requirements | Other requirements |
+    | :------------------- | :------ |
+    | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
+    | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
+    | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
+    | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) |32-bit Windows only supports Unreal Engine 4 and below. To use Unreal Engine with 32-bit Windows, uncomment the code relating to `Win32` in the `AgoraPluginLibrary.Build.cs` file. |
 
 - Two physical devices for testing
 
@@ -6536,8 +6537,8 @@ Refer to the following steps or the [Unreal official guide](https://docs.unreale
 
     * **Template**: Select **Blank**.
     * **Project Defaults**:
-     * **Language**: Select **Blueprint**.
-     * **Target Platform**: Pick **Desktop**.
+        * **Language**: Select **Blueprint**.
+        * **Target Platform**: Pick **Desktop**.
     * **Project Location**: Enter a project files storage path.
     * **Project Name**: Type a suitable name for your project.
 
@@ -6633,15 +6634,15 @@ Add variables to create an engine instance and join a channel.
 
     ![image](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-5.png)
 
-:::note
-  If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
-:::
+    :::note
+    If your target platform is macOS or iOS, please refer to [How do I add the permissions needed for real-time interaction to my Unreal Engine project?](/en/api-reference/faq/integration/unreal_permissions)
+    :::
 
 1. To initialize the RTC engine, in the **InitRtcEngine** function, create and connect nodes as shown in the following figure:
 
     ![image](https://assets-docs.agora.io/images/video-sdk/quickstart-implementation-blueprint-6-voice-sdk.png)
 
- 1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
+1. Create `IRtcEngine` and `IRtcEngineEventHandler`.
 
     1. To store references to the engine and event-handler interface classes, create `RtcEngine` and `EventHandler` variables, and set the **Variable Type** to **Agora Rtc Engine** and **IRtc Engine Event Handler**, respectively.
 
@@ -6651,40 +6652,40 @@ Add variables to create an engine instance and join a channel.
 
     1. Create `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback functions. Refer to the following table to configure the input parameters of the callbacks:
 
-      | Callback | Description | Input parameters |
-      |:--------|:------------------|:------------|
-      | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | <Slot name="fonjoinchannelsuccess" /> |
-      | `FOnLeaveChannel` | The local user left the channel. | <Slot name="fonleavechannel" /> |
-      | `FOnUserJoined` | A remote user joined the current channel. | <Slot name="fonuserjoined" /> |
-      | `FOnUserOffline` | A remote user left the current channel. | <Slot name="fonuseroffline" /> |
+        | Callback | Description | Input parameters |
+        |:--------|:------------------|:------------|
+        | `FOnJoinChannelSuccess` | The local user successfully joined a channel. | <Slot name="fonjoinchannelsuccess" /> |
+        | `FOnLeaveChannel` | The local user left the channel. | <Slot name="fonleavechannel" /> |
+        | `FOnUserJoined` | A remote user joined the current channel. | <Slot name="fonuserjoined" /> |
+        | `FOnUserOffline` | A remote user left the current channel. | <Slot name="fonuseroffline" /> |
 
-      <Slot for="fonjoinchannelsuccess">
+        <Slot for="fonjoinchannelsuccess">
 
-      - `channel`: (String) Channel name.
-      - `uid`: (Integer64) The ID of the user joining the channel.
-      - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+        - `channel`: (String) Channel name.
+        - `uid`: (Integer64) The ID of the user joining the channel.
+        - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
 
-      </Slot>
+        </Slot>
 
-      <Slot for="fonleavechannel">
+        <Slot for="fonleavechannel">
 
-      - `stats`: Call statistics.
+        - `stats`: Call statistics.
 
-      </Slot>
+        </Slot>
 
-      <Slot for="fonuserjoined">
+        <Slot for="fonuserjoined">
 
-      - `uid`: (Integer64) The user ID of the remote user joining the channel.
-      - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
+        - `uid`: (Integer64) The user ID of the remote user joining the channel.
+        - `elapsed`: (Integer) The time (in milliseconds) that elapsed from the local call to `JoinChannel` till the occurrence of this event.
 
-      </Slot>
+        </Slot>
 
-      <Slot for="fonuseroffline">
+        <Slot for="fonuseroffline">
 
-      - `uid`: (Integer64) The ID of the user going offline.
-      - `reason`: Offline reason. For details, see `EUSER_OFFLINE_REASON_TYPE`.
+        - `uid`: (Integer64) The ID of the user going offline.
+        - `reason`: Offline reason. For details, see `EUSER_OFFLINE_REASON_TYPE`.
 
-      </Slot>
+        </Slot>
 
     1. Create a **Bind Event** function. In this function, add a **Sequence** node, and then bind the `onJoinChannelSuccess`, `onLeaveChannel`, `onUserJoined`, and `onUserOffline` callback events.
 
@@ -6707,10 +6708,10 @@ To bind UI events:
     1. Call **Enable Audio** to enable the audio modules.
     2. Call **Join Channel** to join the channel.
     3. Set the following parameters in **Make ChannelMediaOptions**:
-     - Set **Publish Microphone Track** to `AGORA TRUE VALUE` to publish the audio stream recorded by the microphone.
-     - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
-     - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE`, to set the user role to host or audience.
-     - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_COMMUNICATION`.
+        - Set **Publish Microphone Track** to `AGORA TRUE VALUE` to publish the audio stream recorded by the microphone.
+        - Set **Auto Subscribe Video** to `AGORA TRUE VALUE` to automatically subscribe to all video streams.
+        - Check **Client Role Type Set Value** and set **Client Role Type** to `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE`, to set the user role to host or audience.
+        - Check **Channel Profile Set Value** and set **Channel Profile** to `CHANNEL_PROFILE_COMMUNICATION`.
 
 1. Create and implement the `OnLeaveChannelClicked` event callback. When the event is triggered, call **Leave Channel** to leave the channel.
 

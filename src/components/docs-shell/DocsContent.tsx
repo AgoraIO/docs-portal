@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { DocsPageAnalyticsContext } from '@/lib/analytics/docs-page-context';
 import {
-  captureDocsPageViewed,
   captureDocsTocClicked,
   type DocsPageType,
   registerDocsPageContext,
@@ -172,7 +171,6 @@ export function DocsContent({
       title: analyticsPageContext?.title,
       version: analyticsPageContext?.version,
     });
-    captureDocsPageViewed({ locale: currentLocale });
   }, [
     activePath,
     activeTab,

@@ -329,6 +329,28 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
+  it('publishes confirmed PostHog 404 targets as production redirects', () => {
+    const publishedRedirects = [
+      ...bulkRedirects,
+      ...(vercelConfig.redirects ?? []),
+    ];
+
+    expect(publishedRedirects).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          destination: 'https://discord.com/invite/QfgBCvuX4d',
+          source: '/en/AgoraPlatform/community/',
+          statusCode: 301,
+        }),
+        expect.objectContaining({
+          destination: '/en/api-reference/recipes',
+          source: '/en/AgoraPlatform/sampleapps/',
+          statusCode: 301,
+        }),
+      ]),
+    );
+  });
+
   it('maps legacy Voice release notes queries to platform routes', () => {
     expect(vercelConfig.routes).toContainEqual({
       headers: {
@@ -355,8 +377,7 @@ describe('legacy redirect Vercel artifacts', () => {
     ).toBe(false);
     expect(vercelConfig.routes).toContainEqual({
       headers: {
-        Location:
-          '/en/realtime-media/rtc/reference/release-notes/javascript',
+        Location: '/en/realtime-media/rtc/reference/release-notes/javascript',
       },
       has: [
         {

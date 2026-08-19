@@ -1622,6 +1622,30 @@ paths:
                             - `sarvam`: [Sarvam](/en/ai/models/asr/sarvam)
 
                             - `xai`: [xAI](/en/ai/models/asr/xai)
+                        keywords:
+                          type: array
+                          items:
+                            type: string
+                          maxItems: 128
+                          description: >-
+                            ASR keywords used to improve recognition accuracy for specific terms.
+                            See [ARES](/en/ai/models/asr/ares) for details.
+
+
+                            - You can only set `properties.asr.keywords` when
+                            `properties.asr.vendor` is not set, `null`, an empty string, or `ares`.
+
+
+                            - You can configure up to 128 keywords.
+
+
+                            - Setting this field while explicitly using another ASR vendor causes
+                            the request to fail with:
+                            `Invalid value at properties.asr.keywords: can only be set when properties.asr.vendor is not set or ares.`
+
+
+                            Configuring keywords can affect recognition accuracy for other terms,
+                            so configure them carefully based on your use case.
                         params:
                           type: object
                           additionalProperties: true
@@ -1668,9 +1692,11 @@ paths:
                             - microsoft
                             - minimax
                             - mistral
+                            - murf
                             - openai
                             - rime
                             - sarvam
+                            - typecast
                             - xai
                           description: >-
                             TTS provider.
@@ -1709,6 +1735,8 @@ paths:
                             - `rime`: [Rime](/en/ai/models/tts/rime)
 
                             - `sarvam`: [Sarvam](/en/ai/models/tts/sarvam)
+
+                            - `typecast`: [Typecast](/en/ai/models/tts/typecast)
 
                             - `xai`: [xAI](/en/ai/models/tts/xai)
                         url:
@@ -2219,6 +2247,7 @@ paths:
                           type: string
                           enum:
                             - openai
+                            - azure
                             - gemini
                             - vertexai
                             - xai
@@ -2226,6 +2255,8 @@ paths:
                             MLLM provider. Currently supports:
 
                             - `openai`: [OpenAI Realtime API](/en/ai/models/mllm/openai)
+
+                            - `azure`: [Azure OpenAI Realtime API](/en/ai/models/mllm/azure)
 
                             - `gemini`: [Google Gemini Live](/en/ai/models/mllm/gemini)
 
@@ -2511,16 +2542,6 @@ paths:
 
                             Identification sensitivity determines the level of sound in the audio
                             signal that is considered voice activity.
-                        eagerness:
-                          type: string
-                          default: auto
-                          enum:
-                            - auto
-                            - low
-                            - high
-                          description: >-
-                            The eagerness of the model to respond. Only available in `semantic_vad`
-                            mode when using OpenAI Realtime API.
                         config:
                           type: object
                           additionalProperties: true

@@ -120,6 +120,6 @@ For a stream channel, you need to add the following to your firewall whitelist:
     |------------------|----------|---------|
     | 4001 - 4150      | UDP      | Allow   |
 
-:::info
-The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
-:::
+    :::info
+    The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+    :::
