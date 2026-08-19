@@ -16,7 +16,7 @@ To follow this procedure you need:
 * A device [license](build/authenticate-and-secure-channels/license.mdx) to pass to `license_value` when you initialize the SDK.
 * A computer or an embedded device. This page uses a computer running Ubuntu 18.04 as an example. For the full list of supported operating systems and toolchains, see [Supported platforms](reference/supported-platforms.mdx).
 * An Agora [account](/en/introduction/account) and [project](/en/introduction/account).
-* A [temporary RTC token](/en/introduction/account#generate-temporary-tokens) and a temporary RTM token generated for your project. RTC tokens and RTM tokens use different generation mechanisms and scopes, so you cannot use one in place of the other.
+* A [temporary token](/en/introduction/account#generate-temporary-tokens) generated for your project. Agora Console generates a single combined token that's valid for both joining an RTC channel and logging in to Signaling.
 
 ## Project setup
 
@@ -321,7 +321,7 @@ This section shows you how to log in to Signaling, send and receive signaling me
 
 ### Log in to Signaling
 
-Call `agora_rtc_login_rtm` to log in to Signaling on the device, passing an RTM user ID, an RTM token, and an `agora_rtm_handler_t` populated with your signaling callbacks:
+Call `agora_rtc_login_rtm` to log in to Signaling on the device, passing a user ID, a token, and an `agora_rtm_handler_t` populated with your signaling callbacks:
 
 ```c
 agora_rtm_handler_t rtm_handler = {0};
@@ -337,7 +337,7 @@ if (rval < 0) {
 ```
 
 :::info
-RTM tokens and RTC tokens use different generation mechanisms and scopes. You cannot use an RTC token to log in to Signaling, or an RTM token to join an RTC channel.
+A token generated through [Generate temporary tokens](/en/introduction/account#generate-temporary-tokens) in Agora Console is valid for both joining an RTC channel and logging in to Signaling. Use the same token for both, with the user ID you specified when generating it.
 :::
 
 ### Send and receive signaling messages
