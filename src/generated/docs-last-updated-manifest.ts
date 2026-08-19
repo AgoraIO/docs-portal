@@ -22287,49 +22287,41 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/im/index.md': '2026-07-28T02:59:45.000Z',
   'content/docs/zh-CN/realtime-media/im/meta.json': '2026-07-28T02:59:45.000Z',
   'content/docs/zh-CN/realtime-media/index.md': '2026-07-28T02:59:45.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/composite-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/composite-mode.mdx':
     '2026-07-28T10:49:10.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/docker.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/docker.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/individual-mode.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/individual-mode.mdx':
     '2026-07-28T10:49:10.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/integrate-sdk.mdx':
     '2026-07-28T03:13:58.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/manage-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/manage-files.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/merge-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/merge-files.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/raw-data.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/raw-data.mdx':
-    '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-cmd.mdx':
     '2026-07-28T10:49:10.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/set-output-video.mdx':
     '2026-07-28T03:13:58.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/meta.json':
-    '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/implement-core-features/record-by-api.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-api.mdx':
     '2026-07-28T10:49:10.000Z',
   'content/docs/zh-CN/realtime-media/local-server-recording/build/meta.json':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/collect-logs.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/collect-logs.mdx':
     '2026-07-28T03:12:10.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/meta.json':
-    '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/legacy/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/restore-files.mdx':
     '2026-07-28T03:11:20.000Z',
   'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/meta.json':
     '2026-07-28T03:12:09.000Z',
   'content/docs/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files.mdx':
     '2026-07-28T03:12:09.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/meta.json':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/screenshot.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/screenshot.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/set-layout.mdx':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout.mdx':
-    '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/local-server-recording/build/legacy/watermark.mdx':
     '2026-07-28T03:11:20.000Z',
   'content/docs/zh-CN/realtime-media/local-server-recording/build/recording-modes/meta.json':
     '2026-07-28T03:12:09.000Z',
@@ -23166,49 +23158,41 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T02:56:19.000Z',
   'content/docs/zh-CN/realtime-media/recording/local-server-recording/best-practice/restore-files.mdx':
     '2026-07-28T02:56:19.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/composite-mode.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/composite-mode.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/docker.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/docker.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/individual-mode.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/individual-mode.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/integrate-sdk.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/integrate-sdk.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/manage-files.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/manage-files.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/merge-files.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/merge-files.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/meta.json':
-    '2026-07-28T03:04:34.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/raw-data.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/raw-data.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/record-by-cmd.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/record-by-cmd.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/legacy/set-output-video.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/set-output-video.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/meta.json':
-    '2026-07-28T03:06:08.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/implement-core-features/record-by-api.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/record-by-api.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/meta.json':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/collect-logs.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/collect-logs.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/meta.json':
-    '2026-07-28T03:04:34.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/legacy/restore-files.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/restore-files.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/meta.json':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/optimize-and-operate/restore-files.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/meta.json':
-    '2026-07-28T03:04:34.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/screenshot.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/screenshot.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/set-layout.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/set-layout.mdx':
     '2026-07-28T03:11:15.000Z',
-  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/legacy/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/legacy/watermark.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/recording/local-server-recording/build/recording-modes/meta.json':
     '2026-07-28T03:01:45.000Z',

@@ -13,7 +13,7 @@ description: "了解如何在本地服务端录制中合流录制，包括适用
 
 开始前请确保：
 
-- 你已经完成录制 SDK 的环境准备和集成工作并且了解如何使用命令行开始录制，详见[集成客户端](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/integrate-sdk)和[命令行录制](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd)。
+- 你已经完成录制 SDK 的环境准备和集成工作并且了解如何使用命令行开始录制，详见[集成客户端](/zh-CN/realtime-media/local-server-recording/build/legacy/integrate-sdk)和[命令行录制](/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-cmd)。
 - 单流或合流模式的设置必须在开始录制的时候完成，不支持在录制开始后切换模式。请参阅[单流录制模式和合流录制模式的区别](/zh-CN/reference/faq/integration/recording_mode)来决定应使用哪种模式。
 
 ## 实现方法
@@ -35,7 +35,7 @@ description: "了解如何在本地服务端录制中合流录制，包括适用
 :::info[信息]
 - 合流录制模式下，如果同时录制音视频，我们建议同时将 `mixedVideoAudio` 参数设为 `2`，把音频文件和视频文件实时混合成一个既有音频也有视频的 MP4 文件。
 - 在仅录制音频或仅录制视频时请不要将 `mixedVideoAudio` 设为 `2`。
-- 仅录制音频或同时录制音视频时，生成的音频文件新增 MP3 格式，且支持只生成 MP3 格式的音频文件。详见[命令行录制](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/record-by-cmd)。
+- 仅录制音频或同时录制音视频时，生成的音频文件新增 MP3 格式，且支持只生成 MP3 格式的音频文件。详见[命令行录制](/zh-CN/realtime-media/local-server-recording/build/legacy/record-by-cmd)。
 :::
 
 ### 设置音视频编码配置
@@ -52,11 +52,11 @@ description: "了解如何在本地服务端录制中合流录制，包括适用
 
 #### 视频编码配置
 
-设置 `mixResolution` 参数，格式为：`width, height, fps, Kbps`，从左至右分别对应合流视频的宽、高、帧率和码率。默认的视频编码配置为 `360`, `640`, `15`, `500`。推荐的视频编码配置请参考[分辨率、帧率和码率对照表](/zh-CN/realtime-media/local-server-recording/build/implement-core-features/legacy/set-output-video#分辨率帧率和码率对照表)。
+设置 `mixResolution` 参数，格式为：`width, height, fps, Kbps`，从左至右分别对应合流视频的宽、高、帧率和码率。默认的视频编码配置为 `360`, `640`, `15`, `500`。推荐的视频编码配置请参考[分辨率、帧率和码率对照表](/zh-CN/realtime-media/local-server-recording/build/legacy/set-output-video#分辨率帧率和码率对照表)。
 
 ### 设置合流布局
 
-在合流模式录制多人视频时，你可以通过 `layoutMode` 参数设置频道内所有发流用户画面的大小及其在视频画布上的位置，进行[合流布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/legacy/set-layout)。默认设置为 `0`（悬浮布局）。
+在合流模式录制多人视频时，你可以通过 `layoutMode` 参数设置频道内所有发流用户画面的大小及其在视频画布上的位置，进行[合流布局](/zh-CN/realtime-media/local-server-recording/build/legacy/set-layout)。默认设置为 `0`（悬浮布局）。
 
 ## 命令行示例
 
