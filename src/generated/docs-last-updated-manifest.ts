@@ -5901,7 +5901,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx':
-    '2026-07-31T02:34:43.000Z',
+    '2026-08-20T05:36:58.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx':
@@ -6077,6 +6077,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-18T03:20:29.000Z',
   'content/docs/en/realtime-media/rtm/reference/cloud-proxy-allowed-ips.md':
     '2026-06-18T03:20:29.000Z',
+  'content/docs/en/realtime-media/rtm/reference/cloud-proxy-allowed-ips.mdx':
+    '2026-08-20T05:36:58.000Z',
   'content/docs/en/realtime-media/rtm/reference/cloud-proxy-migration-guide.md':
     '2026-06-29T13:18:27.000Z',
   'content/docs/en/realtime-media/rtm/reference/console-overview.md':
@@ -6088,13 +6090,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/error-codes.md':
     '2026-06-28T06:33:56.000Z',
   'content/docs/en/realtime-media/rtm/reference/firewall.md':
-    '2026-08-07T06:52:10.000Z',
+    '2026-08-20T05:36:58.000Z',
   'content/docs/en/realtime-media/rtm/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.md':
     '2026-08-06T11:42:18.000Z',
   'content/docs/en/realtime-media/rtm/reference/meta.json':
-    '2026-07-03T14:28:36.000Z',
+    '2026-08-20T05:36:58.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.md':
     '2026-07-29T04:01:40.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.mdx':
