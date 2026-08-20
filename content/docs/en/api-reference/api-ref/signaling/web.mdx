@@ -104,7 +104,7 @@ const { RTMConfig } = AgoraRTM;
 | `cipherKey` | string | Optional | - | The key used for encryption and decryption. You must set this property if you want to enable message encryption. |
 | `presenceTimeout` | number | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `REMOTE_TIMEOUT` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `REMOTE_TIMEOUT` event notification to other participants or delete the temporary user data associated with the user. |
 | `logUpload` | boolean | Optional | `false` | Whether to upload logs to the server: <br />- `true`: Enable log upload <br />- `false`: Disable log upload. |
-| `cloudProxy` | boolean | Optional | `false` | Whether to enable the cloud proxy: <br />- `true`: Enable. <br />- `false`: Disable. Note: This feature applies to the Message channels and User channels only. |
+| `cloudProxy` | boolean | Optional | `false` | Whether to enable the cloud proxy: <br />- `true`: Enable. <br />- `false`: Disable. Note: This feature applies to the Message channels and User channels only. Since v2.3.0, the SDK no longer automatically falls back to Cloud Proxy. To use Cloud Proxy, you must explicitly set this parameter to `true` when initializing the RTM instance. |
 | `useStringUserId` | boolean | Optional | `true` | Whether to use string-type user IDs: <br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. If you set the property as `false`, SDK automatically converts string-type user IDs to number-type ones. In this case, the `userId` parameter must be a numeric string (for example, "123456"), otherwise initialization fails. |
 | `logLevel` | string | Optional | - | Set the output level of SDK log. For details, see [log output level](#enumvlogleve-l). |
 | `heartbeatInterval` | number | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
@@ -151,7 +151,7 @@ const rtm = new RTM("yourAppId", "Tony", rtmConfig);
 
 #### Description
 
-Signaling has a total of 8 types of event notifications, as shown in the following table:
+Signaling has a total of 7 types of event notifications, as shown in the following table:
 
 | Event Type | Description |
 |:----------------------------:| ------------------------- |
@@ -160,7 +160,6 @@ Signaling has a total of 8 types of event notifications, as shown in the followi
 | `topic` | Receive all topic event notifications in joined stream channels. |
 | `storage` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
 | `lock` | Receive lock event notifications in subscribed message channels and joined stream channels. |
-| `status` | (Deprecated) Receive event notifications when client connection status changes. For details, see [SDK connection state](#enumvconnectionstat-e) and [SDK connection state change reason](#enumvconnectionreaso-n). |
 | `linkState` | Receive event notifications when client connection status changes. For details, see [SDK Link State Types](#enumvlinkstat-e). |
 | `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
@@ -189,6 +188,7 @@ rtm.addEventListener("presence", event => {
     const publisher = event.publisher; // Who trigger this event
     const states = event.stateChanged; // User state payload, only for stateChanged event
     const interval = event.interval; // Interval payload, only for interval event
+    const totalOccupancy = interval?.totalOccupancy; // Total occupancy of the channel, only for interval event
     const snapshot = event.snapshot; // Snapshot payload, only for snapshot event
     const timestamp = event.timestamp; // Event timestamp
 });
@@ -223,12 +223,6 @@ rtm.addEventListener("lock", event => {
     const owner = event.owner; // The owner of this lock
     const timestamp = event.timestamp; // Event timestamp
 });
- // Connection State Change
-rtm.addEventListener("status", event => {
-    const currentState = event.state; // Which connection state right now
-    const changeReason = event.reason; // Why trigger this event
-    const timestamp = event.timestamp; // Event timestamp
-});
  // Link State Change
 rtm.addEventListener('linkState', event => {
     const currentState = event.currentState;
@@ -240,18 +234,31 @@ rtm.addEventListener('linkState', event => {
     const unrestoredChannels = event.unrestoredChannels;
     const timestamp = event.timestamp;
     const isResumed = event.isResumed;
+});
  // Token Privilege Will Expire
 rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
     const channelName = channelName; // Which Channel Token Will Expire
 });
 ```
 
+The type of `PresenceEvent.interval` is `IntervalDetail | null`. It has a value only when `eventType` is `INTERVAL`.
+
+The `IntervalDetail` data type contains the following properties:
+
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| `join` | `UserList` | The list of users who joined the channel in the previous interval. |
+| `leave` | `UserList` | The list of users who left the channel in the previous interval. |
+| `timeout` | `UserList` | The list of users who timed out in the previous interval. |
+| `userStateList` | `UserState[]` | The list of users whose states changed in the previous interval. Each entry contains the user ID and state key-value pairs. |
+| `totalOccupancy` | number | The total occupancy of the current channel. In large-channel optimized mode, this value indicates the total number of online users in the channel and is not limited by the maximum of 512 user details that can be synchronized, but the value may have a short delay. |
+
 #### Remove event listeners
 
 You can call the ``config. removedelegate[javascript]`` method to remove a specified event listener.
 
 ```javascript
-rtm.removeEventListener("status", statusHandler);
+rtm.removeEventListener("linkState", linkStateHandler);
 ```
 
 ### login
@@ -469,13 +476,17 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 - Stream Channel: Follows a concept similar to the observer pattern in the industry, where users need to create and join a channel before sending and receiving messages. You can create different topics in the channel, and messages are organized and managed through topics.
 
-### subscribeTopic
+### subscribe
 
 #### Description
 
 Signaling provides event notification capabilities for messages and states. By listening for callbacks, you can receive messages and events within subscribed channels. For information on how to add and set up event listeners, see [Event Listener](#event-listeners).
 
-By calling the `subscribeTopic` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `presence` event with the `REMOTE_JOIN` type.
+By calling the `subscribe` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `presence` event with the `REMOTE_JOIN` type.
+
+Since v2.3.0, when the SDK is in `CONNECTING`, `DISCONNECTED`, or `SUSPENDED`, this method can still be called. The SDK caches the subscription request and resumes it after the connection recovers.
+
+Success means that the message channel subscription is completed, but Presence join may still be running asynchronously. If your application calls Presence APIs immediately after subscribing, it must handle cases where Presence is not ready or the asynchronous request fails.
 
 :::info[Information]
 This method only applies to the message channel.
@@ -483,7 +494,7 @@ This method only applies to the message channel.
 
 #### Method
 
-You can call the `subscribeTopic` method as follows:
+You can call the `subscribe` method as follows:
 
 ```javascript
 rtm.subscribe(
@@ -527,7 +538,7 @@ try {
 
 #### Return value
 
-If the method call succeeds, the `SubscribeTopicResponse` response as follows is returned:
+If the method call succeeds, the `SubscribeResponse` response as follows is returned:
 
 ```javascript
 type SubscribeResponse = {
@@ -549,11 +560,13 @@ type ErrorInfo = {
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
-If you no longer need to subscribe to a channel, you can call the `unsubscribeTopic` method to cancel your subscription. After successfully unsubscribing from the channel, other users who subscribe to the channel and enable event listeners can receive a `presence` event notification with the `REMOTE_LEAVE` type. For details, see [Event Listener](#event-listeners).
+If you no longer need to subscribe to a channel, you can call the `unsubscribe` method to cancel your subscription. After successfully unsubscribing from the channel, other users who subscribe to the channel and enable event listeners can receive a `presence` event notification with the `REMOTE_LEAVE` type. For details, see [Event Listener](#event-listeners).
+
+If you call this method for the same channel before the subscription completes, the in-progress subscription request returns `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` (-11040), and the SDK then completes the unsubscribe operation. Late messages that arrive after cancellation are no longer passed to the application.
 
 :::info[Information]
 This method only applies to the message channel.
@@ -561,7 +574,7 @@ This method only applies to the message channel.
 
 #### Method
 
-You can call the `unsubscribeTopic` method as follows:
+You can call the `unsubscribe` method as follows:
 
 ```javascript
 rtm.unsubscribe(
@@ -586,7 +599,7 @@ try {
 
 #### Return value
 
-If the method call succeeds, the `UnsubscribeTopicResponse` response as follows is returned:
+If the method call succeeds, the `UnsubscribeResponse` response as follows is returned:
 
 ```javascript
 type UnsubscribeResponse = {
@@ -608,11 +621,11 @@ type ErrorInfo = {
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-### createAgoraRtmClient
+### createStreamChannel
 
 #### Description
 
-Before using a stream channel, you need to call the `createAgoraRtmClient` method to create an `RTMStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
+Before using a stream channel, you need to call the `createStreamChannel` method to create an `RTMStreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
 
 :::info[Information]
 This method only applies to the stream channel.
@@ -620,7 +633,7 @@ This method only applies to the stream channel.
 
 #### Method
 
-You can call the `createAgoraRtmClient` method as follows:
+You can call the `createStreamChannel` method as follows:
 
 ```javascript
 rtm.createStreamChannel(chanelName: string): RTMStreamChannel;
@@ -645,11 +658,11 @@ try{
 
 An `RTMStreamChannel` instance.
 
-### joinTopic
+### join
 
 #### Description
 
-After successfully creating a stream channel, you can call the `joinTopic` method to join the stream channel. Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and add event listeners can receive the following event notifications:
+After successfully creating a stream channel, you can call the `join` method to join the stream channel. Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and add event listeners can receive the following event notifications:
 
 - Local users:
   - `presence` event notification with the `SNAPSHOT` type.
@@ -662,7 +675,7 @@ This method only applies to the stream channel.
 
 #### Method
 
-You can call the `joinTopic` method as follows:
+You can call the `join` method as follows:
 
 ```javascript
 join(options?: object): Promise<JoinChannelResponse>;
@@ -702,7 +715,7 @@ try {
 
 #### Return value
 
-If the method call succeeds, the `JoinTopicResponse` response as follows is returned:
+If the method call succeeds, the `JoinChannelResponse` response as follows is returned:
 
 ```javascript
 type JoinChannelResponse = {
@@ -724,11 +737,11 @@ type ErrorInfo = {
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-### leaveTopic
+### leave
 
 #### Description
 
-If you no longer need to stay in a channel, you can call the `leaveTopic` method to leave the channel. After leaving the channel, you can no longer receive any messages, states, or event notifications from this channel. At the same time, you can no loger be the topic publisher or subscriber of all topics. If you want to restore your previous publisher role and subscribing relationship, you need to call `joinTopic`, `joinTopic` and `subscribeTopic` methods in order.
+If you no longer need to stay in a channel, you can call the `leave` method to leave the channel. After leaving the channel, you can no longer receive any messages, states, or event notifications from this channel. At the same time, you can no longer be the topic publisher or subscriber of all topics. If you want to restore your previous publisher role and subscribing relationship, you need to call the `join`, `joinTopic`, and `subscribeTopic` methods in order.
 
 After successfully leaving the channel, remote users in the channel can receive a `presence` event notification with the `REMOTE_LEAVE` type. For details, see [Event Listener](#event-listeners).
 
@@ -738,7 +751,7 @@ This method only applies to the stream channel.
 
 #### Method
 
-You can call the `leaveTopic` method as follows:
+You can call the `leave` method as follows:
 
 ```javascript
 leave(): Promise<LeaveChannelResponse>;
@@ -757,7 +770,7 @@ try{
 
 #### Return value
 
-If the method call succeeds, the `LeaveTopicResponse` response as follows is returned:
+If the method call succeeds, the `LeaveChannelResponse` response as follows is returned:
 
 ```javascript
 type LeaveChannelResponse = {
@@ -2958,30 +2971,6 @@ To find out the cause of the error and get the corresponding solution, use the `
 | `LOCK_NOT_AVAILABLE` | Lock not available. |
 | `LOGIN_TOO_FREQUENT` | The login operation is too frequent.|
 
-### (Deprecated) Reasons for the SDK Connection State Change
-
-| Value | Description |
-| :---------------- | :---------------------- |
-| `CONNECTING` | The SDK is connecting with the Signaling system. |
-| `LOGIN_SUCCESS` | The SDK logged in the Signaling system successfully. |
-| `REJECTED_BY_SERVER` | The SDK is rejected by the server. |
-| `LOST` | The SDK lost the connection with the Signaling system. |
-| `INTERRUPTED` | The connection was interrupted. |
-| `LOGOUT` | The SDK logged out of the Signaling system. |
-| `/` | The SDK is banned by the server. |
-| `SAME_UID_LOGIN` | The same user ID was used to join the same channel on different devices. |
-| `TOKEN_EXPIRED` | The used token expired. You need to request a new token from your server. |
-
-### (Deprecated) SDK Connection States
-
-| Value | Description |
-| :---------------- | :---------------------- |
-| `DISCONNECTED` | The SDK has disconnected with the server. |
-| `CONNECTING` | The SDK is connecting with the server. |
-| `CONNECTED` | The SDK has connected with the server. |
-| `RECONNECTING` | The connection is lost. The SDK is reconnecting with the server. |
-| `FAILED` | The SDK failed to connect with the server. |
-
 ### End-to-End Encryption Modes
 
 | Value | Description |
@@ -3109,6 +3098,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-10023` | `RTM_ERROR_LOGIN_CANCELED` | The login operation has been canceled. Possible reasons are as follows: <br />- After calling the `login` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. <br />- Calling the `logout` method to log out before successfully logging in. |
 | `-10025` | `RTM_ERROR_NOT_CONNECTED` | Not connected to the Signaling server. When you call APIs related to message subscription, metadata, or the Lock module, this error is reported if the Signaling service is not connected.|
 | `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | Token renewal timed out. |
+| `-10027` | `RTM_ERROR_DUPLICATE_USER_ID` | An active RTM instance already uses the same App ID and user ID. Reuse the existing instance, or release the old instance before creating a new one. |
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | The user has not joined the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | The user has not subscribed to the channel: <br /> - The user is not online, offline or has not joined the channel<br /> - Check for typos in `userId`. |
 | `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | The number of subscribers to this topic exceeds the limit. |
@@ -3135,6 +3125,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type length overflow. The length of the `customType` field must to be within 32 characters. |
 | `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` field is invalid. Check the `customType` field for illegal characters. |
 | `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | When sending a user message, the remote user is offline: <br /> - Check if the user ID set when calling the method is correct.<br /> - Check if the remote user is logged in and online. |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | The channel subscription was canceled. If you call `unsubscribe` before the result of a `subscribe` call is received, the `subscribe` call returns this error and the SDK then completes the unsubscribe operation. |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage operation failed. |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | The number of Storage Metadata Items exceeds the limit. |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | Invalid Metadata Item. |

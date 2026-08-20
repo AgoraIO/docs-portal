@@ -40,6 +40,7 @@ rtm.addEventListener("presence", event => {
     const publisher = event.publisher;          // The user who triggered this event
     const states = event.stateChanged;          // User state payload, only for the stateChanged event
     const interval = event.interval;            // Interval payload, only for the interval event
+    const totalOccupancy = interval?.totalOccupancy; // Total occupancy of the channel, only for the interval event
     const snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
     const timestamp = event.timestamp;          // Event timestamp
 });
@@ -74,28 +75,34 @@ rtm.addEventListener("lock", event => {
     const owner = event.owner;                  // The owner of this lock
     const timestamp = event.timestamp;          // Event timestamp
 });
-// Handle connection state change event
-rtm.addEventListener("status", event => {
-    const currentState = event.state;           // Current connection state
-    const changeReason = event.reason;          // Why the event was triggered
-    const timestamp = event.timestamp;          // Event timestamp
-});
 // Handle link state change event
-rtm.addEventListener('linkState', event => {
-    const currentState = event.currentState;
-    const previousState = event.previousState;
-    const serviceType = event.serviceType;
-    const operation = event.operation;
-    const reason = event.reason;
-    const affectedChannels = event.affectedChannels;
-    const timestamp = event.timestamp;
-    const isResumed = event.isResumed;
+rtm.addEventListener("linkState", event => {
+    const currentState = event.currentState;          // Current link state
+    const previousState = event.previousState;        // Previous link state
+    const serviceType = event.serviceType;            // Service type
+    const operation = event.operation;                // Operation that triggered this event
+    const reason = event.reason;                      // Reason for the state change
+    const affectedChannels = event.affectedChannels;  // Affected channels
+    const timestamp = event.timestamp;                // Event timestamp
+    const isResumed = event.isResumed;                // Whether the connection resumed
 });
 // Handle token privilege will expire event
 rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
     const channelName = channelName;            // The channel for which the token will expire
 });
 ```
+
+The type of `PresenceEvent.interval` is `IntervalDetail | null`. It has a value only when `eventType` is `INTERVAL`.
+
+The `IntervalDetail` data type contains the following properties:
+
+| Property | Type | Description |
+| ---- | ---- | ---- |
+| `join` | `UserList` | The list of users who joined the channel in the previous interval. |
+| `leave` | `UserList` | The list of users who left the channel in the previous interval. |
+| `timeout` | `UserList` | The list of users who timed out in the previous interval. |
+| `userStateList` | `UserState[]` | The list of users whose states changed in the previous interval. Each entry contains the user ID and state key-value pairs. |
+| `totalOccupancy` | number | The total occupancy of the current channel. In large-channel optimized mode, this value indicates the total number of online users in the channel and is not limited by the maximum of 512 user details that can be synchronized, but the value may have a short delay. |
 
 ### Remove event listeners
 
@@ -132,7 +139,6 @@ Signaling offers the following events:
 | `topic`| Receive notifications of topic change events in all the stream channels you have joined. The event payload data includes information such as channel name, event type, topic name, and event sender.  |
 | `storage`| Receive all channel metadata event notifications in the message channels you have subscribed to and stream channels you have joined, as well as user metadata event notifications from all subscribed users.  |
 | `lock` | Receive all lock event notifications in the message channels you have subscribed to and stream channels you have joined. The event payload data contains information such as channel name, channel type, event type, and lock details. |
-| `status` | Receive event notifications for client network connection status changes. This includes channel name, connection status, reason for change, and other information. |
 | `linkState` | Receive notifications about changes in the client's network connection status, including information on the state before and after the change, service type, operation type, reason for the change, and channel list. |
 | `tokenPrivilegeWillExpire`  | Receive notifications when the client token is about to expire.  |
 

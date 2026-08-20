@@ -2552,12 +2552,12 @@ A complete code sample that implements the basic features of Signaling is presen
           showMessage("INFO", event.publisher + " is " + event.eventType);
         }
       });
-      // Connection state changed event handler.
-      rtm.addEventListener("status", event => {
-        // The current connection state.
-        const currentState = event.state;
-        // The reason why the connection state changes.
-        const changeReason = event.reason;
+      // Link state changed event handler.
+      rtm.addEventListener("linkState", event => {
+        // The current link state.
+        const currentState = event.currentState;
+        // The reason why the link state changes.
+        const reason = event.reason;
         showMessage("INFO", JSON.stringify(event));
       });
       // Log in the RTM server.
@@ -2646,12 +2646,12 @@ rtm.addEventListener("presence", event => {
   }
 });
 
-// Connection state changed event handler.
-rtm.addEventListener("status", event => {
-  // The current connection state.
-  const currentState = event.state;
-  // The reason why the connection state changes.
-  const changeReason = event.reason;
+// Link state changed event handler.
+rtm.addEventListener("linkState", event => {
+  // The current link state.
+  const currentState = event.currentState;
+  // The reason why the link state changes.
+  const reason = event.reason;
   showMessage("INFO", JSON.stringify(event));
 });
 ```

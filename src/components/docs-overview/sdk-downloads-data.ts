@@ -1701,8 +1701,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
+            id: '2.3.0-signaling-sdk-web',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtm-sdk/v/2.3.0',
+          },
+          {
             id: '2.2.4-signaling-sdk-web',
-            label: 'Version 2.2.4 (Latest)',
+            label: 'Version 2.2.4',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip',
             packageManager:
