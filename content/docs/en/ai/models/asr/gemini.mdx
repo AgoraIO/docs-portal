@@ -1,0 +1,141 @@
+---
+title: Gemini
+description: >
+ Integrate Gemini ASR into Conversational AI Engine.
+---
+
+Google Gemini provides real-time streaming transcription. Use it as the ASR component in a cascading pipeline with any supported LLM and TTS vendor.
+
+### Sample configuration
+
+The following example shows how to configure Gemini ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GeminiSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(GeminiSTT(
+        api_key='your-google-api-key',
+        model='gemini-3.5-transcribe-live',
+        language='en-US',
+        sample_rate=16000,
+        word_timestamp=True,
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GeminiSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new GeminiSTT({
+    apiKey: 'your-google-api-key',
+    model: 'gemini-3.5-transcribe-live',
+    language: 'en-US',
+    sampleRate: 16000,
+    wordTimestamp: true,
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewGeminiSTT(vendors.GeminiSTTOptions{
+        APIKey:        "your-google-api-key",
+        Model:         "gemini-3.5-transcribe-live",
+        Language:      "en-US",
+        SampleRate:    16000,
+        WordTimestamp: agora.Bool(true),
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+:::info[Info]
+Gemini ASR is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+  "vendor": "gemini",
+  "language": "en-US",
+  "params": {
+    "api_key": "<GOOGLE_GEMINI_API_KEY>",
+    "model": "gemini-3.5-transcribe-live",
+    "sample_rate": 16000,
+    "language": "en-US",
+    "word_timestamp": true
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google Gemini API documentation](https://ai.google.dev/api/live).
+:::
+
+### Key parameters
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ ASR provider. Set to `gemini` to use Google Gemini.
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+  The BCP-47 language tag identifying the primary language used for agent interaction.
+ </Parameter>
+ <Parameter name="params" type="object" required={true}>
+  Configuration object for the Gemini ASR model.
+  <Parameter name="api_key" type="string" required={true}>
+   The Google Gemini API key used to authenticate requests. You can generate an API key in [Google AI Studio](https://aistudio.google.com/apikey).
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+   The Gemini transcription model identifier. Set to `gemini-3.5-transcribe-live` to use Gemini 3.5 Transcribe Live.
+  </Parameter>
+  <Parameter name="sample_rate" type="integer" required={false}>
+   The audio sample rate in Hz. For example, `16000`.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+   The language code for speech recognition, for example, `en-US`. If set, this takes precedence over the top-level `asr.language` value. 
+  </Parameter>
+  <Parameter name="word_timestamp" type="boolean" required={false}>
+   Whether to include word-level timestamps in the transcription results.
+  </Parameter>
+ </Parameter>
+</ParameterList>
