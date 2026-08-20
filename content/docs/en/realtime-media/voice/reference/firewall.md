@@ -11,7 +11,7 @@ The following table lists the support of Agora products for the two solutions:
 |---|:---:|:---:|
 |Video SDK (Native, third-party frameworks) |✘ |✔|
 |Video SDK (Web) |✔ |✔|
-|Signaling SDK (Native) | ✔ | ✘ |
+|Signaling SDK (Native) | ✔ | ✔ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
 |Interactive Gaming SDK | ✘ |✘|
