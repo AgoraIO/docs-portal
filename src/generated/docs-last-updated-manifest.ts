@@ -3351,7 +3351,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/security-privacy.md':
     '2026-05-21T06:46:59.000Z',
   'content/docs/en/introduction/security-privacy.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-19T13:16:31.000Z',
   'content/docs/en/introduction/speech-to-text.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/speech-to-text.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/start-with-ai.md': '2026-05-20T08:41:55.000Z',
@@ -6114,7 +6114,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/subscription-packages.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/reference/supported-platforms.md':
-    '2026-06-18T03:20:29.000Z',
+    '2026-08-20T02:55:16.000Z',
+  'content/docs/en/realtime-media/rtm/reference/supported-platforms.mdx':
+    '2026-08-20T02:55:16.000Z',
   'content/docs/en/realtime-media/rtm/reference/troubleshooting.md':
     '2026-06-27T08:24:53.000Z',
   'content/docs/en/realtime-media/rtm/rest-api/authentication.md':
