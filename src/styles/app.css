@@ -1320,6 +1320,41 @@
   overflow: visible;
 }
 
+/* Keep information-dense Markdown tables readable at desktop content widths.
+   Small screens retain the wrapper's horizontal-scroll fallback. */
+@media (min-width: 48.0625rem) {
+  :where(html)
+    .prose
+    :where(
+      .prose-no-margin.overflow-auto > table:has(> thead > tr > :nth-child(5))
+    ):not(:where(.not-prose, .not-prose *)) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  :where(html)
+    .prose
+    :where(
+      .prose-no-margin.overflow-auto > table:has(> thead > tr > :nth-child(5))
+    )
+    :where(th, td):not(:where(.not-prose, .not-prose *)) {
+    min-width: 0;
+    padding: 0.65rem 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  :where(html)
+    .prose
+    :where(
+      .prose-no-margin.overflow-auto > table:has(> thead > tr > :nth-child(5))
+    )
+    :where(th):not(:where(.not-prose, .not-prose *)) {
+    white-space: normal;
+  }
+}
+
 /* Fumadocs emits paragraph/list margins outside Tailwind layers.
    Keep table-cell edges tight while preserving spacing between block children. */
 :where(html)

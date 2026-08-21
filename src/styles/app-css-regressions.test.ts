@@ -395,6 +395,27 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('fits dense Markdown tables within desktop content widths', () => {
+    const denseTable = getRuleBodyContaining(
+      'table:has(> thead > tr > :nth-child(5)',
+    );
+    const denseCells = getRuleBodyContaining(
+      'table:has(> thead > tr > :nth-child(5)) ) :where(th, td)',
+    );
+    const denseHeaders = getRuleBodyContaining(
+      'table:has(> thead > tr > :nth-child(5)) ) :where(th):not',
+    );
+
+    expectDeclaration(denseTable.rule, 'width', '100%');
+    expectDeclaration(denseTable.rule, 'max-width', '100%');
+    expectDeclaration(denseTable.rule, 'min-width', '0');
+    expectDeclaration(denseTable.rule, 'table-layout', 'fixed');
+    expectDeclaration(denseCells.rule, 'min-width', '0');
+    expectDeclaration(denseCells.rule, 'overflow-wrap', 'anywhere');
+    expectDeclaration(denseCells.rule, 'padding', '0.65rem 0.75rem');
+    expectDeclaration(denseHeaders.rule, 'white-space', 'normal');
+  });
+
   it('lets long prose inline code break without changing pre code styling', () => {
     const inlineCode = getRuleBody(
       '.prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *))',
