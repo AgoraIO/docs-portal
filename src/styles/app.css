@@ -1339,7 +1339,7 @@
     :where(
       .prose-no-margin.overflow-auto > table:has(> thead > tr > :nth-child(5))
     )
-    :where(th, td):not(:where(.not-prose, .not-prose *)) {
+    :where(th, td):not(:where(.not-prose, .not-prose *)):not(:has(> img)) {
     min-width: 0;
     padding: 0.65rem 0.75rem;
     overflow-wrap: anywhere;

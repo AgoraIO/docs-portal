@@ -413,6 +413,9 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(denseCells.rule, 'min-width', '0');
     expectDeclaration(denseCells.rule, 'overflow-wrap', 'anywhere');
     expectDeclaration(denseCells.rule, 'padding', '0.65rem 0.75rem');
+    expect(normalizeSelector(denseCells.rule.selector)).toContain(
+      ':not(:has(> img))',
+    );
     expectDeclaration(denseHeaders.rule, 'white-space', 'normal');
   });
 
