@@ -11,10 +11,9 @@ The following table lists the support of Agora products for the two solutions:
 |---|:---:|:---:|
 |RTC SDK (Native, third-party frameworks) |✘ |✔|
 |RTC SDK (Web) |✔ |✔|
-|Signaling SDK (Native) | ✔ | ✘ |
+|Signaling SDK (Native) | ✔ | ✔ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
-|Interactive Gaming SDK | ✘ |✘|
 
 ## RTC SDK (Web)
 
