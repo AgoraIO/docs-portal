@@ -12,8 +12,7 @@ This page explains how to purchase, and manage subscription and top-up packages.
 By default, a new account may be assigned a Free package when the first eligible project is created. You can upgrade to a paid package at any time. Available package tiers, discounts, and unit prices vary by product. To upgrade:
 
 1. Log in to [Agora Console](https://console.agora.io/).
-1. Click the username at the bottom of the navigation sidebar to open the account popup menu.
-1. Select  **Subscriptions**.
+1. Select **Subscriptions** in the sidebar.
 1. Select the tab for the product subscription you want to manage, such as Realtime, Signaling, or Chat.
 1. Select your package and click **Upgrade** or **Downgrade**.
 

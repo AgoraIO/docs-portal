@@ -86,21 +86,22 @@ Chat provides the translation and content moderation features to meet your busin
 
 Before using Chat, refer to the following steps to subscribe to a plan:
 
-1. Log in to [Agora Console](https://console.agora.io/), on the left navigation bar, click **Package** > **Chat** > **Subscribe** on the left navigation bar.
-2. Check [pricing plan details](./pricing-plan-details), choose the plan you want to use, click **Subscribe**, and make the payment.
+1. Log in to [Agora Console](https://console.agora.io/).
+1. Select **Subscriptions** in the sidebar.
+1. Switch to the **Chat (IM)** tab.
+1. Check [pricing plan details](./pricing-plan-details), then select your package and select **Change plan**.
 
-Subscription takes effect immediately. After subscribing to a plan, you can click **Package** > **Chat** > **Manage**, and on this page you can click **Show More** to view your subscription details.
+    ![Chat subscription plans](/console-tmp/chat-subscriptions.png)
+
+Subscription takes effect immediately.
 
 ### Unsubscribe from a plan
 
-By default, your subscription to Chat pricing plans is automatically renewed. You can unsubscribe at any time from . Cancelling your subscription takes effect immediately and will delete all the Chat-related data.
+By default, your subscription to Chat pricing plans is automatically renewed. To cancel your subscription, downgrade to the Free plan. Cancelling your subscription takes effect immediately and deletes all Chat-related data.
 
 ### Switch to another plan
 
-If you want to upgrade your present plan, you can click the **Subscribe** button of another plan:
-
-1. On **Package** > **Chat** > **Subscribe** page, you can choose the plan you want to use and click **Subscribe**.
-2. Read the content in the pop-up, and then click **Save**.
+To switch plans, select **Subscriptions** in the sidebar, switch to the **Chat (IM)** tab, and select **Change plan** on the plan you want to use.
 
 Reach out to our sales if you would like to subscribe to the Agora Chat Enterprise plan.
 

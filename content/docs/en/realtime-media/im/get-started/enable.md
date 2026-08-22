@@ -15,29 +15,21 @@ To enable Chat, make sure that you have the following:
 
 ## Enable Chat
 
-1. Log in to the [Agora Console](https://console.agora.io/).
+1. Log in to [Agora Console](https://console.agora.io/).
 
-2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
+1. Select **RTC Services** from the sidebar, then locate the **Chat** card and turn on its toggle. The **Chat - Basic Information** panel opens.
 
-3. In the **Features** section of the **Edit Project** page, click **Enable** next to **Chat** to enable Chat.
+    ![Chat Basic Information panel](/console-tmp/chat-basic-info.png)
 
+1. Select a **Data Center** closest to where most of your end users are located.
 
+    :::warning
+    You can't change the data center after you enable Chat.
+    :::
 
-    If this is your first Chat project, select and subscribe to a Chat package:
+1. Select **Enable Chat**.
 
-    ![](https://assets-docs.agora.io/images/im/subscribe.png)
-
-1. Select a data center closest to where most of your end users are located.
-
-    ![img](https://web-cdn.agora.io/docs-files/1665386519450)
-
-    Once Chat is enabled, you are redirected to the Chat config page.
-
-1. Enable the advanced Chat features based on your business requirements.
-
-    ![](https://assets-docs.agora.io/images/im/chat_feature_overview.png)
-
-For details about these advanced features, see the following:
+Once Chat is enabled, configure the following advanced features based on your business requirements:
 - [Message Callback](/en/realtime-media/im/build/notifications-and-event-handling/setup-webhooks)
 - [Message Recall](/en/realtime-media/im/build/build-core-messaging/messages/send-receive-messages#recall-a-message)
 - [Message Thread](/en/realtime-media/im/build/build-groups-rooms-and-threads/threading/thread-management)
@@ -58,13 +50,13 @@ Agora Console assigns the following information to each project that enables Cha
     :::
 - **OrgName**: The unique identifier that Chat assigns to each enterprise (organization).
 - **AppName**: The name that Chat assigns to each app. Each app under the same enterprise (organization) must have a unique App Name.
-- **API request url**: The domain of the WebSocket and RESTful API request that Agora assigns to each project.
+- **API request URL**: The domain of the WebSocket and RESTful API request that Agora assigns to each project.
 
 Follow these steps to get the project information:
 
-1. Find your Chat-enabled project on the [Project Management](https://console.agora.io/legacy/project-management) page on Agora Console and click **Config**.
-2. On the project edit page, find **Chat** and click **Config**.
-3. On the Chat config page, get the values of **Data Center**, **AppKey**, **OrgName**, **AppName**, **WebSocket Address**, and **REST API**.
+1. In [Agora Console](https://console.agora.io/), select **RTC Services** from the sidebar.
+1. Locate the **Chat** card and select the settings icon to open the **Chat - Basic Information** panel.
+1. Under **Chat Service Status**, get the values of **AppKey**, **OrgName**, and **AppName**.
 
 ## Manage users and generate tokens
 
@@ -76,91 +68,49 @@ This section shows you how to register Chat users and generate temporary tokens 
 
 To register a user, do the following:
 
-1. On the **Project Management** page, click **Config** for the project that you want to use.
+1. On the **Chat** card, select **Open Chat Console**.
+1. Select **Connect Chat Console**. The page loads automatically once the Chat Console session is ready.
+1. In the sidebar, under **ACTION**, select **User Management**.
 
-    ![](https://web-cdn.agora.io/docs-files/1664531061644)
+    ![Chat Console User Management page](/console-tmp/chat-user-management.png)
 
-2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
+1. Select **Create**, enter a **Username**, and select **Save**. The new user appears in the users list.
 
-    ![](https://web-cdn.agora.io/docs-files/1664531091562)
-
-3. In the left-navigation pane, select **Operation Management** > **User** and click **Create User**.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531141100)
-
-4. In the **Create User** dialog box, fill in the **User ID**, **Nickname**, and **Password**, and click **Save** to create a user.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531162872)
+    ![Chat Console user list after creating a user](/console-tmp/chat-user-list.png)
 
 ### Generate an app token
 
-In the **Data Center** section of the **Application Information** page, click **Generate** next to **Chat App Temp Token** to generate a token with app privileges.
-
-    ![token_generate_app_token](https://assets-docs.agora.io/images/im/token_generate_app_token.png)
+In the [Chat - Basic Information](#enable-chat) panel, under **Chat App Temp Token**, select **Generate** to generate a token with app privileges.
 
 ### Generate a user token
 
 To ensure communication security, Agora recommends using tokens to authenticate users who log in to Chat.
 
-For testing purposes, Agora Console supports generating temporary tokens for Chat. To generate a user token, do the following:
-
-1. On the **Project Management** page, click **Config** for the project that you want to use.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531061644)
-
-2. On the **Edit Project** page, click **Config** next to **Chat** below **Features**.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531091562)
-
-3. In the **Data Center** section of the **Application Information** page, enter the [user ID](#userid) in the **Chat User Temp Token** box and click **Generate** to generate a token with user privileges.
-
-    ![](https://web-cdn.agora.io/docs-files/1664531214169)
+For testing purposes, Agora Console supports generating temporary tokens for Chat. In the [Chat - Basic Information](#enable-chat) panel, under **Chat User Temp Token**, enter the [user ID](#userid) and select **Generate** to generate a token with user privileges.
 
 ## Change the Chat plan
 
-1. Log in to the [Agora Console](https://console.agora.io/).
+1. Log in to [Agora Console](https://console.agora.io/).
+1. Select **Subscriptions** in the sidebar.
+1. Switch to the **Chat (IM)** tab.
+1. Select your desired plan and select **Change plan**.
 
-2. In the left navigation bar, click **Package**.
+    ![Chat subscription plans](/console-tmp/chat-subscriptions.png)
 
-3. On the **Subscribe** tab, you can change your Chat plan by clicking **Subscribe** next to the desired plan.
-
-    ![img](https://web-cdn.agora.io/docs-files/1665389469534)
-
-   **Note:**
-   - The plan change takes effect immediately.
-   - Agora doesn't recommend plan downgrading, as it could impact the capacity of your applications and availability of certain features.
-
-## Disable Chat
-
-1. Log in to the [Agora Console](https://console.agora.io/).
-
-2. In the left navigation bar, click **Project Management** and click **Config** for the project that you want to use.
-
-3. In the **Features** section of the **Edit Project** page, click **Enable/Configure** next to **Chat**.
-
-4. On the **Application Information** page, disable Chat in the **Chat Service Status** section.
-
-   **Note:** When you disable Chat, the Chat-related data is still stored in the Chat data center, and you are still charged for the plan activation fee.
-
-   ![img](https://web-cdn.agora.io/docs-files/1665387330975)
+:::note
+- The plan change takes effect immediately.
+- Agora doesn't recommend plan downgrading, as it could impact the capacity of your applications and availability of certain features.
+:::
 
 ## Unsubscribe Chat
 
-Before unsubscribing Chat, disable all projects that have Chat enabled.
+To unsubscribe, downgrade to the Free plan on the **Chat (IM)** tab of the **Subscriptions** page. See [Change the Chat plan](#change-the-chat-plan).
 
-1. Log in to the [Agora Console](https://console.agora.io/).
-
-2. In the left navigation bar, click **Package**.
-
-3. On the **Subscribe** tab, scroll down to the bottom and click **Unsubscribe**.
-
-    ![img](https://web-cdn.agora.io/docs-files/1665389814916)
-
-    **Note:**
-
-    When you unsubscribe Chat:
-    - All Chat-related data is purged.
-    - You are still billed with a pro-rated monthly fee and the usage that occurred during that month.
+:::note
+When you unsubscribe Chat:
+- All Chat-related data is purged.
+- You are still billed with a pro-rated monthly fee and the usage that occurred during that month.
+:::
 
 ## Next steps
 

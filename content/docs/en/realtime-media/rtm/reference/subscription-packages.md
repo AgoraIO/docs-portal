@@ -12,8 +12,7 @@ This page explains how to purchase and manage subscription packages.
 By default, a new account is assigned the Free package when the first project is created. You can upgrade at any time to the Lite, Starter, Pro, Business, or Enterprise. Higher-tier packages provide greater discounts. To select your package:
 
 1. Log in to [Agora Console](https://console.agora.io/).
-1. Click the username at the bottom of the navigation sidebar to open the account popup menu.
-1. Select  **Subscriptions**.
+1. Select **Subscriptions** in the sidebar.
 1. Switch to the **Signaling** tab.
 1. Select your package and click **Upgrade** or **Downgrade**.   
 
