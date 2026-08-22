@@ -4843,7 +4843,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/subscription-packages.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/iot/build-from-scratch.mdx':
-    '2026-08-18T10:26:52.000Z',
+    '2026-08-19T11:09:41.000Z',
   'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/authentication-workflow.mdx':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/license.mdx':

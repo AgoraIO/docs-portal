@@ -24,7 +24,7 @@ When you call `agora_rtc_send_video_data` to send a video frame, use the `frame_
 ```cpp
 video_frame_info_t info = { 0 };
 info.frame_type = frame.u.video.is_key_frame ? VIDEO_FRAME_KEY : VIDEO_FRAME_DELTA;
-info.frames_per_sec = config->send_video_frame_rate;
+info.frame_rate = config->send_video_frame_rate;
 info.data_type = config->video_data_type;
 // data is the video data
 // len is the length of the video data

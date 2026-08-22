@@ -30,7 +30,7 @@ In order to follow this procedure you must have:
 
 RDT connections are established per remote user, based on the `on_user_joined` and `on_user_offline` callbacks. Only users with the broadcaster role trigger these callbacks. IoT SDK sets every user as a broadcaster by default, so this usually needs no extra configuration, but if you use IoT SDK alongside another SDK, such as RTC SDK, make sure the user's role is also set to broadcaster in that other SDK.
 
-Since v1.9.4, IoT SDK establishes RDT connections automatically (`auto_connect_rdt` defaults to `true`), so you only need to set `enable_rdt` to `true` in `rtc_channel_options_t` before you call `agora_rtc_join_channel` to use RDT. Set `enable_rdt` to `false` if you don't want to use RDT at all.
+IoT SDK establishes RDT connections automatically, so you only need to set `enable_rdt` to `true` in `rtc_channel_options_t` before you call `agora_rtc_join_channel` to use RDT. Set `enable_rdt` to `false` if you don't want to use RDT at all.
 
 ```cpp
 int rval;

@@ -4,7 +4,7 @@ title: "Implement licensing"
 description: "Acquire and use licenses for your IoT devices."
 ---
 
-Agora grants a device-specific license to bill for its services, with each device having its own unique license. During the licensed period, Agora does not charge for the duration of the call. Typically, device manufacturers predict the sales volume and usage of their devices, buy and activate licenses from Agora, and then embed the license into each device in the form of a single code.
+Agora grants a device-specific license to bill for its services, with each device having its own unique license. During the license validity period, the standard minutes included with the license cover the duration-based charges for audio and video calls. Any usage beyond the included quota is converted into standard minutes and charged at the applicable standard-minute rate. Typically, device manufacturers predict the sales volume and usage of their devices, buy and activate licenses from Agora, and then embed the license into each device in the form of a single code.
 
 ## Understand the tech
 
@@ -18,7 +18,7 @@ Follow the steps below to add a license to your IoT SDK devices.
 
 ### Apply for a license
 
-To apply for a license, contact support@agora.io and provide the following information:
+Agora provides each developer with 10 free trial licenses, valid for 6 months, each including a quota of 150 standard minutes per month. To apply for additional or commercial licenses, contact support@agora.io and provide the following information:
 
 | Name | Description |
 |------|------------------------|
@@ -35,7 +35,7 @@ Note the following when you fill out the license application:
 
 - **License type**: Choose a trial license or a commercial license. Agora recommends that you use a trial license during integration testing, and switch to a commercial license before the official launch. For further details, see [Trial license and commercial license](#trial-and-commercial-license).
 - **Stock keeping unit (SKU)**: Specify the capability set of the license, including the following parameters:
-  - **Product**: Media Stream Acceleration (RTSA).
+  - **Product**: Media Stream Acceleration (RTSA) / IoT SDK.
   - **License capabilities**: Audio, video, or both audio and video.
   - **Upper limit of license minutes**: Whether to limit the duration for using the license, which is accurate to minutes.
   - **License usage period**: Whether to limit the period for using the license, which is accurate to minutes.
@@ -295,7 +295,7 @@ The content in this section completes the information on this page, or points yo
 
 To facilitate development and testing, Agora offers the following types of licenses:
 
-* **Trial license**: For integration-testing and product debugging. Every developer gets 10 free trial licenses. Minimum validity period is 3 days.
+* **Trial license**: For integration-testing and product debugging. Every developer gets 10 free trial licenses, valid for 6 months, each including a quota of 150 standard minutes per month. Minimum validity period for additional trial licenses you request is 3 days.
 * **Commercial license**: For the launch stage of the product. Minimum validity period is 1 year.
 
 Best practice is to use a trial license before the product is officially launched. To switch to a commercial license, follow these steps:
