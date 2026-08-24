@@ -196,9 +196,30 @@ if !verify(string(body), agoraSignature) {
 }
 ```
 
-## Event payload notes
+## Callback reference
 
-The callback payload contains common fields such as `noticeId`, `productId`, `eventType`, `notifyMs`, `sid`, and `payload`.
+Notification callbacks include the following headers and body fields.
+
+### Request header
+
+| Field name | Value |
+| --- | --- |
+| `Content-Type` | `application/json` |
+| `Agora-Signature` | Signature generated with the secret and the HMAC/SHA1 algorithm. Use it to verify the callback body. |
+| `Agora-Signature-V2` | Signature generated with the secret and the HMAC/SHA256 algorithm. Use it to verify the callback body. |
+
+### Request body
+
+| Field name | Type | Description |
+| --- | --- | --- |
+| `noticeId` | String | Unique ID of the notification callback. |
+| `productId` | Number | Product ID. When this value is `10`, the callback belongs to Media Gateway. |
+| `eventType` | Number | Event type code for the current callback. |
+| `notifyMs` | Number | Callback timestamp in milliseconds. |
+| `sid` | String | Streaming session ID. Each streaming task gets a unique SID. |
+| `payload` | Object | Event-specific data. The fields depend on `eventType`. |
+
+The callback payload also contains common fields such as `noticeId`, `productId`, `eventType`, `notifyMs`, `sid`, and `payload`.
 
 ### Common callback fields
 
