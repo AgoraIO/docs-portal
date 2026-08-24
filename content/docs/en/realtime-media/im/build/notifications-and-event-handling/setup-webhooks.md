@@ -54,9 +54,11 @@ You must contact [support@agora.io](mailto:support@agora.io) to disable this fea
 
 To receive the HTTP callbacks, you need to configure rules for the pre- or post-delivery callbacks in Agora Console.
 
-1. Log in to Agora Console and find your project on the **Project Management** page, then click the edit button.
-2. Find **Chat** on the project editing page, and click **Configure**.
-3. Choose **Features** > **Callback** and click **Add Callback Address** on the **Callback** page.
+1. In [Agora Console](https://console.agora.io/), select **RTC Services** from the sidebar.
+1. Locate the **Chat** card and select **Open Chat Console**.
+1. Select **Connect Chat Console**. The page loads automatically once the Chat Console session is ready.
+1. In the sidebar, under **SETTING**, select **Callback**.
+1. Click **Add Callback Address** on the **Callback** page.
 
     ![](https://assets-docs.agora.io/images/im/callback_addr_list.png)
 
@@ -90,16 +92,16 @@ To receive the HTTP callbacks, you need to configure rules for the pre- or post-
      - **Group/Chatroom ID** (Optional): The ID of the relevant chat room or chat group. If you set this parameter, the server will only make callbacks for messages or events in this group or room.
      - **Extension Attribute Key** (Optional): The attribute key in the message extension field. If you set this parameter, the server will only make callbacks for messages containing this attribute key.
 
-        :::tip
-If the sender, receiver, and group/room ID are set at the same time, the sender will not receive a callback when sending a single chat or group chat message to the receiver.
-:::
+    :::info
+    If the sender, receiver, and group/room ID are set at the same time, the sender will not receive a callback when sending a single chat or group chat message to the receiver.
+    :::
 
 The rules take effect immediately.
 
 Note the following for the rule configurations:
 
 - By default, you can add four rules for the pre- and post-delivery callbacks in total. To extend the limit, contact [support@agora.io](mailto:support@agora.io).
-- To receive notifications for other events, configure callbacks under **Chat > Features > Callbacks** for your project in [Agora Console](https://console.agora.io/). See [Callbacks and events](/en/realtime-media/im/build/notifications-and-event-handling/callbacks-events) for details.
+- To receive notifications for other events, configure callbacks on the **Callback** page of the Chat Console. See [Callbacks and events](/en/realtime-media/im/build/notifications-and-event-handling/callbacks-events) for details.
 
 ## Pre-delivery callbacks
 

@@ -310,9 +310,11 @@ You need to set an appropriate expiration timestamp. For example, if the expirat
 
 Refer to the following steps to enable this function in Agora Console: 
 
-1. Log on to [Agora Console](https://console.agora.io/). Under **Projects**, choose a project for which you want to enable co-host authentication, click the **Edit** icon, and enter the **Edit Project** page.
-2. In the Features area, click **Enable authentication**.
-3. Follow the on-screen instructions to know more about this function, check the box, and click **Enable**. 
+1. In [Agora Console](https://console.agora.io/), select **RTC Services** from the sidebar.
+1. Locate the **Chat** card and select **Open Chat Console**.
+1. Select **Connect Chat Console**. The page loads automatically once the Chat Console session is ready.
+1. In the sidebar, under **SETTING**, select **Security Setting**.
+1. Follow the on-screen instructions to know more about this function, check the box, and click **Enable**. 
 
 Co-host authentication takes effect in 5 minutes. 
 
