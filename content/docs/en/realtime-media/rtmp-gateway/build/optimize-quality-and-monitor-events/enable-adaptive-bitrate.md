@@ -117,3 +117,76 @@ Recommended mapping:
 ## Webhook notifications
 
 To help you monitor the ABR configuration for each stream, Media Gateway provides this information through webhooks. When video transcoding is enabled, the `live_stream_connected` event includes the transcoding configuration details for your stream. See [Receive notifications about channel events](./receive-notifications.md).
+
+## Subscriber-side ABR stream
+
+Subscribers can choose ABR layers on the receiving side and let the SDK adapt to changing network conditions.
+
+### Integration guidelines
+
+- Web SDK: 4.22.1 or later
+- Native SDK: 4.3.2 or later
+- Use the latest SDK available from the official website
+- Contact support if you need the latest Agora Web FLS Player
+
+### Stream quality levels
+
+| RTMPG Layer ID | Native SDK (`VideoStreamType`) | Web SDK (`RemoteStreamType`) |
+| --- | --- | --- |
+| 1 | `VIDEO_STREAM_LAYER_1` | `HIGH_STREAM_LAYER1` |
+| 2 | `VIDEO_STREAM_LAYER_2` | `HIGH_STREAM_LAYER2` |
+| 3 | `VIDEO_STREAM_LAYER_3` | `HIGH_STREAM_LAYER3` |
+| 4 | `VIDEO_STREAM_LAYER_4` | `HIGH_STREAM_LAYER4` |
+| 5 | `VIDEO_STREAM_LAYER_5` | `HIGH_STREAM_LAYER5` |
+| 6 | `VIDEO_STREAM_LAYER_6` | `HIGH_STREAM_LAYER6` |
+| 7 | `VIDEO_STREAM_LOW` | `LOW_STREAM` |
+| Push streaming | `VIDEO_STREAM_HIGH` | `HIGH_STREAM` |
+
+### Native SDK: Subscriber-side APIs
+
+#### Configure remote subscriber fallback
+
+- API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
+- Description: Configures fallback behavior for subscribed streams when the network gets weak. The SDK can step down to a lower video layer or audio only, then restore the higher layer when conditions improve.
+- Supported values:
+  - `STREAM_FALLBACK_OPTION_DISABLED`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LOW`
+  - `STREAM_FALLBACK_OPTION_AUDIO_ONLY`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_1`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_2`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_3`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_4`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_5`
+  - `STREAM_FALLBACK_OPTION_VIDEO_STREAM_LAYER_6`
+
+#### Manual stream selection
+
+- API: `setRemoteVideoStreamType(int uid, VideoStreamType streamType)`
+- Description: Sets the stream type to subscribe to for a specific remote user.
+
+#### Set the default stream type
+
+- API: `setRemoteDefaultVideoStreamType(VideoStreamType streamType)`
+- Description: Sets the default stream type for new subscriptions.
+
+### Web SDK: Subscriber-side APIs
+
+#### Enable bandwidth estimation
+
+- API: `.setParameter("ENABLE_AUT_CC", true);`
+- Description: Enables automatic bandwidth estimation so the subscriber can adapt more smoothly to network changes.
+
+#### Configure remote subscriber fallback
+
+- API: `setStreamFallbackOption(uid: UID, fallbackType: RemoteStreamFallbackType): Promise<void>`
+- Description: Enables automatic switching on the subscriber side under poor network conditions.
+
+#### Manual stream selection
+
+- API: `setRemoteVideoStreamType(uid: UID, streamType: RemoteStreamType): Promise<void>`
+- Description: Selects the high or low stream for a specific remote user.
+
+#### Set the default stream type
+
+- API: `setRemoteDefaultVideoStreamType(streamType: RemoteStreamType): Promise<void>`
+- Description: Sets the default stream type for all remote users.
