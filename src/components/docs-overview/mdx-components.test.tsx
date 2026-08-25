@@ -328,11 +328,9 @@ describe('overview MDX components', () => {
     expect(defaultChildren[1].querySelector('h3')).toHaveTextContent(
       'Default card',
     );
-    expect(defaultContent).not.toHaveClass(
-      'flex',
-      'flex-col',
-      'justify-center',
-    );
+    expect(defaultContent).not.toHaveClass('flex');
+    expect(defaultContent).not.toHaveClass('flex-col');
+    expect(defaultContent).not.toHaveClass('justify-center');
 
     expect(inlineCard).toHaveAttribute('href', '/inline');
     expect(inlineCard).toHaveClass('min-h-36');
