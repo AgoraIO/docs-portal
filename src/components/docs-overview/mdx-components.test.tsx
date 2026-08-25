@@ -11,14 +11,22 @@ import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
   children: ReactNode;
-  size?: 'large' | 'small';
+  size?: 'compact' | 'large' | 'small';
 }>;
 type SolutionCardComponent = ComponentType<{
   actions?: Array<{ href: string; label: string }>;
   description: string;
   href?: string;
-  icon?: 'ai' | 'classroom' | 'device' | 'meeting' | 'messaging' | 'rtc';
-  size?: 'large' | 'small';
+  icon?:
+    | 'ai'
+    | 'classroom'
+    | 'device'
+    | 'meeting'
+    | 'messaging'
+    | 'rtc'
+    | 'whiteboard';
+  showDescription?: boolean;
+  size?: 'compact' | 'large' | 'small';
   tags?: string[];
   title: string;
   tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
@@ -279,6 +287,44 @@ describe('overview MDX components', () => {
     expect(container.querySelector('section')).toHaveClass(
       'w-[var(--content-max)]',
       'max-w-full',
+    );
+  });
+
+  it('renders compact solution cards as dense title-only links', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCardGrid =
+      components.SolutionCardGrid as SolutionCardGridComponent;
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+
+    const { container } = render(
+      <SolutionCardGrid size="compact">
+        <SolutionCard
+          description="多人实时协作、文档演示和白板互动能力。"
+          href="/zh-CN/realtime-media/whiteboard"
+          icon="whiteboard"
+          showDescription={false}
+          size="compact"
+          title="互动白板"
+        />
+      </SolutionCardGrid>,
+    );
+
+    const link = screen.getByRole('link', { name: /互动白板/i });
+
+    expect(link).toHaveAttribute('href', '/zh-CN/realtime-media/whiteboard');
+    expect(
+      screen.queryByText('多人实时协作、文档演示和白板互动能力。'),
+    ).toBeNull();
+    expect(container.querySelector('section')).toHaveClass(
+      'my-6',
+      'gap-3',
+      'grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))]',
+    );
+    expect(link).toHaveClass(
+      'flex-row',
+      'items-center',
+      'min-h-14',
+      'p-3',
     );
   });
 

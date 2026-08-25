@@ -835,20 +835,27 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   return <Code2Icon className="size-4" />;
 }
 
+export type SolutionCardSize = 'compact' | 'large' | 'small';
+
 function SolutionCardGrid({
   children,
   size = 'large',
 }: {
   children: ReactNode;
-  size?: 'large' | 'small';
+  size?: SolutionCardSize;
 }) {
   return (
     <section
       className={cn(
-        'not-prose my-8 grid w-[var(--content-max)] max-w-full gap-4',
-        size === 'small'
-          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
-          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+        'not-prose grid w-[var(--content-max)] max-w-full',
+        size === 'compact'
+          ? 'my-6 gap-3 grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))]'
+          : cn(
+              'my-8 gap-4',
+              size === 'small'
+                ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+                : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+            ),
       )}
     >
       {children}
@@ -939,18 +946,41 @@ function SolutionCard({
   icon?: SolutionCardIconKind;
   imageAlt?: string;
   imageSrc?: string;
-  size?: 'large' | 'small';
+  size?: SolutionCardSize;
   showDescription?: boolean;
   tags?: string[];
   title: string;
   tone?: SolutionCardTone;
 }) {
+  const isCompact = size === 'compact';
   const cardClasses = cn(
-    'group relative flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    'group relative rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    isCompact
+      ? 'flex min-h-14 flex-row items-center gap-3 p-3'
+      : 'flex min-h-40 flex-col p-5',
     size === 'small' && 'min-h-32 p-4',
   );
 
-  const content = (
+  const content = isCompact ? (
+    <>
+      {icon ? (
+        <span
+          className={cn(
+            'flex size-8 shrink-0 items-center justify-center rounded-lg',
+            getSolutionToneClasses(tone),
+          )}
+        >
+          <SolutionCardIcon kind={icon} />
+        </span>
+      ) : null}
+      <h3 className="m-0 min-w-0 flex-1 text-sm font-semibold text-foreground">
+        {title}
+      </h3>
+      {href ? (
+        <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+      ) : null}
+    </>
+  ) : (
     <>
       {imageSrc ? (
         <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
