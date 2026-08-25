@@ -29,6 +29,7 @@ type SolutionCardComponent = ComponentType<{
   size?: 'compact' | 'large' | 'small';
   tags?: string[];
   title: string;
+  titlePlacement?: 'below-icon' | 'beside-icon';
   tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 }>;
 type OverviewToolkitsComponent = ComponentType<{ children: ReactNode }>;
@@ -288,6 +289,50 @@ describe('overview MDX components', () => {
       'w-[var(--content-max)]',
       'max-w-full',
     );
+  });
+
+  it('places the title beside the icon only when requested', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+
+    render(
+      <>
+        <SolutionCard
+          description="Default description."
+          href="/default"
+          icon="rtc"
+          title="Default card"
+        />
+        <SolutionCard
+          description="Inline description."
+          href="/inline"
+          icon="rtc"
+          title="Inline card"
+          titlePlacement="beside-icon"
+        />
+      </>,
+    );
+
+    const defaultCard = screen.getByRole('link', { name: /Default card/i });
+    const inlineCard = screen.getByRole('link', { name: /Inline card/i });
+    const defaultChildren = Array.from(defaultCard.children);
+    const inlineChildren = Array.from(inlineCard.children);
+
+    expect(defaultCard).toHaveAttribute('href', '/default');
+    expect(defaultCard).toHaveClass('min-h-40');
+    expect(defaultChildren[0].querySelector('h3')).toBeNull();
+    expect(defaultChildren[1].querySelector('h3')).toHaveTextContent(
+      'Default card',
+    );
+
+    expect(inlineCard).toHaveAttribute('href', '/inline');
+    expect(inlineCard).toHaveClass('min-h-36');
+    expect(inlineChildren[0].children).toHaveLength(3);
+    expect(
+      Array.from(inlineChildren[0].children).map((child) => child.localName),
+    ).toEqual(['span', 'h3', 'svg']);
+    expect(inlineChildren[0].children[1]).toHaveTextContent('Inline card');
+    expect(inlineChildren[1]).toHaveTextContent('Inline description.');
   });
 
   it('renders compact solution cards as dense title-only links', () => {
