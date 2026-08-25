@@ -1014,7 +1014,8 @@ function SolutionCard({
           {icon ? (
             <span
               className={cn(
-                'flex size-10 shrink-0 items-center justify-center rounded-lg',
+                'flex size-10 items-center justify-center rounded-lg',
+                hasBesideIconTitle && 'shrink-0',
                 getSolutionToneClasses(tone),
                 size === 'small' && 'size-9',
               )}
@@ -1022,7 +1023,7 @@ function SolutionCard({
               <SolutionCardIcon kind={icon} />
             </span>
           ) : (
-            <span className="shrink-0" />
+            <span className={hasBesideIconTitle ? 'shrink-0' : undefined} />
           )}
           {hasBesideIconTitle ? (
             <h3 className="m-0 min-w-0 flex-1 text-base font-semibold text-foreground">
@@ -1030,7 +1031,12 @@ function SolutionCard({
             </h3>
           ) : null}
           {href ? (
-            <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+            <ArrowRightIcon
+              className={cn(
+                'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
+                hasBesideIconTitle && 'shrink-0',
+              )}
+            />
           ) : null}
         </div>
       )}
