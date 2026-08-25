@@ -284,27 +284,29 @@ describe('DocsSidebarTree', () => {
     expect(link.className).toContain('overflow-visible');
   });
 
-  it('renders external page links with a native anchor', async () => {
+  it('renders linked external SDK API jumps with a chevron in a new tab', async () => {
     const tree: DocsSidebarNode[] = [
       {
         external: true,
-        href: 'https://example.com/resources',
-        id: 'https://example.com/resources',
-        title: 'External Resource',
+        href: '/en/api-reference/api-ref',
+        id: '/en/api-reference/api-ref',
+        linked: true,
+        title: 'SDK API reference',
         type: 'page',
-        url: 'https://example.com/resources',
+        url: '/en/api-reference/api-ref',
       },
     ];
 
     renderSidebarTree(tree, '/en/introduction');
 
     const link = await screen.findByRole('link', {
-      name: 'External Resource',
+      name: 'SDK API reference',
     });
 
-    expect(link).toHaveAttribute('href', 'https://example.com/resources');
+    expect(link).toHaveAttribute('href', '/en/api-reference/api-ref');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
+    expect(link.querySelector('svg')).toHaveClass('-rotate-90');
   });
 
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {

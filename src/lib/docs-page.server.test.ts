@@ -844,6 +844,68 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                 type: 'folder',
               },
               {
+                $id: 'realtime-media-cloud-recording-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-cloud-recording-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-cloud-recording-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-cloud-recording-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/cloud-recording/reference/pricing',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-cloud-recording-index',
+                  name: 'Cloud Recording',
+                  type: 'page',
+                  url: '/en/realtime-media/cloud-recording',
+                },
+                name: 'Cloud Recording',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-on-premise-recording-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-on-premise-recording-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-on-premise-recording-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-on-premise-recording-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/on-premise-recording/reference/pricing',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-on-premise-recording-index',
+                  name: 'On-Premise Recording',
+                  type: 'page',
+                  url: '/en/realtime-media/on-premise-recording',
+                },
+                name: 'On-Premise Recording',
+                type: 'folder',
+              },
+              {
                 $id: 'realtime-media-video-folder',
                 children: [
                   {
@@ -3196,180 +3258,85 @@ Web body
   });
 
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
-    const page = createPage();
-    const broadcastPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath:
-            '/virtual/content/docs/en/realtime-media/broadcast-streaming/index.mdx',
-          path: 'en/realtime-media/broadcast-streaming/index.mdx',
-        },
-        title: 'Broadcast Streaming',
-      },
-      path: 'en/realtime-media/broadcast-streaming/index.mdx',
-      slugs: ['en', 'realtime-media', 'broadcast-streaming', 'index'],
-      url: '/en/realtime-media/broadcast-streaming',
-    };
-
-    mockedGetPage.mockReturnValue(broadcastPage);
-    mockedGetPages.mockReturnValue([broadcastPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
-    );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-broadcast-streaming-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Broadcast Streaming',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
-    );
-
-    const payload = await loadDocsPagePayload('en', 'realtime-media', [
-      'broadcast-streaming',
-    ]);
-
-    if (!payload || 'redirectUrl' in payload) {
-      throw new Error('expected a docs page payload');
-    }
-
-    expect(payload.sidebar).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/rtc',
-              linked: true,
-              title: 'RESTful API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/rtc',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
-      ]),
-    );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
-      '/en/api-reference/api-ref/broadcast-streaming',
-    );
-
-    const videoPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/video/index.mdx',
-          path: 'en/realtime-media/video/index.mdx',
-        },
-        title: 'Video Calling',
-      },
-      path: 'en/realtime-media/video/index.mdx',
-      slugs: ['en', 'realtime-media', 'video', 'index'],
-      url: '/en/realtime-media/video',
-    };
-
-    mockedGetPage.mockReturnValue(videoPage);
-    mockedGetPages.mockReturnValue([videoPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
-    );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-video-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Video Calling',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
-    );
-
-    const videoPayload = await loadDocsPagePayload('en', 'realtime-media', [
+    const videoPayload = await loadRealtimeMediaProductPayload(
       'video',
-    ]);
-
-    if (!videoPayload || 'redirectUrl' in videoPayload) {
-      throw new Error('expected a docs page payload');
-    }
-
-    expect(videoPayload.sidebar).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/rtc',
-              linked: true,
-              title: 'RESTful API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/rtc',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
-      ]),
+      'Video Calling',
     );
+    const videoReference = getSidebarSection(videoPayload, 'Reference');
+
+    expect.soft(videoReference.children.slice(0, 2)).toEqual([
+      {
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
+      },
+      {
+        external: true,
+        href: '/en/api-reference/api-ref',
+        id: '/en/api-reference/api-ref',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref',
+      },
+    ]);
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
     );
 
-    const rtmPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/rtm/index.mdx',
-          path: 'en/realtime-media/rtm/index.mdx',
-        },
-        title: 'Signaling',
-      },
-      path: 'en/realtime-media/rtm/index.mdx',
-      slugs: ['en', 'realtime-media', 'rtm', 'index'],
-      url: '/en/realtime-media/rtm',
-    };
-
-    mockedGetPage.mockReturnValue(rtmPage);
-    mockedGetPages.mockReturnValue([rtmPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
+    const cloudRecordingPayload = await loadRealtimeMediaProductPayload(
+      'cloud-recording',
+      'Cloud Recording',
     );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-rtm-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Signaling',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
+    const cloudRecordingReference = getSidebarSection(
+      cloudRecordingPayload,
+      'Reference',
     );
 
-    const rtmPayload = unwrapPayload(
-      await loadDocsPagePayload('en', 'realtime-media', ['rtm']),
-    );
-
-    expect(rtmPayload.sidebar).toEqual(
+    expect.soft(cloudRecordingReference.children[0]).toEqual({
+      id: '/en/api-reference/api-ref/cloud-recording',
+      linked: true,
+      title: 'RESTful API',
+      type: 'page',
+      url: '/en/api-reference/api-ref/cloud-recording',
+    });
+    expect(cloudRecordingReference.children).not.toEqual(
       expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/signaling',
-              linked: true,
-              title: 'Signaling REST API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/signaling',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
+        expect.objectContaining({ title: 'SDK API reference' }),
       ]),
     );
+
+    const onPremiseRecordingPayload = await loadRealtimeMediaProductPayload(
+      'on-premise-recording',
+      'On-Premise Recording',
+    );
+    const onPremiseRecordingReference = getSidebarSection(
+      onPremiseRecordingPayload,
+      'Reference',
+    );
+
+    expect.soft(onPremiseRecordingReference.children[0]).toEqual({
+      external: true,
+      href: '/en/api-reference/api-ref/on-premise-recording',
+      id: '/en/api-reference/api-ref/on-premise-recording',
+      linked: true,
+      title: 'SDK API reference',
+      type: 'page',
+      url: '/en/api-reference/api-ref/on-premise-recording',
+    });
+    expect(
+      onPremiseRecordingReference.children.some(
+        (node) => node.type === 'page' && node.title === 'RESTful API',
+      ),
+    ).toBe(false);
+
+    const rtmPayload = await loadRealtimeMediaProductPayload(
+      'rtm',
+      'Signaling',
+    );
+
     expect(flattenSidebarPageUrls(rtmPayload.sidebar)).not.toContain(
       '/en/realtime-media/rtm/reference/rest-api',
     );
@@ -4176,6 +4143,65 @@ function flattenSidebarPageUrls(
           ...(node.url ? [node.url] : []),
           ...flattenSidebarPageUrls(node.children),
         ],
+  );
+}
+
+function getSidebarSection(
+  payload: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >,
+  title: string,
+) {
+  const section = payload.sidebar.find(
+    (node) => node.type === 'section' && node.title === title,
+  );
+
+  if (section?.type !== 'section') {
+    throw new Error(`expected a ${title} sidebar section`);
+  }
+
+  return section;
+}
+
+async function loadRealtimeMediaProductPayload(
+  productSlug: string,
+  title: string,
+) {
+  const page = createPage();
+  const productPage = {
+    ...page,
+    data: {
+      ...page.data,
+      info: {
+        fullPath: `/virtual/content/docs/en/realtime-media/${productSlug}/index.mdx`,
+        path: `en/realtime-media/${productSlug}/index.mdx`,
+      },
+      title,
+    },
+    path: `en/realtime-media/${productSlug}/index.mdx`,
+    slugs: ['en', 'realtime-media', productSlug, 'index'],
+    url: `/en/realtime-media/${productSlug}`,
+  };
+
+  mockedGetPage.mockReturnValue(productPage);
+  mockedGetPages.mockReturnValue([productPage]);
+  mockedGetPageTree.mockReturnValue(
+    createRealtimeMediaApiReferenceJumpPageTree(),
+  );
+  mockedGetNodeMeta.mockImplementation((node) =>
+    node.$id === `realtime-media-${productSlug}-folder`
+      ? ({
+          data: {
+            navScope: {},
+            title,
+          },
+        } as unknown as ReturnType<typeof source.getNodeMeta>)
+      : undefined,
+  );
+
+  return unwrapPayload(
+    await loadDocsPagePayload('en', 'realtime-media', [productSlug]),
   );
 }
 
