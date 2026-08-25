@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { realtimeMediaApiReferenceLinks } from './realtime-media-api-reference-links';
 
 const docsRoot = path.join(process.cwd(), 'content', 'docs');
 const sdkApiReference = '/en/api-reference/api-ref';
@@ -36,6 +37,23 @@ const sdkOnlyProducts = {
   'rtc-server-sdk': '/en/api-reference/api-ref',
 } as const;
 
+const expectedLinks = [
+  ...Object.entries(sdkAndRestProducts).map(([productSlug, restUrl]) => ({
+    productSlug,
+    restUrl,
+    sdkUrl: sdkApiReference,
+  })),
+  ...Object.entries(restOnlyProducts).map(([productSlug, restUrl]) => ({
+    productSlug,
+    restUrl,
+  })),
+  ...Object.entries(sdkOnlyProducts).map(([productSlug, sdkUrl]) => ({
+    productSlug,
+    sdkUrl,
+  })),
+];
+const expectedProducts = expectedLinks.map(({ productSlug }) => productSlug);
+
 function readReferencePages(product: string) {
   const metaPath = path.join(
     docsRoot,
@@ -50,10 +68,6 @@ function readReferencePages(product: string) {
   };
 
   return meta.pages;
-}
-
-function getNavigationEntries(pages: string[], label: string) {
-  return pages.filter((page) => page.includes(`[${label}](`));
 }
 
 function routeExists(href: string) {
@@ -83,66 +97,33 @@ describe('product API reference navigation', () => {
       )
       .map((entry) => entry.name)
       .sort();
-    const expectedProducts = [
-      ...Object.keys(sdkAndRestProducts),
-      ...Object.keys(restOnlyProducts),
-      ...Object.keys(sdkOnlyProducts),
-    ].sort();
-
-    expect(actualProducts).toEqual(expectedProducts);
+    expect(actualProducts).toEqual([...expectedProducts].sort());
   });
 
-  describe('SDK and REST products', () => {
-    it.each(Object.entries(sdkAndRestProducts))(
-      '%s links to the shared SDK catalog and its REST API',
-      (product, restApiReference) => {
-        const pages = readReferencePages(product);
-
-        expect(getNavigationEntries(pages, 'SDK API reference')).toEqual([
-          `[SDK API reference](${sdkApiReference})`,
-        ]);
-        expect(getNavigationEntries(pages, 'REST API')).toEqual([
-          `[REST API](${restApiReference})`,
-        ]);
-      },
-    );
+  it('matches the centralized API reference link registry', () => {
+    expect(realtimeMediaApiReferenceLinks).toEqual(expectedLinks);
   });
 
-  describe('REST-only products', () => {
-    it.each(Object.entries(restOnlyProducts))(
-      '%s links only to its REST API',
-      (product, restApiReference) => {
-        const pages = readReferencePages(product);
-
-        expect(getNavigationEntries(pages, 'REST API')).toEqual([
-          `[REST API](${restApiReference})`,
-        ]);
-        expect(getNavigationEntries(pages, 'SDK API reference')).toEqual([]);
-      },
+  it.each(expectedProducts)('%s metadata does not own API jumps', (product) => {
+    const apiJumps = readReferencePages(product).filter(
+      (page) =>
+        typeof page === 'string' &&
+        (page.startsWith('[SDK API reference](') ||
+          page.startsWith('[REST API](')),
     );
-  });
 
-  describe('SDK-only products', () => {
-    it.each(Object.entries(sdkOnlyProducts))(
-      '%s links only to its SDK API reference',
-      (product, productSdkApiReference) => {
-        const pages = readReferencePages(product);
-
-        expect(getNavigationEntries(pages, 'SDK API reference')).toEqual([
-          `[SDK API reference](${productSdkApiReference})`,
-        ]);
-        expect(getNavigationEntries(pages, 'REST API')).toEqual([]);
-      },
-    );
+    expect(apiJumps).toEqual([]);
   });
 
   it('resolves every internal API navigation target to English docs content', () => {
-    const apiTargets = new Set([
-      sdkApiReference,
-      ...Object.values(sdkAndRestProducts),
-      ...Object.values(restOnlyProducts),
-      ...Object.values(sdkOnlyProducts),
-    ]);
+    const apiTargets = new Set(
+      realtimeMediaApiReferenceLinks
+        .flatMap((links) => [
+          'restUrl' in links ? links.restUrl : undefined,
+          'sdkUrl' in links ? links.sdkUrl : undefined,
+        ])
+        .filter((target) => target !== undefined),
+    );
     const unresolvedTargets = [...apiTargets].filter(
       (target) => !routeExists(target),
     );
