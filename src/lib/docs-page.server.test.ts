@@ -3344,6 +3344,8 @@ Web body
 
     expect.soft(videoReference.children.slice(0, 2)).toEqual([
       {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
         id: '/en/api-reference/api-ref/rtc',
         linked: true,
         title: 'RESTful API',
@@ -3377,6 +3379,8 @@ Web body
     );
 
     expect.soft(cloudRecordingReference.children[0]).toEqual({
+      external: true,
+      href: '/en/api-reference/api-ref/cloud-recording',
       id: '/en/api-reference/api-ref/cloud-recording',
       linked: true,
       title: 'RESTful API',
@@ -3406,6 +3410,8 @@ Web body
 
     expect.soft(whiteboardReference.children.slice(0, 2)).toEqual([
       {
+        external: true,
+        href: '/en/api-reference/api-ref/whiteboard',
         id: '/en/api-reference/api-ref/whiteboard',
         linked: true,
         title: 'RESTful API',

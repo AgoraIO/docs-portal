@@ -309,9 +309,11 @@ describe('DocsSidebarTree', () => {
     expect(link.querySelector('svg')).toHaveClass('-rotate-90');
   });
 
-  it('renders linked REST API jumps with a chevron in the current tab', async () => {
+  it('renders linked external REST API jumps with a chevron in a new tab', async () => {
     const tree: DocsSidebarNode[] = [
       {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
         id: '/en/api-reference/api-ref/rtc',
         linked: true,
         title: 'RESTful API',
@@ -327,6 +329,29 @@ describe('DocsSidebarTree', () => {
     });
 
     expect(link).toHaveAttribute('href', '/en/api-reference/api-ref/rtc');
+    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link.querySelector('svg')).toHaveClass('-rotate-90');
+  });
+
+  it('renders linked internal jumps with a chevron in the current tab', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        id: '/en/api-reference/recipes',
+        linked: true,
+        title: 'API recipes',
+        type: 'page',
+        url: '/en/api-reference/recipes',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'API recipes',
+    });
+
+    expect(link).toHaveAttribute('href', '/en/api-reference/recipes');
     expect(link).not.toHaveAttribute('target');
     expect(link).not.toHaveAttribute('rel');
     expect(link.querySelector('svg')).toHaveClass('-rotate-90');
