@@ -321,6 +321,8 @@ describe('overview MDX components', () => {
     expect(defaultCard).toHaveAttribute('href', '/default');
     expect(defaultCard).toHaveClass('min-h-40');
     expect(defaultChildren[0].querySelector('h3')).toBeNull();
+    expect(defaultChildren[0].children[0]).not.toHaveClass('shrink-0');
+    expect(defaultChildren[0].children[1]).not.toHaveClass('shrink-0');
     expect(defaultChildren[1].querySelector('h3')).toHaveTextContent(
       'Default card',
     );
@@ -331,7 +333,9 @@ describe('overview MDX components', () => {
     expect(
       Array.from(inlineChildren[0].children).map((child) => child.localName),
     ).toEqual(['span', 'h3', 'svg']);
+    expect(inlineChildren[0].children[0]).toHaveClass('shrink-0');
     expect(inlineChildren[0].children[1]).toHaveTextContent('Inline card');
+    expect(inlineChildren[0].children[2]).toHaveClass('shrink-0');
     expect(inlineChildren[1]).toHaveTextContent('Inline description.');
   });
 
