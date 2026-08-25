@@ -319,7 +319,8 @@ describe('overview MDX components', () => {
     expect(container.querySelector('section')).toHaveClass(
       'my-6',
       'gap-3',
-      'grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))]',
+      'grid-cols-1',
+      'md:grid-cols-3',
     );
     expect(link).toHaveClass('flex-row', 'items-center', 'min-h-14', 'p-3');
     expect(compactChildren).toHaveLength(3);
