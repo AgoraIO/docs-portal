@@ -897,6 +897,12 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                         type: 'page',
                         url: '/en/realtime-media/cloud-recording/reference/pricing',
                       },
+                      {
+                        $id: 'realtime-media-cloud-recording-restful-authentication',
+                        name: 'RESTful authentication',
+                        type: 'page',
+                        url: '/en/realtime-media/cloud-recording/reference/restful-authentication',
+                      },
                     ],
                     name: 'Reference',
                     type: 'folder',
@@ -909,6 +915,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                   url: '/en/realtime-media/cloud-recording',
                 },
                 name: 'Cloud Recording',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-whiteboard-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-whiteboard-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-whiteboard-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-whiteboard-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/whiteboard/reference/pricing',
+                      },
+                      {
+                        $id: 'realtime-media-whiteboard-rest-api',
+                        name: 'REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/whiteboard/reference/rest-api',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-whiteboard-index',
+                  name: 'Whiteboard',
+                  type: 'page',
+                  url: '/en/realtime-media/whiteboard',
+                },
+                name: 'Whiteboard',
                 type: 'folder',
               },
               {
@@ -2802,8 +2845,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: false,
-      redirectUrl:
-        '/en/realtime-media/rtc/reference/release-notes/ios',
+      redirectUrl: '/en/realtime-media/rtc/reference/release-notes/ios',
     });
 
     await expect(
@@ -2815,8 +2857,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: false,
-      redirectUrl:
-        '/en/realtime-media/rtc/reference/release-notes/javascript',
+      redirectUrl: '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 
@@ -3350,6 +3391,43 @@ Web body
     expect(flattenSidebarPageUrls(cloudRecordingPayload.sidebar)).toContain(
       '/en/realtime-media/cloud-recording/reference/pricing',
     );
+    expect(flattenSidebarPageUrls(cloudRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/cloud-recording/reference/restful-authentication',
+    );
+
+    const whiteboardPayload = await loadRealtimeMediaProductPayload(
+      'whiteboard',
+      'Whiteboard',
+    );
+    const whiteboardReference = getSidebarSection(
+      whiteboardPayload,
+      'Reference',
+    );
+
+    expect.soft(whiteboardReference.children.slice(0, 2)).toEqual([
+      {
+        id: '/en/api-reference/api-ref/whiteboard',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/whiteboard',
+      },
+      {
+        external: true,
+        href: '/en/api-reference/api-ref',
+        id: '/en/api-reference/api-ref',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref',
+      },
+    ]);
+    expect(flattenSidebarPageUrls(whiteboardPayload.sidebar)).not.toContain(
+      '/en/realtime-media/whiteboard/reference/rest-api',
+    );
+    expect(flattenSidebarPageUrls(whiteboardPayload.sidebar)).toContain(
+      '/en/realtime-media/whiteboard/reference/pricing',
+    );
 
     const onPremiseRecordingPayload = await loadRealtimeMediaProductPayload(
       'on-premise-recording',
@@ -3374,9 +3452,9 @@ Web body
         (node) => node.type === 'page' && node.title === 'RESTful API',
       ),
     ).toBe(false);
-    expect(
-      flattenSidebarPageUrls(onPremiseRecordingPayload.sidebar),
-    ).toContain('/en/realtime-media/on-premise-recording/reference/pricing');
+    expect(flattenSidebarPageUrls(onPremiseRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/on-premise-recording/reference/pricing',
+    );
 
     const interactiveLiveStreamingPayload =
       await loadRealtimeMediaProductPayload(

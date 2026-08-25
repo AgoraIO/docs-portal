@@ -1386,7 +1386,6 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
       return [
         `${prefix}/reference/rest-api-overview`,
         `${prefix}/reference/restful-api`,
-        `${prefix}/reference/restful-authentication`,
       ];
     case 'im':
       return [`${prefix}/reference/server-api`];
