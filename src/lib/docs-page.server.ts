@@ -1329,6 +1329,8 @@ function addRealtimeMediaApiReferenceSidebarItems(
 
   if (links.restUrl) {
     jumpNodes.push({
+      external: true,
+      href: links.restUrl,
       id: links.restUrl,
       linked: true,
       title: 'RESTful API',
