@@ -844,6 +844,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                 type: 'folder',
               },
               {
+                $id: 'realtime-media-interactive-live-streaming-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-interactive-live-streaming-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-interactive-live-streaming-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-interactive-live-streaming-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/interactive-live-streaming/reference/pricing',
+                      },
+                      {
+                        $id: 'realtime-media-interactive-live-streaming-agora-console-rest-api',
+                        name: 'Agora Console REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-interactive-live-streaming-index',
+                  name: 'Interactive Live Streaming',
+                  type: 'page',
+                  url: '/en/realtime-media/interactive-live-streaming',
+                },
+                name: 'Interactive Live Streaming',
+                type: 'folder',
+              },
+              {
                 $id: 'realtime-media-cloud-recording-folder',
                 children: [
                   {
@@ -3285,6 +3322,9 @@ Web body
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
     );
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
+      '/en/realtime-media/video/reference/release-notes',
+    );
 
     const cloudRecordingPayload = await loadRealtimeMediaProductPayload(
       'cloud-recording',
@@ -3306,6 +3346,9 @@ Web body
       expect.arrayContaining([
         expect.objectContaining({ title: 'SDK API reference' }),
       ]),
+    );
+    expect(flattenSidebarPageUrls(cloudRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/cloud-recording/reference/pricing',
     );
 
     const onPremiseRecordingPayload = await loadRealtimeMediaProductPayload(
@@ -3331,6 +3374,21 @@ Web body
         (node) => node.type === 'page' && node.title === 'RESTful API',
       ),
     ).toBe(false);
+    expect(
+      flattenSidebarPageUrls(onPremiseRecordingPayload.sidebar),
+    ).toContain('/en/realtime-media/on-premise-recording/reference/pricing');
+
+    const interactiveLiveStreamingPayload =
+      await loadRealtimeMediaProductPayload(
+        'interactive-live-streaming',
+        'Interactive Live Streaming',
+      );
+
+    expect(
+      flattenSidebarPageUrls(interactiveLiveStreamingPayload.sidebar),
+    ).toContain(
+      '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
+    );
 
     const rtmPayload = await loadRealtimeMediaProductPayload(
       'rtm',

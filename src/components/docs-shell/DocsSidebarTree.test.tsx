@@ -309,6 +309,29 @@ describe('DocsSidebarTree', () => {
     expect(link.querySelector('svg')).toHaveClass('-rotate-90');
   });
 
+  it('renders linked REST API jumps with a chevron in the current tab', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'RESTful API',
+    });
+
+    expect(link).toHaveAttribute('href', '/en/api-reference/api-ref/rtc');
+    expect(link).not.toHaveAttribute('target');
+    expect(link).not.toHaveAttribute('rel');
+    expect(link.querySelector('svg')).toHaveClass('-rotate-90');
+  });
+
   it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
     const tree: DocsSidebarNode[] = [
       {
