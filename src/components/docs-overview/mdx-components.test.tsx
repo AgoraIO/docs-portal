@@ -310,6 +310,7 @@ describe('overview MDX components', () => {
     );
 
     const link = screen.getByRole('link', { name: /互动白板/i });
+    const compactChildren = Array.from(link.children);
 
     expect(link).toHaveAttribute('href', '/zh-CN/realtime-media/whiteboard');
     expect(
@@ -320,12 +321,16 @@ describe('overview MDX components', () => {
       'gap-3',
       'grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))]',
     );
-    expect(link).toHaveClass(
-      'flex-row',
-      'items-center',
-      'min-h-14',
-      'p-3',
-    );
+    expect(link).toHaveClass('flex-row', 'items-center', 'min-h-14', 'p-3');
+    expect(compactChildren).toHaveLength(3);
+    expect(compactChildren.map((child) => child.localName)).toEqual([
+      'span',
+      'h3',
+      'svg',
+    ]);
+    expect(compactChildren[0].querySelector('svg')).not.toBeNull();
+    expect(compactChildren[1]).toHaveTextContent('互动白板');
+    expect(compactChildren[2].localName).toBe('svg');
   });
 
   it('supports multiple labeled actions that share one target', () => {
