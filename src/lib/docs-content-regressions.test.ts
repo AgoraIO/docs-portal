@@ -432,10 +432,12 @@ describe('docs content regressions', () => {
       ),
     ).toBe(false);
 
-    expect(referenceMeta.pages.slice(0, 5)).toEqual([
+    expect(referenceMeta.pages.slice(0, 7)).toEqual([
       'pricing',
       'core-concepts',
       'supported-platforms',
+      '[SDK API reference](/en/api-reference/api-ref)',
+      '[REST API](/en/api-reference/api-ref/whiteboard)',
       'release-notes',
       'release-notes-uikit',
     ]);
