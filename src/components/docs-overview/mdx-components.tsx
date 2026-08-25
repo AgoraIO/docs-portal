@@ -1042,7 +1042,9 @@ function SolutionCard({
       )}
       <div
         className={cn(
-          hasBesideIconTitle ? 'mt-3 flex-1' : 'mt-4 flex-1',
+          hasBesideIconTitle
+            ? 'mt-3 flex flex-1 flex-col justify-center'
+            : 'mt-4 flex-1',
           imageSrc && 'mt-0',
         )}
       >

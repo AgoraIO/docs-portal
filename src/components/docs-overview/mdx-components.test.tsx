@@ -317,6 +317,8 @@ describe('overview MDX components', () => {
     const inlineCard = screen.getByRole('link', { name: /Inline card/i });
     const defaultChildren = Array.from(defaultCard.children);
     const inlineChildren = Array.from(inlineCard.children);
+    const defaultContent = defaultChildren[1];
+    const inlineContent = inlineChildren[1];
 
     expect(defaultCard).toHaveAttribute('href', '/default');
     expect(defaultCard).toHaveClass('min-h-40');
@@ -325,6 +327,11 @@ describe('overview MDX components', () => {
     expect(defaultChildren[0].children[1]).not.toHaveClass('shrink-0');
     expect(defaultChildren[1].querySelector('h3')).toHaveTextContent(
       'Default card',
+    );
+    expect(defaultContent).not.toHaveClass(
+      'flex',
+      'flex-col',
+      'justify-center',
     );
 
     expect(inlineCard).toHaveAttribute('href', '/inline');
@@ -337,6 +344,8 @@ describe('overview MDX components', () => {
     expect(inlineChildren[0].children[1]).toHaveTextContent('Inline card');
     expect(inlineChildren[0].children[2]).toHaveClass('shrink-0');
     expect(inlineChildren[1]).toHaveTextContent('Inline description.');
+    expect(inlineContent).toHaveClass('flex', 'flex-col', 'justify-center');
+    expect(inlineContent).toHaveTextContent('Inline description.');
   });
 
   it('renders compact solution cards as dense title-only links', () => {
