@@ -1037,4 +1037,37 @@ describe('app prose CSS regressions', () => {
       'min(20vh, 11rem) !important',
     );
   });
+
+  it('defines the adaptive examples rail container layout', () => {
+    const layout = getRuleBodyContainingInContainer(
+      '.openapi-operation-layout',
+      '59rem',
+    );
+    const rail = getRuleBodyContainingInContainer(
+      '.openapi-examples-rail',
+      '59rem',
+    );
+    const constrained = getRuleBodyContaining(
+      '.openapi-examples-rail[data-constrained="true"]',
+    );
+    expectDeclaration(
+      layout.rule,
+      'grid-template-columns',
+      'minmax(0, 1fr) clamp(320px, 32cqi, 400px)',
+    );
+    expectDeclaration(rail.rule, 'position', 'sticky');
+    expectDeclaration(
+      rail.rule,
+      'top',
+      'var(--openapi-examples-sticky-top, 48px)',
+    );
+    expectDeclaration(
+      constrained.rule,
+      'max-block-size',
+      'var(--openapi-code-available-height) !important',
+    );
+    expect(
+      getRuleBodyOutsideContainer('.openapi-examples-rail').rule.nodes,
+    ).not.toContainEqual(expect.objectContaining({ prop: 'overflow' }));
+  });
 });

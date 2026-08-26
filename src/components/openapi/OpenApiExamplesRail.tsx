@@ -26,6 +26,14 @@ export function OpenApiExamplesRail({
         rail.querySelectorAll<HTMLElement>('[data-openapi-code-viewport]'),
       );
       return viewports.find((viewport) => {
+        if (
+          viewport.hidden ||
+          viewport.getAttribute('aria-hidden') === 'true' ||
+          viewport.closest('[data-state="inactive"]') ||
+          viewport.closest('[role="tabpanel"][hidden]')
+        ) {
+          return false;
+        }
         const style = window.getComputedStyle?.(viewport);
         return (
           viewport.getClientRects().length > 0 &&

@@ -660,6 +660,16 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.queryByRole('heading', { name: 'Header Parameters' }),
     ).not.toBeInTheDocument();
+    const rail = screen.getByTestId('openapi-examples-rail');
+    expect(
+      rail.querySelector('.openapi-authorization-section'),
+    ).toBeInTheDocument();
+    expect(rail.querySelector('.openapi-request-examples')).toBeInTheDocument();
+    expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
+    const layout = rail.closest('.openapi-operation-layout');
+    expect(layout?.firstElementChild).toHaveClass('min-w-0');
+    expect(layout?.lastElementChild).toBe(rail);
+    expect(rail.className).not.toContain('w-[360px]');
   });
 
   it('renders localized operation security before parameters in zh-CN when no Authorization header parameter exists', async () => {

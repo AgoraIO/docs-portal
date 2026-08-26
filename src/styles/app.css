@@ -1089,6 +1089,7 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
+    --openapi-examples-sticky-top: 48px;
     container-type: inline-size;
     width: min(100%, 1120px);
   }
@@ -1118,7 +1119,7 @@
 
     .openapi-examples-rail {
       position: sticky;
-      top: calc(var(--fd-docs-row-1, 2rem) + 1rem);
+      top: var(--openapi-examples-sticky-top, 48px);
     }
   }
 
