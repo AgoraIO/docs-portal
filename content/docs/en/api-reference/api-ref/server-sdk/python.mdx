@@ -1002,6 +1002,20 @@ from agora_agent.agentkit.vendors import SarvamTTS
 | `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
+#### TypecastTTS
+
+```python
+from agora_agent.agentkit.vendors import TypecastTTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Typecast API key |
+| `voice_id` | `str` | Yes | — | Typecast voice identifier |
+| `model` | `str` | Yes | — | Typecast TTS model name, for example `'ssfm-v30'` |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Typecast parameters |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
+
 #### GradiumTTS
 
 ```python
@@ -1054,6 +1068,20 @@ from agora_agent import GenericTTS
 | `additional_params` | `Dict[str, Any]` | No | `None` | Additional parameters passed through to the TTS service. Explicit fields with the same name take precedence |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
+#### XaiTTS
+
+```python
+from agora_agent.agentkit.vendors import XaiTTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | xAI API key |
+| `language` | `str` | Yes | — | BCP-47 language code for speech synthesis |
+| `voice_id` | `str` | No | `None` | xAI voice identifier |
+| `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional xAI TTS parameters |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
 ### STT vendors
 
@@ -1171,6 +1199,7 @@ from agora_agent.agentkit.vendors import AresSTT
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
+| `keywords` | `List[str]` | No | `None` | Keywords that improve ASR accuracy |
 | `additional_params` | `Dict[str, Any]` | No | `None` | Additional parameters |
 
 #### SarvamSTT
@@ -1211,6 +1240,28 @@ from agora_agent.agentkit.vendors import OpenAIRealtime
 | `messages` | `List[Dict]` | No | `None` | Conversation messages for short-term memory |
 | `params` | `Dict[str, Any]` | No | `None` | Additional parameters |
 | `turn_detection` | `MllmTurnDetectionConfig` | No | `None` | MLLM turn detection configuration; overrides top-level `turn_detection` |
+
+#### AzureOpenAIRealtime
+
+```python
+from agora_agent.agentkit.vendors import AzureOpenAIRealtime
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Azure OpenAI API key |
+| `url` | `str` | Yes | — | Azure OpenAI Realtime WebSocket URL |
+| `turn_detection` | `MllmTurnDetectionConfig` | Yes | — | MLLM turn detection configuration; overrides top-level `turn_detection` |
+| `model` | `str` | No | `None` | Azure OpenAI Realtime model or deployment name |
+| `voice` | `str` | No | `None` | Voice identifier |
+| `instructions` | `str` | No | `None` | System instructions |
+| `input_audio_transcription` | `Dict[str, Any]` | No | `None` | Audio transcription settings |
+| `max_history` | `int` | No | `None` | Number of conversation history messages to cache |
+| `greeting_message` | `str` | No | `None` | Agent greeting message |
+| `failure_message` | `str` | No | `None` | Message played when the model call fails |
+| `output_modalities` | `List[str]` | No | `None` | Output modalities, for example `['text', 'audio']` |
+| `messages` | `List[Dict]` | No | `None` | Conversation messages for short-term memory |
+| `params` | `Dict[str, Any]` | No | `None` | Additional Azure OpenAI parameters |
 
 #### GeminiLive
 
@@ -1497,7 +1548,7 @@ Valid event names for `session.on()` and `session.off()`.
 
 ### `SpeakPriority`
 
-Controls how the agent handles a [`say()`](#say-text-priority-none-interruptable-none) call relative to its current activity. Pass as a string to `session.say()`.
+Controls how the agent handles a [`say()`](#saytext-prioritynone-interruptablenone) call relative to its current activity. Pass as a string to `session.say()`.
 
 | Value | Description |
 |---|---|

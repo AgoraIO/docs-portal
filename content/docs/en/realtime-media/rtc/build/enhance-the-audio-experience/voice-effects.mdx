@@ -91,256 +91,256 @@ Call `setVoiceBeautifierPreset` to set music style, space shaping, electronic mu
 
 - Chat voice beautifier
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the vocal effect to magnetic (for male voices)
-   mRtcEngine.setVoiceBeautifierPreset(Constants.CHAT_BEAUTIFIER_MAGNETIC);
-   // Turn off the effect    
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the vocal effect to magnetic (for male voices)
+       mRtcEngine.setVoiceBeautifierPreset(Constants.CHAT_BEAUTIFIER_MAGNETIC);
+       // Turn off the effect    
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the vocal effect to magnetic (for male voices)
-   mRtcEngine.setVoiceBeautifierPreset(Constants.CHAT_BEAUTIFIER_MAGNETIC)
-   // Turn off the effect    
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the vocal effect to magnetic (for male voices)
+       mRtcEngine.setVoiceBeautifierPreset(Constants.CHAT_BEAUTIFIER_MAGNETIC)
+       // Turn off the effect    
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 - Singing voice beautifier
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Example 1: Set male voice effect
-   // Set the singing voice preset to beautify the male voice and add a small room reverberation effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.SINGING_BEAUTIFIER);
-   // Turn off the effect 
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
+    <CodeBlockTab value="java">
+      ```java
+      // Example 1: Set male voice effect
+       // Set the singing voice preset to beautify the male voice and add a small room reverberation effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.SINGING_BEAUTIFIER);
+       // Turn off the effect 
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
   
-   // Example 2: Set female voice effect
-   // Call the setVoiceBeautifierParameters method to beautify the female voice and add hall reverberation effect
-   mRtcEngine.setVoiceBeautifierParameters(Constants.SINGING_BEAUTIFIER, 2, 3);
-   // Turn off the effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
-  ```
-</CodeBlockTab>
+       // Example 2: Set female voice effect
+       // Call the setVoiceBeautifierParameters method to beautify the female voice and add hall reverberation effect
+       mRtcEngine.setVoiceBeautifierParameters(Constants.SINGING_BEAUTIFIER, 2, 3);
+       // Turn off the effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Example 1: Set male voice effect
-   // Set the singing voice preset to beautify the male voice and add a small room reverberation effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.SINGING_BEAUTIFIER)
-   // Turn off the effect 
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Example 1: Set male voice effect
+       // Set the singing voice preset to beautify the male voice and add a small room reverberation effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.SINGING_BEAUTIFIER)
+       // Turn off the effect 
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
   
-   // Example 2: Set female voice effect
-   // Call the setVoiceBeautifierParameters method to beautify the female voice and add hall reverberation effect
-   mRtcEngine.setVoiceBeautifierParameters(Constants.SINGING_BEAUTIFIER, 2, 3)
-   // Turn off the effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
-  ```
-</CodeBlockTab>
+       // Example 2: Set female voice effect
+       // Call the setVoiceBeautifierParameters method to beautify the female voice and add hall reverberation effect
+       mRtcEngine.setVoiceBeautifierParameters(Constants.SINGING_BEAUTIFIER, 2, 3)
+       // Turn off the effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 * Tone change
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the timbre to thick
-   mRtcEngine.setVoiceBeautifierPreset(Constants.TIMBRE_TRANSFORMATION_VIGOROUS);
-   // Turn off the effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the timbre to thick
+       mRtcEngine.setVoiceBeautifierPreset(Constants.TIMBRE_TRANSFORMATION_VIGOROUS);
+       // Turn off the effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the timbre to thick
-   mRtcEngine.setVoiceBeautifierPreset(Constants.TIMBRE_TRANSFORMATION_VIGOROUS)
-   // Turn off the effect
-   mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the timbre to thick
+       mRtcEngine.setVoiceBeautifierPreset(Constants.TIMBRE_TRANSFORMATION_VIGOROUS)
+       // Turn off the effect
+       mRtcEngine.setVoiceBeautifierPreset(Constants.VOICE_BEAUTIFIER_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ### Sound effects
 
 Call `setAudioEffectPreset` to set music style, space shaping, electronic music and other effects.
 
 * Music Style
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the style to pop
-   mRtcEngine.setAudioEffectPreset(Constants.STYLE_TRANSFORMATION_POPULAR);
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the style to pop
+       mRtcEngine.setAudioEffectPreset(Constants.STYLE_TRANSFORMATION_POPULAR);
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the style to pop
-   mRtcEngine.setAudioEffectPreset(Constants.STYLE_TRANSFORMATION_POPULAR)
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the style to pop
+       mRtcEngine.setAudioEffectPreset(Constants.STYLE_TRANSFORMATION_POPULAR)
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 * Space shaping
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the space shaping effect to KTV
-   mRtcEngine.setAudioEffectPreset(Constants.ROOM_ACOUSTICS_KTV);
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the space shaping effect to KTV
+       mRtcEngine.setAudioEffectPreset(Constants.ROOM_ACOUSTICS_KTV);
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the space shaping effect to KTV
-   mRtcEngine.setAudioEffectPreset(Constants.ROOM_ACOUSTICS_KTV)
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the space shaping effect to KTV
+       mRtcEngine.setAudioEffectPreset(Constants.ROOM_ACOUSTICS_KTV)
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 * Electronic sound effects
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Example 1: Use the preset pitch adjustment method to achieve the electronic music sound effect
-   // The preset is based on the natural major key with the tonic pitch of C, and corrects the actual pitch of the audio
-   mRtcEngine.setAudioEffectPreset(Constants.PITCH_CORRECTION);
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
+    <CodeBlockTab value="java">
+      ```java
+      // Example 1: Use the preset pitch adjustment method to achieve the electronic music sound effect
+       // The preset is based on the natural major key with the tonic pitch of C, and corrects the actual pitch of the audio
+       mRtcEngine.setAudioEffectPreset(Constants.PITCH_CORRECTION);
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
   
-   // Example 2: Adjust the basic mode and tonic pitch to achieve the electronic music sound effect
-   // Call setAudioEffectParameters to adjust the basic mode of the tone to the natural minor key and the tonic pitch to D
-   mRtcEngine.setAudioEffectParameters(Constants.PITCH_CORRECTION, 2, 6);
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
-  ```
-</CodeBlockTab>
+       // Example 2: Adjust the basic mode and tonic pitch to achieve the electronic music sound effect
+       // Call setAudioEffectParameters to adjust the basic mode of the tone to the natural minor key and the tonic pitch to D
+       mRtcEngine.setAudioEffectParameters(Constants.PITCH_CORRECTION, 2, 6);
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Example 1: Use the preset pitch adjustment method to achieve the electronic music sound effect
-   // The preset is based on the natural major key with the tonic pitch of C, and corrects the actual pitch of the audio
-   mRtcEngine.setAudioEffectPreset(Constants.PITCH_CORRECTION)
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Example 1: Use the preset pitch adjustment method to achieve the electronic music sound effect
+       // The preset is based on the natural major key with the tonic pitch of C, and corrects the actual pitch of the audio
+       mRtcEngine.setAudioEffectPreset(Constants.PITCH_CORRECTION)
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
   
-   // Example 2: Adjust the basic mode and tonic pitch to achieve the electronic music sound effect
-   // Call setAudioEffectParameters to adjust the basic mode of the tone to the natural minor key and the tonic pitch to D
-   mRtcEngine.setAudioEffectParameters(Constants.PITCH_CORRECTION, 2, 6)
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
-  ```
-</CodeBlockTab>
+       // Example 2: Adjust the basic mode and tonic pitch to achieve the electronic music sound effect
+       // Call setAudioEffectParameters to adjust the basic mode of the tone to the natural minor key and the tonic pitch to D
+       mRtcEngine.setAudioEffectParameters(Constants.PITCH_CORRECTION, 2, 6)
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ### Voice change effects
 
 To implement basic voice-changing effects, call the `setAudioEffectPreset` method. For advanced voice-changing effects, use the `setVoiceConversionPreset` method.
 
 * Basic voice changer
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the voice change effect to a more neutral voice
-   mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CHANGER_NEUTRAL);
-   // Turn off the effect
-   mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CONVERSION_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the voice change effect to a more neutral voice
+       mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CHANGER_NEUTRAL);
+       // Turn off the effect
+       mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CONVERSION_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the voice change effect to a more neutral voice
-   mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CHANGER_NEUTRAL)
-   // Turn off the effect
-   mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CONVERSION_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the voice change effect to a more neutral voice
+       mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CHANGER_NEUTRAL)
+       // Turn off the effect
+       mRtcEngine.setVoiceConversionPreset(Constants.VOICE_CONVERSION_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 * Advanced voice changer
 
-<CodeBlockTabs defaultValue="java">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="java">
-  ```java
-  // Set the vocal effect to 'Hulk'
-   mRtcEngine.setAudioEffectPreset(Constants.VOICE_CHANGER_EFFECT_HULK);
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="java">
+      ```java
+      // Set the vocal effect to 'Hulk'
+       mRtcEngine.setAudioEffectPreset(Constants.VOICE_CHANGER_EFFECT_HULK);
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF);
+      ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="kotlin">
-  ```kotlin
-  // Set the vocal effect to 'Hulk'
-   mRtcEngine.setAudioEffectPreset(Constants.VOICE_CHANGER_EFFECT_HULK)
-   // Turn off the effect
-   mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
-  ```
-</CodeBlockTab>
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      // Set the vocal effect to 'Hulk'
+       mRtcEngine.setAudioEffectPreset(Constants.VOICE_CHANGER_EFFECT_HULK)
+       // Turn off the effect
+       mRtcEngine.setAudioEffectPreset(Constants.AUDIO_EFFECT_OFF)
+      ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 ### Custom audio effects
 
 Call `setLocalVoicePitch`, `setLocalVoiceEqualization`, and `setLocalVoiceReverb` to fine-tune vocal output parameters, including pitch, equalization, and reverberation effects. The following example shows you how to transform a human voice into the voice of the Hulk by manually setting parameter values:
@@ -517,8 +517,8 @@ For optimal audio quality, take the following steps:
 
 - Call `setAudioProfile` to set the audio encoding properties to high-quality encoding:
 
- - For mono transmission, set the profile to `AgoraAudioProfileMusicHighQuality`.
- - For stereo transmission, set the profile to `AgoraAudioProfileMusicHighQualityStereo`.
+    - For mono transmission, set the profile to `AgoraAudioProfileMusicHighQuality`.
+    - For stereo transmission, set the profile to `AgoraAudioProfileMusicHighQualityStereo`.
 
 ```swift
 // Create RtcEngine object
@@ -759,8 +759,8 @@ For optimal audio quality, take the following steps:
 
 - Call `setAudioProfile` to set the audio encoding properties to high-quality encoding:
 
- - For mono transmission, set the profile to `AgoraAudioProfileMusicHighQuality`.
- - For stereo transmission, set the profile to `AgoraAudioProfileMusicHighQualityStereo`.
+    - For mono transmission, set the profile to `AgoraAudioProfileMusicHighQuality`.
+    - For stereo transmission, set the profile to `AgoraAudioProfileMusicHighQualityStereo`.
 
 ```swift
 // Create RtcEngine object

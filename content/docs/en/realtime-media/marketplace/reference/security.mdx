@@ -441,8 +441,8 @@ Please note for best security practices, you need to set the token expiration ti
 
 - Token expiration: How long a token is valid for, that is, how long a user can stay in a channel.
 - Privilege expiration:
- - Join a channel: How long a token can be used to join a channel.
- - Streaming privilege: Whether a user can send audio, video or messaging to the channel, or join as an audience member. This privilege is not enabled by default.
+    - Join a channel: How long a token can be used to join a channel.
+    - Streaming privilege: Whether a user can send audio, video or messaging to the channel, or join as an audience member. This privilege is not enabled by default.
 
 ### Level 3 - Encryption
 
@@ -531,31 +531,31 @@ The following list outlines detailed examples of how various vulnerabilities wou
 **Critical**
 
 1. Unauthorized system privileges
-  Examples include command injection (execution), code injection (execution), web shell execution, SQL injection, and buffer overflow that gains system privileges on the core system.
+    Examples include command injection (execution), code injection (execution), web shell execution, SQL injection, and buffer overflow that gains system privileges on the core system.
 2. Direct denial of service
-  Examples include actions that make service unavailable, reduce service quality, and so on.
+    Examples include actions that make service unavailable, reduce service quality, and so on.
 3. Sensitive information leakage
-  Examples include SQL injection of the core database (identity, order), unauthorized disclosure of sensitive information relating to a user, product order, or payment method, and so on.
+    Examples include SQL injection of the core database (identity, order), unauthorized disclosure of sensitive information relating to a user, product order, or payment method, and so on.
 4. Serious logic design flaws and process defects
-  Examples include the ability to send batches of fraudulent messages, account consumption through a business interface, and large-scale modification of account passwords, and so on.
+    Examples include the ability to send batches of fraudulent messages, account consumption through a business interface, and large-scale modification of account passwords, and so on.
 
 **High**
 
 1. Sensitive information leakage
-  Examples include unauthorized disclosure of sensitive information relating to a source code, hardcoded passwords, and so on.
+    Examples include unauthorized disclosure of sensitive information relating to a source code, hardcoded passwords, and so on.
 2. Unauthorized access to sensitive information
-  Examples include bypassing authentication or backend password, leading to unauthorized access to sensitive intranet information.
+    Examples include bypassing authentication or backend password, leading to unauthorized access to sensitive intranet information.
 3. Unauthorized sensitive operations
-  Examples include manipulating important information without authorization, such as orders, major business configurations, and so on.
+    Examples include manipulating important information without authorization, such as orders, major business configurations, and so on.
 
 **Medium**
 
 1. Vulnerabilities that require interaction and affect users
-  Examples include stored XSS (cross-site scripting).
+    Examples include stored XSS (cross-site scripting).
 2. General unauthorized operations
-  Examples include incorrect direct object references, unauthorized access to orders, unauthorized access to user information, and so on.
+    Examples include incorrect direct object references, unauthorized access to orders, unauthorized access to user information, and so on.
 3. General information leakage
-  Examples include client-side stored plaintext passwords, system path traversal, and so on.
+    Examples include client-side stored plaintext passwords, system path traversal, and so on.
 4. General logic design flaws and process defects
 
 **Low**

@@ -84,8 +84,8 @@ A higher audio/video bitrate means higher audio/video quality. A low bitrate doe
 | Sender-side metric | Receiver-side metric | Description |
 | --- | --- | --- |
 | Audio sending bitrate | Audio receiving bitrate | N/A |
-| High-quality video stream sending bitrate | Native: High-quality video stream receiving bitrate<br>Web: Video receiving bitrate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving bitrate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
-| Low-quality video stream sending bitrate | Native: Low-quality video stream receiving bitrate<br>Web: Video receiving bitrate | See High-quality video stream sending bitrate |
+| High-quality video stream sending bitrate | Native: High-quality video stream receiving bitrate<br/>Web: Video receiving bitrate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving bitrate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream sending bitrate | Native: Low-quality video stream receiving bitrate<br/>Web: Video receiving bitrate | See High-quality video stream sending bitrate |
 
 ### Packet loss (rate)
 
@@ -107,7 +107,7 @@ Freeze time is any significant pause in audio or video reception.
 | Receiver-side metric | Description |
 | --- | --- |
 | Audio rendering freeze time (Native only) | Audio rendering freezing occurs if it pauses for over 200 ms. A longer audio rendering freeze time means more significant audio freezing for the user. |
-| Video rendering freeze time | Native: Video rendering freezing occurs if it pauses for over 600 ms when the sending frame rate exceeds 5 fps.<br>Web: Video rendering freezing occurs if it pauses for over 500 ms when the sending frame rate exceeds 2 fps. A longer video rendering freeze time means more significant video freezing for the user. |
+| Video rendering freeze time | Native: Video rendering freezing occurs if it pauses for over 600 ms when the sending frame rate exceeds 5 fps.<br/>Web: Video rendering freezing occurs if it pauses for over 500 ms when the sending frame rate exceeds 2 fps. A longer video rendering freeze time means more significant video freezing for the user. |
 
 ### Frame rate
 
@@ -118,8 +118,8 @@ A higher frame rate means smoother video but uses more bandwidth and CPU resourc
 | Sender-side metric | Receiver-side metric | Description |
 | --- | --- | --- |
 | Video capture frame rate | N/A | N/A |
-| High-quality video stream sending frame rate | Native: High-quality video stream receiving frame rate<br>Web: Video receiving frame rate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving frame rate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
-| Low-quality video stream sending frame rate | Native: Low-quality video stream receiving frame rate<br>Web: Video receiving frame rate | See High-quality video stream sending frame rate |
+| High-quality video stream sending frame rate | Native: High-quality video stream receiving frame rate<br/>Web: Video receiving frame rate | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving frame rate. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream sending frame rate | Native: Low-quality video stream receiving frame rate<br/>Web: Video receiving frame rate | See High-quality video stream sending frame rate |
 
 ### Resolution
 
@@ -129,8 +129,8 @@ A higher resolution (higher number of pixels) means clearer video.
 
 | Sender-side metric | Receiver-side metric | Description |
 | --- | --- | --- |
-| High-quality video stream sending resolution | Native: High-quality video stream receiving resolution<br>Web: Video receiving resolution | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving resolution. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
-| Low-quality video stream receiving resolution (Web only) | Native: High-quality video stream receiving resolution<br>Web: Video receiving resolution | See High-quality video stream sending resolution |
+| High-quality video stream sending resolution | Native: High-quality video stream receiving resolution<br/>Web: Video receiving resolution | Because a Web client only receives one video stream from each sender, there is no need to separate high-quality and low-quality streams for the video receiving resolution. A Web client automatically switches to receiving the low-quality video stream when network conditions are poor. |
+| Low-quality video stream receiving resolution (Web only) | Native: High-quality video stream receiving resolution<br/>Web: Video receiving resolution | See High-quality video stream sending resolution |
 
 ### Audio signal strength
 

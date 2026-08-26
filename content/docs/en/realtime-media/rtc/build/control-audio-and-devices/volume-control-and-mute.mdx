@@ -577,55 +577,55 @@ Use one or more of the following volume control methods to adjust volume setting
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
-<CodeBlockTabs defaultValue="objc">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="objc">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="objc">
-```objc
-[agoraKit muteLocalAudioStream:YES];
-```
-</CodeBlockTab>
+    <CodeBlockTab value="objc">
+    ```objc
+    [agoraKit muteLocalAudioStream:YES];
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="swift">
-```swift
-// Stop publishing the local audio stream
-agoraKit.muteLocalAudioStream(true)
+    <CodeBlockTab value="swift">
+    ```swift
+    // Stop publishing the local audio stream
+    agoraKit.muteLocalAudioStream(true)
 
-// Resume publishing the local audio stream
-agoraKit.muteLocalAudioStream(false)
-```
-</CodeBlockTab>
+    // Resume publishing the local audio stream
+    agoraKit.muteLocalAudioStream(false)
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 
 * To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
-<CodeBlockTabs defaultValue="objc">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="objc">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="objc">
-```objc
-[agoraKit muteRemoteAudioStream:remoteUid mute:YES];
-```
-</CodeBlockTab>
+    <CodeBlockTab value="objc">
+    ```objc
+    [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="swift">
-```swift
-// Stop subscribing to the audio stream of the remote user
-agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
+    <CodeBlockTab value="swift">
+    ```swift
+    // Stop subscribing to the audio stream of the remote user
+    agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
 
-// Resume subscribing to the audio stream of the remote user
-agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
-```
-</CodeBlockTab>
+    // Resume subscribing to the audio stream of the remote user
+    agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 
 :::info
 To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.
@@ -775,55 +775,55 @@ Use one or more of the following volume control methods to adjust volume setting
 
 * To mute or unmute the local audio stream, call `muteLocalAudioStream`:
 
-<CodeBlockTabs defaultValue="objc">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="objc">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="objc">
-```objc
-[agoraKit muteLocalAudioStream:YES];
-```
-</CodeBlockTab>
+    <CodeBlockTab value="objc">
+    ```objc
+    [agoraKit muteLocalAudioStream:YES];
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="swift">
-```swift
-// Stop publishing the local audio stream
-agoraKit.muteLocalAudioStream(true)
+    <CodeBlockTab value="swift">
+    ```swift
+    // Stop publishing the local audio stream
+    agoraKit.muteLocalAudioStream(true)
 
-// Resume publishing the local audio stream
-agoraKit.muteLocalAudioStream(false)
-```
-</CodeBlockTab>
+    // Resume publishing the local audio stream
+    agoraKit.muteLocalAudioStream(false)
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 
 * To mute or unmute a remote user, call `muteRemoteAudioStream` with the `uid` of the remote user:
 
-<CodeBlockTabs defaultValue="objc">
-<CodeBlockTabsList>
- <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
- <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
-</CodeBlockTabsList>
+    <CodeBlockTabs defaultValue="objc">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="objc">Objective-C</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="swift">Swift</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
 
-<CodeBlockTab value="objc">
-```objc
-[agoraKit muteRemoteAudioStream:remoteUid mute:YES];
-```
-</CodeBlockTab>
+    <CodeBlockTab value="objc">
+    ```objc
+    [agoraKit muteRemoteAudioStream:remoteUid mute:YES];
+    ```
+    </CodeBlockTab>
 
-<CodeBlockTab value="swift">
-```swift
-// Stop subscribing to the audio stream of the remote user
-agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
+    <CodeBlockTab value="swift">
+    ```swift
+    // Stop subscribing to the audio stream of the remote user
+    agoraKit.muteRemoteAudioStream(remoteUid, mute: true)
 
-// Resume subscribing to the audio stream of the remote user
-agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
-```
-</CodeBlockTab>
+    // Resume subscribing to the audio stream of the remote user
+    agoraKit.muteRemoteAudioStream(remoteUid, mute: false)
+    ```
+    </CodeBlockTab>
 
-</CodeBlockTabs>
+    </CodeBlockTabs>
 
 :::info
 To mute remote users without unsubscribing, set their [playback volume](#adjust-the-playback-volume) to `0`.

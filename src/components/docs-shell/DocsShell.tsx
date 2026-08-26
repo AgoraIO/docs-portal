@@ -54,6 +54,7 @@ import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
@@ -70,18 +71,6 @@ const LEGACY_DOCS_BANNER_DISMISSED_STORAGE_VALUE = 'true';
 const DISMISS_LEGACY_DOCS_BANNER_LABEL = 'Dismiss legacy docs banner';
 const mobileSidebarGroupLabelClassName =
   'px-1 pb-0.5 text-xs font-medium uppercase leading-4 tracking-[0.14em] text-muted-foreground';
-const mobilePageLinkClassName =
-  'relative flex min-h-10 w-full min-w-0 max-w-full items-start gap-2 overflow-hidden rounded-md px-3 py-2.5 text-left text-sm leading-5 transition-colors before:absolute before:left-1 before:top-1/2 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:bg-transparent hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:break-words [&>span:first-child]:whitespace-normal [&>span:first-child]:[overflow-wrap:anywhere]';
-const mobileActivePageLinkClassName =
-  'bg-[color:var(--accent-brand-soft)] font-semibold text-[color:var(--accent-brand)] shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent-brand)_22%,transparent)] before:bg-[color:var(--accent-brand)]';
-const mobileInactivePageLinkClassName = 'text-muted-foreground';
-const mobileSectionLabelClassName =
-  'mt-4 flex min-w-0 max-w-full rounded-md px-2 py-1 text-xs font-semibold uppercase leading-4 tracking-[0.08em] text-muted-foreground [overflow-wrap:anywhere] data-[active=true]:text-[color:var(--ink-2)] [&>span]:min-w-0 [&>span]:break-words [&>span]:whitespace-normal [&>span]:[overflow-wrap:anywhere]';
-const mobileSidebarNestedListClassNames = [
-  'ml-2 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
-  'ml-1 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
-  'ml-0 flex min-w-0 max-w-full flex-col gap-1 border-l border-border/70 pl-2',
-] as const;
 
 type LocaleLink = {
   href: string;
@@ -642,17 +631,11 @@ function MobileSidebar({
                 onSelectPath={onSelectPath}
               />
             ) : null}
-            <div className="flex min-w-0 flex-col gap-1">
-              {sidebar.map((node) => (
-                <MobileSidebarNode
-                  activePath={activePath}
-                  depth={0}
-                  key={node.id}
-                  node={node}
-                  onSelectPath={onSelectPath}
-                />
-              ))}
-            </div>
+            <DocsSidebarTree
+              activePath={activePath}
+              nodes={sidebar}
+              onSelectPath={onSelectPath}
+            />
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
@@ -671,112 +654,5 @@ function MobileSidebar({
         </div>
       </ScrollArea>
     </div>
-  );
-}
-
-function MobileSidebarNode({
-  activePath,
-  depth,
-  node,
-  onSelectPath,
-}: {
-  activePath: string;
-  depth: number;
-  node: DocsSidebarNode;
-  onSelectPath: () => void;
-}) {
-  if (node.type === 'page') {
-    const isActive = node.url === activePath;
-    const content = (
-      <>
-        <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
-          {node.title}
-        </span>
-        {node.method ? (
-          <span className="mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
-            {node.method}
-          </span>
-        ) : null}
-      </>
-    );
-    const className = cn(
-      mobilePageLinkClassName,
-      isActive
-        ? mobileActivePageLinkClassName
-        : mobileInactivePageLinkClassName,
-    );
-
-    if (node.external) {
-      return (
-        <a
-          aria-current={isActive ? 'page' : undefined}
-          className={className}
-          href={node.href ?? node.url}
-          onClick={onSelectPath}
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          {content}
-        </a>
-      );
-    }
-
-    return (
-      <Link
-        aria-current={isActive ? 'page' : undefined}
-        className={className}
-        onClick={onSelectPath}
-        params={{}}
-        search={{}}
-        to={node.url}
-      >
-        {content}
-      </Link>
-    );
-  }
-
-  const hasActiveChild = node.children.some((child) =>
-    isMobileSidebarNodeActive(child, activePath),
-  );
-
-  return (
-    <div className="flex min-w-0 max-w-full flex-col gap-1">
-      <p
-        className={mobileSectionLabelClassName}
-        data-active={hasActiveChild ? 'true' : undefined}
-      >
-        <span>{node.title.replaceAll('-', ' ')}</span>
-      </p>
-      <div className={getMobileSidebarNestedListClassName(depth)}>
-        {node.children.map((child) => (
-          <MobileSidebarNode
-            activePath={activePath}
-            depth={depth + 1}
-            key={child.id}
-            node={child}
-            onSelectPath={onSelectPath}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function getMobileSidebarNestedListClassName(depth: number) {
-  return mobileSidebarNestedListClassNames[
-    Math.min(depth, mobileSidebarNestedListClassNames.length - 1)
-  ];
-}
-
-function isMobileSidebarNodeActive(
-  node: DocsSidebarNode,
-  activePath: string,
-): boolean {
-  if (node.type === 'page') {
-    return node.url === activePath;
-  }
-
-  return node.children.some((child) =>
-    isMobileSidebarNodeActive(child, activePath),
   );
 }

@@ -161,6 +161,18 @@ describe('docs content regressions', () => {
     );
   });
 
+  it('keeps the Ares keywords recipe card in the English recipes index', () => {
+    const content = readDoc('api-reference/recipes.mdx');
+
+    expect(content).toContain('title: "Ares Keywords"');
+    expect(content).toContain(
+      'description: "Use keyword hints to help ARES recognize specific terms more accurately."',
+    );
+    expect(content).toContain(
+      'href: "https://github.com/AgoraIO-Conversational-AI/recipe-agent-stt-vendors/blob/main/README.md#ares-keywords"',
+    );
+  });
+
   it('keeps AI short-term memory Custom LLM link in custom model integration', () => {
     const content = readDoc(
       'ai/build/shape-the-conversation/short-term-memory.mdx',

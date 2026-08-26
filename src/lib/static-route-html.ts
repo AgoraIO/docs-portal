@@ -21,7 +21,56 @@ export function createStaticRouteHtml({
 
   const sourceHtml = hasPrerenderedBody ? (routeHtml ?? spaHtml) : spaHtml;
 
-  return injectStaticSeoHead(sourceHtml, page);
+  return prioritizeStaticRouteResources(injectStaticSeoHead(sourceHtml, page));
+}
+
+const LINK_TAG_PATTERN = /<link\b[^>]*>/gi;
+
+function prioritizeStaticRouteResources(html: string) {
+  return html.replace(LINK_TAG_PATTERN, (tag) => {
+    const rel = getHtmlAttribute(tag, 'rel')?.toLowerCase();
+
+    if (rel === 'stylesheet') {
+      return setHtmlAttribute(tag, 'fetchpriority', 'high');
+    }
+
+    if (rel === 'modulepreload') {
+      return setHtmlAttribute(tag, 'fetchpriority', 'low');
+    }
+
+    const href = getHtmlAttribute(tag, 'href')?.split(/[?#]/, 1)[0];
+    if (
+      rel === 'preload' &&
+      getHtmlAttribute(tag, 'as')?.toLowerCase() === 'image' &&
+      href === '/agora-logo.png'
+    ) {
+      return setHtmlAttribute(tag, 'fetchpriority', 'low');
+    }
+
+    return tag;
+  });
+}
+
+function getHtmlAttribute(tag: string, name: string) {
+  const match = tag.match(
+    new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'i'),
+  );
+
+  return match?.[1] ?? match?.[2] ?? match?.[3];
+}
+
+function setHtmlAttribute(tag: string, name: string, value: string) {
+  const attributePattern = new RegExp(
+    `\\s${name}\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+)`,
+    'i',
+  );
+
+  if (attributePattern.test(tag)) {
+    return tag.replace(attributePattern, ` ${name}="${value}"`);
+  }
+
+  const closing = tag.endsWith('/>') ? '/>' : '>';
+  return `${tag.slice(0, -closing.length).trimEnd()} ${name}="${value}"${closing}`;
 }
 
 function hasPrerenderedDocsBody(routeHtml?: string) {

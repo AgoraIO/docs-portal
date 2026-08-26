@@ -100,9 +100,9 @@ In which:
 - `06`: The SEI frame.
 - `64`: The SEI frame type defined by the user. Here we define it as 100.
 - `bd`: The length of the SEI frame. The following are some sample calculations rendered in decimal and hexadecimal:
-	- If the length is 922, because 922 can be divided by 255 (`0xff`) three times and the remainder is 157 (`0x9d`), then `bd` is `ffffff9d`.
-	- If the length is 572, because 572 can be divided by 255 (`0xff`) two times and the remainder is 62 (`0x3e`), then `bd` is `ffff3e`.
-	- If the length is 234, because 234 divided by 255 (`0xff`) gives 0 and the remainder is 234 (`0xea`), then `bd` is `ea`.
+    - If the length is 922, because 922 can be divided by 255 (`0xff`) three times and the remainder is 157 (`0x9d`), then `bd` is `ffffff9d`.
+    - If the length is 572, because 572 can be divided by 255 (`0xff`) two times and the remainder is 62 (`0x3e`), then `bd` is `ffff3e`.
+    - If the length is 234, because 234 divided by 255 (`0xff`) gives 0 and the remainder is 234 (`0xea`), then `bd` is `ea`.
 - Other digits: Content of the SEI frame.
 
 ### FAQ

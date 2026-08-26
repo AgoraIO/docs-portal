@@ -1083,6 +1083,24 @@ describe('DocsSidebarTree', () => {
     );
   });
 
+  it('marks an active linked section without children as the current page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [],
+        id: 'folder-rtc',
+        title: 'Realtime Communication',
+        type: 'section',
+        url: '/en/realtime-media/rtc',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/realtime-media/rtc');
+
+    expect(
+      await screen.findByRole('link', { name: 'Realtime Communication' }),
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
   it('renders full sidebar labels for long Build document titles', async () => {
     const tree: DocsSidebarNode[] = [
       {

@@ -13,7 +13,6 @@ The following table lists the support of Agora products for the two solutions:
 |Signaling SDK (Native) | ✔ | ✘ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
-|Interactive Gaming SDK | ✘ |✘|
 
 - When using the firewall whitelist, add the domains and ports to the firewall whitelist, and do not set restrictions on IP addresses.
 - When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](/en/realtime-media/iot/reference/firewall)
@@ -120,6 +119,6 @@ For a stream channel, you need to add the following to your firewall whitelist:
     |------------------|----------|---------|
     | 4001 - 4150      | UDP      | Allow   |
 
-:::info
-The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
-:::
+    :::info
+    The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+    :::

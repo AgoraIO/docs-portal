@@ -618,24 +618,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://central.sonatype.com/artifact/io.agora.rtm/rtm-sdk/2.1.7',
           },
-          {
-            id: '1.5.3-rtm-sdk-android',
-            label: 'Version 1.5.3',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_3.zip',
-          },
-          {
-            id: '1.5.2-rtm-sdk-android',
-            label: 'Version 1.5.2',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_2.zip',
-          },
-          {
-            id: '1.5.1-rtm-sdk-android',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_1.zip',
-          },
         ],
       },
       {
@@ -1286,14 +1268,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
           },
-          {
-            id: '1.5.1-rtm-sdk-ios',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_iOS_v1_5_1.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRTM_iOS',
-          },
         ],
       },
       {
@@ -1798,13 +1772,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://www.npmjs.com/package/agora-rtm-sdk/v/2.1.5',
           },
-          {
-            id: '1.5.1-rtm-sdk-web',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Web_v1.5.1.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtm-sdk',
-          },
         ],
       },
       {
@@ -2188,14 +2155,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.agora.io/rtm2/release/Agora_RTM_OC_SDK_for_IOS_v217.zip',
             packageManager:
               'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
-          },
-          {
-            id: '1.5.1-rtm-sdk-macOS',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Mac_v1_5_1.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRTM_macOS',
           },
         ],
       },
@@ -2692,18 +2651,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Windows_v2.2.2.zip',
           },
-          {
-            id: '1.5.1 (x86)-rtm-sdk-windows',
-            label: 'Version 1.5.1 (x86)(Latest)',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Windows_x86_v1.5.1.zip',
-          },
-          {
-            id: '1.5.1 (x64)-rtm-sdk-windows',
-            label: 'Version 1.5.1 (x64)(Latest)',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Windows_x64_v1.5.1.zip',
-          },
         ],
       },
       {
@@ -3044,18 +2991,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v219.zip',
           },
-          {
-            id: '1.5.1-rtm-sdk-linux-cpp',
-            label: 'Version 1.5.1 for C++',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Linux_v1_5_1.zip',
-          },
-          {
-            id: '1.5.1-rtm-sdk-linux-java',
-            label: 'Version 1.5.1 for Java',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Linux_Java_v1_5_1.zip',
-          },
         ],
       },
       {
@@ -3308,12 +3243,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 2.1.9 (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip',
-          },
-          {
-            id: '1.4.10-rtm-sdk-unity',
-            label: 'Version 1.4.10',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_1.4.10_20220726_163.zip',
           },
         ],
       },

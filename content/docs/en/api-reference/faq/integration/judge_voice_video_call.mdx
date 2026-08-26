@@ -8,13 +8,13 @@ In real-time audio or video communication, you can use the Agora Signaling SDK o
 
 If you need to determine and send the call type to the receiver before a call, ensure that you have integrated the Signaling SDK and the RTC SDK. Refer to the following articles to learn more about integration:
 
-- [Signaling SDK Quickstart](/en/signaling/get-started/get-started-sdk)
+- [Signaling SDK Quickstart](/en/realtime-media/rtm/quickstart)
 - [RTC SDK Quickstart](/en/realtime-media/rtc/get-started-sdk)
 
 Complete the following steps to determine the call type:
 
 1. When the caller sends a call, use the [Call Invitation API](/en/signaling/develop/call-invitation) of the Signaling SDK to send a call invitation to the callee.
-2. Call [`sendMessageToPeer`](/en/signaling/reference/release-notes#deprecated-methods) to send the call type to the callee via peer-to-peer message. The callee gets the call type from the received peer-to-peer message.
+2. Call [`sendMessageToPeer`](/en/realtime-media/rtm/reference/migration-guide) to send the call type to the callee via peer-to-peer message. The callee gets the call type from the received peer-to-peer message.
 
 ## After a call
 

@@ -24,86 +24,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -252,20 +219,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -273,7 +240,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -311,86 +278,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -520,20 +454,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -541,7 +475,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -579,86 +513,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -788,20 +689,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -809,7 +710,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -849,87 +750,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  Fill in the following information:
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    Fill in the following information:
 
-  <TabsContent value="aws">
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+    **Sample configuration**
 
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -985,7 +852,7 @@ Agora charges for local screenshot upload based on two metrics:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -1022,86 +889,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -1237,20 +1071,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -1258,7 +1092,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -1296,86 +1130,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -1511,20 +1312,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -1532,7 +1333,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -1570,86 +1371,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -1785,20 +1553,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -1806,7 +1574,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 
@@ -1844,86 +1612,53 @@ Before implementing the Agora local screenshot upload feature, take the followin
 
 1. **Activate local screenshot upload service**
 
-  Log in to [Agora Console](https://console.agora.io), select the project for which you want to activate the local screenshot upload service, and then click **Configure**. Scroll down to the features section to find **Video Screenshot Upload** and click **Config**.
+    In [Agora Console](https://console.agora.io), select **RTC Services** from the sidebar, then locate the **Video Screenshot Upload** card and turn on its toggle. Select the settings icon on the card to open its configuration panel.
 
-   ![Enable screenshot upload](https://assets-docs.agora.io/images/video-sdk/enable-screen-shoot-upload.png)
+     ![Enable screenshot upload](https://assets-docs.agora.io/images/console/enable-screenshot-upload.png)
 
 2. **Configure third-party cloud storage**
 
-  In the **Video Screenshot Upload Configuration**, update the screenshot upload settings:
+    Select the settings icon on the **Video Screenshot Upload** card to open its configuration panel.
 
-  ![Screenshot upload config](https://assets-docs.agora.io/images/video-sdk/screenshot-upload-configuration.png)
+    ![Screenshot upload config](https://assets-docs.agora.io/images/console/screenshot-upload-configuration.png)
 
-:::note
-Currently, the Agora local screenshot upload service supports Amazon S3 and Alibaba Cloud OSS as the third-party cloud storage providers. If you want to use other provider, [contact](mailto:support@agora.io) technical support.
-:::
-  Fill in the following information:
+    :::warning
+    Once you turn on **Enable Video Screenshot Upload**, you can't disable it.
+    :::
 
-  <Tabs defaultValue="aws" groupId="storage-provider" persist>
-  <TabsList>
-    <TabsTrigger value="aws">AWS</TabsTrigger>
-    <TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>
-  </TabsList>
+    :::note
+    Currently, the Agora local screenshot upload service only supports Amazon S3 as the third-party cloud storage provider. If you want to use a different provider, [contact](mailto:support@agora.io) technical support.
+    :::
 
-  <TabsContent value="aws">
+    Fill in the following information:
 
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select AWS.
-  - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
+    - **Storage**: The third-party cloud storage provider. Fixed to AWS.
+    - **Callback URL**: The server address to receive callback notifications of local screenshot upload results.
+    - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Region**: The data center region setting for third-party cloud storage. See [AWS Official Documentation](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region) for details.
+    - **Access key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
+    - **Secret key**: String type, the secret key of the third-party cloud storage.
+    - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
+    - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
 
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
+      - 26 lowercase English letters a-z
+      - 26 uppercase English letters A-Z
+      - 10 digits 0-9
 
-  **Sample configuration**
+    **Sample configuration**
 
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: AWS
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-
-  <TabsContent value="alibaba-cloud">
-
-  - **Screenshot Callback Address**: The server address to receive callback notifications of local screenshot upload results.
-  - **Storage**: Third-party cloud storage provider. Select Alibaba Cloud.
-  - **Access Key**: String type, the access key of the third-party cloud storage. Best practice is to provide a write-only access key.
-  - **Secret Key**: String type, the secret key of the third-party cloud storage.
-  - **Bucket Name**: String type, the bucket name of the third-party cloud storage. The bucket name must comply with the naming rules of the corresponding third-party cloud storage service.
-  - **Endpoint**: Specify the access domain (Endpoint) of the bucket. See [Alibaba Cloud Official Documentation](https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?spm=a2c4g.11186623.0.0.7ac5667aLnjEtX) for details.
-  - **Filename Prefix**: (Optional) JSON Array, an array composed of multiple strings, indicating the storage location of screenshots in the third-party cloud storage. For example, if `fileNamePrefix` = `["directory1","directory2"]`, the prefix `directory1/directory2/` will be added to the screenshot filename, that is, `directory1/directory2/xxx.jpg`. The prefix length, including slashes, must not exceed 128 characters. The string should not contain symbols such as slashes, underscores, parentheses, and so on. The supported character set is as follows:
-
-    - 26 lowercase English letters a-z
-    - 26 uppercase English letters A-Z
-    - 10 digits 0-9
-
-  **Sample configuration**
-
-  - Snapshot Callback Address: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
-  - Storage: Alibaba Cloud
-  - Region: `cn-north-1`
-  - Access Key: `12345678`
-  - Secret Key: `abcd123`
-  - Bucket Name: `test-artifacts`
-  - Endpoint: `oss-accelerate.aliyuncs.com`
-  - Filename Prefix: `test`
-
-  </TabsContent>
-  </Tabs>
+    - Storage: AWS
+    - Callback URL: `https://webhook.site/2e75da2d-xxxx-xxxx-xxx-a0ef44a5259d`
+    - Endpoint: `s3.cn-north-1.amazonaws.com.cn`
+    - Region: `cn-north-1`
+    - Access key: `12345678`
+    - Secret key: `abcd123`
+    - Bucket Name: `test-artifacts`
+    - Filename Prefix: `test`
 
 3. **Integrate RTC SDK**
 
-  Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
+    Integrate the RTC SDK (including the local screenshot upload dynamic library) into your project, join a channel, and publish a video stream. See [SDK quickstart](/en/realtime-media/rtc/get-started-sdk) for details.
 
 ## Implement local screenshot upload
 
@@ -2057,20 +1792,20 @@ Includes 500 QPS per month:
 </Slot>
 
 * **Example 1:**
- A project generates **910,000 screenshots** in one month. Peak QPS = **100**
+    A project generates **910,000 screenshots** in one month. Peak QPS = **100**
 
- - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
- - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
- - QPS fee: 100 ≤ 500 (free), so **$0**
- - **Total fee = $27.00**
+    - Screenshots: 910,000 - 10,000 (free) = 900,000 billable images
+    - Screenshot fee: 900,000 ÷ 10,000 × $0.30 = **$27.00**
+    - QPS fee: 100 ≤ 500 (free), so **$0**
+    - **Total fee = $27.00**
 
 * **Example 2:**
- A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
+    A project generates **2.91 million screenshots** in one month. Peak QPS = **600**
 
- - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
- - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
- - QPS fee: (600 - 500) × $1.5 = **$150.00**
- - **Total fee = $237.00**
+    - Screenshots: 2,910,000 - 10,000 (free) = 2,900,000 billable images
+    - Screenshot fee: 2,900,000 ÷ 10,000 × $0.30 = **$87.00**
+    - QPS fee: (600 - 500) × $1.5 = **$150.00**
+    - **Total fee = $237.00**
 
 ### API reference
 
@@ -2078,7 +1813,7 @@ Includes 500 QPS per month:
 
 ### local screenshot upload dynamic library
 
-You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](app-size-optimization.mdx).
+You can find details about the name of the local screenshot upload dynamic library and the increase in app size after integration in [App size optimization](/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization).
 
 ### HTTP status codes
 

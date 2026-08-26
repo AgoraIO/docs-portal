@@ -135,7 +135,7 @@ Uses a pre-configured `Pool` for regional routing.
 
 ### Sub-clients
 
-`client.NewClient` exposes Fern-generated sub-clients for direct REST API access. You typically do not need these when using the [agentkit layer](#agentkit-newagent).
+`client.NewClient` exposes Fern-generated sub-clients for direct REST API access. You typically do not need these when using the [agentkit layer](#agentkitnewagent).
 
 | Field | Type | Description |
 |---|---|---|
@@ -433,12 +433,12 @@ type AgentSessionOptions struct {
 | `EnableStringUID` | `*bool` | No | Enable string UID mode |
 | `ExpiresIn` | `int` | No | Auto-generated token lifetime in seconds |
 | `UseAppCredentialsForREST` | `bool` | No | Generate ConvoAI REST auth headers per request |
-| `Preset` | `[]string` | No | Advanced preset value for project-specific routing. Leave unset for normal builder usage. |
+| `Preset` | `[]string` | No | Advanced preset value for project-specific routing. Do not set for normal builder usage. |
 | `PipelineID` | `string` | No | Published pipeline ID to send on session start |
 | `Debug` | `bool` | No | Enable debug logging of the start request |
 | `Warn` | `func(string)` | No | Custom warning sink; defaults to logger |
 
-`PipelineID` is sent as the top-level `/join` field `pipeline_id`, not inside `properties`. If unset, `AgentSession.Start()` uses the agent-level value from `WithPipelineID`.
+`PipelineID` is sent as the top-level `/join` field `pipeline_id`, not inside `properties`. If not set, `AgentSession.Start()` uses the agent-level value from `WithPipelineID`.
 
 ### State machine
 
@@ -1081,6 +1081,22 @@ Panics if `Key`, `Speaker`, or `TargetLanguageCode` is empty.
 | `SampleRate` | `*int` | No | Audio sample rate |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
+#### `NewTypecastTTS`
+
+```go
+func NewTypecastTTS(opts TypecastTTSOptions) *TypecastTTS
+```
+
+Panics if `APIKey`, `VoiceID`, or `Model` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Typecast API key |
+| `VoiceID` | `string` | Yes | Typecast voice identifier |
+| `Model` | `string` | Yes | Typecast TTS model name, for example `"ssfm-v30"` |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Typecast parameters |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+
 #### `NewGradiumTTS`
 
 ```go
@@ -1135,6 +1151,22 @@ Custom OpenAI-compatible HTTP TTS. `URL` is required and must be an absolute HTT
 | `ResponseFormat` | `string` | No | The output audio format. Conversational AI Engine currently supports `pcm` |
 | `Instruction` | `string` | No | Instructions for voice style, emotion, or other playback directives |
 | `AdditionalParams` | `map[string]interface{}` | No | Additional parameters passed through to the TTS service. Explicit fields with the same name take precedence |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+
+#### `NewXaiTTS`
+
+```go
+func NewXaiTTS(opts XaiTTSOptions) *XaiTTS
+```
+
+Panics if `APIKey` or `Language` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | xAI API key |
+| `Language` | `string` | Yes | BCP-47 language code for speech synthesis |
+| `VoiceID` | `string` | No | xAI voice identifier |
+| `SampleRate` | `*SampleRate` | No | Audio sample rate |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
 ### STT vendors
@@ -1255,6 +1287,19 @@ Panics if `APIKey` or `Language` is empty.
 | `URI` | `string` | No | AssemblyAI streaming WebSocket URL |
 | `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
 
+#### `NewAresSTT`
+
+```go
+func NewAresSTT(options ...AresSTTOptions) *AresSTT
+```
+
+Agora-managed global ASR provider. `options` is variadic so callers can select Ares without configuring keyword hints; panics if more than one options value is passed.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `Keywords` | `[]string` | No | Keywords that improve ASR accuracy |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
+
 #### `NewSarvamSTT`
 
 ```go
@@ -1297,6 +1342,27 @@ Panics if `APIKey` is empty.
 | `Messages` | `[]map[string]interface{}` | No | — | Conversation messages for short-term memory |
 | `Params` | `map[string]interface{}` | No | — | Additional parameters |
 | `TurnDetection` | `*Agora.MllmTurnDetection` | No | — | MLLM turn detection configuration; overrides top-level turn detection |
+
+#### `NewAzureOpenAIRealtime`
+
+```go
+func NewAzureOpenAIRealtime(opts AzureOpenAIRealtimeOptions) *AzureOpenAIRealtime
+```
+
+Panics if `APIKey`, `URL`, or `TurnDetection` is empty.
+
+| Field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `APIKey` | `string` | Yes | — | Azure OpenAI API key |
+| `URL` | `string` | Yes | — | Azure OpenAI Realtime WebSocket URL |
+| `TurnDetection` | `*Agora.MllmTurnDetection` | Yes | — | MLLM turn detection configuration; overrides top-level turn detection |
+| `Model` | `string` | No | — | Azure OpenAI Realtime model or deployment name |
+| `Voice` | `string` | No | — | Voice identifier |
+| `Instructions` | `string` | No | — | System instructions |
+| `MaxHistory` | `*int` | No | — | Number of conversation history messages to cache |
+| `GreetingMessage` | `string` | No | — | Agent greeting message |
+| `OutputModalities` | `[]string` | No | — | Output modalities |
+| `Messages` | `[]map[string]interface{}` | No | — | Conversation messages for short-term memory |
 
 #### `NewGeminiLive`
 

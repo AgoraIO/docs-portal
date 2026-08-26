@@ -13,7 +13,7 @@ The following table lists common request and response parameters of the Chat RES
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-chat-project-information). | Yes |
 | `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 
 ### Response parameters 
@@ -83,7 +83,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -157,7 +157,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -217,7 +217,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the data fi
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -282,7 +282,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the entity 
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -361,7 +361,7 @@ If the returned HTTP status code is `200`, the request succeeds, and the entity 
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 
@@ -448,7 +448,7 @@ For the last page of data, the response still contains `cursor` and the number o
 
 For other fields and descriptions, see [Common parameters](#response).
 
-If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#Status-codes) for possible causes.
+If the returned HTTP status code is not `200`, the request fails. You can refer to [Status codes](#status-codes) for possible causes.
 
 ### Example
 

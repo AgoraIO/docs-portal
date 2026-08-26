@@ -774,10 +774,12 @@ The logic of joining a chat group varies according to the `GroupStyle` setting y
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the chat group owner and admins. Once a user joins a chat group, all chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The chat group owner and chat group admins receive the `ChatGroupEventHandler#onRequestToJoinReceivedFromGroup` callback and choose whether to accept the join request:
-  - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventHandler#onRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback.
-  - If the request is declined, the user receives the `ChatGroupEventHandler#onRequestToJoinDeclinedFromGroup` callback.
+    - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventHandler#onRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `ChatGroupEventHandler#onMembersJoinedFromGroup` callback.
+    - If the request is declined, the user receives the `ChatGroupEventHandler#onRequestToJoinDeclinedFromGroup` callback.
 
-<div class="alert info">Users can only request to join public groups; private groups do not allow join requests.</div>
+    :::info
+    Users can only request to join public groups; private groups do not allow join requests.
+    :::
 
 Users can refer to the following steps to join a chat group:
 
@@ -1184,9 +1186,9 @@ The logic of joining a chat group varies according to the `GroupStyle` setting y
     - If the request is accepted, the user joins the chat group and receives the `ChatGroupEventListener#onRequestToJoinAccepted` callback, while all the other chat group members receive the `ChatGroupEventListener#onMembersJoined` callback.
     - If the request is declined, the user receives the `ChatGroupEventListener#onRequestToJoinDeclined` callback.
 
-:::info
-Users can only request to join public groups; private groups do not allow join requests.
-:::
+    :::info
+    Users can only request to join public groups; private groups do not allow join requests.
+    :::
 
 Users can refer to the following steps to join a chat group:
 
@@ -1730,12 +1732,12 @@ The logic of joining a chat group varies according to the `GroupStyle` setting y
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
-  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
-  - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
+    - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
+    - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
 
-:::info
-Users can only request to join public groups; private groups do not allow join requests.
-:::
+    :::info
+    Users can only request to join public groups; private groups do not allow join requests.
+    :::
 
 Users can refer to the following steps to join a chat group:
 
@@ -2157,12 +2159,12 @@ The logic of joining a chat group varies according to the `GroupStyle` setting y
 
 - If the `GroupStyle` is set to `PublicOpenJoin`, all users can join the chat group without the consent from the inviter and admins. Once a user joins a chat group, all chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback;
 - If the `GroupStyle` is set to `PublicJoinNeedApproval`, users can send join requests to the chat group. The inviter and chat group admins receive the `IGroupManagerDelegate#OnRequestToJoinReceivedFromGroup` callback and choose whether to approve the join request:
-  - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
-  - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
+    - If the request is accepted, the user joins the chat group and receives the `IGroupManagerDelegate#OnRequestToJoinAcceptedFromGroup` callback, while all the other chat group members receive the `IGroupManagerDelegate#OnMembersJoinedFromGroup` callback.
+    - If the request is declined, the user receives the `IGroupManagerDelegate#OnRequestToJoinDeclinedFromGroup` callback.
 
-:::info
-Users can only request to join public groups; private groups do not allow join requests.
-:::
+    :::info
+    Users can only request to join public groups; private groups do not allow join requests.
+    :::
 
 Users can refer to the following steps to join a chat group:
 

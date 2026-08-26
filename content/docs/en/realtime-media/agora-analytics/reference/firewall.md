@@ -14,7 +14,6 @@ The following table lists the support of Agora products for the two solutions:
 |Signaling SDK (Native) | ✔ | ✘ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
-|Interactive Gaming SDK | ✘ |✘|
 
 ###  RTC SDK (Web)
 
@@ -118,6 +117,6 @@ For a stream channel, you need to add the following to your firewall whitelist:
     |------------------|----------|---------|
     | 4001 - 4150      | UDP      | Allow   |
 
-:::info
-The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
-:::
+    :::info
+    The target ports listed in this section may be adjusted according to actual conditions. If you encounter any issues, contact [rtm@agora.io](mailto:rtm@agora.io).
+    :::
