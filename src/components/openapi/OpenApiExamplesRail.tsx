@@ -28,7 +28,8 @@ export function OpenApiExamplesRail({
       return viewports.find((viewport) => {
         if (
           viewport.hidden ||
-          viewport.getAttribute('aria-hidden') === 'true' ||
+          viewport.closest('[hidden]') ||
+          viewport.closest('[aria-hidden="true"]') ||
           viewport.closest('[data-state="inactive"]') ||
           viewport.closest('[role="tabpanel"][hidden]')
         ) {
