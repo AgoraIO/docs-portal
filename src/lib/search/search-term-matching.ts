@@ -1,10 +1,37 @@
-const API_TASK_DECORATION_TERMS = new Set([
+const COMMON_API_TASK_DECORATION_TERMS = new Set([
   'a',
   'an',
+  'can',
+  'could',
+  'do',
   'how',
+  'i',
+  'me',
+  'my',
+  'need',
+  'our',
   'please',
+  'show',
+  'tell',
   'the',
   'to',
+  'want',
+  'we',
+  'would',
+  'you',
+]);
+
+const SDK_SOURCE_TERMS = new Set([
+  'api',
+  'class',
+  'enum',
+  'function',
+  'interface',
+  'method',
+  'parameter',
+  'property',
+  'rest',
+  'restful',
 ]);
 
 function normalizedTerms(value: string) {
@@ -19,9 +46,35 @@ function normalizedTerms(value: string) {
   );
 }
 
-export function getRequiredApiTaskTerms(terms: string[]) {
-  return terms.filter(
-    (term) => !API_TASK_DECORATION_TERMS.has(term.toLowerCase()),
+function filterRequiredApiTaskTerms(terms: string[], source: 'docs' | 'sdk') {
+  return terms.filter((term) => {
+    const normalizedTerm = term.toLowerCase();
+    return (
+      !COMMON_API_TASK_DECORATION_TERMS.has(normalizedTerm) &&
+      (source !== 'sdk' || !SDK_SOURCE_TERMS.has(normalizedTerm))
+    );
+  });
+}
+
+export function getRequiredApiTaskTerms(
+  intent: { terms: string[] },
+  { source }: { source: 'docs' | 'sdk' },
+) {
+  return filterRequiredApiTaskTerms(intent.terms, source);
+}
+
+function canonicalSdkAlias(value: string) {
+  return filterRequiredApiTaskTerms(normalizedTerms(value), 'sdk').join('');
+}
+
+export function hasExactJoinedSearchAlias(
+  fields: Array<string | undefined>,
+  terms: string[],
+) {
+  const joinedTerms = terms.flatMap(normalizedTerms).join('');
+  return (
+    joinedTerms.length > 0 &&
+    fields.some((field) => field && canonicalSdkAlias(field) === joinedTerms)
   );
 }
 
@@ -44,21 +97,5 @@ export function allSearchTermsMatch(
       [...normalizedTerm].length >= 4 &&
       compactFields.some((field) => field.includes(normalizedTerm))
     );
-  });
-}
-
-export function hasJoinedSearchAlias(
-  fields: Array<string | undefined>,
-  terms: string[],
-) {
-  const normalizedRequiredTerms = terms.flatMap(normalizedTerms);
-  if (normalizedRequiredTerms.length < 2) return true;
-  const joinedTerms = normalizedRequiredTerms.join('');
-
-  return fields.some((field) => {
-    if (!field) return false;
-    return getRequiredApiTaskTerms(normalizedTerms(field))
-      .join('')
-      .includes(joinedTerms);
   });
 }

@@ -656,7 +656,7 @@ function mapDocsHitForRanking(
   const recordKind = getDocsRecordKind(hit, url, breadcrumbs);
   const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
   const apiTaskFields = [plainTitle, plainSection, ...breadcrumbs];
-  const apiTaskTerms = getRequiredApiTaskTerms(intent.terms);
+  const apiTaskTerms = getRequiredApiTaskTerms(intent, { source: 'docs' });
   const allApiTaskTermsMatch = allTermsMatch(apiTaskFields, apiTaskTerms);
   const apiTaskTitleOrSectionSignal = anyTermMatches(
     [plainTitle, plainSection],

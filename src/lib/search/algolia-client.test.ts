@@ -855,74 +855,136 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
-    it.each(['how to renew token', 'please renew token'])(
-      'returns the exact API target for decorated query %s',
+    it.each([
+      'how to renew token',
+      'please renew token',
+      'how do I renew token',
+      'can you please renew token',
+      'we need the renew token API method',
+      'renew token REST API',
+    ])('returns the exact API target for decorated query %s', async (query) => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>renewToken</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                    lvl1: 'renewToken',
+                  },
+                  objectID: `renew-token:${query}`,
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search(query);
+
+      expect(results[0]).toMatchObject({
+        canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
+        id: `renew-token:${query}`,
+      });
+    });
+
+    it.each([
+      'the cloud recording REST API',
+      'show me the cloud recording REST API',
+      'I want the cloud recording REST API',
+      'could you tell me the cloud recording REST API',
+    ])(
+      'keeps semantic REST and API terms for decorated docs query %s',
       async (query) => {
         const searchForHits = vi
           .fn()
-          .mockResolvedValueOnce({ results: [{ hits: [] }] })
           .mockResolvedValueOnce({
             results: [
               {
                 hits: [
-                  apiHit({
-                    _highlightResult: {
-                      hierarchy: {
-                        lvl1: {
-                          matchLevel: 'full',
-                          value: '<mark>renewToken</mark>',
-                        },
-                      },
-                    },
-                    hierarchy: {
-                      lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
-                      lvl1: 'renewToken',
-                    },
-                    objectID: `renew-token:${query}`,
+                  docsHit({
+                    breadcrumbs: ['Cloud Recording'],
+                    objectID: 'cloud-recording-rest-api',
+                    title: 'Cloud Recording RESTful API',
+                    url: '/en/realtime-media/cloud-recording/reference/restful-api',
                   }),
                 ],
               },
             ],
-          });
+          })
+          .mockResolvedValueOnce({ results: [{ hits: [] }] });
         vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
         const client = createClient();
         const results = await client.search(query);
 
         expect(results[0]).toMatchObject({
-          canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
-          id: `renew-token:${query}`,
+          id: 'cloud-recording-rest-api',
+          title: 'Cloud Recording RESTful API',
         });
       },
     );
 
-    it('keeps semantic REST and API terms while ignoring a leading article', async () => {
+    it('rejects real renew-token callbacks around the exact SDK symbol', async () => {
       const searchForHits = vi
         .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
         .mockResolvedValueOnce({
           results: [
             {
               hits: [
-                docsHit({
-                  breadcrumbs: ['Cloud Recording'],
-                  objectID: 'cloud-recording-rest-api',
-                  title: 'Cloud Recording RESTful API',
-                  url: '/en/realtime-media/cloud-recording/reference/restful-api',
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>onRenewTokenResult</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                    lvl1: 'onRenewTokenResult',
+                  },
+                  objectID: 'on-renew-token-result',
+                }),
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>renewToken</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                    lvl1: 'renewToken',
+                  },
+                  objectID: 'renew-token-exact',
                 }),
               ],
             },
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        });
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
-      const results = await client.search('the cloud recording REST API');
+      const results = await client.search('renew token');
 
-      expect(results[0]).toMatchObject({
-        id: 'cloud-recording-rest-api',
-        title: 'Cloud Recording RESTful API',
-      });
+      expect(results.map(({ id }) => id)).toEqual(['renew-token-exact']);
     });
 
     it('does not let the short ID term match inside video', async () => {

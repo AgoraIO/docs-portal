@@ -2,7 +2,7 @@ import type { SearchIntentResult } from './search-intent';
 import {
   allSearchTermsMatch,
   getRequiredApiTaskTerms,
-  hasJoinedSearchAlias,
+  hasExactJoinedSearchAlias,
 } from './search-term-matching';
 
 export type NormalizedApiResult = {
@@ -277,22 +277,11 @@ type ApiUrlIdentity = {
 };
 
 const DOCC_ENUM_LIKE_SUFFIX =
-  /(?:Type|Mode|State|Reason|Code|Scenario|Source|Direction|Preference|Status)$/iu;
-
-function isPageIdentityHash(hash: string, container: string) {
-  if (!hash) return false;
-  const decodedHash = decodeURIComponent(hash.replace(/^#/u, ''));
-  const pageHash = stripDoxygenPagePrefix(decodedHash);
-  return pageHash.kind
-    ? canonicalRootClientAlias(pageHash.name) ===
-        canonicalRootClientAlias(container)
-    : decodedHash.toLowerCase() === container.toLowerCase();
-}
+  /(?:Type|Mode|State|Reason|Code|Scenario|Source|Direction|Preference|Status|Error)$/iu;
 
 function urlIdentity(url: string): ApiUrlIdentity {
   try {
-    const parsedUrl = new URL(url, 'https://api-ref.invalid');
-    const { pathname } = parsedUrl;
+    const { pathname } = new URL(url, 'https://api-ref.invalid');
     const segments = pathname
       .split('/')
       .filter(Boolean)
@@ -331,29 +320,10 @@ function urlIdentity(url: string): ApiUrlIdentity {
             : undefined);
     return {
       container: doxygenPage.name,
-      isMember:
-        Boolean(parsedUrl.hash) &&
-        !isPageIdentityHash(parsedUrl.hash, doxygenPage.name),
       ...(pathKind ? { pageKind: pathKind } : {}),
     };
   } catch {
     return {};
-  }
-}
-
-function supportsSynthesizedTypeDocAnchor(url: string, symbol: string) {
-  try {
-    const pathname = new URL(url, 'https://api-ref.invalid').pathname;
-    const basename = urlBasename(url);
-    if (!pathname.includes('/interfaces/') || !basename) return false;
-    const normalizedSymbol = compact(symbol);
-    const normalizedContainer = compact(basename);
-    return (
-      normalizedSymbol.length > normalizedContainer.length &&
-      normalizedSymbol.endsWith(normalizedContainer)
-    );
-  } catch {
-    return false;
   }
 }
 
@@ -415,6 +385,7 @@ function titleAndSymbol(hit: UnknownRecord, url: string) {
     !levelTwo &&
     !identity.isMember &&
     identity.container &&
+    /^[\p{L}\p{M}\p{N}_]+$/u.test(rawTitle) &&
     canonicalRootClientAlias(rawTitle) ===
       canonicalRootClientAlias(identity.container)
       ? (identity.pageKind ?? 'class')
@@ -449,12 +420,12 @@ function normalizedCandidateFields(hit: unknown) {
 function matchesTerms(fields: string[], intent: SearchIntentResult) {
   const requiredTerms =
     intent.intent === 'api-task'
-      ? getRequiredApiTaskTerms(intent.terms)
+      ? getRequiredApiTaskTerms(intent, { source: 'sdk' })
       : intent.majorTerms;
   return (
     allSearchTermsMatch(fields, requiredTerms) &&
     (intent.intent !== 'api-task' ||
-      hasJoinedSearchAlias(fields, requiredTerms))
+      hasExactJoinedSearchAlias(fields, requiredTerms))
   );
 }
 
@@ -487,7 +458,7 @@ export function normalizeApiHit(
   current?: CurrentVersionInput,
 ): NormalizedApiResult | undefined {
   if (!record(hit)) return undefined;
-  let url = text(hit.url) ?? '';
+  const url = text(hit.url) ?? '';
   if (!isNavigableUrl(url)) return undefined;
   const path = pathSegments(hit);
   const { displayTitle, memberKind, namespace, symbol } = titleAndSymbol(
@@ -495,13 +466,6 @@ export function normalizeApiHit(
     url,
   );
   if (!compact(displayTitle) || !compact(symbol)) return undefined;
-  if (
-    !PAGE_KINDS.has(memberKind) &&
-    !url.includes('#') &&
-    supportsSynthesizedTypeDocAnchor(url, symbol)
-  ) {
-    url = `${url}#${symbol.toLowerCase()}`;
-  }
   const product = text(hit.product);
   const platforms = stringArray(hit.platform).map(normalizePlatform);
   const inferredPlatform = path

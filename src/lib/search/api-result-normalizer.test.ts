@@ -313,13 +313,43 @@ describe('SDK API result normalization', () => {
       },
       intent('RtcEngine'),
     );
+    const sectionPages = ['details', 'pub-methods'].map((hash) =>
+      normalizeValidApiHit(
+        {
+          hierarchy: { lvl1: 'IRtcEngine' },
+          objectID: `doxygen-root-${hash}`,
+          platform: 'android',
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#${hash}`,
+        },
+        intent('RtcEngine'),
+      ),
+    );
+    const explicitMember = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'IRtcEngine' },
+        kind: 'method',
+        objectID: 'doxygen-explicit-member',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#pub-methods',
+      },
+      intent('RtcEngine'),
+    );
 
     expect(classPage.canonicalKey).toBe('video-sdk|rtcengine|class');
     expect(identityHashPage.canonicalKey).toBe('video-sdk|rtcengine|class');
+    expect(sectionPages.map(({ canonicalKey }) => canonicalKey)).toEqual([
+      'video-sdk|rtcengine|class',
+      'video-sdk|rtcengine|class',
+    ]);
     expect(destructor).toMatchObject({
       canonicalKey: 'video-sdk|rtcengine|irtcengine|member',
       url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#member-anchor',
     });
+    expect(explicitMember.canonicalKey).toBe(
+      'video-sdk|rtcengine|irtcengine|method',
+    );
   });
 
   it('normalizes bare DocC enum-like types without treating every type as a class', () => {
@@ -377,6 +407,41 @@ describe('SDK API result normalization', () => {
     );
     expect(explicitDoccClass.canonicalKey).toBe('video-sdk|rtcengine|class');
   });
+
+  it.each(['AgoraChannelMediaRelayError', 'AgoraDirectCdnStreamingError'])(
+    'aggregates real Doxygen and DocC Error enum %s',
+    (symbol) => {
+      const normalizedSymbol = symbol.toLowerCase();
+      const doxygenEnum = normalizeValidApiHit(
+        {
+          hierarchy: { lvl1: symbol },
+          objectID: `android-${normalizedSymbol}`,
+          platform: 'android',
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_${normalizedSymbol}.html`,
+        },
+        intent(symbol),
+      );
+      const doccEnum = normalizeValidApiHit(
+        {
+          hierarchy: { lvl1: symbol },
+          objectID: `ios-${normalizedSymbol}`,
+          platform: 'ios',
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/${normalizedSymbol}`,
+        },
+        intent(symbol),
+      );
+
+      expect(doccEnum.canonicalKey).toBe(doxygenEnum.canonicalKey);
+      expect(aggregateApiResults([doxygenEnum, doccEnum])).toEqual([
+        expect.objectContaining({
+          canonicalKey: `video-sdk|${normalizedSymbol}|enum`,
+          platforms: ['android', 'ios'],
+        }),
+      ]);
+    },
+  );
 
   it('does not canonicalize similar non-root class names', () => {
     const create = (className: string) =>
@@ -521,7 +586,7 @@ describe('SDK API result normalization', () => {
     );
   });
 
-  it('adds missing member anchors and preserves existing anchors', () => {
+  it('preserves anchorless fallback URLs and existing member anchors', () => {
     const base = {
       hierarchy: {
         lvl1: 'Interface NetworkQuality',
@@ -538,9 +603,7 @@ describe('SDK API result normalization', () => {
         },
         intent('uplinkNetworkQuality'),
       ).url,
-    ).toBe(
-      'https://api-ref.agora.io/interfaces/networkquality.html#uplinknetworkquality',
-    );
+    ).toBe('https://api-ref.agora.io/interfaces/networkquality.html');
     expect(
       normalizeValidApiHit(
         {
@@ -553,9 +616,7 @@ describe('SDK API result normalization', () => {
         },
         intent('foo_barNetworkQuality'),
       ).url,
-    ).toBe(
-      'https://api-ref.agora.io/interfaces/networkquality.html#foo_barnetworkquality',
-    );
+    ).toBe('https://api-ref.agora.io/interfaces/networkquality.html');
     expect(
       normalizeValidApiHit(
         {
@@ -873,14 +934,18 @@ describe('SDK API admission', () => {
     ).toBe(false);
   });
 
-  it.each(['how to renew token', 'please renew token'])(
-    'ignores natural-language decoration when admitting %s',
-    (query) => {
-      expect(admitApiHit(currentAndroidRenewToken, intent(query), false)).toBe(
-        true,
-      );
-    },
-  );
+  it.each([
+    'how to renew token',
+    'please renew token',
+    'how do I renew token',
+    'can you please renew token',
+    'we need the renew token API method',
+    'renew token REST API',
+  ])('ignores natural-language decoration when admitting %s', (query) => {
+    expect(admitApiHit(currentAndroidRenewToken, intent(query), false)).toBe(
+      true,
+    );
+  });
 
   it('does not let a short query token match inside a longer API token', () => {
     expect(
@@ -896,6 +961,24 @@ describe('SDK API admission', () => {
       ),
     ).toBe(false);
   });
+
+  it.each(['onRenewTokenResult', 'preRenewToken', 'renewTokenExpired'])(
+    'requires an exact SDK alias instead of admitting %s',
+    (callback) => {
+      expect(
+        admitApiHit(
+          {
+            hierarchy: { lvl1: callback },
+            objectID: callback,
+            product: 'video-sdk',
+            url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html',
+          },
+          intent('renew token'),
+          false,
+        ),
+      ).toBe(false);
+    },
+  );
 
   it('allows an explicitly selected API scope to bypass natural-language gating', () => {
     const hit = {
