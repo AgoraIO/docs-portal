@@ -822,15 +822,24 @@ export function RecipesCatalog({
     ],
     [allCategoriesLabel, items],
   );
+  const sdkItems = useMemo(
+    () =>
+      activeProduct === allProductsLabel
+        ? items
+        : items.filter((item) => item.product === activeProduct),
+    [activeProduct, allProductsLabel, items],
+  );
   const sdks = useMemo(
     () =>
       sdkFallback
         ? [
             sdkFallback,
-            ...getUniqueValues(items.map((item) => item.sdk).filter(Boolean)),
+            ...getUniqueValues(
+              sdkItems.map((item) => item.sdk).filter(Boolean),
+            ),
           ]
         : [],
-    [items, sdkFallback],
+    [sdkFallback, sdkItems],
   );
   const stacks = useMemo(
     () => [
@@ -931,6 +940,24 @@ export function RecipesCatalog({
     }));
   }, [filteredItems]);
 
+  function selectProduct(product: string) {
+    setActiveProduct(product);
+
+    if (!sdkFallback || activeSdk === sdkFallback) {
+      return;
+    }
+
+    const productSupportsActiveSdk = items.some(
+      (item) =>
+        (product === allProductsLabel || item.product === product) &&
+        item.sdk === activeSdk,
+    );
+
+    if (!productSupportsActiveSdk) {
+      setActiveSdk(sdkFallback);
+    }
+  }
+
   return (
     <section className="not-prose my-8">
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -964,7 +991,7 @@ export function RecipesCatalog({
         <RecipesCatalogFilterGroup
           activeValue={activeProduct}
           label={productFilterLabel}
-          onSelect={setActiveProduct}
+          onSelect={selectProduct}
           values={products}
         />
         {sdkFilterLabel && sdkFallback && sdks.length > 1 ? (
@@ -1022,10 +1049,7 @@ export function RecipesCatalog({
                       actions={item.links}
                       description={item.description}
                       href={item.href}
-                      key={
-                        item.href ??
-                        `${item.product}-${item.stack ?? item.title}`
-                      }
+                      key={recipeCatalogItemKey(item)}
                       size="small"
                       showDescription={showDescription}
                       tags={
@@ -1055,7 +1079,7 @@ export function RecipesCatalog({
                 actions={item.links}
                 description={item.description}
                 href={item.href}
-                key={item.href ?? `${item.product}-${item.stack ?? item.title}`}
+                key={recipeCatalogItemKey(item)}
                 size="small"
                 showDescription={showDescription}
                 tags={
@@ -1457,6 +1481,13 @@ function getUniqueValues(values: Array<string | undefined>) {
   return [
     ...new Set(values.filter((value): value is string => Boolean(value))),
   ];
+}
+
+function recipeCatalogItemKey(item: RecipeCatalogItem) {
+  return (
+    item.href ??
+    [item.product, item.sdk, item.stack, item.title].filter(Boolean).join('|')
+  );
 }
 
 function getInitialRecipeProduct(

@@ -9,7 +9,7 @@ import {
 import type { ComponentType, ReactNode } from 'react';
 import { hydrateRoot } from 'react-dom/client';
 import { renderToString } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
@@ -1002,6 +1002,119 @@ describe('overview MDX components', () => {
       screen.queryByRole('link', { name: /Voice SDK for Android/i }),
     ).not.toBeInTheDocument();
     expect(window.location.search).toBe(initialSearch);
+  });
+
+  it('clears an unavailable SDK variant when switching products', () => {
+    window.history.pushState(
+      null,
+      '',
+      '/api-ref?product=realtime-communication&sdk=voice',
+    );
+
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allSdksLabel="All SDKs"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android.',
+            href: '/voice-android',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
+            stack: 'Android',
+            title: 'Voice SDK for Android',
+          },
+          {
+            category: 'Hosted SDK reference',
+            description: 'Signaling SDK for Android.',
+            href: '/signaling-android',
+            product: 'Signaling',
+            stack: 'Android',
+            title: 'Signaling Android',
+          },
+        ]}
+        productFilterLabel="Product"
+        productQueryParam="product"
+        searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    const initialSearch = window.location.search;
+
+    fireEvent.click(screen.getByRole('button', { name: 'Signaling' }));
+
+    expect(
+      screen.queryByRole('group', { name: 'SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Signaling Android/i }),
+    ).toBeVisible();
+    expect(window.location.search).toBe(initialSearch);
+  });
+
+  it('keeps same-platform SDK variant card keys unique', () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    try {
+      render(
+        <RecipesCatalog
+          allCategoriesLabel="All reference types"
+          allProductsLabel="All products"
+          allSdksLabel="All SDKs"
+          allStacksLabel="All platforms"
+          categoryFilterLabel="Reference type"
+          clearFiltersLabel="Clear filters"
+          emptyMessage="No references match the current filters."
+          groupByProduct={true}
+          items={[
+            {
+              category: 'Hosted SDK reference',
+              description: 'Voice SDK for Android.',
+              product: 'Realtime Communication',
+              sdk: 'Voice SDK',
+              stack: 'Android',
+              title: 'Voice SDK for Android',
+            },
+            {
+              category: 'Hosted SDK reference',
+              description: 'RTC SDK for Android.',
+              product: 'Realtime Communication',
+              sdk: 'RTC SDK',
+              stack: 'Android',
+              title: 'RTC SDK for Android',
+            },
+          ]}
+          productFilterLabel="Product"
+          searchPlaceholder="Search references"
+          sdkFilterLabel="SDK"
+          stackFilterLabel="Platform"
+        />,
+      );
+
+      expect(
+        consoleError.mock.calls.some(([message]) =>
+          String(message).includes('same key'),
+        ),
+      ).toBe(false);
+    } finally {
+      consoleError.mockRestore();
+    }
   });
 
   it.each([
