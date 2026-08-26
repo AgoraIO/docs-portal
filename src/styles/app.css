@@ -1092,6 +1092,33 @@
     width: min(100%, 1120px);
   }
 
+  .openapi-field-row:has(button) .openapi-field-main {
+    background: color-mix(in srgb, var(--color-fd-muted) 18%, transparent);
+  }
+
+  .openapi-field-row .openapi-field-anchor {
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  .openapi-field-row:hover .openapi-field-anchor,
+  .openapi-field-row:focus-within .openapi-field-anchor,
+  .openapi-field-row:target .openapi-field-anchor,
+  .openapi-field-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .openapi-field-details:empty {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .openapi-field-row .openapi-field-anchor,
+    .openapi-field-control-gutter svg {
+      transition: none;
+    }
+  }
+
   .openapi-operation :where(h2, h3, h4) {
     letter-spacing: 0;
   }
