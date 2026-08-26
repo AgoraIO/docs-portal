@@ -40,6 +40,7 @@ import {
   buildOpenApiSchemaRows,
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
+import { OpenApiCodePreview } from './OpenApiCodePreview';
 import {
   type OpenApiFieldRequiredState,
   OpenApiFieldRow,
@@ -434,7 +435,12 @@ function OpenApiRightExamplesLayout({
         title={getOpenApiLabel('Request examples', locale)}
       >
         {hasGroupedSamples ? null : slots.selector}
-        {slots.usageTabs}
+        <OpenApiCodePreview
+          resetKey={getOpenApiCodePreviewResetKey(operation)}
+          wrapLabel={isZhCnLocale(locale) ? '自动换行' : 'Wrap lines'}
+        >
+          {slots.usageTabs}
+        </OpenApiCodePreview>
       </OpenApiRightSection>
       <OpenApiRightSection
         className="openapi-response-example"
@@ -444,6 +450,10 @@ function OpenApiRightExamplesLayout({
       </OpenApiRightSection>
     </div>
   );
+}
+
+function getOpenApiCodePreviewResetKey(operation?: OpenApiOperation) {
+  return getString(operation?.operationId) ?? operation?.__path ?? '';
 }
 
 function OpenApiRightSection({

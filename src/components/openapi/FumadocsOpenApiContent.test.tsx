@@ -19,6 +19,46 @@ type Document = Extract<
 >['payload']['bundled'];
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
+function codePreviewPageProps({
+  operationId,
+  path,
+}: {
+  operationId?: string;
+  path: string;
+}) {
+  return {
+    operations: [{ method: 'get', path }],
+    payload: {
+      bundled: {
+        info: { title: 'Code Preview API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            get: {
+              ...(operationId ? { operationId } : {}),
+              responses: {
+                '200': {
+                  content: {
+                    'application/json': { example: { ok: true } },
+                  },
+                  description: 'OK',
+                },
+              },
+              'x-codeSamples': [
+                {
+                  lang: 'bash',
+                  label: 'curl',
+                  source: `curl https://example.com${path}`,
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  } as unknown as OpenAPIPageProps;
+}
+
 describe('FumadocsOpenApiContent', () => {
   it('renders one English response body accordion with status-local headers', async () => {
     render(
@@ -324,6 +364,15 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    const generatedPreview = screen.getByTestId('openapi-code-preview');
+    expect(
+      within(generatedPreview).getByRole('button', { name: 'Wrap lines' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(
+      within(generatedPreview)
+        .getByRole('tabpanel')
+        .querySelector('.fd-scroll-container'),
+    ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(
       screen
         .getByRole('tab', { name: 'cURL' })
@@ -420,8 +469,22 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
+    const preview = examplesScope.getByTestId('openapi-code-preview');
+    const wrapButton = within(preview).getByRole('button', {
+      name: 'Wrap lines',
+    });
+    expect(
+      within(preview)
+        .getByRole('tabpanel')
+        .querySelector('.fd-scroll-container'),
+    ).toHaveAttribute('data-openapi-code-viewport', '');
+    expect(
+      screen.getByText('Response example').closest('.openapi-response-example'),
+    ).not.toContainElement(preview);
+    fireEvent.click(wrapButton);
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
     expect(examplesScope.getByText('import requests')).toBeInTheDocument();
+    expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
     expect(
       examplesScope.getByText('fetch("https://example.com/join")'),
@@ -434,6 +497,34 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.queryByRole('tab', { name: 'Go' })).not.toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'Java' })).not.toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'C#' })).not.toBeInTheDocument();
+  });
+
+  it('resets request wrapping when the rendered endpoint changes', async () => {
+    const { rerender } = render(
+      <FumadocsOpenApiContent
+        pageProps={codePreviewPageProps({
+          path: '/first',
+        })}
+      />,
+    );
+    const wrapButton = await screen.findByRole('button', {
+      name: 'Wrap lines',
+    });
+    fireEvent.click(wrapButton);
+    expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
+
+    rerender(
+      <FumadocsOpenApiContent
+        pageProps={codePreviewPageProps({
+          path: '/second',
+        })}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Wrap lines' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
   });
 
   it('renders authorization from global security and hides auth header parameters', async () => {
@@ -2327,6 +2418,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
+    const wrapButton = within(
+      examplesScope.getByTestId('openapi-code-preview'),
+    ).getByRole('button', { name: 'Wrap lines' });
+    fireEvent.click(wrapButton);
+    expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
 
     fireEvent.change(examplesScope.getByLabelText('Request example scenario'), {
       target: {
@@ -2343,6 +2439,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).not.toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
+    expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),

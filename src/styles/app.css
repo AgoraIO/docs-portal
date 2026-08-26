@@ -1335,10 +1335,28 @@
     font-size: 0.86em;
   }
 
-  .openapi-operation
-    .openapi-request-examples
-    [role="region"].fd-scroll-container {
-    max-height: min(20vh, 11rem) !important;
+  [data-openapi-code-viewport] {
+    max-block-size: min(20vh, 11rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .openapi-code-preview[data-wrap-lines="true"]
+    [data-openapi-code-viewport]
+    :is(pre, pre code, .line) {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] {
+    overflow-x: hidden;
+  }
+
+  @container (max-width: 58.999rem) {
+    [data-openapi-code-viewport] {
+      max-block-size: min(50dvh, 24rem);
+    }
   }
 
   @media (max-width: 48rem) {

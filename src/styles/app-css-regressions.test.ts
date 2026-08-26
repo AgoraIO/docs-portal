@@ -76,6 +76,26 @@ function getRuleBodyContaining(selectorPart: string) {
   };
 }
 
+function getRuleBodyOutsideContainer(selector: string) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelector = normalizeSelector(selector);
+
+  appCssRoot.walkRules((candidate) => {
+    if (
+      normalizeSelector(candidate.selector) === normalizedSelector &&
+      !(
+        candidate.parent?.type === 'atrule' &&
+        candidate.parent.name === 'container'
+      )
+    ) {
+      rule = candidate;
+    }
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
 function getRuleBodyContainingInMedia(
   selectorPart: string,
   mediaQuery: string,
@@ -86,6 +106,29 @@ function getRuleBodyContainingInMedia(
   appCssRoot.walkAtRules('media', (media) => {
     if (!media.params.includes(mediaQuery)) return;
     media.walkRules((candidate) => {
+      if (
+        !rule &&
+        normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
+      ) {
+        rule = candidate;
+      }
+    });
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
+function getRuleBodyContainingInContainer(
+  selectorPart: string,
+  containerQuery: string,
+) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkAtRules('container', (container) => {
+    if (!container.params.includes(containerQuery)) return;
+    container.walkRules((candidate) => {
       if (
         !rule &&
         normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
@@ -921,6 +964,42 @@ describe('app prose CSS regressions', () => {
         prop: 'background',
         value: 'color-mix(in srgb, var(--ink-1) 38%, transparent)',
       }),
+    );
+  });
+
+  it('caps only marked OpenAPI code viewports and supports opt-in wrapping', () => {
+    const viewport = getRuleBodyOutsideContainer(
+      '[data-openapi-code-viewport]',
+    );
+    const wrapContent = getRuleBody(
+      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] :is(pre, pre code, .line)',
+    );
+    const wrapViewport = getRuleBody(
+      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',
+    );
+    const mobileViewport = getRuleBodyContainingInContainer(
+      '[data-openapi-code-viewport]',
+      '58.999rem',
+    );
+
+    expect(appCss).not.toContain(
+      '.openapi-request-examples\n    [role="region"].fd-scroll-container',
+    );
+    expectDeclaration(viewport.rule, 'max-block-size', 'min(20vh, 11rem)');
+    expectDeclaration(viewport.rule, 'overflow', 'auto');
+    expectDeclaration(viewport.rule, 'overscroll-behavior', 'contain');
+    expectDeclaration(wrapContent.rule, 'white-space', 'pre-wrap');
+    expectDeclaration(wrapContent.rule, 'overflow-wrap', 'anywhere');
+    expectDeclaration(wrapContent.rule, 'word-break', 'break-word');
+    expectDeclaration(wrapViewport.rule, 'overflow-x', 'hidden');
+    expectDeclaration(
+      mobileViewport.rule,
+      'max-block-size',
+      'min(50dvh, 24rem)',
+    );
+    expect(mobileViewport.rule.parent?.type).toBe('atrule');
+    expect((mobileViewport.rule.parent as postcss.AtRule).name).toBe(
+      'container',
     );
   });
 });
