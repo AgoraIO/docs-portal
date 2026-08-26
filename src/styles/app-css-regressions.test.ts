@@ -26,6 +26,10 @@ function expectDeclaration(
   prop: string,
   expectedValue: string,
 ) {
+  const expectedImportant = expectedValue.endsWith(' !important');
+  const normalizedExpectedValue = expectedImportant
+    ? expectedValue.slice(0, -' !important'.length)
+    : expectedValue;
   const declaration = rule.nodes.find(
     (node): node is postcss.Declaration =>
       node.type === 'decl' && node.prop === prop,
@@ -33,8 +37,9 @@ function expectDeclaration(
 
   expect(declaration).toBeDefined();
   expect(normalizeDeclarationValue(declaration?.value ?? '')).toBe(
-    normalizeDeclarationValue(expectedValue),
+    normalizeDeclarationValue(normalizedExpectedValue),
   );
+  expect(declaration?.important ?? false).toBe(expectedImportant);
 }
 
 function getRuleBody(selector: string) {
@@ -968,11 +973,11 @@ describe('app prose CSS regressions', () => {
   });
 
   it('caps only marked OpenAPI code viewports and supports opt-in wrapping', () => {
-    const viewport = getRuleBodyOutsideContainer(
-      '[data-openapi-code-viewport]',
+    const viewport = getRuleBodyContaining(
+      '.openapi-code-preview [data-openapi-code-viewport]',
     );
-    const wrapContent = getRuleBody(
-      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] :is(pre, pre code, pre code span, .line)',
+    const wrapContent = getRuleBodyContaining(
+      '.openapi-code-preview[data-wrap-lines="true"]',
     );
     const wrapViewport = getRuleBody(
       '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',
@@ -985,21 +990,51 @@ describe('app prose CSS regressions', () => {
     expect(appCss).not.toContain(
       '.openapi-request-examples\n    [role="region"].fd-scroll-container',
     );
-    expectDeclaration(viewport.rule, 'max-block-size', 'min(20vh, 11rem)');
+    expectDeclaration(
+      viewport.rule,
+      'max-block-size',
+      'min(20vh, 11rem) !important',
+    );
     expectDeclaration(viewport.rule, 'overflow', 'auto');
     expectDeclaration(viewport.rule, 'overscroll-behavior', 'contain');
     expectDeclaration(wrapContent.rule, 'white-space', 'pre-wrap');
     expectDeclaration(wrapContent.rule, 'overflow-wrap', 'anywhere');
     expectDeclaration(wrapContent.rule, 'word-break', 'break-word');
-    expectDeclaration(wrapViewport.rule, 'overflow-x', 'hidden');
+    expectDeclaration(wrapViewport.rule, 'overflow-x', 'hidden !important');
     expectDeclaration(
       mobileViewport.rule,
       'max-block-size',
-      'min(50dvh, 24rem)',
+      'min(50dvh, 24rem) !important',
     );
     expect(mobileViewport.rule.parent?.type).toBe('atrule');
     expect((mobileViewport.rule.parent as postcss.AtRule).name).toBe(
       'container',
+    );
+  });
+
+  it('lets wrapped OpenAPI code defeat Fumadocs width and height utilities', () => {
+    const wrappedCode = getRuleBodyContaining(
+      '.openapi-code-preview[data-wrap-lines="true"]',
+    );
+    const wrappedViewport = getRuleBody(
+      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',
+    );
+
+    expect(wrappedCode.rule.parent?.type).toBe('root');
+    expectDeclaration(wrappedCode.rule, 'width', 'auto');
+    expectDeclaration(wrappedCode.rule, 'max-width', '100%');
+    expectDeclaration(wrappedCode.rule, 'min-width', '0');
+    expectDeclaration(wrappedCode.rule, 'white-space', 'pre-wrap');
+    expectDeclaration(wrappedCode.rule, 'overflow-wrap', 'anywhere');
+    expectDeclaration(wrappedCode.rule, 'overflow-x', 'hidden');
+    expectDeclaration(wrappedViewport.rule, 'overflow-x', 'hidden !important');
+    const baseViewport = getRuleBodyOutsideContainer(
+      '.openapi-code-preview [data-openapi-code-viewport]',
+    );
+    expectDeclaration(
+      baseViewport.rule,
+      'max-block-size',
+      'min(20vh, 11rem) !important',
     );
   });
 });

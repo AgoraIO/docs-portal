@@ -497,6 +497,11 @@ describe('FumadocsOpenApiContent', () => {
         .getByRole('tabpanel')
         .querySelector('.fd-scroll-container'),
     ).toHaveAttribute('data-openapi-code-viewport', '');
+    const viewport = within(preview)
+      .getByRole('tabpanel')
+      .querySelector('.fd-scroll-container');
+    expect(viewport).toHaveClass('fd-scroll-container', 'max-h-[600px]');
+    expect(viewport?.querySelector('pre')).toHaveClass('min-w-full', 'w-max');
     expect(
       screen.getByText('Response example').closest('.openapi-response-example'),
     ).not.toContainElement(preview);
