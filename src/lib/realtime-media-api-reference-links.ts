@@ -6,8 +6,8 @@ export type RealtimeMediaApiReferenceLinks = {
 
 const GENERIC_SDK_API_REFERENCE_URL = '/en/api-reference/api-ref';
 
-function sdkCatalogUrl(product: string) {
-  return `${GENERIC_SDK_API_REFERENCE_URL}?product=${product}`;
+function sdkCatalogUrl(product: string, sdk?: string) {
+  return `${GENERIC_SDK_API_REFERENCE_URL}?product=${product}${sdk ? `&sdk=${sdk}` : ''}`;
 }
 
 export const realtimeMediaApiReferenceLinks = [
@@ -19,7 +19,7 @@ export const realtimeMediaApiReferenceLinks = [
   {
     productSlug: 'voice',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: sdkCatalogUrl('realtime-communication-voice-only'),
+    sdkUrl: sdkCatalogUrl('realtime-communication', 'voice'),
   },
   {
     productSlug: 'video',
@@ -122,7 +122,7 @@ export function getRealtimeMediaApiReferenceLinks(
   ) {
     return {
       ...links,
-      sdkUrl: sdkCatalogUrl('realtime-communication-voice-only'),
+      sdkUrl: sdkCatalogUrl('realtime-communication', 'voice'),
     };
   }
 

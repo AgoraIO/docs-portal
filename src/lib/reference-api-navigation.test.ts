@@ -10,7 +10,7 @@ const docsRoot = path.join(process.cwd(), 'content', 'docs');
 const sdkApiReference = '/en/api-reference/api-ref';
 const sdkProductFilters = {
   rtc: 'realtime-communication',
-  voice: 'realtime-communication-voice-only',
+  voice: 'realtime-communication',
   video: 'realtime-communication',
   'broadcast-streaming': 'realtime-communication',
   'interactive-live-streaming': 'realtime-communication',
@@ -22,9 +22,17 @@ const sdkProductFilters = {
   'on-premise-recording': 'on-premise-recording',
   'rtc-server-sdk': 'server-gateway',
 } as const;
+const sdkVariantFilters = {
+  voice: 'voice',
+} as const;
 
 function sdkCatalogUrl(product: keyof typeof sdkProductFilters) {
-  return `${sdkApiReference}?product=${sdkProductFilters[product]}`;
+  const sdkVariant =
+    product in sdkVariantFilters
+      ? sdkVariantFilters[product as keyof typeof sdkVariantFilters]
+      : null;
+
+  return `${sdkApiReference}?product=${sdkProductFilters[product]}${sdkVariant ? `&sdk=${sdkVariant}` : ''}`;
 }
 
 const sdkAndRestProducts = {
@@ -105,6 +113,21 @@ function routeExists(href: string) {
 }
 
 describe('product API reference navigation', () => {
+  it('models Voice SDK as a Realtime Communication SDK variant', () => {
+    const catalog = readFileSync(
+      path.join(docsRoot, 'en', 'api-reference', 'api-ref', 'index.mdx'),
+      'utf8',
+    );
+
+    expect(catalog).not.toContain('"Realtime Communication (Voice only)"');
+    expect(catalog).not.toContain(
+      'product: "Realtime Communication (Voice only)"',
+    );
+    expect(catalog).toContain('sdk: "Voice SDK"');
+    expect(catalog).toContain('sdk: "RTC SDK"');
+    expect(catalog).toContain('sdkQueryParam="sdk"');
+  });
+
   it('classifies every realtime media product with reference metadata', () => {
     const realtimeMediaRoot = path.join(docsRoot, 'en', 'realtime-media');
     const actualProducts = readdirSync(realtimeMediaRoot, {

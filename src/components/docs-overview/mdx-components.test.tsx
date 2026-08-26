@@ -112,6 +112,7 @@ type OverviewSpotlightCardComponent = ComponentType<{
 type RecipesCatalogComponent = ComponentType<{
   allCategoriesLabel: string;
   allProductsLabel: string;
+  allSdksLabel?: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
   clearFiltersLabel: string;
@@ -126,6 +127,7 @@ type RecipesCatalogComponent = ComponentType<{
       label: string;
     }>;
     product: string;
+    sdk?: string;
     stack?: string;
     tags?: string[];
     title: string;
@@ -142,6 +144,8 @@ type RecipesCatalogComponent = ComponentType<{
   productFilterLabel: string;
   productQueryParam?: string;
   searchPlaceholder: string;
+  sdkFilterLabel?: string;
+  sdkQueryParam?: string;
   showCategoryFilter?: boolean;
   showDescription?: boolean;
   showTags?: boolean;
@@ -710,11 +714,11 @@ describe('overview MDX components', () => {
     expect(screen.queryByText('Reference type')).toBeNull();
   });
 
-  it('uses a kebab-case product query as the initial product filter', () => {
+  it('uses product and SDK queries as initial filters for unified RTC', () => {
     window.history.pushState(
       null,
       '',
-      '/api-ref?product=realtime-communication-voice-only',
+      '/api-ref?product=realtime-communication&sdk=voice',
     );
 
     const components = getOverviewMDXComponents();
@@ -724,6 +728,7 @@ describe('overview MDX components', () => {
       <RecipesCatalog
         allCategoriesLabel="All reference types"
         allProductsLabel="All products"
+        allSdksLabel="All SDKs"
         allStacksLabel="All platforms"
         categoryFilterLabel="Reference type"
         clearFiltersLabel="Clear filters"
@@ -733,34 +738,47 @@ describe('overview MDX components', () => {
             category: 'Hosted SDK reference',
             description: 'Voice-only SDK for Android.',
             href: '/voice-android',
-            product: 'Realtime Communication (Voice only)',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
             stack: 'Android',
-            title: 'Voice Android',
+            title: 'Voice SDK for Android',
           },
           {
             category: 'Hosted SDK reference',
             description: 'RTC SDK for Android.',
             href: '/rtc-android',
             product: 'Realtime Communication',
+            sdk: 'RTC SDK',
             stack: 'Android',
-            title: 'RTC Android',
+            title: 'RTC SDK for Android',
           },
         ]}
         productFilterLabel="Product"
         productQueryParam="product"
         searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
         stackFilterLabel="Platform"
       />,
     );
 
     expect(
-      screen.getByRole('button', {
+      screen.getByRole('button', { name: 'Realtime Communication' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Voice SDK' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(
+      screen.queryByRole('button', {
         name: 'Realtime Communication (Voice only)',
       }),
-    ).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('link', { name: /Voice Android/i })).toBeVisible();
+    ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('link', { name: /RTC Android/i }),
+      screen.getByRole('link', { name: /Voice SDK for Android/i }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('link', { name: /RTC SDK for Android/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -768,7 +786,7 @@ describe('overview MDX components', () => {
     window.history.pushState(
       null,
       '',
-      '/api-ref?product=realtime-communication-voice-only',
+      '/api-ref?product=realtime-communication&sdk=voice',
     );
 
     const components = getOverviewMDXComponents();
@@ -777,6 +795,7 @@ describe('overview MDX components', () => {
       <RecipesCatalog
         allCategoriesLabel="All reference types"
         allProductsLabel="All products"
+        allSdksLabel="All SDKs"
         allStacksLabel="All platforms"
         categoryFilterLabel="Reference type"
         clearFiltersLabel="Clear filters"
@@ -786,22 +805,26 @@ describe('overview MDX components', () => {
             category: 'Hosted SDK reference',
             description: 'Voice-only SDK for Android.',
             href: '/voice-android',
-            product: 'Realtime Communication (Voice only)',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
             stack: 'Android',
-            title: 'Voice Android',
+            title: 'Voice SDK for Android',
           },
           {
             category: 'Hosted SDK reference',
             description: 'RTC SDK for Android.',
             href: '/rtc-android',
             product: 'Realtime Communication',
+            sdk: 'RTC SDK',
             stack: 'Android',
-            title: 'RTC Android',
+            title: 'RTC SDK for Android',
           },
         ]}
         productFilterLabel="Product"
         productQueryParam="product"
         searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
         stackFilterLabel="Platform"
       />
     );
@@ -824,8 +847,8 @@ describe('overview MDX components', () => {
       }
     }
 
-    expect(serverHtml).toContain('Voice Android');
-    expect(serverHtml).toContain('RTC Android');
+    expect(serverHtml).toContain('Voice SDK for Android');
+    expect(serverHtml).toContain('RTC SDK for Android');
 
     const container = document.createElement('div');
     const recoverableErrors: unknown[] = [];
@@ -841,18 +864,144 @@ describe('overview MDX components', () => {
       await waitFor(() => {
         expect(
           within(container).getByRole('button', {
-            name: 'Realtime Communication (Voice only)',
+            name: 'Realtime Communication',
           }),
+        ).toHaveAttribute('aria-pressed', 'true');
+        expect(
+          within(container).getByRole('button', { name: 'Voice SDK' }),
         ).toHaveAttribute('aria-pressed', 'true');
       });
       expect(
-        within(container).queryByRole('link', { name: /RTC Android/i }),
+        within(container).queryByRole('link', {
+          name: /RTC SDK for Android/i,
+        }),
       ).not.toBeInTheDocument();
       expect(recoverableErrors).toEqual([]);
     } finally {
       act(() => root.unmount());
       container.remove();
     }
+  });
+
+  it('falls back to all SDKs for an unknown SDK query', () => {
+    window.history.pushState(
+      null,
+      '',
+      '/api-ref?product=realtime-communication&sdk=unknown',
+    );
+
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allSdksLabel="All SDKs"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android.',
+            href: '/voice-android',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
+            stack: 'Android',
+            title: 'Voice SDK for Android',
+          },
+          {
+            category: 'Hosted SDK reference',
+            description: 'RTC SDK for Android.',
+            href: '/rtc-android',
+            product: 'Realtime Communication',
+            sdk: 'RTC SDK',
+            stack: 'Android',
+            title: 'RTC SDK for Android',
+          },
+        ]}
+        productFilterLabel="Product"
+        productQueryParam="product"
+        searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'All SDKs' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(
+      screen.getByRole('link', { name: /Voice SDK for Android/i }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /RTC SDK for Android/i }),
+    ).toBeVisible();
+  });
+
+  it('keeps SDK filter changes local without rewriting the deep link', () => {
+    window.history.pushState(
+      null,
+      '',
+      '/api-ref?product=realtime-communication&sdk=voice',
+    );
+
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allSdksLabel="All SDKs"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android.',
+            href: '/voice-android',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
+            stack: 'Android',
+            title: 'Voice SDK for Android',
+          },
+          {
+            category: 'Hosted SDK reference',
+            description: 'RTC SDK for Android.',
+            href: '/rtc-android',
+            product: 'Realtime Communication',
+            sdk: 'RTC SDK',
+            stack: 'Android',
+            title: 'RTC SDK for Android',
+          },
+        ]}
+        productFilterLabel="Product"
+        productQueryParam="product"
+        searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    const initialSearch = window.location.search;
+
+    fireEvent.click(screen.getByRole('button', { name: 'RTC SDK' }));
+
+    expect(
+      screen.getByRole('link', { name: /RTC SDK for Android/i }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('link', { name: /Voice SDK for Android/i }),
+    ).not.toBeInTheDocument();
+    expect(window.location.search).toBe(initialSearch);
   });
 
   it.each([

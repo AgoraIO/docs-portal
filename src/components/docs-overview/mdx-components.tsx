@@ -624,6 +624,7 @@ export type RecipeCatalogItem = {
   href?: string;
   links?: RecipeCatalogItemLink[];
   product: string;
+  sdk?: string;
   stack?: string;
   tags?: string[];
   title: string;
@@ -733,6 +734,7 @@ function SolutionCard({
 export function RecipesCatalog({
   allCategoriesLabel,
   allProductsLabel,
+  allSdksLabel,
   allStacksLabel,
   categoryFilterLabel,
   clearFiltersLabel,
@@ -743,6 +745,8 @@ export function RecipesCatalog({
   productFilterLabel,
   productQueryParam,
   searchPlaceholder,
+  sdkFilterLabel,
+  sdkQueryParam,
   showCategoryFilter = true,
   showDescription = true,
   showTags = true,
@@ -751,6 +755,7 @@ export function RecipesCatalog({
 }: {
   allCategoriesLabel: string;
   allProductsLabel: string;
+  allSdksLabel?: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
   clearFiltersLabel: string;
@@ -761,6 +766,8 @@ export function RecipesCatalog({
   productFilterLabel: string;
   productQueryParam?: string;
   searchPlaceholder: string;
+  sdkFilterLabel?: string;
+  sdkQueryParam?: string;
   showCategoryFilter?: boolean;
   showDescription?: boolean;
   showTags?: boolean;
@@ -770,6 +777,9 @@ export function RecipesCatalog({
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
   const hasInitializedProductFromQuery = useRef(false);
+  const sdkFallback = allSdksLabel ?? '';
+  const [activeSdk, setActiveSdk] = useState(sdkFallback);
+  const hasInitializedSdkFromQuery = useRef(false);
   const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
   const initialStack = useMemo(
     () => getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
@@ -789,6 +799,15 @@ export function RecipesCatalog({
     );
   }, [allProductsLabel, items, productQueryParam]);
 
+  useEffect(() => {
+    if (hasInitializedSdkFromQuery.current) {
+      return;
+    }
+
+    hasInitializedSdkFromQuery.current = true;
+    setActiveSdk(getInitialRecipeSdk(items, sdkFallback, sdkQueryParam));
+  }, [items, sdkFallback, sdkQueryParam]);
+
   const products = useMemo(
     () => [
       allProductsLabel,
@@ -802,6 +821,16 @@ export function RecipesCatalog({
       ...getUniqueValues(items.map((item) => item.category)),
     ],
     [allCategoriesLabel, items],
+  );
+  const sdks = useMemo(
+    () =>
+      sdkFallback
+        ? [
+            sdkFallback,
+            ...getUniqueValues(items.map((item) => item.sdk).filter(Boolean)),
+          ]
+        : [],
+    [items, sdkFallback],
   );
   const stacks = useMemo(
     () => [
@@ -830,6 +859,14 @@ export function RecipesCatalog({
       }
 
       if (
+        sdkFallback &&
+        activeSdk !== sdkFallback &&
+        (item.sdk ?? '') !== activeSdk
+      ) {
+        return false;
+      }
+
+      if (
         activeStack !== allStacksLabel &&
         (item.stack ?? '') !== activeStack
       ) {
@@ -845,6 +882,7 @@ export function RecipesCatalog({
           item.title,
           item.description,
           item.product,
+          item.sdk,
           item.category,
           item.stack,
           ...(item.tags ?? []),
@@ -859,16 +897,19 @@ export function RecipesCatalog({
   }, [
     activeCategory,
     activeProduct,
+    activeSdk,
     activeStack,
     allCategoriesLabel,
     allProductsLabel,
     allStacksLabel,
     deferredQuery,
     items,
+    sdkFallback,
   ]);
   const hasActiveFilters =
     query.length > 0 ||
     activeProduct !== allProductsLabel ||
+    (sdkFallback && activeSdk !== sdkFallback) ||
     activeCategory !== allCategoriesLabel ||
     activeStack !== allStacksLabel;
   const groupedItems = useMemo(() => {
@@ -909,6 +950,7 @@ export function RecipesCatalog({
             onClick={() => {
               setQuery('');
               setActiveProduct(allProductsLabel);
+              setActiveSdk(sdkFallback);
               setActiveCategory(allCategoriesLabel);
               setActiveStack(allStacksLabel);
             }}
@@ -925,6 +967,14 @@ export function RecipesCatalog({
           onSelect={setActiveProduct}
           values={products}
         />
+        {sdkFilterLabel && sdkFallback && sdks.length > 1 ? (
+          <RecipesCatalogFilterGroup
+            activeValue={activeSdk}
+            label={sdkFilterLabel}
+            onSelect={setActiveSdk}
+            values={sdks}
+          />
+        ) : null}
         {showCategoryFilter ? (
           <RecipesCatalogFilterGroup
             activeValue={activeCategory}
@@ -982,6 +1032,7 @@ export function RecipesCatalog({
                         showTags
                           ? [
                               item.product,
+                              ...(item.sdk ? [item.sdk] : []),
                               item.category,
                               ...(item.stack ? [item.stack] : []),
                               ...(item.tags ?? []),
@@ -1011,6 +1062,7 @@ export function RecipesCatalog({
                   showTags
                     ? [
                         item.product,
+                        ...(item.sdk ? [item.sdk] : []),
                         item.category,
                         ...(item.stack ? [item.stack] : []),
                         ...(item.tags ?? []),
@@ -1434,6 +1486,31 @@ function getInitialRecipeProduct(
   return matchingProduct ?? fallback;
 }
 
+function getInitialRecipeSdk(
+  items: RecipeCatalogItem[],
+  fallback: string,
+  queryParam?: string,
+) {
+  if (typeof window === 'undefined' || !fallback || !queryParam) {
+    return fallback;
+  }
+
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
+
+  if (!queryValue) {
+    return fallback;
+  }
+
+  const normalizedQueryValue = normalizeRecipeSdkValue(queryValue);
+  const matchingSdk = getUniqueValues(
+    items.map((item) => item.sdk).filter(Boolean),
+  ).find((sdk) => normalizeRecipeSdkValue(sdk) === normalizedQueryValue);
+
+  return matchingSdk ?? fallback;
+}
+
 function getInitialRecipeStack(
   items: RecipeCatalogItem[],
   fallback: string,
@@ -1477,6 +1554,10 @@ function normalizeRecipeProductValue(value: string) {
   return normalizeRecipeFilterValue(value)
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+}
+
+function normalizeRecipeSdkValue(value: string) {
+  return normalizeRecipeProductValue(value).replace(/-sdk$/, '');
 }
 
 function getSolutionToneClasses(_tone: SolutionCardTone) {

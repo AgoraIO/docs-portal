@@ -3428,12 +3428,12 @@ Web body
       },
       {
         external: true,
-        href: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
-        id: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
+        href: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
+        id: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
         linked: true,
         title: 'SDK API reference',
         type: 'page',
-        url: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
+        url: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
       },
     ]);
     expect(flattenSidebarPageUrls(voiceQuickstartPayload.sidebar)).toContain(
