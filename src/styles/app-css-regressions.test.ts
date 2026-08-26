@@ -1069,5 +1069,17 @@ describe('app prose CSS regressions', () => {
     expect(
       getRuleBodyOutsideContainer('.openapi-examples-rail').rule.nodes,
     ).not.toContainEqual(expect.objectContaining({ prop: 'overflow' }));
+    const anchor = getRuleBody('.openapi-examples-rail-anchor');
+    expectDeclaration(anchor.rule, 'position', 'relative');
+    expectDeclaration(anchor.rule, 'min-width', '0');
+    expect(anchor.rule.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: 'display', value: 'contents' }),
+    );
+    const sentinel = getRuleBodyContaining(
+      '[data-openapi-examples-rail-sentinel]',
+    );
+    expectDeclaration(sentinel.rule, 'position', 'absolute');
+    expectDeclaration(sentinel.rule, 'inline-size', '1px');
+    expectDeclaration(sentinel.rule, 'block-size', '1px');
   });
 });

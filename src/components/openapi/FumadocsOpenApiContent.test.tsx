@@ -672,6 +672,7 @@ describe('FumadocsOpenApiContent', () => {
       'openapi-examples-rail-anchor',
     );
     expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
+    expect(layout?.children).toHaveLength(2);
     expect(rail.className).not.toContain('w-[360px]');
   });
 
