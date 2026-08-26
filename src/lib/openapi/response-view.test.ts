@@ -203,7 +203,6 @@ describe('openapi response view', () => {
       hasContent: true,
       mediaTypes: [{ mediaType: 'application/json', schema: false }],
       source: {
-        $ref: '#/missing',
         description: 'Fallback.',
       },
     });
@@ -233,7 +232,6 @@ describe('openapi response view', () => {
         name: 'X-Fallback',
         schema: { type: 'string' },
         source: {
-          $ref: '#/missing',
           description: 'Fallback header.',
           deprecated: true,
           schema: { type: 'string' },
@@ -273,5 +271,64 @@ describe('openapi response view', () => {
     );
 
     expect(view.headers).toEqual([]);
+  });
+
+  it('preserves siblings through a chained dangling response reference', () => {
+    const [view] = buildOpenApiResponseViews(
+      { '200': { $ref: '#/components/responses/Alias', description: 'Outer' } },
+      {
+        components: {
+          responses: {
+            Alias: {
+              $ref: '#/missing',
+              description: 'Alias fallback',
+              content: { 'application/json': { schema: false } },
+            },
+          },
+        },
+      },
+    );
+
+    expect(view).toMatchObject({
+      description: 'Outer',
+      hasContent: true,
+      mediaTypes: [{ mediaType: 'application/json', schema: false }],
+    });
+  });
+
+  it('preserves siblings through a chained dangling header reference', () => {
+    const [view] = buildOpenApiResponseViews(
+      {
+        '200': {
+          headers: { Alias: { $ref: '#/components/headers/HeaderAlias' } },
+        },
+      },
+      {
+        components: {
+          headers: {
+            HeaderAlias: {
+              $ref: '#/missing',
+              description: 'Alias header fallback',
+              deprecated: true,
+              schema: { type: 'string' },
+            },
+          },
+        },
+      },
+    );
+
+    expect(view.headers).toEqual([
+      {
+        description: 'Alias header fallback',
+        deprecated: true,
+        name: 'Alias',
+        schema: { type: 'string' },
+        source: {
+          description: 'Alias header fallback',
+          deprecated: true,
+          schema: { type: 'string' },
+        },
+      },
+    ]);
   });
 });

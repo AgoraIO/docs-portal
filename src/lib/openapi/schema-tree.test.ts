@@ -5,10 +5,42 @@ import {
   buildOpenApiSchemaTree,
   getInitialOpenApiSchemaExpandedPaths,
   getOpenApiSchemaRowLayout,
+  resolveLocalOpenApiReference,
 } from './schema-tree';
 import { getOpenApiOperation } from './source.server';
 
 describe('openapi schema tree', () => {
+  it('preserves siblings through a chained dangling local reference', () => {
+    const document = {
+      components: {
+        Alias: {
+          $ref: '#/missing',
+          description: 'fallback',
+          content: { 'application/json': { schema: false } },
+        },
+      },
+    };
+
+    expect(
+      resolveLocalOpenApiReference(document, {
+        $ref: '#/components/Alias',
+      }),
+    ).toEqual({
+      description: 'fallback',
+      content: { 'application/json': { schema: false } },
+    });
+
+    expect(
+      resolveLocalOpenApiReference(document, {
+        $ref: '#/components/Alias',
+        description: 'outer',
+      }),
+    ).toEqual({
+      description: 'outer',
+      content: { 'application/json': { schema: false } },
+    });
+  });
+
   it('renders nested object and array fields', async () => {
     const operation = await getOpenApiOperation(
       OPENAPI_LANES[0],

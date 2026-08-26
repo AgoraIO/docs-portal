@@ -462,12 +462,18 @@ export function resolveLocalOpenApiReference(
     seenRefs,
   );
 
-  return isRecord(resolvedValue)
-    ? {
-        ...resolvedValue,
-        ...siblings,
-      }
-    : resolvedValue;
+  if (isRecord(resolvedValue)) {
+    return {
+      ...resolvedValue,
+      ...siblings,
+    };
+  }
+
+  if (resolvedValue === undefined && Object.keys(siblings).length > 0) {
+    return siblings;
+  }
+
+  return resolvedValue;
 }
 
 function isReferenceObject(
