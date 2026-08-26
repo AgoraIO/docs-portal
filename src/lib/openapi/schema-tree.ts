@@ -123,15 +123,14 @@ export function getInitialOpenApiSchemaExpandedPaths(
   const topLevelIndexes = rows.flatMap((row, index) =>
     row.depth === 0 ? [index] : [],
   );
+  const topLevelExpandableObjectIndexes = topLevelIndexes.filter(
+    (index) => rows[index].type === 'object' && layout.hasChildren[index],
+  );
   const expanded = new Set<string>();
 
-  for (const index of topLevelIndexes) {
+  for (const index of topLevelExpandableObjectIndexes) {
     const row = rows[index];
-    if (
-      row.type === 'object' &&
-      layout.hasChildren[index] &&
-      (row.required || topLevelIndexes.length === 1)
-    ) {
+    if (row.required || topLevelExpandableObjectIndexes.length === 1) {
       expanded.add(row.path);
     }
   }

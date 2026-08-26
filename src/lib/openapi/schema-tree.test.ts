@@ -503,6 +503,24 @@ describe('openapi schema tree', () => {
     ).toEqual(new Set(['properties']));
   });
 
+  it('expands the only optional top-level object alongside a leaf', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        name: { type: 'string' },
+        properties: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+      },
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['properties']));
+  });
+
   it('does not expand arrays from required status or any response schema', () => {
     const rows = buildOpenApiSchemaRows({
       properties: {
