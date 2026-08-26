@@ -181,6 +181,10 @@ describe('OpenApiExamplesRail', () => {
     render(<OpenApiExamplesRail>Examples</OpenApiExamplesRail>);
     const rail = screen.getByTestId('openapi-examples-rail');
     expect(rail).toHaveAttribute('data-stuck', 'false');
+    const sentinel = document.querySelector(
+      '[data-openapi-examples-rail-sentinel]',
+    );
+    expect(sentinel?.parentElement).not.toBe(rail);
     act(() =>
       MockIntersectionObserver.instance.trigger({
         isIntersecting: false,
@@ -195,6 +199,60 @@ describe('OpenApiExamplesRail', () => {
       }),
     );
     expect(rail).toHaveAttribute('data-stuck', 'false');
+  });
+
+  it('syncs a custom sticky top into CSS and IO threshold', () => {
+    render(<OpenApiExamplesRail stickyTop={72}>Examples</OpenApiExamplesRail>);
+    const rail = screen.getByTestId('openapi-examples-rail');
+    expect(rail).toHaveStyle('--openapi-examples-sticky-top: 72px');
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 72 } as DOMRectReadOnly,
+      }),
+    );
+    expect(rail).toHaveAttribute('data-stuck', 'true');
+  });
+
+  it('recalculates when wrapping state changes', async () => {
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 900,
+    });
+    render(
+      <OpenApiExamplesRail>
+        <div data-wrap-lines="false">
+          <div data-openapi-code-viewport>active</div>
+        </div>
+      </OpenApiExamplesRail>,
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('active') as HTMLElement;
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 700 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 900 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() =>
+      expect(rail).toHaveAttribute('data-constrained', 'true'),
+    );
+    const wrapper = screen.getByText('active').parentElement as HTMLElement;
+    wrapper.setAttribute('data-wrap-lines', 'true');
+    act(() => MockResizeObserver.instance.trigger());
+    expect(rail.style.getPropertyValue('--openapi-code-available-height')).toBe(
+      '336px',
+    );
   });
 
   it('falls back naturally without observers and does not constrain short code', () => {

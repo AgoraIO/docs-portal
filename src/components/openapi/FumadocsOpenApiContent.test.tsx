@@ -668,7 +668,10 @@ describe('FumadocsOpenApiContent', () => {
     expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
     const layout = rail.closest('.openapi-operation-layout');
     expect(layout?.firstElementChild).toHaveClass('min-w-0');
-    expect(layout?.lastElementChild).toBe(rail);
+    expect(layout?.lastElementChild).toHaveClass(
+      'openapi-examples-rail-anchor',
+    );
+    expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
     expect(rail.className).not.toContain('w-[360px]');
   });
 

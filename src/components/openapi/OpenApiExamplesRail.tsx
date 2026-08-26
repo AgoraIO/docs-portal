@@ -1,4 +1,10 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 export const DEFAULT_OPENAPI_RAIL_STICKY_TOP = 48;
 const MIN_CODE_LINES = 8;
@@ -13,6 +19,7 @@ export function OpenApiExamplesRail({
   stickyTop?: number;
 }) {
   const railRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
   const [constrained, setConstrained] = useState(false);
 
@@ -116,7 +123,13 @@ export function OpenApiExamplesRail({
       });
       mutationObserver.observe(rail, {
         attributes: true,
-        attributeFilter: ['class', 'hidden', 'aria-hidden', 'data-state'],
+        attributeFilter: [
+          'class',
+          'hidden',
+          'aria-hidden',
+          'data-state',
+          'data-wrap-lines',
+        ],
         childList: true,
         subtree: true,
       });
@@ -136,9 +149,9 @@ export function OpenApiExamplesRail({
   }, [stickyTop, stuck]);
 
   useEffect(() => {
-    const rail = railRef.current;
-    if (!rail || typeof IntersectionObserver === 'undefined') return;
-    const sentinel = rail.querySelector<HTMLElement>(
+    const anchor = anchorRef.current;
+    if (!anchor || typeof IntersectionObserver === 'undefined') return;
+    const sentinel = anchor.querySelector<HTMLElement>(
       '[data-openapi-examples-rail-sentinel]',
     );
     if (!sentinel) return;
@@ -153,15 +166,20 @@ export function OpenApiExamplesRail({
   }, [stickyTop]);
 
   return (
-    <div
-      className="openapi-examples-rail"
-      data-constrained={constrained}
-      data-stuck={stuck}
-      data-testid="openapi-examples-rail"
-      ref={railRef}
-    >
+    <div className="openapi-examples-rail-anchor" ref={anchorRef}>
       <div aria-hidden="true" data-openapi-examples-rail-sentinel="" />
-      <div className="openapi-examples-rail-content">{children}</div>
+      <div
+        className="openapi-examples-rail"
+        data-constrained={constrained}
+        data-stuck={stuck}
+        data-testid="openapi-examples-rail"
+        ref={railRef}
+        style={
+          { '--openapi-examples-sticky-top': `${stickyTop}px` } as CSSProperties
+        }
+      >
+        <div className="openapi-examples-rail-content">{children}</div>
+      </div>
     </div>
   );
 }
