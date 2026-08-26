@@ -28,6 +28,7 @@ type OpenApiSchemaTreeResetIdentity = {
   anchorPrefix: string;
   document?: unknown;
   omitArrayItemWrapperRows?: boolean;
+  prebuiltRows?: OpenApiSchemaRow[];
   root: unknown;
   usage: OpenApiSchemaUsage;
 };
@@ -37,6 +38,7 @@ export function OpenApiSchemaTree({
   document,
   labels,
   omitArrayItemWrapperRows,
+  prebuiltRows,
   renderCallouts,
   renderDescription,
   renderMetadata,
@@ -47,6 +49,7 @@ export function OpenApiSchemaTree({
   document?: unknown;
   labels: OpenApiSchemaTreeLabels;
   omitArrayItemWrapperRows?: boolean;
+  prebuiltRows?: OpenApiSchemaRow[];
   renderCallouts: (callouts?: OpenApiSchemaCallout[]) => ReactNode;
   renderDescription: (markdown: string) => ReactNode;
   renderMetadata: (row: OpenApiSchemaRow) => ReactNode;
@@ -55,12 +58,13 @@ export function OpenApiSchemaTree({
 }) {
   const rows = useMemo(
     () =>
+      prebuiltRows ??
       buildOpenApiSchemaRows(root, {
         document,
         omitArrayItemWrapperRows,
         usage,
       }),
-    [document, omitArrayItemWrapperRows, root, usage],
+    [document, omitArrayItemWrapperRows, prebuiltRows, root, usage],
   );
   const anchorIds = useMemo(
     () =>
@@ -86,6 +90,7 @@ export function OpenApiSchemaTree({
     anchorPrefix,
     document,
     omitArrayItemWrapperRows,
+    prebuiltRows,
     root,
     usage,
   });
@@ -96,6 +101,7 @@ export function OpenApiSchemaTree({
       previous.anchorPrefix === anchorPrefix &&
       previous.document === document &&
       previous.omitArrayItemWrapperRows === omitArrayItemWrapperRows &&
+      previous.prebuiltRows === prebuiltRows &&
       previous.root === root &&
       previous.usage === usage
     ) {
@@ -106,6 +112,7 @@ export function OpenApiSchemaTree({
       anchorPrefix,
       document,
       omitArrayItemWrapperRows,
+      prebuiltRows,
       root,
       usage,
     };

@@ -1,7 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { OpenApiResponseView } from '@/lib/openapi/response-view';
 import { OpenApiResponses } from './OpenApiResponses';
+
+const { syncHashTarget } = vi.hoisted(() => ({ syncHashTarget: vi.fn() }));
+
+vi.mock('@/lib/docs-hash', () => ({
+  syncDocsHashTargetFromLocation: syncHashTarget,
+}));
 
 function view(
   statusCode: string,
@@ -42,6 +49,7 @@ function renderResponses(
         }
         renderSchema={renderSchema}
         responses={responses}
+        sectionId="test-responses"
       />,
     ),
   };
@@ -84,6 +92,7 @@ describe('OpenApiResponses', () => {
         renderHeaders={() => null}
         renderSchema={() => ({ hasFields: false, node: null })}
         responses={[]}
+        sectionId="test-responses"
       />,
     );
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
@@ -255,6 +264,7 @@ describe('OpenApiResponses', () => {
         renderHeaders={() => null}
         renderSchema={() => ({ hasFields: false, node: null })}
         responses={responses}
+        sectionId="test-responses"
       />,
     );
     expect(
@@ -266,6 +276,7 @@ describe('OpenApiResponses', () => {
         renderHeaders={() => null}
         renderSchema={() => ({ hasFields: false, node: null })}
         responses={[view('201')]}
+        sectionId="test-responses"
       />,
     );
     expect(
@@ -283,5 +294,92 @@ describe('OpenApiResponses', () => {
     );
     expect(panel).toBeInTheDocument();
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('keeps collapsed panels in the DOM with an accessible region relationship', () => {
+    renderResponses([view('default'), view('200')]);
+    const trigger = screen.getByRole('button', {
+      name: 'default application/json',
+    });
+    const panel = document.getElementById(
+      trigger.getAttribute('aria-controls') ?? '',
+    );
+
+    expect(panel).toHaveAttribute('role', 'region');
+    expect(panel).toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-labelledby', trigger.id);
+  });
+
+  it('generates distinct relationship and media IDs for separate instances', () => {
+    const responses = [
+      view('200', {
+        mediaTypes: [
+          { mediaType: 'application/json', schema: {}, source: { schema: {} } },
+          { mediaType: 'text/plain', schema: {}, source: { schema: {} } },
+        ],
+      }),
+    ];
+    render(
+      <>
+        <OpenApiResponses
+          renderDescription={() => null}
+          renderHeaders={() => null}
+          renderSchema={() => ({ hasFields: false, node: null })}
+          responses={responses}
+          sectionId="responses-one"
+        />
+        <OpenApiResponses
+          renderDescription={() => null}
+          renderHeaders={() => null}
+          renderSchema={() => ({ hasFields: false, node: null })}
+          responses={responses}
+          sectionId="responses-two"
+        />
+      </>,
+    );
+
+    const triggers = screen.getAllByRole('button', {
+      name: '200 application/json',
+    });
+    const selects = screen.getAllByLabelText('Media type for 200 response');
+    expect(new Set(triggers.map((trigger) => trigger.id)).size).toBe(2);
+    expect(
+      new Set(triggers.map((trigger) => trigger.getAttribute('aria-controls')))
+        .size,
+    ).toBe(2);
+    expect(new Set(selects.map((select) => select.id)).size).toBe(2);
+  });
+
+  it('scrolls a hash target after the opened panel commits and cancels its frame', () => {
+    const callbacks: FrameRequestCallback[] = [];
+    const requestAnimationFrame = vi
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((callback) => {
+        callbacks.push(callback);
+        return callbacks.length;
+      });
+    const cancelAnimationFrame = vi.spyOn(window, 'cancelAnimationFrame');
+    window.location.hash = 'response-headers-default-x-request-id';
+    const { unmount } = renderResponses([view('default'), view('200')]);
+
+    const panel = document.getElementById(
+      screen
+        .getByRole('button', { name: 'default application/json' })
+        .getAttribute('aria-controls') ?? '',
+    );
+    expect(panel).not.toHaveAttribute('hidden');
+    act(() => {
+      callbacks.forEach((callback) => {
+        callback(0);
+      });
+    });
+    expect(syncHashTarget).toHaveBeenCalledWith('auto');
+
+    act(() => window.dispatchEvent(new HashChangeEvent('hashchange')));
+
+    unmount();
+    expect(cancelAnimationFrame).toHaveBeenCalled();
+    requestAnimationFrame.mockRestore();
+    cancelAnimationFrame.mockRestore();
   });
 });

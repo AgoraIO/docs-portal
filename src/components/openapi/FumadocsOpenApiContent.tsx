@@ -815,6 +815,32 @@ function OpenApiEnglishResponses({
       buildOpenApiResponseViews(operation?.responses, operation?.__document),
     [operation?.responses, operation?.__document],
   );
+  const responseSchemaRows = useMemo(() => {
+    const rowsByStatus = new Map<string, Map<string, OpenApiSchemaRow[]>>();
+
+    for (const response of responses) {
+      const rowsByMediaType = new Map<string, OpenApiSchemaRow[]>();
+
+      for (const media of response.mediaTypes) {
+        // biome-ignore lint/suspicious/noPrototypeBuiltins: Schema false is a present schema value.
+        if (!Object.prototype.hasOwnProperty.call(media.source, 'schema')) {
+          continue;
+        }
+
+        rowsByMediaType.set(
+          media.mediaType,
+          buildOpenApiSchemaRows(media.schema, {
+            document: operation?.__document,
+            usage: 'response',
+          }),
+        );
+      }
+
+      rowsByStatus.set(response.statusCode, rowsByMediaType);
+    }
+
+    return rowsByStatus;
+  }, [operation?.__document, responses]);
 
   return (
     <OpenApiResponses
@@ -824,11 +850,8 @@ function OpenApiEnglishResponses({
       renderHeaders={(headers, status) => (
         <OpenApiEnglishResponseHeaders headers={headers} status={status} />
       )}
-      renderSchema={({ schema, status }) => {
-        const rows = buildOpenApiSchemaRows(schema, {
-          document: operation?.__document,
-          usage: 'response',
-        });
+      renderSchema={({ mediaType, schema, status }) => {
+        const rows = responseSchemaRows.get(status)?.get(mediaType) ?? [];
 
         return {
           hasFields: rows.length > 0,
@@ -837,6 +860,7 @@ function OpenApiEnglishResponses({
               <OpenApiSchemaTreeAdapter
                 anchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
                 document={operation?.__document}
+                prebuiltRows={rows}
                 readOnly
                 root={schema}
               />
@@ -844,6 +868,7 @@ function OpenApiEnglishResponses({
         };
       }}
       responses={responses}
+      sectionId="response-body"
     />
   );
 }
@@ -1395,11 +1420,13 @@ function getOpenApiParameterGroupAnchorPrefix(location: string) {
 function OpenApiSchemaTreeAdapter({
   anchorPrefix,
   document,
+  prebuiltRows,
   root,
   writeOnly,
 }: {
   anchorPrefix: string;
   document?: unknown;
+  prebuiltRows?: OpenApiSchemaRow[];
   readOnly?: boolean;
   root: unknown;
   writeOnly?: boolean;
@@ -1412,6 +1439,7 @@ function OpenApiSchemaTreeAdapter({
       document={document}
       labels={getOpenApiSchemaTreeLabels(anchorPrefix, locale)}
       omitArrayItemWrapperRows={isZhCnLocale(locale)}
+      prebuiltRows={prebuiltRows}
       renderCallouts={(callouts) => (
         <OpenApiInlineCallouts callouts={callouts} />
       )}

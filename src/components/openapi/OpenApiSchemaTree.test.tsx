@@ -7,6 +7,7 @@ import {
 } from '@testing-library/react';
 import { act } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import type { OpenApiSchemaRow } from '@/lib/openapi/schema-tree';
 import { OpenApiSchemaTree } from './OpenApiSchemaTree';
 
 const labels = {
@@ -351,5 +352,47 @@ describe('OpenApiSchemaTree', () => {
     expect(
       screen.getByRole('button', { name: 'Collapse properties properties' }),
     ).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('uses stable prebuilt rows instead of rebuilding an invalid root and resets for a new rows identity', async () => {
+    const prebuiltRows: OpenApiSchemaRow[] = [
+      {
+        depth: 0,
+        name: 'manual',
+        path: 'manual',
+        required: false,
+        type: 'object',
+      },
+      {
+        depth: 1,
+        name: 'field',
+        path: 'manual.field',
+        required: false,
+        type: 'string',
+      },
+    ];
+    const props = {
+      anchorPrefix: 'responses-200',
+      labels,
+      prebuiltRows,
+      renderCallouts: () => null,
+      renderDescription: (markdown: string) => <span>{markdown}</span>,
+      renderMetadata: () => null,
+      root: null,
+      usage: 'request' as const,
+    };
+    const { rerender } = render(<OpenApiSchemaTree {...props} />);
+
+    expect(screen.getByText('manual')).toBeVisible();
+    expect(screen.getByText('field')).toBeVisible();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse manual properties' }),
+    );
+
+    rerender(<OpenApiSchemaTree {...props} />);
+    expect(screen.queryByText('field')).not.toBeInTheDocument();
+
+    rerender(<OpenApiSchemaTree {...props} prebuiltRows={[...prebuiltRows]} />);
+    await waitFor(() => expect(screen.getByText('field')).toBeVisible());
   });
 });
