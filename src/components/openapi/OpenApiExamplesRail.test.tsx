@@ -283,9 +283,13 @@ describe('OpenApiExamplesRail', () => {
     );
     const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
     const viewport = screen.getByText('narrow') as HTMLElement;
-    Object.defineProperty(rail.parentElement, 'getBoundingClientRect', {
-      value: () => ({ width: 0 }),
-    });
+    Object.defineProperty(
+      rail.parentElement?.parentElement,
+      'getBoundingClientRect',
+      {
+        value: () => ({ width: 0 }),
+      },
+    );
     Object.defineProperty(viewport, 'getClientRects', {
       value: () => [{ width: 100, height: 200 }],
     });
