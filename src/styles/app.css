@@ -1093,6 +1093,35 @@
     width: min(100%, 1120px);
   }
 
+  .openapi-operation-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .openapi-examples-rail {
+    min-width: 0;
+  }
+
+  .openapi-examples-rail[data-constrained="true"]
+    [data-openapi-code-viewport-active] {
+    max-block-size: var(--openapi-code-available-height) !important;
+    overflow: auto;
+  }
+
+  @container (min-width: 59rem) {
+    .openapi-operation-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) clamp(320px, 32cqi, 400px);
+      align-items: start;
+    }
+
+    .openapi-examples-rail {
+      position: sticky;
+      top: calc(var(--fd-docs-row-1, 2rem) + 1rem);
+    }
+  }
+
   .openapi-field-row-container > .openapi-field-main {
     background: color-mix(in srgb, var(--color-fd-muted) 18%, transparent);
   }

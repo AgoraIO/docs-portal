@@ -46,6 +46,7 @@ import {
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
+import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 import {
   type OpenApiFieldRequiredState,
   OpenApiFieldRow,
@@ -310,7 +311,7 @@ function OpenApiOperationLayout({
   const locale = useContext(OpenApiLocaleContext);
 
   return (
-    <div className="flex flex-col gap-x-6 gap-y-4 @3xl:flex-row @3xl:items-start">
+    <div className="openapi-operation-layout gap-6">
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
@@ -343,12 +344,12 @@ function OpenApiOperationLayout({
         />
         {slots.callbacks}
       </div>
-      <div className="@3xl:sticky @3xl:top-[calc(var(--fd-docs-row-1,2rem)+1rem)] @3xl:w-[360px] @3xl:shrink-0">
+      <OpenApiExamplesRail>
         <OpenApiAuthorizationSection operation={method} />
         <OpenApiOperationContext.Provider value={method}>
           {slots.apiExample}
         </OpenApiOperationContext.Provider>
-      </div>
+      </OpenApiExamplesRail>
     </div>
   );
 }
