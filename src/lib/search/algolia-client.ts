@@ -54,6 +54,15 @@ export function createAlgoliaDocsClient({
             // One result per page: a page's best-matching section, never the
             // same page repeated for each matching heading.
             distinct: 1,
+            // Algolia's default typo tolerance treats short queries (4
+            // letters) as a 1-typo prefix match, so e.g. "okta" matches
+            // "obta[ins]" in unrelated pages. Requiring 5+ letters before
+            // typo tolerance kicks in keeps exact short-query matches (like
+            // the real "Okta" mentions) without the noise. 'min' layers on
+            // top: when an exact match exists, drop typo-tolerant matches
+            // entirely instead of mixing them in.
+            minWordSizefor1Typo: 5,
+            typoTolerance: 'min' as const,
             filters: buildFilters({ locale, platform, scope }),
             // Demote low-signal pages so real docs rank above them. Boosting
             // via optionalFilters keeps Algolia's textual relevance intact and
@@ -92,6 +101,11 @@ export function createAlgoliaDocsClient({
                   type: 'default' as const,
                   indexName: apiReferenceIndexName,
                   query,
+                  // See the typo-tolerance comment on the docs index request
+                  // above: without this, short queries fuzzy-match unrelated
+                  // method docs via common words like "Obtains".
+                  minWordSizefor1Typo: 5,
+                  typoTolerance: 'min' as const,
                   filters: buildApiReferenceFilters({ platform, scope }),
                   hitsPerPage: 5,
                   attributesToHighlight: ['hierarchy.lvl1', 'content'],
