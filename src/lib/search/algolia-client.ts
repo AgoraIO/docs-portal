@@ -442,6 +442,7 @@ async function searchWithRankingV2({
         compactSymbol.length > 0 &&
         compactSymbol === compactSearchText(intent.originalQuery),
       allMajorTermsMatch,
+      canonicalKey: result.canonicalKey,
       content: highlightedTitle,
       contentMatch: result.contentMatch,
       currentVersion: result.isCurrentVersion,

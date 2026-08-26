@@ -17,8 +17,11 @@ export type SearchIntentResult = {
 /** Phrases that describe an API operation, rather than a general guide task. */
 const API_TASK_PHRASES = [
   'acquire resource id',
+  'cloud recording rest api',
   'query recording status',
   'renew token',
+  'send streaming message',
+  'start cloud recording task',
   'get token',
   'refresh token',
 ] as const;
@@ -31,6 +34,10 @@ const SUPPORT_PHRASES = [
   'cannot',
   'troubleshoot',
   'bluetooth',
+  'token authentication',
+  'http basic authentication',
+  'billing policy',
+  'firewall requirements',
 ] as const;
 
 const TASK_PHRASES = [
@@ -46,6 +53,15 @@ const TASK_PHRASES = [
   'configuration',
   'build',
   'start',
+  'connect your own tts service',
+  'record captions',
+  'transcribe audio',
+  'join a channel',
+  'join multiple channels',
+  'enable adaptive bitrate',
+  'stream channels',
+  'send a message',
+  'mute remote audio',
 ] as const;
 
 const PRODUCT_ALIASES = [
@@ -56,6 +72,15 @@ const PRODUCT_ALIASES = [
   'voice sdk',
   'real time engagement',
   'realtime engagement',
+  'voice agent',
+  'voice activity detection',
+  'conversational ai',
+  'real time transcription',
+  'speech to text',
+  'video calling',
+  'interactive live streaming',
+  'broadcast streaming',
+  'flexible classroom',
 ] as const;
 
 const SUPPORT_TERMS = new Set([
@@ -147,14 +172,14 @@ export function classifySearchIntent(query: string): SearchIntentResult {
   if (normalizedQuery) {
     if (isApiSymbol(query.normalize('NFKC').trim())) {
       intent = 'api-symbol';
-    } else if (hasAnyPhrase(normalizedQuery, API_TASK_PHRASES)) {
-      intent = 'api-task';
     } else if (
       hasAnyPhrase(normalizedQuery, SUPPORT_PHRASES) ||
       (!/\(\)$/u.test(normalizedQuery) &&
         terms.some((term) => SUPPORT_TERMS.has(term)))
     ) {
       intent = 'support';
+    } else if (hasAnyPhrase(normalizedQuery, API_TASK_PHRASES)) {
+      intent = 'api-task';
     } else if (hasAnyPhrase(normalizedQuery, TASK_PHRASES)) {
       intent = 'task';
     } else if (hasAnyPhrase(normalizedQuery, PRODUCT_ALIASES)) {

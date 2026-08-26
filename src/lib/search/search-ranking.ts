@@ -7,6 +7,8 @@ export type RankedSearchResult = {
   url: string;
   title: string;
   recordKind: SearchRecordKind;
+  /** Stable SDK symbol identity used to verify and preserve aggregation. */
+  canonicalKey?: string;
   path: string[];
   platform?: string[];
   product?: string;
