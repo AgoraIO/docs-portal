@@ -8,6 +8,8 @@
 
 **Tech Stack:** TypeScript, React 19, Fumadocs MDX, Vitest, Testing Library, Bun, Vite, `agent-browser`.
 
+> **Approved RTC/Voice amendment:** The catalog no longer treats `Realtime Communication (Voice only)` as a product. Voice and RTC entries share Product=`Realtime Communication`; API items carry SDK=`Voice SDK` or `RTC SDK`. The unified Voice quickstart deep-links to `?product=realtime-communication&sdk=voice`, while other RTC pages use only `?product=realtime-communication`. This amendment supersedes the Voice-only product examples in the original steps below.
+
 ---
 
 ### Task 1: Initialize the catalog product filter from the URL
