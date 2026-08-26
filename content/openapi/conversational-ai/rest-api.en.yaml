@@ -2186,9 +2186,9 @@ paths:
                               markdown: >
                                 - Set `advanced_features.enable_tools` to `true` before using tools.
 
-                                - Currently only supported for synchronous calls to standard text
-                                LLMs. Custom LLMs, MLLMs, Dify, asynchronous tools, and stored tool
-                                references aren't supported yet.
+                                - Only supported for synchronous calls to standard text LLMs. Custom
+                                LLMs, MLLMs, Dify, asynchronous tools, and stored tool references
+                                aren't supported.
                           items:
                             type: object
                             required:
@@ -2203,7 +2203,7 @@ paths:
                               to the LLM.
 
 
-                              - Currently only synchronous `GET` and `POST` requests are supported.
+                              - Only synchronous `GET` and `POST` requests are supported.
                               Asynchronous calls, automatic retries, and HTTP redirects aren't
                               supported.
 
@@ -2221,7 +2221,7 @@ paths:
                                 type: string
                                 enum:
                                   - function
-                                description: The tool type. Currently only `function` is supported.
+                                description: The tool type. Only `function` is supported.
                               function:
                                 type: object
                                 required:
@@ -2315,7 +2315,7 @@ paths:
                                     enum:
                                       - sync
                                     default: sync
-                                    description: The execution mode. Currently only synchronous `sync` execution is supported.
+                                    description: The execution mode. Only synchronous `sync` execution is supported.
                               server:
                                 type: object
                                 required:

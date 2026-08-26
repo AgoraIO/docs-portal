@@ -172,12 +172,14 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-21T03:37:31.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-llm.mdx':
     '2026-07-17T08:52:13.000Z',
+  'content/docs/en/ai/build/custom-model-integration/custom-tools.mdx':
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-tts.mdx':
     '2026-08-24T09:06:02.000Z',
   'content/docs/en/ai/build/custom-model-integration/managed-mode.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/ai/build/custom-model-integration/meta.json':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/ai/build/custom-model-integration/presets.mdx':
     '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/build/debug-agent-failures.mdx':
@@ -224,7 +226,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/custom-information.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/build/shape-the-conversation/filler-words.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
@@ -556,7 +558,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-08-11T06:17:07.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-08-26T04:39:09.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -787,13 +789,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/android.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/meta.json':
     '2026-06-26T08:32:37.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/web.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
@@ -955,13 +957,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-08-11T06:17:07.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
@@ -11593,7 +11595,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-08-14T11:03:51.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',
