@@ -12,6 +12,8 @@ export const ALGOLIA_INDEX_NAME =
 export const ALGOLIA_API_REFERENCE_INDEX_NAME =
   import.meta.env.VITE_ALGOLIA_API_REFERENCE_INDEX_NAME ||
   DEFAULT_ALGOLIA_API_REFERENCE_INDEX_NAME;
+export const SEARCH_RANKING_V2_ENABLED =
+  import.meta.env.VITE_SEARCH_RANKING_V2 === 'true';
 
 export function getAlgoliaSearchConfig() {
   const appId = import.meta.env.VITE_ALGOLIA_APP_ID;
@@ -30,6 +32,7 @@ export function getAlgoliaSearchConfig() {
     apiReferenceIndexName: ALGOLIA_API_REFERENCE_INDEX_NAME,
     appId,
     indexName: ALGOLIA_INDEX_NAME,
+    rankingV2: SEARCH_RANKING_V2_ENABLED,
     searchApiKey,
   };
 }
