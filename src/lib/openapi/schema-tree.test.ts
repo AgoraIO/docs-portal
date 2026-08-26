@@ -605,6 +605,7 @@ describe('openapi schema tree', () => {
               type: 'object',
             },
           },
+          required: ['nested'],
           type: 'object',
         },
       },
