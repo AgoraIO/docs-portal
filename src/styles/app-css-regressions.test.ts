@@ -100,6 +100,28 @@ function getRuleBodyContainingInMedia(
 }
 
 describe('app prose CSS regressions', () => {
+  it('uses list and schema-depth separators instead of complete row borders', () => {
+    expectDeclaration(
+      getRuleBody(
+        '.openapi-field-list > .openapi-field-row + .openapi-field-row',
+      ).rule,
+      'border-block-start',
+      '1px solid var(--fd-border)',
+    );
+    expectDeclaration(
+      getRuleBody('.openapi-schema-depth + .openapi-schema-depth').rule,
+      'border-block-start',
+      '1px solid var(--fd-border)',
+    );
+
+    const fieldRow = getRuleBody('.openapi-field-row').rule;
+    expect(
+      fieldRow.nodes?.some(
+        (node) => node.type === 'decl' && node.prop === 'border',
+      ),
+    ).toBe(false);
+  });
+
   it('keeps OpenAPI field row scanability contracts', () => {
     expectDeclaration(
       getRuleBody('.openapi-field-row .openapi-field-anchor').rule,

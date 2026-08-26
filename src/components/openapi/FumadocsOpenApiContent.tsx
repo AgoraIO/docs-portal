@@ -37,6 +37,10 @@ import {
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
 import {
+  type OpenApiFieldRequiredState,
+  OpenApiFieldRow,
+} from './OpenApiFieldRow';
+import {
   OpenApiSchemaTree,
   type OpenApiSchemaTreeLabels,
 } from './OpenApiSchemaTree';
@@ -709,7 +713,8 @@ function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
               description: parameter.description,
               metadata: getOpenApiSchemaMetadata(parameter.schema, parameter),
               name: parameter.name ?? '',
-              required: parameter.required === true,
+              requiredState:
+                parameter.required === true ? 'required' : 'optional',
               type: getSchemaTypeLabel(parameter.schema),
             }))}
             key={location}
@@ -755,7 +760,6 @@ function OpenApiResponseHeaders({
             resolvedHeader,
           ),
           name,
-          required: false,
           statusCode,
           type: getSchemaTypeLabel(resolvedHeader.schema),
         },
@@ -782,7 +786,6 @@ function OpenApiResponseHeaders({
           ...header.metadata,
         ],
         name: header.name,
-        required: header.required,
         type: header.type,
       }))}
       title={getOpenApiLabel('Response Headers', locale)}
@@ -871,11 +874,12 @@ function OpenApiFieldList({
     description?: string;
     metadata: OpenApiMetadataItem[];
     name: string;
-    required: boolean;
+    requiredState?: OpenApiFieldRequiredState;
     type: string;
   }[];
   title: string;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const titleId = anchorPrefix;
   const anchorIds = buildUniqueOpenApiAnchorIds(
     anchorPrefix,
@@ -890,46 +894,32 @@ function OpenApiFieldList({
       >
         <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
       </h2>
-      <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
         {anchorIds.map((anchorId, index) => {
           const field = fields[index];
 
           return (
-            <div
-              className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
-              id={anchorId}
+            <OpenApiFieldRow
+              anchorId={anchorId}
+              details={
+                <>
+                  {field.description ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {renderOpenApiMarkdown(
+                        normalizeOpenApiDescriptionMarkdown(field.description),
+                      )}
+                    </div>
+                  ) : null}
+                  <OpenApiInlineCallouts callouts={field.callouts} />
+                  <OpenApiMetadata items={field.metadata} />
+                </>
+              }
               key={`${title}:${field.name}`}
-            >
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <div>
-                  <code className="font-medium text-fd-primary">
-                    {field.name}
-                  </code>
-                </div>
-                <div>
-                  <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-                </div>
-                <div>
-                  {field.required ? (
-                    <span className="font-medium text-red-500">*</span>
-                  ) : (
-                    <span className="text-fd-muted-foreground">?</span>
-                  )}
-                </div>
-                <div className="font-mono text-fd-muted-foreground text-xs">
-                  {field.type}
-                </div>
-              </div>
-              {field.description ? (
-                <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-                  {renderOpenApiMarkdown(
-                    normalizeOpenApiDescriptionMarkdown(field.description),
-                  )}
-                </div>
-              ) : null}
-              <OpenApiInlineCallouts callouts={field.callouts} />
-              <OpenApiMetadata items={field.metadata} />
-            </div>
+              labels={getOpenApiFieldLabels(locale)}
+              name={field.name}
+              requiredState={field.requiredState}
+              type={field.type}
+            />
           );
         })}
       </div>

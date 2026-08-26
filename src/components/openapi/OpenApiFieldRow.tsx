@@ -75,7 +75,7 @@ export function OpenApiFieldRow({
   return (
     <div
       className={cn(
-        'openapi-field-row scroll-mt-24 border border-border/60 py-3',
+        'openapi-field-row scroll-mt-24 py-3',
         expandable && 'openapi-field-row-container',
       )}
       id={anchorId}

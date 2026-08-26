@@ -1101,6 +1101,14 @@
     container-type: inline-size;
   }
 
+  .openapi-field-list > .openapi-field-row {
+    padding-inline: 1rem;
+  }
+
+  .openapi-field-list > .openapi-field-row + .openapi-field-row {
+    border-block-start: 1px solid var(--fd-border);
+  }
+
   .openapi-field-heading {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -1150,6 +1158,10 @@
 
   .openapi-schema-depth {
     padding-inline-start: calc(1rem + var(--openapi-schema-indent-desktop));
+  }
+
+  .openapi-schema-depth + .openapi-schema-depth {
+    border-block-start: 1px solid var(--fd-border);
   }
 
   .openapi-schema-depth-nested {

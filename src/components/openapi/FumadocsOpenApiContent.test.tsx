@@ -2744,6 +2744,184 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('renders all parameter locations through the shared field row contract', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/v1/items/{itemId}' }],
+          payload: {
+            bundled: {
+              info: { title: 'Items API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/items/{itemId}': {
+                  get: {
+                    operationId: 'get-item',
+                    parameters: [
+                      {
+                        description: 'The item identifier.',
+                        in: 'path',
+                        name: 'itemId',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Filter by item state.',
+                        in: 'query',
+                        name: 'state',
+                        required: false,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Request trace identifier.',
+                        in: 'header',
+                        name: 'X-Trace-ID',
+                        required: false,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Session cookie.',
+                        in: 'cookie',
+                        name: 'session',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                        headers: {
+                          'X-Request-ID': {
+                            description: 'Response trace identifier.',
+                            schema: { example: 'response-123', type: 'string' },
+                            'x-docs-callouts': [
+                              {
+                                markdown: 'Keep this value for support.',
+                                title: 'Note',
+                                type: 'info',
+                              },
+                            ],
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const pathSection = (
+      await screen.findByRole('heading', { name: 'Path Parameters' })
+    ).closest('section') as HTMLElement;
+    const querySection = screen
+      .getByRole('heading', { name: 'Query Parameters' })
+      .closest('section') as HTMLElement;
+    const headerSection = screen
+      .getByRole('heading', { name: 'Header Parameters' })
+      .closest('section') as HTMLElement;
+    const cookieSection = screen
+      .getByRole('heading', { name: 'Cookie Parameters' })
+      .closest('section') as HTMLElement;
+
+    const pathRow = within(pathSection)
+      .getByText('itemId')
+      .closest('.openapi-field-row') as HTMLElement;
+    const queryRow = within(querySection)
+      .getByText('state')
+      .closest('.openapi-field-row') as HTMLElement;
+    expect(within(pathRow).getByText('required')).toBeInTheDocument();
+    expect(pathRow).not.toHaveTextContent('*');
+    expect(within(queryRow).getByText('optional')).toBeInTheDocument();
+    expect(queryRow).not.toHaveTextContent('?');
+    expect(
+      within(pathRow)
+        .getByText('The item identifier.')
+        .closest('.openapi-field-details'),
+    ).toBeInTheDocument();
+    expect(pathRow.querySelector('.openapi-field-main')).toContainElement(
+      within(pathRow).getByText('itemId'),
+    );
+    expect(within(headerSection).getByText('X-Trace-ID')).toBeInTheDocument();
+    expect(within(cookieSection).getByText('session')).toBeInTheDocument();
+
+    const responseSection = screen
+      .getByRole('heading', { name: 'Response Headers' })
+      .closest('section') as HTMLElement;
+    const responseRow = within(responseSection)
+      .getByText('X-Request-ID')
+      .closest('.openapi-field-row') as HTMLElement;
+    expect(within(responseRow).getByText('string')).toBeInTheDocument();
+    expect(
+      within(responseRow).getByText('Response trace identifier.'),
+    ).toBeInTheDocument();
+    expect(within(responseRow).getByText('Status')).toBeInTheDocument();
+    expect(within(responseRow).getByText('200')).toBeInTheDocument();
+    expect(within(responseRow).getByText('Example')).toBeInTheDocument();
+    expect(within(responseRow).getByText('response-123')).toBeInTheDocument();
+    expect(within(responseRow).getByText('Note')).toBeInTheDocument();
+    expect(within(responseRow).queryByText('required')).not.toBeInTheDocument();
+    expect(within(responseRow).queryByText('optional')).not.toBeInTheDocument();
+    expect(
+      within(responseRow).getByRole('link', {
+        name: 'Copy link to response-headers-200-x-request-id',
+      }),
+    ).toHaveAttribute('href', '#response-headers-200-x-request-id');
+    for (const row of [pathRow, queryRow]) {
+      expect(within(row).queryByRole('button')).not.toBeInTheDocument();
+    }
+  });
+
+  it('localizes shared parameter requiredness labels in zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/v1/items/{itemId}' }],
+          payload: {
+            bundled: {
+              info: { title: 'Items API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/items/{itemId}': {
+                  get: {
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'itemId',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        in: 'query',
+                        name: 'state',
+                        required: false,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const pathSection = (
+      await screen.findByRole('heading', { name: '路径参数' })
+    ).closest('section') as HTMLElement;
+    const querySection = screen
+      .getByRole('heading', { name: '查询参数' })
+      .closest('section') as HTMLElement;
+    expect(within(pathSection).getByText('必填')).toBeInTheDocument();
+    expect(within(querySection).getByText('可选')).toBeInTheDocument();
+  });
+
   async function renderNestedSchema() {
     render(
       <FumadocsOpenApiContent
