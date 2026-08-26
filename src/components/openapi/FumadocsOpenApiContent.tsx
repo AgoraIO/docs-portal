@@ -29,10 +29,17 @@ import remarkRehype from 'remark-rehype';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
+  buildUniqueOpenApiAnchorIds,
+  slugOpenApiAnchorSegment,
+} from '@/lib/openapi/anchors';
+import {
   buildOpenApiSchemaRows,
-  getOpenApiSchemaRowLayout,
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
+import {
+  OpenApiSchemaTree,
+  type OpenApiSchemaTreeLabels,
+} from './OpenApiSchemaTree';
 
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
@@ -65,13 +72,18 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#response-body]:font-semibold',
   '[&_h2#response-body]:text-2xl',
 ] as const;
-const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
-const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
+  Collapse: '折叠',
   'Cookie Parameters': 'Cookie 参数',
   'Expand all': '展开全部',
+  Expand: '展开',
+  'Copy link to': '复制链接到',
+  Deprecated: '已废弃',
+  optional: '可选',
+  required: '必填',
+  properties: '属性',
   'Header Parameters': '请求 Header',
   Note: '注意',
   'Path Parameters': '路径参数',
@@ -125,11 +137,10 @@ const OpenAPIPage = createOpenAPIPage({
   renderMarkdown: renderOpenApiMarkdown,
   schemaUI: {
     render: (options, ctx) => (
-      <OpenApiSchemaRows
+      <OpenApiSchemaTreeAdapter
         anchorPrefix={getOpenApiSchemaAnchorPrefix(options)}
         document={ctx.schema.dereferenced}
         readOnly={options.readOnly}
-        renderMarkdown={renderOpenApiMarkdown}
         root={options.root}
         writeOnly={options.writeOnly}
       />
@@ -833,11 +844,10 @@ function OpenApiResponseBodySchemas({
               </div>
             ) : null}
             {response.rows.length > 0 ? (
-              <OpenApiSchemaRows
+              <OpenApiSchemaTreeAdapter
                 anchorPrefix={`responses-${slugOpenApiAnchorSegment(response.statusCode)}`}
                 document={operation?.__document}
                 readOnly
-                renderMarkdown={renderOpenApiMarkdown}
                 root={response.schema}
               />
             ) : null}
@@ -1325,73 +1335,6 @@ function useOpenApiHashScroll() {
   }, []);
 }
 
-function useOpenApiSchemaHashExpansion(
-  anchorIds: string[],
-  parentIndex: number[],
-  setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
-) {
-  useEffect(() => {
-    const openCurrentHashTarget = () => {
-      const hashAnchorId = getCurrentOpenApiHashAnchorId();
-      const targetIndex = anchorIds.indexOf(hashAnchorId);
-
-      if (targetIndex === -1) {
-        return;
-      }
-
-      const ancestorAnchorIds: string[] = [];
-
-      for (
-        let parent = parentIndex[targetIndex];
-        parent !== -1;
-        parent = parentIndex[parent]
-      ) {
-        ancestorAnchorIds.push(anchorIds[parent]);
-      }
-
-      if (ancestorAnchorIds.length > 0) {
-        setExpandedIds((current) => {
-          if (ancestorAnchorIds.every((id) => current.has(id))) {
-            return current;
-          }
-
-          const next = new Set(current);
-          for (const id of ancestorAnchorIds) {
-            next.add(id);
-          }
-          return next;
-        });
-      }
-
-      window.requestAnimationFrame(() => {
-        syncDocsHashTargetFromLocation('auto');
-      });
-    };
-
-    const frame = window.requestAnimationFrame(openCurrentHashTarget);
-    window.addEventListener('hashchange', openCurrentHashTarget);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('hashchange', openCurrentHashTarget);
-    };
-  }, [anchorIds, parentIndex, setExpandedIds]);
-}
-
-function getCurrentOpenApiHashAnchorId() {
-  const hash = window.location.hash;
-
-  if (!hash.startsWith('#')) {
-    return '';
-  }
-
-  try {
-    return decodeURIComponent(hash.slice(1));
-  } catch {
-    return hash.slice(1);
-  }
-}
-
 function getOpenApiSchemaAnchorPrefix(options: {
   readOnly?: boolean;
   writeOnly?: boolean;
@@ -1411,278 +1354,63 @@ function getOpenApiParameterGroupAnchorPrefix(location: string) {
   return `${slugOpenApiAnchorSegment(location)}-parameters`;
 }
 
-function buildOpenApiAnchorId(prefix: string, value: string) {
-  return `${prefix}-${slugOpenApiAnchorSegment(value)}`;
-}
-
-function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
-  const baseIds = values.map((value) => buildOpenApiAnchorId(prefix, value));
-  const duplicateBaseIds = new Set(
-    baseIds.filter((baseId, index) => baseIds.indexOf(baseId) !== index),
-  );
-  const seen = new Map<string, number>();
-
-  return values.map((value, index) => {
-    const baseId = baseIds[index];
-
-    if (!duplicateBaseIds.has(baseId)) {
-      return baseId;
-    }
-
-    const occurrence = seen.get(baseId) ?? 0;
-    seen.set(baseId, occurrence + 1);
-
-    return `${baseId}-${hashOpenApiAnchorSegment(value)}${
-      occurrence > 0 ? `-${occurrence + 1}` : ''
-    }`;
-  });
-}
-
-function hashOpenApiAnchorSegment(value: string) {
-  let hash = 0;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
-  }
-
-  return hash.toString(36);
-}
-
-function slugOpenApiAnchorSegment(value: string) {
-  return value
-    .trim()
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/[.[\]]+/g, '-')
-    .replace(/[^a-zA-Z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .toLowerCase();
-}
-
-function OpenApiSchemaRows({
+function OpenApiSchemaTreeAdapter({
   anchorPrefix,
   document,
-  readOnly,
-  renderMarkdown,
   root,
   writeOnly,
 }: {
   anchorPrefix: string;
   document?: unknown;
   readOnly?: boolean;
-  renderMarkdown: (markdown: string) => ReactNode;
   root: unknown;
   writeOnly?: boolean;
 }) {
   const locale = useContext(OpenApiLocaleContext);
-  const rows = useMemo(
-    () =>
-      buildOpenApiSchemaRows(root, {
-        document,
-        omitArrayItemWrapperRows: isZhCnLocale(locale),
-        usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
-      }),
-    [root, document, writeOnly, readOnly, locale],
-  );
-  const anchorIds = useMemo(
-    () =>
-      buildUniqueOpenApiAnchorIds(
-        anchorPrefix,
-        rows.map((row) => row.path),
-      ),
-    [anchorPrefix, rows],
-  );
-  const layout = useMemo(() => getOpenApiSchemaRowLayout(rows), [rows]);
-  const collapsibleAnchorIds = useMemo(
-    () => anchorIds.filter((_, index) => layout.hasChildren[index]),
-    [anchorIds, layout],
-  );
-  const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(
-    () => new Set(),
-  );
-
-  useOpenApiSchemaHashExpansion(
-    anchorIds,
-    layout.parentIndex,
-    setExpandedRowIds,
-  );
-
-  const visibleFlags = useMemo(() => {
-    const flags: boolean[] = [];
-
-    rows.forEach((_row, index) => {
-      const parent = layout.parentIndex[index];
-
-      flags[index] =
-        parent === -1
-          ? true
-          : flags[parent] && expandedRowIds.has(anchorIds[parent]);
-    });
-
-    return flags;
-  }, [rows, layout, expandedRowIds, anchorIds]);
-
-  const allRowsExpanded =
-    collapsibleAnchorIds.length > 0 &&
-    collapsibleAnchorIds.every((id) => expandedRowIds.has(id));
-
-  function setAllRowsExpanded(expanded: boolean) {
-    setExpandedRowIds(expanded ? new Set(collapsibleAnchorIds) : new Set());
-  }
-
-  function setRowExpanded(anchorId: string, expanded: boolean) {
-    setExpandedRowIds((current) => {
-      const next = new Set(current);
-
-      if (expanded) {
-        next.add(anchorId);
-      } else {
-        next.delete(anchorId);
-      }
-
-      return next;
-    });
-  }
-
-  if (rows.length === 0) {
-    return null;
-  }
 
   return (
-    <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      {collapsibleAnchorIds.length > 0 ? (
-        <div className="flex justify-end border-fd-border border-b px-4 py-2">
-          <button
-            aria-label={`${getOpenApiLabel(allRowsExpanded ? 'Collapse all' : 'Expand all', locale)} ${getOpenApiSchemaGroupLabel(anchorPrefix, locale)}`}
-            className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
-            onClick={() => setAllRowsExpanded(!allRowsExpanded)}
-            type="button"
-          >
-            {getOpenApiLabel(
-              allRowsExpanded ? 'Collapse all' : 'Expand all',
-              locale,
-            )}
-          </button>
-        </div>
-      ) : null}
-      {anchorIds.map((anchorId, index) => {
-        if (!visibleFlags[index]) {
-          return null;
-        }
-
-        const row = rows[index];
-
-        return (
-          <OpenApiSchemaRowItem
-            anchorId={anchorId}
-            expandable={layout.hasChildren[index]}
-            expanded={expandedRowIds.has(anchorId)}
-            key={row.path}
-            onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
-            renderMarkdown={renderMarkdown}
-            row={row}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function OpenApiSchemaRowItem({
-  anchorId,
-  expandable,
-  expanded,
-  onExpandedChange,
-  renderMarkdown,
-  row,
-}: {
-  anchorId: string;
-  expandable: boolean;
-  expanded: boolean;
-  onExpandedChange: (expanded: boolean) => void;
-  renderMarkdown: (markdown: string) => ReactNode;
-  row: OpenApiSchemaRow;
-}) {
-  const paddingInlineStart = getOpenApiSchemaRowPaddingInlineStart(row.depth);
-  const chevronClass = cn(
-    'select-none text-fd-muted-foreground text-xs transition-transform',
-    expanded && 'rotate-90',
-  );
-  const nameCode = (
-    <code
-      className={cn(
-        'openapi-schema-property-name font-bold text-fd-foreground',
-        row.deprecated && 'line-through opacity-70',
+    <OpenApiSchemaTree
+      anchorPrefix={anchorPrefix}
+      document={document}
+      labels={getOpenApiSchemaTreeLabels(anchorPrefix, locale)}
+      omitArrayItemWrapperRows={isZhCnLocale(locale)}
+      renderCallouts={(callouts) => (
+        <OpenApiInlineCallouts callouts={callouts} />
       )}
-    >
-      {row.name}
-    </code>
-  );
-
-  return (
-    <div
-      className="scroll-mt-24 border-fd-border border-t py-3 pr-4 text-sm first:border-t-0"
-      id={anchorId}
-      style={{ paddingInlineStart }}
-    >
-      <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
-        <span
-          aria-hidden={!expandable}
-          className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
-        >
-          {expandable ? (
-            <button
-              aria-expanded={expanded}
-              aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
-              className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
-              onClick={() => onExpandedChange(!expanded)}
-              type="button"
-            >
-              <span aria-hidden="true" className={chevronClass}>
-                ▶
-              </span>
-            </button>
-          ) : null}
-        </span>
-        <div className="openapi-schema-property-name-column min-w-0">
-          {nameCode}
+      renderDescription={(markdown) => (
+        <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+          {renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))}
         </div>
-        <div>
-          <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-        </div>
-        <div>
-          <OpenApiSchemaRequiredBadge required={row.required} />
-        </div>
-        <div className="font-mono text-fd-muted-foreground text-xs">
-          {row.type}
-          {row.nullable ? ' | null' : ''}
-        </div>
-        {row.deprecated ? (
-          <div>
-            <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-              Deprecated
-            </span>
-          </div>
-        ) : null}
-      </div>
-      {row.description ? (
-        <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-          {renderMarkdown(normalizeOpenApiDescriptionMarkdown(row.description))}
-        </div>
-      ) : null}
-      <OpenApiInlineCallouts callouts={row.docsCallouts} />
-      <OpenApiSchemaMeta row={row} />
-    </div>
+      )}
+      renderMetadata={(row) => <OpenApiSchemaMeta row={row} />}
+      root={root}
+      usage={writeOnly ? 'request' : 'response'}
+    />
   );
 }
 
-function getOpenApiSchemaRowPaddingInlineStart(depth: number) {
-  if (depth === 0) {
-    return OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START;
-  }
+function getOpenApiFieldLabels(locale?: string) {
+  return {
+    collapse: getOpenApiLabel('Collapse', locale),
+    copyLink: getOpenApiLabel('Copy link to', locale),
+    deprecated: getOpenApiLabel('Deprecated', locale),
+    expand: getOpenApiLabel('Expand', locale),
+    optional: getOpenApiLabel('optional', locale),
+    properties: getOpenApiLabel('properties', locale),
+    required: getOpenApiLabel('required', locale),
+  };
+}
 
-  return `calc(${OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START} + ${
-    depth * OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX
-  }px)`;
+function getOpenApiSchemaTreeLabels(
+  anchorPrefix: string,
+  locale?: string,
+): OpenApiSchemaTreeLabels {
+  return {
+    ...getOpenApiFieldLabels(locale),
+    collapseAll: getOpenApiLabel('Collapse all', locale),
+    expandAll: getOpenApiLabel('Expand all', locale),
+    schemaFields: getOpenApiSchemaGroupLabel(anchorPrefix, locale),
+  };
 }
 
 function getOpenApiSchemaGroupLabel(anchorPrefix: string, locale?: string) {
@@ -1699,21 +1427,6 @@ function getOpenApiSchemaGroupLabel(anchorPrefix: string, locale?: string) {
   }
 
   return 'schema fields';
-}
-
-function OpenApiSchemaRequiredBadge({ required }: { required: boolean }) {
-  return (
-    <span
-      className={cn(
-        'rounded border px-1.5 py-0.5 font-medium text-[0.68rem]',
-        required
-          ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-          : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-      )}
-    >
-      {required ? 'required' : 'optional'}
-    </span>
-  );
 }
 
 function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {

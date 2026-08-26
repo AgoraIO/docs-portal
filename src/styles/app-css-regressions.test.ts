@@ -144,6 +144,49 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(reducedChevron, 'transition', 'none');
   });
 
+  it('keeps OpenAPI schema tree indentation and nesting-guide contracts', () => {
+    const nestingGuide = getRuleBodyContaining(
+      '.openapi-schema-depth-nested::before',
+    ).rule;
+    let desktopIndent: postcss.Rule | undefined;
+    let mobileIndent: postcss.Rule | undefined;
+
+    appCssRoot.walkRules((candidate) => {
+      const isInContainer =
+        candidate.parent?.type === 'atrule' &&
+        candidate.parent.name === 'container';
+      if (
+        !desktopIndent &&
+        normalizeSelector(candidate.selector) === '.openapi-schema-depth' &&
+        !isInContainer
+      ) {
+        desktopIndent = candidate;
+      }
+    });
+
+    appCssRoot.walkAtRules('container', (container) => {
+      if (!container.params.includes('max-width: 58.999rem')) return;
+      container.walkRules((candidate) => {
+        if (normalizeSelector(candidate.selector) === '.openapi-schema-depth') {
+          mobileIndent = candidate;
+        }
+      });
+    });
+
+    expectDeclaration(
+      desktopIndent as postcss.Rule,
+      'padding-inline-start',
+      'calc(1rem + var(--openapi-schema-indent-desktop))',
+    );
+    expectDeclaration(nestingGuide, 'width', '1px');
+    expect(mobileIndent).toBeDefined();
+    expectDeclaration(
+      mobileIndent as postcss.Rule,
+      'padding-inline-start',
+      'calc(1rem + var(--openapi-schema-indent-mobile))',
+    );
+  });
+
   it('treats empty legacy anchors as transparent before the first heading', () => {
     const leadingHeading = getRuleBody(
       `.prose

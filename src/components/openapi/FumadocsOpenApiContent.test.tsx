@@ -724,9 +724,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.getElementById('request-body-remote-rtc-uids-items'),
     ).not.toBeInTheDocument();
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand tools properties' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: '展开 tools 属性' }));
     expect(
       document.getElementById('request-body-tools-items'),
     ).not.toBeInTheDocument();
@@ -1220,19 +1218,20 @@ describe('FumadocsOpenApiContent', () => {
     const schemaTreeEl = document.querySelector(
       '.openapi-schema-tree',
     ) as HTMLElement;
+    expect(
+      within(schemaTreeEl).getByRole('button', {
+        name: 'Collapse all Request Body schema fields',
+      }),
+    ).toBeVisible();
     fireEvent.click(
       within(schemaTreeEl).getByRole('button', {
-        name: 'Expand all Request Body schema fields',
+        name: 'Expand llm properties',
       }),
     );
 
     const channelField = screen.getByText('channel');
 
-    expect(channelField).toHaveClass(
-      'openapi-schema-property-name',
-      'font-bold',
-      'text-fd-foreground',
-    );
+    expect(channelField).toHaveClass('font-bold');
 
     expect(screen.getByText('llm')).toBeInTheDocument();
     expect(screen.getByText('url')).toBeInTheDocument();
@@ -2430,7 +2429,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
   });
 
-  it('applies 24px depth increments to nested response schema rows', async () => {
+  it('sets capped schema depth indentation variables on nested response rows', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -2494,26 +2493,30 @@ describe('FumadocsOpenApiContent', () => {
       }),
     );
 
-    const expectResponseSchemaRowPadding = (
+    const expectResponseSchemaRowIndent = (
       anchorId: string,
-      paddingInlineStart: string,
+      desktopIndent: string,
+      mobileIndent: string,
     ) => {
       const row = document.getElementById(anchorId);
+      const wrapper = row?.closest('.openapi-schema-depth') as HTMLElement;
 
       expect(row).toBeInstanceOf(HTMLElement);
-      expect((row as HTMLElement).style.paddingInlineStart).toBe(
-        paddingInlineStart,
-      );
+      expect(wrapper).toBeInstanceOf(HTMLElement);
+      expect(
+        wrapper.style.getPropertyValue('--openapi-schema-indent-desktop'),
+      ).toBe(desktopIndent);
+      expect(
+        wrapper.style.getPropertyValue('--openapi-schema-indent-mobile'),
+      ).toBe(mobileIndent);
     };
 
-    expectResponseSchemaRowPadding('responses-200-data', '1rem');
-    expectResponseSchemaRowPadding(
-      'responses-200-data-agent',
-      'calc(1rem + 24px)',
-    );
-    expectResponseSchemaRowPadding(
+    expectResponseSchemaRowIndent('responses-200-data', '0px', '0px');
+    expectResponseSchemaRowIndent('responses-200-data-agent', '20px', '16px');
+    expectResponseSchemaRowIndent(
       'responses-200-data-agent-voice',
-      'calc(1rem + 48px)',
+      '40px',
+      '32px',
     );
   });
 
@@ -2764,6 +2767,12 @@ describe('FumadocsOpenApiContent', () => {
                                 },
                                 type: 'object',
                               },
+                              advanced: {
+                                properties: {
+                                  tracing: { type: 'boolean' },
+                                },
+                                type: 'object',
+                              },
                             },
                             type: 'object',
                           },
@@ -2814,50 +2823,42 @@ describe('FumadocsOpenApiContent', () => {
   it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
     const tree = await renderNestedSchema();
     const nameField = tree.getByText('name');
-    const nameHeading = nameField.closest(
-      '.openapi-schema-property-heading',
-    ) as HTMLElement;
-    const [gutter, nameColumn] = Array.from(nameHeading.children);
+    const row = nameField.closest('.openapi-field-row') as HTMLElement;
+    const gutter = row.querySelector('.openapi-field-control-gutter');
 
-    expect(nameHeading.textContent).not.toContain('\u00a0');
-    expect(nameHeading).not.toHaveAttribute('data-markdown-ignore');
-    expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
-    expect(gutter.textContent).toBe('');
-    expect(gutter.querySelector('button')).toBeNull();
-    expect(nameColumn).toHaveClass('openapi-schema-property-name-column');
-    expect(nameColumn).toContainElement(nameField);
+    expect(row.textContent).not.toContain('\u00a0');
+    expect(row).not.toHaveAttribute('data-markdown-ignore');
+    expect(gutter).toHaveClass('openapi-field-control-gutter');
+    expect(gutter?.textContent).toBe('');
+    expect(gutter?.querySelector('button')).toBeNull();
+    expect(row).toContainElement(nameField);
   });
 
-  it('uses the same gutter and name column structure for expandable and leaf schema rows at the same depth', async () => {
+  it('uses the shared field row control for expandable and leaf schema rows', async () => {
     const tree = await renderNestedSchema();
 
-    const getSchemaRowColumns = (name: string) => {
+    const getSchemaRowControl = (name: string) => {
       const field = tree.getByText(name);
-      const heading = field.closest(
-        '.openapi-schema-property-heading',
-      ) as HTMLElement;
-      const [gutter, nameColumn] = Array.from(heading.children);
+      const row = field.closest('.openapi-field-row') as HTMLElement;
+      const gutter = row.querySelector('.openapi-field-control-gutter');
 
-      return { field, gutter, heading, nameColumn };
+      return { field, gutter, row };
     };
 
-    const leafRow = getSchemaRowColumns('name');
-    const expandableRow = getSchemaRowColumns('config');
+    const leafRow = getSchemaRowControl('name');
+    const expandableRow = getSchemaRowControl('config');
 
     for (const row of [leafRow, expandableRow]) {
-      expect(row.gutter).toHaveClass('openapi-schema-property-control-gutter');
-      expect(row.nameColumn).toHaveClass('openapi-schema-property-name-column');
-      expect(row.nameColumn).toContainElement(row.field);
-      expect(row.heading.firstElementChild).toBe(row.gutter);
-      expect(row.gutter.nextElementSibling).toBe(row.nameColumn);
+      expect(row.gutter).toHaveClass('openapi-field-control-gutter');
+      expect(row.row).toContainElement(row.field);
     }
 
     expect(
-      within(expandableRow.gutter as HTMLElement).getByRole('button', {
+      within(expandableRow.row).getByRole('button', {
         name: 'Expand config properties',
       }),
     ).toHaveAttribute('aria-expanded', 'false');
-    expect(leafRow.gutter.querySelector('button')).toBeNull();
+    expect(leafRow.gutter?.querySelector('button')).toBeNull();
   });
 
   it('expands and collapses every nested field with the schema-wide control', async () => {

@@ -1112,6 +1112,34 @@
     display: none;
   }
 
+  .openapi-schema-depth {
+    padding-inline-start: calc(1rem + var(--openapi-schema-indent-desktop));
+  }
+
+  .openapi-schema-depth-nested {
+    position: relative;
+  }
+
+  .openapi-schema-depth-nested::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(1rem + var(--openapi-schema-indent-desktop) - 10px);
+    width: 1px;
+    background: color-mix(in srgb, var(--color-fd-border) 70%, transparent);
+    content: "";
+  }
+
+  @container (max-width: 58.999rem) {
+    .openapi-schema-depth {
+      padding-inline-start: calc(1rem + var(--openapi-schema-indent-mobile));
+    }
+
+    .openapi-schema-depth-nested::before {
+      left: calc(1rem + var(--openapi-schema-indent-mobile) - 8px);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .openapi-field-row .openapi-field-anchor,
     .openapi-field-control-gutter svg {
