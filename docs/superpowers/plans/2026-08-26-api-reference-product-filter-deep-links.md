@@ -358,7 +358,7 @@ RTC
 → ?product=realtime-communication
 → Realtime Communication selected
 
-Voice
+Voice-only quickstart (`/en/realtime-media/rtc/voice-quickstart`)
 → ?product=realtime-communication-voice-only
 → Realtime Communication (Voice only) selected
 

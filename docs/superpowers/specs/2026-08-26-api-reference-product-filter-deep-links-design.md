@@ -24,7 +24,7 @@ The 12 Realtime Media products with SDK API jumps map to nine catalog filters:
 | `video` | Realtime Communication | `realtime-communication` |
 | `broadcast-streaming` | Realtime Communication | `realtime-communication` |
 | `interactive-live-streaming` | Realtime Communication | `realtime-communication` |
-| `voice` | Realtime Communication (Voice only) | `realtime-communication-voice-only` |
+| `voice` (legacy product scope) | Realtime Communication (Voice only) | `realtime-communication-voice-only` |
 | `rtm` | Signaling | `signaling` |
 | `im` | Chat | `chat` |
 | `whiteboard` | Interactive Whiteboard | `interactive-whiteboard` |
@@ -34,6 +34,8 @@ The 12 Realtime Media products with SDK API jumps map to nine catalog filters:
 | `rtc-server-sdk` | Server Gateway | `server-gateway` |
 
 Voice Calling intentionally uses its own Voice-only catalog group. RTC, Video Calling, Broadcast Streaming, and Interactive Live Streaming share the full Realtime Communication catalog group.
+
+The current navigable Voice-only guide is `/en/realtime-media/rtc/voice-quickstart` because the standalone Voice and Video product navigation was unified under RTC. That exact page receives the Voice-only SDK filter while other pages under `/en/realtime-media/rtc` continue to use the full Realtime Communication filter. The legacy `voice` registry entry remains classified for compatibility, but the implementation does not restore the removed Voice product root to the main navigation.
 
 On-Premise Recording changes from the dedicated `/en/api-reference/api-ref/on-premise-recording` page to the filtered catalog URL. This makes all 12 SDK sidebar jumps behave consistently and exposes both Linux C++ and Linux Java entries in one view.
 
@@ -165,7 +167,7 @@ Automated tests cover:
 Use a local documentation preview and browser automation to verify representative mappings:
 
 1. RTC opens the catalog filtered to Realtime Communication and shows multiple SDK platforms.
-2. Voice opens the Voice-only product group.
+2. The unified RTC Voice-only quickstart opens the Voice-only product group.
 3. Signaling opens the Signaling group.
 4. On-Premise Recording opens the catalog filtered to its Linux SDK entries.
 
