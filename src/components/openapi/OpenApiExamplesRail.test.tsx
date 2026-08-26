@@ -320,7 +320,9 @@ describe('OpenApiExamplesRail', () => {
     vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
       const style = originalGetComputedStyle(element);
       if (element === document.documentElement) {
-        return { getPropertyValue: () => '20px' } as CSSStyleDeclaration;
+        return {
+          getPropertyValue: () => '20px',
+        } as unknown as CSSStyleDeclaration;
       }
       return style;
     });
@@ -369,7 +371,9 @@ describe('OpenApiExamplesRail', () => {
     vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
       const style = originalGetComputedStyle(element);
       if (element === document.documentElement) {
-        return { getPropertyValue: () => '20px' } as CSSStyleDeclaration;
+        return {
+          getPropertyValue: () => '20px',
+        } as unknown as CSSStyleDeclaration;
       }
       return style;
     });
