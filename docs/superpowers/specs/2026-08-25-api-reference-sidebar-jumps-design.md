@@ -7,20 +7,20 @@ Make API Reference jumps in English Realtime Media product sidebars predictable 
 - Products with REST and SDK APIs show `RESTful API` first and `SDK API reference` immediately below it.
 - Products with SDK APIs but no REST API show `SDK API reference` as the first item in the `Reference` section.
 - Products with REST APIs but no SDK API do not show an SDK entry.
-- Both jump entries show the right-facing chevron used for cross-section navigation.
+- Both API jump entries show an up-right arrow that communicates new-tab navigation instead of the right-facing chevron used by expandable or current-tab navigation.
 - REST and SDK jumps both open the API Reference destination in a new browser tab.
 
 ## Current Behavior
 
 `src/lib/realtime-media-api-reference-links.ts` defines the 20-product SDK/REST capability registry. `src/lib/docs-page.server.ts` uses that registry to inject ordered API jumps into each Realtime Media `Reference` section.
 
-The injected SDK node has `linked: true` and `external: true`, so it displays a right-facing chevron and opens in a new tab. The REST node currently has only `linked: true`, so it displays the chevron but uses the TanStack Router link in the current tab. This design changes REST jumps to the same safe new-tab anchor behavior used by SDK jumps.
+The injected REST and SDK nodes both have `linked: true` and `external: true`, so they open in new tabs. `SidebarPageLabel` currently only receives `linked`; as a result, it renders the same rotated chevron used for linked current-tab navigation. In the surrounding sidebar, the same visual also appears beside expandable sections, so users can reasonably interpret the API entries as disclosure controls instead of new-tab links.
 
 Product `reference/meta.json` files own ordinary Reference pages; the centralized server registry owns cross-tab API jumps because it controls final position and browser behavior.
 
 ## Chosen Approach
 
-Use one server-side product capability registry as the owner of API jump placement and behavior. Replace `REALTIME_MEDIA_API_REFERENCE_LINKS` with a registry that supports optional REST and SDK targets.
+Keep the server-side product capability registry as the owner of API jump placement and behavior. The icon change consumes the existing `linked` and `external` node fields; it does not add an icon field or API-title-specific configuration to the registry.
 
 ```ts
 type RealtimeMediaApiReferenceLinks = {
@@ -36,7 +36,7 @@ Example entries:
 {
   productSlug: 'rtc',
   restUrl: '/en/api-reference/api-ref/rtc',
-  sdkUrl: '/en/api-reference/api-ref',
+  sdkUrl: '/en/api-reference/api-ref?product=realtime-communication',
 },
 {
   productSlug: 'cloud-recording',
@@ -44,7 +44,7 @@ Example entries:
 },
 {
   productSlug: 'on-premise-recording',
-  sdkUrl: '/en/api-reference/api-ref/on-premise-recording',
+  sdkUrl: '/en/api-reference/api-ref?product=on-premise-recording',
 },
 ```
 
@@ -72,7 +72,7 @@ REST jump nodes use this target contract:
 }
 ```
 
-`linked: true` preserves the right-facing chevron. `external: true` makes the internal docs destination render as a native anchor with `target="_blank"` and `rel="noreferrer noopener"`.
+`linked: true` marks the item as a cross-section jump. `external: true` makes the internal docs destination render as a native anchor with `target="_blank"` and `rel="noreferrer noopener"`.
 
 SDK jump nodes use both linked and external behavior:
 
@@ -88,7 +88,33 @@ SDK jump nodes use both linked and external behavior:
 }
 ```
 
-REST and SDK nodes therefore share the same visual and browser contract: both show the chevron and both open their internal API Reference destination in a new tab.
+REST and SDK nodes therefore share the same browser contract: both open their internal API Reference destination in a new tab.
+
+## Icon And Accessibility Contract
+
+`SidebarPageLabel` receives both `linked` and `external` and chooses the trailing indicator by node semantics:
+
+```text
+method present
+→ render the HTTP method badge
+
+linked + external
+→ render ArrowUpRightIcon
+→ tooltip: Opens in a new tab
+→ screen-reader text: (opens in a new tab)
+
+linked only
+→ render the existing right-facing chevron
+
+external only or ordinary page
+→ no trailing linked-jump indicator
+```
+
+The implementation does not inspect `title` values such as `RESTful API` or `SDK API reference`. This keeps behavior stable if labels change and avoids applying API-specific logic in the generic renderer.
+
+The visual icon is decorative and uses `aria-hidden="true"`. A visually hidden text suffix communicates the new-tab behavior to assistive technology. The icon wrapper uses the native tooltip text `Opens in a new tab` for pointer users.
+
+Use `ArrowUpRightIcon`, not the rotated `ChevronDownIcon`, for linked external nodes. Keep the existing chevron for linked internal nodes so its current navigation/disclosure meaning remains intact.
 
 ## Ordering Rules
 
@@ -139,17 +165,20 @@ Focused unit and integration tests cover:
 5. Absence of SDK nodes for REST-only products.
 6. SDK node shape: `linked: true`, `external: true`, and `href` set.
 7. REST node shape: `linked: true`, `external: true`, and `href` set.
-8. Sidebar rendering: both entries display the chevron and render native anchors with `_blank` and safe `rel`.
-9. Existing Console REST entries and ordinary Reference pages remain present.
-10. Whiteboard and other existing navigation regression tests are updated to the final injected order.
+8. Sidebar rendering: linked external REST and SDK entries display `ArrowUpRightIcon`, the new-tab tooltip, and screen-reader text; they do not display the rotated chevron.
+9. Linked internal entries retain the right-facing chevron and current-tab behavior.
+10. Ordinary external entries without `linked` do not acquire an API jump icon.
+11. HTTP method badges retain priority over linked/external indicators.
+12. Existing Console REST entries and ordinary Reference pages remain present.
+13. Whiteboard and other existing navigation regression tests are updated to the final injected order.
 
 ## Preview Verification
 
 After implementation, start the local documentation site and use browser automation to verify the rendered sidebar and click behavior. Provide the user with these screenshots:
 
-1. RTC as an SDK+REST sample, showing `RESTful API` followed immediately by `SDK API reference`, both with chevrons.
-2. On-Premise Recording as an SDK-only sample, showing `SDK API reference` as the first Reference item with a chevron.
-3. Cloud Recording as a REST-only sample, showing `RESTful API` without an SDK entry.
+1. RTC as an SDK+REST sample, showing `RESTful API` followed immediately by `SDK API reference`, both with up-right arrows.
+2. On-Premise Recording as an SDK-only sample, showing `SDK API reference` as the first Reference item with an up-right arrow.
+3. Cloud Recording as a REST-only sample, showing `RESTful API` with an up-right arrow and without an SDK entry.
 
 Also verify interactively that clicking either the SDK or RESTful API entry creates one new browser tab while preserving the original product-guide tab. Capture screenshots at a stable desktop viewport with the `Reference` section visible and no overlapping UI.
 
@@ -157,7 +186,7 @@ Also verify interactively that clicking either the SDK or RESTful API entry crea
 
 This change updates the English Realtime Media sidebar behavior and the tests required to maintain it. It does not:
 
-- Add product-filter query parameters to the API Reference catalog.
+- Add or change product-filter query mappings in the API Reference catalog.
 - Change the API Reference catalog content.
 - Change Chinese documentation navigation.
 - Change ordinary external link icons across the rest of the documentation site.
