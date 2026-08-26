@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import * as searchIntent from './search-intent';
 import { classifySearchIntent } from './search-intent';
 
 describe('classifySearchIntent', () => {
@@ -87,5 +88,55 @@ describe('classifySearchIntent', () => {
   it('guards empty and whitespace-only queries as unknown', () => {
     expect(classifySearchIntent('').intent).toBe('unknown');
     expect(classifySearchIntent('   ').intent).toBe('unknown');
+  });
+
+  it.each([
+    ['billing policy', 'billing policies'],
+    ['real-time transcription', 'speech to text'],
+    ['real time transcription', 'speech to text'],
+    ['billing policies', 'billing policies'],
+    ['voice agent quickstart', 'voice agent quickstart'],
+  ])('rewrites the exact docs retrieval query %s to %s', (query, expected) => {
+    const getDocsRetrievalQuery = (
+      searchIntent as typeof searchIntent & {
+        getDocsRetrievalQuery?: (value: string) => string;
+      }
+    ).getDocsRetrievalQuery;
+
+    expect(getDocsRetrievalQuery).toBeTypeOf('function');
+    expect(getDocsRetrievalQuery?.(query)).toBe(expected);
+  });
+
+  it.each([
+    ['RtcEngine', 'AgoraRtcEngineKit'],
+    ['joinChannel', 'joinChannel'],
+    ['RTC engine', 'RTC engine'],
+  ])('rewrites the exact API retrieval query %s to %s', (query, expected) => {
+    const getApiRetrievalQuery = (
+      searchIntent as typeof searchIntent & {
+        getApiRetrievalQuery?: (value: string) => string;
+      }
+    ).getApiRetrievalQuery;
+
+    expect(getApiRetrievalQuery).toBeTypeOf('function');
+    expect(getApiRetrievalQuery?.(query)).toBe(expected);
+  });
+
+  it('keeps intent classification based on the original query', () => {
+    expect(classifySearchIntent('billing policy')).toMatchObject({
+      intent: 'support',
+      originalQuery: 'billing policy',
+      normalizedQuery: 'billing policy',
+    });
+    expect(classifySearchIntent('real-time transcription')).toMatchObject({
+      intent: 'product',
+      originalQuery: 'real-time transcription',
+      normalizedQuery: 'real-time transcription',
+    });
+    expect(classifySearchIntent('RtcEngine')).toMatchObject({
+      intent: 'api-symbol',
+      originalQuery: 'RtcEngine',
+      normalizedQuery: 'rtcengine',
+    });
   });
 });

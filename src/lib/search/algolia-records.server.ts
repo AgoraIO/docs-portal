@@ -109,7 +109,9 @@ export function buildAlgoliaContentDocsRecords(
       return [];
     }
 
-    const breadcrumbs = navigationByLocale.get(route.locale)?.get(page.url);
+    const breadcrumbs =
+      navigationByLocale.get(route.locale)?.get(page.url) ??
+      getHiddenSearchablePageBreadcrumbs(route);
 
     if (!breadcrumbs) {
       return [];
@@ -142,6 +144,41 @@ export function buildAlgoliaContentDocsRecords(
       },
     ];
   });
+}
+
+function getHiddenSearchablePageBreadcrumbs(
+  route: NonNullable<ReturnType<typeof parseDocsUrl>>,
+) {
+  if (route.locale !== 'en') return undefined;
+
+  const [firstSegment, secondSegment, thirdSegment] = route.slugSegments;
+  if (
+    route.tab === 'api-reference' &&
+    firstSegment === 'faq' &&
+    secondSegment &&
+    thirdSegment
+  ) {
+    return ['Reference', 'FAQ', humanizeSlug(secondSegment)];
+  }
+
+  if (
+    route.tab === 'realtime-media' &&
+    firstSegment &&
+    secondSegment === 'product-overview' &&
+    route.slugSegments.length === 2
+  ) {
+    return ['RTC', humanizeSlug(firstSegment)];
+  }
+
+  return undefined;
+}
+
+function humanizeSlug(value: string) {
+  return value
+    .split(/[-_]+/u)
+    .filter(Boolean)
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(' ');
 }
 
 export function buildAlgoliaOpenApiRecord({

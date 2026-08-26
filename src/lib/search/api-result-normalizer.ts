@@ -95,6 +95,13 @@ const KIND_ALIASES: Record<string, string> = {
 
 const PAGE_KINDS = new Set(['class', 'enum', 'interface', 'namespace', 'type']);
 
+const ROOT_CLIENT_ALIASES = new Set([
+  'irtcengine',
+  'agorartcenginekit',
+  'rtcengine',
+  'iagorartcclient',
+]);
+
 function normalizeMemberKind(value: string) {
   const normalized = value.trim().toLowerCase();
   return KIND_ALIASES[normalized] ?? normalized;
@@ -112,6 +119,11 @@ function splitIdentifier(value: string) {
 
 function compact(value: string) {
   return splitIdentifier(value).join('');
+}
+
+function canonicalRootClientAlias(value: string) {
+  const normalized = compact(value);
+  return ROOT_CLIENT_ALIASES.has(normalized) ? 'rtcengine' : normalized;
 }
 
 function normalizeProductKey(value: string | undefined) {
@@ -369,9 +381,9 @@ function matchesTerms(fields: string[], intent: SearchIntentResult) {
 }
 
 function symbolMatches(fields: string[], intent: SearchIntentResult) {
-  const queryCompact = compact(intent.normalizedQuery);
+  const queryCompact = canonicalRootClientAlias(intent.normalizedQuery);
   return fields.some((field) => {
-    const fieldCompact = compact(field);
+    const fieldCompact = canonicalRootClientAlias(field);
     return fieldCompact === queryCompact;
   });
 }
@@ -447,13 +459,20 @@ export function normalizeApiHit(
     (record(hit._snippetResult) && record(hit._snippetResult.content)
       ? text(hit._snippetResult.content.value)
       : undefined) ?? text(hit.content);
+  const canonicalNamespace = canonicalRootClientAlias(namespace) || 'unknown';
+  const canonicalSymbol = compact(symbol) || 'unknown';
+  const isRootClientPage =
+    PAGE_KINDS.has(memberKind.toLowerCase()) &&
+    canonicalNamespace === 'rtcengine' &&
+    canonicalRootClientAlias(symbol) === 'rtcengine';
   const key = [
     normalizeProductKey(product),
-    compact(namespace) || 'unknown',
-    ...(PAGE_KINDS.has(memberKind.toLowerCase()) &&
-    compact(namespace) === compact(symbol)
+    canonicalNamespace,
+    ...(isRootClientPage ||
+    (PAGE_KINDS.has(memberKind.toLowerCase()) &&
+      compact(namespace) === compact(symbol))
       ? [memberKind.toLowerCase()]
-      : [compact(symbol) || 'unknown', memberKind.toLowerCase()]),
+      : [canonicalSymbol, memberKind.toLowerCase()]),
   ].join('|');
   const fallbackIdentity = !product
     ? `|url:${encodeURIComponent(url.toLowerCase())}`

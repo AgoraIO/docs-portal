@@ -138,6 +138,96 @@ describe('SDK API result normalization', () => {
     expect(new Set(results.map((result) => result.canonicalKey)).size).toBe(3);
   });
 
+  it.each(['AgoraRtcEngineKit', 'IRtcEngine', 'IAgoraRTCClient'])(
+    'admits %s as an exact RtcEngine class alias',
+    (classAlias) => {
+      const normalized = normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl0: 'API Reference ❯ Video Sdk ❯ iOS ❯ 4.x (current)',
+            lvl1: `Class ${classAlias}`,
+          },
+          objectID: `class-${classAlias}`,
+          platform: 'ios',
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/${classAlias}.html`,
+          version: '4.x',
+        },
+        intent('RtcEngine'),
+      );
+
+      expect(admitApiHit(normalized, intent('RtcEngine'), false)).toBe(true);
+      expect(normalized.canonicalKey).toBe('video-sdk|rtcengine|class');
+    },
+  );
+
+  it.each(['renewToken', 'setAudioProfile'])(
+    'aggregates Android, iOS, and Web %s results across root client aliases',
+    (symbol) => {
+      const platformHits = [
+        {
+          classAlias: 'IRtcEngine',
+          label: 'Android',
+          platform: 'android',
+        },
+        {
+          classAlias: 'AgoraRtcEngineKit',
+          label: 'iOS',
+          platform: 'ios',
+        },
+        {
+          classAlias: 'IAgoraRTCClient',
+          label: 'Web',
+          platform: 'web',
+        },
+      ].map(({ classAlias, label, platform }) =>
+        normalizeValidApiHit(
+          {
+            hierarchy: {
+              lvl0: `API Reference ❯ Video Sdk ❯ ${label} ❯ 4.x (current)`,
+              lvl1: `Class ${classAlias}`,
+              lvl2: symbol,
+            },
+            objectID: `${platform}-${symbol}`,
+            platform,
+            product: 'video-sdk',
+            url: `https://api-ref.agora.io/${platform}/${classAlias}.html#${symbol.toLowerCase()}`,
+            version: '4.x',
+          },
+          intent(symbol),
+        ),
+      );
+
+      const results = aggregateApiResults(platformHits);
+
+      expect(results).toHaveLength(1);
+      expect(results[0]).toMatchObject({
+        canonicalKey: `video-sdk|rtcengine|${symbol.toLowerCase()}|member`,
+        platforms: ['android', 'ios', 'web'],
+      });
+    },
+  );
+
+  it('does not canonicalize similar non-root class names', () => {
+    const create = (className: string) =>
+      normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl1: `Class ${className}`,
+            lvl2: 'renewToken',
+          },
+          objectID: className,
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/${className}.html#renewtoken`,
+        },
+        intent('renewToken'),
+      );
+
+    expect(
+      aggregateApiResults([create('IRtcEngine'), create('IRtcEngineEx')]),
+    ).toHaveLength(2);
+  });
+
   it('derives class and member identity from hierarchy levels without duplicating class pages', () => {
     const classPage = normalizeValidApiHit(
       {

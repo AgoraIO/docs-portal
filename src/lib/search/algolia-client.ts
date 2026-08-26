@@ -5,7 +5,11 @@ import {
   aggregateApiResults,
   normalizeApiHit,
 } from './api-result-normalizer';
-import { classifySearchIntent } from './search-intent';
+import {
+  classifySearchIntent,
+  getApiRetrievalQuery,
+  getDocsRetrievalQuery,
+} from './search-intent';
 import type { DocsSearchScope } from './search-provider';
 import {
   type RankedSearchResult,
@@ -326,7 +330,13 @@ async function searchWithRankingV2({
       apiScopeSelected);
   const docsPromise = client.searchForHits({
     requests: [
-      buildDocsSearchRequest({ indexName, locale, platform, query, scope }),
+      buildDocsSearchRequest({
+        indexName,
+        locale,
+        platform,
+        query: getDocsRetrievalQuery(query),
+        scope,
+      }),
     ],
   });
   const apiPromise =
@@ -336,7 +346,7 @@ async function searchWithRankingV2({
             buildApiSearchRequest({
               apiReferenceIndexName,
               platform,
-              query,
+              query: getApiRetrievalQuery(query),
               scope,
             }),
           ],
@@ -376,7 +386,7 @@ async function searchWithRankingV2({
           buildApiSearchRequest({
             apiReferenceIndexName,
             platform,
-            query,
+            query: getApiRetrievalQuery(query),
             scope,
           }),
         ],
@@ -635,6 +645,16 @@ function mapDocsHitForRanking(
     isMatched(hit, 'content') ||
     anyTermMatches([plainContent, description], intent.majorTerms);
   const recordKind = getDocsRecordKind(hit, url, breadcrumbs);
+  const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
+
+  if (
+    intent.intent === 'api-task' &&
+    !titleExactMatch &&
+    !titleMatch &&
+    !sectionMatch
+  ) {
+    return undefined;
+  }
 
   return {
     allMajorTermsMatch,
@@ -660,7 +680,7 @@ function mapDocsHitForRanking(
       plainContent,
     tab: getString(hit.tab),
     title,
-    titleExactMatch: normalizedText(plainTitle) === intent.normalizedQuery,
+    titleExactMatch,
     titleMatch,
     type: 'page',
     url: resultUrl,

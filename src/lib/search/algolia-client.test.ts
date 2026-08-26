@@ -580,6 +580,86 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
+    it('uses retrieval aliases in requests while retaining original-query intent behavior', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>Class AgoraRtcEngineKit</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ iOS ❯ 4.x (current)',
+                    lvl1: 'Class AgoraRtcEngineKit',
+                  },
+                  objectID: 'agora-rtc-engine-kit',
+                  platform: 'ios',
+                  url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('RtcEngine');
+
+      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'docs_portal_en',
+            query: 'RtcEngine',
+          }),
+        ],
+      });
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'AgoraRtcEngineKit',
+          }),
+        ],
+      });
+      expect(results[0]).toMatchObject({
+        canonicalKey: 'video-sdk|rtcengine|class',
+        id: 'agora-rtc-engine-kit',
+        recordKind: 'sdk-symbol',
+      });
+    });
+
+    it.each([
+      ['billing policy', 'billing policies'],
+      ['real-time transcription', 'speech to text'],
+      ['real time transcription', 'speech to text'],
+    ])('uses docs retrieval alias %s -> %s', async (query, retrievalQuery) => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [{ hits: [docsHit()] }],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      await client.search(query);
+
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({
+            indexName: 'docs_portal_en',
+            query: retrievalQuery,
+          }),
+        ],
+      });
+    });
+
     it('treats call syntax as an exact API symbol alias ahead of an exact docs title', async () => {
       const searchForHits = vi
         .fn()
@@ -646,6 +726,75 @@ describe('createAlgoliaDocsClient', () => {
         api: 'success',
         docs: 'success',
       });
+    });
+
+    it('drops content-only docs hits for an api-task query', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  _highlightResult: {
+                    content: {
+                      matchLevel: 'full',
+                      value:
+                        'Reference notes for <mark>send streaming message</mark>.',
+                    },
+                    section: { matchLevel: 'none', value: 'References' },
+                    title: { matchLevel: 'none', value: 'Media streams' },
+                  },
+                  content: 'Reference notes for send streaming message.',
+                  objectID: 'content-only-reference',
+                  section: 'References',
+                  title: 'Media streams',
+                  url: '/en/reference/media-streams',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('send streaming message')).resolves.toEqual(
+        [],
+      );
+    });
+
+    it.each([
+      ['acquire resource ID', 'Acquire a resource ID'],
+      ['start cloud recording task', 'Start a cloud recording task'],
+      ['query recording status', 'Query status'],
+    ])('keeps title-matched api-task docs for %s', async (query, title) => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  _highlightResult: {
+                    title: { matchLevel: 'full', value: title },
+                  },
+                  objectID: `docs:${query}`,
+                  title,
+                  url: `/en/api-reference/${query.replaceAll(' ', '-')}`,
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search(query);
+
+      expect(results[0]).toMatchObject({ id: `docs:${query}`, title });
     });
 
     it('keeps docs results and records API failure when the API request rejects', async () => {

@@ -3,13 +3,21 @@ import { resolve } from 'node:path';
 import { liteClient } from 'algoliasearch/lite';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { loadDocsSearchIndex } from '../docs-page.server';
-import type { SearchEntry } from '../docs-search';
 import { createAlgoliaDocsClient } from './algolia-client';
+import {
+  type AlgoliaDocsRecord,
+  buildAlgoliaContentDocsRecords,
+} from './algolia-records.server';
 import {
   GLOBAL_GOLDEN_SEARCH_CASES,
   type GoldenSearchCase,
 } from './golden-search-queries';
-import { classifySearchIntent, type SearchIntent } from './search-intent';
+import {
+  classifySearchIntent,
+  getApiRetrievalQuery,
+  getDocsRetrievalQuery,
+  type SearchIntent,
+} from './search-intent';
 
 vi.mock('algoliasearch/lite', () => ({
   liteClient: vi.fn(),
@@ -33,7 +41,9 @@ type ApiCorpusEntry = {
   namespace?: string;
   platformHits: readonly {
     label: string;
+    namespace?: string;
     platform: string;
+    symbol?: string;
     url: string;
   }[];
 };
@@ -110,13 +120,6 @@ const EMPTY_QUERIES = new Set([
   'xyznonexistent',
 ]);
 
-const INDEX_MISSING_ALLOWLIST = new Set([
-  '/en/realtime-media/interactive-live-streaming/product-overview',
-  '/en/realtime-media/broadcast-streaming/product-overview',
-  '/en/api-reference/faq/quality/video_blank',
-  '/en/api-reference/faq/quality/ios_bluetooth',
-]);
-
 const NOISE_DOC_ROUTES = [
   '/en/api-reference/faq/account',
   '/en/api-reference/faq/integration',
@@ -132,11 +135,13 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     platformHits: [
       {
         label: 'Android',
+        namespace: 'IRtcEngine',
         platform: 'android',
         url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
       },
       {
         label: 'C++',
+        namespace: 'IRtcEngine',
         platform: 'cpp',
         url: 'https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
       },
@@ -150,13 +155,21 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     platformHits: [
       {
         label: 'Android',
+        namespace: 'IRtcEngine',
         platform: 'android',
         url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
       },
       {
         label: 'C++',
+        namespace: 'IRtcEngine',
         platform: 'cpp',
         url: 'https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
+      },
+      {
+        label: 'iOS',
+        namespace: 'AgoraRtcEngineKit',
+        platform: 'ios',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)',
       },
     ],
     queries: ['setAudioProfile'],
@@ -190,14 +203,10 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     kind: 'class',
     platformHits: [
       {
-        label: 'Android',
-        platform: 'android',
-        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
-      },
-      {
-        label: 'C++',
-        platform: 'cpp',
-        url: 'https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html',
+        label: 'iOS',
+        platform: 'ios',
+        symbol: 'AgoraRtcEngineKit',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
       },
     ],
     queries: ['RtcEngine'],
@@ -209,13 +218,27 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     platformHits: [
       {
         label: 'Android',
+        namespace: 'IRtcEngine',
         platform: 'android',
         url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
       },
       {
         label: 'C++',
+        namespace: 'IRtcEngine',
         platform: 'cpp',
         url: 'https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
+      },
+      {
+        label: 'iOS',
+        namespace: 'AgoraRtcEngineKit',
+        platform: 'ios',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/renewtoken(_:)',
+      },
+      {
+        label: 'Web',
+        namespace: 'IAgoraRTCClient',
+        platform: 'web',
+        url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#renewtoken',
       },
     ],
     queries: ['renew token'],
@@ -292,9 +315,11 @@ const NOISE_API_CORPUS: readonly ApiCorpusEntry[] = [
 const TRACKED_ANDROID_SDK_URLS = [
   'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
   'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
-  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
   'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
 ] as const;
+
+const TRACKED_IOS_RTC_ENGINE_URL =
+  'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html';
 
 const STABLE_WEB_NETWORK_QUALITY_URL =
   'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html';
@@ -307,15 +332,23 @@ const EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST = new Set([
 
 const REAL_SDK_TARGET_URLS = new Set([
   ...TRACKED_ANDROID_SDK_URLS,
+  TRACKED_IOS_RTC_ENGINE_URL,
   STABLE_WEB_NETWORK_QUALITY_URL,
   ...EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST,
 ]);
 
-let englishSearchIndex: SearchEntry[] = [];
-let trackedEnglishRoutes = new Map<string, SearchEntry>();
+type IndexedDocsEntry = Record<string, unknown> & {
+  breadcrumbs: string[];
+  content?: string;
+  objectType: 'docs' | 'openapi';
+  title: string;
+  url: string;
+};
+
+let englishSearchIndex: IndexedDocsEntry[] = [];
+let hiddenSyncRecords: AlgoliaDocsRecord[] = [];
 
 beforeAll(async () => {
-  englishSearchIndex = await loadDocsSearchIndex('en');
   const inventory = JSON.parse(
     readFileSync(
       resolve(process.cwd(), 'src/lib/legacy-sitemap/new-docs-inventory.json'),
@@ -323,42 +356,60 @@ beforeAll(async () => {
     ),
   ) as {
     routes: Array<{
-      product?: string;
       routePath: string;
-      searchText?: string;
+      sourceFilePath: string;
       title: string;
     }>;
   };
-  trackedEnglishRoutes = new Map(
-    inventory.routes
-      .filter(({ routePath }) => routePath.startsWith('/en/'))
-      .map(({ product, routePath, searchText, title }) => [
-        routePath,
-        {
-          breadcrumbs: routePath.includes('/faq/')
-            ? ['FAQ', product ?? '']
-            : [product ?? ''],
-          content: searchText,
-          objectType: 'docs' as const,
-          product,
-          title,
-          url: routePath,
-        },
-      ]),
+  const hiddenUrls = new Set([
+    '/en/realtime-media/interactive-live-streaming/product-overview',
+    '/en/realtime-media/broadcast-streaming/product-overview',
+    '/en/api-reference/faq/quality/video_blank',
+    '/en/api-reference/faq/quality/ios_bluetooth',
+  ]);
+  const hiddenPages = inventory.routes
+    .filter(({ routePath }) => hiddenUrls.has(routePath))
+    .map(({ routePath, sourceFilePath, title }) => ({
+      content: readFileSync(resolve(process.cwd(), sourceFilePath), 'utf8'),
+      title,
+      url: routePath,
+    }));
+  hiddenSyncRecords = buildAlgoliaContentDocsRecords(
+    hiddenPages,
+    new Map([['en', new Map()]]),
   );
+  englishSearchIndex = [
+    ...((await loadDocsSearchIndex('en')) as IndexedDocsEntry[]),
+    ...hiddenSyncRecords.map(toIndexedDocsEntry),
+  ];
 }, 30_000);
+
+function toIndexedDocsEntry(record: AlgoliaDocsRecord): IndexedDocsEntry {
+  return {
+    breadcrumbs: record.breadcrumbs ?? [],
+    content: record.structured.contents
+      .map(({ content }) => content)
+      .join('\n'),
+    ...(record.description ? { description: record.description } : {}),
+    objectType: record.extra_data.objectType,
+    ...(record.extra_data.platform
+      ? { platform: record.extra_data.platform }
+      : {}),
+    ...(record.extra_data.product
+      ? { product: record.extra_data.product }
+      : {}),
+    tab: record.extra_data.tab,
+    title: record.title,
+    url: record.url,
+  };
+}
 
 function indexedEntry(url: string) {
   return englishSearchIndex.find((entry) => entry.url === url);
 }
 
 function authoritativeRouteEntry(url: string) {
-  return (
-    indexedEntry(url) ??
-    (INDEX_MISSING_ALLOWLIST.has(url)
-      ? trackedEnglishRoutes.get(url)
-      : undefined)
-  );
+  return indexedEntry(url);
 }
 
 function targetDocsHit(query: string): SourceHit | undefined {
@@ -407,35 +458,43 @@ function apiHit(
   entry: ApiCorpusEntry,
   platformHit: ApiCorpusEntry['platformHits'][number],
 ) {
-  const hierarchyTitle =
-    entry.kind === 'method'
-      ? entry.symbol
-      : `${entry.kind === 'enum' ? 'Enum' : entry.kind === 'interface' ? 'Interface' : 'Class'} ${entry.symbol}`;
+  const symbol = platformHit.symbol ?? entry.symbol;
+  const namespace = platformHit.namespace ?? entry.namespace;
+  const pageTitle = `${entry.kind === 'enum' ? 'Enum' : entry.kind === 'interface' ? 'Interface' : 'Class'} ${symbol}`;
   return {
-    ...(entry.namespace ? { className: entry.namespace } : {}),
     hierarchy: {
       lvl0: `API Reference ❯ Video Sdk ❯ ${platformHit.label} ❯ 4.x (current)`,
-      lvl1: hierarchyTitle,
+      lvl1: entry.kind === 'method' ? `Class ${namespace}` : pageTitle,
+      ...(entry.kind === 'method' ? { lvl2: symbol } : {}),
     },
-    isCurrentVersion: true,
-    kind: entry.kind,
-    objectID: `${entry.queries.length === 0 ? 'noise-api-' : ''}${entry.symbol}-${platformHit.platform}`,
+    objectID: `${entry.queries.length === 0 ? 'noise-api-' : ''}${symbol}-${platformHit.platform}`,
     platform: platformHit.platform,
     product: 'video-sdk',
-    symbol: entry.symbol,
     url: platformHit.url,
     version: '4.x',
   };
 }
 
-function sourceHitsFor(query: string, indexName: string, intent: SearchIntent) {
+function sourceHitsFor(
+  query: string,
+  retrievalQuery: string,
+  indexName: string,
+  intent: SearchIntent,
+) {
   if (indexName === 'docs_portal_en') {
     if (EMPTY_QUERIES.has(query)) return [];
-    const target = targetDocsHit(query);
+    const target =
+      retrievalQuery === getDocsRetrievalQuery(query)
+        ? targetDocsHit(query)
+        : undefined;
     return [...noiseDocsFor(intent), ...(target ? [target] : [])];
   }
 
-  const targets = API_CORPUS.filter(({ queries }) => queries.includes(query));
+  const targets = API_CORPUS.filter(({ queries }) =>
+    queries.some(
+      (candidate) => getApiRetrievalQuery(candidate) === retrievalQuery,
+    ),
+  );
   return [...NOISE_API_CORPUS, ...targets].flatMap((entry) =>
     entry.platformHits.map((platformHit) => apiHit(entry, platformHit)),
   );
@@ -447,7 +506,7 @@ function createGoldenClient(query: string, intent: SearchIntent) {
     return Promise.resolve({
       results: [
         {
-          hits: sourceHitsFor(query, request.indexName, intent),
+          hits: sourceHitsFor(query, request.query, request.indexName, intent),
         },
       ],
     });
@@ -491,21 +550,28 @@ describe('Global search golden queries', () => {
     expect(NOISE_API_CORPUS).toHaveLength(5);
   });
 
-  it('allows exactly the four known target routes missing from the current index', () => {
-    const indexedUrls = new Set(englishSearchIndex.map(({ url }) => url));
-    const actualMissingTargets = new Set(
-      Object.values(DOC_TARGET_ROUTE_BY_QUERY).filter(
-        (url) => !indexedUrls.has(url),
-      ),
-    );
-
-    expect(INDEX_MISSING_ALLOWLIST.size).toBe(4);
-    expect(actualMissingTargets).toEqual(INDEX_MISSING_ALLOWLIST);
+  it('sources the four formerly missing targets directly from search sync records', () => {
+    expect(hiddenSyncRecords.map(({ url }) => url)).toEqual([
+      '/en/api-reference/faq/quality/ios_bluetooth',
+      '/en/api-reference/faq/quality/video_blank',
+      '/en/realtime-media/broadcast-streaming/product-overview',
+      '/en/realtime-media/interactive-live-streaming/product-overview',
+    ]);
     expect(
-      [...INDEX_MISSING_ALLOWLIST].filter(
-        (url) => !trackedEnglishRoutes.has(url),
-      ),
-    ).toEqual([]);
+      [
+        '/en/realtime-media/interactive-live-streaming/product-overview',
+        '/en/realtime-media/broadcast-streaming/product-overview',
+        '/en/api-reference/faq/quality/video_blank',
+        '/en/api-reference/faq/quality/ios_bluetooth',
+      ].map(indexedEntry),
+    ).toEqual([
+      expect.objectContaining({
+        breadcrumbs: ['RTC', 'Interactive Live Streaming'],
+      }),
+      expect.objectContaining({ breadcrumbs: ['RTC', 'Broadcast Streaming'] }),
+      expect.objectContaining({ breadcrumbs: ['Reference', 'FAQ', 'Quality'] }),
+      expect.objectContaining({ breadcrumbs: ['Reference', 'FAQ', 'Quality'] }),
+    ]);
   });
 
   it('keeps every relative expected route in an authoritative current source', () => {
@@ -583,6 +649,7 @@ describe('Global search golden queries', () => {
       'content/docs/en/realtime-media/video/get-started-sdk.mdx',
       'content/docs/en/realtime-media/video/build/enhance-the-audio-experience/voice-effects.mdx',
       'content/docs/en/realtime-media/rtc/build/authenticate-users/authentication-workflow.mdx',
+      'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx',
     ]
       .map((file) => readFileSync(resolve(process.cwd(), file), 'utf8'))
       .join('\n');
@@ -593,7 +660,9 @@ describe('Global search golden queries', () => {
 
     expect(fixtureSdkUrls).toEqual(REAL_SDK_TARGET_URLS);
     expect(
-      TRACKED_ANDROID_SDK_URLS.filter((url) => !trackedEvidence.includes(url)),
+      [...TRACKED_ANDROID_SDK_URLS, TRACKED_IOS_RTC_ENGINE_URL].filter(
+        (url) => !trackedEvidence.includes(url),
+      ),
     ).toEqual([]);
     expect(stableClientFixture).toContain(STABLE_WEB_NETWORK_QUALITY_URL);
     expect(EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST.size).toBe(1);
@@ -610,6 +679,7 @@ describe('Global search golden queries', () => {
       if (goldenCase.expectedKind !== 'empty') {
         const docsSourceHits = sourceHitsFor(
           goldenCase.query,
+          getDocsRetrievalQuery(goldenCase.query),
           'docs_portal_en',
           goldenCase.expectedIntent,
         );
@@ -675,11 +745,9 @@ describe('Global search golden queries', () => {
         const apiCorpusEntry = API_CORPUS.find(({ queries }) =>
           queries.includes(goldenCase.query),
         );
-        expect(expectedResult).toMatchObject({
-          platform: apiCorpusEntry?.platformHits.map(
-            ({ platform }) => platform,
-          ),
-        });
+        expect(new Set(expectedResult?.platform)).toEqual(
+          new Set(apiCorpusEntry?.platformHits.map(({ platform }) => platform)),
+        );
       }
     });
   });

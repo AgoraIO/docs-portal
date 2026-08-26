@@ -91,8 +91,26 @@ const SUPPORT_TERMS = new Set([
   'problem',
 ]);
 
+const DOCS_RETRIEVAL_QUERY_ALIASES = new Map([
+  ['billing policy', 'billing policies'],
+  ['real-time transcription', 'speech to text'],
+  ['real time transcription', 'speech to text'],
+]);
+
+const API_RETRIEVAL_QUERY_ALIASES = new Map([
+  ['rtcengine', 'AgoraRtcEngineKit'],
+]);
+
 function normalizeQuery(query: string) {
   return query.normalize('NFKC').trim().replace(/\s+/gu, ' ').toLowerCase();
+}
+
+export function getDocsRetrievalQuery(query: string) {
+  return DOCS_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(query)) ?? query;
+}
+
+export function getApiRetrievalQuery(query: string) {
+  return API_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(query)) ?? query;
 }
 
 function queryTerms(normalizedQuery: string) {

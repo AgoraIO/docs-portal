@@ -251,7 +251,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedIntent: 'api-symbol',
     expectedKind: 'sdk-symbol',
     expectedTitle: 'joinChannel',
-    expectedCanonicalKey: 'video-sdk|rtcengine|joinchannel|method',
+    expectedCanonicalKey: 'video-sdk|rtcengine|joinchannel|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
   },
@@ -260,7 +260,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedIntent: 'api-symbol',
     expectedKind: 'sdk-symbol',
     expectedTitle: 'setAudioProfile',
-    expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|method',
+    expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
   },
@@ -286,10 +286,10 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'RtcEngine',
     expectedIntent: 'api-symbol',
     expectedKind: 'sdk-symbol',
-    expectedTitle: 'RtcEngine',
+    expectedTitle: 'AgoraRtcEngineKit',
     expectedCanonicalKey: 'video-sdk|rtcengine|class',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
   },
   {
     query: 'acquire resource ID',
@@ -317,7 +317,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedIntent: 'api-task',
     expectedKind: 'sdk-symbol',
     expectedTitle: 'renewToken',
-    expectedCanonicalKey: 'video-sdk|rtcengine|renewtoken|method',
+    expectedCanonicalKey: 'video-sdk|rtcengine|renewtoken|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
   },
