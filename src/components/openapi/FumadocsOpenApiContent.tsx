@@ -97,6 +97,7 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   'Response example': '响应示例',
   'Response schema': '响应 Schema',
   'Response schema fields': '响应字段',
+  'schema fields': 'Schema 字段',
   'This endpoint requires authentication.': '该接口需要鉴权。',
 };
 const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
@@ -1401,7 +1402,7 @@ function getOpenApiFieldLabels(locale?: string) {
   };
 }
 
-function getOpenApiSchemaTreeLabels(
+export function getOpenApiSchemaTreeLabels(
   anchorPrefix: string,
   locale?: string,
 ): OpenApiSchemaTreeLabels {
@@ -1426,7 +1427,7 @@ function getOpenApiSchemaGroupLabel(anchorPrefix: string, locale?: string) {
     return getOpenApiLabel('Response Body schema fields', locale);
   }
 
-  return 'schema fields';
+  return getOpenApiLabel('schema fields', locale);
 }
 
 function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {

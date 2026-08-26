@@ -5,7 +5,8 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { act } from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import { OpenApiSchemaTree } from './OpenApiSchemaTree';
 
 const labels = {
@@ -129,5 +130,80 @@ describe('OpenApiSchemaTree', () => {
       expect(screen.getByText('enabled')).toBeVisible();
     });
     window.history.replaceState(null, '', '/');
+  });
+
+  it('cancels initial and hash scroll animation frames on unmount', () => {
+    const callbacks = new Map<number, FrameRequestCallback>();
+    const cancelled: number[] = [];
+    let nextFrameId = 1;
+    const requestAnimationFrame = vi
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((callback) => {
+        const frameId = nextFrameId;
+        nextFrameId += 1;
+        callbacks.set(frameId, callback);
+        return frameId;
+      });
+    const cancelAnimationFrame = vi
+      .spyOn(window, 'cancelAnimationFrame')
+      .mockImplementation((frameId) => {
+        cancelled.push(frameId);
+        callbacks.delete(frameId);
+      });
+    const scrollTo = vi.spyOn(window, 'scrollTo');
+
+    const { unmount } = renderTree();
+    window.history.replaceState(
+      null,
+      '',
+      '#request-body-properties-optional-object-enabled',
+    );
+    act(() => {
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+
+    expect(Array.from(callbacks.keys())).toEqual([1, 2]);
+
+    unmount();
+
+    expect(cancelled).toEqual(expect.arrayContaining([1, 2]));
+    expect(callbacks.size).toBe(0);
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    requestAnimationFrame.mockRestore();
+    cancelAnimationFrame.mockRestore();
+    scrollTo.mockRestore();
+    window.history.replaceState(null, '', '/');
+  });
+
+  it('initially expands a sole optional object alongside a leaf request field', () => {
+    render(
+      <OpenApiSchemaTree
+        anchorPrefix="request-body"
+        labels={labels}
+        renderCallouts={() => null}
+        renderDescription={(markdown) => <span>{markdown}</span>}
+        renderMetadata={() => null}
+        root={{
+          properties: {
+            name: { type: 'string' },
+            properties: {
+              properties: {
+                token: { type: 'string' },
+              },
+              type: 'object',
+            },
+          },
+          type: 'object',
+        }}
+        usage="request"
+      />,
+    );
+
+    expect(screen.getByText('name')).toBeVisible();
+    expect(screen.getByText('token')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Collapse properties properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
   });
 });

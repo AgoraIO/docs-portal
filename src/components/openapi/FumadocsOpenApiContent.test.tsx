@@ -8,7 +8,10 @@ import {
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { act } from 'react';
 import { describe, expect, it } from 'vitest';
-import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
+import {
+  FumadocsOpenApiContent,
+  getOpenApiSchemaTreeLabels,
+} from './FumadocsOpenApiContent';
 
 type Document = Extract<
   OpenAPIPageProps,
@@ -17,6 +20,12 @@ type Document = Extract<
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
+  it('localizes generic schema field labels in zh-CN', () => {
+    expect(getOpenApiSchemaTreeLabels('schema', 'zh-CN').schemaFields).toBe(
+      'Schema 字段',
+    );
+  });
+
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
     render(
       <FumadocsOpenApiContent

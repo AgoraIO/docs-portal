@@ -197,6 +197,8 @@ function useOpenApiSchemaHashExpansion(
   setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
 ) {
   useEffect(() => {
+    let syncFrame: number | undefined;
+
     const openCurrentHashTarget = () => {
       const targetIndex = anchorIds.indexOf(getCurrentOpenApiHashAnchorId());
       if (targetIndex === -1) return;
@@ -217,7 +219,10 @@ function useOpenApiSchemaHashExpansion(
         });
       }
 
-      window.requestAnimationFrame(() =>
+      if (syncFrame !== undefined) {
+        window.cancelAnimationFrame(syncFrame);
+      }
+      syncFrame = window.requestAnimationFrame(() =>
         syncDocsHashTargetFromLocation('auto'),
       );
     };
@@ -226,6 +231,9 @@ function useOpenApiSchemaHashExpansion(
     window.addEventListener('hashchange', openCurrentHashTarget);
     return () => {
       window.cancelAnimationFrame(frame);
+      if (syncFrame !== undefined) {
+        window.cancelAnimationFrame(syncFrame);
+      }
       window.removeEventListener('hashchange', openCurrentHashTarget);
     };
   }, [anchorIds, parentIndex, setExpandedIds]);

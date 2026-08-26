@@ -185,6 +185,11 @@ describe('app prose CSS regressions', () => {
       'padding-inline-start',
       'calc(1rem + var(--openapi-schema-indent-mobile))',
     );
+    expectDeclaration(
+      getRuleBody('.openapi-operation').rule,
+      'container-type',
+      'inline-size',
+    );
   });
 
   it('treats empty legacy anchors as transparent before the first heading', () => {
