@@ -33,6 +33,10 @@ import {
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
 import {
+  buildOpenApiResponseViews,
+  type OpenApiResponseHeaderView,
+} from '@/lib/openapi/response-view';
+import {
   buildOpenApiSchemaRows,
   type OpenApiSchemaRow,
 } from '@/lib/openapi/schema-tree';
@@ -40,6 +44,7 @@ import {
   type OpenApiFieldRequiredState,
   OpenApiFieldRow,
 } from './OpenApiFieldRow';
+import { OpenApiResponses } from './OpenApiResponses';
 import {
   OpenApiSchemaTree,
   type OpenApiSchemaTreeLabels,
@@ -312,11 +317,14 @@ function OpenApiOperationLayout({
           operation={method}
           position="before-response-body"
         />
-        {slots.responses}
-        {isZhCnLocale(locale) ? null : (
-          <OpenApiResponseBodySchemas operation={method} />
+        {isZhCnLocale(locale) ? (
+          <>
+            {slots.responses}
+            <OpenApiResponseHeaders operation={method} />
+          </>
+        ) : (
+          <OpenApiEnglishResponses operation={method} />
         )}
-        <OpenApiResponseHeaders operation={method} />
         <OpenApiDocsSections
           operation={method}
           position="after-response-body"
@@ -797,68 +805,100 @@ function OpenApiResponseHeaders({
   );
 }
 
-function OpenApiResponseBodySchemas({
+function OpenApiEnglishResponses({
   operation,
 }: {
   operation?: OpenApiOperation;
 }) {
-  const responses = Object.entries(getRecord(operation?.responses) ?? {})
-    .map(([statusCode, response]) => {
-      const resolvedResponse = getRecord(
-        resolveLocalReference(operation?.__document, response),
-      );
-      const content = getRecord(resolvedResponse?.content);
-      const jsonContent = getRecord(content?.['application/json']);
-      const schema = jsonContent?.schema;
-      const rows = buildOpenApiSchemaRows(schema, {
-        document: operation?.__document,
-        usage: 'response',
-      });
-
-      return {
-        description: getString(resolvedResponse?.description),
-        rows,
-        schema,
-        statusCode,
-      };
-    })
-    .filter((response) => response.description || response.rows.length > 0);
-
-  if (responses.length === 0) {
-    return null;
-  }
+  const responses = buildOpenApiResponseViews(
+    operation?.responses,
+    operation?.__document,
+  );
 
   return (
-    <section className="mt-8">
-      <h3 className="mb-3 font-semibold text-xl">Response schema</h3>
-      <div className="space-y-4">
-        {responses.map((response) => (
-          <div key={response.statusCode}>
-            <div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
-              <div>
-                <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 font-medium text-fd-foreground text-xs">
-                  {response.statusCode}
-                </code>
-              </div>
-              <div className="font-mono text-fd-muted-foreground text-xs">
-                application/json
-              </div>
-            </div>
-            {response.description ? (
-              <div className="prose-no-margin mb-3 text-fd-muted-foreground text-sm">
-                {renderOpenApiMarkdown(
-                  normalizeOpenApiDescriptionMarkdown(response.description),
-                )}
-              </div>
-            ) : null}
-            {response.rows.length > 0 ? (
+    <OpenApiResponses
+      renderDescription={(markdown) =>
+        renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
+      }
+      renderHeaders={(headers, status) => (
+        <OpenApiEnglishResponseHeaders headers={headers} status={status} />
+      )}
+      renderSchema={({ schema, status }) => {
+        const rows = buildOpenApiSchemaRows(schema, {
+          document: operation?.__document,
+          usage: 'response',
+        });
+
+        return {
+          hasFields: rows.length > 0,
+          node:
+            rows.length > 0 ? (
               <OpenApiSchemaTreeAdapter
-                anchorPrefix={`responses-${slugOpenApiAnchorSegment(response.statusCode)}`}
+                anchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
                 document={operation?.__document}
                 readOnly
-                root={response.schema}
+                root={schema}
               />
-            ) : null}
+            ) : null,
+        };
+      }}
+      responses={responses}
+    />
+  );
+}
+
+function OpenApiEnglishResponseHeaders({
+  headers,
+  status,
+}: {
+  headers: OpenApiResponseHeaderView[];
+  status: string;
+}) {
+  const locale = useContext(OpenApiLocaleContext);
+  const anchorPrefix = `response-headers-${slugOpenApiAnchorSegment(status)}`;
+  const anchorIds = buildUniqueOpenApiAnchorIds(
+    anchorPrefix,
+    headers.map((header) => header.name),
+  );
+
+  if (headers.length === 0) return null;
+
+  return (
+    <section>
+      <h3 className="mb-3 font-semibold text-base">Response Headers</h3>
+      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+        {headers.map((header, index) => (
+          <div
+            className={index === 0 ? '' : 'border-fd-border border-t'}
+            key={anchorIds[index]}
+          >
+            <OpenApiFieldRow
+              anchorId={anchorIds[index]}
+              deprecated={header.deprecated}
+              details={
+                <>
+                  {header.description ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {renderOpenApiMarkdown(
+                        normalizeOpenApiDescriptionMarkdown(header.description),
+                      )}
+                    </div>
+                  ) : null}
+                  <OpenApiInlineCallouts
+                    callouts={getOpenApiDocsCallouts(header.source)}
+                  />
+                  <OpenApiMetadata
+                    items={getOpenApiSchemaMetadata(
+                      header.schema,
+                      header.source,
+                    )}
+                  />
+                </>
+              }
+              labels={getOpenApiFieldLabels(locale)}
+              name={header.name}
+              type={getSchemaTypeLabel(header.schema)}
+            />
           </div>
         ))}
       </div>

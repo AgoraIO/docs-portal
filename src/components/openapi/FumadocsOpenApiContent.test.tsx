@@ -20,6 +20,146 @@ type Document = Extract<
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
+  it('renders one English response body accordion with status-local headers', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/responses' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response API' },
+              openapi: '3.2.0',
+              paths: {
+                '/responses': {
+                  get: {
+                    responses: {
+                      default: {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: { error: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'Fallback response',
+                      },
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: { result: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                          'text/plain': {
+                            schema: {
+                              properties: { message: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        headers: {
+                          'x-request-id': {
+                            description: 'Correlation ID.',
+                            schema: { type: 'string' },
+                          },
+                        },
+                        description: 'Successful response',
+                      },
+                    },
+                    summary: 'Responses',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Response Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', { name: 'Response Body' }),
+    ).toHaveLength(1);
+    expect(
+      document.querySelector('[data-openapi-responses]'),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '200 application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      document.getElementById('response-headers-200-x-request-id'),
+    ).toBeInTheDocument();
+    expect(
+      within(
+        document.getElementById(
+          'response-headers-200-x-request-id',
+        ) as HTMLElement,
+      ).queryByText('optional'),
+    ).not.toBeInTheDocument();
+    const select = screen.getByLabelText('Media type for 200 response');
+    fireEvent.change(select, { target: { value: 'text/plain' } });
+    expect(
+      screen.getByRole('button', { name: '200 text/plain' }),
+    ).toBeInTheDocument();
+  });
+
+  it('opens a hashed English response panel and its schema ancestors', async () => {
+    window.location.hash = 'responses-default-data-id';
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/response-hash' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response hash API' },
+              openapi: '3.2.0',
+              paths: {
+                '/response-hash': {
+                  get: {
+                    responses: {
+                      default: {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                data: {
+                                  properties: { id: { type: 'string' } },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                      },
+                      '200': { description: 'OK' },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    await waitFor(() => expect(screen.getByText('id')).toBeInTheDocument());
+    window.location.hash = '';
+  });
+
   it('localizes generic schema field labels in zh-CN', () => {
     expect(getOpenApiSchemaTreeLabels('schema', 'zh-CN').schemaFields).toBe(
       'Schema 字段',
@@ -1381,14 +1521,12 @@ describe('FumadocsOpenApiContent', () => {
     await screen.findByRole('heading', {
       name: 'Response Body',
     });
-    fireEvent.click(screen.getByRole('button', { name: '200' }));
-
     const schemaTreeElement = document.querySelector('.openapi-schema-tree');
 
     expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
     fireEvent.click(
       within(schemaTreeElement as HTMLElement).getByRole('button', {
-        name: 'Expand all Response Body schema fields',
+        name: 'Expand all Response schema fields',
       }),
     );
     expect(
@@ -1815,7 +1953,11 @@ describe('FumadocsOpenApiContent', () => {
 
     expect(pathHeading).toHaveClass('font-semibold', 'text-2xl');
     expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
-    expect(responseBodyHeading).toHaveAttribute('id', 'response-body');
+    expect(responseBodyHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(document.querySelector('[data-openapi-responses]')).toHaveAttribute(
+      'id',
+      'response-body',
+    );
     expect(operation).toHaveClass(
       '[&_h2#request-body]:font-semibold',
       '[&_h2#request-body]:text-2xl',
@@ -2495,7 +2637,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    await screen.findByRole('heading', { name: 'Response schema' });
+    await screen.findByRole('heading', { name: 'Response Body' });
     fireEvent.click(
       screen.getByRole('button', {
         name: 'Expand all Response schema fields',
@@ -2529,7 +2671,7 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
-  it('keeps the supplemental response schema outside zh-CN', async () => {
+  it('keeps English response schemas inside the response body accordion', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -2581,7 +2723,10 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('heading', { name: 'Response Body' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Response schema' }),
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(
+      document.getElementById('responses-200-agent-id'),
     ).toBeInTheDocument();
   });
 
@@ -2670,8 +2815,6 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
-    fireEvent.click(screen.getByRole('button', { name: '200' }));
-
     for (const button of screen.getAllByRole('button', {
       name: /^Expand all .* schema fields$/,
     })) {
@@ -2688,7 +2831,7 @@ describe('FumadocsOpenApiContent', () => {
       document.getElementById('request-body-config-idle-timeout'),
     ).not.toBeNull();
     expect(
-      document.getElementById('response-body-data-agent-id'),
+      document.getElementById('responses-200-data-agent-id'),
     ).not.toBeNull();
     expect(
       document.querySelector('a[href="#request-body-channel-name"]'),
@@ -2909,8 +3052,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(responseRow).getByText('Response trace identifier.'),
     ).toBeInTheDocument();
-    expect(within(responseRow).getByText('Status')).toBeInTheDocument();
-    expect(within(responseRow).getByText('200')).toBeInTheDocument();
+    expect(within(responseRow).queryByText('Status')).not.toBeInTheDocument();
     expect(within(responseRow).getByText('Example')).toBeInTheDocument();
     expect(within(responseRow).getByText('response-123')).toBeInTheDocument();
     expect(within(responseRow).getByText('Note')).toBeInTheDocument();
