@@ -23,6 +23,7 @@ const analyticsMocks = vi.hoisted(() => ({
   captureDocsSearchCompleted: vi.fn(),
   captureDocsSearchOpened: vi.fn(),
   captureDocsSearchResultClicked: vi.fn(),
+  queueDocsPageView: vi.fn(),
 }));
 const oramaClientMocks = vi.hoisted(() => ({
   actualCreate: undefined as
@@ -40,6 +41,10 @@ vi.mock('@/lib/analytics/posthog', () => ({
 vi.mock('@/lib/search/algolia-client', () => ({
   createAlgoliaDocsClient: vi.fn(() => ({
     deps: ['mock-algolia'],
+    getLastStatus: vi.fn(() => ({
+      api: 'not-requested' as const,
+      docs: 'success' as const,
+    })),
     search: vi.fn(),
   })),
 }));
@@ -73,6 +78,10 @@ function createDeferredSearch() {
   );
 
   return { resolvers, search };
+}
+
+function successfulAlgoliaStatus() {
+  return { api: 'not-requested' as const, docs: 'success' as const };
 }
 
 describe('DocsSearchDialog', () => {
@@ -371,6 +380,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -425,6 +435,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: '<mark>uplinkNetworkQuality</mark>',
@@ -517,6 +528,7 @@ describe('DocsSearchDialog', () => {
       const { resolvers, search } = createDeferredSearch();
       vi.mocked(createAlgoliaDocsClient).mockReturnValue({
         deps: ['mock-algolia'],
+        getLastStatus: successfulAlgoliaStatus,
         search,
       });
       const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -600,6 +612,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: 'Voice Activity Detection',
@@ -682,6 +695,7 @@ describe('DocsSearchDialog', () => {
         indexName: 'docs_portal_en',
         locale: 'en',
         platform: undefined,
+        rankingV2: false,
         scope: undefined,
         searchApiKey: 'test-search-key',
       });
@@ -725,6 +739,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn(() => new Promise<never>(() => {})),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -764,6 +779,7 @@ describe('DocsSearchDialog', () => {
     const { resolvers, search } = createDeferredSearch();
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search,
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -834,6 +850,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: 'Voice Activity Detection',
@@ -905,6 +922,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -937,6 +955,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -1195,6 +1214,7 @@ describe('DocsSearchDialog', () => {
       .mockReturnValue(new Promise<never>(() => {}));
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search,
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });

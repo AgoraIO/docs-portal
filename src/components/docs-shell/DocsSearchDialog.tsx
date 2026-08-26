@@ -114,6 +114,7 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaApiReferenceIndexName = algoliaConfig?.apiReferenceIndexName;
   const algoliaIndexName = algoliaConfig?.indexName;
+  const algoliaRankingV2 = algoliaConfig?.rankingV2 ?? false;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
   const algoliaEnabled = Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
@@ -176,6 +177,7 @@ export function DocsSearchDialog({
             indexName: algoliaIndexName,
             locale: searchLocale,
             platform: platformFilter ?? undefined,
+            rankingV2: algoliaRankingV2,
             scope: searchScope,
             searchApiKey: algoliaSearchApiKey,
           })
@@ -241,6 +243,7 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaApiReferenceIndexName,
     algoliaIndexName,
+    algoliaRankingV2,
     algoliaSearchApiKey,
     algoliaEnabled,
     captureLatestCompletedSearch,
@@ -258,6 +261,7 @@ export function DocsSearchDialog({
             algoliaAppId,
             algoliaApiReferenceIndexName,
             algoliaIndexName,
+            algoliaRankingV2,
             algoliaSearchApiKey,
             searchLocale,
             platformFilter,
@@ -268,6 +272,7 @@ export function DocsSearchDialog({
       algoliaAppId,
       algoliaApiReferenceIndexName,
       algoliaIndexName,
+      algoliaRankingV2,
       algoliaSearchApiKey,
       pages,
       platformFilter,

@@ -440,4 +440,417 @@ describe('createAlgoliaDocsClient', () => {
       path: ['API Reference', 'Speech-to-Text'],
     });
   });
+
+  describe('ranking v2', () => {
+    function createClient(
+      overrides: Partial<Parameters<typeof createAlgoliaDocsClient>[0]> = {},
+    ) {
+      return createAlgoliaDocsClient({
+        apiReferenceIndexName: 'agora_APIRefSearch',
+        appId: 'app-id',
+        indexName: 'docs_portal_en',
+        locale: 'en',
+        rankingV2: true,
+        searchApiKey: 'search-key',
+        ...overrides,
+      });
+    }
+
+    function docsHit(
+      overrides: Record<string, unknown> = {},
+    ): Record<string, unknown> {
+      return {
+        objectID: 'guide',
+        objectType: 'docs',
+        title: 'Voice agent quickstart',
+        url: '/en/voice-ai/voice-agents/quickstart',
+        ...overrides,
+      };
+    }
+
+    function apiHit(
+      overrides: Record<string, unknown> = {},
+    ): Record<string, unknown> {
+      return {
+        _highlightResult: {
+          hierarchy: {
+            lvl1: { matchLevel: 'full', value: '<mark>joinChannel</mark>' },
+          },
+        },
+        _snippetResult: {
+          content: {
+            value: 'Call <mark>joinChannel</mark> to enter the channel.',
+          },
+        },
+        content: 'Call joinChannel to enter the channel.',
+        hierarchy: {
+          lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+          lvl1: 'joinChannel',
+        },
+        objectID: 'join-channel',
+        platform: 'web',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#joinchannel',
+        version: '4.x',
+        ...overrides,
+      };
+    }
+
+    it('does not request the SDK API index for a task query', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [{ hits: [docsHit()] }],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('voice agent quickstart');
+
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({
+            indexName: 'docs_portal_en',
+            query: 'voice agent quickstart',
+          }),
+        ],
+      });
+      expect(results[0]).toMatchObject({
+        id: 'guide',
+        title: 'Voice agent quickstart',
+      });
+      expect(client.getLastStatus()).toEqual({
+        api: 'not-requested',
+        docs: 'success',
+      });
+    });
+
+    it('requests both indexes with strict API parameters and ranks an exact symbol first', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  objectID: 'join-guide',
+                  title: 'Join a channel',
+                  url: '/en/video-calling/get-started/join-a-channel',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('joinChannel');
+
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'docs_portal_en',
+            query: 'joinChannel',
+          }),
+        ],
+      });
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            hitsPerPage: 20,
+            indexName: 'agora_APIRefSearch',
+            query: 'joinChannel',
+            queryType: 'prefixAll',
+            removeWordsIfNoResults: 'none',
+            typoTolerance: false,
+          }),
+        ],
+      });
+      expect(results[0]).toMatchObject({
+        content: '<mark>joinChannel</mark>',
+        id: 'join-channel',
+        objectType: 'sdk-api',
+        snippet: 'Call <mark>joinChannel</mark> to enter the channel.',
+        title: '<mark>joinChannel</mark>',
+      });
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'success',
+      });
+    });
+
+    it('treats call syntax as an exact API symbol alias ahead of an exact docs title', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  objectID: 'join-channel-docs',
+                  title: 'joinChannel()',
+                  url: '/en/reference/join-channel',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('joinChannel()');
+
+      expect(results.map(({ id }) => id)).toEqual([
+        'join-channel',
+        'join-channel-docs',
+      ]);
+    });
+
+    it('drops a weak API hit after an api-task query requests the API index', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>setAudioProfile</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                    lvl1: 'setAudioProfile',
+                  },
+                  objectID: 'set-audio-profile',
+                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('renew token')).resolves.toEqual([]);
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'success',
+      });
+    });
+
+    it('keeps docs results and records API failure when the API request rejects', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] })
+        .mockRejectedValueOnce(new Error('API index unavailable'));
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('joinChannel');
+
+      expect(results).toHaveLength(1);
+      expect(results[0]).toMatchObject({ id: 'guide' });
+      expect(client.getLastStatus()).toEqual({
+        api: 'error',
+        docs: 'success',
+      });
+    });
+
+    it('throws a docs rejection even when the independent API request succeeds', async () => {
+      const docsError = new Error('Docs index unavailable');
+      const searchForHits = vi
+        .fn()
+        .mockRejectedValueOnce(docsError)
+        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('joinChannel')).rejects.toBe(docsError);
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'error',
+      });
+    });
+
+    it('does not let an older failed search overwrite the latest successful status', async () => {
+      let rejectOldSearch: ((reason: Error) => void) | undefined;
+      const oldSearchResult = new Promise<never>((_resolve, reject) => {
+        rejectOldSearch = reject;
+      });
+      const searchForHits = vi
+        .fn()
+        .mockReturnValueOnce(oldSearchResult)
+        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const oldSearch = client.search('voice agent quickstart');
+      await expect(client.search('screen sharing')).resolves.toHaveLength(1);
+      expect(client.getLastStatus()).toEqual({
+        api: 'not-requested',
+        docs: 'success',
+      });
+
+      const oldError = new Error('Old docs request failed');
+      rejectOldSearch?.(oldError);
+      await expect(oldSearch).rejects.toBe(oldError);
+      expect(client.getLastStatus()).toEqual({
+        api: 'not-requested',
+        docs: 'success',
+      });
+    });
+
+    it('requests the API index when API Reference scope is explicit', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient({
+        scope: { field: 'tab', value: 'api-reference' },
+      });
+      await client.search('voice agent quickstart');
+
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'voice agent quickstart',
+          }),
+        ],
+      });
+    });
+
+    it('requests an API fallback only after docs are empty and the query has an API signal', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      await client.search('RTC engine method');
+
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'RTC engine method',
+          }),
+        ],
+      });
+    });
+
+    it('strictly admits a matching no-docs API-signal fallback', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({ results: [{ hits: [] }] })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>Class RtcEngine</mark>',
+                      },
+                    },
+                  },
+                  _snippetResult: {
+                    content: {
+                      value: 'The <mark>RtcEngine</mark> class.',
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                    lvl1: 'Class RtcEngine',
+                  },
+                  objectID: 'rtc-engine',
+                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('RtcEngine API');
+
+      expect(results).toEqual([
+        expect.objectContaining({
+          id: 'rtc-engine',
+          objectType: 'sdk-api',
+          snippet: 'The <mark>RtcEngine</mark> class.',
+          title: '<mark>Class RtcEngine</mark>',
+        }),
+      ]);
+    });
+
+    it('includes the feature flag in dependencies', () => {
+      const searchForHits = vi.fn();
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      expect(client.deps).toContain(true);
+    });
+  });
+
+  it('preserves legacy multi-search and API-first ordering when ranking v2 is disabled', async () => {
+    const searchForHits = vi.fn().mockResolvedValue({
+      results: [
+        { hits: [{ objectID: 'guide', title: 'Guide', url: '/en/guide' }] },
+        {
+          hits: [
+            {
+              hierarchy: { lvl1: 'joinChannel' },
+              objectID: 'api',
+              url: 'https://api-ref.agora.io/joinChannel',
+            },
+          ],
+        },
+      ],
+    });
+    vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+    const client = createAlgoliaDocsClient({
+      apiReferenceIndexName: 'agora_APIRefSearch',
+      appId: 'app-id',
+      indexName: 'docs_portal_en',
+      locale: 'en',
+      rankingV2: false,
+      searchApiKey: 'search-key',
+    });
+    const results = await client.search('joinChannel');
+
+    expect(searchForHits).toHaveBeenCalledTimes(1);
+    expect(searchForHits).toHaveBeenCalledWith({
+      requests: [
+        expect.objectContaining({ indexName: 'docs_portal_en' }),
+        expect.objectContaining({
+          hitsPerPage: 5,
+          indexName: 'agora_APIRefSearch',
+        }),
+      ],
+    });
+    expect(results.map((result) => result.id)).toEqual(['api', 'guide']);
+  });
 });
