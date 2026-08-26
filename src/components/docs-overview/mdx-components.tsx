@@ -39,7 +39,9 @@ import {
   lazy,
   type ReactNode,
   useDeferredValue,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -739,6 +741,7 @@ export function RecipesCatalog({
   items,
   productGroups,
   productFilterLabel,
+  productQueryParam,
   searchPlaceholder,
   showCategoryFilter = true,
   showDescription = true,
@@ -756,6 +759,7 @@ export function RecipesCatalog({
   items: RecipeCatalogItem[];
   productGroups?: Record<string, RecipeCatalogGroupMeta>;
   productFilterLabel: string;
+  productQueryParam?: string;
   searchPlaceholder: string;
   showCategoryFilter?: boolean;
   showDescription?: boolean;
@@ -765,6 +769,7 @@ export function RecipesCatalog({
 }) {
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const hasInitializedProductFromQuery = useRef(false);
   const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
   const initialStack = useMemo(
     () => getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
@@ -772,6 +777,17 @@ export function RecipesCatalog({
   );
   const [activeStack, setActiveStack] = useState(initialStack);
   const deferredQuery = useDeferredValue(query);
+
+  useEffect(() => {
+    if (hasInitializedProductFromQuery.current) {
+      return;
+    }
+
+    hasInitializedProductFromQuery.current = true;
+    setActiveProduct(
+      getInitialRecipeProduct(items, allProductsLabel, productQueryParam),
+    );
+  }, [allProductsLabel, items, productQueryParam]);
 
   const products = useMemo(
     () => [
@@ -1391,6 +1407,33 @@ function getUniqueValues(values: Array<string | undefined>) {
   ];
 }
 
+function getInitialRecipeProduct(
+  items: RecipeCatalogItem[],
+  fallback: string,
+  queryParam?: string,
+) {
+  if (typeof window === 'undefined' || !queryParam) {
+    return fallback;
+  }
+
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
+
+  if (!queryValue) {
+    return fallback;
+  }
+
+  const normalizedQueryValue = normalizeRecipeProductValue(queryValue);
+  const matchingProduct = getUniqueValues(
+    items.map((item) => item.product),
+  ).find(
+    (product) => normalizeRecipeProductValue(product) === normalizedQueryValue,
+  );
+
+  return matchingProduct ?? fallback;
+}
+
 function getInitialRecipeStack(
   items: RecipeCatalogItem[],
   fallback: string,
@@ -1428,6 +1471,12 @@ function getInitialRecipeStack(
 
 function normalizeRecipeFilterValue(value: string) {
   return value.trim().toLowerCase();
+}
+
+function normalizeRecipeProductValue(value: string) {
+  return normalizeRecipeFilterValue(value)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function getSolutionToneClasses(_tone: SolutionCardTone) {
