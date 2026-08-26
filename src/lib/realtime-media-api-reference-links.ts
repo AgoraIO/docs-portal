@@ -6,56 +6,60 @@ export type RealtimeMediaApiReferenceLinks = {
 
 const GENERIC_SDK_API_REFERENCE_URL = '/en/api-reference/api-ref';
 
+function sdkCatalogUrl(product: string) {
+  return `${GENERIC_SDK_API_REFERENCE_URL}?product=${product}`;
+}
+
 export const realtimeMediaApiReferenceLinks = [
   {
     productSlug: 'rtc',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('realtime-communication'),
   },
   {
     productSlug: 'voice',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('realtime-communication-voice-only'),
   },
   {
     productSlug: 'video',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('realtime-communication'),
   },
   {
     productSlug: 'broadcast-streaming',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('realtime-communication'),
   },
   {
     productSlug: 'interactive-live-streaming',
     restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('realtime-communication'),
   },
   {
     productSlug: 'rtm',
     restUrl: '/en/api-reference/api-ref/signaling',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('signaling'),
   },
   {
     productSlug: 'im',
     restUrl: '/en/api-reference/api-ref/im',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('chat'),
   },
   {
     productSlug: 'whiteboard',
     restUrl: '/en/api-reference/api-ref/whiteboard',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('interactive-whiteboard'),
   },
   {
     productSlug: 'flexible-classroom',
     restUrl: '/en/api-reference/api-ref/flexible-classroom/classroom-rest-api',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('flexible-classroom'),
   },
   {
     productSlug: 'iot',
     restUrl: '/en/api-reference/api-ref/iot-channel-management-rest-api',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('iot-sdk'),
   },
   {
     productSlug: 'cloud-recording',
@@ -91,11 +95,11 @@ export const realtimeMediaApiReferenceLinks = [
   },
   {
     productSlug: 'on-premise-recording',
-    sdkUrl: '/en/api-reference/api-ref/on-premise-recording',
+    sdkUrl: sdkCatalogUrl('on-premise-recording'),
   },
   {
     productSlug: 'rtc-server-sdk',
-    sdkUrl: GENERIC_SDK_API_REFERENCE_URL,
+    sdkUrl: sdkCatalogUrl('server-gateway'),
   },
 ] as const satisfies readonly RealtimeMediaApiReferenceLinks[];
 

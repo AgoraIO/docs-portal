@@ -3354,12 +3354,12 @@ Web body
       },
       {
         external: true,
-        href: '/en/api-reference/api-ref',
-        id: '/en/api-reference/api-ref',
+        href: '/en/api-reference/api-ref?product=realtime-communication',
+        id: '/en/api-reference/api-ref?product=realtime-communication',
         linked: true,
         title: 'SDK API reference',
         type: 'page',
-        url: '/en/api-reference/api-ref',
+        url: '/en/api-reference/api-ref?product=realtime-communication',
       },
     ]);
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
@@ -3420,12 +3420,12 @@ Web body
       },
       {
         external: true,
-        href: '/en/api-reference/api-ref',
-        id: '/en/api-reference/api-ref',
+        href: '/en/api-reference/api-ref?product=interactive-whiteboard',
+        id: '/en/api-reference/api-ref?product=interactive-whiteboard',
         linked: true,
         title: 'SDK API reference',
         type: 'page',
-        url: '/en/api-reference/api-ref',
+        url: '/en/api-reference/api-ref?product=interactive-whiteboard',
       },
     ]);
     expect(flattenSidebarPageUrls(whiteboardPayload.sidebar)).not.toContain(
@@ -3446,12 +3446,12 @@ Web body
 
     expect.soft(onPremiseRecordingReference.children[0]).toEqual({
       external: true,
-      href: '/en/api-reference/api-ref/on-premise-recording',
-      id: '/en/api-reference/api-ref/on-premise-recording',
+      href: '/en/api-reference/api-ref?product=on-premise-recording',
+      id: '/en/api-reference/api-ref?product=on-premise-recording',
       linked: true,
       title: 'SDK API reference',
       type: 'page',
-      url: '/en/api-reference/api-ref/on-premise-recording',
+      url: '/en/api-reference/api-ref?product=on-premise-recording',
     });
     expect(
       onPremiseRecordingReference.children.some(

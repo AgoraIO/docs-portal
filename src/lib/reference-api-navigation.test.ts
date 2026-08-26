@@ -5,6 +5,24 @@ import { realtimeMediaApiReferenceLinks } from './realtime-media-api-reference-l
 
 const docsRoot = path.join(process.cwd(), 'content', 'docs');
 const sdkApiReference = '/en/api-reference/api-ref';
+const sdkProductFilters = {
+  rtc: 'realtime-communication',
+  voice: 'realtime-communication-voice-only',
+  video: 'realtime-communication',
+  'broadcast-streaming': 'realtime-communication',
+  'interactive-live-streaming': 'realtime-communication',
+  rtm: 'signaling',
+  im: 'chat',
+  whiteboard: 'interactive-whiteboard',
+  'flexible-classroom': 'flexible-classroom',
+  iot: 'iot-sdk',
+  'on-premise-recording': 'on-premise-recording',
+  'rtc-server-sdk': 'server-gateway',
+} as const;
+
+function sdkCatalogUrl(product: keyof typeof sdkProductFilters) {
+  return `${sdkApiReference}?product=${sdkProductFilters[product]}`;
+}
 
 const sdkAndRestProducts = {
   rtc: '/en/api-reference/api-ref/rtc',
@@ -32,24 +50,21 @@ const restOnlyProducts = {
   marketplace: '/en/api-reference/api-ref/extensions-marketplace/provisioning',
 } as const;
 
-const sdkOnlyProducts = {
-  'on-premise-recording': '/en/api-reference/api-ref/on-premise-recording',
-  'rtc-server-sdk': '/en/api-reference/api-ref',
-} as const;
+const sdkOnlyProducts = ['on-premise-recording', 'rtc-server-sdk'] as const;
 
 const expectedLinks = [
   ...Object.entries(sdkAndRestProducts).map(([productSlug, restUrl]) => ({
     productSlug,
     restUrl,
-    sdkUrl: sdkApiReference,
+    sdkUrl: sdkCatalogUrl(productSlug as keyof typeof sdkProductFilters),
   })),
   ...Object.entries(restOnlyProducts).map(([productSlug, restUrl]) => ({
     productSlug,
     restUrl,
   })),
-  ...Object.entries(sdkOnlyProducts).map(([productSlug, sdkUrl]) => ({
+  ...sdkOnlyProducts.map((productSlug) => ({
     productSlug,
-    sdkUrl,
+    sdkUrl: sdkCatalogUrl(productSlug),
   })),
 ];
 const expectedProducts = expectedLinks.map(({ productSlug }) => productSlug);
@@ -71,7 +86,11 @@ function readReferencePages(product: string) {
 }
 
 function routeExists(href: string) {
-  const contentPath = path.join(docsRoot, ...href.split('/').filter(Boolean));
+  const routePath = href.split(/[?#]/, 1)[0];
+  const contentPath = path.join(
+    docsRoot,
+    ...routePath.split('/').filter(Boolean),
+  );
   const candidates = [
     `${contentPath}.md`,
     `${contentPath}.mdx`,
