@@ -111,10 +111,20 @@ export function getRealtimeMediaApiReferenceLinks(
   }
 
   const productSlug = activePath.split('/').filter(Boolean)[2];
-
-  return (
+  const links =
     realtimeMediaApiReferenceLinks.find(
-      (links) => links.productSlug === productSlug,
-    ) ?? null
-  );
+      (entry) => entry.productSlug === productSlug,
+    ) ?? null;
+
+  if (
+    links?.productSlug === 'rtc' &&
+    /^\/en\/realtime-media\/rtc\/voice-quickstart(?:[?#]|$)/.test(activePath)
+  ) {
+    return {
+      ...links,
+      sdkUrl: sdkCatalogUrl('realtime-communication-voice-only'),
+    };
+  }
+
+  return links;
 }

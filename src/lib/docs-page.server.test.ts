@@ -813,6 +813,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
             $id: 'realtime-media-folder',
             children: [
               {
+                $id: 'realtime-media-rtc-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-rtc-voice-quickstart',
+                    name: 'Voice Quickstart',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/voice-quickstart',
+                  },
+                  {
+                    $id: 'realtime-media-rtc-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-rtc-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-rtc-release-notes',
+                        name: 'Release Notes',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/reference/release-notes',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-rtc-index',
+                  name: 'Voice & Video',
+                  type: 'page',
+                  url: '/en/realtime-media/rtc',
+                },
+                name: 'Voice & Video',
+                type: 'folder',
+              },
+              {
                 $id: 'realtime-media-broadcast-streaming-folder',
                 children: [
                   {
@@ -3369,6 +3406,40 @@ Web body
       '/en/realtime-media/video/reference/release-notes',
     );
 
+    const voiceQuickstartPayload = await loadRealtimeMediaProductPayload(
+      'rtc',
+      'Voice & Video',
+      ['voice-quickstart'],
+    );
+    const voiceQuickstartReference = getSidebarSection(
+      voiceQuickstartPayload,
+      'Reference',
+    );
+
+    expect.soft(voiceQuickstartReference.children.slice(0, 2)).toEqual([
+      {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
+      },
+      {
+        external: true,
+        href: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
+        id: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref?product=realtime-communication-voice-only',
+      },
+    ]);
+    expect(flattenSidebarPageUrls(voiceQuickstartPayload.sidebar)).toContain(
+      '/en/realtime-media/rtc/reference/release-notes',
+    );
+
     const cloudRecordingPayload = await loadRealtimeMediaProductPayload(
       'cloud-recording',
       'Cloud Recording',
@@ -4309,21 +4380,34 @@ function getSidebarSection(
 async function loadRealtimeMediaProductPayload(
   productSlug: string,
   title: string,
+  slugSegments: string[] = [],
 ) {
   const page = createPage();
+  const contentSegments = [
+    'en',
+    'realtime-media',
+    productSlug,
+    ...slugSegments,
+  ];
+  const contentPath = contentSegments.join('/');
+  const sourcePath = slugSegments.length
+    ? `${contentPath}.mdx`
+    : `${contentPath}/index.mdx`;
   const productPage = {
     ...page,
     data: {
       ...page.data,
       info: {
-        fullPath: `/virtual/content/docs/en/realtime-media/${productSlug}/index.mdx`,
-        path: `en/realtime-media/${productSlug}/index.mdx`,
+        fullPath: `/virtual/content/docs/${sourcePath}`,
+        path: sourcePath,
       },
       title,
     },
-    path: `en/realtime-media/${productSlug}/index.mdx`,
-    slugs: ['en', 'realtime-media', productSlug, 'index'],
-    url: `/en/realtime-media/${productSlug}`,
+    path: sourcePath,
+    slugs: slugSegments.length
+      ? contentSegments
+      : [...contentSegments, 'index'],
+    url: `/${contentPath}`,
   };
 
   mockedGetPage.mockReturnValue(productPage);
@@ -4343,7 +4427,10 @@ async function loadRealtimeMediaProductPayload(
   );
 
   return unwrapPayload(
-    await loadDocsPagePayload('en', 'realtime-media', [productSlug]),
+    await loadDocsPagePayload('en', 'realtime-media', [
+      productSlug,
+      ...slugSegments,
+    ]),
   );
 }
 

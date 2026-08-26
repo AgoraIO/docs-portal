@@ -1,7 +1,10 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { realtimeMediaApiReferenceLinks } from './realtime-media-api-reference-links';
+import {
+  getRealtimeMediaApiReferenceLinks,
+  realtimeMediaApiReferenceLinks,
+} from './realtime-media-api-reference-links';
 
 const docsRoot = path.join(process.cwd(), 'content', 'docs');
 const sdkApiReference = '/en/api-reference/api-ref';
@@ -121,6 +124,34 @@ describe('product API reference navigation', () => {
 
   it('matches the centralized API reference link registry', () => {
     expect(realtimeMediaApiReferenceLinks).toEqual(expectedLinks);
+  });
+
+  it.each([
+    '/en/realtime-media/rtc/voice-quickstart',
+    '/en/realtime-media/rtc/voice-quickstart?platform=android',
+    '/en/realtime-media/rtc/voice-quickstart#download-the-sdk',
+  ])(
+    'uses the voice-only SDK filter for the unified voice quickstart at %s',
+    (activePath) => {
+      expect(getRealtimeMediaApiReferenceLinks(activePath)).toEqual({
+        productSlug: 'rtc',
+        restUrl: '/en/api-reference/api-ref/rtc',
+        sdkUrl: sdkCatalogUrl('voice'),
+      });
+    },
+  );
+
+  it.each([
+    '/en/realtime-media/rtc',
+    '/en/realtime-media/rtc/android/quick-start/build-from-scratch',
+    '/en/realtime-media/rtc/voice-quickstart-extra',
+    '/en/realtime-media/rtc/voice-quickstart/build',
+  ])('keeps the full RTC SDK filter for %s', (activePath) => {
+    expect(getRealtimeMediaApiReferenceLinks(activePath)).toEqual({
+      productSlug: 'rtc',
+      restUrl: '/en/api-reference/api-ref/rtc',
+      sdkUrl: sdkCatalogUrl('rtc'),
+    });
   });
 
   it.each(expectedProducts)('%s metadata does not own API jumps', (product) => {
