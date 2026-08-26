@@ -39,11 +39,13 @@ export function OpenApiFieldRow({
   const control = (
     <span
       aria-hidden="true"
-      className="openapi-field-control-gutter flex size-3 shrink-0 items-center justify-center"
+      className="openapi-field-control-gutter flex h-3 w-3 shrink-0 items-center justify-center"
     >
-      <ChevronRight
-        className={cn('size-3 transition-transform', expanded && 'rotate-90')}
-      />
+      {expandable && (
+        <ChevronRight
+          className={cn('size-3 transition-transform', expanded && 'rotate-90')}
+        />
+      )}
     </span>
   );
 
@@ -60,12 +62,15 @@ export function OpenApiFieldRow({
 
   return (
     <div
-      className="openapi-field-row group/openapi-field scroll-mt-24 border border-border/60 py-3"
+      className={cn(
+        'openapi-field-row group/openapi-field scroll-mt-24 border border-border/60 py-3',
+        expandable && 'openapi-field-row-container',
+      )}
       id={anchorId}
     >
       <div className="openapi-field-main min-w-0">
         <div className="flex min-w-0 items-start gap-2">
-          <div className="min-w-0 flex-1">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
             {expandable ? (
               <button
                 aria-expanded={expanded}

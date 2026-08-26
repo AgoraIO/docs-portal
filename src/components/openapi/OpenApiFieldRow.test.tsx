@@ -60,6 +60,7 @@ describe('OpenApiFieldRow', () => {
     const { unmount } = render(
       <OpenApiFieldRow
         anchorId="leaf"
+        details={<p>Leaf details</p>}
         labels={labels}
         name="leaf"
         type="string"
@@ -67,6 +68,8 @@ describe('OpenApiFieldRow', () => {
     );
     const leafGutter = document.querySelector('.openapi-field-control-gutter');
     expect(leafGutter).toBeInTheDocument();
+    expect(leafGutter).toHaveAttribute('class', expect.stringContaining('w-3'));
+    expect(leafGutter).toHaveProperty('childElementCount', 0);
     expect(
       screen.queryByRole('button', { name: /Expand/ }),
     ).not.toBeInTheDocument();
@@ -84,6 +87,82 @@ describe('OpenApiFieldRow', () => {
     expect(
       document.querySelector('.openapi-field-control-gutter'),
     ).toBeInTheDocument();
+    expect(
+      document.querySelector('.openapi-field-control-gutter'),
+    ).toHaveAttribute('class', expect.stringContaining('w-3'));
+    expect(
+      document.querySelector('.openapi-field-control-gutter'),
+    ).not.toHaveProperty('childElementCount', 0);
+  });
+
+  it('uses aligned name wrappers and details padding for both field kinds', () => {
+    const { unmount } = render(
+      <OpenApiFieldRow
+        anchorId="leaf-align"
+        details={<p>Details</p>}
+        labels={labels}
+        name="leaf"
+        type="string"
+      />,
+    );
+    const leafNameWrapper = document.querySelector(
+      '.openapi-field-main > div > div',
+    );
+    expect(leafNameWrapper).toHaveAttribute(
+      'class',
+      expect.stringContaining('gap-2'),
+    );
+    expect(document.querySelector('.openapi-field-details')).toHaveAttribute(
+      'class',
+      expect.stringContaining('ps-5'),
+    );
+    unmount();
+
+    render(
+      <OpenApiFieldRow
+        anchorId="container-align"
+        expandable
+        labels={labels}
+        name="container"
+        type="object"
+      />,
+    );
+    const containerNameWrapper = document.querySelector(
+      '.openapi-field-main > div > div',
+    );
+    expect(containerNameWrapper).toHaveAttribute(
+      'class',
+      expect.stringContaining('gap-2'),
+    );
+  });
+
+  it('marks only expandable fields as containers', () => {
+    const { container, unmount } = render(
+      <OpenApiFieldRow
+        anchorId="leaf-button-details"
+        details={<button type="button">Nested action</button>}
+        labels={labels}
+        name="leaf"
+        type="string"
+      />,
+    );
+    expect(container.firstElementChild).not.toHaveClass(
+      'openapi-field-row-container',
+    );
+    unmount();
+
+    render(
+      <OpenApiFieldRow
+        anchorId="actual-container"
+        expandable
+        labels={labels}
+        name="container"
+        type="object"
+      />,
+    );
+    expect(document.querySelector('.openapi-field-row')).toHaveClass(
+      'openapi-field-row-container',
+    );
   });
 
   it('does not render a requiredness badge when state is omitted', () => {
