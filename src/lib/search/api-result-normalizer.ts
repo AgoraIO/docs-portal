@@ -121,8 +121,18 @@ function compact(value: string) {
   return splitIdentifier(value).join('');
 }
 
+function stripDoxygenPagePrefix(value: string) {
+  const match = value.match(/^(class|interface|struct|enum)_(.+)$/iu);
+  return match
+    ? {
+        kind: match[1].toLowerCase(),
+        name: match[2],
+      }
+    : { name: value };
+}
+
 function canonicalRootClientAlias(value: string) {
-  const normalized = compact(value);
+  const normalized = compact(stripDoxygenPagePrefix(value).name);
   return ROOT_CLIENT_ALIASES.has(normalized) ? 'rtcengine' : normalized;
 }
 
@@ -255,6 +265,57 @@ function urlBasename(url: string) {
   }
 }
 
+type ApiUrlIdentity = {
+  container?: string;
+  isMember?: boolean;
+  leaf?: string;
+  pageKind?: string;
+};
+
+function urlIdentity(url: string): ApiUrlIdentity {
+  try {
+    const pathname = new URL(url, 'https://api-ref.invalid').pathname;
+    const segments = pathname
+      .split('/')
+      .filter(Boolean)
+      .map((segment) => decodeURIComponent(segment));
+    const leaf = segments.at(-1)?.replace(/\.html$/iu, '');
+    if (!leaf) return {};
+
+    const documentationIndex = segments.findIndex(
+      (segment) => segment.toLowerCase() === 'documentation',
+    );
+    const documentationSegments =
+      documentationIndex >= 0 ? segments.slice(documentationIndex + 1) : [];
+    if (documentationSegments.length >= 3) {
+      return {
+        container: documentationSegments.at(-2),
+        isMember: true,
+        leaf,
+      };
+    }
+
+    const doxygenPage = stripDoxygenPagePrefix(leaf);
+    const parent = segments.at(-2)?.toLowerCase();
+    const pathKind =
+      doxygenPage.kind ??
+      (parent === 'interfaces'
+        ? 'interface'
+        : parent === 'classes'
+          ? 'class'
+          : parent === 'enums'
+            ? 'enum'
+            : undefined);
+    return {
+      container: doxygenPage.name,
+      leaf,
+      ...(pathKind ? { pageKind: pathKind } : {}),
+    };
+  } catch {
+    return {};
+  }
+}
+
 function supportsSynthesizedTypeDocAnchor(url: string, symbol: string) {
   try {
     const pathname = new URL(url, 'https://api-ref.invalid').pathname;
@@ -299,11 +360,9 @@ function titleAndSymbol(hit: UnknownRecord, url: string) {
     /^(Class|Enum|Enumeration|Interface|Namespace|Type|Function|Method|Property|Event|Constructor)\s+(.+)$/iu,
   );
   const symbol = kindMatch?.[2]?.trim() || rawTitle;
-  const memberKind = normalizeMemberKind(
-    text(hit.memberKind) ??
-      text(hit.kind) ??
-      (kindMatch ? kindMatch[1] : 'member'),
-  );
+  const explicitMemberKind =
+    text(hit.memberKind) ?? text(hit.kind) ?? kindMatch?.[1];
+  const identity = urlIdentity(url);
   const basename = urlBasename(url);
   const titleLower = rawTitle.toLowerCase();
   const basenameLower = basename?.toLowerCase();
@@ -324,23 +383,20 @@ function titleAndSymbol(hit: UnknownRecord, url: string) {
     (levelTwo
       ? levelOneKindMatch?.[2]?.trim() || levelOne
       : levelOneKindMatch?.[2]?.trim()) ??
+    identity.container ??
     basename ??
     '';
-  if (
+  const inferredPageKind =
     !levelTwo &&
-    !levelOneKindMatch &&
-    !text(hit.memberKind) &&
-    !text(hit.kind) &&
-    basename &&
-    compact(rawTitle) === compact(basename)
-  ) {
-    return {
-      displayTitle: rawTitle,
-      memberKind: 'class',
-      namespace: basename,
-      symbol: rawTitle,
-    };
-  }
+    !identity.isMember &&
+    identity.container &&
+    canonicalRootClientAlias(rawTitle) ===
+      canonicalRootClientAlias(identity.container)
+      ? (identity.pageKind ?? 'class')
+      : undefined;
+  const memberKind = normalizeMemberKind(
+    explicitMemberKind ?? inferredPageKind ?? 'member',
+  );
   return { displayTitle, memberKind, namespace, symbol };
 }
 

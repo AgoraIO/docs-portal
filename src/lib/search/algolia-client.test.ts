@@ -765,6 +765,142 @@ describe('createAlgoliaDocsClient', () => {
       );
     });
 
+    it('drops api-task docs when title, section, and breadcrumbs match only one query term', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  breadcrumbs: ['API Reference', 'Video SDK', 'Web'],
+                  objectID: 'platform-message-reference',
+                  section: 'Messages',
+                  title: 'Web platform reference',
+                  url: '/en/api-reference/video-sdk/web/messages',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('send streaming message')).resolves.toEqual(
+        [],
+      );
+    });
+
+    it('keeps api-task docs when ordinary terms collectively match title, section, and breadcrumbs', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  breadcrumbs: ['API Reference', 'Cloud Recording'],
+                  objectID: 'query-recording-status',
+                  section: 'Cloud Recording',
+                  title: 'Query status',
+                  url: '/en/cloud-recording/restful-api/query-status',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('query recording status');
+
+      expect(results[0]).toMatchObject({
+        id: 'query-recording-status',
+        title: 'Query status',
+      });
+    });
+
+    it.each(['setAudioProfile', 'renewToken'])(
+      'aggregates real-like Android, iOS, and Web %s hits',
+      async (symbol) => {
+        const searchForHits = vi
+          .fn()
+          .mockResolvedValueOnce({ results: [{ hits: [] }] })
+          .mockResolvedValueOnce({
+            results: [
+              {
+                hits: [
+                  apiHit({
+                    _highlightResult: {
+                      hierarchy: {
+                        lvl1: {
+                          matchLevel: 'full',
+                          value: `<mark>${symbol}</mark>`,
+                        },
+                      },
+                    },
+                    hierarchy: {
+                      lvl0: 'API Reference ❯ Video SDK ❯ Android ❯ 4.x (current)',
+                      lvl1: symbol,
+                    },
+                    objectID: `android-${symbol}`,
+                    platform: 'android',
+                    url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+                  }),
+                  apiHit({
+                    _highlightResult: {
+                      hierarchy: {
+                        lvl1: {
+                          matchLevel: 'full',
+                          value: `<mark>${symbol}</mark>(_:)`,
+                        },
+                      },
+                    },
+                    hierarchy: {
+                      lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+                      lvl1: `${symbol}(_:)`,
+                    },
+                    objectID: `ios-${symbol}`,
+                    platform: 'ios',
+                    url: `https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/${symbol.toLowerCase()}(_:)`,
+                  }),
+                  apiHit({
+                    _highlightResult: {
+                      hierarchy: {
+                        lvl1: {
+                          matchLevel: 'full',
+                          value: `<mark>${symbol}</mark>`,
+                        },
+                      },
+                    },
+                    hierarchy: {
+                      lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                      lvl1: symbol,
+                    },
+                    objectID: `web-${symbol}`,
+                    platform: 'web',
+                    url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html',
+                  }),
+                ],
+              },
+            ],
+          });
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const client = createClient();
+        const results = await client.search(symbol);
+
+        expect(results).toHaveLength(1);
+        expect(results[0]).toMatchObject({
+          canonicalKey: `video-sdk|rtcengine|${symbol.toLowerCase()}|member`,
+          platform: ['android', 'ios', 'web'],
+        });
+      },
+    );
+
     it('keeps content-only api-task docs when the API request fails', async () => {
       const searchForHits = vi
         .fn()
@@ -864,7 +1000,6 @@ describe('createAlgoliaDocsClient', () => {
     it.each([
       ['acquire resource ID', 'Acquire a resource ID'],
       ['start cloud recording task', 'Start a cloud recording task'],
-      ['query recording status', 'Query status'],
     ])('keeps title-matched api-task docs for %s', async (query, title) => {
       const searchForHits = vi
         .fn()

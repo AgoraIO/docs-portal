@@ -651,13 +651,20 @@ function mapDocsHitForRanking(
     anyTermMatches([plainContent, description], intent.majorTerms);
   const recordKind = getDocsRecordKind(hit, url, breadcrumbs);
   const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
+  const apiTaskFields = [plainTitle, plainSection, ...breadcrumbs];
+  const apiTaskTerms = intent.terms.filter(
+    (term) => !GENERIC_API_SIGNAL_TERMS.has(term),
+  );
+  const allApiTaskTermsMatch = allTermsMatch(apiTaskFields, apiTaskTerms);
+  const apiTaskTitleOrSectionSignal = anyTermMatches(
+    [plainTitle, plainSection],
+    apiTaskTerms,
+  );
 
   if (
     enforceApiTaskTitleGate &&
     intent.intent === 'api-task' &&
-    !titleExactMatch &&
-    !titleMatch &&
-    !sectionMatch
+    (!allApiTaskTermsMatch || !apiTaskTitleOrSectionSignal)
   ) {
     return undefined;
   }
@@ -777,6 +784,8 @@ const GENERIC_API_SIGNAL_TERMS = new Set([
   'enum',
   'parameter',
   'property',
+  'rest',
+  'restful',
   'function',
   'interface',
 ]);

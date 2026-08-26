@@ -55,7 +55,8 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'connect your own TTS service':
     '/en/ai/build/custom-model-integration/custom-tts',
   'cloud recording start': '/en/realtime-media/cloud-recording',
-  'cloud recording REST API': '/en/api-reference/api-ref/cloud-recording/start',
+  'cloud recording REST API':
+    '/en/realtime-media/cloud-recording/reference/restful-api',
   'record captions':
     '/en/realtime-media/speech-to-text/build/process-transcription-data/record-captions',
   'transcribe audio': '/en/realtime-media/speech-to-text',

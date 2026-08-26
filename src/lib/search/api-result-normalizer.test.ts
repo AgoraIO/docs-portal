@@ -208,6 +208,80 @@ describe('SDK API result normalization', () => {
     },
   );
 
+  it('normalizes real Doxygen, Apple documentation, and TypeDoc member URLs', () => {
+    const setAudioProfile = [
+      normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl0: 'API Reference ❯ Video SDK ❯ Android ❯ 4.6.0 (current)',
+            lvl1: 'SetAudioProfile',
+          },
+          objectID: 'android-set-audio-profile-real',
+          platform: 'android',
+          product: 'video-sdk',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+          version: '4.6.0',
+        },
+        intent('setAudioProfile'),
+      ),
+      normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+            lvl1: 'setAudioProfile(_:)',
+          },
+          objectID: 'ios-set-audio-profile-real',
+          platform: 'ios',
+          product: 'video-sdk',
+          url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)',
+          version: '4.x',
+        },
+        intent('setAudioProfile'),
+      ),
+    ];
+    const renewToken = normalizeValidApiHit(
+      {
+        hierarchy: {
+          lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+          lvl1: 'renewToken',
+        },
+        objectID: 'web-renew-token-real',
+        platform: 'web',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html',
+        version: '4.x',
+      },
+      intent('renewToken'),
+    );
+
+    expect(setAudioProfile.map((result) => result.canonicalKey)).toEqual([
+      'video-sdk|rtcengine|setaudioprofile|member',
+      'video-sdk|rtcengine|setaudioprofile|member',
+    ]);
+    expect(renewToken.canonicalKey).toBe(
+      'video-sdk|rtcengine|renewtoken|member',
+    );
+  });
+
+  it('keeps a real Doxygen root client page as a class page', () => {
+    const result = normalizeValidApiHit(
+      {
+        hierarchy: {
+          lvl0: 'API Reference ❯ Video SDK ❯ Android ❯ 4.x (current)',
+          lvl1: 'IRtcEngine',
+        },
+        objectID: 'android-rtc-engine-real',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+        version: '4.x',
+      },
+      intent('RtcEngine'),
+    );
+
+    expect(result.canonicalKey).toBe('video-sdk|rtcengine|class');
+  });
+
   it('does not canonicalize similar non-root class names', () => {
     const create = (className: string) =>
       normalizeValidApiHit(
