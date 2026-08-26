@@ -64,18 +64,28 @@ Choose a `response_wait_ms` value based on your use case:
 
 #### Content
 
-The `content` object defines the source and selection behavior of filler phrases. Currently, the `static` mode is supported, which uses a predefined list of phrases.
+The `content` object defines the source and selection behavior of filler phrases. Two modes are supported: `static`, which uses a predefined list of phrases, and `generated`, which generates a phrase from the current context.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `content.mode` | String | Content mode. Currently only `static` is supported. |
-| `content.static_config.phrases` | Array[String] | List of filler phrases. Maximum 100 phrases, each up to 50 English words. |
+| `content.mode` | String | Content mode. Accepts `static` (default) or `generated`. |
+| `content.static_config.phrases` | Array[String] | List of filler phrases. Supports 1 to 100 phrases. A phrase containing only Latin characters supports up to 50 space-separated words; a phrase containing any non-Latin character supports up to 50 Unicode code points. |
 | `content.static_config.selection_rule` | String | Selection rule for choosing phrases. Accepts `shuffle` or `round_robin`. |
+| `content.generated_config.prompt` | String | Optional prompt used to generate the filler phrase. |
+| `content.generated_config.fallback_strategy` | String | Fallback strategy for when a generated phrase isn't available in time. Currently only `static` is supported. |
 
 Selection rules:
 
 - `shuffle`: Randomly selects phrases without repeating until all phrases have been used. After a full cycle, the list is reshuffled and a new round begins.
 - `round_robin`: Selects phrases sequentially from the list. After all phrases are played, a new cycle begins.
+
+`content.static_config` is required whenever filler words are enabled, even when `content.mode` is `generated`. It serves as the fallback when a generated phrase isn't available by the time `response_wait_ms` elapses.
+
+##### Generated filler words
+
+When `content.mode` is `generated`, Agora-hosted generation produces a filler phrase from the current conversation context in parallel with the main LLM request. This gives a more natural, context-aware acknowledgment than a fixed phrase list, at the cost of a small amount of additional processing.
+
+If the generated phrase isn't ready by the time the `response_wait_ms` threshold is reached, the agent falls back to a phrase from `content.static_config` instead. Because of this fallback behavior, `content.static_config` remains required even when using `generated` mode.
 
 ### Sample configuration
 
@@ -237,6 +247,175 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 </TabsContent>
 </Tabs>
 
+### Generated filler words example
+
+The following example configures `generated` mode with a custom prompt, keeping `static_config` as a fallback if a generated phrase isn't ready in time.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit import (
+    FillerWordsConfig,
+    FillerWordsTrigger,
+    FillerWordsTriggerFixedTimeConfig,
+    FillerWordsContent,
+    FillerWordsContentStaticConfig,
+    FillerWordsContentGeneratedConfig,
+)
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_filler_words(FillerWordsConfig(
+        enable=True,
+        trigger=FillerWordsTrigger(
+            mode='fixed_time',
+            fixed_time_config=FillerWordsTriggerFixedTimeConfig(
+                response_wait_ms=1500,
+            ),
+        ),
+        content=FillerWordsContent(
+            mode='generated',
+            static_config=FillerWordsContentStaticConfig(
+                phrases=[
+                    'Let me look into that.',
+                    "I'm on it.",
+                ],
+                selection_rule='shuffle',
+            ),
+            generated_config=FillerWordsContentGeneratedConfig(
+                prompt='Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.',
+                fallback_strategy='static',
+            ),
+        ),
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withFillerWords({
+    enable: true,
+    trigger: {
+      mode: 'fixed_time',
+      fixed_time_config: {
+        response_wait_ms: 1500,
+      },
+    },
+    content: {
+      mode: 'generated',
+      static_config: {
+        phrases: [
+          'Let me look into that.',
+          "I'm on it.",
+        ],
+        selection_rule: 'shuffle',
+      },
+      generated_config: {
+        prompt: 'Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.',
+        fallback_strategy: 'static',
+      },
+    },
+  });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+)
+
+// client is your configured *agentkit.AgoraClient
+agent := agentkit.NewAgent(client).
+    WithStt(/* configure your STT vendor */).
+    WithLlm(/* configure your LLM vendor */).
+    WithTts(/* configure your TTS vendor */).
+    WithFillerWords(&agentkit.FillerWordsConfig{
+        Enable: Agora.Bool(true),
+        Trigger: &agentkit.FillerWordsTrigger{
+            Mode: Agora.String("fixed_time"),
+            FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+                ResponseWaitMs: Agora.Int(1500),
+            },
+        },
+        Content: &agentkit.FillerWordsContent{
+            Mode: Agora.String("generated"),
+            StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+                Phrases: []string{
+                    "Let me look into that.",
+                    "I'm on it.",
+                },
+                SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+            },
+            GeneratedConfig: &agentkit.FillerWordsContentGeneratedConfig{
+                Prompt: Agora.String("Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly."),
+                FallbackStrategy: agentkit.FillerWordsFallbackStrategyStatic.Ptr(),
+            },
+        },
+    })
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request body:
+
+```json
+"filler_words": {
+  "enable": true,
+  "trigger": {
+    "mode": "fixed_time",
+    "fixed_time_config": {
+      "response_wait_ms": 1500
+    }
+  },
+  "content": {
+    "mode": "generated",
+    "static_config": {
+      "phrases": [
+        "Let me look into that.",
+        "I'm on it."
+      ],
+      "selection_rule": "shuffle"
+    },
+    "generated_config": {
+      "prompt": "Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.",
+      "fallback_strategy": "static"
+    }
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
 ## Best practices
 
 Keep the following tips in mind when configuring filler words:
@@ -245,6 +424,7 @@ Keep the following tips in mind when configuring filler words:
 - **Match phrasing to your use case**: For customer support agents, use reassuring phrases like "Let me look into that for you." For casual assistants, use informal phrases like "Hmm, one sec."
 - **Tune the trigger threshold**: Start with a `response_wait_ms` of 1500 ms and adjust based on your LLM's typical response time. If your agent frequently invokes tools, consider a lower threshold to cover longer processing times.
 - **Provide enough variety**: Include at least 4-6 phrases to avoid sounding repetitive. Use `shuffle` selection to maximize variety across conversation turns.
+- **Keep a solid static fallback**: When using `generated` mode, still provide a well-chosen `static_config` phrase list, since it plays whenever generation isn't ready in time.
 
 ## References
 

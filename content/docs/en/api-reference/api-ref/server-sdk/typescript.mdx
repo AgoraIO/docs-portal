@@ -238,7 +238,7 @@ The following methods follow the same pattern — each returns a new `Agent` ins
 |---|---|---|
 | `withSal(config)` | `SalConfig` | Set Selective Attention Locking configuration |
 | `withAdvancedFeatures(features)` | `AdvancedFeatures` | Set advanced features |
-| `withTools(enabled)` | `boolean` | Enable or disable MCP tool invocation |
+| `withTools(enabled)` | `boolean` | Enable or disable custom tool and MCP tool invocation. In v2.12, this also governs custom tools declared via the LLM vendor's `tools` option, in addition to MCP tools |
 | `withParameters(parameters)` | `SessionParams` | Set session parameters |
 | `withAudioScenario(audioScenario)` | `ParametersAudioScenario` | Set `parameters.audio_scenario`. Use the exported `AudioScenario` constants for discoverability, for example `agent.withAudioScenario(AudioScenario.Aiserver)` |
 | `withFailureMessage(message)` | `string` | Set the message spoken when the LLM fails |
@@ -326,7 +326,7 @@ toProperties(opts): StartAgentsRequest.Properties
 
 Public aliases over Fern-generated types include `LlmConfig`, `SttConfig`, `AsrConfig` (= `SttConfig`), `MllmConfig`, `AvatarConfig`, session/conversation types, and think types (`ThinkOnListeningAction`, etc.).
 
-Think value constants: `ThinkOnListeningActionInject`, `ThinkOnListeningActionInterrupt`, `ThinkOnListeningActionIgnore`, `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, `ThinkOnSpeakingActionIgnore`.
+Think value constants: `ThinkOnListeningActionInject`, `ThinkOnListeningActionInterrupt`, `ThinkOnListeningActionAppend`, `ThinkOnListeningActionIgnore`, `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionAppend`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, `ThinkOnSpeakingActionAppend`, `ThinkOnSpeakingActionIgnore`.
 
 ## AgentSession
 
@@ -564,6 +564,7 @@ new OpenAI(options: OpenAIOptions)
 | `headers` | `Record<string, string>` | No | Custom HTTP headers forwarded to the LLM provider |
 | `vendor` | `string` | No | Vendor override |
 | `mcpServers` | `Record<string, unknown>[]` | No | MCP server connections |
+| `tools` | `Record<string, unknown>[]` | No | Custom tool definitions the LLM can call |
 | `greetingConfigs` | `LlmGreetingConfigs` | No | Greeting playback configuration |
 | `templateVariables` | `Record<string, string>` | No | Template variables for messages |
 
@@ -596,6 +597,7 @@ new AzureOpenAI(options: AzureOpenAIOptions)
 | `headers` | `Record<string, string>` | No | Custom HTTP headers forwarded to the LLM provider |
 | `vendor` | `string` | No | Vendor override. Defaults to `azure` |
 | `mcpServers` | `Record<string, unknown>[]` | No | MCP server connections |
+| `tools` | `Record<string, unknown>[]` | No | Custom tool definitions the LLM can call |
 | `greetingConfigs` | `LlmGreetingConfigs` | No | Greeting playback configuration |
 | `templateVariables` | `Record<string, string>` | No | Template variables for messages |
 
@@ -623,6 +625,7 @@ new Anthropic(options: AnthropicOptions)
 | `params` | `Record<string, unknown>` | No | Additional LLM parameters |
 | `vendor` | `string` | No | Vendor override |
 | `mcpServers` | `Record<string, unknown>[]` | No | MCP server connections |
+| `tools` | `Record<string, unknown>[]` | No | Custom tool definitions the LLM can call |
 | `greetingConfigs` | `LlmGreetingConfigs` | No | Greeting playback configuration |
 | `templateVariables` | `Record<string, string>` | No | Template variables for messages |
 
@@ -651,6 +654,7 @@ new Gemini(options: GeminiOptions)
 | `headers` | `Record<string, string>` | No | Custom HTTP headers forwarded to the LLM provider |
 | `vendor` | `string` | No | Vendor override |
 | `mcpServers` | `Record<string, unknown>[]` | No | MCP server connections |
+| `tools` | `Record<string, unknown>[]` | No | Custom tool definitions the LLM can call |
 | `greetingConfigs` | `LlmGreetingConfigs` | No | Greeting playback configuration |
 | `templateVariables` | `Record<string, string>` | No | Template variables for messages |
 

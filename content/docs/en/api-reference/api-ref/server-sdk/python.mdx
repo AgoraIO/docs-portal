@@ -277,7 +277,7 @@ The following methods follow the same pattern — each returns a new `Agent` ins
 |---|---|---|
 | `with_sal(config)` | `SalConfig` | Set Selective Attention Locking configuration |
 | `with_advanced_features(features)` | `Dict[str, Any]` | Set advanced features |
-| `with_tools(enabled)` | `bool` | Enable or disable MCP tool invocation |
+| `with_tools(enabled)` | `bool` | Enable or disable custom tool and MCP tool invocation. In v2.12, this also governs custom tools declared via the LLM vendor's `tools` parameter, in addition to MCP tools |
 | `with_parameters(parameters)` | `SessionParams` | Set session parameters |
 | `with_failure_message(message)` | `str` | Set the message spoken when the LLM fails |
 | `with_max_history(n)` | `int` | Set the maximum conversation history length |
@@ -369,7 +369,7 @@ Read-only properties available on any `Agent` instance.
 
 Public aliases over Fern-generated types: `LlmConfig`, `SttConfig`, `AsrConfig` (= `SttConfig`), `MllmConfig`, `AvatarConfig`, session/conversation types, and think types (`ThinkOnListeningAction`, etc.).
 
-Think value constants: `ThinkOnListeningActionInject`, `ThinkOnListeningActionInterrupt`, `ThinkOnListeningActionIgnore`, `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, `ThinkOnSpeakingActionIgnore`.
+Think value constants: `ThinkOnListeningActionInject`, `ThinkOnListeningActionInterrupt`, `ThinkOnListeningActionAppend`, `ThinkOnListeningActionIgnore`, `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionAppend`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, `ThinkOnSpeakingActionAppend`, `ThinkOnSpeakingActionIgnore`.
 
 
 ## AgentSession / AsyncAgentSession
@@ -524,6 +524,8 @@ Injects a custom text instruction into the running agent.
 
 In API v2.7, omitting `on_listening_action` uses the server default `interrupt`. Pass `on_listening_action='inject'` explicitly to preserve the pre-v2.7 behavior.
 
+In API v2.12, `on_listening_action`, `on_thinking_action`, and `on_speaking_action` also accept `append`. It waits for the current turn's LLM output to finish, then appends the instruction as a separate user message and starts a new turn, without interrupting the turn in progress.
+
 ```python
 session.think('Summarize the last answer', on_listening_action='inject')
 ```
@@ -666,6 +668,7 @@ llm = OpenAI(api_key='your-key', model='gpt-4o-mini', temperature=0.7)
 | `params` | `Dict[str, Any]` | No | `None` | Additional model parameters |
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
+| `tools` | `List[Dict]` | No | `None` | Custom tool definitions the LLM can call |
 
 #### AzureOpenAI
 
@@ -702,6 +705,7 @@ llm = AzureOpenAI(
 | `template_variables` | `Dict[str, str]` | No | `None` | Template variables for system prompt interpolation |
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
+| `tools` | `List[Dict]` | No | `None` | Custom tool definitions the LLM can call |
 
 #### Anthropic
 
@@ -737,6 +741,7 @@ llm = Anthropic(
 | `template_variables` | `Dict[str, str]` | No | `None` | Template variables for system prompt interpolation |
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
+| `tools` | `List[Dict]` | No | `None` | Custom tool definitions the LLM can call |
 
 #### Gemini
 
@@ -767,6 +772,7 @@ llm = Gemini(api_key='your-google-key', model='gemini-2.0-flash-exp')
 | `template_variables` | `Dict[str, str]` | No | `None` | Template variables for system prompt interpolation |
 | `vendor` | `str` | No | `None` | Vendor override |
 | `mcp_servers` | `List[Dict]` | No | `None` | MCP server connections |
+| `tools` | `List[Dict]` | No | `None` | Custom tool definitions the LLM can call |
 
 #### Other LLM vendors
 The SDK also includes named helpers for the remaining Agora-supported LLM providers. These helpers choose the correct request format internally.
