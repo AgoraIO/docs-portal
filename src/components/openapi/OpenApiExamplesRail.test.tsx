@@ -1,16 +1,18 @@
-import { render, screen, act, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 
 class MockIntersectionObserver {
   static instance: MockIntersectionObserver;
+  static instances: MockIntersectionObserver[] = [];
+  disconnect = vi.fn();
   callback: IntersectionObserverCallback;
   constructor(callback: IntersectionObserverCallback) {
     this.callback = callback;
     MockIntersectionObserver.instance = this;
+    MockIntersectionObserver.instances.push(this);
   }
   observe() {}
-  disconnect() {}
   unobserve() {}
   trigger(entry: Partial<IntersectionObserverEntry>) {
     this.callback(
@@ -22,13 +24,15 @@ class MockIntersectionObserver {
 
 class MockResizeObserver {
   static instance: MockResizeObserver;
+  static instances: MockResizeObserver[] = [];
+  disconnect = vi.fn();
   callback: ResizeObserverCallback;
   constructor(callback: ResizeObserverCallback) {
     this.callback = callback;
     MockResizeObserver.instance = this;
+    MockResizeObserver.instances.push(this);
   }
   observe() {}
-  disconnect() {}
   unobserve() {}
   trigger() {
     this.callback([], this as unknown as ResizeObserver);
@@ -45,6 +49,133 @@ describe('OpenApiExamplesRail', () => {
     });
   });
   afterEach(() => vi.unstubAllGlobals());
+
+  it('selects only the visible active viewport', async () => {
+    render(
+      <OpenApiExamplesRail>
+        <div aria-hidden="true" data-openapi-code-viewport hidden>
+          hidden
+        </div>
+        <div data-openapi-code-viewport data-state="inactive">
+          inactive
+        </div>
+        <div data-openapi-code-viewport>active</div>
+      </OpenApiExamplesRail>,
+    );
+    const active = screen.getByText('active') as HTMLElement;
+    const inactive = screen.getByText('inactive') as HTMLElement;
+    const hidden = screen.getByText('hidden') as HTMLElement;
+    for (const viewport of [active, inactive, hidden]) {
+      Object.defineProperty(viewport, 'getClientRects', {
+        value: () => [{ width: 100, height: 200 }],
+      });
+    }
+    Object.defineProperties(active, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 900 },
+    });
+    Object.defineProperties(inactive, {
+      clientHeight: { configurable: true, value: 100 },
+      scrollHeight: { configurable: true, value: 10_000 },
+    });
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    Object.defineProperty(rail, 'scrollHeight', {
+      configurable: true,
+      value: 700,
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() =>
+      expect(rail).toHaveAttribute('data-constrained', 'true'),
+    );
+    expect(active).toHaveAttribute('data-openapi-code-viewport-active');
+    expect(inactive).not.toHaveAttribute('data-openapi-code-viewport-active');
+  });
+
+  it('uses exact available-height formula and threshold', async () => {
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 900,
+    });
+    render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>active</div>
+      </OpenApiExamplesRail>,
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('active') as HTMLElement;
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 700 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 900 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() =>
+      expect(rail).toHaveAttribute('data-constrained', 'true'),
+    );
+    expect(rail.style.getPropertyValue('--openapi-rail-available-height')).toBe(
+      '836px',
+    );
+    expect(rail.style.getPropertyValue('--openapi-code-available-height')).toBe(
+      '336px',
+    );
+  });
+
+  it('does not constrain when code fits or available space is below eight lines', async () => {
+    const { unmount } = render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>fits</div>
+      </OpenApiExamplesRail>,
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('fits') as HTMLElement;
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperty(rail, 'scrollHeight', {
+      configurable: true,
+      value: 700,
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 200 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() => expect(rail).toHaveAttribute('data-stuck', 'true'));
+    expect(rail).toHaveAttribute('data-constrained', 'false');
+    unmount();
+  });
+
+  it('disconnects observers and cancels pending resize frame on unmount', () => {
+    const cancel = vi.spyOn(window, 'cancelAnimationFrame');
+    const { unmount } = render(
+      <OpenApiExamplesRail>Examples</OpenApiExamplesRail>,
+    );
+    unmount();
+    expect(MockIntersectionObserver.instance.disconnect).toHaveBeenCalled();
+    expect(MockResizeObserver.instance.disconnect).toHaveBeenCalled();
+    expect(cancel).toHaveBeenCalled();
+    cancel.mockRestore();
+  });
 
   it('toggles stuck only when sentinel leaves above sticky top', () => {
     render(<OpenApiExamplesRail>Examples</OpenApiExamplesRail>);
