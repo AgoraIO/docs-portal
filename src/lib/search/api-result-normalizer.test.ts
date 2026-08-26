@@ -282,6 +282,102 @@ describe('SDK API result normalization', () => {
     expect(result.canonicalKey).toBe('video-sdk|rtcengine|class');
   });
 
+  it('uses a Doxygen hash to distinguish a root class page from a member', () => {
+    const classPage = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'IRtcEngine' },
+        objectID: 'doxygen-root-class',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+      },
+      intent('RtcEngine'),
+    );
+    const destructor = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: '~IRtcEngine' },
+        objectID: 'doxygen-root-destructor',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#member-anchor',
+      },
+      intent('RtcEngine'),
+    );
+    const identityHashPage = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'IRtcEngine' },
+        objectID: 'doxygen-root-identity-hash',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#class_irtcengine',
+      },
+      intent('RtcEngine'),
+    );
+
+    expect(classPage.canonicalKey).toBe('video-sdk|rtcengine|class');
+    expect(identityHashPage.canonicalKey).toBe('video-sdk|rtcengine|class');
+    expect(destructor).toMatchObject({
+      canonicalKey: 'video-sdk|rtcengine|irtcengine|member',
+      url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#member-anchor',
+    });
+  });
+
+  it('normalizes bare DocC enum-like types without treating every type as a class', () => {
+    const doxygenEnum = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'AgoraApplicationScenarioType' },
+        objectID: 'android-application-scenario-type',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_agoraapplicationscenariotype.html',
+      },
+      intent('AgoraApplicationScenarioType'),
+    );
+    const doccEnum = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'AgoraApplicationScenarioType' },
+        objectID: 'ios-application-scenario-type',
+        platform: 'ios',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agoraapplicationscenariotype',
+      },
+      intent('AgoraApplicationScenarioType'),
+    );
+    const neutralDoccType = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'AgoraRtcConnection' },
+        objectID: 'ios-rtc-connection',
+        platform: 'ios',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcconnection',
+      },
+      intent('AgoraRtcConnection'),
+    );
+    const explicitDoccClass = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'Class AgoraRtcEngineKit' },
+        objectID: 'ios-rtc-engine-class',
+        platform: 'ios',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit',
+      },
+      intent('RtcEngine'),
+    );
+
+    expect(doxygenEnum.canonicalKey).toBe(
+      'video-sdk|agoraapplicationscenariotype|enum',
+    );
+    expect(doccEnum.canonicalKey).toBe(doxygenEnum.canonicalKey);
+    expect(aggregateApiResults([doxygenEnum, doccEnum])[0].platforms).toEqual([
+      'android',
+      'ios',
+    ]);
+    expect(neutralDoccType.canonicalKey).toBe(
+      'video-sdk|agorartcconnection|type',
+    );
+    expect(explicitDoccClass.canonicalKey).toBe('video-sdk|rtcengine|class');
+  });
+
   it('does not canonicalize similar non-root class names', () => {
     const create = (className: string) =>
       normalizeValidApiHit(
@@ -774,6 +870,30 @@ describe('SDK API admission', () => {
     };
     expect(
       admitApiHit(missingJoinedMajorTerm, intent('renew token'), false),
+    ).toBe(false);
+  });
+
+  it.each(['how to renew token', 'please renew token'])(
+    'ignores natural-language decoration when admitting %s',
+    (query) => {
+      expect(admitApiHit(currentAndroidRenewToken, intent(query), false)).toBe(
+        true,
+      );
+    },
+  );
+
+  it('does not let a short query token match inside a longer API token', () => {
+    expect(
+      admitApiHit(
+        {
+          hierarchy: { lvl1: 'forgetToken' },
+          objectID: 'forget-token',
+          product: 'video-sdk',
+          url: 'https://api-ref.agora.io/forget-token',
+        },
+        intent('get token'),
+        false,
+      ),
     ).toBe(false);
   });
 

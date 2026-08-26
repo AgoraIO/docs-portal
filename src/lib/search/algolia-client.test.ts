@@ -819,8 +819,134 @@ describe('createAlgoliaDocsClient', () => {
 
       expect(results[0]).toMatchObject({
         id: 'query-recording-status',
+        sectionMatch: true,
         title: 'Query status',
       });
+    });
+
+    it('keeps an api-task document when a required term is supplied by the section', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  breadcrumbs: ['API Reference', 'Cloud Recording'],
+                  objectID: 'query-recording-section-status',
+                  section: 'Status',
+                  title: 'Query recording',
+                  url: '/en/cloud-recording/restful-api/query-status',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('query recording status');
+
+      expect(results[0]).toMatchObject({
+        id: 'query-recording-section-status',
+        section: 'Status',
+        sectionMatch: true,
+      });
+    });
+
+    it.each(['how to renew token', 'please renew token'])(
+      'returns the exact API target for decorated query %s',
+      async (query) => {
+        const searchForHits = vi
+          .fn()
+          .mockResolvedValueOnce({ results: [{ hits: [] }] })
+          .mockResolvedValueOnce({
+            results: [
+              {
+                hits: [
+                  apiHit({
+                    _highlightResult: {
+                      hierarchy: {
+                        lvl1: {
+                          matchLevel: 'full',
+                          value: '<mark>renewToken</mark>',
+                        },
+                      },
+                    },
+                    hierarchy: {
+                      lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                      lvl1: 'renewToken',
+                    },
+                    objectID: `renew-token:${query}`,
+                  }),
+                ],
+              },
+            ],
+          });
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const client = createClient();
+        const results = await client.search(query);
+
+        expect(results[0]).toMatchObject({
+          canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
+          id: `renew-token:${query}`,
+        });
+      },
+    );
+
+    it('keeps semantic REST and API terms while ignoring a leading article', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  breadcrumbs: ['Cloud Recording'],
+                  objectID: 'cloud-recording-rest-api',
+                  title: 'Cloud Recording RESTful API',
+                  url: '/en/realtime-media/cloud-recording/reference/restful-api',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('the cloud recording REST API');
+
+      expect(results[0]).toMatchObject({
+        id: 'cloud-recording-rest-api',
+        title: 'Cloud Recording RESTful API',
+      });
+    });
+
+    it('does not let the short ID term match inside video', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  objectID: 'acquire-video-resource',
+                  title: 'Acquire video resource',
+                  url: '/en/reference/acquire-video-resource',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('acquire resource ID')).resolves.toEqual([]);
     });
 
     it.each(['setAudioProfile', 'renewToken'])(

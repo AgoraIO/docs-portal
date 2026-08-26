@@ -16,6 +16,10 @@ import {
   rankSearchResults,
   type SearchRecordKind,
 } from './search-ranking';
+import {
+  allSearchTermsMatch,
+  getRequiredApiTaskTerms,
+} from './search-term-matching';
 
 export type AlgoliaSearchFilters = {
   platform?: string;
@@ -652,9 +656,7 @@ function mapDocsHitForRanking(
   const recordKind = getDocsRecordKind(hit, url, breadcrumbs);
   const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
   const apiTaskFields = [plainTitle, plainSection, ...breadcrumbs];
-  const apiTaskTerms = intent.terms.filter(
-    (term) => !GENERIC_API_SIGNAL_TERMS.has(term),
-  );
+  const apiTaskTerms = getRequiredApiTaskTerms(intent.terms);
   const allApiTaskTermsMatch = allTermsMatch(apiTaskFields, apiTaskTerms);
   const apiTaskTitleOrSectionSignal = anyTermMatches(
     [plainTitle, plainSection],
@@ -734,29 +736,8 @@ function compactSearchText(value: string) {
   );
 }
 
-function normalizedTerms(value: string) {
-  return (
-    normalizedText(value)
-      .replace(/([a-z\d])([A-Z])/gu, '$1 $2')
-      .match(/[\p{L}\p{M}\p{N}]+/gu) ?? []
-  );
-}
-
 function allTermsMatch(fields: Array<string | undefined>, terms: string[]) {
-  if (terms.length === 0) return false;
-  const fieldTerms = new Set(
-    fields.flatMap((field) => (field ? normalizedTerms(field) : [])),
-  );
-  const compactFields = fields
-    .filter((field): field is string => Boolean(field))
-    .map((field) => normalizedTerms(field).join(''));
-  return terms.every((term) => {
-    const normalizedTerm = normalizedTerms(term).join('');
-    return (
-      fieldTerms.has(normalizedTerm) ||
-      compactFields.some((field) => field.includes(normalizedTerm))
-    );
-  });
+  return allSearchTermsMatch(fields, terms);
 }
 
 function anyTermMatches(fields: Array<string | undefined>, terms: string[]) {
@@ -784,8 +765,6 @@ const GENERIC_API_SIGNAL_TERMS = new Set([
   'enum',
   'parameter',
   'property',
-  'rest',
-  'restful',
   'function',
   'interface',
 ]);

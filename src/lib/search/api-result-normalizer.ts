@@ -1,4 +1,9 @@
 import type { SearchIntentResult } from './search-intent';
+import {
+  allSearchTermsMatch,
+  getRequiredApiTaskTerms,
+  hasJoinedSearchAlias,
+} from './search-term-matching';
 
 export type NormalizedApiResult = {
   canonicalKey: string;
@@ -268,13 +273,26 @@ function urlBasename(url: string) {
 type ApiUrlIdentity = {
   container?: string;
   isMember?: boolean;
-  leaf?: string;
   pageKind?: string;
 };
 
+const DOCC_ENUM_LIKE_SUFFIX =
+  /(?:Type|Mode|State|Reason|Code|Scenario|Source|Direction|Preference|Status)$/iu;
+
+function isPageIdentityHash(hash: string, container: string) {
+  if (!hash) return false;
+  const decodedHash = decodeURIComponent(hash.replace(/^#/u, ''));
+  const pageHash = stripDoxygenPagePrefix(decodedHash);
+  return pageHash.kind
+    ? canonicalRootClientAlias(pageHash.name) ===
+        canonicalRootClientAlias(container)
+    : decodedHash.toLowerCase() === container.toLowerCase();
+}
+
 function urlIdentity(url: string): ApiUrlIdentity {
   try {
-    const pathname = new URL(url, 'https://api-ref.invalid').pathname;
+    const parsedUrl = new URL(url, 'https://api-ref.invalid');
+    const { pathname } = parsedUrl;
     const segments = pathname
       .split('/')
       .filter(Boolean)
@@ -291,7 +309,12 @@ function urlIdentity(url: string): ApiUrlIdentity {
       return {
         container: documentationSegments.at(-2),
         isMember: true,
-        leaf,
+      };
+    }
+    if (documentationSegments.length === 2) {
+      return {
+        container: leaf,
+        pageKind: DOCC_ENUM_LIKE_SUFFIX.test(leaf) ? 'enum' : 'type',
       };
     }
 
@@ -308,7 +331,9 @@ function urlIdentity(url: string): ApiUrlIdentity {
             : undefined);
     return {
       container: doxygenPage.name,
-      leaf,
+      isMember:
+        Boolean(parsedUrl.hash) &&
+        !isPageIdentityHash(parsedUrl.hash, doxygenPage.name),
       ...(pathKind ? { pageKind: pathKind } : {}),
     };
   } catch {
@@ -422,17 +447,14 @@ function normalizedCandidateFields(hit: unknown) {
 }
 
 function matchesTerms(fields: string[], intent: SearchIntentResult) {
-  const candidateTokens = new Set(fields.flatMap(splitIdentifier));
-  const candidateCompact = fields.map(compact).join('');
+  const requiredTerms =
+    intent.intent === 'api-task'
+      ? getRequiredApiTaskTerms(intent.terms)
+      : intent.majorTerms;
   return (
-    intent.majorTerms.length > 0 &&
-    intent.majorTerms.every((term) => {
-      const normalizedTerm = compact(term);
-      return (
-        candidateTokens.has(normalizedTerm) ||
-        candidateCompact.includes(normalizedTerm)
-      );
-    })
+    allSearchTermsMatch(fields, requiredTerms) &&
+    (intent.intent !== 'api-task' ||
+      hasJoinedSearchAlias(fields, requiredTerms))
   );
 }
 

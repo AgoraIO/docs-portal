@@ -455,6 +455,23 @@ function targetDocsHit(query: string): SourceHit | undefined {
   };
 }
 
+function competitiveDocsHits(query: string): SourceHit[] {
+  if (query !== 'cloud recording REST API') return [];
+  const entry = authoritativeRouteEntry('/en/realtime-media/cloud-recording');
+  if (!entry) {
+    throw new Error('Cloud Recording overview competition is absent');
+  }
+  return [
+    {
+      ...entry,
+      _highlightResult: {
+        title: { matchLevel: 'full', value: entry.title },
+      },
+      objectID: 'competition:cloud-recording-overview',
+    },
+  ];
+}
+
 function noiseDocsFor(intent: SearchIntent) {
   return NOISE_DOC_ROUTES.map((route, index) => {
     const entry = indexedEntry(route);
@@ -501,7 +518,11 @@ function sourceHitsFor(
       retrievalQuery === expectedDocsRetrievalQuery(query)
         ? targetDocsHit(query)
         : undefined;
-    return [...noiseDocsFor(intent), ...(target ? [target] : [])];
+    return [
+      ...noiseDocsFor(intent),
+      ...competitiveDocsHits(query),
+      ...(target ? [target] : []),
+    ];
   }
 
   const targets = API_CORPUS.filter(({ queries }) =>
@@ -615,6 +636,26 @@ describe('Global search golden queries', () => {
     expect(NOISE_DOC_ROUTES).toHaveLength(5);
     expect(NOISE_DOC_ROUTES.map(indexedEntry)).not.toContain(undefined);
     expect(noiseDocsFor('unknown')).toHaveLength(NOISE_DOC_ROUTES.length);
+  });
+
+  it('tests the Cloud Recording REST API target against the real overview sibling', () => {
+    const hits = sourceHitsFor(
+      'cloud recording REST API',
+      'cloud recording REST API',
+      'docs_portal_en',
+      'api-task',
+    );
+
+    expect(hits).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: '/en/realtime-media/cloud-recording',
+        }),
+        expect.objectContaining({
+          url: '/en/realtime-media/cloud-recording/reference/restful-api',
+        }),
+      ]),
+    );
   });
 
   it.each([
