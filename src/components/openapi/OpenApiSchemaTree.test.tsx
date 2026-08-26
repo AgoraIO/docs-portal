@@ -180,6 +180,90 @@ describe('OpenApiSchemaTree', () => {
     ).toBeVisible();
   });
 
+  it('resets disclosure when array item wrapper rendering changes', () => {
+    const { rerender } = renderTree();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse all schema fields' }),
+    );
+    expect(screen.queryByText('channel')).not.toBeInTheDocument();
+
+    rerender(
+      <OpenApiSchemaTree
+        anchorPrefix="request-body"
+        labels={labels}
+        omitArrayItemWrapperRows
+        renderCallouts={() => null}
+        renderDescription={(markdown) => <span>{markdown}</span>}
+        renderMetadata={() => null}
+        root={root}
+        usage="request"
+      />,
+    );
+
+    expect(screen.getByText('channel')).toBeVisible();
+  });
+
+  it('resets disclosure when a referenced document changes', () => {
+    const refRoot = { $ref: '#/components/schemas/request' };
+    const documentA = {
+      components: {
+        schemas: {
+          request: {
+            properties: {
+              config: {
+                properties: { token: { type: 'string' } },
+                type: 'object',
+              },
+            },
+            required: ['config'],
+            type: 'object',
+          },
+        },
+      },
+    };
+    const documentB = {
+      components: {
+        schemas: {
+          request: {
+            properties: {
+              settings: {
+                properties: { region: { type: 'string' } },
+                type: 'object',
+              },
+            },
+            required: ['settings'],
+            type: 'object',
+          },
+        },
+      },
+    };
+    const renderReferencedTree = (document: unknown) => (
+      <OpenApiSchemaTree
+        anchorPrefix="request-body"
+        document={document}
+        labels={labels}
+        renderCallouts={() => null}
+        renderDescription={(markdown) => <span>{markdown}</span>}
+        renderMetadata={() => null}
+        root={refRoot}
+        usage="request"
+      />
+    );
+    const { rerender } = render(renderReferencedTree(documentA));
+
+    expect(screen.getByText('token')).toBeVisible();
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse all schema fields' }),
+    );
+    expect(screen.queryByText('token')).not.toBeInTheDocument();
+
+    rerender(renderReferencedTree(documentB));
+
+    expect(screen.getByText('settings')).toBeVisible();
+    expect(screen.getByText('region')).toBeVisible();
+  });
+
   it('opens every ancestor of a nested hash target', async () => {
     window.history.replaceState(
       null,

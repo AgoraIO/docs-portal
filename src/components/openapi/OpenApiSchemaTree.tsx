@@ -24,6 +24,14 @@ export type OpenApiSchemaTreeLabels = OpenApiFieldLabels & {
   schemaFields: string;
 };
 
+type OpenApiSchemaTreeResetIdentity = {
+  anchorPrefix: string;
+  document?: unknown;
+  omitArrayItemWrapperRows?: boolean;
+  root: unknown;
+  usage: OpenApiSchemaUsage;
+};
+
 export function OpenApiSchemaTree({
   anchorPrefix,
   document,
@@ -74,19 +82,33 @@ export function OpenApiSchemaTree({
   const [expandedRowIds, setExpandedRowIds] = useState(
     () => new Set(initialExpandedRowIds),
   );
-  const previousResetInputs = useRef({ anchorPrefix, root, usage });
+  const previousResetInputs = useRef<OpenApiSchemaTreeResetIdentity>({
+    anchorPrefix,
+    document,
+    omitArrayItemWrapperRows,
+    root,
+    usage,
+  });
 
   useEffect(() => {
     const previous = previousResetInputs.current;
     if (
       previous.anchorPrefix === anchorPrefix &&
+      previous.document === document &&
+      previous.omitArrayItemWrapperRows === omitArrayItemWrapperRows &&
       previous.root === root &&
       previous.usage === usage
     ) {
       return;
     }
 
-    previousResetInputs.current = { anchorPrefix, root, usage };
+    previousResetInputs.current = {
+      anchorPrefix,
+      document,
+      omitArrayItemWrapperRows,
+      root,
+      usage,
+    };
     setExpandedRowIds(new Set(initialExpandedRowIds));
   });
 
