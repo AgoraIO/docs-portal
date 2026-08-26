@@ -972,7 +972,7 @@ describe('app prose CSS regressions', () => {
       '[data-openapi-code-viewport]',
     );
     const wrapContent = getRuleBody(
-      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] :is(pre, pre code, .line)',
+      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] :is(pre, pre code, pre code span, .line)',
     );
     const wrapViewport = getRuleBody(
       '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',

@@ -7,9 +7,10 @@ import {
 } from '@testing-library/react';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { act } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   FumadocsOpenApiContent,
+  getOpenApiCodePreviewResetKey,
   getOpenApiSchemaTreeLabels,
 } from './FumadocsOpenApiContent';
 
@@ -20,21 +21,23 @@ type Document = Extract<
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 function codePreviewPageProps({
+  method = 'get',
   operationId,
   path,
 }: {
+  method?: 'get' | 'post';
   operationId?: string;
   path: string;
 }) {
   return {
-    operations: [{ method: 'get', path }],
+    operations: [{ method, path }],
     payload: {
       bundled: {
         info: { title: 'Code Preview API' },
         openapi: '3.2.0',
         paths: {
           [path]: {
-            get: {
+            [method]: {
               ...(operationId ? { operationId } : {}),
               responses: {
                 '200': {
@@ -60,6 +63,22 @@ function codePreviewPageProps({
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('uses operation ID first and method plus path as the preview reset identity', () => {
+    expect(
+      getOpenApiCodePreviewResetKey({
+        __path: '/agents',
+        method: 'post',
+        operationId: 'create-agent',
+      }),
+    ).toBe('create-agent');
+    expect(
+      getOpenApiCodePreviewResetKey({ __path: '/agents', method: 'get' }),
+    ).toBe('get:/agents');
+    expect(
+      getOpenApiCodePreviewResetKey({ __path: '/agents', method: 'post' }),
+    ).toBe('post:/agents');
+  });
+
   it('renders one English response body accordion with status-local headers', async () => {
     render(
       <FumadocsOpenApiContent
@@ -482,6 +501,31 @@ describe('FumadocsOpenApiContent', () => {
       screen.getByText('Response example').closest('.openapi-response-example'),
     ).not.toContainElement(preview);
     fireEvent.click(wrapButton);
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+    try {
+      fireEvent.click(
+        within(preview).getByRole('button', { name: 'Copy Text' }),
+      );
+      await waitFor(() => {
+        expect(clipboardWriteText).toHaveBeenCalledWith(
+          'curl --request POST https://example.com/join',
+        );
+      });
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
     expect(examplesScope.getByText('import requests')).toBeInTheDocument();
     expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
@@ -503,7 +547,8 @@ describe('FumadocsOpenApiContent', () => {
     const { rerender } = render(
       <FumadocsOpenApiContent
         pageProps={codePreviewPageProps({
-          path: '/first',
+          method: 'get',
+          path: '/same',
         })}
       />,
     );
@@ -516,7 +561,8 @@ describe('FumadocsOpenApiContent', () => {
     rerender(
       <FumadocsOpenApiContent
         pageProps={codePreviewPageProps({
-          path: '/second',
+          method: 'post',
+          path: '/same',
         })}
       />,
     );

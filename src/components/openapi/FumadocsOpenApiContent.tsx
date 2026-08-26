@@ -6,14 +6,19 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
+  CodeBlock,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
+  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
+import { Check, Clipboard } from 'lucide-react';
 import {
+  type ComponentProps,
   createContext,
   type ReactNode,
   type RefObject,
@@ -75,6 +80,7 @@ const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
 const OpenApiLocaleContext = createContext<string | undefined>(undefined);
+const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
 const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#request-body]:font-semibold',
@@ -452,8 +458,15 @@ function OpenApiRightExamplesLayout({
   );
 }
 
-function getOpenApiCodePreviewResetKey(operation?: OpenApiOperation) {
-  return getString(operation?.operationId) ?? operation?.__path ?? '';
+export function getOpenApiCodePreviewResetKey(operation?: OpenApiOperation) {
+  const operationId = getString(operation?.operationId);
+
+  if (operationId) return operationId;
+
+  const method = getString(operation?.method) ?? '';
+  const path = getString(operation?.__path) ?? getString(operation?.path) ?? '';
+
+  return `${method}:${path}`;
 }
 
 function OpenApiRightSection({
@@ -1753,7 +1766,53 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
 }
 
 function renderOpenApiCodeBlock(lang: string, source: string) {
-  return renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``);
+  return (
+    <OpenApiCodeSourceContext.Provider value={source}>
+      {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
+    </OpenApiCodeSourceContext.Provider>
+  );
+}
+
+function OpenApiMarkdownCodeBlock({
+  children,
+  ...props
+}: ComponentProps<'pre'>) {
+  const source = useContext(OpenApiCodeSourceContext);
+
+  return (
+    <CodeBlock
+      {...props}
+      Actions={
+        source === undefined
+          ? undefined
+          : ({ className }) => (
+              <div className={cn('empty:hidden', className)}>
+                <OpenApiCodeCopyButton source={source} />
+              </div>
+            )
+      }
+    >
+      <Pre>{children}</Pre>
+    </CodeBlock>
+  );
+}
+
+function OpenApiCodeCopyButton({ source }: { source: string }) {
+  const [checked, onClick] = useCopyButton(() =>
+    navigator.clipboard.writeText(source),
+  );
+
+  return (
+    <button
+      aria-label={checked ? 'Copied Text' : 'Copy Text'}
+      className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
+      data-checked={checked || undefined}
+      onClick={onClick}
+      type="button"
+    >
+      {checked ? <Check /> : <Clipboard />}
+    </button>
+  );
 }
 
 function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
@@ -1785,6 +1844,7 @@ function createOpenApiMarkdownProcessor() {
         components: {
           ...defaultMdxComponents,
           blockquote: OpenApiMarkdownBlockquote,
+          pre: OpenApiMarkdownCodeBlock,
         },
       });
   }
