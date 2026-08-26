@@ -33,6 +33,8 @@ export type OpenApiSchemaRow = Omit<OpenApiSchemaTreeNode, 'children'> & {
   depth: number;
 };
 
+export type OpenApiSchemaUsage = 'request' | 'response';
+
 export type OpenApiSchemaCallout = {
   markdown: string;
   position?: string;
@@ -59,7 +61,7 @@ export function buildOpenApiSchemaRows(
   options: {
     document?: unknown;
     omitArrayItemWrapperRows?: boolean;
-    usage?: 'request' | 'response';
+    usage?: OpenApiSchemaUsage;
   } = {},
 ): OpenApiSchemaRow[] {
   return buildOpenApiSchemaTree(schema, {
@@ -109,6 +111,34 @@ export function getOpenApiSchemaRowLayout(
   return { hasChildren, parentIndex };
 }
 
+export function getInitialOpenApiSchemaExpandedPaths(
+  rows: OpenApiSchemaRow[],
+  layout: OpenApiSchemaRowLayout,
+  usage: OpenApiSchemaUsage,
+): Set<string> {
+  if (usage !== 'request') {
+    return new Set();
+  }
+
+  const topLevelIndexes = rows.flatMap((row, index) =>
+    row.depth === 0 ? [index] : [],
+  );
+  const expanded = new Set<string>();
+
+  for (const index of topLevelIndexes) {
+    const row = rows[index];
+    if (
+      row.type === 'object' &&
+      layout.hasChildren[index] &&
+      (row.required || topLevelIndexes.length === 1)
+    ) {
+      expanded.add(row.path);
+    }
+  }
+
+  return expanded;
+}
+
 type BuildContext = {
   depth: number;
   document?: unknown;
@@ -122,7 +152,7 @@ function buildSchemaChildren(
   schema: unknown,
   context: BuildContext,
 ): OpenApiSchemaTreeNode[] {
-  const resolvedSchema = resolveLocalReference(context.document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(context.document, schema);
 
   if (!isRecord(resolvedSchema) || context.depth > MAX_SCHEMA_DEPTH) {
     return [];
@@ -175,7 +205,7 @@ function buildSchemaNode(
   schema: unknown,
   context: BuildContext,
 ): OpenApiSchemaTreeNode {
-  const resolvedSchema = resolveLocalReference(context.document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(context.document, schema);
   const value = isRecord(resolvedSchema)
     ? mergeComposedSchemas(resolvedSchema, context.document)
     : {};
@@ -299,7 +329,7 @@ function mergeComposedSchemas(
   document?: unknown,
 ) {
   const originalSchema = isRecord(schema) ? schema : {};
-  const resolvedSchema = resolveLocalReference(document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(document, schema);
   const merged = isRecord(resolvedSchema)
     ? { ...resolvedSchema, ...originalSchema }
     : { ...originalSchema };
@@ -393,7 +423,7 @@ function arrayOfStrings(value: unknown) {
     : [];
 }
 
-function resolveLocalReference(
+export function resolveLocalOpenApiReference(
   document: unknown,
   value: unknown,
   seenRefs = new Set<string>(),
@@ -422,7 +452,11 @@ function resolveLocalReference(
     );
 
   const { $ref: _ref, ...siblings } = value;
-  const resolvedValue = resolveLocalReference(document, resolved, seenRefs);
+  const resolvedValue = resolveLocalOpenApiReference(
+    document,
+    resolved,
+    seenRefs,
+  );
 
   return isRecord(resolvedValue)
     ? {

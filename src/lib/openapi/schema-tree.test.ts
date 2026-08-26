@@ -3,6 +3,7 @@ import { OPENAPI_LANES } from './lanes';
 import {
   buildOpenApiSchemaRows,
   buildOpenApiSchemaTree,
+  getInitialOpenApiSchemaExpandedPaths,
   getOpenApiSchemaRowLayout,
 } from './schema-tree';
 import { getOpenApiOperation } from './source.server';
@@ -460,6 +461,67 @@ describe('openapi schema tree', () => {
     const layout = getOpenApiSchemaRowLayout([]);
     expect(layout.hasChildren).toEqual([]);
     expect(layout.parentIndex).toEqual([]);
+  });
+
+  it('initially expands a required top-level object for request schemas', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        name: { type: 'string' },
+        properties: {
+          properties: {
+            channel: { type: 'string' },
+            llm: { properties: { url: { type: 'string' } }, type: 'object' },
+          },
+          required: ['channel'],
+          type: 'object',
+        },
+      },
+      required: ['properties'],
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['properties']));
+  });
+
+  it('initially expands the only optional top-level object for requests', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        properties: {
+          properties: { channel: { type: 'string' } },
+          type: 'object',
+        },
+      },
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['properties']));
+  });
+
+  it('does not expand arrays from required status or any response schema', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        properties: {
+          items: { type: 'string' },
+          type: 'array',
+        },
+      },
+      required: ['properties'],
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set());
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'response'),
+    ).toEqual(new Set());
   });
 });
 
