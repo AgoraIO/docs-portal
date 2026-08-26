@@ -10,11 +10,11 @@ export const DEFAULT_OPENAPI_RAIL_STICKY_TOP = 48;
 const MIN_CODE_LINES = 8;
 const CODE_LINE_HEIGHT = 20;
 const RAIL_BOTTOM_GAP = 16;
-const DESKTOP_LAYOUT_MIN_WIDTH = 59 * 16;
+const DESKTOP_LAYOUT_MIN_REM = 59;
 
 export function OpenApiExamplesRail({
   children,
-  stickyTop = DEFAULT_OPENAPI_RAIL_STICKY_TOP,
+  stickyTop: stickyTopProp,
 }: {
   children: ReactNode;
   stickyTop?: number;
@@ -27,6 +27,8 @@ export function OpenApiExamplesRail({
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
+
+    const stickyTop = stickyTopProp ?? getRailStickyTop(rail);
 
     let frame = 0;
     const getActiveViewport = () => {
@@ -78,8 +80,10 @@ export function OpenApiExamplesRail({
       );
       const layoutParent = anchorRef.current?.parentElement;
       const layoutWidth = layoutParent?.getBoundingClientRect().width ?? 0;
+      const rootFontSize = getRootFontSize();
       const isWideLayout =
-        Boolean(layoutParent) && layoutWidth >= DESKTOP_LAYOUT_MIN_WIDTH;
+        Boolean(layoutParent) &&
+        layoutWidth >= DESKTOP_LAYOUT_MIN_REM * rootFontSize;
       rail.style.setProperty(
         '--openapi-rail-available-height',
         `${availableRailHeight}px`,
@@ -156,11 +160,12 @@ export function OpenApiExamplesRail({
         window.cancelAnimationFrame(frame);
       }
     };
-  }, [stickyTop, stuck]);
+  }, [stickyTopProp, stuck]);
 
   useEffect(() => {
     const anchor = anchorRef.current;
     if (!anchor || typeof IntersectionObserver === 'undefined') return;
+    const stickyTop = stickyTopProp ?? getRailStickyTop(anchor);
     const sentinel = anchor.querySelector<HTMLElement>(
       '[data-openapi-examples-rail-sentinel]',
     );
@@ -176,7 +181,7 @@ export function OpenApiExamplesRail({
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [stickyTop]);
+  }, [stickyTopProp]);
 
   return (
     <div className="openapi-examples-rail-anchor" ref={anchorRef}>
@@ -188,11 +193,34 @@ export function OpenApiExamplesRail({
         data-testid="openapi-examples-rail"
         ref={railRef}
         style={
-          { '--openapi-examples-sticky-top': `${stickyTop}px` } as CSSProperties
+          stickyTopProp === undefined
+            ? undefined
+            : ({
+                '--openapi-examples-sticky-top': `${stickyTopProp}px`,
+              } as CSSProperties)
         }
       >
         <div className="openapi-examples-rail-content">{children}</div>
       </div>
     </div>
   );
+}
+
+function getRailStickyTop(rail: HTMLElement) {
+  const value = window
+    .getComputedStyle(rail)
+    .getPropertyValue('--openapi-examples-sticky-top')
+    .trim();
+  const parsed = Number.parseFloat(value);
+
+  return Number.isFinite(parsed) ? parsed : DEFAULT_OPENAPI_RAIL_STICKY_TOP;
+}
+
+function getRootFontSize() {
+  const value = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue('font-size');
+  const parsed = Number.parseFloat(value);
+
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 16;
 }
