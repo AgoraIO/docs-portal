@@ -2848,6 +2848,49 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(headerSection).getByText('X-Trace-ID')).toBeInTheDocument();
     expect(within(cookieSection).getByText('session')).toBeInTheDocument();
 
+    const headerField = within(headerSection).getByText('X-Trace-ID');
+    const headerRow = headerField.closest('.openapi-field-row');
+    expect(headerRow).not.toBeNull();
+    expect(
+      within(headerRow as HTMLElement).getByText('optional'),
+    ).toBeInTheDocument();
+    expect(headerRow).not.toHaveTextContent('*');
+    expect(headerRow).not.toHaveTextContent('?');
+    expect(
+      within(headerRow as HTMLElement).queryByRole('button', {
+        name: /Expand|Collapse/,
+      }),
+    ).not.toBeInTheDocument();
+    const headerAnchor = headerRow?.querySelector('.openapi-field-anchor');
+    expect(headerAnchor).toHaveAttribute(
+      'href',
+      '#header-parameters-x-trace-id',
+    );
+    expect(headerAnchor).toHaveAttribute(
+      'aria-label',
+      'Copy link to header-parameters-x-trace-id',
+    );
+
+    const cookieField = within(cookieSection).getByText('session');
+    const cookieRow = cookieField.closest('.openapi-field-row');
+    expect(cookieRow).not.toBeNull();
+    expect(
+      within(cookieRow as HTMLElement).getByText('required'),
+    ).toBeInTheDocument();
+    expect(cookieRow).not.toHaveTextContent('*');
+    expect(cookieRow).not.toHaveTextContent('?');
+    expect(
+      within(cookieRow as HTMLElement).queryByRole('button', {
+        name: /Expand|Collapse/,
+      }),
+    ).not.toBeInTheDocument();
+    const cookieAnchor = cookieRow?.querySelector('.openapi-field-anchor');
+    expect(cookieAnchor).toHaveAttribute('href', '#cookie-parameters-session');
+    expect(cookieAnchor).toHaveAttribute(
+      'aria-label',
+      'Copy link to cookie-parameters-session',
+    );
+
     const responseSection = screen
       .getByRole('heading', { name: 'Response Headers' })
       .closest('section') as HTMLElement;
