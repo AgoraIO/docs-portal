@@ -248,6 +248,8 @@ The following methods follow the same pattern — each returns a new `Agent` ins
 | `withRtc(rtc)` | `RtcConfig` | Set RTC configuration |
 | `withFillerWords(fillerWords)` | `FillerWordsConfig` | Set filler words configuration |
 
+Filler word type aliases: `FillerWordsConfig`, `FillerWordsTrigger`, `FillerWordsTriggerFixedTimeConfig`, `FillerWordsContent`, `FillerWordsContentStaticConfig`, and `FillerWordsContentGeneratedConfig` (its `llm_provider` field takes a plain object with `base_url`, `api_key`, and `params`). See [Talking while waiting](/en/ai/build/shape-the-conversation/filler-words) for usage.
+
 ### `createSession(client, options)`
 
 Creates an [`AgentSession`](#agentsession) bound to a specific client and channel. Does not start the agent — call [`session.start()`](#start) to join the channel.

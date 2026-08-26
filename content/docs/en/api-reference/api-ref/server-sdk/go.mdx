@@ -230,6 +230,8 @@ agent := agentkit.NewAgent(
 | `WithRtc(rtc)` | `*RtcConfig` | RTC media encryption |
 | `WithFillerWords(fw)` | `*FillerWordsConfig` | Filler words played while waiting for the LLM response |
 
+Filler word type aliases: `agentkit.FillerWordsConfig`, `agentkit.FillerWordsTrigger`, `agentkit.FillerWordsTriggerFixedTimeConfig`, `agentkit.FillerWordsContent`, `agentkit.FillerWordsContentStaticConfig`, `agentkit.FillerWordsContentGeneratedConfig`, and `agentkit.FillerWordsGeneratedLlmProvider`. See [Talking while waiting](/en/ai/build/shape-the-conversation/filler-words) for usage.
+
 ### Vendor chaining methods
 
 Vendor methods are called on the `*Agent` returned by `NewAgent`. Each method returns a **new** `*Agent` — the original is never modified.
