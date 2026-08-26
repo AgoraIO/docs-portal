@@ -1193,11 +1193,11 @@ describe('overview MDX components', () => {
         items={[
           {
             category: 'Hosted SDK reference',
-            description: 'Voice-only SDK for Android.',
-            href: '/voice-android',
-            product: 'Realtime Communication (Voice only)',
+            description: 'Signaling SDK for Android.',
+            href: '/signaling-android',
+            product: 'Signaling',
             stack: 'Android',
-            title: 'Voice Android',
+            title: 'Signaling Android',
           },
           {
             category: 'Hosted SDK reference',
@@ -1218,16 +1218,14 @@ describe('overview MDX components', () => {
     expect(
       screen.getByRole('button', { name: 'All products' }),
     ).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('link', { name: /Voice Android/i })).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /Signaling Android/i }),
+    ).toBeVisible();
     expect(screen.getByRole('link', { name: /RTC Android/i })).toBeVisible();
   });
 
   it('ignores a valid product query without an opt-in prop', () => {
-    window.history.pushState(
-      null,
-      '',
-      '/api-ref?product=realtime-communication-voice-only',
-    );
+    window.history.pushState(null, '', '/api-ref?product=signaling');
 
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
@@ -1243,11 +1241,11 @@ describe('overview MDX components', () => {
         items={[
           {
             category: 'Hosted SDK reference',
-            description: 'Voice-only SDK for Android.',
-            href: '/voice-android',
-            product: 'Realtime Communication (Voice only)',
+            description: 'Signaling SDK for Android.',
+            href: '/signaling-android',
+            product: 'Signaling',
             stack: 'Android',
-            title: 'Voice Android',
+            title: 'Signaling Android',
           },
           {
             category: 'Hosted SDK reference',
@@ -1267,7 +1265,9 @@ describe('overview MDX components', () => {
     expect(
       screen.getByRole('button', { name: 'All products' }),
     ).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('link', { name: /Voice Android/i })).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /Signaling Android/i }),
+    ).toBeVisible();
     expect(screen.getByRole('link', { name: /RTC Android/i })).toBeVisible();
   });
 
