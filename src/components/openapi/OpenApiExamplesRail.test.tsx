@@ -57,7 +57,10 @@ describe('OpenApiExamplesRail', () => {
       value: () => ({ width: 1000 }),
     });
   });
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 
   it('selects only the visible active viewport', async () => {
     render(
@@ -308,6 +311,102 @@ describe('OpenApiExamplesRail', () => {
     );
     await waitFor(() => expect(rail).toHaveAttribute('data-stuck', 'true'));
     expect(rail).toHaveAttribute('data-constrained', 'false');
+  });
+
+  it('uses the root font size when matching the 59rem wide-layout breakpoint', async () => {
+    const previousFontSize = document.documentElement.style.fontSize;
+    document.documentElement.style.fontSize = '20px';
+    const originalGetComputedStyle = window.getComputedStyle.bind(window);
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+      const style = originalGetComputedStyle(element);
+      if (element === document.documentElement) {
+        return { getPropertyValue: () => '20px' } as CSSStyleDeclaration;
+      }
+      return style;
+    });
+
+    const host = document.createElement('div');
+    document.body.append(host);
+    Object.defineProperty(host, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({ width: 1200 }),
+    });
+    render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>wide</div>
+      </OpenApiExamplesRail>,
+      { container: host },
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('wide') as HTMLElement;
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 500 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 1200 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() =>
+      expect(rail).toHaveAttribute('data-constrained', 'true'),
+    );
+    host.remove();
+    document.documentElement.style.fontSize = previousFontSize;
+  });
+
+  it('does not treat a 1000px parent as wide when the root font size is 20px', async () => {
+    const previousFontSize = document.documentElement.style.fontSize;
+    document.documentElement.style.fontSize = '20px';
+    const originalGetComputedStyle = window.getComputedStyle.bind(window);
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+      const style = originalGetComputedStyle(element);
+      if (element === document.documentElement) {
+        return { getPropertyValue: () => '20px' } as CSSStyleDeclaration;
+      }
+      return style;
+    });
+    const host = document.createElement('div');
+    document.body.append(host);
+    Object.defineProperty(host, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({ width: 1000 }),
+    });
+    render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>not-wide</div>
+      </OpenApiExamplesRail>,
+      { container: host },
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('not-wide') as HTMLElement;
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 500 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 1200 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() => expect(rail).toHaveAttribute('data-stuck', 'true'));
+    expect(rail).toHaveAttribute('data-constrained', 'false');
+    host.remove();
+    document.documentElement.style.fontSize = previousFontSize;
   });
 
   it('syncs a custom sticky top into CSS and IO threshold', () => {

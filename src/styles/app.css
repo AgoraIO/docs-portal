@@ -1089,7 +1089,7 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
-    --openapi-examples-sticky-top: 48px;
+    --openapi-examples-sticky-top: var(--docs-shell-header-offset, 48px);
     container-type: inline-size;
     width: min(100%, 1120px);
   }
@@ -1429,6 +1429,7 @@
    The !important declarations are limited to the marked viewport and are
    required to override those generated utilities. */
 .openapi-code-preview [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
   max-block-size: min(20vh, 11rem) !important;
   overflow: auto;
   overscroll-behavior: contain;
@@ -1453,11 +1454,13 @@
 }
 
 .openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs overflow utility. */
   overflow-x: hidden !important;
 }
 
 @container (max-width: 58.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
+    /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
     max-block-size: min(50dvh, 24rem) !important;
   }
 }
