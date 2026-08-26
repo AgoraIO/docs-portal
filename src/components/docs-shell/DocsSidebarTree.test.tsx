@@ -6,7 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -302,15 +302,19 @@ describe('DocsSidebarTree', () => {
     const link = await screen.findByRole('link', {
       name: 'SDK API reference (opens in a new tab)',
     });
-    const arrow = link.querySelector('svg.lucide-arrow-up-right');
+    const tooltip = within(link).getByTitle('Opens in a new tab');
+    const arrow = tooltip.querySelector<SVGSVGElement>(
+      'svg.lucide-arrow-up-right',
+    );
 
     expect(link).toHaveAttribute('href', '/en/api-reference/api-ref');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAccessibleName('SDK API reference (opens in a new tab)');
+    expect(tooltip).toContainElement(arrow);
     expect(arrow).toBeInTheDocument();
     expect(arrow).toHaveAttribute('aria-hidden', 'true');
-    expect(arrow).toHaveAttribute('title', 'Opens in a new tab');
+    expect(arrow).not.toHaveAttribute('title');
     expect(link.querySelector('.sr-only')).toHaveTextContent(
       '(opens in a new tab)',
     );
@@ -335,15 +339,19 @@ describe('DocsSidebarTree', () => {
     const link = await screen.findByRole('link', {
       name: 'RESTful API (opens in a new tab)',
     });
-    const arrow = link.querySelector('svg.lucide-arrow-up-right');
+    const tooltip = within(link).getByTitle('Opens in a new tab');
+    const arrow = tooltip.querySelector<SVGSVGElement>(
+      'svg.lucide-arrow-up-right',
+    );
 
     expect(link).toHaveAttribute('href', '/en/api-reference/api-ref/rtc');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAccessibleName('RESTful API (opens in a new tab)');
+    expect(tooltip).toContainElement(arrow);
     expect(arrow).toBeInTheDocument();
     expect(arrow).toHaveAttribute('aria-hidden', 'true');
-    expect(arrow).toHaveAttribute('title', 'Opens in a new tab');
+    expect(arrow).not.toHaveAttribute('title');
     expect(link.querySelector('.sr-only')).toHaveTextContent(
       '(opens in a new tab)',
     );
