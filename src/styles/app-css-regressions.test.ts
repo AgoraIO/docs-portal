@@ -1047,8 +1047,9 @@ describe('app prose CSS regressions', () => {
       '.openapi-examples-rail',
       '59rem',
     );
-    const constrained = getRuleBodyContaining(
+    const constrained = getRuleBodyContainingInContainer(
       '.openapi-examples-rail[data-constrained="true"]',
+      '59rem',
     );
     expectDeclaration(
       layout.rule,

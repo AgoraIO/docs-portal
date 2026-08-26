@@ -10,6 +10,7 @@ export const DEFAULT_OPENAPI_RAIL_STICKY_TOP = 48;
 const MIN_CODE_LINES = 8;
 const CODE_LINE_HEIGHT = 20;
 const RAIL_BOTTOM_GAP = 16;
+const DESKTOP_LAYOUT_MIN_WIDTH = 59 * 16;
 
 export function OpenApiExamplesRail({
   children,
@@ -75,6 +76,12 @@ export function OpenApiExamplesRail({
         0,
         availableRailHeight - fixedRailHeight,
       );
+      const layoutParent = anchorRef.current?.parentElement;
+      const layoutWidth = layoutParent?.getBoundingClientRect().width ?? 0;
+      const isWideLayout =
+        !layoutParent ||
+        layoutWidth === 0 ||
+        layoutWidth >= DESKTOP_LAYOUT_MIN_WIDTH;
       rail.style.setProperty(
         '--openapi-rail-available-height',
         `${availableRailHeight}px`,
@@ -85,6 +92,7 @@ export function OpenApiExamplesRail({
       );
       const nextConstrained = Boolean(
         stuck &&
+          isWideLayout &&
           activeViewport &&
           availableCodeHeight >= MIN_CODE_LINES * CODE_LINE_HEIGHT &&
           naturalCodeHeight > availableCodeHeight,
@@ -106,6 +114,8 @@ export function OpenApiExamplesRail({
     if (typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => scheduleCalculate());
       resizeObserver.observe(rail);
+      const layoutParent = anchorRef.current?.parentElement;
+      if (layoutParent) resizeObserver.observe(layoutParent);
       const activeViewport = getActiveViewport();
       if (activeViewport) resizeObserver.observe(activeViewport);
     }
@@ -116,6 +126,8 @@ export function OpenApiExamplesRail({
         if (resizeObserver) {
           resizeObserver.disconnect();
           resizeObserver.observe(rail);
+          const layoutParent = anchorRef.current?.parentElement;
+          if (layoutParent) resizeObserver.observe(layoutParent);
           const activeViewport = getActiveViewport();
           if (activeViewport) resizeObserver.observe(activeViewport);
         }
@@ -155,12 +167,15 @@ export function OpenApiExamplesRail({
       '[data-openapi-examples-rail-sentinel]',
     );
     if (!sentinel) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry) return;
-      setStuck(
-        !entry.isIntersecting && entry.boundingClientRect.top <= stickyTop,
-      );
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        setStuck(
+          !entry.isIntersecting || entry.boundingClientRect.top <= stickyTop,
+        );
+      },
+      { rootMargin: `-${stickyTop}px 0px 0px 0px` },
+    );
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [stickyTop]);

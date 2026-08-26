@@ -7,8 +7,13 @@ class MockIntersectionObserver {
   static instances: MockIntersectionObserver[] = [];
   disconnect = vi.fn();
   callback: IntersectionObserverCallback;
-  constructor(callback: IntersectionObserverCallback) {
+  options?: IntersectionObserverInit;
+  constructor(
+    callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit,
+  ) {
     this.callback = callback;
+    this.options = options;
     MockIntersectionObserver.instance = this;
     MockIntersectionObserver.instances.push(this);
   }
@@ -181,6 +186,9 @@ describe('OpenApiExamplesRail', () => {
     render(<OpenApiExamplesRail>Examples</OpenApiExamplesRail>);
     const rail = screen.getByTestId('openapi-examples-rail');
     expect(rail).toHaveAttribute('data-stuck', 'false');
+    expect(MockIntersectionObserver.instance.options?.rootMargin).toBe(
+      '-48px 0px 0px 0px',
+    );
     const sentinel = document.querySelector(
       '[data-openapi-examples-rail-sentinel]',
     );
@@ -194,11 +202,47 @@ describe('OpenApiExamplesRail', () => {
     expect(rail).toHaveAttribute('data-stuck', 'true');
     act(() =>
       MockIntersectionObserver.instance.trigger({
-        isIntersecting: false,
+        isIntersecting: true,
         boundingClientRect: { top: 100 } as DOMRectReadOnly,
       }),
     );
     expect(rail).toHaveAttribute('data-stuck', 'false');
+  });
+
+  it('allows constraints only when the operation layout is desktop width', async () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const { unmount } = render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>wide</div>
+      </OpenApiExamplesRail>,
+      { container: host },
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('wide') as HTMLElement;
+    Object.defineProperty(host, 'getBoundingClientRect', {
+      value: () => ({ width: 500 }),
+    });
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 500 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 1200 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() => expect(rail).toHaveAttribute('data-stuck', 'true'));
+    expect(rail).toHaveAttribute('data-constrained', 'false');
+    unmount();
+    host.remove();
   });
 
   it('syncs a custom sticky top into CSS and IO threshold', () => {

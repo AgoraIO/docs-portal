@@ -1118,12 +1118,6 @@
     min-width: 0;
   }
 
-  .openapi-examples-rail[data-constrained="true"]
-    [data-openapi-code-viewport-active] {
-    max-block-size: var(--openapi-code-available-height) !important;
-    overflow: auto;
-  }
-
   @container (min-width: 59rem) {
     .openapi-operation-layout {
       display: grid;
@@ -1134,6 +1128,13 @@
     .openapi-examples-rail {
       position: sticky;
       top: var(--openapi-examples-sticky-top, 48px);
+    }
+
+    .openapi-examples-rail[data-constrained="true"]
+      [data-openapi-code-viewport-active] {
+      /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+      max-block-size: var(--openapi-code-available-height) !important;
+      overflow: auto;
     }
   }
 
