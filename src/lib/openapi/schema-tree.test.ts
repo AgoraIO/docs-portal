@@ -521,6 +521,124 @@ describe('openapi schema tree', () => {
     ).toEqual(new Set(['properties']));
   });
 
+  it('expands a required nullable top-level object', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        settings: {
+          properties: { token: { type: 'string' } },
+          type: ['object', 'null'],
+        },
+      },
+      required: ['settings'],
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['settings']));
+  });
+
+  it('expands the sole optional nullable top-level object', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        settings: {
+          properties: { token: { type: 'string' } },
+          type: ['object', 'null'],
+        },
+      },
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['settings']));
+  });
+
+  it('expands required objects without expanding optional objects', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        requiredSettings: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+        optionalSettings: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+      },
+      required: ['requiredSettings'],
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['requiredSettings']));
+  });
+
+  it('does not initialize response object expansion', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        response: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+      },
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'response'),
+    ).toEqual(new Set());
+  });
+
+  it('only expands top-level objects, not required nested objects', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        settings: {
+          properties: {
+            nested: {
+              properties: { token: { type: 'string' } },
+              type: 'object',
+            },
+          },
+          type: 'object',
+        },
+      },
+      required: ['settings'],
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set(['settings']));
+  });
+
+  it('does not expand when multiple optional top-level objects are expandable', () => {
+    const rows = buildOpenApiSchemaRows({
+      properties: {
+        first: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+        second: {
+          properties: { token: { type: 'string' } },
+          type: 'object',
+        },
+      },
+      type: 'object',
+    });
+    const layout = getOpenApiSchemaRowLayout(rows);
+
+    expect(
+      getInitialOpenApiSchemaExpandedPaths(rows, layout, 'request'),
+    ).toEqual(new Set());
+  });
+
   it('does not expand arrays from required status or any response schema', () => {
     const rows = buildOpenApiSchemaRows({
       properties: {

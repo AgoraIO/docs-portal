@@ -124,7 +124,8 @@ export function getInitialOpenApiSchemaExpandedPaths(
     row.depth === 0 ? [index] : [],
   );
   const topLevelExpandableObjectIndexes = topLevelIndexes.filter(
-    (index) => rows[index].type === 'object' && layout.hasChildren[index],
+    (index) =>
+      isOpenApiObjectType(rows[index].type) && layout.hasChildren[index],
   );
   const expanded = new Set<string>();
 
@@ -136,6 +137,10 @@ export function getInitialOpenApiSchemaExpandedPaths(
   }
 
   return expanded;
+}
+
+function isOpenApiObjectType(type: string) {
+  return type.split(' | ').includes('object');
 }
 
 type BuildContext = {
