@@ -32,31 +32,33 @@ export function buildOpenApiResponseViews(
   }
 
   return Object.entries(responses).map(([statusCode, rawResponse]) => {
+    const rawRecord = isRecord(rawResponse) ? rawResponse : undefined;
     const resolvedResponse = resolveLocalOpenApiReference(
       document,
       rawResponse,
     );
-    if (!isRecord(resolvedResponse)) {
+    const response = isRecord(resolvedResponse)
+      ? resolvedResponse
+      : (rawRecord ?? {});
+    if (!isRecord(response)) {
       return emptyResponseView(statusCode);
     }
 
     // biome-ignore lint/suspicious/noPrototypeBuiltins: Support the project's target runtime.
     const hasContent = Object.prototype.hasOwnProperty.call(
-      resolvedResponse,
+      response,
       'content',
     );
-    const content = isRecord(resolvedResponse.content)
-      ? resolvedResponse.content
-      : {};
+    const content = isRecord(response.content) ? response.content : {};
 
     return {
-      ...(typeof resolvedResponse.description === 'string'
-        ? { description: resolvedResponse.description }
+      ...(typeof response.description === 'string'
+        ? { description: response.description }
         : {}),
       hasContent,
-      headers: buildHeaders(resolvedResponse.headers, document),
+      headers: buildHeaders(response.headers, document),
       mediaTypes: buildMediaTypes(content),
-      source: resolvedResponse,
+      source: response,
       statusCode,
     };
   });
@@ -91,23 +93,25 @@ function buildHeaders(
   }
 
   return Object.entries(headers).flatMap(([name, rawHeader]) => {
-    const resolvedHeader = resolveLocalOpenApiReference(document, rawHeader);
-    if (!isRecord(resolvedHeader)) {
+    const rawRecord = isRecord(rawHeader) ? rawHeader : undefined;
+    if (!rawRecord) {
       return [];
     }
+    const resolvedHeader = resolveLocalOpenApiReference(document, rawHeader);
+    const header = isRecord(resolvedHeader) ? resolvedHeader : rawRecord;
 
     return [
       {
-        ...(typeof resolvedHeader.description === 'string'
-          ? { description: resolvedHeader.description }
+        ...(typeof header.description === 'string'
+          ? { description: header.description }
           : {}),
-        ...(resolvedHeader.deprecated === true ? { deprecated: true } : {}),
+        ...(header.deprecated === true ? { deprecated: true } : {}),
         name,
         // biome-ignore lint/suspicious/noPrototypeBuiltins: Support the project's target runtime.
-        ...(Object.prototype.hasOwnProperty.call(resolvedHeader, 'schema')
-          ? { schema: resolvedHeader.schema }
+        ...(Object.prototype.hasOwnProperty.call(header, 'schema')
+          ? { schema: header.schema }
           : {}),
-        source: resolvedHeader,
+        source: header,
       },
     ];
   });

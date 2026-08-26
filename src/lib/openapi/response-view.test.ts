@@ -185,4 +185,60 @@ describe('openapi response view', () => {
       statusCode: '201',
     });
   });
+
+  it('preserves response siblings when a local reference cannot be resolved', () => {
+    const [view] = buildOpenApiResponseViews(
+      {
+        '200': {
+          $ref: '#/missing',
+          description: 'Fallback.',
+          content: { 'application/json': { schema: false } },
+        },
+      },
+      {},
+    );
+
+    expect(view).toMatchObject({
+      description: 'Fallback.',
+      hasContent: true,
+      mediaTypes: [{ mediaType: 'application/json', schema: false }],
+      source: {
+        $ref: '#/missing',
+        description: 'Fallback.',
+      },
+    });
+  });
+
+  it('preserves header siblings when a local reference cannot be resolved', () => {
+    const [view] = buildOpenApiResponseViews(
+      {
+        '200': {
+          headers: {
+            'X-Fallback': {
+              $ref: '#/missing',
+              description: 'Fallback header.',
+              deprecated: true,
+              schema: { type: 'string' },
+            },
+          },
+        },
+      },
+      {},
+    );
+
+    expect(view.headers).toEqual([
+      {
+        description: 'Fallback header.',
+        deprecated: true,
+        name: 'X-Fallback',
+        schema: { type: 'string' },
+        source: {
+          $ref: '#/missing',
+          description: 'Fallback header.',
+          deprecated: true,
+          schema: { type: 'string' },
+        },
+      },
+    ]);
+  });
 });
