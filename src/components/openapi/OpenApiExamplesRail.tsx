@@ -79,9 +79,7 @@ export function OpenApiExamplesRail({
       const layoutParent = anchorRef.current?.parentElement;
       const layoutWidth = layoutParent?.getBoundingClientRect().width ?? 0;
       const isWideLayout =
-        !layoutParent ||
-        layoutWidth === 0 ||
-        layoutWidth >= DESKTOP_LAYOUT_MIN_WIDTH;
+        Boolean(layoutParent) && layoutWidth >= DESKTOP_LAYOUT_MIN_WIDTH;
       rail.style.setProperty(
         '--openapi-rail-available-height',
         `${availableRailHeight}px`,
@@ -171,7 +169,7 @@ export function OpenApiExamplesRail({
       ([entry]) => {
         if (!entry) return;
         setStuck(
-          !entry.isIntersecting || entry.boundingClientRect.top <= stickyTop,
+          !entry.isIntersecting && entry.boundingClientRect.top <= stickyTop,
         );
       },
       { rootMargin: `-${stickyTop}px 0px 0px 0px` },

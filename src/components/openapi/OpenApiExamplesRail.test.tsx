@@ -52,6 +52,10 @@ describe('OpenApiExamplesRail', () => {
       configurable: true,
       value: 800,
     });
+    Object.defineProperty(HTMLElement.prototype, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({ width: 1000 }),
+    });
   });
   afterEach(() => vi.unstubAllGlobals());
 
@@ -209,6 +213,32 @@ describe('OpenApiExamplesRail', () => {
     expect(rail).toHaveAttribute('data-stuck', 'false');
   });
 
+  it('requires both non-intersection and a sentinel above the sticky top', () => {
+    render(<OpenApiExamplesRail>Examples</OpenApiExamplesRail>);
+    const rail = screen.getByTestId('openapi-examples-rail');
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: true,
+        boundingClientRect: { top: 10 } as DOMRectReadOnly,
+      }),
+    );
+    expect(rail).toHaveAttribute('data-stuck', 'false');
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 100 } as DOMRectReadOnly,
+      }),
+    );
+    expect(rail).toHaveAttribute('data-stuck', 'false');
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 10 } as DOMRectReadOnly,
+      }),
+    );
+    expect(rail).toHaveAttribute('data-stuck', 'true');
+  });
+
   it('allows constraints only when the operation layout is desktop width', async () => {
     const host = document.createElement('div');
     document.body.append(host);
@@ -243,6 +273,37 @@ describe('OpenApiExamplesRail', () => {
     expect(rail).toHaveAttribute('data-constrained', 'false');
     unmount();
     host.remove();
+  });
+
+  it('does not constrain without a measurable wide layout parent', async () => {
+    render(
+      <OpenApiExamplesRail>
+        <div data-openapi-code-viewport>narrow</div>
+      </OpenApiExamplesRail>,
+    );
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    const viewport = screen.getByText('narrow') as HTMLElement;
+    Object.defineProperty(rail.parentElement, 'getBoundingClientRect', {
+      value: () => ({ width: 0 }),
+    });
+    Object.defineProperty(viewport, 'getClientRects', {
+      value: () => [{ width: 100, height: 200 }],
+    });
+    Object.defineProperties(rail, {
+      scrollHeight: { configurable: true, value: 500 },
+    });
+    Object.defineProperties(viewport, {
+      clientHeight: { configurable: true, value: 200 },
+      scrollHeight: { configurable: true, value: 1200 },
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() => expect(rail).toHaveAttribute('data-stuck', 'true'));
+    expect(rail).toHaveAttribute('data-constrained', 'false');
   });
 
   it('syncs a custom sticky top into CSS and IO threshold', () => {
