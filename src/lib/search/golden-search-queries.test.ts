@@ -12,12 +12,7 @@ import {
   GLOBAL_GOLDEN_SEARCH_CASES,
   type GoldenSearchCase,
 } from './golden-search-queries';
-import {
-  classifySearchIntent,
-  getApiRetrievalQuery,
-  getDocsRetrievalQuery,
-  type SearchIntent,
-} from './search-intent';
+import { classifySearchIntent, type SearchIntent } from './search-intent';
 
 vi.mock('algoliasearch/lite', () => ({
   liteClient: vi.fn(),
@@ -119,6 +114,24 @@ const EMPTY_QUERIES = new Set([
   'foo bar baz',
   'xyznonexistent',
 ]);
+
+const EXPECTED_DOCS_RETRIEVAL_QUERY = new Map([
+  ['billing policy', 'billing policies'],
+  ['real-time transcription', 'speech to text'],
+  ['real time transcription', 'speech to text'],
+]);
+
+const EXPECTED_API_RETRIEVAL_QUERY = new Map([
+  ['RtcEngine', 'AgoraRtcEngineKit'],
+]);
+
+function expectedDocsRetrievalQuery(query: string) {
+  return EXPECTED_DOCS_RETRIEVAL_QUERY.get(query) ?? query;
+}
+
+function expectedApiRetrievalQuery(query: string) {
+  return EXPECTED_API_RETRIEVAL_QUERY.get(query) ?? query;
+}
 
 const NOISE_DOC_ROUTES = [
   '/en/api-reference/faq/account',
@@ -484,7 +497,7 @@ function sourceHitsFor(
   if (indexName === 'docs_portal_en') {
     if (EMPTY_QUERIES.has(query)) return [];
     const target =
-      retrievalQuery === getDocsRetrievalQuery(query)
+      retrievalQuery === expectedDocsRetrievalQuery(query)
         ? targetDocsHit(query)
         : undefined;
     return [...noiseDocsFor(intent), ...(target ? [target] : [])];
@@ -492,7 +505,7 @@ function sourceHitsFor(
 
   const targets = API_CORPUS.filter(({ queries }) =>
     queries.some(
-      (candidate) => getApiRetrievalQuery(candidate) === retrievalQuery,
+      (candidate) => expectedApiRetrievalQuery(candidate) === retrievalQuery,
     ),
   );
   return [...NOISE_API_CORPUS, ...targets].flatMap((entry) =>
@@ -503,6 +516,11 @@ function sourceHitsFor(
 function createGoldenClient(query: string, intent: SearchIntent) {
   const searchForHits = vi.fn().mockImplementation(({ requests }) => {
     const request = requests[0];
+    const expectedQuery =
+      request.indexName === 'docs_portal_en'
+        ? expectedDocsRetrievalQuery(query)
+        : expectedApiRetrievalQuery(query);
+    expect(request.query).toBe(expectedQuery);
     return Promise.resolve({
       results: [
         {
@@ -679,7 +697,7 @@ describe('Global search golden queries', () => {
       if (goldenCase.expectedKind !== 'empty') {
         const docsSourceHits = sourceHitsFor(
           goldenCase.query,
-          getDocsRetrievalQuery(goldenCase.query),
+          expectedDocsRetrievalQuery(goldenCase.query),
           'docs_portal_en',
           goldenCase.expectedIntent,
         );

@@ -765,6 +765,102 @@ describe('createAlgoliaDocsClient', () => {
       );
     });
 
+    it('keeps content-only api-task docs when the API request fails', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  _highlightResult: {
+                    content: {
+                      matchLevel: 'full',
+                      value: 'Call <mark>renew token</mark> after expiry.',
+                    },
+                    section: { matchLevel: 'none', value: 'Authentication' },
+                    title: {
+                      matchLevel: 'none',
+                      value: 'Authentication workflow',
+                    },
+                  },
+                  content: 'Call renew token after expiry.',
+                  objectID: 'renew-token-workflow',
+                  section: 'Authentication',
+                  title: 'Authentication workflow',
+                  url: '/en/realtime-media/rtc/authentication-workflow',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockRejectedValueOnce(new Error('API index unavailable'));
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('renew token');
+
+      expect(results).toEqual([
+        expect.objectContaining({
+          id: 'renew-token-workflow',
+          snippet: 'Call renew token after expiry.',
+        }),
+      ]);
+      expect(client.getLastStatus()).toEqual({
+        api: 'error',
+        docs: 'success',
+      });
+    });
+
+    it('still drops content-only api-task docs when the API request succeeds with a weak hit', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  _highlightResult: {
+                    content: {
+                      matchLevel: 'full',
+                      value: 'Call <mark>renew token</mark> after expiry.',
+                    },
+                  },
+                  content: 'Call renew token after expiry.',
+                  objectID: 'renew-token-content-only',
+                  title: 'Authentication workflow',
+                  url: '/en/realtime-media/rtc/authentication-workflow',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                    lvl1: 'setAudioProfile',
+                  },
+                  objectID: 'weak-set-audio-profile',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('renew token')).resolves.toEqual([]);
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'success',
+      });
+    });
+
     it.each([
       ['acquire resource ID', 'Acquire a resource ID'],
       ['start cloud recording task', 'Start a cloud recording task'],

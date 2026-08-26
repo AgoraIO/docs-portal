@@ -404,7 +404,11 @@ async function searchWithRankingV2({
   });
 
   const docsCandidates = docsHits.flatMap((hit) => {
-    const candidate = mapDocsHitForRanking(hit, intent);
+    const candidate = mapDocsHitForRanking(
+      hit,
+      intent,
+      apiResult?.status === 'fulfilled',
+    );
     return candidate ? [candidate] : [];
   });
   const apiHits =
@@ -614,6 +618,7 @@ function getFirstResultHits(value: unknown): unknown[] {
 function mapDocsHitForRanking(
   rawHit: unknown,
   intent: ReturnType<typeof classifySearchIntent>,
+  enforceApiTaskTitleGate: boolean,
 ): RankedUiSearchResult | undefined {
   if (!isRecord(rawHit)) return undefined;
   const hit = rawHit as AlgoliaDocsHit;
@@ -648,6 +653,7 @@ function mapDocsHitForRanking(
   const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
 
   if (
+    enforceApiTaskTitleGate &&
     intent.intent === 'api-task' &&
     !titleExactMatch &&
     !titleMatch &&

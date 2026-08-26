@@ -111,6 +111,26 @@ describe('buildAlgoliaContentDocsRecords', () => {
 
     expect(records).toEqual([]);
   });
+
+  it('does not index undeclared private FAQ or product overview pages', () => {
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'Internal support notes.',
+          title: 'Private incident notes',
+          url: '/en/api-reference/faq/quality/private_secret',
+        },
+        {
+          content: 'Internal product planning.',
+          title: 'Internal tools',
+          url: '/en/realtime-media/internal-tools/product-overview',
+        },
+      ],
+      new Map([['en', new Map()]]),
+    );
+
+    expect(records).toEqual([]);
+  });
 });
 
 describe('buildAlgoliaOpenApiRecord', () => {

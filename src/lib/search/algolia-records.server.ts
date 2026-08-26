@@ -4,6 +4,7 @@ import { structure } from 'fumadocs-core/mdx-plugins';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
+import { faqItems } from '../../components/faq/faq-data';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
@@ -47,6 +48,11 @@ type AlgoliaContentDocsPage = {
 
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = getPublishedDocsLocales('global');
+const PUBLIC_FAQ_URLS = new Set(faqItems.map(({ href }) => href));
+const APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS = new Set([
+  '/en/realtime-media/interactive-live-streaming/product-overview',
+  '/en/realtime-media/broadcast-streaming/product-overview',
+]);
 
 // Classify a doc by its URL for search ranking. No taxonomy exists in
 // frontmatter, so this derives it once, at index time, from path conventions:
@@ -111,7 +117,7 @@ export function buildAlgoliaContentDocsRecords(
 
     const breadcrumbs =
       navigationByLocale.get(route.locale)?.get(page.url) ??
-      getHiddenSearchablePageBreadcrumbs(route);
+      getHiddenSearchablePageBreadcrumbs(page.url, route);
 
     if (!breadcrumbs) {
       return [];
@@ -147,6 +153,7 @@ export function buildAlgoliaContentDocsRecords(
 }
 
 function getHiddenSearchablePageBreadcrumbs(
+  url: string,
   route: NonNullable<ReturnType<typeof parseDocsUrl>>,
 ) {
   if (route.locale !== 'en') return undefined;
@@ -156,7 +163,8 @@ function getHiddenSearchablePageBreadcrumbs(
     route.tab === 'api-reference' &&
     firstSegment === 'faq' &&
     secondSegment &&
-    thirdSegment
+    thirdSegment &&
+    PUBLIC_FAQ_URLS.has(url)
   ) {
     return ['Reference', 'FAQ', humanizeSlug(secondSegment)];
   }
@@ -165,7 +173,8 @@ function getHiddenSearchablePageBreadcrumbs(
     route.tab === 'realtime-media' &&
     firstSegment &&
     secondSegment === 'product-overview' &&
-    route.slugSegments.length === 2
+    route.slugSegments.length === 2 &&
+    APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS.has(url)
   ) {
     return ['RTC', humanizeSlug(firstSegment)];
   }
