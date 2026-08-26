@@ -10,32 +10,44 @@ export type OpenApiFieldLabels = {
   deprecated: string;
   expand: string;
   optional: string;
+  properties: string;
   required: string;
 };
+
+type OpenApiFieldRowPropsBase = {
+  anchorId: string;
+  deprecated?: boolean;
+  details?: ReactNode;
+  labels: OpenApiFieldLabels;
+  name: string;
+  requiredState?: OpenApiFieldRequiredState;
+  type: string;
+};
+
+type OpenApiFieldRowProps =
+  | (OpenApiFieldRowPropsBase & {
+      expandable: true;
+      expanded: boolean;
+      onExpandedChange: (expanded: boolean) => void;
+    })
+  | (OpenApiFieldRowPropsBase & {
+      expandable?: false;
+      expanded?: never;
+      onExpandedChange?: never;
+    });
 
 export function OpenApiFieldRow({
   anchorId,
   deprecated = false,
   details,
-  expandable = false,
-  expanded = false,
+  expandable,
+  expanded,
   labels,
   name,
   onExpandedChange,
   requiredState,
   type,
-}: {
-  anchorId: string;
-  deprecated?: boolean;
-  details?: ReactNode;
-  expandable?: boolean;
-  expanded?: boolean;
-  labels: OpenApiFieldLabels;
-  name: string;
-  onExpandedChange?: (expanded: boolean) => void;
-  requiredState?: OpenApiFieldRequiredState;
-  type: string;
-}) {
+}: OpenApiFieldRowProps) {
   const control = (
     <span
       aria-hidden="true"
@@ -52,7 +64,7 @@ export function OpenApiFieldRow({
   const fieldName = (
     <code
       className={cn(
-        'min-w-0 font-mono text-sm font-bold',
+        'min-w-0 break-words font-mono text-sm font-bold [overflow-wrap:anywhere]',
         deprecated && 'text-muted-foreground opacity-70 line-through',
       )}
     >
@@ -63,7 +75,7 @@ export function OpenApiFieldRow({
   return (
     <div
       className={cn(
-        'openapi-field-row group/openapi-field scroll-mt-24 border border-border/60 py-3',
+        'openapi-field-row scroll-mt-24 border border-border/60 py-3',
         expandable && 'openapi-field-row-container',
       )}
       id={anchorId}
@@ -74,9 +86,11 @@ export function OpenApiFieldRow({
             {expandable ? (
               <button
                 aria-expanded={expanded}
-                aria-label={`${expanded ? labels.collapse : labels.expand} ${name} properties`}
+                aria-label={`${expanded ? labels.collapse : labels.expand} ${name} ${labels.properties}`}
                 className="flex min-w-0 w-full items-center gap-2 text-start"
-                onClick={() => onExpandedChange?.(!expanded)}
+                onClick={() => {
+                  if (expandable) onExpandedChange(!expanded);
+                }}
                 type="button"
               >
                 {control}

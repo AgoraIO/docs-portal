@@ -76,7 +76,74 @@ function getRuleBodyContaining(selectorPart: string) {
   };
 }
 
+function getRuleBodyContainingInMedia(
+  selectorPart: string,
+  mediaQuery: string,
+) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkAtRules('media', (media) => {
+    if (!media.params.includes(mediaQuery)) return;
+    media.walkRules((candidate) => {
+      if (
+        !rule &&
+        normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
+      ) {
+        rule = candidate;
+      }
+    });
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
 describe('app prose CSS regressions', () => {
+  it('keeps OpenAPI field row scanability contracts', () => {
+    expectDeclaration(
+      getRuleBody('.openapi-field-row .openapi-field-anchor').rule,
+      'opacity',
+      '0',
+    );
+    const visibleAnchorRule = getRuleBodyContaining(
+      '.openapi-field-row:hover .openapi-field-anchor',
+    ).rule;
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-field-row:hover .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-field-row:focus-within .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-field-row:target .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-field-anchor:focus-visible',
+    );
+    expectDeclaration(visibleAnchorRule, 'opacity', '1');
+    expectDeclaration(
+      getRuleBody('.openapi-field-row-container > .openapi-field-main').rule,
+      'background',
+      'color-mix(in srgb, var(--color-fd-muted) 18%, transparent)',
+    );
+    expectDeclaration(
+      getRuleBody('.openapi-field-details:empty').rule,
+      'display',
+      'none',
+    );
+    const reducedMotion = getRuleBodyContainingInMedia(
+      '.openapi-field-row .openapi-field-anchor',
+      'prefers-reduced-motion: reduce',
+    ).rule;
+    expectDeclaration(reducedMotion, 'transition', 'none');
+    const reducedChevron = getRuleBodyContainingInMedia(
+      '.openapi-field-control-gutter svg',
+      'prefers-reduced-motion: reduce',
+    ).rule;
+    expectDeclaration(reducedChevron, 'transition', 'none');
+  });
+
   it('treats empty legacy anchors as transparent before the first heading', () => {
     const leadingHeading = getRuleBody(
       `.prose

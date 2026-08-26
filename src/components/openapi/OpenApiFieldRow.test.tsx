@@ -8,7 +8,18 @@ const labels: OpenApiFieldLabels = {
   deprecated: 'Deprecated',
   expand: 'Expand',
   optional: 'Optional',
+  properties: 'properties',
   required: 'Required',
+};
+
+const chineseLabels: OpenApiFieldLabels = {
+  collapse: '折叠',
+  copyLink: '复制链接',
+  deprecated: '已弃用',
+  expand: '展开',
+  optional: '可选',
+  properties: '属性',
+  required: '必需',
 };
 
 describe('OpenApiFieldRow', () => {
@@ -43,6 +54,7 @@ describe('OpenApiFieldRow', () => {
         labels={labels}
         name="profile"
         onExpandedChange={onExpandedChange}
+        requiredState="optional"
         type="object"
       />,
     );
@@ -54,6 +66,24 @@ describe('OpenApiFieldRow', () => {
     expect(within(button).getByText('profile')).toBeInTheDocument();
     fireEvent.click(button);
     expect(onExpandedChange).toHaveBeenCalledWith(true);
+  });
+
+  it('uses localized labels and collapses an expanded container', () => {
+    const onExpandedChange = vi.fn();
+    render(
+      <OpenApiFieldRow
+        anchorId="profile-cn"
+        expandable
+        expanded
+        labels={chineseLabels}
+        name="profile"
+        onExpandedChange={onExpandedChange}
+        type="object"
+      />,
+    );
+    const button = screen.getByRole('button', { name: '折叠 profile 属性' });
+    fireEvent.click(button);
+    expect(onExpandedChange).toHaveBeenCalledWith(false);
   });
 
   it('keeps the same control gutter for leaf and container rows', () => {
@@ -79,8 +109,10 @@ describe('OpenApiFieldRow', () => {
       <OpenApiFieldRow
         anchorId="container"
         expandable
+        expanded={false}
         labels={labels}
         name="container"
+        onExpandedChange={vi.fn()}
         type="object"
       />,
     );
@@ -122,8 +154,10 @@ describe('OpenApiFieldRow', () => {
       <OpenApiFieldRow
         anchorId="container-align"
         expandable
+        expanded={false}
         labels={labels}
         name="container"
+        onExpandedChange={vi.fn()}
         type="object"
       />,
     );
@@ -155,8 +189,10 @@ describe('OpenApiFieldRow', () => {
       <OpenApiFieldRow
         anchorId="actual-container"
         expandable
+        expanded={false}
         labels={labels}
         name="container"
+        onExpandedChange={vi.fn()}
         type="object"
       />,
     );
@@ -183,8 +219,10 @@ describe('OpenApiFieldRow', () => {
       <OpenApiFieldRow
         anchorId="settings"
         expandable
+        expanded={false}
         labels={labels}
         name="settings"
+        onExpandedChange={vi.fn()}
         type="object"
       />,
     );
@@ -203,5 +241,20 @@ describe('OpenApiFieldRow', () => {
     const anchor = document.querySelector('.openapi-field-anchor');
     expect(anchor).toHaveAttribute('href', '#query-limit');
     expect(anchor).toHaveAttribute('aria-label', 'Copy link to query-limit');
+  });
+
+  it('allows long field names to wrap anywhere', () => {
+    render(
+      <OpenApiFieldRow
+        anchorId="long-name"
+        labels={labels}
+        name="an_extremely_long_openapi_field_name_that_must_wrap"
+        type="string"
+      />,
+    );
+    expect(screen.getByText(/an_extremely_long_openapi/)).toHaveClass(
+      'break-words',
+      '[overflow-wrap:anywhere]',
+    );
   });
 });
