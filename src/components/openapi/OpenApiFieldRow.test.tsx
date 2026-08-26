@@ -137,13 +137,10 @@ describe('OpenApiFieldRow', () => {
         type="string"
       />,
     );
-    const leafNameWrapper = document.querySelector(
-      '.openapi-field-main > div > div',
-    );
-    expect(leafNameWrapper).toHaveAttribute(
-      'class',
-      expect.stringContaining('gap-2'),
-    );
+    const leafHeading = document.querySelector('.openapi-field-heading');
+    const leafNameWrapper = leafHeading?.querySelector('.openapi-field-name');
+    expect(leafHeading).toHaveClass('openapi-field-heading');
+    expect(leafNameWrapper).toHaveClass('openapi-field-name');
     expect(document.querySelector('.openapi-field-details')).toHaveAttribute(
       'class',
       expect.stringContaining('ps-5'),
@@ -161,13 +158,12 @@ describe('OpenApiFieldRow', () => {
         type="object"
       />,
     );
-    const containerNameWrapper = document.querySelector(
-      '.openapi-field-main > div > div',
+    const containerHeading = document.querySelector('.openapi-field-heading');
+    const containerNameWrapper = containerHeading?.querySelector(
+      '.openapi-field-name',
     );
-    expect(containerNameWrapper).toHaveAttribute(
-      'class',
-      expect.stringContaining('gap-2'),
-    );
+    expect(containerHeading).toHaveClass('openapi-field-heading');
+    expect(containerNameWrapper).toHaveClass('openapi-field-name');
   });
 
   it('marks only expandable fields as containers', () => {
@@ -256,5 +252,31 @@ describe('OpenApiFieldRow', () => {
       'break-words',
       '[overflow-wrap:anywhere]',
     );
+  });
+
+  it('groups long names and all field metadata for responsive heading layout', () => {
+    render(
+      <OpenApiFieldRow
+        anchorId="long-deprecated-name"
+        deprecated
+        labels={labels}
+        name="an_extremely_long_openapi_field_name_that_must_wrap"
+        requiredState="required"
+        type="object | null"
+      />,
+    );
+
+    const heading = document.querySelector('.openapi-field-heading');
+    const name = heading?.querySelector('.openapi-field-name');
+    const metadata = heading?.querySelector('.openapi-field-meta');
+
+    expect(heading).toBeInTheDocument();
+    expect(name).toHaveTextContent('an_extremely_long_openapi_field_name');
+    expect(metadata).toContainElement(screen.getByText('Required'));
+    expect(metadata).toContainElement(screen.getByText('object | null'));
+    expect(metadata).toContainElement(screen.getByText('Deprecated'));
+    expect(
+      metadata?.querySelector('.openapi-field-anchor'),
+    ).toBeInTheDocument();
   });
 });

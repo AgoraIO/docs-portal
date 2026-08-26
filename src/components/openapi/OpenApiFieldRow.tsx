@@ -81,8 +81,8 @@ export function OpenApiFieldRow({
       id={anchorId}
     >
       <div className="openapi-field-main min-w-0">
-        <div className="flex min-w-0 items-start gap-2">
-          <div className="flex min-w-0 flex-1 items-center gap-2">
+        <div className="openapi-field-heading min-w-0">
+          <div className="openapi-field-name min-w-0">
             {expandable ? (
               <button
                 aria-expanded={expanded}
@@ -103,33 +103,35 @@ export function OpenApiFieldRow({
               </div>
             )}
           </div>
-          {requiredState && (
-            <span
-              className={cn(
-                'shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
-                requiredState === 'required'
-                  ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-                  : 'border-border bg-muted text-muted-foreground',
-              )}
+          <div className="openapi-field-meta min-w-0">
+            {requiredState && (
+              <span
+                className={cn(
+                  'shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+                  requiredState === 'required'
+                    ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+                    : 'border-border bg-muted text-muted-foreground',
+                )}
+              >
+                {labels[requiredState]}
+              </span>
+            )}
+            <span className="shrink-0 font-mono text-xs text-muted-foreground">
+              {type}
+            </span>
+            {deprecated && (
+              <span className="shrink-0 text-xs text-muted-foreground">
+                {labels.deprecated}
+              </span>
+            )}
+            <a
+              aria-label={`${labels.copyLink} ${anchorId}`}
+              className="openapi-field-anchor shrink-0 rounded p-1 text-muted-foreground"
+              href={`#${anchorId}`}
             >
-              {labels[requiredState]}
-            </span>
-          )}
-          <span className="shrink-0 font-mono text-xs text-muted-foreground">
-            {type}
-          </span>
-          {deprecated && (
-            <span className="shrink-0 text-xs text-muted-foreground">
-              {labels.deprecated}
-            </span>
-          )}
-          <a
-            aria-label={`${labels.copyLink} ${anchorId}`}
-            className="openapi-field-anchor shrink-0 rounded p-1 text-muted-foreground"
-            href={`#${anchorId}`}
-          >
-            <Link2 aria-hidden="true" className="size-3.5" />
-          </a>
+              <Link2 aria-hidden="true" className="size-3.5" />
+            </a>
+          </div>
         </div>
         {details !== undefined && (
           <div className="openapi-field-details mt-3 ps-5">{details}</div>

@@ -118,6 +118,68 @@ describe('OpenApiSchemaTree', () => {
     expect(within(tree).queryByText('url')).not.toBeInTheDocument();
   });
 
+  it('removes collapsed parent descendants so one toolbar expansion restores the full branch', () => {
+    renderTree();
+    const tree = screen.getByTestId('openapi-schema-tree');
+
+    fireEvent.click(
+      within(tree).getByRole('button', { name: 'Collapse all schema fields' }),
+    );
+    fireEvent.click(
+      within(tree).getByRole('button', { name: 'Expand all schema fields' }),
+    );
+    fireEvent.click(
+      within(tree).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    );
+
+    expect(
+      within(tree).getByRole('button', { name: 'Expand all schema fields' }),
+    ).toBeVisible();
+    fireEvent.click(
+      within(tree).getByRole('button', { name: 'Expand all schema fields' }),
+    );
+    expect(within(tree).getByText('url')).toBeVisible();
+  });
+
+  it('preserves user disclosure on ordinary rerenders and resets it for a new identity', () => {
+    const { rerender } = renderTree();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse all schema fields' }),
+    );
+    rerender(
+      <OpenApiSchemaTree
+        anchorPrefix="request-body"
+        labels={labels}
+        renderCallouts={() => null}
+        renderDescription={(markdown) => <span>{markdown}</span>}
+        renderMetadata={() => null}
+        root={root}
+        usage="request"
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Expand all schema fields' }),
+    ).toBeVisible();
+
+    rerender(
+      <OpenApiSchemaTree
+        anchorPrefix="request-body"
+        labels={labels}
+        renderCallouts={() => null}
+        renderDescription={(markdown) => <span>{markdown}</span>}
+        renderMetadata={() => null}
+        root={{ ...root }}
+        usage="request"
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Collapse all schema fields' }),
+    ).toBeVisible();
+  });
+
   it('opens every ancestor of a nested hash target', async () => {
     window.history.replaceState(
       null,

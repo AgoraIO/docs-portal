@@ -1097,6 +1097,41 @@
     background: color-mix(in srgb, var(--color-fd-muted) 18%, transparent);
   }
 
+  .openapi-field-row {
+    container-type: inline-size;
+  }
+
+  .openapi-field-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    align-items: start;
+  }
+
+  .openapi-field-name {
+    min-width: 0;
+  }
+
+  .openapi-field-meta {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  @container (max-width: 32rem) {
+    .openapi-field-heading {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .openapi-field-meta {
+      justify-content: flex-start;
+      padding-inline-start: 20px;
+    }
+  }
+
   .openapi-field-row .openapi-field-anchor {
     opacity: 0;
     transition: opacity 140ms ease;
@@ -1125,7 +1160,11 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(1rem + var(--openapi-schema-indent-desktop) - 10px);
+    inset-inline-start: calc(
+      1rem +
+      var(--openapi-schema-indent-desktop) -
+      10px
+    );
     width: 1px;
     background: color-mix(in srgb, var(--color-fd-border) 70%, transparent);
     content: "";
@@ -1137,7 +1176,11 @@
     }
 
     .openapi-schema-depth-nested::before {
-      left: calc(1rem + var(--openapi-schema-indent-mobile) - 8px);
+      inset-inline-start: calc(
+        1rem +
+        var(--openapi-schema-indent-mobile) -
+        8px
+      );
     }
   }
 

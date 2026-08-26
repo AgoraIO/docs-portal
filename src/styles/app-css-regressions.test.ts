@@ -132,6 +132,20 @@ describe('app prose CSS regressions', () => {
       'display',
       'none',
     );
+    expectDeclaration(
+      getRuleBody('.openapi-field-row').rule,
+      'container-type',
+      'inline-size',
+    );
+    expectDeclaration(
+      getRuleBodyContaining('.openapi-field-heading').rule,
+      'grid-template-columns',
+      'minmax(0, 1fr) auto',
+    );
+    const fieldMeta = getRuleBodyContaining('.openapi-field-meta').rule;
+    expectDeclaration(fieldMeta, 'display', 'flex');
+    expectDeclaration(fieldMeta, 'flex-wrap', 'wrap');
+    expectDeclaration(fieldMeta, 'justify-content', 'flex-end');
     const reducedMotion = getRuleBodyContainingInMedia(
       '.openapi-field-row .openapi-field-anchor',
       'prefers-reduced-motion: reduce',
@@ -142,6 +156,37 @@ describe('app prose CSS regressions', () => {
       'prefers-reduced-motion: reduce',
     ).rule;
     expectDeclaration(reducedChevron, 'transition', 'none');
+
+    let narrowHeading: postcss.Rule | undefined;
+    let narrowMeta: postcss.Rule | undefined;
+    appCssRoot.walkAtRules('container', (container) => {
+      if (!container.params.includes('max-width: 32rem')) return;
+      container.walkRules((candidate) => {
+        if (
+          normalizeSelector(candidate.selector) === '.openapi-field-heading'
+        ) {
+          narrowHeading = candidate;
+        }
+        if (normalizeSelector(candidate.selector) === '.openapi-field-meta') {
+          narrowMeta = candidate;
+        }
+      });
+    });
+    expectDeclaration(
+      narrowHeading as postcss.Rule,
+      'grid-template-columns',
+      'minmax(0, 1fr)',
+    );
+    expectDeclaration(
+      narrowMeta as postcss.Rule,
+      'justify-content',
+      'flex-start',
+    );
+    expectDeclaration(
+      narrowMeta as postcss.Rule,
+      'padding-inline-start',
+      '20px',
+    );
   });
 
   it('keeps OpenAPI schema tree indentation and nesting-guide contracts', () => {
@@ -179,6 +224,11 @@ describe('app prose CSS regressions', () => {
       'calc(1rem + var(--openapi-schema-indent-desktop))',
     );
     expectDeclaration(nestingGuide, 'width', '1px');
+    expectDeclaration(
+      nestingGuide,
+      'inset-inline-start',
+      'calc(1rem + var(--openapi-schema-indent-desktop) - 10px)',
+    );
     expect(mobileIndent).toBeDefined();
     expectDeclaration(
       mobileIndent as postcss.Rule,

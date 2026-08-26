@@ -3,6 +3,7 @@ import {
   type ReactNode,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -73,10 +74,21 @@ export function OpenApiSchemaTree({
   const [expandedRowIds, setExpandedRowIds] = useState(
     () => new Set(initialExpandedRowIds),
   );
+  const previousResetInputs = useRef({ anchorPrefix, root, usage });
 
   useEffect(() => {
+    const previous = previousResetInputs.current;
+    if (
+      previous.anchorPrefix === anchorPrefix &&
+      previous.root === root &&
+      previous.usage === usage
+    ) {
+      return;
+    }
+
+    previousResetInputs.current = { anchorPrefix, root, usage };
     setExpandedRowIds(new Set(initialExpandedRowIds));
-  }, [initialExpandedRowIds]);
+  });
 
   useOpenApiSchemaHashExpansion(
     anchorIds,
@@ -162,14 +174,15 @@ export function OpenApiSchemaTree({
                 expanded={expandedRowIds.has(anchorId)}
                 labels={labels}
                 name={row.name}
-                onExpandedChange={(expanded) => {
-                  setExpandedRowIds((current) => {
-                    const next = new Set(current);
-                    if (expanded) next.add(anchorId);
-                    else next.delete(anchorId);
-                    return next;
-                  });
-                }}
+                onExpandedChange={(expanded) =>
+                  setRowExpanded({
+                    anchorIds,
+                    expanded,
+                    index,
+                    rows,
+                    setExpandedRowIds,
+                  })
+                }
                 requiredState={row.required ? 'required' : 'optional'}
                 type={type}
               />
@@ -189,6 +202,42 @@ export function OpenApiSchemaTree({
       })}
     </div>
   );
+}
+
+function setRowExpanded({
+  anchorIds,
+  expanded,
+  index,
+  rows,
+  setExpandedRowIds,
+}: {
+  anchorIds: string[];
+  expanded: boolean;
+  index: number;
+  rows: OpenApiSchemaRow[];
+  setExpandedRowIds: (updater: (current: Set<string>) => Set<string>) => void;
+}) {
+  setExpandedRowIds((current) => {
+    const next = new Set(current);
+    const anchorId = anchorIds[index];
+
+    if (expanded) {
+      next.add(anchorId);
+      return next;
+    }
+
+    const targetDepth = rows[index].depth;
+    next.delete(anchorId);
+    for (
+      let descendantIndex = index + 1;
+      descendantIndex < rows.length &&
+      rows[descendantIndex].depth > targetDepth;
+      descendantIndex += 1
+    ) {
+      next.delete(anchorIds[descendantIndex]);
+    }
+    return next;
+  });
 }
 
 function useOpenApiSchemaHashExpansion(
