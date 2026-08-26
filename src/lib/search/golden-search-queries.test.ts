@@ -127,11 +127,13 @@ const EXPECTED_API_RETRIEVAL_QUERY = new Map([
 ]);
 
 function expectedDocsRetrievalQuery(query: string) {
-  return EXPECTED_DOCS_RETRIEVAL_QUERY.get(query) ?? query;
+  const retrievalQuery = classifySearchIntent(query).matchedPhrase ?? query;
+  return EXPECTED_DOCS_RETRIEVAL_QUERY.get(retrievalQuery) ?? retrievalQuery;
 }
 
 function expectedApiRetrievalQuery(query: string) {
-  return EXPECTED_API_RETRIEVAL_QUERY.get(query) ?? query;
+  const retrievalQuery = classifySearchIntent(query).matchedPhrase ?? query;
+  return EXPECTED_API_RETRIEVAL_QUERY.get(retrievalQuery) ?? retrievalQuery;
 }
 
 const NOISE_DOC_ROUTES = [
@@ -641,7 +643,7 @@ describe('Global search golden queries', () => {
   it('tests the Cloud Recording REST API target against the real overview sibling', () => {
     const hits = sourceHitsFor(
       'cloud recording REST API',
-      'cloud recording REST API',
+      'cloud recording rest api',
       'docs_portal_en',
       'api-task',
     );

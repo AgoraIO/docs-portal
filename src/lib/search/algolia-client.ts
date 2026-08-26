@@ -332,13 +332,14 @@ async function searchWithRankingV2({
     (intent.intent === 'api-symbol' ||
       intent.intent === 'api-task' ||
       apiScopeSelected);
+  const retrievalQuery = intent.matchedPhrase ?? query;
   const docsPromise = client.searchForHits({
     requests: [
       buildDocsSearchRequest({
         indexName,
         locale,
         platform,
-        query: getDocsRetrievalQuery(query),
+        query: getDocsRetrievalQuery(retrievalQuery),
         scope,
       }),
     ],
@@ -350,7 +351,7 @@ async function searchWithRankingV2({
             buildApiSearchRequest({
               apiReferenceIndexName,
               platform,
-              query: getApiRetrievalQuery(query),
+              query: getApiRetrievalQuery(retrievalQuery),
               scope,
             }),
           ],
@@ -390,7 +391,7 @@ async function searchWithRankingV2({
           buildApiSearchRequest({
             apiReferenceIndexName,
             platform,
-            query: getApiRetrievalQuery(query),
+            query: getApiRetrievalQuery(retrievalQuery),
             scope,
           }),
         ],

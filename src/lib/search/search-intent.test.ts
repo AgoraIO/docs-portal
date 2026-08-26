@@ -80,6 +80,20 @@ describe('classifySearchIntent', () => {
     expect(result.majorTerms).toContain('renewtoken');
   });
 
+  it.each([
+    ['help me find docs for renew token', 'renew token'],
+    ['where is the cloud recording REST API', 'cloud recording rest api'],
+    ['how should I renew token', 'renew token'],
+  ])(
+    'records the API task phrase matched inside %s',
+    (query, matchedPhrase) => {
+      expect(classifySearchIntent(query)).toMatchObject({
+        intent: 'api-task',
+        matchedPhrase,
+      });
+    },
+  );
+
   it('does not classify every two-word query as an API task', () => {
     expect(classifySearchIntent('getting started').intent).toBe('task');
     expect(classifySearchIntent('random words').intent).toBe('unknown');

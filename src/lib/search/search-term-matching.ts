@@ -57,10 +57,13 @@ function filterRequiredApiTaskTerms(terms: string[], source: 'docs' | 'sdk') {
 }
 
 export function getRequiredApiTaskTerms(
-  intent: { terms: string[] },
+  intent: { matchedPhrase?: string; terms: string[] },
   { source }: { source: 'docs' | 'sdk' },
 ) {
-  return filterRequiredApiTaskTerms(intent.terms, source);
+  const intentTerms = intent.matchedPhrase
+    ? normalizedTerms(intent.matchedPhrase)
+    : intent.terms;
+  return filterRequiredApiTaskTerms(intentTerms, source);
 }
 
 function canonicalSdkAlias(value: string) {

@@ -862,6 +862,9 @@ describe('createAlgoliaDocsClient', () => {
       'can you please renew token',
       'we need the renew token API method',
       'renew token REST API',
+      'help me find docs for renew token',
+      'where is the documentation for renew token',
+      'how should I renew token',
     ])('returns the exact API target for decorated query %s', async (query) => {
       const searchForHits = vi
         .fn()
@@ -898,6 +901,12 @@ describe('createAlgoliaDocsClient', () => {
         canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
         id: `renew-token:${query}`,
       });
+      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+        requests: [expect.objectContaining({ query: 'renew token' })],
+      });
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [expect.objectContaining({ query: 'renew token' })],
+      });
     });
 
     it.each([
@@ -905,6 +914,7 @@ describe('createAlgoliaDocsClient', () => {
       'show me the cloud recording REST API',
       'I want the cloud recording REST API',
       'could you tell me the cloud recording REST API',
+      'where are the docs for the cloud recording REST API',
     ])(
       'keeps semantic REST and API terms for decorated docs query %s',
       async (query) => {
@@ -933,6 +943,11 @@ describe('createAlgoliaDocsClient', () => {
         expect(results[0]).toMatchObject({
           id: 'cloud-recording-rest-api',
           title: 'Cloud Recording RESTful API',
+        });
+        expect(searchForHits).toHaveBeenNthCalledWith(1, {
+          requests: [
+            expect.objectContaining({ query: 'cloud recording rest api' }),
+          ],
         });
       },
     );

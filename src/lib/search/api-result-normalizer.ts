@@ -279,9 +279,23 @@ type ApiUrlIdentity = {
 const DOCC_ENUM_LIKE_SUFFIX =
   /(?:Type|Mode|State|Reason|Code|Scenario|Source|Direction|Preference|Status|Error)$/iu;
 
+const DOXYGEN_PAGE_SECTION_HASH =
+  /^(?:details|inheritance|collaboration|friends|related|nested-classes|properties|events|signals|slots|(?:pub|pro|pri)-(?:types|methods|static-methods|attribs|static-attribs|slots))$/u;
+
+function isDoxygenPageHash(hash: string, container: string) {
+  const decodedHash = decodeURIComponent(hash.replace(/^#/u, '')).toLowerCase();
+  if (DOXYGEN_PAGE_SECTION_HASH.test(decodedHash)) return true;
+  const pageHash = stripDoxygenPagePrefix(decodedHash);
+  return pageHash.kind
+    ? canonicalRootClientAlias(pageHash.name) ===
+        canonicalRootClientAlias(container)
+    : decodedHash === container.toLowerCase();
+}
+
 function urlIdentity(url: string): ApiUrlIdentity {
   try {
-    const { pathname } = new URL(url, 'https://api-ref.invalid');
+    const parsedUrl = new URL(url, 'https://api-ref.invalid');
+    const { pathname } = parsedUrl;
     const segments = pathname
       .split('/')
       .filter(Boolean)
@@ -320,6 +334,9 @@ function urlIdentity(url: string): ApiUrlIdentity {
             : undefined);
     return {
       container: doxygenPage.name,
+      isMember:
+        Boolean(parsedUrl.hash) &&
+        !isDoxygenPageHash(parsedUrl.hash, doxygenPage.name),
       ...(pathKind ? { pageKind: pathKind } : {}),
     };
   } catch {

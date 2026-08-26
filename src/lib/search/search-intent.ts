@@ -8,6 +8,7 @@ export type SearchIntent =
 
 export type SearchIntentResult = {
   intent: SearchIntent;
+  matchedPhrase?: string;
   originalQuery: string;
   normalizedQuery: string;
   terms: string[];
@@ -178,15 +179,27 @@ function isApiSymbol(query: string) {
 }
 
 function hasAnyPhrase(normalizedQuery: string, phrases: readonly string[]) {
-  return phrases.some((phrase) => includesPhrase(normalizedQuery, phrase));
+  return findMatchedPhrase(normalizedQuery, phrases) !== undefined;
+}
+
+function findMatchedPhrase(
+  normalizedQuery: string,
+  phrases: readonly string[],
+) {
+  return phrases.find((phrase) => includesPhrase(normalizedQuery, phrase));
 }
 
 export function classifySearchIntent(query: string): SearchIntentResult {
   const normalizedQuery = normalizeQuery(query);
   const terms = queryTerms(normalizedQuery);
   const majorTerms = majorTermsForQuery(query.normalize('NFKC'), terms);
+  const matchedApiTaskPhrase = findMatchedPhrase(
+    normalizedQuery,
+    API_TASK_PHRASES,
+  );
 
   let intent: SearchIntent = 'unknown';
+  let matchedPhrase: string | undefined;
   if (normalizedQuery) {
     if (isApiSymbol(query.normalize('NFKC').trim())) {
       intent = 'api-symbol';
@@ -196,8 +209,9 @@ export function classifySearchIntent(query: string): SearchIntentResult {
         terms.some((term) => SUPPORT_TERMS.has(term)))
     ) {
       intent = 'support';
-    } else if (hasAnyPhrase(normalizedQuery, API_TASK_PHRASES)) {
+    } else if (matchedApiTaskPhrase) {
       intent = 'api-task';
+      matchedPhrase = matchedApiTaskPhrase;
     } else if (hasAnyPhrase(normalizedQuery, TASK_PHRASES)) {
       intent = 'task';
     } else if (hasAnyPhrase(normalizedQuery, PRODUCT_ALIASES)) {
@@ -207,6 +221,7 @@ export function classifySearchIntent(query: string): SearchIntentResult {
 
   return {
     intent,
+    ...(matchedPhrase ? { matchedPhrase } : {}),
     originalQuery: query,
     normalizedQuery,
     terms,

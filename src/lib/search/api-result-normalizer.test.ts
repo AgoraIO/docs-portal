@@ -9,7 +9,7 @@ import {
   aggregateApiResults,
   normalizeApiHit,
 } from './api-result-normalizer';
-import { classifySearchIntent } from './search-intent';
+import { classifySearchIntent, type SearchIntentResult } from './search-intent';
 
 const currentAndroidRenewToken = {
   _highlightResult: {
@@ -336,6 +336,16 @@ describe('SDK API result normalization', () => {
       },
       intent('RtcEngine'),
     );
+    const constructorMember = normalizeValidApiHit(
+      {
+        hierarchy: { lvl1: 'IRtcEngine' },
+        objectID: 'doxygen-constructor-anchor',
+        platform: 'android',
+        product: 'video-sdk',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#constructor-anchor',
+      },
+      intent('RtcEngine'),
+    );
 
     expect(classPage.canonicalKey).toBe('video-sdk|rtcengine|class');
     expect(identityHashPage.canonicalKey).toBe('video-sdk|rtcengine|class');
@@ -350,6 +360,13 @@ describe('SDK API result normalization', () => {
     expect(explicitMember.canonicalKey).toBe(
       'video-sdk|rtcengine|irtcengine|method',
     );
+    expect(constructorMember).toMatchObject({
+      canonicalKey: 'video-sdk|rtcengine|irtcengine|member',
+      url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#constructor-anchor',
+    });
+    expect(
+      aggregateApiResults([classPage, ...sectionPages, constructorMember]),
+    ).toHaveLength(2);
   });
 
   it('normalizes bare DocC enum-like types without treating every type as a class', () => {
@@ -941,8 +958,25 @@ describe('SDK API admission', () => {
     'can you please renew token',
     'we need the renew token API method',
     'renew token REST API',
+    'help me find docs for renew token',
+    'where is the documentation for renew token',
+    'how should I renew token',
   ])('ignores natural-language decoration when admitting %s', (query) => {
     expect(admitApiHit(currentAndroidRenewToken, intent(query), false)).toBe(
+      true,
+    );
+  });
+
+  it('falls back to explicit terms for manual api-task intent fixtures', () => {
+    const manualIntent: SearchIntentResult = {
+      intent: 'api-task',
+      majorTerms: ['please', 'renew', 'token', 'pleaserenewtoken'],
+      normalizedQuery: 'please renew token',
+      originalQuery: 'please renew token',
+      terms: ['please', 'renew', 'token'],
+    };
+
+    expect(admitApiHit(currentAndroidRenewToken, manualIntent, false)).toBe(
       true,
     );
   });
