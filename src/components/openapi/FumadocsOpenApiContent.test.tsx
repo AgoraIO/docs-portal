@@ -67,6 +67,7 @@ describe('FumadocsOpenApiContent', () => {
                         },
                         description: 'Successful response',
                       },
+                      '204': { description: 'No content' },
                     },
                     summary: 'Responses',
                   },
@@ -111,6 +112,8 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('button', { name: '200 text/plain' }),
     ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '204' }));
+    expect(screen.getByText('Empty response body')).toBeInTheDocument();
   });
 
   it('opens a hashed English response panel and its schema ancestors', async () => {
@@ -158,6 +161,106 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('aria-expanded', 'true');
     await waitFor(() => expect(screen.getByText('id')).toBeInTheDocument());
     window.location.hash = '';
+  });
+
+  it('opens an English response panel targeted by a response-header hash', () => {
+    window.location.hash = 'response-headers-default-x-request-id';
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/response-header-hash' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response header hash API' },
+              openapi: '3.2.0',
+              paths: {
+                '/response-header-hash': {
+                  get: {
+                    responses: {
+                      default: {
+                        headers: {
+                          'x-request-id': { schema: { type: 'string' } },
+                        },
+                      },
+                      '200': { description: 'OK' },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'default' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    expect(
+      document.getElementById('response-headers-default-x-request-id'),
+    ).toBeInTheDocument();
+    window.location.hash = '';
+  });
+
+  it('preserves English response accordion state for unchanged response references', () => {
+    const responses = {
+      default: {
+        content: {
+          'application/json': { schema: { type: 'object' } },
+        },
+      },
+      '200': { description: 'OK' },
+    };
+    const bundled = {
+      info: { title: 'Response state API' },
+      openapi: '3.2.0',
+      paths: {
+        '/response-state': {
+          get: { responses },
+        },
+      },
+    };
+    const pageProps = {
+      operations: [{ method: 'get', path: '/response-state' }],
+      payload: { bundled },
+    } as unknown as OpenAPIPageProps;
+    const { rerender } = render(
+      <FumadocsOpenApiContent pageProps={pageProps} />,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'default application/json' }),
+    );
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    rerender(<FumadocsOpenApiContent pageProps={pageProps} />);
+
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    const nextPageProps = {
+      operations: pageProps.operations,
+      payload: {
+        bundled: {
+          ...bundled,
+          paths: {
+            '/response-state': {
+              get: { responses: { '201': { description: 'Created' } } },
+            },
+          },
+        },
+      },
+    } as unknown as OpenAPIPageProps;
+    rerender(<FumadocsOpenApiContent pageProps={nextPageProps} />);
+
+    expect(screen.getByRole('button', { name: '201' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
   });
 
   it('localizes generic schema field labels in zh-CN', () => {
@@ -2531,6 +2634,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       await screen.findByRole('heading', { name: '响应 Body' }),
     ).toBeInTheDocument();
+    expect(document.querySelector('[data-openapi-responses]')).toBeNull();
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();

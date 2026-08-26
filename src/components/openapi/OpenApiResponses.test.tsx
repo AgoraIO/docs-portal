@@ -122,6 +122,40 @@ describe('OpenApiResponses', () => {
     expect(screen.getByText('Schema has no fields')).toBeInTheDocument();
   });
 
+  it('treats a selected media type without its own schema key as missing', () => {
+    const renderSchema = vi.fn(() => ({ hasFields: false, node: null }));
+    renderResponses(
+      [
+        view('200', {
+          mediaTypes: [{ mediaType: 'application/json', source: {} }],
+        }),
+      ],
+      renderSchema,
+    );
+
+    expect(screen.getByText('Schema not provided')).toBeInTheDocument();
+    expect(renderSchema).not.toHaveBeenCalled();
+  });
+
+  it('shows the fieldless state for an ordinary object schema', () => {
+    renderResponses(
+      [
+        view('200', {
+          mediaTypes: [
+            {
+              mediaType: 'application/json',
+              schema: { type: 'object' },
+              source: { schema: { type: 'object' } },
+            },
+          ],
+        }),
+      ],
+      vi.fn(() => ({ hasFields: false, node: null })),
+    );
+
+    expect(screen.getByText('Schema has no fields')).toBeInTheDocument();
+  });
+
   it('selects JSON by default and changes only that response media', () => {
     const { renderSchema } = renderResponses([
       view('200', {
@@ -195,6 +229,18 @@ describe('OpenApiResponses', () => {
       expect.any(Function),
     );
     removeEventListener.mockRestore();
+  });
+
+  it('opens a default response directly from a response-header hash', () => {
+    window.location.hash = 'response-headers-default-x-request-id';
+    renderResponses([view('default'), view('200')]);
+
+    expect(
+      screen.getByRole('button', { name: '200 application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('preserves user state for the same response identity and resets it for a new identity', () => {

@@ -810,9 +810,10 @@ function OpenApiEnglishResponses({
 }: {
   operation?: OpenApiOperation;
 }) {
-  const responses = buildOpenApiResponseViews(
-    operation?.responses,
-    operation?.__document,
+  const responses = useMemo(
+    () =>
+      buildOpenApiResponseViews(operation?.responses, operation?.__document),
+    [operation?.responses, operation?.__document],
   );
 
   return (
