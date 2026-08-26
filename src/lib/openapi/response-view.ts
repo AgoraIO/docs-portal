@@ -39,10 +39,9 @@ export function buildOpenApiResponseViews(
     );
     const response = isRecord(resolvedResponse)
       ? resolvedResponse
-      : (rawRecord ?? {});
-    if (!isRecord(response)) {
-      return emptyResponseView(statusCode);
-    }
+      : resolvedResponse === undefined
+        ? (rawRecord ?? {})
+        : {};
 
     // biome-ignore lint/suspicious/noPrototypeBuiltins: Support the project's target runtime.
     const hasContent = Object.prototype.hasOwnProperty.call(
@@ -98,7 +97,12 @@ function buildHeaders(
       return [];
     }
     const resolvedHeader = resolveLocalOpenApiReference(document, rawHeader);
-    const header = isRecord(resolvedHeader) ? resolvedHeader : rawRecord;
+    if (!isRecord(resolvedHeader) && resolvedHeader !== undefined) {
+      return [];
+    }
+    const header = isRecord(resolvedHeader)
+      ? resolvedHeader
+      : (rawRecord ?? {});
 
     return [
       {
@@ -131,16 +135,6 @@ function buildMediaTypes(
       source,
     };
   });
-}
-
-function emptyResponseView(statusCode: string): OpenApiResponseView {
-  return {
-    hasContent: false,
-    headers: [],
-    mediaTypes: [],
-    source: {},
-    statusCode,
-  };
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

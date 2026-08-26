@@ -241,4 +241,37 @@ describe('openapi response view', () => {
       },
     ]);
   });
+
+  it('does not fall back to raw response when a reference resolves to a non-record', () => {
+    const [view] = buildOpenApiResponseViews(
+      { '200': { $ref: '#/components/responses/Invalid', description: 'Raw' } },
+      { components: { responses: { Invalid: false } } },
+    );
+
+    expect(view).toEqual({
+      hasContent: false,
+      headers: [],
+      mediaTypes: [],
+      source: {},
+      statusCode: '200',
+    });
+  });
+
+  it('skips a header whose reference resolves to a non-record', () => {
+    const [view] = buildOpenApiResponseViews(
+      {
+        '200': {
+          headers: {
+            Invalid: {
+              $ref: '#/components/headers/Invalid',
+              description: 'Raw',
+            },
+          },
+        },
+      },
+      { components: { headers: { Invalid: false } } },
+    );
+
+    expect(view.headers).toEqual([]);
+  });
 });
