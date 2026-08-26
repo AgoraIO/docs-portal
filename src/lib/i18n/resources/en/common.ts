@@ -25,6 +25,7 @@ const enCommon = {
     searchEmpty: 'No matching pages found.',
     searchRecent: 'Recent',
     searchApiReference: 'API Reference',
+    searchApiUnavailable: 'SDK API results are temporarily unavailable.',
     searchDocumentation: 'Documentation',
     searchPrompt: 'Search docs, APIs, and guides.',
     searchUnavailable: 'Search index unavailable.',

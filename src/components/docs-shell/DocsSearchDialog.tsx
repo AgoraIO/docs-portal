@@ -42,6 +42,7 @@ import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
+import { classifySearchIntent } from '@/lib/search/search-intent';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -123,6 +124,7 @@ export function DocsSearchDialog({
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [apiSearchUnavailable, setApiSearchUnavailable] = useState(false);
   const currentSearchRef = useRef('');
   const latestSearchRequestRef = useRef(0);
   const localSearchStatusRef = useRef(localSearchStatus);
@@ -191,9 +193,29 @@ export function DocsSearchDialog({
       async search(query: string) {
         const requestId = latestSearchRequestRef.current + 1;
         latestSearchRequestRef.current = requestId;
+        setApiSearchUnavailable(false);
         setPendingRequests((count) => count + 1);
         try {
           const results = await base.search(query);
+          if (isLatestSearch(query, requestId)) {
+            const searchStatus =
+              'getLastStatus' in base &&
+              typeof base.getLastStatus === 'function'
+                ? base.getLastStatus()
+                : undefined;
+            const intent = classifySearchIntent(query).intent;
+            const isApiIntent =
+              intent === 'api-symbol' ||
+              intent === 'api-task' ||
+              (searchScope?.field === 'tab' &&
+                searchScope.value === 'api-reference');
+
+            setApiSearchUnavailable(
+              searchStatus?.docs === 'success' &&
+                searchStatus.api === 'error' &&
+                isApiIntent,
+            );
+          }
           const completionStatus = algoliaEnabled
             ? 'success'
             : localSearchStatus === 'loading'
@@ -390,7 +412,22 @@ export function DocsSearchDialog({
   const invalidateCurrentSearch = useCallback(() => {
     latestSearchRequestRef.current += 1;
     pendingLocalCompletionRef.current = null;
+    setApiSearchUnavailable(false);
   }, []);
+  const handleSearchChange = useCallback(
+    (nextSearch: string) => {
+      setApiSearchUnavailable(false);
+      setSearch(nextSearch);
+    },
+    [setSearch],
+  );
+  const closeAndReset = useCallback(() => {
+    setOpen(false);
+    setStaggerArmed(false);
+    setActiveValue(null);
+    invalidateCurrentSearch();
+    setSearch('');
+  }, [invalidateCurrentSearch, setSearch]);
   const handleScopeChange = useCallback(
     (nextScopeId: string | null) => {
       if (nextScopeId === scopeId) {
@@ -425,7 +462,7 @@ export function DocsSearchDialog({
       });
     }
 
-    setOpen(false);
+    closeAndReset();
     if (isExternalUrl(url)) {
       window.open(url, '_blank', 'noopener,noreferrer');
       return;
@@ -438,9 +475,13 @@ export function DocsSearchDialog({
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
-      setOpen(nextOpen);
-      // Re-arm the cascade each time the dialog opens; clear it on close.
-      setStaggerArmed(nextOpen);
+      if (nextOpen) {
+        setOpen(true);
+        // Re-arm the result cascade each time the dialog opens.
+        setStaggerArmed(true);
+      } else {
+        closeAndReset();
+      }
 
       if (nextOpen) {
         captureDocsSearchOpened({
@@ -457,13 +498,6 @@ export function DocsSearchDialog({
             .filter((page) => page.url !== currentPath)
             .slice(0, RECENT_VISIBLE),
         );
-      }
-
-      if (!nextOpen) {
-        setActiveValue(null);
-        // Reset the query on close so reopening lands on the recent list / prompt
-        // rather than the previous search's (possibly empty) results.
-        setSearch('');
       }
 
       if (algoliaConfig || !nextOpen || pages.length > 0) {
@@ -491,7 +525,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, mode, pages.length, searchLocale, setSearch],
+    [algoliaConfig, closeAndReset, loadPages, mode, pages.length, searchLocale],
   );
 
   useEffect(() => {
@@ -613,7 +647,7 @@ export function DocsSearchDialog({
         value={activeValue ?? ''}
       >
         <CommandInput
-          onValueChange={setSearch}
+          onValueChange={handleSearchChange}
           placeholder={t('docs.searchPlaceholder')}
           value={search}
         />
@@ -637,6 +671,16 @@ export function DocsSearchDialog({
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
             />
+          </div>
+        ) : null}
+        {hasQuery && apiSearchUnavailable && !isSearchUnavailable ? (
+          <div
+            aria-live="polite"
+            className="border-b px-4 py-2 text-sm text-muted-foreground"
+            data-testid="search-api-unavailable"
+            role="status"
+          >
+            {t('docs.searchApiUnavailable')}
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
