@@ -943,6 +943,61 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  it('ignores an SDK query that is unavailable for the selected product', () => {
+    window.history.pushState(null, '', '/api-ref?product=signaling&sdk=voice');
+
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allSdksLabel="All SDKs"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'Hosted SDK reference',
+            description: 'Voice SDK for Android.',
+            href: '/voice-android',
+            product: 'Realtime Communication',
+            sdk: 'Voice SDK',
+            stack: 'Android',
+            title: 'Voice SDK for Android',
+          },
+          {
+            category: 'Hosted SDK reference',
+            description: 'Signaling SDK for Android.',
+            href: '/signaling-android',
+            product: 'Signaling',
+            stack: 'Android',
+            title: 'Signaling Android',
+          },
+        ]}
+        productFilterLabel="Product"
+        productQueryParam="product"
+        searchPlaceholder="Search references"
+        sdkFilterLabel="SDK"
+        sdkQueryParam="sdk"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Signaling' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    expect(
+      screen.queryByRole('group', { name: 'SDK' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Signaling Android/i }),
+    ).toBeVisible();
+  });
+
   it('keeps SDK filter changes local without rewriting the deep link', () => {
     window.history.pushState(
       null,

@@ -805,8 +805,20 @@ export function RecipesCatalog({
     }
 
     hasInitializedSdkFromQuery.current = true;
-    setActiveSdk(getInitialRecipeSdk(items, sdkFallback, sdkQueryParam));
-  }, [items, sdkFallback, sdkQueryParam]);
+    const initialProduct = getInitialRecipeProduct(
+      items,
+      allProductsLabel,
+      productQueryParam,
+    );
+    const initialSdkItems =
+      initialProduct === allProductsLabel
+        ? items
+        : items.filter((item) => item.product === initialProduct);
+
+    setActiveSdk(
+      getInitialRecipeSdk(initialSdkItems, sdkFallback, sdkQueryParam),
+    );
+  }, [allProductsLabel, items, productQueryParam, sdkFallback, sdkQueryParam]);
 
   const products = useMemo(
     () => [
