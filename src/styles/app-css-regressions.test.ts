@@ -1047,6 +1047,10 @@ describe('app prose CSS regressions', () => {
       '.openapi-examples-rail',
       '59rem',
     );
+    const anchorInDesktop = getRuleBodyContainingInContainer(
+      '.openapi-examples-rail-anchor',
+      '59rem',
+    );
     const constrained = getRuleBodyContainingInContainer(
       '.openapi-examples-rail[data-constrained="true"]',
       '59rem',
@@ -1057,6 +1061,7 @@ describe('app prose CSS regressions', () => {
       'minmax(0, 1fr) clamp(320px, 32cqi, 400px)',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
+    expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');
     expectDeclaration(
       rail.rule,
       'top',
@@ -1070,7 +1075,7 @@ describe('app prose CSS regressions', () => {
     expect(
       getRuleBodyOutsideContainer('.openapi-examples-rail').rule.nodes,
     ).not.toContainEqual(expect.objectContaining({ prop: 'overflow' }));
-    const anchor = getRuleBody('.openapi-examples-rail-anchor');
+    const anchor = getRuleBodyOutsideContainer('.openapi-examples-rail-anchor');
     expectDeclaration(anchor.rule, 'position', 'relative');
     expectDeclaration(anchor.rule, 'min-width', '0');
     expect(anchor.rule.nodes).not.toContainEqual(
