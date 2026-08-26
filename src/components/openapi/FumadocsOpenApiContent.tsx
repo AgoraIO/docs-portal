@@ -221,6 +221,7 @@ type OpenApiOperation = OpenApiRecord & {
   responses?: OpenApiRecord;
 };
 type OpenApiParameter = OpenApiRecord & {
+  deprecated?: boolean;
   description?: string;
   example?: unknown;
   examples?: OpenApiRecord;
@@ -710,6 +711,7 @@ function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
             anchorPrefix={getOpenApiParameterGroupAnchorPrefix(location)}
             fields={groupParameters.map((parameter) => ({
               callouts: getOpenApiDocsCallouts(parameter),
+              deprecated: parameter.deprecated === true,
               description: parameter.description,
               metadata: getOpenApiSchemaMetadata(parameter.schema, parameter),
               name: parameter.name ?? '',
@@ -754,6 +756,7 @@ function OpenApiResponseHeaders({
       return [
         {
           callouts: getOpenApiDocsCallouts(resolvedHeader),
+          deprecated: resolvedHeader.deprecated === true,
           description: getString(resolvedHeader.description),
           metadata: getOpenApiSchemaMetadata(
             resolvedHeader.schema,
@@ -777,6 +780,7 @@ function OpenApiResponseHeaders({
       fields={responseHeaders.map((header) => ({
         anchorSuffix: `${header.statusCode}-${header.name}`,
         callouts: header.callouts,
+        deprecated: header.deprecated,
         description: header.description,
         metadata: [
           {
@@ -871,6 +875,7 @@ function OpenApiFieldList({
   fields: {
     anchorSuffix?: string;
     callouts?: OpenApiDisplayCallout[];
+    deprecated?: boolean;
     description?: string;
     metadata: OpenApiMetadataItem[];
     name: string;
@@ -914,6 +919,7 @@ function OpenApiFieldList({
                   <OpenApiMetadata items={field.metadata} />
                 </>
               }
+              deprecated={field.deprecated}
               key={`${title}:${field.name}`}
               labels={getOpenApiFieldLabels(locale)}
               name={field.name}

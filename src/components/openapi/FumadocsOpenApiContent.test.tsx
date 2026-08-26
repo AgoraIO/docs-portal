@@ -2777,6 +2777,7 @@ describe('FumadocsOpenApiContent', () => {
                         in: 'header',
                         name: 'X-Trace-ID',
                         required: false,
+                        deprecated: true,
                         schema: { type: 'string' },
                       },
                       {
@@ -2793,6 +2794,7 @@ describe('FumadocsOpenApiContent', () => {
                         headers: {
                           'X-Request-ID': {
                             description: 'Response trace identifier.',
+                            deprecated: true,
                             schema: { example: 'response-123', type: 'string' },
                             'x-docs-callouts': [
                               {
@@ -2854,6 +2856,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(headerRow as HTMLElement).getByText('optional'),
     ).toBeInTheDocument();
+    expect(
+      within(headerRow as HTMLElement).getByText('Deprecated'),
+    ).toBeInTheDocument();
     expect(headerRow).not.toHaveTextContent('*');
     expect(headerRow).not.toHaveTextContent('?');
     expect(
@@ -2879,6 +2884,9 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(cookieRow).not.toHaveTextContent('*');
     expect(cookieRow).not.toHaveTextContent('?');
+    expect(
+      within(cookieRow as HTMLElement).queryByText('Deprecated'),
+    ).not.toBeInTheDocument();
     expect(
       within(cookieRow as HTMLElement).queryByRole('button', {
         name: /Expand|Collapse/,
@@ -2906,6 +2914,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(responseRow).getByText('Example')).toBeInTheDocument();
     expect(within(responseRow).getByText('response-123')).toBeInTheDocument();
     expect(within(responseRow).getByText('Note')).toBeInTheDocument();
+    expect(within(responseRow).getByText('Deprecated')).toBeInTheDocument();
     expect(within(responseRow).queryByText('required')).not.toBeInTheDocument();
     expect(within(responseRow).queryByText('optional')).not.toBeInTheDocument();
     expect(

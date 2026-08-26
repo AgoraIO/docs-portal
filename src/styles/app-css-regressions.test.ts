@@ -106,12 +106,12 @@ describe('app prose CSS regressions', () => {
         '.openapi-field-list > .openapi-field-row + .openapi-field-row',
       ).rule,
       'border-block-start',
-      '1px solid var(--fd-border)',
+      '1px solid var(--color-fd-border)',
     );
     expectDeclaration(
       getRuleBody('.openapi-schema-depth + .openapi-schema-depth').rule,
       'border-block-start',
-      '1px solid var(--fd-border)',
+      '1px solid var(--color-fd-border)',
     );
 
     const fieldRow = getRuleBody('.openapi-field-row').rule;
