@@ -42,7 +42,6 @@ import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
-import { classifySearchIntent } from '@/lib/search/search-intent';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -203,17 +202,9 @@ export function DocsSearchDialog({
               typeof base.getLastStatus === 'function'
                 ? base.getLastStatus()
                 : undefined;
-            const intent = classifySearchIntent(query).intent;
-            const isApiIntent =
-              intent === 'api-symbol' ||
-              intent === 'api-task' ||
-              (searchScope?.field === 'tab' &&
-                searchScope.value === 'api-reference');
 
             setApiSearchUnavailable(
-              searchStatus?.docs === 'success' &&
-                searchStatus.api === 'error' &&
-                isApiIntent,
+              searchStatus?.docs === 'success' && searchStatus.api === 'error',
             );
           }
           const completionStatus = algoliaEnabled

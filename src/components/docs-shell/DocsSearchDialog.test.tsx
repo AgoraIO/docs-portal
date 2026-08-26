@@ -595,7 +595,7 @@ describe('DocsSearchDialog', () => {
   });
 
   it.each([
-    { apiStatus: 'error' as const, query: 'cloud recording' },
+    { apiStatus: 'not-requested' as const, query: 'cloud recording' },
     { apiStatus: 'not-requested' as const, query: 'voice agent quickstart' },
   ])(
     'does not show the SDK API warning for the natural-language query $query when API status is $apiStatus',
@@ -623,6 +623,28 @@ describe('DocsSearchDialog', () => {
       ).toBeNull();
     },
   );
+
+  it('warns when an unknown-intent API fallback request fails', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'error', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'RTC engine method' } },
+    );
+
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'SDK API results are temporarily unavailable.',
+    );
+    expect(screen.queryByRole('option')).toBeNull();
+  });
 
   it('clears the SDK API warning for the next query and an empty query', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
