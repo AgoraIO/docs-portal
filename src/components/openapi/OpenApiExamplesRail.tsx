@@ -163,13 +163,7 @@ export function OpenApiExamplesRail({
       });
       mutationObserver.observe(rail, {
         attributes: true,
-        attributeFilter: [
-          'class',
-          'hidden',
-          'aria-hidden',
-          'data-state',
-          'data-wrap-lines',
-        ],
+        attributeFilter: ['class', 'hidden', 'aria-hidden', 'data-state'],
         childList: true,
         subtree: true,
       });

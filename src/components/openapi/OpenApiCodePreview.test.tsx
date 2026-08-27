@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { OpenApiCodePreview } from './OpenApiCodePreview';
 
@@ -22,31 +22,9 @@ function CodeTabs() {
 }
 
 describe('OpenApiCodePreview', () => {
-  it('toggles wrapping without changing the source content', () => {
-    render(
-      <OpenApiCodePreview resetKey="operation-a">
-        <CodeTabs />
-      </OpenApiCodePreview>,
-    );
-
-    const preview = screen.getByTestId('openapi-code-preview');
-    const button = screen.getByRole('button', { name: 'Wrap lines' });
-    const source = 'curl --request GET https://example.com/very-long-path';
-
-    expect(button).toHaveAttribute('aria-pressed', 'false');
-    expect(preview).toHaveAttribute('data-wrap-lines', 'false');
-    expect(preview).toHaveTextContent(source);
-
-    fireEvent.click(button);
-
-    expect(button).toHaveAttribute('aria-pressed', 'true');
-    expect(preview).toHaveAttribute('data-wrap-lines', 'true');
-    expect(preview).toHaveTextContent(source);
-  });
-
   it('marks panel code viewports without including language tabs', async () => {
     render(
-      <OpenApiCodePreview resetKey="operation-a">
+      <OpenApiCodePreview>
         <CodeTabs />
       </OpenApiCodePreview>,
     );
@@ -63,7 +41,7 @@ describe('OpenApiCodePreview', () => {
 
   it('marks code viewports added after render', async () => {
     const { container } = render(
-      <OpenApiCodePreview resetKey="operation-a">
+      <OpenApiCodePreview>
         <div />
       </OpenApiCodePreview>,
     );
@@ -89,7 +67,7 @@ describe('OpenApiCodePreview', () => {
 
     try {
       render(
-        <OpenApiCodePreview resetKey="operation-a">
+        <OpenApiCodePreview>
           <CodeTabs />
         </OpenApiCodePreview>,
       );
@@ -100,32 +78,5 @@ describe('OpenApiCodePreview', () => {
     } finally {
       vi.stubGlobal('MutationObserver', originalMutationObserver);
     }
-  });
-
-  it('keeps wrapping for the same reset key and resets it for a new key', () => {
-    const { rerender } = render(
-      <OpenApiCodePreview resetKey="operation-a">
-        <CodeTabs />
-      </OpenApiCodePreview>,
-    );
-    const button = screen.getByRole('button', { name: 'Wrap lines' });
-    fireEvent.click(button);
-
-    rerender(
-      <OpenApiCodePreview resetKey="operation-a">
-        <CodeTabs />
-      </OpenApiCodePreview>,
-    );
-    expect(button).toHaveAttribute('aria-pressed', 'true');
-
-    rerender(
-      <OpenApiCodePreview resetKey="operation-b">
-        <CodeTabs />
-      </OpenApiCodePreview>,
-    );
-    expect(screen.getByRole('button', { name: 'Wrap lines' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    );
   });
 });

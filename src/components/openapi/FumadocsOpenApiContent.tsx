@@ -442,12 +442,7 @@ function OpenApiRightExamplesLayout({
         title={getOpenApiLabel('Request examples', locale)}
       >
         {hasGroupedSamples ? null : slots.selector}
-        <OpenApiCodePreview
-          resetKey={getOpenApiCodePreviewResetKey(operation)}
-          wrapLabel={isZhCnLocale(locale) ? '自动换行' : 'Wrap lines'}
-        >
-          {slots.usageTabs}
-        </OpenApiCodePreview>
+        <OpenApiCodePreview>{slots.usageTabs}</OpenApiCodePreview>
       </OpenApiRightSection>
       <OpenApiRightSection
         className="openapi-response-example"
@@ -457,17 +452,6 @@ function OpenApiRightExamplesLayout({
       </OpenApiRightSection>
     </div>
   );
-}
-
-export function getOpenApiCodePreviewResetKey(operation?: OpenApiOperation) {
-  const operationId = getString(operation?.operationId);
-
-  if (operationId) return operationId;
-
-  const method = getString(operation?.method) ?? '';
-  const path = getString(operation?.__path) ?? getString(operation?.path) ?? '';
-
-  return `${method}:${path}`;
 }
 
 function OpenApiRightSection({

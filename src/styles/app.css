@@ -1446,29 +1446,6 @@
   overscroll-behavior: contain;
 }
 
-.openapi-code-preview[data-wrap-lines="true"]
-  :is(
-    figure:has(> [data-openapi-code-viewport]),
-    [data-openapi-code-viewport],
-    [data-openapi-code-viewport] pre,
-    [data-openapi-code-viewport] pre code,
-    [data-openapi-code-viewport] pre code span,
-    [data-openapi-code-viewport] .line
-  ) {
-  width: auto;
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  overflow-x: hidden;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] {
-  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs overflow utility. */
-  overflow-x: hidden !important;
-}
-
 @container (max-width: 58.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
     /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */

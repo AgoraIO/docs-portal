@@ -975,15 +975,9 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('caps only marked OpenAPI code viewports and supports opt-in wrapping', () => {
+  it('caps only marked OpenAPI code viewports', () => {
     const viewport = getRuleBodyContaining(
       '.openapi-code-preview [data-openapi-code-viewport]',
-    );
-    const wrapContent = getRuleBodyContaining(
-      '.openapi-code-preview[data-wrap-lines="true"]',
-    );
-    const wrapViewport = getRuleBody(
-      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',
     );
     const mobileViewport = getRuleBodyContainingInContainer(
       '[data-openapi-code-viewport]',
@@ -1000,10 +994,6 @@ describe('app prose CSS regressions', () => {
     );
     expectDeclaration(viewport.rule, 'overflow', 'auto');
     expectDeclaration(viewport.rule, 'overscroll-behavior', 'contain');
-    expectDeclaration(wrapContent.rule, 'white-space', 'pre-wrap');
-    expectDeclaration(wrapContent.rule, 'overflow-wrap', 'anywhere');
-    expectDeclaration(wrapContent.rule, 'word-break', 'break-word');
-    expectDeclaration(wrapViewport.rule, 'overflow-x', 'hidden !important');
     expectDeclaration(
       mobileViewport.rule,
       'max-block-size',
@@ -1012,32 +1002,6 @@ describe('app prose CSS regressions', () => {
     expect(mobileViewport.rule.parent?.type).toBe('atrule');
     expect((mobileViewport.rule.parent as postcss.AtRule).name).toBe(
       'container',
-    );
-  });
-
-  it('lets wrapped OpenAPI code defeat Fumadocs width and height utilities', () => {
-    const wrappedCode = getRuleBodyContaining(
-      '.openapi-code-preview[data-wrap-lines="true"]',
-    );
-    const wrappedViewport = getRuleBody(
-      '.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport]',
-    );
-
-    expect(wrappedCode.rule.parent?.type).toBe('root');
-    expectDeclaration(wrappedCode.rule, 'width', 'auto');
-    expectDeclaration(wrappedCode.rule, 'max-width', '100%');
-    expectDeclaration(wrappedCode.rule, 'min-width', '0');
-    expectDeclaration(wrappedCode.rule, 'white-space', 'pre-wrap');
-    expectDeclaration(wrappedCode.rule, 'overflow-wrap', 'anywhere');
-    expectDeclaration(wrappedCode.rule, 'overflow-x', 'hidden');
-    expectDeclaration(wrappedViewport.rule, 'overflow-x', 'hidden !important');
-    const baseViewport = getRuleBodyOutsideContainer(
-      '.openapi-code-preview [data-openapi-code-viewport]',
-    );
-    expectDeclaration(
-      baseViewport.rule,
-      'max-block-size',
-      'min(20vh, 11rem) !important',
     );
   });
 
