@@ -53,13 +53,15 @@ describe('OpenApiCodePreview', () => {
         <OpenApiCodePreview resetKey="operation-a">
           <CodeTabs />
         </OpenApiCodePreview>
-        <OpenApiCodePreview resetKey="operation-a:response" role="response">
+        <OpenApiCodePreview codeRole="response" resetKey="operation-a:response">
           <CodeTabs />
         </OpenApiCodePreview>
       </>,
     );
 
-    const previews = container.querySelectorAll('[data-testid="openapi-code-preview"]');
+    const previews = container.querySelectorAll(
+      '[data-testid="openapi-code-preview"]',
+    );
     expect(previews[0]).toHaveAttribute('data-openapi-code-role', 'request');
     expect(previews[1]).toHaveAttribute('data-openapi-code-role', 'response');
     expect(

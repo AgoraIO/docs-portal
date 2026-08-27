@@ -583,9 +583,10 @@ describe('FumadocsOpenApiContent', () => {
       .getByText('Request examples')
       .closest('.openapi-request-examples');
     expect(requestExamples).not.toBeNull();
-    const wrapButton = await within(
-      requestExamples as HTMLElement,
-    ).findByRole('button', { name: 'Wrap lines' });
+    const wrapButton = await within(requestExamples as HTMLElement).findByRole(
+      'button',
+      { name: 'Wrap lines' },
+    );
     const responseExamples = screen
       .getByText('Response example')
       .closest('.openapi-response-example');
@@ -609,16 +610,16 @@ describe('FumadocsOpenApiContent', () => {
 
     expect(
       within(
-        screen.getByText('Request examples').closest(
-          '.openapi-request-examples',
-        ) as HTMLElement,
+        screen
+          .getByText('Request examples')
+          .closest('.openapi-request-examples') as HTMLElement,
       ).getByRole('button', { name: 'Wrap lines' }),
     ).toHaveAttribute('aria-pressed', 'false');
     expect(
       within(
-        screen.getByText('Response example').closest(
-          '.openapi-response-example',
-        ) as HTMLElement,
+        screen
+          .getByText('Response example')
+          .closest('.openapi-response-example') as HTMLElement,
       ).getByRole('button', { name: 'Wrap lines' }),
     ).toHaveAttribute('aria-pressed', 'false');
   });

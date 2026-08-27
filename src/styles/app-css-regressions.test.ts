@@ -1056,11 +1056,7 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(toggle, 'inline-size', '2rem');
     expectDeclaration(toggle, 'block-size', '2rem');
     expectDeclaration(activeToggle, 'background', 'var(--color-fd-accent)');
-    expectDeclaration(
-      responseViewport,
-      'max-block-size',
-      'none !important',
-    );
+    expectDeclaration(responseViewport, 'max-block-size', 'none !important');
     expectDeclaration(responseViewport, 'overflow', 'visible !important');
   });
 

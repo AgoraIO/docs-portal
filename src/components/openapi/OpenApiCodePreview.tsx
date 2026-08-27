@@ -5,13 +5,13 @@ export type OpenApiCodeRole = 'request' | 'response';
 
 export function OpenApiCodePreview({
   children,
+  codeRole = 'request',
   resetKey,
-  role = 'request',
   wrapLabel = 'Wrap lines',
 }: {
   children: ReactNode;
+  codeRole?: OpenApiCodeRole;
   resetKey: string;
-  role?: OpenApiCodeRole;
   wrapLabel?: string;
 }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export function OpenApiCodePreview({
   return (
     <div
       className="openapi-code-preview"
-      data-openapi-code-role={role}
+      data-openapi-code-role={codeRole}
       data-testid="openapi-code-preview"
       data-wrap-lines={wrap}
       ref={rootRef}

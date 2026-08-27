@@ -111,16 +111,10 @@ describe('OpenApiExamplesRail', () => {
   it('ignores response-role viewports when selecting the active request viewport', async () => {
     render(
       <OpenApiExamplesRail>
-        <div
-          className="openapi-code-preview"
-          data-openapi-code-role="response"
-        >
+        <div className="openapi-code-preview" data-openapi-code-role="response">
           <div data-openapi-code-viewport>response</div>
         </div>
-        <div
-          className="openapi-code-preview"
-          data-openapi-code-role="request"
-        >
+        <div className="openapi-code-preview" data-openapi-code-role="request">
           <div data-openapi-code-viewport>request</div>
         </div>
       </OpenApiExamplesRail>,

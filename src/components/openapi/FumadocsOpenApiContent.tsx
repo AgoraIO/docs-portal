@@ -455,7 +455,7 @@ function OpenApiRightExamplesLayout({
       >
         <OpenApiCodePreview
           resetKey={`${getOpenApiCodePreviewResetKey(operation)}:response`}
-          role="response"
+          codeRole="response"
           wrapLabel={isZhCnLocale(locale) ? '自动换行' : 'Wrap lines'}
         >
           {slots.responseTabs}

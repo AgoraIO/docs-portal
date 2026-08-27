@@ -32,7 +32,8 @@ expect(button.textContent).toBe('');
 
 - [ ] **Step 2: Add request/response role assertions**
 
-Render one preview with the default request role and one with `role="response"`.
+Render one preview with the default request role and one with
+`codeRole="response"`.
 Assert the roots expose `data-openapi-code-role="request"` and
 `data-openapi-code-role="response"`. The response fixture may still mark its
 viewport for shared wrapping CSS, but it must never receive the active request
@@ -78,25 +79,25 @@ git commit -m "test: specify request and response wrap controls"
 
 - [ ] **Step 1: Add the role prop and stable root attributes**
 
-Use a typed role with request as the default:
+Use a typed code role with request as the default:
 
 ```tsx
 type OpenApiCodeRole = 'request' | 'response';
 
 export function OpenApiCodePreview({
   children,
+  codeRole = 'request',
   resetKey,
-  role = 'request',
   wrapLabel = 'Wrap lines',
 }: {
   children: ReactNode;
+  codeRole?: OpenApiCodeRole;
   resetKey: string;
-  role?: OpenApiCodeRole;
   wrapLabel?: string;
 })
 ```
 
-Set `data-openapi-code-role={role}` on the root. Keep the current reset-key
+Set `data-openapi-code-role={codeRole}` on the root. Keep the current reset-key
 behavior so both regions reset when the operation identity changes.
 
 - [ ] **Step 2: Render the compact accessible control**
@@ -157,7 +158,7 @@ In `OpenApiRightExamplesLayout`, replace the raw response slot with:
 ```tsx
 <OpenApiCodePreview
   resetKey={`${getOpenApiCodePreviewResetKey(operation)}:response`}
-  role="response"
+  codeRole="response"
   wrapLabel={isZhCnLocale(locale) ? '自动换行' : 'Wrap lines'}
 >
   {slots.responseTabs}
