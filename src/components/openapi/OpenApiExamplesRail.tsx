@@ -23,12 +23,38 @@ export function OpenApiExamplesRail({
   const anchorRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
   const [constrained, setConstrained] = useState(false);
+  const [resolvedStickyTop, setResolvedStickyTop] = useState(
+    stickyTopProp ?? DEFAULT_OPENAPI_RAIL_STICKY_TOP,
+  );
 
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
 
-    const stickyTop = stickyTopProp ?? getRailStickyTop(rail);
+    const syncStickyTop = () => {
+      const nextStickyTop = stickyTopProp ?? getRailStickyTop(rail);
+      setResolvedStickyTop((current) =>
+        current === nextStickyTop ? current : nextStickyTop,
+      );
+    };
+    syncStickyTop();
+
+    const offsetSource = findDocsShellOffsetSource(rail);
+    if (!offsetSource || typeof MutationObserver === 'undefined') return;
+
+    const observer = new MutationObserver(syncStickyTop);
+    observer.observe(offsetSource, {
+      attributeFilter: ['style'],
+      attributes: true,
+    });
+    return () => observer.disconnect();
+  }, [stickyTopProp]);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const stickyTop = resolvedStickyTop;
 
     let frame = 0;
     const getActiveViewport = () => {
@@ -160,12 +186,12 @@ export function OpenApiExamplesRail({
         window.cancelAnimationFrame(frame);
       }
     };
-  }, [stickyTopProp, stuck]);
+  }, [resolvedStickyTop, stuck]);
 
   useEffect(() => {
     const anchor = anchorRef.current;
     if (!anchor || typeof IntersectionObserver === 'undefined') return;
-    const stickyTop = stickyTopProp ?? getRailStickyTop(anchor);
+    const stickyTop = resolvedStickyTop;
     const sentinel = anchor.querySelector<HTMLElement>(
       '[data-openapi-examples-rail-sentinel]',
     );
@@ -181,7 +207,7 @@ export function OpenApiExamplesRail({
     );
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [stickyTopProp]);
+  }, [resolvedStickyTop]);
 
   return (
     <div className="openapi-examples-rail-anchor" ref={anchorRef}>
@@ -223,4 +249,18 @@ function getRootFontSize() {
   const parsed = Number.parseFloat(value);
 
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 16;
+}
+
+function findDocsShellOffsetSource(element: HTMLElement) {
+  for (
+    let current = element.parentElement;
+    current;
+    current = current.parentElement
+  ) {
+    if (current.style.getPropertyValue('--docs-shell-header-offset')) {
+      return current;
+    }
+  }
+
+  return undefined;
 }

@@ -426,6 +426,63 @@ describe('OpenApiExamplesRail', () => {
     expect(rail).toHaveAttribute('data-stuck', 'true');
   });
 
+  it('resyncs the sticky threshold when the docs shell offset changes', async () => {
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 1000,
+    });
+    const shell = document.createElement('div');
+    shell.style.setProperty('--docs-shell-header-offset', '131px');
+    const layout = document.createElement('div');
+    shell.append(layout);
+    document.body.append(shell);
+    Object.defineProperty(layout, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({ width: 1000 }),
+    });
+    const originalGetComputedStyle = window.getComputedStyle.bind(window);
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+      if (
+        element instanceof HTMLElement &&
+        element.classList.contains('openapi-examples-rail')
+      ) {
+        return {
+          getPropertyValue: (property: string) =>
+            property === '--openapi-examples-sticky-top'
+              ? shell.style.getPropertyValue('--docs-shell-header-offset')
+              : '',
+        } as unknown as CSSStyleDeclaration;
+      }
+      return originalGetComputedStyle(element);
+    });
+
+    render(<OpenApiExamplesRail>Examples</OpenApiExamplesRail>, {
+      container: layout,
+    });
+    const rail = screen.getByTestId('openapi-examples-rail');
+    await waitFor(() =>
+      expect(MockIntersectionObserver.instance.options?.rootMargin).toBe(
+        '-131px 0px 0px 0px',
+      ),
+    );
+    expect(rail.style.getPropertyValue('--openapi-rail-available-height')).toBe(
+      '853px',
+    );
+
+    act(() => {
+      shell.style.setProperty('--docs-shell-header-offset', '94px');
+    });
+    await waitFor(() =>
+      expect(MockIntersectionObserver.instance.options?.rootMargin).toBe(
+        '-94px 0px 0px 0px',
+      ),
+    );
+    expect(rail.style.getPropertyValue('--openapi-rail-available-height')).toBe(
+      '890px',
+    );
+    shell.remove();
+  });
+
   it('recalculates when wrapping state changes', async () => {
     Object.defineProperty(window, 'innerHeight', {
       configurable: true,

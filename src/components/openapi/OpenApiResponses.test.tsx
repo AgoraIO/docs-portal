@@ -360,7 +360,35 @@ describe('OpenApiResponses', () => {
       });
     const cancelAnimationFrame = vi.spyOn(window, 'cancelAnimationFrame');
     window.location.hash = 'response-headers-default-x-request-id';
-    const { unmount } = renderResponses([view('default'), view('200')]);
+    const { unmount } = render(
+      <OpenApiResponses
+        renderDescription={() => null}
+        renderHeaders={(headers, status) =>
+          headers.map((header) => (
+            <div
+              id={`response-headers-${status}-${header.name}`}
+              key={header.name}
+            >
+              {header.name}
+            </div>
+          ))
+        }
+        renderSchema={() => ({ hasFields: false, node: null })}
+        responses={[
+          view('default', {
+            headers: [
+              {
+                name: 'x-request-id',
+                schema: { type: 'string' },
+                source: { schema: { type: 'string' } },
+              },
+            ],
+          }),
+          view('200'),
+        ]}
+        sectionId="test-responses"
+      />,
+    );
 
     const panel = document.getElementById(
       screen
@@ -368,6 +396,10 @@ describe('OpenApiResponses', () => {
         .getAttribute('aria-controls') ?? '',
     );
     expect(panel).not.toHaveAttribute('hidden');
+    const target = document.getElementById(
+      'response-headers-default-x-request-id',
+    );
+    expect(target).toBeVisible();
     act(() => {
       callbacks.forEach((callback) => {
         callback(0);
