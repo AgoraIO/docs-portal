@@ -230,13 +230,13 @@ Bypasses the LLM and makes the agent speak text directly through its TTS pipelin
 This method requires RTM. A resolved `Promise` only indicates that the RTM message was published successfully, not that the agent has finished speaking.
 
 ```javascript
-public async speak(agentUserId: string, message: ISpeakMessage): Promise<void>
+public async speak(agentUserId: string, message: SpeakMessage): Promise<void>
 ```
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
 | `agentUserId` | `string` | Unique identifier of the agent. |
-| `message` | `ISpeakMessage` | The text to speak and its playback behavior. See [`ISpeakMessage`](#ispeakmessage). |
+| `message` | `SpeakMessage` | The text to speak and its playback behavior. See [`SpeakMessage`](#speakmessage). |
 
 **Return Value**  
 If the method call succeeds, a `Promise<void>` is returned.
@@ -248,13 +248,13 @@ Injects text as user input into the conversation for the LLM to process.
 This method requires RTM. A resolved `Promise` only indicates that the RTM message was published successfully, not that the LLM has finished processing the instruction.
 
 ```javascript
-public async think(agentUserId: string, message: IThinkMessage): Promise<void>
+public async think(agentUserId: string, message: ThinkMessage): Promise<void>
 ```
 
 | Parameter | Type     | Description             |
 |-----------|----------|-------------------------|
 | `agentUserId` | `string` | Unique identifier of the agent. |
-| `message` | `IThinkMessage` | The instruction text, state actions, and custom metadata. See [`IThinkMessage`](#ithinkmessage). |
+| `message` | `ThinkMessage` | The instruction text, state actions, and custom metadata. See [`ThinkMessage`](#thinkmessage). |
 
 **Return Value**  
 If the method call succeeds, a `Promise<void>` is returned.
@@ -445,12 +445,12 @@ export interface IChatMessageImage extends IChatMessageBase {
 | `uuid`         | `string`                       | Unique identifier for the image message.     |
 | `url`          | `string`                       | Optional. URL pointing to the image resource. |
 
-### `ISpeakMessage`
+### `SpeakMessage`
 
 Used to bypass the LLM and speak text directly through the agent's TTS pipeline.
 
 ```js
-export interface ISpeakMessage {
+export interface SpeakMessage {
   text: string
   priority?: EChatMessagePriority
   interruptable?: boolean
@@ -463,12 +463,12 @@ export interface ISpeakMessage {
 | `priority` | `EChatMessagePriority` | Optional. The priority for handling this speak request. Defaults to `INTERRUPTED`. See [`EChatMessagePriority`](#echatmessagepriority). |
 | `interruptable` | `boolean` | Optional. Whether the user can interrupt this speech by talking. Defaults to `true`. |
 
-### `IThinkMessage`
+### `ThinkMessage`
 
 Used to inject text as user input for the LLM to process.
 
 ```js
-export interface IThinkMessage {
+export interface ThinkMessage {
   text: string
   onListeningAction?: EThinkListeningAction
   onThinkingAction?: EThinkThinkingAction

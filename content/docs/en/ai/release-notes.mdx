@@ -125,10 +125,19 @@ This release adds `speak` and `think` methods to the client toolkit, so you can 
 
 - [`speak`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#speak)
 - [`think`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#think)
-- `ISpeakMessage`, `IThinkMessage`, `EThinkListeningAction`, `EThinkThinkingAction`, `EThinkSpeakingAction`
+- `SpeakMessage`, `ThinkMessage`, `EThinkListeningAction`, `EThinkThinkingAction`, `EThinkSpeakingAction`
 
 </TabsContent>
 </Tabs>
+
+#### Deprecation notice
+
+:::warning[Important]
+These changes may affect your existing integration. Review each change and update your integration as needed.
+:::
+
+- **`asr.params` becomes required for non-default ASR vendors in v2.13.** Starting in v2.13, a request that sets [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) to a vendor other than `ares` and omits [`asr.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-params) fails. Configure `asr.params` for your vendor, or omit `asr.vendor` to keep the default `ares` vendor.
+- **Legacy `turn_detection` fields and the `keywords`/`disabled` start-of-speech modes lose their support guarantee in a future release.** Migrate to [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config) and [`interruption`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-interruption), introduced in v2.6.
 
 ### v2.11
 

@@ -252,7 +252,7 @@ GET https://api.example.com/orders/ORD-10293/status
 Authorization: Bearer your-order-service-key
 ```
 
-#### Field reference
+**Field reference**
 
 Use the following fields to configure tool use:
 
@@ -359,7 +359,7 @@ Even if tool calling isn't enabled, any tools you declare are still validated fo
 
 ### Configure a POST tool
 
-Use a `POST` tool to perform actions, such as creating a ticket or sending a message. You can use `server.body` only with `POST`; configuring it for a `GET` tool causes validation to fail. The following example sends a confirmed delivery address to a phone number:
+Use a `POST` tool to perform actions, such as creating a ticket or sending a message. A request body can only be used with `POST`; configuring one for a `GET` tool causes validation to fail. The following example sends a confirmed delivery address to a phone number:
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -579,7 +579,7 @@ postTool := &Agora.LlmTool{
 
 `{{tool_call_id}}` is the system-generated ID correlating this tool call. You can pass it to your own service to correlate logs or detect a repeated call, but passing it alone doesn't stop your service from processing the same request twice, and Agora doesn't automatically retry requests. Your service is still responsible for handling duplicate requests and unknown outcomes.
 
-#### Field reference
+**Field reference**
 
 `function` and `execution` are the same as for a `GET` tool. The following fields are specific to a `POST` tool's `server` block:
 
@@ -642,7 +642,7 @@ postTool := &Agora.LlmTool{
 
 For `POST` tools that change data or trigger an action:
 
-- State the conditions for calling the tool in `function.description` and in your system prompt, such as requiring the user to confirm first.
+- State the conditions for calling the tool in its description and in your system prompt, such as requiring the user to confirm first.
 - Perform the final authorization check on your own server. Don't rely on the LLM's judgment alone.
 - Only have the agent tell the user the request succeeded after your endpoint returns a `2xx` status.
 - If a request has already been sent, a user interruption doesn't guarantee the remote action is canceled or rolled back.
@@ -833,7 +833,7 @@ tool := &Agora.LlmTool{
 </TabsContent>
 </Tabs>
 
-#### Field reference
+**Field reference**
 
 The following fields configure and reference `template_variables` in each language.
 
@@ -904,7 +904,7 @@ The following reference material covers the tool parameter schema, response hand
 
 ### Parameter schema
 
-`function.parameters` uses JSON Schema and is passed to the LLM using OpenAI's non-strict function-calling mode. The root must be `object`, with parameters typically declared under `properties`. For details, see [OpenAI's Function Calling guide](https://platform.openai.com/docs/guides/function-calling).
+A tool's parameters use JSON Schema and are passed to the LLM using OpenAI's non-strict function-calling mode. The root must be `object`, with parameters typically declared under `properties`. For details, see [OpenAI's Function Calling guide](https://platform.openai.com/docs/guides/function-calling).
 
 ```json
 {
@@ -966,12 +966,12 @@ A few other runtime behaviors to keep in mind:
 
 ### Security and configuration limits
 
-- `server.url` must be an absolute HTTPS URL. Usernames and passwords in the URL aren't supported.
+- The request URL must be an absolute HTTPS URL. Usernames and passwords in the URL aren't supported.
 - Header values are treated as sensitive: they aren't passed to the model, and aren't written to regular logs, subtitles, or TTS output. OAuth token exchange, dynamic request signing, mTLS, and reusable credential resources aren't provided.
 - The final rendered URL is capped at 8192 UTF-8 bytes: each path variable at 1024 bytes, and each query variable at 4096 bytes.
 - Headers are capped at 32 entries, totaling up to 16 KiB.
-- `server.body` is `POST` only. Both the configured value and the rendered result are capped at 64 KiB.
-- `server.timeout_ms` defaults to `10000`, in the range `1000` to `100000`.
+- The request body is `POST` only. Both the configured value and the rendered result are capped at 64 KiB.
+- The request timeout defaults to `10000` ms, in the range `1000` to `100000`.
 - A non-empty response body can't exceed 1 MiB. Extracting specific fields, JSONPath, or custom truncation aren't supported.
 - Custom tools, MCP tools, built-in tools, and model-native tools share one namespace. Tool names must start with a letter, contain only letters and numbers, and be no more than 64 characters, and comparisons aren't case-sensitive.
 - Tool names can't use the `mcp` prefix or the value `ragsearch_tool`. After discovery and filtering, the engine exposes at most 32 tools to the model.
@@ -984,7 +984,7 @@ If a custom tool isn't behaving as expected, start with these checks.
 | Symptom | Check |
 |---|---|
 | The model never calls the tool | Check that `enable_tools` is set to `true`, the tool description explains when to call it and what it returns, and the current LLM supports function calling. |
-| Agent creation fails | Check that `type` is `function`, `function.parameters`'s root type is `object`, `server.method` is `GET` or `POST`, and no tool name is duplicated. |
+| Agent creation fails | Check that the tool type is `function`, the parameters' root type is `object`, the request method is `GET` or `POST`, and no tool name is duplicated. |
 | Your endpoint never receives a request | Check that `server` is a sibling of `function` rather than nested inside it, the URL is an absolute HTTPS URL, the referenced template variables exist, and `body` isn't configured on a `GET` tool. |
 | A header doesn't contain the model's parameter | Check for `{{args.<name>}}` in a header. Headers don't support it; use a fixed value directly, or use `template_variables` or `tool_call_id` instead. |
 | Your endpoint returns a parameter validation error | Check the body field names, parameter types, and `Content-Type`. Template placeholders in the request body can't be concatenated with other text. |

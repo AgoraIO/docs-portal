@@ -10,50 +10,54 @@ Common use cases for filler words include:
 - **Complex queries**: Queries that require more LLM processing time benefit from a brief acknowledgment to signal that the agent is working on a response.
 - **Customer service scenarios**: In support interactions, filler words such as "Let me look into that for you" reassure users that their request is being handled.
 
-## Prerequisites
+## Understand the tech
 
-Use the [Agora CLI](/en/introduction/agora-cli) to create or select an Agora project, enable RTC and Conversational AI, and verify project readiness:
+You configure filler words as part of the agent's configuration. Their behavior depends on the content mode you choose and how the engine times playback against the main LLM response.
 
-```bash
-agora login
-agora project create conv-ai-tutorial --feature rtc --feature convoai
-agora project use conv-ai-tutorial
-agora project doctor --feature convoai
-```
+### Filler word modes
 
-You also need a working Conversational AI Engine project. If you don't have one yet, follow the [quickstart](../../get-started/quickstart) to set one up.
+Specify where filler word content comes from:
 
-## Choose a filler word mode
-
-Choose where filler word content comes from using `content.mode`:
-
-- `static` (default): Selects a predefined phrase from `content.static_config.phrases`. This is also the behavior when `mode` is omitted.
-- `generated`: Dynamically generates a filler phrase based on the current conversation. If the generated result isn't ready in time, generation fails, or the content is invalid, the agent falls back to a phrase from `content.static_config.phrases`.
+- **Static** (default): Selects a phrase from a predefined list. This is also the behavior when no mode is set.
+- **Generated**: Dynamically generates a filler phrase based on the current conversation. If the generated result isn't ready in time, generation fails, or the content is invalid, the agent falls back to a phrase from the static list.
 
 :::info
-`generated` mode must be set explicitly, and you still need to configure `content.static_config` as a fallback. When configuring through the REST API, the filler-word generation service is Agora-hosted, and you don't need to configure an additional model, endpoint, or credentials. When configuring through an Agora Agents SDK, you can specify an OpenAI Chat Completions-compatible model service in `content.generated_config.llm_provider`.
+Generated mode must be set explicitly, and you still need to configure a static fallback list. When configuring through the REST API, the filler-word generation service is Agora-hosted, and you don't need to configure an additional model, endpoint, or credentials. When configuring through an Agora Agents SDK, you can specify an OpenAI Chat Completions-compatible model service to generate the filler word.
 :::
 
-## Understand trigger timing
+### Filler word selection and playback
 
 For qualifying speech input or a [custom instruction](/en/api-reference/api-ref/conversational-ai/think), the engine starts the main LLM request and dynamic filler word generation at the same time:
 
-1. If the main LLM produces playable content before `response_wait_ms` elapses, the agent plays the main reply directly, without playing a filler word.
+1. If the main LLM produces playable content before the response wait threshold elapses, the agent plays the main reply directly, without playing a filler word.
 2. If the main LLM is still waiting when the threshold elapses and a dynamic filler word is already ready, the agent plays the dynamic filler word.
 3. If the dynamic filler word isn't ready, generation failed, or the content is invalid, the agent plays a static fallback filler word instead.
 4. Playing a filler word doesn't cancel, discard, or restart the main LLM request. The agent continues into the main reply once it's ready.
 
 The agent plays at most one filler word per turn. A dynamic filler word that arrives late doesn't replace content that's already been selected, and it doesn't trigger a second playback. Prefetch turns don't trigger filler words.
 
-When `content.mode` is `static`, or `content.mode` is omitted, the engine doesn't start dynamic filler word generation at all. Once the main LLM's wait time reaches `response_wait_ms`, the agent selects and plays a static phrase from `content.static_config.phrases` directly.
+When you use static mode, or don't set a mode, the engine doesn't start dynamic filler word generation at all. Once the main LLM's wait time reaches the response wait threshold, the agent selects and plays a static phrase directly.
+
+## Prerequisites
+
+- Use the [Agora CLI](/en/introduction/agora-cli) to create or select an Agora project, and verify project readiness:
+
+  ```bash
+  agora login
+  agora project create conv-ai-tutorial
+  agora project use conv-ai-tutorial
+  agora project doctor
+  ```
+
+- Implemented the basic logic for interacting with a conversational AI agent by following the [quickstart](../../get-started/quickstart).
 
 ## Implementation
 
-Take the following steps to configure filler words.
+Configure static or generated filler words, depending on the mode you want to use.
 
 ### Configure static filler words
 
-The following example configures filler words that play a random phrase when the LLM takes longer than 1.5 seconds to respond.
+The following example configures filler words to play a random phrase when the LLM takes longer than 1.5 seconds to respond.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -66,8 +70,8 @@ The following example configures filler words that play a random phrase when the
 <TabsContent value="python">
 
 ```python
-from agora_agent import Agent
-from agora_agent.agentkit import (
+from agora_agent import (
+    Agent,
     FillerWordsConfig,
     FillerWordsTrigger,
     FillerWordsTriggerFixedTimeConfig,
@@ -211,9 +215,7 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 </TabsContent>
 </Tabs>
 
-#### Field reference
-
-The field names differ slightly by language, since Python, TypeScript, and REST pass a raw object mirroring the JSON body, while Go uses typed structs.
+**Field reference**
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -276,16 +278,16 @@ The field names differ slightly by language, since Python, TypeScript, and REST 
 </TabsContent>
 </Tabs>
 
-`content.static_config.phrases` supports 1 to 100 non-empty strings. A phrase containing only Latin characters supports up to 50 space-separated words; a phrase containing any non-Latin character supports up to 50 Unicode code points.
+The static phrase list supports 1 to 100 non-empty strings. A phrase containing only Latin characters supports up to 50 space-separated words; a phrase containing any non-Latin character supports up to 50 Unicode code points.
 
-Choose a `response_wait_ms` value based on your use case:
+Choose a response wait threshold based on your use case:
 
 - **Lower values** (500-1000 ms): Better for fast-paced interactions where silence is more noticeable.
 - **Higher values** (1500-3000 ms): Suitable for scenarios where users expect some processing time, such as complex queries or data lookups.
 
 ### Configure generated filler words
 
-Set `content.mode` to `generated`, and keep a static fallback configured. The following example also configures an OpenAI Chat Completions-compatible model to generate the filler phrase:
+Set the content mode to generated, and keep a static fallback configured. The following example also configures an OpenAI Chat Completions-compatible model to generate the filler phrase:
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -298,8 +300,8 @@ Set `content.mode` to `generated`, and keep a static fallback configured. The fo
 <TabsContent value="python">
 
 ```python
-from agora_agent import Agent
-from agora_agent.agentkit import (
+from agora_agent import (
+    Agent,
     FillerWordsConfig,
     FillerWordsContent,
     FillerWordsContentStaticConfig,
@@ -449,9 +451,9 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 </TabsContent>
 </Tabs>
 
-#### Field reference
+**Field reference**
 
-`content.generated_config.llm_provider` is only available in the Agora Agents SDKs; the REST API doesn't expose it, since generation is Agora-hosted.
+The option to bring your own model for generation is only available in the Agora Agents SDKs; the REST API doesn't expose it, since generation is Agora-hosted.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -466,6 +468,7 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `enable` | `bool` | No | Whether to enable filler words. Requires a static fallback when set to `True`. Defaults to `False`. |
+| Trigger configuration | — | No | Uses `fixed_time` mode with a 1500 ms threshold when not explicitly set. |
 | `content.mode` | `str` | Yes | Set to `generated` to enable generated filler words. |
 | `content.static_config.phrases` | `List[str]` | Yes | Static fallback phrases, used when the generated filler word isn't available. |
 | `content.generated_config.llm_provider.base_url` | `str` | Conditional | The model service's Chat Completions endpoint. Required if `llm_provider` is set. |
@@ -498,6 +501,8 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `FillerWordsConfig.Enable` | `*bool` | No | Whether to enable filler words. Requires a static fallback when set to `true`. Defaults to `false`. |
+| `FillerWordsTrigger.Mode` | `*string` | No | Filler word trigger mode. Defaults to `fixed_time`. |
+| `FillerWordsTriggerFixedTimeConfig.ResponseWaitMs` | `*int` | No | LLM response wait threshold in milliseconds, from `100` to `10000`. Defaults to `1500`. |
 | `FillerWordsContent.Mode` | `*FillerWordsContentMode` | Yes | Content mode. Use `FillerWordsContentModeGenerated` for generated filler words. |
 | `FillerWordsContentStaticConfig.Phrases` | `[]string` | Yes | Static fallback phrases, used when the generated filler word isn't available. |
 | `FillerWordsContentGeneratedConfig.LlmProvider` | `*FillerWordsGeneratedLlmProvider` | No | OpenAI Chat Completions-compatible model service configuration used to generate the filler word. |
@@ -512,6 +517,9 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
+| `enable` | Boolean | No | Whether to enable filler words. Requires a static fallback phrase list when set to `true`. Defaults to `false`. |
+| `trigger.mode` | String | No | Filler word trigger mode. Defaults to `fixed_time`. |
+| `trigger.fixed_time_config.response_wait_ms` | Integer | No | LLM response wait threshold in milliseconds, from `100` to `10000`. Defaults to `1500`. |
 | `content.mode` | String | Yes | Set to `generated` to enable generated filler words. |
 | `content.static_config` | Object | Yes | Static fallback configuration. Used whenever the generated filler word isn't available. |
 | `content.static_config.phrases` | Array of String | Yes | Static fallback phrases, supporting 1 to 100 non-empty strings. |
@@ -522,7 +530,7 @@ Add the following `filler_words` object to `properties` in your [Start a convers
 </TabsContent>
 </Tabs>
 
-When configuring through the REST API, filler-word generation is Agora-hosted, so there's no `llm_provider` field to configure. Generation runs in parallel with the main LLM request, and falls back to `content.static_config` if it isn't ready by `response_wait_ms`.
+When configuring through the REST API, filler-word generation is Agora-hosted, so there's no model provider field to configure. Generation runs in parallel with the main LLM request, and falls back to the static phrase list if it isn't ready by the response wait threshold.
 
 ## Best practices
 
@@ -530,9 +538,9 @@ Keep the following tips in mind when configuring filler words:
 
 - **Keep phrases short and natural**: Use brief, conversational phrases that sound like something a person would say.
 - **Match phrasing to your use case**: For customer support agents, use reassuring phrases like "Let me look into that for you." For casual assistants, use informal phrases like "Hmm, one sec."
-- **Tune the trigger threshold**: Start with a `response_wait_ms` of 1500 ms and adjust based on your LLM's typical response time. If your agent frequently invokes tools, consider a lower threshold to cover longer processing times.
+- **Tune the trigger threshold**: Start with a response wait threshold of 1500 ms and adjust based on your LLM's typical response time. If your agent frequently invokes tools, consider a lower threshold to cover longer processing times.
 - **Provide enough variety**: Include at least 4-6 phrases to avoid sounding repetitive. Use `shuffle` selection to maximize variety across conversation turns.
-- **Keep a solid static fallback**: When using `generated` mode, still provide a well-chosen `static_config` phrase list, since it plays whenever generation isn't ready in time.
+- **Keep a solid static fallback**: When using generated mode, still provide a well-chosen static phrase list, since it plays whenever generation isn't ready in time.
 
 ## References
 
