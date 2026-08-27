@@ -176,6 +176,9 @@ jobs:
           VITE_DOCS_REGION: global
           VITE_DEPLOY_ENVIRONMENT: preview
           VITE_DEPLOY_VERSION: ${{ github.event.pull_request.head.sha || github.sha }}
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_SEARCH_RANKING_V2: 'true'
           VITE_GTM_ID: ${{ secrets.VITE_GTM_ID }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
