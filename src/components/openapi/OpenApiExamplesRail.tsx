@@ -58,9 +58,7 @@ export function OpenApiExamplesRail({
 
     let frame = 0;
     const getActiveViewport = () => {
-      const viewports = Array.from(
-        rail.querySelectorAll<HTMLElement>('[data-openapi-code-viewport]'),
-      );
+      const viewports = getRequestCodeViewports(rail);
       return viewports.find((viewport) => {
         if (
           viewport.hidden ||
@@ -85,9 +83,7 @@ export function OpenApiExamplesRail({
         0,
         window.innerHeight - stickyTop - RAIL_BOTTOM_GAP,
       );
-      const viewports = Array.from(
-        rail.querySelectorAll<HTMLElement>('[data-openapi-code-viewport]'),
-      );
+      const viewports = getRequestCodeViewports(rail);
       const activeViewport = getActiveViewport();
       for (const viewport of viewports) {
         if (viewport === activeViewport)
@@ -263,4 +259,20 @@ function findDocsShellOffsetSource(element: HTMLElement) {
   }
 
   return undefined;
+}
+
+function getRequestCodeViewports(rail: HTMLElement) {
+  const rolePreviews = rail.querySelectorAll(
+    '.openapi-code-preview[data-openapi-code-role]',
+  );
+  if (rolePreviews.length === 0) {
+    return Array.from(
+      rail.querySelectorAll<HTMLElement>('[data-openapi-code-viewport]'),
+    );
+  }
+  return Array.from(
+    rail.querySelectorAll<HTMLElement>(
+      '.openapi-code-preview[data-openapi-code-role="request"] [data-openapi-code-viewport]',
+    ),
+  );
 }

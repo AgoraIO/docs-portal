@@ -173,6 +173,22 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
     expect(screen.getByText('Empty response body')).toBeInTheDocument();
+
+    const wrapButtons = screen.getAllByRole('button', { name: 'Wrap lines' });
+    expect(wrapButtons).toHaveLength(2);
+    const requestPreview = screen
+      .getByText('Request examples')
+      .closest('.openapi-request-examples')
+      ?.querySelector('[data-testid="openapi-code-preview"]');
+    const responsePreview = screen
+      .getByText('Response example')
+      .closest('.openapi-response-example')
+      ?.querySelector('[data-testid="openapi-code-preview"]');
+    expect(requestPreview).toHaveAttribute('data-wrap-lines', 'false');
+    expect(responsePreview).toHaveAttribute('data-wrap-lines', 'false');
+    fireEvent.click(wrapButtons[1]);
+    expect(responsePreview).toHaveAttribute('data-wrap-lines', 'true');
+    expect(requestPreview).toHaveAttribute('data-wrap-lines', 'false');
   });
 
   it('opens a hashed English response panel and its schema ancestors', async () => {
@@ -383,7 +399,13 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
-    const generatedPreview = screen.getByTestId('openapi-code-preview');
+    const generatedRequestExamples = screen
+      .getByRole('tab', { name: 'cURL' })
+      .closest('.openapi-request-examples');
+    expect(generatedRequestExamples).not.toBeNull();
+    const generatedPreview = within(
+      generatedRequestExamples as HTMLElement,
+    ).getByTestId('openapi-code-preview');
     expect(
       within(generatedPreview).getByRole('button', { name: 'Wrap lines' }),
     ).toHaveAttribute('aria-pressed', 'false');
@@ -557,11 +579,25 @@ describe('FumadocsOpenApiContent', () => {
         })}
       />,
     );
-    const wrapButton = await screen.findByRole('button', {
-      name: 'Wrap lines',
-    });
+    const requestExamples = screen
+      .getByText('Request examples')
+      .closest('.openapi-request-examples');
+    expect(requestExamples).not.toBeNull();
+    const wrapButton = await within(requestExamples as HTMLElement).findByRole(
+      'button',
+      { name: 'Wrap lines' },
+    );
+    const responseExamples = screen
+      .getByText('Response example')
+      .closest('.openapi-response-example');
+    expect(responseExamples).not.toBeNull();
+    const responseWrapButton = within(
+      responseExamples as HTMLElement,
+    ).getByRole('button', { name: 'Wrap lines' });
     fireEvent.click(wrapButton);
+    fireEvent.click(responseWrapButton);
     expect(wrapButton).toHaveAttribute('aria-pressed', 'true');
+    expect(responseWrapButton).toHaveAttribute('aria-pressed', 'true');
 
     rerender(
       <FumadocsOpenApiContent
@@ -572,10 +608,20 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(screen.getByRole('button', { name: 'Wrap lines' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    );
+    expect(
+      within(
+        screen
+          .getByText('Request examples')
+          .closest('.openapi-request-examples') as HTMLElement,
+      ).getByRole('button', { name: 'Wrap lines' }),
+    ).toHaveAttribute('aria-pressed', 'false');
+    expect(
+      within(
+        screen
+          .getByText('Response example')
+          .closest('.openapi-response-example') as HTMLElement,
+      ).getByRole('button', { name: 'Wrap lines' }),
+    ).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('renders authorization from global security and hides auth header parameters', async () => {

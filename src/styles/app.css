@@ -1439,6 +1439,36 @@
    Fumadocs' utility classes (`max-h-[600px]`, `w-max`) without broad globals.
    The !important declarations are limited to the marked viewport and are
    required to override those generated utilities. */
+.openapi-code-preview {
+  position: relative;
+}
+
+.openapi-code-wrap-toggle {
+  position: absolute;
+  inset-block-start: 3.2rem;
+  inset-inline-end: 2.75rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+.openapi-code-preview:has(> .openapi-code-sample-groups > select)
+  .openapi-code-wrap-toggle {
+  inset-block-start: 5.6rem;
+}
+
+.openapi-code-wrap-toggle:hover,
+.openapi-code-wrap-toggle:focus-visible {
+  background: var(--color-fd-accent);
+  color: var(--color-fd-accent-foreground);
+}
+
 .openapi-code-preview [data-openapi-code-viewport] {
   /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
   max-block-size: min(20vh, 11rem) !important;
@@ -1467,6 +1497,19 @@
 .openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] {
   /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs overflow utility. */
   overflow-x: hidden !important;
+}
+
+.openapi-code-preview[data-wrap-lines="true"] .openapi-code-wrap-toggle {
+  background: var(--color-fd-accent);
+  color: var(--color-fd-accent-foreground);
+}
+
+.openapi-code-preview[data-openapi-code-role="response"]
+  [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Override Fumadocs max-height for natural response examples. */
+  max-block-size: none !important;
+  /* biome-ignore lint/complexity/noImportantStyles: Keep response code at natural height instead of an internal scroll region. */
+  overflow: visible !important;
 }
 
 @container (max-width: 58.999rem) {

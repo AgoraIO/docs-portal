@@ -33,6 +33,9 @@ describe('OpenApiCodePreview', () => {
     const button = screen.getByRole('button', { name: 'Wrap lines' });
     const source = 'curl --request GET https://example.com/very-long-path';
 
+    expect(button).toHaveClass('openapi-code-wrap-toggle');
+    expect(button).toHaveAttribute('title', 'Wrap lines');
+    expect(button.textContent).toBe('');
     expect(button).toHaveAttribute('aria-pressed', 'false');
     expect(preview).toHaveAttribute('data-wrap-lines', 'false');
     expect(preview).toHaveTextContent(source);
@@ -42,6 +45,28 @@ describe('OpenApiCodePreview', () => {
     expect(button).toHaveAttribute('aria-pressed', 'true');
     expect(preview).toHaveAttribute('data-wrap-lines', 'true');
     expect(preview).toHaveTextContent(source);
+  });
+
+  it('exposes request and response roles for rail and natural-height behavior', () => {
+    const { container } = render(
+      <>
+        <OpenApiCodePreview resetKey="operation-a">
+          <CodeTabs />
+        </OpenApiCodePreview>
+        <OpenApiCodePreview codeRole="response" resetKey="operation-a:response">
+          <CodeTabs />
+        </OpenApiCodePreview>
+      </>,
+    );
+
+    const previews = container.querySelectorAll(
+      '[data-testid="openapi-code-preview"]',
+    );
+    expect(previews[0]).toHaveAttribute('data-openapi-code-role', 'request');
+    expect(previews[1]).toHaveAttribute('data-openapi-code-role', 'response');
+    expect(
+      previews[1]?.querySelector('[data-openapi-code-viewport]'),
+    ).toBeInTheDocument();
   });
 
   it('marks panel code viewports without including language tabs', async () => {

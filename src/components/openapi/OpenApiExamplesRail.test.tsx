@@ -108,6 +108,45 @@ describe('OpenApiExamplesRail', () => {
     expect(inactive).not.toHaveAttribute('data-openapi-code-viewport-active');
   });
 
+  it('ignores response-role viewports when selecting the active request viewport', async () => {
+    render(
+      <OpenApiExamplesRail>
+        <div className="openapi-code-preview" data-openapi-code-role="response">
+          <div data-openapi-code-viewport>response</div>
+        </div>
+        <div className="openapi-code-preview" data-openapi-code-role="request">
+          <div data-openapi-code-viewport>request</div>
+        </div>
+      </OpenApiExamplesRail>,
+    );
+    const response = screen.getByText('response') as HTMLElement;
+    const request = screen.getByText('request') as HTMLElement;
+    for (const viewport of [response, request]) {
+      Object.defineProperty(viewport, 'getClientRects', {
+        value: () => [{ width: 100, height: 200 }],
+      });
+      Object.defineProperties(viewport, {
+        clientHeight: { configurable: true, value: 200 },
+        scrollHeight: { configurable: true, value: 900 },
+      });
+    }
+    const rail = screen.getByTestId('openapi-examples-rail') as HTMLElement;
+    Object.defineProperty(rail, 'scrollHeight', {
+      configurable: true,
+      value: 700,
+    });
+    act(() =>
+      MockIntersectionObserver.instance.trigger({
+        isIntersecting: false,
+        boundingClientRect: { top: 0 } as DOMRectReadOnly,
+      }),
+    );
+    await waitFor(() =>
+      expect(request).toHaveAttribute('data-openapi-code-viewport-active'),
+    );
+    expect(response).not.toHaveAttribute('data-openapi-code-viewport-active');
+  });
+
   it('uses exact available-height formula and threshold', async () => {
     Object.defineProperty(window, 'innerHeight', {
       configurable: true,
