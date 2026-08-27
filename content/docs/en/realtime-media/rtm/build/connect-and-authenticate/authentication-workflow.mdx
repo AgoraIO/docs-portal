@@ -259,9 +259,9 @@ async function loginRTM() {
     // Initialize the client
     const client = new AgoraRTM.RTM(appID, uid);
 
-    // Display connection status changes
-    client.on('status', function (state, reason) {
-        console.log("State changed To: " + state + " Reason: " + reason)
+    // Display link state changes
+    client.on('linkState', function (event) {
+        console.log("Link state changed to: " + event.currentState + " Reason: " + event.reason)
     });
 
     // Log in to the RTM system

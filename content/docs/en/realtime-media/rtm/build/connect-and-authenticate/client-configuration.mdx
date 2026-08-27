@@ -47,6 +47,8 @@ AgoraRTM.setArea({ areaCodes: ["GLOBAL"], excludedArea: "CHINA" })
 
 In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
 
+Since v2.3.0, the SDK no longer automatically falls back to Cloud Proxy. To use Cloud Proxy, you must explicitly set `cloudProxy` to `true` when initializing the RTM instance. Agora recommends that you give end users an option to enable Cloud Proxy based on your business needs.
+
 ```javascript
 const { RTM } = AgoraRTM;
 const appId = "your_appId";
