@@ -20,6 +20,7 @@ import { Check, Clipboard } from 'lucide-react';
 import {
   type ComponentProps,
   createContext,
+  isValidElement,
   type ReactNode,
   type RefObject,
   useContext,
@@ -37,6 +38,7 @@ import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
+import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import {
   buildOpenApiResponseViews,
   type OpenApiResponseHeaderView,
@@ -1763,6 +1765,12 @@ function OpenApiMarkdownCodeBlock({
   ...props
 }: ComponentProps<'pre'>) {
   const source = useContext(OpenApiCodeSourceContext);
+  const childClassName = isValidElement(children)
+    ? (children.props as { className?: string }).className
+    : undefined;
+  const language =
+    getCodeBlockLanguage(props.className) ??
+    getCodeBlockLanguage(childClassName);
 
   return (
     <CodeBlock
@@ -1777,9 +1785,19 @@ function OpenApiMarkdownCodeBlock({
             )
       }
     >
-      <Pre>{children}</Pre>
+      <Pre>
+        {source === undefined || language === undefined
+          ? children
+          : highlightOpenApiCode({ language, source })}
+      </Pre>
     </CodeBlock>
   );
+}
+
+function getCodeBlockLanguage(className: string | undefined) {
+  const match = className?.match(/(?:^|\s)language-([^\s]+)/);
+
+  return match?.[1];
 }
 
 function OpenApiCodeCopyButton({ source }: { source: string }) {

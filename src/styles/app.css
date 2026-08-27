@@ -1458,6 +1458,64 @@
   overscroll-behavior: contain;
 }
 
+.openapi-operation figure.shiki code .token-command {
+  color: var(--shiki-light-token-command, #0f766e);
+}
+
+.openapi-operation figure.shiki code .token-flag {
+  color: var(--shiki-light-token-keyword, #be185d);
+}
+
+.openapi-operation figure.shiki code .token-url,
+.openapi-operation figure.shiki code .token-string {
+  color: var(--shiki-light-token-string, #a16207);
+}
+
+.openapi-operation figure.shiki code .token-key {
+  color: var(--shiki-light-token-key, #0369a1);
+}
+
+.openapi-operation figure.shiki code .token-number {
+  color: var(--shiki-light-token-number, #7c3aed);
+}
+
+.openapi-operation figure.shiki code .token-keyword,
+.openapi-operation figure.shiki code .token-function {
+  color: var(--shiki-light-token-keyword, #7c3aed);
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  .token-command {
+  color: #f8f8f2;
+}
+
+:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-flag {
+  color: #ff79c6;
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  :is(.token-url, .token-string) {
+  color: #f1fa8c;
+}
+
+:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-key {
+  color: #8be9fd;
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  :is(.token-number, .token-keyword, .token-function) {
+  color: #bd93f9;
+}
+
 @container (max-width: 58.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
     /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */

@@ -426,6 +426,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
+    expect(
+      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
+    ).toBeInTheDocument();
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)
@@ -466,11 +469,13 @@ describe('FumadocsOpenApiContent', () => {
       }
     }
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
-    expect(examplesScope.getByText('import requests')).toBeInTheDocument();
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'import requests',
+    );
     fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
-    expect(
-      examplesScope.getByText('fetch("https://example.com/join")'),
-    ).toBeInTheDocument();
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'fetch("https://example.com/join")',
+    );
 
     expect(screen.queryByRole('tab', { name: 'cURL' })).not.toBeInTheDocument();
     expect(
