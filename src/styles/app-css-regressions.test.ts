@@ -1053,6 +1053,8 @@ describe('app prose CSS regressions', () => {
 
     expectDeclaration(preview, 'position', 'relative');
     expectDeclaration(toggle, 'position', 'absolute');
+    expectDeclaration(toggle, 'inset-block-start', '3.2rem');
+    expectDeclaration(toggle, 'inset-inline-end', '2.75rem');
     expectDeclaration(toggle, 'inline-size', '2rem');
     expectDeclaration(toggle, 'block-size', '2rem');
     expectDeclaration(activeToggle, 'background', 'var(--color-fd-accent)');

@@ -215,8 +215,8 @@ normal flow:
 
 .openapi-code-wrap-toggle {
   position: absolute;
-  inset-block-start: 0.35rem;
-  inset-inline-end: 0.75rem;
+  inset-block-start: 3.2rem;
+  inset-inline-end: 2.75rem;
   z-index: 2;
   display: inline-flex;
   align-items: center;
@@ -225,6 +225,11 @@ normal flow:
   block-size: 2rem;
   border-radius: 0.375rem;
   color: var(--color-fd-muted-foreground);
+}
+
+.openapi-code-preview:has(> .openapi-code-sample-groups > select)
+  .openapi-code-wrap-toggle {
+  inset-block-start: 5.6rem;
 }
 
 .openapi-code-wrap-toggle:hover,
