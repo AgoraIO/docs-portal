@@ -212,10 +212,13 @@ describe('app prose CSS regressions', () => {
       'grid-template-columns',
       'minmax(0, 1fr) auto',
     );
-    const fieldMeta = getRuleBodyContaining('.openapi-field-meta').rule;
-    expectDeclaration(fieldMeta, 'display', 'flex');
-    expectDeclaration(fieldMeta, 'flex-wrap', 'wrap');
-    expectDeclaration(fieldMeta, 'justify-content', 'flex-end');
+    const fieldIdentity = getRuleBodyContaining('.openapi-field-identity').rule;
+    expectDeclaration(fieldIdentity, 'display', 'flex');
+    expectDeclaration(fieldIdentity, 'align-items', 'center');
+    const fieldStatus = getRuleBodyContaining('.openapi-field-status').rule;
+    expectDeclaration(fieldStatus, 'display', 'flex');
+    expectDeclaration(fieldStatus, 'flex-wrap', 'nowrap');
+    expectDeclaration(fieldStatus, 'justify-content', 'flex-end');
     const reducedMotion = getRuleBodyContainingInMedia(
       '.openapi-field-row .openapi-field-anchor',
       'prefers-reduced-motion: reduce',
@@ -228,7 +231,7 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(reducedChevron, 'transition', 'none');
 
     let narrowHeading: postcss.Rule | undefined;
-    let narrowMeta: postcss.Rule | undefined;
+    let narrowStatus: postcss.Rule | undefined;
     appCssRoot.walkAtRules('container', (container) => {
       if (!container.params.includes('max-width: 32rem')) return;
       container.walkRules((candidate) => {
@@ -237,8 +240,8 @@ describe('app prose CSS regressions', () => {
         ) {
           narrowHeading = candidate;
         }
-        if (normalizeSelector(candidate.selector) === '.openapi-field-meta') {
-          narrowMeta = candidate;
+        if (normalizeSelector(candidate.selector) === '.openapi-field-status') {
+          narrowStatus = candidate;
         }
       });
     });
@@ -248,12 +251,12 @@ describe('app prose CSS regressions', () => {
       'minmax(0, 1fr)',
     );
     expectDeclaration(
-      narrowMeta as postcss.Rule,
+      narrowStatus as postcss.Rule,
       'justify-content',
       'flex-start',
     );
     expectDeclaration(
-      narrowMeta as postcss.Rule,
+      narrowStatus as postcss.Rule,
       'padding-inline-start',
       '20px',
     );

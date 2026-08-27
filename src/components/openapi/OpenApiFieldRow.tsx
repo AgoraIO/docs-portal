@@ -36,6 +36,9 @@ type OpenApiFieldRowProps =
       onExpandedChange?: never;
     });
 
+const OPENAPI_FIELD_BADGE_CLASS =
+  'openapi-field-badge shrink-0 whitespace-nowrap rounded border px-1.5 py-0.5 text-[10px] font-semibold tracking-wide';
+
 export function OpenApiFieldRow({
   anchorId,
   deprecated = false,
@@ -82,12 +85,12 @@ export function OpenApiFieldRow({
     >
       <div className="openapi-field-main min-w-0">
         <div className="openapi-field-heading min-w-0">
-          <div className="openapi-field-name min-w-0">
+          <div className="openapi-field-identity min-w-0">
             {expandable ? (
               <button
                 aria-expanded={expanded}
                 aria-label={`${expanded ? labels.collapse : labels.expand} ${name} ${labels.properties}`}
-                className="flex min-w-0 w-full items-center gap-2 text-start"
+                className="openapi-field-name flex min-w-0 items-center gap-2 text-start"
                 onClick={() => {
                   if (expandable) onExpandedChange(!expanded);
                 }}
@@ -97,17 +100,22 @@ export function OpenApiFieldRow({
                 {fieldName}
               </button>
             ) : (
-              <div className="flex min-w-0 items-center gap-2">
+              <div className="openapi-field-name flex min-w-0 items-center gap-2">
                 {control}
                 {fieldName}
               </div>
             )}
+            <span className="openapi-field-type shrink-0 font-mono text-xs text-muted-foreground">
+              {type}
+            </span>
           </div>
-          <div className="openapi-field-meta min-w-0">
+          <div className="openapi-field-status min-w-0">
             {requiredState && (
               <span
+                data-variant={requiredState}
                 className={cn(
-                  'shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide',
+                  OPENAPI_FIELD_BADGE_CLASS,
+                  'uppercase',
                   requiredState === 'required'
                     ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
                     : 'border-border bg-muted text-muted-foreground',
@@ -116,11 +124,14 @@ export function OpenApiFieldRow({
                 {labels[requiredState]}
               </span>
             )}
-            <span className="shrink-0 font-mono text-xs text-muted-foreground">
-              {type}
-            </span>
             {deprecated && (
-              <span className="shrink-0 text-xs text-muted-foreground">
+              <span
+                className={cn(
+                  OPENAPI_FIELD_BADGE_CLASS,
+                  'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300',
+                )}
+                data-variant="deprecated"
+              >
                 {labels.deprecated}
               </span>
             )}

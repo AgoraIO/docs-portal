@@ -254,7 +254,7 @@ describe('OpenApiFieldRow', () => {
     );
   });
 
-  it('groups long names and all field metadata for responsive heading layout', () => {
+  it('groups field identity separately from right-aligned status metadata', () => {
     render(
       <OpenApiFieldRow
         anchorId="long-deprecated-name"
@@ -267,16 +267,56 @@ describe('OpenApiFieldRow', () => {
     );
 
     const heading = document.querySelector('.openapi-field-heading');
-    const name = heading?.querySelector('.openapi-field-name');
-    const metadata = heading?.querySelector('.openapi-field-meta');
+    const identity = heading?.querySelector('.openapi-field-identity');
+    const status = heading?.querySelector('.openapi-field-status');
 
     expect(heading).toBeInTheDocument();
-    expect(name).toHaveTextContent('an_extremely_long_openapi_field_name');
-    expect(metadata).toContainElement(screen.getByText('Required'));
-    expect(metadata).toContainElement(screen.getByText('object | null'));
-    expect(metadata).toContainElement(screen.getByText('Deprecated'));
-    expect(
-      metadata?.querySelector('.openapi-field-anchor'),
-    ).toBeInTheDocument();
+    expect(identity).toHaveTextContent('an_extremely_long_openapi_field_name');
+    expect(identity).toContainElement(screen.getByText('object | null'));
+    expect(identity).not.toContainElement(screen.getByText('Required'));
+    expect(identity).not.toContainElement(screen.getByText('Deprecated'));
+    expect(status).toContainElement(screen.getByText('Required'));
+    expect(status).toContainElement(screen.getByText('Deprecated'));
+    expect(status).not.toContainElement(screen.getByText('object | null'));
+    expect(status?.querySelector('.openapi-field-anchor')).toBeInTheDocument();
+  });
+
+  it('uses matching badge geometry with distinct required and deprecated variants', () => {
+    render(
+      <OpenApiFieldRow
+        anchorId="deprecated-required-field"
+        deprecated
+        labels={labels}
+        name="legacy_channel"
+        requiredState="required"
+        type="string"
+      />,
+    );
+
+    const requiredBadge = screen.getByText('Required');
+    const deprecatedBadge = screen.getByText('Deprecated');
+    const fieldName = screen.getByText('legacy_channel');
+
+    expect(requiredBadge).toHaveClass('openapi-field-badge');
+    expect(requiredBadge).toHaveAttribute('data-variant', 'required');
+    expect(deprecatedBadge).toHaveClass('openapi-field-badge');
+    expect(deprecatedBadge).toHaveAttribute('data-variant', 'deprecated');
+    expect(fieldName).toHaveClass('line-through');
+  });
+
+  it('renders optional with the shared neutral badge treatment', () => {
+    render(
+      <OpenApiFieldRow
+        anchorId="optional-field"
+        labels={labels}
+        name="idle_timeout"
+        requiredState="optional"
+        type="integer"
+      />,
+    );
+
+    const optionalBadge = screen.getByText('Optional');
+    expect(optionalBadge).toHaveClass('openapi-field-badge');
+    expect(optionalBadge).toHaveAttribute('data-variant', 'optional');
   });
 });
