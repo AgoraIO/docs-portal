@@ -161,6 +161,16 @@ describe('app prose CSS regressions', () => {
       'border-block-start',
       '1px solid var(--color-fd-border)',
     );
+    expectDeclaration(
+      getRuleBody('.openapi-schema-depth + .openapi-schema-depth-nested').rule,
+      'border-block-start',
+      '0',
+    );
+    expectDeclaration(
+      getRuleBody('.openapi-schema-depth-nested > .openapi-field-row').rule,
+      'border-block-start',
+      '1px solid var(--color-fd-border)',
+    );
 
     const fieldRow = getRuleBody('.openapi-field-row').rule;
     expect(
@@ -264,7 +274,7 @@ describe('app prose CSS regressions', () => {
 
   it('keeps OpenAPI schema tree indentation and nesting-guide contracts', () => {
     const nestingGuide = getRuleBodyContaining(
-      '.openapi-schema-depth-nested::before',
+      '.openapi-schema-depth-guide',
     ).rule;
     let desktopIndent: postcss.Rule | undefined;
     let mobileIndent: postcss.Rule | undefined;
@@ -297,16 +307,34 @@ describe('app prose CSS regressions', () => {
       'calc(1rem + var(--openapi-schema-indent-desktop))',
     );
     expectDeclaration(nestingGuide, 'width', '1px');
+    expectDeclaration(nestingGuide, 'top', '0');
+    expectDeclaration(nestingGuide, 'bottom', '0');
+    expectDeclaration(
+      nestingGuide,
+      'background',
+      'color-mix(in srgb, var(--color-fd-border) 58%, transparent)',
+    );
+    expectDeclaration(nestingGuide, 'pointer-events', 'none');
+    expectDeclaration(nestingGuide, 'z-index', '0');
     expectDeclaration(
       nestingGuide,
       'inset-inline-start',
-      'calc(1rem + var(--openapi-schema-indent-desktop) - 10px)',
+      'calc(1rem + (var(--openapi-schema-guide-depth) * 20px) - 10px)',
     );
     expect(mobileIndent).toBeDefined();
     expectDeclaration(
       mobileIndent as postcss.Rule,
       'padding-inline-start',
       'calc(1rem + var(--openapi-schema-indent-mobile))',
+    );
+    const mobileGuide = getRuleBodyContainingInContainer(
+      '.openapi-schema-depth-guide',
+      'max-width: 58.999rem',
+    ).rule;
+    expectDeclaration(
+      mobileGuide,
+      'inset-inline-start',
+      'calc(1rem + (var(--openapi-schema-guide-depth) * 16px) - 8px)',
     );
     expectDeclaration(
       getRuleBody('.openapi-operation').rule,

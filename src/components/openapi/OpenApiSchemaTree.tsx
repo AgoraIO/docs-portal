@@ -176,6 +176,10 @@ export function OpenApiSchemaTree({
           '--openapi-schema-indent-desktop': `${depth * 20}px`,
           '--openapi-schema-indent-mobile': `${Math.min(row.depth, 3) * 16}px`,
         } as CSSProperties;
+        const guideDepths = Array.from(
+          { length: Math.min(row.depth, 3) },
+          (_, guideIndex) => guideIndex + 1,
+        );
         const type =
           row.nullable && !row.type.split(' | ').includes('null')
             ? `${row.type} | null`
@@ -194,6 +198,18 @@ export function OpenApiSchemaTree({
             key={row.path}
             style={style}
           >
+            {guideDepths.map((guideDepth) => (
+              <span
+                aria-hidden="true"
+                className="openapi-schema-depth-guide"
+                key={guideDepth}
+                style={
+                  {
+                    '--openapi-schema-guide-depth': guideDepth,
+                  } as CSSProperties
+                }
+              />
+            ))}
             {expandable ? (
               <OpenApiFieldRow
                 anchorId={anchorId}

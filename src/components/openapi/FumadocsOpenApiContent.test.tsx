@@ -2822,6 +2822,11 @@ describe('FumadocsOpenApiContent', () => {
       expect(
         wrapper.style.getPropertyValue('--openapi-schema-indent-mobile'),
       ).toBe(mobileIndent);
+      expect(
+        wrapper.querySelectorAll('.openapi-schema-depth-guide'),
+      ).toHaveLength(
+        mobileIndent === '0px' ? 0 : mobileIndent === '16px' ? 1 : 2,
+      );
     };
 
     expectResponseSchemaRowIndent('responses-200-data', '0px', '0px');

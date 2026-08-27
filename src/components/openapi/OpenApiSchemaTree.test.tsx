@@ -119,6 +119,38 @@ describe('OpenApiSchemaTree', () => {
     expect(within(tree).queryByText('url')).not.toBeInTheDocument();
   });
 
+  it('lets nested object parameters collapse independently from sibling branches', () => {
+    renderTree();
+    const tree = screen.getByTestId('openapi-schema-tree');
+
+    fireEvent.click(
+      within(tree).getByRole('button', { name: 'Expand llm properties' }),
+    );
+    expect(within(tree).getByText('url')).toBeVisible();
+
+    fireEvent.click(
+      within(tree).getByRole('button', {
+        name: 'Expand optionalObject properties',
+      }),
+    );
+    expect(within(tree).getByText('enabled')).toBeVisible();
+
+    fireEvent.click(
+      within(tree).getByRole('button', {
+        name: 'Collapse llm properties',
+      }),
+    );
+    expect(within(tree).queryByText('url')).not.toBeInTheDocument();
+    expect(within(tree).getByText('enabled')).toBeVisible();
+
+    fireEvent.click(
+      within(tree).getByRole('button', {
+        name: 'Expand llm properties',
+      }),
+    );
+    expect(within(tree).getByText('url')).toBeVisible();
+  });
+
   it('removes collapsed parent descendants so one toolbar expansion restores the full branch', () => {
     renderTree();
     const tree = screen.getByTestId('openapi-schema-tree');
