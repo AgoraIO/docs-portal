@@ -508,32 +508,26 @@
     pointer-events: none;
   }
 
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
-    margin-top: 0.5rem;
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child::before {
-    content: none;
-  }
-
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(:where(.not-prose, .not-prose *)) {
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(
-      :where(.not-prose, .not-prose *)
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
     )::before {
     content: none;
+  }
+
+  .prose[data-platform-header-tabs="true"]
+    [data-platform-group-shell]
+    > .docs-body:empty {
+    display: none;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
@@ -699,9 +693,9 @@
   .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     max-width: 100%;
     overflow-wrap: anywhere;
@@ -719,9 +713,9 @@
     .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     border-color: var(--docs-prose-inline-code-border);
     background: var(--docs-prose-inline-code-bg);
@@ -1095,7 +1089,174 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
+    --openapi-examples-sticky-top: var(--docs-shell-header-offset, 48px);
+    container-type: inline-size;
     width: min(100%, 1120px);
+  }
+
+  .openapi-operation-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .openapi-examples-rail-anchor {
+    position: relative;
+    min-width: 0;
+  }
+
+  .openapi-examples-rail-anchor > [data-openapi-examples-rail-sentinel] {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 1px;
+    block-size: 1px;
+    pointer-events: none;
+  }
+
+  .openapi-examples-rail {
+    min-width: 0;
+  }
+
+  @container (min-width: 59rem) {
+    .openapi-operation-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) clamp(320px, 32cqi, 400px);
+      align-items: start;
+    }
+
+    .openapi-examples-rail {
+      position: sticky;
+      top: var(--openapi-examples-sticky-top, 48px);
+    }
+
+    .openapi-examples-rail-anchor {
+      align-self: stretch;
+    }
+
+    .openapi-examples-rail[data-constrained="true"]
+      [data-openapi-code-viewport-active] {
+      /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+      max-block-size: var(--openapi-code-available-height) !important;
+      overflow: auto;
+    }
+  }
+
+  .openapi-field-row-container > .openapi-field-main {
+    background: color-mix(in srgb, var(--color-fd-muted) 18%, transparent);
+  }
+
+  .openapi-field-row {
+    container-type: inline-size;
+  }
+
+  .openapi-field-list > .openapi-field-row {
+    padding-inline: 1rem;
+  }
+
+  .openapi-field-list > .openapi-field-row + .openapi-field-row {
+    border-block-start: 1px solid var(--color-fd-border);
+  }
+
+  .openapi-field-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    align-items: start;
+  }
+
+  .openapi-field-identity {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .openapi-field-name {
+    min-width: 0;
+  }
+
+  .openapi-field-status {
+    display: flex;
+    min-width: 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  @container (max-width: 32rem) {
+    .openapi-field-heading {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .openapi-field-status {
+      justify-content: flex-start;
+      padding-inline-start: 20px;
+    }
+  }
+
+  .openapi-field-row .openapi-field-anchor {
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  .openapi-field-row:hover .openapi-field-anchor,
+  .openapi-field-row:focus-within .openapi-field-anchor,
+  .openapi-field-row:target .openapi-field-anchor,
+  .openapi-field-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .openapi-field-details:empty {
+    display: none;
+  }
+
+  .openapi-schema-depth {
+    padding-inline-start: calc(1rem + var(--openapi-schema-indent-desktop));
+  }
+
+  .openapi-schema-depth + .openapi-schema-depth {
+    border-block-start: 1px solid var(--color-fd-border);
+  }
+
+  .openapi-schema-depth-nested {
+    position: relative;
+  }
+
+  .openapi-schema-depth-nested::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: calc(
+      1rem +
+      var(--openapi-schema-indent-desktop) -
+      10px
+    );
+    width: 1px;
+    background: color-mix(in srgb, var(--color-fd-border) 70%, transparent);
+    content: "";
+  }
+
+  @container (max-width: 58.999rem) {
+    .openapi-schema-depth {
+      padding-inline-start: calc(1rem + var(--openapi-schema-indent-mobile));
+    }
+
+    .openapi-schema-depth-nested::before {
+      inset-inline-start: calc(
+        1rem +
+        var(--openapi-schema-indent-mobile) -
+        8px
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .openapi-field-row .openapi-field-anchor,
+    .openapi-field-control-gutter svg {
+      transition: none;
+    }
   }
 
   .openapi-operation :where(h2, h3, h4) {
@@ -1230,12 +1391,6 @@
     font-size: 0.86em;
   }
 
-  .openapi-operation
-    .openapi-request-examples
-    [role="region"].fd-scroll-container {
-    max-height: min(20vh, 11rem) !important;
-  }
-
   @media (max-width: 48rem) {
     .openapi-operation figure.shiki:has(> .fd-scroll-container) {
       isolation: isolate;
@@ -1280,6 +1435,47 @@
   }
 }
 
+/* These OpenAPI code rules intentionally remain unlayered so they win over
+   Fumadocs' utility classes (`max-h-[600px]`, `w-max`) without broad globals.
+   The !important declarations are limited to the marked viewport and are
+   required to override those generated utilities. */
+.openapi-code-preview [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+  max-block-size: min(20vh, 11rem) !important;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.openapi-code-preview[data-wrap-lines="true"]
+  :is(
+    figure:has(> [data-openapi-code-viewport]),
+    [data-openapi-code-viewport],
+    [data-openapi-code-viewport] pre,
+    [data-openapi-code-viewport] pre code,
+    [data-openapi-code-viewport] pre code span,
+    [data-openapi-code-viewport] .line
+  ) {
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.openapi-code-preview[data-wrap-lines="true"] [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs overflow utility. */
+  overflow-x: hidden !important;
+}
+
+@container (max-width: 58.999rem) {
+  .openapi-code-preview [data-openapi-code-viewport] {
+    /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+    max-block-size: min(50dvh, 24rem) !important;
+  }
+}
+
 /* Fumadocs ships unlayered prose list styles after Tailwind layers.
    Keep these unlayered overrides after the base layer so nested ordered
    lists retain decimal, alpha, and roman markers by depth. */
@@ -1318,6 +1514,31 @@
   max-width: none;
   min-width: 0;
   overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .prose
+    :where(.docs-table-container[data-table-overflow="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2.75rem;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--bg-card));
+    opacity: 1;
+    transition: opacity 160ms ease;
+  }
+
+  .prose
+    :where(.docs-table-container[data-table-scroll-end="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    opacity: 0;
+  }
 }
 
 /* Fumadocs emits paragraph/list margins outside Tailwind layers.
@@ -1592,4 +1813,46 @@
   .docs-search-overlay[data-state="open"] {
     animation: none;
   }
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
 }
