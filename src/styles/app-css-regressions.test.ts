@@ -1041,6 +1041,29 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('keeps wrap controls compact and response examples at natural height', () => {
+    const preview = getRuleBody('.openapi-code-preview').rule;
+    const toggle = getRuleBody('.openapi-code-wrap-toggle').rule;
+    const activeToggle = getRuleBody(
+      '.openapi-code-preview[data-wrap-lines="true"] .openapi-code-wrap-toggle',
+    ).rule;
+    const responseViewport = getRuleBody(
+      '.openapi-code-preview[data-openapi-code-role="response"] [data-openapi-code-viewport]',
+    ).rule;
+
+    expectDeclaration(preview, 'position', 'relative');
+    expectDeclaration(toggle, 'position', 'absolute');
+    expectDeclaration(toggle, 'inline-size', '2rem');
+    expectDeclaration(toggle, 'block-size', '2rem');
+    expectDeclaration(activeToggle, 'background', 'var(--color-fd-accent)');
+    expectDeclaration(
+      responseViewport,
+      'max-block-size',
+      'none !important',
+    );
+    expectDeclaration(responseViewport, 'overflow', 'visible !important');
+  });
+
   it('defines the adaptive examples rail container layout', () => {
     const layout = getRuleBodyContainingInContainer(
       '.openapi-operation-layout',
