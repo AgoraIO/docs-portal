@@ -23,14 +23,14 @@ _migration:
 
 `GET /{region}/conference/apps/{appId}/v1/rooms/{roomUuid}/records?nextId={nextId}`
 
-域名详见[保障 REST 服务高可用](/zh-CN/solutions/meeting/build/manage-classroom/high-availability)。
+域名详见[保障 REST 服务高可用](/zh-CN/realtime-media/meeting/build/manage-classroom/high-availability)。
 
 ### 路径参数
 
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | 服务区域，目前仅支持设为 `cn`，代表中国大陆。 |
-| `appId` | String | 必填 | 项目 App ID，详见[获取 App ID](/zh-CN/solutions/meeting/build/setup-and-access/enable-service#获取-app-id)。 |
+| `appId` | String | 必填 | 项目 App ID，详见[获取 App ID](/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service#获取-app-id)。 |
 | `roomUuid` | String | 必填 | <Slot name="query-recording-restful-html-0-3-3" /> |
 
 <Slot for="query-recording-restful-html-0-3-3">
@@ -58,7 +58,7 @@ _migration:
 
 ### 请求 Header
 
-- `Authorization`：用于 HTTP Token 认证的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 认证](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
+- `Authorization`：用于 HTTP Token 认证的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 认证](/zh-CN/realtime-media/meeting/build/customize-and-extend/http-token-auth)。
 
 ### 请求示例
 
@@ -88,7 +88,7 @@ curl -X GET 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/room
 响应状态码：
 
     - `0`：请求成功。
-    - 非 0：请求失败。详见[响应状态码](/zh-CN/solutions/meeting/reference/response-code)。
+    - 非 0：请求失败。详见[响应状态码](/zh-CN/realtime-media/meeting/reference/response-code)。
 
 </Slot>
 
@@ -112,7 +112,7 @@ curl -X GET 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/room
 | `recordDetails.url`   | String          | 页面录制文件的访问地址。|
 | `nextId`              | String          | 下一批数据的起始 ID。用法详见[查询参数](#查询参数)。|
 | `total`               | Integer         | 数据总条数。       |
-| `unready`             | Boolean         | 页面录制因加载超时而失败时该字段为 `true`，其他情况没有该字段。如果在开启录制时设置了 `retryTimeout` 参数，那么超时未报告 [`ready`](/zh-CN/solutions/meeting/reference/webhook-events#页面录制状态变更事件) 而被自动终止的录制任务会被标记 `unready`。|
+| `unready`             | Boolean         | 页面录制因加载超时而失败时该字段为 `true`，其他情况没有该字段。如果在开启录制时设置了 `retryTimeout` 参数，那么超时未报告 [`ready`](/zh-CN/realtime-media/meeting/reference/webhook-events#页面录制状态变更事件) 而被自动终止的录制任务会被标记 `unready`。|
 
 ### 响应示例
 

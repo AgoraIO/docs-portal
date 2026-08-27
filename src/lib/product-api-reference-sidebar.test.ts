@@ -133,7 +133,7 @@ describe('product API reference sidebar links', () => {
     ['realtime-media', ['rtsa'], 'rtsa'],
     ['realtime-media', ['whiteboard', 'whiteboard-sdk'], 'whiteboard'],
     ['solutions', ['flexible-classroom'], 'flexible-classroom'],
-    ['solutions', ['meeting'], 'meeting'],
+    ['realtime-media', ['meeting'], 'meeting'],
     ['solutions', ['art-class'], 'online-art-teaching'],
     ['solutions', ['online-ktv', 'online-ktv-sdk'], 'online-ktv'],
     ['solutions', ['online-music-class'], 'online-music-teaching'],
@@ -249,9 +249,10 @@ describe('product API reference sidebar links', () => {
       '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
     ],
   ])(
-    'reads the service API leaf from the Chinese %s solutions metadata',
+    'reads the service API leaf from the Chinese %s product metadata',
     async (slugs, url) => {
-      const sidebar = await loadSidebar('zh-CN', 'solutions', slugs);
+      const tab = slugs[0] === 'meeting' ? 'realtime-media' : 'solutions';
+      const sidebar = await loadSidebar('zh-CN', tab, slugs);
       const restApiNode = findPage(sidebar, '服务端 API', url);
 
       expect(restApiNode).toMatchObject({
@@ -397,7 +398,7 @@ describe('product API reference sidebar links', () => {
       '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
     ],
     [
-      'content/docs/zh-CN/solutions/meeting/reference/meta.json',
+      'content/docs/zh-CN/realtime-media/meeting/reference/meta.json',
       '/zh-CN/api-reference/meeting/restful/api/create-room',
     ],
     [
