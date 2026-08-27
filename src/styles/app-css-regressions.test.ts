@@ -1003,7 +1003,7 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('caps only marked OpenAPI code viewports', () => {
+  it('caps only marked OpenAPI code viewports with a stable desktop limit', () => {
     const viewport = getRuleBodyContaining(
       '.openapi-code-preview [data-openapi-code-viewport]',
     );
@@ -1015,13 +1015,10 @@ describe('app prose CSS regressions', () => {
     expect(appCss).not.toContain(
       '.openapi-request-examples\n    [role="region"].fd-scroll-container',
     );
-    expectDeclaration(
-      viewport.rule,
-      'max-block-size',
-      'min(20vh, 11rem) !important',
-    );
+    expectDeclaration(viewport.rule, 'max-block-size', '24rem !important');
     expectDeclaration(viewport.rule, 'overflow', 'auto');
     expectDeclaration(viewport.rule, 'overscroll-behavior', 'contain');
+    expect(viewport.rule.parent?.type).toBe('root');
     expectDeclaration(
       mobileViewport.rule,
       'max-block-size',
@@ -1033,7 +1030,7 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines the adaptive examples rail container layout', () => {
+  it('defines the independent desktop examples rail layout', () => {
     const layout = getRuleBodyContainingInContainer(
       '.openapi-operation-layout',
       '59rem',
@@ -1044,10 +1041,6 @@ describe('app prose CSS regressions', () => {
     );
     const anchorInDesktop = getRuleBodyContainingInContainer(
       '.openapi-examples-rail-anchor',
-      '59rem',
-    );
-    const constrained = getRuleBodyContainingInContainer(
-      '.openapi-examples-rail[data-constrained="true"]',
       '59rem',
     );
     expectDeclaration(
@@ -1062,25 +1055,46 @@ describe('app prose CSS regressions', () => {
       'top',
       'var(--openapi-examples-sticky-top, 48px)',
     );
+    const maxBlockSizes = rail.rule.nodes
+      .filter(
+        (node): node is postcss.Declaration =>
+          node.type === 'decl' && node.prop === 'max-block-size',
+      )
+      .map((declaration) => normalizeDeclarationValue(declaration.value));
+    expect(maxBlockSizes).toEqual([
+      'calc(100vh - var(--openapi-examples-sticky-top, 48px) - 1rem)',
+      'calc(100dvh - var(--openapi-examples-sticky-top, 48px) - 1rem)',
+    ]);
+    expectDeclaration(rail.rule, 'overflow-y', 'auto');
+    expectDeclaration(rail.rule, 'overscroll-behavior', 'contain');
+    expectDeclaration(rail.rule, 'scrollbar-width', 'thin');
     expectDeclaration(
-      constrained.rule,
-      'max-block-size',
-      'var(--openapi-code-available-height) !important',
+      rail.rule,
+      'scrollbar-color',
+      'color-mix(in srgb, var(--ink-1) 16%, transparent) transparent',
     );
-    expect(
-      getRuleBodyOutsideContainer('.openapi-examples-rail').rule.nodes,
-    ).not.toContainEqual(expect.objectContaining({ prop: 'overflow' }));
+    const baseRail = getRuleBodyOutsideContainer('.openapi-examples-rail');
+    for (const prop of [
+      'overflow',
+      'overflow-y',
+      'overflow-block',
+      'max-block-size',
+      'overscroll-behavior',
+      'scrollbar-width',
+      'scrollbar-color',
+    ]) {
+      expect(baseRail.rule.nodes).not.toContainEqual(
+        expect.objectContaining({ prop }),
+      );
+    }
     const anchor = getRuleBodyOutsideContainer('.openapi-examples-rail-anchor');
     expectDeclaration(anchor.rule, 'position', 'relative');
     expectDeclaration(anchor.rule, 'min-width', '0');
     expect(anchor.rule.nodes).not.toContainEqual(
       expect.objectContaining({ prop: 'display', value: 'contents' }),
     );
-    const sentinel = getRuleBodyContaining(
-      '[data-openapi-examples-rail-sentinel]',
-    );
-    expectDeclaration(sentinel.rule, 'position', 'absolute');
-    expectDeclaration(sentinel.rule, 'inline-size', '1px');
-    expectDeclaration(sentinel.rule, 'block-size', '1px');
+    expect(appCss).not.toContain('data-constrained');
+    expect(appCss).not.toContain('data-openapi-code-viewport-active');
+    expect(appCss).not.toContain('data-openapi-examples-rail-sentinel');
   });
 });

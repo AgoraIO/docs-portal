@@ -1105,15 +1105,6 @@
     min-width: 0;
   }
 
-  .openapi-examples-rail-anchor > [data-openapi-examples-rail-sentinel] {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    inline-size: 1px;
-    block-size: 1px;
-    pointer-events: none;
-  }
-
   .openapi-examples-rail {
     min-width: 0;
   }
@@ -1128,17 +1119,26 @@
     .openapi-examples-rail {
       position: sticky;
       top: var(--openapi-examples-sticky-top, 48px);
+      max-block-size: calc(
+        100vh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      /* biome-ignore lint/suspicious/noDuplicateProperties: The dynamic viewport fallback intentionally follows the legacy viewport declaration. */
+      max-block-size: calc(
+        100dvh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-color: color-mix(in srgb, var(--ink-1) 16%, transparent)
+        transparent;
+      scrollbar-width: thin;
     }
 
     .openapi-examples-rail-anchor {
       align-self: stretch;
-    }
-
-    .openapi-examples-rail[data-constrained="true"]
-      [data-openapi-code-viewport-active] {
-      /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
-      max-block-size: var(--openapi-code-available-height) !important;
-      overflow: auto;
     }
   }
 
@@ -1453,7 +1453,7 @@
    required to override those generated utilities. */
 .openapi-code-preview [data-openapi-code-viewport] {
   /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
-  max-block-size: min(20vh, 11rem) !important;
+  max-block-size: 24rem !important;
   overflow: auto;
   overscroll-behavior: contain;
 }
