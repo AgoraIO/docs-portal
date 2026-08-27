@@ -453,13 +453,7 @@ function OpenApiRightExamplesLayout({
         className="openapi-response-example"
         title={getOpenApiLabel('Response example', locale)}
       >
-        <OpenApiCodePreview
-          resetKey={`${getOpenApiCodePreviewResetKey(operation)}:response`}
-          codeRole="response"
-          wrapLabel={isZhCnLocale(locale) ? '自动换行' : 'Wrap lines'}
-        >
-          {slots.responseTabs}
-        </OpenApiCodePreview>
+        {slots.responseTabs}
       </OpenApiRightSection>
     </div>
   );

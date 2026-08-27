@@ -1,16 +1,12 @@
 import { WrapText } from 'lucide-react';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 
-export type OpenApiCodeRole = 'request' | 'response';
-
 export function OpenApiCodePreview({
   children,
-  codeRole = 'request',
   resetKey,
   wrapLabel = 'Wrap lines',
 }: {
   children: ReactNode;
-  codeRole?: OpenApiCodeRole;
   resetKey: string;
   wrapLabel?: string;
 }) {
@@ -50,20 +46,18 @@ export function OpenApiCodePreview({
   return (
     <div
       className="openapi-code-preview"
-      data-openapi-code-role={codeRole}
       data-testid="openapi-code-preview"
       data-wrap-lines={wrap}
       ref={rootRef}
     >
       <button
-        aria-label={wrapLabel}
         aria-pressed={wrap}
-        className="openapi-code-wrap-toggle"
+        className="inline-flex items-center gap-1 rounded-md border border-fd-border px-2 py-1 text-fd-muted-foreground text-xs hover:bg-fd-accent hover:text-fd-accent-foreground"
         onClick={() => setWrap((value) => !value)}
-        title={wrapLabel}
         type="button"
       >
         <WrapText aria-hidden="true" className="size-3.5" />
+        {wrapLabel}
       </button>
       {children}
     </div>
