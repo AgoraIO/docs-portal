@@ -533,7 +533,7 @@ function productIconKind(productLabel: string): SolutionCardIconKind {
   if (normalized.includes('recording')) {
     return 'on-premise-recording';
   }
-  // Media Player Kit and anything else fall back to the overview's "tools" icon.
+  // Anything else falls back to the overview's "tools" icon.
   return 'tools';
 }
 

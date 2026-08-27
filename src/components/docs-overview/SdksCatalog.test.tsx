@@ -124,6 +124,14 @@ describe('SdksCatalog', () => {
     expect(videoCard.querySelector('svg')).toBeTruthy();
   });
 
+  it('omits obsolete Media Player Kit downloads', () => {
+    render(<SdksCatalog />);
+
+    expect(
+      screen.queryAllByRole('article', { name: /mediaplayer kit sdk/i }),
+    ).toHaveLength(0);
+  });
+
   it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
     render(<SdksCatalog />);
 
