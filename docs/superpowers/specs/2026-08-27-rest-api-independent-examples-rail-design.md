@@ -149,16 +149,11 @@ Update `app-css-regressions.test.ts` to assert that:
 
 ### Manual verification
 
-Verify the Conversational AI `join` operation at `1440 × 900` and `1280 × 720`:
+Verify the Conversational AI `join` operation on both sides of the operation-container breakpoint:
 
-1. Scroll the main document and confirm the right rail stays sticky.
-2. Scroll the right rail and confirm the main document position does not change.
-3. Scroll a long request sample and confirm the rail position does not change.
-4. Switch request scenarios and curl, Python, and Node.js tabs.
-5. Switch response status tabs.
-6. Repeat with the legacy-docs banner shown and dismissed.
-7. Check both sides of the `59rem` container breakpoint.
-8. Confirm the tablet and mobile layout has no rail-level vertical scrollbar.
+1. At an operation container width of at least `59rem` (the current `1440 × 900` viewport reaches this desktop layout), scroll the main document, right rail, and a long request sample independently. Confirm the rail stays sticky, its scroll position does not change the main document position, and request-code scrolling does not change the rail position.
+2. In that desktop layout, switch request scenarios and curl, Python, and Node.js tabs; switch response status tabs; and repeat with the legacy-docs banner shown and dismissed.
+3. Below the `59rem` operation-container breakpoint, confirm the rail is in normal flow with no independent vertical scrollbar, request code uses `min(50dvh, 24rem)`, and response examples remain reachable through the main document. Measure the operation container first and reduce the viewport or container width if necessary to reach this branch; do not treat a particular viewport's measured width as a permanent threshold.
 
 ## Success criteria
 

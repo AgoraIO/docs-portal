@@ -323,7 +323,11 @@ Expected: one commit containing only the stylesheet and its regression contract.
 ### Task 3: Verify the integrated behavior
 
 **Files:**
-- Verify only; no planned file modifications.
+- No product-code modifications. If verification wording conflicts with measured behavior, only these verification documents may change:
+  - `docs/superpowers/specs/2026-08-27-rest-api-independent-examples-rail-design.md`
+  - `docs/superpowers/plans/2026-08-27-rest-api-independent-examples-rail.md`
+
+**Fixed comparison baseline:** Use independent clean worktrees for the Head under verification and the pre-implementation baseline `8b6c1c8ba87a2be606eb284b4d2441d192fd48c0`. Use the same Bun version and `bun.lock` in both worktrees, run `bun install --frozen-lockfile` in each, and record the ref, command, exit code, and set difference for every comparison. Compare test failures by suite file and full test name, and lint diagnostics by file, rule, and message; never accept a count-only comparison.
 
 - [ ] **Step 1: Run the full Vitest suite**
 
@@ -333,7 +337,7 @@ Run:
 bun run test
 ```
 
-Expected: all test files pass with 0 failures.
+Expected: relative to fixed baseline `8b6c1c8ba87a2be606eb284b4d2441d192fd48c0`, Head has no failing suite/test identity absent from the baseline and the failing set does not involve this task. Record both refs, commands, exit codes, and the identity set difference; a clean baseline should still pass in full.
 
 - [ ] **Step 2: Run generated-type and TypeScript validation**
 
@@ -353,9 +357,19 @@ Run:
 bun run lint
 ```
 
-Expected: Biome exits 0 with no diagnostics.
+Expected: relative to fixed baseline `8b6c1c8ba87a2be606eb284b4d2441d192fd48c0`, Head has no diagnostic identity absent from the baseline and the failing set does not involve this task. Record both refs, commands, exit codes, and the `file + rule + message` set difference; a clean baseline should still exit 0.
 
-- [ ] **Step 4: Start the local docs portal**
+- [ ] **Step 4: Run the production build**
+
+Run:
+
+```bash
+bun run build
+```
+
+Expected: Head exits 0. If Head fails, run the same command in the fixed baseline worktree and compare error identities; Head must introduce no error identity absent from the baseline.
+
+- [ ] **Step 5: Start the local docs portal**
 
 Run in a dedicated terminal:
 
@@ -365,7 +379,7 @@ bun run dev
 
 Expected: Vite reports the local site at `http://localhost:3000`.
 
-- [ ] **Step 5: Verify independent desktop scrolling at 1440 × 900**
+- [ ] **Step 6: Verify independent desktop scrolling at an operation container width of at least 59rem**
 
 Open:
 
@@ -373,7 +387,7 @@ Open:
 http://localhost:3000/en/api-reference/api-ref/conversational-ai/join
 ```
 
-At a `1440 × 900` viewport:
+At a `1440 × 900` viewport, confirm the operation container is at least `59rem` wide before running the desktop checks:
 
 1. Leave the legacy-docs banner visible.
 2. Scroll over the main request-body column and confirm the page moves while the sticky right rail retains its own scroll position.
@@ -384,13 +398,13 @@ At a `1440 × 900` viewport:
 
 Expected: all three scroll levels remain independent, controls remain usable, and the rail keeps a 16px viewport bottom gap.
 
-- [ ] **Step 6: Repeat desktop verification at 1280 × 720**
+- [ ] **Step 7: Verify the `<59rem` narrow fallback at 1280 × 720**
 
-Set the viewport to `1280 × 720` and repeat the main-column, rail, and code-block scrolling checks.
+Set the viewport to `1280 × 720` and measure the operation container. If it is not below `59rem`, reduce the viewport or container width until the narrow branch applies. The 897px measurement from the 2026-08-27 verification record is evidence for that run only, not a permanent viewport condition.
 
-Expected: the rail remains fully bounded below the header, the request code ceiling stays `24rem`, and response examples remain reachable through the rail scrollbar.
+Expected once the operation container is below `59rem`: the rail is static and in normal document flow with no rail scrollbar; request code uses `min(50dvh, 24rem)` (which computes to `360px` at a 720px viewport height); and response examples remain reachable through the main document.
 
-- [ ] **Step 7: Verify the responsive boundary and narrow layout**
+- [ ] **Step 8: Verify the responsive boundary and narrow layout**
 
 Resize the operation container across the existing `59rem` breakpoint, then check a phone-sized viewport.
 
@@ -401,13 +415,22 @@ Expected below `59rem`:
 - request code uses `min(50dvh, 24rem)`; and
 - the existing horizontal overflow affordance remains visible for wide code.
 
-- [ ] **Step 8: Confirm the final Git state**
+- [ ] **Step 9: Confirm the final Git state**
 
 Run:
 
 ```bash
 git status --short --branch
-git log -3 --oneline
+git log -5 --oneline
 ```
 
-Expected: the worktree is clean and the two implementation commits appear above the approved design/plan documentation commits.
+Expected: the worktree is clean; the latest verification-documentation correction commit appears above the two implementation commits; and those implementation commits appear above the original design and plan documentation commits.
+
+### Verification record (2026-08-27)
+
+- Product evidence ref: `45c1707c410c296a2df742ad8726c41e027269b6`; fixed baseline ref: `8b6c1c8ba87a2be606eb284b4d2441d192fd48c0`. Later commits modify only the design and plan verification documents, not product files, so the tested and built product tree is identical to `45c1707c410c296a2df742ad8726c41e027269b6`. Both were independent clean worktrees prepared with `bun install --frozen-lockfile`, Bun `1.3.9`, Node `v25.9.0`, and the same `bun.lock` SHA-256 `9bcce2bb0864a135746ba506dd086c90c4bcad839d439f1646cc1923e527c250`.
+- Focused command `bun run test src/components/openapi/OpenApiExamplesRail.test.tsx src/styles/app-css-regressions.test.ts` exited 0 with 2 files and 16 tests passing. `bun run types:check` exited 0.
+- Browser evidence at `1440 × 900` reached the `>=59rem` desktop branch: the rail was sticky with contained auto overflow and a thin scrollbar, the code viewport computed to `384px`, main/rail/code scroll positions were independent, and dismissing the banner changed rail top and available height through the inherited offset. The `1280 × 720` run measured an 897px operation container and therefore exercised the narrow branch; the rail was static with no independent overflow, the code viewport computed to `360px`, and response content remained reachable through the main document. A `390 × 844` run retained horizontal code overflow and computed a `384px` code ceiling.
+- Test comparison commands were `bun run test -- --reporter=json --outputFile=/tmp/rest-api-head-vitest.json` at Head and `bun run test -- --reporter=json --outputFile=/tmp/rest-api-baseline-vitest.json` at Baseline; both exited 1. Head had 36 failing suite/test identities and Baseline had 37: Head-only set was empty, while Baseline-only contained `src/lib/source.server.test.ts — fumadocs source loader serializes the SDK catalog as concise machine-readable content`.
+- Lint comparison commands were `bun run lint -- --reporter=json` in both worktrees; both exited 1. Each reported 22 errors, 12 warnings, and 4 infos. The normalized `file + rule + message` identity sets were identical (31 unique identities), so neither Head-only nor Baseline-only diagnostics existed.
+- Head build command `bun run build` exited 0, generating static payloads, client/SSR output, and 3666 route HTML files; no baseline build was required.
