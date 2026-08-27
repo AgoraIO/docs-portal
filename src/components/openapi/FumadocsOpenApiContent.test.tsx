@@ -173,6 +173,22 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '204' }));
     expect(screen.getByText('Empty response body')).toBeInTheDocument();
+
+    const wrapButtons = screen.getAllByRole('button', { name: 'Wrap lines' });
+    expect(wrapButtons).toHaveLength(2);
+    const requestPreview = screen
+      .getByText('Request examples')
+      .closest('.openapi-request-examples')
+      ?.querySelector('[data-testid="openapi-code-preview"]');
+    const responsePreview = screen
+      .getByText('Response example')
+      .closest('.openapi-response-example')
+      ?.querySelector('[data-testid="openapi-code-preview"]');
+    expect(requestPreview).toHaveAttribute('data-wrap-lines', 'false');
+    expect(responsePreview).toHaveAttribute('data-wrap-lines', 'false');
+    fireEvent.click(wrapButtons[1]);
+    expect(responsePreview).toHaveAttribute('data-wrap-lines', 'true');
+    expect(requestPreview).toHaveAttribute('data-wrap-lines', 'false');
   });
 
   it('opens a hashed English response panel and its schema ancestors', async () => {
