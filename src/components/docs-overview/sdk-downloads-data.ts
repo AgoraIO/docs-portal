@@ -790,19 +790,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-android',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-android',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Android_rel.v1.3.0_14564_ffmpeg_player_lite_20210723_1234.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -1393,19 +1380,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 1.2.2',
             packageManager:
               'https://github.com/netless-io/fastboard-iOS/releases/tag/1.2.2',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-ios',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-ios',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_iOS_rel.v1.3.0_53009_ffmpeg_player_lite_20210702_1606.zip',
           },
         ],
       },
@@ -2170,19 +2144,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-macOS',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-macOS',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Mac_rel.v1.3.0_31754_ffmpeg_player_lite_20210716_1813.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -2705,32 +2666,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 1.0.5',
             downloadLink:
               'https://downloadsdk.easemob.com/downloads/SDK/WinSDK/agora_chat_sdk.1.0.5.nupkg',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-windows-x86',
-        label: 'Mediaplayer Kit SDK (x86)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x86',
-            label: 'version 1.3.0 (x86)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x86_rel.v1.3.0_63393_ffmpeg_player_lite_20210727_1117.zip',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-windows-x64',
-        label: 'Mediaplayer Kit SDK (x64)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x64',
-            label: 'version 1.3.0 (x64)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x64_rel.v1.3.0_63392_ffmpeg_player_lite_20210727_1117.zip',
           },
         ],
       },
