@@ -11,16 +11,25 @@ import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
   children: ReactNode;
-  size?: 'large' | 'small';
+  size?: 'compact' | 'large' | 'small';
 }>;
 type SolutionCardComponent = ComponentType<{
   actions?: Array<{ href: string; label: string }>;
   description: string;
   href?: string;
-  icon?: 'ai' | 'classroom' | 'device' | 'meeting' | 'messaging' | 'rtc';
-  size?: 'large' | 'small';
+  icon?:
+    | 'ai'
+    | 'classroom'
+    | 'device'
+    | 'meeting'
+    | 'messaging'
+    | 'rtc'
+    | 'whiteboard';
+  showDescription?: boolean;
+  size?: 'compact' | 'large' | 'small';
   tags?: string[];
   title: string;
+  titlePlacement?: 'below-icon' | 'beside-icon';
   tone?: 'blue' | 'green' | 'pink' | 'purple' | 'sand';
 }>;
 type OverviewToolkitsComponent = ComponentType<{ children: ReactNode }>;
@@ -280,6 +289,105 @@ describe('overview MDX components', () => {
       'w-[var(--content-max)]',
       'max-w-full',
     );
+  });
+
+  it('places the title beside the icon only when requested', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+
+    render(
+      <>
+        <SolutionCard
+          description="Default description."
+          href="/default"
+          icon="rtc"
+          title="Default card"
+        />
+        <SolutionCard
+          description="Inline description."
+          href="/inline"
+          icon="rtc"
+          title="Inline card"
+          titlePlacement="beside-icon"
+        />
+      </>,
+    );
+
+    const defaultCard = screen.getByRole('link', { name: /Default card/i });
+    const inlineCard = screen.getByRole('link', { name: /Inline card/i });
+    const defaultChildren = Array.from(defaultCard.children);
+    const inlineChildren = Array.from(inlineCard.children);
+    const defaultContent = defaultChildren[1];
+    const inlineContent = inlineChildren[1];
+
+    expect(defaultCard).toHaveAttribute('href', '/default');
+    expect(defaultCard).toHaveClass('min-h-40');
+    expect(defaultChildren[0].querySelector('h3')).toBeNull();
+    expect(defaultChildren[0].children[0]).not.toHaveClass('shrink-0');
+    expect(defaultChildren[0].children[1]).not.toHaveClass('shrink-0');
+    expect(defaultChildren[1].querySelector('h3')).toHaveTextContent(
+      'Default card',
+    );
+    expect(defaultContent).not.toHaveClass('flex');
+    expect(defaultContent).not.toHaveClass('flex-col');
+    expect(defaultContent).not.toHaveClass('justify-center');
+
+    expect(inlineCard).toHaveAttribute('href', '/inline');
+    expect(inlineCard).toHaveClass('min-h-36');
+    expect(inlineChildren[0].children).toHaveLength(3);
+    expect(
+      Array.from(inlineChildren[0].children).map((child) => child.localName),
+    ).toEqual(['span', 'h3', 'svg']);
+    expect(inlineChildren[0].children[0]).toHaveClass('shrink-0');
+    expect(inlineChildren[0].children[1]).toHaveTextContent('Inline card');
+    expect(inlineChildren[0].children[2]).toHaveClass('shrink-0');
+    expect(inlineChildren[1]).toHaveTextContent('Inline description.');
+    expect(inlineContent).toHaveClass('flex', 'flex-col', 'justify-center');
+    expect(inlineContent).toHaveTextContent('Inline description.');
+  });
+
+  it('renders compact solution cards as dense title-only links', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCardGrid =
+      components.SolutionCardGrid as SolutionCardGridComponent;
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+
+    const { container } = render(
+      <SolutionCardGrid size="compact">
+        <SolutionCard
+          description="多人实时协作、文档演示和白板互动能力。"
+          href="/zh-CN/realtime-media/whiteboard"
+          icon="whiteboard"
+          showDescription={false}
+          size="compact"
+          title="互动白板"
+        />
+      </SolutionCardGrid>,
+    );
+
+    const link = screen.getByRole('link', { name: /互动白板/i });
+    const compactChildren = Array.from(link.children);
+
+    expect(link).toHaveAttribute('href', '/zh-CN/realtime-media/whiteboard');
+    expect(
+      screen.queryByText('多人实时协作、文档演示和白板互动能力。'),
+    ).toBeNull();
+    expect(container.querySelector('section')).toHaveClass(
+      'my-6',
+      'gap-3',
+      'grid-cols-1',
+      'md:grid-cols-3',
+    );
+    expect(link).toHaveClass('flex-row', 'items-center', 'min-h-14', 'p-3');
+    expect(compactChildren).toHaveLength(3);
+    expect(compactChildren.map((child) => child.localName)).toEqual([
+      'span',
+      'h3',
+      'svg',
+    ]);
+    expect(compactChildren[0].querySelector('svg')).not.toBeNull();
+    expect(compactChildren[1]).toHaveTextContent('互动白板');
+    expect(compactChildren[2].localName).toBe('svg');
   });
 
   it('supports multiple labeled actions that share one target', () => {
