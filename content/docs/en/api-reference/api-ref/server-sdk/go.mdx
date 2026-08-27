@@ -222,15 +222,13 @@ agent := agentkit.NewAgent(
 | `WithGreetingConfigs(configs)` | `*LlmGreetingConfigs` | Sets `llm.greeting_configs`, including v2.7 `interruptable` |
 | `WithSalConfig(sal)` | `*SalConfig` | Speech analytics configuration |
 | `WithAdvancedFeatures(af)` | `*AdvancedFeatures` | Advanced feature flags, for example `EnableMllm`, `EnableAivad` |
-| `WithTools(enabled)` | `bool` | Enable or disable custom tool and MCP tool invocation. In v2.12, this also governs custom tools declared via the LLM vendor's `Tools` field, in addition to MCP tools |
+| `WithTools(enabled)` | `bool` | Enable or disable MCP tool invocation |
 | `WithParameters(params)` | `*SessionParams` | Additional session parameters |
 | `WithAudioScenario(audioScenario)` | `ParametersAudioScenario` | Sets `parameters.audio_scenario` (`default`, `chorus`, or `aiserver`) |
 | `WithGeofence(gf)` | `*GeofenceConfig` | Regional access restriction |
 | `WithLabels(labels)` | `map[string]string` | Custom key-value labels returned in notification callbacks |
 | `WithRtc(rtc)` | `*RtcConfig` | RTC media encryption |
 | `WithFillerWords(fw)` | `*FillerWordsConfig` | Filler words played while waiting for the LLM response |
-
-Filler word type aliases: `agentkit.FillerWordsConfig`, `agentkit.FillerWordsTrigger`, `agentkit.FillerWordsTriggerFixedTimeConfig`, `agentkit.FillerWordsContent`, `agentkit.FillerWordsContentStaticConfig`, `agentkit.FillerWordsContentGeneratedConfig`, and `agentkit.FillerWordsGeneratedLlmProvider`. See [Talking while waiting](/en/ai/build/shape-the-conversation/filler-words) for usage.
 
 ### Vendor chaining methods
 
@@ -295,7 +293,7 @@ The following methods follow the same pattern — each returns a new `*Agent` wi
 | `WithName(name)` | `string` | Override the agent name |
 | `WithSal(sal)` | `*SalConfig` | Set SAL configuration |
 | `WithAdvancedFeatures(af)` | `*AdvancedFeatures` | Set advanced features |
-| `WithTools(enabled)` | `bool` | Enable or disable custom tool and MCP tool invocation. In v2.12, this also governs custom tools declared via the LLM vendor's `Tools` field, in addition to MCP tools |
+| `WithTools(enabled)` | `bool` | Enable or disable MCP tool invocation |
 | `WithParameters(params)` | `*SessionParams` | Set session parameters |
 | `WithFailureMessage(msg)` | `string` | Set the failure message |
 | `WithMaxHistory(n)` | `int` | Set the maximum conversation history length |
@@ -605,8 +603,6 @@ func (s *AgentSession) GetInfo(ctx context.Context) (*Agora.GetAgentsResponse, e
 
 Injects a thought or instruction into a running agent. In v2.7, omitting `on_listening_action` uses the server default `interrupt`. Set `agentkit.ThinkOnListeningActionInject.Ptr()` if you need legacy inject behavior. AgentKit also exposes `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, and `ThinkOnSpeakingActionIgnore` convenience constants.
 
-In v2.12, `ThinkOnListeningAction`, `ThinkOnThinkingAction`, and `ThinkOnSpeakingAction` also accept `append`, available as `ThinkOnListeningActionAppend`, `ThinkOnThinkingActionAppend`, and `ThinkOnSpeakingActionAppend`. It waits for the current turn's LLM output to finish, then appends the instruction as a separate user message and starts a new turn, without interrupting the turn in progress.
-
 ```go
 func (s *AgentSession) Think(ctx context.Context, text string, onListeningAction *Agora.AgentThinkAgentManagementRequestOnListeningAction, onThinkingAction *Agora.AgentThinkAgentManagementRequestOnThinkingAction, onSpeakingAction *Agora.AgentThinkAgentManagementRequestOnSpeakingAction, interruptable *bool, metadata map[string]string) (*Agora.AgentThinkAgentManagementResponse, error)
 func (s *AgentSession) ThinkWithOptions(ctx context.Context, text string, opts *ThinkOptions) (*Agora.AgentThinkAgentManagementResponse, error)
@@ -743,7 +739,6 @@ Panics if `Model` is empty. Panics if `APIKey` is empty unless `Model` is one of
 | `MaxHistory` | `*int` | No | — | Maximum number of conversation history messages to cache |
 | `Vendor` | `string` | No | — | Vendor override |
 | `McpServers` | `[]map[string]interface{}` | No | — | MCP server connections |
-| `Tools` | `[]*Agora.LlmTool` | No | — | Custom tool definitions the LLM can call |
 
 #### `NewAzureOpenAI`
 
@@ -775,7 +770,6 @@ Panics if `APIKey`, `Model`, `Endpoint`, or `DeploymentName` is empty.
 | `MaxHistory` | `*int` | No | — | Maximum number of conversation history messages to cache |
 | `Vendor` | `string` | No | — | Vendor override |
 | `McpServers` | `[]map[string]interface{}` | No | — | MCP server connections |
-| `Tools` | `[]*Agora.LlmTool` | No | — | Custom tool definitions the LLM can call |
 
 #### `NewAnthropic`
 
@@ -805,7 +799,6 @@ Panics if `APIKey`, `Model`, `URL`, `Headers`, or `MaxTokens` is empty.
 | `MaxHistory` | `*int` | No | — | Maximum number of conversation history messages to cache |
 | `Vendor` | `string` | No | — | Vendor override |
 | `McpServers` | `[]map[string]interface{}` | No | — | MCP server connections |
-| `Tools` | `[]*Agora.LlmTool` | No | — | Custom tool definitions the LLM can call |
 
 #### `NewGemini`
 
@@ -836,9 +829,6 @@ Panics if `APIKey` or `Model` is empty.
 | `MaxHistory` | `*int` | No | — | Maximum number of conversation history messages to cache |
 | `Vendor` | `string` | No | — | Vendor override |
 | `McpServers` | `[]map[string]interface{}` | No | — | MCP server connections |
-| `Tools` | `[]*Agora.LlmTool` | No | — | Custom tool definitions the LLM can call |
-
-Custom tool type aliases: `Agora.LlmTool`, `Agora.LlmToolFunction`, `Agora.LlmToolFunctionParameters`, `Agora.LlmToolExecution`, `Agora.LlmToolServer`, and the `Agora.LlmToolServerMethodGet`/`Agora.LlmToolServerMethodPost` constants. See [Call custom tools](/en/ai/build/custom-model-integration/custom-tools) for usage.
 
 ### Other LLM vendors
 

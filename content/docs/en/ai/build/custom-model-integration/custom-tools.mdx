@@ -32,164 +32,11 @@ The following aren't supported:
 
 ## Implementation
 
-You declare tools when creating the agent, using either an Agora Agents SDK or the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-tools) REST API.
+You declare tools when creating the agent, using the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-tools) REST API.
 
 ### Configure a GET tool
 
 The following example configures a `GET` tool that looks up order status:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```python
-from agora_agent import OpenAI
-
-# ... other agent configuration ...
-.with_llm(OpenAI(
-    api_key='your-llm-api-key',
-    model='gpt-4o-mini',
-    template_variables={
-        'api_key': 'Bearer your-order-service-key',
-    },
-    tools=[
-        {
-            'type': 'function',
-            'function': {
-                'name': 'getOrderStatus',
-                'description': "Get the shipping status for a customer's order by order ID.",
-                'parameters': {
-                    'type': 'object',
-                    'properties': {
-                        'order_id': {
-                            'type': 'string',
-                            'description': 'The order ID, for example ORD-10293.',
-                        },
-                    },
-                    'required': ['order_id'],
-                    'additionalProperties': False,
-                },
-            },
-            'execution': {'mode': 'sync'},
-            'server': {
-                'method': 'GET',
-                'url': 'https://api.example.com/orders/{{args.order_id}}/status',
-                'headers': {
-                    'Authorization': '{{template_variables.api_key}}',
-                },
-                'timeout_ms': 5000,
-            },
-        },
-    ],
-))
-.with_tools(True)
-# ... continue with .with_tts() and .create_session() ...
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { OpenAI } from 'agora-agents';
-
-// ... other agent configuration ...
-.withLlm(new OpenAI({
-  apiKey: 'your-llm-api-key',
-  model: 'gpt-4o-mini',
-  templateVariables: {
-    api_key: 'Bearer your-order-service-key',
-  },
-  tools: [
-    {
-      type: 'function',
-      function: {
-        name: 'getOrderStatus',
-        description: "Get the shipping status for a customer's order by order ID.",
-        parameters: {
-          type: 'object',
-          properties: {
-            order_id: {
-              type: 'string',
-              description: 'The order ID, for example ORD-10293.',
-            },
-          },
-          required: ['order_id'],
-          additionalProperties: false,
-        },
-      },
-      execution: { mode: 'sync' },
-      server: {
-        method: 'GET',
-        url: 'https://api.example.com/orders/{{args.order_id}}/status',
-        headers: {
-          Authorization: '{{template_variables.api_key}}',
-        },
-        timeout_ms: 5000,
-      },
-    },
-  ],
-}))
-.withTools(true)
-// ... continue with .withTts() and .createSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-tool := &Agora.LlmTool{
-    Function: &Agora.LlmToolFunction{
-        Name:        "getOrderStatus",
-        Description: Agora.String("Get the shipping status for a customer's order by order ID."),
-        Parameters: &Agora.LlmToolFunctionParameters{
-            Properties: map[string]interface{}{
-                "order_id": map[string]interface{}{
-                    "type":        "string",
-                    "description": "The order ID, for example ORD-10293.",
-                },
-            },
-            Required: []string{"order_id"},
-        },
-    },
-    Execution: &Agora.LlmToolExecution{
-        Mode: Agora.String("sync"),
-    },
-    Server: &Agora.LlmToolServer{
-        Method: Agora.LlmToolServerMethodGet,
-        URL:    "https://api.example.com/orders/{{args.order_id}}/status",
-        Headers: map[string]string{
-            "Authorization": "{{template_variables.api_key}}",
-        },
-        TimeoutMs: Agora.Int(5000),
-    },
-}
-
-// ... other agent configuration ...
-.WithLlm(
-    vendors.NewOpenAI(vendors.OpenAIOptions{
-        APIKey: "your-llm-api-key",
-        Model:  "gpt-4o-mini",
-        TemplateVariables: map[string]string{
-            "api_key": "Bearer your-order-service-key",
-        },
-        Tools: []*Agora.LlmTool{tool},
-    }),
-)
-.WithTools(true)
-// ... continue with .WithTts() and .CreateSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 ```json
 {
@@ -240,9 +87,6 @@ tool := &Agora.LlmTool{
 }
 ```
 
-</TabsContent>
-</Tabs>
-
 To create the agent, enable tool calling. If you don't enable tool calling, the engine doesn't expose tools to the model and never calls their endpoints.
 
 Once this is configured, a user can ask something like "What's the status of order ORD-10293?" After the model generates `order_id`, the engine sends:
@@ -253,83 +97,6 @@ Authorization: Bearer your-order-service-key
 ```
 
 **Field reference**
-
-Use the following fields to configure tool use:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-Configure tools using the `tools` parameter on the LLM vendor class, and enable tool calling with `Agent.with_tools(True)`.
-
-| Parameter | Required | Description |
-|---|---|---|
-| `OpenAI(tools=...)` | No | The custom tool array. |
-| `Agent.with_tools(True)` | Yes | Enables custom tool and MCP tool invocation together. |
-| `tools[].type` | Yes | Fixed as `function`. |
-| `tools[].function` | Yes | The tool definition visible to the model. |
-| `function.name` | Yes | Must start with a letter, contain only letters and numbers, and be no more than 64 characters long. Can't use the `mcp` prefix or the value `ragsearch_tool`. |
-| `function.description` | Yes | Explains the tool's purpose, when to call it, and what it returns. Don't include secrets. |
-| `function.parameters` | Yes | A JSON Schema object. The root `type` must be `object`. Passed using OpenAI's non-strict function-calling mode. |
-| `execution.mode` | No | Defaults to `sync` when omitted. Only `sync` is supported. |
-| `server.method` | Yes | Only `GET` and `POST` are supported. `GET` can't configure `body`. |
-| `server.url` | Yes | An absolute HTTPS URL. The path and query parameters can use template variables. |
-| `server.headers` | No | Up to 32 entries. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `server.body` | Optional for `POST` | `POST` only, supports nested JSON. Template placeholders must be complete, not concatenated with other text. |
-| `server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-Configure tools using the `tools` option on the LLM vendor class, and enable tool calling with `Agent.withTools(true)`.
-
-| Parameter | Required | Description |
-|---|---|---|
-| `OpenAI({ tools: [...] })` | No | The custom tool array, of type `LlmTool[]`. |
-| `Agent.withTools(true)` | Yes | Enables custom tool and MCP tool invocation together. |
-| `tools[].type` | Yes | Fixed as `function`. |
-| `tools[].function` | Yes | The tool definition visible to the model. |
-| `function.name` | Yes | Must start with a letter, contain only letters and numbers, and be no more than 64 characters long. Can't use the `mcp` prefix or the value `ragsearch_tool`. |
-| `function.description` | Yes | Explains the tool's purpose, when to call it, and what it returns. Don't include secrets. |
-| `function.parameters` | Yes | A JSON Schema object. The root `type` must be `object`. Passed using OpenAI's non-strict function-calling mode. |
-| `execution.mode` | No | Defaults to `sync` when omitted. Only `sync` is supported. |
-| `server.method` | Yes | Only `GET` and `POST` are supported. `GET` can't configure `body`. |
-| `server.url` | Yes | An absolute HTTPS URL. The path and query parameters can use template variables. |
-| `server.headers` | No | Up to 32 entries. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `server.body` | Optional for `POST` | `POST` only, supports nested JSON. Template placeholders must be complete, not concatenated with other text. |
-| `server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="go">
-
-Configure tools using the `Tools` field on the LLM vendor options, and enable tool calling with `agentkit.WithTools(true)`.
-
-| Parameter | Required | Description |
-|---|---|---|
-| `OpenAIOptions.Tools` | No | The custom tool array, of type `[]*Agora.LlmTool`. |
-| `WithTools(true)` | Yes | Enables custom tool and MCP tool invocation together. |
-| `Tool.Function` | Yes | The tool definition visible to the model. |
-| `Function.Name` | Yes | Must start with a letter, contain only letters and numbers, and be no more than 64 characters long. Can't use the `mcp` prefix or the value `ragsearch_tool`. |
-| `Function.Description` | Yes | Explains the tool's purpose, when to call it, and what it returns. Don't include secrets. |
-| `Function.Parameters` | Yes | A JSON Schema object. The root type is serialized as `object` and passed using OpenAI's non-strict function-calling mode. |
-| `Execution.Mode` | No | Defaults to `sync` when omitted. Only `sync` is supported. |
-| `Server.Method` | Yes | Only `GET` and `POST` are supported. `GET` can't configure `Body`. |
-| `Server.URL` | Yes | An absolute HTTPS URL. The path and query parameters can use template variables. |
-| `Server.Headers` | No | Up to 32 entries. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `Server.Body` | Optional for `POST` | `POST` only, supports nested JSON. Template placeholders must be complete, not concatenated with other text. |
-| `Server.TimeoutMs` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 Configure tools in the `properties.llm.tools` array, and set `properties.advanced_features.enable_tools` to `true`.
 
@@ -350,9 +117,6 @@ Configure tools in the `properties.llm.tools` array, and set `properties.advance
 | `tools[].server.body` | Optional for `POST` | `POST` only, supports nested JSON. Template placeholders must be complete, not concatenated with other text. |
 | `tools[].server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
 
-</TabsContent>
-</Tabs>
-
 :::info
 Even if tool calling isn't enabled, any tools you declare are still validated for field type, size, template syntax, and duplicate names.
 :::
@@ -360,177 +124,6 @@ Even if tool calling isn't enabled, any tools you declare are still validated fo
 ### Configure a POST tool
 
 Use a `POST` tool to perform actions, such as creating a ticket or sending a message. A request body can only be used with `POST`; configuring one for a `GET` tool causes validation to fail. The following example sends a confirmed delivery address to a phone number:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```python
-post_tool = {
-    'type': 'function',
-    'function': {
-        'name': 'sendFollowUpSms',
-        'description': "Send the customer's confirmed delivery address to a phone number. Only call this after the customer has confirmed both the address and the phone number.",
-        'parameters': {
-            'type': 'object',
-            'properties': {
-                'phone_number': {
-                    'type': 'string',
-                    'description': 'The recipient phone number, in E.164 format.',
-                },
-                'address': {
-                    'type': 'string',
-                    'description': "The customer's confirmed delivery address.",
-                },
-            },
-            'required': ['phone_number', 'address'],
-            'additionalProperties': False,
-        },
-    },
-    'execution': {'mode': 'sync'},
-    'server': {
-        'method': 'POST',
-        'url': 'https://api.example.com/messages/sms',
-        'headers': {
-            'Authorization': '{{template_variables.api_key}}',
-            'Content-Type': 'application/json',
-        },
-        'body': {
-            'to': '{{args.phone_number}}',
-            'message': '{{args.address}}',
-            'idempotency_key': '{{tool_call_id}}',
-        },
-        'timeout_ms': 10000,
-    },
-}
-
-# ... other agent configuration ...
-.with_llm(OpenAI(
-    api_key='your-llm-api-key',
-    model='gpt-4o-mini',
-    tools=[post_tool],
-))
-.with_tools(True)
-# ... continue with .with_tts() and .create_session() ...
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-const postTool = {
-  type: 'function' as const,
-  function: {
-    name: 'sendFollowUpSms',
-    description:
-      "Send the customer's confirmed delivery address to a phone number. Only call this after the customer has confirmed both the address and the phone number.",
-    parameters: {
-      type: 'object' as const,
-      properties: {
-        phone_number: {
-          type: 'string' as const,
-          description: 'The recipient phone number, in E.164 format.',
-        },
-        address: {
-          type: 'string' as const,
-          description: "The customer's confirmed delivery address.",
-        },
-      },
-      required: ['phone_number', 'address'],
-      additionalProperties: false,
-    },
-  },
-  execution: { mode: 'sync' as const },
-  server: {
-    method: 'POST' as const,
-    url: 'https://api.example.com/messages/sms',
-    headers: {
-      Authorization: '{{template_variables.api_key}}',
-      'Content-Type': 'application/json',
-    },
-    body: {
-      to: '{{args.phone_number}}',
-      message: '{{args.address}}',
-      idempotency_key: '{{tool_call_id}}',
-    },
-    timeout_ms: 10000,
-  },
-};
-
-// ... other agent configuration ...
-.withLlm(new OpenAI({
-  apiKey: 'your-llm-api-key',
-  model: 'gpt-4o-mini',
-  tools: [postTool],
-}))
-.withTools(true)
-// ... continue with .withTts() and .createSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-postTool := &Agora.LlmTool{
-    Function: &Agora.LlmToolFunction{
-        Name:        "sendFollowUpSms",
-        Description: Agora.String("Send the customer's confirmed delivery address to a phone number. Only call this after the customer has confirmed both the address and the phone number."),
-        Parameters: &Agora.LlmToolFunctionParameters{
-            Properties: map[string]interface{}{
-                "phone_number": map[string]interface{}{
-                    "type":        "string",
-                    "description": "The recipient phone number, in E.164 format.",
-                },
-                "address": map[string]interface{}{
-                    "type":        "string",
-                    "description": "The customer's confirmed delivery address.",
-                },
-            },
-            Required: []string{"phone_number", "address"},
-        },
-    },
-    Execution: &Agora.LlmToolExecution{
-        Mode: Agora.String("sync"),
-    },
-    Server: &Agora.LlmToolServer{
-        Method: Agora.LlmToolServerMethodPost,
-        URL:    "https://api.example.com/messages/sms",
-        Headers: map[string]string{
-            "Authorization": "{{template_variables.api_key}}",
-            "Content-Type":  "application/json",
-        },
-        Body: map[string]interface{}{
-            "to":              "{{args.phone_number}}",
-            "message":         "{{args.address}}",
-            "idempotency_key": "{{tool_call_id}}",
-        },
-        TimeoutMs: Agora.Int(10000),
-    },
-}
-
-// ... other agent configuration ...
-.WithLlm(
-    vendors.NewOpenAI(vendors.OpenAIOptions{
-        APIKey: "your-llm-api-key",
-        Model:  "gpt-4o-mini",
-        Tools:  []*Agora.LlmTool{postTool},
-    }),
-)
-.WithTools(true)
-// ... continue with .WithTts() and .CreateSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 ```json
 {
@@ -574,60 +167,11 @@ postTool := &Agora.LlmTool{
 }
 ```
 
-</TabsContent>
-</Tabs>
-
 `{{tool_call_id}}` is the system-generated ID correlating this tool call. You can pass it to your own service to correlate logs or detect a repeated call, but passing it alone doesn't stop your service from processing the same request twice, and Agora doesn't automatically retry requests. Your service is still responsible for handling duplicate requests and unknown outcomes.
 
 **Field reference**
 
 `function` and `execution` are the same as for a `GET` tool. The following fields are specific to a `POST` tool's `server` block:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-| Parameter | Required | Description |
-|---|---|---|
-| `server.method` | Yes | Fixed as `POST`. |
-| `server.url` | Yes | An absolute HTTPS URL. The path or query parameters can use template variables. |
-| `server.headers` | No | Configure authentication and `Content-Type`. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `server.body` | No | The `POST` request body. Supports nested JSON. Values can be constants or complete template placeholders, not concatenated text. |
-| `server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-| Parameter | Required | Description |
-|---|---|---|
-| `server.method` | Yes | Fixed as `POST`. |
-| `server.url` | Yes | An absolute HTTPS URL. The path or query parameters can use template variables. |
-| `server.headers` | No | Configure authentication and `Content-Type`. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `server.body` | No | The `POST` request body. Supports nested JSON. Values can be constants or complete template placeholders, not concatenated text. |
-| `server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="go">
-
-| Parameter | Required | Description |
-|---|---|---|
-| `Server.Method` | Yes | Fixed as `POST`. |
-| `Server.URL` | Yes | An absolute HTTPS URL. The path or query parameters can use template variables. |
-| `Server.Headers` | No | Configure authentication and `Content-Type`. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
-| `Server.Body` | No | The `POST` request body. Supports nested JSON. Values can be constants or complete template placeholders, not concatenated text. |
-| `Server.TimeoutMs` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 | Parameter | Required | Description |
 |---|---|---|
@@ -636,9 +180,6 @@ postTool := &Agora.LlmTool{
 | `tools[].server.headers` | No | Configure authentication and `Content-Type`. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
 | `tools[].server.body` | No | The `POST` request body. Supports nested JSON. Values can be constants or complete template placeholders, not concatenated text. |
 | `tools[].server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
-
-</TabsContent>
-</Tabs>
 
 For `POST` tools that change data or trigger an action:
 
@@ -650,145 +191,6 @@ For `POST` tools that change data or trigger an action:
 ### Configure template variables
 
 Template variables let you fill an HTTP request with either LLM-generated parameters or fixed values known when you create the agent. The following example puts a tenant ID in a header and a customer ID in the request body:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-Configure fixed values in the LLM vendor's `template_variables` parameter, then reference them from a tool's `server.headers` or `server.body`:
-
-```python
-post_tool = {
-    'type': 'function',
-    'function': {
-        'name': 'getCustomerProfile',
-        'description': "Look up the current customer's profile.",
-        'parameters': {
-            'type': 'object',
-            'properties': {},
-            'additionalProperties': False,
-        },
-    },
-    'execution': {'mode': 'sync'},
-    'server': {
-        'method': 'POST',
-        'url': 'https://api.example.com/customers/profile',
-        'headers': {
-            'X-Tenant-ID': '{{template_variables.tenant_id}}',
-        },
-        'body': {
-            'customer_id': '{{template_variables.customer_id}}',
-        },
-    },
-}
-
-# ... other agent configuration ...
-.with_llm(OpenAI(
-    api_key='your-llm-api-key',
-    model='gpt-4o-mini',
-    template_variables={
-        'tenant_id': 'acme-corp',
-        'customer_id': 'cust-4471',
-    },
-    tools=[post_tool],
-))
-.with_tools(True)
-# ... continue with .with_tts() and .create_session() ...
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-Configure fixed values in the LLM vendor's `templateVariables` option, then reference them from a tool's `server.headers` or `server.body`:
-
-```typescript
-const postTool = {
-  type: 'function' as const,
-  function: {
-    name: 'getCustomerProfile',
-    description: "Look up the current customer's profile.",
-    parameters: { type: 'object' as const, properties: {}, additionalProperties: false },
-  },
-  execution: { mode: 'sync' as const },
-  server: {
-    method: 'POST' as const,
-    url: 'https://api.example.com/customers/profile',
-    headers: {
-      'X-Tenant-ID': '{{template_variables.tenant_id}}',
-    },
-    body: {
-      customer_id: '{{template_variables.customer_id}}',
-    },
-  },
-};
-
-// ... other agent configuration ...
-.withLlm(new OpenAI({
-  apiKey: 'your-llm-api-key',
-  model: 'gpt-4o-mini',
-  templateVariables: {
-    tenant_id: 'acme-corp',
-    customer_id: 'cust-4471',
-  },
-  tools: [postTool],
-}))
-.withTools(true)
-// ... continue with .withTts() and .createSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-The Go SDK configures fixed values in the LLM vendor's `TemplateVariables`, then references them from `LlmToolServer.Headers` or `Body`:
-
-```go
-tool := &Agora.LlmTool{
-    Function: &Agora.LlmToolFunction{
-        Name:        "getCustomerProfile",
-        Description: Agora.String("Look up the current customer's profile."),
-        Parameters: &Agora.LlmToolFunctionParameters{
-            Properties: map[string]interface{}{},
-        },
-    },
-    Server: &Agora.LlmToolServer{
-        Method: Agora.LlmToolServerMethodPost,
-        URL:    "https://api.example.com/customers/profile",
-        Headers: map[string]string{
-            "X-Tenant-ID": "{{template_variables.tenant_id}}",
-        },
-        Body: map[string]interface{}{
-            "customer_id": "{{template_variables.customer_id}}",
-        },
-    },
-}
-
-// ... other agent configuration ...
-.WithLlm(
-    vendors.NewOpenAI(vendors.OpenAIOptions{
-        APIKey: "your-llm-api-key",
-        Model:  "gpt-4o-mini",
-        TemplateVariables: map[string]string{
-            "tenant_id":   "acme-corp",
-            "customer_id": "cust-4471",
-        },
-        Tools: []*Agora.LlmTool{tool},
-    }),
-)
-.WithTools(true)
-// ... continue with .WithTts() and .CreateSession() ...
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 ```json
 {
@@ -830,62 +232,13 @@ tool := &Agora.LlmTool{
 }
 ```
 
-</TabsContent>
-</Tabs>
-
 **Field reference**
-
-The following fields configure and reference `template_variables` in each language.
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-| Parameter | Description |
-|---|---|
-| `OpenAI(template_variables=...)` | Fixed string values known when the agent is created. |
-| `OpenAI(tools=...)` | The custom tools. |
-| `Agent.with_tools(True)` | Enables custom tool and MCP tool invocation. |
-| `server.body` / `server.headers` | Read a fixed value with `{{template_variables.<name>}}`. Can also reference `args` or `tool_call_id`. |
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-| Parameter | Description |
-|---|---|
-| `OpenAI({ templateVariables: ... })` | Fixed string values known when the agent is created. |
-| `server.headers` / `server.body` | Read a fixed value with `{{template_variables.<name>}}`. |
-| `server.body` | Can also use `{{args.<name>}}` and `{{tool_call_id}}`, neither of which need `templateVariables` configured. |
-
-</TabsContent>
-
-<TabsContent value="go">
-
-| Parameter | Description |
-|---|---|
-| `OpenAIOptions.TemplateVariables` | Fixed string values known when the agent is created. |
-| `LlmToolServer.Headers` / `Body` | Read a fixed value with `{{template_variables.<name>}}`. |
-| `LlmToolServer.Body` | Can also use `{{args.<name>}}` and `{{tool_call_id}}`, neither of which need `TemplateVariables` configured. |
-
-</TabsContent>
-
-<TabsContent value="rest-api">
 
 | Parameter | Description |
 |---|---|
 | `properties.llm.template_variables` | Fixed string values known when the agent is created. |
 | `properties.llm.tools[].server.headers` / `body` | Read a fixed value with `{{template_variables.<name>}}`. |
 | `properties.llm.tools[].server.body` | Can also use `{{args.<name>}}` and `{{tool_call_id}}`, neither of which need `template_variables` configured. |
-
-</TabsContent>
-</Tabs>
 
 Keep the following rules in mind when using template variables:
 
