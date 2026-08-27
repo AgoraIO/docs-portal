@@ -1097,30 +1097,32 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/iot-apaas/reference/downloads',
   'solutions/iot-apaas/restful': '/zh-CN/solutions/iot-apaas/reference/restful',
   'solutions/meeting/api/create-room':
-    '/zh-CN/solutions/meeting/reference/create-room',
+    '/zh-CN/api-reference/meeting/restful/api/create-room',
   'solutions/meeting/api/query-recording':
-    '/zh-CN/solutions/meeting/reference/query-recording',
+    '/zh-CN/api-reference/meeting/restful/api/query-recording',
   'solutions/meeting/best-practices/high-availability':
-    '/zh-CN/solutions/meeting/build/manage-classroom/high-availability',
+    '/zh-CN/realtime-media/meeting/build/manage-classroom/high-availability',
   'solutions/meeting/get-started/call-api':
-    '/zh-CN/solutions/meeting/reference/call-api',
+    '/zh-CN/realtime-media/meeting/reference/call-api',
   'solutions/meeting/get-started/configure-meeting':
-    '/zh-CN/solutions/meeting/build/manage-classroom/configure-meeting',
+    '/zh-CN/realtime-media/meeting/build/manage-classroom/configure-meeting',
   'solutions/meeting/get-started/enable-service':
-    '/zh-CN/solutions/meeting/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
   'solutions/meeting/overview/platform-support':
-    '/zh-CN/solutions/meeting/reference/platform-support',
-  'solutions/meeting/overview/product-overview': '/zh-CN/solutions/meeting',
-  'solutions/meeting/quota': '/zh-CN/solutions/meeting/reference/quota',
-  'solutions/meeting/resources': '/zh-CN/solutions/meeting/reference/downloads',
+    '/zh-CN/realtime-media/meeting/reference/platform-support',
+  'solutions/meeting/overview/product-overview':
+    '/zh-CN/realtime-media/meeting',
+  'solutions/meeting/quota': '/zh-CN/realtime-media/meeting/reference/quota',
+  'solutions/meeting/resources':
+    '/zh-CN/realtime-media/meeting/reference/downloads',
   'solutions/meeting/response-code':
-    '/zh-CN/solutions/meeting/reference/response-code',
+    '/zh-CN/realtime-media/meeting/reference/response-code',
   'solutions/meeting/user-guides/generate-token':
-    '/zh-CN/solutions/meeting/build/customize-and-extend/generate-token',
+    '/zh-CN/realtime-media/meeting/build/customize-and-extend/generate-token',
   'solutions/meeting/user-guides/http-token-auth':
-    '/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth',
+    '/zh-CN/realtime-media/meeting/build/customize-and-extend/http-token-auth',
   'solutions/meeting/webhook/webhook-events':
-    '/zh-CN/solutions/meeting/reference/webhook-events',
+    '/zh-CN/realtime-media/meeting/reference/webhook-events',
   'solutions/meta-world/advanced-features/dress-face':
     '/zh-CN/solutions/meta-world/build/customize-and-extend/dress-face',
   'solutions/meta-world/advanced-features/share-audio-video':
