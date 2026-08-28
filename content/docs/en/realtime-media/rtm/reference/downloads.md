@@ -273,11 +273,7 @@ The steps to execute these scripts are as follows:
 </TabsContent>
 
 <TabsContent value="linux-java">
-To manually install the Signaling SDK for Linux Java:
-
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
-
-1. Copy the `*.so` files and the `*.jar` file to the `lib` folder.
+To install the Signaling SDK for Linux Java using Maven:
 
 1. Create a file named `pom.xml` in `RTM_quickstart` with the following content:
 
@@ -298,6 +294,7 @@ To manually install the Signaling SDK for Linux Java:
             <maven.compiler.target>1.8</maven.compiler.target>
         </properties>
 
+        <!-- [!code highlight:7] -->
         <dependencies>
             <dependency>
                 <groupId>io.agora</groupId>
@@ -336,11 +333,7 @@ To manually install the Signaling SDK for Linux Java:
 
     Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
-1. The SDK isn't published to a public Maven repository, so before building, register the `agora-rtm-sdk.jar` file as a local dependency. Use the same `x.y.z` version number as in `pom.xml`:
-
-    ```bash
-    mvn install:install-file -Dfile=lib/agora-rtm-sdk.jar -DgroupId=io.agora -DartifactId=rtm-java -Dversion=x.y.z -Dpackaging=jar
-    ```
+1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
 </TabsContent>
 
 <TabsContent value="linux-cpp">

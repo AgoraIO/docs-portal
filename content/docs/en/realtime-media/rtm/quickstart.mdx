@@ -3273,15 +3273,11 @@ RTM_quickstart/
 └── lib/
 ```
 
-### Integrate the SDK
+### Integrate the SDK using Maven Central
 
-To integrate the Linux Java Signaling SDK into your project:
+To integrate the Linux Java Signaling SDK into your project using Maven:
 
-1. [Download](/en/api-reference/sdks?product=signaling&platform=linux) the latest version of the SDK and unzip it.
-
-1. Copy the `*.so` files and the `*.jar` file from the SDK package to the project's `lib` folder.
-
-1. Create a `pom.xml` file in the `RTM_quickstart` folder with the following content, to build the project with Maven:
+1. Create a `pom.xml` file in the `RTM_quickstart` folder with the following content:
 
     <Accordions>
     <Accordion title="pom.xml">
@@ -3303,6 +3299,7 @@ To integrate the Linux Java Signaling SDK into your project:
             <maven.compiler.target>1.8</maven.compiler.target>
         </properties>
 
+        <!-- [!code highlight:7] -->
         <dependencies>
             <dependency>
                 <groupId>io.agora</groupId>
@@ -3343,6 +3340,8 @@ To integrate the Linux Java Signaling SDK into your project:
     </Accordions>
 
     Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux) the SDK package separately, unzip it, and copy the `*.so` files to the project's `lib` folder.
 
 ## Implement Signaling
 
@@ -3652,14 +3651,6 @@ Take the following steps to test the sample code:
 1. [Generate a temporary token](/en/introduction/account#generate-temporary-tokens) for your project.
 
 1. In your code, replace `<Your App ID>` with your app ID from Agora Console and `<Your token>` with the generated token. Make sure Signaling is activated for your project in [Agora Console](https://console.agora.io/).
-
-1. The SDK isn't published to a public Maven repository, so register the `agora-rtm-sdk.jar` file you copied into the `lib` folder as a local dependency:
-
-    ```bash
-    mvn install:install-file -Dfile=lib/agora-rtm-sdk.jar -DgroupId=io.agora -DartifactId=rtm-java -Dversion=x.y.z -Dpackaging=jar
-    ```
-
-    Use the same `x.y.z` version number as in your `pom.xml`.
 
 1. In the terminal, run the following commands to compile the project:
 
