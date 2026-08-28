@@ -68,8 +68,8 @@ __attribute__((visibility("default"))) @interface AgoraRtmClientConfig: NSObject
 | :---------------: | :--------: | :------: | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `appId` | NSString | Required | - | App ID obtained when creating a project in the Agora Console. |
 | `userId` | NSString | Required | - | User ID for identify a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
-| `areaCode` | `AgoraRtmAreaCode` | Optional | `AgoraRtmAreaCodeGLOB` | Service area code, you can choose according to the region where your business is deployed. See [`AgoraRtmAreaCode`](#enumvareacod-e). |
-| `protocolType` | `AgoraRtmProtocolType` | Optional | `AgoraRtmProtocolTypeTcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`AgoraRtmProtocolType`](#enumvprotocoltyp-e). |
+| `areaCode` | `AgoraRtmAreaCode` | Optional | `AgoraRtmAreaCodeGLOB` | Service area code, you can choose according to the region where your business is deployed. See [`AgoraRtmAreaCode`](#agorartmareacode). |
+| `protocolType` | `AgoraRtmProtocolType` | Optional | `AgoraRtmProtocolTypeTcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`AgoraRtmProtocolType`](#agorartmprotocoltype). |
 | `presenceTimeout` | unsigned int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | unsigned int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
 | `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `completion` callback with `errorInfo` as `AgoraRtmErrorLoginTimeout`, and also triggers the `didReceiveLinkStateEvent` callback with `currentState` as `AgoraRtmLinkStateFailed` and `reasonCode` as `AgoraRtmLinkStateChangeReasonLoginTimeout`. <br />- If reconnection times out, the SDK triggers the `didReceiveLinkStateEvent` callback with `currentState` as `AgoraRtmLinkStateFailed` and `reasonCode` as `AgoraRtmLinkStateChangeReasonReconnectTimeout`. |
@@ -88,7 +88,7 @@ Use the `AgoraRtmLogConfig` instance to configure and store local log files name
 |:--------------:|:---------:|:--------:|:-------:| ----------------------------------------------------------------------------------------------------------------------- |
 | `filePath` | NSString | Optional | - | Log file storage paths. |
 | `fileSizeInKB` | int | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
-| `level` | `AgoraRtmLogLevel` | Optional | `AgoraRtmLogLevelInfo` | Output level of log information. See [`AgoraRtmLogLevel`](#enumvlogleve-l). |
+| `level` | `AgoraRtmLogLevel` | Optional | `AgoraRtmLogLevelInfo` | Output level of log information. See [`AgoraRtmLogLevel`](#agorartmloglevel). |
 
 ##### AgoraRtmProxyConfig
 
@@ -125,7 +125,7 @@ Once you set the encryption feature, all users must use the same encryption mode
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `encryptionMode` | `AgoraRtmEncryptionMode` | Optional | `AgoraRtmEncryptionNone` | Encryption mode. See [`AgoraRtmEncryptionMode`](#enumvencryptionmod-e). |
+| `encryptionMode` | `AgoraRtmEncryptionMode` | Optional | `AgoraRtmEncryptionNone` | Encryption mode. See [`AgoraRtmEncryptionMode`](#agorartmencryptionmode). |
 | `encryptionKey` | NSString | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
 | `encryptionKdfSalt` | NSData | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
@@ -135,7 +135,7 @@ Use the `AgoraRtmPrivateConfig` instance to set the properties required for the 
 `AgoraRtmPrivateConfig` contains the following properties:
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `serviceType` | `EnumSet&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`AgoraRtmServiceType`](#enumvrtmservicetyp-e). |
+| `serviceType` | `EnumSet&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`AgoraRtmServiceType`](#agorartmservicetype). |
 | `accessPointHosts` | `NSArray&lt;NSString *&gt;` | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
 
 #### Basic usage
@@ -223,12 +223,12 @@ Signaling has a total of 7 types of event notifications, as shown in the followi
 
 | Event Type | Description |
 |:----------:|------------------------------|
-| `didReceiveMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`AgoraRtmMessageEvent`](#configmessageeven-t) . |
-| `didReceivePresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmPresenceEvent`](#configpresenceeven-t) |
-| `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. See [`AgoraRtmTopicEvent`](#configtopiceven-t) |
-| `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`AgoraRtmStorageEvent`](#configstorageeven-t) |
-| `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmLockEvent`](#configlockeven-t) |
-| `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. See [`AgoraRtmLinkStateEvent`](#configlinkstateeven-t). |
+| `didReceiveMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`AgoraRtmMessageEvent`](#agorartmmessageevent) . |
+| `didReceivePresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmPresenceEvent`](#agorartmpresenceevent) |
+| `didReceiveTopicEvent` | Receive all topic event notifications in joined stream channels. See [`AgoraRtmTopicEvent`](#agorartmtopicevent) |
+| `didReceiveStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`AgoraRtmStorageEvent`](#agorartmstorageevent) |
+| `didReceiveLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`AgoraRtmLockEvent`](#agorartmlockevent) |
+| `didReceiveLinkStateEvent` | Receive event notifications when client connection status changes. See [`AgoraRtmLinkStateEvent`](#agorartmlinkstateevent). |
 | `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -310,7 +310,7 @@ Message event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `channelName` | NSString | Channel name. |
 | `channelTopic` | NSString | Topic name. |
 | `message` | `AgoraRtmMessage` | Message. |
@@ -333,8 +333,8 @@ User presence event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `AgoraRtmPresenceEventType` | Presence event type. See [`AgoraRtmPresenceEventType`](#enumvpresencetyp-e). |
-| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `type` | `AgoraRtmPresenceEventType` | Presence event type. See [`AgoraRtmPresenceEventType`](#agorartmpresenceeventtype). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `channelName` | NSString | Channel name. |
 | `publisher` | NSString | User ID of the message publisher. |
 | `states` | NSDictionary | Key-value pair that identifies the user's presence state. |
@@ -374,7 +374,7 @@ Topic event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `AgoraRtmTopicEventType` | Topic event type. See [`AgoraRtmTopicEventType`](#enumvtopictyp-e). |
+| `type` | `AgoraRtmTopicEventType` | Topic event type. See [`AgoraRtmTopicEventType`](#agorartmtopiceventtype). |
 | `channelName` | NSString | Channel name. |
 | `publisher` | NSString | User ID. |
 | `topicInfos` | `NSArray&lt;AgoraRtmTopicInfo *&gt;` | Topic information. |
@@ -402,11 +402,11 @@ Storage event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
-| `storageType` | `AgoraRtmStorageType` | Storage type. See [`AgoraRtmStorageType`](#enumvstoragetyp-e). |
-| `eventType` | `AgoraRtmStorageEventType` | Storage event type. See [`AgoraRtmStorageEventType`](#enumvstorageeventtyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
+| `storageType` | `AgoraRtmStorageType` | Storage type. See [`AgoraRtmStorageType`](#agorartmstoragetype). |
+| `eventType` | `AgoraRtmStorageEventType` | Storage event type. See [`AgoraRtmStorageEventType`](#agorartmstorageeventtype). |
 | `target` | NSString | User ID or channel name. |
-| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `timestamp` | unsigned long long | The timestamp when the event occurs. |
 
 ##### AgoraRtmLockEvent
@@ -417,8 +417,8 @@ Lock event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
-| `eventType` | `AgoraRtmLockEventType` | Lock event type. See [`AgoraRtmLockEventType`](#enumvlocktyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
+| `eventType` | `AgoraRtmLockEventType` | Lock event type. See [`AgoraRtmLockEventType`](#agorartmlockeventtype). |
 | `channelName` | NSString | Channel name. |
 | `lockDetailList` | `ArrayList&lt;LockDetail&gt;` | Details of lock. |
 | `timestamp` | unsigned long long | The timestamp when the event occurs. |
@@ -436,11 +436,11 @@ SDK link state event.
 `AgoraRtmLinkStateEvent` data type contains the following properties:
 | Parameters | Type | Description |
 |:----------:|:-----:|:--------------------------- |
-| `currentState` | `AgoraRtmLinkState` | The current link state. See [`AgoraRtmLinkState`](#enumvlinkstat-e). |
-| `previousState` | `AgoraRtmLinkState` | The previous link state. See [`AgoraRtmLinkState`](#enumvlinkstat-e). |
-| `serviceType` | `AgoraRtmServiceType` | The network connection type. See [`AgoraRtmServiceType`](#enumvrtmservicetyp-e). |
-| `operation` | `AgoraRtmLinkOperation` | The operation that triggered the current state transition. See [`AgoraRtmLinkOperation`](#enumvlinkoperatio-n). |
-| `reasonCode` | `AgoraRtmLinkStateChangeReason` | The reason for this state transition. See [`AgoraRtmLinkStateChangeReason`](#enumvlinkstatereaso-n). |
+| `currentState` | `AgoraRtmLinkState` | The current link state. See [`AgoraRtmLinkState`](#agorartmlinkstate). |
+| `previousState` | `AgoraRtmLinkState` | The previous link state. See [`AgoraRtmLinkState`](#agorartmlinkstate). |
+| `serviceType` | `AgoraRtmServiceType` | The network connection type. See [`AgoraRtmServiceType`](#agorartmservicetype). |
+| `operation` | `AgoraRtmLinkOperation` | The operation that triggered the current state transition. See [`AgoraRtmLinkOperation`](#agorartmlinkoperation). |
+| `reasonCode` | `AgoraRtmLinkStateChangeReason` | The reason for this state transition. See [`AgoraRtmLinkStateChangeReason`](#agorartmlinkstatechangereason). |
 | `reason` | NSString | The reason for the current state transition. This parameter will be deprecated in the future, please use the `reasonCode` parameter instead. |
 | `affectedChannels` | `NSArray&lt;NSString *&gt;` | The channels affected by the current state transition. |
 | `unrestoredChannels` | `NSArray&lt;NSString *&gt;` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
@@ -940,8 +940,8 @@ The `AgoraRtmJoinTopicOption` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :-------------: | :------------------------------------------------------: | :------: | :-----------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `qos` | `AgoraRtmMessageQos` | Optional | `AgoraRtmMessageQosUnordered` | Whether the data transmitted in the topic is ordered. See [`AgoraRtmMessageQos`](#enumvmessageqo-s). |
-| `priority` | `AgoraRtmMessagePriority` | Optional | `AgoraRtmMessagePriorityNormal` | The priority of data transmission in the topic compared to other topics in the same channel. See [`AgoraRtmMessagePriority`](#enumvpriorit-y). |
+| `qos` | `AgoraRtmMessageQos` | Optional | `AgoraRtmMessageQosUnordered` | Whether the data transmitted in the topic is ordered. See [`AgoraRtmMessageQos`](#agorartmmessageqos). |
+| `priority` | `AgoraRtmMessagePriority` | Optional | `AgoraRtmMessagePriorityNormal` | The priority of data transmission in the topic compared to other topics in the same channel. See [`AgoraRtmMessagePriority`](#agorartmmessagepriority). |
 | `meta` | NSString | Optional | - | Adds additional metadata when joining the topic. |
 | `syncWithMedia` | BOOL | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
 
@@ -1254,7 +1254,7 @@ The `AgoraRtmTopicMessageOptions` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :----------: | :----: | :------: | :----: | --------------------------------------- |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `customType` | NSString | Required | - | A user-defined field. Only supports string type. |
 
 #### Basic usage
@@ -1410,7 +1410,7 @@ You can call the `getOnlineUsers` method as follows:
 | Parameters |Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `options` | `AgoraRtmGetOnlineUsersOptions` | Optional | - | Query options. |
 | `completionBlock` | `AgoraRtmGetOnlineUsersBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetOnlineUsersResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -1496,7 +1496,7 @@ The `AgoraRtmChannelInfo` data type contains the following properties:
 | Properties |Type | Description |
 | :------------ | :-------------------------------------------------------: | ---------------------------------------------------------------------------------------------------------------- |
 | `channelName` | NSString | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 
 #### Basic usage
 
@@ -1540,7 +1540,7 @@ You can call the `setState` method as follows:
 | Parameters |Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `items` | NSDictionary | Required | - | User state, an array of `StateItem`.
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -1578,7 +1578,7 @@ You can call the `getState` method as follows:
 | Parameters |Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `userId` | NSString | Required | - | User ID.|
 | `completionBlock` | `AgoraRtmPresenceGetStateBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmPresenceGetStateResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -1641,7 +1641,7 @@ You can call the `removeState` method as follows:
 | Parameters |Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `keys` | `NSArray&lt;NSString *&gt;` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -1700,8 +1700,8 @@ You can call the `setChannelMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-----------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `lock` | NSString | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -1765,14 +1765,14 @@ You can call the `getChannelMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-----------: | :----: | :------: | :----: | --------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `completionBlock` | `AgoraRtmGetMetadataBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetMetadataResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
 The `AgoraRtmGetMetadataResponse` data type contains the following properties:
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | ------------------------------------- |
-| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 
 #### Basic usage
 
@@ -1821,8 +1821,8 @@ You can call the `removeChannelMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-----------: | :----: | :------: | :----: | --------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `lock` | NSString | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -1884,8 +1884,8 @@ You can call the `updateChannelMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-----------: | :----: | :------: | :----: | --------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `lock` | NSString | Optional | nil string `''` | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -1965,7 +1965,7 @@ You can call the `setUserMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `userId` | NSString | Required | `userId` of the current user | User ID. |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -2030,7 +2030,7 @@ The `AgoraRtmGetMetadataResponse` data type contains the following properties:
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | ------------------------------------- |
-| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 
 #### Basic usage
 
@@ -2071,7 +2071,7 @@ You can call the `removeUserMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `userId` | NSString | Required | `userId` of the current user | User ID. |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -2128,7 +2128,7 @@ You can call the `updateUserMetadata` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :-------: | :-------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `userId` | NSString | Required | `userId` of the current user | User ID. |
-| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#storagemetadat-a). |
+| `data` | `AgoraRtmMetadata` | Required | - | Metadata item. See [`AgoraRtmMetadata`](#agorartmmetadata). |
 | `options` | `AgoraRtmMetadataOptions` | Optional | - | Options for setting the channel metadata. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -2279,7 +2279,7 @@ You can call the `setLock` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `lockName` | NSString | Required | - | Lock name. |
 | `ttl` | int | Optional | `10` | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `didReceiveLockEvent` event receives the `AgoraRtmLockEventTypeLockReleased` event. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -2318,7 +2318,7 @@ You can call the `acquireLock` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `lockName` | NSString | Required | - | Lock name. |
 | `retry` | BOOL | Required | - | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -2358,7 +2358,7 @@ You can call the `releaseLock` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `lockName` | NSString | Required | - | Lock name. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
@@ -2398,7 +2398,7 @@ You can call the `revokeLock` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `lockName` | NSString | Required | - | Lock name. |
 | `userId` | NSString | Required | - | The ID of the user who has a lock. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
@@ -2434,7 +2434,7 @@ You can call the `getMessages` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `completionBlock` | `AgoraRtmGetLocksBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmGetLocksResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 
 The `AgoraRtmGetLocksResponse` data type contains the following properties:
@@ -2488,7 +2488,7 @@ You can call the `removeLock` method as follows:
 | Parameters | Type | Required | Default | Description |
 | :---------------: | :-------------------------------------------------------: | :------: | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | NSString | Required | - | Channel name. |
-| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `AgoraRtmChannelType` | Required | - | Channel types. See [`AgoraRtmChannelType`](#agorartmchanneltype). |
 | `lockName` | NSString | Required | - | Lock name. |
 | `completionBlock` | `AgoraRtmOperationBlock` | Optional | - | Callback of invocation result:<br />- Success: Returns the `AgoraRtmCommonResponse` data in the `response` parameter, and `nil` in the `errorInfo` parameter.<br />- Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter. |
 

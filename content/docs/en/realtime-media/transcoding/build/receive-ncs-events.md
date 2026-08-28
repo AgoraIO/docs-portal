@@ -31,7 +31,7 @@ To set up and use Notifications, you must have:
 
 In order to handle notifications for the events you subscribe to, you need to:
 - [Create your webhook](#create-your-webhook)
-- [Enable Notifications](#enable-notifications)
+- [Set up Webhook notifications](#set-up-webhook-notifications)
 - [Verify Notifications signatures](#add-signature-verification)
 
 ### Create your webhook
@@ -302,7 +302,7 @@ To add signature verification to your server, take the following steps:
     }
     ```
 
-4. To test the server, follow the steps given in the [Enable notifications](#enable-notifications) section.
+4. To test the server, follow the steps given in the [Set up Webhook notifications](#set-up-webhook-notifications) section.
 
 5. When you receive an event from the console, and if the signature matches, the event details are displayed in your browser.
 
