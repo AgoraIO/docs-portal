@@ -130,6 +130,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -165,6 +168,42 @@ val rtmConfig = RtmConfig.Builder("appid", "userId")
     .build()
 ```
 
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```java tab="Java"
+RtmProxyConfig proxyConfig = new RtmProxyConfig();
+proxyConfig.setProxyType(RtmProxyType.HTTP);
+proxyConfig.setServer("your_proxy_server_ip");
+proxyConfig.setPort(8080);
+proxyConfig.setAccount("your_proxy_account");
+proxyConfig.setPassword("your_proxy_password");
+
+RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
+    .proxyConfig(proxyConfig)
+    .eventListener(eventListener)
+    .build();
+```
+
+```kotlin tab="Kotlin"
+val proxyConfig = RtmProxyConfig().apply {
+    proxyType = RtmProxyType.HTTP
+    server = "your_proxy_server_ip"
+    port = 8080
+    account = "your_proxy_account"
+    password = "your_proxy_password"
+}
+
+val rtmConfig = RtmConfig.Builder("appid", "userId")
+    .proxyConfig(proxyConfig)
+    .eventListener(eventListener)
+    .build()
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -301,6 +340,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -331,6 +373,40 @@ config.areaCode = [.CN, .NA]
 AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 rtm_cfg.areaCode = AgoraRtmAreaCodeNA;
 ```
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let proxyConfig = AgoraRtmProxyConfig()
+proxyConfig.proxyType = .http
+proxyConfig.server = "your_proxy_server_ip"
+proxyConfig.port = 8080
+proxyConfig.account = "your_proxy_account"
+proxyConfig.password = "your_proxy_password"
+
+rtmConfig.proxyConfig = proxyConfig
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server_ip";
+proxy_config.port = 8080;
+proxy_config.account = @"your_proxy_account";
+proxy_config.password = @"your_proxy_password";
+
+rtm_config.proxyConfig = proxy_config;
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -455,6 +531,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -485,6 +564,40 @@ config.areaCode = [.CN, .NA]
 AgoraRtmClientConfig *rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
 rtm_cfg.areaCode = AgoraRtmAreaCodeNA;
 ```
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```swift tab="Swift" tabGroup="rtm-client-language"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let proxyConfig = AgoraRtmProxyConfig()
+proxyConfig.proxyType = .http
+proxyConfig.server = "your_proxy_server_ip"
+proxyConfig.port = 8080
+proxyConfig.account = "your_proxy_account"
+proxyConfig.password = "your_proxy_password"
+
+rtmConfig.proxyConfig = proxyConfig
+```
+
+```objc tab="Objective-C" tabGroup="rtm-client-language"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server_ip";
+proxy_config.port = 8080;
+proxy_config.account = @"your_proxy_account";
+proxy_config.password = @"your_proxy_password";
+
+rtm_config.proxyConfig = proxy_config;
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -609,6 +722,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -640,6 +756,24 @@ RtmConfig config = RtmConfig(
 );
 ```
 
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```dart
+const proxyConfig = RtmProxyConfig(
+    proxyType: RtmProxyType.http,
+    server: "your_proxy_server_ip",
+    port: 8080,
+    account: "your_proxy_account",
+    password: "your_proxy_password");
+
+const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -747,6 +881,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -793,6 +930,32 @@ Available area codes:
 | `RtmAreaCode.in` | India |
 | `RtmAreaCode.cn` | Mainland China |
 | `RtmAreaCode.glob` | Global (default) |
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```tsx
+
+const client = createAgoraRtmClient(
+ new RtmConfig({
+   userId: 'your_userId',
+   appId: 'your_appId',
+   useStringUserId: true,
+   proxyConfig: {
+     proxyType: RtmProxyType.http,
+     server: 'your_proxy_server_ip',
+     port: 8080,
+     account: 'your_proxy_account',
+     password: 'your_proxy_password',
+   },
+ })
+);
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Connection protocol
 
@@ -992,6 +1155,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -1017,6 +1183,25 @@ To specify a geographical area for Agora SDRTN® connections, refer to the follo
 rtmConfig.areaCode = RTM_AREA_CODE_NA;
 int ret = signalingEngine->initialize(rtmConfig);
 ```
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```cpp
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.proxyConfig.proxyType = RTM_PROXY_TYPE_HTTP;
+config.proxyConfig.server = "your_proxy_server_ip";
+config.proxyConfig.port = 8080;
+config.proxyConfig.account = "your_proxy_account";
+config.proxyConfig.password = "your_proxy_password";
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -1110,6 +1295,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Private deployment**
     Private deployment enables you to deploy and manage the Signaling environment on your own infrastructure rather than using Agora services. This feature is fully supported since version 2.2.0.
 
@@ -1135,6 +1323,25 @@ To specify a geographical area for Agora SDRTN® connections, refer to the follo
 rtmConfig.areaCode = RTM_AREA_CODE_NA;
 int ret = signalingEngine->initialize(rtmConfig);
 ```
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```cpp
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.proxyConfig.proxyType = RTM_PROXY_TYPE_HTTP;
+config.proxyConfig.server = "your_proxy_server_ip";
+config.proxyConfig.port = 8080;
+config.proxyConfig.account = "your_proxy_account";
+config.proxyConfig.password = "your_proxy_password";
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Private deployment configuration
 
@@ -1351,6 +1558,9 @@ When initializing a Signaling client instance, configure any or all of the follo
 - **Geographical area access**
     When a user joins a channel, Signaling SDK automatically connects them to the closest geographical region of Agora SDRTN®. However, to comply with local laws and regulations, you may want to specify or restrict connections to a specific geographical area. Agora enables you to control and customize data routing in your app by specifying the Agora SDRTN® region users connect to.
 
+- **Enable proxy connection**
+    You use a proxy connection to ensure reliable connectivity for your users when they connect from an environment with a restricted network. This helps in maintaining a stable connection even in environments with network restrictions.
+
 - **Logging**
     Logging enables you to output detailed information from the SDK for locating and fixing problems during the development and testing phases. By configuring logging settings, you can control the amount and type of information logged by the SDK.
 
@@ -1372,6 +1582,47 @@ To specify a geographical area for Agora SDRTN® connections, refer to the follo
 ```csharp
 rtmConfig.areaCode = Agora.Rtm.RTM_AREA_CODE.NA;
 ```
+
+### Proxy configuration
+
+In some environments with restricted network services, you may need to set up a proxy service to access external resources. Signaling supports configuring a proxy service. You enable this feature during the Signaling instance initialization.
+
+```csharp
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+RtmProxyConfig proxyConfig = new RtmProxyConfig();
+// Set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// Set your proxy server address.
+proxyConfig.server = "your_proxy_server_ip";
+// Set your proxy listening port.
+proxyConfig.port = 8080;
+// Set your proxy account.
+proxyConfig.account = "your_proxy_account";
+// Set your proxy password.
+proxyConfig.password = "your_proxy_password";
+
+RtmConfig config = new RtmConfig();
+config.proxyConfig = proxyConfig;
+config.appId = "your_appId";
+config.userId = "your_userId";
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+:::warning[Caution]
+Keep your proxy username and password safe. The Signaling SDK does not parse, store, or forward your credentials. If you change proxy settings while the app is running, the new settings take effect only after you restart the Signaling client.
+:::
 
 ### Log configuration
 

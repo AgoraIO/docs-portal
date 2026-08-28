@@ -99,14 +99,14 @@ const { RTMConfig } = AgoraRTM;
 
 | Property | Type | Required | Default | 描述 |
 | :---------------: | :--------: | :------: | :-----: | ---------------------------------------- |
-| `encryptionMode` | string | Optional | - | Encryption mode for end-to-end messages. If you do not set this property or set it as `NONE`, end-to-end encryption is disabled. For details, see [Encryption Mode](#enumvencryptionmod-e). |
+| `encryptionMode` | string | Optional | - | Encryption mode for end-to-end messages. If you do not set this property or set it as `NONE`, end-to-end encryption is disabled. For details, see [Encryption Mode](#end-to-end-encryption-modes). |
 | `salt` | Uint8Array | Optional | - | The salt required for encryption. The value must be a 32-byte binary array. |
 | `cipherKey` | string | Optional | - | The key used for encryption and decryption. You must set this property if you want to enable message encryption. |
 | `presenceTimeout` | number | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `REMOTE_TIMEOUT` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `REMOTE_TIMEOUT` event notification to other participants or delete the temporary user data associated with the user. |
 | `logUpload` | boolean | Optional | `false` | Whether to upload logs to the server: <br />- `true`: Enable log upload <br />- `false`: Disable log upload. |
 | `cloudProxy` | boolean | Optional | `false` | Whether to enable the cloud proxy: <br />- `true`: Enable. <br />- `false`: Disable. Note: This feature applies to the Message channels and User channels only. |
 | `useStringUserId` | boolean | Optional | `true` | Whether to use string-type user IDs: <br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. If you set the property as `false`, SDK automatically converts string-type user IDs to number-type ones. In this case, the `userId` parameter must be a numeric string (for example, "123456"), otherwise initialization fails. |
-| `logLevel` | string | Optional | - | Set the output level of SDK log. For details, see [log output level](#enumvlogleve-l). |
+| `logLevel` | string | Optional | - | Set the output level of SDK log. For details, see [log output level](#log-output-levels). |
 | `heartbeatInterval` | number | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
 | `privateConfig` | object | Optional | - | When using the private deployment feature of Signaling, you need to configure this parameter. |
 
@@ -114,7 +114,7 @@ const { RTMConfig } = AgoraRTM;
 
 | Property | Type | Required | Default| Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `serviceType` | string[] | Optional | - | Service type. See [Service Types](#enumvrtmservicetyp-e). |
+| `serviceType` | string[] | Optional | - | Service type. See [Service Types](#service-types). |
 | `accessPointHosts` | string[] | Optional | - | An addresses list of servers to access the Signaling service. Only supports domain name. |
 | `eventUploadHosts` | string[] | Optional | - | An addresses list of servers for event uploading. Only supports domain name. |
 | `logUploadHosts` | string[] | Optional | - | An addresses list of servers for log uploading. Only supports domain name. |
@@ -160,8 +160,8 @@ Signaling has a total of 8 types of event notifications, as shown in the followi
 | `topic` | Receive all topic event notifications in joined stream channels. |
 | `storage` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
 | `lock` | Receive lock event notifications in subscribed message channels and joined stream channels. |
-| `status` | (Deprecated) Receive event notifications when client connection status changes. For details, see [SDK connection state](#enumvconnectionstat-e) and [SDK connection state change reason](#enumvconnectionreaso-n). |
-| `linkState` | Receive event notifications when client connection status changes. For details, see [SDK Link State Types](#enumvlinkstat-e). |
+| `status` | (Deprecated) Receive event notifications when client connection status changes. For details, see [SDK connection state](#deprecated-sdk-connection-states) and [SDK connection state change reason](#deprecated-reasons-for-the-sdk-connection-state-change). |
+| `linkState` | Receive event notifications when client connection status changes. For details, see [SDK Link State Types](#sdk-link-state-types). |
 | `tokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -2834,7 +2834,7 @@ To find out the cause of the error and get the corresponding solution, use the `
 
 #### Description
 
-If you no longer need a lock, you can remove the lock by calling the `removeLock` method. When the lock is successfully removed, all the users in the channel receives the `lock` event notification in the `REMOVED` type. For details, see [Event Handlers](#setup#eventhandlers).
+If you no longer need a lock, you can remove the lock by calling the `removeLock` method. When the lock is successfully removed, all the users in the channel receives the `lock` event notification in the `REMOVED` type. For details, see [Event Listeners](#event-listeners).
 
 #### Method
 
