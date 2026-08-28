@@ -333,13 +333,13 @@ To install the Signaling SDK for Linux Java using Maven:
 
     Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
-1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
+1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux-java) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
 </TabsContent>
 
 <TabsContent value="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux-cpp) to a local folder.
 
 1. Copy the `*.so` file in the SDK folder into your `lib` folder, and copy the `*.h` file in the SDK folder into your `include` folder.
 
