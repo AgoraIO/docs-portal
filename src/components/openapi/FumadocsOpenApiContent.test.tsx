@@ -3355,7 +3355,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(tree.getByText('config')).toBeVisible();
     expect(tree.getByText('Agent runtime settings.')).toBeVisible();
 
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
 
     expect(
       tree.queryByRole('button', { name: 'Expand name properties' }),
@@ -3370,7 +3370,7 @@ describe('FumadocsOpenApiContent', () => {
     fireEvent.click(
       tree.getByRole('button', { name: 'Collapse config properties' }),
     );
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
   });
 
   it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
@@ -3417,7 +3417,7 @@ describe('FumadocsOpenApiContent', () => {
   it('expands and collapses every nested field with the schema-wide control', async () => {
     const tree = await renderNestedSchema();
 
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
     fireEvent.click(
       tree.getByRole('button', {
         name: 'Expand all Request Body schema fields',
@@ -3430,7 +3430,7 @@ describe('FumadocsOpenApiContent', () => {
         name: 'Collapse all Request Body schema fields',
       }),
     );
-    expect(tree.queryByText('idleTimeout')).not.toBeInTheDocument();
+    expect(tree.getByText('idleTimeout')).not.toBeVisible();
     expect(tree.getByText('name')).toBeVisible();
   });
 

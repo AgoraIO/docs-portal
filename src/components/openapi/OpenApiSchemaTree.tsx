@@ -139,6 +139,22 @@ export function OpenApiSchemaTree({
     return flags;
   }, [anchorIds, expandedRowIds, layout, rows]);
 
+  function revealRow(index: number) {
+    setExpandedRowIds((current) => {
+      const next = new Set(current);
+
+      for (
+        let parent = layout.parentIndex[index];
+        parent !== -1;
+        parent = layout.parentIndex[parent]
+      ) {
+        next.add(anchorIds[parent]);
+      }
+
+      return next;
+    });
+  }
+
   if (rows.length === 0) {
     return null;
   }
@@ -167,8 +183,6 @@ export function OpenApiSchemaTree({
         </div>
       ) : null}
       {rows.map((row, index) => {
-        if (!visibleFlags[index]) return null;
-
         const anchorId = anchorIds[index];
         const expandable = layout.hasChildren[index];
         const depth = Math.min(row.depth, 3);
@@ -193,9 +207,11 @@ export function OpenApiSchemaTree({
         );
 
         return (
-          <div
+          <OpenApiFindableSchemaRow
             className={`openapi-schema-depth${row.depth > 0 ? ' openapi-schema-depth-nested' : ''}`}
+            hiddenUntilFound={!visibleFlags[index]}
             key={row.path}
+            onBeforeMatch={() => revealRow(index)}
             style={style}
           >
             {guideDepths.map((guideDepth) => (
@@ -242,9 +258,46 @@ export function OpenApiSchemaTree({
                 type={type}
               />
             )}
-          </div>
+          </OpenApiFindableSchemaRow>
         );
       })}
+    </div>
+  );
+}
+
+function OpenApiFindableSchemaRow({
+  children,
+  className,
+  hiddenUntilFound,
+  onBeforeMatch,
+  style,
+}: {
+  children: ReactNode;
+  className: string;
+  hiddenUntilFound: boolean;
+  onBeforeMatch: () => void;
+  style: CSSProperties;
+}) {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row || !hiddenUntilFound) return;
+
+    row.setAttribute('hidden', 'until-found');
+    row.addEventListener('beforematch', onBeforeMatch);
+    return () => row.removeEventListener('beforematch', onBeforeMatch);
+  }, [hiddenUntilFound, onBeforeMatch]);
+
+  return (
+    <div
+      className={className}
+      data-openapi-schema-row=""
+      hidden={hiddenUntilFound}
+      ref={rowRef}
+      style={style}
+    >
+      {children}
     </div>
   );
 }

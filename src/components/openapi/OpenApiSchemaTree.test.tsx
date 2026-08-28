@@ -70,9 +70,9 @@ describe('OpenApiSchemaTree', () => {
 
     expect(screen.getByText('channel')).toBeVisible();
     expect(screen.getByText('llm')).toBeVisible();
-    expect(screen.queryByText('url')).not.toBeInTheDocument();
+    expect(screen.getByText('url')).not.toBeVisible();
     expect(screen.getByText('optionalObject')).toBeVisible();
-    expect(screen.queryByText('enabled')).not.toBeInTheDocument();
+    expect(screen.getByText('enabled')).not.toBeVisible();
     expect(
       screen.getByRole('button', { name: 'Collapse all schema fields' }),
     ).toBeVisible();
@@ -94,7 +94,7 @@ describe('OpenApiSchemaTree', () => {
       />,
     );
     expect(screen.getByText('properties')).toBeVisible();
-    expect(screen.queryByText('channel')).not.toBeInTheDocument();
+    expect(screen.getByText('channel')).not.toBeVisible();
   });
 
   it('collapses and expands all rows from the request default state', () => {
@@ -104,8 +104,8 @@ describe('OpenApiSchemaTree', () => {
     fireEvent.click(
       within(tree).getByRole('button', { name: 'Collapse all schema fields' }),
     );
-    expect(within(tree).queryByText('channel')).not.toBeInTheDocument();
-    expect(within(tree).queryByText('url')).not.toBeInTheDocument();
+    expect(within(tree).getByText('channel')).not.toBeVisible();
+    expect(within(tree).getByText('url')).not.toBeVisible();
 
     fireEvent.click(
       within(tree).getByRole('button', { name: 'Expand all schema fields' }),
@@ -116,7 +116,7 @@ describe('OpenApiSchemaTree', () => {
     fireEvent.click(
       within(tree).getByRole('button', { name: 'Collapse llm properties' }),
     );
-    expect(within(tree).queryByText('url')).not.toBeInTheDocument();
+    expect(within(tree).getByText('url')).not.toBeVisible();
   });
 
   it('lets nested object parameters collapse independently from sibling branches', () => {
@@ -140,7 +140,7 @@ describe('OpenApiSchemaTree', () => {
         name: 'Collapse llm properties',
       }),
     );
-    expect(within(tree).queryByText('url')).not.toBeInTheDocument();
+    expect(within(tree).getByText('url')).not.toBeVisible();
     expect(within(tree).getByText('enabled')).toBeVisible();
 
     fireEvent.click(
@@ -151,7 +151,51 @@ describe('OpenApiSchemaTree', () => {
     expect(within(tree).getByText('url')).toBeVisible();
   });
 
-  it('removes collapsed parent descendants so one toolbar expansion restores the full branch', () => {
+  it('keeps collapsed fields findable and reveals only the matched ancestor chain', () => {
+    renderTree();
+    const tree = screen.getByTestId('openapi-schema-tree');
+    fireEvent.click(
+      within(tree).getByRole('button', { name: 'Collapse all schema fields' }),
+    );
+
+    const matchedRow = within(tree)
+      .getByText('enabled')
+      .closest('[data-openapi-schema-row]');
+    const unrelatedRow = within(tree)
+      .getByText('url')
+      .closest('[data-openapi-schema-row]');
+
+    expect(matchedRow).toHaveAttribute('hidden', 'until-found');
+    expect(matchedRow).not.toBeVisible();
+    expect(unrelatedRow).toHaveAttribute('hidden', 'until-found');
+
+    fireEvent(matchedRow as HTMLElement, new Event('beforematch'));
+
+    expect(matchedRow).not.toHaveAttribute('hidden');
+    expect(matchedRow).toBeVisible();
+    expect(
+      within(tree).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(tree).getByRole('button', {
+        name: 'Collapse optionalObject properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(unrelatedRow).toHaveAttribute('hidden', 'until-found');
+    expect(unrelatedRow).not.toBeVisible();
+
+    fireEvent.click(
+      within(tree).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    );
+    expect(matchedRow).toHaveAttribute('hidden', 'until-found');
+    expect(matchedRow).not.toBeVisible();
+  });
+
+  it('clears collapsed descendant disclosure so one toolbar expansion restores the full branch', () => {
     renderTree();
     const tree = screen.getByTestId('openapi-schema-tree');
 
@@ -219,7 +263,7 @@ describe('OpenApiSchemaTree', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Collapse all schema fields' }),
     );
-    expect(screen.queryByText('channel')).not.toBeInTheDocument();
+    expect(screen.getByText('channel')).not.toBeVisible();
 
     rerender(
       <OpenApiSchemaTree
@@ -289,7 +333,7 @@ describe('OpenApiSchemaTree', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Collapse all schema fields' }),
     );
-    expect(screen.queryByText('token')).not.toBeInTheDocument();
+    expect(screen.getByText('token')).not.toBeVisible();
 
     rerender(renderReferencedTree(documentB));
 
@@ -422,7 +466,7 @@ describe('OpenApiSchemaTree', () => {
     );
 
     rerender(<OpenApiSchemaTree {...props} />);
-    expect(screen.queryByText('field')).not.toBeInTheDocument();
+    expect(screen.getByText('field')).not.toBeVisible();
 
     rerender(<OpenApiSchemaTree {...props} prebuiltRows={[...prebuiltRows]} />);
     await waitFor(() => expect(screen.getByText('field')).toBeVisible());
