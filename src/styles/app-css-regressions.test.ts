@@ -162,6 +162,11 @@ describe('app prose CSS regressions', () => {
       '1px solid var(--color-fd-border)',
     );
     expectDeclaration(
+      getRuleBody('.openapi-schema-depth[hidden="until-found"]').rule,
+      'border-block-start',
+      '0',
+    );
+    expectDeclaration(
       getRuleBody('.openapi-schema-depth + .openapi-schema-depth-nested').rule,
       'border-block-start',
       '0',
