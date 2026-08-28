@@ -293,7 +293,7 @@ describe('app prose CSS regressions', () => {
     });
 
     appCssRoot.walkAtRules('container', (container) => {
-      if (!container.params.includes('max-width: 58.999rem')) return;
+      if (!container.params.includes('max-width: 55.999rem')) return;
       container.walkRules((candidate) => {
         if (normalizeSelector(candidate.selector) === '.openapi-schema-depth') {
           mobileIndent = candidate;
@@ -329,7 +329,7 @@ describe('app prose CSS regressions', () => {
     );
     const mobileGuide = getRuleBodyContainingInContainer(
       '.openapi-schema-depth-guide',
-      'max-width: 58.999rem',
+      'max-width: 55.999rem',
     ).rule;
     expectDeclaration(
       mobileGuide,
@@ -1009,7 +1009,7 @@ describe('app prose CSS regressions', () => {
     );
     const mobileViewport = getRuleBodyContainingInContainer(
       '[data-openapi-code-viewport]',
-      '58.999rem',
+      '55.999rem',
     );
 
     expect(appCss).not.toContain(
@@ -1033,15 +1033,15 @@ describe('app prose CSS regressions', () => {
   it('defines the independent desktop examples rail layout', () => {
     const layout = getRuleBodyContainingInContainer(
       '.openapi-operation-layout',
-      '59rem',
+      '56rem',
     );
     const rail = getRuleBodyContainingInContainer(
       '.openapi-examples-rail',
-      '59rem',
+      '56rem',
     );
     const anchorInDesktop = getRuleBodyContainingInContainer(
       '.openapi-examples-rail-anchor',
-      '59rem',
+      '56rem',
     );
     expectDeclaration(
       layout.rule,
