@@ -8,6 +8,21 @@ This document tracks important changes and improvements to the Cloud Transcoding
 
 ## Releases
 
+### 2026.8.30
+
+You can now enable Cloud Transcoding and configure notification events directly in Agora Console, without contacting support.
+
+#### New features
+
+- **Self-service enablement**  
+Enable Cloud Transcoding directly in Agora Console without contacting the support team. See [Enable Cloud Transcoding](../sdk-quickstart.md#enable-cloud-transcoding).
+
+- **Self-service notification event configuration**  
+Configure Cloud Transcoding notification events directly in Agora Console without contacting the support team. See [Receive webhook notifications](../build/receive-ncs-events.md).
+
+- **New product ID**  
+Cloud Transcoding is identified by `productId=22` in notification events. Use this product ID to identify and process Cloud Transcoding events in your application.
+
 ### 2025.10.1 Public Beta
 
 Released on October 1, 2025.
