@@ -3369,6 +3369,15 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
+### v2.2.6
+
+v2.2.6 was released on November 18, 2025.
+
+#### Improvements
+
+- **New reconnection timeout configuration**
+  This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
+
 ### v2.2.5
 
 v2.2.5 was released on September 25, 2025.
