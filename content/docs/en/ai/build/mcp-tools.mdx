@@ -1,0 +1,209 @@
+---
+title: Use MCP tools
+description: Connect your agent's LLM to an MCP (Model Context Protocol) server so it can call external tools during a conversation.
+---
+
+MCP is an open protocol for connecting LLMs to external tools and data sources. When you attach an MCP server to a Conversational AI agent and enable tool calling, the LLM can invoke the tools that the server exposes, such as looking up account data, running a search, or triggering an action in another system, and use the results to generate its response.
+
+This page explains how to attach an MCP server to an agent using the REST API and Agent SDKs.
+
+:::info[Info]
+Building a no-code agent in the Agora Console? See [Manage integrations](../studio/build/integrations#mcp-servers).
+:::
+
+## Understand the tech
+
+During a conversation, the LLM decides when a tool call is useful, the engine forwards that call to the configured MCP server over HTTP, and the server's response is fed back to the LLM as context for its next reply. Agora's Conversational AI Engine acts as the MCP client. 
+
+To configure MCP tool-use:
+
+- **Specify an array of MCP servers**: Each entry defines the server's endpoint, transport, and which of its tools the agent can call.
+
+- **Enable tool invocation**: This allows the agent to call the available tools on the specified servers.
+
+## Prerequisites
+
+- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../get-started/quickstart).
+- An MCP server reachable over HTTP or HTTPS.
+
+## Implementation
+
+Take the following steps to give your agent access to an MCP server.
+
+### Attach an MCP server and enable tool calling
+
+Add one or more servers then enable tool calling.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import OpenAI
+
+# ... other agent configuration ...
+.with_llm(OpenAI(
+    api_key='your-llm-api-key',
+    model='gpt-4o-mini',
+    mcp_servers=[
+        {
+            'name': 'deepwiki',
+            'endpoint': 'https://mcp.deepwiki.com/mcp',  # Replace with your own MCP server
+            'transport': 'streamable_http',
+            'allowed_tools': ['ask_question'],  # Replace with your server's tool names
+            'timeout_ms': 10000,
+        },
+    ],
+))
+.with_tools(True)
+# ... continue with .with_tts() and .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { OpenAI } from 'agora-agents';
+
+// ... other agent configuration ...
+.withLlm(new OpenAI({
+  apiKey: 'your-llm-api-key',
+  model: 'gpt-4o-mini',
+  mcpServers: [
+    {
+      name: 'deepwiki',
+      endpoint: 'https://mcp.deepwiki.com/mcp', // Replace with your own MCP server
+      transport: 'streamable_http',
+      allowed_tools: ['ask_question'], // Replace with your server's tool names
+      timeout_ms: 10000,
+    },
+  ],
+}))
+.withTools(true)
+// ... continue with .withTts() and .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithLlm(
+    vendors.NewOpenAI(vendors.OpenAIOptions{
+        APIKey: "your-llm-api-key",
+        Model:  "gpt-4o-mini",
+        McpServers: []map[string]interface{}{
+            {
+                "name":          "deepwiki",
+                "endpoint":      "https://mcp.deepwiki.com/mcp", // Replace with your own MCP server
+                "transport":     "streamable_http",
+                "allowed_tools": []string{"ask_question"}, // Replace with your server's tool names
+                "timeout_ms":    10000,
+            },
+        },
+    }),
+)
+.WithTools(true)
+// ... continue with .WithTts() and .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```json
+{
+  "llm": {
+    "url": "https://api.openai.com/v1/chat/completions",
+    "api_key": "your-llm-api-key",
+    "params": {
+      "model": "gpt-4o-mini"
+    },
+    "mcp_servers": [
+      {
+        "name": "deepwiki",
+        "endpoint": "https://mcp.deepwiki.com/mcp",
+        "transport": "streamable_http",
+        "allowed_tools": ["ask_question"],
+        "timeout_ms": 10000
+      }
+    ]
+  },
+  "advanced_features": {
+    "enable_tools": true
+  }
+}
+```
+
+Update `endpoint` with your own MCP server's URL, and `allowed_tools` with the MCP tool names you want your agent to use. 
+
+</TabsContent>
+</Tabs>
+
+:::info
+Attaching MCP servers and enabling tool invocation are independent settings. If you configure servers without enabling tool invocation, the LLM never calls any tools, with no error to signal the mismatch.
+:::
+
+### Configure an MCP server
+
+Each item in the MCP servers array accepts the following fields.
+
+<ParameterList title="mcp_servers item">
+  <Parameter name="name" type="string" required={true}>
+    A unique identifier for the MCP server. Maximum 48 characters. Accepts only English letters and numbers.
+  </Parameter>
+  <Parameter name="endpoint" type="string" required={true}>
+    The MCP server's endpoint address.
+  </Parameter>
+  <Parameter name="transport" type="string" required={false}>
+    Transport protocol. Currently only `streamable_http` is supported.
+  </Parameter>
+  <Parameter name="headers" type="object" required={false}>
+    HTTP headers to send with requests to the MCP server. If your MCP server requires authentication, use it to pass credentials. For example:
+
+    ```json
+    {
+      "Authorization": "Bearer your-mcp-server-token"
+    }
+    ```
+  </Parameter>
+  <Parameter name="allowed_tools" type="array" required={false}>
+    The tools the agent is allowed to call:
+
+    - Omit `allowed_tools`, or set it to `["*"]`: all tools on the server are enabled.
+    - Set `allowed_tools` to a list of tool names, for example `["search_docs", "get_weather"]`: only those tools are enabled.
+
+    Strings in `allowed_tools` must match the tool names the MCP server actually registers, not names from another integration's docs or a client config file. An empty array or a name that doesn't match any real tool doesn't fail cleanly: the agent can hang mid-response with no error, rather than answering or falling back. Confirm the exact names by calling the server's `tools/list` method directly, for example:
+
+    ```bash
+    curl --request POST \
+      --url https://your-mcp-server.example.com/mcp \
+      --header 'Content-Type: application/json' \
+      --header 'Accept: application/json, text/event-stream' \
+      --data '{"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}'
+    ```
+  </Parameter>
+  <Parameter name="timeout_ms" type="integer" required={false}>
+    Request timeout for the MCP server. After the timeout, the agent stops waiting for a response and continues with subsequent logic.
+  </Parameter>
+</ParameterList>
+
+To connect multiple MCP servers, add multiple entries to the MCP servers array. Each server must have a unique `name`.
+
+:::tip[Filler words during tool calls]
+Tool calls add latency while the MCP server processes the request. Configure [filler words](shape-the-conversation/filler-words) so the agent acknowledges the user's request while it waits for a tool result.
+:::
+
+## Reference
+
+- [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers)
+- [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools)
+- [`with_tools()` / `withTools()` / `WithTools()`](/en/api-reference/api-ref/server-sdk/python#other-builder-methods)

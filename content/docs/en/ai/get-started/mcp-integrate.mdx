@@ -121,9 +121,10 @@ Create or edit `.vscode/mcp.json` in the root directory, then add the following 
 
 ## MCP tools
 
-- `search-docs`: Search for relevant documentation.
-- `list-docs`: Browse documentation categories and document lists.
-- `get-doc-content`: Read the full content of a specified document.
+- `algolia_search_index_docs_portal_en`: Search Agora's documentation portal.
+- `algolia_search_index_agora_api_refapirefcrawler`: Search SDK API references, such as methods, classes, and parameters, across Agora's real-time communication SDKs.
+- `algolia_search_index_agora_swift_api_ref`: Search the iOS and macOS SDK API reference.
+- `algolia_search_for_facet_values`: Look up available filter values, such as product or platform, for one of the search indexes above.
 
 ## Use MCP tools
 
@@ -134,7 +135,7 @@ In Agent Mode, you can describe your requirement directly and let the coding age
 For example:
 
 ```text
-Search the relevant Agora documentation, read the document content, and tell me how to build the simplest possible 1v1 real-time audio and video call.
+Search the relevant Agora documentation and tell me how to build the simplest possible 1v1 real-time audio and video call.
 ```
 **Specify tool calls in the prompt**
 
@@ -143,5 +144,5 @@ You can also specify which MCP tools to use in the prompt through the tool-calli
 For example:
 
 ```text
-#search-docs #get-doc-content Use search-docs to find relevant Agora documentation, then use get-doc-content to read the full content of the matched document and tell me how to build an interactive experience with an AI agent.
+#algolia_search_index_docs_portal_en Use algolia_search_index_docs_portal_en to find relevant Agora documentation, then tell me how to build an interactive experience with an AI agent.
 ```
