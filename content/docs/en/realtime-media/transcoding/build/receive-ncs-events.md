@@ -393,10 +393,6 @@ Each primary IP field shows an IP address of Notifications server. When you rece
 * Notifications does not guarantee that notification callbacks arrive at your server in the same order as events occur. Implement a strategy to handle messages arriving out of order.
 * For improved reliability of Notifications, your server may receive more than one notification callback for a single event. Your server must be able to handle repeated messages.
 
-  :::tip
-  To implement a strategy to ensure that you log only one callback event and ignore duplicate events, use a combination of the `noticeId` and `notifyMs` fields in the response body.
-  :::
-
 ### FAQs
 
 - [What's the difference between the query method and message notification service?](/en/api-reference/faq/integration/ncs_vs_query)
