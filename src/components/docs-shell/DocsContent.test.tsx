@@ -101,11 +101,13 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
 
 vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   FumadocsOpenApiContent: ({
+    locale,
     pageProps,
   }: {
+    locale?: string;
     pageProps: { operations?: { path: string }[] };
   }) => (
-    <div data-testid="fumadocs-openapi-content">
+    <div data-locale={locale} data-testid="fumadocs-openapi-content">
       {pageProps.operations?.[0]?.path}
     </div>
   ),
@@ -438,15 +440,18 @@ describe('DocsContent', () => {
             },
           },
         }}
+        locale="zh-CN"
         slug="join"
         title="Start a conversational AI agent"
         toc={[]}
       />,
     );
 
-    expect(
-      await screen.findByTestId('fumadocs-openapi-content'),
-    ).toHaveTextContent('/v2/projects/{appid}/join');
+    const openApiContent = await screen.findByTestId(
+      'fumadocs-openapi-content',
+    );
+    expect(openApiContent).toHaveTextContent('/v2/projects/{appid}/join');
+    expect(openApiContent).toHaveAttribute('data-locale', 'zh-CN');
   });
 
   it('renders the generic header description for OpenAPI bodies', async () => {

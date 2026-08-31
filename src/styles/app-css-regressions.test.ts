@@ -148,199 +148,41 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
-  it('uses list and schema-depth separators instead of complete row borders', () => {
+  it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
-      getRuleBody(
-        '.openapi-field-list > .openapi-field-row + .openapi-field-row',
+      getRuleBodyContaining(
+        '.openapi-response-header-row .openapi-field-anchor',
       ).rule,
-      'border-block-start',
-      '1px solid var(--color-fd-border)',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-schema-depth + .openapi-schema-depth').rule,
-      'border-block-start',
-      '1px solid var(--color-fd-border)',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-schema-depth[hidden="until-found"]').rule,
-      'border-block-start',
-      '0',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-schema-depth + .openapi-schema-depth-nested').rule,
-      'border-block-start',
-      '0',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-schema-depth-nested > .openapi-field-row').rule,
-      'border-block-start',
-      '1px solid var(--color-fd-border)',
-    );
-
-    const fieldRow = getRuleBody('.openapi-field-row').rule;
-    expect(
-      fieldRow.nodes?.some(
-        (node) => node.type === 'decl' && node.prop === 'border',
-      ),
-    ).toBe(false);
-  });
-
-  it('keeps OpenAPI field row scanability contracts', () => {
-    expectDeclaration(
-      getRuleBody('.openapi-field-row .openapi-field-anchor').rule,
       'opacity',
       '0',
     );
     const visibleAnchorRule = getRuleBodyContaining(
-      '.openapi-field-row:hover .openapi-field-anchor',
+      '.openapi-response-header-row:hover .openapi-field-anchor',
     ).rule;
     expect(visibleAnchorRule.selector).toContain(
-      '.openapi-field-row:hover .openapi-field-anchor',
+      '.openapi-response-header-row:hover .openapi-field-anchor',
     );
     expect(visibleAnchorRule.selector).toContain(
-      '.openapi-field-row:focus-within .openapi-field-anchor',
+      '.openapi-response-header-row:focus-within .openapi-field-anchor',
     );
     expect(visibleAnchorRule.selector).toContain(
-      '.openapi-field-row:target .openapi-field-anchor',
+      '.openapi-response-header-row:target .openapi-field-anchor',
     );
     expect(visibleAnchorRule.selector).toContain(
       '.openapi-field-anchor:focus-visible',
     );
     expectDeclaration(visibleAnchorRule, 'opacity', '1');
-    expectDeclaration(
-      getRuleBody('.openapi-field-row-container > .openapi-field-main').rule,
-      'background',
-      'color-mix(in srgb, var(--color-fd-muted) 18%, transparent)',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-field-details:empty').rule,
-      'display',
-      'none',
-    );
-    expectDeclaration(
-      getRuleBody('.openapi-field-row').rule,
-      'container-type',
-      'inline-size',
-    );
-    expectDeclaration(
-      getRuleBodyContaining('.openapi-field-heading').rule,
-      'grid-template-columns',
-      'minmax(0, 1fr) auto',
-    );
-    const fieldIdentity = getRuleBodyContaining('.openapi-field-identity').rule;
-    expectDeclaration(fieldIdentity, 'display', 'flex');
-    expectDeclaration(fieldIdentity, 'align-items', 'center');
-    const fieldStatus = getRuleBodyContaining('.openapi-field-status').rule;
-    expectDeclaration(fieldStatus, 'display', 'flex');
-    expectDeclaration(fieldStatus, 'flex-wrap', 'nowrap');
-    expectDeclaration(fieldStatus, 'justify-content', 'flex-end');
     const reducedMotion = getRuleBodyContainingInMedia(
-      '.openapi-field-row .openapi-field-anchor',
+      '.openapi-response-header-row .openapi-field-anchor',
       'prefers-reduced-motion: reduce',
     ).rule;
     expectDeclaration(reducedMotion, 'transition', 'none');
-    const reducedChevron = getRuleBodyContainingInMedia(
-      '.openapi-field-control-gutter svg',
-      'prefers-reduced-motion: reduce',
-    ).rule;
-    expectDeclaration(reducedChevron, 'transition', 'none');
-
-    let narrowHeading: postcss.Rule | undefined;
-    let narrowStatus: postcss.Rule | undefined;
-    appCssRoot.walkAtRules('container', (container) => {
-      if (!container.params.includes('max-width: 32rem')) return;
-      container.walkRules((candidate) => {
-        if (
-          normalizeSelector(candidate.selector) === '.openapi-field-heading'
-        ) {
-          narrowHeading = candidate;
-        }
-        if (normalizeSelector(candidate.selector) === '.openapi-field-status') {
-          narrowStatus = candidate;
-        }
-      });
-    });
-    expectDeclaration(
-      narrowHeading as postcss.Rule,
-      'grid-template-columns',
-      'minmax(0, 1fr)',
-    );
-    expectDeclaration(
-      narrowStatus as postcss.Rule,
-      'justify-content',
-      'flex-start',
-    );
-    expectDeclaration(
-      narrowStatus as postcss.Rule,
-      'padding-inline-start',
-      '20px',
-    );
-  });
-
-  it('keeps OpenAPI schema tree indentation and nesting-guide contracts', () => {
-    const nestingGuide = getRuleBodyContaining(
-      '.openapi-schema-depth-guide',
-    ).rule;
-    let desktopIndent: postcss.Rule | undefined;
-    let mobileIndent: postcss.Rule | undefined;
-
-    appCssRoot.walkRules((candidate) => {
-      const isInContainer =
-        candidate.parent?.type === 'atrule' &&
-        candidate.parent.name === 'container';
-      if (
-        !desktopIndent &&
-        normalizeSelector(candidate.selector) === '.openapi-schema-depth' &&
-        !isInContainer
-      ) {
-        desktopIndent = candidate;
-      }
-    });
-
-    appCssRoot.walkAtRules('container', (container) => {
-      if (!container.params.includes('max-width: 55.999rem')) return;
-      container.walkRules((candidate) => {
-        if (normalizeSelector(candidate.selector) === '.openapi-schema-depth') {
-          mobileIndent = candidate;
-        }
-      });
-    });
-
-    expectDeclaration(
-      desktopIndent as postcss.Rule,
-      'padding-inline-start',
-      'calc(1rem + var(--openapi-schema-indent-desktop))',
-    );
-    expectDeclaration(nestingGuide, 'width', '1px');
-    expectDeclaration(nestingGuide, 'top', '0');
-    expectDeclaration(nestingGuide, 'bottom', '0');
-    expectDeclaration(
-      nestingGuide,
-      'background',
-      'color-mix(in srgb, var(--color-fd-border) 58%, transparent)',
-    );
-    expectDeclaration(nestingGuide, 'pointer-events', 'none');
-    expectDeclaration(nestingGuide, 'z-index', '0');
-    expectDeclaration(
-      nestingGuide,
-      'inset-inline-start',
-      'calc(1rem + (var(--openapi-schema-guide-depth) * 20px) - 10px)',
-    );
-    expect(mobileIndent).toBeDefined();
-    expectDeclaration(
-      mobileIndent as postcss.Rule,
-      'padding-inline-start',
-      'calc(1rem + var(--openapi-schema-indent-mobile))',
-    );
-    const mobileGuide = getRuleBodyContainingInContainer(
-      '.openapi-schema-depth-guide',
-      'max-width: 55.999rem',
-    ).rule;
-    expectDeclaration(
-      mobileGuide,
-      'inset-inline-start',
-      'calc(1rem + (var(--openapi-schema-guide-depth) * 16px) - 8px)',
-    );
+    const findIndex = getRuleBody('.openapi-schema-find-index').rule;
+    expectDeclaration(findIndex, 'position', 'absolute');
+    expectDeclaration(findIndex, 'height', '1px');
+    expectDeclaration(findIndex, 'width', '1px');
+    expectDeclaration(findIndex, 'clip-path', 'inset(50%)');
+    expectDeclaration(findIndex, 'overflow', 'hidden');
     expectDeclaration(
       getRuleBody('.openapi-operation').rule,
       'container-type',
