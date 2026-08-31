@@ -11,11 +11,6 @@ Cloud Transcoding notification callbacks use `productId=22`.
 
 | Event Type | Event Name | Description |
 |------------|------------|-------------|
-| 1 | transcoder create | A cloud transcoding task is created. |
-| 2 | transcoder update | A cloud transcoding task is updated. |
-| 3 | transcoder delete | A cloud transcoding task is deleted. |
-| 4 | transcoder quit | A cloud transcoding task stops. |
-| 5 | transcoder notify | Agora sends a general notification about a cloud transcoding task. |
 | [110](#110-cloud_transcoder_started) | `cloud_transcoder_started` | Cloud transcoder has started successfully |
 | [111](#111-cloud_transcoder_stopped) | `cloud_transcoder_stopped` | Cloud transcoder has been destroyed |
 | [112](#112-cloud_transcoder_status) | `cloud_transcoder_status` | Cloud transcoder runtime state has changed |
