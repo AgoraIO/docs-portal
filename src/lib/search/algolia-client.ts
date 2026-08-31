@@ -10,15 +10,18 @@ import {
   getApiRetrievalQuery,
   getDocsRetrievalQuery,
 } from './search-intent';
-import type { DocsSearchScope } from './search-provider';
 import {
-  type RankedSearchResult,
-  rankSearchResults,
-  type SearchRecordKind,
-} from './search-ranking';
+  compactSearchText,
+  normalizeSearchPlatform,
+  normalizeSearchText,
+  stripSearchMarks,
+} from './search-normalization';
+import type { DocsSearchScope } from './search-provider';
+import type { FederatedSearchResult, SearchRecordKind } from './search-result';
 import {
   allSearchTermsMatch,
   getRequiredApiTaskTerms,
+  hasExactJoinedSearchAlias,
 } from './search-term-matching';
 
 export type AlgoliaSearchFilters = {
@@ -220,7 +223,7 @@ export function createAlgoliaDocsClient({
               objectType: 'sdk-api',
               path: getApiReferencePath(hit),
               platform: toStringArray(hit.platform)?.map(
-                normalizeApiReferencePlatform,
+                normalizeSearchPlatform,
               ),
               product: getString(hit.product),
               snippet:
@@ -292,7 +295,7 @@ export function createAlgoliaDocsClient({
   };
 }
 
-type RankedUiSearchResult = RankedSearchResult & {
+type FederatedUiSearchResult = FederatedSearchResult & {
   breadcrumbs?: string[];
   content: string;
   objectType?: string;
@@ -321,9 +324,10 @@ async function searchWithRankingV2({
   query,
   scope,
   setStatus,
-}: RankingV2SearchInput): Promise<RankedUiSearchResult[]> {
+}: RankingV2SearchInput): Promise<FederatedUiSearchResult[]> {
   const intent = classifySearchIntent(query);
   const apiScopeSelected = isExplicitApiReferenceScope(scope);
+  const explicitApiSignal = hasExplicitApiSignal(query);
   const canSearchApi = Boolean(
     apiReferenceIndexName && supportsApiReferenceScope(scope),
   );
@@ -331,62 +335,46 @@ async function searchWithRankingV2({
     canSearchApi &&
     (intent.intent === 'api-symbol' ||
       intent.intent === 'api-task' ||
-      apiScopeSelected);
+      apiScopeSelected ||
+      explicitApiSignal);
   const retrievalQuery = intent.matchedPhrase ?? query;
-  const docsPromise = client.searchForHits({
-    requests: [
-      buildDocsSearchRequest({
-        indexName,
-        locale,
-        platform,
-        query: getDocsRetrievalQuery(retrievalQuery),
-        scope,
-      }),
-    ],
-  });
-  const apiPromise =
-    shouldSearchApiImmediately && apiReferenceIndexName
-      ? client.searchForHits({
-          requests: [
-            buildApiSearchRequest({
-              apiReferenceIndexName,
-              platform,
-              query: getApiRetrievalQuery(retrievalQuery),
-              scope,
-            }),
-          ],
-        })
-      : undefined;
-  const [docsResult, initialApiResult] = await Promise.allSettled([
-    docsPromise,
-    ...(apiPromise ? [apiPromise] : []),
-  ]);
-
-  if (docsResult.status === 'rejected') {
+  const apiRequested = shouldSearchApiImmediately && apiReferenceIndexName;
+  let searchResponse: unknown;
+  try {
+    searchResponse = await client.searchForHits({
+      requests: [
+        buildDocsSearchRequest({
+          indexName,
+          locale,
+          platform,
+          query: getDocsRetrievalQuery(retrievalQuery),
+          scope,
+        }),
+        ...(apiRequested
+          ? [
+              buildApiSearchRequest({
+                apiReferenceIndexName,
+                platform,
+                query: getApiRetrievalQuery(retrievalQuery),
+                scope,
+              }),
+            ]
+          : []),
+      ],
+    });
+  } catch (error) {
     setStatus({
-      api: initialApiResult
-        ? initialApiResult.status === 'fulfilled'
-          ? 'success'
-          : 'error'
-        : 'not-requested',
+      api: apiRequested ? 'error' : 'not-requested',
       docs: 'error',
     });
-    throw docsResult.reason;
+    throw error;
   }
 
-  const docsHits = getFirstResultHits(docsResult.value);
-  let apiResult = initialApiResult;
-  let apiRequestedAsFallback = false;
-  if (
-    !apiResult &&
-    canSearchApi &&
-    apiReferenceIndexName &&
-    docsHits.length === 0 &&
-    hasExplicitApiSignal(query)
-  ) {
-    apiRequestedAsFallback = true;
-    [apiResult] = await Promise.allSettled([
-      client.searchForHits({
+  const docsResult = getResultAt(searchResponse, 0);
+  let apiResult = apiRequested ? getResultAt(searchResponse, 1) : undefined;
+  if (apiRequested && !apiResult) {
+    try {
+      const retryResponse = await client.searchForHits({
         requests: [
           buildApiSearchRequest({
             apiReferenceIndexName,
@@ -395,32 +383,38 @@ async function searchWithRankingV2({
             scope,
           }),
         ],
-      }),
-    ]);
+      });
+      apiResult = getResultAt(retryResponse, 0);
+    } catch {
+      apiResult = undefined;
+    }
+  }
+  const docsHits = getResultHits(docsResult);
+  const apiHits = getResultHits(apiResult);
+  const docsSucceeded = docsHits !== undefined;
+  const apiSucceeded = apiHits !== undefined;
+  if (!docsSucceeded) {
+    setStatus({
+      api: apiRequested
+        ? apiSucceeded
+          ? 'success'
+          : 'error'
+        : 'not-requested',
+      docs: 'error',
+    });
+    throw new Error(getString(docsResult?.error) ?? 'Docs search failed');
   }
 
   setStatus({
-    api: apiResult
-      ? apiResult.status === 'fulfilled'
-        ? 'success'
-        : 'error'
-      : 'not-requested',
+    api: apiRequested ? (apiSucceeded ? 'success' : 'error') : 'not-requested',
     docs: 'success',
   });
 
-  const docsCandidates = docsHits.flatMap((hit) => {
-    const candidate = mapDocsHitForRanking(
-      hit,
-      intent,
-      apiResult?.status === 'fulfilled',
-    );
+  const docsCandidates = (docsHits ?? []).flatMap((hit) => {
+    const candidate = mapDocsHitForFederatedSearch(hit, intent, apiSucceeded);
     return candidate ? [candidate] : [];
   });
-  const apiHits =
-    apiResult?.status === 'fulfilled'
-      ? getFirstResultHits(apiResult.value)
-      : [];
-  const normalizedApiEntries = apiHits.flatMap((hit) => {
+  const normalizedApiEntries = (apiHits ?? []).flatMap((hit) => {
     const normalized = normalizeApiHit(hit, intent);
     if (
       !normalized ||
@@ -428,7 +422,7 @@ async function searchWithRankingV2({
         !isStrictApiSignalFallbackMatch(
           normalized,
           intent.terms,
-          apiRequestedAsFallback,
+          explicitApiSignal,
         ))
     ) {
       return [];
@@ -441,7 +435,7 @@ async function searchWithRankingV2({
   const apiCandidates = aggregateApiResults(
     normalizedApiEntries.map(({ normalized }) => normalized),
     platform,
-  ).map((result): RankedUiSearchResult => {
+  ).map((result): FederatedUiSearchResult => {
     const allMajorTermsMatch = allTermsMatch(
       [result.displayTitle, result.symbol],
       intent.majorTerms,
@@ -471,12 +465,14 @@ async function searchWithRankingV2({
       objectType: 'sdk-api',
       path: result.path,
       platform: result.platforms,
+      platformUrls: result.platformUrls,
       product: result.product,
       recordKind: 'sdk-symbol',
       sectionMatch: false,
       snippet: highlightedSnippet ?? result.snippet,
       title: highlightedTitle,
-      titleExactMatch: normalizedText(result.symbol) === intent.normalizedQuery,
+      titleExactMatch:
+        normalizeSearchText(result.symbol) === intent.normalizedQuery,
       titleMatch: result.titleMatch || result.symbolMatch,
       type: 'page',
       url: result.url,
@@ -484,11 +480,15 @@ async function searchWithRankingV2({
     };
   });
 
-  return rankSearchResults(
-    [...docsCandidates, ...apiCandidates],
-    intent,
-    10,
-  ) as RankedUiSearchResult[];
+  const apiFirst =
+    apiScopeSelected ||
+    ((intent.intent === 'api-symbol' || explicitApiSignal) &&
+      apiCandidates.length > 0);
+  const docsSection = docsCandidates.slice(0, 10);
+  const apiSection = apiCandidates.slice(0, 10);
+  return apiFirst
+    ? [...apiSection, ...docsSection]
+    : [...docsSection, ...apiSection];
 }
 
 function getApiHighlightedTitle(
@@ -503,12 +503,14 @@ function getApiHighlightedTitle(
     getHighlight(hit, 'title');
   if (!highlighted) return displayTitle;
 
-  const plainHighlighted = stripMarks(highlighted);
-  if (normalizedText(plainHighlighted) === normalizedText(displayTitle)) {
+  const plainHighlighted = stripSearchMarks(highlighted);
+  if (
+    normalizeSearchText(plainHighlighted) === normalizeSearchText(displayTitle)
+  ) {
     return highlighted;
   }
   if (
-    normalizedText(plainHighlighted) === normalizedText(symbol) &&
+    normalizeSearchText(plainHighlighted) === normalizeSearchText(symbol) &&
     displayTitle.includes(symbol)
   ) {
     return displayTitle.replace(symbol, highlighted);
@@ -534,6 +536,8 @@ function buildDocsSearchRequest({
     indexName,
     query,
     distinct: 1,
+    minWordSizefor1Typo: 5,
+    typoTolerance: 'min' as const,
     filters: buildFilters({ locale, platform, scope }),
     optionalFilters: [
       'category:default<score=2>',
@@ -612,19 +616,21 @@ function buildApiSearchRequest({
   };
 }
 
-function getFirstResultHits(value: unknown): unknown[] {
-  if (!isRecord(value) || !Array.isArray(value.results)) return [];
-  const firstResult = value.results[0];
-  return isRecord(firstResult) && Array.isArray(firstResult.hits)
-    ? firstResult.hits
-    : [];
+function getResultAt(value: unknown, index: number) {
+  if (!isRecord(value) || !Array.isArray(value.results)) return undefined;
+  const result = value.results[index];
+  return isRecord(result) ? result : undefined;
 }
 
-function mapDocsHitForRanking(
+function getResultHits(result: Record<string, unknown> | undefined) {
+  return result && Array.isArray(result.hits) ? result.hits : undefined;
+}
+
+function mapDocsHitForFederatedSearch(
   rawHit: unknown,
   intent: ReturnType<typeof classifySearchIntent>,
   enforceApiTaskTitleGate: boolean,
-): RankedUiSearchResult | undefined {
+): FederatedUiSearchResult | undefined {
   if (!isRecord(rawHit)) return undefined;
   const hit = rawHit as AlgoliaDocsHit;
   const url = getString(hit.url) ?? '';
@@ -655,8 +661,14 @@ function mapDocsHitForRanking(
     isMatched(hit, 'content') ||
     anyTermMatches([plainContent, description], intent.majorTerms);
   const recordKind = getDocsRecordKind(hit, url, breadcrumbs);
-  const titleExactMatch = normalizedText(plainTitle) === intent.normalizedQuery;
-  const apiTaskFields = [plainTitle, plainSection, ...breadcrumbs];
+  const titleExactMatch =
+    normalizeSearchText(plainTitle) === intent.normalizedQuery;
+  const apiTaskFields = [
+    plainTitle,
+    plainSection,
+    ...breadcrumbs,
+    url.includes('/api-reference/api-ref/') ? 'REST API' : undefined,
+  ];
   const apiTaskTerms = getRequiredApiTaskTerms(intent, { source: 'docs' });
   const allApiTaskTermsMatch = allTermsMatch(apiTaskFields, apiTaskTerms);
   const apiTaskTitleOrSectionSignal = anyTermMatches(
@@ -717,24 +729,8 @@ function getDocsRecordKind(
     : 'guide';
 }
 
-function getDocsCategory(value: unknown): RankedSearchResult['category'] {
+function getDocsCategory(value: unknown): FederatedSearchResult['category'] {
   return value === 'deprecated' || value === 'glossary' ? value : 'default';
-}
-
-function normalizedText(value: string) {
-  return stripMarks(value)
-    .normalize('NFKC')
-    .trim()
-    .replace(/\s+/gu, ' ')
-    .toLowerCase();
-}
-
-function compactSearchText(value: string) {
-  return (
-    normalizedText(value)
-      .match(/[\p{L}\p{M}\p{N}]+/gu)
-      ?.join('') ?? ''
-  );
 }
 
 function allTermsMatch(fields: Array<string | undefined>, terms: string[]) {
@@ -743,10 +739,6 @@ function allTermsMatch(fields: Array<string | undefined>, terms: string[]) {
 
 function anyTermMatches(fields: Array<string | undefined>, terms: string[]) {
   return terms.some((term) => allTermsMatch(fields, [term]));
-}
-
-function stripMarks(value: string) {
-  return value.replace(/<\/?mark(?:\s[^>]*)?>/giu, '');
 }
 
 function isExplicitApiReferenceScope(scope?: DocsSearchScope) {
@@ -779,7 +771,7 @@ function isStrictApiSignalFallbackMatch(
   const identifyingTerms = terms.filter(
     (term) => !GENERIC_API_SIGNAL_TERMS.has(term),
   );
-  return allTermsMatch(
+  return hasExactJoinedSearchAlias(
     [result.displayTitle, result.symbol, ...result.path],
     identifyingTerms,
   );
@@ -929,18 +921,6 @@ function getApiReferenceResultUrl(
   } catch {
     return url;
   }
-}
-
-function normalizeApiReferencePlatform(platform: string) {
-  if (platform === 'reactjs') {
-    return 'javascript';
-  }
-
-  if (platform === 'unreal-engine') {
-    return 'unreal';
-  }
-
-  return platform.startsWith('windows-') ? 'windows' : platform;
 }
 
 function getHierarchyValue(hit: Record<string, unknown>, key: string) {

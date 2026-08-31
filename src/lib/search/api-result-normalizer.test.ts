@@ -98,6 +98,10 @@ describe('SDK API result normalization', () => {
       expect.objectContaining({
         canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
         isCurrentVersion: true,
+        platformUrls: {
+          android: currentAndroidRenewToken.url,
+          web: webRenewToken.url,
+        },
         platforms: ['android', 'web'],
         url: currentAndroidRenewToken.url,
         version: '4.x',
@@ -108,6 +112,13 @@ describe('SDK API result normalization', () => {
       platforms: ['android', 'web'],
       url: currentAndroidRenewToken.url,
     });
+
+    expect(
+      aggregateApiResults([
+        normalizeValidApiHit(oldAndroidRenewToken, intent('renew token')),
+        normalizeValidApiHit(currentAndroidRenewToken, intent('renew token')),
+      ])[0].platformUrls.android,
+    ).toBe(currentAndroidRenewToken.url);
   });
 
   it('does not merge same symbols from different classes or products', () => {

@@ -25,6 +25,7 @@ const zhCnCommon = {
     searchEmpty: '没有找到匹配页面。',
     searchRecent: '最近浏览',
     searchApiReference: 'API Reference',
+    searchPlatformVariant: '选择平台',
     searchApiUnavailable: 'SDK API 结果暂时不可用。',
     searchDocumentation: '文档',
     searchPrompt: '搜索文档、API 和指南。',

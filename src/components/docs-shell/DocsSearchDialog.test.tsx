@@ -121,6 +121,7 @@ const apiFallbackDocsResult = {
 
 describe('DocsSearchDialog', () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
     analyticsMocks.captureDocsSearchCompleted.mockReset();
     analyticsMocks.captureDocsSearchOpened.mockReset();
     analyticsMocks.captureDocsSearchResultClicked.mockReset();
@@ -742,9 +743,10 @@ describe('DocsSearchDialog', () => {
     ).toBeNull();
   });
 
-  it('renders one aggregated SDK API row with compact platform context', async () => {
+  it('renders one aggregated SDK API row with platform-aware navigation', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
       getLastStatus: () => ({ api: 'success', docs: 'success' }),
@@ -754,7 +756,15 @@ describe('DocsSearchDialog', () => {
           id: 'video-sdk:rtcengine:joinchannel:method',
           objectType: 'sdk-api',
           path: ['API Reference', 'Video SDK'],
-          platform: ['android', 'ios', 'web', 'unity'],
+          platform: ['android', 'ios', 'web', 'linux'],
+          platformUrls: {
+            android:
+              'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#joinchannel',
+            ios: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+            linux:
+              'https://api-ref.agora.io/en/video-sdk/linux/4.x/API/class_irtcengine.html#joinchannel',
+            web: 'https://api-ref.agora.io/en/video-sdk/web/4.x/API/class_irtcengine.html#joinchannel',
+          },
           type: 'page',
           url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#joinchannel',
         },
@@ -769,12 +779,77 @@ describe('DocsSearchDialog', () => {
     );
 
     await screen.findAllByText('joinChannel');
-    expect(screen.getAllByRole('option')).toHaveLength(1);
+    const platformSelector = screen.getByRole('combobox', {
+      name: 'Choose platform',
+    });
+    expect(platformSelector).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'linux' })).toBeInTheDocument();
+    fireEvent.keyDown(platformSelector, { key: 'Enter' });
+    expect(openSpy).not.toHaveBeenCalled();
+    fireEvent.change(platformSelector, {
+      target: {
+        value:
+          'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+      },
+    });
     expect(screen.getByText('android')).toBeInTheDocument();
     expect(screen.getByText('ios')).toBeInTheDocument();
     expect(screen.getByText('web')).toBeInTheDocument();
     expect(screen.getByText('+1')).toBeInTheDocument();
-    expect(screen.queryByText('unity')).toBeNull();
+
+    fireEvent.click(screen.getAllByText('joinChannel')[0]);
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+      '_blank',
+      'noopener,noreferrer',
+    );
+  });
+
+  it('resets an API row platform selection when the query changes', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'success', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>joinChannel</mark>',
+          id: 'join-channel',
+          objectType: 'sdk-api',
+          path: ['API Reference', 'Video SDK'],
+          platform: ['android', 'ios'],
+          platformUrls: {
+            android: 'https://api-ref.agora.io/android/joinchannel',
+            ios: 'https://api-ref.agora.io/ios/joinchannel',
+          },
+          type: 'page',
+          url: 'https://api-ref.agora.io/android/joinchannel',
+        },
+      ]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    const platformSelector = await screen.findByRole('combobox', {
+      name: 'Choose platform',
+    });
+    fireEvent.change(platformSelector, {
+      target: { value: 'https://api-ref.agora.io/ios/joinchannel' },
+    });
+
+    fireEvent.input(input, { target: { value: 'joinChannel method' } });
+    fireEvent.click((await screen.findAllByText('joinChannel'))[0]);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://api-ref.agora.io/android/joinchannel',
+      '_blank',
+      'noopener,noreferrer',
+    );
   });
 
   it.each([

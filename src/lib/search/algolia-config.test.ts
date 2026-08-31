@@ -47,6 +47,6 @@ describe('getAlgoliaSearchConfig', () => {
 
     const { getAlgoliaSearchConfig } = await import('./algolia-config');
 
-    expect(getAlgoliaSearchConfig()).toBeNull();
+    expect(getAlgoliaSearchConfig('cn')).toBeNull();
   });
 });

@@ -1,5 +1,10 @@
 import type { SearchIntentResult } from './search-intent';
 import {
+  compactSearchText,
+  normalizeSearchPlatform,
+  stripSearchMarks,
+} from './search-normalization';
+import {
   allSearchTermsMatch,
   getRequiredApiTaskTerms,
   hasExactJoinedSearchAlias,
@@ -11,6 +16,7 @@ export type NormalizedApiResult = {
   symbol: string;
   product?: string;
   platforms: string[];
+  platformUrls: Record<string, string>;
   version?: string;
   isCurrentVersion: boolean;
   url: string;
@@ -29,17 +35,8 @@ export type CurrentVersionInput = {
   currentPath?: string;
 };
 
-const PLATFORM_ALIASES: Record<string, string> = {
-  'unreal-engine': 'unreal',
-  reactjs: 'javascript',
-};
-
-function stripMark(value: string) {
-  return value.replace(/<\/?mark(?:\s[^>]*)?>/giu, '');
-}
-
 function text(value: unknown) {
-  return typeof value === 'string' ? stripMark(value).trim() : undefined;
+  return typeof value === 'string' ? stripSearchMarks(value).trim() : undefined;
 }
 
 function isNavigableUrl(value: string) {
@@ -112,18 +109,8 @@ function normalizeMemberKind(value: string) {
   return KIND_ALIASES[normalized] ?? normalized;
 }
 
-function splitIdentifier(value: string) {
-  return value
-    .replace(/[^\p{L}\p{M}\p{N}]+/gu, ' ')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
-    .toLowerCase()
-    .split(/\s+/u)
-    .filter(Boolean);
-}
-
 function compact(value: string) {
-  return splitIdentifier(value).join('');
+  return compactSearchText(value);
 }
 
 function stripDoxygenPagePrefix(value: string) {
@@ -151,12 +138,6 @@ function normalizeProductKey(value: string | undefined) {
       .replace(/-+/gu, '-')
       .replace(/^-|-$/gu, '') || 'unknown'
   );
-}
-
-function normalizePlatform(value: string) {
-  const normalized = value.trim().toLowerCase();
-  if (PLATFORM_ALIASES[normalized]) return PLATFORM_ALIASES[normalized];
-  return normalized.startsWith('windows-') ? 'windows' : normalized;
 }
 
 function pathSegments(hit: UnknownRecord) {
@@ -484,9 +465,9 @@ export function normalizeApiHit(
   );
   if (!compact(displayTitle) || !compact(symbol)) return undefined;
   const product = text(hit.product);
-  const platforms = stringArray(hit.platform).map(normalizePlatform);
+  const platforms = stringArray(hit.platform).map(normalizeSearchPlatform);
   const inferredPlatform = path
-    .map(normalizePlatform)
+    .map(normalizeSearchPlatform)
     .find((segment) =>
       [
         'android',
@@ -543,6 +524,9 @@ export function normalizeApiHit(
     symbol,
     ...(product ? { product } : {}),
     platforms: [...new Set(platforms)],
+    platformUrls: Object.fromEntries(
+      [...new Set(platforms)].map((platform) => [platform, url]),
+    ),
     ...(version ? { version } : {}),
     isCurrentVersion: isCurrentVersion(hit, path, version, current, url),
     url,
@@ -635,7 +619,9 @@ export function aggregateApiResults(
   }
 
   return [...groups.values()].map((group) => {
-    const wantedPlatform = platform ? normalizePlatform(platform) : undefined;
+    const wantedPlatform = platform
+      ? normalizeSearchPlatform(platform)
+      : undefined;
     const sorted = [...group].sort((a, b) => {
       const aPlatform =
         wantedPlatform && a.platforms.includes(wantedPlatform) ? 1 : 0;
@@ -658,6 +644,16 @@ export function aggregateApiResults(
     ].sort(
       (a, b) => platformRank([a]) - platformRank([b]) || a.localeCompare(b),
     );
-    return { ...representative, platforms };
+    const platformUrls = sorted.reduce<Record<string, string>>(
+      (urls, result) => {
+        for (const resultPlatform of result.platforms) {
+          urls[resultPlatform] ??=
+            result.platformUrls[resultPlatform] ?? result.url;
+        }
+        return urls;
+      },
+      {},
+    );
+    return { ...representative, platformUrls, platforms };
   });
 }

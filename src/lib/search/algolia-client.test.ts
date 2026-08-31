@@ -525,38 +525,34 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('requests both indexes with strict API parameters and ranks an exact symbol first', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  objectID: 'join-guide',
-                  title: 'Join a channel',
-                  url: '/en/video-calling/get-started/join-a-channel',
-                }),
-              ],
-            },
-          ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          {
+            hits: [
+              docsHit({
+                objectID: 'join-guide',
+                title: 'Join a channel',
+                url: '/en/video-calling/get-started/join-a-channel',
+              }),
+            ],
+          },
+          { hits: [apiHit()] },
+        ],
+      });
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
       const results = await client.search('joinChannel');
 
-      expect(searchForHits).toHaveBeenCalledTimes(2);
-      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
         requests: [
           expect.objectContaining({
             indexName: 'docs_portal_en',
+            minWordSizefor1Typo: 5,
             query: 'joinChannel',
+            typoTolerance: 'min',
           }),
-        ],
-      });
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
-        requests: [
           expect.objectContaining({
             hitsPerPage: 20,
             indexName: 'agora_APIRefSearch',
@@ -578,6 +574,183 @@ describe('createAlgoliaDocsClient', () => {
         api: 'success',
         docs: 'success',
       });
+    });
+
+    it('searches the API index for an explicit symbol query with a modifier', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [{ hits: [docsHit()] }],
+        })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>setAudioProfile</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                    lvl1: 'setAudioProfile',
+                  },
+                  objectID: 'set-audio-profile',
+                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('setAudioProfile method');
+
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'setAudioProfile',
+          }),
+        ],
+      });
+      expect(results).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: 'set-audio-profile',
+            objectType: 'sdk-api',
+          }),
+        ]),
+      );
+    });
+
+    it('rejects a longer API symbol for an explicit symbol query with a modifier', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          { hits: [docsHit()] },
+          {
+            hits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: '<mark>preRenewToken</mark>',
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                  lvl1: 'preRenewToken',
+                },
+                objectID: 'pre-renew-token',
+              }),
+            ],
+          },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('renewToken api');
+
+      expect(results.map(({ id }) => id)).toEqual(['guide']);
+    });
+
+    it('keeps Documentation before API Reference for API task queries', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                docsHit({
+                  objectID: 'renew-guide',
+                  title: 'Renew token guide',
+                }),
+              ],
+            },
+          ],
+        })
+        .mockResolvedValueOnce({
+          results: [
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>renewToken</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                    lvl1: 'renewToken',
+                  },
+                  objectID: 'renew-token',
+                }),
+              ],
+            },
+          ],
+        });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('renew token');
+
+      expect(results.map(({ id }) => id)).toEqual([
+        'renew-guide',
+        'renew-token',
+      ]);
+    });
+
+    it('keeps both federated sections when Documentation fills its limit', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          {
+            hits: Array.from({ length: 10 }, (_, index) =>
+              docsHit({
+                objectID: `renew-guide-${index}`,
+                title: `Renew token guide ${index}`,
+              }),
+            ),
+          },
+          {
+            hits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: '<mark>renewToken</mark>',
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                  lvl1: 'renewToken',
+                },
+                objectID: 'renew-token',
+              }),
+            ],
+          },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('renew token');
+
+      expect(results).toHaveLength(11);
+      expect(results.at(-1)).toMatchObject({ id: 'renew-token' });
     });
 
     it('uses retrieval aliases in requests while retaining original-query intent behavior', async () => {
@@ -619,6 +792,10 @@ describe('createAlgoliaDocsClient', () => {
           expect.objectContaining({
             indexName: 'docs_portal_en',
             query: 'RtcEngine',
+          }),
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'AgoraRtcEngineKit',
           }),
         ],
       });
@@ -855,6 +1032,33 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
+    it('uses the REST API route context when admitting an API overview', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          {
+            hits: [
+              docsHit({
+                breadcrumbs: ['Reference', 'Cloud Recording'],
+                objectID: 'cloud-recording-api-overview',
+                title: 'Cloud Recording Overview',
+                url: '/en/api-reference/api-ref/cloud-recording',
+              }),
+            ],
+          },
+          { hits: [] },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      const results = await client.search('cloud recording REST API');
+
+      expect(results[0]).toMatchObject({
+        id: 'cloud-recording-api-overview',
+        recordKind: 'guide',
+      });
+    });
+
     it.each([
       'how to renew token',
       'please renew token',
@@ -902,7 +1106,10 @@ describe('createAlgoliaDocsClient', () => {
         id: `renew-token:${query}`,
       });
       expect(searchForHits).toHaveBeenNthCalledWith(1, {
-        requests: [expect.objectContaining({ query: 'renew token' })],
+        requests: [
+          expect.objectContaining({ query: 'renew token' }),
+          expect.objectContaining({ query: 'renew token' }),
+        ],
       });
       expect(searchForHits).toHaveBeenNthCalledWith(2, {
         requests: [expect.objectContaining({ query: 'renew token' })],
@@ -946,6 +1153,7 @@ describe('createAlgoliaDocsClient', () => {
         });
         expect(searchForHits).toHaveBeenNthCalledWith(1, {
           requests: [
+            expect.objectContaining({ query: 'cloud recording rest api' }),
             expect.objectContaining({ query: 'cloud recording rest api' }),
           ],
         });
@@ -1249,20 +1457,17 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
-    it('throws a docs rejection even when the independent API request succeeds', async () => {
+    it('marks both sources failed when the multi-index request rejects', async () => {
       const docsError = new Error('Docs index unavailable');
-      const searchForHits = vi
-        .fn()
-        .mockRejectedValueOnce(docsError)
-        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+      const searchForHits = vi.fn().mockRejectedValueOnce(docsError);
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
 
       await expect(client.search('joinChannel')).rejects.toBe(docsError);
-      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenCalledTimes(1);
       expect(client.getLastStatus()).toEqual({
-        api: 'success',
+        api: 'error',
         docs: 'error',
       });
     });

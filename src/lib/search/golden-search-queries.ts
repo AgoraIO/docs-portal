@@ -49,8 +49,8 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'cloud recording REST API',
     expectedIntent: 'api-task',
     expectedKind: 'guide',
-    expectedTitle: 'Cloud Recording RESTful API',
-    expectedUrl: '/en/realtime-media/cloud-recording/reference/restful-api',
+    expectedTitle: 'Cloud Recording Overview',
+    expectedUrl: '/en/api-reference/api-ref/cloud-recording',
   },
   {
     query: 'record captions',

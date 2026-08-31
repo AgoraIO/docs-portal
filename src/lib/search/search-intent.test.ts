@@ -123,6 +123,7 @@ describe('classifySearchIntent', () => {
 
   it.each([
     ['RtcEngine', 'AgoraRtcEngineKit'],
+    ['RtcEngine class', 'AgoraRtcEngineKit'],
     ['joinChannel', 'joinChannel'],
     ['RTC engine', 'RTC engine'],
   ])('rewrites the exact API retrieval query %s to %s', (query, expected) => {

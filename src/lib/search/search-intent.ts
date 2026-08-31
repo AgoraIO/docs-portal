@@ -1,3 +1,8 @@
+import {
+  normalizeSearchText,
+  tokenizeSearchText,
+} from './search-normalization';
+
 export type SearchIntent =
   | 'api-symbol'
   | 'api-task'
@@ -102,8 +107,19 @@ const API_RETRIEVAL_QUERY_ALIASES = new Map([
   ['rtcengine', 'AgoraRtcEngineKit'],
 ]);
 
+const API_QUERY_MODIFIER_TERMS = new Set([
+  'api',
+  'class',
+  'enum',
+  'function',
+  'interface',
+  'method',
+  'parameter',
+  'property',
+]);
+
 function normalizeQuery(query: string) {
-  return query.normalize('NFKC').trim().replace(/\s+/gu, ' ').toLowerCase();
+  return normalizeSearchText(query);
 }
 
 export function getDocsRetrievalQuery(query: string) {
@@ -111,7 +127,19 @@ export function getDocsRetrievalQuery(query: string) {
 }
 
 export function getApiRetrievalQuery(query: string) {
-  return API_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(query)) ?? query;
+  const normalizedQuery = normalizeQuery(query);
+  const alias = API_RETRIEVAL_QUERY_ALIASES.get(normalizedQuery);
+  if (alias) return alias;
+
+  const identifiers = (query.match(/[A-Za-z][A-Za-z\d]*/gu) ?? []).filter(
+    (token) =>
+      !API_QUERY_MODIFIER_TERMS.has(token.toLowerCase()) && isApiSymbol(token),
+  );
+  if (identifiers.length !== 1) return query;
+  const identifier = identifiers[0];
+  return (
+    API_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(identifier)) ?? identifier
+  );
 }
 
 function queryTerms(normalizedQuery: string) {
@@ -119,13 +147,7 @@ function queryTerms(normalizedQuery: string) {
 }
 
 function splitIdentifier(identifier: string) {
-  return identifier
-    .replace(/[^\p{L}\p{M}\p{N}]+/gu, '')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
-    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
-    .split(/\s+/u)
-    .filter(Boolean)
-    .map((term) => term.toLowerCase());
+  return tokenizeSearchText(identifier.replace(/[^\p{L}\p{M}\p{N}]+/gu, ''));
 }
 
 function majorTermsForQuery(query: string, terms: string[]) {

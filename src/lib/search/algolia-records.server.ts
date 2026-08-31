@@ -4,7 +4,6 @@ import { structure } from 'fumadocs-core/mdx-plugins';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
-import { faqItems } from '../../components/faq/faq-data';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
@@ -18,6 +17,7 @@ import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 import { getPublishedDocsLocales } from '../site-region';
 import { getAlgoliaSearchNavigation } from './algolia-search-source.server';
+import { faqItems } from './faq-data';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
 // match almost any query; legacy/deprecated pages are rarely the intent. Both

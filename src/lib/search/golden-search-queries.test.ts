@@ -55,8 +55,7 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'connect your own TTS service':
     '/en/ai/build/custom-model-integration/custom-tts',
   'cloud recording start': '/en/realtime-media/cloud-recording',
-  'cloud recording REST API':
-    '/en/realtime-media/cloud-recording/reference/restful-api',
+  'cloud recording REST API': '/en/api-reference/api-ref/cloud-recording',
   'record captions':
     '/en/realtime-media/speech-to-text/build/process-transcription-data/record-captions',
   'transcribe audio': '/en/realtime-media/speech-to-text',
@@ -521,9 +520,9 @@ function sourceHitsFor(
         ? targetDocsHit(query)
         : undefined;
     return [
-      ...noiseDocsFor(intent),
-      ...competitiveDocsHits(query),
       ...(target ? [target] : []),
+      ...competitiveDocsHits(query),
+      ...noiseDocsFor(intent),
     ];
   }
 
@@ -532,7 +531,7 @@ function sourceHitsFor(
       (candidate) => expectedApiRetrievalQuery(candidate) === retrievalQuery,
     ),
   );
-  return [...NOISE_API_CORPUS, ...targets].flatMap((entry) =>
+  return [...targets, ...NOISE_API_CORPUS].flatMap((entry) =>
     entry.platformHits.map((platformHit) => apiHit(entry, platformHit)),
   );
 }
@@ -654,7 +653,7 @@ describe('Global search golden queries', () => {
           url: '/en/realtime-media/cloud-recording',
         }),
         expect.objectContaining({
-          url: '/en/realtime-media/cloud-recording/reference/restful-api',
+          url: '/en/api-reference/api-ref/cloud-recording',
         }),
       ]),
     );

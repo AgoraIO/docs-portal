@@ -1,4 +1,4 @@
-import { DOCS_REGION } from '../site-region';
+import { DOCS_REGION, type DocsRegion } from '../site-region';
 import { getDocsSearchProvider } from './search-provider';
 
 export const DEFAULT_ALGOLIA_INDEX_NAME = 'docs_portal_en';
@@ -15,13 +15,13 @@ export const ALGOLIA_API_REFERENCE_INDEX_NAME =
 export const SEARCH_RANKING_V2_ENABLED =
   import.meta.env.VITE_SEARCH_RANKING_V2 === 'true';
 
-export function getAlgoliaSearchConfig() {
+export function getAlgoliaSearchConfig(region: DocsRegion = DOCS_REGION) {
   const appId = import.meta.env.VITE_ALGOLIA_APP_ID;
   const searchApiKey = import.meta.env.VITE_ALGOLIA_SEARCH_API_KEY;
   const hasAlgoliaConfig = Boolean(appId && searchApiKey);
 
   if (
-    getDocsSearchProvider(DOCS_REGION, hasAlgoliaConfig) !== 'algolia' ||
+    getDocsSearchProvider(region, hasAlgoliaConfig) !== 'algolia' ||
     !appId ||
     !searchApiKey
   ) {
