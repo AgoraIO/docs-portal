@@ -89,7 +89,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-voice-sdk-android',
             label: 'Version 4.6.4 (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.4_VOICE.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.4_VOICE.zip',
             packageManager:
               'https://central.sonatype.com/artifact/io.agora.rtc/voice-sdk/4.6.4/aar',
           },
@@ -280,7 +280,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-video-sdk-android',
             label: 'Version 4.6.4 (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.4_FULL.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.4_FULL.zip',
             packageManager:
               'https://central.sonatype.com/artifact/io.agora.rtc/full-sdk/4.6.4/aar',
           },
@@ -288,7 +288,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-video-sdk-android-lite',
             label: 'Version 4.6.4 Lite (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.4_LITE.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.4_LITE.zip',
             packageManager:
               'https://central.sonatype.com/artifact/io.agora.rtc/lite-sdk/4.6.4/aar',
           },
@@ -830,7 +830,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-voice-sdk-ios',
             label: 'Version 4.6.4 (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.4_VOICE.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.6.4_VOICE.zip',
             packageManager:
               'https://swiftpackageindex.com/AgoraIO/AgoraAudio_iOS',
           },
@@ -997,7 +997,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-video-sdk-ios',
             label: 'Version 4.6.4 (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.4_FULL.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.6.4_FULL.zip',
             packageManager:
               'https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_iOS',
           },
@@ -1005,7 +1005,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '4.6.4-video-sdk-ios-lite',
             label: 'Version 4.6.4 Lite (Latest)',
             downloadLink:
-              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.4_LITE.zip',
+              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.6.4_LITE.zip',
             packageManager:
               'https://swiftpackageindex.com/AgoraIO/AgoraLite_iOS',
           },
