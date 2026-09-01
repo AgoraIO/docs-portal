@@ -54,7 +54,7 @@ With dual-stream high availability, you push the same content to two independent
 
 1. Create two custom domains, one with `domainType: 0` (primary) and one with `domainType: 1` (backup). See [Configure a custom RTMPS domain](../build/configure-custom-domains/configure-rtmps-domain.md).
 2. Create two streaming keys bound to the same `channel` and `uid`.
-3. Enable `dualStreaming` for your project:
+3. Enable `dualStreaming` for your project using adaptive mode (`switchStrategy: 2`), so Media Gateway also promotes the backup stream when the primary degrades in quality:
 
 ```bash
 curl --request PUT \
@@ -65,7 +65,20 @@ curl --request PUT \
     "settings": {
       "dualStreaming": {
         "enabled": true,
-        "switchStrategy": 0
+        "switchStrategy": 2,
+        "qualityThreshold": {
+          "freezeRate": {
+            "high": 30,
+            "low": 5
+          }
+        },
+        "adaptiveSwitchPolicy": {
+          "windowCount": 5,
+          "degradeCount": 3,
+          "recoverCount": 3,
+          "takeoverCount": 3,
+          "cooldownMs": 30000
+        }
       }
     }
   }'

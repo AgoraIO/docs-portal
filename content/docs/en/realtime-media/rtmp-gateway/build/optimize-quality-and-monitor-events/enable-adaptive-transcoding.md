@@ -14,6 +14,7 @@ You can reference the following source stream properties in an expression:
 
 | Variable | Description |
 | --- | --- |
+| `codec` | Source stream codec, as a numeric `VIDEO_CODEC_TYPE` value: `2` (H.264), `3` (H.265), or `12` (AV1). |
 | `width` | Source stream width, in pixels. |
 | `height` | Source stream height, in pixels. |
 | `fps` | Source stream frame rate. |
@@ -24,7 +25,7 @@ You can reference the following source stream properties in an expression:
 For example, the expression `bitrate > 4000 or bframes > 0` transcodes a stream only if its bitrate exceeds 4000 Kbps or it contains B-frames.
 
 :::note
-There's no `codec` variable you can compare against a string like `"H.264"`. Build expressions from `width`, `height`, `fps`, `bitrate`, `gop`, and `bframes` instead.
+`codec` is numeric, not a string like `"H.264"`. For example, `codec == 12` matches an AV1 source stream.
 :::
 
 You can also apply an expression to individual ABR layers, so each layer transcodes only when needed. See [Enable adaptive bitrate](./enable-adaptive-bitrate.md).

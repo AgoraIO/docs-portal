@@ -72,7 +72,13 @@ DELETE https://api.agora.io/v1/projects/:appId/rtls/ingress/streamkeys/:streamKe
 A regional streaming key and a global streaming key use different endpoints for both creation and revocation. A regional key can't be revoked using the global endpoint, and a global key doesn't appear in a regional key list.
 
 :::note
-Revoking a global streaming key isn't atomic across regions. The response is `200` if every region succeeds, `207` if some regions succeed and others don't (check the response body for the per-region results), or an error if all regions fail. Handle the `207` case explicitly instead of treating the request as all-or-nothing.
+Revoking a global streaming key isn't atomic across regions. The response is:
+
+- `200` if the revocation succeeds in every region.
+- `207` if it succeeds in some regions and fails in others. Check the response body for the per-region results.
+- `502` or another error status if it fails in every region.
+
+Handle the `207` case explicitly instead of treating the request as all-or-nothing.
 :::
 
 ### Generate streaming key locally
