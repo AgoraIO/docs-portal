@@ -24,7 +24,7 @@ describe('SdksCatalog', () => {
     // Default platform (Android, first in canonical order) → Gradle command.
     expect(
       within(videoCard).getByText(
-        "implementation 'io.agora.rtc:full-sdk:4.6.3'",
+        "implementation 'io.agora.rtc:full-sdk:4.6.4'",
       ),
     ).toBeVisible();
     expect(
@@ -79,7 +79,7 @@ describe('SdksCatalog', () => {
 
     expect(
       within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
       ),
     ).toBeVisible();
   });
@@ -185,7 +185,9 @@ describe('SdksCatalog', () => {
     expect(
       screen.getByRole('link', { name: /show all sdks/i }),
     ).toHaveAttribute('href', '/en/api-reference/sdks');
-    expect(screen.getByRole('article', { name: 'RTC Voice SDK' })).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: 'RTC Voice SDK' }),
+    ).toBeVisible();
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
@@ -201,9 +203,10 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
-    expect(
-      within(voiceCard).getByRole('tab', { name: 'iOS' }),
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(
       within(voiceCard).getByRole('tab', { name: 'Android' }),
     ).toHaveAttribute('aria-selected', 'false');
@@ -254,9 +257,10 @@ describe('SdksCatalog', () => {
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
-    expect(
-      within(voiceCard).getByRole('tab', { name: 'iOS' }),
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('renders the unfiltered static catalog on the server', () => {
