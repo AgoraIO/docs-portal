@@ -30,7 +30,7 @@ This release fixed the following issues:
 - On Android watches connected to Bluetooth headphones, the audio route could switch to the speaker.
 - The app occasionally crashed during audio interactions.
 - With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
-- After joining a channel with the `CHANNEL_PROFILE_COMMUNICATION` channel profile, calling `updateChannelMediaOptions` to update channel media options could unexpectedly switch the channel profile to interactive live streaming.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
 
 ### v4.6.3
 
@@ -1208,7 +1208,7 @@ This release fixed the following issues:
 - If the receiver used the `AUDIO_SCENARIO_AI_CLIENT` audio scenario and the sender frequently stopped and resumed sending audio, the receiver occasionally heard no audio when network conditions were poor.
 - Audio quality occasionally degraded when using a wired headset in certain audio routing configurations.
 - With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
-- After joining a channel with the `CHANNEL_PROFILE_COMMUNICATION` channel profile, calling `updateChannelMediaOptions` to update channel media options could unexpectedly switch the channel profile to interactive live streaming.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
 
 ### v4.6.2
 

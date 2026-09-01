@@ -62,7 +62,7 @@ This release fixed the following issues:
 - In Web and Native SDK interoperability scenarios, video encoding occasionally failed, causing remote video to stutter or display corrupted frames.
 - With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
 - When using Media Player to play a CDN stream, video occasionally became corrupted after the stream resolution changed.
-- After joining a channel with the `CHANNEL_PROFILE_COMMUNICATION` channel profile, calling `updateChannelMediaOptions` to update channel media options could unexpectedly switch the channel profile to interactive live streaming.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
 
 ### v4.6.3
 
@@ -1901,7 +1901,7 @@ This release fixed the following issues:
 - Local preview occasionally froze when rendering local video frames with a custom renderer.
 - When an app called `setExternalVideoSource` to push encoded video frames (`ENCODED_VIDEO_FRAME`), the app occasionally crashed if the SEI information length in the encoded video frame did not match the encoding specification.
 - With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
-- After joining a channel with the `CHANNEL_PROFILE_COMMUNICATION` channel profile, calling `updateChannelMediaOptions` to update channel media options could unexpectedly switch the channel profile to interactive live streaming.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
 
 ### v4.6.2
 
