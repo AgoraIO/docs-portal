@@ -49,7 +49,7 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.7'),
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.8'),
     ).toBeVisible();
     expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'aria-selected',
@@ -122,6 +122,14 @@ describe('SdksCatalog', () => {
 
     const videoCard = screen.getByRole('article', { name: 'RTC SDK' });
     expect(videoCard.querySelector('svg')).toBeTruthy();
+  });
+
+  it('omits obsolete Media Player Kit downloads', () => {
+    render(<SdksCatalog />);
+
+    expect(
+      screen.queryAllByRole('article', { name: /mediaplayer kit sdk/i }),
+    ).toHaveLength(0);
   });
 
   it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {

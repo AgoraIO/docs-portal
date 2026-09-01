@@ -6,7 +6,7 @@ import {
   Outlet,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -284,33 +284,141 @@ describe('DocsSidebarTree', () => {
     expect(link.className).toContain('overflow-visible');
   });
 
-  it('renders external page links with a native anchor', async () => {
+  it('renders linked external SDK API jumps with an indicator in a new tab', async () => {
     const tree: DocsSidebarNode[] = [
       {
         external: true,
-        href: 'https://example.com/resources',
-        id: 'https://example.com/resources',
-        title: 'External Resource',
+        href: '/en/api-reference/api-ref',
+        id: '/en/api-reference/api-ref',
+        linked: true,
+        title: 'SDK API reference',
         type: 'page',
-        url: 'https://example.com/resources',
+        url: '/en/api-reference/api-ref',
       },
     ];
 
     renderSidebarTree(tree, '/en/introduction');
 
     const link = await screen.findByRole('link', {
-      name: 'External Resource',
+      name: 'SDK API reference (opens in a new tab)',
     });
+    const tooltip = within(link).getByTitle('Opens in a new tab');
+    const arrow = tooltip.querySelector<SVGSVGElement>(
+      'svg.lucide-arrow-up-right',
+    );
 
-    expect(link).toHaveAttribute('href', 'https://example.com/resources');
+    expect(link).toHaveAttribute('href', '/en/api-reference/api-ref');
     expect(link).toHaveAttribute('rel', 'noreferrer noopener');
     expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAccessibleName('SDK API reference (opens in a new tab)');
+    expect(tooltip).toContainElement(arrow);
+    expect(arrow).toBeInTheDocument();
+    expect(arrow).toHaveAttribute('aria-hidden', 'true');
+    expect(arrow).not.toHaveAttribute('title');
+    expect(link.querySelector('.sr-only')).toHaveTextContent(
+      '(opens in a new tab)',
+    );
+    expect(link.querySelector('svg.lucide-chevron-down')).toBeNull();
   });
 
-  it('renders HTTP method badges for OpenAPI endpoint pages', async () => {
+  it('renders linked external REST API jumps with an indicator in a new tab', async () => {
     const tree: DocsSidebarNode[] = [
       {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'RESTful API (opens in a new tab)',
+    });
+    const tooltip = within(link).getByTitle('Opens in a new tab');
+    const arrow = tooltip.querySelector<SVGSVGElement>(
+      'svg.lucide-arrow-up-right',
+    );
+
+    expect(link).toHaveAttribute('href', '/en/api-reference/api-ref/rtc');
+    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAccessibleName('RESTful API (opens in a new tab)');
+    expect(tooltip).toContainElement(arrow);
+    expect(arrow).toBeInTheDocument();
+    expect(arrow).toHaveAttribute('aria-hidden', 'true');
+    expect(arrow).not.toHaveAttribute('title');
+    expect(link.querySelector('.sr-only')).toHaveTextContent(
+      '(opens in a new tab)',
+    );
+    expect(link.querySelector('svg.lucide-chevron-down')).toBeNull();
+  });
+
+  it('renders linked internal jumps with a chevron in the current tab', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        id: '/en/api-reference/recipes',
+        linked: true,
+        title: 'API recipes',
+        type: 'page',
+        url: '/en/api-reference/recipes',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'API recipes',
+    });
+
+    expect(link).toHaveAttribute('href', '/en/api-reference/recipes');
+    expect(link).not.toHaveAttribute('target');
+    expect(link).not.toHaveAttribute('rel');
+    expect(link).toHaveAccessibleName('API recipes');
+    expect(link.querySelector('svg.lucide-chevron-down')).toHaveClass(
+      '-rotate-90',
+    );
+    expect(link.querySelector('svg.lucide-arrow-up-right')).toBeNull();
+    expect(link.querySelector('.sr-only')).toBeNull();
+  });
+
+  it('opens an ordinary external page safely without a new tab indicator', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        external: true,
+        href: 'https://example.com/docs',
+        id: 'external-docs',
+        title: 'External docs',
+        type: 'page',
+        url: 'https://example.com/docs',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/introduction');
+
+    const link = await screen.findByRole('link', {
+      name: 'External docs',
+    });
+
+    expect(link).toHaveAttribute('href', 'https://example.com/docs');
+    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAccessibleName('External docs');
+    expect(link.querySelector('svg')).toBeNull();
+    expect(link.querySelector('.sr-only')).toBeNull();
+  });
+
+  it('prioritizes a method badge over linked external indicators', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        external: true,
+        href: '/en/api-reference/api-ref/conversational-ai/join',
         id: '/en/api-reference/api-ref/conversational-ai/join',
+        linked: true,
         method: 'POST',
         title: 'Start a conversational AI agent',
         type: 'page',
@@ -321,11 +429,20 @@ describe('DocsSidebarTree', () => {
     renderSidebarTree(tree, '/en/api-reference/api-ref/conversational-ai/join');
 
     const link = await screen.findByRole('link', {
-      name: /Start a conversational AI agent POST/i,
+      name: 'Start a conversational AI agent POST',
     });
 
-    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute(
+      'href',
+      '/en/api-reference/api-ref/conversational-ai/join',
+    );
+    expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAccessibleName('Start a conversational AI agent POST');
     expect(screen.getByText('POST')).toHaveClass('font-mono');
+    expect(link.querySelector('svg.lucide-arrow-up-right')).toBeNull();
+    expect(link.querySelector('svg.lucide-chevron-down')).toBeNull();
+    expect(link.querySelector('.sr-only')).toBeNull();
   });
 
   it('does not clamp long OpenAPI endpoint labels', async () => {
@@ -1081,6 +1198,24 @@ describe('DocsSidebarTree', () => {
       'aria-expanded',
       'true',
     );
+  });
+
+  it('marks an active linked section without children as the current page', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [],
+        id: 'folder-rtc',
+        title: 'Realtime Communication',
+        type: 'section',
+        url: '/en/realtime-media/rtc',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/realtime-media/rtc');
+
+    expect(
+      await screen.findByRole('link', { name: 'Realtime Communication' }),
+    ).toHaveAttribute('aria-current', 'page');
   });
 
   it('renders full sidebar labels for long Build document titles', async () => {

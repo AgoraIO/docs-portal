@@ -1590,6 +1590,7 @@ paths:
                             - deepgram
                             - openai
                             - google
+                            - gemini
                             - amazon
                             - assemblyai
                             - sarvam
@@ -1615,6 +1616,8 @@ paths:
                             - `amazon`: Amazon Transcribe
 
                             - `google`: [Google](/en/ai/models/asr/google)
+
+                            - `gemini`: [Gemini](/en/ai/models/asr/gemini)
 
                             - `sarvam`: [Sarvam](/en/ai/models/asr/sarvam)
 
@@ -2539,16 +2542,6 @@ paths:
 
                             Identification sensitivity determines the level of sound in the audio
                             signal that is considered voice activity.
-                        eagerness:
-                          type: string
-                          default: auto
-                          enum:
-                            - auto
-                            - low
-                            - high
-                          description: >-
-                            The eagerness of the model to respond. Only available in `semantic_vad`
-                            mode when using OpenAI Realtime API.
                         config:
                           type: object
                           additionalProperties: true

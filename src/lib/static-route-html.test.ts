@@ -28,6 +28,31 @@ describe('static route HTML', () => {
     );
   });
 
+  it('prioritizes render-blocking CSS ahead of speculative preloads', () => {
+    const result = createStaticRouteHtml({
+      page: QUICKSTART_PAGE,
+      routeHtml:
+        '<html><head><link rel="preload" as="image" href="/agora-logo.png"><link rel="preload" as="image" href="/hero.png"><link crossorigin rel="stylesheet" href="/assets/app.css"><link rel="modulepreload" href="/assets/app.js"><link rel="modulepreload" href="/assets/route.js" fetchpriority="high"></head><body><article><div data-static-docs-body>Install Agora skills</div></article></body></html>',
+      spaHtml: SPA_HTML,
+    });
+
+    expect(result).toContain(
+      '<link rel="preload" as="image" href="/agora-logo.png" fetchpriority="low">',
+    );
+    expect(result).toContain(
+      '<link rel="preload" as="image" href="/hero.png">',
+    );
+    expect(result).toContain(
+      '<link crossorigin rel="stylesheet" href="/assets/app.css" fetchpriority="high">',
+    );
+    expect(result).toContain(
+      '<link rel="modulepreload" href="/assets/app.js" fetchpriority="low">',
+    );
+    expect(result).toContain(
+      '<link rel="modulepreload" href="/assets/route.js" fetchpriority="low">',
+    );
+  });
+
   it('fails when a production canonical route has no prerendered HTML', () => {
     expect(() =>
       createStaticRouteHtml({

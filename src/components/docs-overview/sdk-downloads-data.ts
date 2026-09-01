@@ -618,24 +618,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://central.sonatype.com/artifact/io.agora.rtm/rtm-sdk/2.1.7',
           },
-          {
-            id: '1.5.3-rtm-sdk-android',
-            label: 'Version 1.5.3',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_3.zip',
-          },
-          {
-            id: '1.5.2-rtm-sdk-android',
-            label: 'Version 1.5.2',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_2.zip',
-          },
-          {
-            id: '1.5.1-rtm-sdk-android',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Android_v1_5_1.zip',
-          },
         ],
       },
       {
@@ -805,19 +787,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 1.3.4',
             packageManager:
               'https://github.com/netless-io/fastboard-android/releases/tag/1.3.4',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-android',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-android',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Android_rel.v1.3.0_14564_ffmpeg_player_lite_20210723_1234.zip',
           },
         ],
       },
@@ -1286,14 +1255,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
           },
-          {
-            id: '1.5.1-rtm-sdk-ios',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_iOS_v1_5_1.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRTM_iOS',
-          },
         ],
       },
       {
@@ -1422,19 +1383,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-ios',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-ios',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_iOS_rel.v1.3.0_53009_ffmpeg_player_lite_20210702_1606.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -1447,8 +1395,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.8-video-sdk-web',
+            label: 'Version 4.24.8 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_8_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.8',
+          },
+          {
             id: '4.24.7-video-sdk-web',
-            label: 'Version 4.24.7 (Latest)',
+            label: 'Version 4.24.7',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_7_FULL.zip',
             packageManager:
@@ -1797,13 +1753,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
               'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v215.zip',
             packageManager:
               'https://www.npmjs.com/package/agora-rtm-sdk/v/2.1.5',
-          },
-          {
-            id: '1.5.1-rtm-sdk-web',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Web_v1.5.1.zip',
-            packageManager: 'https://www.npmjs.com/package/agora-rtm-sdk',
           },
         ],
       },
@@ -2189,14 +2138,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageManager:
               'https://github.com/CocoaPods/Specs/tree/master/Specs/7/b/0/AgoraRtm_iOS',
           },
-          {
-            id: '1.5.1-rtm-sdk-macOS',
-            label: 'Version 1.5.1',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Mac_v1_5_1.zip',
-            packageManager:
-              'https://swiftpackageindex.com/AgoraIO/AgoraRTM_macOS',
-          },
         ],
       },
       {
@@ -2208,19 +2149,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             id: '2.16.46-interactive-whiteboard-ios',
             label: 'Version 2.16.46 (Latest)',
             packageManager: 'https://github.com/netless-io/whiteboard-ios',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-macOS',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-macOS',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Mac_rel.v1.3.0_31754_ffmpeg_player_lite_20210716_1813.zip',
           },
         ],
       },
@@ -2692,18 +2620,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Windows_v2.2.2.zip',
           },
-          {
-            id: '1.5.1 (x86)-rtm-sdk-windows',
-            label: 'Version 1.5.1 (x86)(Latest)',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Windows_x86_v1.5.1.zip',
-          },
-          {
-            id: '1.5.1 (x64)-rtm-sdk-windows',
-            label: 'Version 1.5.1 (x64)(Latest)',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Windows_x64_v1.5.1.zip',
-          },
         ],
       },
       {
@@ -2758,32 +2674,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 1.0.5',
             downloadLink:
               'https://downloadsdk.easemob.com/downloads/SDK/WinSDK/agora_chat_sdk.1.0.5.nupkg',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-windows-x86',
-        label: 'Mediaplayer Kit SDK (x86)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x86',
-            label: 'version 1.3.0 (x86)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x86_rel.v1.3.0_63393_ffmpeg_player_lite_20210727_1117.zip',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-windows-x64',
-        label: 'Mediaplayer Kit SDK (x64)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x64',
-            label: 'version 1.3.0 (x64)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x64_rel.v1.3.0_63392_ffmpeg_player_lite_20210727_1117.zip',
           },
         ],
       },
@@ -3044,18 +2934,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v219.zip',
           },
-          {
-            id: '1.5.1-rtm-sdk-linux-cpp',
-            label: 'Version 1.5.1 for C++',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Linux_v1_5_1.zip',
-          },
-          {
-            id: '1.5.1-rtm-sdk-linux-java',
-            label: 'Version 1.5.1 for Java',
-            downloadLink:
-              'https://download.agora.io/rtmsdk/release/Agora_RTM_SDK_for_Linux_Java_v1_5_1.zip',
-          },
         ],
       },
       {
@@ -3308,12 +3186,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 2.1.9 (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip',
-          },
-          {
-            id: '1.4.10-rtm-sdk-unity',
-            label: 'Version 1.4.10',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_1.4.10_20220726_163.zip',
           },
         ],
       },
