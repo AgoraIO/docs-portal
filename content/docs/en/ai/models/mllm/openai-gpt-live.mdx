@@ -1,0 +1,122 @@
+---
+title: OpenAI GPT-Live
+description: >
+ Integrate OpenAI GPT-Live into Conversational AI Engine.
+---
+
+OpenAI GPT-Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components.
+
+:::info[Info]
+Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::
+
+### Sample configuration
+
+The following example shows how to configure OpenAI GPT-Live MLLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import OpenAIGPTLive
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(OpenAIGPTLive(
+        api_key='your-openai-key',
+        url='wss://api.openai.com/v1/live',
+        greeting_message="Hello! I'm GPT-live. How can I help you today?",
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, OpenAIGPTLive } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new OpenAIGPTLive({
+    apiKey: 'your-openai-key',
+    url: 'wss://api.openai.com/v1/live',
+    greetingMessage: "Hello! I'm GPT-live. How can I help you today?",
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewOpenAIGPTLive(vendors.OpenAIGPTLiveOptions{
+        APIKey:          "your-openai-key",
+        URL:             "wss://api.openai.com/v1/live",
+        GreetingMessage: "Hello! I'm GPT-live. How can I help you today?",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+:::info[Info]
+OpenAI GPT-Live is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
+
+Use the following `mllm` configuration in your request:
+
+```json
+"mllm": {
+  "enable": true,
+  "vendor": "openai-gpt-live",
+  "api_key": "<openai_api_key>",
+  "url": "wss://api.openai.com/v1/live",
+  "greeting_message": "Hello! I'm GPT-live. How can I help you today?"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [OpenAI Realtime API documentation](https://platform.openai.com/docs/guides/realtime).
+:::
+
+### Key parameters
+
+<ParameterList title="mllm" required={true}>
+  <Parameter name="enable" type="boolean" required={false}>
+    Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+    MLLM provider identifier. Set to `openai-gpt-live` for OpenAI GPT-Live.
+  </Parameter>
+  <Parameter name="api_key" type="string" required={true}>
+    The API key used for authentication. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The WebSocket URL for OpenAI GPT-Live. Set to `wss://api.openai.com/v1/live`.
+  </Parameter>
+  <Parameter name="greeting_message" type="string" required={false}>
+    Initial message the agent speaks when a user joins the channel.
+  </Parameter>
+</ParameterList>
