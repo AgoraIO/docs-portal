@@ -3251,7 +3251,7 @@ To implement the code presented on this page you need to have:
 - An Agora [account](/en/introduction/account#sign-up-for-an-agora-account) and [project](/en/introduction/account#your-first-agora-project).
 - [Enabled Signaling](/en/realtime-media/rtm/enable-signaling) in Agora Console
 
-- A device running Ubuntu 18.04 or Debian 9.9, x86-64 architecture.
+- A device running Ubuntu 18.04 or Debian 9.9, aarch64 (arm64) or x86-64 architecture.
 - Java 8 or above.
 - Maven.
 
@@ -3303,7 +3303,7 @@ To integrate the Linux Java Signaling SDK into your project using Maven:
         <dependencies>
             <dependency>
                 <groupId>io.agora</groupId>
-                <artifactId>rtm-java</artifactId>
+                <artifactId>rtm-java-aarch64</artifactId>
                 <version>x.y.z</version>
             </dependency>
         </dependencies>
@@ -3340,6 +3340,8 @@ To integrate the Linux Java Signaling SDK into your project using Maven:
     </Accordions>
 
     Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+    The `artifactId` is architecture-specific. Use `rtm-java-aarch64` for aarch64 (arm64) devices, or `rtm-java-x86_64` for x86-64 devices.
 
 1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux-java) the SDK package separately, unzip it, and copy the `*.so` files to the project's `lib` folder.
 

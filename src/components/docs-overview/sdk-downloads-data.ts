@@ -3077,9 +3077,21 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Real-Time Messaging',
         versions: [
           {
-            id: '2.3.0-rtm-sdk-linux-java',
-            label: 'Version 2.3.0 (Latest)',
-            packageManager: 'https://central.sonatype.com/artifact/io.agora/rtm-java/2.3.0',
+            id: '2.3.0-rtm-sdk-linux-java-aarch64',
+            label: 'Version 2.3.0 for aarch64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_JAVA_SDK_for_Linux_aarch64_v2.3.0.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora/rtm-java-aarch64/2.3.0',
+          },
+          {
+            id: '2.3.0-rtm-sdk-linux-java-x86_64',
+            label:
+              'Version 2.3.0 for x86-64 (Latest) — TODO: confirm download URL and Maven artifact before merge',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/TODO_CONFIRM_LINUX_JAVA_X86_64_2.3.0_URL.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora/rtm-java-x86_64/2.3.0',
           },
         ],
       },

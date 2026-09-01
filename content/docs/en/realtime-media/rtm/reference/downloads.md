@@ -298,7 +298,7 @@ To install the Signaling SDK for Linux Java using Maven:
         <dependencies>
             <dependency>
                 <groupId>io.agora</groupId>
-                <artifactId>rtm-java</artifactId>
+                <artifactId>rtm-java-aarch64</artifactId>
                 <version>x.y.z</version>
             </dependency>
         </dependencies>
@@ -332,6 +332,8 @@ To install the Signaling SDK for Linux Java using Maven:
     ```
 
     Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+    The `artifactId` is architecture-specific. Use `rtm-java-aarch64` for aarch64 (arm64) devices, or `rtm-java-x86_64` for x86-64 devices.
 
 1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux-java) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
 </TabsContent>
