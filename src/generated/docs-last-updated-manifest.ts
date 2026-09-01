@@ -206,7 +206,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/index.mdx': '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/interrupt-agent.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/interrupt-agent.mdx': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/build/meta.json': '2026-08-10T15:28:51.000Z',
+  'content/docs/en/ai/build/mcp-tools.mdx': '2026-08-31T09:29:14.000Z',
+  'content/docs/en/ai/build/meta.json': '2026-08-31T09:29:14.000Z',
   'content/docs/en/ai/build/monitor-agent-runtime.mdx':
     '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/presets.md': '2026-05-19T10:33:06.000Z',
@@ -224,7 +225,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/custom-information.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/build/shape-the-conversation/filler-words.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-31T09:29:14.000Z',
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
@@ -352,7 +353,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/get-started/_shared-mdx-fixture.mdx':
     '2026-06-30T06:39:15.000Z',
   'content/docs/en/ai/get-started/mcp-integrate.mdx':
-    '2026-06-29T14:43:43.000Z',
+    '2026-08-31T09:29:14.000Z',
   'content/docs/en/ai/get-started/meta.json': '2026-06-30T06:39:15.000Z',
   'content/docs/en/ai/get-started/quickstart.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/get-started/quickstart.mdx': '2026-08-11T07:22:09.000Z',
