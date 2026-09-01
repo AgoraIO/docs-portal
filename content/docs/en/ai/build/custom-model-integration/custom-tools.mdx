@@ -1,0 +1,346 @@
+---
+title: Call custom tools
+description: Let the LLM call your own HTTPS endpoints as tools during a conversation.
+---
+To look up data or take action in your systems, you can set up a Conversational AI agent to use custom tools through your own HTTPS endpoints.
+
+When the LLM needs a tool call, it generates the tool's parameters from the conversation. The Conversational AI Engine validates those parameters, makes one synchronous request to your endpoint, and returns the result to the LLM so it can continue generating a response. Only the LLM's reply is sent to TTS, never the raw HTTP response.
+
+Common use cases include:
+
+- **Looking up business data**: Query order status, account balances, or inventory from your own systems.
+- **Performing actions**: Create a support ticket, schedule an appointment, or update a record.
+- **Grounding responses**: Pull current, business-specific information into the conversation without retraining the model.
+
+## Understand the tech
+
+Each custom tool declares a `function` block with a name, description, and a JSON Schema for its parameters. It also declares a `server` block that describes the HTTPS request the Conversational AI Engine sends once the LLM has generated valid parameters. Tool calling supports only synchronous `GET` and `POST` requests to a single endpoint per tool.
+
+Custom tools, MCP tools, built-in tools, and model-native tools all share one tool namespace. Names are not case-sensitive. An agent can expose at most 32 tools to the LLM. If tool names conflict or the limit is exceeded, the agent fails to start.
+
+The following aren't supported:
+
+- `PUT`, `PATCH`, or `DELETE` requests, automatic retries, or following HTTP redirects.
+- Asynchronous tools, callbacks, polling, or stored/reusable tool references.
+- OAuth token exchange, dynamic request signing, or mTLS for authenticating to your endpoint.
+
+## Prerequisites
+
+- Implemented the basic logic for interacting with a conversational AI agent by following the [quickstart](../../get-started/quickstart).
+- A standard text LLM that supports function calling. Custom LLMs, MLLMs, realtime voice models, and Dify aren't supported.
+- An HTTPS endpoint your agent can call to fulfill the tool.
+
+## Implementation
+
+You declare tools when creating the agent, using the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-tools) REST API.
+
+### Configure a GET tool
+
+The following example configures a `GET` tool that looks up order status:
+
+```json
+{
+  "properties": {
+    "advanced_features": {
+      "enable_tools": true
+    },
+    "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "your-llm-api-key",
+      "params": { "model": "gpt-4o-mini" },
+      "template_variables": {
+        "api_key": "Bearer your-order-service-key"
+      },
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "getOrderStatus",
+            "description": "Get the shipping status for a customer's order by order ID.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "order_id": {
+                  "type": "string",
+                  "description": "The order ID, for example ORD-10293."
+                }
+              },
+              "required": ["order_id"],
+              "additionalProperties": false
+            }
+          },
+          "execution": {
+            "mode": "sync"
+          },
+          "server": {
+            "method": "GET",
+            "url": "https://api.example.com/orders/{{args.order_id}}/status",
+            "headers": {
+              "Authorization": "{{template_variables.api_key}}"
+            },
+            "timeout_ms": 5000
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+To create the agent, enable tool calling. If you don't enable tool calling, the engine doesn't expose tools to the model and never calls their endpoints.
+
+Once this is configured, a user can ask something like "What's the status of order ORD-10293?" After the model generates `order_id`, the engine sends:
+
+```http
+GET https://api.example.com/orders/ORD-10293/status
+Authorization: Bearer your-order-service-key
+```
+
+**Field reference**
+
+Configure tools in the `properties.llm.tools` array, and set `properties.advanced_features.enable_tools` to `true`.
+
+| Parameter | Required | Description |
+|---|---|---|
+| `properties.advanced_features.enable_tools` | Yes | Set to `true` so the agent can expose custom tools and MCP tools to the model. If omitted or `false`, the agent doesn't call any tool endpoints. |
+| `properties.llm.tools` | No | The custom tool array. Custom tools, MCP tools, built-in tools, and model-native tools share one model-visible tool namespace. |
+| `tools[].type` | Yes | Fixed as `function`. |
+| `tools[].function` | Yes | The tool definition visible to the model, including its name, description, and parameter schema. |
+| `tools[].function.name` | Yes | Must start with a letter, contain only letters and numbers, and be no more than 64 characters long. Can't use the `mcp` prefix or the value `ragsearch_tool`. |
+| `tools[].function.description` | Yes | Explains the tool's purpose, when to call it, and what it returns. Don't include secrets. |
+| `tools[].function.parameters` | Yes | A JSON Schema object. The root `type` must be `object`. Passed using OpenAI's non-strict function-calling mode. |
+| `tools[].execution` | No | Defaults to `{ "mode": "sync" }` when omitted. Only `sync` is supported. |
+| `tools[].server` | Yes | The actual HTTP request configuration. |
+| `tools[].server.method` | Yes | Only `GET` and `POST` are supported. `GET` can't configure `body`. |
+| `tools[].server.url` | Yes | An absolute HTTPS URL. The path and query parameters can use template variables. |
+| `tools[].server.headers` | No | Up to 32 entries. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
+| `tools[].server.body` | Optional for `POST` | `POST` only, supports nested JSON. Template placeholders must be complete, not concatenated with other text. |
+| `tools[].server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
+
+:::info
+Even if tool calling isn't enabled, any tools you declare are still validated for field type, size, template syntax, and duplicate names.
+:::
+
+### Configure a POST tool
+
+Use a `POST` tool to perform actions, such as creating a ticket or sending a message. A request body can only be used with `POST`; configuring one for a `GET` tool causes validation to fail. The following example sends a confirmed delivery address to a phone number:
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "sendFollowUpSms",
+    "description": "Send the customer's confirmed delivery address to a phone number. Only call this after the customer has confirmed both the address and the phone number.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "phone_number": {
+          "type": "string",
+          "description": "The recipient phone number, in E.164 format."
+        },
+        "address": {
+          "type": "string",
+          "description": "The customer's confirmed delivery address."
+        }
+      },
+      "required": ["phone_number", "address"],
+      "additionalProperties": false
+    }
+  },
+  "execution": {
+    "mode": "sync"
+  },
+  "server": {
+    "method": "POST",
+    "url": "https://api.example.com/messages/sms",
+    "headers": {
+      "Authorization": "{{template_variables.api_key}}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "to": "{{args.phone_number}}",
+      "message": "{{args.address}}",
+      "idempotency_key": "{{tool_call_id}}"
+    },
+    "timeout_ms": 10000
+  }
+}
+```
+
+`{{tool_call_id}}` is the system-generated ID correlating this tool call. You can pass it to your own service to correlate logs or detect a repeated call, but passing it alone doesn't stop your service from processing the same request twice, and Agora doesn't automatically retry requests. Your service is still responsible for handling duplicate requests and unknown outcomes.
+
+**Field reference**
+
+`function` and `execution` are the same as for a `GET` tool. The following fields are specific to a `POST` tool's `server` block:
+
+| Parameter | Required | Description |
+|---|---|---|
+| `tools[].server.method` | Yes | Fixed as `POST`. |
+| `tools[].server.url` | Yes | An absolute HTTPS URL. The path or query parameters can use template variables. |
+| `tools[].server.headers` | No | Configure authentication and `Content-Type`. Can't use `{{args.<name>}}`; pass authentication only as a complete header value. |
+| `tools[].server.body` | No | The `POST` request body. Supports nested JSON. Values can be constants or complete template placeholders, not concatenated text. |
+| `tools[].server.timeout_ms` | No | Defaults to `10000`, in the range `1000` to `100000`. |
+
+For `POST` tools that change data or trigger an action:
+
+- State the conditions for calling the tool in its description and in your system prompt, such as requiring the user to confirm first.
+- Perform the final authorization check on your own server. Don't rely on the LLM's judgment alone.
+- Only have the agent tell the user the request succeeded after your endpoint returns a `2xx` status.
+- If a request has already been sent, a user interruption doesn't guarantee the remote action is canceled or rolled back.
+
+### Configure template variables
+
+Template variables let you fill an HTTP request with either LLM-generated parameters or fixed values known when you create the agent. The following example puts a tenant ID in a header and a customer ID in the request body:
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "tenant_id": "acme-corp",
+        "customer_id": "cust-4471"
+      },
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "getCustomerProfile",
+            "description": "Look up the current customer's profile.",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          "execution": {
+            "mode": "sync"
+          },
+          "server": {
+            "method": "POST",
+            "url": "https://api.example.com/customers/profile",
+            "headers": {
+              "X-Tenant-ID": "{{template_variables.tenant_id}}"
+            },
+            "body": {
+              "customer_id": "{{template_variables.customer_id}}"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+**Field reference**
+
+| Parameter | Description |
+|---|---|
+| `properties.llm.template_variables` | Fixed string values known when the agent is created. |
+| `properties.llm.tools[].server.headers` / `body` | Read a fixed value with `{{template_variables.<name>}}`. |
+| `properties.llm.tools[].server.body` | Can also use `{{args.<name>}}` and `{{tool_call_id}}`, neither of which need `template_variables` configured. |
+
+Keep the following rules in mind when using template variables:
+
+- Placeholders are substituted once; they aren't expanded recursively.
+- A template must reference a complete variable. Concatenating text, such as `order-{{args.order_id}}`, isn't supported.
+- Nested fields, array indexes, and shorthand forms like `{{name}}` aren't supported.
+- `{{args.<name>}}` can't be used in headers.
+- Header names, the HTTP method, and the URL's scheme, host, and port can't be templated.
+- Variables used in the URL path and query parameters are encoded for their respective part of the URL. A variable can't inject a new host, path segment, or query key.
+- If a variable doesn't exist, is `null`, or has a type that doesn't fit its target location, the tool call fails without calling your endpoint.
+- Always pass authentication information as a complete header value. Don't put it in the URL, request body, tool parameters, or tool description.
+
+## Reference
+
+The following reference material covers the tool parameter schema, response handling, configuration limits, and common issues.
+
+### Parameter schema
+
+A tool's parameters use JSON Schema and are passed to the LLM using OpenAI's non-strict function-calling mode. The root must be `object`, with parameters typically declared under `properties`. For details, see [OpenAI's Function Calling guide](https://platform.openai.com/docs/guides/function-calling).
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "The order ID."
+    },
+    "include_items": {
+      "type": "boolean",
+      "description": "Whether to also return line-item details."
+    },
+    "region": {
+      "type": "string",
+      "enum": ["us", "eu"],
+      "description": "The order's region."
+    }
+  },
+  "required": ["order_id"],
+  "additionalProperties": false
+}
+```
+
+`additionalProperties: false` in this example only demonstrates disallowing undeclared parameters. It isn't required, and setting it doesn't itself enable strict mode. To allow extra parameters, omit this field or set it to `true`.
+
+Practical rules:
+
+- Common JSON Schema types are supported: `object`, `array`, `string`, `integer`, `number`, `boolean`, and `null`.
+- Standard JSON Schema keywords relevant to tool parameters are supported, such as `type`, `description`, `enum`, `properties`, `required`, `additionalProperties`, and `items`. The actual effect depends on your LLM's function-calling support.
+- The root `type` must be `object`. Declare array elements with `items`.
+- Don't add optional parameters to `required`. If you omit `additionalProperties`, extra properties are allowed per JSON Schema semantics. Set it to `false` explicitly to disallow undeclared parameters.
+- Don't rely on a specific model's support for advanced keywords such as `$ref`, `$defs`, `format`, `pattern`, range constraints, or composition schemas. Confirm compatibility with your LLM before using them.
+- The serialized schema size is capped at 64 KiB.
+
+### Response and runtime behavior
+
+The Conversational AI Engine passes your endpoint's response back to the LLM. The exact behavior depends on the response status and content:
+
+| Endpoint result | Tool result | Conversation behavior |
+|---|---|---|
+| Non-empty `2xx`, valid JSON | JSON is parsed, then serialized back to a string | The model generates a reply based on the full result |
+| Non-empty `2xx`, UTF-8 text | The raw text is used | The model generates a reply based on the full result |
+| Empty `2xx`, such as `204` | Reported as success, result is `[]` | The model continues based on the success result |
+| Non-`2xx`, valid JSON | Reported as failed; JSON is parsed, then serialized back to a string | The full response is still returned to the model, but it shouldn't claim the action succeeded |
+| Non-`2xx`, UTF-8 text | Reported as failed; the raw text is used | The full response is still returned to the model, but it shouldn't claim the action succeeded |
+| Non-`2xx`, empty body | Reported as failed, result is `[]` | The model gets a failure result and shouldn't claim the action succeeded |
+| `3xx` | Reported as failed, following the non-`2xx` rules | The engine doesn't follow `Location` or forward the request to the redirect target |
+| Timeout, network error, or parameter/template validation failure | Reported as failed | The request isn't retried automatically |
+| Response over 1 MiB or not valid, safe UTF-8 text | Reported as failed | The partial response isn't passed to the model |
+
+A few other runtime behaviors to keep in mind:
+
+- If a single model response submits multiple tool calls, the engine runs them concurrently. One call failing doesn't block the others.
+- The engine waits for every submitted call to reach a final result or error before starting the next LLM turn, and writes the results back in the order the model returned them.
+- Interrupting the agent stops its current response, but it doesn't cancel an in-flight HTTP request or guarantee that the remote action is rolled back.
+- While waiting for a tool call, the agent uses your existing [filler words](../shape-the-conversation/filler-words) configuration. Custom tools don't add a separate, tool-specific filler word trigger.
+- Only the model's final generated text is sent to TTS, never the raw tool response.
+
+### Security and configuration limits
+
+- The request URL must be an absolute HTTPS URL. Usernames and passwords in the URL aren't supported.
+- Header values are treated as sensitive: they aren't passed to the model, and aren't written to regular logs, subtitles, or TTS output. OAuth token exchange, dynamic request signing, mTLS, and reusable credential resources aren't provided.
+- The final rendered URL is capped at 8192 UTF-8 bytes: each path variable at 1024 bytes, and each query variable at 4096 bytes.
+- Headers are capped at 32 entries, totaling up to 16 KiB.
+- The request body is `POST` only. Both the configured value and the rendered result are capped at 64 KiB.
+- The request timeout defaults to `10000` ms, in the range `1000` to `100000`.
+- A non-empty response body can't exceed 1 MiB. Extracting specific fields, JSONPath, or custom truncation aren't supported.
+- Custom tools, MCP tools, built-in tools, and model-native tools share one namespace. Tool names must start with a letter, contain only letters and numbers, and be no more than 64 characters, and comparisons aren't case-sensitive.
+- Tool names can't use the `mcp` prefix or the value `ragsearch_tool`. After discovery and filtering, the engine exposes at most 32 tools to the model.
+- Stored tools, asynchronous tasks, callbacks, polling, automatic retries, `PUT`/`PATCH`/`DELETE`, and configurable serial tool scheduling aren't supported.
+
+### Troubleshooting
+
+If a custom tool isn't behaving as expected, start with these checks.
+
+| Symptom | Check |
+|---|---|
+| The model never calls the tool | Check that `enable_tools` is set to `true`, the tool description explains when to call it and what it returns, and the current LLM supports function calling. |
+| Agent creation fails | Check that the tool type is `function`, the parameters' root type is `object`, the request method is `GET` or `POST`, and no tool name is duplicated. |
+| Your endpoint never receives a request | Check that `server` is a sibling of `function` rather than nested inside it, the URL is an absolute HTTPS URL, the referenced template variables exist, and `body` isn't configured on a `GET` tool. |
+| A header doesn't contain the model's parameter | Check for `{{args.<name>}}` in a header. Headers don't support it; use a fixed value directly, or use `template_variables` or `tool_call_id` instead. |
+| Your endpoint returns a parameter validation error | Check the body field names, parameter types, and `Content-Type`. Template placeholders in the request body can't be concatenated with other text. |
+| The tool call times out | Check your endpoint's response time against `timeout_ms`. Timed-out calls aren't retried automatically. |
+| Your endpoint returns success, but the model can't use the result | Confirm your endpoint returned a `2xx` status. A non-empty response must be safe UTF-8 text under 1 MiB. The engine doesn't support extracting specific fields from a JSON response. |
+| A `POST` action runs more than once | Use `tool_call_id` to correlate the call on your side, and handle duplicate requests in your own service. Don't assume Agora will roll back or retry the request for you. |

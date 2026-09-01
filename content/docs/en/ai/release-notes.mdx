@@ -7,6 +7,99 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ## Releases
 
+### v2.12
+
+Released on August 31, 2026.
+
+#### New features
+
+Included in this release:
+
+- **Call custom tools**
+
+  You can now declare custom tools for the LLM to call during a conversation, directly through the RESTful API. Set `advanced_features.enable_tools` and declare a tool's name, description, parameters, and a synchronous `GET` or `POST` HTTPS endpoint using the `llm.tools` parameter. The LLM selects a tool and generates its parameters based on the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
+
+- **Generated filler words**
+
+  `filler_words.content` now supports a `generated` mode that produces a context-relevant filler phrase instead of a fixed phrase list, directly through the RESTful API. If a generated phrase isn't ready in time, the agent falls back to your configured static phrases. Generation is Agora-hosted, so no additional model, endpoint, or credentials are required. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+
+- **Defer custom instructions with the `append` action**
+
+  The `think` API's state actions now support `append`. Setting `on_listening_action`, `on_thinking_action`, or `on_speaking_action` to `append` doesn't interrupt the current interaction. Instead, the custom instruction is appended as a separate user message once the current turn's LLM output finishes, then starts a new turn. Available through the [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think) endpoint.
+
+- **Client component support for direct speech and instruction injection**
+
+  The [Android](/en/api-reference/api-ref/conversational-ai/client-toolkit/android), [iOS](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios), and [Web](/en/api-reference/api-ref/conversational-ai/client-toolkit/web) client toolkits add `speak` and `think` methods. Use `speak` to bypass the LLM and make the agent speak text directly, or `think` to inject text as user input for the LLM to process. Both methods send messages over RTM and support message priority, interruption behavior, and per-state Think actions.
+
+#### API changes
+
+This release introduces the following changes for custom tool calling, generated filler words, and the `think` API's `append` action.
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`llm.tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-tools): Custom tool definitions the LLM can call. Requires `advanced_features.enable_tools`.
+    - [`filler_words.content.generated_config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config): Prompt and fallback strategy for generated filler words. Used when `filler_words.content.mode` is `generated`.
+
+  - **Updated parameters**
+
+    - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools): Now also enables custom tools declared in `llm.tools`, in addition to MCP tools.
+    - [`filler_words.content.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-mode) value `generated`: Generate a filler phrase from the current context, with `filler_words.content.static_config` used as a fallback.
+    - [`filler_words.content.static_config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-static-config): Now a named sibling property of `content` instead of the `"{mode}_config"` key.
+
+- Changes to [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think)
+
+  - **Updated parameters**
+
+    - [`on_listening_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-listening-action), [`on_thinking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-thinking-action), and [`on_speaking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-speaking-action) value `append`: Don't interrupt the current interaction; append the instruction as a separate user message once the current turn's LLM output finishes.
+
+#### Toolkit API
+
+This release adds `speak` and `think` methods to the client toolkit, so you can bypass the LLM to play text directly or inject text as user input:
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`speak`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#speak)
+- [`think`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#think)
+- `SpeakMessage`, `ThinkMessage`, `ThinkListeningAction`, `ThinkThinkingAction`, `ThinkSpeakingAction`
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`speak`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#speak)
+- [`think`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#think)
+- `SpeakMessage`, `ThinkMessage`, `ThinkListeningAction`, `ThinkThinkingAction`, `ThinkSpeakingAction`
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`speak`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#speak)
+- [`think`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#think)
+- `SpeakMessage`, `ThinkMessage`, `EThinkListeningAction`, `EThinkThinkingAction`, `EThinkSpeakingAction`
+
+</TabsContent>
+</Tabs>
+
+#### Deprecation notice
+
+:::warning[Important]
+These changes may affect your existing integration. Review each change and update your integration as needed.
+:::
+
+- **`asr.params` becomes required for non-default ASR vendors in v2.13.** Starting in v2.13, a request that sets [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) to a vendor other than `ares` and omits [`asr.params`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-params) fails. Configure `asr.params` for your vendor, or omit `asr.vendor` to keep the default `ares` vendor.
+- **Legacy `turn_detection` fields and the `keywords`/`disabled` start-of-speech modes lose their support guarantee in a future release.** Migrate to [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config) and [`interruption`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-interruption), introduced in v2.6.
+- **`advanced_features.enable_mllm` loses its support guarantee in a future release.** The MLLM switch may stop working. Migrate to [`mllm.enable`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-enable), introduced in v2.6.
+
 ### v2.11
 
 Released on August 11, 2026.

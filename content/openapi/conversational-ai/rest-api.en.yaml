@@ -460,19 +460,22 @@ paths:
                       "enable": true,
                       "trigger": {
                         "mode": "fixed_time",
-                        "config": {
+                        "fixed_time_config": {
                           "response_wait_ms": 1500
                         }
                       },
                       "content": {
-                        "mode": "static",
-                        "config": {
+                        "mode": "generated",
+                        "static_config": {
                           "phrases": [
                             "Please wait a moment.",
-                            "OK",
-                            "Uh-huh."
+                            "I'm looking into it."
                           ],
                           "selection_rule": "shuffle"
+                        },
+                        "generated_config": {
+                          "prompt": "Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.",
+                          "fallback_strategy": "static"
                         }
                       }
                     },
@@ -613,13 +616,17 @@ paths:
                             "enable": True,
                             "trigger": {
                                 "mode": "fixed_time",
-                                "config": { "response_wait_ms": 1500 }
+                                "fixed_time_config": { "response_wait_ms": 1500 }
                             },
                             "content": {
-                                "mode": "static",
-                                "config": {
-                                    "phrases": ["Please wait a moment.", "OK", "Uh-huh."],
+                                "mode": "generated",
+                                "static_config": {
+                                    "phrases": ["Please wait a moment.", "I'm looking into it."],
                                     "selection_rule": "shuffle"
+                                },
+                                "generated_config": {
+                                    "prompt": "Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.",
+                                    "fallback_strategy": "static"
                                 }
                             }
                         },
@@ -747,10 +754,11 @@ paths:
                       },
                       filler_words: {
                         enable: true,
-                        trigger: {mode: 'fixed_time', config: {response_wait_ms: 1500}},
+                        trigger: {mode: 'fixed_time', fixed_time_config: {response_wait_ms: 1500}},
                         content: {
-                          mode: 'static',
-                          config: {phrases: ['Please wait a moment.', 'OK', 'Uh-huh.'], selection_rule: 'shuffle'}
+                          mode: 'generated',
+                          static_config: {phrases: ['Please wait a moment.', "I'm looking into it."], selection_rule: 'shuffle'},
+                          generated_config: {prompt: 'Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.', fallback_strategy: 'static'}
                         }
                       },
                       parameters: {
@@ -1550,8 +1558,21 @@ paths:
                           type: boolean
                           default: false
                           description: >-
-                            Enable tool invocation. When enabled, the agent can invoke tools
-                            provided by the MCP server to implement advanced functionality.
+                            Enable tool invocation. When enabled, the agent can invoke custom tools
+                            declared in `llm.tools` and MCP tools configured in `llm.mcp_servers` to
+                            perform tasks such as querying business data or executing external
+                            actions.
+
+
+                            - `true`: Enable custom tool and MCP tool invocation.
+
+                            - `false` (default): Don't enable tool invocation. The agent doesn't
+                            access any tool endpoints.
+
+
+                            Even when this field is `false` or omitted, any `llm.tools` passed in the
+                            request are still validated for field type, size, template syntax, and
+                            duplicate tool names.
                     asr:
                       type: object
                       additionalProperties: true
@@ -2144,6 +2165,338 @@ paths:
                             MCP (Model Context Protocol) server configuration. By configuring MCP
                             servers, agents can call tools provided by external services to
                             implement advanced functionality.
+                        tools:
+                          type: array
+                          maxItems: 32
+                          description: >-
+                            A list of custom tools. When configured, the LLM can select a tool based
+                            on the conversation and generate its parameters. The Conversational AI
+                            Engine then validates the parameters, calls the corresponding HTTPS
+                            endpoint, and returns the result to the LLM to continue generating a
+                            response.
+
+
+                            Custom tools, MCP tools, built-in tools, and model-native tools share the
+                            same tool name namespace. Name comparisons aren't case-sensitive and use
+                            ASCII rules. After MCP discovery and filtering, a maximum of 32 tools
+                            total can be exposed to the LLM. If names conflict or the limit is
+                            exceeded, agent startup fails. The engine doesn't automatically overwrite,
+                            rename, or truncate tools.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                - Set `advanced_features.enable_tools` to `true` before using tools.
+
+                                - Only supported for synchronous calls to standard text LLMs. Custom
+                                LLMs, MLLMs, Dify, asynchronous tools, and stored tool references
+                                aren't supported.
+                          items:
+                            type: object
+                            required:
+                              - type
+                              - function
+                              - server
+                            additionalProperties: false
+                            description: >-
+                              A custom tool definition. The LLM decides whether to call the tool and
+                              generates its parameters; the Conversational AI Engine validates the
+                              parameters, makes one synchronous HTTP request, and returns the result
+                              to the LLM.
+
+
+                              - Only synchronous `GET` and `POST` requests are supported.
+                              Asynchronous calls, automatic retries, and HTTP redirects aren't
+                              supported.
+
+                              - The raw response body size is capped at 1 MiB and must be UTF-8 text.
+
+                              - `application/json` and `+json` responses preserve their original JSON
+                              type, including object, array, scalar, and `null`. Other responses are
+                              treated as UTF-8 strings.
+
+                              - An empty response body is returned as `[]`. A 2xx response is reported
+                              as `success` and a non-2xx response as `failed`. In both cases, the
+                              response content is returned to the LLM.
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - function
+                                description: The tool type. Only `function` is supported.
+                              function:
+                                type: object
+                                required:
+                                  - name
+                                  - description
+                                  - parameters
+                                additionalProperties: false
+                                properties:
+                                  name:
+                                    type: string
+                                    pattern: '^[a-zA-Z][a-zA-Z0-9]{0,63}$'
+                                    description: >-
+                                      The tool name visible to the model. Must start with a letter and
+                                      contain only letters and numbers, 1 to 64 characters long.
+
+
+                                      Custom tools, MCP tools, built-in tools, and model-native tools
+                                      can't share a name. Name comparisons aren't case-sensitive and
+                                      use ASCII rules. Names can't use the `mcp` prefix or the value
+                                      `ragsearch_tool`.
+                                  description:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 1024
+                                    description: >-
+                                      A description of the tool, used to help the LLM decide when to
+                                      call it and what it returns. Don't include sensitive information
+                                      such as secrets.
+                                  parameters:
+                                    type: object
+                                    additionalProperties: true
+                                    description: >-
+                                      The tool's parameters, defined as JSON Schema and passed to the
+                                      LLM using OpenAI's non-strict function-calling mode. See [OpenAI
+                                      Function Calling](https://platform.openai.com/docs/guides/function-calling).
+
+
+                                      Usage rules:
+
+                                      - The root `type` must be `object`.
+
+                                      - Common JSON Schema types are supported: `object`, `array`,
+                                      `string`, `integer`, `number`, `boolean`, and `null`.
+
+                                      - Standard JSON Schema keywords relevant to tool parameters are
+                                      supported, such as `type`, `description`, `enum`, `properties`,
+                                      `required`, `additionalProperties`, and `items`.
+
+                                      - Objects can use `properties`, `required`, and
+                                      `additionalProperties`. `additionalProperties` can be omitted;
+                                      when omitted, extra properties are allowed per JSON Schema
+                                      semantics. To disallow undeclared extra parameters, set it to
+                                      `false` explicitly.
+
+                                      - Array parameters should specify an element schema with
+                                      `items`. Support for tuple schemas depends on the selected LLM.
+
+                                      - Don't add optional parameters to `required`. Don't rely on a
+                                      specific model's support for advanced keywords such as `$ref`,
+                                      `$defs`, `format`, `pattern`, range constraints, or composition
+                                      schemas. Confirm your LLM's compatibility before using them.
+
+                                      - The serialized schema size is capped at 64 KiB.
+
+
+                                      Example:
+
+                                      ```json
+
+                                      {
+
+                                        "type": "object",
+                                        "properties": {
+                                          "order_id": {
+                                            "type": "string",
+                                            "description": "Order ID"
+                                          }
+                                        },
+                                        "required": ["order_id"],
+                                        "additionalProperties": false
+                                      }
+
+                                      ```
+                              execution:
+                                type: object
+                                additionalProperties: false
+                                description: The tool's execution mode.
+                                properties:
+                                  mode:
+                                    type: string
+                                    enum:
+                                      - sync
+                                    default: sync
+                                    description: The execution mode. Only synchronous `sync` execution is supported.
+                              server:
+                                type: object
+                                required:
+                                  - method
+                                  - url
+                                additionalProperties: false
+                                description: >-
+                                  The HTTP request configuration for the custom tool.
+
+
+                                  Templates use single-pass substitution; they aren't expanded
+                                  recursively. The following variables are supported:
+
+                                  - `{{args.<name>}}`: A validated LLM tool parameter. Can be used in
+                                  the URL path or query parameters and in the request body, but not in
+                                  headers.
+
+                                  - `{{template_variables.<name>}}`: A template variable configured
+                                  when creating the agent. Can be used in the URL path or query
+                                  parameters, header values, and the request body.
+
+                                  - `{{tool_call_id}}`: The ID correlating this tool call. Can be used
+                                  in the URL, header values, or the request body.
+
+
+                                  Template variable rules:
+
+                                  - **Headers and request body**: Each value must be either a fixed
+                                  value or one complete placeholder, such as `{{args.order_id}}`.
+                                  Concatenating a placeholder with other text, such as
+                                  `order-{{args.order_id}}`, isn't supported, and nested fields, array
+                                  indexes, and recursive references aren't supported either.
+
+                                  - **URL path and query parameters**: Placeholders can be used within
+                                  a fixed URL, such as `/orders/{{args.order_id}}`.
+
+                                  - If a placeholder references a variable that doesn't exist or is
+                                  `null`, the tool call returns `UnresolvedTemplate`.
+
+                                  - Variable values in the URL and headers must be a string, number, or
+                                  boolean.
+
+
+                                  Authentication information may only be passed as a complete header
+                                  value. Don't put authentication information in the URL or request
+                                  body. All header values are treated as sensitive and aren't passed to
+                                  the LLM or written to regular logs, events, subtitles, or TTS output.
+                                properties:
+                                  method:
+                                    type: string
+                                    enum:
+                                      - GET
+                                      - POST
+                                    description: >-
+                                      The HTTP request method:
+
+                                      - `GET`: For querying data. Doesn't support a request body;
+                                      configuring `body` causes request validation to fail.
+
+                                      - `POST`: For submitting data. Supports URL query parameters,
+                                      request headers, and a request body together.
+                                  url:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 2048
+                                    pattern: '^https://'
+                                    description: >-
+                                      The absolute HTTPS URL for the custom tool request.
+
+
+                                      The URL path and query parameters can embed single-level
+                                      placeholders:
+
+                                      - `{{args.<name>}}`
+
+                                      - `{{template_variables.<name>}}`
+
+                                      - `{{tool_call_id}}`
+
+
+                                      For example:
+                                      `https://api.example.com/orders/{{args.order_id}}?tenant={{template_variables.tenant_id}}`.
+
+
+                                      Usage limits:
+
+                                      - Placeholder names must be complete; nested fields, array
+                                      indexes, and recursive expansion aren't supported.
+
+                                      - Only the URL path and query parameters can use placeholders;
+                                      the scheme, userinfo, host, and port can't be templated.
+
+                                      - Usernames, passwords, or other authentication information can't
+                                      be embedded in the URL.
+
+                                      - Placeholder values in the URL must be a string, number, or
+                                      boolean.
+
+                                      - Each rendered path variable is capped at 1024 UTF-8 bytes, each
+                                      query variable at 4096 UTF-8 bytes, and the final URL at 8192
+                                      UTF-8 bytes.
+                                  headers:
+                                    type: object
+                                    maxProperties: 32
+                                    additionalProperties:
+                                      oneOf:
+                                        - type: string
+                                        - type: number
+                                        - type: boolean
+                                    description: >-
+                                      Custom headers to send with the tool request, up to 32 entries.
+
+
+                                      Header values support:
+
+                                      - A static string, number, or boolean.
+
+                                      - A complete `{{template_variables.<name>}}` placeholder.
+
+                                      - A complete `{{tool_call_id}}` placeholder.
+
+
+                                      Usage limits:
+
+                                      - Header names must be 1 to 128 characters and must conform to
+                                      the HTTP token specification.
+
+                                      - Header names can't be templated, and header values don't
+                                      support `{{args.<name>}}`.
+
+                                      - A placeholder must be the entire header value; it can't be
+                                      concatenated with other text, and nested fields, array indexes,
+                                      or recursive expansion aren't supported.
+
+                                      - Each rendered header value is capped at 4096 UTF-8 bytes, and
+                                      all headers combined are capped at 16 KiB.
+
+                                      - If a custom header name conflicts with a system-generated
+                                      header, the system-generated value takes precedence.
+
+
+                                      All header values are treated as sensitive: they aren't passed to
+                                      the LLM and aren't written to regular logs, events, subtitles, or
+                                      TTS output.
+                                  body:
+                                    description: >-
+                                      The HTTP request body for the custom tool. Only used with `POST`;
+                                      configuring this field for `GET` causes request validation to
+                                      fail.
+
+
+                                      The request body supports object, array, string, number, boolean,
+                                      and `null`, in any level of JSON structure. Leaf values in the
+                                      request body can be:
+
+                                      - A JSON constant.
+
+                                      - A complete `{{args.<name>}}` placeholder.
+
+                                      - A complete `{{template_variables.<name>}}` placeholder.
+
+                                      - A complete `{{tool_call_id}}` placeholder.
+
+
+                                      A placeholder must be the entire leaf value; it can't be
+                                      concatenated with other text, and nested fields, array indexes,
+                                      or recursive expansion aren't supported. After substitution, a
+                                      placeholder keeps the variable's original JSON type; tool
+                                      parameters are automatically escaped when serialized into the
+                                      JSON request body.
+                                  timeout_ms:
+                                    type: integer
+                                    minimum: 1000
+                                    maximum: 100000
+                                    default: 10000
+                                    description: >-
+                                      The HTTP request timeout in milliseconds, in the range [1000,
+                                      100000]. Defaults to 10000.
                         headers:
                           type: object
                           additionalProperties: true
@@ -3141,29 +3494,25 @@ paths:
                               description: >-
                                 Filler word content mode:
 
-                                - `static`: Static filler words. Uses a predefined list of filler
-                                words.
-                            "{mode}_config":
+                                - `static` (default): Static filler words. Uses a predefined list of
+                                filler words.
+
+                                - `generated`: Generated filler words. Agora-hosted generation produces
+                                one filler word phrase based on the current context. If the generated
+                                result isn't available in time, the static filler words in
+                                `static_config` are used as a fallback.
+                            static_config:
                               type: object
                               additionalProperties: true
                               description: >-
-                                Filler word content configuration parameters. The parameter name and
-                                structure vary depending on the content mode.
+                                Static filler word configuration. Required whenever filler words are
+                                enabled. When `mode` is `generated`, this configuration is used as the
+                                static fallback for when generation isn't available.
                               x-docs-callouts:
                                 - type: info
                                   title: Note
                                   position: after-description
                                   markdown: >
-                                    - The configuration type must match `mode`. For example, when
-                                    `mode`
-
-                                    is `static`, you must provide `static_config`.
-
-
-                                    - You cannot provide multiple mode configurations
-                                    simultaneously.
-
-
                                     **Static filler word configuration example:**
 
 
@@ -3179,10 +3528,7 @@ paths:
                                     "Please wait.",
 
 
-                                    "Okay.",
-
-
-                                    "Uh-huh."
+                                    "I'm looking into it."
 
 
                                     ],
@@ -3200,17 +3546,23 @@ paths:
                                   type: array
                                   items:
                                     type: string
+                                  minItems: 1
+                                  maxItems: 100
                                   description: |-
                                     List of filler word phrases.
 
                                     **Limits:**
-                                    - Maximum 100 filler words.
-                                    - Each filler word must not exceed 50 English words.
+                                    - Supports 1 to 100 non-empty strings.
+                                    - A phrase containing only Latin characters supports up to 50
+                                      space-separated words.
+                                    - A phrase containing any non-Latin character supports up to 50
+                                      Unicode code points.
                                 selection_rule:
                                   type: string
                                   enum:
                                     - shuffle
                                     - round_robin
+                                  default: shuffle
                                   description: >-
                                     Filler word selection rule:
 
@@ -3224,6 +3576,37 @@ paths:
                                     once, a new cycle begins.
                               required:
                                 - phrases
+                            generated_config:
+                              type: object
+                              additionalProperties: true
+                              description: >-
+                                Generated filler word configuration. Only takes effect when `mode` is
+                                `generated`.
+
+
+                                - When `mode` is `generated`, Agora generates a context-relevant
+                                filler word phrase in parallel with the main LLM request.
+
+                                - If the generated result isn't available by `response_wait_ms`, the
+                                static filler words in `static_config` are used as a fallback.
+                              properties:
+                                prompt:
+                                  type: string
+                                  description: >-
+                                    The prompt used to generate the filler word phrase. This field is
+                                    an optional non-empty string; if provided, Agora uses this prompt
+                                    to generate the filler word.
+                                fallback_strategy:
+                                  type: string
+                                  enum:
+                                    - static
+                                  default: static
+                                  description: >-
+                                    The fallback strategy to use when the generated filler word isn't
+                                    available:
+
+                                    - `static` (default): Use the static filler words in
+                                    `static_config`.
                     parameters:
                       type: object
                       additionalProperties: true
@@ -4480,6 +4863,7 @@ paths:
                   enum:
                     - inject
                     - interrupt
+                    - append
                     - ignore
                   description: >-
                     The action to take when the agent is in a listening state:
@@ -4490,26 +4874,34 @@ paths:
                     - `interrupt`: Immediately interrupt the current flow and initiate a new round
                     of dialogue.
 
+                    - `append`: Don't interrupt the current user input. After the LLM finishes
+                    responding to it, append the custom text instruction as a separate user message
+                    and initiate a new round of dialogue.
+
                     - `ignore`: Ignore the request.
                 on_thinking_action:
                   type: string
                   default: interrupt
                   enum:
                     - interrupt
+                    - append
                     - ignore
                   description: |-
                     The action to take when the agent is in a thinking state:
                     - `interrupt`: Interrupt the current state and start a new conversation turn.
+                    - `append`: Don't interrupt the current LLM inference. After the current turn's LLM output finishes, append the custom text instruction as a separate user message and start a new conversation turn.
                     - `ignore`: Ignore the request.
                 on_speaking_action:
                   type: string
                   default: ignore
                   enum:
                     - interrupt
+                    - append
                     - ignore
                   description: |-
                     The action to take when the agent is in a speaking state:
                     - `interrupt`: Interrupt the current state and start a new conversation turn.
+                    - `append`: Don't interrupt the current TTS playback. After the current turn's LLM output finishes, append the custom text instruction as a separate user message and start a new conversation turn.
                     - `ignore`: Ignore the request.
                 interruptable:
                   type: boolean
