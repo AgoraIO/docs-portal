@@ -32,7 +32,7 @@ You can use Agora's unified domain name or your own one. The server appends the 
   - `ap`: Asia, except Mainland China
   - `cn`: Mainland China
 
-- To use your own domain name, [contact technical support](mailto:support@agora.io) for configuration.
+- To use your own domain name over RTMPS, see [Configure a custom RTMPS domain](./build/configure-custom-domains/configure-rtmps-domain.md).
 
 ## Get streaming key
 
@@ -53,10 +53,38 @@ For authentication details, see [RESTful authentication](./reference/restful-aut
 To explore the RESTful API parameters, obtain sample code in various client languages, or test Media Gateway requests, refer to the [Postman API reference](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6aed9690-285e-45f0-a329-c995adbd0956).
 :::
 
+### Create a global streaming key
+
+The streaming key you create with the RESTful API endpoint is scoped to a single region. If you need a key that works across all Media Gateway regions, for example when your clients push streams from different parts of the world into the same region-agnostic setup, create a global streaming key instead. A global key carries its channel, user ID, and expiration directly in the key, so any region can validate it without a lookup.
+
+Create a global streaming key by calling the same endpoint without a region:
+
+```
+POST https://api.agora.io/v1/projects/:appId/rtls/ingress/streamkeys
+```
+
+To revoke a global streaming key in all regions at once, call:
+
+```
+DELETE https://api.agora.io/v1/projects/:appId/rtls/ingress/streamkeys/:streamKey
+```
+
+A regional streaming key and a global streaming key use different endpoints for both creation and revocation. A regional key can't be revoked using the global endpoint, and a global key doesn't appear in a regional key list.
+
+:::note
+Revoking a global streaming key isn't atomic across regions. The response is:
+
+- `200` if the revocation succeeds in every region.
+- `207` if it succeeds in some regions and fails in others. Check the response body for the per-region results.
+- `502` or another error status if it fails in every region.
+
+Handle the `207` case explicitly instead of treating the request as all-or-nothing.
+:::
+
 ### Generate streaming key locally
 
 :::note
-Before starting, make sure you have configured your domain name by contacting [technical support](mailto:support@agora.io).
+Before starting, make sure you have configured your domain name. See [Get server domain name](#get-server-domain-name).
 :::
 
 To generate a stream key locally, you use the following information:
@@ -116,7 +144,7 @@ In case of intercommunication with the web client, transcoding is not enabled by
 - x264 options: `threads=6`
 - Frame rate (FPS): At 1080 resolution, the frame rate must not exceed 30; for resolutions below that, the frame rate must not exceed 60. If not necessary, 30 is sufficient.
 
-Taking OBS as an example, configure it as shown below:
+Taking OBS as an example, configure it as follows:
 
 1. On the **Settings > Output > Live** page, configure the video profile, keyframe interval, and x264 options.
 
