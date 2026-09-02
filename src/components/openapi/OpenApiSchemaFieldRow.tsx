@@ -80,7 +80,10 @@ export function OpenApiSchemaFieldRow({
           )}
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
-          <Badge variant={node.required ? 'default' : 'outline'}>
+          <Badge
+            className="ml-auto normal-case tracking-normal"
+            variant={node.required ? 'default' : 'outline'}
+          >
             {node.required ? labels.required : labels.optional}
           </Badge>
           <Button

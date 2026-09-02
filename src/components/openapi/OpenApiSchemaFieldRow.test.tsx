@@ -100,6 +100,69 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(screen.getByText('Optional')).toBeInTheDocument();
   });
 
+  it('reflects the expanded state in the accessible button contract', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded
+        labels={labels}
+        node={makeNode({
+          children: [makeNode({ id: 'nested-id', name: 'nested' })],
+          name: 'profile',
+          schema: {
+            aliasName: 'object',
+            props: [],
+            type: 'object',
+            typeName: 'object',
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse profile properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('keeps requiredness badges title case and right-aligned', () => {
+    const { rerender } = render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={node}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText('Required')).toHaveClass(
+      'ml-auto',
+      'normal-case',
+      'tracking-normal',
+    );
+    expect(screen.getByText('Required')).toHaveTextContent('Required');
+
+    rerender(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({ required: false })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+    expect(screen.getByText('Optional')).toHaveClass(
+      'ml-auto',
+      'normal-case',
+      'tracking-normal',
+    );
+    expect(screen.getByText('Optional')).toHaveTextContent('Optional');
+  });
+
   it('uses the copy callback and keeps the accessible label in the copied state', () => {
     const onCopy = vi.fn();
     const { rerender } = render(
@@ -171,6 +234,13 @@ describe('OpenApiSchemaFieldRow', () => {
     ).toBeInTheDocument();
     expect(allowedValues?.querySelectorAll('code')).toHaveLength(3);
     expect(allowedValues?.querySelector('ul')).not.toBeInTheDocument();
+    expect(allowedValues?.querySelector('ol, li')).not.toBeInTheDocument();
+    expect(
+      allowedValues?.querySelector('[class*="list-"]'),
+    ).not.toBeInTheDocument();
+    expect(
+      allowedValues?.querySelector('[class*="shadow"]'),
+    ).not.toBeInTheDocument();
     expect(screen.getByText('Format: slug')).toBeInTheDocument();
   });
 });
