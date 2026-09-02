@@ -594,7 +594,7 @@ describe('common MDX registry', () => {
     expect(Parameter).toBe(components.Parameter);
   });
 
-  it('renders transformed platform groups with persisted preference fallback and hidden inactive panels', () => {
+  it('renders transformed platform groups with only the active panel mounted', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     const components = getMDXComponents() as Record<string, unknown>;
@@ -628,14 +628,11 @@ describe('common MDX registry', () => {
     const activePanel = screen
       .getByText('Install Web SDK')
       .closest('[data-platform-panel="web"]');
-    const inactivePanel = screen
-      .getByText('Install Android SDK')
-      .closest('[data-platform-panel="android"]');
-
     expect(activePanel).not.toHaveAttribute('hidden');
     expect(activePanel).toHaveAttribute('aria-hidden', 'false');
-    expect(inactivePanel).toHaveAttribute('hidden');
-    expect(inactivePanel).toHaveAttribute('aria-hidden', 'true');
+    expect(activePanel).toHaveClass('min-w-0');
+    expect(activePanel).toHaveClass('[overflow-wrap:anywhere]');
+    expect(screen.queryByText('Install Android SDK')).not.toBeInTheDocument();
   });
 
   it('hides the platform tablist when a group only has one platform', () => {
@@ -710,9 +707,7 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Web instructions').closest('section'),
     ).toBeVisible();
-    expect(
-      screen.getByText('Android instructions').closest('section'),
-    ).not.toBeVisible();
+    expect(screen.queryByText('Android instructions')).not.toBeInTheDocument();
 
     act(() => {
       window.dispatchEvent(
@@ -723,9 +718,7 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();
-    expect(
-      screen.getByText('Web instructions').closest('section'),
-    ).not.toBeVisible();
+    expect(screen.queryByText('Web instructions')).not.toBeInTheDocument();
   });
 
   it('renders measured header platforms, defaults to the first platform, and moves overflow into More', async () => {
@@ -815,8 +808,8 @@ describe('common MDX registry', () => {
         screen.getByText('Android instructions').closest('section'),
       ).toBeVisible();
       expect(
-        screen.getByText('Flutter instructions').closest('section'),
-      ).not.toBeVisible();
+        screen.queryByText('Flutter instructions'),
+      ).not.toBeInTheDocument();
       expect(
         screen.getByRole('button', { name: 'More platforms' }),
       ).toHaveAttribute('data-state', 'inactive');
@@ -833,8 +826,8 @@ describe('common MDX registry', () => {
         screen.getByText('Flutter instructions').closest('section'),
       ).toBeVisible();
       expect(
-        screen.getByText('Android instructions').closest('section'),
-      ).not.toBeVisible();
+        screen.queryByText('Android instructions'),
+      ).not.toBeInTheDocument();
       expect(
         screen.getByRole('button', { name: 'More platforms' }),
       ).toHaveAttribute('data-state', 'inactive');
@@ -1042,9 +1035,7 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();
-    expect(
-      screen.getByText('Web instructions').closest('section'),
-    ).not.toBeVisible();
+    expect(screen.queryByText('Web instructions')).not.toBeInTheDocument();
   });
 
   it('does not push URL paths for inline platform tab groups', () => {
@@ -1142,9 +1133,7 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();
-    expect(
-      screen.getByText('Web instructions').closest('section'),
-    ).not.toBeVisible();
+    expect(screen.queryByText('Web instructions')).not.toBeInTheDocument();
   });
 
   it('hides a body group when the URL platform is not present in that group', () => {
