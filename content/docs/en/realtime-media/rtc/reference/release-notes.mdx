@@ -34,6 +34,36 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 </section>
 
+### v4.6.4
+
+Released on September 2, 2026.
+
+#### New features
+
+Included in this release:
+
+* **New event types for wide-angle and ultra-wide-angle camera capture on Android**
+
+    This release adds the `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_APPLIED` and `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_FALLBACK_TO_DEFAULT` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- After a network outage, the `onNetworkQuality` callback sometimes reported inaccurate network quality.
+- If the receiver used the `AUDIO_SCENARIO_AI_CLIENT` audio scenario and the sender frequently stopped and resumed sending audio, the receiver occasionally heard no audio when network conditions were poor.
+- Audio quality occasionally degraded when using a wired headset in certain audio routing configurations.
+- Local preview occasionally froze when rendering local video frames with a custom renderer.
+- Echo occasionally occurred in some Android emulator scenarios.
+- After Google security hardening was enabled, the app occasionally crashed or became unresponsive (ANR) during audio and video interactions.
+- On Android watches connected to Bluetooth headphones, the audio route could switch to the speaker.
+- When an app called `setExternalVideoSource` to push encoded video frames (`ENCODED_VIDEO_FRAME`), the app occasionally crashed if the SEI information length in the encoded video frame did not match the encoding specification.
+- The app occasionally crashed during audio and video interactions.
+- In Web and Native SDK interoperability scenarios, video encoding occasionally failed, causing remote video to stutter or display corrupted frames.
+- With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
+- When using Media Player to play a CDN stream, video occasionally became corrupted after the stream resolution changed.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
+
 ### v4.6.3
 
 Released on February 12, 2026.
@@ -1846,6 +1876,32 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 :::
 
 </section>
+
+### v4.6.4
+
+Released on September 2, 2026.
+
+#### Compatibility changes
+
+This release includes the following compatibility change:
+
+* **iOS 27 landscape capture orientation adaptation**
+
+    When compiling your app with Xcode 27 and running it on iOS 27.0 or later, older interface orientation system APIs used by previous SDK versions, such as [`UIApplicationWillChangeStatusBarOrientationNotification`](https://developer.apple.com/documentation/uikit/uiapplication/willchangestatusbarorientationnotification), are no longer supported. This could cause abnormal camera capture orientation in landscape mode. This release adapts to the new APIs.
+
+    For more information, see Apple's [iOS & iPadOS 27 Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-27-release-notes).
+
+#### Issues fixed
+
+This release fixed the following issues:
+
+- After a network outage, the `networkQuality` callback sometimes reported inaccurate network quality.
+- If the receiver used the `AUDIO_SCENARIO_AI_CLIENT` audio scenario and the sender frequently stopped and resumed sending audio, the receiver occasionally heard no audio when network conditions were poor.
+- Audio quality occasionally degraded when using a wired headset in certain audio routing configurations.
+- Local preview occasionally froze when rendering local video frames with a custom renderer.
+- When an app called `setExternalVideoSource` to push encoded video frames (`ENCODED_VIDEO_FRAME`), the app occasionally crashed if the SEI information length in the encoded video frame did not match the encoding specification.
+- With Media Player caching enabled, playing a cached resource after a network disconnection could be delayed by about 10 seconds and return an error.
+- When an app joined a channel in communication mode (`CHANNEL_PROFILE_COMMUNICATION`) and then called `updateChannelMediaOptions` to update channel media options, the channel information returned by NCS and RESTful APIs was incorrectly identified as interactive live streaming mode.
 
 ### v4.6.2
 
@@ -5963,6 +6019,26 @@ The image enhancement algorithm can reduce mobile device performance below accep
 
 </Accordion>
 </Accordions>
+
+</section>
+
+<section id="web-sdk-v4-24-8">
+
+### v4.24.8
+
+Released on August 31, 2026.
+
+This release includes several internal improvements.
+
+</section>
+
+<section id="web-sdk-v4-24-7">
+
+### v4.24.7
+
+Released on August 3, 2026.
+
+This release includes several internal improvements.
 
 </section>
 

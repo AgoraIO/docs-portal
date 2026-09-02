@@ -813,6 +813,43 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
             $id: 'realtime-media-folder',
             children: [
               {
+                $id: 'realtime-media-rtc-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-rtc-voice-quickstart',
+                    name: 'Voice Quickstart',
+                    type: 'page',
+                    url: '/en/realtime-media/rtc/voice-quickstart',
+                  },
+                  {
+                    $id: 'realtime-media-rtc-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-rtc-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-rtc-release-notes',
+                        name: 'Release Notes',
+                        type: 'page',
+                        url: '/en/realtime-media/rtc/reference/release-notes',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-rtc-index',
+                  name: 'Voice & Video',
+                  type: 'page',
+                  url: '/en/realtime-media/rtc',
+                },
+                name: 'Voice & Video',
+                type: 'folder',
+              },
+              {
                 $id: 'realtime-media-broadcast-streaming-folder',
                 children: [
                   {
@@ -841,6 +878,148 @@ function createRealtimeMediaApiReferenceJumpPageTree(): Root {
                   url: '/en/realtime-media/broadcast-streaming',
                 },
                 name: 'Broadcast Streaming',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-interactive-live-streaming-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-interactive-live-streaming-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-interactive-live-streaming-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-interactive-live-streaming-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/interactive-live-streaming/reference/pricing',
+                      },
+                      {
+                        $id: 'realtime-media-interactive-live-streaming-agora-console-rest-api',
+                        name: 'Agora Console REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-interactive-live-streaming-index',
+                  name: 'Interactive Live Streaming',
+                  type: 'page',
+                  url: '/en/realtime-media/interactive-live-streaming',
+                },
+                name: 'Interactive Live Streaming',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-cloud-recording-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-cloud-recording-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-cloud-recording-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-cloud-recording-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/cloud-recording/reference/pricing',
+                      },
+                      {
+                        $id: 'realtime-media-cloud-recording-restful-authentication',
+                        name: 'RESTful authentication',
+                        type: 'page',
+                        url: '/en/realtime-media/cloud-recording/reference/restful-authentication',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-cloud-recording-index',
+                  name: 'Cloud Recording',
+                  type: 'page',
+                  url: '/en/realtime-media/cloud-recording',
+                },
+                name: 'Cloud Recording',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-whiteboard-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-whiteboard-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-whiteboard-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-whiteboard-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/whiteboard/reference/pricing',
+                      },
+                      {
+                        $id: 'realtime-media-whiteboard-rest-api',
+                        name: 'REST API',
+                        type: 'page',
+                        url: '/en/realtime-media/whiteboard/reference/rest-api',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-whiteboard-index',
+                  name: 'Whiteboard',
+                  type: 'page',
+                  url: '/en/realtime-media/whiteboard',
+                },
+                name: 'Whiteboard',
+                type: 'folder',
+              },
+              {
+                $id: 'realtime-media-on-premise-recording-folder',
+                children: [
+                  {
+                    $id: 'realtime-media-on-premise-recording-reference-separator',
+                    name: 'Reference',
+                    type: 'separator',
+                  },
+                  {
+                    $id: 'realtime-media-on-premise-recording-reference-folder',
+                    children: [
+                      {
+                        $id: 'realtime-media-on-premise-recording-pricing',
+                        name: 'Pricing',
+                        type: 'page',
+                        url: '/en/realtime-media/on-premise-recording/reference/pricing',
+                      },
+                    ],
+                    name: 'Reference',
+                    type: 'folder',
+                  },
+                ],
+                index: {
+                  $id: 'realtime-media-on-premise-recording-index',
+                  name: 'On-Premise Recording',
+                  type: 'page',
+                  url: '/en/realtime-media/on-premise-recording',
+                },
+                name: 'On-Premise Recording',
                 type: 'folder',
               },
               {
@@ -2703,8 +2882,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: false,
-      redirectUrl:
-        '/en/realtime-media/rtc/reference/release-notes/ios',
+      redirectUrl: '/en/realtime-media/rtc/reference/release-notes/ios',
     });
 
     await expect(
@@ -2716,8 +2894,7 @@ Web body
       ),
     ).resolves.toEqual({
       preserveSearch: false,
-      redirectUrl:
-        '/en/realtime-media/rtc/reference/release-notes/javascript',
+      redirectUrl: '/en/realtime-media/rtc/reference/release-notes/javascript',
     });
   });
 
@@ -3196,180 +3373,183 @@ Web body
   });
 
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
-    const page = createPage();
-    const broadcastPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath:
-            '/virtual/content/docs/en/realtime-media/broadcast-streaming/index.mdx',
-          path: 'en/realtime-media/broadcast-streaming/index.mdx',
-        },
-        title: 'Broadcast Streaming',
-      },
-      path: 'en/realtime-media/broadcast-streaming/index.mdx',
-      slugs: ['en', 'realtime-media', 'broadcast-streaming', 'index'],
-      url: '/en/realtime-media/broadcast-streaming',
-    };
-
-    mockedGetPage.mockReturnValue(broadcastPage);
-    mockedGetPages.mockReturnValue([broadcastPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
-    );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-broadcast-streaming-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Broadcast Streaming',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
-    );
-
-    const payload = await loadDocsPagePayload('en', 'realtime-media', [
-      'broadcast-streaming',
-    ]);
-
-    if (!payload || 'redirectUrl' in payload) {
-      throw new Error('expected a docs page payload');
-    }
-
-    expect(payload.sidebar).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/rtc',
-              linked: true,
-              title: 'RESTful API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/rtc',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
-      ]),
-    );
-    expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(
-      '/en/api-reference/api-ref/broadcast-streaming',
-    );
-
-    const videoPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/video/index.mdx',
-          path: 'en/realtime-media/video/index.mdx',
-        },
-        title: 'Video Calling',
-      },
-      path: 'en/realtime-media/video/index.mdx',
-      slugs: ['en', 'realtime-media', 'video', 'index'],
-      url: '/en/realtime-media/video',
-    };
-
-    mockedGetPage.mockReturnValue(videoPage);
-    mockedGetPages.mockReturnValue([videoPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
-    );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-video-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Video Calling',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
-    );
-
-    const videoPayload = await loadDocsPagePayload('en', 'realtime-media', [
+    const videoPayload = await loadRealtimeMediaProductPayload(
       'video',
-    ]);
-
-    if (!videoPayload || 'redirectUrl' in videoPayload) {
-      throw new Error('expected a docs page payload');
-    }
-
-    expect(videoPayload.sidebar).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/rtc',
-              linked: true,
-              title: 'RESTful API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/rtc',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
-      ]),
+      'Video Calling',
     );
+    const videoReference = getSidebarSection(videoPayload, 'Reference');
+
+    expect.soft(videoReference.children.slice(0, 2)).toEqual([
+      {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
+      },
+      {
+        external: true,
+        href: '/en/api-reference/api-ref?product=realtime-communication',
+        id: '/en/api-reference/api-ref?product=realtime-communication',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref?product=realtime-communication',
+      },
+    ]);
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
     );
+    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
+      '/en/realtime-media/video/reference/release-notes',
+    );
 
-    const rtmPage = {
-      ...page,
-      data: {
-        ...page.data,
-        info: {
-          fullPath: '/virtual/content/docs/en/realtime-media/rtm/index.mdx',
-          path: 'en/realtime-media/rtm/index.mdx',
-        },
-        title: 'Signaling',
+    const voiceQuickstartPayload = await loadRealtimeMediaProductPayload(
+      'rtc',
+      'Voice & Video',
+      ['voice-quickstart'],
+    );
+    const voiceQuickstartReference = getSidebarSection(
+      voiceQuickstartPayload,
+      'Reference',
+    );
+
+    expect.soft(voiceQuickstartReference.children.slice(0, 2)).toEqual([
+      {
+        external: true,
+        href: '/en/api-reference/api-ref/rtc',
+        id: '/en/api-reference/api-ref/rtc',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/rtc',
       },
-      path: 'en/realtime-media/rtm/index.mdx',
-      slugs: ['en', 'realtime-media', 'rtm', 'index'],
-      url: '/en/realtime-media/rtm',
-    };
-
-    mockedGetPage.mockReturnValue(rtmPage);
-    mockedGetPages.mockReturnValue([rtmPage]);
-    mockedGetPageTree.mockReturnValue(
-      createRealtimeMediaApiReferenceJumpPageTree(),
-    );
-    mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'realtime-media-rtm-folder'
-        ? ({
-            data: {
-              navScope: {},
-              title: 'Signaling',
-            },
-          } as unknown as ReturnType<typeof source.getNodeMeta>)
-        : undefined,
+      {
+        external: true,
+        href: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
+        id: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref?product=realtime-communication&sdk=voice',
+      },
+    ]);
+    expect(flattenSidebarPageUrls(voiceQuickstartPayload.sidebar)).toContain(
+      '/en/realtime-media/rtc/reference/release-notes',
     );
 
-    const rtmPayload = unwrapPayload(
-      await loadDocsPagePayload('en', 'realtime-media', ['rtm']),
+    const cloudRecordingPayload = await loadRealtimeMediaProductPayload(
+      'cloud-recording',
+      'Cloud Recording',
+    );
+    const cloudRecordingReference = getSidebarSection(
+      cloudRecordingPayload,
+      'Reference',
     );
 
-    expect(rtmPayload.sidebar).toEqual(
+    expect.soft(cloudRecordingReference.children[0]).toEqual({
+      external: true,
+      href: '/en/api-reference/api-ref/cloud-recording',
+      id: '/en/api-reference/api-ref/cloud-recording',
+      linked: true,
+      title: 'RESTful API',
+      type: 'page',
+      url: '/en/api-reference/api-ref/cloud-recording',
+    });
+    expect(cloudRecordingReference.children).not.toEqual(
       expect.arrayContaining([
-        expect.objectContaining({
-          children: expect.arrayContaining([
-            {
-              id: '/en/api-reference/api-ref/signaling',
-              linked: true,
-              title: 'Signaling REST API',
-              type: 'page',
-              url: '/en/api-reference/api-ref/signaling',
-            },
-          ]),
-          title: 'Reference',
-          type: 'section',
-        }),
+        expect.objectContaining({ title: 'SDK API reference' }),
       ]),
     );
+    expect(flattenSidebarPageUrls(cloudRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/cloud-recording/reference/pricing',
+    );
+    expect(flattenSidebarPageUrls(cloudRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/cloud-recording/reference/restful-authentication',
+    );
+
+    const whiteboardPayload = await loadRealtimeMediaProductPayload(
+      'whiteboard',
+      'Whiteboard',
+    );
+    const whiteboardReference = getSidebarSection(
+      whiteboardPayload,
+      'Reference',
+    );
+
+    expect.soft(whiteboardReference.children.slice(0, 2)).toEqual([
+      {
+        external: true,
+        href: '/en/api-reference/api-ref/whiteboard',
+        id: '/en/api-reference/api-ref/whiteboard',
+        linked: true,
+        title: 'RESTful API',
+        type: 'page',
+        url: '/en/api-reference/api-ref/whiteboard',
+      },
+      {
+        external: true,
+        href: '/en/api-reference/api-ref?product=interactive-whiteboard',
+        id: '/en/api-reference/api-ref?product=interactive-whiteboard',
+        linked: true,
+        title: 'SDK API reference',
+        type: 'page',
+        url: '/en/api-reference/api-ref?product=interactive-whiteboard',
+      },
+    ]);
+    expect(flattenSidebarPageUrls(whiteboardPayload.sidebar)).not.toContain(
+      '/en/realtime-media/whiteboard/reference/rest-api',
+    );
+    expect(flattenSidebarPageUrls(whiteboardPayload.sidebar)).toContain(
+      '/en/realtime-media/whiteboard/reference/pricing',
+    );
+
+    const onPremiseRecordingPayload = await loadRealtimeMediaProductPayload(
+      'on-premise-recording',
+      'On-Premise Recording',
+    );
+    const onPremiseRecordingReference = getSidebarSection(
+      onPremiseRecordingPayload,
+      'Reference',
+    );
+
+    expect.soft(onPremiseRecordingReference.children[0]).toEqual({
+      external: true,
+      href: '/en/api-reference/api-ref?product=on-premise-recording',
+      id: '/en/api-reference/api-ref?product=on-premise-recording',
+      linked: true,
+      title: 'SDK API reference',
+      type: 'page',
+      url: '/en/api-reference/api-ref?product=on-premise-recording',
+    });
+    expect(
+      onPremiseRecordingReference.children.some(
+        (node) => node.type === 'page' && node.title === 'RESTful API',
+      ),
+    ).toBe(false);
+    expect(flattenSidebarPageUrls(onPremiseRecordingPayload.sidebar)).toContain(
+      '/en/realtime-media/on-premise-recording/reference/pricing',
+    );
+
+    const interactiveLiveStreamingPayload =
+      await loadRealtimeMediaProductPayload(
+        'interactive-live-streaming',
+        'Interactive Live Streaming',
+      );
+
+    expect(
+      flattenSidebarPageUrls(interactiveLiveStreamingPayload.sidebar),
+    ).toContain(
+      '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
+    );
+
+    const rtmPayload = await loadRealtimeMediaProductPayload(
+      'rtm',
+      'Signaling',
+    );
+
     expect(flattenSidebarPageUrls(rtmPayload.sidebar)).not.toContain(
       '/en/realtime-media/rtm/reference/rest-api',
     );
@@ -4176,6 +4356,81 @@ function flattenSidebarPageUrls(
           ...(node.url ? [node.url] : []),
           ...flattenSidebarPageUrls(node.children),
         ],
+  );
+}
+
+function getSidebarSection(
+  payload: Exclude<
+    Awaited<ReturnType<typeof loadDocsPagePayload>>,
+    null | { redirectUrl: string }
+  >,
+  title: string,
+) {
+  const section = payload.sidebar.find(
+    (node) => node.type === 'section' && node.title === title,
+  );
+
+  if (section?.type !== 'section') {
+    throw new Error(`expected a ${title} sidebar section`);
+  }
+
+  return section;
+}
+
+async function loadRealtimeMediaProductPayload(
+  productSlug: string,
+  title: string,
+  slugSegments: string[] = [],
+) {
+  const page = createPage();
+  const contentSegments = [
+    'en',
+    'realtime-media',
+    productSlug,
+    ...slugSegments,
+  ];
+  const contentPath = contentSegments.join('/');
+  const sourcePath = slugSegments.length
+    ? `${contentPath}.mdx`
+    : `${contentPath}/index.mdx`;
+  const productPage = {
+    ...page,
+    data: {
+      ...page.data,
+      info: {
+        fullPath: `/virtual/content/docs/${sourcePath}`,
+        path: sourcePath,
+      },
+      title,
+    },
+    path: sourcePath,
+    slugs: slugSegments.length
+      ? contentSegments
+      : [...contentSegments, 'index'],
+    url: `/${contentPath}`,
+  };
+
+  mockedGetPage.mockReturnValue(productPage);
+  mockedGetPages.mockReturnValue([productPage]);
+  mockedGetPageTree.mockReturnValue(
+    createRealtimeMediaApiReferenceJumpPageTree(),
+  );
+  mockedGetNodeMeta.mockImplementation((node) =>
+    node.$id === `realtime-media-${productSlug}-folder`
+      ? ({
+          data: {
+            navScope: {},
+            title,
+          },
+        } as unknown as ReturnType<typeof source.getNodeMeta>)
+      : undefined,
+  );
+
+  return unwrapPayload(
+    await loadDocsPagePayload('en', 'realtime-media', [
+      productSlug,
+      ...slugSegments,
+    ]),
   );
 }
 

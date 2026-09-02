@@ -47,8 +47,8 @@ RtmConfig({
 
 | Properties | Type | Required | Default | Description |
 | :------------------------------------------------: | :-------------------------------------------------------: | :------: | :--------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `areaCode` | `RtmAreaCode` | Optional | `glob` | Service area code, you can choose according to the region where your business is deployed. See [`RtmAreaCode`](#enumvareacod-e). |
-| `protocolType` | `RtmProtocolType` | Optional | `tcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#enumvprotocoltyp-e). |
+| `areaCode` | `RtmAreaCode` | Optional | `glob` | Service area code, you can choose according to the region where your business is deployed. See [`RtmAreaCode`](#rtmareacode). |
+| `protocolType` | `RtmProtocolType` | Optional | `tcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#rtmprotocoltype). |
 | `presenceTimeout` | int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers to the delay imposed by the Signaling server before sending a `remoteTimeout` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `remoteTimeout` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
 | `useStringUserId` | bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use int-type user IDs. The SDK automatically converts string-type user IDs to int-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123457"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
@@ -74,7 +74,7 @@ Use the `RtmLogConfig` instance to configure and store local log files named `ag
 |:--------------:|:---------:|:--------:|:-------:| ----------------------------------------------------------------------------------------------------------------------- |
 | `filePath` | String | Optional | - | Log file storage paths. |
 | `fileSizeInKB` | int | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
-| `level` | `RtmLogLevel` | Optional | `info` | Output level of log information. See [`RtmLogLevel`](#enumvlogleve-l). |
+| `level` | `RtmLogLevel` | Optional | `info` | Output level of log information. See [`RtmLogLevel`](#rtmloglevel). |
 
 ##### RtmProxyConfig
 
@@ -98,7 +98,7 @@ You need to keep your Proxy username and password safe. The Signaling SDK does n
 
 | Properties | Type | Required | Default | Description |
 |:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
-| `proxyType` | `RtmProxyType` | Optional | `none` | Proxy protocol type. See [`RtmProxyType`](#enumvproxytyp-e). |
+| `proxyType` | `RtmProxyType` | Optional | `none` | Proxy protocol type. See [`RtmProxyType`](#rtmproxytype). |
 | `server` | String | Optional | - | Proxy server domain name or IP address. |
 | `port` | int | Optional | `0` | Proxy listening port. |
 | `account` | String | Optional | - | Proxy login account. |
@@ -124,7 +124,7 @@ Once you set the encryption feature, all users must use the same encryption mode
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `encryptionMode` | `RtmEncryptionMode` | Optional | `none` | Encryption mode. See [`RtmEncryptionMode`](#enumvencryptionmod-e). |
+| `encryptionMode` | `RtmEncryptionMode` | Optional | `none` | Encryption mode. See [`RtmEncryptionMode`](#rtmencryptionmode). |
 | `encryptionKey` | String | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
 | `encryptionKdfSalt` | Uint8List | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
@@ -143,7 +143,7 @@ Use the `RtmPrivateConfig` instance to set the properties required for the priva
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `serviceType` | `Set&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`RtmServiceType`](#enumvrtmservicetyp-e). |
+| `serviceType` | `Set&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`RtmServiceType`](#rtmservicetype). |
 | `accessPointHosts` | `List&lt;String&gt;` | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
 
 #### Basic usage
@@ -272,7 +272,7 @@ Signaling has a total of 7 types of event notifications, as shown in the followi
 | `topic` | Receive all topic event notifications in joined stream channels. |
 | `storage` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. |
 | `lock` | Receive lock event notifications in subscribed message channels and joined stream channels. |
-| `linkState` | Receive event notifications when client connection status changes. For details, see [`LinkStateEvent`](#configlinkstateeven-t). |
+| `linkState` | Receive event notifications when client connection status changes. For details, see [`LinkStateEvent`](#linkstateevent). |
 | `token` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -309,8 +309,8 @@ Message event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `messageType` | `RtmMessageType` | Message type. See [`RtmMessageType`](#enumvmessagetyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `messageType` | `RtmMessageType` | Message type. See [`RtmMessageType`](#rtmmessagetype). |
 | `channelName` | String | Channel name. |
 | `channelTopic` | String | Topic name. |
 | `message` | Uint8List | Message. |
@@ -327,8 +327,8 @@ User presence event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `RtmPresenceEventType` | Presence event type. See [`RtmPresenceEventType`](#enumvpresencetyp-e). |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `type` | `RtmPresenceEventType` | Presence event type. See [`RtmPresenceEventType`](#rtmpresenceeventtype). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `channelName` | String | Channel name. |
 | `publisher` | String | User ID of the message publisher. |
 | `stateItems` | `List&lt;StateItem&gt;` | Key-value pair that identifies the user's presence state. |
@@ -379,7 +379,7 @@ Topic event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `RtmTopicEventType` | Topic event type. See [`RtmTopicEventType`](#enumvtopictyp-e). |
+| `type` | `RtmTopicEventType` | Topic event type. See [`RtmTopicEventType`](#rtmtopiceventtype). |
 | `channelName` | String | Channel name. |
 | `publisher` | String | User ID. |
 | `topicInfos` | `List&lt;TopicInfo&gt;` | Topic information. |
@@ -407,9 +407,9 @@ Storage event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#enumvstoragetyp-e). |
-| `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#enumvstorageeventtyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#rtmstoragetype). |
+| `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#rtmstorageeventtype). |
 | `target` | String | User ID or channel name. |
 | `data` | `IMetadata*` | Metadata item. See [`IMetadata`](../storage#IMetadata). |
 | `timestamp` | int | The timestamp when the event occurs. |
@@ -422,8 +422,8 @@ Lock event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `eventType` | `RtmLockEventType` | Lock event type. See [`RtmLockEventType`](#enumvlocktyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `eventType` | `RtmLockEventType` | Lock event type. See [`RtmLockEventType`](#rtmlockeventtype). |
 | `channelName` | String | Channel name. |
 | `lockDetailList` | `List&lt;LockDetail&gt;` | Details of lock. |
 | `count` | int | Lock count. |
@@ -445,11 +445,11 @@ SDK link state event.
 
 | Parameters | Type | Description |
 |:----------:|:-----:|:--------------------------- |
-| `currentState` | `RtmLinkState` | The current link state. See [`RtmLinkState`](#enumvlinkstat-e). |
-| `previousState` | `RtmLinkState` | The previous link state. See [`RtmLinkState`](#enumvlinkstat-e). |
-| `serviceType` | `RtmServiceType` | The network connection type. See [`RtmServiceType`](#enumvrtmservicetyp-e). |
-| `operation` | `RtmLinkOperation` | The operation that triggered the current state transition. See [`RtmLinkOperation`](#enumvlinkoperatio-n). |
-| `reason` | String | The reason of the current state transition. See [`RtmLinkStateChangeReason`](#enumvlinkstatereaso-n). |
+| `currentState` | `RtmLinkState` | The current link state. See [`RtmLinkState`](#rtmlinkstate). |
+| `previousState` | `RtmLinkState` | The previous link state. See [`RtmLinkState`](#rtmlinkstate). |
+| `serviceType` | `RtmServiceType` | The network connection type. See [`RtmServiceType`](#rtmservicetype). |
+| `operation` | `RtmLinkOperation` | The operation that triggered the current state transition. See [`RtmLinkOperation`](#rtmlinkoperation). |
+| `reason` | String | The reason of the current state transition. See [`RtmLinkStateChangeReason`](#rtmlinkstatechangereason). |
 | `affectedChannels` | `List&lt;String&gt;` | The channels affected by the current state transition. |
 | `unrestoredChannels` | `List&lt;String&gt;` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
 | `isResumed` | bool | Within 2 minutes of the disconnection, whether the state transitions from `disconnected` to `connected`. `true` refers to the state has transitioned. |
@@ -1079,8 +1079,8 @@ Future<(RtmStatus, JoinTopicResult?)> joinTopic(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------- |
 | `topic` | String | Required | - | Topic name. |
-| `qos` | `RtmMessageQos` | Optional | `unordered` | Whether the data transmitted in the topic is ordered. See [`RtmMessageQos`](#enumvmessageqo-s). |
-| `priority` | `RtmMessagePriority` | Optional | `normal` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RtmMessagePriority`](#enumvpriorit-y). |
+| `qos` | `RtmMessageQos` | Optional | `unordered` | Whether the data transmitted in the topic is ordered. See [`RtmMessageQos`](#rtmmessageqos). |
+| `priority` | `RtmMessagePriority` | Optional | `normal` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RtmMessagePriority`](#rtmmessagepriority). |
 | `meta` | String | Optional | - | Adds additional metadata when joining the topic. |
 | `syncWithMedia` | bool | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
 
@@ -1572,7 +1572,7 @@ Future<(RtmStatus, PublishResult?)> publish(
 | :--------------: | :------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Fill in a channel name to send messages in a specified channel, or fill in a user ID to send messages to a specified user. |
 | `message` | String | Required | - | Message payload. |
-| `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
 | `customType` | String | Optional | - | A user-defined field. Only supports string type. |
 
 #### Basic usage
@@ -1668,7 +1668,7 @@ Future<PublishResult> publishBinaryMessage(
 | :--------------: | :------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Fill in a channel name to send messages in a specified channel, or fill in a user ID to send messages to a specified user. |
 | `message` | Uint8List | Required | - | Message payload. |
-| `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
 | `customType` | String | Optional | - | A user-defined field. Only supports string type. |
 
 #### Basic usage
@@ -1790,7 +1790,7 @@ Future<(RtmStatus, GetOnlineUsersResult?)> getOnlineUsers(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----: | :------: | :-----: | ------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `includeUserId` | bool | Optional | `true` | Whether the returned result includes the user ID of online members. |
 | `includeState` | bool | Optional | `false` | Whether the returned result includes temporary state data of online users. |
 | `page` | String | Optional | - | Page number of the returned result. If you do not provide this property, the SDK returns the first page by default. You can check whether there is next page in the returned result. |
@@ -1915,7 +1915,7 @@ Future<(RtmStatus, SetStateResult?)> setState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----: | :------: | :-----: | ------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `state` | `Map&lt;String, String&gt;` | Required | - | User state key-value pairs. |
 
 #### Basic usage
@@ -1973,7 +1973,7 @@ Future<(RtmStatus, GetStateResult?)> getState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----: | :------: | :-----: | ------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `userId` | String | Required | - | User ID. |
 
 #### Basic usage
@@ -2037,7 +2037,7 @@ Future<(RtmStatus, RemoveStateResult?)> removeState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----: | :------: | :-----: | ------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `states` | `List&lt;String&gt;` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
 
 #### Basic usage
@@ -2122,8 +2122,8 @@ Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | `message` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem `](#storagemetadataite-m). |
+| `channelType` | `RtmChannelType` | Required | `message` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem `](#metadataitem). |
 | `majorRevision` | int | Optional | `-1` | Version control switch: <br />- `-1`: Disable version verification.<br />- `&gt; 0`: Enable version verification, only execute the operation if the target version number matches this value. |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
@@ -2213,7 +2213,7 @@ Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 
 #### Basic usage
 
@@ -2288,9 +2288,9 @@ Future<(RtmStatus, RemoveChannelMetadataResult?)> removeChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `majorRevision` | int | Optional | `-1` | Version control switch: <br />- `-1`: Disable version verification.<br />- `&gt; 0`: Enable version verification, only execute the operation if the target version number matches this value. |
-| `metadata` | `List&lt;MetadataItem&gt;` | Optional | - | Metadata item. See [`MetadataItem`](#storagemetadataite-m). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Optional | - | Metadata item. See [`MetadataItem`](#metadataitem). |
 | `lockName` | String | Optional | '' | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
@@ -2383,8 +2383,8 @@ Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `metadata` | `List&lt;MetadataItem&gt;` | Optional | - | Metadata item. See [`MetadataItem`](#storagemetadataite-m). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Optional | - | Metadata item. See [`MetadataItem`](#metadataitem). |
 | `majorRevision` | int | Optional | `-1` | Version control switch: <br />- `-1`: Disable version verification.<br />- `&gt; 0`: Enable version verification, only execute the operation if the target version number matches this value. |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
@@ -2489,7 +2489,7 @@ Future<(RtmStatus, SetUserMetadataResult?)> setUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem`](#storagemetadataite-m). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem`](#metadataitem). |
 | `majorRevision` | int | Optional | -1 | The version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
@@ -2629,7 +2629,7 @@ Future<(RtmStatus, RemoveUserMetadataResult?)> removeUserMetadata(
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | String | Required | - | User ID. |
 | `majorRevision` | int | Optional | -1 | The version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
-| `metadata` | `List&lt;MetadataItem&gt;` | Optional | `const []` | Metadata item. See [`MetadataItem`](#storagemetadataite-m). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Optional | `const []` | Metadata item. See [`MetadataItem`](#metadataitem). |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
 
@@ -2716,7 +2716,7 @@ Future<(RtmStatus, UpdateUserMetadataResult?)> updateUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem`](#storagemetadataite-m). |
+| `metadata` | `List&lt;MetadataItem&gt;` | Required | - | Metadata item. See [`MetadataItem`](#metadataitem). |
 | `majorRevision` | int | Optional | -1 | The version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
 | `recordTs` | bool | Optional | `false` | Whether to record the timestamp of the edits. |
 | `recordUserId` | bool | Optional | `false` | Whether to record the user ID of the editor. |
@@ -2928,7 +2928,7 @@ Future<(RtmStatus, SetLockResult?)> setLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `ttl` | int | Optional | 10 | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `lock` event receive the `lockReleased` event. |
 
@@ -2993,7 +2993,7 @@ Future<(RtmStatus, AcquireLockResult?)> acquireLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `retry` | bool | Optional | false | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
 
@@ -3058,7 +3058,7 @@ Future<(RtmStatus, ReleaseLockResult?)> releaseLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 
 #### Basic usage
@@ -3122,7 +3122,7 @@ Future<(RtmStatus, RevokeLockResult?)> revokeLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `owner` | String | Required | - | The ID of the user who has a lock. |
 
@@ -3182,7 +3182,7 @@ Future<(RtmStatus, GetLocksResult?)> getLocks(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :----: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 
 #### Basic usage
 
@@ -3243,7 +3243,7 @@ Future<(RtmStatus, RemoveLockResult?)> removeLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 
 #### Basic usage

@@ -13,7 +13,7 @@ This page shows how to use the Chat RESTful APIs to implement presence in your p
 
 | Parameter | Type | Description | Required |
 | :--------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-the-information-of-the-agora-chat-project). | Yes |
+| `host` | String | The domain name assigned by the Chat service to access RESTful APIs. For how to get the domain name, see [Get the information of your project](/en/realtime-media/im/get-started/enable#get-chat-project-information). | Yes |
 | `app_id` | String | The unique identifier automatically assigned to each project by Agora | Yes |
 | `uid`      | String | The unique login account of the user.         | Yes |
 

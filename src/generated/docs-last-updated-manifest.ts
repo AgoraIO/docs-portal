@@ -4843,7 +4843,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/subscription-packages.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/iot/build-from-scratch.mdx':
-    '2026-08-19T11:09:41.000Z',
+    '2026-09-02T10:08:57.000Z',
   'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/authentication-workflow.mdx':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/license.mdx':
@@ -4908,7 +4908,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/iot/meta.json': '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/product-overview.mdx':
-    '2026-08-22T08:03:42.000Z',
+    '2026-09-02T10:08:57.000Z',
   'content/docs/en/realtime-media/iot/quickstart.mdx':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/reference/agora-console-rest-api.md':
@@ -4936,13 +4936,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/pricing.md':
     '2026-08-28T07:48:10.000Z',
   'content/docs/en/realtime-media/iot/reference/release-notes.mdx':
-    '2026-08-18T10:26:52.000Z',
+    '2026-09-02T10:08:57.000Z',
   'content/docs/en/realtime-media/iot/reference/resources.mdx':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/reference/security.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/iot/reference/supported-platforms.mdx':
-    '2026-08-28T07:48:10.000Z',
+    '2026-09-02T10:08:57.000Z',
   'content/docs/en/realtime-media/iot/resources.mdx':
     '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/marketplace.md': '2026-05-14T11:07:52.000Z',

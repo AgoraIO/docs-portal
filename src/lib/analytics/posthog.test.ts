@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const initMock = vi.fn();
 const captureMock = vi.fn();
@@ -13,15 +13,21 @@ vi.mock('posthog-js', () => ({
 describe('PostHog analytics', () => {
   beforeEach(() => {
     vi.resetModules();
+    vi.unstubAllGlobals();
     vi.unstubAllEnvs();
     initMock.mockClear();
     captureMock.mockClear();
     delete document.documentElement.dataset.docsPlatform;
+    window.sessionStorage.clear();
     window.history.replaceState(
       {},
       '',
       '/en/realtime-media/video/quickstart?platform=web&token=secret#start',
     );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('does not initialize PostHog without a project key', async () => {
@@ -251,10 +257,10 @@ describe('PostHog analytics', () => {
     captureDocsPageViewed({ locale: 'en' });
 
     await vi.waitFor(() => {
-      expect(captureMock).toHaveBeenCalledTimes(1);
+      expect(captureMock).toHaveBeenCalledTimes(2);
     });
 
-    expect(captureMock).toHaveBeenCalledWith('docs_page_viewed', {
+    expect(captureMock).toHaveBeenNthCalledWith(1, 'docs_page_viewed', {
       content_id: 'realtime-media/video/get-started-sdk',
       content_kind: 'mdx',
       deploy_version: '253dabcc',
@@ -279,6 +285,108 @@ describe('PostHog analytics', () => {
       title: 'Quickstart',
       version: 'current',
     });
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        docs_locale: 'en',
+        docs_page_type: 'task-guide',
+        docs_pathname: '/en/realtime-media/video/get-started-sdk',
+        docs_product: 'video',
+        docs_tab: 'realtime-media',
+        journey_entry: true,
+        journey_to_page_type: 'task-guide',
+        journey_to_pathname: '/en/realtime-media/video/get-started-sdk',
+        journey_to_product: 'video',
+        journey_to_tab: 'realtime-media',
+      }),
+    );
+  });
+
+  it('waits for matching registered context before capturing a queued page view', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { queueDocsPageView, registerDocsPageContext } = await import(
+      './posthog'
+    );
+
+    queueDocsPageView({ pathname: '/en/ai/get-started/quickstart' });
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+
+    registerDocsPageContext({
+      canonicalProduct: 'voice-agent',
+      contentId: 'ai/get-started/quickstart',
+      contentKind: 'mdx',
+      journeyStage: 'get-started',
+      locale: 'en',
+      navSection: 'get-started',
+      navSectionTitle: 'Get started',
+      pageType: 'task-guide',
+      pathname: '/en/ai/get-started/quickstart',
+      tab: 'ai',
+      title: 'Quickstart',
+      version: 'current',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
+      'docs_page_viewed',
+      expect.objectContaining({
+        content_id: 'ai/get-started/quickstart',
+        docs_product: 'ai',
+        journey_stage: 'get-started',
+        nav_section: 'get-started',
+        product: 'voice-agent',
+      }),
+    );
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        journey_to_content_id: 'ai/get-started/quickstart',
+        journey_to_journey_stage: 'get-started',
+        journey_to_nav_section: 'get-started',
+        journey_to_product: 'voice-agent',
+      }),
+    );
+  });
+
+  it('does not mark a queued page view captured before destination context exists', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { queueDocsPageView, registerDocsPageContext } = await import(
+      './posthog'
+    );
+
+    queueDocsPageView({ pathname: '/en/ai/get-started/quickstart' });
+    registerDocsPageContext({
+      canonicalProduct: 'video',
+      contentId: 'realtime-media/video/get-started-sdk',
+      locale: 'en',
+      pageType: 'task-guide',
+      pathname: '/en/realtime-media/video/get-started-sdk',
+      tab: 'realtime-media',
+    });
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+
+    registerDocsPageContext({
+      canonicalProduct: 'voice-agent',
+      contentId: 'ai/get-started/quickstart',
+      locale: 'en',
+      pageType: 'task-guide',
+      pathname: '/en/ai/get-started/quickstart',
+      tab: 'ai',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
   });
 
   it('keeps legacy docs_product while publishing the canonical product', async () => {
@@ -302,14 +410,24 @@ describe('PostHog analytics', () => {
     captureDocsPageViewed({ locale: 'en' });
 
     await vi.waitFor(() => {
-      expect(captureMock).toHaveBeenCalledTimes(1);
+      expect(captureMock).toHaveBeenCalledTimes(2);
     });
 
-    expect(captureMock).toHaveBeenCalledWith(
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
       'docs_page_viewed',
       expect.objectContaining({
         docs_product: 'ai',
         product: 'voice-agent',
+      }),
+    );
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        journey_to_journey_stage: 'get-started',
+        journey_to_nav_section: 'get-started',
+        journey_to_product: 'voice-agent',
       }),
     );
   });
@@ -322,16 +440,215 @@ describe('PostHog analytics', () => {
     captureDocsPageViewed({ locale: 'en' });
 
     await vi.waitFor(() => {
-      expect(captureMock).toHaveBeenCalledTimes(1);
+      expect(captureMock).toHaveBeenCalledTimes(2);
     });
 
-    expect(captureMock).toHaveBeenCalledWith(
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
       'docs_page_viewed',
       expect.objectContaining({
         content_id: 'unknown',
         journey_stage: 'unknown',
         nav_section: 'unknown',
       }),
+    );
+  });
+
+  it('does not reuse stale registered context for a different page view pathname', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed, registerDocsPageContext } = await import(
+      './posthog'
+    );
+
+    registerDocsPageContext({
+      canonicalProduct: 'voice-agent',
+      contentId: 'ai/get-started/quickstart',
+      contentKind: 'mdx',
+      journeyStage: 'get-started',
+      locale: 'en',
+      navSection: 'get-started',
+      navSectionTitle: 'Get started',
+      pageType: 'task-guide',
+      pathname: '/en/ai/get-started/quickstart',
+      tab: 'ai',
+      title: 'Quickstart',
+      version: 'current',
+    });
+    captureDocsPageViewed({
+      pathname: '/en/realtime-media/video/get-started-sdk',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
+      'docs_page_viewed',
+      expect.objectContaining({
+        content_id: 'unknown',
+        content_kind: 'unknown',
+        docs_content_kind: 'unknown',
+        docs_pathname: '/en/realtime-media/video/get-started-sdk',
+        docs_product: 'video',
+        docs_tab: 'realtime-media',
+        pathname: '/en/realtime-media/video/get-started-sdk',
+        product: 'video',
+        tab: 'realtime-media',
+        title: 'unknown',
+      }),
+    );
+  });
+
+  it('tracks anonymous English page journeys without identifying a user', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
+    captureDocsPageViewed({ pathname: '/en/realtime-media/video' });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
+      'docs_page_viewed',
+      expect.objectContaining({
+        docs_locale: 'en',
+        docs_page_type: 'concept-explanation',
+        docs_pathname: '/en/realtime-media/video',
+        docs_product: 'video',
+        docs_tab: 'realtime-media',
+        pathname: '/en/realtime-media/video',
+        product: 'video',
+        tab: 'realtime-media',
+      }),
+    );
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        docs_locale: 'en',
+        docs_page_type: 'concept-explanation',
+        docs_pathname: '/en/realtime-media/video',
+        docs_product: 'video',
+        docs_tab: 'realtime-media',
+        journey_entry: true,
+        journey_to_page_type: 'concept-explanation',
+        journey_to_pathname: '/en/realtime-media/video',
+        journey_to_product: 'video',
+        journey_to_tab: 'realtime-media',
+      }),
+    );
+    expect(initMock.mock.calls[0]?.[1]).toMatchObject({
+      person_profiles: 'never',
+    });
+  });
+
+  it('captures the previous anonymous page when a session navigates between English docs', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
+    captureDocsPageViewed({ pathname: '/en/introduction' });
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+    captureMock.mockClear();
+
+    captureDocsPageViewed({ pathname: '/en/ai/get-started/quickstart' });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        journey_entry: false,
+        journey_from_page_type: 'navigation-landing',
+        journey_from_pathname: '/en/introduction',
+        journey_from_product: 'introduction',
+        journey_from_tab: 'introduction',
+        journey_to_page_type: 'task-guide',
+        journey_to_pathname: '/en/ai/get-started/quickstart',
+        journey_to_product: 'ai',
+        journey_to_tab: 'ai',
+      }),
+    );
+  });
+
+  it('does not emit anonymous journey events outside English docs', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
+    captureDocsPageViewed({ pathname: '/zh-CN/introduction' });
+
+    await Promise.resolve();
+
+    expect(captureMock).not.toHaveBeenCalled();
+  });
+
+  it('does not bridge an anonymous journey across non-English docs pages', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
+    captureDocsPageViewed({ pathname: '/en/introduction' });
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+    captureMock.mockClear();
+
+    captureDocsPageViewed({ pathname: '/zh-CN/introduction' });
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+
+    captureDocsPageViewed({ pathname: '/en/ai/get-started/quickstart' });
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({
+        journey_entry: true,
+        journey_to_pathname: '/en/ai/get-started/quickstart',
+      }),
+    );
+    expect(captureMock.mock.calls[1]?.[1]).not.toHaveProperty(
+      'journey_from_pathname',
+    );
+  });
+
+  it('fails closed when sessionStorage.getItem throws', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubGlobal('sessionStorage', {
+      getItem: vi.fn(() => {
+        throw new Error('storage denied');
+      }),
+      removeItem: vi.fn(),
+      setItem: vi.fn(),
+    });
+
+    const { captureDocsPageViewed } = await import('./posthog');
+
+    expect(() =>
+      captureDocsPageViewed({ pathname: '/en/introduction' }),
+    ).not.toThrow();
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_journey_step',
+      expect.objectContaining({ journey_entry: true }),
     );
   });
 
@@ -420,6 +737,33 @@ describe('PostHog analytics', () => {
     );
     expect(captureMock.mock.calls[1]?.[1]).toEqual(
       expect.objectContaining({ docs_product: 'api-reference' }),
+    );
+  });
+
+  it('keeps legacy solutions pages at the solution-level product classification', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    const { captureDocsSearchOpened } = await import('./posthog');
+
+    window.history.replaceState(
+      {},
+      '',
+      '/en/solutions/interactive-live-streaming/product-overview',
+    );
+    captureDocsSearchOpened({
+      locale: 'en',
+      mode: 'desktop',
+      trigger: 'button',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_opened',
+      expect.objectContaining({
+        docs_product: 'interactive-live-streaming',
+      }),
     );
   });
 

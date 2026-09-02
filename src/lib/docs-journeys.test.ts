@@ -110,6 +110,15 @@ describe('docs journeys', () => {
     expect(quickstart).toContain('/en/api-reference/api-ref/conversational-ai');
   });
 
+  it('offers Voice Agent exploration before the direct app quickstart', () => {
+    const intro = readDoc('en/introduction/index.mdx');
+
+    expect(intro).toContain('## Build a Voice Agent');
+    expect(intro).toMatch(
+      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
+    );
+  });
+
   it('connects the Realtime Media home, Voice and Video starts, and RTC API reference path', () => {
     const realtime = readDoc('en/realtime-media/index.md');
     expect(realtime).toContain('/en/realtime-media/rtc');

@@ -3310,6 +3310,440 @@ This section contains content that completes the information on this page, or po
 
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+In Signaling solutions, it is often important to know a user's current online status. For example, in instant messaging, chat applications, and online collaboration tools, users need to see the availability of their contacts. This information is typically displayed as a status message or icon next to a user's name. Presence features in Signaling SDK enable you to monitor join, leave, and status change notifications for users in a channel. Using Presence, you can:
+
+- Get a list of users currently in a channel and their temporary status data.
+- Get a list of channels a specified user has joined or is subscribed to.
+- Get, set, or remove user statuses.
+- Receive real-time event notifications when users join or leave specified channels.
+- Receive user status change event notifications in real time.
+
+## Understand the tech
+
+Presence provides real-time information about the availability, and the current status of users, for effective communication and collaboration. It enables you to retrieve a list of users in a channel, or to query the list of channels for a specific user. The following figure illustrates how you integrate presence features into your app.
+
+**Presence workflow**
+
+![Presence workflow](https://assets-docs.agora.io/images/signaling/presence-workflow.svg)
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
+## Implement presence features
+
+Using presence, you can implement the following features:
+
+### Get channel users
+
+To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
+
+After obtaining the initial online users list, update it in real time through `onPresenceEvent` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
+
+Refer to the following sample code to query the list of online users in a channel and their current status:
+
+```java
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        log(CALLBACK, "getOnlineUsers success");
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned `result` contains a bookmark for the next page. After each query, check if `result.getNextPage` is empty to determine if there is more data. To retrieve the next page, set the `page` field in `GetOnlineUsersOptions` to the value of `result.getNextPage`. Repeat this process until `result.getNextPage` is null. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
+
+```java
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+options.setPage("your_Next_Page_Bookmark");
+
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        // If nextPage exists, fill the value of nextPage into the page field of getOnlineUsersOptions for the next getOnlineUsers call
+        log(CALLBACK, "getOnlineUsers success");
+        log(INFO, "next page: " + result.getNextPage());
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `GetOnlineUsersOptions` to `false`.
+
+```java
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(false);
+options.setIncludeState(false);
+
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        log(CALLBACK, "Total occupancy: " + result.getTotalOccupancy());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+In this case, only the `totalOccupancy` property in the result is valid while all other fields are empty.
+:::info
+
+You cannot set `includeState` to `true` and `includeUserId` to `false` at the same time. To get the temporary status of users, you must also retrieve their user IDs.
+:::
+
+### Get user channels
+
+The `getUserChannels` method enables you to query which channels a user is currently in. This includes the message channels a user has subscribed to and the stream channels they have joined. This method is particularly useful for tracking user paths. Refer to the following sample code:
+
+```java
+mRtmClient.getPresence().getUserChannels("userid", new ResultCallback<ArrayList<ChannelInfo>>() {
+    @Override
+    public void onSuccess(ArrayList<ChannelInfo> channels) {
+        log(CALLBACK, "get getUserChannels success");
+        for (ChannelInfo channel : channels) {
+            log(INFO, channel.toString());
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+## User status management
+
+Signaling enables you to set and delete user status messages for the local user in each channel. The SDK notifies other online users in the channel of these changes through event notifications. This feature is useful in use-cases where user status sharing is required, such as real-time synchronization of the user's microphone status, mood, personal signature, score, and message input status.
+
+Signaling does not permanently save the status data. When a user unsubscribes from a channel, times out, or exits a channel, the data is deleted. To save user data permanently, use the [Store user metadata](storage/store-user-metadata) feature.
+
+When a user's temporary status changes, Signaling triggers a `REMOTE_STATE_CHANGED` event notification in real time. Users who set `withPresence = true` when joining the channel, receive the event notification.
+
+### Set status
+
+Using presence, you can set the temporary user status for the local user. When you set the status before subscribing to or joining a channel, the data is cached on the client and does not take effect immediately. The status is updated and corresponding event notifications are triggered when you subscribe to or join a channel. The `setState` method applies to both message and stream channels; use the `channelType` parameter to specify the channel type.
+
+```java
+HashMap<String, String> items = new HashMap<String, String>();
+items.put("Mode", "Happy");
+items.put("Mic", "False");
+
+mRtmClient.getPresence().setState("channel_name", RtmChannelType.MESSAGE, items, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "setState success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+When using `setState` to set temporary user status, if the specified key already exists, its value is overwritten by the new value. If the specified key does not exist, a new key-value pair is added.
+
+### Get status
+
+To obtain the temporary user status set by a user in a specified channel, use the `getState` method:
+
+```java
+String userId = "Tony";
+mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, new ResultCallback<UserState>() {
+    @Override
+    public void onSuccess(UserState state) {
+        log(CALLBACK, "get users(" + state.getUserId() + ") state success, " + state.toString());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `PRESENCE_USER_NOT_EXIST` error message is returned by the SDK.
+
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
+### Delete status
+
+Each user can set up to 32 key-value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
+
+```java
+ArrayList<String> keys = new ArrayList<>(Arrays.asList("Mode", "Mic"));
+mRtmClient.getPresence().removeState("Chat_room", RtmChannelType.MESSAGE, keys, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "removeState success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` event notifications. Users who join the channel with `withPresence` set to `true` receive event notifications containing full data of the user's temporary status.
+
+## Receive presence event notifications
+
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+
+### Event notification modes
+
+The presence event notification mode determines how subscribed users receive event notifications. There are two notification modes:
+
+- `Announce`: Real-time notification mode
+- `Interval`: Scheduled notification mode
+
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
+
+#### Real-time notification mode
+
+If the number of instant notifications in the channel is less than the **Max number of instant event** value, presence event notifications operate in real-time notification mode. In this mode, `REMOTE_JOIN`, `REMOTE_LEAVE`, `REMOTE_TIMEOUT`, and `REMOTE_STATE_CHANGED` notifications are sent to the client in real-time.
+
+```js tab="Join"
+{
+      eventType: RtmPresenceEventType.REMOTE_JOIN;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Leave"
+{
+      eventType: RtmPresenceEventType.REMOTE_LEAVE;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Timeout"
+{
+      eventType: RtmPresenceEventType.REMOTE_TIMEOUT;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Snapshot"
+{
+      eventType: RtmPresenceEventType.SNAPSHOT;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[
+              {
+                  userId: "user_a",
+                  states: {}
+              },
+              {
+                  userId: "user_b",
+                  states: {
+                      key: "key_1";
+                      value: "value_1";
+                  }
+              },
+              {
+                  userId: "yourSelf",
+                  states: {}
+              },
+          ]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="State change"
+{
+      eventType: RtmPresenceEventType.REMOTE_STATE_CHANGED;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {
+          "key_1":"value_1";
+      };
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+     timestamp: 1710487149497;
+}
+```
+
+#### Scheduled notification mode
+
+When the number of online users in the channel exceeds the **Max number of instant event** value, the channel switches to the scheduled notification mode. In this mode, `REMOTE_JOIN`, `REMOTE_LEAVE`, `REMOTE_TIMEOUT`, and `REMOTE_STATE_CHANGED` events are replaced by `INTERVAL` events and sent to all users in the channel at specific time intervals. Users receive the following notification:
+
+```js
+{
+      eventType: RtmPresenceEventType.INTERVAL,
+      channelTye: RtmChannelType.MESSAGE,
+      channelName: "Chat_room",
+      publisher: "",
+      stateItems: {},
+      interval: {
+          joinUserList: ["Tony", "Lily"],
+          leaveUserList: ["Jason"],
+          timeoutUserList: ["Wang"],
+          userStateList: [
+              {
+                  userId: "Harvard",
+                  states: [
+                      {
+                          key: "Mic",
+                          value: "False"
+                      },
+                     {
+                          key: "Position",
+                          value: "Beijing"
+                      }
+                 ]
+              }
+          ]
+      },
+      snapshot: {
+          userStateList: []
+      },
+      timestamp: 1710487149497
+}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
+- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
+- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
+- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+
+</PlatformStructured>
+
 <PlatformStructured platform="unity">
 
 In Signaling solutions, it is often important to know a user's current online status. For example, in instant messaging, chat applications, and online collaboration tools, users need to see the availability of their contacts. This information is typically displayed as a status message or icon next to a user's name. Presence features in Signaling SDK enable you to monitor join, leave, and status change notifications for users in a channel. Using Presence, you can:

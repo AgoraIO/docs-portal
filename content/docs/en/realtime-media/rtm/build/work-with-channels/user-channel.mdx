@@ -736,3 +736,100 @@ This section contains content that completes the information on this page, or po
 - [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
 
 </PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+Signaling enables you to send direct, point-to-point messages to individual users through user channels. This feature is useful in one-on-one communication use-cases such as private chats and customer support interactions.
+
+## Understand the tech
+
+To implement point-to-point communication between individual users in your app:
+
+1. **Set up the Signaling SDK**: [Integrate the Signaling SDK](/en/realtime-media/rtm/quickstart) in your app and [initialize an instance](/en/realtime-media/rtm/quickstart) of the Signaling client.
+2. **Authenticate the user**: [Log in to Signaling](/en/realtime-media/rtm/quickstart) using a unique user ID.
+3. **Send direct messages**: Call the `publish` method with the User channel type and specify the recipient's user ID as the channel name to send direct messages.
+4. **Handle incoming messages**: [Listen for message events](/en/realtime-media/rtm/quickstart) to receive messages sent directly to the local user.
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](/en/realtime-media/rtm/quickstart).
+
+## Implement user messages
+
+This section shows you how to use the Signaling SDK to send messages directly to a specified user.
+
+To send message to a user channel, call the `publish` method with the `channelType` parameter set to `RtmChannelType.USER` and the `channelName` parameter set to the target user's `userId`. This method enables you to send a message to one user at a time. To send messages to multiple users, call this method for each user. While Signaling does not limit the number of users you can send messages to or receive messages from, it does [limit](/en/realtime-media/rtm/reference/limitations) the frequency at which you can send messages to users.
+
+Refer to the following sample code for sending messages:
+
+**String message**
+
+```java
+// Send string message
+    PublishOptions options = new PublishOptions();
+    options.setChannelType(RtmChannelType.USER);
+    options.setCustomType("PlainText");
+    rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            log(CALLBACK, "Send message success");
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
+
+**Binary message**
+
+```java
+// Send binary message
+    byte[] message = new byte[] {1, 2, 3, 4};
+    PublishOptions options = new PublishOptions();
+    options.setChannelType(RtmChannelType.USER);
+    options.setCustomType("ByteArray");
+    rtmClient.publish("Tony", message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            log(CALLBACK, "Send message success");
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
+
+:::info
+Signaling currently supports only string and binary message formats. To send other types of data such as JSON objects, or data from third-party data construction tools such as protobuf, serialize the data before sending the message. For information on how to effectively construct the payload data structure and recommended serialization methods, refer to [Message payload structuring](/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring).
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes 32 KB size limits on message payload packets sent in user channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive the following error message.
+
+```js
+ErrorInfo {
+    errorCode = -11010;
+    reason = "Publish too long message.";
+    operation = "publishTopicMessage"; // or "publish"
+}
+```
+
+To avoid sending failure due to excess message payload packet size, check the packet size before sending.
+
+### API reference
+
+- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`receive`](/en/api-reference/api-ref/signaling#receive)
+
+</PlatformStructured>

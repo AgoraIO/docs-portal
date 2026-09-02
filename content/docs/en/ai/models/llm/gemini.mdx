@@ -28,7 +28,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(Gemini(
         api_key='your-google-api-key',
-        model='gemini-2.0-flash',
+        model='gemini-3.6-flash',
         system_messages=[{'parts': [{'text': 'You are a helpful chatbot.'}], 'role': 'user'}],
         greeting_message='Good to see you!',
         failure_message='Hold on a second.',
@@ -50,7 +50,7 @@ const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(new Gemini({
     apiKey: 'your-google-api-key',
-    model: 'gemini-2.0-flash',
+    model: 'gemini-3.6-flash',
     systemMessages: [{ parts: [{ text: 'You are a helpful chatbot.' }], role: 'user' }],
     greetingMessage: 'Good to see you!',
     failureMessage: 'Hold on a second.',
@@ -71,7 +71,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(
     vendors.NewGemini(vendors.GeminiOptions{
         APIKey: "your-google-api-key",
-        Model:  "gemini-2.0-flash",
+        Model:  "gemini-3.6-flash",
         SystemMessages: []map[string]interface{}{
             {"parts": []map[string]interface{}{{"text": "You are a helpful chatbot."}}, "role": "user"},
         },
@@ -90,7 +90,7 @@ Use the following `llm` configuration in your request:
 
 ```json
 "llm": {
-   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=<api_key>",
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=<api_key>",
    "system_messages": [
        {
            "parts": [
@@ -105,7 +105,7 @@ Use the following `llm` configuration in your request:
    "greeting_message": "Good to see you!",
    "failure_message": "Hold on a second.",
    "params": {
-       "model": "gemini-2.0-flash"
+       "model": "gemini-3.6-flash"
    },
    "style": "gemini"
 }
