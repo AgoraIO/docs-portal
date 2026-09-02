@@ -1,5 +1,5 @@
 diff --git a/dist/components/schema/client.js b/dist/components/schema/client.js
-index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..1776fb6ae084af1b0b434b0f2080fed35bceba2c 100644
+index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..87b2efb007a69331b7fedee33dd6a0dd23d87810 100644
 --- a/dist/components/schema/client.js
 +++ b/dist/components/schema/client.js
 @@ -67,8 +67,14 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
@@ -48,7 +48,7 @@ index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..1776fb6ae084af1b0b434b0f2080fed3
 -			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "text-fd-muted-foreground size-3.5 transition-colors" }), /* @__PURE__ */ jsx("input", {
 +			"data-openapi-schema-filter": "",
 +			"data-variant": variant,
-+			className: cn(variant === "in-popover" && "sticky top-11 -mx-3 border-b bg-fd-popover px-3 py-2 z-10"),
++			className: cn(variant === "in-popover" && "sticky top-11 -mx-3 border-b bg-fd-popover px-3 py-3 z-10", variant === "default" && "my-2"),
 +			style: variant === "in-popover" ? { top: "44px" } : undefined,
 +			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "hidden" }), /* @__PURE__ */ jsx("input", {
 +				"aria-label": t("Filter Properties"),
