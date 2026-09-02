@@ -88,32 +88,63 @@ describe('OpenApiSchema', () => {
     expect(filter).toHaveAttribute('aria-label', 'Filter Properties');
     expect(filter).toHaveAttribute('data-slot', 'input');
     expect(filter).toHaveAttribute('type', 'search');
-    expect(filter.parentElement).toHaveAttribute('data-openapi-schema-filter');
-    expect(filter.parentElement).toHaveAttribute('data-variant', 'default');
+    expect(filter.closest('.openapi-schema-tree')).toBeInTheDocument();
     expect(requiredRow).toBeInstanceOf(HTMLElement);
     expect(optionalRow).toBeInstanceOf(HTMLElement);
     expect(
-      within(
-        (requiredRow as HTMLElement).firstElementChild as HTMLElement,
-      ).getByText('*'),
+      within(requiredRow as HTMLElement).getByText('Required'),
     ).toBeVisible();
     expect(
-      within(
-        (optionalRow as HTMLElement).firstElementChild as HTMLElement,
-      ).getByText('?'),
+      within(optionalRow as HTMLElement).getByText('Optional'),
     ).toBeVisible();
-    expect(screen.queryByText('required')).not.toBeInTheDocument();
-    expect(screen.queryByText('optional')).not.toBeInTheDocument();
 
     fireEvent.change(filter, { target: { value: 'name' } });
 
     expect(getRenderedSchemaText('name')).toBeVisible();
-    expect(queryRenderedSchemaText('config')).toHaveLength(0);
-    expect(queryRenderedSchemaText('advanced')).toHaveLength(0);
+    expect(queryRenderedSchemaText('config')[0]).toBeVisible();
+    expect(queryRenderedSchemaText('advanced')[0]).toBeVisible();
 
     fireEvent.change(filter, { target: { value: '' } });
     expect(getRenderedSchemaText('config')).toBeVisible();
     expect(getRenderedSchemaText('advanced')).toBeVisible();
+  });
+
+  it('renders raw enum metadata as allowed value code tokens', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              status: {
+                default: 'ready',
+                description: 'Current status.',
+                enum: ['ready', 'running'],
+                format: 'status-code',
+                type: 'string',
+              },
+            },
+            required: ['status'],
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('status')?.closest('div.border-t');
+    expect(row).toBeInstanceOf(HTMLElement);
+    expect(
+      within(row as HTMLElement).getByText('Allowed values'),
+    ).toBeVisible();
+    expect(within(row as HTMLElement).getByText('ready')).toHaveAttribute(
+      'data-openapi-allowed-value-key',
+    );
+    expect(within(row as HTMLElement).getByText('running')).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Default')).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Format')).toBeVisible();
+    expect(screen.queryByText('Value in')).not.toBeInTheDocument();
   });
 
   it('gives each field permalink control an accessible name', () => {
@@ -139,7 +170,13 @@ describe('OpenApiSchema', () => {
     expect(configRow).toBeInstanceOf(HTMLElement);
     expect(idleTimeout).toBeVisible();
     expect(transport).toBeVisible();
-    expect(codec).toBeVisible();
+    expect(codec).not.toBeVisible();
+    fireEvent.click(
+      within(
+        (transport as HTMLElement).closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand transport properties' }),
+    );
+    expect(getRenderedSchemaText('codec')).toBeVisible();
     expect(
       within(
         (configRow as HTMLElement).firstElementChild as HTMLElement,
@@ -155,6 +192,13 @@ describe('OpenApiSchema', () => {
     renderSchema();
 
     expect(getRenderedSchemaText('idleTimeout')).toBeVisible();
+    fireEvent.click(
+      within(
+        getRenderedSchemaText('transport')?.closest(
+          'div.border-t',
+        ) as HTMLElement,
+      ).getByRole('button', { name: 'Expand transport properties' }),
+    );
     expect(getRenderedSchemaText('codec')).toBeVisible();
     expect(
       document.querySelector('[data-openapi-schema-find-index]'),
@@ -182,11 +226,9 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    expect(screen.getAllByText('label')).toHaveLength(2);
-    expect(screen.getAllByText('child')).toHaveLength(2);
-    expect(
-      document.querySelectorAll('[data-openapi-schema-inline]'),
-    ).toHaveLength(1);
+    expect(screen.getAllByText('label')).toHaveLength(1);
+    expect(screen.getAllByText('child')).toHaveLength(1);
+    expect(document.querySelector('.openapi-schema-tree')).toBeInTheDocument();
   });
 
   it('converts a legacy nested-field hash into the official path protocol', async () => {
@@ -231,6 +273,9 @@ describe('OpenApiSchema', () => {
       expect(url.searchParams.get('path')).toContain('config');
     });
     expect(window.location.hash).toBe('#request-body.application-json.body');
+    expect(
+      screen.getByText('idleTimeout').closest('.openapi-schema-field-row'),
+    ).toHaveAttribute('data-openapi-schema-highlighted');
   });
 
   it.each([
@@ -307,7 +352,7 @@ describe('OpenApiSchema', () => {
     );
 
     expect(getRenderedSchemaText('state')).toBeVisible();
-    expect(screen.getByText('object')).not.toHaveRole('button');
+    expect(screen.getByText('array<object>')).not.toHaveRole('button');
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 

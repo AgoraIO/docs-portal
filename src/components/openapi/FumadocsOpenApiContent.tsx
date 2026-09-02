@@ -122,12 +122,15 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'response-body': '响应 Body',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
+  'Collapse all(schema UI)': '折叠全部',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
+  'Expand all(schema UI)': '展开全部',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
   'Header Parameters': '请求 Header',
@@ -142,6 +145,12 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Range(schema UI)': '范围',
   'Request Body': '请求 Body',
   'Response Body': '响应 Body',
+  'Required(schema UI)': '必填',
+  'Optional(schema UI)': '可选',
+  'Expand(schema UI)': '展开',
+  'Collapse(schema UI)': '折叠',
+  'properties(schema UI)': '属性',
+  'matches(schema UI)': '匹配项',
   'Value in(schema UI)': '可选值',
 } as const;
 
@@ -159,7 +168,6 @@ const OpenAPIPage = createOpenAPIPage({
     ),
     renderOperationLayout: (slots, { ctx, operation }) => (
       <OpenApiOperationLayoutWithSource
-        SchemaUI={ctx.SchemaUI}
         method={
           {
             ...(operation as OpenApiOperation),
@@ -336,13 +344,17 @@ function adaptOpenApiParameterSchema(value: unknown) {
   if (!schema) return value;
   const callouts = value['x-docs-callouts'];
   const example = value.example ?? getFirstExample(value.examples);
-  if (callouts === undefined && example === undefined) return value;
+  const deprecated = value.deprecated === true;
+  if (callouts === undefined && example === undefined && !deprecated) {
+    return value;
+  }
 
   return {
     ...value,
     schema: {
       ...schema,
       example: schema.example ?? example,
+      deprecated: schema.deprecated ?? deprecated,
       'x-docs-callouts': schema['x-docs-callouts'] ?? callouts,
     },
   };
@@ -408,17 +420,10 @@ type OpenApiMetadataItem = {
   label: string;
   value: string;
 };
-type OpenApiSchemaUI = RenderContext['SchemaUI'];
-type OpenApiSchemaUIWithLegacyNavigation = (
-  props: ComponentProps<OpenApiSchemaUI> & { legacyAnchorPrefix?: string },
-) => ReactNode;
-
 function OpenApiOperationLayoutWithSource({
-  SchemaUI,
   method,
   slots,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
@@ -426,7 +431,6 @@ function OpenApiOperationLayoutWithSource({
 
   return (
     <OpenApiOperationLayout
-      SchemaUI={SchemaUI}
       method={mergeOpenApiOperationExtensions(method, sourceOperation)}
       slots={slots}
     />
@@ -434,11 +438,9 @@ function OpenApiOperationLayoutWithSource({
 }
 
 function OpenApiOperationLayout({
-  SchemaUI,
   method,
   slots,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
@@ -465,7 +467,7 @@ function OpenApiOperationLayout({
             <OpenApiResponseHeaders operation={method} />
           </>
         ) : (
-          <OpenApiEnglishResponses SchemaUI={SchemaUI} operation={method} />
+          <OpenApiEnglishResponses operation={method} />
         )}
         <OpenApiDocsSections
           operation={method}
@@ -923,10 +925,8 @@ function OpenApiResponseHeaders({
 }
 
 function OpenApiEnglishResponses({
-  SchemaUI,
   operation,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   operation?: OpenApiOperation;
 }) {
   const responses = useMemo(
@@ -934,8 +934,6 @@ function OpenApiEnglishResponses({
       buildOpenApiResponseViews(operation?.responses, operation?.__document),
     [operation?.responses, operation?.__document],
   );
-  const SchemaUIWithLegacyNavigation =
-    SchemaUI as OpenApiSchemaUIWithLegacyNavigation;
   return (
     <OpenApiResponses
       renderDescription={(markdown) =>
@@ -948,14 +946,31 @@ function OpenApiEnglishResponses({
         return {
           hasFields: schema !== undefined,
           node: (
-            <SchemaUIWithLegacyNavigation
+            <OpenApiSchema
               client={{
                 as: 'body',
                 name: `response-${slugOpenApiAnchorSegment(status)}-${slugOpenApiAnchorSegment(mediaType)}`,
               }}
               legacyAnchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
+              renderCodeblock={({ code, lang }) =>
+                renderOpenApiCodeBlock(lang, code)
+              }
+              renderExtraDescription={(source) => {
+                const record = getRecord(source);
+                return record ? (
+                  <OpenApiInlineCallouts
+                    callouts={getOpenApiDocsCallouts(record)}
+                  />
+                ) : null;
+              }}
+              renderMarkdown={(markdown) =>
+                renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(markdown),
+                )
+              }
               readOnly
               root={schema as never}
+              showExample
             />
           ),
         };

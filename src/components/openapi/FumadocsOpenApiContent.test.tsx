@@ -1071,8 +1071,13 @@ describe('FumadocsOpenApiContent', () => {
       .closest('div.border-t') as HTMLElement;
     expect(remoteRow).toHaveTextContent('array<string>');
     expect(
-      within(toolsRow.firstElementChild as HTMLElement).getByText('object'),
+      within(toolsRow.firstElementChild as HTMLElement).getByText(
+        'array<object>',
+      ),
     ).not.toHaveRole('button');
+    fireEvent.click(
+      within(toolsRow).getByRole('button', { name: '展开 tools 属性' }),
+    );
     expect(screen.getByText('name')).toBeVisible();
   });
 
@@ -1411,12 +1416,12 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
     expect(within(pathSection).getByText('sid')).toBeInTheDocument();
     expect(within(pathSection).getByText('mode')).toBeInTheDocument();
-    expect(within(pathSection).getByText('"individual"')).toBeInTheDocument();
-    expect(within(pathSection).getByText('"mix"')).toBeInTheDocument();
-    expect(within(pathSection).getByText('"web"')).toBeInTheDocument();
+    expect(within(pathSection).getByText('individual')).toBeInTheDocument();
+    expect(within(pathSection).getByText('mix')).toBeInTheDocument();
+    expect(within(pathSection).getByText('web')).toBeInTheDocument();
     expect(within(headerSection).getByText('Content-Type')).toBeInTheDocument();
     expect(
-      within(headerSection).getAllByText('"application/json"')[0],
+      within(headerSection).getAllByText('application/json')[0],
     ).toBeInTheDocument();
   });
 
@@ -1528,7 +1533,7 @@ describe('FumadocsOpenApiContent', () => {
     const propertiesRow = getOfficialRow('properties');
 
     expect(filter).toBeVisible();
-    expect(within(displayNameRow).getByText('?')).toBeVisible();
+    expect(within(displayNameRow).getByText('Optional')).toBeVisible();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
     expect(
       within(propertiesRow.firstElementChild as HTMLElement).getByText(
@@ -1549,6 +1554,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(llmRow.firstElementChild as HTMLElement).getByText('object'),
     ).not.toHaveRole('button');
+    fireEvent.click(
+      within(llmRow).getByRole('button', { name: 'Expand llm properties' }),
+    );
     expect(getOfficialRow('url')).toBeVisible();
     expect(screen.getByText(/production callback URLs/)).toBeInTheDocument();
 
@@ -1672,6 +1680,18 @@ describe('FumadocsOpenApiContent', () => {
         'The UID used by the cloud recording service in the RTC channel.',
       ),
     ).toBeVisible();
+    expect(
+      screen
+        .getAllByText('status')
+        .find((element) => element.closest('div.border-t')),
+    ).not.toBeVisible();
+    fireEvent.click(
+      within(
+        screen
+          .getByText('serverResponse')
+          .closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand serverResponse properties' }),
+    );
     expect(
       screen
         .getAllByText('status')
@@ -1896,8 +1916,8 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(pathSection).getByText(/flow configuration template ID/),
     ).toBeInTheDocument();
-    expect(within(pathSection).getByText('Value in')).toBeInTheDocument();
-    expect(within(pathSection).getAllByText('"cn"').length).toBeGreaterThan(0);
+    expect(within(pathSection).getByText('Allowed values')).toBeInTheDocument();
+    expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
     expect(within(pathSection).getByText('Default')).toBeInTheDocument();
     expect(within(pathSection).getByText('Length')).toBeInTheDocument();
     expect(within(pathSection).getByText('Match')).toBeInTheDocument();
@@ -2679,6 +2699,11 @@ describe('FumadocsOpenApiContent', () => {
       ),
     ).toBeInTheDocument();
     expect(responseScope.getByText('status')).toBeInTheDocument();
+    fireEvent.click(
+      within(
+        responseScope.getByText('data').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: '展开 data 属性' }),
+    );
     expect(
       responseScope
         .getAllByText('channel')
@@ -2870,6 +2895,16 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.getElementById('request-body.applicationjson.body'),
     ).not.toBeNull();
+    fireEvent.click(
+      within(
+        screen.getByText('config').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand config properties' }),
+    );
+    fireEvent.click(
+      within(
+        screen.getByText('data').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand data properties' }),
+    );
     expect(screen.getByText('idleTimeout')).toBeVisible();
     expect(screen.getByText('agentId')).toBeVisible();
     expect(
@@ -3024,11 +3059,11 @@ describe('FumadocsOpenApiContent', () => {
       .getByText('session')
       .closest('div.border-t') as HTMLElement;
 
-    expect(within(pathRow).getByText('*')).toBeVisible();
-    expect(within(queryRow).getByText('?')).toBeVisible();
-    expect(within(headerRow).getByText('?')).toBeVisible();
+    expect(within(pathRow).getByText('Required')).toBeVisible();
+    expect(within(queryRow).getByText('Optional')).toBeVisible();
+    expect(within(headerRow).getByText('Optional')).toBeVisible();
     expect(within(headerRow).getByText('Deprecated')).toBeVisible();
-    expect(within(cookieRow).getByText('*')).toBeVisible();
+    expect(within(cookieRow).getByText('Required')).toBeVisible();
     expect(within(pathRow).getByText('The item identifier.')).toBeVisible();
     expect(pathRow).toHaveAttribute('id', 'parameters.path.itemid');
     expect(headerRow).toHaveAttribute('id', 'parameters.header.x-trace-id');
@@ -3100,8 +3135,8 @@ describe('FumadocsOpenApiContent', () => {
     const querySection = screen.getByRole('heading', {
       name: '查询参数',
     }).nextElementSibling as HTMLElement;
-    expect(within(pathSection).getByText('*')).toBeVisible();
-    expect(within(querySection).getByText('?')).toBeVisible();
+    expect(within(pathSection).getByText('必填')).toBeVisible();
+    expect(within(querySection).getByText('可选')).toBeVisible();
     expect(
       within(pathSection).getByRole('button', {
         name: '复制字段链接到 itemId',

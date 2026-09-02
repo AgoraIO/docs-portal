@@ -4,10 +4,7 @@ import {
   generateSchemaUI,
   type SchemaUIGeneratedData,
 } from '@fumadocs/api-docs/components/schema';
-import {
-  SchemaUI,
-  type SchemaUIProps,
-} from '@fumadocs/api-docs/components/schema/client';
+import type { SchemaUIProps } from '@fumadocs/api-docs/components/schema/client';
 import type { ParsedSchema } from '@fumadocs/api-docs/schema';
 import {
   type ReactNode,
@@ -17,6 +14,22 @@ import {
   useState,
 } from 'react';
 import { buildOpenApiAnchorId } from '@/lib/openapi/anchors';
+import {
+  buildOpenApiSchemaView,
+  flattenOpenApiSchemaView,
+  type OpenApiSchemaData,
+  type OpenApiSchemaPathItem,
+  type OpenApiSchemaViewNode,
+} from '@/lib/openapi/schema-view';
+import {
+  OpenApiSchemaFieldRow,
+  type OpenApiSchemaFieldRowLabels,
+} from './OpenApiSchemaFieldRow';
+import {
+  type OpenApiSchemaRevealTarget,
+  OpenApiSchemaTree,
+  type OpenApiSchemaTreeLabels,
+} from './OpenApiSchemaTree';
 
 type OpenApiSchemaClient = Omit<SchemaUIProps, 'generated'>;
 
@@ -30,12 +43,6 @@ export type OpenApiSchemaProps = {
   root: unknown;
   showExample?: boolean;
   writeOnly?: boolean;
-};
-
-type OpenApiSchemaPathItem = {
-  $ref: string;
-  name: string;
-  tabValues?: string[];
 };
 
 type OpenApiSchemaFindTarget = {
@@ -69,39 +76,65 @@ export function OpenApiSchema({
   );
   const [navigationKey, setNavigationKey] = useState(0);
   const normalizedRoot = useMemo(() => normalizeOpenApiSchema(root), [root]);
-  const generated = useMemo(
-    () =>
-      appendOpenApiSchemaExtraDescriptions(
-        generateSchemaUI({
-          readOnly,
-          renderCodeblock,
-          renderMarkdown,
-          root: normalizedRoot as ParsedSchema,
-          showExample,
-          translations,
-          writeOnly,
-        }),
-        root,
-        renderExtraDescription,
-      ),
-    [
+  const generated = useMemo(() => {
+    const generated = generateSchemaUI({
       readOnly,
       renderCodeblock,
-      renderExtraDescription,
       renderMarkdown,
-      normalizedRoot,
-      root,
+      root: removeOpenApiSchemaEnums(normalizedRoot) as ParsedSchema,
       showExample,
       translations,
       writeOnly,
-    ],
-  );
+    });
+
+    appendOpenApiSchemaAllowedValues(generated, normalizedRoot);
+    return appendOpenApiSchemaExtraDescriptions(
+      generated,
+      root,
+      renderExtraDescription,
+    );
+  }, [
+    readOnly,
+    renderCodeblock,
+    renderExtraDescription,
+    renderMarkdown,
+    normalizedRoot,
+    root,
+    showExample,
+    translations,
+    writeOnly,
+  ]);
   const findTargets = useMemo(
     () =>
       buildOpenApiSchemaFindTargets(generated, client.name, legacyNavigation),
     [client.name, generated, legacyNavigation],
   );
-  const revealTarget = useCallback(
+  const schemaView = useMemo(
+    () => buildOpenApiSchemaView(generated, client.name),
+    [client.name, generated],
+  );
+  const labels = useMemo(
+    () => getOpenApiSchemaLabels(translations),
+    [translations],
+  );
+  const renderRemainingInfoTags = useCallback(
+    (node: OpenApiSchemaViewNode) => {
+      const tags = getRemainingInfoTags(node);
+      if (node.schema.deprecated) {
+        tags.push(
+          <span key="deprecated" className="font-mono text-xs text-warning">
+            {getOpenApiSchemaLabel(translations, 'Deprecated', 'Deprecated')}
+          </span>,
+        );
+      }
+      return tags;
+    },
+    [translations],
+  );
+  const [revealTarget, setRevealTarget] = useState<
+    OpenApiSchemaRevealTarget | undefined
+  >();
+  const revealTargetInLocation = useCallback(
     (target: OpenApiSchemaFindTarget) => {
       const url = new URL(window.location.href);
       url.hash = `#${rootId}`;
@@ -109,8 +142,15 @@ export function OpenApiSchema({
       url.searchParams.set('s-highlight', target.name);
       window.history.replaceState(window.history.state, '', url);
       setNavigationKey((current) => current + 1);
+      setRevealTarget({
+        fieldName: target.name,
+        parentPath: normalizeOpenApiSchemaRevealPath(
+          target.parentPath,
+          legacyNavigation,
+        ),
+      });
     },
-    [rootId],
+    [legacyNavigation, rootId],
   );
 
   useEffect(() => {
@@ -121,23 +161,334 @@ export function OpenApiSchema({
       const target = findTargets.find(
         (candidate) => candidate.legacyAnchorId === hash,
       );
-      if (target) revealTarget(target);
+      if (target) revealTargetInLocation(target);
+
+      if (!target && hash === rootId) {
+        const path = decodeOpenApiSchemaPath(window.location.search, generated);
+        if (path) {
+          setRevealTarget({
+            fieldName: path.fieldName,
+            parentPath: normalizeOpenApiSchemaRevealPath(
+              path.parentPath,
+              legacyNavigation,
+            ),
+          });
+        }
+      }
     };
 
     revealLegacyHashTarget();
     window.addEventListener('hashchange', revealLegacyHashTarget);
     return () =>
       window.removeEventListener('hashchange', revealLegacyHashTarget);
-  }, [findTargets, revealTarget]);
+  }, [
+    findTargets,
+    generated,
+    legacyNavigation,
+    revealTargetInLocation,
+    rootId,
+  ]);
+
+  const rootSchema = generated.refs[generated.$root] as OpenApiSchemaData;
+  const rootIsBodyTree =
+    client.as === 'body' && rootSchema?.type !== 'primitive';
+  const rootNode = createOpenApiSchemaRootNode(
+    generated,
+    client.name,
+    client.required ?? false,
+    rootId,
+  );
 
   return (
-    <SchemaUI
-      {...client}
-      generated={generated}
-      key={navigationKey}
-      nestedDisplay="inline"
-    />
+    <>
+      {rootIsBodyTree ? renderOpenApiSchemaDetails(rootSchema) : null}
+      {rootIsBodyTree ? (
+        <OpenApiSchemaTree
+          client={client}
+          key={navigationKey}
+          labels={labels}
+          nodes={schemaView}
+          onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
+          renderRemainingInfoTags={renderRemainingInfoTags}
+          revealTarget={revealTarget}
+          rootId={rootId}
+        />
+      ) : (
+        <OpenApiSchemaParameterFields
+          labels={labels}
+          nodes={[
+            rootNode,
+            ...flattenOpenApiSchemaView(schemaView).map((node) => ({
+              ...node,
+              children: [],
+            })),
+          ]}
+          onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
+          renderRemainingInfoTags={renderRemainingInfoTags}
+          rootId={rootId}
+        />
+      )}
+    </>
   );
+}
+
+function renderOpenApiSchemaDetails(schema: OpenApiSchemaData) {
+  const infoTags = getRemainingInfoTagsFromSchema(schema);
+  if (!schema.description && infoTags.length === 0) return null;
+
+  return (
+    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+      {schema.description}
+      {infoTags.length > 0 ? (
+        <div className="mt-2 flex flex-wrap gap-2">{infoTags}</div>
+      ) : null}
+    </div>
+  );
+}
+
+function OpenApiSchemaParameterFields({
+  labels,
+  nodes,
+  onCopyFieldLink,
+  renderRemainingInfoTags,
+  rootId,
+}: {
+  labels: OpenApiSchemaFieldRowLabels;
+  nodes: OpenApiSchemaViewNode[];
+  onCopyFieldLink: (node: OpenApiSchemaViewNode) => void;
+  renderRemainingInfoTags: (node: OpenApiSchemaViewNode) => ReactNode[];
+  rootId: string;
+}) {
+  return (
+    <div className="openapi-schema-parameter-fields">
+      {nodes.map((node) => (
+        <OpenApiSchemaFieldRow
+          copied={false}
+          domId={node.id === rootId ? rootId : undefined}
+          expanded={false}
+          labels={labels}
+          key={node.id}
+          node={node}
+          onCopy={() => onCopyFieldLink(node)}
+          onExpandedChange={() => {}}
+          remainingInfoTags={renderRemainingInfoTags(node)}
+        />
+      ))}
+    </div>
+  );
+}
+
+function createOpenApiSchemaRootNode(
+  generated: SchemaUIGeneratedData,
+  name: string,
+  required: boolean,
+  rootId: string,
+): OpenApiSchemaViewNode {
+  return {
+    $type: generated.$root,
+    children: [],
+    depth: 0,
+    id: rootId,
+    name,
+    parentPath: [{ $ref: generated.$root, name }],
+    path: name,
+    required,
+    schema: generated.refs[generated.$root] as OpenApiSchemaData,
+  };
+}
+
+function getRemainingInfoTags(node: OpenApiSchemaViewNode) {
+  return getRemainingInfoTagsFromSchema(node.schema);
+}
+
+function getRemainingInfoTagsFromSchema(schema: OpenApiSchemaData) {
+  return schema.infoTags?.map((tag) => tag.node) ?? [];
+}
+
+function getOpenApiSchemaLabel(
+  translations: Partial<Record<string, string>>,
+  key: string,
+  fallback: string,
+) {
+  return translations[`${key}(schema UI)`] ?? translations[key] ?? fallback;
+}
+
+function getOpenApiSchemaLabels(
+  translations: Partial<Record<string, string>>,
+): OpenApiSchemaTreeLabels {
+  const translate = (key: string, fallback: string) =>
+    getOpenApiSchemaLabel(translations, key, fallback);
+
+  return {
+    allowedValues: translate('Allowed values', 'Allowed values'),
+    collapse: translate('Collapse', 'Collapse'),
+    collapseAll: translate('Collapse all', 'Collapse all'),
+    copiedLink: translate('Copied link to', 'Copied link to'),
+    copyLink: translate('Copy link to', 'Copy link to'),
+    expand: translate('Expand', 'Expand'),
+    expandAll: translate('Expand all', 'Expand all'),
+    filter: translate('Filter Properties', 'Filter Properties'),
+    matchCount: translate('matches', 'matches'),
+    noMatches: translate('No property matching', 'No properties matching'),
+    optional: translate('Optional', 'Optional'),
+    properties: translate('properties', 'properties'),
+    required: translate('Required', 'Required'),
+  };
+}
+
+function copyOpenApiSchemaFieldLink(
+  rootId: string,
+  node: OpenApiSchemaViewNode,
+) {
+  const url = new URL(window.location.href);
+  url.hash = `#${rootId}`;
+  url.searchParams.set('path', encodeOpenApiSchemaPath(node.parentPath));
+  url.searchParams.set('s-highlight', node.name);
+  void navigator.clipboard?.writeText(url.href);
+}
+
+function normalizeOpenApiSchemaRevealPath(
+  path: OpenApiSchemaPathItem[],
+  navigation?: OpenApiLegacySchemaNavigation,
+) {
+  if (
+    navigation?.rootDisplay === 'property-trigger' &&
+    path.length > 1 &&
+    path[0].$ref === path[1].$ref &&
+    path[0].name === path[1].name
+  ) {
+    return path.slice(1);
+  }
+  return path;
+}
+
+function decodeOpenApiSchemaPath(
+  search: string,
+  generated: SchemaUIGeneratedData,
+) {
+  const url = new URL(search, window.location.origin);
+  const encodedPath = url.searchParams.get('path');
+  const fieldName = url.searchParams.get('s-highlight');
+  if (!encodedPath || !fieldName) return;
+
+  const parentPath = encodedPath.split('|').map((encoded) => {
+    const [name, $ref, ...tabValues] = encoded.split('\0');
+    return { $ref, name, tabValues };
+  });
+  if (
+    parentPath.some(
+      (item) =>
+        !item.name ||
+        !item.$ref ||
+        !generated.refs[item.$ref] ||
+        item.tabValues.some((value) => !generated.refs[value]),
+    )
+  ) {
+    return;
+  }
+
+  return { fieldName, parentPath };
+}
+
+function appendOpenApiSchemaAllowedValues(
+  generated: SchemaUIGeneratedData,
+  root: unknown,
+) {
+  visit(generated.$root, root, new Set());
+
+  function visit(ref: string, rawSchema: unknown, ancestors: Set<string>) {
+    if (ancestors.has(ref)) return;
+    const schema = generated.refs[ref] as OpenApiSchemaData | undefined;
+    if (!schema) return;
+
+    const rawRecord = isRecord(rawSchema) ? rawSchema : undefined;
+    if (rawRecord && Array.isArray(rawRecord.enum)) {
+      schema.allowedValues = rawRecord.enum;
+    }
+
+    const nextAncestors = new Set(ancestors).add(ref);
+    if (schema.type === 'object') {
+      for (const property of schema.props) {
+        visit(
+          property.$type,
+          getRawOpenApiSchemaProperty(rawSchema, property.name),
+          nextAncestors,
+        );
+      }
+      return;
+    }
+
+    if (schema.type === 'array') {
+      visit(schema.item.$type, rawRecord?.items, nextAncestors);
+      return;
+    }
+
+    if (schema.type === 'or' || schema.type === 'and') {
+      const rawBranches = getRawOpenApiSchemaBranches(rawSchema);
+      schema.items.forEach((item, index) => {
+        visit(item.$type, rawBranches[index] ?? rawSchema, nextAncestors);
+      });
+    }
+  }
+}
+
+function getRawOpenApiSchemaBranches(value: unknown) {
+  if (!isRecord(value)) return [];
+  if (Array.isArray(value.type)) {
+    return value.type.map((type) => ({ ...value, type }));
+  }
+  if (Array.isArray(value.oneOf)) return value.oneOf;
+  if (Array.isArray(value.anyOf)) return value.anyOf;
+  return [];
+}
+
+function getRawOpenApiSchemaProperty(value: unknown, name: string): unknown {
+  const seen = new Set<object>();
+
+  function find(candidate: unknown): unknown {
+    if (!isRecord(candidate) || seen.has(candidate)) return;
+    seen.add(candidate);
+
+    const properties = isRecord(candidate.properties)
+      ? candidate.properties
+      : undefined;
+    if (properties?.[name] !== undefined) return properties[name];
+
+    for (const key of ['allOf', 'oneOf', 'anyOf']) {
+      if (!Array.isArray(candidate[key])) continue;
+      for (const item of candidate[key]) {
+        const result = find(item);
+        if (result !== undefined) return result;
+      }
+    }
+  }
+
+  return find(value);
+}
+
+function removeOpenApiSchemaEnums(
+  value: unknown,
+  seen = new WeakMap<object, unknown>(),
+): unknown {
+  if (Array.isArray(value)) {
+    const existing = seen.get(value);
+    if (existing) return existing;
+    const output: unknown[] = [];
+    seen.set(value, output);
+    output.push(...value.map((item) => removeOpenApiSchemaEnums(item, seen)));
+    return output;
+  }
+  if (!isRecord(value)) return value;
+
+  const existing = seen.get(value);
+  if (existing) return existing;
+  const output: Record<string, unknown> = {};
+  seen.set(value, output);
+  for (const [key, item] of Object.entries(value)) {
+    if (key === 'enum') continue;
+    output[key] = removeOpenApiSchemaEnums(item, seen);
+  }
+  return output;
 }
 
 export function buildOpenApiSchemaFindTargets(
