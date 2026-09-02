@@ -269,6 +269,21 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('unrelatedChild')).not.toBeVisible();
   });
 
+  it('resets manual search collapse when the query changes', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'channel' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+
+    fireEvent.change(search, { target: { value: 'remote_rtc_uids' } });
+
+    expect(screen.getByText('remote_rtc_uids')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Collapse config properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+  });
+
   it('shows the complete dotted path next to a direct search match', () => {
     renderTree();
     const search = screen.getByRole('searchbox', { name: 'Filter properties' });

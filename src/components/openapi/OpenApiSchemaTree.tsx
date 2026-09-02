@@ -230,6 +230,11 @@ export function OpenApiSchemaTree({
   }, [effectiveExpandedIds, findNodeChain, findNodeRow, pendingFocusId]);
 
   function handleSearchChange(nextQuery: string) {
+    if (query.trim() && nextQuery.trim() && query.trim() !== nextQuery.trim()) {
+      setSearchExpandedIds(new Set());
+      setSearchCollapsedIds(new Set());
+    }
+
     if (!query.trim() && nextQuery.trim()) {
       preSearchExpandedIds.current = new Set(expandedIds);
       setSearchExpandedIds(new Set());
