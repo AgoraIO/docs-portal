@@ -20,7 +20,10 @@ const platformGroups = [
     platformIds: ['android', 'ios', 'react-native', 'flutter'],
   },
   { label: 'Web', platformIds: ['web', 'react-js', 'electron'] },
-  { label: 'Desktop', platformIds: ['windows', 'macos', 'linux'] },
+  {
+    label: 'Desktop',
+    platformIds: ['windows', 'macos', 'linux', 'linux-cpp', 'linux-java'],
+  },
   { label: 'Game engines', platformIds: ['unity', 'unreal-engine'] },
 ] as const;
 
