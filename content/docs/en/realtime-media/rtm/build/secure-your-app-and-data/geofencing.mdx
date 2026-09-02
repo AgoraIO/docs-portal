@@ -407,6 +407,50 @@ This section contains content that completes the information on this page, or po
 
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.
+
+## Understand the tech
+
+When you set area codes in your client configuration, the SDK only accesses the Agora server in the specified zone(s), irrespective of the geographical location of the user.
+
+The following zones are available:
+
+- **GLOB**: Global (Default)
+- **NA**: North America
+- **CN**: Mainland China.
+- **AS**: Asia excluding mainland China.
+- **EU**: Europe
+- **IN**: India
+- **JP**: Japan
+
+## Prerequisites
+
+Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/quickstart) in your project.
+
+## Configure geographical zones
+
+To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
+
+```java
+RtmConfig rtmConfig = new RtmConfig.Builder("<your_app_id>", "<your_user_Id>")
+    .areaCode(EnumSet.of(RtmConstants.RtmAreaCode.AS, RtmConstants.RtmAreaCode.CN))
+    .eventListener(eventListener)
+    .build();
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+* [`RtmConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+* [`RtmClient.create`](/en/api-reference/api-ref/signaling#configcreatepropsag_platform)
+
+</PlatformStructured>
+
 <PlatformStructured platform="unity">
 
 To comply with local laws and regulations, you can restrict user connections to specific geographic zones. Agora enables you to control data routing in your app by specifying the Agora SDRTN® zones that users can connect to.

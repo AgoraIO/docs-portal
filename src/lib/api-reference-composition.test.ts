@@ -48,6 +48,19 @@ describe('api reference composition', () => {
     ]) {
       expect(titles).toContain(t);
     }
+    expect(titles).not.toContain('Media Player Kit');
+  });
+
+  it('does not expose Media Player Kit hosted SDK entries in the API reference overview', () => {
+    const apiReferenceOverview = readFileSync(
+      path.join(
+        process.cwd(),
+        'content/docs/en/api-reference/api-ref/index.mdx',
+      ),
+      'utf8',
+    );
+
+    expect(apiReferenceOverview).not.toContain('Media Player Kit');
   });
 
   it('gives each mapped product a REST API leaf at the right url, and SDK-only products none', () => {

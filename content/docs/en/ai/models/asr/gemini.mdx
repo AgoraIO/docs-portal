@@ -34,7 +34,7 @@ agent = (
     Agent(client)
     .with_stt(GeminiTranscribeSTT(
         api_key='your-google-api-key',
-        model='gemini-3.5-transcribe-live-preview',
+        model='gemini-3.5-transcribe-live',
         language='en-US',
         sample_rate=16000,
         word_timestamp=True,
@@ -61,7 +61,7 @@ const client = new AgoraPreviewClient({
 const agent = new Agent({ client })
   .withStt(new GeminiTranscribeSTT({
     apiKey: 'your-google-api-key',
-    model: 'gemini-3.5-transcribe-live-preview',
+    model: 'gemini-3.5-transcribe-live',
     language: 'en-US',
     sampleRate: 16000,
     wordTimestamp: true,
@@ -94,7 +94,7 @@ client := agentkit.NewAgoraPreviewClient(agentkit.AgoraPreviewClientOptions{
 agent := agentkit.NewAgent(client).WithStt(
     vendors.NewGeminiTranscribeSTT(vendors.GeminiTranscribeSTTOptions{
         APIKey:        "your-google-api-key",
-        Model:         "gemini-3.5-transcribe-live-preview",
+        Model:         "gemini-3.5-transcribe-live",
         Language:      "en-US",
         SampleRate:    16000,
         WordTimestamp: Agora.Bool(true),
@@ -122,7 +122,7 @@ Use the following `asr` configuration in your request:
   "language": "en-US",
   "params": {
     "api_key": "<GOOGLE_GEMINI_API_KEY>",
-    "model": "gemini-3.5-transcribe-live-preview",
+    "model": "gemini-3.5-transcribe-live",
     "sample_rate": 16000,
     "language": "en-US",
     "word_timestamp": true
@@ -152,7 +152,7 @@ The parameters listed on this page are validated for use with Conversational AI 
    The Google Gemini API key used to authenticate requests. You can generate an API key in [Google AI Studio](https://aistudio.google.com/apikey).
   </Parameter>
   <Parameter name="model" type="string" required={true}>
-   The Gemini transcription model identifier. Set to `gemini-3.5-transcribe-live-preview`.
+   The Gemini transcription model identifier. Set to `gemini-3.5-transcribe-live` to use Gemini 3.5 Transcribe Live.
   </Parameter>
   <Parameter name="sample_rate" type="integer" required={false}>
    The audio sample rate in Hz. For example, `16000`.

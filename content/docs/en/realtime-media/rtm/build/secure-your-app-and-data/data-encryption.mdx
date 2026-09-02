@@ -511,6 +511,65 @@ This section contains content that completes the information on this page, or po
 
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.
+
+## Understand the tech
+
+Signaling provides the following security features:
+
+- **Transport layer encryption**: Data transmission between the client, the server, and the Signaling server is encrypted using TLS. This feature is enabled by default and cannot be disabled.
+
+- **Message encryption**: Each message is protected with end-to-end encryption after you configure the encryption parameters.
+
+- **Token authorization**: The SDK incorporates time-based access control strategies to ensure that only authorized users are able to access Signaling resources. For details, see [Secure authentication with tokens](../connect-and-authenticate/authentication-workflow).
+
+If your application requires enhanced data security, or compliance with HIPAA or SOC2 type II standards, implement message-level encryption. Best practice is to use a combination of TLS encryption for data transmission and end-to-end AES encryption for messages.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+## Implement end-to-end message encryption
+
+The Signaling SDK includes a built-in AES 256 GCM encryption algorithm. To enable end-to-end encryption and decryption, simply configure the encryption mode, encryption key, and salt parameters when initializing the Signaling client instance. After encryption is enabled, the SDK automatically encrypts messages before transmission and decrypts them upon receipt, using the same encryption parameters. Your data is protected throughout the transmission pipeline. Even if a message is temporarily stored on the Signaling server, it remains cryptographically protected and cannot be accessed without the correct key and salt.
+
+Refer to the following sample code to configure end-to-end encryption:
+
+```java
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig();
+// Set the encryption mode, which can be `AES_256_GCM`, `AES_128_GCM`, or `NONE`.
+// The default value is `NONE`, which means encryption is not enabled.
+encryptionConfig.setEncryptionMode(RtmEncryptionMode.AES_256_GCM);
+encryptionConfig.setEncryptionKey("your_encryptionKey");
+byte[] salt = {1, 2, 3, 4, 5};
+encryptionConfig.setEncryptionSalt(salt);
+
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .encryptionConfig(encryptionConfig)
+    .build();
+mRtmClient = RtmClient.create(rtmConfig);
+```
+
+When automatic encryption and decryption is enabled, all clients under the same app ID must enable this feature and use the same encryption parameters to communicate smoothly.
+
+:::warning[Note]
+Automatic encryption and decryption may impact functionality in some use-cases. For instance, if you use mobile push notifications, Signaling is unable to read the mobile push keys and values provided in the message payload due to encryption. In such use-cases, only encrypt the sensitive data in the message payload and keep other data segments in plain text. This partial encryption feature may be provided in future versions of Signaling SDK.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+
+</PlatformStructured>
+
 <PlatformStructured platform="unity">
 
 Agora places great emphasis on the security of user data and privacy. Signaling provides TLS encryption at the transport layer and 256-bit AES encryption on the client side to effectively protect user data. Signaling is also compliant with GDPR, SOC2 Type II, and other security standards.

@@ -790,19 +790,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-android',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-android',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Android_rel.v1.3.0_14564_ffmpeg_player_lite_20210723_1234.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -1396,19 +1383,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-ios',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-ios',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_iOS_rel.v1.3.0_53009_ffmpeg_player_lite_20210702_1606.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -1421,8 +1395,16 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.24.8-video-sdk-web',
+            label: 'Version 4.24.8 (Latest)',
+            downloadLink:
+              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_8_FULL.zip',
+            packageManager:
+              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.8',
+          },
+          {
             id: '4.24.7-video-sdk-web',
-            label: 'Version 4.24.7 (Latest)',
+            label: 'Version 4.24.7',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_7_FULL.zip',
             packageManager:
@@ -2170,19 +2152,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-macOS',
-        label: 'Mediaplayer Kit SDK',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-macOS',
-            label: 'version 1.3.0 (Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Mac_rel.v1.3.0_31754_ffmpeg_player_lite_20210716_1813.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -2708,32 +2677,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
-      {
-        id: 'mediaplayer-kit-windows-x86',
-        label: 'Mediaplayer Kit SDK (x86)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x86',
-            label: 'version 1.3.0 (x86)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x86_rel.v1.3.0_63393_ffmpeg_player_lite_20210727_1117.zip',
-          },
-        ],
-      },
-      {
-        id: 'mediaplayer-kit-windows-x64',
-        label: 'Mediaplayer Kit SDK (x64)',
-        info: 'SDK for: Mediaplayer Kit',
-        versions: [
-          {
-            id: '1.3.0-mediaplayer-kit-windows-x64',
-            label: 'version 1.3.0 (x64)(Latest)',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Media_Player_for_Windows_x64_rel.v1.3.0_63392_ffmpeg_player_lite_20210727_1117.zip',
-          },
-        ],
-      },
     ],
   },
   {
@@ -2927,73 +2870,6 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     label: 'Linux',
     core: [
       {
-        id: 'rtm-sdk-linux',
-        label: 'Signaling SDK',
-        info: 'SDK for: Real-Time Messaging',
-        versions: [
-          {
-            id: '2.3.0-rtm-sdk-linux-cpp',
-            label: 'Version 2.3.0 for C++ (Latest)',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
-          },
-          {
-            id: '2.2.8-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.8 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
-          },
-          {
-            id: '2.2.6-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.6 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.6.zip',
-          },
-          {
-            id: '2.2.4-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.4 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.4.zip',
-          },
-          {
-            id: '2.2.2-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.2 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.2.zip',
-          },
-          {
-            id: '2.2.1-rtm-sdk-linux-cpp',
-            label: 'Version 2.2.1 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.1.zip',
-          },
-          {
-            id: '2.1.12-rtm-sdk-linux-cpp',
-            label: 'Version 2.1.12 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.12.zip',
-          },
-          {
-            id: '2.1.11-rtm-sdk-linux-cpp',
-            label: 'Version 2.1.11 for C++ ',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.11.zip',
-          },
-          {
-            id: '2.1.10-rtm-sdk-linux-cpp',
-            label: 'Version 2.1.10 for C++ ',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.10.zip',
-          },
-          {
-            id: '2.1.9-rtm-sdk-linux-cpp',
-            label: 'Version 2.1.9 for C++',
-            downloadLink:
-              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v219.zip',
-          },
-        ],
-      },
-      {
         id: 'iot-sdk-c',
         label: 'IoT SDK',
         info: 'SDK for: Embedded Devices',
@@ -3121,6 +2997,100 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             label: 'Version 3.7.2 for Java',
             packageManager:
               'https://mvnrepository.com/artifact/io.agora.rtc/linux-sdk',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'linux-cpp',
+    label: 'Linux C++',
+    core: [
+      {
+        id: 'rtm-sdk-linux-cpp',
+        label: 'Signaling SDK',
+        info: 'SDK for: Real-Time Messaging',
+        versions: [
+          {
+            id: '2.3.0-rtm-sdk-linux-cpp',
+            label: 'Version 2.3.0 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
+          },
+          {
+            id: '2.2.8-rtm-sdk-linux-cpp',
+            label: 'Version 2.2.8',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.8.zip',
+          },
+          {
+            id: '2.2.6-rtm-sdk-linux-cpp',
+            label: 'Version 2.2.6',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.6.zip',
+          },
+          {
+            id: '2.2.4-rtm-sdk-linux-cpp',
+            label: 'Version 2.2.4',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.4.zip',
+          },
+          {
+            id: '2.2.2-rtm-sdk-linux-cpp',
+            label: 'Version 2.2.2',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.2.zip',
+          },
+          {
+            id: '2.2.1-rtm-sdk-linux-cpp',
+            label: 'Version 2.2.1',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.2.1.zip',
+          },
+          {
+            id: '2.1.12-rtm-sdk-linux-cpp',
+            label: 'Version 2.1.12',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.12.zip',
+          },
+          {
+            id: '2.1.11-rtm-sdk-linux-cpp',
+            label: 'Version 2.1.11',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.11.zip',
+          },
+          {
+            id: '2.1.10-rtm-sdk-linux-cpp',
+            label: 'Version 2.1.10',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v2.1.10.zip',
+          },
+          {
+            id: '2.1.9-rtm-sdk-linux-cpp',
+            label: 'Version 2.1.9',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_C%2B%2B_SDK_for_Linux_v219.zip',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'linux-java',
+    label: 'Linux Java',
+    core: [
+      {
+        id: 'rtm-sdk-linux-java',
+        label: 'Signaling SDK',
+        info: 'SDK for: Real-Time Messaging',
+        versions: [
+          {
+            id: '2.3.0-rtm-sdk-linux-java-aarch64',
+            label: 'Version 2.3.0 for aarch64 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_JAVA_SDK_for_Linux_aarch64_v2.3.0.zip',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.agora/rtm-java-aarch64/2.3.0',
           },
         ],
       },

@@ -39,7 +39,9 @@ import {
   lazy,
   type ReactNode,
   useDeferredValue,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
@@ -622,6 +624,7 @@ export type RecipeCatalogItem = {
   href?: string;
   links?: RecipeCatalogItemLink[];
   product: string;
+  sdk?: string;
   stack?: string;
   tags?: string[];
   title: string;
@@ -731,6 +734,7 @@ function SolutionCard({
 export function RecipesCatalog({
   allCategoriesLabel,
   allProductsLabel,
+  allSdksLabel,
   allStacksLabel,
   categoryFilterLabel,
   clearFiltersLabel,
@@ -739,7 +743,10 @@ export function RecipesCatalog({
   items,
   productGroups,
   productFilterLabel,
+  productQueryParam,
   searchPlaceholder,
+  sdkFilterLabel,
+  sdkQueryParam,
   showCategoryFilter = true,
   showDescription = true,
   showTags = true,
@@ -748,6 +755,7 @@ export function RecipesCatalog({
 }: {
   allCategoriesLabel: string;
   allProductsLabel: string;
+  allSdksLabel?: string;
   allStacksLabel: string;
   categoryFilterLabel: string;
   clearFiltersLabel: string;
@@ -756,7 +764,10 @@ export function RecipesCatalog({
   items: RecipeCatalogItem[];
   productGroups?: Record<string, RecipeCatalogGroupMeta>;
   productFilterLabel: string;
+  productQueryParam?: string;
   searchPlaceholder: string;
+  sdkFilterLabel?: string;
+  sdkQueryParam?: string;
   showCategoryFilter?: boolean;
   showDescription?: boolean;
   showTags?: boolean;
@@ -765,6 +776,10 @@ export function RecipesCatalog({
 }) {
   const [query, setQuery] = useState('');
   const [activeProduct, setActiveProduct] = useState(allProductsLabel);
+  const hasInitializedProductFromQuery = useRef(false);
+  const sdkFallback = allSdksLabel ?? '';
+  const [activeSdk, setActiveSdk] = useState(sdkFallback);
+  const hasInitializedSdkFromQuery = useRef(false);
   const [activeCategory, setActiveCategory] = useState(allCategoriesLabel);
   const initialStack = useMemo(
     () => getInitialRecipeStack(items, allStacksLabel, stackQueryParam),
@@ -772,6 +787,38 @@ export function RecipesCatalog({
   );
   const [activeStack, setActiveStack] = useState(initialStack);
   const deferredQuery = useDeferredValue(query);
+
+  useEffect(() => {
+    if (hasInitializedProductFromQuery.current) {
+      return;
+    }
+
+    hasInitializedProductFromQuery.current = true;
+    setActiveProduct(
+      getInitialRecipeProduct(items, allProductsLabel, productQueryParam),
+    );
+  }, [allProductsLabel, items, productQueryParam]);
+
+  useEffect(() => {
+    if (hasInitializedSdkFromQuery.current) {
+      return;
+    }
+
+    hasInitializedSdkFromQuery.current = true;
+    const initialProduct = getInitialRecipeProduct(
+      items,
+      allProductsLabel,
+      productQueryParam,
+    );
+    const initialSdkItems =
+      initialProduct === allProductsLabel
+        ? items
+        : items.filter((item) => item.product === initialProduct);
+
+    setActiveSdk(
+      getInitialRecipeSdk(initialSdkItems, sdkFallback, sdkQueryParam),
+    );
+  }, [allProductsLabel, items, productQueryParam, sdkFallback, sdkQueryParam]);
 
   const products = useMemo(
     () => [
@@ -786,6 +833,25 @@ export function RecipesCatalog({
       ...getUniqueValues(items.map((item) => item.category)),
     ],
     [allCategoriesLabel, items],
+  );
+  const sdkItems = useMemo(
+    () =>
+      activeProduct === allProductsLabel
+        ? items
+        : items.filter((item) => item.product === activeProduct),
+    [activeProduct, allProductsLabel, items],
+  );
+  const sdks = useMemo(
+    () =>
+      sdkFallback
+        ? [
+            sdkFallback,
+            ...getUniqueValues(
+              sdkItems.map((item) => item.sdk).filter(Boolean),
+            ),
+          ]
+        : [],
+    [sdkFallback, sdkItems],
   );
   const stacks = useMemo(
     () => [
@@ -814,6 +880,14 @@ export function RecipesCatalog({
       }
 
       if (
+        sdkFallback &&
+        activeSdk !== sdkFallback &&
+        (item.sdk ?? '') !== activeSdk
+      ) {
+        return false;
+      }
+
+      if (
         activeStack !== allStacksLabel &&
         (item.stack ?? '') !== activeStack
       ) {
@@ -829,6 +903,7 @@ export function RecipesCatalog({
           item.title,
           item.description,
           item.product,
+          item.sdk,
           item.category,
           item.stack,
           ...(item.tags ?? []),
@@ -843,16 +918,19 @@ export function RecipesCatalog({
   }, [
     activeCategory,
     activeProduct,
+    activeSdk,
     activeStack,
     allCategoriesLabel,
     allProductsLabel,
     allStacksLabel,
     deferredQuery,
     items,
+    sdkFallback,
   ]);
   const hasActiveFilters =
     query.length > 0 ||
     activeProduct !== allProductsLabel ||
+    (sdkFallback && activeSdk !== sdkFallback) ||
     activeCategory !== allCategoriesLabel ||
     activeStack !== allStacksLabel;
   const groupedItems = useMemo(() => {
@@ -874,6 +952,24 @@ export function RecipesCatalog({
     }));
   }, [filteredItems]);
 
+  function selectProduct(product: string) {
+    setActiveProduct(product);
+
+    if (!sdkFallback || activeSdk === sdkFallback) {
+      return;
+    }
+
+    const productSupportsActiveSdk = items.some(
+      (item) =>
+        (product === allProductsLabel || item.product === product) &&
+        item.sdk === activeSdk,
+    );
+
+    if (!productSupportsActiveSdk) {
+      setActiveSdk(sdkFallback);
+    }
+  }
+
   return (
     <section className="not-prose my-8">
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -893,6 +989,7 @@ export function RecipesCatalog({
             onClick={() => {
               setQuery('');
               setActiveProduct(allProductsLabel);
+              setActiveSdk(sdkFallback);
               setActiveCategory(allCategoriesLabel);
               setActiveStack(allStacksLabel);
             }}
@@ -906,9 +1003,17 @@ export function RecipesCatalog({
         <RecipesCatalogFilterGroup
           activeValue={activeProduct}
           label={productFilterLabel}
-          onSelect={setActiveProduct}
+          onSelect={selectProduct}
           values={products}
         />
+        {sdkFilterLabel && sdkFallback && sdks.length > 1 ? (
+          <RecipesCatalogFilterGroup
+            activeValue={activeSdk}
+            label={sdkFilterLabel}
+            onSelect={setActiveSdk}
+            values={sdks}
+          />
+        ) : null}
         {showCategoryFilter ? (
           <RecipesCatalogFilterGroup
             activeValue={activeCategory}
@@ -956,16 +1061,14 @@ export function RecipesCatalog({
                       actions={item.links}
                       description={item.description}
                       href={item.href}
-                      key={
-                        item.href ??
-                        `${item.product}-${item.stack ?? item.title}`
-                      }
+                      key={recipeCatalogItemKey(item)}
                       size="small"
                       showDescription={showDescription}
                       tags={
                         showTags
                           ? [
                               item.product,
+                              ...(item.sdk ? [item.sdk] : []),
                               item.category,
                               ...(item.stack ? [item.stack] : []),
                               ...(item.tags ?? []),
@@ -988,13 +1091,14 @@ export function RecipesCatalog({
                 actions={item.links}
                 description={item.description}
                 href={item.href}
-                key={item.href ?? `${item.product}-${item.stack ?? item.title}`}
+                key={recipeCatalogItemKey(item)}
                 size="small"
                 showDescription={showDescription}
                 tags={
                   showTags
                     ? [
                         item.product,
+                        ...(item.sdk ? [item.sdk] : []),
                         item.category,
                         ...(item.stack ? [item.stack] : []),
                         ...(item.tags ?? []),
@@ -1391,6 +1495,65 @@ function getUniqueValues(values: Array<string | undefined>) {
   ];
 }
 
+function recipeCatalogItemKey(item: RecipeCatalogItem) {
+  return (
+    item.href ??
+    [item.product, item.sdk, item.stack, item.title].filter(Boolean).join('|')
+  );
+}
+
+function getInitialRecipeProduct(
+  items: RecipeCatalogItem[],
+  fallback: string,
+  queryParam?: string,
+) {
+  if (typeof window === 'undefined' || !queryParam) {
+    return fallback;
+  }
+
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
+
+  if (!queryValue) {
+    return fallback;
+  }
+
+  const normalizedQueryValue = normalizeRecipeProductValue(queryValue);
+  const matchingProduct = getUniqueValues(
+    items.map((item) => item.product),
+  ).find(
+    (product) => normalizeRecipeProductValue(product) === normalizedQueryValue,
+  );
+
+  return matchingProduct ?? fallback;
+}
+
+function getInitialRecipeSdk(
+  items: RecipeCatalogItem[],
+  fallback: string,
+  queryParam?: string,
+) {
+  if (typeof window === 'undefined' || !fallback || !queryParam) {
+    return fallback;
+  }
+
+  const queryValue = new URLSearchParams(window.location.search).get(
+    queryParam,
+  );
+
+  if (!queryValue) {
+    return fallback;
+  }
+
+  const normalizedQueryValue = normalizeRecipeSdkValue(queryValue);
+  const matchingSdk = getUniqueValues(
+    items.map((item) => item.sdk).filter(Boolean),
+  ).find((sdk) => normalizeRecipeSdkValue(sdk) === normalizedQueryValue);
+
+  return matchingSdk ?? fallback;
+}
+
 function getInitialRecipeStack(
   items: RecipeCatalogItem[],
   fallback: string,
@@ -1428,6 +1591,16 @@ function getInitialRecipeStack(
 
 function normalizeRecipeFilterValue(value: string) {
   return value.trim().toLowerCase();
+}
+
+function normalizeRecipeProductValue(value: string) {
+  return normalizeRecipeFilterValue(value)
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function normalizeRecipeSdkValue(value: string) {
+  return normalizeRecipeProductValue(value).replace(/-sdk$/, '');
 }
 
 function getSolutionToneClasses(_tone: SolutionCardTone) {

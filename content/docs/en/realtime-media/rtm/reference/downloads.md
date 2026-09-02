@@ -120,13 +120,13 @@ To manually install the Signaling SDK for Android from a downloaded package:
 
 1. Copy the following files or folders from the `libs` folder to your Android project.
 
-| File or folder | Path in your project |
-| --- | --- |
-| `agora-rtm_sdk.jar` | `/app/libs/` |
-| `/arm64-v8a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/arm64-v8a/` |
-| `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
-| `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
-| `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
+    | File or folder | Path in your project |
+    | --- | --- |
+    | `agora-rtm_sdk.jar` | `/app/libs/` |
+    | `/arm64-v8a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/arm64-v8a/` |
+    | `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
+    | `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
+    | `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
 
 </TabsContent>
 
@@ -273,11 +273,7 @@ The steps to execute these scripts are as follows:
 </TabsContent>
 
 <TabsContent value="linux-java">
-To manually install the Signaling SDK for Linux Java:
-
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
-
-1. Copy the `*.so` file and the `*.jar` file to the `lib` folder.
+To install the Signaling SDK for Linux Java using Maven:
 
 1. Create a file named `pom.xml` in `RTM_quickstart` with the following content:
 
@@ -289,20 +285,21 @@ To manually install the Signaling SDK for Linux Java:
         <modelVersion>4.0.0</modelVersion>
 
         <groupId>io.agora</groupId>
-        <artifactId>Signaling-Client-Demo</artifactId>
+        <artifactId>RTM-Java-Demo</artifactId>
         <version>1.0-SNAPSHOT</version>
 
         <properties>
             <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-            <maven.compiler.source>1.6</maven.compiler.source>
-            <maven.compiler.target>1.6</maven.compiler.target>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
         </properties>
 
+        <!-- [!code highlight:7] -->
         <dependencies>
             <dependency>
-                <groupId>io.agora.rtm</groupId>
-                <artifactId>agora-rtm-sdk</artifactId>
-                <version>1.0</version>
+                <groupId>io.agora</groupId>
+                <artifactId>rtm-java-aarch64</artifactId>
+                <version>x.y.z</version>
             </dependency>
         </dependencies>
 
@@ -322,7 +319,7 @@ To manually install the Signaling SDK for Linux Java:
                             <configuration>
                                 <transformers>
                                     <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>io.agora.mainClass.RtmJavaDemo</mainClass>
+                                        <mainClass>io.agora.RtmJavaDemo</mainClass>
                                     </transformer>
                                 </transformers>
                             </configuration>
@@ -333,12 +330,18 @@ To manually install the Signaling SDK for Linux Java:
         </build>
     </project>
     ```
+
+    Replace `x.y.z` with the specific SDK version number, such as `2.3.0`. To get the latest version number, check the [Release notes](/en/realtime-media/rtm/reference/release-notes).
+
+    The `artifactId` is architecture-specific. Use `rtm-java-aarch64` for aarch64 (arm64) devices, or `rtm-java-x86_64` for x86-64 devices.
+
+1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux-java) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
 </TabsContent>
 
 <TabsContent value="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
-1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux) to a local folder.
+1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux-cpp) to a local folder.
 
 1. Copy the `*.so` file in the SDK folder into your `lib` folder, and copy the `*.h` file in the SDK folder into your `include` folder.
 
@@ -410,13 +413,13 @@ To manually install the Signaling SDK for Unity, do one of the following:
 
 1. Copy the following files under the `libs/Plugins` path in the SDK package to the corresponding path of the project:
 
-| Development platform | File or folder | Project directory |
-| --- | --- | --- |
-| Android | `Plugins/Android` | `/Assets/Plugins/Android/` |
-| iOS | `Plugins/iOS` | `/Assets/Plugins/iOS` |
-| macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
-| Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
-| Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
+    | Development platform | File or folder | Project directory |
+    | --- | --- | --- |
+    | Android | `Plugins/Android` | `/Assets/Plugins/Android/` |
+    | iOS | `Plugins/iOS` | `/Assets/Plugins/iOS` |
+    | macOS | `Plugins/macOS` | `/Assets/Plugins/macOS` |
+    | Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
+    | Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
 
 </TabsContent>
 
