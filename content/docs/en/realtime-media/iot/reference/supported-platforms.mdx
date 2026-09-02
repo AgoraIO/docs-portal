@@ -3,40 +3,16 @@ title: "Supported platforms"
 description: "The platforms supported by this product."
 ---
 
-<PlatformStructured platform="android">
-
-This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
-
-- *Platforms*:
-
-  | Target Platform | Operating system version | IDE version |
-  |-----------------|--------------------------|---------------------------------------|
-  | Android | Android 4.1 or later. | Android Studio 3.0 or later |
-
-  IoT SDK supports the following Android ABIs:
-
-  - armeabi-v7a
-  - arm64-v8a
-  - x86
-  - x86-64
-
-- *Browsers supported on Android*:
-
-  |Browser or application |Receiving streams |Sending streams|
-  |---|---|---|
-  |The latest version of Chrome |Supported |Supported|
-  |The latest version of WeChat |Supported |Supported|
-
-</PlatformStructured>
-
-<PlatformStructured platform="linux-c">
-
 This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
 
 - *Platforms*:
 
   | Target Platform | Operating system version | IDE version |
   | --- | --- | --- |
-  | Linux | x86_64: gcc 2.6.35 or higher; ARM: arm-linux-gnueabi 4.4.x or higher, arm-linux-gnueabihf 4.8.x or higher, aarch64-linux-gnu 4.8.x or higher, arm-linux-musleabihf 5.2.x or higher, arm-linux-musleabi 5.5.x or higher, aarch64-linux-musl 5.5.x or higher, arm-linux-uclibceabi 4.4.x or higher, arm-linux-uclibceabihf 4.8.x or higher; MIPS: mips-linux-uclibceabihf 4.7.x or higher. | - |
+  | Linux | <ul><li>x86_64: gcc 2.6.35 or higher.</li><li>ARM:<ul><li>arm-linux-gnueabi 4.4.x or higher</li><li>arm-linux-gnueabihf 4.8.x or higher</li><li>aarch64-linux-gnu 4.8.x or higher</li><li>arm-linux-musleabihf 5.2.x or higher</li><li>arm-linux-musleabi 5.5.x or higher</li><li>aarch64-linux-musl 5.5.x or higher</li><li>arm-linux-uclibceabi 4.4.x or higher</li><li>arm-linux-uclibceabihf 4.8.x or higher</li></ul></li><li>MIPS: mips-linux-uclibceabihf 4.7.x or higher.</li></ul> | - |
+  | HarmonyOS | ARM: armv7a-harmony-eabi. | - |
+  | LiteOS | ARM: arm-liteos-eabi, LiteOS 2.0 or higher. | - |
 
-</PlatformStructured>
+For a full list of downloadable SDK packages by architecture, C library, and float ABI, see [Resources](/en/realtime-media/iot/reference/resources).
+
+If your target platform isn't listed, see [Agora Open Source Layer (AOSL)](https://github.com/AgoraIO-Community/aosl). AOSL provides a lightweight platform abstraction layer for common operations such as threads, I/O, logging, memory, files, sockets, time, and atomic operations. It helps isolate platform-specific code and simplify SDK integration on custom embedded platforms. AOSL doesn't automatically add support for every chipset or operating system: you may need to implement and validate the required platform layer for your target device.

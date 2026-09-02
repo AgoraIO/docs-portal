@@ -1,0 +1,125 @@
+---
+title: "Implement multi-streaming"
+description: "Stream to multiple channels or push multiple streams to a single channel."
+---
+
+Some special use-cases require live streaming over two or more separate channels. For example, consider the case of a real-time monitoring system, where a camera feed is shared over two channels for two types of users. There are also certain applications where you want to send multiple streams over the same channel. Consider the case of a monitoring system where feeds from multiple cameras are shared on the same channel.
+
+IoT SDK's connection ID mechanism lets you join multiple channels at the same time, or send multiple streams over a single channel. This page shows you how to implement both multi-streaming methods. Choose the method that best fits your use case.
+
+## Understand the tech
+
+IoT SDK provides the following approaches to multi-streaming:
+
+* **Stream to multiple channels**
+
+    Create multiple connections, then join a different channel on each, using a distinct channel name and connection ID. Use the connection ID to specify the intended channel when you send audio or video data, leave a channel, or destroy a connection.
+
+* **Push multiple streams to a single channel**
+
+    Create multiple connections, then call the join channel method multiple times with the same channel name but a different user ID and connection ID for each. To send audio or video data, use the connection ID of the intended stream.
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
+
+## Stream to multiple channels
+
+Create multiple connections:
+
+```cpp
+connection_id_t conn1, conn2, conn3;
+agora_rtc_create_connection(&conn1);
+agora_rtc_create_connection(&conn2);
+agora_rtc_create_connection(&conn3);
+```
+
+Join a different channel on each connection:
+
+```cpp
+agora_rtc_join_channel(conn1, cname1, uid, token1, &channel_options);
+agora_rtc_join_channel(conn2, cname2, uid, token2, &channel_options);
+agora_rtc_join_channel(conn3, cname3, uid, token3, &channel_options);
+```
+
+Use each connection's ID to send audio or video data to its channel:
+
+```cpp
+// Send video streams to cname1/cname2/cname3
+agora_rtc_send_video_data(conn1, data, len, &info);
+agora_rtc_send_video_data(conn2, data, len, &info);
+agora_rtc_send_video_data(conn3, data, len, &info);
+
+// Send audio streams to cname1/cname2/cname3
+agora_rtc_send_audio_data(conn1, data, len, &info);
+agora_rtc_send_audio_data(conn2, data, len, &info);
+agora_rtc_send_audio_data(conn3, data, len, &info);
+```
+
+Use each connection's ID to leave its channel, then destroy the connection:
+
+```cpp
+agora_rtc_leave_channel(conn1);
+agora_rtc_leave_channel(conn2);
+agora_rtc_leave_channel(conn3);
+
+agora_rtc_destroy_connection(conn1);
+agora_rtc_destroy_connection(conn2);
+agora_rtc_destroy_connection(conn3);
+```
+
+## Push multiple streams to a single channel
+
+Create multiple connections:
+
+```cpp
+connection_id_t conn1, conn2, conn3;
+agora_rtc_create_connection(&conn1);
+agora_rtc_create_connection(&conn2);
+agora_rtc_create_connection(&conn3);
+```
+
+Join the same channel on each connection, using a different user ID each time:
+
+```cpp
+agora_rtc_join_channel(conn1, cname, 1, token, &channel_options);
+agora_rtc_join_channel(conn2, cname, 2, token, &channel_options);
+agora_rtc_join_channel(conn3, cname, 3, token, &channel_options);
+```
+
+Use each connection's ID to send an independent audio or video stream to the channel:
+
+```cpp
+// Send video streams to cname as uid=1/2/3
+agora_rtc_send_video_data(conn1, data, len, &info);
+agora_rtc_send_video_data(conn2, data, len, &info);
+agora_rtc_send_video_data(conn3, data, len, &info);
+
+// Send audio streams to cname as uid=1/2/3
+agora_rtc_send_audio_data(conn1, data, len, &info);
+agora_rtc_send_audio_data(conn2, data, len, &info);
+agora_rtc_send_audio_data(conn3, data, len, &info);
+```
+
+Use each connection's ID to leave the channel and destroy the connection:
+
+```cpp
+agora_rtc_leave_channel(conn1);
+agora_rtc_leave_channel(conn2);
+agora_rtc_leave_channel(conn3);
+
+agora_rtc_destroy_connection(conn1);
+agora_rtc_destroy_connection(conn2);
+agora_rtc_destroy_connection(conn3);
+```
+
+## Reference
+
+- [agora_rtc_create_connection](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#adef869ae47e2f1c194af611b57d06394)
+- [agora_rtc_join_channel](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a6c29ff27f04623526a164cf6e5dcd738)
+- [agora_rtc_send_audio_data](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a0a00045d34a87e7a3798c6c906f9e197)
+- [agora_rtc_send_video_data](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a05973c4f32a5eb480e52b4f566601bf5)
+- [agora_rtc_leave_channel](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a939878648ce563ef4041da892d478f8b)
+- [agora_rtc_destroy_connection](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#ac58d42a331c45233d81085fc13defcaf)

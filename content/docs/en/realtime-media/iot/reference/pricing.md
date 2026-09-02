@@ -1,5 +1,6 @@
 ---
 title: "Pricing"
-description: "Provides you with information on billing, fee deductions, free-of-charge policy, and any suspension to your account based on the account type."
+description: "Billing model and pricing for IoT SDK usage."
 ---
-For details about pricing, please submit a [Support ticket](https://agoraio.zendesk.com/hc/en-us).
+
+For IoT SDK licensing and pricing details, see [Implement licensing](/en/realtime-media/iot/build/authenticate-and-secure-channels/license). To receive a tailored quote, submit a [Support ticket](https://agoraio.zendesk.com/hc/en-us) with your requirements.

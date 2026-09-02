@@ -1,0 +1,74 @@
+---
+title: "Manage stream state"
+description: "Mute and unmute local and remote audio and video streams."
+---
+
+After you join a channel on a connection and start streaming, you can pause and resume sending local audio or video to a specific connection or to all connections. You can also pause and resume receiving audio or video from a specific remote user or all remote users.
+
+This page shows you how to mute and unmute local and remote audio and video streams in your IoT SDK app.
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
+
+## Send stream state
+
+To pause or resume sending local audio or video, call `agora_rtc_mute_local_audio` or `agora_rtc_mute_local_video` with the connection ID and a mute flag (`1` to mute, `0` to unmute):
+
+```cpp
+// Pause sending audio to a specific connection
+agora_rtc_mute_local_audio(conn_id, 1);
+// Resume sending audio to a specific connection
+agora_rtc_mute_local_audio(conn_id, 0);
+// Pause sending video to a specific connection
+agora_rtc_mute_local_video(conn_id, 1);
+// Resume sending video to a specific connection
+agora_rtc_mute_local_video(conn_id, 0);
+```
+
+:::info
+Pass `0` as the connection ID to mute or unmute all of your connections at once, instead of a single connection.
+:::
+
+## Receive stream state
+
+### Handle mute notifications from remote users
+
+When a remote user mutes or unmutes their audio or video stream, IoT SDK notifies you through the `on_user_mute_audio` and `on_user_mute_video` callbacks:
+
+```c
+static void __on_user_mute_audio(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] audio: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+
+static void __on_user_mute_video(connection_id_t conn_id, uint32_t uid, bool muted) {
+    printf("[conn-%u] video: uid=%u muted=%d\n", conn_id, uid, muted);
+}
+```
+
+### Pause and resume receiving remote streams
+
+To pause or resume receiving a remote user's audio or video, call `agora_rtc_mute_remote_audio` or `agora_rtc_mute_remote_video` with the connection ID, the remote user's ID, and a mute flag:
+
+```cpp
+const uint32_t remote_uid = 789;
+// Pause receiving audio from a remote user on a specific connection
+agora_rtc_mute_remote_audio(conn_id, remote_uid, 1);
+// Resume receiving audio from a remote user on a specific connection
+agora_rtc_mute_remote_audio(conn_id, remote_uid, 0);
+// Pause receiving video from a remote user on a specific connection
+agora_rtc_mute_remote_video(conn_id, remote_uid, 1);
+// Resume receiving video from a remote user on a specific connection
+agora_rtc_mute_remote_video(conn_id, remote_uid, 0);
+```
+
+## Reference
+
+- [on_user_mute_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#a5c823e048831fcefa7fca0a2c01ad864)
+- [on_user_mute_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/structagora__rtc__event__handler__t.html#ae07cf9b3a19154ad8d889a4bd3f51b59)
+- [agora_rtc_mute_local_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a28c1dae086be4014ad732a07db248b16)
+- [agora_rtc_mute_local_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a47f116e271b78c0659fcd68a96d34224)
+- [agora_rtc_mute_remote_audio](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a8ad8bfa0e0a46a0c5e7fae11449ab575)
+- [agora_rtc_mute_remote_video](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a894f5a102c66b20c408bb495ac424efa)

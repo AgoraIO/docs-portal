@@ -747,7 +747,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         versions: [
           {
             id: 'Agora-RTSALite-LJAutRmAcAjCP-Android-v1.8.0',
-            label: 'Version 1.8.0 (Latest)',
+            label: 'Version 1.8.0 (no longer updated)',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTSALite-LJAutRmAcAjCP-Android-v1.8.0-20230421_161341-262178.tgz',
           },
@@ -2924,8 +2924,116 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Embedded Devices',
         versions: [
           {
+            id: 'v1.9.7-x86_64-linux-gnu',
+            label: 'x86_64-linux-gnu Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-x86_64-linux-gnu-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-aarch64-linux-gnu',
+            label: 'aarch64-linux-gnu Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-aarch64-linux-gnu-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-aarch64-linux-musl',
+            label: 'aarch64-linux-musl Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-aarch64-linux-musl-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-gnueabihf',
+            label: 'armv7a-linux-gnueabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-gnueabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-gnueabi',
+            label: 'armv7a-linux-gnueabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-gnueabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-uclibceabihf',
+            label: 'armv7a-linux-uclibceabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-uclibceabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-uclibceabi',
+            label: 'armv7a-linux-uclibceabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-uclibceabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-musleabihf',
+            label: 'armv7a-linux-musleabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-musleabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-linux-musleabi',
+            label: 'armv7a-linux-musleabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-linux-musleabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv6-linux-gnueabihf',
+            label: 'armv6-linux-gnueabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-armv6-linux-gnueabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv6-linux-uclibceabi',
+            label: 'armv6-linux-uclibceabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-armv6-linux-uclibceabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv5-linux-gnueabi',
+            label: 'armv5-linux-gnueabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-armv5-linux-gnueabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv5-linux-uclibceabi',
+            label: 'armv5-linux-uclibceabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-armv5-linux-uclibceabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-mipsel-linux-gnueabihf',
+            label: 'mipsel-linux-gnueabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-mipsel-linux-gnueabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-mipsel-linux-uclibceabihf',
+            label: 'mipsel-linux-uclibceabihf Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-mipsel-linux-uclibceabihf-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-mipsel-linux-uclibceabi',
+            label: 'mipsel-linux-uclibceabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-mipsel-linux-uclibceabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-arm-liteos-eabi',
+            label: 'arm-liteos-eabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-liteos-eabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
+            id: 'v1.9.7-armv7a-harmony-eabi',
+            label: 'armv7a-harmony-eabi Version 1.9.7 (Latest)',
+            downloadLink:
+              'https://download.agora.io/rtsasdk/release/Agora-RTSALite-RmRdRcAcAjCF-arm-harmony-eabi-v1.9.7-20251127_103054-992914.tgz',
+          },
+          {
             id: 'Agora-RTSALite-RmAcAjCP-x86_64-linux-gnu-v1.8.0.tgz',
-            label: 'Version 1.8.0 (Latest)',
+            label: 'x86_64-linux-gnu Version 1.8.0',
             downloadLink:
               'https://download.agora.io/rtsasdk/release/Agora-RTSALite-AutAcAj-x86_64-linux-gnu-v1.8.0.tgz',
           },
