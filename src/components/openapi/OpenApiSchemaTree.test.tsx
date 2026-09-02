@@ -209,6 +209,46 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('1 matches')).toBeVisible();
   });
 
+  it('shows the complete dotted path next to a direct search match', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'channel' } });
+
+    expect(screen.getByText('config.channel')).toBeVisible();
+  });
+
+  it('keeps root rows and mounts hidden descendants for unrelated search branches', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'channel' } });
+
+    expect(screen.getByText('advanced')).toBeVisible();
+    expect(screen.getByText('unrelated')).toBeVisible();
+    expect(screen.getByText('advancedChild')).not.toBeVisible();
+    expect(screen.getByText('unrelatedChild')).not.toBeVisible();
+    expect(
+      getRow(advanced).parentElement?.querySelector(
+        '[data-openapi-schema-hidden-children][hidden="until-found"]',
+      ),
+    ).toBeTruthy();
+    expect(
+      getRow(unrelated).parentElement?.querySelector(
+        '[data-openapi-schema-hidden-children][hidden="until-found"]',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('announces zero search matches in the polite live status', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'does-not-exist' } });
+
+    expect(screen.getByRole('status')).toHaveTextContent('0 matches');
+  });
+
   it('reports no matches and restores the pre-search expansion state on Escape', () => {
     renderTree();
     const search = screen.getByRole('searchbox', { name: 'Filter properties' });

@@ -201,10 +201,18 @@ export function OpenApiSchemaTree({
   function renderNodes(
     candidates: OpenApiSchemaViewNode[],
     seen: Set<string> = new Set(),
+    includeHiddenDescendants = false,
   ): ReactNode[] {
     return candidates.flatMap((node) => {
       if (seen.has(node.id)) return [];
-      if (isSearching && !filterResult.visibleIds.has(node.id)) return [];
+      if (
+        isSearching &&
+        !includeHiddenDescendants &&
+        node.depth !== 0 &&
+        !filterResult.visibleIds.has(node.id)
+      ) {
+        return [];
+      }
 
       const nextSeen = new Set(seen).add(node.id);
       const expandable = node.children.length > 0;
@@ -214,16 +222,14 @@ export function OpenApiSchemaTree({
       const descendants = expandable
         ? expanded
           ? renderNodes(node.children, nextSeen)
-          : isSearching
-            ? []
-            : [
-                <HiddenDescendants
-                  key={`${node.id}-hidden`}
-                  onBeforeMatch={() => revealNode(node.id)}
-                >
-                  {renderNodes(node.children, nextSeen)}
-                </HiddenDescendants>,
-              ]
+          : [
+              <HiddenDescendants
+                key={`${node.id}-hidden`}
+                onBeforeMatch={() => revealNode(node.id)}
+              >
+                {renderNodes(node.children, nextSeen, true)}
+              </HiddenDescendants>,
+            ]
         : [];
 
       return [
@@ -252,6 +258,14 @@ export function OpenApiSchemaTree({
             }}
             remainingInfoTags={remainingInfoTags}
           />
+          {isSearching && directMatch ? (
+            <div
+              className="mt-1 break-words font-mono text-xs text-muted-foreground"
+              data-openapi-schema-match-path=""
+            >
+              {node.path}
+            </div>
+          ) : null}
           {descendants}
         </div>,
       ];
@@ -295,9 +309,7 @@ export function OpenApiSchemaTree({
         </div>
       </div>
       <div aria-live="polite" className="sr-only" role="status">
-        {isSearching && filterResult.matchCount > 0
-          ? `${filterResult.matchCount} ${labels.matchCount}`
-          : null}
+        {isSearching ? `${filterResult.matchCount} ${labels.matchCount}` : null}
       </div>
       <div data-openapi-schema-fields="">
         {renderNodes(nodes)}
