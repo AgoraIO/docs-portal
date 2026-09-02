@@ -72,23 +72,27 @@ describe('ApiReferenceCards', () => {
   it('renders merged API reference groups and filters by API type', async () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
-    expect(screen.getByRole('group', { name: 'API 类型' })).toBeVisible();
+    expect(screen.getByRole('radiogroup', { name: 'API 类型' })).toBeVisible();
     expect(screen.queryByLabelText('API 类型')).not.toBeInstanceOf(
       HTMLSelectElement,
     );
     expect(
       screen.getByRole('radio', { checked: true, name: '全部' }),
     ).toBeVisible();
-    expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
     expect(
-      screen.getByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
+      screen.getByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', {
+        name: /对话式 AI 引擎 Android 客户端 SDK/i,
+      }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/conversational-ai/android/overview',
     );
     expect(
       screen.getByRole('link', {
-        name: /对话式 AI Python Agent SDK 服务端 SDK/i,
+        name: /对话式 AI 引擎 Python Agent SDK 服务端 SDK/i,
       }),
     ).toHaveAttribute(
       'href',
@@ -101,24 +105,30 @@ describe('ApiReferenceCards', () => {
       screen.getByRole('radio', { checked: true, name: '服务端 SDK' }),
     ).toBeVisible();
     expect(
-      screen.queryByRole('link', { name: /对话式 AI Android 客户端 SDK/i }),
+      screen.queryByRole('link', {
+        name: /对话式 AI 引擎 Android 客户端 SDK/i,
+      }),
     ).not.toBeInTheDocument();
     expect(
       screen.getByRole('link', {
-        name: /对话式 AI Python Agent SDK 服务端 SDK/i,
+        name: /对话式 AI 引擎 Python Agent SDK 服务端 SDK/i,
       }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/conversational-ai/agent-python',
     );
     expect(
-      screen.queryByRole('link', { name: /对话式 AI RESTful API/i }),
+      screen.queryByRole('link', {
+        name: /对话式 AI 引擎 RESTful API/i,
+      }),
     ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('radio', { name: 'RESTful API' }));
 
     expect(
-      screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
+      screen.getByRole('link', {
+        name: /对话式 AI 引擎 RESTful API/i,
+      }),
     ).toHaveAttribute('href', '/zh-CN/api-reference/api-ref/conversational-ai');
     await waitFor(() => {
       expect(new URLSearchParams(window.location.search).get('apiType')).toBe(
@@ -127,12 +137,27 @@ describe('ApiReferenceCards', () => {
     });
   });
 
+  it('uses current Chinese product names in the product filter', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    expect(
+      screen.getByRole('option', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
+    expect(screen.getByRole('option', { name: '1v1 私密房' })).toBeVisible();
+    expect(
+      screen.queryByRole('option', { name: '对话式 AI' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('option', { name: '私密房' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('keeps the platform select left of API type and the product select as a mobile fallback', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
     const productSelect = screen.getByLabelText('产品');
     const platformSelect = screen.getByLabelText('平台/语言');
-    const apiType = screen.getByRole('group', { name: 'API 类型' });
+    const apiType = screen.getByRole('radiogroup', { name: 'API 类型' });
 
     expect(productSelect.closest('label')).toHaveClass('lg:hidden');
     expect(platformSelect.closest('label')).not.toHaveClass('lg:hidden');
@@ -156,7 +181,9 @@ describe('ApiReferenceCards', () => {
     expect(
       screen.queryByRole('heading', { name: '场景化解决方案' }),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
   });
 
   it('groups Conversational AI into Toolkit, Agora Agents, and RESTful API', () => {
@@ -167,7 +194,7 @@ describe('ApiReferenceCards', () => {
     });
 
     const aiCard = screen
-      .getByRole('heading', { name: '对话式 AI' })
+      .getByRole('heading', { name: '对话式 AI 引擎' })
       .closest('section');
 
     expect(
@@ -185,7 +212,9 @@ describe('ApiReferenceCards', () => {
     expect(screen.getByRole('heading', { name: 'RESTful API' })).toBeVisible();
     expect(
       within(
-        screen.getByRole('link', { name: /对话式 AI RESTful API/i }),
+        screen.getByRole('link', {
+          name: /对话式 AI 引擎 RESTful API/i,
+        }),
       ).getByText('RESTful API'),
     ).toBeVisible();
   });

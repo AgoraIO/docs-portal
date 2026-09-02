@@ -75,19 +75,22 @@ const PRODUCT_ICONS = new Map([
   ['平行操控', 'iot'],
 ]);
 const ROOT_PRODUCT_TITLES = new Map([
-  ['对话式 AI 引擎', '对话式 AI'],
-  ['微呼叫', 'VoIP 呼叫服务'],
-  ['灵动会议', '会议'],
-  ['1v1 私密房', '私密房'],
+  ['对话式 AI', '对话式 AI 引擎'],
+  ['微呼叫', '微呼叫'],
+  ['VoIP 呼叫服务', '微呼叫'],
+  ['会议', '智能云会议引擎'],
+  ['灵动会议', '智能云会议引擎'],
+  ['私密房', '1v1 私密房'],
+  ['1v1 私密房', '1v1 私密房'],
 ]);
 const ROOT_PRODUCT_ICONS = new Map([
-  ['对话式 AI', 'Bot'],
+  ['对话式 AI 引擎', 'Bot'],
   ['实时互动 RTC', 'AudioLines'],
   ['实时消息 RTM', 'Network'],
   ['融合 CDN 直播', 'RadioTower'],
   ['媒体流加速 RTSA', 'Radio'],
   ['互动白板', 'Presentation'],
-  ['VoIP 呼叫服务', 'PhoneCall'],
+  ['微呼叫', 'PhoneCall'],
   ['水晶球', 'ChartColumn'],
   ['实时转录翻译', 'Captions'],
   ['云端录制', 'HardDrive'],
@@ -99,14 +102,15 @@ const ROOT_PRODUCT_ICONS = new Map([
   ['RTC 服务端 SDK', 'ServerCog'],
   ['PPT 转码服务', 'FileVideo'],
   ['控制台', 'LayoutDashboard'],
-  ['会议', 'Users'],
+  ['智能云会议引擎', 'Users'],
   ['在线 K 歌房', 'MicVocal'],
-  ['私密房', 'Lock'],
+  ['1v1 私密房', 'Lock'],
   ['在线美术教学', 'Palette'],
   ['在线音乐教学', 'Music2'],
   ['平行操控', 'Gamepad2'],
 ]);
 const API_REFERENCE_CATALOG_PRODUCT_IDS = new Map([
+  ['对话式 AI 引擎', 'conversational-ai'],
   ['对话式 AI', 'conversational-ai'],
   ['实时互动 RTC', 'rtc'],
   ['实时消息 RTM', 'rtm'],
@@ -114,6 +118,7 @@ const API_REFERENCE_CATALOG_PRODUCT_IDS = new Map([
   ['融合 CDN 直播', 'fusion-cdn'],
   ['媒体流加速 RTSA', 'rtsa'],
   ['互动白板', 'whiteboard'],
+  ['微呼叫', 'voip-callkit'],
   ['VoIP 呼叫服务', 'voip-callkit'],
   ['水晶球', 'analytics'],
   ['实时转录翻译', 'speech-to-text'],
@@ -126,8 +131,10 @@ const API_REFERENCE_CATALOG_PRODUCT_IDS = new Map([
   ['RTC 服务端 SDK', 'rtc-server-sdk'],
   ['PPT 转码服务', 'ppt-conversion-service'],
   ['控制台', 'console'],
+  ['智能云会议引擎', 'meeting'],
   ['会议', 'meeting'],
   ['在线 K 歌房', 'online-ktv'],
+  ['1v1 私密房', 'private-room'],
   ['私密房', 'private-room'],
   ['在线美术教学', 'online-art-teaching'],
   ['在线音乐教学', 'online-music-teaching'],
@@ -1386,8 +1393,12 @@ export function buildApiReferenceCatalogGroups(
     currentProductGroups.length > 0
       ? currentProductGroups
       : existingCatalogGroups;
+  const normalizedPreservedGroups = preservedGroups.map((group) => ({
+    ...group,
+    title: rootProductTitle(group.title),
+  }));
   return reconcileRootProductGroups(
-    preservedGroups,
+    normalizedPreservedGroups,
     entries,
     apiReferenceRehome,
   ).filter(visibleRootProductGroup);
@@ -1449,14 +1460,20 @@ function catalogLabelParts(sourceLabel) {
 
 function catalogEntryLabelParts(product, action) {
   const projection = catalogLabelParts(action.label);
-  if (product === '对话式 AI' && action.label.startsWith('agent-')) {
+  if (
+    (product === '对话式 AI 引擎' || product === '对话式 AI') &&
+    action.label.startsWith('agent-')
+  ) {
     const language = action.label.slice('agent-'.length);
     const platform =
       { go: 'Go', python: 'Python', typescript: 'TypeScript' }[language] ??
       language;
     return { label: 'Agent SDK', platform };
   }
-  if (product === '对话式 AI' && action.route.includes('/restclient-')) {
+  if (
+    (product === '对话式 AI 引擎' || product === '对话式 AI') &&
+    action.route.includes('/restclient-')
+  ) {
     return { label: 'REST Client', platform: projection.platform };
   }
   if (projection.label === 'API 参考') {
@@ -1476,7 +1493,8 @@ function catalogApiType(product, sourceLabel, route, platform) {
   if (
     API_REFERENCE_CATALOG_SERVER_PRODUCTS.has(product) ||
     sourceLabel.includes('服务端 API') ||
-    (product === '对话式 AI' && !['Android', 'iOS', 'Web'].includes(platform))
+    ((product === '对话式 AI 引擎' || product === '对话式 AI') &&
+      !['Android', 'iOS', 'Web'].includes(platform))
   ) {
     return 'server-sdk';
   }
