@@ -155,7 +155,6 @@ export function OpenApiSchemaTree({
 
     const targetKey = JSON.stringify(revealTarget);
     if (lastRevealTarget.current === targetKey) return;
-    lastRevealTarget.current = targetKey;
 
     const chain = findNodeChain(
       (node) =>
@@ -165,6 +164,7 @@ export function OpenApiSchemaTree({
     );
     const target = chain.at(-1);
     if (!target) return;
+    lastRevealTarget.current = targetKey;
 
     const restored = preSearchExpandedIds.current;
     preSearchExpandedIds.current = null;
@@ -184,6 +184,7 @@ export function OpenApiSchemaTree({
     const row = findNodeRow(highlightedId);
     if (!row) return;
 
+    const originalTabIndex = row.getAttribute('tabindex');
     row.setAttribute('data-openapi-schema-highlighted', '');
     row.tabIndex = -1;
     row
@@ -193,6 +194,7 @@ export function OpenApiSchemaTree({
     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     return () => {
+      restoreTabIndex(row, originalTabIndex);
       row.removeAttribute('data-openapi-schema-highlighted');
       row
         .querySelector('code')
@@ -218,10 +220,13 @@ export function OpenApiSchemaTree({
     const row = findNodeRow(pendingFocusId);
     if (!row || row.closest('[hidden]')) return;
 
+    const originalTabIndex = row.getAttribute('tabindex');
     row.tabIndex = -1;
     row.focus();
     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     setPendingFocusId(undefined);
+
+    return () => restoreTabIndex(row, originalTabIndex);
   }, [effectiveExpandedIds, findNodeChain, findNodeRow, pendingFocusId]);
 
   function handleSearchChange(nextQuery: string) {
@@ -483,4 +488,9 @@ function findFirstDirectMatchId(
   }
 
   return visit(nodes);
+}
+
+function restoreTabIndex(row: HTMLElement, originalTabIndex: string | null) {
+  if (originalTabIndex === null) row.removeAttribute('tabindex');
+  else row.setAttribute('tabindex', originalTabIndex);
 }

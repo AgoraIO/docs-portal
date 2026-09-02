@@ -388,6 +388,7 @@ describe('OpenApiSchemaTree', () => {
       ).toHaveAttribute('aria-expanded', 'true');
       expect(focusedElements.at(-1)).toBe(getRow(advancedChild));
       expect(scrollIntoView).toHaveBeenCalled();
+      expect(getRow(advancedChild)).not.toHaveAttribute('tabindex');
     });
     focus.mockRestore();
     scrollIntoView.mockRestore();
@@ -438,7 +439,7 @@ describe('OpenApiSchemaTree', () => {
       secondTree.querySelectorAll<HTMLElement>('.openapi-schema-field-row'),
     ).find(
       (row) =>
-        row.closest('[data-openapi-schema-node-id]')?.dataset
+        row.closest<HTMLElement>('[data-openapi-schema-node-id]')?.dataset
           .openapiSchemaNodeId === advancedChild.id,
     );
     const firstTree = document.getElementById('schema-root-one') as HTMLElement;
@@ -553,6 +554,102 @@ describe('OpenApiSchemaTree', () => {
       expect(target).toHaveAttribute('data-openapi-schema-highlighted', '');
       expect(scrollIntoView).toHaveBeenCalled();
     });
+    scrollIntoView.mockRestore();
+  });
+
+  it('retries revealing a target when nodes arrive after the initial render', async () => {
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    const revealTarget = {
+      fieldName: 'advancedChild',
+      parentPath: [rootPath, advancedPath],
+    };
+    const { rerender } = renderTree({ nodes: [], revealTarget });
+
+    rerender(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={[advanced]}
+        onCopyFieldLink={() => {}}
+        renderRemainingInfoTags={() => []}
+        revealTarget={revealTarget}
+        rootId="schema-root"
+      />,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Collapse advanced properties' }),
+      ).toHaveAttribute('aria-expanded', 'true');
+      expect(getRow(advancedChild)).toHaveAttribute(
+        'data-openapi-schema-highlighted',
+        '',
+      );
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
+    scrollIntoView.mockRestore();
+  });
+
+  it('restores the highlighted row tabIndex when focus cleanup runs', async () => {
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    const revealTarget = {
+      fieldName: 'channel',
+      parentPath: [rootPath, configPath],
+    };
+    const { rerender, unmount } = renderTree({ nodes: [config] });
+    const target = getRow(channel);
+    target.tabIndex = 0;
+
+    rerender(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={[config]}
+        onCopyFieldLink={() => {}}
+        renderRemainingInfoTags={() => []}
+        revealTarget={revealTarget}
+        rootId="schema-root"
+      />,
+    );
+
+    await waitFor(() => {
+      expect(target).toHaveAttribute('tabindex', '-1');
+    });
+
+    unmount();
+    expect(target).toHaveAttribute('tabindex', '0');
+    scrollIntoView.mockRestore();
+  });
+
+  it('restores the pending focus row tabIndex after focusing', async () => {
+    const focusedElements: HTMLElement[] = [];
+    const focus = vi
+      .spyOn(HTMLElement.prototype, 'focus')
+      .mockImplementation(function (this: HTMLElement) {
+        focusedElements.push(this);
+      });
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'advanced' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+    const target = getRow(advanced);
+    target.tabIndex = 0;
+    fireEvent.keyDown(search, { key: 'Enter' });
+
+    await waitFor(() => {
+      expect(focusedElements.at(-1)).toBe(target);
+      expect(target).toHaveAttribute('tabindex', '0');
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
+    focus.mockRestore();
     scrollIntoView.mockRestore();
   });
 
