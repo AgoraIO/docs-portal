@@ -6,6 +6,7 @@ import {
   createContext,
   isValidElement,
   type ReactElement,
+  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
   useCallback,
   useContext,
@@ -285,9 +286,22 @@ function PlatformHeaderTabsList({
     ? getPlatformLabel(activePlatform, locale)
     : 'More';
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [focusedPlatform, setFocusedPlatform] = useState(activePlatform);
   const activeTabRef = useRef<HTMLButtonElement | null>(null);
+  const primaryTabRefs = useRef(new Map<PlatformKey, HTMLButtonElement>());
   const menuId = useId();
   const overflowMenuRef = useRef<HTMLDivElement | null>(null);
+  const setPrimaryTabRef = useCallback(
+    (platform: PlatformKey) => (node: HTMLButtonElement | null) => {
+      if (node) {
+        primaryTabRefs.current.set(platform, node);
+        return;
+      }
+
+      primaryTabRefs.current.delete(platform);
+    },
+    [],
+  );
   const setMeasurementTabRef = useCallback(
     (platform: PlatformKey) => (node: HTMLButtonElement | null) => {
       if (node) {
@@ -380,6 +394,46 @@ function PlatformHeaderTabsList({
   }, [activePlatform]);
 
   useEffect(() => {
+    setFocusedPlatform(activePlatform);
+  }, [activePlatform]);
+
+  const handleTabKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLButtonElement>, platform: PlatformKey) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onValueChange(platform);
+        return;
+      }
+
+      const currentIndex = primaryPlatforms.indexOf(platform);
+      let nextIndex: number | undefined;
+
+      if (event.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % primaryPlatforms.length;
+      } else if (event.key === 'ArrowLeft') {
+        nextIndex =
+          (currentIndex - 1 + primaryPlatforms.length) %
+          primaryPlatforms.length;
+      } else if (event.key === 'Home') {
+        nextIndex = 0;
+      } else if (event.key === 'End') {
+        nextIndex = primaryPlatforms.length - 1;
+      }
+
+      const nextPlatform =
+        nextIndex === undefined ? undefined : primaryPlatforms[nextIndex];
+      if (!nextPlatform) {
+        return;
+      }
+
+      event.preventDefault();
+      setFocusedPlatform(nextPlatform);
+      primaryTabRefs.current.get(nextPlatform)?.focus();
+    },
+    [onValueChange, primaryPlatforms],
+  );
+
+  useEffect(() => {
     if (!isMoreOpen) {
       return;
     }
@@ -432,8 +486,16 @@ function PlatformHeaderTabsList({
             data-platform-tab={platform}
             key={platform}
             onClick={() => onValueChange(platform)}
-            ref={activePlatform === platform ? activeTabRef : undefined}
+            onFocus={() => setFocusedPlatform(platform)}
+            onKeyDown={(event) => handleTabKeyDown(event, platform)}
+            ref={(node) => {
+              setPrimaryTabRef(platform)(node);
+              if (activePlatform === platform) {
+                activeTabRef.current = node;
+              }
+            }}
             role="tab"
+            tabIndex={focusedPlatform === platform ? 0 : -1}
             type="button"
           >
             {getPlatformLabel(platform, locale)}

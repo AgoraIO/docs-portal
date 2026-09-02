@@ -45,8 +45,8 @@ import {
 import { getOpenApiMarkdownPages } from './openapi/markdown';
 import { getOpenApiOperation } from './openapi/source.server';
 import {
+  extendPlatformGroupPanelSearchNavigation,
   filterPlatformGroupPanelNodes,
-  getCanonicalSourcePages,
   getPlatformGroupPanelUrls,
   isPlatformGroupPanelPage,
   resolvePlatformGroupDefinition,
@@ -528,11 +528,13 @@ export async function loadDocsSearchIndex(
   }
 
   const { source } = await import('./source.server');
-  const searchNavigation = buildDocsSearchNavigation(
-    getCanonicalPageTree(source, supportedLocale),
+  const localePages = source.getPages(locale);
+  const searchNavigation = extendPlatformGroupPanelSearchNavigation(
+    buildDocsSearchNavigation(getCanonicalPageTree(source, supportedLocale)),
+    localePages,
   );
   const pages = await Promise.all(
-    getCanonicalSourcePages(source.getPages(locale))
+    localePages
       .filter(
         (item) => item.type !== 'openapi' && searchNavigation.has(item.url),
       )

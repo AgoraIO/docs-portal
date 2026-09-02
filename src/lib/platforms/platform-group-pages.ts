@@ -32,6 +32,44 @@ export type PlatformGroupDefinition = {
   platforms: PlatformKey[];
 };
 
+export function extendPlatformGroupPanelSearchNavigation(
+  navigation: ReadonlyMap<string, string[]>,
+  pages: readonly PlatformGroupSourcePage[],
+) {
+  const extended = new Map(navigation);
+
+  for (const page of pages) {
+    if (
+      resolvePlatformGroupDefinition(page, pages) &&
+      !extended.has(page.url)
+    ) {
+      extended.set(page.url, []);
+    }
+  }
+
+  for (const page of pages) {
+    const parent = resolvePlatformGroupParentPage(page, pages);
+    if (!parent) {
+      continue;
+    }
+
+    const parentBreadcrumbs = extended.get(parent.url);
+    if (!parentBreadcrumbs) {
+      continue;
+    }
+
+    const parentTitle = parent.data.title ?? parent.slugs.at(-1) ?? parent.url;
+    extended.set(
+      page.url,
+      parentBreadcrumbs.at(-1) === parentTitle
+        ? [...parentBreadcrumbs]
+        : [...parentBreadcrumbs, parentTitle],
+    );
+  }
+
+  return extended;
+}
+
 export function isPlatformGroupIndexPage(page: PlatformGroupSourcePage) {
   return page.data.layout === 'platform-group';
 }
