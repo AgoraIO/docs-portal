@@ -118,6 +118,46 @@ const recursiveGeneratedFixture: SchemaUIGeneratedData = {
   },
 };
 
+const unionArrayGeneratedFixture: SchemaUIGeneratedData = {
+  $root: 'root',
+  refs: {
+    root: {
+      aliasName: 'Root',
+      props: [{ $type: 'choice-array', name: 'choiceArray', required: false }],
+      type: 'object',
+      typeName: 'Root',
+    },
+    'choice-array': {
+      aliasName: 'Choice[]',
+      items: [
+        { $type: 'variant-a', name: 'first' },
+        { $type: 'variant-b', name: 'second' },
+      ],
+      type: 'or',
+      typeName: 'Choice[]',
+    },
+    'variant-a': {
+      aliasName: 'Choice[]',
+      item: { $type: 'shared-item' },
+      type: 'array',
+      typeName: 'Choice[]',
+    },
+    'variant-b': {
+      aliasName: 'Choice[]',
+      item: { $type: 'shared-item' },
+      type: 'array',
+      typeName: 'Choice[]',
+    },
+    'shared-item': {
+      aliasName: 'ChoiceItem',
+      props: [{ $type: 'shared-field', name: 'field', required: false }],
+      type: 'object',
+      typeName: 'ChoiceItem',
+    },
+    'shared-field': primitive(),
+  },
+};
+
 describe('openapi schema view', () => {
   it('opens only required root expandable fields and hides synthetic map rows', () => {
     const view = buildOpenApiSchemaView(generatedFixture, 'body');
@@ -180,6 +220,39 @@ describe('openapi schema view', () => {
     expect(
       flattened.filter((node) => node.path.endsWith('.self')),
     ).toHaveLength(1);
+  });
+
+  it('keeps union variant paths and IDs unique through array object items', () => {
+    const view = buildOpenApiSchemaView(unionArrayGeneratedFixture, 'body');
+    const fields = flattenOpenApiSchemaView(view).filter(
+      (node) => node.path === 'choiceArray.field',
+    );
+
+    expect(fields).toHaveLength(2);
+    expect(fields.map((node) => node.variant)).toEqual(
+      expect.arrayContaining(['first', 'second']),
+    );
+    expect(
+      fields.every((node) => node.parentPath.at(-1)?.tabValues?.length === 1),
+    ).toBe(true);
+    expect(
+      new Set(fields.map((node) => JSON.stringify(node.parentPath))).size,
+    ).toBe(2);
+    expect(new Set(fields.map((node) => node.id)).size).toBe(2);
+  });
+
+  it('counts direct matches from every union array object branch', () => {
+    const view = buildOpenApiSchemaView(unionArrayGeneratedFixture, 'body');
+    const fields = flattenOpenApiSchemaView(view).filter(
+      (node) => node.path === 'choiceArray.field',
+    );
+    const result = filterOpenApiSchemaView(view, 'field');
+
+    expect(result.matchCount).toBe(2);
+    expect(result.directMatchIds.size).toBe(2);
+    expect(result.directMatchIds).toEqual(
+      new Set(fields.map((node) => node.id)),
+    );
   });
 
   it('matches nested names and dotted paths while retaining only matching branches', () => {

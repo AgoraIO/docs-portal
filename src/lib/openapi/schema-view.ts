@@ -98,7 +98,11 @@ export function buildOpenApiSchemaView(
         generated.refs[schema.item.$type],
         [
           ...parentPath.slice(0, -1),
-          { $ref: schema.item.$type, name: `${current.name}[]` },
+          {
+            ...current,
+            $ref: schema.item.$type,
+            name: `${current.name}[]`,
+          },
         ],
         fieldPath,
         depth,
