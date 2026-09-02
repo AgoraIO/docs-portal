@@ -349,7 +349,7 @@ export function DocsContent({
             </Suspense>
           ) : null}
           {resolvedBody?.kind === 'platform-group' ? (
-            <div className="flex flex-col gap-8">
+            <div className="flex min-w-0 flex-col gap-8">
               <Suspense fallback={<DocsContentSkeleton />}>
                 <DocsContentBody contentPath={resolvedBody.contentPath} />
               </Suspense>
@@ -372,7 +372,7 @@ export function DocsContent({
                       key={panel.platform}
                       platform={panel.platform}
                     >
-                      <div className="prose prose-neutral dark:prose-invert max-w-none">
+                      <div className="prose prose-neutral dark:prose-invert min-w-0 max-w-none">
                         <Suspense fallback={<DocsContentSkeleton />}>
                           <DocsContentBody contentPath={panel.contentPath} />
                         </Suspense>

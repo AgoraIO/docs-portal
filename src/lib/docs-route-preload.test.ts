@@ -30,7 +30,7 @@ describe('preloadDocsPageContent', () => {
     expect(mockedPreloadDocsContent).not.toHaveBeenCalled();
   });
 
-  it('preloads platform group index and panel content paths', async () => {
+  it('preloads only the platform group index and initial panel', async () => {
     await preloadDocsPageContent(
       createPayload({
         body: {
@@ -58,7 +58,7 @@ describe('preloadDocsPageContent', () => {
       }),
     );
 
-    expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(3);
+    expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(2);
     expect(mockedPreloadDocsContent).toHaveBeenNthCalledWith(
       1,
       'docs/en/platform-split/index.mdx',
@@ -67,8 +67,39 @@ describe('preloadDocsPageContent', () => {
       2,
       'docs/en/platform-split/ios.mdx',
     );
+  });
+
+  it('preloads the URL-selected platform instead of the canonical panel', async () => {
+    const payload = createPayload({
+      body: {
+        canonicalPlatform: 'ios',
+        contentPath: 'docs/en/platform-split/index.mdx',
+        kind: 'platform-group',
+        panels: [
+          {
+            contentPath: 'docs/en/platform-split/ios.mdx',
+            platform: 'ios',
+          },
+          {
+            contentPath: 'docs/en/platform-split/android.mdx',
+            platform: 'android',
+          },
+        ],
+        platformTabs: {
+          canonicalPlatform: 'ios',
+          defaultPlatform: 'ios',
+          initialPlatform: 'android',
+          platforms: '["ios","android"]',
+        },
+        platforms: ['ios', 'android'],
+      },
+    });
+
+    await preloadDocsPageContent(payload);
+
+    expect(mockedPreloadDocsContent).toHaveBeenCalledTimes(2);
     expect(mockedPreloadDocsContent).toHaveBeenNthCalledWith(
-      3,
+      2,
       'docs/en/platform-split/android.mdx',
     );
   });

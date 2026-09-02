@@ -332,17 +332,7 @@ export async function loadDocsPagePayload(
       };
     }
 
-    const parentPage = source.getPage(
-      platformGroupParent.slugs.slice(1),
-      locale,
-    );
-    if (!parentPage) {
-      return {
-        redirectUrl: platformGroupParent.url,
-      };
-    }
-
-    page = parentPage;
+    page = platformGroupParent as typeof page;
     requestedPlatform = panelPlatform;
   }
 

@@ -158,6 +158,7 @@ export function PlatformTabsGroup({
   return (
     <div
       className={cn(
+        'min-w-0',
         groupMode === 'structured'
           ? 'flex flex-col gap-4'
           : 'flex flex-col gap-3',
@@ -954,12 +955,15 @@ export function PlatformPanel({
 }: PlatformPanelProps) {
   const isActive = activePlatform === undefined || activePlatform === platform;
 
+  if (!isActive) {
+    return null;
+  }
+
   return (
     <section
-      aria-hidden={isActive ? 'false' : 'true'}
+      aria-hidden="false"
+      className="min-w-0 [overflow-wrap:anywhere]"
       data-platform-panel={platform}
-      hidden={!isActive}
-      inert={isActive ? undefined : true}
     >
       {children}
     </section>

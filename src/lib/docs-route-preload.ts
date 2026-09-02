@@ -13,10 +13,16 @@ export async function preloadDocsPageContent(
     return;
   }
 
+  const selectedPlatform =
+    payload.body.platformTabs.initialPlatform ??
+    payload.body.platformTabs.defaultPlatform ??
+    payload.body.canonicalPlatform;
+  const selectedPanel = payload.body.panels.find(
+    (panel) => panel.platform === selectedPlatform,
+  );
+
   await Promise.all([
     preloadDocsContent(payload.body.contentPath),
-    ...payload.body.panels.map((panel) =>
-      preloadDocsContent(panel.contentPath),
-    ),
+    ...(selectedPanel ? [preloadDocsContent(selectedPanel.contentPath)] : []),
   ]);
 }
