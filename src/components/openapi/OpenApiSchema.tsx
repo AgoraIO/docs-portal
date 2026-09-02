@@ -14,7 +14,6 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { buildOpenApiAnchorId } from '@/lib/openapi/anchors';
@@ -132,49 +131,12 @@ export function OpenApiSchema({
   }, [findTargets, revealTarget]);
 
   return (
-    <>
-      <SchemaUI {...client} generated={generated} key={navigationKey} />
-      <div
-        aria-hidden="true"
-        className="openapi-schema-find-index"
-        data-openapi-schema-find-index=""
-      >
-        {findTargets
-          .filter((target) => target.parentPath.length > 1)
-          .map((target) => (
-            <OpenApiSchemaFindTarget
-              key={`${target.fieldPath}:${encodeOpenApiSchemaPath(target.parentPath)}`}
-              onBeforeMatch={() => revealTarget(target)}
-              target={target}
-            />
-          ))}
-      </div>
-    </>
-  );
-}
-
-function OpenApiSchemaFindTarget({
-  onBeforeMatch,
-  target,
-}: {
-  onBeforeMatch: () => void;
-  target: OpenApiSchemaFindTarget;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    element.setAttribute('hidden', 'until-found');
-    element.addEventListener('beforematch', onBeforeMatch);
-    return () => element.removeEventListener('beforematch', onBeforeMatch);
-  }, [onBeforeMatch]);
-
-  return (
-    <span data-openapi-schema-find-target={target.fieldPath} ref={ref}>
-      {target.name}
-    </span>
+    <SchemaUI
+      {...client}
+      generated={generated}
+      key={navigationKey}
+      nestedDisplay="inline"
+    />
   );
 }
 

@@ -1070,17 +1070,10 @@ describe('FumadocsOpenApiContent', () => {
       .getByText('tools')
       .closest('div.border-t') as HTMLElement;
     expect(remoteRow).toHaveTextContent('array<string>');
-    const objectType = within(toolsRow).getByRole('button', { name: 'object' });
-    fireEvent.click(objectType);
-    await waitFor(() => {
-      expect(
-        screen
-          .getAllByText('name')
-          .find(
-            (element) => !element.closest('[data-openapi-schema-find-index]'),
-          ),
-      ).toBeVisible();
-    });
+    expect(
+      within(toolsRow.firstElementChild as HTMLElement).getByText('object'),
+    ).not.toHaveRole('button');
+    expect(screen.getByText('name')).toBeVisible();
   });
 
   it('renders operation callouts from the bundled source operation', async () => {
@@ -1537,13 +1530,12 @@ describe('FumadocsOpenApiContent', () => {
     expect(filter).toBeVisible();
     expect(within(displayNameRow).getByText('?')).toBeVisible();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
-    fireEvent.click(
-      within(propertiesRow)
-        .getByText('object')
-        .closest('button') as HTMLElement,
-    );
-
-    await waitFor(() => expect(getOfficialRow('channel')).toBeVisible());
+    expect(
+      within(propertiesRow.firstElementChild as HTMLElement).getByText(
+        'object',
+      ),
+    ).not.toHaveRole('button');
+    expect(getOfficialRow('channel')).toBeVisible();
     expect(screen.getByRole('link', { name: 'Token docs' })).toHaveAttribute(
       'href',
       'https://example.com/token',
@@ -1554,11 +1546,10 @@ describe('FumadocsOpenApiContent', () => {
     );
     expect(screen.getByText(/primary channel/)).toBeInTheDocument();
     const llmRow = getOfficialRow('llm');
-    fireEvent.click(
-      within(llmRow).getByText('object').closest('button') as HTMLElement,
-    );
-
-    await waitFor(() => expect(getOfficialRow('url')).toBeVisible());
+    expect(
+      within(llmRow.firstElementChild as HTMLElement).getByText('object'),
+    ).not.toHaveRole('button');
+    expect(getOfficialRow('url')).toBeVisible();
     expect(screen.getByText(/production callback URLs/)).toBeInTheDocument();
 
     const requestBodyHeading = screen.getByRole('heading', {
@@ -1681,21 +1672,11 @@ describe('FumadocsOpenApiContent', () => {
         'The UID used by the cloud recording service in the RTC channel.',
       ),
     ).toBeVisible();
-    const serverResponseRow = screen
-      .getByText('serverResponse')
-      .closest('div.border-t') as HTMLElement;
-    fireEvent.click(
-      within(serverResponseRow).getByRole('button', { name: 'object' }),
-    );
-    await waitFor(() => {
-      expect(
-        screen
-          .getAllByText('status')
-          .find(
-            (element) => !element.closest('[data-openapi-schema-find-index]'),
-          ),
-      ).toBeVisible();
-    });
+    expect(
+      screen
+        .getAllByText('status')
+        .find((element) => element.closest('div.border-t')),
+    ).toBeVisible();
   });
 
   it('renders scalar parameters, response headers, callouts, and parameter metadata', async () => {
@@ -2698,19 +2679,11 @@ describe('FumadocsOpenApiContent', () => {
       ),
     ).toBeInTheDocument();
     expect(responseScope.getByText('status')).toBeInTheDocument();
-    const dataRow = responseScope
-      .getByText('data')
-      .closest('div.border-t') as HTMLElement;
-    fireEvent.click(within(dataRow).getByRole('button', { name: 'object' }));
-    await waitFor(() => {
-      expect(
-        responseScope
-          .getAllByText('channel')
-          .find(
-            (element) => !element.closest('[data-openapi-schema-find-index]'),
-          ),
-      ).toBeVisible();
-    });
+    expect(
+      responseScope
+        .getAllByText('channel')
+        .find((element) => element.closest('div.border-t')),
+    ).toBeVisible();
     expect(
       responseScope
         .getAllByText('createdAt')
@@ -2897,16 +2870,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.getElementById('request-body.applicationjson.body'),
     ).not.toBeNull();
+    expect(screen.getByText('idleTimeout')).toBeVisible();
+    expect(screen.getByText('agentId')).toBeVisible();
     expect(
-      document.querySelector(
-        '[data-openapi-schema-find-target="config.idleTimeout"]',
-      ),
-    ).not.toBeNull();
-    expect(
-      document.querySelector(
-        '[data-openapi-schema-find-target="data.agentId"]',
-      ),
-    ).not.toBeNull();
+      document.querySelector('[data-openapi-schema-find-index]'),
+    ).toBeNull();
   });
 
   it('shows parameter descriptions without any collapse control', async () => {

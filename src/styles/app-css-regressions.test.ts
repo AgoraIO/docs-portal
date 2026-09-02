@@ -177,12 +177,6 @@ describe('app prose CSS regressions', () => {
       'prefers-reduced-motion: reduce',
     ).rule;
     expectDeclaration(reducedMotion, 'transition', 'none');
-    const findIndex = getRuleBody('.openapi-schema-find-index').rule;
-    expectDeclaration(findIndex, 'position', 'absolute');
-    expectDeclaration(findIndex, 'height', '1px');
-    expectDeclaration(findIndex, 'width', '1px');
-    expectDeclaration(findIndex, 'clip-path', 'inset(50%)');
-    expectDeclaration(findIndex, 'overflow', 'hidden');
     expectDeclaration(
       getRuleBody('.openapi-operation').rule,
       'container-type',

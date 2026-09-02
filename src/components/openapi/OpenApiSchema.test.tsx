@@ -22,6 +22,15 @@ const schema = {
           description: 'Idle timeout in seconds.',
           type: 'integer',
         },
+        transport: {
+          properties: {
+            codec: {
+              description: 'Audio codec name.',
+              type: 'string',
+            },
+          },
+          type: 'object',
+        },
       },
       required: ['idleTimeout'],
       type: 'object',
@@ -83,8 +92,16 @@ describe('OpenApiSchema', () => {
     expect(filter.parentElement).toHaveAttribute('data-variant', 'default');
     expect(requiredRow).toBeInstanceOf(HTMLElement);
     expect(optionalRow).toBeInstanceOf(HTMLElement);
-    expect(within(requiredRow as HTMLElement).getByText('*')).toBeVisible();
-    expect(within(optionalRow as HTMLElement).getByText('?')).toBeVisible();
+    expect(
+      within(
+        (requiredRow as HTMLElement).firstElementChild as HTMLElement,
+      ).getByText('*'),
+    ).toBeVisible();
+    expect(
+      within(
+        (optionalRow as HTMLElement).firstElementChild as HTMLElement,
+      ).getByText('?'),
+    ).toBeVisible();
     expect(screen.queryByText('required')).not.toBeInTheDocument();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
 
@@ -111,67 +128,65 @@ describe('OpenApiSchema', () => {
     ).toBeVisible();
   });
 
-  it('opens the official nested-object navigation and focuses its filter', async () => {
+  it('renders every nested object field inline without a popup', () => {
     renderSchema();
 
     const configRow = getRenderedSchemaText('config')?.closest('div.border-t');
-    const typeTrigger = within(configRow as HTMLElement)
-      .getByText('object')
-      .closest('button');
+    const idleTimeout = getRenderedSchemaText('idleTimeout');
+    const transport = getRenderedSchemaText('transport');
+    const codec = getRenderedSchemaText('codec');
 
-    expect(typeTrigger).toBeInstanceOf(HTMLButtonElement);
-    fireEvent.click(typeTrigger as HTMLButtonElement);
-
-    await waitFor(() => {
-      const visibleField = screen
-        .getAllByText('idleTimeout')
-        .find(
-          (element) => !element.closest('[data-openapi-schema-find-index]'),
-        );
-      expect(visibleField).toBeVisible();
-    });
-    const filters = screen.getAllByPlaceholderText('Filter Properties');
-    expect(filters).toHaveLength(2);
-    expect(filters[1]).toHaveFocus();
-    expect(filters[1].parentElement).toHaveAttribute(
-      'data-variant',
-      'in-popover',
-    );
+    expect(configRow).toBeInstanceOf(HTMLElement);
+    expect(idleTimeout).toBeVisible();
+    expect(transport).toBeVisible();
+    expect(codec).toBeVisible();
+    expect(
+      within(
+        (configRow as HTMLElement).firstElementChild as HTMLElement,
+      ).getByText('object'),
+    ).not.toHaveRole('button');
+    expect(screen.getAllByPlaceholderText('Filter Properties')).toHaveLength(1);
     expect(
       document.querySelector('[data-openapi-schema-popover]'),
-    ).toBeVisible();
-    const breadcrumb = document.querySelector(
-      '[data-openapi-schema-breadcrumb]',
-    );
-    expect(breadcrumb).toBeVisible();
-    expect(
-      within(breadcrumb as HTMLElement).getByRole('button', {
-        name: 'config',
-      }),
-    ).toHaveAttribute('aria-current', 'page');
+    ).not.toBeInTheDocument();
   });
 
-  it('restores a nested browser-find match through the official path protocol', async () => {
+  it('keeps nested fields directly visible to native browser find', () => {
     renderSchema();
 
-    const target = document.querySelector(
-      '[data-openapi-schema-find-target="config.idleTimeout"]',
+    expect(getRenderedSchemaText('idleTimeout')).toBeVisible();
+    expect(getRenderedSchemaText('codec')).toBeVisible();
+    expect(
+      document.querySelector('[data-openapi-schema-find-index]'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('stops expanding a recursive object while preserving sibling fields', () => {
+    const recursiveNode: Record<string, unknown> = {
+      properties: {
+        label: { type: 'string' },
+      },
+      type: 'object',
+    };
+    (recursiveNode.properties as Record<string, unknown>).child = recursiveNode;
+
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={recursiveNode}
+          writeOnly
+        />
+      </AnchorSection>,
     );
 
-    expect(target).toBeInstanceOf(HTMLElement);
-    expect(target).toHaveAttribute('hidden', 'until-found');
-
-    fireEvent(target as HTMLElement, new Event('beforematch'));
-
-    await waitFor(() => {
-      expect(
-        new URL(window.location.href).searchParams.get('s-highlight'),
-      ).toBe('idleTimeout');
-      expect(screen.getAllByPlaceholderText('Filter Properties')).toHaveLength(
-        2,
-      );
-    });
-    expect(window.location.hash).toBe('#request-body.application-json.body');
+    expect(screen.getAllByText('label')).toHaveLength(2);
+    expect(screen.getAllByText('child')).toHaveLength(2);
+    expect(
+      document.querySelectorAll('[data-openapi-schema-inline]'),
+    ).toHaveLength(1);
   });
 
   it('converts a legacy nested-field hash into the official path protocol', async () => {
@@ -249,7 +264,7 @@ describe('OpenApiSchema', () => {
     },
   );
 
-  it('restores browser-find inside an object parameter through the official type navigation', async () => {
+  it('renders object parameter fields inline for native browser find', () => {
     render(
       <AnchorSection segments={['parameters', 'query']}>
         <OpenApiSchema
@@ -266,23 +281,12 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    const target = document.querySelector(
-      '[data-openapi-schema-find-target="state"]',
-    );
-
-    expect(target).toBeInstanceOf(HTMLElement);
-    expect(target).toHaveAttribute('hidden', 'until-found');
-    fireEvent(target as HTMLElement, new Event('beforematch'));
-
-    await waitFor(() => {
-      const url = new URL(window.location.href);
-      expect(url.searchParams.get('s-highlight')).toBe('state');
-      expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
-    });
-    expect(window.location.hash).toBe('#parameters.query.filter');
+    expect(getRenderedSchemaText('state')).toBeVisible();
+    expect(screen.getByText('object')).not.toHaveRole('button');
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
-  it('restores browser-find inside an array parameter through the official type navigation', async () => {
+  it('renders array object parameter fields inline for native browser find', () => {
     render(
       <AnchorSection segments={['parameters', 'query']}>
         <OpenApiSchema
@@ -302,23 +306,9 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    const target = document.querySelector(
-      '[data-openapi-schema-find-target="state"]',
-    );
-
-    expect(target).toBeInstanceOf(HTMLElement);
-    expect(target).toHaveAttribute('hidden', 'until-found');
-    fireEvent(target as HTMLElement, new Event('beforematch'));
-
-    await waitFor(() => {
-      const url = new URL(window.location.href);
-      expect(url.searchParams.get('s-highlight')).toBe('state');
-      expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
-      expect(document.querySelector('.bg-fd-primary')).toHaveTextContent(
-        'state',
-      );
-    });
-    expect(window.location.hash).toBe('#parameters.query.filters');
+    expect(getRenderedSchemaText('state')).toBeVisible();
+    expect(screen.getByText('object')).not.toHaveRole('button');
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
   it('encodes an official union selection when indexing nested fields', () => {
