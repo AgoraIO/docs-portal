@@ -1748,9 +1748,11 @@ You can call the `startLocalVideoTranscoder` method to start local video mixing 
 Video capture devices can support multiple video formats, each supporting a different combination of video frame width, video frame height, and frame rate.
 
 This release adds the `numberOfCapabilities` and `getCapability` methods for getting the number of video formats supported by the video capture device and the details of the video frames in the specified video format. When calling the `startPrimaryCameraCapture` or `startSecondaryCameraCapture` method to capture video using the camera, you can use the specified video format.
+
 :::info
 The SDK automatically selects the best video format for the video capture device based on your settings in `VideoEncoderConfiguration`, so normally you should not need to use these new methods.
 :::
+
 #### Improvements
 
 **1. Fast channel switching**

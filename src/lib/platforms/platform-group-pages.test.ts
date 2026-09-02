@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  extendPlatformGroupPanelSearchNavigation,
   filterPlatformGroupPanelNodes,
   getCanonicalSourcePages,
   getPlatformGroupPanelUrls,
@@ -10,6 +11,32 @@ import {
 } from './platform-group-pages';
 
 describe('platform group pages', () => {
+  it('gives hidden panel routes the parent search breadcrumbs', () => {
+    const pages = createPlatformGroupPages();
+    const parentUrl = pages[0].url;
+    const navigation = extendPlatformGroupPanelSearchNavigation(
+      new Map([[parentUrl, ['RTC', 'Video Calling', 'Reference']]]),
+      pages,
+    );
+
+    expect(navigation.get(`${parentUrl}/ios`)).toEqual([
+      'RTC',
+      'Video Calling',
+      'Reference',
+      'Split platform page',
+    ]);
+  });
+
+  it('makes a platform group searchable when its parent is outside navigation', () => {
+    const pages = createPlatformGroupPages();
+    const navigation = extendPlatformGroupPanelSearchNavigation(
+      new Map<string, string[]>(),
+      pages,
+    );
+
+    expect(navigation.get(pages[0].url)).toEqual([]);
+    expect(navigation.get(pages[1].url)).toEqual(['Split platform page']);
+  });
   it('resolves platform panels from a platform-group index page', () => {
     const pages = createPlatformGroupPages();
     const definition = resolvePlatformGroupDefinition(pages[0], pages);
@@ -125,6 +152,7 @@ function createPlatformGroupPages(): PlatformGroupSourcePage[] {
         defaultPlatform: 'ios',
         layout: 'platform-group',
         platforms: ['ios', 'android', 'web'],
+        title: 'Split platform page',
       },
       path: 'en/ai/get-started/platform-split/index.mdx',
       slugs: ['en', 'ai', 'get-started', 'platform-split'],

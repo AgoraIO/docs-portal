@@ -876,6 +876,34 @@ describe('common MDX registry', () => {
     }
   });
 
+  it('uses manual-activation keyboard navigation for header platform tabs', () => {
+    const onPathChange = vi.spyOn(window.history, 'pushState');
+
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    const android = screen.getByRole('tab', { name: 'Android' });
+    const ios = screen.getByRole('tab', { name: 'iOS' });
+
+    android.focus();
+    fireEvent.keyDown(android, { key: 'ArrowRight' });
+
+    expect(ios).toHaveFocus();
+    expect(ios).toHaveAttribute('tabindex', '0');
+    expect(ios).toHaveAttribute('aria-selected', 'false');
+    expect(onPathChange).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(ios, { key: 'Enter' });
+
+    expect(ios).toHaveAttribute('aria-selected', 'true');
+    expect(onPathChange).toHaveBeenCalledTimes(1);
+  });
+
   it('uses the canonical page default before stored preference without overwriting it', () => {
     window.localStorage.setItem('docs-portal:platform:v1', 'flutter');
 
