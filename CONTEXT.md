@@ -184,6 +184,7 @@ _Avoid_: FAQ card, inline FAQ answer, FAQ accordion item
 - **Migration-seed content** may be replaced or merged during a **High-fidelity migration** when the migrated page supersedes it with higher source coverage.
 - A legacy `PlatformWrapper` should migrate to **Page-level platform tabs** when multiple platform variants must remain on one route and the platform switch belongs to the page header region rather than a single code example.
 - Source-controlled platform variants may live in separate repository files, but they should still render as one page with **Page-level platform tabs** when they represent one logical document.
+- A split-file route-level pure platform projection may combine only the selected platform's segments from multiple source **Platform groups**, retain intervening **Shared segments**, and omit a group when that platform has no variant; this projection does not redefine or collapse the source document's group boundaries.
 - A contiguous sequence of page-level platform blocks forms one **Platform group**.
 - A **Shared segment** always terminates the current **Platform group** before any later platform block begins a new group.
 - A **Single-platform block** is still a valid **Platform group**, but it should not render a meaningless one-tab switcher.
