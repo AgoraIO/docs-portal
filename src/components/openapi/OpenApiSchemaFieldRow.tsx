@@ -38,10 +38,10 @@ export function OpenApiSchemaFieldRow({
   const expandable = node.children.length > 0;
   const fieldIdentity = (
     <>
-      <code className="min-w-0 break-words font-mono text-sm font-semibold">
+      <code className="min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]">
         {node.name}
       </code>
-      <span className="shrink-0 font-mono text-sm text-muted-foreground">
+      <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
         {node.schema.aliasName}
       </span>
     </>
@@ -58,7 +58,7 @@ export function OpenApiSchemaFieldRow({
             <Button
               aria-expanded={expanded}
               aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
-              className="min-w-0 max-w-full px-0 py-0 font-normal hover:bg-transparent"
+              className="min-w-0 max-w-full justify-start whitespace-normal break-words px-0 py-0 text-left font-normal hover:bg-transparent [overflow-wrap:anywhere]"
               onClick={() => onExpandedChange(!expanded)}
               size="sm"
               type="button"
@@ -110,14 +110,19 @@ export function OpenApiSchemaFieldRow({
       {node.schema.allowedValues && node.schema.allowedValues.length > 0 ? (
         <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
           <span className="text-muted-foreground">{labels.allowedValues}</span>
-          {node.schema.allowedValues.map((value) => (
-            <code
-              className="rounded border border-border px-1.5 py-0.5 font-mono text-xs"
-              key={formatAllowedValue(value)}
-            >
-              {formatAllowedValue(value)}
-            </code>
-          ))}
+          {node.schema.allowedValues.map((value, index) => {
+            const key = getAllowedValueKey(value, index);
+
+            return (
+              <code
+                className="max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
+                data-openapi-allowed-value-key={key}
+                key={key}
+              >
+                {formatAllowedValue(value)}
+              </code>
+            );
+          })}
         </div>
       ) : null}
       {remainingInfoTags.length > 0 ? (
@@ -129,6 +134,19 @@ export function OpenApiSchemaFieldRow({
 
 function formatAllowedValue(value: unknown) {
   if (typeof value === 'string') return value;
+  return serializeAllowedValue(value);
+}
+
+function getAllowedValueKey(value: unknown, index: number) {
+  return `${typeof value}:${serializeAllowedValue(value)}:${index}`;
+}
+
+function serializeAllowedValue(value: unknown) {
   if (value === undefined) return 'undefined';
-  return JSON.stringify(value) ?? String(value);
+
+  try {
+    return JSON.stringify(value) ?? String(value);
+  } catch {
+    return String(value);
+  }
 }

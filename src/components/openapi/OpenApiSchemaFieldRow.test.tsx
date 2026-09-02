@@ -126,6 +126,82 @@ describe('OpenApiSchemaFieldRow', () => {
     ).toHaveAttribute('aria-expanded', 'true');
   });
 
+  it('gives mixed duplicate allowed values unique React keys', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'value',
+          schema: {
+            aliasName: 'string | number',
+            allowedValues: ['1', 1, '1', 1],
+            type: 'primitive',
+            typeName: 'string | number',
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    const keys = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        '[data-openapi-allowed-value-key]',
+      ),
+    ).map((token) => token.dataset.openapiAllowedValueKey);
+    expect(keys).toHaveLength(4);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('keeps long field identities and allowed values wrappable on narrow layouts', () => {
+    const longFieldName = 'field-with-a-very-long-name-that-must-wrap';
+    const longTypeName = 'custom-type-with-a-very-long-name-that-must-wrap';
+    const longAllowedValue =
+      'allowed-value-with-a-very-long-name-that-must-wrap';
+
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          children: [makeNode({ id: 'nested', name: 'nested' })],
+          name: longFieldName,
+          schema: {
+            aliasName: longTypeName,
+            allowedValues: [longAllowedValue],
+            props: [],
+            type: 'object',
+            typeName: longTypeName,
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    const expandButton = screen.getByRole('button', {
+      name: `Expand ${longFieldName} properties`,
+    });
+    expect(expandButton).toHaveClass(
+      'whitespace-normal',
+      'text-left',
+      'justify-start',
+      'break-words',
+    );
+    expect(screen.getByText(longFieldName)).toHaveClass(
+      'min-w-0',
+      'break-words',
+    );
+    expect(screen.getByText(longTypeName)).toHaveClass(
+      'min-w-0',
+      'break-words',
+    );
+    expect(screen.getByText(longAllowedValue)).toHaveClass('break-words');
+  });
+
   it('keeps requiredness badges title case and right-aligned', () => {
     const { rerender } = render(
       <OpenApiSchemaFieldRow
