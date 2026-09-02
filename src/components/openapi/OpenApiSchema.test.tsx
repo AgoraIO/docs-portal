@@ -76,6 +76,11 @@ describe('OpenApiSchema', () => {
     const optionalRow =
       getRenderedSchemaText('advanced')?.closest('div.border-t');
 
+    expect(filter).toHaveAttribute('aria-label', 'Filter Properties');
+    expect(filter).toHaveAttribute('data-slot', 'input');
+    expect(filter).toHaveAttribute('type', 'search');
+    expect(filter.parentElement).toHaveAttribute('data-openapi-schema-filter');
+    expect(filter.parentElement).toHaveAttribute('data-variant', 'default');
     expect(requiredRow).toBeInstanceOf(HTMLElement);
     expect(optionalRow).toBeInstanceOf(HTMLElement);
     expect(within(requiredRow as HTMLElement).getByText('*')).toBeVisible();
@@ -128,6 +133,22 @@ describe('OpenApiSchema', () => {
     const filters = screen.getAllByPlaceholderText('Filter Properties');
     expect(filters).toHaveLength(2);
     expect(filters[1]).toHaveFocus();
+    expect(filters[1].parentElement).toHaveAttribute(
+      'data-variant',
+      'in-popover',
+    );
+    expect(
+      document.querySelector('[data-openapi-schema-popover]'),
+    ).toBeVisible();
+    const breadcrumb = document.querySelector(
+      '[data-openapi-schema-breadcrumb]',
+    );
+    expect(breadcrumb).toBeVisible();
+    expect(
+      within(breadcrumb as HTMLElement).getByRole('button', {
+        name: 'config',
+      }),
+    ).toHaveAttribute('aria-current', 'page');
   });
 
   it('restores a nested browser-find match through the official path protocol', async () => {

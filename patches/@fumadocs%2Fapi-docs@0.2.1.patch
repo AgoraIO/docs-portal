@@ -1,8 +1,23 @@
 diff --git a/dist/components/schema/client.js b/dist/components/schema/client.js
-index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..9a8044615297151ebd5130c81c49eb2d0be3bd31 100644
+index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..1776fb6ae084af1b0b434b0f2080fed35bceba2c 100644
 --- a/dist/components/schema/client.js
 +++ b/dist/components/schema/client.js
-@@ -157,15 +157,21 @@ function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
+@@ -67,8 +67,14 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
+ 					className: cn(typeVariants({ variant: "trigger" })),
+ 					children
+ 				}), /* @__PURE__ */ jsx(PopoverContent, {
++					"data-openapi-schema-popover": "",
+ 					ref: popoverRef,
+ 					className: "w-[600px] max-w-(--available-width) min-h-(--min-height,200px) fd-scroll-container max-h-[460px] px-3 pt-0",
++					style: {
++						borderRadius: "12px",
++						maxHeight: "min(440px, var(--available-height))",
++						width: "min(544px, var(--available-width))"
++					},
+ 					onScrollEnd: (e) => {
+ 						path.at(-1).scrollTop = e.target.scrollTop;
+ 					},
+@@ -157,15 +163,21 @@ function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
  				}),
  				/* @__PURE__ */ jsx("div", { className: "flex-1" }),
  				schema.deprecated && /* @__PURE__ */ jsx("span", {
@@ -25,3 +40,51 @@ index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..9a8044615297151ebd5130c81c49eb2d
  					children: isChecked ? /* @__PURE__ */ jsx(CheckIcon, {}) : /* @__PURE__ */ jsx(LinkIcon, {})
  				})
  			]
+@@ -240,13 +252,19 @@ function ObjectSearch({ variant = "default", schema, pathIndex, children }) {
+ 	const t = useTranslations({ note: "schema UI" });
+ 	return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+ 		/* @__PURE__ */ jsxs("div", {
+-			className: cn("flex items-center bg-fd-secondary text-fd-secondary-foreground transition-colors", variant === "in-popover" && "sticky top-10 -mx-3 ps-3 border-b focus-within:[&_svg]:text-fd-primary", variant === "default" && "border rounded-md ps-2 shadow-sm focus-within:ring-2 focus-within:ring-fd-ring"),
+-			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "text-fd-muted-foreground size-3.5 transition-colors" }), /* @__PURE__ */ jsx("input", {
++			"data-openapi-schema-filter": "",
++			"data-variant": variant,
++			className: cn(variant === "in-popover" && "sticky top-11 -mx-3 border-b bg-fd-popover px-3 py-2 z-10"),
++			style: variant === "in-popover" ? { top: "44px" } : undefined,
++			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "hidden" }), /* @__PURE__ */ jsx("input", {
++				"aria-label": t("Filter Properties"),
++				"data-slot": "input",
+ 				value: search,
+ 				"data-object-search-input": "",
+ 				onChange: (e) => setSearch(e.target.value),
+ 				placeholder: t("Filter Properties"),
+-				className: "text-sm ps-2 py-2 flex-1 outline-none placeholder:text-fd-muted-foreground",
++				type: "search",
++				className: "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm dark:bg-input/30",
+ 				onKeyDown: (e) => {
+ 					if (e.key === "Enter") {
+ 						const item = firstItemRef.current;
+@@ -340,18 +358,21 @@ function SchemaUIPopover() {
+ 		children: /* @__PURE__ */ jsxs("div", {
+ 			ref,
+ 			children: [/* @__PURE__ */ jsx("div", {
+-				className: "sticky top-0 -mx-3 flex overflow-x-auto overflow-y-hidden items-center text-sm font-medium font-mono bg-fd-secondary text-fd-secondary-foreground px-3 h-10 border-b z-20",
++				"data-openapi-schema-breadcrumb": "",
++				className: "sticky top-0 -mx-3 flex gap-1 overflow-x-auto overflow-y-hidden items-center font-medium font-mono bg-fd-popover text-fd-muted-foreground px-3 border-b z-20",
++				style: { height: "44px" },
+ 				children: path.map((item, i) => {
+ 					if (i === 0) return;
+ 					const isDuplicated = path.some((other, j) => j !== i && other.$ref === item.$ref);
+ 					let text;
+ 					const indexItemMatch = /^\[(\w+): (\w+)]$/.exec(item.name);
+ 					if (indexItemMatch) text = `[${indexItemMatch[1]}]`;
+-					else if (i > 1) text = `.${item.name}`;
+ 					else text = item.name;
+ 					return /* @__PURE__ */ jsx("button", {
++						"aria-current": i === path.length - 1 ? "page" : undefined,
+ 						onClick: () => setPath(path.slice(0, i + 1)),
+-						className: cn("hover:underline hover:text-fd-accent-foreground", isDuplicated && "text-orange-400"),
++						className: cn("inline-flex min-h-7 items-center rounded-md px-1.5 text-[13px] no-underline transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring", i === path.length - 1 && "text-fd-foreground", isDuplicated && "text-fd-warning"),
++						type: "button",
+ 						children: text
+ 					}, i);
+ 				})

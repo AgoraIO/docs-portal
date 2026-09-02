@@ -1162,6 +1162,13 @@
     overflow: hidden;
   }
 
+  [data-openapi-schema-breadcrumb] > button + button::before {
+    margin-right: 0.625rem;
+    color: var(--fd-muted-foreground);
+    content: "/";
+    opacity: 0.6;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .openapi-response-header-row .openapi-field-anchor {
       transition: none;
