@@ -56,6 +56,7 @@ export function OpenApiSchemaTree({
   const [query, setQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string>();
   const [highlightedId, setHighlightedId] = useState<string>();
+  const [pendingFocusId, setPendingFocusId] = useState<string>();
   const [searchExpandedIds, setSearchExpandedIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -203,6 +204,26 @@ export function OpenApiSchemaTree({
     };
   }, [findNodeRow, highlightedId]);
 
+  useEffect(() => {
+    if (!pendingFocusId) return;
+
+    const chain = findNodeChain((node) => node.id === pendingFocusId);
+    if (
+      chain.length === 0 ||
+      !chain.slice(0, -1).every((node) => effectiveExpandedIds.has(node.id))
+    ) {
+      return;
+    }
+
+    const row = findNodeRow(pendingFocusId);
+    if (!row || row.closest('[hidden]')) return;
+
+    row.tabIndex = -1;
+    row.focus();
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setPendingFocusId(undefined);
+  }, [effectiveExpandedIds, findNodeChain, findNodeRow, pendingFocusId]);
+
   function handleSearchChange(nextQuery: string) {
     if (!query.trim() && nextQuery.trim()) {
       preSearchExpandedIds.current = new Set(expandedIds);
@@ -236,12 +257,8 @@ export function OpenApiSchemaTree({
     );
     if (!firstMatchId) return;
 
-    const row = findNodeRow(firstMatchId);
-    if (!row) return;
-
-    row.tabIndex = -1;
-    row.focus();
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    revealNode(firstMatchId);
+    setPendingFocusId(firstMatchId);
   }
 
   function renderNodes(
@@ -298,6 +315,7 @@ export function OpenApiSchemaTree({
         >
           <OpenApiSchemaFieldRow
             copied={copiedId === node.id}
+            domId={`${rootId}-${node.id}`}
             expanded={expanded}
             labels={labels}
             node={node}

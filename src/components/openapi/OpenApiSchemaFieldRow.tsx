@@ -18,6 +18,7 @@ export type OpenApiSchemaFieldRowLabels = {
 
 export type OpenApiSchemaFieldRowProps = {
   copied: boolean;
+  domId?: string;
   expanded: boolean;
   labels: OpenApiSchemaFieldRowLabels;
   node: OpenApiSchemaViewNode;
@@ -28,6 +29,7 @@ export type OpenApiSchemaFieldRowProps = {
 
 export function OpenApiSchemaFieldRow({
   copied,
+  domId,
   expanded,
   labels,
   node,
@@ -50,7 +52,7 @@ export function OpenApiSchemaFieldRow({
   return (
     <div
       className="openapi-schema-field-row scroll-mt-24 border-t border-border py-3 first:border-t-0"
-      id={node.id}
+      id={domId ?? node.id}
     >
       <div className="flex min-w-0 items-start gap-2 text-sm">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">

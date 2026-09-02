@@ -140,7 +140,11 @@ function renderTree(
 }
 
 function getRow(node: OpenApiSchemaViewNode) {
-  return document.getElementById(node.id) as HTMLElement;
+  return Array.from(
+    document.querySelectorAll<HTMLElement>('[data-openapi-schema-node-id]'),
+  )
+    .find((element) => element.dataset.openapiSchemaNodeId === node.id)
+    ?.querySelector<HTMLElement>('.openapi-schema-field-row') as HTMLElement;
 }
 
 describe('OpenApiSchemaTree', () => {
@@ -357,6 +361,38 @@ describe('OpenApiSchemaTree', () => {
     scrollIntoView.mockRestore();
   });
 
+  it('reveals a collapsed search branch before focusing and scrolling its match on Enter', async () => {
+    const focusedElements: HTMLElement[] = [];
+    const focus = vi
+      .spyOn(HTMLElement.prototype, 'focus')
+      .mockImplementation(function (this: HTMLElement) {
+        focusedElements.push(this);
+      });
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+    expect(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.keyDown(search, { key: 'Enter' });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Collapse advanced properties' }),
+      ).toHaveAttribute('aria-expanded', 'true');
+      expect(focusedElements.at(-1)).toBe(getRow(advancedChild));
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
+    focus.mockRestore();
+    scrollIntoView.mockRestore();
+  });
+
   it('focuses the first direct match inside the current tree when IDs are duplicated', async () => {
     const focusedElements: HTMLElement[] = [];
     const focus = vi
@@ -400,7 +436,30 @@ describe('OpenApiSchemaTree', () => {
 
     const secondTarget = Array.from(
       secondTree.querySelectorAll<HTMLElement>('.openapi-schema-field-row'),
-    ).find((row) => row.id === advancedChild.id);
+    ).find(
+      (row) =>
+        row.closest('[data-openapi-schema-node-id]')?.dataset
+          .openapiSchemaNodeId === advancedChild.id,
+    );
+    const firstTree = document.getElementById('schema-root-one') as HTMLElement;
+    const firstTarget = Array.from(
+      firstTree.querySelectorAll<HTMLElement>('[data-openapi-schema-node-id]'),
+    )
+      .find(
+        (element) => element.dataset.openapiSchemaNodeId === advancedChild.id,
+      )
+      ?.querySelector<HTMLElement>('.openapi-schema-field-row');
+
+    expect(firstTarget).toHaveAttribute(
+      'id',
+      `schema-root-one-${advancedChild.id}`,
+    );
+    expect(secondTarget).toHaveAttribute(
+      'id',
+      `schema-root-two-${advancedChild.id}`,
+    );
+    expect(new Set([firstTarget?.id, secondTarget?.id]).size).toBe(2);
+
     await waitFor(() => expect(focusedElements.at(-1)).toBe(secondTarget));
 
     expect(scrollIntoView).toHaveBeenCalled();
