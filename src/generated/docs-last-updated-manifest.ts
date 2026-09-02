@@ -6067,7 +6067,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/product-overview.md':
     '2026-06-18T08:34:22.000Z',
   'content/docs/en/realtime-media/rtm/quickstart.mdx':
-    '2026-08-28T11:56:11.000Z',
+    '2026-09-01T07:21:01.000Z',
   'content/docs/en/realtime-media/rtm/reference/account-settlement.md':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/rtm/reference/beginners-guide.md':
@@ -6087,7 +6087,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/core-concepts.md':
     '2026-06-16T05:32:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/downloads.md':
-    '2026-08-28T11:56:11.000Z',
+    '2026-09-01T07:21:01.000Z',
   'content/docs/en/realtime-media/rtm/reference/error-codes.md':
     '2026-06-28T06:33:56.000Z',
   'content/docs/en/realtime-media/rtm/reference/firewall.md':
@@ -6119,7 +6119,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/supported-platforms.md':
     '2026-08-20T02:55:16.000Z',
   'content/docs/en/realtime-media/rtm/reference/supported-platforms.mdx':
-    '2026-08-20T02:55:16.000Z',
+    '2026-09-01T07:21:01.000Z',
   'content/docs/en/realtime-media/rtm/reference/troubleshooting.md':
     '2026-06-27T08:24:53.000Z',
   'content/docs/en/realtime-media/rtm/rest-api/authentication.md':
