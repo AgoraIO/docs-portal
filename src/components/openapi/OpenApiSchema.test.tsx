@@ -94,6 +94,18 @@ describe('OpenApiSchema', () => {
     expect(getRenderedSchemaText('advanced')).toBeVisible();
   });
 
+  it('gives each field permalink control an accessible name', () => {
+    renderSchema();
+
+    const nameRow = getRenderedSchemaText('name')?.closest('div.border-t');
+
+    expect(
+      within(nameRow as HTMLElement).getByRole('button', {
+        name: 'Copy link to name',
+      }),
+    ).toBeVisible();
+  });
+
   it('opens the official nested-object navigation and focuses its filter', async () => {
     renderSchema();
 
@@ -185,6 +197,109 @@ describe('OpenApiSchema', () => {
     expect(window.location.hash).toBe('#request-body.application-json.body');
   });
 
+  it.each([
+    ['path', 'path-parameters'],
+    ['query', 'query-parameters'],
+    ['header', 'header-parameters'],
+    ['cookie', 'cookie-parameters'],
+  ] as const)(
+    'converts a legacy %s parameter hash into the official path protocol',
+    async (location, legacyPrefix) => {
+      window.history.replaceState(null, '', `#${legacyPrefix}-item-id`);
+
+      render(
+        <AnchorSection segments={['parameters', location]}>
+          <OpenApiSchema
+            client={{ name: 'itemId', required: location === 'path' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{ type: 'string' }}
+            writeOnly
+          />
+        </AnchorSection>,
+      );
+
+      await waitFor(() => {
+        const url = new URL(window.location.href);
+        expect(url.searchParams.get('s-highlight')).toBe('itemId');
+        expect(url.searchParams.get('path')).toContain('itemId');
+      });
+      expect(window.location.hash).toBe(`#parameters.${location}.itemid`);
+    },
+  );
+
+  it('restores browser-find inside an object parameter through the official type navigation', async () => {
+    render(
+      <AnchorSection segments={['parameters', 'query']}>
+        <OpenApiSchema
+          client={{ name: 'filter' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              state: { type: 'string' },
+            },
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const target = document.querySelector(
+      '[data-openapi-schema-find-target="state"]',
+    );
+
+    expect(target).toBeInstanceOf(HTMLElement);
+    expect(target).toHaveAttribute('hidden', 'until-found');
+    fireEvent(target as HTMLElement, new Event('beforematch'));
+
+    await waitFor(() => {
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('state');
+      expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+    });
+    expect(window.location.hash).toBe('#parameters.query.filter');
+  });
+
+  it('restores browser-find inside an array parameter through the official type navigation', async () => {
+    render(
+      <AnchorSection segments={['parameters', 'query']}>
+        <OpenApiSchema
+          client={{ name: 'filters' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            items: {
+              properties: {
+                state: { type: 'string' },
+              },
+              type: 'object',
+            },
+            type: 'array',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const target = document.querySelector(
+      '[data-openapi-schema-find-target="state"]',
+    );
+
+    expect(target).toBeInstanceOf(HTMLElement);
+    expect(target).toHaveAttribute('hidden', 'until-found');
+    fireEvent(target as HTMLElement, new Event('beforematch'));
+
+    await waitFor(() => {
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('state');
+      expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+      expect(document.querySelector('.bg-fd-primary')).toHaveTextContent(
+        'state',
+      );
+    });
+    expect(window.location.hash).toBe('#parameters.query.filters');
+  });
+
   it('encodes an official union selection when indexing nested fields', () => {
     const targets = buildOpenApiSchemaFindTargets(
       {
@@ -225,7 +340,7 @@ describe('OpenApiSchema', () => {
         },
       },
       'body',
-      'request-body',
+      { anchorPrefix: 'request-body', rootDisplay: 'inline' },
     );
 
     expect(targets).toEqual(

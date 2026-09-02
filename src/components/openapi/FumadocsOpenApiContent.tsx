@@ -87,10 +87,12 @@ const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
   Collapse: '折叠',
+  'Copied endpoint URL': '已复制接口 URL',
   'Cookie Parameters': 'Cookie 参数',
   'Expand all': '展开全部',
   Expand: '展开',
   'Copy link to': '复制链接到',
+  'Copy endpoint URL': '复制接口 URL',
   Deprecated: '已废弃',
   optional: '可选',
   required: '必填',
@@ -121,6 +123,8 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Cookie Parameters': 'Cookie 参数',
+  'Copied link to(schema UI)': '已复制字段链接到',
+  'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
@@ -177,17 +181,14 @@ const OpenAPIPage = createOpenAPIPage({
     render: (options) => {
       const schemaOptions = options as typeof options & {
         client: ComponentProps<RenderContext['SchemaUI']>['client'];
+        legacyAnchorPrefix?: string;
         showExample?: boolean;
       };
 
       return (
         <OpenApiSchema
           client={schemaOptions.client}
-          legacyAnchorPrefix={
-            schemaOptions.writeOnly
-              ? 'request-body'
-              : undefined
-          }
+          legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
           readOnly={schemaOptions.readOnly}
           renderCodeblock={({ code, lang }) =>
             renderOpenApiCodeBlock(lang, code)
@@ -408,6 +409,9 @@ type OpenApiMetadataItem = {
   value: string;
 };
 type OpenApiSchemaUI = RenderContext['SchemaUI'];
+type OpenApiSchemaUIWithLegacyNavigation = (
+  props: ComponentProps<OpenApiSchemaUI> & { legacyAnchorPrefix?: string },
+) => ReactNode;
 
 function OpenApiOperationLayoutWithSource({
   SchemaUI,
@@ -698,6 +702,10 @@ function OpenApiInlineAuthorizationSection({
 function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
   const method = typeof operation.method === 'string' ? operation.method : '';
+  const locale = useContext(OpenApiLocaleContext);
+  const [endpointCopied, copyEndpoint] = useCopyButton(() =>
+    navigator.clipboard.writeText(endpoint),
+  );
 
   if (!endpoint && !method) {
     return null;
@@ -713,11 +721,29 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
         </div>
       ) : null}
       {endpoint ? (
-        <div className="flex-1 overflow-auto">
-          <code className="text-nowrap text-[0.8125rem] text-fd-muted-foreground">
-            {endpoint}
-          </code>
-        </div>
+        <>
+          <div className="flex-1 overflow-auto">
+            <code className="text-nowrap text-[0.8125rem] text-fd-muted-foreground">
+              {endpoint}
+            </code>
+          </div>
+          <button
+            aria-label={getOpenApiLabel(
+              endpointCopied ? 'Copied endpoint URL' : 'Copy endpoint URL',
+              locale,
+            )}
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+            data-checked={endpointCopied || undefined}
+            onClick={copyEndpoint}
+            type="button"
+          >
+            {endpointCopied ? (
+              <Check aria-hidden="true" className="size-4" />
+            ) : (
+              <Clipboard aria-hidden="true" className="size-4" />
+            )}
+          </button>
+        </>
       ) : null}
     </div>
   );
@@ -908,6 +934,8 @@ function OpenApiEnglishResponses({
       buildOpenApiResponseViews(operation?.responses, operation?.__document),
     [operation?.responses, operation?.__document],
   );
+  const SchemaUIWithLegacyNavigation =
+    SchemaUI as OpenApiSchemaUIWithLegacyNavigation;
   return (
     <OpenApiResponses
       renderDescription={(markdown) =>
@@ -920,11 +948,12 @@ function OpenApiEnglishResponses({
         return {
           hasFields: schema !== undefined,
           node: (
-            <SchemaUI
+            <SchemaUIWithLegacyNavigation
               client={{
                 as: 'body',
                 name: `response-${slugOpenApiAnchorSegment(status)}-${slugOpenApiAnchorSegment(mediaType)}`,
               }}
+              legacyAnchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
               readOnly
               root={schema as never}
             />

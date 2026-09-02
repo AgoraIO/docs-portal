@@ -1,0 +1,27 @@
+diff --git a/dist/components/schema/client.js b/dist/components/schema/client.js
+index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..9a8044615297151ebd5130c81c49eb2d0be3bd31 100644
+--- a/dist/components/schema/client.js
++++ b/dist/components/schema/client.js
+@@ -157,15 +157,21 @@ function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
+ 				}),
+ 				/* @__PURE__ */ jsx("div", { className: "flex-1" }),
+ 				schema.deprecated && /* @__PURE__ */ jsx("span", {
+-					className: "text-xs font-mono text-yellow-600 dark:text-yellow-400",
++					className: "text-xs font-mono text-fd-warning",
+ 					children: t("Deprecated")
+ 				}),
+ 				/* @__PURE__ */ jsx("button", {
++					"aria-label": `${t(isChecked ? "Copied link to" : "Copy link to")} ${name}`,
+ 					className: cn(buttonVariants({
+ 						size: "icon-xs",
+ 						variant: "ghost"
+ 					}), "text-fd-muted-foreground [&_svg]:size-3.5"),
+ 					onClick,
++					style: {
++						minHeight: "24px",
++						minWidth: "24px"
++					},
++					type: "button",
+ 					children: isChecked ? /* @__PURE__ */ jsx(CheckIcon, {}) : /* @__PURE__ */ jsx(LinkIcon, {})
+ 				})
+ 			]

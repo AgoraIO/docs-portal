@@ -30,7 +30,7 @@ export function OpenApiResponseHeaderRow({
         </span>
         <span className="flex-1" />
         {deprecated ? (
-          <span className="font-mono text-xs text-yellow-600 dark:text-yellow-400">
+          <span className="font-mono text-fd-warning text-xs">
             {deprecatedLabel}
           </span>
         ) : null}

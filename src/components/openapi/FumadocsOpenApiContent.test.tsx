@@ -156,7 +156,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('button', { name: 'default application/json' }),
     ).toHaveAttribute('aria-expanded', 'true');
-    await waitFor(() => expect(screen.getByText('id')).toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.getAllByText('id').length).toBeGreaterThan(0);
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('id');
+      expect(url.searchParams.get('path')).toContain('data');
+    });
+    expect(window.location.hash).toBe('#response-default-application-json');
     window.location.hash = '';
   });
 
@@ -1266,6 +1272,32 @@ describe('FumadocsOpenApiContent', () => {
         'https://api.agora.io/dev/v2/project/{appid}/rtm/vendor/user_events',
       ),
     ).toBeInTheDocument();
+    const copyEndpoint = screen.getByRole('button', {
+      name: 'Copy endpoint URL',
+    });
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+    try {
+      fireEvent.click(copyEndpoint);
+      await waitFor(() => {
+        expect(clipboardWriteText).toHaveBeenCalledWith(
+          'https://api.agora.io/dev/v2/project/{appid}/rtm/vendor/user_events',
+        );
+      });
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
     expect(
       screen.getByText(
         'This endpoint does not require any query parameters or a request body.',
@@ -2766,6 +2798,8 @@ describe('FumadocsOpenApiContent', () => {
   });
 
   it('adds stable official root anchors and nested find paths', async () => {
+    window.history.replaceState(null, '', '#path-parameters-appid');
+
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -2850,6 +2884,12 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
+    await waitFor(() => {
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('appid');
+      expect(url.searchParams.get('path')).toContain('appid');
+    });
+    expect(window.location.hash).toBe('#parameters.path.appid');
     expect(document.getElementById('parameters.path.appid')).not.toBeNull();
     expect(
       document.getElementById('parameters.query.pagetoken'),
@@ -3094,5 +3134,10 @@ describe('FumadocsOpenApiContent', () => {
     }).nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('*')).toBeVisible();
     expect(within(querySection).getByText('?')).toBeVisible();
+    expect(
+      within(pathSection).getByRole('button', {
+        name: '复制字段链接到 itemId',
+      }),
+    ).toBeVisible();
   });
 });

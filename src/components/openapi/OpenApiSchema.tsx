@@ -46,6 +46,11 @@ type OpenApiSchemaFindTarget = {
   parentPath: OpenApiSchemaPathItem[];
 };
 
+type OpenApiLegacySchemaNavigation = {
+  anchorPrefix: string;
+  rootDisplay: 'inline' | 'property-trigger';
+};
+
 export function OpenApiSchema({
   client,
   legacyAnchorPrefix,
@@ -59,6 +64,10 @@ export function OpenApiSchema({
 }: OpenApiSchemaProps) {
   const translations = useTranslations().translations;
   const rootId = useAnchorId([client.name]);
+  const legacyNavigation = useMemo(
+    () => getLegacySchemaNavigation(rootId, legacyAnchorPrefix),
+    [legacyAnchorPrefix, rootId],
+  );
   const [navigationKey, setNavigationKey] = useState(0);
   const normalizedRoot = useMemo(() => normalizeOpenApiSchema(root), [root]);
   const generated = useMemo(
@@ -90,8 +99,8 @@ export function OpenApiSchema({
   );
   const findTargets = useMemo(
     () =>
-      buildOpenApiSchemaFindTargets(generated, client.name, legacyAnchorPrefix),
-    [client.name, generated, legacyAnchorPrefix],
+      buildOpenApiSchemaFindTargets(generated, client.name, legacyNavigation),
+    [client.name, generated, legacyNavigation],
   );
   const revealTarget = useCallback(
     (target: OpenApiSchemaFindTarget) => {
@@ -172,12 +181,27 @@ function OpenApiSchemaFindTarget({
 export function buildOpenApiSchemaFindTargets(
   generated: SchemaUIGeneratedData,
   rootName: string,
-  legacyAnchorPrefix?: string,
+  legacyNavigation?: OpenApiLegacySchemaNavigation,
 ) {
   const targets: OpenApiSchemaFindTarget[] = [];
   const rootPath = [{ $ref: generated.$root, name: rootName }];
+  const legacyAnchorPrefix = legacyNavigation?.anchorPrefix;
+  const rootUsesPropertyTrigger =
+    legacyNavigation?.rootDisplay === 'property-trigger';
 
-  visitSchema(generated.$root, rootPath, [], new Set());
+  if (legacyAnchorPrefix && rootUsesPropertyTrigger) {
+    targets.push({
+      fieldPath: rootName,
+      legacyAnchorId: buildOpenApiAnchorId(legacyAnchorPrefix, rootName),
+      name: rootName,
+      parentPath: rootPath,
+    });
+  }
+
+  const schemaRootPath = rootUsesPropertyTrigger
+    ? [...rootPath, { $ref: generated.$root, name: rootName }]
+    : rootPath;
+  visitSchema(generated.$root, schemaRootPath, [], new Set());
   return targets;
 
   function visitSchema(
@@ -246,6 +270,31 @@ export function buildOpenApiSchemaFindTargets(
       );
     }
   }
+}
+
+function getLegacySchemaNavigation(rootId: string, explicitPrefix?: string) {
+  if (explicitPrefix) {
+    return { anchorPrefix: explicitPrefix, rootDisplay: 'inline' } as const;
+  }
+
+  const parameterMatch = rootId.match(
+    /^parameters\.(path|query|header|cookie)\./,
+  );
+  if (parameterMatch) {
+    return {
+      anchorPrefix: `${parameterMatch[1]}-parameters`,
+      rootDisplay: 'property-trigger',
+    } as const;
+  }
+
+  if (rootId.startsWith('request-body.')) {
+    return {
+      anchorPrefix: 'request-body',
+      rootDisplay: 'inline',
+    } as const;
+  }
+
+  return undefined;
 }
 
 function encodeOpenApiSchemaPath(path: OpenApiSchemaPathItem[]) {
