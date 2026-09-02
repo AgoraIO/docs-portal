@@ -96,6 +96,16 @@ const advancedChild = makeNode({
   name: 'advancedChild',
   parentPath: [rootPath, advancedPath],
 });
+const advancedGrandchild = makeNode({
+  depth: 2,
+  name: 'advancedGrandchild',
+  parentPath: [
+    rootPath,
+    advancedPath,
+    { $ref: 'advancedChild-type', name: 'advancedChild' },
+  ],
+});
+advancedChild.children = [advancedGrandchild];
 const advanced = makeNode({
   children: [advancedChild],
   name: 'advanced',
@@ -193,7 +203,7 @@ describe('OpenApiSchemaTree', () => {
     fireEvent.change(search, { target: { value: 'remote_rtc_uids' } });
     expect(screen.getByText('remote_rtc_uids')).toBeVisible();
     expect(screen.getByText('config')).toBeVisible();
-    expect(screen.queryByText('channel')).not.toBeInTheDocument();
+    expect(screen.getByText('channel')).not.toBeVisible();
     expect(screen.getByText('1 matches')).toHaveAttribute(
       'aria-live',
       'polite',
@@ -221,6 +231,10 @@ describe('OpenApiSchemaTree', () => {
   it('keeps root rows and mounts hidden descendants for unrelated search branches', () => {
     renderTree();
     const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    );
 
     fireEvent.change(search, { target: { value: 'channel' } });
 
@@ -276,15 +290,17 @@ describe('OpenApiSchemaTree', () => {
   });
 
   it('focuses and scrolls the first direct match on Enter', async () => {
+    const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
     renderTree();
     const search = screen.getByRole('searchbox', { name: 'Filter properties' });
-    const row = getRow(channel);
-    const focus = vi.spyOn(row, 'focus');
-    const scrollIntoView = vi
-      .spyOn(row, 'scrollIntoView')
-      .mockImplementation(() => {});
 
-    fireEvent.change(search, { target: { value: 'channel' } });
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
     fireEvent.keyDown(search, { key: 'Enter' });
 
     await waitFor(() => {
@@ -310,6 +326,29 @@ describe('OpenApiSchemaTree', () => {
       screen.getByRole('button', { name: 'Collapse advanced properties' }),
     ).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByText('advancedChild')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Expand unrelated properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('reveals a deep hidden descendant through only its ancestor chain', () => {
+    renderTree({ nodes: [advanced, unrelated] });
+    const deepHidden = getRow(advancedChild).parentElement?.querySelector(
+      '[data-openapi-schema-hidden-children][hidden="until-found"]',
+    );
+    expect(deepHidden).toBeTruthy();
+
+    fireEvent(deepHidden as HTMLElement, new Event('beforematch'));
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', {
+        name: 'Collapse advancedChild properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('advancedGrandchild')).toBeVisible();
     expect(
       screen.getByRole('button', { name: 'Expand unrelated properties' }),
     ).toHaveAttribute('aria-expanded', 'false');

@@ -70,9 +70,7 @@ export function OpenApiSchemaTree({
   );
   const isSearching = query.trim().length > 0;
   const effectiveExpandedIds = useMemo(() => {
-    if (!isSearching) return expandedIds;
-
-    return new Set([...expandedIds, ...filterResult.expandedIds]);
+    return isSearching ? filterResult.expandedIds : expandedIds;
   }, [expandedIds, filterResult.expandedIds, isSearching]);
 
   const findNodeChain = useCallback(
@@ -211,7 +209,14 @@ export function OpenApiSchemaTree({
         node.depth !== 0 &&
         !filterResult.visibleIds.has(node.id)
       ) {
-        return [];
+        return [
+          <HiddenDescendants
+            key={`${node.id}-search-hidden`}
+            onBeforeMatch={() => revealNode(node.id)}
+          >
+            {renderNodes([node], seen, true)}
+          </HiddenDescendants>,
+        ];
       }
 
       const nextSeen = new Set(seen).add(node.id);
