@@ -1,0 +1,316 @@
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import type {
+  OpenApiSchemaPathItem,
+  OpenApiSchemaViewNode,
+} from '@/lib/openapi/schema-view';
+import { OpenApiSchemaTree } from './OpenApiSchemaTree';
+
+const labels = {
+  allowedValues: 'Allowed values',
+  collapse: 'Collapse',
+  collapseAll: 'Collapse all',
+  copiedLink: 'Copied link to',
+  copyLink: 'Copy link to',
+  expand: 'Expand',
+  expandAll: 'Expand all',
+  filter: 'Filter properties',
+  matchCount: 'matches',
+  noMatches: 'No properties matching',
+  optional: 'Optional',
+  properties: 'properties',
+  required: 'Required',
+};
+
+const rootPath: OpenApiSchemaPathItem = { $ref: 'root', name: 'body' };
+const configPath: OpenApiSchemaPathItem = {
+  $ref: 'config-type',
+  name: 'config',
+};
+const advancedPath: OpenApiSchemaPathItem = {
+  $ref: 'advanced-type',
+  name: 'advanced',
+};
+
+function makeNode({
+  children = [],
+  depth = 0,
+  name,
+  parentPath = depth === 0 ? [rootPath] : [rootPath, configPath],
+  required = false,
+}: {
+  children?: OpenApiSchemaViewNode[];
+  depth?: number;
+  name: string;
+  parentPath?: OpenApiSchemaPathItem[];
+  required?: boolean;
+}): OpenApiSchemaViewNode {
+  const path = [...parentPath.slice(1).map((item) => item.name), name].join(
+    '.',
+  );
+  const id = `${path || name}-${depth}`;
+
+  return {
+    $type: `${name}-type`,
+    children,
+    depth,
+    id,
+    name,
+    parentPath,
+    path,
+    required,
+    schema: {
+      aliasName: children.length > 0 ? 'object' : 'string',
+      infoTags: [],
+      props: [],
+      type: children.length > 0 ? 'object' : 'primitive',
+      typeName: children.length > 0 ? 'object' : 'string',
+    } as OpenApiSchemaViewNode['schema'],
+  };
+}
+
+const channel = makeNode({
+  depth: 1,
+  name: 'channel',
+  parentPath: [rootPath, configPath],
+  required: true,
+});
+const remoteRtcUids = makeNode({
+  depth: 1,
+  name: 'remote_rtc_uids',
+  parentPath: [rootPath, configPath],
+});
+const config = makeNode({
+  children: [channel, remoteRtcUids],
+  name: 'config',
+  required: true,
+});
+const advancedChild = makeNode({
+  depth: 1,
+  name: 'advancedChild',
+  parentPath: [rootPath, advancedPath],
+});
+const advanced = makeNode({
+  children: [advancedChild],
+  name: 'advanced',
+  parentPath: [rootPath],
+});
+const unrelatedChild = makeNode({
+  depth: 1,
+  name: 'unrelatedChild',
+  parentPath: [rootPath, { $ref: 'unrelated-type', name: 'unrelated' }],
+});
+const unrelated = makeNode({
+  children: [unrelatedChild],
+  name: 'unrelated',
+  parentPath: [rootPath],
+});
+const nodes = [config, advanced, unrelated];
+
+function renderTree(
+  overrides: Partial<React.ComponentProps<typeof OpenApiSchemaTree>> = {},
+) {
+  return render(
+    <OpenApiSchemaTree
+      client={{ as: 'body', name: 'body', required: true }}
+      labels={labels}
+      nodes={nodes}
+      onCopyFieldLink={() => {}}
+      renderRemainingInfoTags={() => []}
+      rootId="schema-root"
+      {...overrides}
+    />,
+  );
+}
+
+function getRow(node: OpenApiSchemaViewNode) {
+  return document.getElementById(node.id) as HTMLElement;
+}
+
+describe('OpenApiSchemaTree', () => {
+  it('initially expands required root fields and keeps optional roots collapsed', () => {
+    renderTree();
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse config properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('channel')).toBeVisible();
+    expect(screen.getByText('advancedChild')).not.toBeVisible();
+    expect(
+      getRow(advanced).parentElement?.querySelector(
+        '[data-openapi-schema-hidden-children]',
+      ),
+    ).toBeTruthy();
+  });
+
+  it('toggles nested fields through the row button and updates ARIA state', () => {
+    renderTree();
+
+    const toggle = screen.getByRole('button', {
+      name: 'Expand advanced properties',
+    });
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('advancedChild')).toBeVisible();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('advancedChild')).not.toBeVisible();
+  });
+
+  it('expands every expandable node and collapses them while keeping root rows', () => {
+    renderTree();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Expand all' }));
+    for (const node of [config, advanced, unrelated]) {
+      expect(getRow(node).querySelector('[aria-expanded="true"]')).toBeTruthy();
+    }
+    expect(screen.getByText('advancedChild')).toBeVisible();
+    expect(screen.getByText('unrelatedChild')).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+    expect(screen.getByText('config')).toBeVisible();
+    expect(screen.getByText('advanced')).toBeVisible();
+    expect(screen.getByText('unrelated')).toBeVisible();
+    expect(screen.getByText('channel')).not.toBeVisible();
+    expect(screen.getByText('advancedChild')).not.toBeVisible();
+    expect(screen.getByText('unrelatedChild')).not.toBeVisible();
+  });
+
+  it('recursively searches names and complete dotted paths with a polite count', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'remote_rtc_uids' } });
+    expect(screen.getByText('remote_rtc_uids')).toBeVisible();
+    expect(screen.getByText('config')).toBeVisible();
+    expect(screen.queryByText('channel')).not.toBeInTheDocument();
+    expect(screen.getByText('1 matches')).toHaveAttribute(
+      'aria-live',
+      'polite',
+    );
+
+    fireEvent.change(search, { target: { value: 'channel' } });
+    expect(screen.getByText('channel')).toBeVisible();
+    expect(screen.getByText('1 matches')).toBeVisible();
+
+    fireEvent.change(search, { target: { value: 'config.remote_rtc_uids' } });
+    expect(screen.getByText('remote_rtc_uids')).toBeVisible();
+    expect(screen.getByText('config')).toBeVisible();
+    expect(screen.getByText('1 matches')).toBeVisible();
+  });
+
+  it('reports no matches and restores the pre-search expansion state on Escape', () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+    const configToggle = screen.getByRole('button', {
+      name: 'Collapse config properties',
+    });
+    fireEvent.click(configToggle);
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    );
+
+    fireEvent.change(search, { target: { value: 'does-not-exist' } });
+    expect(
+      screen.getByText('No properties matching does-not-exist'),
+    ).toBeVisible();
+    fireEvent.keyDown(search, { key: 'Escape' });
+
+    expect(search).toHaveValue('');
+    expect(
+      screen.getByRole('button', { name: 'Expand config properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('focuses and scrolls the first direct match on Enter', async () => {
+    renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+    const row = getRow(channel);
+    const focus = vi.spyOn(row, 'focus');
+    const scrollIntoView = vi
+      .spyOn(row, 'scrollIntoView')
+      .mockImplementation(() => {});
+
+    fireEvent.change(search, { target: { value: 'channel' } });
+    fireEvent.keyDown(search, { key: 'Enter' });
+
+    await waitFor(() => {
+      expect(focus).toHaveBeenCalled();
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
+    focus.mockRestore();
+    scrollIntoView.mockRestore();
+  });
+
+  it('reveals hidden descendants through beforematch without opening unrelated branches', () => {
+    renderTree({
+      nodes: [advanced, unrelated],
+    });
+    const hidden = getRow(advanced).parentElement?.querySelector(
+      '[data-openapi-schema-hidden-children]',
+    );
+    expect(hidden).toBeTruthy();
+
+    fireEvent(hidden as HTMLElement, new Event('beforematch'));
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('advancedChild')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Expand unrelated properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('reveals a target by parent path, scrolls it, and marks it highlighted', async () => {
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    renderTree({
+      nodes: [advanced],
+      revealTarget: {
+        fieldName: 'advancedChild',
+        parentPath: [rootPath, advancedPath],
+      },
+    });
+    const target = getRow(advancedChild);
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Collapse advanced properties' }),
+      ).toHaveAttribute('aria-expanded', 'true');
+      expect(target).toHaveAttribute('data-openapi-schema-highlighted', '');
+      expect(scrollIntoView).toHaveBeenCalled();
+    });
+    scrollIntoView.mockRestore();
+  });
+
+  it('passes field rows the copy callback and remaining info tag renderer', () => {
+    const onCopyFieldLink = vi.fn();
+    const renderRemainingInfoTags = vi.fn(() => [
+      <span key="tag">Custom tag</span>,
+    ]);
+    renderTree({ onCopyFieldLink, renderRemainingInfoTags });
+
+    fireEvent.click(
+      within(getRow(config)).getByRole('button', {
+        name: 'Copy link to config',
+      }),
+    );
+    expect(onCopyFieldLink).toHaveBeenCalledWith(config);
+    expect(within(getRow(config)).getByText('Custom tag')).toBeVisible();
+  });
+});
