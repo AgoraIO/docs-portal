@@ -36,6 +36,9 @@ agent = (
         key='your-sarvam-key',
         speaker='anushka',
         target_language_code='en-IN',
+        model='bulbul:v2',
+        speech_sample_rate=16000,
+        enable_preprocessing=False,
     ))
 )
 ```
@@ -55,6 +58,9 @@ const agent = new Agent({ client })
     key: 'your-sarvam-key',
     speaker: 'anushka',
     targetLanguageCode: 'en-IN',
+    model: 'bulbul:v2',
+    speechSampleRate: 16000,
+    enablePreprocessing: false,
   }));
 ```
 
@@ -66,13 +72,18 @@ const agent = new Agent({ client })
 import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
 
 // client is your configured Agora client
+speechSampleRate := 16000
+enablePreprocessing := false
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(
     vendors.NewSarvamTTS(vendors.SarvamTTSOptions{
-        Key:                "your-sarvam-key",
-        Speaker:            "anushka",
-        TargetLanguageCode: "en-IN",
+        Key:                 "your-sarvam-key",
+        Speaker:             "anushka",
+        TargetLanguageCode:  "en-IN",
+        Model:               "bulbul:v2",
+        SpeechSampleRate:    &speechSampleRate,
+        EnablePreprocessing: &enablePreprocessing,
     }),
 )
 ```
@@ -89,7 +100,10 @@ Use the following `tts` configuration in your request:
   "params": {
     "api_subscription_key": "<SARVAM_API_KEY>",
     "speaker": "anushka",
-    "target_language_code": "en-IN"
+    "target_language_code": "en-IN",
+    "model": "bulbul:v2",
+    "speech_sample_rate": 16000,
+    "enable_preprocessing": false
   }
 }
 ```
@@ -135,7 +149,13 @@ The parameters listed on this page are validated for use with Conversational AI 
   <Parameter name="loudness" type="number" possibleValues="[0.1,3.0]" required={false}>
   The volume level of the speech. Higher values increase the loudness.
   </Parameter>
-  <Parameter name="sample_rate" type="number" possibleValues="8000, 16000, 22050, 24000" required={false}>
+  <Parameter name="model" type="string" possibleValues="bulbul:v2, bulbul:v3" required={false}>
+  The Sarvam TTS model version to use.
+  </Parameter>
+  <Parameter name="speech_sample_rate" type="number" defaultValue="24000" possibleValues="8000, 16000, 22050, 24000, 32000, 44100, 48000" required={false}>
   The audio sample rate in Hz.
+  </Parameter>
+  <Parameter name="enable_preprocessing" type="boolean" required={false}>
+  Whether to normalize English words and numeric entities, such as dates and currency, before speech synthesis.
   </Parameter>
 </ParameterList>

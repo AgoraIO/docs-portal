@@ -980,12 +980,12 @@ Panics if `APIKey` or `Model` is empty.
 func NewHumeAITTS(opts HumeAITTSOptions) *HumeAITTS
 ```
 
-Panics if `Key`, `VoiceID`, or `Provider` is empty.
+Panics if `Key`, `VoiceName`, or `Provider` is empty.
 
 | Field | Type | Required | Description |
 |---|---|---|---|
 | `Key` | `string` | Yes | Hume AI API key |
-| `VoiceID` | `string` | Yes | Hume AI voice ID |
+| `VoiceName` | `string` | Yes | Hume AI voice name |
 | `Provider` | `string` | Yes | Voice provider type, such as `CUSTOM_VOICE` or `HUME_AI` |
 | `ConfigID` | `string` | No | Configuration ID |
 | `BaseURL` | `string` | No | Base URL |
@@ -1078,7 +1078,9 @@ Panics if `Key`, `Speaker`, or `TargetLanguageCode` is empty.
 | `Pitch` | `*float64` | No | Pitch adjustment |
 | `Pace` | `*float64` | No | Speed of speech |
 | `Loudness` | `*float64` | No | Volume level |
-| `SampleRate` | `*int` | No | Audio sample rate |
+| `Model` | `string` | No | TTS model, for example `"bulbul:v2"` |
+| `SpeechSampleRate` | `*int` | No | Audio sample rate in Hz |
+| `EnablePreprocessing` | `*bool` | No | Normalizes English words and numeric entities before synthesis |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
 #### `NewTypecastTTS`
