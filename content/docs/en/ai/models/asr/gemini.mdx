@@ -8,7 +8,7 @@ Google Gemini provides real-time streaming transcription. Use it as the ASR comp
 
 ### Sample configuration
 
-The following example shows how to configure Gemini ASR when starting a conversational AI agent. `GeminiTranscribeSTT` is a preview-only vendor, so the SDK client must be the preview client (`AgoraPreview`, `AgoraPreviewClient`, or `NewAgoraPreviewClient`) instead of the standard client. The preview client points requests at the preview endpoint and attaches the required header automatically.
+The following example shows how to configure Gemini ASR when starting a conversational AI agent.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -20,19 +20,12 @@ The following example shows how to configure Gemini ASR when starting a conversa
 <TabsContent value="python">
 
 ```python
-from agora_agent import Agent, Area
-from agora_agent.agentkit.preview import AgoraPreview, GeminiTranscribeSTT
+from agora_agent import Agent, GeminiSTT
 
-# Preview-only vendors require AgoraPreview instead of the standard Agora client.
-client = AgoraPreview(
-    area=Area.US,
-    app_id='your-app-id',
-    app_certificate='your-app-certificate',
-)
-
+# client is your configured Agora client
 agent = (
     Agent(client)
-    .with_stt(GeminiTranscribeSTT(
+    .with_stt(GeminiSTT(
         api_key='your-google-api-key',
         model='gemini-3.5-transcribe-live',
         language='en-US',
@@ -49,17 +42,11 @@ agent = (
 <TabsContent value="typescript">
 
 ```typescript
-import { Agent, AgoraPreviewClient, Area, GeminiTranscribeSTT } from 'agora-agents';
+import { Agent, GeminiSTT } from 'agora-agents';
 
-// Preview-only vendors require AgoraPreviewClient instead of the standard client.
-const client = new AgoraPreviewClient({
-  area: Area.US,
-  appId: 'your-app-id',
-  appCertificate: 'your-app-certificate',
-});
-
+// client is your configured Agora client
 const agent = new Agent({ client })
-  .withStt(new GeminiTranscribeSTT({
+  .withStt(new GeminiSTT({
     apiKey: 'your-google-api-key',
     model: 'gemini-3.5-transcribe-live',
     language: 'en-US',
@@ -75,29 +62,16 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import (
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-    "github.com/AgoraIO/agora-agents-go/v2/option"
-)
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
 
-// Preview-only vendors require NewAgoraPreviewClient instead of the standard client.
-client := agentkit.NewAgoraPreviewClient(agentkit.AgoraPreviewClientOptions{
-    AgoraClientOptions: agentkit.AgoraClientOptions{
-        Area:           option.AreaUS,
-        AppID:          "your-app-id",
-        AppCertificate: "your-app-certificate",
-    },
-})
-
+// client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewGeminiTranscribeSTT(vendors.GeminiTranscribeSTTOptions{
+    vendors.NewGeminiSTT(vendors.GeminiSTTOptions{
         APIKey:        "your-google-api-key",
         Model:         "gemini-3.5-transcribe-live",
         Language:      "en-US",
         SampleRate:    16000,
-        WordTimestamp: Agora.Bool(true),
+        WordTimestamp: agora.Bool(true),
     }),
 ).WithLlm(/* configure your LLM vendor */).
   WithTts(/* configure your TTS vendor */)
