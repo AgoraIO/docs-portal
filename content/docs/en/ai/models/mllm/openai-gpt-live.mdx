@@ -34,6 +34,7 @@ agent = (
         api_key='your-openai-key',
         url='wss://api.openai.com/v1/live',
         greeting_message="Hello! I'm GPT-live. How can I help you today?",
+        voice='cedar',
     ))
 )
 ```
@@ -51,6 +52,7 @@ const agent = new Agent({ client })
     apiKey: 'your-openai-key',
     url: 'wss://api.openai.com/v1/live',
     greetingMessage: "Hello! I'm GPT-live. How can I help you today?",
+    voice: 'cedar',
   }));
 ```
 
@@ -67,6 +69,7 @@ agent := agentkit.NewAgent(client).WithMllm(
         APIKey:          "your-openai-key",
         URL:             "wss://api.openai.com/v1/live",
         GreetingMessage: "Hello! I'm GPT-live. How can I help you today?",
+        Voice:           "cedar",
     }),
 )
 ```
@@ -90,7 +93,10 @@ Use the following `mllm` configuration in your request:
   "vendor": "openai-gpt-live",
   "api_key": "<openai_api_key>",
   "url": "wss://api.openai.com/v1/live",
-  "greeting_message": "Hello! I'm GPT-live. How can I help you today?"
+  "greeting_message": "Hello! I'm GPT-live. How can I help you today?",
+  "params": {
+    "voice": "cedar"
+  }
 }
 ```
 
@@ -118,5 +124,11 @@ The parameters listed on this page are validated for use with Conversational AI 
   </Parameter>
   <Parameter name="greeting_message" type="string" required={false}>
     Initial message the agent speaks when a user joins the channel.
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    Additional MLLM configuration parameters.
+    <Parameter name="voice" type="string" required={false}>
+    The voice identifier for audio output. For example, `cedar`.
+    </Parameter>
   </Parameter>
 </ParameterList>
