@@ -5,7 +5,7 @@ description: "Quickly implement real-time audio and video transmission and inter
 
 Agora's IoT SDK brings real-time audio and video engagement to smart devices with a lightweight design optimized for low-resource and battery-powered systems. Compatible with WebRTC and a wide range of chipsets, it supports seamless cross-platform development across mobile, PC, web, and smart displays. With robust performance in weak network conditions and integration with Agora’s real-time platform, it’s ideal for live streaming, remote control, and interactive IoT applications.
 
-Use the IoT SDK to build lightweight, cross-platform apps for smart devices, from video doorbells to smart displays. Designed for low power consumption and exceptional network performance, it offers full compatibility with Agora’s RTC and signaling platforms, simplifying development for interactive and reliable IoT solutions.
+Use the IoT SDK to build lightweight, cross-platform apps for smart devices, from video doorbells to smart displays. Designed for low power consumption and exceptional network performance, it offers full compatibility with Agora’s RTC and Signaling platforms, simplifying development for interactive and reliable IoT solutions.
 
 Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ensures high connectivity, low latency, and maximum stability even in challenging network conditions. Add real-time audio and video capabilities to smart devices with a small footprint, minimal power consumption, and seamless interoperability with Agora’s real-time platform and RTC SDKs.
 
@@ -13,7 +13,7 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 
 <Cards>
   <Card title="SDK quickstart" href="quickstart.mdx" description="Run the IoT SDK example project to stream audio and video." />
-  <Card title="Build from scratch" href="build-from-scratch.mdx" description="Integrate media streaming and signaling into your own project, step by step." />
+  <Card title="Build from scratch" href="build-from-scratch.mdx" description="Integrate media streaming and Signaling into your own project, step by step." />
   <Card title="Download SDKs" href="/en/api-reference/sdks?product=iot" description="Get the latest IoT SDK package for your target device." />
   <Card title="Authentication" href="build/authenticate-and-secure-channels/authentication-workflow.mdx" description="Secure IoT SDK connections with tokens." />
   <Card title="API reference" href="/en/api-reference/api-ref" description="Explore IoT SDK API references and related integration surfaces." />
@@ -24,7 +24,7 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
 
 <CardGrid>
   <FeatureCard title="Highly integrated">
-    IoT SDK integrates both real-time communication and signalling services, so you can easily develop features like live streaming and remote control at the same time.
+    IoT SDK integrates both real-time communication and Signaling services, so you can easily develop features like live streaming and remote control at the same time.
   </FeatureCard>
   <FeatureCard title="Lightweight design">
     Designed for low-resource embedded systems, IoT SDK has a small package footprint as low as 400kB so you don’t have to worry about system resource usage.
@@ -43,20 +43,27 @@ Built on Agora’s Software-Defined Real-Time Network (SDRTN®), the IoT SDK ens
   </FeatureCard>
 </CardGrid>
 
-## Product capability
+## Common use cases
 
-| Feature | Description |
+| Use case | Description |
+|---|---|
+| Broadcasting devices | Deliver real-time audio and video streams from IoT devices to multiple audience clients on mobile, web, or desktop platforms. Supports scenarios such as sports livestreaming, with synchronized features like timers, scoring, play-by-play information, and betting, connecting on-site devices with low-latency broadcast and interactive viewing services. |
+| Real-time monitoring | Let users view live video from one or more cameras, view the same camera stream from multiple mobile devices, view multiple camera streams from one mobile device, and communicate with the camera through two-way audio. |
+| Cellular smartwatches | Enable real-time audio and video calls between a low-power cellular smartwatch and a mobile application. |
+| Remote control | Combine Signaling and real-time media capabilities to build remote control applications for smart devices, robots, cameras, and other connected hardware. |
+
+## Core capabilities
+
+| Capability | Description |
 |---|---|
 | IoT SDK interoperability | Supports intercommunication between IoT SDKs using multiple audio and video encoding formats. See `audio_data_type_e` and `video_data_type_e`. |
 | RTC SDK interoperability | Supports bidirectional intercommunication between IoT SDK and RTC Server SDK, RTC Native SDK, RTC third-party framework SDKs, and RTC Web SDK. See [Communicate with RTC SDK](build/send-messages/interoperate-with-rtc-sdk.mdx). |
 | Uplink bandwidth prediction and bitrate adaptation | Proposes target bitrate recommendations based on a bandwidth prediction algorithm, and reports whether to increase or decrease bitrate to boost throughput and avoid network congestion. See [Adapt the sending bitrate](build/manage-connections-and-quality/bitrate-adaptation.mdx). |
+| Cloud Proxy connectivity | Supports connecting to Agora through networks with firewall or access restrictions. See [Connect with Cloud Proxy](build/manage-connections-and-quality/cloud-proxy.mdx). |
 | Key frames | Supports requesting local key frames to improve encoding and decoding efficiency and reduce data storage footprint. See [Send and receive key frames](build/configure-media/key-frame.mdx). |
 | Stream state management | Supports flexibly starting and pausing local audio and video publishing and remote audio and video subscription, with status monitoring. See [Manage stream state](build/manage-connections-and-quality/stream-state.mdx). |
-
-## Applicable scenarios
-
-- **Real-time surveillance**: Smart home cameras, vehicle monitoring, and video doorbells, enabling simultaneous viewing from multiple phones and two-way voice communication.
-- **Smart wearables**: Low-power devices such as smart watches, integrated with IoT SDK for real-time audio and video calling.
+| Multiple media formats | Supports multiple audio and video formats for different device and interoperability requirements, including G.711, G.722, Opus, and AAC audio, and H.264 and JPEG video. See [Configure the audio codec](build/configure-media/audio-codec.mdx). |
+| Security and compliance support | Supports media stream encryption and geofencing to help protect media transmission and control where your application can connect. See [Secure channel encryption](build/authenticate-and-secure-channels/media-stream-encryption.mdx) and [Restrict media zones](build/manage-connections-and-quality/geofencing.mdx). |
 
 ## Product performance
 

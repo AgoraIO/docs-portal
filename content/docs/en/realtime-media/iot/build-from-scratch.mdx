@@ -304,6 +304,10 @@ static void *audio_send_thread(void *threadid) {
 
 ### Receive audio and video
 
+:::info
+IoT SDK does not decode or render audio and video itself. Your application is responsible for decoding the raw data it receives and passing it to your device's playback pipeline.
+:::
+
 To receive audio and video sent by remote users, implement the `on_audio_data` and `on_video_data` callbacks you registered in [Listen for events](#listen-for-events).
 
 ### Leave the channel and destroy the connection

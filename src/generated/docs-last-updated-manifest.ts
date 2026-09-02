@@ -4934,7 +4934,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/meta.json':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/reference/pricing.md':
-    '2026-08-22T08:03:42.000Z',
+    '2026-08-28T07:48:10.000Z',
   'content/docs/en/realtime-media/iot/reference/release-notes.mdx':
     '2026-08-18T10:26:52.000Z',
   'content/docs/en/realtime-media/iot/reference/resources.mdx':
@@ -4942,7 +4942,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/iot/reference/security.md':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/iot/reference/supported-platforms.mdx':
-    '2026-08-18T10:26:52.000Z',
+    '2026-08-28T07:48:10.000Z',
   'content/docs/en/realtime-media/iot/resources.mdx':
     '2026-08-13T12:09:23.000Z',
   'content/docs/en/realtime-media/marketplace.md': '2026-05-14T11:07:52.000Z',
