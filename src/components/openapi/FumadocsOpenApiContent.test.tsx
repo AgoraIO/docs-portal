@@ -1967,7 +1967,9 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: 'Request Body' });
-    const propertiesRow = document.getElementById('request-body-properties');
+    const propertiesRow = document.querySelector(
+      '[data-openapi-schema-path="properties"]',
+    );
     expect(propertiesRow).toBeInTheDocument();
 
     expect(

@@ -168,6 +168,49 @@ describe('OpenApiSchemaTree', () => {
     ).toBeTruthy();
   });
 
+  it('initially expands required top-level fields regardless of depth metadata', () => {
+    const requiredChild = makeNode({
+      depth: 2,
+      name: 'requiredChild',
+      parentPath: [
+        rootPath,
+        { $ref: 'required-root-type', name: 'requiredRoot' },
+      ],
+    });
+    const optionalChild = makeNode({
+      depth: 2,
+      name: 'optionalChild',
+      parentPath: [
+        rootPath,
+        { $ref: 'optional-root-type', name: 'optionalRoot' },
+      ],
+    });
+    const requiredRoot = makeNode({
+      children: [requiredChild],
+      depth: 1,
+      name: 'requiredRoot',
+      parentPath: [rootPath],
+      required: true,
+    });
+    const optionalRoot = makeNode({
+      children: [optionalChild],
+      depth: 1,
+      name: 'optionalRoot',
+      parentPath: [rootPath],
+    });
+
+    renderTree({ nodes: [requiredRoot, optionalRoot] });
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse requiredRoot properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('requiredChild')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Expand optionalRoot properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('optionalChild')).not.toBeVisible();
+  });
+
   it('toggles nested fields through the row button and updates ARIA state', () => {
     renderTree();
 

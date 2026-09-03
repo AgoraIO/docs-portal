@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import {
   filterOpenApiSchemaView,
   getAllOpenApiSchemaExpandableIds,
-  getInitialOpenApiSchemaExpandedIds,
   type OpenApiSchemaPathItem,
   type OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
@@ -20,6 +19,14 @@ export function stableDomId(rootId: string, nodeId: string) {
   const encodedRoot = encodeURIComponent(rootId);
   const encodedNode = encodeURIComponent(nodeId);
   return `openapi-node-${encodedRoot.length}-${encodedRoot}-${encodedNode.length}-${encodedNode}`;
+}
+
+function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
+  return new Set(
+    nodes
+      .filter((node) => node.required && node.children.length > 0)
+      .map((node) => node.id),
+  );
 }
 
 export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
@@ -102,7 +109,7 @@ export function OpenApiSchemaTree({
   rootId,
 }: OpenApiSchemaTreeProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() =>
-    getInitialOpenApiSchemaExpandedIds(nodes),
+    getInitialExpandedIds(nodes),
   );
   const [query, setQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string>();
@@ -135,7 +142,7 @@ export function OpenApiSchemaTree({
       window.clearTimeout(copyTimer.current);
       copyTimer.current = undefined;
     }
-    setExpandedIds(getInitialOpenApiSchemaExpandedIds(latestNodesRef.current));
+    setExpandedIds(getInitialExpandedIds(latestNodesRef.current));
     setQuery('');
     setCopiedId(undefined);
     setHighlightedId(undefined);
