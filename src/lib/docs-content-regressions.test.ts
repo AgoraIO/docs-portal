@@ -927,6 +927,8 @@ describe('docs content regressions', () => {
     const appSizeOptimizationDocs = [
       'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
       'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
     ];
 
     for (const relativePath of appSizeOptimizationDocs) {
@@ -998,6 +1000,49 @@ describe('docs content regressions', () => {
     expect(whiteboardReleaseNotes).not.toContain(
       '/interactive-whiteboard/get-started/get-started-sdk',
     );
+  });
+
+  it('keeps marketplace downloads extension lists collapsed across platforms', () => {
+    const marketplaceDownloads = readDoc(
+      'realtime-media/marketplace/reference/downloads.mdx',
+    );
+
+    expect(marketplaceDownloads.match(/<Accordions>/g) ?? []).toHaveLength(8);
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="AI Noise Suppression">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="AI Echo Cancellation">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Audio Beauty">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Video Enhancement">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Local Screenshot Upload">',
+    );
+    expect(marketplaceDownloads).not.toContain('**AI Noise Suppression**');
+  });
+
+  it('keeps app size optimization extension lists collapsed across products', () => {
+    const appSizeOptimizationDocs = [
+      'realtime-media/rtc/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+    ];
+
+    for (const relativePath of appSizeOptimizationDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content.match(/<Accordions>/g) ?? []).toHaveLength(8);
+      expect(content.match(/<Accordion title=/g) ?? []).toHaveLength(144);
+      expect(content).not.toContain('**AI Noise Suppression**');
+      expect(content).not.toContain('**Voice Driver**');
+    }
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {
