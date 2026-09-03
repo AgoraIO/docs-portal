@@ -99,7 +99,7 @@ const zhCnServiceApiEntries = [
     '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
   ],
   [
-    'solutions',
+    'realtime-media',
     ['meeting'],
     '服务端 API',
     '/zh-CN/api-reference/meeting/restful/api/create-room',
