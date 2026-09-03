@@ -436,6 +436,43 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('Second callout')).toBeVisible();
   });
 
+  it('renders examples from every duplicate allOf property schema', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            allOf: [
+              {
+                properties: {
+                  mode: { examples: ['first-example'], type: 'string' },
+                },
+                type: 'object',
+              },
+              {
+                properties: {
+                  mode: { examples: ['second-example'], type: 'string' },
+                },
+                type: 'object',
+              },
+            ],
+          }}
+          showExample
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('mode')?.closest('div.border-t');
+    expect(
+      within(row as HTMLElement).getByText('"first-example"'),
+    ).toBeVisible();
+    expect(
+      within(row as HTMLElement).getByText('"second-example"'),
+    ).toBeVisible();
+  });
+
   it.each([
     {
       name: 'type array',
@@ -1220,9 +1257,10 @@ describe('OpenApiSchema', () => {
   });
 
   it('reveals nested fields in array parameter schemas through legacy and official paths', async () => {
+    const fieldName = 'state|value\0x';
     const root = {
       items: {
-        properties: { state: { type: 'string' } },
+        properties: { [fieldName]: { type: 'string' } },
         type: 'object',
       },
       type: 'array',
@@ -1232,7 +1270,7 @@ describe('OpenApiSchema', () => {
       .spyOn(HTMLElement.prototype, 'scrollIntoView')
       .mockImplementation(() => {});
     try {
-      window.history.replaceState(null, '', '#query-parameters-state');
+      window.history.replaceState(null, '', '#query-parameters-state-value-x');
       const first = render(
         <AnchorSection segments={['parameters', 'query']}>
           <OpenApiSchema
@@ -1246,7 +1284,7 @@ describe('OpenApiSchema', () => {
 
       await waitFor(() => {
         const stateRow = screen
-          .getByText('state')
+          .getByText(fieldName)
           .closest('.openapi-schema-field-row');
         expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
         expect(stateRow).toHaveAttribute(
@@ -1262,7 +1300,7 @@ describe('OpenApiSchema', () => {
       window.history.replaceState(
         null,
         '',
-        `/?path=${encodeURIComponent(path ?? '')}&s-highlight=state#parameters.query.filters`,
+        `/?path=${encodeURIComponent(path ?? '')}&s-highlight=${encodeURIComponent(fieldName)}#parameters.query.filters`,
       );
       render(
         <AnchorSection segments={['parameters', 'query']}>
@@ -1277,7 +1315,7 @@ describe('OpenApiSchema', () => {
 
       await waitFor(() => {
         const stateRow = screen
-          .getByText('state')
+          .getByText(fieldName)
           .closest('.openapi-schema-field-row');
         expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
         expect(stateRow).toHaveAttribute(

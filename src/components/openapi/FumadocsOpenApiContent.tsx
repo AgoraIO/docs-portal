@@ -16,7 +16,6 @@ import {
   Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
 import {
@@ -25,6 +24,7 @@ import {
   isValidElement,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -707,7 +707,7 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
   const method = typeof operation.method === 'string' ? operation.method : '';
   const locale = useContext(OpenApiLocaleContext);
-  const [endpointCopied, copyEndpoint] = useCopyButton(() =>
+  const [endpointCopied, copyEndpoint] = useOpenApiCopyButton(() =>
     navigator.clipboard.writeText(endpoint),
   );
 
@@ -1755,7 +1755,7 @@ function getCodeBlockLanguage(className: string | undefined) {
 }
 
 function OpenApiCodeCopyButton({ source }: { source: string }) {
-  const [checked, onClick] = useCopyButton(() =>
+  const [checked, onClick] = useOpenApiCopyButton(() =>
     navigator.clipboard.writeText(source),
   );
 
@@ -1770,6 +1770,54 @@ function OpenApiCodeCopyButton({ source }: { source: string }) {
       {checked ? <Check /> : <Clipboard />}
     </button>
   );
+}
+
+function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
+  const [checked, setChecked] = useState(false);
+  const callbackRef = useRef(onCopy);
+  const timeoutRef = useRef<number | undefined>(undefined);
+  const mountedRef = useRef(false);
+  const requestRef = useRef(0);
+  callbackRef.current = onCopy;
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      requestRef.current += 1;
+      if (timeoutRef.current !== undefined) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+    };
+  }, []);
+
+  const onClick = useCallback(() => {
+    const requestId = requestRef.current + 1;
+    requestRef.current = requestId;
+    if (timeoutRef.current !== undefined) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+    }
+
+    void (async () => {
+      try {
+        await callbackRef.current();
+      } catch {
+        return;
+      }
+      if (!mountedRef.current || requestRef.current !== requestId) return;
+
+      setChecked(true);
+      timeoutRef.current = window.setTimeout(() => {
+        if (!mountedRef.current || requestRef.current !== requestId) return;
+        setChecked(false);
+        timeoutRef.current = undefined;
+      }, 1500);
+    })();
+  }, []);
+
+  return [checked, onClick] as const;
 }
 
 function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {

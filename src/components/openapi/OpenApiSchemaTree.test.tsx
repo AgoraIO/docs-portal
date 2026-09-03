@@ -961,6 +961,27 @@ describe('OpenApiSchemaTree', () => {
 
     expect(vi.getTimerCount()).toBe(0);
   });
+
+  it('resets interaction state when a primitive schema type changes', async () => {
+    const { rerender } = renderTree();
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    act(() => {
+      rerender(
+        <OpenApiSchemaTree
+          client={{ as: 'body', name: 'body', required: true }}
+          labels={labels}
+          nodes={recreateNodesWithPrimitiveType(nodes)}
+          onCopyFieldLink={() => Promise.resolve(false)}
+          renderRemainingInfoTags={() => []}
+          rootId="schema-root"
+        />,
+      );
+    });
+
+    expect(search).toHaveValue('');
+  });
 });
 
 function recreateNodes(
@@ -993,5 +1014,18 @@ function recreateNodesWithPresentationMetadata(
       description: <span>{node.name} presentation description</span>,
       infoTags: [{ node: <span>{node.name} presentation tag</span> }],
     },
+  }));
+}
+
+function recreateNodesWithPrimitiveType(
+  source: OpenApiSchemaViewNode[],
+): OpenApiSchemaViewNode[] {
+  return source.map((node) => ({
+    ...node,
+    children: recreateNodesWithPrimitiveType(node.children),
+    schema:
+      node.name === 'advancedChild'
+        ? { ...node.schema, aliasName: 'number', typeName: 'number' }
+        : node.schema,
   }));
 }

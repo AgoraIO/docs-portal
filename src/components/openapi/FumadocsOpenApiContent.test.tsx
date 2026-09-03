@@ -16,6 +16,63 @@ type Document = Extract<
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
 describe('FumadocsOpenApiContent', () => {
+  it('does not schedule endpoint copy feedback after unmount', async () => {
+    vi.useFakeTimers();
+    let resolveCopy!: () => void;
+    const clipboardWriteText = vi.fn(
+      () => new Promise<void>((resolve) => (resolveCopy = resolve)),
+    );
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      const { unmount } = render(
+        <FumadocsOpenApiContent
+          pageProps={{
+            operations: [{ method: 'get', path: '/copy-unmount' }],
+            payload: {
+              bundled: {
+                info: { title: 'Copy API' },
+                openapi: '3.2.0',
+                paths: {
+                  '/copy-unmount': {
+                    get: {
+                      responses: {
+                        '204': { description: 'No content' },
+                      },
+                    },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy endpoint URL' }),
+      );
+      unmount();
+      resolveCopy();
+      await Promise.resolve();
+
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+      vi.useRealTimers();
+    }
+  });
+
   it('renders one English response body accordion with status-local headers', async () => {
     render(
       <FumadocsOpenApiContent

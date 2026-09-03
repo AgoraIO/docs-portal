@@ -91,19 +91,15 @@ export function buildOpenApiSchemaView(
     }
 
     if (schema.type === 'array') {
-      const current = parentPath.at(-1);
-      if (!current) return [];
+      const nextParentPath = getOpenApiSchemaArrayParentPath(
+        parentPath,
+        schema.item.$type,
+      );
+      if (!nextParentPath) return [];
 
       return childrenFor(
         generated.refs[schema.item.$type],
-        [
-          ...parentPath.slice(0, -1),
-          {
-            ...current,
-            $ref: schema.item.$type,
-            name: `${current.name}[]`,
-          },
-        ],
+        nextParentPath,
         fieldPath,
         depth,
         nextAncestors,
@@ -140,9 +136,19 @@ export function buildOpenApiSchemaView(
 }
 
 export function encodeOpenApiSchemaNodeId(path: OpenApiSchemaPathItem[]) {
-  return path
-    .map((item) => [item.name, item.$ref, ...(item.tabValues ?? [])].join('\0'))
-    .join('|');
+  return encodeURIComponent(JSON.stringify(path));
+}
+
+export function getOpenApiSchemaArrayParentPath(
+  parentPath: OpenApiSchemaPathItem[],
+  itemRef: string,
+) {
+  const current = parentPath.at(-1);
+  if (!current) return;
+  return [
+    ...parentPath.slice(0, -1),
+    { ...current, $ref: itemRef, name: `${current.name}[]` },
+  ];
 }
 
 export function flattenOpenApiSchemaView(

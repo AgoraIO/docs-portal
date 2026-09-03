@@ -19,6 +19,7 @@ import { buildOpenApiAnchorId } from '@/lib/openapi/anchors';
 import {
   buildOpenApiSchemaView,
   flattenOpenApiSchemaView,
+  getOpenApiSchemaArrayParentPath,
   type OpenApiSchemaData,
   type OpenApiSchemaPathItem,
   type OpenApiSchemaViewNode,
@@ -390,18 +391,6 @@ function createOpenApiSchemaRootNode(
   };
 }
 
-function getOpenApiSchemaArrayParentPath(
-  parentPath: OpenApiSchemaPathItem[],
-  itemRef: string,
-) {
-  const current = parentPath.at(-1);
-  if (!current) return;
-  return [
-    ...parentPath.slice(0, -1),
-    { ...current, $ref: itemRef, name: `${current.name}[]` },
-  ];
-}
-
 function getOpenApiSchemaUnionParentPath(
   parentPath: OpenApiSchemaPathItem[],
   branchRef: string,
@@ -676,24 +665,37 @@ function associateOpenApiSchemaBranches(
       !filterVisibility ||
       isOpenApiSchemaBranchVisible(branch, options.readOnly, options.writeOnly),
   );
+  const used = new Set<number>();
 
-  return items.map((item) => {
+  return items.map((item, itemIndex) => {
     const generatedSchema = generated.refs[item.$type];
+    const positionalBranch = remaining[itemIndex];
+    const positionalIndex =
+      positionalBranch !== undefined &&
+      (!generatedSchema ||
+        getOpenApiSchemaBranchType(positionalBranch) === generatedSchema.type)
+        ? itemIndex
+        : -1;
     const matchIndex = remaining.findIndex(
       (branch) =>
         getOpenApiSchemaBranchType(branch) === generatedSchema?.type &&
         getOpenApiSchemaBranchNames(branch).includes(item.name),
     );
-    const fallbackIndex =
-      matchIndex >= 0
-        ? matchIndex
-        : remaining.findIndex(
-            (branch) =>
-              !generatedSchema ||
-              getOpenApiSchemaBranchType(branch) === generatedSchema.type,
-          );
-    if (fallbackIndex < 0) return undefined;
-    return remaining.splice(fallbackIndex, 1)[0];
+    const fallbackIndex = remaining.findIndex(
+      (branch, index) =>
+        !used.has(index) &&
+        (!generatedSchema ||
+          getOpenApiSchemaBranchType(branch) === generatedSchema.type),
+    );
+    const selectedIndex =
+      positionalIndex >= 0 && !used.has(positionalIndex)
+        ? positionalIndex
+        : matchIndex >= 0 && !used.has(matchIndex)
+          ? matchIndex
+          : fallbackIndex;
+    if (selectedIndex < 0) return undefined;
+    used.add(selectedIndex);
+    return remaining[selectedIndex];
   });
 }
 
@@ -836,6 +838,37 @@ function isOpenApiSchemaWithEnum(
   return Array.isArray(schema.enum);
 }
 
+function mergeOpenApiSchemaAllOfPropertyMetadata(value: unknown) {
+  if (!Array.isArray(value)) return value;
+
+  const propertyMatches = new Map<string, unknown[]>();
+  for (const item of value) {
+    if (!isRecord(item) || !isRecord(item.properties)) continue;
+    for (const [name, property] of Object.entries(item.properties)) {
+      propertyMatches.set(name, [
+        ...(propertyMatches.get(name) ?? []),
+        property,
+      ]);
+    }
+  }
+
+  return value.map((item) => {
+    if (!isRecord(item) || !isRecord(item.properties)) return item;
+    const properties = Object.fromEntries(
+      Object.entries(item.properties).map(([name, property]) => {
+        const matches = propertyMatches.get(name) ?? [];
+        return [
+          name,
+          matches.length > 1
+            ? mergeOpenApiSchemaPropertyMatches(matches)
+            : property,
+        ];
+      }),
+    );
+    return { ...item, properties };
+  });
+}
+
 function removeOpenApiSchemaEnums(
   value: unknown,
   seen: WeakMap<
@@ -865,6 +898,14 @@ function removeOpenApiSchemaEnums(
     if (context === 'schema' && key === 'enum') continue;
     if (context === 'schema' && isOpenApiSchemaMapKeyword(key)) {
       output[key] = removeOpenApiSchemaPropertyMap(item, seen);
+      continue;
+    }
+    if (context === 'schema' && key === 'allOf') {
+      output[key] = removeOpenApiSchemaEnums(
+        mergeOpenApiSchemaAllOfPropertyMetadata(item),
+        seen,
+        context,
+      );
       continue;
     }
     output[key] = removeOpenApiSchemaEnums(
@@ -1045,34 +1086,52 @@ function getLegacySchemaNavigation(rootId: string, explicitPrefix?: string) {
 }
 
 export function encodeOpenApiSchemaPath(path: OpenApiSchemaPathItem[]) {
-  return path.map((item) => encodeURIComponent(JSON.stringify(item))).join('|');
+  return encodeURIComponent(JSON.stringify(path));
 }
 
 function decodeOpenApiSchemaPathItems(encodedPath: string) {
   try {
-    const path = encodedPath.split('|').map((item) => {
-      const decoded = JSON.parse(decodeURIComponent(item));
-      if (
-        !isRecord(decoded) ||
-        typeof decoded.name !== 'string' ||
-        typeof decoded.$ref !== 'string' ||
-        (decoded.tabValues !== undefined &&
-          (!Array.isArray(decoded.tabValues) ||
-            !decoded.tabValues.every((value) => typeof value === 'string')))
-      ) {
-        throw new Error('Invalid schema path item');
-      }
-      return {
-        $ref: decoded.$ref,
-        name: decoded.name,
-        ...(decoded.tabValues ? { tabValues: decoded.tabValues } : {}),
-      };
-    });
+    const decoded = JSON.parse(decodeURIComponent(encodedPath));
+    if (Array.isArray(decoded)) {
+      const path = decoded.map(parseOpenApiSchemaPathItem);
+      if (path.length > 0) return path;
+    }
+  } catch {
+    // Fall through to the previous JSON-per-item and legacy formats.
+  }
+
+  try {
+    const encodedItems = encodedPath.match(/[^|]+/g) ?? [];
+    const path = encodedItems.map((item) =>
+      parseOpenApiSchemaPathItem(JSON.parse(decodeURIComponent(item))),
+    );
     if (path.length > 0) return path;
   } catch {
     // Fall back to the pre-JSON path format below.
   }
 
+  return decodeLegacyOpenApiSchemaPathItems(encodedPath);
+}
+
+function parseOpenApiSchemaPathItem(decoded: unknown) {
+  if (
+    !isRecord(decoded) ||
+    typeof decoded.name !== 'string' ||
+    typeof decoded.$ref !== 'string' ||
+    (decoded.tabValues !== undefined &&
+      (!Array.isArray(decoded.tabValues) ||
+        !decoded.tabValues.every((value) => typeof value === 'string')))
+  ) {
+    throw new Error('Invalid schema path item');
+  }
+  return {
+    $ref: decoded.$ref,
+    name: decoded.name,
+    ...(decoded.tabValues ? { tabValues: decoded.tabValues } : {}),
+  };
+}
+
+function decodeLegacyOpenApiSchemaPathItems(encodedPath: string) {
   return encodedPath.split('|').map((encoded) => {
     const [name, $ref, ...tabValues] = encoded.split('\0');
     return { $ref, name, tabValues };

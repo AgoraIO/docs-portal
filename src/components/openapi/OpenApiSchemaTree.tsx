@@ -32,6 +32,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.path,
     node.$type,
     node.name,
+    node.variant,
     node.depth,
     node.required,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
@@ -41,7 +42,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
 }
 
 function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
-  const base = [schema.type];
+  const base = [schema.type, schema.typeName, schema.aliasName];
 
   if (schema.type === 'object') {
     return [
@@ -57,7 +58,7 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
   if (schema.type === 'array') return [...base, schema.item.$type];
 
   if (schema.type === 'or' || schema.type === 'and') {
-    return [...base, schema.items.map((item) => item.$type)];
+    return [...base, schema.items.map((item) => [item.$type, item.name])];
   }
 
   return base;

@@ -5,6 +5,7 @@ import type {
 import { describe, expect, it } from 'vitest';
 import {
   buildOpenApiSchemaView,
+  encodeOpenApiSchemaNodeId,
   filterOpenApiSchemaView,
   flattenOpenApiSchemaView,
   getAllOpenApiSchemaExpandableIds,
@@ -159,6 +160,21 @@ const unionArrayGeneratedFixture: SchemaUIGeneratedData = {
 };
 
 describe('openapi schema view', () => {
+  it('keeps tuple paths unique when names or refs contain delimiters', () => {
+    const nulInName = encodeOpenApiSchemaNodeId([{ $ref: 'c', name: 'a\0b' }]);
+    const nulInRef = encodeOpenApiSchemaNodeId([{ $ref: 'b\0c', name: 'a' }]);
+    const pipeInName = encodeOpenApiSchemaNodeId([{ $ref: 'c', name: 'a|b' }]);
+    const pipeInRef = encodeOpenApiSchemaNodeId([{ $ref: 'b|c', name: 'a' }]);
+
+    expect(nulInName).not.toBe(nulInRef);
+    expect(pipeInName).not.toBe(pipeInRef);
+    expect(nulInName).not.toMatch(/[\0|]/);
+    expect(pipeInName).not.toMatch(/[\0|]/);
+    expect(nulInName).toBe(
+      encodeOpenApiSchemaNodeId([{ $ref: 'c', name: 'a\0b' }]),
+    );
+  });
+
   it('opens only required root expandable fields and hides synthetic map rows', () => {
     const view = buildOpenApiSchemaView(generatedFixture, 'body');
     const flattened = flattenOpenApiSchemaView(view);
