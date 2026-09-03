@@ -99,7 +99,7 @@ export function OpenApiSchemaFieldRow({
           </Badge>
           {node.schema.deprecated ? (
             <Badge
-              className="openapi-schema-status normal-case tracking-normal text-warning"
+              className="openapi-schema-status normal-case tracking-normal text-fd-warning"
               variant="outline"
             >
               {labels.deprecated}

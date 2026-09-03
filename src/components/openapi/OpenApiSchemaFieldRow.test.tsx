@@ -65,7 +65,7 @@ describe('OpenApiSchemaFieldRow', () => {
     const required = within(row as HTMLElement).getByText('Required');
     const deprecated = within(row as HTMLElement).getByText('Deprecated');
     expect(required).toHaveClass('openapi-schema-status');
-    expect(deprecated).toHaveClass('openapi-schema-status', 'text-warning');
+    expect(deprecated).toHaveClass('openapi-schema-status', 'text-fd-warning');
     expect(
       within(row as HTMLElement).getByRole('button', {
         name: 'Copy link to id',
