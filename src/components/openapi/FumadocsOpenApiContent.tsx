@@ -150,7 +150,7 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Expand(schema UI)': '展开',
   'Collapse(schema UI)': '折叠',
   'properties(schema UI)': '属性',
-  'matches(schema UI)': '匹配项',
+  'matches(schema UI)': '个匹配项',
   'Value in(schema UI)': '可选值',
 } as const;
 
@@ -969,7 +969,7 @@ function OpenApiEnglishResponses({
                 )
               }
               readOnly
-              root={schema as never}
+              root={schema}
               showExample
             />
           ),

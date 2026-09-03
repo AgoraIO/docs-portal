@@ -299,7 +299,10 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(await screen.findByPlaceholderText('筛选属性')).toBeVisible();
+    const filter = await screen.findByPlaceholderText('筛选属性');
+    expect(filter).toBeVisible();
+    fireEvent.change(filter, { target: { value: 'name' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 个匹配项');
   });
 
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
