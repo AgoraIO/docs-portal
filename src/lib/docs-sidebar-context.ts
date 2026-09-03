@@ -24,7 +24,8 @@ export function parseProductSidebarContext(
   if (
     locale !== expectedLocale ||
     !PRODUCT_TABS.has(tab ?? '') ||
-    (tab !== 'ai' && slugSegments.length === 0)
+    (tab !== 'ai' && slugSegments.length === 0) ||
+    slugSegments.some((segment) => segment === '.' || segment === '..')
   ) {
     return null;
   }

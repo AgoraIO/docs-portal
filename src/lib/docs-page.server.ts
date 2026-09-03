@@ -864,6 +864,7 @@ export async function loadDocsPagePayload(
   const productSidebarPayload = productSidebarContext
     ? await getProductSidebarContextPayload({
         context: productSidebarContext,
+        activePath: page.url,
         pageTree,
         source,
       })
@@ -1986,10 +1987,12 @@ async function getDocsSidebarNodes({
 }
 
 async function getProductSidebarContextPayload({
+  activePath,
   context,
   pageTree,
   source,
 }: {
+  activePath: string;
   context: ReturnType<typeof parseProductSidebarContext>;
   pageTree: ReturnType<typeof docsSource.getPageTree>;
   source: typeof docsSource;
@@ -2041,9 +2044,43 @@ async function getProductSidebarContextPayload({
 
   return {
     activeTab: context.tab,
-    sidebar,
+    sidebar: revealActiveSidebarPath(sidebar, activePath),
     sidebarHeader,
   };
+}
+
+function revealActiveSidebarPath(
+  nodes: DocsSidebarNode[],
+  activePath: string,
+): DocsSidebarNode[] {
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return node;
+    }
+
+    const children = revealActiveSidebarPath(node.children, activePath);
+    const containsActivePath = children.some((child) =>
+      sidebarNodeContainsPath(child, activePath),
+    );
+
+    return containsActivePath
+      ? { ...node, children, defaultOpen: true }
+      : { ...node, children };
+  });
+}
+
+function sidebarNodeContainsPath(
+  node: DocsSidebarNode,
+  activePath: string,
+): boolean {
+  if (node.type === 'page') {
+    return node.url === activePath;
+  }
+
+  return (
+    node.url === activePath ||
+    node.children.some((child) => sidebarNodeContainsPath(child, activePath))
+  );
 }
 
 async function getApiReferenceSidebarNodes({
@@ -2140,7 +2177,13 @@ function findApiNavScopeByPageUrl({
   pageTree: ReturnType<typeof docsSource.getPageTree>;
   source: typeof docsSource;
 }): DocsNavScopeResolution | null {
-  const ancestors = findFolderAncestorsByPageUrl(pageTree, activePath);
+  const apiRoot = findFolderByIndexUrl(
+    pageTree,
+    `/${locale}/${OPENAPI_TAB}/api`,
+  );
+  const ancestors = apiRoot
+    ? findFolderAncestorsByPageUrl(apiRoot, activePath)
+    : null;
   if (!ancestors) {
     return null;
   }

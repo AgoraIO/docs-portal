@@ -22,6 +22,7 @@ describe('product sidebar context', () => {
     '?from=%2Fzh-CN%2Fapi-reference%2Fapi-ref%2Frtc',
     '?from=%2Fzh-CN%2Funknown%2Frtc',
     '?from=%2Fzh-CN%2Frealtime-media',
+    '?from=%2Fzh-CN%2Fsolutions%2F..%2Fapi-reference',
   ])('rejects invalid product context %s', (search) => {
     expect(parseProductSidebarContext(search, 'zh-CN')).toBeNull();
   });

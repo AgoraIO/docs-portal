@@ -365,6 +365,29 @@ describe('product API reference sidebar links', () => {
     return undefined;
   }
 
+  function findSectionWithChild(
+    nodes: SidebarNode[],
+    title: string,
+    childUrl: string,
+  ): SidebarNode | undefined {
+    for (const node of nodes) {
+      if (
+        node.type === 'section' &&
+        node.title === title &&
+        collectUrls(node.children ?? []).includes(childUrl)
+      ) {
+        return node;
+      }
+
+      const nested = findSectionWithChild(node.children ?? [], title, childUrl);
+      if (nested) {
+        return nested;
+      }
+    }
+
+    return undefined;
+  }
+
   it('keeps ordinary API cross-links as page entries', async () => {
     const sidebar = await loadSidebar('zh-CN', 'solutions', ['meeting']);
     const reference = findSection(sidebar, ['参考', '参考信息']);
@@ -510,8 +533,10 @@ describe('product API reference sidebar links', () => {
     );
     expect(payload.activeTab).toBe('realtime-media');
     expect(payload.body.kind).toBe('openapi');
-    expect(findNode(payload.sidebar, '服务端 API')).toMatchObject({
-      defaultOpen: false,
+    expect(
+      findSectionWithChild(payload.sidebar, '服务端 API', payload.activePath),
+    ).toMatchObject({
+      defaultOpen: true,
       type: 'section',
     });
   });
