@@ -6,6 +6,7 @@ import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
+import type { DocsMeta } from './docs-meta-schema';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
@@ -18,6 +19,7 @@ import {
 } from './docs-nav-scope';
 import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
+import { parseProductSidebarContext } from './docs-sidebar-context';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -787,7 +789,7 @@ export async function loadDocsPagePayload(
     ),
   );
 
-  return {
+  const apiPayload = {
     activePath: page.url,
     activeTab: tab,
     body,
@@ -854,6 +856,27 @@ export async function loadDocsPagePayload(
     title: page.data.title,
     toc,
   };
+
+  const productSidebarContext =
+    supportedLocale === 'zh-CN' && tab === OPENAPI_TAB
+      ? parseProductSidebarContext(search, supportedLocale)
+      : null;
+  const productSidebarPayload = productSidebarContext
+    ? await getProductSidebarContextPayload({
+        context: productSidebarContext,
+        pageTree,
+        source,
+      })
+    : null;
+
+  return productSidebarPayload
+    ? {
+        ...apiPayload,
+        activeTab: productSidebarPayload.activeTab,
+        sidebar: productSidebarPayload.sidebar,
+        sidebarHeader: productSidebarPayload.sidebarHeader,
+      }
+    : apiPayload;
 }
 
 function canonicalizeZhCnProductIaRedirectUrl(
@@ -1833,7 +1856,14 @@ async function getDocsSidebarNodes({
             tab: OPENAPI_TAB,
           });
 
-    return buildAiProductSidebar(aiNodes, apiReferenceNodes);
+    return embedZhCnServiceApiSidebars(
+      buildAiProductSidebar(aiNodes, apiReferenceNodes),
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+      tab,
+    );
   }
 
   if (
@@ -1845,12 +1875,28 @@ async function getDocsSidebarNodes({
       source,
     )
   ) {
-    return getSharedRtcSidebarNodes({
+    return embedZhCnServiceApiSidebars(
+      getSharedRtcSidebarNodes({
+        locale,
+        pageTree,
+        source,
+        tab,
+        activePath,
+      }),
+      activePath ?? pageUrl,
       locale,
       pageTree,
       source,
       tab,
+    );
+  }
+
+  if (isOpenApiTab(tab) && activePath && locale) {
+    return getApiReferenceSidebarNodes({
       activePath,
+      locale,
+      pageTree,
+      source,
     });
   }
 
@@ -1916,7 +1962,14 @@ async function getDocsSidebarNodes({
     );
 
   if (!isOpenApiTab(tab) || !locale) {
-    return sidebarWithRealtimeMediaApiReference;
+    return embedZhCnServiceApiSidebars(
+      sidebarWithRealtimeMediaApiReference,
+      activePath ?? pageUrl,
+      locale,
+      pageTree,
+      source,
+      tab,
+    );
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
@@ -1930,6 +1983,320 @@ async function getDocsSidebarNodes({
   }
 
   return openApiSidebar;
+}
+
+async function getProductSidebarContextPayload({
+  context,
+  pageTree,
+  source,
+}: {
+  context: ReturnType<typeof parseProductSidebarContext>;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}) {
+  if (!context) {
+    return null;
+  }
+
+  const productPage = source.getPage(
+    getSourceSlugs({
+      locale: context.locale,
+      slugSegments: context.slugSegments,
+      tab: context.tab,
+    }),
+    context.locale,
+  );
+
+  if (!productPage || productPage.url !== context.pathname) {
+    return null;
+  }
+
+  const sidebar = await getDocsSidebarNodes({
+    activePath: productPage.url,
+    locale: context.locale as AppLocale,
+    pageTree,
+    pageUrl: productPage.url,
+    source,
+    tab: context.tab,
+  });
+  const navScope = getDocsNavScope({
+    activePath: productPage.url,
+    locale: context.locale,
+    pageTree,
+    source,
+    tab: context.tab,
+  });
+  const sidebarHeader = resolveDocsSidebarHeader({
+    activePath: productPage.url,
+    hidePlatformTabs:
+      'hidePlatformTabs' in productPage.data
+        ? productPage.data.hidePlatformTabs
+        : undefined,
+    locale: context.locale,
+    navScope,
+    pageTree,
+    source,
+    tab: context.tab,
+  });
+
+  return {
+    activeTab: context.tab,
+    sidebar,
+    sidebarHeader,
+  };
+}
+
+async function getApiReferenceSidebarNodes({
+  activePath,
+  locale,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}): Promise<DocsSidebarNode[]> {
+  const tab = OPENAPI_TAB;
+  const navScope = getDocsNavScope({
+    activePath,
+    locale,
+    pageTree,
+    source,
+    tab,
+  });
+  const focusedOpenApiLaneSidebar = !navScope
+    ? await getFocusedOpenApiLaneSidebarNodes({
+        activePath,
+        locale,
+        pageTree,
+        source,
+        tab,
+      })
+    : null;
+  const focusedZhCnRtmRestSidebar = !navScope
+    ? getFocusedZhCnRtmRestSidebarNodes({
+        activePath,
+        locale,
+        source,
+        tab,
+      })
+    : null;
+  const apiNavScope =
+    navScope ??
+    findApiNavScopeByPageUrl({
+      activePath,
+      locale,
+      pageTree,
+      source,
+    });
+  const sidebar = apiNavScope
+    ? getScopedSidebarNodes({
+        locale,
+        navScope: apiNavScope,
+        source,
+      })
+    : (focusedZhCnRtmRestSidebar ??
+      focusedOpenApiLaneSidebar ??
+      getNavScopeSidebarNodes({
+        getNodeMeta: (node) =>
+          getDocsMetaData(source.getNodeMeta(node, locale)),
+        root: pageTree,
+        tab,
+      }));
+  const sourcePageUrls =
+    locale === 'zh-CN' ? getLocaleSourcePageUrls(source, locale) : null;
+  const sidebarWithSourcePagesOnly = sourcePageUrls
+    ? filterSourceBackedSidebarNodes(sidebar, sourcePageUrls)
+    : sidebar;
+  const scopedReferenceProductSidebar =
+    Boolean(apiNavScope) && isReferenceProductSidebarPath(activePath);
+  const sidebarWithoutReferenceProductIcons = scopedReferenceProductSidebar
+    ? stripSidebarSectionIcons(sidebarWithSourcePagesOnly)
+    : sidebarWithSourcePagesOnly;
+  const sidebarWithProductLinks = addRealtimeMediaApiReferenceSidebarItem(
+    sidebarWithoutReferenceProductIcons,
+    activePath,
+  );
+  const openApiSidebar = await addOpenApiEndpointSidebarItems(
+    sidebarWithProductLinks,
+    locale,
+    tab,
+  );
+
+  return isRecipesPath(activePath)
+    ? restoreRecipesSidebarSections(openApiSidebar)
+    : openApiSidebar;
+}
+
+function findApiNavScopeByPageUrl({
+  activePath,
+  locale,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}): DocsNavScopeResolution | null {
+  const ancestors = findFolderAncestorsByPageUrl(pageTree, activePath);
+  if (!ancestors) {
+    return null;
+  }
+
+  const scopedAncestors = ancestors
+    .map((node) => ({
+      meta: getDocsMetaData(source.getNodeMeta(node, locale)),
+      node,
+    }))
+    .filter((item) =>
+      Boolean(item.meta && 'navScope' in item.meta && item.meta.navScope),
+    );
+  const scopedAncestor = scopedAncestors.at(-1);
+
+  if (!scopedAncestor?.meta || !('navScope' in scopedAncestor.meta)) {
+    return null;
+  }
+  const meta = scopedAncestor.meta as DocsMeta;
+
+  return {
+    header: {
+      backHref: getFirstTabPageUrl(pageTree, OPENAPI_TAB) ?? activePath,
+      backLabel: 'API 参考',
+      title: meta.title ?? 'RESTful API',
+    },
+    scope: {
+      meta,
+      node: scopedAncestor.node,
+    },
+    sidebarRoot: scopedAncestor.node,
+  };
+}
+
+function findFolderAncestorsByPageUrl(
+  node: Folder | Root,
+  activePath: string,
+  ancestors: Folder[] = [],
+): Folder[] | null {
+  const nextAncestors =
+    node.type === 'folder' ? [...ancestors, node] : ancestors;
+
+  if (node.type === 'folder' && node.index?.url === activePath) {
+    return nextAncestors;
+  }
+
+  for (const child of node.children) {
+    if (child.type === 'page' && child.url === activePath) {
+      return nextAncestors;
+    }
+
+    if (child.type === 'folder') {
+      const result = findFolderAncestorsByPageUrl(
+        child,
+        activePath,
+        nextAncestors,
+      );
+      if (result) {
+        return result;
+      }
+    }
+  }
+
+  return null;
+}
+
+const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
+  '服务端 API',
+  '呼叫小程序 API',
+  'License 管理 API',
+  '设备端 API',
+  '操控端 API',
+]);
+
+async function embedZhCnServiceApiSidebars(
+  nodes: DocsSidebarNode[],
+  productPath: string | undefined,
+  locale: AppLocale | null,
+  pageTree: ReturnType<typeof docsSource.getPageTree>,
+  source: typeof docsSource,
+  tab: string,
+): Promise<DocsSidebarNode[]> {
+  if (
+    locale !== 'zh-CN' ||
+    !productPath ||
+    !['ai', 'realtime-media', 'solutions'].includes(tab)
+  ) {
+    return nodes;
+  }
+
+  return Promise.all(
+    nodes.map(async (node) => {
+      if (node.type === 'page') {
+        if (
+          !ZH_CN_SERVICE_API_ENTRY_TITLES.has(node.title) ||
+          !node.url.startsWith('/zh-CN/api-reference/')
+        ) {
+          return node;
+        }
+
+        const apiSidebar = await getApiReferenceSidebarNodes({
+          activePath: node.url,
+          locale,
+          pageTree,
+          source,
+        });
+
+        if (apiSidebar.length === 0) {
+          return node;
+        }
+
+        return {
+          children: addProductContextToApiSidebarNodes(apiSidebar, productPath),
+          collapsible: true,
+          defaultOpen: false,
+          id: `${node.id}-embedded`,
+          title: node.title,
+          type: 'section' as const,
+        };
+      }
+
+      return {
+        ...node,
+        children: await embedZhCnServiceApiSidebars(
+          node.children,
+          productPath,
+          locale,
+          pageTree,
+          source,
+          tab,
+        ),
+      };
+    }),
+  );
+}
+
+function addProductContextToApiSidebarNodes(
+  nodes: DocsSidebarNode[],
+  productPath: string,
+): DocsSidebarNode[] {
+  return nodes.map((node) =>
+    node.type === 'page'
+      ? {
+          ...node,
+          search: {
+            ...node.search,
+            from: productPath,
+          },
+        }
+      : {
+          ...node,
+          children: addProductContextToApiSidebarNodes(
+            node.children,
+            productPath,
+          ),
+        },
+  );
 }
 
 function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {

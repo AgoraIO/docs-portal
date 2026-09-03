@@ -11,6 +11,137 @@ type SidebarNode = {
   url?: string;
 };
 
+const zhCnServiceApiEntries = [
+  ['ai', [], '服务端 API', '/zh-CN/api-reference/api-ref/conversational-ai'],
+  ['realtime-media', ['rtc'], '服务端 API', '/zh-CN/api-reference/api-ref/rtc'],
+  [
+    'realtime-media',
+    ['rtm'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/signaling/publish',
+  ],
+  [
+    'realtime-media',
+    ['cloud-recording'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/cloud-recording',
+  ],
+  [
+    'realtime-media',
+    ['transcoding'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/cloud-transcoding',
+  ],
+  [
+    'realtime-media',
+    ['media-push'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/media-push',
+  ],
+  [
+    'realtime-media',
+    ['media-pull'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/media-pull',
+  ],
+  [
+    'realtime-media',
+    ['rtmp-gateway'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/rtmp-gateway',
+  ],
+  [
+    'realtime-media',
+    ['speech-to-text'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/speech-to-text',
+  ],
+  [
+    'realtime-media',
+    ['usage-analytics'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/agora-analytics',
+  ],
+  [
+    'realtime-media',
+    ['fusion-cdn'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/fusion-cdn',
+  ],
+  [
+    'realtime-media',
+    ['danmaku'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/danmaku',
+  ],
+  [
+    'realtime-media',
+    ['whiteboard', 'whiteboard-sdk'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  ],
+  [
+    'realtime-media',
+    ['whiteboard', 'fastboard-sdk'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/whiteboard/restful',
+  ],
+  [
+    'solutions',
+    ['ppt-transcoding'],
+    '服务端 API',
+    '/zh-CN/api-reference/api-ref/ppt-conversion-service',
+  ],
+  [
+    'solutions',
+    ['flexible-classroom'],
+    '服务端 API',
+    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  ],
+  [
+    'solutions',
+    ['meeting'],
+    '服务端 API',
+    '/zh-CN/api-reference/meeting/restful/api/create-room',
+  ],
+  [
+    'solutions',
+    ['online-ktv', 'ktv-scenario'],
+    '服务端 API',
+    '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
+  ],
+  [
+    'solutions',
+    ['online-ktv', 'online-ktv-sdk'],
+    '服务端 API',
+    '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
+  ],
+  [
+    'solutions',
+    ['voip-call'],
+    '呼叫小程序 API',
+    '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
+  ],
+  [
+    'solutions',
+    ['voip-call'],
+    'License 管理 API',
+    '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
+  ],
+  [
+    'solutions',
+    ['teleoperation'],
+    '设备端 API',
+    '/zh-CN/api-reference/teleoperation/iot/api/device',
+  ],
+  [
+    'solutions',
+    ['teleoperation'],
+    '操控端 API',
+    '/zh-CN/api-reference/teleoperation/iot/api/operator',
+  ],
+] as const;
+
 function findSection(
   nodes: SidebarNode[],
   titles: string[],
@@ -57,33 +188,19 @@ function findTopLevelSection(
   );
 }
 
-function findPage(
-  nodes: SidebarNode[],
-  title: string,
-  url: string,
-): SidebarNode | undefined {
-  for (const node of nodes) {
-    if (node.type === 'page' && node.title === title && node.url === url) {
-      return node;
-    }
-
-    if (node.children) {
-      const found = findPage(node.children, title, url);
-      if (found) {
-        return found;
-      }
-    }
-  }
-
-  return undefined;
+function collectUrls(nodes: SidebarNode[]): string[] {
+  return nodes.flatMap((node) => [
+    ...(node.url ? [node.url] : []),
+    ...collectUrls(node.children ?? []),
+  ]);
 }
 
 async function loadSidebar(
   locale: 'en' | 'zh-CN',
   tab: string,
-  slugs: string[],
+  slugs: readonly string[],
 ) {
-  const payload = await loadDocsPagePayload(locale, tab, slugs);
+  const payload = await loadDocsPagePayload(locale, tab, [...slugs]);
 
   if (!payload || 'redirectUrl' in payload) {
     throw new Error(
@@ -119,10 +236,16 @@ describe('product API reference sidebar links', () => {
       );
 
       expect(restApiNode).toMatchObject({
+        collapsible: true,
+        defaultOpen: false,
         title: '服务端 API',
-        type: 'page',
-        url,
+        type: 'section',
       });
+      expect(
+        collectUrls(restApiNode?.children ?? []).some(
+          (childUrl) => childUrl === url || childUrl.startsWith(`${url}/`),
+        ),
+      ).toBe(true);
     },
   );
 
@@ -194,11 +317,66 @@ describe('product API reference sidebar links', () => {
         url: '/zh-CN/api-reference/api',
       },
       {
+        collapsible: true,
+        defaultOpen: false,
         title: '服务端 API',
-        type: 'page',
-        url: '/zh-CN/api-reference/api-ref/rtc',
+        type: 'section',
       },
     ]);
+  });
+
+  it.each(zhCnServiceApiEntries)(
+    'embeds %s/%s %s as a collapsed API sidebar section',
+    async (tab, slugs, title, url) => {
+      const sidebar = await loadSidebar('zh-CN', tab, slugs);
+      const entry = findNode(sidebar, title);
+
+      expect(entry).toMatchObject({
+        collapsible: true,
+        defaultOpen: false,
+        title,
+        type: 'section',
+      });
+      const childUrls = collectUrls(entry?.children ?? []);
+      expect(childUrls.length).toBeGreaterThan(0);
+      expect(
+        childUrls.some(
+          (childUrl) => childUrl === url || childUrl.startsWith(`${url}/`),
+        ),
+      ).toBe(true);
+    },
+  );
+
+  function findNode(
+    nodes: SidebarNode[],
+    title: string,
+  ): SidebarNode | undefined {
+    for (const node of nodes) {
+      if (node.title === title) {
+        return node;
+      }
+
+      const nested = findNode(node.children ?? [], title);
+      if (nested) {
+        return nested;
+      }
+    }
+
+    return undefined;
+  }
+
+  it('keeps ordinary API cross-links as page entries', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'solutions', ['meeting']);
+    const reference = findSection(sidebar, ['参考', '参考信息']);
+    const createRoom = reference?.children?.find(
+      (child) => child.title === '创建房间',
+    );
+
+    expect(createRoom).toMatchObject({
+      title: '创建房间',
+      type: 'page',
+      url: '/zh-CN/api-reference/meeting/restful/api/create-room',
+    });
   });
 
   it('does not add a client API link to products without a client API', async () => {
@@ -220,13 +398,19 @@ describe('product API reference sidebar links', () => {
         sdkSlug,
       ]);
       const url = '/zh-CN/api-reference/api-ref/whiteboard/restful';
-      const restApiNode = findPage(sidebar, '服务端 API', url);
+      const restApiNode = findNode(sidebar, '服务端 API');
 
       expect(restApiNode).toMatchObject({
+        collapsible: true,
+        defaultOpen: false,
         title: '服务端 API',
-        type: 'page',
-        url,
+        type: 'section',
       });
+      expect(
+        collectUrls(restApiNode?.children ?? []).some(
+          (childUrl) => childUrl === url || childUrl.startsWith(`${url}/`),
+        ),
+      ).toBe(true);
     },
   );
 
@@ -252,13 +436,19 @@ describe('product API reference sidebar links', () => {
     'reads the service API leaf from the Chinese %s solutions metadata',
     async (slugs, url) => {
       const sidebar = await loadSidebar('zh-CN', 'solutions', slugs);
-      const restApiNode = findPage(sidebar, '服务端 API', url);
+      const restApiNode = findNode(sidebar, '服务端 API');
 
       expect(restApiNode).toMatchObject({
+        collapsible: true,
+        defaultOpen: false,
         title: '服务端 API',
-        type: 'page',
-        url,
+        type: 'section',
       });
+      expect(
+        collectUrls(restApiNode?.children ?? []).some(
+          (childUrl) => childUrl === url || childUrl.startsWith(`${url}/`),
+        ),
+      ).toBe(true);
     },
   );
 
@@ -268,16 +458,28 @@ describe('product API reference sidebar links', () => {
 
     expect(reference?.children?.slice(0, 2)).toMatchObject([
       {
+        collapsible: true,
+        defaultOpen: false,
         title: '呼叫小程序 API',
-        type: 'page',
-        url: '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
+        type: 'section',
       },
       {
+        collapsible: true,
+        defaultOpen: false,
         title: 'License 管理 API',
-        type: 'page',
-        url: '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
+        type: 'section',
       },
     ]);
+    expect(collectUrls(reference?.children?.[0]?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
+      ]),
+    );
+    expect(collectUrls(reference?.children?.[1]?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
+      ]),
+    );
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {
@@ -288,6 +490,29 @@ describe('product API reference sidebar links', () => {
       title: 'RESTful API',
       type: 'page',
       url: '/en/api-reference/api-ref/rtc',
+    });
+  });
+
+  it('keeps the RTC product sidebar while loading an API document', async () => {
+    const payload = await loadDocsPagePayload(
+      'zh-CN',
+      'api-reference',
+      ['api-ref', 'rtc', 'create-ban-rule'],
+      '?from=%2Fzh-CN%2Frealtime-media%2Frtc',
+    );
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a RESTful API docs payload');
+    }
+
+    expect(payload.activePath).toBe(
+      '/zh-CN/api-reference/api-ref/rtc/create-ban-rule',
+    );
+    expect(payload.activeTab).toBe('realtime-media');
+    expect(payload.body.kind).toBe('openapi');
+    expect(findNode(payload.sidebar, '服务端 API')).toMatchObject({
+      defaultOpen: false,
+      type: 'section',
     });
   });
 
@@ -309,10 +534,16 @@ describe('product API reference sidebar links', () => {
       url: '/zh-CN/api-reference/api',
     });
     expect(reference?.children?.[1]).toMatchObject({
+      collapsible: true,
+      defaultOpen: false,
       title: '服务端 API',
-      type: 'page',
-      url: '/zh-CN/api-reference/api-ref/conversational-ai',
+      type: 'section',
     });
+    expect(collectUrls(reference?.children?.[1]?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/conversational-ai/join',
+      ]),
+    );
 
     const deviceKitSection = findTopLevelSection(sidebar, [
       '对话式 AI 开发套件',
