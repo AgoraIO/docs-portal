@@ -125,6 +125,92 @@ describe('OpenApiSchema', () => {
     expect(getRenderedSchemaText('advanced')).toBeVisible();
   });
 
+  it('keeps nested request body wrappers, hidden descendants, and statuses integrated', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              properties: {
+                properties: {
+                  provider: {
+                    deprecated: true,
+                    description: 'Provider configuration.',
+                    properties: {
+                      name: { type: 'string' },
+                    },
+                    required: ['name'],
+                    type: 'object',
+                  },
+                  channel: { type: 'string' },
+                },
+                type: 'object',
+              },
+            },
+            required: ['properties'],
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const schemaTree = screen
+      .getByPlaceholderText('Filter Properties')
+      .closest('.openapi-schema-tree') as HTMLElement;
+    const propertiesNode = getRenderedSchemaText('properties')?.closest(
+      '[data-openapi-schema-path]',
+    ) as HTMLElement;
+    const providerNode = getRenderedSchemaText('provider')?.closest(
+      '[data-openapi-schema-path]',
+    ) as HTMLElement;
+    const providerRow = providerNode.querySelector(
+      '.openapi-schema-field-row',
+    ) as HTMLElement;
+    const nameRow = getRenderedSchemaText('name')?.closest(
+      '.openapi-schema-field-row',
+    ) as HTMLElement;
+    const channelNode = getRenderedSchemaText('channel')?.closest(
+      '[data-openapi-schema-path]',
+    ) as HTMLElement;
+
+    expect(schemaTree).toBeInTheDocument();
+    expect(
+      schemaTree.querySelector('[data-openapi-schema-fields]'),
+    ).toBeInTheDocument();
+    expect(propertiesNode).toHaveAttribute(
+      'data-openapi-schema-path',
+      'properties',
+    );
+    expect(providerNode).toBeInTheDocument();
+    expect(providerNode).toHaveAttribute(
+      'data-openapi-schema-path',
+      'properties.provider',
+    );
+    expect(
+      propertiesNode.querySelector(':scope > .openapi-schema-children'),
+    ).toBeInTheDocument();
+    expect(
+      providerNode.querySelector(':scope > .openapi-schema-children'),
+    ).toBeInTheDocument();
+    expect(
+      providerNode.querySelector(':scope > .openapi-schema-children'),
+    ).toHaveAttribute('hidden', 'until-found');
+    expect(within(providerRow).getByText('Optional')).toBeVisible();
+    expect(within(providerRow).getByText('Deprecated')).toBeVisible();
+    expect(within(nameRow).getByText('Required')).toBeInTheDocument();
+    expect(within(channelNode).getByText('Optional')).toBeVisible();
+    expect(within(providerRow).getByText('Deprecated')).toHaveClass(
+      'openapi-schema-status',
+    );
+    const description = providerRow.querySelector(
+      '.openapi-schema-field-description',
+    );
+    expect(description).not.toHaveTextContent('Deprecated');
+  });
+
   it('renders deprecated as a status badge without a duplicate metadata tag', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>

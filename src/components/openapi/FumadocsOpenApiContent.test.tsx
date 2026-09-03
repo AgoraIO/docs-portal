@@ -796,8 +796,14 @@ describe('FumadocsOpenApiContent', () => {
         ?.closest('.openapi-schema-field-row') as HTMLElement;
     const propertiesRow = getSchemaRow('properties');
     const asrRow = getSchemaRow('asr');
+    const propertiesNode = propertiesRow.closest(
+      '[data-openapi-schema-node]',
+    ) as HTMLElement;
 
     expect(propertiesRow).toBeInstanceOf(HTMLElement);
+    expect(
+      propertiesNode.querySelector(':scope > .openapi-schema-children'),
+    ).toBeInTheDocument();
     expect(asrRow).toBeInstanceOf(HTMLElement);
     expect(
       within(propertiesRow).getByRole('button', {
