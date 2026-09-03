@@ -1,4 +1,5 @@
 import { canonicalizeApiSymbol } from './api-query-identity';
+import { normalizeApiReferenceUrl } from './api-url-normalizer';
 import type { SearchIntentResult } from './search-intent';
 import {
   compactSearchText,
@@ -450,8 +451,9 @@ export function normalizeApiHit(
   current?: CurrentVersionInput,
 ): NormalizedApiResult | undefined {
   if (!record(hit)) return undefined;
-  const url = text(hit.url) ?? '';
-  if (!isNavigableUrl(url)) return undefined;
+  const rawUrl = text(hit.url) ?? '';
+  if (!isNavigableUrl(rawUrl)) return undefined;
+  const url = normalizeApiReferenceUrl(rawUrl);
   const path = pathSegments(hit);
   const { displayTitle, memberKind, namespace, symbol } = titleAndSymbol(
     hit,

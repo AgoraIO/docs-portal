@@ -747,6 +747,8 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const normalizedIosUrl =
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main';
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
       getLastStatus: () => ({ api: 'success', docs: 'success' }),
@@ -760,7 +762,7 @@ describe('DocsSearchDialog', () => {
           platformUrls: {
             android:
               'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#joinchannel',
-            ios: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+            ios: normalizedIosUrl,
             linux:
               'https://api-ref.agora.io/en/video-sdk/linux/4.x/API/class_irtcengine.html#joinchannel',
             web: 'https://api-ref.agora.io/en/video-sdk/web/4.x/API/class_irtcengine.html#joinchannel',
@@ -788,8 +790,7 @@ describe('DocsSearchDialog', () => {
     expect(openSpy).not.toHaveBeenCalled();
     fireEvent.change(platformSelector, {
       target: {
-        value:
-          'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+        value: normalizedIosUrl,
       },
     });
     expect(screen.getByText('android')).toBeInTheDocument();
@@ -799,7 +800,7 @@ describe('DocsSearchDialog', () => {
 
     fireEvent.click(screen.getAllByText('joinChannel')[0]);
     expect(openSpy).toHaveBeenCalledWith(
-      'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html#joinchannel',
+      normalizedIosUrl,
       '_blank',
       'noopener,noreferrer',
     );

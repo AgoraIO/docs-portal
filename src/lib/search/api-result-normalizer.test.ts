@@ -121,6 +121,40 @@ describe('SDK API result normalization', () => {
     ).toBe(currentAndroidRenewToken.url);
   });
 
+  it('normalizes language query parameters before aggregating platform URLs', () => {
+    const malformedLanguage = Array.from({ length: 256 }, () => 'objc').join(
+      ',',
+    );
+    const url =
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=' +
+      malformedLanguage +
+      '#app-main';
+    const normalizedUrl =
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main';
+
+    const result = aggregateApiResults([
+      normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+            lvl1: 'setAudioProfile(_:)',
+          },
+          objectID: 'ios-set-audio-profile-language',
+          platform: 'ios',
+          product: 'video-sdk',
+          url,
+          version: '4.x',
+        },
+        intent('setAudioProfile'),
+      ),
+    ]);
+
+    expect(result[0]).toMatchObject({
+      platformUrls: { ios: normalizedUrl },
+      url: normalizedUrl,
+    });
+  });
+
   it('does not merge same symbols from different classes or products', () => {
     const joinChannel = (product: string, className: string, id: string) =>
       normalizeValidApiHit(
