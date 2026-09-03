@@ -27,6 +27,14 @@ describe('API query identity', () => {
     });
   });
 
+  it.each(['IoT SDK', 'Bluetooth iOS'])(
+    'does not treat product or platform query %s as API identity context',
+    (query) => {
+      expect(parseApiQueryIdentity(query)).toBeUndefined();
+      expect(getApiRetrievalQuery(query)).toBe(query);
+    },
+  );
+
   it.each([
     'RtcEngine.joinChannel',
     'RtcEngine::joinChannel',

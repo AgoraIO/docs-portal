@@ -94,9 +94,16 @@ export function parseApiQueryIdentity(
   const target = isApiSymbol(normalizedQuery)
     ? normalizedQuery
     : (() => {
-        const identifiers = (
-          normalizedQuery.match(API_IDENTIFIER_TOKEN_PATTERN) ?? []
-        ).filter(
+        const tokens =
+          normalizedQuery.match(API_IDENTIFIER_TOKEN_PATTERN) ?? [];
+        if (
+          !tokens.some((token) =>
+            API_QUERY_MODIFIER_TERMS.has(token.toLowerCase()),
+          )
+        ) {
+          return undefined;
+        }
+        const identifiers = tokens.filter(
           (token) =>
             !API_QUERY_MODIFIER_TERMS.has(token.toLowerCase()) &&
             isApiSymbol(token),
