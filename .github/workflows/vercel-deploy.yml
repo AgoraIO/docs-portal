@@ -288,6 +288,23 @@ jobs:
               body,
             });
 
+      - name: Replay Global search golden queries
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+          VITE_SEARCH_RANKING_V2: 'true'
+        run: bun run search:replay -- --out=global-search-replay-preview.json
+
+      - name: Upload Global search replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-search-replay-preview
+          path: global-search-replay-preview.json
+          if-no-files-found: warn
+
   deploy-production:
     name: Deploy Production to Vercel
     if: |
