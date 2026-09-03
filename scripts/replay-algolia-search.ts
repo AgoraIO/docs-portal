@@ -4,6 +4,7 @@ import {
   type GoldenReplayResult,
   replayGoldenSearchCases,
 } from '../src/lib/search/golden-search-replay';
+import { parseReplayArguments } from './replay-algolia-search-arguments';
 import { writeReplayReport } from './replay-algolia-search-report';
 
 const appId = process.env.VITE_ALGOLIA_APP_ID;
@@ -14,10 +15,7 @@ const indexName =
   'docs_portal_en';
 const apiReferenceIndexName =
   process.env.VITE_ALGOLIA_API_REFERENCE_INDEX_NAME ?? 'agora_APIRefSearch';
-const outputPath = process.argv
-  .slice(2)
-  .find((argument) => argument.startsWith('--out='))
-  ?.slice('--out='.length);
+const { gateMode, outputPath } = parseReplayArguments(process.argv.slice(2));
 
 if (!appId || !searchApiKey) {
   throw new Error(
@@ -37,5 +35,6 @@ const report = await replayGoldenSearchCases(
   GLOBAL_GOLDEN_SEARCH_CASES,
   async (query) =>
     (await client.search(query)) as unknown as GoldenReplayResult[],
+  { gateMode },
 );
 process.exitCode = await writeReplayReport(report, outputPath);

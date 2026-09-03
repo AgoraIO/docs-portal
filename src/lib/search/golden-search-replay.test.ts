@@ -71,6 +71,43 @@ describe('replayGoldenSearchCases', () => {
     });
   });
 
+  it('accepts a Documentation result on the expected page with a different section hash', async () => {
+    const docsCase = {
+      expectedIntent: 'task',
+      expectedKind: 'guide',
+      expectedTitle: 'Quickstart',
+      expectedUrl: '/en/guide',
+      query: 'guide section',
+    } satisfies GoldenSearchCase;
+
+    const matchingReport = await replayGoldenSearchCases(
+      [docsCase],
+      async () => [
+        {
+          recordKind: 'guide',
+          title: 'Quickstart',
+          url: '/en/guide#section',
+        },
+      ],
+    );
+    const differentPathReport = await replayGoldenSearchCases(
+      [docsCase],
+      async () => [
+        {
+          recordKind: 'guide',
+          title: 'Quickstart',
+          url: '/en/other#section',
+        },
+      ],
+    );
+
+    expect(matchingReport.cases[0]).toMatchObject({
+      actualUrls: ['/en/guide#section'],
+      passed: true,
+    });
+    expect(differentPathReport.cases[0]).toMatchObject({ passed: false });
+  });
+
   it('matches a golden title when live highlights split every title term', async () => {
     const markedTitleCase = {
       expectedIntent: 'task',
@@ -136,6 +173,101 @@ describe('replayGoldenSearchCases', () => {
       expectedUrl: sdkCase.expectedUrl,
       passed: false,
       query: sdkCase.query,
+    });
+  });
+
+  it('requires an exact query and hash match for absolute SDK URLs', async () => {
+    const differentHashReport = await replayGoldenSearchCases(
+      [sdkCase],
+      async () => [
+        {
+          canonicalKey: sdkCase.expectedCanonicalKey,
+          recordKind: 'sdk-symbol',
+          title: 'setAudioProfile',
+          url: sdkCase.expectedUrl.replace('#app-main', '#different-anchor'),
+        },
+      ],
+    );
+    const differentQueryReport = await replayGoldenSearchCases(
+      [sdkCase],
+      async () => [
+        {
+          canonicalKey: sdkCase.expectedCanonicalKey,
+          recordKind: 'sdk-symbol',
+          title: 'setAudioProfile',
+          url: sdkCase.expectedUrl.replace('?language=objc', '?language=swift'),
+        },
+      ],
+    );
+
+    expect(differentHashReport).toMatchObject({
+      failed: 1,
+      passed: 0,
+      total: 1,
+    });
+    expect(differentQueryReport).toMatchObject({
+      failed: 1,
+      passed: 0,
+      total: 1,
+    });
+  });
+
+  it('observes every case while preview blockers alone determine the gate', async () => {
+    const previewCases = [
+      {
+        expectedIntent: 'task',
+        expectedKind: 'guide',
+        expectedTitle: 'Blocking guide',
+        expectedUrl: '/en/blocking',
+        previewBlocking: true,
+        query: 'blocking query',
+      },
+      {
+        expectedIntent: 'task',
+        expectedKind: 'guide',
+        expectedTitle: 'Monitoring guide',
+        expectedUrl: '/en/monitoring',
+        query: 'monitoring query',
+      },
+    ] satisfies GoldenSearchCase[];
+
+    const report = await replayGoldenSearchCases(
+      previewCases,
+      async (query) => [
+        {
+          recordKind: 'guide',
+          title: query === 'blocking query' ? 'Blocking guide' : 'Wrong guide',
+          url: query === 'blocking query' ? '/en/blocking' : '/en/wrong',
+        },
+      ],
+      { gateMode: 'preview-blockers' },
+    );
+
+    expect(report).toMatchObject({
+      failed: 1,
+      gate: {
+        failed: 0,
+        mode: 'preview-blockers',
+        passed: 1,
+        total: 1,
+      },
+      passed: 1,
+      total: 2,
+    });
+    expect(report.cases).toEqual([
+      expect.objectContaining({ passed: true, previewBlocking: true }),
+      expect.objectContaining({ passed: false, previewBlocking: false }),
+    ]);
+  });
+
+  it('uses all observed cases as the default gate', async () => {
+    const report = await replayGoldenSearchCases(cases, async () => []);
+
+    expect(report.gate).toEqual({
+      failed: 1,
+      mode: 'all',
+      passed: 1,
+      total: 2,
     });
   });
 });

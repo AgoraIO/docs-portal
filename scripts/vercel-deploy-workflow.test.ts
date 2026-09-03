@@ -17,6 +17,9 @@ type VercelDeployWorkflow = {
     'deploy-preview': {
       steps: WorkflowStep[];
     };
+    'deploy-production': {
+      steps: WorkflowStep[];
+    };
   };
 };
 
@@ -28,6 +31,14 @@ async function previewSteps(): Promise<WorkflowStep[]> {
   ) as VercelDeployWorkflow;
 
   return workflow.jobs['deploy-preview'].steps;
+}
+
+async function productionSteps(): Promise<WorkflowStep[]> {
+  const workflow = load(
+    await readFile(workflowPath, 'utf8'),
+  ) as VercelDeployWorkflow;
+
+  return workflow.jobs['deploy-production'].steps;
 }
 
 function stepIndex(steps: WorkflowStep[], name: string): number {
@@ -62,7 +73,7 @@ describe('Vercel preview deployment workflow', () => {
     });
 
     expect(replay.run).toContain(
-      'bun run search:replay -- --out=global-search-replay-preview.json',
+      'bun run search:replay -- --gate=preview-blockers --out=global-search-replay-preview.json',
     );
 
     const previewWorkflow = JSON.stringify(steps);
@@ -79,5 +90,19 @@ describe('Vercel preview deployment workflow', () => {
     expect(replay.if).toBe(
       "steps.preview-context.outputs.should_deploy == 'true'",
     );
+  });
+
+  it('keeps Production replay strict after search sync', async () => {
+    const steps = await productionSteps();
+    const syncIndex = stepIndex(steps, 'Sync Algolia search index');
+    const replayIndex = stepIndex(steps, 'Replay Global search golden queries');
+    const replay = steps[replayIndex];
+
+    expect(syncIndex).toBeGreaterThanOrEqual(0);
+    expect(replayIndex).toBeGreaterThan(syncIndex);
+    expect(replay.run).toContain(
+      'bun run search:replay -- --out=global-search-replay.json',
+    );
+    expect(replay.run).not.toContain('--gate=');
   });
 });

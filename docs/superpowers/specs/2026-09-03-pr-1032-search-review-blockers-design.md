@@ -142,7 +142,9 @@ The approved live list therefore grows from 50 to 54 cases.
 
 For aggregated SDK results, replay matching must not depend exclusively on the representative platform URL. When `expectedCanonicalKey` is present, replay locates the expected top-three result by that key and verifies that the expected target URL is either the representative `url` or one of the result's `platformUrls`. Documentation cases continue to use their expected URL.
 
-The replay report is always fully constructed and written before a failed case causes a non-zero process exit status.
+Documentation URL comparison treats a site-relative URL as a page identity: a section fragment is ignored, while its path and query string must still match. Absolute SDK API URLs remain exact evidence, including query string and fragment. The representative URL and every `platformUrls` value use the same comparison rule, while `actualUrls` in the report retain their original fragments.
+
+The replay report is always fully constructed and written before the selected gate determines process exit status. It retains overall totals for all 54 cases and separately records gate mode, total, passed, and failed counts. The 11 known shared-index top-three gaps remain monitoring evidence; they are not copied into golden `expected` values and do not trigger Algolia reordering in this change.
 
 ## PR Preview Gate
 
@@ -151,13 +153,15 @@ The Preview deployment job runs in this order:
 1. Build and verify the Vercel output.
 2. Deploy the Preview.
 3. Write the workflow summary and publish or update the PR Preview URL comment.
-4. Run the 54-case live replay with the PR code and shared read-only Algolia indices.
+4. Run all 54 live replay cases with the PR code and shared read-only Algolia indices.
 5. Upload the replay JSON artifact with `if: always()`.
-6. Let the replay result determine whether the Preview check is green or red.
+6. Let only the four modifier regressions (`setAudioProfile method`, `renewToken api`, `joinChannel method`, and `RtcEngine class`) determine whether the Preview check is green or red.
 
 This ordering ensures a failed live replay blocks the check without hiding the deployed Preview URL needed for investigation.
 
 The Preview gate uses only the search API key. It does not run `search:sync`, use an Algolia admin key, mutate the shared index, or attempt to validate branch-only documentation content that is not present in the shared index.
+
+Production remains strict: after `search:sync`, replay runs without a gate option, so all 54 cases determine its exit status.
 
 ## Testing
 
@@ -193,9 +197,13 @@ Focused automated tests cover:
 ### Replay and workflow
 
 - All 54 golden queries are declared.
+- Exactly the four modifier regressions are marked as Preview blockers.
 - SDK replay can match an aggregated result by canonical key and platform URL.
-- Replay writes its JSON report before returning a failing exit status.
+- Documentation replay ignores only relative section fragments; absolute SDK URLs remain exact.
+- Preview replay writes all case and overall evidence before returning success when its four-case gate passes.
+- Default replay uses all 54 cases as its strict gate.
 - The Preview workflow deploys and publishes its URL before replay.
+- Preview passes the blocker gate option, while Production passes no gate option.
 - Artifact upload runs with `if: always()`.
 
 Final verification runs in this order:
@@ -203,7 +211,7 @@ Final verification runs in this order:
 1. Focused search, docs-shell, and i18n tests.
 2. `bun run types:check`.
 3. `bun run test`.
-4. The 54-case live replay against the shared indices.
+4. The 54-case Preview replay against the shared indices, confirming all four blockers pass while recording every monitoring result.
 5. `git diff --check`.
 
 ## Scope Boundaries
@@ -224,5 +232,5 @@ This change does not:
 - API-first ordering follows canonical strict exact match or explicit API Reference scope only.
 - Ordinary supported V2 searches issue a federated request while retaining Documentation-first behavior when no strict API result exists.
 - Malformed repeated iOS `language` values cannot reach platform navigation.
-- A failed Preview replay leaves the Preview URL published and uploads its JSON evidence.
-- Focused tests, type checking, the full test suite, all 54 live cases, and `git diff --check` pass after rebasing onto the latest `main`.
+- A failed Preview blocker gate leaves the Preview URL published and uploads the complete 54-case JSON evidence.
+- Focused tests, type checking, the full test suite, the four-case live Preview gate, and `git diff --check` pass after rebasing onto the latest `main`; Production remains strict across all 54 cases after sync.

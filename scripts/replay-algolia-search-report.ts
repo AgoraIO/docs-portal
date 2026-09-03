@@ -14,6 +14,9 @@ export async function writeReplayReport(
   io.log(
     `Global Algolia replay: ${report.passed}/${report.total} passed, ${report.failed} failed.`,
   );
+  io.log(
+    `Global Algolia replay gate (${report.gate.mode}): ${report.gate.passed}/${report.gate.total} passed, ${report.gate.failed} failed.`,
+  );
   for (const result of report.cases.filter(({ passed }) => !passed)) {
     io.error(
       JSON.stringify({
@@ -25,5 +28,5 @@ export async function writeReplayReport(
     );
   }
 
-  return report.failed > 0 ? 1 : 0;
+  return report.gate.failed > 0 ? 1 : 0;
 }

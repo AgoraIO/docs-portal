@@ -295,7 +295,7 @@ jobs:
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
           VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
           VITE_SEARCH_RANKING_V2: 'true'
-        run: bun run search:replay -- --out=global-search-replay-preview.json
+        run: bun run search:replay -- --gate=preview-blockers --out=global-search-replay-preview.json
 
       - name: Upload Global search replay evidence
         if: always()

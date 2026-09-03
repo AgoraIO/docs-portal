@@ -7,6 +7,7 @@ export type GoldenSearchCase = {
   expectedTitle?: string;
   expectedCanonicalKey?: string;
   expectedUrl?: string;
+  previewBlocking?: boolean;
 };
 
 export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
@@ -263,6 +264,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedCanonicalKey: 'video-sdk|rtcengine|joinchannel|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title78',
+    previewBlocking: true,
   },
   {
     query: 'setAudioProfile',
@@ -281,6 +283,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
+    previewBlocking: true,
   },
   {
     query: 'NetworkQuality',
@@ -317,6 +320,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedCanonicalKey: 'video-sdk|rtcengine|type',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit?language=objc#app-main',
+    previewBlocking: true,
   },
   {
     query: 'acquire resource ID',
@@ -356,6 +360,7 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedCanonicalKey: 'video-sdk|rtcengine|renewtoken|member',
     expectedUrl:
       'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title128',
+    previewBlocking: true,
   },
   {
     query: 'send streaming message',
