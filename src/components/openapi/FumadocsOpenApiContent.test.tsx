@@ -690,6 +690,176 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.queryByRole('tab', { name: 'C#' })).not.toBeInTheDocument();
   });
 
+  it('keeps the Conversational AI join request body readable', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      required: true,
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description:
+                                  'The unique identifier of the agent.',
+                                type: 'string',
+                              },
+                              pipeline_id: {
+                                description:
+                                  'The unique ID of a published agent.',
+                                type: 'string',
+                              },
+                              properties: {
+                                additionalProperties: true,
+                                properties: {
+                                  channel: {
+                                    description:
+                                      'The name of the channel to join.',
+                                    type: 'string',
+                                  },
+                                  remote_rtc_uids: {
+                                    description:
+                                      'A list of user IDs that the agent subscribes to in the channel.',
+                                    items: { type: 'string' },
+                                    type: 'array',
+                                  },
+                                  asr: {
+                                    additionalProperties: true,
+                                    description:
+                                      'Automatic Speech Recognition configuration.',
+                                    properties: {
+                                      vendor: {
+                                        enum: ['ares', 'microsoft'],
+                                        type: 'string',
+                                      },
+                                    },
+                                    type: 'object',
+                                  },
+                                  llm: {
+                                    additionalProperties: true,
+                                    properties: {
+                                      vendor: {
+                                        enum: ['openai', 'azure'],
+                                        type: 'string',
+                                      },
+                                    },
+                                    required: ['vendor'],
+                                    type: 'object',
+                                  },
+                                },
+                                required: ['channel', 'remote_rtc_uids', 'llm'],
+                                type: 'object',
+                              },
+                              preset: {
+                                deprecated: true,
+                                type: 'string',
+                              },
+                            },
+                            required: ['name', 'properties'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const schemaTree = screen
+      .getByPlaceholderText('Filter Properties')
+      .closest('.openapi-schema-tree') as HTMLElement;
+    const getSchemaRow = (name: string) =>
+      within(schemaTree)
+        .getAllByText(name, { exact: true })
+        .find((element) => !element.closest('[data-openapi-schema-find-index]'))
+        ?.closest('.openapi-schema-field-row') as HTMLElement;
+    const propertiesRow = getSchemaRow('properties');
+    const asrRow = getSchemaRow('asr');
+
+    expect(propertiesRow).toBeInstanceOf(HTMLElement);
+    expect(asrRow).toBeInstanceOf(HTMLElement);
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+
+    const propertiesName = within(propertiesRow).getByText('properties', {
+      exact: true,
+    });
+    expect(propertiesName.tagName).toBe('CODE');
+    expect(propertiesName).toHaveClass('font-semibold');
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toContainElement(
+      within(propertiesRow).getByText('object', { exact: true }),
+    );
+    expect(within(propertiesRow).getByText('Required')).toBeVisible();
+    expect(within(asrRow).getByText('Optional')).toBeVisible();
+
+    expect(
+      screen.queryByText('[key: string]', { exact: true }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(
+      within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
+    );
+    const vendorRow = getSchemaRow('vendor');
+    expect(within(vendorRow).getByText('Allowed values')).toBeVisible();
+    expect(
+      within(vendorRow).getByText('ares', { exact: true }),
+    ).toHaveAttribute('data-openapi-allowed-value-key', 'string:"ares":0');
+    expect(within(vendorRow).getByText('ares', { exact: true }).tagName).toBe(
+      'CODE',
+    );
+    expect(
+      within(vendorRow).getByText('microsoft', { exact: true }),
+    ).toBeVisible();
+
+    const filter = screen.getByPlaceholderText('Filter Properties');
+    fireEvent.change(filter, { target: { value: 'channel' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.channel', { exact: true }),
+    ).toBeVisible();
+
+    fireEvent.change(filter, { target: { value: 'remote_rtc_uids' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.remote_rtc_uids', { exact: true }),
+    ).toBeVisible();
+
+    expect(
+      document.querySelector('[data-openapi-method="POST"]'),
+    ).toHaveTextContent('POST');
+  });
+
   it('renders authorization with official parameter sections', async () => {
     render(
       <FumadocsOpenApiContent
