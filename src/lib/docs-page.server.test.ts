@@ -4857,6 +4857,35 @@ describe('normalizeZhCnEmbeddedApiSidebar', () => {
     expect(result.map((node) => node.id)).toEqual(['publish', 'receive']);
   });
 
+  it('keeps only Meeting endpoint pages from its service API section', () => {
+    const result = normalizeZhCnEmbeddedApiSidebar(
+      [
+        page('guide', '/zh-CN/realtime-media/meeting/reference/call-api'),
+        {
+          children: [
+            page(
+              'create-room',
+              '/zh-CN/api-reference/meeting/restful/api/create-room',
+            ),
+            page(
+              'query-recording',
+              '/zh-CN/api-reference/meeting/restful/api/query-recording',
+            ),
+          ],
+          id: 'meeting-service-api',
+          title: '服务端 API',
+          type: 'section',
+        },
+      ],
+      '/zh-CN/api-reference/meeting/restful/api/create-room',
+    );
+
+    expect(result.map((node) => node.id)).toEqual([
+      'create-room',
+      'query-recording',
+    ]);
+  });
+
   it.each([
     [
       '/zh-CN/api-reference/api-ref/rtmp-gateway',

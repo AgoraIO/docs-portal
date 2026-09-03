@@ -2312,6 +2312,8 @@ const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
   '操控端 API',
 ]);
 const ZH_CN_RTM_EMBEDDED_API_PREFIX = '/zh-CN/api-reference/api-ref/signaling/';
+const ZH_CN_MEETING_EMBEDDED_API_PREFIX =
+  '/zh-CN/api-reference/meeting/restful/api/';
 const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway';
 const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
@@ -2399,7 +2401,9 @@ export function normalizeZhCnEmbeddedApiSidebar(
 ): DocsSidebarNode[] {
   const flattened = apiEntryUrl.startsWith(ZH_CN_RTM_EMBEDDED_API_PREFIX)
     ? flattenSidebarSectionByTitle(nodes, 'RESTful API')
-    : nodes;
+    : apiEntryUrl.startsWith(ZH_CN_MEETING_EMBEDDED_API_PREFIX)
+      ? selectSidebarSectionChildrenByTitle(nodes, '服务端 API')
+      : nodes;
 
   const landingUrl =
     apiEntryUrl === ZH_CN_RTMP_GATEWAY_API_ENTRY_URL
@@ -2429,6 +2433,29 @@ function flattenSidebarSectionByTitle(
         : node,
     ];
   });
+}
+
+function selectSidebarSectionChildrenByTitle(
+  nodes: DocsSidebarNode[],
+  title: string,
+): DocsSidebarNode[] {
+  for (const node of nodes) {
+    if (node.type === 'section' && node.title === title) {
+      return node.children;
+    }
+
+    if (node.type === 'section') {
+      const children = selectSidebarSectionChildrenByTitle(
+        node.children,
+        title,
+      );
+      if (children !== node.children) {
+        return children;
+      }
+    }
+  }
+
+  return nodes;
 }
 
 function removeSidebarPageByUrl(
