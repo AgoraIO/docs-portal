@@ -34,7 +34,7 @@ agent = (
     .with_llm(...)  # configure your LLM vendor
     .with_tts(HumeAITTS(
         key='your-hume-key',
-        voice_id='your-voice-id',
+        voice_name='your-voice-name',
         provider='HUME_AI',
     ))
 )
@@ -53,7 +53,7 @@ const agent = new Agent({ client })
   .withLlm(/* configure your LLM vendor */)
   .withTts(new HumeAITTS({
     key: 'your-hume-key',
-    voiceId: 'your-voice-id',
+    voiceName: 'your-voice-name',
     provider: 'HUME_AI',
   }));
 ```
@@ -70,9 +70,9 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(
     vendors.NewHumeAITTS(vendors.HumeAITTSOptions{
-        Key:      "your-hume-key",
-        VoiceID:  "your-voice-id",
-        Provider: "HUME_AI",
+        Key:       "your-hume-key",
+        VoiceName: "your-voice-name",
+        Provider:  "HUME_AI",
     }),
 )
 ```
@@ -88,7 +88,7 @@ Use the following `tts` configuration in your request:
     "vendor": "humeai",
     "params": {
         "key": "<API_KEY>",
-        "voice_id": "<your_voice_id>",
+        "voice_name": "<your_voice_name>",
         "base_url": "https://api.hume.ai",
         "provider": "HUME_AI",
         "speed": 1,
@@ -110,8 +110,8 @@ The parameters listed on this page are validated for use with Conversational AI 
  <Parameter name="key" type="string" required={true}>
  The API key used for authentication with Hume AI's services. Get your API key from the Hume AI console.
  </Parameter>
- <Parameter name="voice_id" type="string" required={true}>
- The identifier of the voice to use for speech synthesis. Choose from available voices in your Hume AI dashboard.
+ <Parameter name="voice_name" type="string" required={true}>
+ The name of the voice to use for speech synthesis. Choose from available voices in your Hume AI dashboard.
  </Parameter>
  <Parameter name="base_url" type="string" required={false}>
  The base URL for the Hume AI API. For example, `https://api.hume.ai`.

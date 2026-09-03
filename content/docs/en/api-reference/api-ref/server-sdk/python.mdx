@@ -894,7 +894,7 @@ from agora_agent.agentkit.vendors import HumeAITTS
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `key` | `str` | Yes | — | Hume AI API key |
-| `voice_id` | `str` | Yes | — | Hume AI voice ID |
+| `voice_name` | `str` | Yes | — | Hume AI voice name |
 | `provider` | `str` | Yes | — | Voice provider type: `HUME_AI` or `CUSTOM_VOICE` |
 | `config_id` | `str` | No | `None` | Configuration ID |
 | `base_url` | `str` | No | `None` | Base URL |
@@ -999,7 +999,9 @@ from agora_agent.agentkit.vendors import SarvamTTS
 | `pitch` | `float` | No | `None` | Pitch adjustment |
 | `pace` | `float` | No | `None` | Speed of speech |
 | `loudness` | `float` | No | `None` | Volume level |
-| `sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
+| `model` | `str` | No | `None` | TTS model, for example `'bulbul:v2'` |
+| `speech_sample_rate` | `int` | No | `None` | Audio sample rate in Hz |
+| `enable_preprocessing` | `bool` | No | `None` | Normalizes English words and numeric entities before synthesis |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
 #### TypecastTTS
