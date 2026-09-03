@@ -7,8 +7,10 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildOpenApiSchemaFindTargets, OpenApiSchema } from './OpenApiSchema';
+import { stableDomId } from './OpenApiSchemaTree';
 
 const schema = {
   properties: {
@@ -345,6 +347,104 @@ describe('OpenApiSchema', () => {
     expect(within(row as HTMLElement).queryByText('c')).not.toBeInTheDocument();
   });
 
+  it('renders enum metadata for pattern and additional properties', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              metadata: {
+                additionalProperties: { enum: ['map-value'], type: 'string' },
+                patternProperties: {
+                  '^x-': { enum: ['pattern-value'], type: 'string' },
+                },
+                type: 'object',
+              },
+            },
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand metadata properties' }),
+    );
+
+    expect(screen.getByText('pattern-value')).toBeVisible();
+    expect(screen.getByText('map-value')).toBeVisible();
+  });
+
+  it('renders callouts from local references inside union branches', () => {
+    const document = {
+      components: {
+        schemas: {
+          Choice: {
+            oneOf: [
+              { $ref: '#/components/schemas/FirstChoice' },
+              { $ref: '#/components/schemas/SecondChoice' },
+            ],
+          },
+          FirstChoice: {
+            properties: {
+              value: { $ref: '#/components/schemas/FirstValue' },
+            },
+            type: 'object',
+          },
+          FirstValue: {
+            type: 'string',
+            'x-docs-callouts': [{ body: 'First branch callout.' }],
+          },
+          SecondChoice: {
+            properties: {
+              value: { $ref: '#/components/schemas/SecondValue' },
+            },
+            type: 'object',
+          },
+          SecondValue: {
+            type: 'string',
+            'x-docs-callouts': [{ body: 'Second branch callout.' }],
+          },
+        },
+      },
+    };
+
+    const schemaProps = {
+      client: { as: 'body', name: 'body' },
+      document,
+      renderCodeblock: ({ code }: { code: string }) => <pre>{code}</pre>,
+      renderExtraDescription: (value: unknown) => {
+        const callout = (value as { 'x-docs-callouts'?: { body: string }[] })[
+          'x-docs-callouts'
+        ]?.[0];
+        return callout ? <span>{callout.body}</span> : null;
+      },
+      renderMarkdown: (markdown: string) => <p>{markdown}</p>,
+      root: {
+        properties: {
+          choice: { $ref: '#/components/schemas/Choice' },
+        },
+        type: 'object',
+      },
+    } as unknown as ComponentProps<typeof OpenApiSchema>;
+
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema {...schemaProps} />
+      </AnchorSection>,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand choice properties' }),
+    );
+
+    expect(screen.getByText('First branch callout.')).toBeVisible();
+    expect(screen.getByText('Second branch callout.')).toBeVisible();
+  });
+
   it('gives each field permalink control an accessible name', () => {
     renderSchema();
 
@@ -388,6 +488,10 @@ describe('OpenApiSchema', () => {
           ) as HTMLElement,
         ).getByRole('button', { name: 'Copy link to transport' }),
       );
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
       expect(
         screen.getByRole('button', { name: 'Copied link to transport' }),
       ).toBeVisible();
@@ -689,6 +793,10 @@ describe('OpenApiSchema', () => {
       fireEvent.click(
         screen.getByRole('button', { name: 'Copy link to state' }),
       );
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
       expect(clipboardWriteText).toHaveBeenCalled();
       expect(
         screen.getByRole('button', { name: 'Copied link to state' }),
@@ -707,6 +815,91 @@ describe('OpenApiSchema', () => {
         Reflect.deleteProperty(window.navigator, 'clipboard');
       }
     }
+  });
+
+  it('does not show body copy feedback when clipboard rejects', async () => {
+    const clipboardWriteText = vi
+      .fn()
+      .mockRejectedValue(new Error('clipboard unavailable'));
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      renderSchema();
+      fireEvent.click(
+        within(
+          getRenderedSchemaText('name')?.closest('div.border-t') as HTMLElement,
+        ).getByRole('button', { name: 'Copy link to name' }),
+      );
+
+      await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
+      expect(
+        screen.queryByRole('button', { name: 'Copied link to name' }),
+      ).not.toBeInTheDocument();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('does not show parameter copy feedback when clipboard rejects', async () => {
+    const clipboardWriteText = vi
+      .fn()
+      .mockRejectedValue(new Error('clipboard unavailable'));
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      render(
+        <AnchorSection segments={['parameters', 'query']}>
+          <OpenApiSchema
+            client={{ name: 'state' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{ type: 'string' }}
+          />
+        </AnchorSection>,
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy link to state' }),
+      );
+
+      await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
+      expect(
+        screen.queryByRole('button', { name: 'Copied link to state' }),
+      ).not.toBeInTheDocument();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('encodes DOM ids without collisions between encoded and literal names', () => {
+    const encodedQuestion = stableDomId('schema-root', 'a?b');
+    const literalDash = stableDomId('schema-root', 'a-3f-b');
+
+    expect(encodedQuestion).not.toBe(literalDash);
+    expect(encodedQuestion).not.toMatch(/[\0|]/);
+    expect(literalDash).not.toMatch(/[\0|]/);
   });
 
   it('renders array object parameter fields inline for native browser find', () => {

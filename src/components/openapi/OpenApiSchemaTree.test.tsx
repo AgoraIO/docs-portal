@@ -131,7 +131,7 @@ function renderTree(
       client={{ as: 'body', name: 'body', required: true }}
       labels={labels}
       nodes={nodes}
-      onCopyFieldLink={() => {}}
+      onCopyFieldLink={() => Promise.resolve(false)}
       renderRemainingInfoTags={() => []}
       rootId="schema-root"
       {...overrides}
@@ -426,7 +426,7 @@ describe('OpenApiSchemaTree', () => {
           client={{ as: 'body', name: 'body', required: true }}
           labels={labels}
           nodes={nodes}
-          onCopyFieldLink={() => {}}
+          onCopyFieldLink={() => Promise.resolve(false)}
           renderRemainingInfoTags={() => []}
           rootId="schema-root-one"
         />
@@ -434,7 +434,7 @@ describe('OpenApiSchemaTree', () => {
           client={{ as: 'body', name: 'body', required: true }}
           labels={labels}
           nodes={nodes}
-          onCopyFieldLink={() => {}}
+          onCopyFieldLink={() => Promise.resolve(false)}
           renderRemainingInfoTags={() => []}
           rootId="schema-root-two"
         />
@@ -587,7 +587,7 @@ describe('OpenApiSchemaTree', () => {
         client={{ as: 'body', name: 'body', required: true }}
         labels={labels}
         nodes={[advanced]}
-        onCopyFieldLink={() => {}}
+        onCopyFieldLink={() => Promise.resolve(false)}
         renderRemainingInfoTags={() => []}
         revealTarget={revealTarget}
         rootId="schema-root"
@@ -624,7 +624,7 @@ describe('OpenApiSchemaTree', () => {
         client={{ as: 'body', name: 'body', required: true }}
         labels={labels}
         nodes={[config]}
-        onCopyFieldLink={() => {}}
+        onCopyFieldLink={() => Promise.resolve(false)}
         renderRemainingInfoTags={() => []}
         revealTarget={revealTarget}
         rootId="schema-root"
@@ -703,6 +703,80 @@ describe('OpenApiSchemaTree', () => {
     expect(row.closest('[data-openapi-schema-node-id]')).toHaveAttribute(
       'data-openapi-schema-node-id',
       specialNode.id,
+    );
+  });
+
+  it('resets interaction state when a new schema replaces the current nodes', async () => {
+    const onCopyFieldLink = vi.fn(() => Promise.resolve(true));
+    const newChild = makeNode({
+      depth: 1,
+      name: 'newChild',
+      parentPath: [rootPath, { $ref: 'newRequired-type', name: 'newRequired' }],
+    });
+    const newOptionalChild = makeNode({
+      depth: 1,
+      name: 'newOptionalChild',
+      parentPath: [rootPath, { $ref: 'newOptional-type', name: 'newOptional' }],
+    });
+    const newRequired = makeNode({
+      children: [newChild],
+      name: 'newRequired',
+      required: true,
+    });
+    const newOptional = makeNode({
+      children: [newOptionalChild],
+      name: 'newOptional',
+    });
+    const { rerender } = renderTree({ onCopyFieldLink });
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    );
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    fireEvent.click(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copy link to advanced',
+      }),
+    );
+    await waitFor(() =>
+      expect(
+        within(getRow(advanced)).getByRole('button', {
+          name: 'Copied link to advanced',
+        }),
+      ).toBeVisible(),
+    );
+
+    rerender(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={[newRequired, newOptional]}
+        onCopyFieldLink={onCopyFieldLink}
+        renderRemainingInfoTags={() => []}
+        rootId="schema-root-new"
+      />,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('searchbox', { name: 'Filter properties' }),
+      ).toHaveValue('');
+      expect(screen.getByText('newChild')).toBeVisible();
+    });
+    expect(screen.getByText('newRequired')).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Collapse newRequired properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Expand newOptional properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('button', { name: 'Copied link to advanced' }),
+    ).not.toBeInTheDocument();
+    expect(document.querySelector('.openapi-schema-tree')).toHaveAttribute(
+      'id',
+      'schema-root-new',
     );
   });
 });

@@ -186,7 +186,7 @@ const OpenAPIPage = createOpenAPIPage({
   },
   renderMarkdown: renderOpenApiMarkdown,
   schemaUI: {
-    render: (options) => {
+    render: (options, ctx) => {
       const schemaOptions = options as typeof options & {
         client: ComponentProps<RenderContext['SchemaUI']>['client'];
         legacyAnchorPrefix?: string;
@@ -196,6 +196,7 @@ const OpenAPIPage = createOpenAPIPage({
       return (
         <OpenApiSchema
           client={schemaOptions.client}
+          document={ctx.schema.bundled}
           legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
           readOnly={schemaOptions.readOnly}
           renderCodeblock={({ code, lang }) =>

@@ -16,11 +16,25 @@ import {
 
 export function stableDomId(rootId: string, nodeId: string) {
   const value = nodeId === rootId ? rootId : `${rootId}-${nodeId}`;
-  const encoded = value.replace(
-    /[^A-Za-z0-9_.-]/g,
-    (character) => `-${character.codePointAt(0)?.toString(16)}-`,
-  );
+  const encoded = encodeStableDomIdValue(value);
   return /^[A-Za-z_]/.test(encoded) ? encoded : `openapi-${encoded}`;
+}
+
+function encodeStableDomIdValue(value: string) {
+  if (/^[A-Za-z0-9_.-]+$/.test(value) && !/-x[0-9a-f]+-$/.test(value)) {
+    return value;
+  }
+
+  const escaped = encodeURIComponent(value)
+    .replace(/%([0-9A-F]{2})/g, '-$1-')
+    .replace(
+      /[!~*'()]/g,
+      (character) => `-${character.codePointAt(0)?.toString(16)}-`,
+    );
+  const codePoints = Array.from(value)
+    .map((character) => character.codePointAt(0)?.toString(16))
+    .join('');
+  return `${escaped}-x${codePoints}-`;
 }
 
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
@@ -44,7 +58,7 @@ export type OpenApiSchemaTreeProps = {
   };
   labels: OpenApiSchemaTreeLabels;
   nodes: OpenApiSchemaViewNode[];
-  onCopyFieldLink: (node: OpenApiSchemaViewNode) => void;
+  onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>;
   renderRemainingInfoTags: (node: OpenApiSchemaViewNode) => ReactNode[];
   revealTarget?: OpenApiSchemaRevealTarget;
   rootId: string;
@@ -76,6 +90,24 @@ export function OpenApiSchemaTree({
   const preSearchExpandedIds = useRef<Set<string> | null>(null);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
+
+  // rootId is part of the tree identity even though the reset values only use nodes.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: rootId changes must reset tree interaction state.
+  useEffect(() => {
+    if (copyTimer.current !== undefined) {
+      window.clearTimeout(copyTimer.current);
+      copyTimer.current = undefined;
+    }
+    setExpandedIds(getInitialOpenApiSchemaExpandedIds(nodes));
+    setQuery('');
+    setCopiedId(undefined);
+    setHighlightedId(undefined);
+    setPendingFocusId(undefined);
+    setSearchExpandedIds(new Set());
+    setSearchCollapsedIds(new Set());
+    preSearchExpandedIds.current = null;
+    lastRevealTarget.current = undefined;
+  }, [nodes, rootId]);
 
   useEffect(
     () => () => {
@@ -348,15 +380,7 @@ export function OpenApiSchemaTree({
             labels={labels}
             node={node}
             onCopy={() => {
-              setCopiedId(node.id);
-              if (copyTimer.current !== undefined) {
-                window.clearTimeout(copyTimer.current);
-              }
-              copyTimer.current = window.setTimeout(() => {
-                setCopiedId(undefined);
-                copyTimer.current = undefined;
-              }, 1000);
-              onCopyFieldLink(node);
+              void handleTreeCopy(node);
             }}
             onExpandedChange={(nextExpanded) => {
               if (isSearching) {
@@ -403,6 +427,23 @@ export function OpenApiSchemaTree({
         </div>,
       ];
     });
+  }
+
+  async function handleTreeCopy(node: OpenApiSchemaViewNode) {
+    try {
+      if ((await onCopyFieldLink(node)) !== true) return;
+    } catch {
+      return;
+    }
+
+    setCopiedId(node.id);
+    if (copyTimer.current !== undefined) {
+      window.clearTimeout(copyTimer.current);
+    }
+    copyTimer.current = window.setTimeout(() => {
+      setCopiedId(undefined);
+      copyTimer.current = undefined;
+    }, 1000);
   }
 
   return (
