@@ -1394,6 +1394,31 @@ describe('OpenApiSchema', () => {
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
+  it('renders root array body fields beneath the array container', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            items: {
+              properties: {
+                state: { type: 'string' },
+              },
+              type: 'object',
+            },
+            type: 'array',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    expect(getRenderedSchemaText('body')).toBeVisible();
+    expect(getRenderedSchemaText('state')).toBeVisible();
+    expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+  });
+
   it('encodes an official union selection when indexing nested fields', () => {
     const targets = buildOpenApiSchemaFindTargets(
       {

@@ -1,5 +1,13 @@
-import type { KeyboardEvent, ReactNode } from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  createElement,
+  type KeyboardEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -24,7 +32,10 @@ export function stableDomId(rootId: string, nodeId: string) {
 function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
   return new Set(
     nodes
-      .filter((node) => node.required && node.children.length > 0)
+      .filter(
+        (node) =>
+          (node.required || node.rootContainer) && node.children.length > 0,
+      )
       .map((node) => node.id),
   );
 }
@@ -42,6 +53,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.variant,
     node.depth,
     node.required,
+    node.rootContainer,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
     getOpenApiSchemaIdentity(node.schema),
     node.children.map(getOpenApiSchemaNodeIdentity),
@@ -550,7 +562,13 @@ export function OpenApiSchemaTree({
             onClick={() => {
               if (isSearching) {
                 setSearchExpandedIds(new Set());
-                setSearchCollapsedIds(new Set(expandableIds));
+                setSearchCollapsedIds(
+                  new Set(
+                    [...expandableIds].filter(
+                      (id) => !filterResult.expandedIds.has(id),
+                    ),
+                  ),
+                );
               } else {
                 setExpandedIds(new Set());
               }
@@ -579,7 +597,7 @@ function HiddenDescendants({
   children: ReactNode;
   onBeforeMatch: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const element = ref.current;
@@ -590,10 +608,15 @@ function HiddenDescendants({
     return () => element.removeEventListener('beforematch', onBeforeMatch);
   }, [onBeforeMatch]);
 
-  return (
-    <div data-openapi-schema-hidden-children="" hidden ref={ref}>
-      {children}
-    </div>
+  return createElement(
+    'openapi-schema-hidden',
+    {
+      className: 'openapi-schema-hidden-children',
+      'data-openapi-schema-hidden-children': '',
+      hidden: 'until-found',
+      ref,
+    },
+    children,
   );
 }
 

@@ -22,16 +22,47 @@ export type OpenApiSchemaViewNode = {
   parentPath: OpenApiSchemaPathItem[];
   path: string;
   required: boolean;
+  rootContainer?: boolean;
   schema: OpenApiSchemaData;
   variant?: string;
+};
+
+export type OpenApiSchemaViewOptions = {
+  includeRootContainer?: boolean;
+  rootRequired?: boolean;
 };
 
 export function buildOpenApiSchemaView(
   generated: SchemaUIGeneratedData,
   rootName: string,
+  options: OpenApiSchemaViewOptions = {},
 ): OpenApiSchemaViewNode[] {
   const rootPath = [{ $ref: generated.$root, name: rootName }];
   const root = generated.refs[generated.$root];
+  if (options.includeRootContainer && root?.type !== 'object') {
+    return [
+      {
+        $type: generated.$root,
+        children: childrenFor(
+          root,
+          rootPath,
+          [],
+          1,
+          new Set(),
+          generated.$root,
+        ),
+        depth: 0,
+        id: encodeOpenApiSchemaNodeId(rootPath),
+        name: rootName,
+        parentPath: rootPath,
+        path: rootName,
+        required: options.rootRequired ?? false,
+        rootContainer: true,
+        schema: root as OpenApiSchemaData,
+      },
+    ];
+  }
+
   return childrenFor(root, rootPath, [], 0, new Set(), generated.$root);
 
   function childrenFor(

@@ -159,6 +159,55 @@ const unionArrayGeneratedFixture: SchemaUIGeneratedData = {
   },
 };
 
+function rootArrayGeneratedFixture(item: SchemaData): SchemaUIGeneratedData {
+  return {
+    $root: 'root',
+    refs: {
+      root: {
+        aliasName: 'Items[]',
+        item: { $type: 'item' },
+        type: 'array',
+        typeName: 'Items[]',
+      },
+      field: primitive(),
+      item,
+    },
+  };
+}
+
+function rootUnionGeneratedFixture(type: 'and' | 'or'): SchemaUIGeneratedData {
+  return {
+    $root: 'root',
+    refs: {
+      root: {
+        aliasName: 'Choice',
+        items: [
+          { $type: 'first', name: 'first' },
+          { $type: 'second', name: 'second' },
+        ],
+        type,
+        typeName: 'Choice',
+      },
+      first: {
+        aliasName: 'First',
+        props: [{ $type: 'first-field', name: 'firstField', required: false }],
+        type: 'object',
+        typeName: 'First',
+      },
+      second: {
+        aliasName: 'Second',
+        props: [
+          { $type: 'second-field', name: 'secondField', required: false },
+        ],
+        type: 'object',
+        typeName: 'Second',
+      },
+      'first-field': primitive(),
+      'second-field': primitive(),
+    },
+  };
+}
+
 describe('openapi schema view', () => {
   it('keeps tuple paths unique when names or refs contain delimiters', () => {
     const nulInName = encodeOpenApiSchemaNodeId([{ $ref: 'c', name: 'a\0b' }]);
@@ -256,6 +305,86 @@ describe('openapi schema view', () => {
     ).toBe(2);
     expect(new Set(fields.map((node) => node.id)).size).toBe(2);
   });
+
+  it('adds a root container for an array of objects only when requested', () => {
+    const generated = rootArrayGeneratedFixture({
+      aliasName: 'Item',
+      props: [{ $type: 'field', name: 'field', required: false }],
+      type: 'object',
+      typeName: 'Item',
+    });
+
+    const fields = buildOpenApiSchemaView(generated, 'body');
+    expect(fields).toHaveLength(1);
+    expect(fields[0]?.path).toBe('field');
+
+    const view = buildOpenApiSchemaView(generated, 'body', {
+      includeRootContainer: true,
+    });
+    const container = view[0];
+    const field = container?.children[0];
+
+    expect(container).toMatchObject({
+      $type: 'root',
+      children: [field],
+      id: encodeOpenApiSchemaNodeId([{ $ref: 'root', name: 'body' }]),
+      name: 'body',
+      parentPath: [{ $ref: 'root', name: 'body' }],
+      path: 'body',
+      schema: generated.refs.root,
+    });
+    expect(field).toMatchObject({
+      depth: 1,
+      name: 'field',
+      parentPath: [{ $ref: 'item', name: 'body[]' }],
+      path: 'field',
+    });
+  });
+
+  it('keeps a root container for an array of primitives when requested', () => {
+    const view = buildOpenApiSchemaView(
+      rootArrayGeneratedFixture(primitive()),
+      'body',
+      { includeRootContainer: true },
+    );
+
+    expect(view).toHaveLength(1);
+    expect(view[0]).toMatchObject({
+      $type: 'root',
+      children: [],
+      name: 'body',
+      path: 'body',
+      schema: {
+        aliasName: 'Items[]',
+        type: 'array',
+        typeName: 'Items[]',
+      },
+    });
+  });
+
+  it.each(['or', 'and'] as const)(
+    'adds a root container for a root %s union when requested',
+    (type) => {
+      const view = buildOpenApiSchemaView(
+        rootUnionGeneratedFixture(type),
+        'body',
+        { includeRootContainer: true },
+      );
+      const container = view[0];
+
+      expect(container).toMatchObject({
+        $type: 'root',
+        name: 'body',
+        path: 'body',
+        schema: { aliasName: 'Choice', type },
+      });
+      expect(container?.children.map((node) => node.path)).toEqual([
+        'firstField',
+        'secondField',
+      ]);
+      expect(new Set(container?.children.map((node) => node.id)).size).toBe(2);
+    },
+  );
 
   it('counts direct matches from every union array object branch', () => {
     const view = buildOpenApiSchemaView(unionArrayGeneratedFixture, 'body');

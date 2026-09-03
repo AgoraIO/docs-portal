@@ -6,6 +6,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import type {
   OpenApiSchemaPathItem,
@@ -46,12 +47,14 @@ function makeNode({
   name,
   parentPath = depth === 0 ? [rootPath] : [rootPath, configPath],
   required = false,
+  rootContainer = false,
 }: {
   children?: OpenApiSchemaViewNode[];
   depth?: number;
   name: string;
   parentPath?: OpenApiSchemaPathItem[];
   required?: boolean;
+  rootContainer?: boolean;
 }): OpenApiSchemaViewNode {
   const path = [...parentPath.slice(1).map((item) => item.name), name].join(
     '.',
@@ -67,6 +70,7 @@ function makeNode({
     parentPath,
     path,
     required,
+    rootContainer,
     schema: {
       aliasName: children.length > 0 ? 'object' : 'string',
       infoTags: [],
@@ -211,6 +215,26 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('optionalChild')).not.toBeVisible();
   });
 
+  it('initially expands a non-object root container even when optional', () => {
+    const item = makeNode({
+      depth: 1,
+      name: 'item',
+      parentPath: [rootPath, { $ref: 'item', name: 'body[]' }],
+    });
+    const rootContainer = makeNode({
+      children: [item],
+      name: 'body',
+      rootContainer: true,
+    });
+
+    renderTree({ nodes: [rootContainer] });
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse body properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('item')).toBeVisible();
+  });
+
   it('toggles nested fields through the row button and updates ARIA state', () => {
     renderTree();
 
@@ -310,8 +334,24 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('config')).toBeVisible();
     expect(screen.getByText('advanced')).toBeVisible();
     expect(screen.getByText('unrelated')).toBeVisible();
+    expect(screen.getByText('channel')).toBeVisible();
     expect(screen.getByText('advancedChild')).not.toBeVisible();
     expect(screen.getByText('unrelatedChild')).not.toBeVisible();
+  });
+
+  it('renders hidden descendants with until-found during SSR', () => {
+    const html = renderToString(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={[advanced]}
+        onCopyFieldLink={() => Promise.resolve(false)}
+        renderRemainingInfoTags={() => []}
+        rootId="schema-root"
+      />,
+    );
+
+    expect(html).toContain('hidden="until-found"');
   });
 
   it('resets manual search collapse when the query changes', () => {
@@ -436,6 +476,9 @@ describe('OpenApiSchemaTree', () => {
 
     fireEvent.change(search, { target: { value: 'advancedChild' } });
     fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    );
     expect(
       screen.getByRole('button', { name: 'Expand advanced properties' }),
     ).toHaveAttribute('aria-expanded', 'false');

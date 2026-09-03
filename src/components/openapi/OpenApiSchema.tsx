@@ -126,8 +126,12 @@ export function OpenApiSchema({
     [client.name, generated, legacyNavigation],
   );
   const schemaView = useMemo(
-    () => buildOpenApiSchemaView(generated, client.name),
-    [client.name, generated],
+    () =>
+      buildOpenApiSchemaView(generated, client.name, {
+        includeRootContainer: client.as === 'body',
+        rootRequired: client.required,
+      }),
+    [client.as, client.name, client.required, generated],
   );
   const labels = useMemo(
     () => getOpenApiSchemaLabels(translations),
