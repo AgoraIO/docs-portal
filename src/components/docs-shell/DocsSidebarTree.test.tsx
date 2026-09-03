@@ -44,6 +44,54 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('keeps embedded service API entries collapsed until clicked', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: 'rtc-create-ban-rule',
+                method: 'POST',
+                search: {
+                  from: '/zh-CN/realtime-media/rtc',
+                },
+                title: '创建规则',
+                type: 'page',
+                url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule',
+              },
+            ],
+            collapsible: true,
+            defaultOpen: false,
+            id: 'rtc-rest-api',
+            title: '服务端 API',
+            type: 'section',
+          },
+        ],
+        id: 'rtc-reference',
+        title: '参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/realtime-media/rtc');
+
+    const toggle = await screen.findByRole('button', { name: '服务端 API' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: '创建规则' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: /创建规则/ })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc',
+    );
+    expect(screen.getByText('POST')).toBeInTheDocument();
+  });
+
   it('links the RTC client API entry to the filtered API reference page', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -522,41 +570,44 @@ describe('DocsSidebarTree', () => {
     ['rtmp-gateway', '计费说明', 'reference/billing', '计费说明'],
     ['whiteboard/fastboard-sdk', '计费说明', 'reference/billing', '计费说明'],
     ['whiteboard/whiteboard-sdk', '计费说明', 'reference/billing', '计费说明'],
-  ])('keeps the %s billing root section collapsible', async (product, title, pagePath, pageTitle) => {
-    const url = `/zh-CN/realtime-media/${product}/${pagePath}`;
+  ])(
+    'keeps the %s billing root section collapsible',
+    async (product, title, pagePath, pageTitle) => {
+      const url = `/zh-CN/realtime-media/${product}/${pagePath}`;
 
-    const tree: DocsSidebarNode[] = [
-      {
-        children: [
-          {
-            id: url,
-            title: pageTitle,
-            type: 'page',
-            url,
-          },
-        ],
-        collapsible: true,
-        id: `separator-${title}`,
-        title,
-        type: 'section',
-      },
-    ];
+      const tree: DocsSidebarNode[] = [
+        {
+          children: [
+            {
+              id: url,
+              title: pageTitle,
+              type: 'page',
+              url,
+            },
+          ],
+          collapsible: true,
+          id: `separator-${title}`,
+          title,
+          type: 'section',
+        },
+      ];
 
-    renderSidebarTree(tree, `/zh-CN/realtime-media/${product}`);
+      renderSidebarTree(tree, `/zh-CN/realtime-media/${product}`);
 
-    const toggle = await screen.findByRole('button', {
-      name: title,
-    });
+      const toggle = await screen.findByRole('button', {
+        name: title,
+      });
 
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('link', { name: '计费说明' })).toBeNull();
+      expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      expect(screen.queryByRole('link', { name: '计费说明' })).toBeNull();
 
-    fireEvent.click(toggle);
+      fireEvent.click(toggle);
 
-    expect(
-      await screen.findByRole('link', { name: pageTitle }),
-    ).toBeInTheDocument();
-  });
+      expect(
+        await screen.findByRole('link', { name: pageTitle }),
+      ).toBeInTheDocument();
+    },
+  );
 
   it('renders linked collapsed sections as navigation entries', async () => {
     const tree: DocsSidebarNode[] = [

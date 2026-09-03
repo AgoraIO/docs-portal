@@ -2,15 +2,17 @@ import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
+import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
-import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
+import { parseProductSidebarContext } from '@/lib/docs-sidebar-context';
 import {
+  readStaticDocsPayload,
   resolvePlatformStaticDocsPayload,
   shouldUseStaticDocsPayload,
 } from '@/lib/docs-static-manifest';
@@ -128,6 +130,31 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
       });
+    }
+
+    if (params.tab === 'api-reference' && params.locale === 'zh-CN') {
+      const productContext = parseProductSidebarContext(
+        location.searchStr,
+        params.locale,
+      );
+      if (productContext) {
+        const productPayload = await readStaticDocsPayload<
+          DocsPagePayload | DocsRedirectPayload
+        >({
+          locale: productContext.locale,
+          slugSegments: productContext.slugSegments,
+          tab: productContext.tab,
+        });
+
+        if (productPayload && !('redirectUrl' in productPayload)) {
+          payload = {
+            ...payload,
+            activeTab: productPayload.activeTab,
+            sidebar: productPayload.sidebar,
+            sidebarHeader: productPayload.sidebarHeader,
+          };
+        }
+      }
     }
 
     await preloadDocsPageContent(payload);
