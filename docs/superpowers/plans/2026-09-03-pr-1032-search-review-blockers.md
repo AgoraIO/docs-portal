@@ -445,7 +445,7 @@ const normalizedApiEntries = (apiHits ?? []).flatMap((hit) => {
 });
 ```
 
-Delete `hasExplicitApiSignal`, `GENERIC_API_SIGNAL_TERMS`, and `isStrictApiSignalFallbackMatch` from `algolia-client.ts`.
+Delete `GENERIC_API_SIGNAL_TERMS` and `isStrictApiSignalFallbackMatch` from `algolia-client.ts`. Keep `hasExplicitApiSignal` temporarily because Task 4 has not yet replaced classifier-driven API request participation; Task 4 deletes it together with `shouldSearchApiImmediately`.
 
 - [ ] **Step 4: Derive result fields and ordering from the same match**
 
@@ -727,7 +727,7 @@ The first call uses:
 requests: [docsRequest, ...(apiRequest ? [apiRequest] : [])],
 ```
 
-Remove `shouldSearchApiImmediately`.
+Remove `shouldSearchApiImmediately` and the now-unused `hasExplicitApiSignal` helper.
 
 - [ ] **Step 5: Implement the fixed whole-request fallback**
 
