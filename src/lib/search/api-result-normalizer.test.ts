@@ -491,6 +491,30 @@ describe('SDK API result normalization', () => {
     ).toHaveLength(2);
   });
 
+  it('keeps dotted and compact namespaces in the same canonical group', () => {
+    const create = (className: string) =>
+      normalizeValidApiHit(
+        {
+          hierarchy: {
+            lvl1: `Class ${className}`,
+            lvl2: 'joinChannel',
+          },
+          objectID: className,
+          product: 'video-sdk',
+          url: `https://api-ref.agora.io/${className}.html#joinchannel`,
+        },
+        intent('joinChannel'),
+      );
+
+    const dottedNamespace = create('Foo.Bar');
+    const compactNamespace = create('FooBar');
+
+    expect(dottedNamespace.canonicalKey).toBe(compactNamespace.canonicalKey);
+    expect(
+      aggregateApiResults([dottedNamespace, compactNamespace]),
+    ).toHaveLength(1);
+  });
+
   it('derives class and member identity from hierarchy levels without duplicating class pages', () => {
     const classPage = normalizeValidApiHit(
       {
@@ -524,6 +548,8 @@ describe('SDK API result normalization', () => {
 
     expect(classPage.canonicalKey).toBe('video-sdk|rtcengine|class');
     expect(member.canonicalKey).toBe('video-sdk|rtcengine|joinchannel|member');
+    expect(member.namespace).toBe('RtcEngine');
+    expect(aggregateApiResults([member])[0].namespace).toBe('RtcEngine');
     expect(
       normalizeValidApiHit(
         {

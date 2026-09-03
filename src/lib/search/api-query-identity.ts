@@ -45,11 +45,22 @@ const API_IDENTIFIER_DELIMITER_PATTERN = new RegExp(
   API_IDENTIFIER_DELIMITER,
   'u',
 );
+const API_IDENTIFIER_DELIMITER_SPLIT_PATTERN = new RegExp(
+  API_IDENTIFIER_DELIMITER,
+  'u',
+);
 const API_IDENTIFIER_TOKEN_PATTERN = new RegExp(API_QUALIFIED_IDENTIFIER, 'gu');
 
 export function canonicalizeApiSymbol(value: string) {
-  const canonical = compactSearchText(value);
-  return ROOT_CLIENT_ALIASES.has(canonical) ? 'rtcengine' : canonical;
+  const segments = value
+    .normalize('NFKC')
+    .trim()
+    .split(API_IDENTIFIER_DELIMITER_SPLIT_PATTERN)
+    .map(compactSearchText)
+    .filter(Boolean);
+  if (segments.length === 0) return '';
+  if (ROOT_CLIENT_ALIASES.has(segments[0])) segments[0] = 'rtcengine';
+  return segments.join('');
 }
 
 export function isApiSymbol(query: string) {

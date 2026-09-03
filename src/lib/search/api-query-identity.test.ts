@@ -49,6 +49,21 @@ describe('API query identity', () => {
   );
 
   it.each([
+    'RtcEngine.joinChannel',
+    'IRtcEngine::joinChannel',
+    'AgoraRtcEngineKit->joinChannel',
+  ])('canonicalizes qualified root-client alias %s', (symbol) => {
+    expect(canonicalizeApiSymbol(symbol)).toBe('rtcenginejoinchannel');
+  });
+
+  it.each([
+    ['Foo.Bar', 'foobar'],
+    ['FooBar', 'foobar'],
+  ])('keeps canonical key compatibility for %s', (symbol, canonical) => {
+    expect(canonicalizeApiSymbol(symbol)).toBe(canonical);
+  });
+
+  it.each([
     ['RtcEngine', 'AgoraRtcEngineKit'],
     ['RtcEngine class', 'AgoraRtcEngineKit'],
     ['joinChannel', 'joinChannel'],

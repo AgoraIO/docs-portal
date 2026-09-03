@@ -1,6 +1,10 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
-import { getApiRetrievalQuery } from './api-query-identity';
+import {
+  getApiIdentityMatch,
+  getApiRetrievalQuery,
+  parseApiQueryIdentity,
+} from './api-query-identity';
 import {
   admitApiHit,
   aggregateApiResults,
@@ -8,7 +12,6 @@ import {
 } from './api-result-normalizer';
 import { classifySearchIntent, getDocsRetrievalQuery } from './search-intent';
 import {
-  compactSearchText,
   normalizeSearchPlatform,
   normalizeSearchText,
   stripSearchMarks,
@@ -18,7 +21,6 @@ import type { FederatedSearchResult, SearchRecordKind } from './search-result';
 import {
   allSearchTermsMatch,
   getRequiredApiTaskTerms,
-  hasExactJoinedSearchAlias,
 } from './search-term-matching';
 
 export type AlgoliaSearchFilters = {
@@ -323,6 +325,7 @@ async function searchWithRankingV2({
   setStatus,
 }: RankingV2SearchInput): Promise<FederatedUiSearchResult[]> {
   const intent = classifySearchIntent(query);
+  const apiIdentity = parseApiQueryIdentity(query);
   const apiScopeSelected = isExplicitApiReferenceScope(scope);
   const explicitApiSignal = hasExplicitApiSignal(query);
   const canSearchApi = Boolean(
@@ -413,14 +416,14 @@ async function searchWithRankingV2({
   });
   const normalizedApiEntries = (apiHits ?? []).flatMap((hit) => {
     const normalized = normalizeApiHit(hit, intent);
+    const exactMatch = normalized
+      ? getApiIdentityMatch(getApiIdentityFields(normalized), apiIdentity)
+      : undefined;
     if (
       !normalized ||
       (!admitApiHit(normalized, intent, apiScopeSelected) &&
-        !isStrictApiSignalFallbackMatch(
-          normalized,
-          intent.terms,
-          explicitApiSignal,
-        ))
+        !exactMatch?.titleExactMatch &&
+        !exactMatch?.aliasesExactMatch)
     ) {
       return [];
     }
@@ -446,11 +449,12 @@ async function searchWithRankingV2({
     const highlightedSnippet = isRecord(representativeHit)
       ? getSnippet(representativeHit, 'content')
       : undefined;
-    const compactSymbol = compactSearchText(result.symbol);
+    const exactMatch = getApiIdentityMatch(
+      getApiIdentityFields(result),
+      apiIdentity,
+    );
     return {
-      aliasesExactMatch:
-        compactSymbol.length > 0 &&
-        compactSymbol === compactSearchText(intent.originalQuery),
+      ...exactMatch,
       allMajorTermsMatch,
       canonicalKey: result.canonicalKey,
       content: highlightedTitle,
@@ -468,8 +472,6 @@ async function searchWithRankingV2({
       sectionMatch: false,
       snippet: highlightedSnippet ?? result.snippet,
       title: highlightedTitle,
-      titleExactMatch:
-        normalizeSearchText(result.symbol) === intent.normalizedQuery,
       titleMatch: result.titleMatch || result.symbolMatch,
       type: 'page',
       url: result.url,
@@ -479,13 +481,27 @@ async function searchWithRankingV2({
 
   const apiFirst =
     apiScopeSelected ||
-    ((intent.intent === 'api-symbol' || explicitApiSignal) &&
-      apiCandidates.length > 0);
+    apiCandidates.some(
+      ({ aliasesExactMatch, titleExactMatch }) =>
+        titleExactMatch || aliasesExactMatch,
+    );
   const docsSection = docsCandidates.slice(0, 10);
   const apiSection = apiCandidates.slice(0, 10);
   return apiFirst
     ? [...apiSection, ...docsSection]
     : [...docsSection, ...apiSection];
+}
+
+function getApiIdentityFields(result: {
+  displayTitle: string;
+  namespace?: string;
+  symbol: string;
+}) {
+  return [
+    result.displayTitle,
+    result.symbol,
+    result.namespace ? `${result.namespace}.${result.symbol}` : undefined,
+  ];
 }
 
 function getApiHighlightedTitle(
@@ -745,32 +761,6 @@ function isExplicitApiReferenceScope(scope?: DocsSearchScope) {
 function hasExplicitApiSignal(query: string) {
   return /(?:^|[^\p{L}\p{M}\p{N}])(?:api|method|class|enum|parameter|property|function|interface)(?:$|[^\p{L}\p{M}\p{N}])/iu.test(
     query,
-  );
-}
-
-const GENERIC_API_SIGNAL_TERMS = new Set([
-  'api',
-  'method',
-  'class',
-  'enum',
-  'parameter',
-  'property',
-  'function',
-  'interface',
-]);
-
-function isStrictApiSignalFallbackMatch(
-  result: { displayTitle: string; path: string[]; symbol: string },
-  terms: string[],
-  requestedAsFallback: boolean,
-) {
-  if (!requestedAsFallback) return false;
-  const identifyingTerms = terms.filter(
-    (term) => !GENERIC_API_SIGNAL_TERMS.has(term),
-  );
-  return hasExactJoinedSearchAlias(
-    [result.displayTitle, result.symbol, ...result.path],
-    identifyingTerms,
   );
 }
 

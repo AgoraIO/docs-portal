@@ -576,6 +576,147 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
+    it.each([
+      ['setAudioProfile method', 'setAudioProfile', 'set-audio-profile', false],
+      ['renewToken api', 'renewToken', 'renew-token', false],
+      ['joinChannel method', 'joinChannel', 'join-channel', false],
+      ['RtcEngine class', 'Class AgoraRtcEngineKit', 'rtc-engine', true],
+    ])(
+      'strictly admits %s by API identity and puts it before documentation',
+      async (query, rawSymbol, objectID, aliasesExactMatch) => {
+        const searchForHits = vi.fn().mockResolvedValue({
+          results: [
+            { hits: [docsHit()] },
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: `<mark>${rawSymbol}</mark>`,
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+                    lvl1: rawSymbol,
+                  },
+                  objectID,
+                  platform: 'ios',
+                  url:
+                    rawSymbol === 'Class AgoraRtcEngineKit'
+                      ? 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html'
+                      : 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_irtcengine.html',
+                }),
+              ],
+            },
+          ],
+        });
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const results = await createClient().search(query);
+
+        expect(searchForHits).toHaveBeenCalledTimes(1);
+        expect(results[0]).toMatchObject({
+          aliasesExactMatch,
+          id: objectID,
+          objectType: 'sdk-api',
+          titleExactMatch: !aliasesExactMatch,
+        });
+        expect(results[1]).toMatchObject({ id: 'guide' });
+      },
+    );
+
+    it('does not admit a weak API hit for a modifier query without an API identity', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          {
+            hits: [docsHit({ objectID: 'audio-guide', title: 'Audio guide' })],
+          },
+          {
+            hits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: '<mark>AudioVolumeInfo</mark>',
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: 'AudioVolumeInfo',
+                },
+                objectID: 'audio-volume-info',
+              }),
+            ],
+          },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const results = await createClient().search('audio method');
+
+      expect(results).toEqual([
+        expect.objectContaining({ id: 'audio-guide', objectType: 'docs' }),
+      ]);
+    });
+
+    it.each([
+      ['RtcEngine.joinChannel', true],
+      ['use RtcEngine.joinChannel method', true],
+      ['MediaEngine.joinChannel', false],
+    ])(
+      'matches qualified API identity %s only for the containing class',
+      async (query, shouldAdmit) => {
+        const searchForHits = vi.fn().mockResolvedValue({
+          results: [
+            { hits: [docsHit()] },
+            {
+              hits: [
+                apiHit({
+                  _highlightResult: {
+                    hierarchy: {
+                      lvl1: {
+                        matchLevel: 'full',
+                        value: '<mark>Class IRtcEngine</mark>',
+                      },
+                      lvl2: {
+                        matchLevel: 'full',
+                        value: '<mark>joinChannel</mark>',
+                      },
+                    },
+                  },
+                  hierarchy: {
+                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                    lvl1: 'Class IRtcEngine',
+                    lvl2: 'joinChannel',
+                  },
+                  objectID: 'rtc-engine-join-channel',
+                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/irtcengine.html#joinchannel',
+                }),
+              ],
+            },
+          ],
+        });
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const results = await createClient().search(query);
+
+        expect(results.map(({ id }) => id)).toEqual(
+          shouldAdmit ? ['rtc-engine-join-channel', 'guide'] : ['guide'],
+        );
+        if (shouldAdmit) {
+          expect(results[0]).toMatchObject({
+            aliasesExactMatch: true,
+            titleExactMatch: false,
+          });
+        }
+      },
+    );
+
     it('searches the API index for an explicit symbol query with a modifier', async () => {
       const searchForHits = vi
         .fn()
@@ -1520,6 +1661,48 @@ describe('createAlgoliaDocsClient', () => {
             query: 'voice agent quickstart',
           }),
         ],
+      });
+    });
+
+    it('keeps API Reference results first for an explicit scope without an API identity', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [
+          { hits: [docsHit()] },
+          {
+            hits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: '<mark>AudioVolumeInfo</mark>',
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: 'AudioVolumeInfo',
+                },
+                objectID: 'audio-volume-info',
+              }),
+            ],
+          },
+        ],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient({
+        scope: { field: 'tab', value: 'api-reference' },
+      });
+      const results = await client.search('voice agent quickstart');
+
+      expect(results.map(({ id }) => id)).toEqual([
+        'audio-volume-info',
+        'guide',
+      ]);
+      expect(results[0]).toMatchObject({
+        aliasesExactMatch: false,
+        titleExactMatch: false,
       });
     });
 

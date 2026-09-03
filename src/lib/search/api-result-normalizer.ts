@@ -14,6 +14,7 @@ import {
 export type NormalizedApiResult = {
   canonicalKey: string;
   displayTitle: string;
+  namespace?: string;
   symbol: string;
   product?: string;
   platforms: string[];
@@ -514,6 +515,7 @@ export function normalizeApiHit(
   return {
     canonicalKey: `${key}${fallbackIdentity}`,
     displayTitle,
+    ...(namespace ? { namespace } : {}),
     symbol,
     ...(product ? { product } : {}),
     platforms: [...new Set(platforms)],
