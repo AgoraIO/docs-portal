@@ -418,9 +418,17 @@ export function OpenApiSchemaTree({
         includeHiddenDescendants || searchExpandedIds.has(node.id);
       const descendants = expandable
         ? expanded
-          ? renderNodes(node.children, nextSeen, revealHiddenDescendants)
+          ? [
+              <div
+                className="openapi-schema-children"
+                key={`${node.id}-children`}
+              >
+                {renderNodes(node.children, nextSeen, revealHiddenDescendants)}
+              </div>,
+            ]
           : [
               <HiddenDescendants
+                className="openapi-schema-children"
                 key={`${node.id}-hidden`}
                 onBeforeMatch={() => revealNode(node.id)}
               >
@@ -592,9 +600,11 @@ export function OpenApiSchemaTree({
 
 function HiddenDescendants({
   children,
+  className,
   onBeforeMatch,
 }: {
   children: ReactNode;
+  className?: string;
   onBeforeMatch: () => void;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -611,7 +621,9 @@ function HiddenDescendants({
   return createElement(
     'openapi-schema-hidden',
     {
-      className: 'openapi-schema-hidden-children',
+      className: ['openapi-schema-hidden-children', className]
+        .filter(Boolean)
+        .join(' '),
       'data-openapi-schema-hidden-children': '',
       hidden: 'until-found',
       ref,

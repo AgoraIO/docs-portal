@@ -148,6 +148,27 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
+  it('defines continuous logical guide lines for nested OpenAPI schema children', () => {
+    const children = getRuleBody('.openapi-schema-children').rule;
+    const nestedChildren = getRuleBody(
+      '.openapi-schema-children .openapi-schema-children',
+    ).rule;
+
+    expectDeclaration(children, 'position', 'relative');
+    expectDeclaration(children, 'margin-inline-start', '16px');
+    expectDeclaration(children, 'padding-inline-start', '16px');
+    expectDeclaration(
+      children,
+      'border-inline-start',
+      '1px solid color-mix(in srgb, var(--ink-1) 14%, transparent)',
+    );
+    expectDeclaration(nestedChildren, 'margin-inline-start', '16px');
+    expect(children.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: '::before' }),
+    );
+    expect(appCss).not.toContain('.openapi-schema-children::before');
+  });
+
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
       getRuleBodyContaining(

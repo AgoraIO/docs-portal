@@ -251,6 +251,52 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('advancedChild')).not.toBeVisible();
   });
 
+  it('wraps recursive descendants in nested continuous guide-line containers', () => {
+    renderTree({ nodes: [advanced] });
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    );
+
+    const advancedRow = getRow(advanced);
+    const advancedChildren = advancedRow.parentElement?.querySelector(
+      ':scope > .openapi-schema-children',
+    );
+    const advancedChildRow = getRow(advancedChild);
+    const nestedChildren = advancedChildRow.parentElement?.querySelector(
+      ':scope > .openapi-schema-children',
+    );
+
+    expect(advancedChildren).toBeTruthy();
+    expect(advancedChildren).toContainElement(advancedChildRow);
+    expect(nestedChildren).toBeTruthy();
+    expect(nestedChildren).toContainElement(
+      screen.getByText('advancedGrandchild'),
+    );
+  });
+
+  it('keeps collapsed guide-line containers hidden while retaining descendants', () => {
+    renderTree({ nodes: [advanced] });
+
+    const advancedChildren = getRow(advanced).parentElement?.querySelector(
+      ':scope > [data-openapi-schema-hidden-children]',
+    );
+    const nestedChildren = getRow(advancedChild).parentElement?.querySelector(
+      ':scope > [data-openapi-schema-hidden-children]',
+    );
+
+    expect(advancedChildren).toHaveClass('openapi-schema-children');
+    expect(advancedChildren).toHaveAttribute('hidden', 'until-found');
+    expect(advancedChildren).toContainElement(
+      screen.getByText('advancedChild'),
+    );
+    expect(nestedChildren).toHaveClass('openapi-schema-children');
+    expect(nestedChildren).toHaveAttribute('hidden', 'until-found');
+    expect(nestedChildren).toContainElement(
+      screen.getByText('advancedGrandchild'),
+    );
+  });
+
   it('expands every expandable node and collapses them while keeping root rows', () => {
     renderTree();
 
