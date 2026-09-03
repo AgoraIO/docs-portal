@@ -5,7 +5,17 @@ export const API_REFERENCE_PRODUCT_SECTION_SELECTOR =
   '[data-api-reference-product-id]';
 
 export type ApiReferenceCapabilityGroup = {
-  id: 'core' | 'extensions' | 'solutions';
+  id:
+    | 'conversational-ai'
+    | 'realtime-core'
+    | 'media-processing'
+    | 'meeting-collaboration'
+    | 'monitoring-analytics'
+    | 'extensions-ecosystem'
+    | 'social-entertainment'
+    | 'education'
+    | 'smart-hardware'
+    | 'platform-management';
   label: string;
   productIds: readonly string[];
 };
@@ -13,48 +23,68 @@ export type ApiReferenceCapabilityGroup = {
 export const API_REFERENCE_CAPABILITY_GROUPS: readonly ApiReferenceCapabilityGroup[] =
   [
     {
-      id: 'core',
-      label: '实时互动基础能力',
-      productIds: [
-        'conversational-ai',
-        'rtc',
-        'rtm',
-        'im',
-        'fusion-cdn',
-        'rtsa',
-      ],
+      id: 'conversational-ai',
+      label: '对话式 AI 引擎',
+      productIds: ['conversational-ai'],
     },
     {
-      id: 'extensions',
-      label: '实时互动扩展能力',
+      id: 'realtime-core',
+      label: '实时互动基础能力',
+      productIds: ['rtc', 'rtm', 'im', 'rtsa'],
+    },
+    {
+      id: 'media-processing',
+      label: '实时媒体处理',
       productIds: [
-        'whiteboard',
-        'voip-callkit',
-        'analytics',
         'speech-to-text',
         'cloud-recording',
         'local-server-recording',
+        'cloud-transcoding',
         'media-push',
         'media-pull',
-        'cloud-transcoding',
         'rtmp-gateway',
-        'rtc-server-sdk',
-        'ppt-conversion-service',
-        'console',
+        'fusion-cdn',
       ],
     },
     {
-      id: 'solutions',
-      label: '场景化解决方案',
+      id: 'meeting-collaboration',
+      label: '会议协作',
+      productIds: ['meeting'],
+    },
+    {
+      id: 'monitoring-analytics',
+      label: '监控与分析',
+      productIds: ['analytics'],
+    },
+    {
+      id: 'extensions-ecosystem',
+      label: '扩展能力与生态',
+      productIds: ['rtc-server-sdk', 'whiteboard'],
+    },
+    {
+      id: 'social-entertainment',
+      label: '社交娱乐',
+      productIds: ['online-ktv', 'private-room'],
+    },
+    {
+      id: 'education',
+      label: '教育',
       productIds: [
-        'meeting',
-        'online-ktv',
-        'private-room',
+        'flexible-classroom',
         'online-art-teaching',
         'online-music-teaching',
-        'teleoperation',
-        'flexible-classroom',
+        'ppt-conversion-service',
       ],
+    },
+    {
+      id: 'smart-hardware',
+      label: '智能硬件',
+      productIds: ['voip-callkit', 'teleoperation'],
+    },
+    {
+      id: 'platform-management',
+      label: '平台管理',
+      productIds: ['console'],
     },
   ];
 

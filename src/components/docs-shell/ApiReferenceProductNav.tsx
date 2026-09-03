@@ -1,10 +1,17 @@
 'use client';
 
 import {
-  BoxIcon,
-  LayoutGridIcon,
+  ActivityIcon,
+  BriefcaseIcon,
+  CpuIcon,
+  GraduationCapIcon,
   type LucideIcon,
+  PuzzleIcon,
+  RadioIcon,
+  SettingsIcon,
+  SparklesIcon,
   WorkflowIcon,
+  ZapIcon,
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { zhCNApiReferenceCards } from '@/lib/api-reference-cards-data.zh-cn';
@@ -26,9 +33,16 @@ const groupIconById: Record<
   (typeof API_REFERENCE_CAPABILITY_GROUPS)[number]['id'],
   LucideIcon
 > = {
-  core: BoxIcon,
-  extensions: WorkflowIcon,
-  solutions: LayoutGridIcon,
+  'conversational-ai': ZapIcon,
+  'realtime-core': RadioIcon,
+  'media-processing': WorkflowIcon,
+  'meeting-collaboration': BriefcaseIcon,
+  'monitoring-analytics': ActivityIcon,
+  'extensions-ecosystem': PuzzleIcon,
+  'social-entertainment': SparklesIcon,
+  education: GraduationCapIcon,
+  'smart-hardware': CpuIcon,
+  'platform-management': SettingsIcon,
 };
 
 const productOptions = buildApiReferenceFilterOptions(
