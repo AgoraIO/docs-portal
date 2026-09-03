@@ -30,7 +30,7 @@ When using Cloud Transcoding, you may receive status codes that indicate the ser
 | `202 Accepted` | The server has received the task request, but the task execution may not be complete. | Query the execution status before proceeding to the next business operation. |
 | `400 Bad Request` | The request syntax is incorrect, the parameter value does not meet the requirements, or your App ID does not have Cloud Transcoding enabled. | Investigate based on the `message` field in the response body. |
 | `401 Unauthorized` | The `Authorization` field for HTTP Basic authentication is invalid. | See [RESTful authentication](authentication) or check your `Authorization` credentials. |
-| `403 Forbidden` | Cloud Transcoding is not enabled for your App ID. | Contact [technical support](mailto:support@agora.io) to activate it. |
+| `403 Forbidden` | Cloud Transcoding is not enabled for your App ID. | [Enable Cloud Transcoding](/en/realtime-media/transcoding/sdk-quickstart#enable-cloud-transcoding) in Agora Console. |
 | `404 Not Found` | Transcoder not found. | Use a backoff strategy to make a query request and confirm whether the transcoder was created successfully. |
 | `409 Conflict` | A transcoder task with the same `instanceId` already exists. | Delete the existing transcoder before creating a new one. |
 | `429 Too Many Requests` | The request rate exceeds the upper limit. | Wait for a while and try again. |

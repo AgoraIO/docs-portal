@@ -216,11 +216,19 @@ jobs:
           MAIN_PREVIEW_ALIAS: ${{ vars.VERCEL_MAIN_PREVIEW_ALIAS || 'docs-portal-mocha.vercel.app' }}
         run: vercel alias set "$DEPLOY_URL" "$MAIN_PREVIEW_ALIAS" --token="${{ secrets.VERCEL_TOKEN }}" --team="$VERCEL_ORG_ID"
 
+      - name: Alias PR preview URL
+        if: steps.preview-context.outputs.should_deploy == 'true' && steps.preview-context.outputs.pr_number != ''
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+          PR_PREVIEW_ALIAS: docs-portal-pr-${{ steps.preview-context.outputs.pr_number }}.vercel.app
+        run: vercel alias set "$DEPLOY_URL" "$PR_PREVIEW_ALIAS" --token="${{ secrets.VERCEL_TOKEN }}" --team="$VERCEL_ORG_ID"
+
       - name: Write workflow summary
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
           MAIN_PREVIEW_ALIAS: ${{ vars.VERCEL_MAIN_PREVIEW_ALIAS || 'docs-portal-mocha.vercel.app' }}
+          PR_PREVIEW_ALIAS: docs-portal-pr-${{ steps.preview-context.outputs.pr_number }}.vercel.app
         run: |
           {
             echo "## Vercel Preview"
@@ -228,6 +236,9 @@ jobs:
             echo "Preview URL: ${DEPLOY_URL}"
             if [[ "${{ github.event_name }}" == "push" && "${{ github.ref_name }}" == "main" ]]; then
               echo "Main preview alias: https://${MAIN_PREVIEW_ALIAS}"
+            fi
+            if [[ -n "${{ steps.preview-context.outputs.pr_number }}" ]]; then
+              echo "Stable PR preview alias: https://${PR_PREVIEW_ALIAS}"
             fi
             echo
             echo "Trigger: ${{ steps.preview-context.outputs.reason }}"
@@ -238,12 +249,14 @@ jobs:
         uses: actions/github-script@v7
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+          PR_PREVIEW_ALIAS: docs-portal-pr-${{ steps.preview-context.outputs.pr_number }}.vercel.app
         with:
           script: |
             const body = [
               '## Vercel Preview',
               '',
               `Preview URL: ${process.env.DEPLOY_URL}`,
+              `Stable review URL: https://${process.env.PR_PREVIEW_ALIAS}`,
             ].join('\n');
 
             const { owner, repo } = context.repo;
