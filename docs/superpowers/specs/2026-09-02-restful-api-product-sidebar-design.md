@@ -26,6 +26,13 @@
 - 当前已盘点的中文服务端 API 入口都应生成非空目录，包括 OpenAPI lane、scoped API sidebar、深层 API URL 和多个入口产品。
 - 若未来新增入口无法解析出目录，保留原链接可用性，并通过测试暴露该入口缺少导航配置的问题。
 
+## 已确认的嵌入导航例外
+
+- RTM 的服务端 API 入口 `/zh-CN/api-reference/api-ref/signaling/publish` 继续显示为“服务端 API”折叠项，但嵌入时移除其内部的“RESTful API”section 标题，将该 section 的子页面直接展示在“服务端 API”下。
+- RTMP 网关嵌入导航中隐藏 `/zh-CN/api-reference/api-ref/rtmp-gateway/restful` landing page，但保留其下的实际 API endpoint 页面。
+- 白板嵌入导航中隐藏 `/zh-CN/api-reference/api-ref/whiteboard/restful` landing page，但保留其下的实际 API endpoint 页面。
+- 以上例外仅作用于产品 sidebar 中的嵌入视图；直接访问对应 API 参考路径时，API 参考页的正文、sidebar 和 URL 均保持现状。
+
 ## 组件职责
 
 - 服务端文档 payload：为产品页生成嵌套的服务端 API sidebar 节点，并为 API 子页面链接保留来源产品上下文。
@@ -41,3 +48,5 @@
 - 移动端组件测试验证同样的折叠行为以及打开子页面后导航抽屉关闭。
 - 路由/payload 测试验证 API 正文路径、产品 sidebar 上下文和直接访问 API URL 的现有行为互不冲突。
 - 现有 API Center sidebar、API 页面路由和英文 sidebar 测试继续通过。
+- RTM 测试验证“服务端 API”下无重复的“RESTful API”section 标题且 endpoint 仍可见。
+- RTMP 网关和白板测试验证指定 landing page 不出现在产品嵌入 sidebar 中，同时 endpoint 页面仍可见。
