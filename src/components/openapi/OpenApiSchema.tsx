@@ -8,6 +8,7 @@ import type { SchemaUIProps } from '@fumadocs/api-docs/components/schema/client'
 import type { ParsedSchema } from '@fumadocs/api-docs/schema';
 import { schemaToString } from '@fumadocs/api-docs/schema/to-string';
 import {
+  Children,
   type ReactNode,
   useCallback,
   useEffect,
@@ -420,7 +421,7 @@ function getRemainingInfoTags(node: OpenApiSchemaViewNode) {
 }
 
 function getRemainingInfoTagsFromSchema(schema: OpenApiSchemaData) {
-  return schema.infoTags?.map((tag) => tag.node) ?? [];
+  return Children.toArray(schema.infoTags?.map((tag) => tag.node) ?? []);
 }
 
 function getOpenApiSchemaLabel(
