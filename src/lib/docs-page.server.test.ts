@@ -1,5 +1,6 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { DocsSidebarNode } from './docs-tree';
 
 const { resolveDocsLastUpdatedMetadataMock } = vi.hoisted(() => ({
   resolveDocsLastUpdatedMetadataMock: vi.fn(),
@@ -13,6 +14,7 @@ import {
   loadDocsPagePayload,
   loadDocsSearchIndex,
   loadDocsTabIndex,
+  normalizeZhCnEmbeddedApiSidebar,
 } from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
 
@@ -4820,3 +4822,85 @@ function unwrapPayload(
 
   return payload;
 }
+
+describe('normalizeZhCnEmbeddedApiSidebar', () => {
+  const page = (id: string, url: string): DocsSidebarNode => ({
+    id,
+    title: id,
+    type: 'page',
+    url,
+  });
+
+  const collectPageUrls = (nodes: DocsSidebarNode[]): string[] =>
+    nodes.flatMap((node) => [
+      ...(node.type === 'page' ? [node.url] : []),
+      ...(node.type === 'section' ? collectPageUrls(node.children) : []),
+    ]);
+
+  it('flattens only the redundant RTM RESTful API section', () => {
+    const result = normalizeZhCnEmbeddedApiSidebar(
+      [
+        {
+          children: [
+            page('publish', '/zh-CN/api-reference/api-ref/signaling/publish'),
+            page('receive', '/zh-CN/api-reference/api-ref/signaling/receive'),
+          ],
+          id: 'restful-api',
+          title: 'RESTful API',
+          type: 'section',
+        },
+      ],
+      '/zh-CN/api-reference/api-ref/signaling/publish',
+    );
+
+    expect(result.map((node) => node.id)).toEqual(['publish', 'receive']);
+  });
+
+  it.each([
+    [
+      '/zh-CN/api-reference/api-ref/rtmp-gateway',
+      '/zh-CN/api-reference/api-ref/rtmp-gateway/restful',
+      '/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template',
+    ],
+    [
+      '/zh-CN/api-reference/api-ref/whiteboard/restful',
+      '/zh-CN/api-reference/api-ref/whiteboard/restful',
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token',
+    ],
+  ])(
+    'removes the %s landing page while retaining endpoint pages',
+    (entryUrl, landingUrl, endpointUrl) => {
+      const result = normalizeZhCnEmbeddedApiSidebar(
+        [
+          {
+            children: [
+              page('landing', landingUrl),
+              page('endpoint', endpointUrl),
+            ],
+            id: 'api-section',
+            title: 'RESTful API',
+            type: 'section',
+          },
+        ],
+        entryUrl,
+      );
+
+      const urls = collectPageUrls(result);
+      expect(urls).not.toContain(landingUrl);
+      expect(urls).toContain(endpointUrl);
+    },
+  );
+
+  it('does not normalize unrelated embedded API sidebars', () => {
+    const landing = page(
+      'landing',
+      '/zh-CN/api-reference/api-ref/cloud-recording',
+    );
+    const result = normalizeZhCnEmbeddedApiSidebar(
+      [landing],
+      '/zh-CN/api-reference/api-ref/cloud-recording',
+    );
+
+    expect(result).toEqual([landing]);
+  });
+});

@@ -347,6 +347,59 @@ describe('product API reference sidebar links', () => {
     },
   );
 
+  it('flattens the redundant RESTful API section for the Chinese RTM sidebar', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtm']);
+    const serviceApi = findNode(sidebar, '服务端 API');
+
+    expect(serviceApi).toMatchObject({
+      collapsible: true,
+      defaultOpen: false,
+      type: 'section',
+    });
+    expect(
+      serviceApi?.children?.some(
+        (child) => child.type === 'section' && child.title === 'RESTful API',
+      ),
+    ).toBe(false);
+    expect(collectUrls(serviceApi?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        '/zh-CN/api-reference/api-ref/signaling/publish',
+        '/zh-CN/api-reference/api-ref/signaling/receive',
+      ]),
+    );
+  });
+
+  it('hides the RTMP Gateway RESTful API landing page from the embedded sidebar', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+      'rtmp-gateway',
+    ]);
+    const serviceApi = findNode(sidebar, '服务端 API');
+    const urls = collectUrls(serviceApi?.children ?? []);
+
+    expect(urls).not.toContain(
+      '/zh-CN/api-reference/api-ref/rtmp-gateway/restful',
+    );
+    expect(urls).toContain(
+      '/zh-CN/api-reference/api-ref/rtmp-gateway/create-reset-template',
+    );
+  });
+
+  it('hides the Whiteboard RESTful API landing page from the embedded sidebar', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+      'whiteboard',
+      'whiteboard-sdk',
+    ]);
+    const serviceApi = findNode(sidebar, '服务端 API');
+    const urls = collectUrls(serviceApi?.children ?? []);
+
+    expect(urls).not.toContain(
+      '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    );
+    expect(urls).toContain(
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token',
+    );
+  });
+
   function findNode(
     nodes: SidebarNode[],
     title: string,
@@ -420,7 +473,8 @@ describe('product API reference sidebar links', () => {
         'whiteboard',
         sdkSlug,
       ]);
-      const url = '/zh-CN/api-reference/api-ref/whiteboard/restful';
+      const url =
+        '/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token';
       const restApiNode = findNode(sidebar, '服务端 API');
 
       expect(restApiNode).toMatchObject({
@@ -434,6 +488,9 @@ describe('product API reference sidebar links', () => {
           (childUrl) => childUrl === url || childUrl.startsWith(`${url}/`),
         ),
       ).toBe(true);
+      expect(collectUrls(restApiNode?.children ?? [])).not.toContain(
+        '/zh-CN/api-reference/api-ref/whiteboard/restful',
+      );
     },
   );
 

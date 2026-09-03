@@ -2256,6 +2256,13 @@ const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
   '设备端 API',
   '操控端 API',
 ]);
+const ZH_CN_RTM_EMBEDDED_API_PREFIX = '/zh-CN/api-reference/api-ref/signaling/';
+const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
+  '/zh-CN/api-reference/api-ref/rtmp-gateway';
+const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
+  '/zh-CN/api-reference/api-ref/rtmp-gateway/restful';
+const ZH_CN_WHITEBOARD_API_ENTRY_URL =
+  '/zh-CN/api-reference/api-ref/whiteboard/restful';
 
 async function embedZhCnServiceApiSidebars(
   nodes: DocsSidebarNode[],
@@ -2289,18 +2296,25 @@ async function embedZhCnServiceApiSidebars(
           pageTree,
           source,
         });
+        const normalizedApiSidebar = normalizeZhCnEmbeddedApiSidebar(
+          apiSidebar,
+          node.url,
+        );
 
-        const apiSidebarUrls = collectSidebarPageUrls(apiSidebar);
+        const apiSidebarUrls = collectSidebarPageUrls(normalizedApiSidebar);
         const hasTargetApiPage = Array.from(apiSidebarUrls).some(
           (url) => url === node.url || url.startsWith(`${node.url}/`),
         );
 
-        if (apiSidebar.length === 0 || !hasTargetApiPage) {
+        if (normalizedApiSidebar.length === 0 || !hasTargetApiPage) {
           return node;
         }
 
         return {
-          children: addProductContextToApiSidebarNodes(apiSidebar, productPath),
+          children: addProductContextToApiSidebarNodes(
+            normalizedApiSidebar,
+            productPath,
+          ),
           collapsible: true,
           defaultOpen: false,
           id: `${node.id}-embedded`,
@@ -2322,6 +2336,64 @@ async function embedZhCnServiceApiSidebars(
       };
     }),
   );
+}
+
+export function normalizeZhCnEmbeddedApiSidebar(
+  nodes: DocsSidebarNode[],
+  apiEntryUrl: string,
+): DocsSidebarNode[] {
+  const flattened = apiEntryUrl.startsWith(ZH_CN_RTM_EMBEDDED_API_PREFIX)
+    ? flattenSidebarSectionByTitle(nodes, 'RESTful API')
+    : nodes;
+
+  const landingUrl =
+    apiEntryUrl === ZH_CN_RTMP_GATEWAY_API_ENTRY_URL
+      ? ZH_CN_RTMP_GATEWAY_API_LANDING_URL
+      : apiEntryUrl === ZH_CN_WHITEBOARD_API_ENTRY_URL
+        ? ZH_CN_WHITEBOARD_API_ENTRY_URL
+        : null;
+
+  return landingUrl ? removeSidebarPageByUrl(flattened, landingUrl) : flattened;
+}
+
+function flattenSidebarSectionByTitle(
+  nodes: DocsSidebarNode[],
+  title: string,
+): DocsSidebarNode[] {
+  return nodes.flatMap((node) => {
+    if (node.type === 'section' && node.title === title) {
+      return node.children;
+    }
+
+    return [
+      node.type === 'section'
+        ? {
+            ...node,
+            children: flattenSidebarSectionByTitle(node.children, title),
+          }
+        : node,
+    ];
+  });
+}
+
+function removeSidebarPageByUrl(
+  nodes: DocsSidebarNode[],
+  url: string,
+): DocsSidebarNode[] {
+  return nodes.flatMap((node) => {
+    if (node.type === 'page' && node.url === url) {
+      return [];
+    }
+
+    return [
+      node.type === 'section'
+        ? {
+            ...node,
+            children: removeSidebarPageByUrl(node.children, url),
+          }
+        : node,
+    ];
+  });
 }
 
 function addProductContextToApiSidebarNodes(
