@@ -125,6 +125,37 @@ describe('OpenApiSchema', () => {
     expect(getRenderedSchemaText('advanced')).toBeVisible();
   });
 
+  it('renders deprecated as a status badge without a duplicate metadata tag', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              legacy: {
+                deprecated: true,
+                description: 'Legacy field.',
+                type: 'string',
+              },
+            },
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('legacy')?.closest('div.border-t');
+    expect(row).toBeInstanceOf(HTMLElement);
+    expect(within(row as HTMLElement).getAllByText('Deprecated')).toHaveLength(
+      1,
+    );
+    expect(within(row as HTMLElement).getByText('Deprecated')).toHaveClass(
+      'openapi-schema-status',
+    );
+  });
+
   it('uses the singular English match label for one result', () => {
     renderSchema();
 

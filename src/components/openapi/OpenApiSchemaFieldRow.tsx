@@ -10,6 +10,7 @@ export type OpenApiSchemaFieldRowLabels = {
   collapse: string;
   copiedLink: string;
   copyLink: string;
+  deprecated: string;
   expand: string;
   optional: string;
   properties: string;
@@ -91,11 +92,19 @@ export function OpenApiSchemaFieldRow({
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
           <Badge
-            className="ml-auto normal-case tracking-normal"
+            className="openapi-schema-status ml-auto normal-case tracking-normal"
             variant={node.required ? 'default' : 'outline'}
           >
             {node.required ? labels.required : labels.optional}
           </Badge>
+          {node.schema.deprecated ? (
+            <Badge
+              className="openapi-schema-status normal-case tracking-normal text-warning"
+              variant="outline"
+            >
+              {labels.deprecated}
+            </Badge>
+          ) : null}
           <Button
             aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${node.name}`}
             className="text-muted-foreground"

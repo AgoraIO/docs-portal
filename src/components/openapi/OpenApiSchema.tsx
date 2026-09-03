@@ -138,20 +138,9 @@ export function OpenApiSchema({
     () => getOpenApiSchemaLabels(translations),
     [translations],
   );
-  const renderRemainingInfoTags = useCallback(
-    (node: OpenApiSchemaViewNode) => {
-      const tags = getRemainingInfoTags(node);
-      if (node.schema.deprecated) {
-        tags.push(
-          <span key="deprecated" className="font-mono text-xs text-warning">
-            {getOpenApiSchemaLabel(translations, 'Deprecated', 'Deprecated')}
-          </span>,
-        );
-      }
-      return tags;
-    },
-    [translations],
-  );
+  const renderRemainingInfoTags = useCallback((node: OpenApiSchemaViewNode) => {
+    return getRemainingInfoTags(node);
+  }, []);
   const [revealTarget, setRevealTarget] = useState<
     OpenApiSchemaRevealTarget | undefined
   >();
@@ -444,6 +433,7 @@ function getOpenApiSchemaLabels(
     collapseAll: translate('Collapse all', 'Collapse all'),
     copiedLink: translate('Copied link to', 'Copied link to'),
     copyLink: translate('Copy link to', 'Copy link to'),
+    deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
     expandAll: translate('Expand all', 'Expand all'),
     filter: translate('Filter Properties', 'Filter Properties'),

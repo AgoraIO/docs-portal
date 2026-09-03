@@ -8,6 +8,7 @@ const labels = {
   collapse: 'Collapse',
   copiedLink: 'Copied link to',
   copyLink: 'Copy link to',
+  deprecated: 'Deprecated',
   expand: 'Expand',
   optional: 'Optional',
   properties: 'properties',
@@ -44,6 +45,34 @@ function makeNode(
 }
 
 describe('OpenApiSchemaFieldRow', () => {
+  it('renders required and deprecated statuses together in the row status area', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          schema: { deprecated: true },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    const row = screen.getByText('id').closest('.openapi-schema-field-row');
+    expect(row).toBeInstanceOf(HTMLElement);
+
+    const required = within(row as HTMLElement).getByText('Required');
+    const deprecated = within(row as HTMLElement).getByText('Deprecated');
+    expect(required).toHaveClass('openapi-schema-status');
+    expect(deprecated).toHaveClass('openapi-schema-status', 'text-warning');
+    expect(
+      within(row as HTMLElement).getByRole('button', {
+        name: 'Copy link to id',
+      }),
+    ).toBeInTheDocument();
+  });
+
   it('renders the field name, adjacent type, required badge, and description', () => {
     render(
       <OpenApiSchemaFieldRow
