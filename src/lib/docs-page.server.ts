@@ -2127,20 +2127,42 @@ async function getApiReferenceSidebarNodes({
       pageTree,
       source,
     });
+  const apiReferenceSidebarRoot = apiNavScope
+    ? null
+    : findApiReferenceSidebarRoot({
+        activePath,
+        locale,
+        pageTree,
+        source,
+      });
   const sidebar = apiNavScope
     ? getScopedSidebarNodes({
         locale,
         navScope: apiNavScope,
         source,
       })
-    : (focusedZhCnRtmRestSidebar ??
-      focusedOpenApiLaneSidebar ??
-      getNavScopeSidebarNodes({
-        getNodeMeta: (node) =>
-          getDocsMetaData(source.getNodeMeta(node, locale)),
-        root: pageTree,
-        tab,
-      }));
+    : apiReferenceSidebarRoot
+      ? getScopedNavScopeSidebarNodes({
+          getNodeMeta: (node) =>
+            getDocsMetaData(source.getNodeMeta(node, locale)),
+          navScope: {
+            header: {
+              backHref: getFirstTabPageUrl(pageTree, OPENAPI_TAB) ?? activePath,
+              backLabel: 'API 参考',
+              title: apiReferenceSidebarRoot.meta.title ?? 'RESTful API',
+            },
+            scope: apiReferenceSidebarRoot,
+            sidebarRoot: apiReferenceSidebarRoot.node,
+          },
+        })
+      : (focusedZhCnRtmRestSidebar ??
+        focusedOpenApiLaneSidebar ??
+        getNavScopeSidebarNodes({
+          getNodeMeta: (node) =>
+            getDocsMetaData(source.getNodeMeta(node, locale)),
+          root: pageTree,
+          tab,
+        }));
   const sourcePageUrls =
     locale === 'zh-CN' ? getLocaleSourcePageUrls(source, locale) : null;
   const sidebarWithSourcePagesOnly = sourcePageUrls
@@ -2164,6 +2186,39 @@ async function getApiReferenceSidebarNodes({
   return isRecipesPath(activePath)
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
+}
+
+export function findApiReferenceSidebarRoot({
+  activePath,
+  locale,
+  pageTree,
+  source,
+}: {
+  activePath: string;
+  locale: AppLocale;
+  pageTree: ReturnType<typeof docsSource.getPageTree>;
+  source: typeof docsSource;
+}): { meta: DocsMeta; node: Folder } | null {
+  const apiReferenceRoot = findFolderByIndexUrl(
+    pageTree,
+    `/${locale}/${OPENAPI_TAB}`,
+  );
+  const ancestors = apiReferenceRoot
+    ? findFolderAncestorsByPageUrl(apiReferenceRoot, activePath)
+    : null;
+
+  if (!ancestors) {
+    return null;
+  }
+
+  for (const node of ancestors.reverse()) {
+    const meta = getDocsMetaData(source.getNodeMeta(node, locale));
+    if (meta?.sidebarLabels?.[activePath] || meta?.pages?.length) {
+      return { meta, node };
+    }
+  }
+
+  return null;
 }
 
 function findApiNavScopeByPageUrl({

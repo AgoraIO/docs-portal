@@ -11,6 +11,7 @@ vi.mock('./docs-last-updated.server', () => ({
 }));
 
 import {
+  findApiReferenceSidebarRoot,
   loadDocsPagePayload,
   loadDocsSearchIndex,
   loadDocsTabIndex,
@@ -4902,5 +4903,75 @@ describe('normalizeZhCnEmbeddedApiSidebar', () => {
     );
 
     expect(result).toEqual([landing]);
+  });
+
+  it('finds metadata-driven API sidebar roots outside the api-ref scope', () => {
+    const activePath = '/zh-CN/api-reference/meeting/restful/api/create-room';
+    const apiRoot = {
+      $id: 'api-reference-root',
+      children: [
+        {
+          $id: 'meeting-root',
+          children: [
+            {
+              $id: 'meeting-restful',
+              children: [
+                {
+                  $id: 'meeting-api',
+                  children: [
+                    {
+                      name: '创建房间',
+                      type: 'page' as const,
+                      url: activePath,
+                    },
+                  ],
+                  name: 'API',
+                  type: 'folder' as const,
+                },
+              ],
+              name: '灵动会议 RESTful',
+              type: 'folder' as const,
+            },
+          ],
+          index: {
+            name: '会议',
+            type: 'page' as const,
+            url: '/zh-CN/api-reference/meeting',
+          },
+          name: '会议',
+          type: 'folder' as const,
+        },
+      ],
+      index: {
+        name: 'API 参考',
+        type: 'page' as const,
+        url: '/zh-CN/api-reference',
+      },
+      name: 'API 参考',
+      root: true,
+      type: 'folder' as const,
+    };
+
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'meeting-restful'
+        ? {
+            data: {
+              pages: ['api/create-room'],
+              sidebarLabels: { [activePath]: '创建房间' },
+              title: '灵动会议 RESTful',
+            },
+          }
+        : undefined,
+    );
+
+    const result = findApiReferenceSidebarRoot({
+      activePath,
+      locale: 'zh-CN',
+      pageTree: { children: [apiRoot] },
+      source,
+    });
+
+    expect(result?.node.$id).toBe('meeting-restful');
+    expect(result?.meta.title).toBe('灵动会议 RESTful');
   });
 });
