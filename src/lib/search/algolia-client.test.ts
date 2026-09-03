@@ -496,10 +496,20 @@ describe('createAlgoliaDocsClient', () => {
       };
     }
 
-    it('does not request the SDK API index for a task query', async () => {
-      const searchForHits = vi.fn().mockResolvedValue({
-        results: [{ hits: [docsHit()] }],
-      });
+    function federatedResponse({
+      apiHits = [],
+      docsHits = [docsHit()],
+    }: {
+      apiHits?: Record<string, unknown>[];
+      docsHits?: Record<string, unknown>[];
+    } = {}) {
+      return {
+        results: [{ hits: docsHits }, { hits: apiHits }],
+      };
+    }
+
+    it('对普通文档查询在首次请求中联合检索 Docs 和 SDK API', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(federatedResponse());
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -512,6 +522,10 @@ describe('createAlgoliaDocsClient', () => {
             indexName: 'docs_portal_en',
             query: 'voice agent quickstart',
           }),
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'voice agent quickstart',
+          }),
         ],
       });
       expect(results[0]).toMatchObject({
@@ -519,7 +533,7 @@ describe('createAlgoliaDocsClient', () => {
         title: 'Voice agent quickstart',
       });
       expect(client.getLastStatus()).toEqual({
-        api: 'not-requested',
+        api: 'success',
         docs: 'success',
       });
     });
@@ -718,43 +732,37 @@ describe('createAlgoliaDocsClient', () => {
     );
 
     it('searches the API index for an explicit symbol query with a modifier', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [{ hits: [docsHit()] }],
-        })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>setAudioProfile</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>setAudioProfile</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
-                    lvl1: 'setAudioProfile',
-                  },
-                  objectID: 'set-audio-profile',
-                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                lvl1: 'setAudioProfile',
+              },
+              objectID: 'set-audio-profile',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
       const results = await client.search('setAudioProfile method');
 
-      expect(searchForHits).toHaveBeenCalledTimes(2);
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
         requests: [
+          expect.objectContaining({ indexName: 'docs_portal_en' }),
           expect.objectContaining({
             indexName: 'agora_APIRefSearch',
             query: 'setAudioProfile',
@@ -805,43 +813,33 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('keeps Documentation before API Reference for API task queries', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  objectID: 'renew-guide',
-                  title: 'Renew token guide',
-                }),
-              ],
-            },
-          ],
-        })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>renewToken</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>renewToken</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
-                    lvl1: 'renewToken',
-                  },
-                  objectID: 'renew-token',
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                lvl1: 'renewToken',
+              },
+              objectID: 'renew-token',
+            }),
           ],
-        });
+          docsHits: [
+            docsHit({
+              objectID: 'renew-guide',
+              title: 'Renew token guide',
+            }),
+          ],
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -895,53 +893,41 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('uses retrieval aliases in requests while retaining original-query intent behavior', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>Class AgoraRtcEngineKit</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>Class AgoraRtcEngineKit</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ iOS ❯ 4.x (current)',
-                    lvl1: 'Class AgoraRtcEngineKit',
-                  },
-                  objectID: 'agora-rtc-engine-kit',
-                  platform: 'ios',
-                  url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ iOS ❯ 4.x (current)',
+                lvl1: 'Class AgoraRtcEngineKit',
+              },
+              objectID: 'agora-rtc-engine-kit',
+              platform: 'ios',
+              url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
       const results = await client.search('RtcEngine');
 
-      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
         requests: [
           expect.objectContaining({
             indexName: 'docs_portal_en',
             query: 'RtcEngine',
           }),
-          expect.objectContaining({
-            indexName: 'agora_APIRefSearch',
-            query: 'AgoraRtcEngineKit',
-          }),
-        ],
-      });
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
-        requests: [
           expect.objectContaining({
             indexName: 'agora_APIRefSearch',
             query: 'AgoraRtcEngineKit',
@@ -960,9 +946,7 @@ describe('createAlgoliaDocsClient', () => {
       ['real-time transcription', 'speech to text'],
       ['real time transcription', 'speech to text'],
     ])('uses docs retrieval alias %s -> %s', async (query, retrievalQuery) => {
-      const searchForHits = vi.fn().mockResolvedValue({
-        results: [{ hits: [docsHit()] }],
-      });
+      const searchForHits = vi.fn().mockResolvedValue(federatedResponse());
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -974,27 +958,27 @@ describe('createAlgoliaDocsClient', () => {
             indexName: 'docs_portal_en',
             query: retrievalQuery,
           }),
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query,
+          }),
         ],
       });
     });
 
     it('treats call syntax as an exact API symbol alias ahead of an exact docs title', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  objectID: 'join-channel-docs',
-                  title: 'joinChannel()',
-                  url: '/en/reference/join-channel',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [apiHit()],
+          docsHits: [
+            docsHit({
+              objectID: 'join-channel-docs',
+              title: 'joinChannel()',
+              url: '/en/reference/join-channel',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [apiHit()] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1007,39 +991,35 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('drops a weak API hit after an api-task query requests the API index', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>setAudioProfile</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [],
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>setAudioProfile</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
-                    lvl1: 'setAudioProfile',
-                  },
-                  objectID: 'set-audio-profile',
-                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                lvl1: 'setAudioProfile',
+              },
+              objectID: 'set-audio-profile',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html#setaudioprofile',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
 
       await expect(client.search('renew token')).resolves.toEqual([]);
-      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenCalledTimes(1);
       expect(client.getLastStatus()).toEqual({
         api: 'success',
         docs: 'success',
@@ -1047,33 +1027,28 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('drops content-only docs hits for an api-task query', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  _highlightResult: {
-                    content: {
-                      matchLevel: 'full',
-                      value:
-                        'Reference notes for <mark>send streaming message</mark>.',
-                    },
-                    section: { matchLevel: 'none', value: 'References' },
-                    title: { matchLevel: 'none', value: 'Media streams' },
-                  },
-                  content: 'Reference notes for send streaming message.',
-                  objectID: 'content-only-reference',
-                  section: 'References',
-                  title: 'Media streams',
-                  url: '/en/reference/media-streams',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              _highlightResult: {
+                content: {
+                  matchLevel: 'full',
+                  value:
+                    'Reference notes for <mark>send streaming message</mark>.',
+                },
+                section: { matchLevel: 'none', value: 'References' },
+                title: { matchLevel: 'none', value: 'Media streams' },
+              },
+              content: 'Reference notes for send streaming message.',
+              objectID: 'content-only-reference',
+              section: 'References',
+              title: 'Media streams',
+              url: '/en/reference/media-streams',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1084,24 +1059,19 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('drops api-task docs when title, section, and breadcrumbs match only one query term', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  breadcrumbs: ['API Reference', 'Video SDK', 'Web'],
-                  objectID: 'platform-message-reference',
-                  section: 'Messages',
-                  title: 'Web platform reference',
-                  url: '/en/api-reference/video-sdk/web/messages',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              breadcrumbs: ['API Reference', 'Video SDK', 'Web'],
+              objectID: 'platform-message-reference',
+              section: 'Messages',
+              title: 'Web platform reference',
+              url: '/en/api-reference/video-sdk/web/messages',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1112,24 +1082,19 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('keeps api-task docs when ordinary terms collectively match title, section, and breadcrumbs', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  breadcrumbs: ['API Reference', 'Cloud Recording'],
-                  objectID: 'query-recording-status',
-                  section: 'Cloud Recording',
-                  title: 'Query status',
-                  url: '/en/cloud-recording/restful-api/query-status',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              breadcrumbs: ['API Reference', 'Cloud Recording'],
+              objectID: 'query-recording-status',
+              section: 'Cloud Recording',
+              title: 'Query status',
+              url: '/en/cloud-recording/restful-api/query-status',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1143,24 +1108,19 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('keeps an api-task document when a required term is supplied by the section', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  breadcrumbs: ['API Reference', 'Cloud Recording'],
-                  objectID: 'query-recording-section-status',
-                  section: 'Status',
-                  title: 'Query recording',
-                  url: '/en/cloud-recording/restful-api/query-status',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              breadcrumbs: ['API Reference', 'Cloud Recording'],
+              objectID: 'query-recording-section-status',
+              section: 'Status',
+              title: 'Query recording',
+              url: '/en/cloud-recording/restful-api/query-status',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1211,32 +1171,28 @@ describe('createAlgoliaDocsClient', () => {
       'where is the documentation for renew token',
       'how should I renew token',
     ])('returns the exact API target for decorated query %s', async (query) => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>renewToken</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [],
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>renewToken</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
-                    lvl1: 'renewToken',
-                  },
-                  objectID: `renew-token:${query}`,
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                lvl1: 'renewToken',
+              },
+              objectID: `renew-token:${query}`,
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1246,14 +1202,12 @@ describe('createAlgoliaDocsClient', () => {
         canonicalKey: 'video-sdk|rtcengine|renewtoken|member',
         id: `renew-token:${query}`,
       });
-      expect(searchForHits).toHaveBeenNthCalledWith(1, {
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
         requests: [
           expect.objectContaining({ query: 'renew token' }),
           expect.objectContaining({ query: 'renew token' }),
         ],
-      });
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
-        requests: [expect.objectContaining({ query: 'renew token' })],
       });
     });
 
@@ -1266,23 +1220,18 @@ describe('createAlgoliaDocsClient', () => {
     ])(
       'keeps semantic REST and API terms for decorated docs query %s',
       async (query) => {
-        const searchForHits = vi
-          .fn()
-          .mockResolvedValueOnce({
-            results: [
-              {
-                hits: [
-                  docsHit({
-                    breadcrumbs: ['Cloud Recording'],
-                    objectID: 'cloud-recording-rest-api',
-                    title: 'Cloud Recording RESTful API',
-                    url: '/en/realtime-media/cloud-recording/reference/restful-api',
-                  }),
-                ],
-              },
+        const searchForHits = vi.fn().mockResolvedValue(
+          federatedResponse({
+            docsHits: [
+              docsHit({
+                breadcrumbs: ['Cloud Recording'],
+                objectID: 'cloud-recording-rest-api',
+                title: 'Cloud Recording RESTful API',
+                url: '/en/realtime-media/cloud-recording/reference/restful-api',
+              }),
             ],
-          })
-          .mockResolvedValueOnce({ results: [{ hits: [] }] });
+          }),
+        );
         vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
         const client = createClient();
@@ -1302,47 +1251,43 @@ describe('createAlgoliaDocsClient', () => {
     );
 
     it('rejects real renew-token callbacks around the exact SDK symbol', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>onRenewTokenResult</mark>',
-                      },
-                    },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [],
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>onRenewTokenResult</mark>',
                   },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
-                    lvl1: 'onRenewTokenResult',
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                lvl1: 'onRenewTokenResult',
+              },
+              objectID: 'on-renew-token-result',
+            }),
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>renewToken</mark>',
                   },
-                  objectID: 'on-renew-token-result',
-                }),
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>renewToken</mark>',
-                      },
-                    },
-                  },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
-                    lvl1: 'renewToken',
-                  },
-                  objectID: 'renew-token-exact',
-                }),
-              ],
-            },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                lvl1: 'renewToken',
+              },
+              objectID: 'renew-token-exact',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1352,22 +1297,17 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('does not let the short ID term match inside video', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  objectID: 'acquire-video-resource',
-                  title: 'Acquire video resource',
-                  url: '/en/reference/acquire-video-resource',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              objectID: 'acquire-video-resource',
+              title: 'Acquire video resource',
+              url: '/en/reference/acquire-video-resource',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1378,68 +1318,64 @@ describe('createAlgoliaDocsClient', () => {
     it.each(['setAudioProfile', 'renewToken'])(
       'aggregates real-like Android, iOS, and Web %s hits',
       async (symbol) => {
-        const searchForHits = vi
-          .fn()
-          .mockResolvedValueOnce({ results: [{ hits: [] }] })
-          .mockResolvedValueOnce({
-            results: [
-              {
-                hits: [
-                  apiHit({
-                    _highlightResult: {
-                      hierarchy: {
-                        lvl1: {
-                          matchLevel: 'full',
-                          value: `<mark>${symbol}</mark>`,
-                        },
-                      },
+        const searchForHits = vi.fn().mockResolvedValue(
+          federatedResponse({
+            docsHits: [],
+            apiHits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: `<mark>${symbol}</mark>`,
                     },
-                    hierarchy: {
-                      lvl0: 'API Reference ❯ Video SDK ❯ Android ❯ 4.x (current)',
-                      lvl1: symbol,
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Android ❯ 4.x (current)',
+                  lvl1: symbol,
+                },
+                objectID: `android-${symbol}`,
+                platform: 'android',
+                url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
+              }),
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: `<mark>${symbol}</mark>(_:)`,
                     },
-                    objectID: `android-${symbol}`,
-                    platform: 'android',
-                    url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html',
-                  }),
-                  apiHit({
-                    _highlightResult: {
-                      hierarchy: {
-                        lvl1: {
-                          matchLevel: 'full',
-                          value: `<mark>${symbol}</mark>(_:)`,
-                        },
-                      },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+                  lvl1: `${symbol}(_:)`,
+                },
+                objectID: `ios-${symbol}`,
+                platform: 'ios',
+                url: `https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/${symbol.toLowerCase()}(_:)`,
+              }),
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: `<mark>${symbol}</mark>`,
                     },
-                    hierarchy: {
-                      lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
-                      lvl1: `${symbol}(_:)`,
-                    },
-                    objectID: `ios-${symbol}`,
-                    platform: 'ios',
-                    url: `https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/${symbol.toLowerCase()}(_:)`,
-                  }),
-                  apiHit({
-                    _highlightResult: {
-                      hierarchy: {
-                        lvl1: {
-                          matchLevel: 'full',
-                          value: `<mark>${symbol}</mark>`,
-                        },
-                      },
-                    },
-                    hierarchy: {
-                      lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
-                      lvl1: symbol,
-                    },
-                    objectID: `web-${symbol}`,
-                    platform: 'web',
-                    url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html',
-                  }),
-                ],
-              },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: symbol,
+                },
+                objectID: `web-${symbol}`,
+                platform: 'web',
+                url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html',
+              }),
             ],
-          });
+          }),
+        );
         vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
         const client = createClient();
@@ -1480,6 +1416,7 @@ describe('createAlgoliaDocsClient', () => {
                 }),
               ],
             },
+            { error: 'bad' },
           ],
         })
         .mockRejectedValueOnce(new Error('API index unavailable'));
@@ -1501,43 +1438,33 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it('still drops content-only api-task docs when the API request succeeds with a weak hit', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  _highlightResult: {
-                    content: {
-                      matchLevel: 'full',
-                      value: 'Call <mark>renew token</mark> after expiry.',
-                    },
-                  },
-                  content: 'Call renew token after expiry.',
-                  objectID: 'renew-token-content-only',
-                  title: 'Authentication workflow',
-                  url: '/en/realtime-media/rtc/authentication-workflow',
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              _highlightResult: {
+                content: {
+                  matchLevel: 'full',
+                  value: 'Call <mark>renew token</mark> after expiry.',
+                },
+              },
+              content: 'Call renew token after expiry.',
+              objectID: 'renew-token-content-only',
+              title: 'Authentication workflow',
+              url: '/en/realtime-media/rtc/authentication-workflow',
+            }),
           ],
-        })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
-                    lvl1: 'setAudioProfile',
-                  },
-                  objectID: 'weak-set-audio-profile',
-                }),
-              ],
-            },
+          apiHits: [
+            apiHit({
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                lvl1: 'setAudioProfile',
+              },
+              objectID: 'weak-set-audio-profile',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1553,25 +1480,20 @@ describe('createAlgoliaDocsClient', () => {
       ['acquire resource ID', 'Acquire a resource ID'],
       ['start cloud recording task', 'Start a cloud recording task'],
     ])('keeps title-matched api-task docs for %s', async (query, title) => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                docsHit({
-                  _highlightResult: {
-                    title: { matchLevel: 'full', value: title },
-                  },
-                  objectID: `docs:${query}`,
-                  title,
-                  url: `/en/api-reference/${query.replaceAll(' ', '-')}`,
-                }),
-              ],
-            },
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [
+            docsHit({
+              _highlightResult: {
+                title: { matchLevel: 'full', value: title },
+              },
+              objectID: `docs:${query}`,
+              title,
+              url: `/en/api-reference/${query.replaceAll(' ', '-')}`,
+            }),
           ],
-        })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
@@ -1580,36 +1502,116 @@ describe('createAlgoliaDocsClient', () => {
       expect(results[0]).toMatchObject({ id: `docs:${query}`, title });
     });
 
-    it('keeps docs results and records API failure when the API request rejects', async () => {
+    it('在 API 子结果无效时仅重试 API，且空结果仍视为成功', async () => {
       const searchForHits = vi
         .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] })
-        .mockRejectedValueOnce(new Error('API index unavailable'));
+        .mockResolvedValueOnce({
+          results: [{ hits: [docsHit()] }, { error: 'bad' }],
+        })
+        .mockResolvedValueOnce({ results: [{ hits: [] }] });
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
       const results = await client.search('joinChannel');
 
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'joinChannel',
+          }),
+        ],
+      });
       expect(results).toHaveLength(1);
       expect(results[0]).toMatchObject({ id: 'guide' });
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'success',
+      });
+    });
+
+    it('在 Docs 与 API 子结果都无效时不重试 API', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [{ error: 'docs bad' }, { error: 'api bad' }],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('joinChannel')).rejects.toThrow('docs bad');
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(client.getLastStatus()).toEqual({ api: 'error', docs: 'error' });
+    });
+
+    it('在 Docs 子结果无效而 API 成功时不重试 API', async () => {
+      const searchForHits = vi.fn().mockResolvedValue({
+        results: [{ error: 'docs bad' }, { hits: [apiHit()] }],
+      });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('joinChannel')).rejects.toThrow('docs bad');
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(client.getLastStatus()).toEqual({
+        api: 'success',
+        docs: 'error',
+      });
+    });
+
+    it('在联合请求被拒绝后仅重试 Docs，并将 API 标记为失败', async () => {
+      const searchForHits = vi
+        .fn()
+        .mockRejectedValueOnce(new Error('Combined request failed'))
+        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] });
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+
+      await expect(client.search('joinChannel')).resolves.toEqual([
+        expect.objectContaining({ id: 'guide' }),
+      ]);
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [expect.objectContaining({ indexName: 'docs_portal_en' })],
+      });
       expect(client.getLastStatus()).toEqual({
         api: 'error',
         docs: 'success',
       });
     });
 
-    it('marks both sources failed when the multi-index request rejects', async () => {
+    it('在联合请求和 Docs 重试都失败时抛出 Docs 错误', async () => {
+      const combinedError = new Error('Combined request failed');
       const docsError = new Error('Docs index unavailable');
-      const searchForHits = vi.fn().mockRejectedValueOnce(docsError);
+      const searchForHits = vi
+        .fn()
+        .mockRejectedValueOnce(combinedError)
+        .mockRejectedValueOnce(docsError);
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
 
       await expect(client.search('joinChannel')).rejects.toBe(docsError);
+      expect(searchForHits).toHaveBeenCalledTimes(2);
+      expect(searchForHits).toHaveBeenNthCalledWith(2, {
+        requests: [expect.objectContaining({ indexName: 'docs_portal_en' })],
+      });
+      expect(client.getLastStatus()).toEqual({ api: 'error', docs: 'error' });
+    });
+
+    it('不会为格式正确的空 API 结果重试', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(federatedResponse());
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const client = createClient();
+      await client.search('voice agent quickstart');
+
       expect(searchForHits).toHaveBeenCalledTimes(1);
       expect(client.getLastStatus()).toEqual({
-        api: 'error',
-        docs: 'error',
+        api: 'success',
+        docs: 'success',
       });
     });
 
@@ -1618,49 +1620,33 @@ describe('createAlgoliaDocsClient', () => {
       const oldSearchResult = new Promise<never>((_resolve, reject) => {
         rejectOldSearch = reject;
       });
+      let rejectOldDocsRetry: ((reason: Error) => void) | undefined;
+      const oldDocsRetry = new Promise<never>((_resolve, reject) => {
+        rejectOldDocsRetry = reject;
+      });
       const searchForHits = vi
         .fn()
         .mockReturnValueOnce(oldSearchResult)
-        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] });
+        .mockResolvedValueOnce(federatedResponse())
+        .mockReturnValueOnce(oldDocsRetry);
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();
       const oldSearch = client.search('voice agent quickstart');
       await expect(client.search('screen sharing')).resolves.toHaveLength(1);
       expect(client.getLastStatus()).toEqual({
-        api: 'not-requested',
+        api: 'success',
         docs: 'success',
       });
 
-      const oldError = new Error('Old docs request failed');
-      rejectOldSearch?.(oldError);
-      await expect(oldSearch).rejects.toBe(oldError);
+      rejectOldSearch?.(new Error('Old combined request failed'));
+      await vi.waitFor(() => expect(rejectOldDocsRetry).toBeTypeOf('function'));
+      const oldDocsError = new Error('Old docs retry failed');
+      rejectOldDocsRetry?.(oldDocsError);
+      await expect(oldSearch).rejects.toBe(oldDocsError);
       expect(client.getLastStatus()).toEqual({
-        api: 'not-requested',
+        api: 'success',
         docs: 'success',
-      });
-    });
-
-    it('requests the API index when API Reference scope is explicit', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [docsHit()] }] })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
-      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
-
-      const client = createClient({
-        scope: { field: 'tab', value: 'api-reference' },
-      });
-      await client.search('voice agent quickstart');
-
-      expect(searchForHits).toHaveBeenCalledTimes(2);
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
-        requests: [
-          expect.objectContaining({
-            indexName: 'agora_APIRefSearch',
-            query: 'voice agent quickstart',
-          }),
-        ],
       });
     });
 
@@ -1696,6 +1682,13 @@ describe('createAlgoliaDocsClient', () => {
       });
       const results = await client.search('voice agent quickstart');
 
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({ indexName: 'docs_portal_en' }),
+          expect.objectContaining({ indexName: 'agora_APIRefSearch' }),
+        ],
+      });
       expect(results.map(({ id }) => id)).toEqual([
         'audio-volume-info',
         'guide',
@@ -1706,60 +1699,35 @@ describe('createAlgoliaDocsClient', () => {
       });
     });
 
-    it('requests an API fallback only after docs are empty and the query has an API signal', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({ results: [{ hits: [] }] });
-      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
-
-      const client = createClient();
-      await client.search('RTC engine method');
-
-      expect(searchForHits).toHaveBeenCalledTimes(2);
-      expect(searchForHits).toHaveBeenNthCalledWith(2, {
-        requests: [
-          expect.objectContaining({
-            indexName: 'agora_APIRefSearch',
-            query: 'RTC engine method',
-          }),
-        ],
-      });
-    });
-
-    it('strictly admits a matching no-docs API-signal fallback', async () => {
-      const searchForHits = vi
-        .fn()
-        .mockResolvedValueOnce({ results: [{ hits: [] }] })
-        .mockResolvedValueOnce({
-          results: [
-            {
-              hits: [
-                apiHit({
-                  _highlightResult: {
-                    hierarchy: {
-                      lvl1: {
-                        matchLevel: 'full',
-                        value: '<mark>Class RtcEngine</mark>',
-                      },
-                    },
+    it('严格接纳与无文档查询匹配的 API 结果', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          docsHits: [],
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>Class RtcEngine</mark>',
                   },
-                  _snippetResult: {
-                    content: {
-                      value: 'The <mark>RtcEngine</mark> class.',
-                    },
-                  },
-                  hierarchy: {
-                    lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
-                    lvl1: 'Class RtcEngine',
-                  },
-                  objectID: 'rtc-engine',
-                  url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html',
-                }),
-              ],
-            },
+                },
+              },
+              _snippetResult: {
+                content: {
+                  value: 'The <mark>RtcEngine</mark> class.',
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video Sdk ❯ Web ❯ 4.x (current)',
+                lvl1: 'Class RtcEngine',
+              },
+              objectID: 'rtc-engine',
+              url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/rtcengine.html',
+            }),
           ],
-        });
+        }),
+      );
       vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
 
       const client = createClient();

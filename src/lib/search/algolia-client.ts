@@ -327,86 +327,89 @@ async function searchWithRankingV2({
   const intent = classifySearchIntent(query);
   const apiIdentity = parseApiQueryIdentity(query);
   const apiScopeSelected = isExplicitApiReferenceScope(scope);
-  const explicitApiSignal = hasExplicitApiSignal(query);
   const canSearchApi = Boolean(
     apiReferenceIndexName && supportsApiReferenceScope(scope),
   );
-  const shouldSearchApiImmediately =
-    canSearchApi &&
-    (intent.intent === 'api-symbol' ||
-      intent.intent === 'api-task' ||
-      apiScopeSelected ||
-      explicitApiSignal);
   const retrievalQuery = intent.matchedPhrase ?? query;
-  const apiRequested = shouldSearchApiImmediately && apiReferenceIndexName;
+  const apiRequested = canSearchApi ? apiReferenceIndexName : undefined;
+  const docsRequest = buildDocsSearchRequest({
+    indexName,
+    locale,
+    platform,
+    query: getDocsRetrievalQuery(retrievalQuery),
+    scope,
+  });
+  const apiRequest = apiRequested
+    ? buildApiSearchRequest({
+        apiReferenceIndexName: apiRequested,
+        platform,
+        query: getApiRetrievalQuery(retrievalQuery),
+        scope,
+      })
+    : undefined;
   let searchResponse: unknown;
+  let multiRequestRejected = false;
   try {
     searchResponse = await client.searchForHits({
-      requests: [
-        buildDocsSearchRequest({
-          indexName,
-          locale,
-          platform,
-          query: getDocsRetrievalQuery(retrievalQuery),
-          scope,
-        }),
-        ...(apiRequested
-          ? [
-              buildApiSearchRequest({
-                apiReferenceIndexName,
-                platform,
-                query: getApiRetrievalQuery(retrievalQuery),
-                scope,
-              }),
-            ]
-          : []),
-      ],
+      requests: [docsRequest, ...(apiRequest ? [apiRequest] : [])],
     });
   } catch (error) {
-    setStatus({
-      api: apiRequested ? 'error' : 'not-requested',
-      docs: 'error',
-    });
-    throw error;
+    if (!apiRequest) {
+      setStatus({ api: 'not-requested', docs: 'error' });
+      throw error;
+    }
+
+    multiRequestRejected = true;
+    try {
+      searchResponse = await client.searchForHits({ requests: [docsRequest] });
+    } catch (docsError) {
+      setStatus({ api: 'error', docs: 'error' });
+      throw docsError;
+    }
   }
 
   const docsResult = getResultAt(searchResponse, 0);
-  let apiResult = apiRequested ? getResultAt(searchResponse, 1) : undefined;
-  if (apiRequested && !apiResult) {
+  const docsHits = getResultHits(docsResult);
+  const docsSucceeded = docsHits !== undefined;
+  let apiResult =
+    apiRequest && !multiRequestRejected
+      ? getResultAt(searchResponse, 1)
+      : undefined;
+  let apiHits = getResultHits(apiResult);
+  if (
+    docsSucceeded &&
+    apiRequest &&
+    !multiRequestRejected &&
+    apiHits === undefined
+  ) {
     try {
       const retryResponse = await client.searchForHits({
-        requests: [
-          buildApiSearchRequest({
-            apiReferenceIndexName,
-            platform,
-            query: getApiRetrievalQuery(retrievalQuery),
-            scope,
-          }),
-        ],
+        requests: [apiRequest],
       });
       apiResult = getResultAt(retryResponse, 0);
+      apiHits = getResultHits(apiResult);
     } catch {
       apiResult = undefined;
+      apiHits = undefined;
     }
   }
-  const docsHits = getResultHits(docsResult);
-  const apiHits = getResultHits(apiResult);
-  const docsSucceeded = docsHits !== undefined;
   const apiSucceeded = apiHits !== undefined;
   if (!docsSucceeded) {
     setStatus({
-      api: apiRequested
-        ? apiSucceeded
-          ? 'success'
-          : 'error'
-        : 'not-requested',
+      api: apiRequest ? (apiSucceeded ? 'success' : 'error') : 'not-requested',
       docs: 'error',
     });
     throw new Error(getString(docsResult?.error) ?? 'Docs search failed');
   }
 
   setStatus({
-    api: apiRequested ? (apiSucceeded ? 'success' : 'error') : 'not-requested',
+    api: !apiRequest
+      ? 'not-requested'
+      : multiRequestRejected
+        ? 'error'
+        : apiSucceeded
+          ? 'success'
+          : 'error',
     docs: 'success',
   });
 
@@ -756,12 +759,6 @@ function anyTermMatches(fields: Array<string | undefined>, terms: string[]) {
 
 function isExplicitApiReferenceScope(scope?: DocsSearchScope) {
   return scope?.field === 'tab' && scope.value === 'api-reference';
-}
-
-function hasExplicitApiSignal(query: string) {
-  return /(?:^|[^\p{L}\p{M}\p{N}])(?:api|method|class|enum|parameter|property|function|interface)(?:$|[^\p{L}\p{M}\p{N}])/iu.test(
-    query,
-  );
 }
 
 function buildFilters({
