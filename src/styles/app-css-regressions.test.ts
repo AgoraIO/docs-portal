@@ -163,6 +163,11 @@ describe('app prose CSS regressions', () => {
       '1px solid color-mix(in srgb, var(--ink-1) 14%, transparent)',
     );
     expectDeclaration(nestedChildren, 'margin-inline-start', '16px');
+    expectDeclaration(
+      getRuleBody('.openapi-schema-children[hidden]').rule,
+      'border-inline-start-color',
+      'transparent',
+    );
     expect(children.nodes).not.toContainEqual(
       expect.objectContaining({ prop: '::before' }),
     );
