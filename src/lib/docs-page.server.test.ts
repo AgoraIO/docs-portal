@@ -4975,7 +4975,7 @@ describe('normalizeZhCnEmbeddedApiSidebar', () => {
       index: {
         name: 'API 参考',
         type: 'page' as const,
-        url: '/zh-CN/api-reference',
+        url: '/zh-CN/api-reference/api',
       },
       name: 'API 参考',
       root: true,
@@ -5044,7 +5044,7 @@ describe('normalizeZhCnEmbeddedApiSidebar', () => {
       index: {
         name: 'API 参考',
         type: 'page' as const,
-        url: '/zh-CN/api-reference',
+        url: '/zh-CN/api-reference/api',
       },
       name: 'API 参考',
       root: true,

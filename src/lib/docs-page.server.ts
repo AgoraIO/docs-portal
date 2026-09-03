@@ -2201,7 +2201,7 @@ export function findApiReferenceSidebarRoot({
 }): { meta: DocsMeta; node: Folder } | null {
   const apiReferenceRoot = findFolderByIndexUrl(
     pageTree,
-    `/${locale}/${OPENAPI_TAB}`,
+    `/${locale}/${OPENAPI_TAB}/api`,
   );
   const ancestors = apiReferenceRoot
     ? findFolderAncestorsByPageUrl(apiReferenceRoot, activePath)
