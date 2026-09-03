@@ -34,6 +34,7 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
@@ -83,6 +84,13 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#response-body]:font-semibold',
   '[&_h2#response-body]:text-2xl',
 ] as const;
+const OPENAPI_METHOD_BADGE_CLASSES = {
+  GET: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+  POST: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
+  PUT: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  PATCH: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  DELETE: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+} as const;
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -167,11 +175,15 @@ const OpenAPIPage = createOpenAPIPage({
         }}
       />
     ),
-    renderOperationLayout: (slots, { ctx, operation }) => (
+    renderOperationLayout: (
+      slots,
+      { ctx, method: operationMethod, operation },
+    ) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
             ...(operation as OpenApiOperation),
+            method: operationMethod,
             __documentSecurity: ctx.schema.dereferenced.security,
             __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
@@ -705,7 +717,10 @@ function OpenApiInlineAuthorizationSection({
 
 function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
-  const method = typeof operation.method === 'string' ? operation.method : '';
+  const method =
+    typeof operation.method === 'string'
+      ? operation.method.trim().toUpperCase()
+      : '';
   const locale = useContext(OpenApiLocaleContext);
   const [endpointCopied, copyEndpoint] = useOpenApiCopyButton(() =>
     navigator.clipboard.writeText(endpoint),
@@ -718,11 +733,18 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   return (
     <div className="not-prose flex flex-row items-center gap-2.5 rounded-xl border bg-fd-card p-3 text-fd-card-foreground">
       {method ? (
-        <div>
-          <span className="rounded-md bg-fd-primary px-2 py-1 font-semibold text-[0.6875rem] text-fd-primary-foreground uppercase">
-            {method}
-          </span>
-        </div>
+        <Badge
+          className={cn(
+            'openapi-method-badge shrink-0 normal-case tracking-normal',
+            OPENAPI_METHOD_BADGE_CLASSES[
+              method as keyof typeof OPENAPI_METHOD_BADGE_CLASSES
+            ] ?? 'bg-muted text-muted-foreground',
+          )}
+          data-method={method}
+          data-openapi-method={method}
+        >
+          {method}
+        </Badge>
       ) : null}
       {endpoint ? (
         <>

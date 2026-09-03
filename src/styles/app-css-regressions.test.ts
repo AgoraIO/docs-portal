@@ -872,6 +872,7 @@ describe('app prose CSS regressions', () => {
   });
 
   it('defines the independent desktop examples rail layout', () => {
+    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
     const layout = getRuleBodyContainingInContainer(
       '.openapi-operation-layout',
       '56rem',
@@ -884,10 +885,18 @@ describe('app prose CSS regressions', () => {
       '.openapi-examples-rail-anchor',
       '56rem',
     );
+    expectDeclaration(baseLayout.rule, 'display', 'flex');
+    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
+    expect(baseLayout.rule.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: 'grid-template-columns' }),
+    );
+    expect(layout.rule.parent?.type).toBe('atrule');
+    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
+    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
     expectDeclaration(
       layout.rule,
       'grid-template-columns',
-      'minmax(0, 1fr) clamp(320px, 32cqi, 400px)',
+      'minmax(0, 1fr) 400px',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

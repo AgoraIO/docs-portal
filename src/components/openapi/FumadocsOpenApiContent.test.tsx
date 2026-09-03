@@ -15,7 +15,118 @@ type Document = Extract<
 >['payload']['bundled'];
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
+function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
+  const path = `/method-${method.toLowerCase()}`;
+
+  return {
+    operations: [{ method, path } as OpenApiOperationItem],
+    payload: {
+      bundled: {
+        info: { title: 'Methods API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            [method.toLowerCase()]: {
+              responses: { '200': { description: 'OK' } },
+            },
+          },
+        },
+      } as unknown as Document,
+    },
+  };
+}
+
 describe('FumadocsOpenApiContent', () => {
+  it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
+    const cases = [
+      {
+        input: 'get',
+        label: 'GET',
+        colorClasses: [
+          'bg-blue-100',
+          'text-blue-800',
+          'dark:bg-blue-900',
+          'dark:text-blue-100',
+        ],
+      },
+      {
+        input: 'post',
+        label: 'POST',
+        colorClasses: [
+          'bg-green-100',
+          'text-green-800',
+          'dark:bg-green-900',
+          'dark:text-green-100',
+        ],
+      },
+      {
+        input: 'put',
+        label: 'PUT',
+        colorClasses: [
+          'bg-amber-100',
+          'text-amber-800',
+          'dark:bg-amber-900',
+          'dark:text-amber-100',
+        ],
+      },
+      {
+        input: 'patch',
+        label: 'PATCH',
+        colorClasses: [
+          'bg-amber-100',
+          'text-amber-800',
+          'dark:bg-amber-900',
+          'dark:text-amber-100',
+        ],
+      },
+      {
+        input: 'delete',
+        label: 'DELETE',
+        colorClasses: [
+          'bg-red-100',
+          'text-red-800',
+          'dark:bg-red-900',
+          'dark:text-red-100',
+        ],
+      },
+      {
+        input: 'options',
+        label: 'OPTIONS',
+        colorClasses: ['bg-muted', 'text-muted-foreground'],
+      },
+    ] as const;
+
+    for (const { colorClasses, input, label } of cases) {
+      const { unmount } = render(
+        <FumadocsOpenApiContent
+          pageProps={makeMinimalOpenApiPageProps(input)}
+        />,
+      );
+      const badge = document.querySelector<HTMLElement>(
+        `[data-openapi-method="${label}"]`,
+      );
+      expect(badge, `missing badge for ${label}`).not.toBeNull();
+      expect(badge).toHaveTextContent(label);
+      expect(badge).toHaveAttribute('data-method', label);
+      expect(badge).toHaveClass(
+        'openapi-method-badge',
+        'normal-case',
+        'tracking-normal',
+        'shrink-0',
+        ...colorClasses,
+      );
+
+      const endpointBar = badge?.closest('.not-prose');
+      const endpointScroller = endpointBar?.querySelector(
+        '.flex-1.overflow-auto',
+      );
+      expect(endpointBar?.firstElementChild).toBe(badge);
+      expect(endpointScroller).not.toContainElement(badge);
+
+      unmount();
+    }
+  });
+
   it('does not schedule endpoint copy feedback after unmount', async () => {
     vi.useFakeTimers();
     let resolveCopy!: () => void;
