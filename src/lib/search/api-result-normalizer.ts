@@ -1,3 +1,4 @@
+import { canonicalizeApiSymbol } from './api-query-identity';
 import type { SearchIntentResult } from './search-intent';
 import {
   compactSearchText,
@@ -97,13 +98,6 @@ const KIND_ALIASES: Record<string, string> = {
 
 const PAGE_KINDS = new Set(['class', 'enum', 'interface', 'namespace', 'type']);
 
-const ROOT_CLIENT_ALIASES = new Set([
-  'irtcengine',
-  'agorartcenginekit',
-  'rtcengine',
-  'iagorartcclient',
-]);
-
 function normalizeMemberKind(value: string) {
   const normalized = value.trim().toLowerCase();
   return KIND_ALIASES[normalized] ?? normalized;
@@ -124,8 +118,7 @@ function stripDoxygenPagePrefix(value: string) {
 }
 
 function canonicalRootClientAlias(value: string) {
-  const normalized = compact(stripDoxygenPagePrefix(value).name);
-  return ROOT_CLIENT_ALIASES.has(normalized) ? 'rtcengine' : normalized;
+  return canonicalizeApiSymbol(stripDoxygenPagePrefix(value).name);
 }
 
 function normalizeProductKey(value: string | undefined) {

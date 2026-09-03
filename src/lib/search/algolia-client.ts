@@ -1,15 +1,12 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
+import { getApiRetrievalQuery } from './api-query-identity';
 import {
   admitApiHit,
   aggregateApiResults,
   normalizeApiHit,
 } from './api-result-normalizer';
-import {
-  classifySearchIntent,
-  getApiRetrievalQuery,
-  getDocsRetrievalQuery,
-} from './search-intent';
+import { classifySearchIntent, getDocsRetrievalQuery } from './search-intent';
 import {
   compactSearchText,
   normalizeSearchPlatform,

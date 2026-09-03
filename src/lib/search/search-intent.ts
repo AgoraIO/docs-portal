@@ -1,3 +1,4 @@
+import { isApiSymbol } from './api-query-identity';
 import {
   normalizeSearchText,
   tokenizeSearchText,
@@ -103,43 +104,12 @@ const DOCS_RETRIEVAL_QUERY_ALIASES = new Map([
   ['real time transcription', 'speech to text'],
 ]);
 
-const API_RETRIEVAL_QUERY_ALIASES = new Map([
-  ['rtcengine', 'AgoraRtcEngineKit'],
-]);
-
-const API_QUERY_MODIFIER_TERMS = new Set([
-  'api',
-  'class',
-  'enum',
-  'function',
-  'interface',
-  'method',
-  'parameter',
-  'property',
-]);
-
 function normalizeQuery(query: string) {
   return normalizeSearchText(query);
 }
 
 export function getDocsRetrievalQuery(query: string) {
   return DOCS_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(query)) ?? query;
-}
-
-export function getApiRetrievalQuery(query: string) {
-  const normalizedQuery = normalizeQuery(query);
-  const alias = API_RETRIEVAL_QUERY_ALIASES.get(normalizedQuery);
-  if (alias) return alias;
-
-  const identifiers = (query.match(/[A-Za-z][A-Za-z\d]*/gu) ?? []).filter(
-    (token) =>
-      !API_QUERY_MODIFIER_TERMS.has(token.toLowerCase()) && isApiSymbol(token),
-  );
-  if (identifiers.length !== 1) return query;
-  const identifier = identifiers[0];
-  return (
-    API_RETRIEVAL_QUERY_ALIASES.get(normalizeQuery(identifier)) ?? identifier
-  );
 }
 
 function queryTerms(normalizedQuery: string) {
@@ -173,31 +143,6 @@ function includesPhrase(normalizedQuery: string, phrase: string) {
     `(?:^|[^\\p{L}\\p{M}\\p{N}])${escapedPhrase}(?:$|[^\\p{L}\\p{M}\\p{N}])`,
     'u',
   ).test(normalizedQuery);
-}
-
-function isApiSymbol(query: string) {
-  // A symbol is a single identifier. Spaces make the query natural language,
-  // even when one of its words happens to contain an uppercase letter.
-  if (/\s/u.test(query)) return false;
-
-  const compact = query.replace(/\s+/gu, '');
-  if (!compact || compact.length < 2) return false;
-
-  const identifier = compact.replace(/\(\)$/u, '');
-  const hasCamelBoundary = /[a-z][A-Z]/u.test(identifier);
-  const hasPascalBoundary =
-    /[a-z]/u.test(identifier) && /[A-Z].*[A-Z]/u.test(identifier);
-  const isIdentifier = /^[A-Za-z][A-Za-z\d]*$/u.test(identifier);
-  const isDelimitedIdentifier =
-    /^[A-Za-z][A-Za-z\d]*(?:(?:\.|::|->)[A-Za-z][A-Za-z\d]*)+$/u.test(
-      identifier,
-    );
-  const hasCallSyntax = compact.endsWith('()');
-  const hasApiPunctuation =
-    (hasCallSyntax ? isIdentifier : isDelimitedIdentifier) &&
-    (hasCamelBoundary || hasPascalBoundary);
-
-  return hasApiPunctuation || hasCamelBoundary || hasPascalBoundary;
 }
 
 function hasAnyPhrase(normalizedQuery: string, phrases: readonly string[]) {

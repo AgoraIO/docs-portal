@@ -121,22 +121,6 @@ describe('classifySearchIntent', () => {
     expect(getDocsRetrievalQuery?.(query)).toBe(expected);
   });
 
-  it.each([
-    ['RtcEngine', 'AgoraRtcEngineKit'],
-    ['RtcEngine class', 'AgoraRtcEngineKit'],
-    ['joinChannel', 'joinChannel'],
-    ['RTC engine', 'RTC engine'],
-  ])('rewrites the exact API retrieval query %s to %s', (query, expected) => {
-    const getApiRetrievalQuery = (
-      searchIntent as typeof searchIntent & {
-        getApiRetrievalQuery?: (value: string) => string;
-      }
-    ).getApiRetrievalQuery;
-
-    expect(getApiRetrievalQuery).toBeTypeOf('function');
-    expect(getApiRetrievalQuery?.(query)).toBe(expected);
-  });
-
   it('keeps intent classification based on the original query', () => {
     expect(classifySearchIntent('billing policy')).toMatchObject({
       intent: 'support',
