@@ -21,6 +21,18 @@ function normalizeDeclarationValue(value: string) {
     .trim();
 }
 
+function getSelectorsContaining(selectorPart: string) {
+  const selectors: string[] = [];
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkRules((candidate) => {
+    const selector = normalizeSelector(candidate.selector);
+    if (selector.includes(normalizedSelectorPart)) selectors.push(selector);
+  });
+
+  return selectors;
+}
+
 function expectDeclaration(
   rule: postcss.Rule,
   prop: string,
@@ -153,6 +165,9 @@ describe('app prose CSS regressions', () => {
     const nestedChildren = getRuleBody(
       '.openapi-schema-children .openapi-schema-children',
     ).rule;
+    const schemaGuideSelectors = getSelectorsContaining(
+      '.openapi-schema-children',
+    );
 
     expectDeclaration(children, 'position', 'relative');
     expectDeclaration(children, 'margin-inline-start', '16px');
@@ -168,10 +183,30 @@ describe('app prose CSS regressions', () => {
       'border-inline-start-color',
       'transparent',
     );
-    expect(children.nodes).not.toContainEqual(
-      expect.objectContaining({ prop: '::before' }),
+    expect(schemaGuideSelectors).toEqual(
+      expect.arrayContaining([
+        '.openapi-schema-children',
+        '.openapi-schema-children .openapi-schema-children',
+      ]),
     );
+    for (const selector of schemaGuideSelectors) {
+      expect(selector).not.toContain('::before');
+      expect(selector).not.toContain('::after');
+    }
     expect(appCss).not.toContain('.openapi-schema-children::before');
+
+    const narrowChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    const narrowNestedChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children .openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    expectDeclaration(narrowChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowChildren, 'padding-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'padding-inline-start', '8px');
   });
 
   it('keeps the narrow response-header and browser-find adapter contracts', () => {

@@ -60,7 +60,7 @@ export function OpenApiSchemaFieldRow({
 
   return (
     <div
-      className="openapi-schema-field-row scroll-mt-24 border-t border-border py-3 first:border-t-0"
+      className="openapi-schema-field-row min-w-0 scroll-mt-24 border-t border-border py-3 first:border-t-0 [overflow-wrap:anywhere]"
       id={domId ?? node.id}
     >
       <div className="flex min-w-0 items-start gap-2 text-sm">
@@ -122,7 +122,7 @@ export function OpenApiSchemaFieldRow({
         </div>
       </div>
       {node.schema.description ? (
-        <div className="openapi-schema-field-description mt-2 font-normal text-muted-foreground">
+        <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
           {node.schema.description}
         </div>
       ) : null}

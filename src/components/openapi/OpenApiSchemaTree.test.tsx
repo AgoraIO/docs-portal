@@ -275,6 +275,33 @@ describe('OpenApiSchemaTree', () => {
     );
   });
 
+  it('keeps long nested schema descriptions shrinkable and wrappable', () => {
+    const longDescription =
+      'https://example.com/api/v1/projects/with-a-very-long-resource-name/that-must-wrap-within-the-schema-tree';
+    const longChild = makeNode({
+      depth: 1,
+      name: 'longChild',
+      parentPath: [rootPath, configPath],
+    });
+    longChild.schema.description = longDescription;
+    const parent = makeNode({ children: [longChild], name: 'parent' });
+
+    renderTree({ nodes: [parent] });
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand parent properties' }),
+    );
+
+    const row = getRow(longChild);
+    const description = row.querySelector('.openapi-schema-field-description');
+
+    expect(row).toHaveClass('min-w-0');
+    expect(description).toHaveClass(
+      'min-w-0',
+      'break-words',
+      '[overflow-wrap:anywhere]',
+    );
+  });
+
   it('keeps collapsed guide-line containers hidden while retaining descendants', () => {
     renderTree({ nodes: [advanced] });
 
