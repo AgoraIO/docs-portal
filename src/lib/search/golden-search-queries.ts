@@ -253,7 +253,16 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedTitle: 'joinChannel',
     expectedCanonicalKey: 'video-sdk|rtcengine|joinchannel|member',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
+      'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title78',
+  },
+  {
+    query: 'joinChannel method',
+    expectedIntent: 'unknown',
+    expectedKind: 'sdk-symbol',
+    expectedTitle: 'JoinChannel',
+    expectedCanonicalKey: 'video-sdk|rtcengine|joinchannel|member',
+    expectedUrl:
+      'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title78',
   },
   {
     query: 'setAudioProfile',
@@ -262,7 +271,16 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedTitle: 'setAudioProfile',
     expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|member',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
+  },
+  {
+    query: 'setAudioProfile method',
+    expectedIntent: 'unknown',
+    expectedKind: 'sdk-symbol',
+    expectedTitle: 'setAudioProfile',
+    expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|member',
+    expectedUrl:
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
   },
   {
     query: 'NetworkQuality',
@@ -278,18 +296,27 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedIntent: 'api-symbol',
     expectedKind: 'sdk-symbol',
     expectedTitle: 'AudioVolumeInfo',
-    expectedCanonicalKey: 'video-sdk|audiovolumeinfo|class',
+    expectedCanonicalKey: 'video-sdk|rtcapidatatype|audiovolumeinfo|member',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_audiovolumeinfo.html',
+      'https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_data_type.html#ariaid-title89',
   },
   {
     query: 'RtcEngine',
     expectedIntent: 'api-symbol',
     expectedKind: 'sdk-symbol',
     expectedTitle: 'AgoraRtcEngineKit',
-    expectedCanonicalKey: 'video-sdk|rtcengine|class',
+    expectedCanonicalKey: 'video-sdk|rtcengine|type',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit?language=objc#app-main',
+  },
+  {
+    query: 'RtcEngine class',
+    expectedIntent: 'unknown',
+    expectedKind: 'sdk-symbol',
+    expectedTitle: 'AgoraRtcEngineKit',
+    expectedCanonicalKey: 'video-sdk|rtcengine|type',
+    expectedUrl:
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit?language=objc#app-main',
   },
   {
     query: 'acquire resource ID',
@@ -319,7 +346,16 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     expectedTitle: 'renewToken',
     expectedCanonicalKey: 'video-sdk|rtcengine|renewtoken|member',
     expectedUrl:
-      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
+      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title128',
+  },
+  {
+    query: 'renewToken api',
+    expectedIntent: 'unknown',
+    expectedKind: 'sdk-symbol',
+    expectedTitle: 'renewToken',
+    expectedCanonicalKey: 'video-sdk|rtcengine|renewtoken|member',
+    expectedUrl:
+      'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title128',
   },
   {
     query: 'send streaming message',

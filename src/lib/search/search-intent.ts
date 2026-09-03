@@ -1,4 +1,5 @@
-import { isApiSymbol } from './api-query-identity';
+import { isApiQueryIdentityCandidate } from './api-query-identity';
+import { PRODUCT_ALIASES } from './search-domain-terms';
 import {
   normalizeSearchText,
   tokenizeSearchText,
@@ -69,25 +70,6 @@ const TASK_PHRASES = [
   'stream channels',
   'send a message',
   'mute remote audio',
-] as const;
-
-const PRODUCT_ALIASES = [
-  'cloud recording',
-  'agora cli',
-  'iot sdk',
-  'video sdk',
-  'voice sdk',
-  'real time engagement',
-  'realtime engagement',
-  'voice agent',
-  'voice activity detection',
-  'conversational ai',
-  'real time transcription',
-  'speech to text',
-  'video calling',
-  'interactive live streaming',
-  'broadcast streaming',
-  'flexible classroom',
 ] as const;
 
 const SUPPORT_TERMS = new Set([
@@ -168,7 +150,7 @@ export function classifySearchIntent(query: string): SearchIntentResult {
   let intent: SearchIntent = 'unknown';
   let matchedPhrase: string | undefined;
   if (normalizedQuery) {
-    if (isApiSymbol(query.normalize('NFKC').trim())) {
+    if (isApiQueryIdentityCandidate(query.normalize('NFKC').trim())) {
       intent = 'api-symbol';
     } else if (
       hasAnyPhrase(normalizedQuery, SUPPORT_PHRASES) ||

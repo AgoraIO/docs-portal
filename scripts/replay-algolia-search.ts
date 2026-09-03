@@ -1,10 +1,10 @@
-import { writeFile } from 'node:fs/promises';
 import { createAlgoliaDocsClient } from '../src/lib/search/algolia-client';
 import { GLOBAL_GOLDEN_SEARCH_CASES } from '../src/lib/search/golden-search-queries';
 import {
   type GoldenReplayResult,
   replayGoldenSearchCases,
 } from '../src/lib/search/golden-search-replay';
+import { writeReplayReport } from './replay-algolia-search-report';
 
 const appId = process.env.VITE_ALGOLIA_APP_ID;
 const searchApiKey = process.env.VITE_ALGOLIA_SEARCH_API_KEY;
@@ -38,26 +38,4 @@ const report = await replayGoldenSearchCases(
   async (query) =>
     (await client.search(query)) as unknown as GoldenReplayResult[],
 );
-const serializedReport = `${JSON.stringify(report, null, 2)}\n`;
-
-if (outputPath) {
-  await writeFile(outputPath, serializedReport, 'utf8');
-}
-
-console.log(
-  `Global Algolia replay: ${report.passed}/${report.total} passed, ${report.failed} failed.`,
-);
-for (const result of report.cases.filter(({ passed }) => !passed)) {
-  console.error(
-    JSON.stringify({
-      actualUrls: result.actualUrls,
-      error: result.error,
-      expectedUrl: result.expectedUrl,
-      query: result.query,
-    }),
-  );
-}
-
-if (report.failed > 0) {
-  process.exitCode = 1;
-}
+process.exitCode = await writeReplayReport(report, outputPath);

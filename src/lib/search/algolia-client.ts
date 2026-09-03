@@ -325,8 +325,12 @@ async function searchWithRankingV2({
   setStatus,
 }: RankingV2SearchInput): Promise<FederatedUiSearchResult[]> {
   const intent = classifySearchIntent(query);
-  const apiIdentity = parseApiQueryIdentity(query);
   const apiScopeSelected = isExplicitApiReferenceScope(scope);
+  const parsedApiIdentity = parseApiQueryIdentity(query);
+  const apiIdentity =
+    !apiScopeSelected && intent.intent === 'api-task'
+      ? undefined
+      : parsedApiIdentity;
   const canSearchApi = Boolean(
     apiReferenceIndexName && supportsApiReferenceScope(scope),
   );
@@ -343,7 +347,9 @@ async function searchWithRankingV2({
     ? buildApiSearchRequest({
         apiReferenceIndexName: apiRequested,
         platform,
-        query: getApiRetrievalQuery(retrievalQuery),
+        query: intent.matchedPhrase
+          ? getApiRetrievalQuery(intent.matchedPhrase)
+          : (apiIdentity?.retrievalQuery ?? retrievalQuery),
         scope,
       })
     : undefined;

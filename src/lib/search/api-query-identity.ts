@@ -1,4 +1,9 @@
-import { compactSearchText } from './search-normalization';
+import { platformRegistry } from '../platforms/registry';
+import { isKnownProductIdentity } from './search-domain-terms';
+import {
+  compactSearchText,
+  normalizeSearchPlatform,
+} from './search-normalization';
 
 export type ApiQueryIdentity = {
   canonicalTarget: string;
@@ -51,6 +56,34 @@ const API_IDENTIFIER_DELIMITER_SPLIT_PATTERN = new RegExp(
 );
 const API_IDENTIFIER_TOKEN_PATTERN = new RegExp(API_QUALIFIED_IDENTIFIER, 'gu');
 
+const KNOWN_PLATFORM_IDENTITIES = new Set(
+  Object.entries(platformRegistry)
+    .flatMap(([key, platform]) => [key, platform.label.en])
+    .map(compactSearchText)
+    .filter(Boolean),
+);
+
+function isKnownPlatformIdentity(value: string) {
+  const compactIdentity = compactSearchText(value);
+  return (
+    KNOWN_PLATFORM_IDENTITIES.has(normalizeSearchPlatform(compactIdentity)) ||
+    KNOWN_PLATFORM_IDENTITIES.has(compactIdentity)
+  );
+}
+
+export function isApiQueryIdentityCandidate(value: string) {
+  const normalizedValue = value.normalize('NFKC').trim();
+  if (!isApiSymbol(normalizedValue)) return false;
+
+  const firstSegment =
+    normalizedValue.split(API_IDENTIFIER_DELIMITER_SPLIT_PATTERN)[0] ?? '';
+
+  return [normalizedValue, firstSegment].every(
+    (candidate) =>
+      !isKnownPlatformIdentity(candidate) && !isKnownProductIdentity(candidate),
+  );
+}
+
 export function canonicalizeApiSymbol(value: string) {
   const segments = value
     .normalize('NFKC')
@@ -91,7 +124,7 @@ export function parseApiQueryIdentity(
   query: string,
 ): ApiQueryIdentity | undefined {
   const normalizedQuery = query.normalize('NFKC').trim();
-  const target = isApiSymbol(normalizedQuery)
+  const target = isApiQueryIdentityCandidate(normalizedQuery)
     ? normalizedQuery
     : (() => {
         const tokens =
@@ -106,11 +139,9 @@ export function parseApiQueryIdentity(
         const identifiers = tokens.filter(
           (token) =>
             !API_QUERY_MODIFIER_TERMS.has(token.toLowerCase()) &&
-            isApiSymbol(token),
+            isApiQueryIdentityCandidate(token),
         );
-        return identifiers.length === 1 && isApiSymbol(identifiers[0])
-          ? identifiers[0]
-          : undefined;
+        return identifiers.length === 1 ? identifiers[0] : undefined;
       })();
   if (!target) return undefined;
 

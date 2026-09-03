@@ -1,6 +1,9 @@
 import type { GoldenSearchCase } from './golden-search-queries';
+import { normalizeSearchText } from './search-normalization';
 
 export type GoldenReplayResult = {
+  canonicalKey?: string;
+  platformUrls?: Record<string, string>;
   recordKind?: string;
   title: string;
   url: string;
@@ -21,6 +24,17 @@ export type GoldenReplayReport = {
   total: number;
 };
 
+function containsExpectedUrl(
+  result: GoldenReplayResult,
+  expectedUrl: string | undefined,
+) {
+  if (!expectedUrl) return true;
+  return (
+    result.url === expectedUrl ||
+    Object.values(result.platformUrls ?? {}).includes(expectedUrl)
+  );
+}
+
 export async function replayGoldenSearchCases(
   goldenCases: readonly GoldenSearchCase[],
   search: (query: string) => Promise<readonly GoldenReplayResult[]>,
@@ -31,19 +45,24 @@ export async function replayGoldenSearchCases(
     try {
       const results = await search(goldenCase.query);
       const topThree = results.slice(0, 3);
-      const expectedResult = goldenCase.expectedUrl
-        ? topThree.find((result) => result.url === goldenCase.expectedUrl)
-        : undefined;
+      const expectedResult = goldenCase.expectedCanonicalKey
+        ? topThree.find(
+            (result) => result.canonicalKey === goldenCase.expectedCanonicalKey,
+          )
+        : topThree.find((result) =>
+            containsExpectedUrl(result, goldenCase.expectedUrl),
+          );
       const passed =
         goldenCase.expectedKind === 'empty'
           ? results.length === 0
           : Boolean(
               expectedResult &&
                 expectedResult.recordKind === goldenCase.expectedKind &&
+                containsExpectedUrl(expectedResult, goldenCase.expectedUrl) &&
                 (!goldenCase.expectedTitle ||
-                  expectedResult.title
-                    .toLowerCase()
-                    .includes(goldenCase.expectedTitle.toLowerCase())),
+                  normalizeSearchText(expectedResult.title).includes(
+                    normalizeSearchText(goldenCase.expectedTitle),
+                  )),
             );
 
       cases.push({

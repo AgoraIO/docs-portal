@@ -942,6 +942,320 @@ describe('createAlgoliaDocsClient', () => {
     });
 
     it.each([
+      {
+        apiSymbol: 'iOS',
+        docId: 'bluetooth-ios-guide',
+        docTitle: 'Bluetooth iOS troubleshooting',
+        query: 'Bluetooth iOS API',
+      },
+      {
+        apiSymbol: 'IoT',
+        docId: 'iot-sdk-guide',
+        docTitle: 'IoT SDK overview',
+        query: 'IoT SDK API',
+      },
+      {
+        apiSymbol: 'iOS',
+        docId: 'ios-api-guide',
+        docTitle: 'How to use the iOS API',
+        query: 'how to use iOS API',
+      },
+      {
+        apiSymbol: 'IoT',
+        docId: 'iot-api-guide',
+        docTitle: 'How to use the IoT SDK API',
+        query: 'how to use IoT SDK API',
+      },
+      {
+        apiSymbol: 'IoT',
+        docId: 'configure-iot-api-guide',
+        docTitle: 'Configure the IoT SDK API',
+        query: 'configure IoT SDK API',
+      },
+    ])(
+      'keeps the full $query retrieval query and rejects an intent-conflicting exact API hit',
+      async ({ apiSymbol, docId, docTitle, query }) => {
+        const searchForHits = vi.fn().mockResolvedValue(
+          federatedResponse({
+            apiHits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: `<mark>${apiSymbol}</mark>`,
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: apiSymbol,
+                },
+                objectID: `${apiSymbol.toLowerCase()}-api`,
+              }),
+            ],
+            docsHits: [docsHit({ objectID: docId, title: docTitle })],
+          }),
+        );
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const results = await createClient().search(query);
+
+        expect(searchForHits).toHaveBeenCalledTimes(1);
+        expect(searchForHits).toHaveBeenCalledWith({
+          requests: [
+            expect.objectContaining({
+              indexName: 'docs_portal_en',
+              query,
+            }),
+            expect.objectContaining({
+              indexName: 'agora_APIRefSearch',
+              query,
+            }),
+          ],
+        });
+        expect(results.map(({ id }) => id)).toEqual([docId]);
+        expect(results[0]).toMatchObject({ id: docId, recordKind: 'guide' });
+      },
+    );
+
+    it.each(['iOS', 'IoT', 'ReactNative', 'ReactJS', 'React-JS', 'VideoSdk'])(
+      'rejects the same-named API hit for direct domain query %s',
+      async (query) => {
+        const docId = `docs-${query.toLowerCase()}`;
+        const searchForHits = vi.fn().mockResolvedValue(
+          federatedResponse({
+            apiHits: [
+              apiHit({
+                _highlightResult: {
+                  hierarchy: {
+                    lvl1: {
+                      matchLevel: 'full',
+                      value: `<mark>${query}</mark>`,
+                    },
+                  },
+                },
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: query,
+                },
+                objectID: `api-${query.toLowerCase()}`,
+              }),
+            ],
+            docsHits: [docsHit({ objectID: docId, title: query })],
+          }),
+        );
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const results = await createClient().search(query);
+
+        expect(searchForHits).toHaveBeenCalledWith({
+          requests: [
+            expect.objectContaining({
+              indexName: 'docs_portal_en',
+              query,
+            }),
+            expect.objectContaining({
+              indexName: 'agora_APIRefSearch',
+              query,
+            }),
+          ],
+        });
+        expect(results.map(({ id }) => id)).toEqual([docId]);
+      },
+    );
+
+    it.each(['ReactJS', 'React-JS'])(
+      'admits direct platform alias query %s API hit first in explicit API Reference scope',
+      async (query) => {
+        const apiId = `api-${query.toLowerCase()}`;
+        const docsId = `docs-${query.toLowerCase()}`;
+        const searchForHits = vi.fn().mockResolvedValue(
+          federatedResponse({
+            apiHits: [
+              apiHit({
+                hierarchy: {
+                  lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                  lvl1: query,
+                },
+                objectID: apiId,
+              }),
+            ],
+            docsHits: [docsHit({ objectID: docsId, title: query })],
+          }),
+        );
+        vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+        const results = await createClient({
+          scope: { field: 'tab', value: 'api-reference' },
+        }).search(query);
+
+        expect(searchForHits).toHaveBeenCalledWith({
+          requests: [
+            expect.objectContaining({ query }),
+            expect.objectContaining({ query }),
+          ],
+        });
+        expect(results.map(({ id }) => id)).toEqual([apiId, docsId]);
+      },
+    );
+
+    it('admits a direct platform query API hit first in explicit API Reference scope', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+                lvl1: 'iOS',
+              },
+              objectID: 'ios-api',
+              platform: 'ios',
+            }),
+          ],
+          docsHits: [docsHit({ objectID: 'ios-docs', title: 'iOS' })],
+        }),
+      );
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const results = await createClient({
+        scope: { field: 'tab', value: 'api-reference' },
+      }).search('iOS');
+
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({ query: 'iOS' }),
+          expect.objectContaining({ query: 'iOS' }),
+        ],
+      });
+      expect(results.map(({ id }) => id)).toEqual(['ios-api', 'ios-docs']);
+    });
+
+    it('preserves exact API identity retrieval inside explicit API Reference scope', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: { matchLevel: 'full', value: '<mark>iOS</mark>' },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ iOS ❯ 4.x (current)',
+                lvl1: 'iOS',
+              },
+              objectID: 'ios-api',
+              platform: 'ios',
+            }),
+          ],
+          docsHits: [
+            docsHit({
+              objectID: 'bluetooth-ios-guide',
+              title: 'Bluetooth iOS troubleshooting',
+            }),
+          ],
+        }),
+      );
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const results = await createClient({
+        scope: { field: 'tab', value: 'api-reference' },
+      }).search('Bluetooth iOS API');
+
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({
+            indexName: 'docs_portal_en',
+            query: 'Bluetooth iOS API',
+          }),
+          expect.objectContaining({
+            indexName: 'agora_APIRefSearch',
+            query: 'Bluetooth iOS API',
+          }),
+        ],
+      });
+      expect(results.map(({ id }) => id)).toEqual([
+        'ios-api',
+        'bluetooth-ios-guide',
+      ]);
+      expect(results[0]).toMatchObject({
+        id: 'ios-api',
+        recordKind: 'sdk-symbol',
+        titleExactMatch: false,
+      });
+    });
+
+    it('gives an API-task matched phrase priority over a conflicting lexical identity', async () => {
+      const searchForHits = vi.fn().mockResolvedValue(
+        federatedResponse({
+          apiHits: [
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>setAudioProfile</mark>',
+                  },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                lvl1: 'setAudioProfile',
+              },
+              objectID: 'set-audio-profile',
+            }),
+            apiHit({
+              _highlightResult: {
+                hierarchy: {
+                  lvl1: {
+                    matchLevel: 'full',
+                    value: '<mark>renewToken</mark>',
+                  },
+                },
+              },
+              hierarchy: {
+                lvl0: 'API Reference ❯ Video SDK ❯ Web ❯ 4.x (current)',
+                lvl1: 'renewToken',
+              },
+              objectID: 'renew-token',
+            }),
+          ],
+          docsHits: [
+            docsHit({
+              objectID: 'renew-guide',
+              title: 'Renew token guide',
+            }),
+          ],
+        }),
+      );
+      vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
+
+      const results = await createClient().search(
+        'renew token setAudioProfile method',
+      );
+
+      expect(searchForHits).toHaveBeenCalledTimes(1);
+      expect(searchForHits).toHaveBeenCalledWith({
+        requests: [
+          expect.objectContaining({ query: 'renew token' }),
+          expect.objectContaining({ query: 'renew token' }),
+        ],
+      });
+      expect(results.map(({ id }) => id)).toEqual([
+        'renew-guide',
+        'renew-token',
+      ]);
+      expect(results[1]).toMatchObject({
+        id: 'renew-token',
+        recordKind: 'sdk-symbol',
+        titleExactMatch: false,
+      });
+      expect(results.some(({ id }) => id === 'set-audio-profile')).toBe(false);
+    });
+
+    it.each([
       ['billing policy', 'billing policies'],
       ['real-time transcription', 'speech to text'],
       ['real time transcription', 'speech to text'],

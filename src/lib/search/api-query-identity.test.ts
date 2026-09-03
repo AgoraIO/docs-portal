@@ -27,7 +27,26 @@ describe('API query identity', () => {
     });
   });
 
-  it.each(['IoT SDK', 'Bluetooth iOS'])(
+  it.each([
+    'Bluetooth iOS API',
+    'IoT SDK API',
+    'how to use iOS API',
+    'how to use IoT SDK API',
+    'configure IoT SDK API',
+    'how to use ReactNative API',
+    'iOS',
+    'iOS.Client',
+    'IoT',
+    'IoT.Client',
+    'ReactNative',
+    'ReactNative.Client',
+    'ReactJS',
+    'ReactJS.Client',
+    'React-JS',
+    'React-JS.Client',
+    'VideoSdk',
+    'VoiceSdk',
+  ])(
     'does not treat product or platform query %s as API identity context',
     (query) => {
       expect(parseApiQueryIdentity(query)).toBeUndefined();
@@ -42,6 +61,31 @@ describe('API query identity', () => {
   ])('extracts %s from natural-language context', (target) => {
     expect(parseApiQueryIdentity(`use ${target} method`)).toMatchObject({
       target,
+    });
+  });
+
+  it.each(['RtcEngine', 'RtcEngine.joinChannel'])(
+    'keeps valid root-client identity %s',
+    (target) => {
+      expect(parseApiQueryIdentity(target)).toMatchObject({ target });
+    },
+  );
+
+  it.each([
+    ['Agora.Rtc.RtcEngine', 'Agora.Rtc.RtcEngine'],
+    ['show Agora.Rtc.RtcEngine method', 'Agora.Rtc.RtcEngine'],
+    ['Agora.Rtc.RtcEngineEventHandler', 'Agora.Rtc.RtcEngineEventHandler'],
+  ])('keeps qualified Agora identity for %s', (query, target) => {
+    const identity = parseApiQueryIdentity(query);
+
+    expect(identity).toMatchObject({
+      canonicalTarget: target.toLowerCase().replaceAll('.', ''),
+      retrievalQuery: target,
+      target,
+    });
+    expect(getApiIdentityMatch([target], identity)).toEqual({
+      aliasesExactMatch: false,
+      titleExactMatch: true,
     });
   });
 

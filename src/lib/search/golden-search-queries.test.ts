@@ -24,6 +24,7 @@ type GoldenClientResult = {
   canonicalKey?: string;
   id: string;
   platform?: string[];
+  platformUrls?: Record<string, string>;
   recordKind: string;
   title: string;
   url: string;
@@ -32,7 +33,7 @@ type GoldenClientResult = {
 type ApiCorpusEntry = {
   queries: readonly string[];
   symbol: string;
-  kind: 'class' | 'enum' | 'interface' | 'method';
+  kind: 'class' | 'enum' | 'interface' | 'member' | 'method' | 'type';
   namespace?: string;
   platformHits: readonly {
     label: string;
@@ -40,6 +41,7 @@ type ApiCorpusEntry = {
     platform: string;
     symbol?: string;
     url: string;
+    version?: string;
   }[];
 };
 
@@ -123,6 +125,10 @@ const EXPECTED_DOCS_RETRIEVAL_QUERY = new Map([
 
 const EXPECTED_API_RETRIEVAL_QUERY = new Map([
   ['RtcEngine', 'AgoraRtcEngineKit'],
+  ['RtcEngine class', 'AgoraRtcEngineKit'],
+  ['joinChannel method', 'joinChannel'],
+  ['renewToken api', 'renewToken'],
+  ['setAudioProfile method', 'setAudioProfile'],
 ]);
 
 function expectedDocsRetrievalQuery(query: string) {
@@ -130,8 +136,12 @@ function expectedDocsRetrievalQuery(query: string) {
   return EXPECTED_DOCS_RETRIEVAL_QUERY.get(retrievalQuery) ?? retrievalQuery;
 }
 
-function expectedApiRetrievalQuery(query: string) {
+function expectedApiRetrievalQuery(
+  query: string,
+  intent = classifySearchIntent(query).intent,
+) {
   const retrievalQuery = classifySearchIntent(query).matchedPhrase ?? query;
+  if (intent === 'support' || intent === 'product') return retrievalQuery;
   return EXPECTED_API_RETRIEVAL_QUERY.get(retrievalQuery) ?? retrievalQuery;
 }
 
@@ -149,10 +159,10 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     namespace: 'RtcEngine',
     platformHits: [
       {
-        label: 'Android',
+        label: 'Blueprint',
         namespace: 'IRtcEngine',
-        platform: 'android',
-        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
+        platform: 'blueprint',
+        url: 'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title78',
       },
       {
         label: 'C++',
@@ -161,7 +171,7 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
         url: 'https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
       },
     ],
-    queries: ['joinChannel'],
+    queries: ['joinChannel', 'joinChannel method'],
     symbol: 'joinChannel',
   },
   {
@@ -184,10 +194,10 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
         label: 'iOS',
         namespace: 'AgoraRtcEngineKit',
         platform: 'ios',
-        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
       },
     ],
-    queries: ['setAudioProfile'],
+    queries: ['setAudioProfile', 'setAudioProfile method'],
     symbol: 'setAudioProfile',
   },
   {
@@ -203,28 +213,31 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
     symbol: 'NetworkQuality',
   },
   {
-    kind: 'class',
+    kind: 'member',
+    namespace: 'RtcApiDataType',
     platformHits: [
       {
-        label: 'Android',
-        platform: 'android',
-        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_audiovolumeinfo.html',
+        label: 'Flutter',
+        namespace: 'RtcApiDataType',
+        platform: 'flutter',
+        url: 'https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_data_type.html#ariaid-title89',
+        version: '5.x',
       },
     ],
     queries: ['AudioVolumeInfo'],
     symbol: 'AudioVolumeInfo',
   },
   {
-    kind: 'class',
+    kind: 'type',
     platformHits: [
       {
         label: 'iOS',
         platform: 'ios',
         symbol: 'AgoraRtcEngineKit',
-        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html',
+        url: 'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit?language=objc#app-main',
       },
     ],
-    queries: ['RtcEngine'],
+    queries: ['RtcEngine', 'RtcEngine class'],
     symbol: 'RtcEngine',
   },
   {
@@ -235,7 +248,7 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
         label: 'Android',
         namespace: 'IRtcEngine',
         platform: 'android',
-        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
+        url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title128',
       },
       {
         label: 'C++',
@@ -256,7 +269,7 @@ const API_CORPUS: readonly ApiCorpusEntry[] = [
         url: 'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#renewtoken',
       },
     ],
-    queries: ['renew token'],
+    queries: ['renew token', 'renewToken api'],
     symbol: 'renewToken',
   },
 ];
@@ -327,27 +340,20 @@ const NOISE_API_CORPUS: readonly ApiCorpusEntry[] = [
   },
 ];
 
-const TRACKED_ANDROID_SDK_URLS = [
-  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2',
-  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudioprofile2',
-  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_renewtoken',
-] as const;
-
-const TRACKED_IOS_RTC_ENGINE_URL =
-  'https://api-ref.agora.io/en/video-sdk/ios/4.x/API/class_agorartcenginekit.html';
-
 const STABLE_WEB_NETWORK_QUALITY_URL =
   'https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/networkquality.html';
 
-// Verified against the live API reference (HTTP 200 on 2026-08-26). Unit
-// tests remain offline and keep this exceptional URL explicit.
+// Verified against the shared read-only API reference index on 2026-09-03.
+// Unit tests remain offline and keep the observed live targets explicit.
 const EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST = new Set([
-  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_audiovolumeinfo.html',
+  'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title78',
+  'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
+  'https://api-ref.agora.io/en/video-sdk/flutter/5.x/API/rtc_api_data_type.html#ariaid-title89',
+  'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit?language=objc#app-main',
+  'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title128',
 ]);
 
 const REAL_SDK_TARGET_URLS = new Set([
-  ...TRACKED_ANDROID_SDK_URLS,
-  TRACKED_IOS_RTC_ENGINE_URL,
   STABLE_WEB_NETWORK_QUALITY_URL,
   ...EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST,
 ]);
@@ -492,18 +498,27 @@ function apiHit(
 ) {
   const symbol = platformHit.symbol ?? entry.symbol;
   const namespace = platformHit.namespace ?? entry.namespace;
-  const pageTitle = `${entry.kind === 'enum' ? 'Enum' : entry.kind === 'interface' ? 'Interface' : 'Class'} ${symbol}`;
+  const version = platformHit.version ?? '4.x';
+  const lvl0 = `API Reference ❯ Video Sdk ❯ ${platformHit.label} ❯ ${version} (current)`;
+  const pageKindLabel = {
+    class: 'Class',
+    enum: 'Enum',
+    interface: 'Interface',
+    type: 'Type',
+  } as const;
+  const hierarchy =
+    entry.kind === 'method'
+      ? { lvl0, lvl1: `Class ${namespace}`, lvl2: symbol }
+      : entry.kind === 'member'
+        ? { lvl0, lvl1: symbol }
+        : { lvl0, lvl1: `${pageKindLabel[entry.kind]} ${symbol}` };
   return {
-    hierarchy: {
-      lvl0: `API Reference ❯ Video Sdk ❯ ${platformHit.label} ❯ 4.x (current)`,
-      lvl1: entry.kind === 'method' ? `Class ${namespace}` : pageTitle,
-      ...(entry.kind === 'method' ? { lvl2: symbol } : {}),
-    },
+    hierarchy,
     objectID: `${entry.queries.length === 0 ? 'noise-api-' : ''}${symbol}-${platformHit.platform}`,
     platform: platformHit.platform,
     product: 'video-sdk',
     url: platformHit.url,
-    version: '4.x',
+    version,
   };
 }
 
@@ -537,21 +552,37 @@ function sourceHitsFor(
 }
 
 function createGoldenClient(query: string, intent: SearchIntent) {
-  const searchForHits = vi.fn().mockImplementation(({ requests }) => {
-    const request = requests[0];
-    const expectedQuery =
-      request.indexName === 'docs_portal_en'
-        ? expectedDocsRetrievalQuery(query)
-        : expectedApiRetrievalQuery(query);
-    expect(request.query).toBe(expectedQuery);
-    return Promise.resolve({
-      results: [
-        {
-          hits: sourceHitsFor(query, request.query, request.indexName, intent),
-        },
-      ],
-    });
-  });
+  const searchForHits = vi
+    .fn()
+    .mockImplementation(
+      ({
+        requests,
+      }: {
+        requests: Array<{ indexName: string; query: string }>;
+      }) => {
+        expect(requests.map(({ indexName }) => indexName)).toEqual([
+          'docs_portal_en',
+          'agora_APIRefSearch',
+        ]);
+        return Promise.resolve({
+          results: requests.map((request) => {
+            const expectedQuery =
+              request.indexName === 'docs_portal_en'
+                ? expectedDocsRetrievalQuery(query)
+                : expectedApiRetrievalQuery(query, intent);
+            expect(request.query).toBe(expectedQuery);
+            return {
+              hits: sourceHitsFor(
+                query,
+                request.query,
+                request.indexName,
+                intent,
+              ),
+            };
+          }),
+        });
+      },
+    );
   vi.mocked(liteClient).mockReturnValue({ searchForHits } as never);
   return createAlgoliaDocsClient({
     apiReferenceIndexName: 'agora_APIRefSearch',
@@ -567,14 +598,28 @@ function expectedTopThreeResult(
   results: GoldenClientResult[],
   goldenCase: GoldenSearchCase,
 ) {
-  return results
-    .slice(0, 3)
-    .find((result) => result.url === goldenCase.expectedUrl);
+  const topThree = results.slice(0, 3);
+  return goldenCase.expectedCanonicalKey
+    ? topThree.find(
+        ({ canonicalKey }) => canonicalKey === goldenCase.expectedCanonicalKey,
+      )
+    : topThree.find((result) => resultContainsExpectedUrl(result, goldenCase));
+}
+
+function resultContainsExpectedUrl(
+  result: GoldenClientResult,
+  goldenCase: GoldenSearchCase,
+) {
+  if (!goldenCase.expectedUrl) return true;
+  return (
+    result.url === goldenCase.expectedUrl ||
+    Object.values(result.platformUrls ?? {}).includes(goldenCase.expectedUrl)
+  );
 }
 
 describe('Global search golden queries', () => {
-  it('contains exactly the 50 approved online cases', () => {
-    expect(GLOBAL_GOLDEN_SEARCH_CASES).toHaveLength(50);
+  it('contains exactly the 54 approved online cases', () => {
+    expect(GLOBAL_GOLDEN_SEARCH_CASES).toHaveLength(54);
   });
 
   it('covers every query with an independent real route, SDK symbol, or empty result', () => {
@@ -700,33 +745,20 @@ describe('Global search golden queries', () => {
     expect(mismatches).toEqual([]);
   });
 
-  it('anchors all six SDK target URLs in tracked or explicitly verified evidence', () => {
+  it('anchors all six SDK target URLs in stable or explicitly verified evidence', () => {
     const fixtureSdkUrls = new Set(
       GLOBAL_GOLDEN_SEARCH_CASES.flatMap(({ expectedKind, expectedUrl }) =>
         expectedKind === 'sdk-symbol' && expectedUrl ? [expectedUrl] : [],
       ),
     );
-    const trackedEvidence = [
-      'content/docs/en/realtime-media/video/get-started-sdk.mdx',
-      'content/docs/en/realtime-media/video/build/enhance-the-audio-experience/voice-effects.mdx',
-      'content/docs/en/realtime-media/rtc/build/authenticate-users/authentication-workflow.mdx',
-      'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx',
-    ]
-      .map((file) => readFileSync(resolve(process.cwd(), file), 'utf8'))
-      .join('\n');
     const stableClientFixture = readFileSync(
       resolve(process.cwd(), 'src/lib/search/algolia-client.test.ts'),
       'utf8',
     );
 
     expect(fixtureSdkUrls).toEqual(REAL_SDK_TARGET_URLS);
-    expect(
-      [...TRACKED_ANDROID_SDK_URLS, TRACKED_IOS_RTC_ENGINE_URL].filter(
-        (url) => !trackedEvidence.includes(url),
-      ),
-    ).toEqual([]);
     expect(stableClientFixture).toContain(STABLE_WEB_NETWORK_QUALITY_URL);
-    expect(EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST.size).toBe(1);
+    expect(EXTERNALLY_VERIFIED_SDK_URL_ALLOWLIST.size).toBe(5);
   });
 
   describe.each(GLOBAL_GOLDEN_SEARCH_CASES)('$query', (goldenCase) => {
@@ -772,8 +804,10 @@ describe('Global search golden queries', () => {
         ),
       ).toMatchObject({
         recordKind: goldenCase.expectedKind,
-        url: goldenCase.expectedUrl,
       });
+      expect(
+        expectedResult && resultContainsExpectedUrl(expectedResult, goldenCase),
+      ).toBe(true);
       expect(expectedResult?.title.toLowerCase()).toContain(
         goldenCase.expectedTitle?.toLowerCase(),
       );

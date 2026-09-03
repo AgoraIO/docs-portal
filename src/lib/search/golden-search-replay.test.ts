@@ -17,6 +17,16 @@ const cases = [
   },
 ] satisfies GoldenSearchCase[];
 
+const sdkCase = {
+  expectedCanonicalKey: 'video-sdk|rtcengine|setaudioprofile|member',
+  expectedIntent: 'unknown',
+  expectedKind: 'sdk-symbol',
+  expectedTitle: 'setAudioProfile',
+  expectedUrl:
+    'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main',
+  query: 'setAudioProfile method',
+} satisfies GoldenSearchCase;
+
 describe('replayGoldenSearchCases', () => {
   it('evaluates supplied live results against the golden top-three contract', async () => {
     const search = vi.fn(async (query: string) =>
@@ -58,6 +68,74 @@ describe('replayGoldenSearchCases', () => {
       actualUrls: ['/en/unrelated'],
       expectedUrl: '/en/quickstart',
       passed: false,
+    });
+  });
+
+  it('matches a golden title when live highlights split every title term', async () => {
+    const markedTitleCase = {
+      expectedIntent: 'task',
+      expectedKind: 'guide',
+      expectedTitle: 'Voice agent quickstart',
+      expectedUrl: '/en/quickstart',
+      query: 'voice agent quickstart',
+    } satisfies GoldenSearchCase;
+    const report = await replayGoldenSearchCases(
+      [markedTitleCase],
+      async () => [
+        {
+          recordKind: 'guide',
+          title:
+            '<mark>Voice</mark> <mark>agent</mark> <mark>quickstart</mark>',
+          url: markedTitleCase.expectedUrl,
+        },
+      ],
+    );
+
+    expect(report).toMatchObject({ failed: 0, passed: 1, total: 1 });
+  });
+
+  it('accepts an aggregated SDK result when a platform URL contains the expected target', async () => {
+    const report = await replayGoldenSearchCases([sdkCase], async () => [
+      {
+        canonicalKey: sdkCase.expectedCanonicalKey,
+        platformUrls: {
+          blueprint:
+            'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title90',
+          ios: sdkCase.expectedUrl,
+        },
+        recordKind: 'sdk-symbol',
+        title: 'setAudioProfile',
+        url: 'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title90',
+      },
+    ]);
+
+    expect(report).toMatchObject({ failed: 0, passed: 1, total: 1 });
+    expect(report.cases[0]).toMatchObject({
+      expectedUrl: sdkCase.expectedUrl,
+      passed: true,
+      query: sdkCase.query,
+    });
+  });
+
+  it('rejects an aggregated SDK result when neither representative nor platform URLs contain the expected target', async () => {
+    const report = await replayGoldenSearchCases([sdkCase], async () => [
+      {
+        canonicalKey: sdkCase.expectedCanonicalKey,
+        platformUrls: {
+          android:
+            'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#ariaid-title90',
+        },
+        recordKind: 'sdk-symbol',
+        title: 'setAudioProfile',
+        url: 'https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengine.html#ariaid-title90',
+      },
+    ]);
+
+    expect(report).toMatchObject({ failed: 1, passed: 0, total: 1 });
+    expect(report.cases[0]).toMatchObject({
+      expectedUrl: sdkCase.expectedUrl,
+      passed: false,
+      query: sdkCase.query,
     });
   });
 });
