@@ -1899,4 +1899,70 @@ describe('DocsShell', () => {
     expect(tocRail).toHaveClass('hidden', 'xl:block');
     expect(within(tocRail).getByText('On this page')).toBeInTheDocument();
   });
+
+  it('renders embedded service API sections as collapsed mobile disclosures', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/realtime-media/rtc',
+        activeTab: 'realtime-media',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            children: [
+              {
+                id: 'rtc-create-ban-rule',
+                search: {
+                  from: '/zh-CN/realtime-media/rtc',
+                },
+                title: '创建规则',
+                type: 'page',
+                url: '/zh-CN/realtime-media/api',
+              },
+            ],
+            collapsible: true,
+            defaultOpen: false,
+            id: 'rtc-rest-api',
+            title: '服务端 API',
+            type: 'section',
+          },
+        ],
+        tabs: [
+          {
+            id: 'realtime-media',
+            title: '实时互动',
+            url: '/zh-CN/realtime-media',
+          },
+        ],
+      },
+      '/zh-CN/realtime-media/rtc',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const toggle = within(mobileSheet).getByRole('button', {
+      name: '展开或收起服务端 API子页面',
+    });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      within(mobileSheet).queryByRole('link', { name: '创建规则' }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(toggle);
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    const childLink = within(mobileSheet).getByRole('link', {
+      name: '创建规则',
+    });
+    expect(childLink).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/api?from=%2Fzh-CN%2Frealtime-media%2Frtc',
+    );
+
+    fireEvent.click(childLink);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
 });

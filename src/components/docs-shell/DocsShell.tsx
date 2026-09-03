@@ -784,6 +784,49 @@ function MobileSidebarSectionNode({
     }
   }, [shouldRevealActivePath]);
 
+  if (!node.url && node.collapsible) {
+    return (
+      <div className="flex min-w-0 max-w-full flex-col gap-1">
+        <button
+          aria-expanded={isOpen}
+          aria-label={sectionDisclosureLabel(node.title)}
+          className={cn(
+            mobilePageLinkClassName,
+            'items-center justify-between',
+            mobileInactivePageLinkClassName,
+          )}
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <span className="min-w-0 flex-1 break-words text-left whitespace-normal [overflow-wrap:anywhere]">
+            {node.title.replaceAll('-', ' ')}
+          </span>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </button>
+        {isOpen ? (
+          <div className={getMobileSidebarNestedListClassName(depth)}>
+            {node.children.map((child) => (
+              <MobileSidebarNode
+                activePath={activePath}
+                depth={depth + 1}
+                key={child.id}
+                node={child}
+                onSelectPath={onSelectPath}
+                sectionDisclosureLabel={sectionDisclosureLabel}
+              />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   if (node.url) {
     const isActive = node.url === activePath;
 
