@@ -1914,6 +1914,118 @@ describe('FumadocsOpenApiContent', () => {
     expect(filter).toBeVisible();
   });
 
+  it('keeps optional join properties collapsed and finds complete schema paths', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              properties: {
+                                additionalProperties: true,
+                                properties: {
+                                  channel: { type: 'string' },
+                                  remote_rtc_uids: {
+                                    items: { type: 'string' },
+                                    type: 'array',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                              advanced_features: {
+                                properties: {
+                                  child: { type: 'string' },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            required: ['properties'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const schemaTree = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
+    const propertiesRow = within(schemaTree)
+      .getByText('properties', { exact: true })
+      .closest('[data-openapi-schema-row]') as HTMLElement;
+
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Expand properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Expand advanced_features properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('child', { exact: true })).not.toBeVisible();
+
+    fireEvent.click(
+      within(propertiesRow).getByRole('button', {
+        name: 'Expand properties properties',
+      }),
+    );
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    const filter = screen.getByPlaceholderText('Filter Properties');
+    fireEvent.change(filter, { target: { value: 'channel' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.channel', { exact: true }),
+    ).toBeVisible();
+
+    fireEvent.change(filter, { target: { value: 'properties.channel' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.channel', { exact: true }),
+    ).toBeVisible();
+
+    fireEvent.change(filter, { target: { value: 'remote_rtc_uids' } });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.remote_rtc_uids', { exact: true }),
+    ).toBeVisible();
+
+    fireEvent.change(filter, {
+      target: { value: 'properties.remote_rtc_uids' },
+    });
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+    expect(
+      screen.getByText('properties.remote_rtc_uids', { exact: true }),
+    ).toBeVisible();
+  });
+
   it('renders response body fields inherited through local refs and nested allOf schemas', async () => {
     render(
       <FumadocsOpenApiContent
