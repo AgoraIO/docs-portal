@@ -2611,7 +2611,7 @@ const PRODUCT_CLIENT_API_REFERENCE_LINKS = [
   {
     productId: 'meeting',
     productSlug: 'meeting',
-    tab: 'solutions',
+    tab: 'realtime-media',
   },
   {
     productId: 'online-art-teaching',

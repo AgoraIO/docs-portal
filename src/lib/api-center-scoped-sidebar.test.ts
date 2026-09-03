@@ -83,7 +83,7 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toContain('Whiteboard SDK');
     expect(titles).not.toEqual(
       expect.arrayContaining([
-        '对话式 AI',
+        '对话式 AI 引擎',
         '实时互动 RTC',
         '实时消息 RTM',
         '互动白板',

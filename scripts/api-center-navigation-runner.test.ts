@@ -77,6 +77,74 @@ describe('API Center navigation runner', () => {
     ]);
   });
 
+  it('keeps current Chinese product names in generated catalog data', () => {
+    const entries = [
+      {
+        product: '对话式 AI 引擎',
+        apiGroup: 'server',
+        label: 'agent-go',
+        targetRoute: '/zh-CN/api-reference/conversational-ai/agent-go',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '微呼叫',
+        apiGroup: 'server',
+        label: 'RESTful API',
+        targetRoute: '/zh-CN/api-reference/api-ref/voip-callkit',
+        urlFamily: 'api-ref',
+      },
+      {
+        product: '灵动会议',
+        apiGroup: 'client',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/meeting/android',
+        urlFamily: 'doc',
+      },
+      {
+        product: '1v1 私密房',
+        apiGroup: 'client',
+        label: 'Android',
+        targetRoute: '/zh-CN/api-reference/private-room/android/rtm/api/call-api',
+        urlFamily: 'doc',
+      },
+    ];
+    const groups = buildApiReferenceCatalogGroups([], [], entries, null);
+    const catalog = buildApiReferenceCatalogData(groups);
+
+    expect(
+      catalog.all.map((entry: {
+        apiType: string;
+        product: string;
+        productId: string;
+      }) => ({
+        apiType: entry.apiType,
+        product: entry.product,
+        productId: entry.productId,
+      })),
+    ).toEqual([
+      {
+        apiType: 'server-sdk',
+        product: '对话式 AI 引擎',
+        productId: 'conversational-ai',
+      },
+      {
+        apiType: 'restful-api',
+        product: '微呼叫',
+        productId: 'voip-callkit',
+      },
+      {
+        apiType: 'client-api',
+        product: '智能云会议引擎',
+        productId: 'meeting',
+      },
+      {
+        apiType: 'client-api',
+        product: '1v1 私密房',
+        productId: 'private-room',
+      },
+    ]);
+  });
+
   it('keeps external catalog products in manifest product order', () => {
     const entries = [
       {

@@ -21,11 +21,11 @@ Webhook 是一种基于 HTTP 协议的回调机制，允许服务端主动推送
 |字段|类型|描述|
 |---|---|---|
 |`roomUuid`|String|会议房间 UUID。|
-|`cmd`|Integer| [事件类型](/zh-CN/solutions/meeting/reference/webhook-events)|
+|`cmd`|Integer| [事件类型](/zh-CN/realtime-media/meeting/reference/webhook-events)|
 |`sequence`|Integer|事件序号，用于标识同一个房间内发生的事件。在同一个房间内，`sequence` 不会重复，并且会自动递增，以确保事件的有序性。|
 |`version`|Integer|事件版本号。|
 |`ts`|Integer|事件发生的 Unix 时间戳。UTC 时间，单位为毫秒。|
-|`data`|Object|事件的具体数据，不同事件会包含不同数据，详见[事件类型](/zh-CN/solutions/meeting/reference/webhook-events)。|
+|`data`|Object|事件的具体数据，不同事件会包含不同数据，详见[事件类型](/zh-CN/realtime-media/meeting/reference/webhook-events)。|
 
 ```json
 {

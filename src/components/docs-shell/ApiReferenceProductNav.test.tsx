@@ -9,6 +9,34 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ApiReferenceCards } from '@/components/docs-overview/ApiReferenceCards';
 import { ApiReferenceProductNav } from './ApiReferenceProductNav';
 
+const expectedGroups = [
+  ['对话式 AI 引擎', ['对话式 AI 引擎']],
+  [
+    '实时互动基础能力',
+    ['实时互动 RTC', '实时消息 RTM', '即时通讯 IM', '媒体流加速 RTSA'],
+  ],
+  [
+    '实时媒体处理',
+    [
+      '实时转录翻译',
+      '云端录制',
+      '本地服务端录制',
+      '云端转码',
+      '旁路推流',
+      '输入在线媒体流',
+      'RTMP 网关',
+      '融合 CDN 直播',
+    ],
+  ],
+  ['会议协作', ['智能云会议引擎']],
+  ['监控与分析', ['水晶球']],
+  ['扩展能力与生态', ['RTC 服务端 SDK', '互动白板']],
+  ['社交娱乐', ['在线 K 歌房', '1v1 私密房']],
+  ['教育', ['灵动课堂', '在线美术教学', '在线音乐教学', 'PPT 转码服务']],
+  ['智能硬件', ['微呼叫', '平行操控']],
+  ['平台管理', ['控制台']],
+] as const;
+
 describe('ApiReferenceProductNav', () => {
   beforeEach(() => {
     window.history.replaceState({}, '', '/zh-CN/api-reference/api');
@@ -18,33 +46,32 @@ describe('ApiReferenceProductNav', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders grouped products in an independent always-visible scroll area', () => {
+  it('renders products under the current Chinese documentation categories', () => {
     render(<ApiReferenceProductNav />);
 
     const navigation = screen.getByRole('navigation', {
       name: 'API 参考产品',
     });
     const scrollArea = screen.getByTestId('api-reference-product-scroll');
+    const headings = within(navigation)
+      .getAllByRole('heading', { level: 2 })
+      .map((heading) => heading.textContent);
 
-    expect(
-      screen.queryByRole('combobox', { name: '平台/语言' }),
-    ).not.toBeInTheDocument();
-    expect(
-      within(navigation).getByRole('heading', {
-        name: '实时互动基础能力',
-      }),
-    ).toBeVisible();
-    expect(
-      within(navigation).getByRole('heading', {
-        name: '实时互动扩展能力',
-      }),
-    ).toBeVisible();
-    expect(
-      within(navigation).getByRole('heading', { name: '场景化解决方案' }),
-    ).toBeVisible();
-    expect(
-      within(navigation).getByRole('link', { name: '实时互动 RTC' }),
-    ).toBeVisible();
+    expect(headings).toEqual(expectedGroups.map(([label]) => label));
+
+    for (const [label, products] of expectedGroups) {
+      const section = within(navigation)
+        .getByRole('heading', { level: 2, name: label })
+        .closest('section');
+
+      expect(section).not.toBeNull();
+      expect(
+        within(section as HTMLElement)
+          .getAllByRole('link')
+          .map((link) => link.textContent),
+      ).toEqual(products);
+    }
+
     expect(
       within(navigation).queryByRole('link', { name: '全部产品' }),
     ).not.toBeInTheDocument();
@@ -71,7 +98,9 @@ describe('ApiReferenceProductNav', () => {
     expect(rtcLink).toHaveAttribute('href', '#api-reference-product-rtc');
     expect(document.querySelector('#api-reference-product-rtc')).toBeVisible();
     expect(screen.getByRole('heading', { name: '实时互动 RTC' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: '对话式 AI' })).toBeVisible();
+    expect(
+      screen.getAllByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toHaveLength(2);
     expect(screen.getByRole('heading', { name: '实时消息 RTM' })).toBeVisible();
     expect(
       new URLSearchParams(window.location.search).get('product'),
@@ -96,7 +125,9 @@ describe('ApiReferenceProductNav', () => {
 
     await waitFor(() => {
       expect(
-        within(navigation).queryByRole('link', { name: '对话式 AI' }),
+        within(navigation).queryByRole('heading', {
+          name: '对话式 AI 引擎',
+        }),
       ).not.toBeInTheDocument();
     });
     expect(
@@ -107,9 +138,19 @@ describe('ApiReferenceProductNav', () => {
     ).toBeVisible();
     expect(
       within(navigation).queryByRole('heading', {
-        name: '实时互动扩展能力',
+        name: '实时媒体处理',
       }),
     ).not.toBeInTheDocument();
+    expect(
+      within(navigation).getByRole('heading', {
+        name: '会议协作',
+      }),
+    ).toBeVisible();
+    expect(
+      within(navigation).getByRole('heading', {
+        name: '教育',
+      }),
+    ).toBeVisible();
   });
 
   it('tracks the visible product and scrolls its left navigation link into view', async () => {

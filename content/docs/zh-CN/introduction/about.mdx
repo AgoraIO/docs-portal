@@ -1,0 +1,167 @@
+---
+title: 声网能力总览
+description: 了解声网的产品能力结构，再找到对应的接入路径和 API。
+---
+
+## 声网是什么？
+
+声网是全球实时音视频云服务开创者，为人与人、人与智能体、智能体与智能体的实时互动提供基础能力与云服务。开发者可以通过声网 API 和 SDK，在应用内快速构建对话式 AI、音视频通话、互动直播、实时协作和智能硬件等实时交互场景。
+
+基于声网自建的底层实时传输网络 SD-RTN™，声网为实时音视频和数据流提供低延迟、高可靠的传输、路由、同步和会话管理能力，帮助开发者获得稳定、高性能的实时互动体验。
+
+## 先从场景开始
+
+如果你还不确定该看哪个产品，建议先按业务目标选择入口。通常，每个场景通常是一组实时通信、AI、媒体处理和管理能力的组合。
+
+| 你要构建的场景 | 通常需要的能力 | 建议入口 |
+| --- | --- | --- |
+| AI 语音助手 / 智能客服 | 对话式 AI + RTC + 事件回调 + 业务编排 | [对话式 AI](/zh-CN/ai) |
+| 音视频通话 / 在线会议 | RTC + RTM + 鉴权 + 录制 / 转写 | [实时互动 RTC](/zh-CN/realtime-media/rtc) |
+| 互动直播 / 语聊房 | RTC + RTM + 连麦 + 旁路推流 + 录制 + 内容审核 | [解决方案概览](/zh-CN/solutions/overview) |
+| 在线课堂 / 实时协作 | RTC + 互动白板 + 录制 + 转写 + 会控 | [解决方案概览](/zh-CN/solutions/overview) |
+| 智能硬件 / 远程看护 | RTSA + RTC + 设备侧接入 + 会话控制 | [解决方案概览](/zh-CN/solutions/overview) |
+| 会后处理 / 内容分发 | 云端录制 + 实时转录翻译 + 云端转码 + 旁路推流 | [实时互动概览](/zh-CN/realtime-media/overview) |
+| 已经知道接口名称 | SDK、RESTful API、回调和平台参数 | [API 参考](/zh-CN/api-reference/overview) |
+
+## 热门场景
+
+<section className="not-prose my-8">
+  <div className="grid gap-6 md:grid-cols-3">
+    <a
+      className="group flex min-h-40 flex-col gap-4 overflow-hidden rounded-lg border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35 md:flex-row md:items-start"
+      href="/zh-CN/solutions/one-to-one-live/rtm"
+    >
+      <div className="aspect-[39/20] shrink-0 overflow-hidden rounded-md bg-muted md:w-44">
+        <img
+          alt="1v1 私密房场景图"
+          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+          src="/img/rtc/scenario-video-calling.png"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h3 className="m-0 text-xl font-semibold leading-7 text-foreground">
+          {'1v1 私密房'}
+        </h3>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          {'支持陌生人社交和即时通讯'}
+        </p>
+      </div>
+    </a>
+
+    <a
+      className="group flex min-h-40 flex-col gap-4 overflow-hidden rounded-lg border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35 md:flex-row md:items-start"
+      href="/zh-CN/solutions/showroom"
+    >
+      <div className="aspect-[39/20] shrink-0 overflow-hidden rounded-md bg-muted md:w-44">
+        <img
+          alt="秀场直播场景图"
+          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+          src="/img/rtc/scenario-live-streaming.png"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h3 className="m-0 text-xl font-semibold leading-7 text-foreground">
+          {'秀场直播'}
+        </h3>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          {'支持单人直播、房主跨直播间 PK 连麦、观众与房主连麦、伪直播'}
+        </p>
+      </div>
+    </a>
+
+    <a
+      className="group flex min-h-40 flex-col gap-4 overflow-hidden rounded-lg border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35 md:flex-row md:items-start"
+      href="/zh-CN/solutions/chatroom/sdk"
+    >
+      <div className="aspect-[39/20] shrink-0 overflow-hidden rounded-md bg-muted md:w-44">
+        <img
+          alt="声动语聊场景图"
+          className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          loading="lazy"
+          src="/img/rtc/scenario-voice-calling.png"
+        />
+      </div>
+      <div className="min-w-0 flex-1">
+        <h3 className="m-0 text-xl font-semibold leading-7 text-foreground">
+          {'声动语聊'}
+        </h3>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          {'搭载声网最新音频技术和最佳音效实践，提供更好的在线语音聊天室体验'}
+        </p>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+
+## 场景如何组合能力
+
+声网文档按场景组织入口，但底层能力可以复用。你可以先跑通最小链路，再按业务需要补充信令、录制、审核、转写、推流或观测能力。
+
+- `RTC + RTM`：先把通话、直播或会话同步跑通，再补在线状态、信令和会控。
+- `RTC + AI`：让语音智能体作为会话参与者进入实时房间，与用户进行语音或多模态交互。
+- `RTC + 录制 / 转写 / 转码`：把直播、课堂或会议扩展成可回放、可搜索、可分发的流程。
+- `RTSA + 设备`：把摄像头、麦克风、扬声器和设备控制接入实时链路。
+- `场景化方案 + API 参考`：先按业务目标确定产品组合，再回到接口层细化实现。
+
+## 产品文档
+
+当你已经知道场景需要哪些能力，可以再按产品家族查找具体文档：
+
+| 能力 | 代表产品 | 适合解决什么 |
+| --- | --- | --- |
+| 对话式 AI | 对话式 AI 引擎、对话式 AI 开发套件 | 让语音智能体进入实时会话，做助手、客服、陪练或设备对话。 |
+| 实时互动基础能力 | RTC、RTM、RTSA、IM | 做通话、直播、消息同步、状态传递，以及设备侧实时接入。 |
+| 会话后处理 | 云端录制、本地服务端录制、实时转录翻译、云端转码、旁路推流、输入在线媒体流、RTMP 网关 | 录制、字幕、转写、翻译、分发和内容转换。 |
+| 协作与治理 | 互动白板、内容审核、SDK 拓展插件、RTC 服务端 SDK | 在会话里增加协作、控制、审核和自定义处理能力。 |
+| 监测与分析 | 水晶球 | 监控、回溯和分析质量、用量和异常。 |
+| 管理与工具 | 控制台、CLI、MCP、Skills、API 参考 | 管项目、找接口、做接入和自动化。 |
+
+## 核心文档入口
+
+<SolutionCardGrid size="small">
+  <SolutionCard
+    title="对话式 AI"
+    href="/zh-CN/ai"
+    icon="ai"
+    tone="purple"
+    size="small"
+    description="构建语音智能体、智能客服、AI 陪练或设备对话。"
+  />
+  <SolutionCard
+    title="实时互动"
+    href="/zh-CN/realtime-media/overview"
+    icon="video-calling"
+    tone="blue"
+    size="small"
+    description="接入 RTC、RTM、RTSA、录制、转写、转码和推流等能力。"
+  />
+  <SolutionCard
+    title="解决方案"
+    href="/zh-CN/solutions/overview"
+    icon="live-streaming"
+    tone="green"
+    size="small"
+    description="按直播、会议、教育、语聊、硬件等业务场景查找方案。"
+  />
+  <SolutionCard
+    title="API 参考"
+    href="/zh-CN/api-reference/overview"
+    icon="tools"
+    tone="sand"
+    size="small"
+    description="查找 SDK、RESTful API、事件回调和平台参数。"
+  />
+</SolutionCardGrid>
+
+## 下一步
+
+如果你已经确定业务场景，下一步通常是选择一个最小可运行路径：
+
+- 构建 AI 语音助手或智能客服，进入[对话式 AI](/zh-CN/ai)。
+- 构建通话、直播、消息同步或设备接入，进入[实时互动概览](/zh-CN/realtime-media/overview)。
+- 按会议、教育、直播、语聊或智能硬件等业务目标选型，进入[解决方案概览](/zh-CN/solutions/overview)。
+- 已经确定 SDK 或接口，进入 [API 参考](/zh-CN/api-reference/overview)。

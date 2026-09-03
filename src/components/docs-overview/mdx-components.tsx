@@ -835,20 +835,28 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   return <Code2Icon className="size-4" />;
 }
 
+export type SolutionCardSize = 'compact' | 'large' | 'small';
+type SolutionCardTitlePlacement = 'below-icon' | 'beside-icon';
+
 function SolutionCardGrid({
   children,
   size = 'large',
 }: {
   children: ReactNode;
-  size?: 'large' | 'small';
+  size?: SolutionCardSize;
 }) {
   return (
     <section
       className={cn(
-        'not-prose my-8 grid w-[var(--content-max)] max-w-full gap-4',
-        size === 'small'
-          ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
-          : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+        'not-prose grid w-[var(--content-max)] max-w-full',
+        size === 'compact'
+          ? 'my-6 grid-cols-1 gap-3 md:grid-cols-3'
+          : cn(
+              'my-8 gap-4',
+              size === 'small'
+                ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+                : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+            ),
       )}
     >
       {children}
@@ -931,6 +939,7 @@ function SolutionCard({
   showDescription = true,
   tags = [],
   title,
+  titlePlacement = 'below-icon',
   tone = 'blue',
 }: {
   actions?: RecipeCatalogItemLink[];
@@ -939,18 +948,46 @@ function SolutionCard({
   icon?: SolutionCardIconKind;
   imageAlt?: string;
   imageSrc?: string;
-  size?: 'large' | 'small';
+  size?: SolutionCardSize;
   showDescription?: boolean;
   tags?: string[];
   title: string;
+  titlePlacement?: SolutionCardTitlePlacement;
   tone?: SolutionCardTone;
 }) {
+  const isCompact = size === 'compact';
+  const hasBesideIconTitle =
+    titlePlacement === 'beside-icon' && !imageSrc && !isCompact;
   const cardClasses = cn(
-    'group relative flex min-h-40 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    'group relative rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+    isCompact
+      ? 'flex min-h-14 flex-row items-center gap-3 p-3'
+      : hasBesideIconTitle
+        ? 'flex min-h-36 flex-col p-5'
+        : 'flex min-h-40 flex-col p-5',
     size === 'small' && 'min-h-32 p-4',
   );
 
-  const content = (
+  const content = isCompact ? (
+    <>
+      {icon ? (
+        <span
+          className={cn(
+            'flex size-8 shrink-0 items-center justify-center rounded-lg',
+            getSolutionToneClasses(tone),
+          )}
+        >
+          <SolutionCardIcon kind={icon} />
+        </span>
+      ) : null}
+      <h3 className="m-0 min-w-0 flex-1 text-sm font-semibold text-foreground">
+        {title}
+      </h3>
+      {href ? (
+        <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+      ) : null}
+    </>
+  ) : (
     <>
       {imageSrc ? (
         <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
@@ -968,11 +1005,17 @@ function SolutionCard({
         </span>
       ) : null}
       {imageSrc ? null : (
-        <div className="flex items-start justify-between gap-3">
+        <div
+          className={cn(
+            'flex justify-between gap-3',
+            hasBesideIconTitle ? 'items-center' : 'items-start',
+          )}
+        >
           {icon ? (
             <span
               className={cn(
                 'flex size-10 items-center justify-center rounded-lg',
+                hasBesideIconTitle && 'shrink-0',
                 getSolutionToneClasses(tone),
                 size === 'small' && 'size-9',
               )}
@@ -980,17 +1023,43 @@ function SolutionCard({
               <SolutionCardIcon kind={icon} />
             </span>
           ) : (
-            <span />
+            <span className={hasBesideIconTitle ? 'shrink-0' : undefined} />
           )}
+          {hasBesideIconTitle ? (
+            <h3 className="m-0 min-w-0 flex-1 text-base font-semibold text-foreground">
+              {title}
+            </h3>
+          ) : null}
           {href ? (
-            <ArrowRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+            <ArrowRightIcon
+              className={cn(
+                'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
+                hasBesideIconTitle && 'shrink-0',
+              )}
+            />
           ) : null}
         </div>
       )}
-      <div className={cn('mt-4 flex-1', imageSrc && 'mt-0')}>
-        <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
+      <div
+        className={cn(
+          hasBesideIconTitle
+            ? 'mt-3 flex flex-1 flex-col justify-center'
+            : 'mt-4 flex-1',
+          imageSrc && 'mt-0',
+        )}
+      >
+        {hasBesideIconTitle ? null : (
+          <h3 className="m-0 text-base font-semibold text-foreground">
+            {title}
+          </h3>
+        )}
         {showDescription && description ? (
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          <p
+            className={cn(
+              hasBesideIconTitle ? 'mt-0' : 'mt-2',
+              'text-sm leading-6 text-muted-foreground',
+            )}
+          >
             {description}
           </p>
         ) : null}

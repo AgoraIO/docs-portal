@@ -6,7 +6,7 @@ description: "查看灵动会议的调用灵动会议 RESTful API，了解关键
 
 本文介绍灵动会议 RESTful API 的构成，并引导你如何正确地调用 API。
 
-在调用 RESTful API 之前，确保已经[开通灵动会议服务](/zh-CN/solutions/meeting/build/setup-and-access/enable-service)并获取 App ID 和临时 Token。
+在调用 RESTful API 之前，确保已经[开通灵动会议服务](/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service)并获取 App ID 和临时 Token。
 
 ## 配置 URL
 
@@ -19,7 +19,7 @@ https://api.sd-rtn.com/{region}/conference/apps/{appId}/v1/rooms/{roomUuid}
 其中：
 
 - `https`：通信协议。声网使用 HTTPS 协议。
-- `api.sd-rtn.com`：声网服务端域名。详见[保障 REST 服务高可用](/zh-CN/solutions/meeting/build/manage-classroom/high-availability)。
+- `api.sd-rtn.com`：声网服务端域名。详见[保障 REST 服务高可用](/zh-CN/realtime-media/meeting/build/manage-classroom/high-availability)。
 - `{region}/conference/apps/{appId}/v1/rooms/{roomUuid}`：资源路径。
     - `{region}`：请求的目标区域，目前仅支持 `cn`，代表中国大陆。
     - `{appId}`：声网为每个开发者提供的 App ID，是项目的唯一标识。
@@ -58,7 +58,7 @@ curl -X POST 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/roo
 
 - `Content-Type`：`application/json`。代表指定请求 Body 的类型为 JSON，以 `UTF-8` 字符编码进行编码。
 
-- `Authorization`：用于 HTTP Token 鉴权的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 鉴权](/zh-CN/solutions/meeting/build/customize-and-extend/http-token-auth)。
+- `Authorization`：用于 HTTP Token 鉴权的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 鉴权](/zh-CN/realtime-media/meeting/build/customize-and-extend/http-token-auth)。
 
 ### 请求 Body（可选）
 
@@ -73,7 +73,7 @@ curl -X POST 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/roo
 响应的 HTTP 状态码分 200 和非 200 两种情况：
 
 - 如果 HTTP 状态码为 `200`，表示请求成功。
-- 如果 HTTP 状态码不为 `200`，参考[响应状态码](/zh-CN/solutions/meeting/reference/response-code)排查问题。
+- 如果 HTTP 状态码不为 `200`，参考[响应状态码](/zh-CN/realtime-media/meeting/reference/response-code)排查问题。
 
 ### 响应 Header（可选）
 
@@ -95,4 +95,4 @@ curl -X POST 'https://api.sd-rtn.com/{region}/conference/apps/{yourAppId}/v1/roo
 
 ## 错误处理
 
-当你遇到问题时，可以使用开发者工具查看请求和响应，结合[响应状态码](/zh-CN/solutions/meeting/reference/response-code)进行排查。如未能解决问题，可[联系技术支持](https://ticket.shengwang.cn/)。
+当你遇到问题时，可以使用开发者工具查看请求和响应，结合[响应状态码](/zh-CN/realtime-media/meeting/reference/response-code)进行排查。如未能解决问题，可[联系技术支持](https://ticket.shengwang.cn/)。
