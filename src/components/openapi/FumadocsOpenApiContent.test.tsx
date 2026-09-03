@@ -1914,7 +1914,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(filter).toBeVisible();
   });
 
-  it('keeps optional join properties collapsed and finds complete schema paths', async () => {
+  it('expands required join properties, keeps optional properties collapsed, and finds complete schema paths', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -1967,18 +1967,16 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: 'Request Body' });
-    const schemaTree = document.querySelector(
-      '.openapi-schema-tree',
-    ) as HTMLElement;
-    const propertiesRow = within(schemaTree)
-      .getByText('properties', { exact: true })
-      .closest('[data-openapi-schema-row]') as HTMLElement;
+    const propertiesRow = document.getElementById('request-body-properties');
+    expect(propertiesRow).toBeInTheDocument();
 
     expect(
-      within(propertiesRow).getByRole('button', {
-        name: 'Expand properties properties',
+      within(propertiesRow as HTMLElement).getByRole('button', {
+        name: 'Collapse properties properties',
       }),
-    ).toHaveAttribute('aria-expanded', 'false');
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('channel', { exact: true })).toBeVisible();
+    expect(screen.getByText('remote_rtc_uids', { exact: true })).toBeVisible();
 
     expect(
       screen.getByRole('button', {
@@ -1986,17 +1984,6 @@ describe('FumadocsOpenApiContent', () => {
       }),
     ).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('child', { exact: true })).not.toBeVisible();
-
-    fireEvent.click(
-      within(propertiesRow).getByRole('button', {
-        name: 'Expand properties properties',
-      }),
-    );
-    expect(
-      within(propertiesRow).getByRole('button', {
-        name: 'Collapse properties properties',
-      }),
-    ).toHaveAttribute('aria-expanded', 'true');
 
     const filter = screen.getByPlaceholderText('Filter Properties');
     fireEvent.change(filter, { target: { value: 'channel' } });
