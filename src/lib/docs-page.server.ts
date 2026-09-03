@@ -2083,7 +2083,7 @@ function sidebarNodeContainsPath(
   );
 }
 
-async function getApiReferenceSidebarNodes({
+export async function getApiReferenceSidebarNodes({
   activePath,
   locale,
   pageTree,

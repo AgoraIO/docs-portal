@@ -12,6 +12,7 @@ vi.mock('./docs-last-updated.server', () => ({
 
 import {
   findApiReferenceSidebarRoot,
+  getApiReferenceSidebarNodes,
   loadDocsPagePayload,
   loadDocsSearchIndex,
   loadDocsTabIndex,
@@ -5002,5 +5003,80 @@ describe('normalizeZhCnEmbeddedApiSidebar', () => {
 
     expect(result?.node.$id).toBe('meeting-restful');
     expect(result?.meta.title).toBe('灵动会议 RESTful');
+  });
+
+  it('builds the Meeting endpoint sidebar from the metadata-driven API root', async () => {
+    const activePath = '/zh-CN/api-reference/meeting/restful/api/create-room';
+    const endpoint = {
+      name: '创建房间',
+      type: 'page' as const,
+      url: activePath,
+    };
+    const apiRoot = {
+      $id: 'api-reference-root',
+      children: [
+        {
+          $id: 'meeting-root',
+          children: [
+            {
+              $id: 'meeting-restful',
+              children: [
+                {
+                  $id: 'meeting-api',
+                  children: [endpoint],
+                  name: 'API',
+                  type: 'folder' as const,
+                },
+              ],
+              name: '灵动会议 RESTful',
+              type: 'folder' as const,
+            },
+          ],
+          index: {
+            name: '会议',
+            type: 'page' as const,
+            url: '/zh-CN/api-reference/meeting',
+          },
+          name: '会议',
+          type: 'folder' as const,
+        },
+      ],
+      index: {
+        name: 'API 参考',
+        type: 'page' as const,
+        url: '/zh-CN/api-reference',
+      },
+      name: 'API 参考',
+      root: true,
+      type: 'folder' as const,
+    };
+
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'meeting-restful'
+        ? {
+            data: {
+              pages: ['api/create-room'],
+              sidebarLabels: { [activePath]: '创建房间' },
+              title: '灵动会议 RESTful',
+            },
+          }
+        : undefined,
+    );
+    mockedGetPages.mockReturnValue([
+      {
+        data: { title: '创建房间' },
+        path: 'zh-CN/api-reference/meeting/restful/api/create-room',
+        url: activePath,
+      },
+    ]);
+
+    const result = await getApiReferenceSidebarNodes({
+      activePath,
+      locale: 'zh-CN',
+      pageTree: { children: [apiRoot] },
+      source,
+    });
+
+    expect(flattenSidebarPageUrls(result)).toContain(activePath);
   });
 });
