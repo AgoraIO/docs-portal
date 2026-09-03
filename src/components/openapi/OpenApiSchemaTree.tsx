@@ -15,9 +15,17 @@ import {
 } from './OpenApiSchemaFieldRow';
 
 export function stableDomId(rootId: string, nodeId: string) {
-  const value = nodeId === rootId ? rootId : `${rootId}-${nodeId}`;
-  const encoded = encodeStableDomIdValue(value);
-  return /^[A-Za-z_]/.test(encoded) ? encoded : `openapi-${encoded}`;
+  const encodedRoot = encodeStableDomIdValue(rootId);
+  if (
+    nodeId === rootId &&
+    /^[A-Za-z_]/.test(encodedRoot) &&
+    !encodedRoot.startsWith('openapi-')
+  ) {
+    return encodedRoot;
+  }
+
+  const encodedNode = encodeStableDomIdValue(nodeId);
+  return `openapi-${encodedRoot.length}-${encodedRoot}-${encodedNode.length}-${encodedNode}`;
 }
 
 function encodeStableDomIdValue(value: string) {
@@ -37,11 +45,60 @@ function encodeStableDomIdValue(value: string) {
   return `${escaped}-x${codePoints}-`;
 }
 
+export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
+  return JSON.stringify(nodes.map(getOpenApiSchemaNodeIdentity));
+}
+
+function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
+  return [
+    node.id,
+    node.path,
+    node.$type,
+    node.name,
+    node.depth,
+    node.required,
+    node.variant ?? null,
+    node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
+    getOpenApiSchemaIdentity(node.schema),
+    node.children.map(getOpenApiSchemaNodeIdentity),
+  ];
+}
+
+function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
+  const base = [
+    schema.type,
+    schema.typeName,
+    schema.aliasName,
+    schema.deprecated ?? false,
+    schema.allowedValues ?? null,
+  ];
+
+  if (schema.type === 'object') {
+    return [
+      ...base,
+      schema.props.map((property) => [
+        property.name,
+        property.$type,
+        property.required,
+      ]),
+    ];
+  }
+
+  if (schema.type === 'array') return [...base, schema.item.$type];
+
+  if (schema.type === 'or' || schema.type === 'and') {
+    return [...base, schema.items.map((item) => [item.name, item.$type])];
+  }
+
+  return base;
+}
+
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
   collapseAll: string;
   expandAll: string;
   filter: string;
-  matchCount: string;
+  match: string;
+  matches: string;
   noMatches: string;
 };
 
@@ -87,18 +144,24 @@ export function OpenApiSchemaTree({
   const [searchCollapsedIds, setSearchCollapsedIds] = useState<Set<string>>(
     () => new Set(),
   );
+  const latestNodesRef = useRef(nodes);
   const preSearchExpandedIds = useRef<Set<string> | null>(null);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
 
-  // rootId is part of the tree identity even though the reset values only use nodes.
-  // biome-ignore lint/correctness/useExhaustiveDependencies: rootId changes must reset tree interaction state.
+  latestNodesRef.current = nodes;
+  const schemaIdentity = useMemo(
+    () => getOpenApiSchemaTreeIdentity(nodes),
+    [nodes],
+  );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: schema identity and root ID intentionally trigger a full interaction reset.
   useEffect(() => {
     if (copyTimer.current !== undefined) {
       window.clearTimeout(copyTimer.current);
       copyTimer.current = undefined;
     }
-    setExpandedIds(getInitialOpenApiSchemaExpandedIds(nodes));
+    setExpandedIds(getInitialOpenApiSchemaExpandedIds(latestNodesRef.current));
     setQuery('');
     setCopiedId(undefined);
     setHighlightedId(undefined);
@@ -107,7 +170,7 @@ export function OpenApiSchemaTree({
     setSearchCollapsedIds(new Set());
     preSearchExpandedIds.current = null;
     lastRevealTarget.current = undefined;
-  }, [nodes, rootId]);
+  }, [rootId, schemaIdentity]);
 
   useEffect(
     () => () => {
@@ -469,7 +532,7 @@ export function OpenApiSchemaTree({
             className="whitespace-nowrap text-sm text-muted-foreground"
             role="status"
           >
-            {`${filterResult.matchCount} ${labels.matchCount}`}
+            {`${filterResult.matchCount} ${filterResult.matchCount === 1 ? labels.match : labels.matches}`}
           </span>
         ) : null}
         <div className="flex gap-2">

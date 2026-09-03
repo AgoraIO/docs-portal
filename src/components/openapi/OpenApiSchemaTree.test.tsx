@@ -10,7 +10,7 @@ import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
-import { OpenApiSchemaTree } from './OpenApiSchemaTree';
+import { OpenApiSchemaTree, stableDomId } from './OpenApiSchemaTree';
 
 const labels = {
   allowedValues: 'Allowed values',
@@ -21,7 +21,8 @@ const labels = {
   expand: 'Expand',
   expandAll: 'Expand all',
   filter: 'Filter properties',
-  matchCount: 'matches',
+  match: 'match',
+  matches: 'matches',
   noMatches: 'No properties matching',
   optional: 'Optional',
   properties: 'properties',
@@ -208,19 +209,19 @@ describe('OpenApiSchemaTree', () => {
     expect(screen.getByText('remote_rtc_uids')).toBeVisible();
     expect(screen.getByText('config')).toBeVisible();
     expect(screen.getByText('channel')).not.toBeVisible();
-    const matchCount = screen.getByText('1 matches');
+    const matchCount = screen.getByText('1 match');
     expect(matchCount).toHaveAttribute('aria-live', 'polite');
     expect(matchCount).not.toHaveClass('sr-only');
     expect(matchCount.tagName).toBe('SPAN');
 
     fireEvent.change(search, { target: { value: 'channel' } });
     expect(screen.getByText('channel')).toBeVisible();
-    expect(screen.getByText('1 matches')).toBeVisible();
+    expect(screen.getByText('1 match')).toBeVisible();
 
     fireEvent.change(search, { target: { value: 'config.remote_rtc_uids' } });
     expect(screen.getByText('remote_rtc_uids')).toBeVisible();
     expect(screen.getByText('config')).toBeVisible();
-    expect(screen.getByText('1 matches')).toBeVisible();
+    expect(screen.getByText('1 match')).toBeVisible();
   });
 
   it('lets row toggles override filtered expansion while searching', () => {
@@ -468,11 +469,11 @@ describe('OpenApiSchemaTree', () => {
 
     expect(firstTarget).toHaveAttribute(
       'id',
-      `schema-root-one-${advancedChild.id}`,
+      stableDomId('schema-root-one', advancedChild.id),
     );
     expect(secondTarget).toHaveAttribute(
       'id',
-      `schema-root-two-${advancedChild.id}`,
+      stableDomId('schema-root-two', advancedChild.id),
     );
     expect(new Set([firstTarget?.id, secondTarget?.id]).size).toBe(2);
 
@@ -699,7 +700,10 @@ describe('OpenApiSchemaTree', () => {
 
     expect(tree).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
     expect(row).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
-    expect(row).toHaveAttribute('id', expect.stringContaining('-variant-'));
+    expect(row).toHaveAttribute(
+      'id',
+      stableDomId(specialRootId, specialNode.id),
+    );
     expect(row.closest('[data-openapi-schema-node-id]')).toHaveAttribute(
       'data-openapi-schema-node-id',
       specialNode.id,
@@ -779,4 +783,83 @@ describe('OpenApiSchemaTree', () => {
       'schema-root-new',
     );
   });
+
+  it('preserves interaction state when equivalent nodes are recreated', async () => {
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    const onCopyFieldLink = vi.fn(() => Promise.resolve(true));
+    const revealTarget = {
+      fieldName: 'advancedChild',
+      parentPath: [rootPath, advancedPath],
+    };
+    const { rerender } = renderTree({ onCopyFieldLink, revealTarget });
+
+    await waitFor(() => {
+      expect(getRow(advancedChild)).toHaveAttribute(
+        'data-openapi-schema-highlighted',
+        '',
+      );
+    });
+
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    fireEvent.click(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copy link to advanced',
+      }),
+    );
+
+    await waitFor(() => {
+      expect(
+        within(getRow(advanced)).getByRole('button', {
+          name: 'Copied link to advanced',
+        }),
+      ).toBeVisible();
+    });
+
+    rerender(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={recreateNodes(nodes)}
+        onCopyFieldLink={onCopyFieldLink}
+        renderRemainingInfoTags={() => []}
+        revealTarget={revealTarget}
+        rootId="schema-root"
+      />,
+    );
+
+    expect(search).toHaveValue('advancedChild');
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copied link to advanced',
+      }),
+    ).toBeVisible();
+    expect(getRow(advancedChild)).toHaveAttribute(
+      'data-openapi-schema-highlighted',
+      '',
+    );
+    scrollIntoView.mockRestore();
+  });
 });
+
+function recreateNodes(
+  source: OpenApiSchemaViewNode[],
+): OpenApiSchemaViewNode[] {
+  return source.map((node) => ({
+    ...node,
+    children: recreateNodes(node.children),
+    parentPath: node.parentPath.map((item) => ({
+      ...item,
+      tabValues: item.tabValues ? [...item.tabValues] : undefined,
+    })),
+    schema: {
+      ...node.schema,
+      description: <span>{node.name} description rerender</span>,
+    },
+  }));
+}

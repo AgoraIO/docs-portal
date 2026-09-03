@@ -113,6 +113,15 @@ describe('OpenApiSchema', () => {
     expect(getRenderedSchemaText('advanced')).toBeVisible();
   });
 
+  it('uses the singular English match label for one result', () => {
+    renderSchema();
+
+    const filter = screen.getByPlaceholderText('Filter Properties');
+    fireEvent.change(filter, { target: { value: 'name' } });
+
+    expect(screen.getByRole('status')).toHaveTextContent('1 match');
+  });
+
   it('renders raw enum metadata as allowed value code tokens', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>
@@ -896,10 +905,18 @@ describe('OpenApiSchema', () => {
   it('encodes DOM ids without collisions between encoded and literal names', () => {
     const encodedQuestion = stableDomId('schema-root', 'a?b');
     const literalDash = stableDomId('schema-root', 'a-3f-b');
+    const firstTuple = stableDomId('a', 'b-c');
+    const secondTuple = stableDomId('a-b', 'c');
+    const special = stableDomId('root/带空格', 'node|\0?');
+    const rootTuple = stableDomId('openapi-1-a-1-b', 'openapi-1-a-1-b');
+    const nonRootTuple = stableDomId('a', 'b');
 
     expect(encodedQuestion).not.toBe(literalDash);
+    expect(firstTuple).not.toBe(secondTuple);
+    expect(rootTuple).not.toBe(nonRootTuple);
     expect(encodedQuestion).not.toMatch(/[\0|]/);
     expect(literalDash).not.toMatch(/[\0|]/);
+    expect(special).toMatch(/^[A-Za-z_][A-Za-z0-9_.%()-]*$/);
   });
 
   it('renders array object parameter fields inline for native browser find', () => {

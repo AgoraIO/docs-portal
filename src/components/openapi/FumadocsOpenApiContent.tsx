@@ -137,6 +137,7 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Items(schema UI)': '元素',
   'Length(schema UI)': '长度',
   'Match(schema UI)': '匹配',
+  'match(schema UI)': '个匹配项',
   'Multiple Of(schema UI)': '倍数',
   'No property matching(schema UI)': '没有匹配的属性',
   'Path Parameters': '路径参数',
