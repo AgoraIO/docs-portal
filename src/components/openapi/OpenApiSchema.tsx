@@ -31,6 +31,7 @@ import {
   type OpenApiSchemaRevealTarget,
   OpenApiSchemaTree,
   type OpenApiSchemaTreeLabels,
+  stableDomId,
 } from './OpenApiSchemaTree';
 
 type OpenApiSchemaClient = Omit<SchemaUIProps, 'generated'>;
@@ -77,8 +78,6 @@ export function OpenApiSchema({
     [legacyAnchorPrefix, rootId],
   );
   const [navigationKey, setNavigationKey] = useState(0);
-  const [bodyCopyResetKey, setBodyCopyResetKey] = useState(0);
-  const bodyCopyTimer = useRef<number | undefined>(undefined);
   const normalizedRoot = useMemo(() => normalizeOpenApiSchema(root), [root]);
   const generated = useMemo(() => {
     const generated = generateSchemaUI({
@@ -141,27 +140,6 @@ export function OpenApiSchema({
   const [revealTarget, setRevealTarget] = useState<
     OpenApiSchemaRevealTarget | undefined
   >();
-  useEffect(
-    () => () => {
-      if (bodyCopyTimer.current !== undefined) {
-        window.clearTimeout(bodyCopyTimer.current);
-      }
-    },
-    [],
-  );
-  const copyBodyFieldLink = useCallback(
-    (node: OpenApiSchemaViewNode) => {
-      copyOpenApiSchemaFieldLink(rootId, node);
-      if (bodyCopyTimer.current !== undefined) {
-        window.clearTimeout(bodyCopyTimer.current);
-      }
-      bodyCopyTimer.current = window.setTimeout(() => {
-        setBodyCopyResetKey((current) => current + 1);
-        bodyCopyTimer.current = undefined;
-      }, 1000);
-    },
-    [rootId],
-  );
   const revealTargetInLocation = useCallback(
     (target: OpenApiSchemaFindTarget) => {
       const url = new URL(window.location.href);
@@ -233,10 +211,10 @@ export function OpenApiSchema({
       {rootIsBodyTree ? (
         <OpenApiSchemaTree
           client={client}
-          key={`${navigationKey}-${bodyCopyResetKey}`}
+          key={navigationKey}
           labels={labels}
           nodes={schemaView}
-          onCopyFieldLink={copyBodyFieldLink}
+          onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
           renderRemainingInfoTags={renderRemainingInfoTags}
           revealTarget={revealTarget}
           rootId={rootId}
@@ -461,15 +439,6 @@ function areOpenApiSchemaPathsEqual(
   );
 }
 
-function stableDomId(rootId: string, nodeId: string) {
-  const value = nodeId === rootId ? rootId : `${rootId}-${nodeId}`;
-  const encoded = value.replace(
-    /[^A-Za-z0-9_.-]/g,
-    (character) => `-${character.codePointAt(0)?.toString(16)}-`,
-  );
-  return /^[A-Za-z_]/.test(encoded) ? encoded : `openapi-${encoded}`;
-}
-
 function normalizeOpenApiSchemaRevealPath(
   path: OpenApiSchemaPathItem[],
   navigation?: OpenApiLegacySchemaNavigation,
@@ -656,9 +625,20 @@ function getRawOpenApiSchemaProperty(value: unknown, name: string): unknown {
     const properties = isRecord(candidate.properties)
       ? candidate.properties
       : undefined;
-    if (properties?.[name] !== undefined) return properties[name];
+    const matches: unknown[] = [];
+    if (properties && Object.hasOwn(properties, name)) {
+      matches.push(properties[name]);
+    }
 
-    for (const key of ['allOf', 'oneOf', 'anyOf']) {
+    if (Array.isArray(candidate.allOf)) {
+      for (const item of candidate.allOf) {
+        const result = find(item);
+        if (result !== undefined) matches.push(result);
+      }
+    }
+    if (matches.length > 0) return mergeOpenApiSchemaPropertyMatches(matches);
+
+    for (const key of ['oneOf', 'anyOf']) {
       if (!Array.isArray(candidate[key])) continue;
       for (const item of candidate[key]) {
         const result = find(item);
@@ -670,16 +650,43 @@ function getRawOpenApiSchemaProperty(value: unknown, name: string): unknown {
   return find(value);
 }
 
+function mergeOpenApiSchemaPropertyMatches(matches: unknown[]) {
+  const schemas = matches.filter(isRecord);
+  const enumSchemas = schemas.filter(isOpenApiSchemaWithEnum);
+  if (schemas.length === 0 || enumSchemas.length === 0) return matches[0];
+
+  const allowedValues = enumSchemas
+    .slice(1)
+    .reduce(
+      (current, schema) =>
+        current.filter((value) => schema.enum.includes(value)),
+      [...enumSchemas[0].enum],
+    );
+  return { ...schemas[0], enum: allowedValues };
+}
+
+function isOpenApiSchemaWithEnum(
+  schema: Record<string, unknown>,
+): schema is Record<string, unknown> & { enum: unknown[] } {
+  return Array.isArray(schema.enum);
+}
+
 function removeOpenApiSchemaEnums(
   value: unknown,
-  seen = new WeakMap<object, unknown>(),
-  context: 'schema' | 'data' = 'schema',
+  seen: WeakMap<
+    object,
+    Partial<Record<OpenApiSchemaEnumContext, unknown>>
+  > = new WeakMap(),
+  context: OpenApiSchemaEnumContext = 'schema',
 ): unknown {
+  const existing = isRecordOrArray(value)
+    ? seen.get(value)?.[context]
+    : undefined;
+  if (existing !== undefined) return existing;
+
   if (Array.isArray(value)) {
-    const existing = seen.get(value);
-    if (existing) return existing;
     const output: unknown[] = [];
-    seen.set(value, output);
+    setSeenOutput(value, output, seen, context);
     output.push(
       ...value.map((item) => removeOpenApiSchemaEnums(item, seen, context)),
     );
@@ -687,10 +694,8 @@ function removeOpenApiSchemaEnums(
   }
   if (!isRecord(value)) return value;
 
-  const existing = seen.get(value);
-  if (existing) return existing;
   const output: Record<string, unknown> = {};
-  seen.set(value, output);
+  setSeenOutput(value, output, seen, context);
   for (const [key, item] of Object.entries(value)) {
     if (context === 'schema' && key === 'enum') continue;
     if (context === 'schema' && isOpenApiSchemaMapKeyword(key)) {
@@ -708,17 +713,34 @@ function removeOpenApiSchemaEnums(
   return output;
 }
 
+type OpenApiSchemaEnumContext = 'data' | 'schema' | 'schema-map';
+
 function removeOpenApiSchemaPropertyMap(
   value: unknown,
-  seen: WeakMap<object, unknown>,
+  seen: WeakMap<object, Partial<Record<OpenApiSchemaEnumContext, unknown>>>,
 ) {
   if (!isRecord(value)) return removeOpenApiSchemaEnums(value, seen, 'data');
+  const existing = seen.get(value)?.['schema-map'];
+  if (existing !== undefined) return existing;
   const output: Record<string, unknown> = {};
-  seen.set(value, output);
+  setSeenOutput(value, output, seen, 'schema-map');
   for (const [key, item] of Object.entries(value)) {
     output[key] = removeOpenApiSchemaEnums(item, seen, 'schema');
   }
   return output;
+}
+
+function isRecordOrArray(value: unknown): value is object {
+  return typeof value === 'object' && value !== null;
+}
+
+function setSeenOutput(
+  value: object,
+  output: unknown,
+  seen: WeakMap<object, Partial<Record<OpenApiSchemaEnumContext, unknown>>>,
+  context: OpenApiSchemaEnumContext,
+) {
+  seen.set(value, { ...seen.get(value), [context]: output });
 }
 
 function isOpenApiSchemaKeywordWithSchemas(key: string) {

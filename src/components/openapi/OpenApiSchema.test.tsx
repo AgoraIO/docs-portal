@@ -176,6 +176,37 @@ describe('OpenApiSchema', () => {
     ).toBeVisible();
   });
 
+  it('preserves enum data in properties, examples, and default objects', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            default: { enum: 'default-data' },
+            examples: [{ enum: 'example-data' }],
+            properties: {
+              enum: {
+                enum: ['property-value'],
+                type: 'string',
+              },
+            },
+            type: 'object',
+          }}
+          showExample
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('enum')?.closest('div.border-t');
+    expect(
+      within(row as HTMLElement).getByText('property-value'),
+    ).toBeVisible();
+    expect(screen.getByText(/"enum": "default-data"/)).toBeVisible();
+    expect(screen.getByText(/"enum": "example-data"/)).toBeVisible();
+  });
+
   it('keeps allowed values with the visible union branch after filtering', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>
@@ -281,6 +312,39 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('inherited')).toBeVisible();
   });
 
+  it('intersects enum values for duplicate properties inherited through allOf', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            allOf: [
+              {
+                properties: {
+                  mode: { enum: ['a', 'b'], type: 'string' },
+                },
+                type: 'object',
+              },
+              {
+                properties: {
+                  mode: { enum: ['b', 'c'], type: 'string' },
+                },
+                type: 'object',
+              },
+            ],
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('mode')?.closest('div.border-t');
+    expect(within(row as HTMLElement).getByText('b')).toBeVisible();
+    expect(within(row as HTMLElement).queryByText('a')).not.toBeInTheDocument();
+    expect(within(row as HTMLElement).queryByText('c')).not.toBeInTheDocument();
+  });
+
   it('gives each field permalink control an accessible name', () => {
     renderSchema();
 
@@ -293,7 +357,7 @@ describe('OpenApiSchema', () => {
     ).toBeVisible();
   });
 
-  it('clears body tree copy feedback after a brief interval', async () => {
+  it('clears body tree copy feedback without resetting search or expansion state', async () => {
     vi.useFakeTimers();
     const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
     const originalClipboard = Object.getOwnPropertyDescriptor(
@@ -309,19 +373,36 @@ describe('OpenApiSchema', () => {
       renderSchema();
       fireEvent.click(
         within(
-          getRenderedSchemaText('name')?.closest('div.border-t') as HTMLElement,
-        ).getByRole('button', { name: 'Copy link to name' }),
+          getRenderedSchemaText('transport')?.closest(
+            'div.border-t',
+          ) as HTMLElement,
+        ).getByRole('button', { name: 'Expand transport properties' }),
+      );
+      const filter = screen.getByPlaceholderText('Filter Properties');
+      fireEvent.change(filter, { target: { value: 'codec' } });
+      expect(filter).toHaveValue('codec');
+      fireEvent.click(
+        within(
+          getRenderedSchemaText('transport')?.closest(
+            'div.border-t',
+          ) as HTMLElement,
+        ).getByRole('button', { name: 'Copy link to transport' }),
       );
       expect(
-        screen.getByRole('button', { name: 'Copied link to name' }),
+        screen.getByRole('button', { name: 'Copied link to transport' }),
       ).toBeVisible();
 
       await act(async () => {
         await vi.advanceTimersByTimeAsync(1000);
       });
       expect(
-        screen.getByRole('button', { name: 'Copy link to name' }),
+        screen.getByRole('button', { name: 'Copy link to transport' }),
       ).toBeVisible();
+      expect(filter).toHaveValue('codec');
+      expect(screen.getByText('codec')).toBeVisible();
+      expect(
+        screen.getByRole('button', { name: 'Collapse transport properties' }),
+      ).toHaveAttribute('aria-expanded', 'true');
     } finally {
       if (originalClipboard) {
         Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
@@ -584,34 +665,48 @@ describe('OpenApiSchema', () => {
   it('shows parameter copy feedback briefly and then clears it', async () => {
     vi.useFakeTimers();
     const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
     Object.defineProperty(window.navigator, 'clipboard', {
       configurable: true,
       value: { writeText: clipboardWriteText },
     });
 
-    render(
-      <AnchorSection segments={['parameters', 'query']}>
-        <OpenApiSchema
-          client={{ name: 'state' }}
-          renderCodeblock={({ code }) => <pre>{code}</pre>}
-          renderMarkdown={(markdown) => <p>{markdown}</p>}
-          root={{ type: 'string' }}
-        />
-      </AnchorSection>,
-    );
+    try {
+      render(
+        <AnchorSection segments={['parameters', 'query']}>
+          <OpenApiSchema
+            client={{ name: 'state' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{ type: 'string' }}
+          />
+        </AnchorSection>,
+      );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Copy link to state' }));
-    expect(clipboardWriteText).toHaveBeenCalled();
-    expect(
-      screen.getByRole('button', { name: 'Copied link to state' }),
-    ).toBeVisible();
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy link to state' }),
+      );
+      expect(clipboardWriteText).toHaveBeenCalled();
+      expect(
+        screen.getByRole('button', { name: 'Copied link to state' }),
+      ).toBeVisible();
 
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(1000);
-    });
-    expect(
-      screen.getByRole('button', { name: 'Copy link to state' }),
-    ).toBeVisible();
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+      expect(
+        screen.getByRole('button', { name: 'Copy link to state' }),
+      ).toBeVisible();
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
   });
 
   it('renders array object parameter fields inline for native browser find', () => {

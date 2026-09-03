@@ -14,6 +14,15 @@ import {
   type OpenApiSchemaFieldRowLabels,
 } from './OpenApiSchemaFieldRow';
 
+export function stableDomId(rootId: string, nodeId: string) {
+  const value = nodeId === rootId ? rootId : `${rootId}-${nodeId}`;
+  const encoded = value.replace(
+    /[^A-Za-z0-9_.-]/g,
+    (character) => `-${character.codePointAt(0)?.toString(16)}-`,
+  );
+  return /^[A-Za-z_]/.test(encoded) ? encoded : `openapi-${encoded}`;
+}
+
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
   collapseAll: string;
   expandAll: string;
@@ -55,6 +64,7 @@ export function OpenApiSchemaTree({
   );
   const [query, setQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string>();
+  const copyTimer = useRef<number | undefined>(undefined);
   const [highlightedId, setHighlightedId] = useState<string>();
   const [pendingFocusId, setPendingFocusId] = useState<string>();
   const [searchExpandedIds, setSearchExpandedIds] = useState<Set<string>>(
@@ -66,6 +76,14 @@ export function OpenApiSchemaTree({
   const preSearchExpandedIds = useRef<Set<string> | null>(null);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(
+    () => () => {
+      if (copyTimer.current !== undefined)
+        window.clearTimeout(copyTimer.current);
+    },
+    [],
+  );
 
   const filterResult = useMemo(
     () => filterOpenApiSchemaView(nodes, query),
@@ -325,12 +343,19 @@ export function OpenApiSchemaTree({
         >
           <OpenApiSchemaFieldRow
             copied={copiedId === node.id}
-            domId={`${rootId}-${node.id}`}
+            domId={stableDomId(rootId, node.id)}
             expanded={expanded}
             labels={labels}
             node={node}
             onCopy={() => {
               setCopiedId(node.id);
+              if (copyTimer.current !== undefined) {
+                window.clearTimeout(copyTimer.current);
+              }
+              copyTimer.current = window.setTimeout(() => {
+                setCopiedId(undefined);
+                copyTimer.current = undefined;
+              }, 1000);
               onCopyFieldLink(node);
             }}
             onExpandedChange={(nextExpanded) => {
@@ -385,7 +410,7 @@ export function OpenApiSchemaTree({
       className="openapi-schema-tree"
       data-openapi-schema-as={client.as}
       data-openapi-schema-client={client.name}
-      id={rootId}
+      id={stableDomId(rootId, rootId)}
       ref={treeRef}
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">

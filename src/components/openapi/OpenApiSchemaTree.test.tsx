@@ -683,4 +683,26 @@ describe('OpenApiSchemaTree', () => {
     expect(onCopyFieldLink).toHaveBeenCalledWith(config);
     expect(within(getRow(config)).getByText('Custom tag')).toBeVisible();
   });
+
+  it('uses HTML-safe namespaced ids for body trees and special union node ids', () => {
+    const specialRootId = 'body|union\0root';
+    const specialNode = makeNode({ name: 'mode' });
+    specialNode.id = 'variant\0branch|mode';
+
+    renderTree({
+      nodes: [specialNode],
+      rootId: specialRootId,
+    });
+
+    const tree = document.querySelector('.openapi-schema-tree') as HTMLElement;
+    const row = getRow(specialNode);
+
+    expect(tree).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
+    expect(row).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
+    expect(row).toHaveAttribute('id', expect.stringContaining('-variant-'));
+    expect(row.closest('[data-openapi-schema-node-id]')).toHaveAttribute(
+      'data-openapi-schema-node-id',
+      specialNode.id,
+    );
+  });
 });
