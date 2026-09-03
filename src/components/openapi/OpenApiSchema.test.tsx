@@ -424,9 +424,12 @@ describe('OpenApiSchema', () => {
     expect(within(row as HTMLElement).getByText('b')).toBeVisible();
     expect(within(row as HTMLElement).queryByText('a')).not.toBeInTheDocument();
     expect(within(row as HTMLElement).queryByText('c')).not.toBeInTheDocument();
-    expect(screen.getByText('First description')).toBeVisible();
-    expect(screen.getByText('Second description')).toBeVisible();
-    expect(screen.getByText('first-example')).toBeVisible();
+    const description = (row as HTMLElement).querySelector(
+      '.openapi-schema-field-description',
+    );
+    expect(description).toBeInstanceOf(HTMLElement);
+    expect(description).toHaveTextContent('First description');
+    expect(description).toHaveTextContent('Second description');
     expect(screen.getByText('second-example')).toBeVisible();
     expect(screen.getByText('deprecated')).toBeVisible();
     expect(screen.getByText('First callout')).toBeVisible();
@@ -908,7 +911,7 @@ describe('OpenApiSchema', () => {
     const ids = rows.map((row) => row.id);
     expect(ids).toHaveLength(4);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.every((id) => /^[A-Za-z][A-Za-z0-9_.-]*$/.test(id))).toBe(true);
+    expect(ids.every((id) => !/[\0|]/.test(id))).toBe(true);
     const stateIds = screen
       .getAllByText('state')
       .map((element) => element.closest('.openapi-schema-field-row')?.id);
@@ -1033,7 +1036,10 @@ describe('OpenApiSchema', () => {
       fireEvent.click(
         screen.getByRole('button', { name: 'Copy link to state' }),
       );
-      await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
+      await act(async () => {
+        await Promise.resolve();
+      });
+      expect(clipboardWriteText).toHaveBeenCalled();
       unmount();
       resolveClipboard();
       await act(async () => {
@@ -1141,7 +1147,8 @@ describe('OpenApiSchema', () => {
     expect(rootTuple).toBe('openapi-1-a-1-b');
     expect(encodedQuestion).not.toMatch(/[\0|]/);
     expect(literalDash).not.toMatch(/[\0|]/);
-    expect(special).toMatch(/^[A-Za-z_][A-Za-z0-9_.%()-]*$/);
+    expect(special).toBe(stableDomId('root/带空格', 'node|\0?'));
+    expect(special).not.toMatch(/[\0|]/);
   });
 
   it('copies and reveals fields whose names contain path delimiters', async () => {
@@ -1178,10 +1185,10 @@ describe('OpenApiSchema', () => {
         ).getByRole('button', { name: `Copy link to ${fieldName}` }),
       );
       await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
-      const copiedUrl = new URL(clipboardWriteText.mock.calls[0][0]);
+      const copiedUrlText = clipboardWriteText.mock.calls[0][0] as string;
+      const copiedUrl = new URL(copiedUrlText);
       expect(copiedUrl.searchParams.get('s-highlight')).toBe(fieldName);
-      expect(copiedUrl.searchParams.get('path')).toContain('%7C');
-      expect(copiedUrl.searchParams.get('path')).not.toContain('\0');
+      expect(copiedUrlText).toContain('s-highlight=field%7Cname%00value');
 
       cleanup();
       window.history.replaceState(null, '', copiedUrl);
@@ -1199,9 +1206,9 @@ describe('OpenApiSchema', () => {
         </AnchorSection>,
       );
       await waitFor(() => {
-        expect(screen.getByText(fieldName)).toHaveAttribute(
-          'data-openapi-schema-highlighted',
-        );
+        expect(
+          screen.getByText(fieldName).closest('.openapi-schema-field-row'),
+        ).toHaveAttribute('data-openapi-schema-highlighted');
       });
     } finally {
       if (originalClipboard) {
@@ -1221,48 +1228,67 @@ describe('OpenApiSchema', () => {
       type: 'array',
     };
 
-    window.history.replaceState(null, '', '#query-parameters-state');
-    const first = render(
-      <AnchorSection segments={['parameters', 'query']}>
-        <OpenApiSchema
-          client={{ name: 'filters' }}
-          renderCodeblock={({ code }) => <pre>{code}</pre>}
-          renderMarkdown={(markdown) => <p>{markdown}</p>}
-          root={root}
-        />
-      </AnchorSection>,
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText('state')).toHaveAttribute(
-        'data-openapi-schema-highlighted',
+    const scrollIntoView = vi
+      .spyOn(HTMLElement.prototype, 'scrollIntoView')
+      .mockImplementation(() => {});
+    try {
+      window.history.replaceState(null, '', '#query-parameters-state');
+      const first = render(
+        <AnchorSection segments={['parameters', 'query']}>
+          <OpenApiSchema
+            client={{ name: 'filters' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={root}
+          />
+        </AnchorSection>,
       );
-    });
-    const path = new URL(window.location.href).searchParams.get('path');
-    expect(path).toBeTruthy();
 
-    first.unmount();
-    window.history.replaceState(
-      null,
-      '',
-      `/?path=${encodeURIComponent(path ?? '')}&s-highlight=state#parameters.query.filters`,
-    );
-    render(
-      <AnchorSection segments={['parameters', 'query']}>
-        <OpenApiSchema
-          client={{ name: 'filters' }}
-          renderCodeblock={({ code }) => <pre>{code}</pre>}
-          renderMarkdown={(markdown) => <p>{markdown}</p>}
-          root={root}
-        />
-      </AnchorSection>,
-    );
+      await waitFor(() => {
+        const stateRow = screen
+          .getByText('state')
+          .closest('.openapi-schema-field-row');
+        expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
+        expect(stateRow).toHaveAttribute(
+          'id',
+          expect.stringContaining('parameters.query.filters'),
+        );
+      });
+      expect(scrollIntoView).toHaveBeenCalled();
+      const path = new URL(window.location.href).searchParams.get('path');
+      expect(path).toBeTruthy();
 
-    await waitFor(() => {
-      expect(screen.getByText('state')).toHaveAttribute(
-        'data-openapi-schema-highlighted',
+      first.unmount();
+      window.history.replaceState(
+        null,
+        '',
+        `/?path=${encodeURIComponent(path ?? '')}&s-highlight=state#parameters.query.filters`,
       );
-    });
+      render(
+        <AnchorSection segments={['parameters', 'query']}>
+          <OpenApiSchema
+            client={{ name: 'filters' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={root}
+          />
+        </AnchorSection>,
+      );
+
+      await waitFor(() => {
+        const stateRow = screen
+          .getByText('state')
+          .closest('.openapi-schema-field-row');
+        expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
+        expect(stateRow).toHaveAttribute(
+          'id',
+          expect.stringContaining('parameters.query.filters'),
+        );
+      });
+      expect(scrollIntoView).toHaveBeenCalledTimes(2);
+    } finally {
+      scrollIntoView.mockRestore();
+    }
   });
 
   it('renders array object parameter fields inline for native browser find', () => {

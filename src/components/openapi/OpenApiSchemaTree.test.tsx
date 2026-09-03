@@ -699,7 +699,7 @@ describe('OpenApiSchemaTree', () => {
     const tree = document.querySelector('.openapi-schema-tree') as HTMLElement;
     const row = getRow(specialNode);
 
-    expect(tree).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
+    expect(tree).toHaveAttribute('id', specialRootId);
     expect(row).toHaveAttribute('id', expect.not.stringMatching(/[\0|]/));
     expect(row).toHaveAttribute(
       'id',
