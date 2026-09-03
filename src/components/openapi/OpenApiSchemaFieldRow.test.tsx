@@ -52,7 +52,7 @@ describe('OpenApiSchemaFieldRow', () => {
         expanded={false}
         labels={labels}
         node={makeNode({
-          schema: { deprecated: true },
+          schema: { ...node.schema, deprecated: true },
         })}
         onCopy={() => {}}
         onExpandedChange={() => {}}

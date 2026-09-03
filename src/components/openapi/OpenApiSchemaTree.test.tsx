@@ -20,6 +20,7 @@ const labels = {
   collapseAll: 'Collapse all',
   copiedLink: 'Copied link to',
   copyLink: 'Copy link to',
+  deprecated: 'Deprecated',
   expand: 'Expand',
   expandAll: 'Expand all',
   filter: 'Filter properties',
