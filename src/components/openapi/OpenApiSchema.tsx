@@ -163,10 +163,11 @@ export function OpenApiSchema({
         parentPath: normalizeOpenApiSchemaRevealPath(
           target.parentPath,
           legacyNavigation,
+          generated,
         ),
       });
     },
-    [legacyNavigation, rootId],
+    [generated, legacyNavigation, rootId],
   );
 
   useEffect(() => {
@@ -187,6 +188,7 @@ export function OpenApiSchema({
             parentPath: normalizeOpenApiSchemaRevealPath(
               path.parentPath,
               legacyNavigation,
+              generated,
             ),
           });
         }
@@ -511,14 +513,20 @@ function areOpenApiSchemaPathsEqual(
 function normalizeOpenApiSchemaRevealPath(
   path: OpenApiSchemaPathItem[],
   navigation?: OpenApiLegacySchemaNavigation,
+  generated?: SchemaUIGeneratedData,
 ) {
-  if (
-    navigation?.rootDisplay === 'property-trigger' &&
-    path.length > 1 &&
-    path[0].$ref === path[1].$ref &&
-    path[0].name === path[1].name
-  ) {
-    return path.slice(1);
+  if (navigation?.rootDisplay === 'property-trigger' && generated) {
+    const [root, next] = path;
+    const rootSchema = root ? generated.refs[root.$ref] : undefined;
+    if (
+      root?.$ref === generated.$root &&
+      ((next?.$ref === root.$ref && next.name === root.name) ||
+        (rootSchema?.type === 'array' &&
+          next?.$ref === rootSchema.item.$type &&
+          next.name === `${root.name}[]`))
+    ) {
+      return path.slice(1);
+    }
   }
   return path;
 }

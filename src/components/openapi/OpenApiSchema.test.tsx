@@ -12,6 +12,10 @@ import {
 import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  buildOpenApiSchemaView,
+  flattenOpenApiSchemaView,
+} from '@/lib/openapi/schema-view';
+import {
   appendOpenApiSchemaAllowedValues,
   buildOpenApiSchemaFindTargets,
   decodeOpenApiSchemaPath,
@@ -1295,35 +1299,71 @@ describe('OpenApiSchema', () => {
       expect(scrollIntoView).toHaveBeenCalled();
       const path = new URL(window.location.href).searchParams.get('path');
       expect(path).toBeTruthy();
+      if (!path) throw new Error('Expected the legacy hash to create a path');
 
       first.unmount();
-      window.history.replaceState(
-        null,
-        '',
-        `/?path=${encodeURIComponent(path ?? '')}&s-highlight=${encodeURIComponent(fieldName)}#parameters.query.filters`,
-      );
-      render(
-        <AnchorSection segments={['parameters', 'query']}>
-          <OpenApiSchema
-            client={{ name: 'filters' }}
-            renderCodeblock={({ code }) => <pre>{code}</pre>}
-            renderMarkdown={(markdown) => <p>{markdown}</p>}
-            root={root}
-          />
-        </AnchorSection>,
-      );
-
-      await waitFor(() => {
-        const stateRow = screen
-          .getByText(fieldName)
-          .closest('.openapi-schema-field-row');
-        expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
-        expect(stateRow).toHaveAttribute(
-          'id',
-          expect.stringContaining('parameters.query.filters'),
-        );
+      const currentPath = JSON.parse(decodeURIComponent(path ?? '')) as Array<{
+        $ref: string;
+        name: string;
+      }>;
+      const generated = generateSchemaUI({
+        renderCodeblock: ({ code }) => <pre>{code}</pre>,
+        renderMarkdown: (markdown) => <p>{markdown}</p>,
+        root: root as never,
       });
-      expect(scrollIntoView).toHaveBeenCalledTimes(2);
+      const stateViewNode = flattenOpenApiSchemaView(
+        buildOpenApiSchemaView(generated, 'filters'),
+      ).find((node) => node.path === 'state|value\0x');
+      const stateTarget = buildOpenApiSchemaFindTargets(generated, 'filters', {
+        anchorPrefix: 'query-parameters',
+        rootDisplay: 'property-trigger',
+      }).find((target) => target.fieldPath === 'state|value\0x');
+      expect(stateTarget?.parentPath).toEqual(stateViewNode?.parentPath);
+      expect(currentPath).toEqual(stateViewNode?.parentPath);
+      const legacyPath = [
+        { $ref: generated.$root, name: 'filters' },
+        ...currentPath,
+      ];
+      const officialPaths = [
+        path,
+        encodeOpenApiSchemaPath(legacyPath),
+        legacyPath
+          .map((item) => encodeURIComponent(JSON.stringify(item)))
+          .join('|'),
+      ];
+
+      for (const officialPath of officialPaths) {
+        window.history.replaceState(
+          null,
+          '',
+          `/?path=${encodeURIComponent(officialPath)}&s-highlight=${encodeURIComponent(fieldName)}#parameters.query.filters`,
+        );
+        const next = render(
+          <AnchorSection segments={['parameters', 'query']}>
+            <OpenApiSchema
+              client={{ name: 'filters' }}
+              renderCodeblock={({ code }) => <pre>{code}</pre>}
+              renderMarkdown={(markdown) => <p>{markdown}</p>}
+              root={root}
+            />
+          </AnchorSection>,
+        );
+
+        await waitFor(() => {
+          const stateRow = screen
+            .getByText(fieldName)
+            .closest('.openapi-schema-field-row');
+          expect(stateRow).toHaveAttribute('data-openapi-schema-highlighted');
+          expect(stateRow).toHaveAttribute(
+            'id',
+            expect.stringContaining('parameters.query.filters'),
+          );
+        });
+        expect(scrollIntoView).toHaveBeenCalledTimes(
+          officialPaths.indexOf(officialPath) + 2,
+        );
+        next.unmount();
+      }
     } finally {
       scrollIntoView.mockRestore();
     }
