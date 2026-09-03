@@ -2290,7 +2290,12 @@ async function embedZhCnServiceApiSidebars(
           source,
         });
 
-        if (apiSidebar.length === 0) {
+        const apiSidebarUrls = collectSidebarPageUrls(apiSidebar);
+        const hasTargetApiPage = Array.from(apiSidebarUrls).some(
+          (url) => url === node.url || url.startsWith(`${node.url}/`),
+        );
+
+        if (apiSidebar.length === 0 || !hasTargetApiPage) {
           return node;
         }
 
