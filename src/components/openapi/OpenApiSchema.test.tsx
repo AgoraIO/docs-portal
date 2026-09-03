@@ -1402,6 +1402,7 @@ describe('OpenApiSchema', () => {
           renderCodeblock={({ code }) => <pre>{code}</pre>}
           renderMarkdown={(markdown) => <p>{markdown}</p>}
           root={{
+            description: 'The array response.',
             items: {
               properties: {
                 state: { type: 'string' },
@@ -1416,6 +1417,7 @@ describe('OpenApiSchema', () => {
 
     expect(getRenderedSchemaText('body')).toBeVisible();
     expect(getRenderedSchemaText('state')).toBeVisible();
+    expect(screen.getAllByText('The array response.')).toHaveLength(1);
     expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
   });
 

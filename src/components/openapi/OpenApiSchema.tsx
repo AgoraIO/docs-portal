@@ -214,6 +214,7 @@ export function OpenApiSchema({
   const rootSchema = generated.refs[generated.$root] as OpenApiSchemaData;
   const rootIsBodyTree =
     client.as === 'body' && rootSchema?.type !== 'primitive';
+  const rootHasContainer = rootIsBodyTree && rootSchema?.type !== 'object';
   const rootNode = createOpenApiSchemaRootNode(
     generated,
     client.name,
@@ -223,7 +224,9 @@ export function OpenApiSchema({
 
   return (
     <>
-      {rootIsBodyTree ? renderOpenApiSchemaDetails(rootSchema) : null}
+      {rootIsBodyTree && !rootHasContainer
+        ? renderOpenApiSchemaDetails(rootSchema)
+        : null}
       {rootIsBodyTree ? (
         <OpenApiSchemaTree
           client={client}

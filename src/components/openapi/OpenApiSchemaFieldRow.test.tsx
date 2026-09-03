@@ -68,6 +68,23 @@ describe('OpenApiSchemaFieldRow', () => {
     );
   });
 
+  it('identifies the union branch next to the field type', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({ variant: 'EmailAddress' })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText('(EmailAddress)')).toHaveAttribute(
+      'data-openapi-schema-variant',
+    );
+  });
+
   it('uses an accessible Button for expandable fields and reports the next state', () => {
     const onExpandedChange = vi.fn();
     render(

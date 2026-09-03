@@ -46,6 +46,14 @@ export function OpenApiSchemaFieldRow({
       <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
         {node.schema.aliasName}
       </span>
+      {node.variant ? (
+        <span
+          className="min-w-0 break-words text-xs text-muted-foreground [overflow-wrap:anywhere]"
+          data-openapi-schema-variant=""
+        >
+          ({node.variant})
+        </span>
+      ) : null}
     </>
   );
 
