@@ -2213,8 +2213,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '4.6.4-video-sdk-react-native',
+            label: 'Version 4.6.4 (Latest)',
+            packageManager:
+              'https://www.npmjs.com/package/react-native-agora/v/4.6.4',
+          },
+          {
             id: '4.6.2-video-sdk-react-native',
-            label: 'Version 4.6.2 (Latest)',
+            label: 'Version 4.6.2',
             packageManager:
               'https://www.npmjs.com/package/react-native-agora/v/4.6.2',
           },
@@ -2738,8 +2744,14 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Video Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
+            id: '6.6.4-video-sdk-flutter',
+            label: 'Version 6.6.4 (Latest)',
+            packageManager:
+              'https://pub.dev/packages/agora_rtc_engine/versions/6.6.4',
+          },
+          {
             id: '6.6.2-video-sdk-flutter',
-            label: 'Version 6.6.2 (Latest)',
+            label: 'Version 6.6.2',
             packageManager:
               'https://pub.dev/packages/agora_rtc_engine/versions/6.6.2',
           },
