@@ -281,7 +281,16 @@ function OpenApiSchemaParameterFields({
   const [copiedId, setCopiedId] = useState<string>();
   const [highlightedId, setHighlightedId] = useState<string>();
   const copyTimer = useRef<number | undefined>(undefined);
+  const mountedRef = useRef(false);
+  const copyRequestRef = useRef(0);
 
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      copyRequestRef.current += 1;
+    };
+  }, []);
   useEffect(
     () => () => {
       if (copyTimer.current !== undefined)
@@ -343,11 +352,15 @@ function OpenApiSchemaParameterFields({
           key={node.id}
           node={node}
           onCopy={() => {
+            const requestId = copyRequestRef.current + 1;
+            copyRequestRef.current = requestId;
             void handleOpenApiSchemaCopy(
               node,
               onCopyFieldLink,
               setCopiedId,
               copyTimer,
+              () => mountedRef.current,
+              () => copyRequestRef.current === requestId,
             );
           }}
           onExpandedChange={() => {}}
@@ -375,6 +388,33 @@ function createOpenApiSchemaRootNode(
     required,
     schema: generated.refs[generated.$root] as OpenApiSchemaData,
   };
+}
+
+function getOpenApiSchemaArrayParentPath(
+  parentPath: OpenApiSchemaPathItem[],
+  itemRef: string,
+) {
+  const current = parentPath.at(-1);
+  if (!current) return;
+  return [
+    ...parentPath.slice(0, -1),
+    { ...current, $ref: itemRef, name: `${current.name}[]` },
+  ];
+}
+
+function getOpenApiSchemaUnionParentPath(
+  parentPath: OpenApiSchemaPathItem[],
+  branchRef: string,
+) {
+  const current = parentPath.at(-1);
+  if (!current) return;
+  return [
+    ...parentPath.slice(0, -1),
+    {
+      ...current,
+      tabValues: [...(current.tabValues ?? []), branchRef],
+    },
+  ];
 }
 
 function getRemainingInfoTags(node: OpenApiSchemaViewNode) {
@@ -439,6 +479,8 @@ async function handleOpenApiSchemaCopy(
   onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>,
   setCopiedId: (id: string | undefined) => void,
   copyTimer: { current: number | undefined },
+  isMounted: () => boolean,
+  isCurrentRequest: () => boolean,
 ) {
   try {
     if ((await onCopyFieldLink(node)) !== true) return;
@@ -446,11 +488,14 @@ async function handleOpenApiSchemaCopy(
     return;
   }
 
+  if (!isMounted() || !isCurrentRequest()) return;
+
   setCopiedId(node.id);
   if (copyTimer.current !== undefined) {
     window.clearTimeout(copyTimer.current);
   }
   copyTimer.current = window.setTimeout(() => {
+    if (!isMounted() || !isCurrentRequest()) return;
     setCopiedId(undefined);
     copyTimer.current = undefined;
   }, 1000);
@@ -489,7 +534,7 @@ function normalizeOpenApiSchemaRevealPath(
   return path;
 }
 
-function decodeOpenApiSchemaPath(
+export function decodeOpenApiSchemaPath(
   search: string,
   generated: SchemaUIGeneratedData,
 ) {
@@ -498,17 +543,15 @@ function decodeOpenApiSchemaPath(
   const fieldName = url.searchParams.get('s-highlight');
   if (!encodedPath || !fieldName) return;
 
-  const parentPath = encodedPath.split('|').map((encoded) => {
-    const [name, $ref, ...tabValues] = encoded.split('\0');
-    return { $ref, name, tabValues };
-  });
+  const parentPath = decodeOpenApiSchemaPathItems(encodedPath);
+  if (!parentPath) return;
   if (
     parentPath.some(
       (item) =>
         !item.name ||
         !item.$ref ||
         !generated.refs[item.$ref] ||
-        item.tabValues.some((value) => !generated.refs[value]),
+        (item.tabValues ?? []).some((value) => !generated.refs[value]),
     )
   ) {
     return;
@@ -517,7 +560,7 @@ function decodeOpenApiSchemaPath(
   return { fieldName, parentPath };
 }
 
-function appendOpenApiSchemaAllowedValues(
+export function appendOpenApiSchemaAllowedValues(
   generated: SchemaUIGeneratedData,
   root: unknown,
   options: { readOnly?: boolean; writeOnly?: boolean },
@@ -585,7 +628,17 @@ function getRawOpenApiSchemaBranches(value: unknown, document?: unknown) {
   const resolvedValue = resolveLocalOpenApiSchemaReference(value, document);
   if (!isRecord(resolvedValue)) return [];
   if (Array.isArray(resolvedValue.type)) {
-    return resolvedValue.type.map((type) => ({ ...resolvedValue, type }));
+    return resolvedValue.type.map((type) => ({
+      ...resolvedValue,
+      ...(Array.isArray(resolvedValue.enum)
+        ? {
+            enum: resolvedValue.enum.filter((value) =>
+              isOpenApiSchemaEnumValueForType(value, type),
+            ),
+          }
+        : {}),
+      type,
+    }));
   }
   if (
     Array.isArray(resolvedValue.oneOf) &&
@@ -599,6 +652,16 @@ function getRawOpenApiSchemaBranches(value: unknown, document?: unknown) {
   if (Array.isArray(resolvedValue.oneOf)) return resolvedValue.oneOf;
   if (Array.isArray(resolvedValue.anyOf)) return resolvedValue.anyOf;
   return [];
+}
+
+function isOpenApiSchemaEnumValueForType(value: unknown, type: string) {
+  if (type === 'null') return value === null;
+  if (type === 'string') return typeof value === 'string';
+  if (type === 'number') return typeof value === 'number';
+  if (type === 'integer')
+    return typeof value === 'number' && Number.isInteger(value);
+  if (type === 'boolean') return typeof value === 'boolean';
+  return true;
 }
 
 function associateOpenApiSchemaBranches(
@@ -618,27 +681,31 @@ function associateOpenApiSchemaBranches(
     const generatedSchema = generated.refs[item.$type];
     const matchIndex = remaining.findIndex(
       (branch) =>
-        getOpenApiSchemaBranchName(branch) === item.name &&
-        (!generatedSchema ||
-          getOpenApiSchemaBranchType(branch) === generatedSchema.type),
+        getOpenApiSchemaBranchType(branch) === generatedSchema?.type &&
+        getOpenApiSchemaBranchNames(branch).includes(item.name),
     );
     const fallbackIndex =
       matchIndex >= 0
         ? matchIndex
         : remaining.findIndex(
-            (branch) => getOpenApiSchemaBranchName(branch) === item.name,
+            (branch) =>
+              !generatedSchema ||
+              getOpenApiSchemaBranchType(branch) === generatedSchema.type,
           );
     if (fallbackIndex < 0) return undefined;
     return remaining.splice(fallbackIndex, 1)[0];
   });
 }
 
-function getOpenApiSchemaBranchName(value: unknown) {
-  if (!isRecord(value) && typeof value !== 'boolean') return '';
+function getOpenApiSchemaBranchNames(value: unknown) {
+  if (!isRecord(value) && typeof value !== 'boolean') return [];
   try {
-    return schemaToString(value as ParsedSchema, 1);
+    const name = schemaToString(value as ParsedSchema, 1);
+    if (!isRecord(value) || !Array.isArray(value.enum)) return [name];
+    const withoutEnum = { ...value, enum: undefined };
+    return [name, schemaToString(withoutEnum as ParsedSchema, 1)];
   } catch {
-    return '';
+    return [];
   }
 }
 
@@ -723,16 +790,44 @@ function getRawOpenApiSchemaProperty(
 function mergeOpenApiSchemaPropertyMatches(matches: unknown[]) {
   const schemas = matches.filter(isRecord);
   const enumSchemas = schemas.filter(isOpenApiSchemaWithEnum);
-  if (schemas.length === 0 || enumSchemas.length === 0) return matches[0];
+  if (schemas.length === 0) return matches[0];
 
-  const allowedValues = enumSchemas
-    .slice(1)
-    .reduce(
-      (current, schema) =>
-        current.filter((value) => schema.enum.includes(value)),
-      [...enumSchemas[0].enum],
+  const merged: Record<string, unknown> = {};
+  for (const schema of schemas) Object.assign(merged, schema);
+  const descriptions = schemas
+    .map((schema) => schema.description)
+    .filter(
+      (description): description is string => typeof description === 'string',
     );
-  return { ...schemas[0], enum: allowedValues };
+  if (descriptions.length > 0) {
+    merged.description = [...new Set(descriptions)].join('\n\n');
+  }
+
+  const callouts = schemas.flatMap((schema) =>
+    Array.isArray(schema['x-docs-callouts']) ? schema['x-docs-callouts'] : [],
+  );
+  if (callouts.length > 0) merged['x-docs-callouts'] = callouts;
+
+  const examples = schemas.flatMap((schema) => {
+    const values = Array.isArray(schema.examples) ? schema.examples : [];
+    return schema.example === undefined ? values : [...values, schema.example];
+  });
+  if (examples.length > 0) merged.examples = examples;
+  if (schemas.some((schema) => schema.deprecated === true)) {
+    merged.deprecated = true;
+  }
+
+  if (enumSchemas.length > 0) {
+    const allowedValues = enumSchemas
+      .slice(1)
+      .reduce(
+        (current, schema) =>
+          current.filter((value) => schema.enum.includes(value)),
+        [...enumSchemas[0].enum],
+      );
+    merged.enum = allowedValues;
+  }
+  return merged;
 }
 
 function isOpenApiSchemaWithEnum(
@@ -863,10 +958,7 @@ export function buildOpenApiSchemaFindTargets(
     });
   }
 
-  const schemaRootPath = rootUsesPropertyTrigger
-    ? [...rootPath, { $ref: generated.$root, name: rootName }]
-    : rootPath;
-  visitSchema(generated.$root, schemaRootPath, [], new Set());
+  visitSchema(generated.$root, rootPath, [], new Set());
   return targets;
 
   function visitSchema(
@@ -906,33 +998,23 @@ export function buildOpenApiSchemaFindTargets(
 
     if (schema.type === 'and' || schema.type === 'or') {
       for (const item of schema.items) {
-        const current = parentPath.at(-1);
-        if (!current) continue;
-        const nextParentPath = [
-          ...parentPath.slice(0, -1),
-          {
-            ...current,
-            tabValues: [...(current.tabValues ?? []), item.$type],
-          },
-        ];
+        const nextParentPath = getOpenApiSchemaUnionParentPath(
+          parentPath,
+          item.$type,
+        );
+        if (!nextParentPath) continue;
         visitSchema(item.$type, nextParentPath, fieldPath, nextAncestors);
       }
       return;
     }
 
     if (schema.type === 'array') {
-      visitSchema(
+      const nextParentPath = getOpenApiSchemaArrayParentPath(
+        parentPath,
         schema.item.$type,
-        [
-          ...parentPath.slice(0, -1),
-          {
-            $ref: schema.item.$type,
-            name: `${parentPath.at(-1)?.name ?? '[index]'}[]`,
-          },
-        ],
-        fieldPath,
-        nextAncestors,
       );
+      if (!nextParentPath) return;
+      visitSchema(schema.item.$type, nextParentPath, fieldPath, nextAncestors);
     }
   }
 }
@@ -962,10 +1044,39 @@ function getLegacySchemaNavigation(rootId: string, explicitPrefix?: string) {
   return undefined;
 }
 
-function encodeOpenApiSchemaPath(path: OpenApiSchemaPathItem[]) {
-  return path
-    .map((item) => [item.name, item.$ref, ...(item.tabValues ?? [])].join('\0'))
-    .join('|');
+export function encodeOpenApiSchemaPath(path: OpenApiSchemaPathItem[]) {
+  return path.map((item) => encodeURIComponent(JSON.stringify(item))).join('|');
+}
+
+function decodeOpenApiSchemaPathItems(encodedPath: string) {
+  try {
+    const path = encodedPath.split('|').map((item) => {
+      const decoded = JSON.parse(decodeURIComponent(item));
+      if (
+        !isRecord(decoded) ||
+        typeof decoded.name !== 'string' ||
+        typeof decoded.$ref !== 'string' ||
+        (decoded.tabValues !== undefined &&
+          (!Array.isArray(decoded.tabValues) ||
+            !decoded.tabValues.every((value) => typeof value === 'string')))
+      ) {
+        throw new Error('Invalid schema path item');
+      }
+      return {
+        $ref: decoded.$ref,
+        name: decoded.name,
+        ...(decoded.tabValues ? { tabValues: decoded.tabValues } : {}),
+      };
+    });
+    if (path.length > 0) return path;
+  } catch {
+    // Fall back to the pre-JSON path format below.
+  }
+
+  return encodedPath.split('|').map((encoded) => {
+    const [name, $ref, ...tabValues] = encoded.split('\0');
+    return { $ref, name, tabValues };
+  });
 }
 
 function decodeOpenApiSchemaHash(hash: string) {

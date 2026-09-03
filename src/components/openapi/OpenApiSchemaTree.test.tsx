@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -845,6 +846,121 @@ describe('OpenApiSchemaTree', () => {
     );
     scrollIntoView.mockRestore();
   });
+
+  it('ignores presentation metadata when deciding whether to reset state', async () => {
+    const onCopyFieldLink = vi.fn(() => Promise.resolve(true));
+    const { rerender } = renderTree({ onCopyFieldLink });
+    const search = screen.getByRole('searchbox', { name: 'Filter properties' });
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    );
+    fireEvent.change(search, { target: { value: 'advancedChild' } });
+    fireEvent.click(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copy link to advanced',
+      }),
+    );
+    await waitFor(() =>
+      expect(
+        within(getRow(advanced)).getByRole('button', {
+          name: 'Copied link to advanced',
+        }),
+      ).toBeVisible(),
+    );
+
+    rerender(
+      <OpenApiSchemaTree
+        client={{ as: 'body', name: 'body', required: true }}
+        labels={labels}
+        nodes={recreateNodesWithPresentationMetadata(nodes)}
+        onCopyFieldLink={onCopyFieldLink}
+        renderRemainingInfoTags={() => []}
+        rootId="schema-root"
+      />,
+    );
+
+    expect(search).toHaveValue('advancedChild');
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copied link to advanced',
+      }),
+    ).toBeVisible();
+  });
+
+  it('ignores stale copy requests after a newer request resolves', async () => {
+    let resolveFirst!: (value: boolean) => void;
+    let resolveSecond!: (value: boolean) => void;
+    const onCopyFieldLink = vi
+      .fn()
+      .mockImplementationOnce(
+        () => new Promise<boolean>((resolve) => (resolveFirst = resolve)),
+      )
+      .mockImplementationOnce(
+        () => new Promise<boolean>((resolve) => (resolveSecond = resolve)),
+      );
+    renderTree({ onCopyFieldLink });
+
+    fireEvent.click(
+      within(getRow(config)).getByRole('button', {
+        name: 'Copy link to config',
+      }),
+    );
+    fireEvent.click(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copy link to advanced',
+      }),
+    );
+
+    resolveSecond(true);
+    await waitFor(() =>
+      expect(
+        within(getRow(advanced)).getByRole('button', {
+          name: 'Copied link to advanced',
+        }),
+      ).toBeVisible(),
+    );
+    resolveFirst(true);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(
+      within(getRow(advanced)).getByRole('button', {
+        name: 'Copied link to advanced',
+      }),
+    ).toBeVisible();
+    expect(
+      within(getRow(config)).queryByRole('button', {
+        name: 'Copied link to config',
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not schedule copy feedback after the tree unmounts', async () => {
+    vi.useFakeTimers();
+    let resolveCopy!: (value: boolean) => void;
+    const onCopyFieldLink = vi.fn(
+      () => new Promise<boolean>((resolve) => (resolveCopy = resolve)),
+    );
+    const { unmount } = renderTree({ onCopyFieldLink });
+
+    fireEvent.click(
+      within(getRow(config)).getByRole('button', {
+        name: 'Copy link to config',
+      }),
+    );
+    unmount();
+    resolveCopy(true);
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(vi.getTimerCount()).toBe(0);
+  });
 });
 
 function recreateNodes(
@@ -860,6 +976,22 @@ function recreateNodes(
     schema: {
       ...node.schema,
       description: <span>{node.name} description rerender</span>,
+    },
+  }));
+}
+
+function recreateNodesWithPresentationMetadata(
+  source: OpenApiSchemaViewNode[],
+): OpenApiSchemaViewNode[] {
+  return source.map((node) => ({
+    ...node,
+    children: recreateNodesWithPresentationMetadata(node.children),
+    schema: {
+      ...node.schema,
+      allowedValues: ['presentation-only'],
+      deprecated: !node.schema.deprecated,
+      description: <span>{node.name} presentation description</span>,
+      infoTags: [{ node: <span>{node.name} presentation tag</span> }],
     },
   }));
 }

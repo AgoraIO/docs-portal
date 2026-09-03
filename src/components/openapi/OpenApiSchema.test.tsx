@@ -1,6 +1,8 @@
 import { AnchorSection } from '@fumadocs/api-docs/auto-anchor/client';
+import { generateSchemaUI } from '@fumadocs/api-docs/components/schema';
 import {
   act,
+  cleanup,
   fireEvent,
   render,
   screen,
@@ -9,7 +11,13 @@ import {
 } from '@testing-library/react';
 import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { buildOpenApiSchemaFindTargets, OpenApiSchema } from './OpenApiSchema';
+import {
+  appendOpenApiSchemaAllowedValues,
+  buildOpenApiSchemaFindTargets,
+  decodeOpenApiSchemaPath,
+  encodeOpenApiSchemaPath,
+  OpenApiSchema,
+} from './OpenApiSchema';
 import { stableDomId } from './OpenApiSchemaTree';
 
 const schema = {
@@ -354,6 +362,175 @@ describe('OpenApiSchema', () => {
     expect(within(row as HTMLElement).getByText('b')).toBeVisible();
     expect(within(row as HTMLElement).queryByText('a')).not.toBeInTheDocument();
     expect(within(row as HTMLElement).queryByText('c')).not.toBeInTheDocument();
+  });
+
+  it('merges metadata from duplicate allOf properties without dropping later constraints', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderExtraDescription={(value) => {
+            const record = value as Record<string, unknown>;
+            const callouts = record['x-docs-callouts'] as
+              | { body: string }[]
+              | undefined;
+            return (
+              <div>
+                <span>{record.description as string}</span>
+                <span>{record.example as string}</span>
+                <span>{record.deprecated ? 'deprecated' : 'active'}</span>
+                {callouts?.map((callout) => (
+                  <span key={callout.body}>{callout.body}</span>
+                ))}
+              </div>
+            );
+          }}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            allOf: [
+              {
+                properties: {
+                  mode: {
+                    description: 'First description',
+                    enum: ['a', 'b'],
+                    example: 'first-example',
+                    'x-docs-callouts': [{ body: 'First callout' }],
+                    type: 'string',
+                  },
+                },
+                type: 'object',
+              },
+              {
+                properties: {
+                  mode: {
+                    deprecated: true,
+                    description: 'Second description',
+                    enum: ['b', 'c'],
+                    example: 'second-example',
+                    'x-docs-callouts': [{ body: 'Second callout' }],
+                    type: 'string',
+                  },
+                },
+                type: 'object',
+              },
+            ],
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('mode')?.closest('div.border-t');
+    expect(within(row as HTMLElement).getByText('b')).toBeVisible();
+    expect(within(row as HTMLElement).queryByText('a')).not.toBeInTheDocument();
+    expect(within(row as HTMLElement).queryByText('c')).not.toBeInTheDocument();
+    expect(screen.getByText('First description')).toBeVisible();
+    expect(screen.getByText('Second description')).toBeVisible();
+    expect(screen.getByText('first-example')).toBeVisible();
+    expect(screen.getByText('second-example')).toBeVisible();
+    expect(screen.getByText('deprecated')).toBeVisible();
+    expect(screen.getByText('First callout')).toBeVisible();
+    expect(screen.getByText('Second callout')).toBeVisible();
+  });
+
+  it.each([
+    {
+      name: 'type array',
+      root: {
+        properties: {
+          value: { enum: ['text', 7], type: ['string', 'number'] },
+        },
+        type: 'object',
+      },
+    },
+    {
+      name: 'oneOf',
+      root: {
+        properties: {
+          value: {
+            oneOf: [
+              { enum: ['text'], type: 'string' },
+              { enum: [7], type: 'number' },
+            ],
+          },
+        },
+        type: 'object',
+      },
+    },
+  ])(
+    'keeps scalar enum values associated with each $name branch',
+    ({ root }) => {
+      const rawValue = root.properties.value;
+      const generated = generateSchemaUI({
+        renderCodeblock: ({ code }) => <pre>{code}</pre>,
+        renderMarkdown: (markdown) => <p>{markdown}</p>,
+        root: {
+          properties: {
+            value: rawValue.oneOf
+              ? { oneOf: rawValue.oneOf.map(({ type }) => ({ type })) }
+              : { type: rawValue.type },
+          },
+          type: 'object',
+        },
+      });
+      appendOpenApiSchemaAllowedValues(generated, root, {
+        readOnly: true,
+        writeOnly: true,
+      });
+
+      const generatedRoot = generated.refs[generated.$root] as {
+        props: { $type: string }[];
+      };
+      const union = generated.refs[generatedRoot.props[0].$type] as {
+        items: { $type: string }[];
+      };
+      expect(
+        union.items.map(
+          (item) =>
+            (generated.refs[item.$type] as { allowedValues?: unknown[] })
+              .allowedValues,
+        ),
+      ).toEqual([['text'], [7]]);
+    },
+  );
+  it('round-trips JSON-encoded schema paths with delimiter characters', () => {
+    const path = [
+      {
+        $ref: 'root|ref\0',
+        name: 'field|name\0',
+        tabValues: ['branch|ref\0'],
+      },
+    ];
+    const generated = {
+      refs: {
+        'root|ref\0': {},
+        'branch|ref\0': {},
+      },
+    };
+    const encoded = encodeOpenApiSchemaPath(path);
+    const search = new URLSearchParams({
+      path: encoded,
+      's-highlight': path[0].name,
+    });
+
+    expect(encoded).not.toContain('\0');
+    expect(decodeOpenApiSchemaPath(`?${search}`, generated as never)).toEqual({
+      fieldName: path[0].name,
+      parentPath: path,
+    });
+  });
+
+  it('keeps decoding the legacy delimiter schema path format', () => {
+    const generated = { refs: { root: {}, branch: {} } };
+    const search = new URLSearchParams({
+      path: 'field\0root\0branch',
+      's-highlight': 'field',
+    });
+
+    expect(decodeOpenApiSchemaPath(`?${search}`, generated as never)).toEqual({
+      fieldName: 'field',
+      parentPath: [{ $ref: 'root', name: 'field', tabValues: ['branch'] }],
+    });
   });
 
   it('renders enum metadata for pattern and additional properties', () => {
@@ -826,6 +1003,53 @@ describe('OpenApiSchema', () => {
     }
   });
 
+  it('does not schedule parameter copy feedback after unmount', async () => {
+    vi.useFakeTimers();
+    let resolveClipboard!: () => void;
+    const clipboardWriteText = vi.fn(
+      () => new Promise<void>((resolve) => (resolveClipboard = resolve)),
+    );
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      const { unmount } = render(
+        <AnchorSection segments={['parameters', 'query']}>
+          <OpenApiSchema
+            client={{ name: 'state' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{ type: 'string' }}
+          />
+        </AnchorSection>,
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy link to state' }),
+      );
+      await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
+      unmount();
+      resolveClipboard();
+      await act(async () => {
+        await Promise.resolve();
+      });
+
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
+  });
+
   it('does not show body copy feedback when clipboard rejects', async () => {
     const clipboardWriteText = vi
       .fn()
@@ -914,9 +1138,131 @@ describe('OpenApiSchema', () => {
     expect(encodedQuestion).not.toBe(literalDash);
     expect(firstTuple).not.toBe(secondTuple);
     expect(rootTuple).not.toBe(nonRootTuple);
+    expect(rootTuple).toBe('openapi-1-a-1-b');
     expect(encodedQuestion).not.toMatch(/[\0|]/);
     expect(literalDash).not.toMatch(/[\0|]/);
     expect(special).toMatch(/^[A-Za-z_][A-Za-z0-9_.%()-]*$/);
+  });
+
+  it('copies and reveals fields whose names contain path delimiters', async () => {
+    const fieldName = 'field|name\0value';
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      render(
+        <AnchorSection segments={['request-body', 'application-json']}>
+          <OpenApiSchema
+            client={{ as: 'body', name: 'body' }}
+            legacyAnchorPrefix="request-body"
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{
+              properties: { [fieldName]: { type: 'string' } },
+              type: 'object',
+            }}
+          />
+        </AnchorSection>,
+      );
+
+      fireEvent.click(
+        within(
+          screen.getByText(fieldName).closest('div.border-t') as HTMLElement,
+        ).getByRole('button', { name: `Copy link to ${fieldName}` }),
+      );
+      await waitFor(() => expect(clipboardWriteText).toHaveBeenCalled());
+      const copiedUrl = new URL(clipboardWriteText.mock.calls[0][0]);
+      expect(copiedUrl.searchParams.get('s-highlight')).toBe(fieldName);
+      expect(copiedUrl.searchParams.get('path')).toContain('%7C');
+      expect(copiedUrl.searchParams.get('path')).not.toContain('\0');
+
+      cleanup();
+      window.history.replaceState(null, '', copiedUrl);
+      render(
+        <AnchorSection segments={['request-body', 'application-json']}>
+          <OpenApiSchema
+            client={{ as: 'body', name: 'body' }}
+            renderCodeblock={({ code }) => <pre>{code}</pre>}
+            renderMarkdown={(markdown) => <p>{markdown}</p>}
+            root={{
+              properties: { [fieldName]: { type: 'string' } },
+              type: 'object',
+            }}
+          />
+        </AnchorSection>,
+      );
+      await waitFor(() => {
+        expect(screen.getByText(fieldName)).toHaveAttribute(
+          'data-openapi-schema-highlighted',
+        );
+      });
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
+  });
+
+  it('reveals nested fields in array parameter schemas through legacy and official paths', async () => {
+    const root = {
+      items: {
+        properties: { state: { type: 'string' } },
+        type: 'object',
+      },
+      type: 'array',
+    };
+
+    window.history.replaceState(null, '', '#query-parameters-state');
+    const first = render(
+      <AnchorSection segments={['parameters', 'query']}>
+        <OpenApiSchema
+          client={{ name: 'filters' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={root}
+        />
+      </AnchorSection>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('state')).toHaveAttribute(
+        'data-openapi-schema-highlighted',
+      );
+    });
+    const path = new URL(window.location.href).searchParams.get('path');
+    expect(path).toBeTruthy();
+
+    first.unmount();
+    window.history.replaceState(
+      null,
+      '',
+      `/?path=${encodeURIComponent(path ?? '')}&s-highlight=state#parameters.query.filters`,
+    );
+    render(
+      <AnchorSection segments={['parameters', 'query']}>
+        <OpenApiSchema
+          client={{ name: 'filters' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={root}
+        />
+      </AnchorSection>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('state')).toHaveAttribute(
+        'data-openapi-schema-highlighted',
+      );
+    });
   });
 
   it('renders array object parameter fields inline for native browser find', () => {

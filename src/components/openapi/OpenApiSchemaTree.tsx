@@ -15,34 +15,11 @@ import {
 } from './OpenApiSchemaFieldRow';
 
 export function stableDomId(rootId: string, nodeId: string) {
-  const encodedRoot = encodeStableDomIdValue(rootId);
-  if (
-    nodeId === rootId &&
-    /^[A-Za-z_]/.test(encodedRoot) &&
-    !encodedRoot.startsWith('openapi-')
-  ) {
-    return encodedRoot;
-  }
+  if (nodeId === rootId) return rootId;
 
-  const encodedNode = encodeStableDomIdValue(nodeId);
-  return `openapi-${encodedRoot.length}-${encodedRoot}-${encodedNode.length}-${encodedNode}`;
-}
-
-function encodeStableDomIdValue(value: string) {
-  if (/^[A-Za-z0-9_.-]+$/.test(value) && !/-x[0-9a-f]+-$/.test(value)) {
-    return value;
-  }
-
-  const escaped = encodeURIComponent(value)
-    .replace(/%([0-9A-F]{2})/g, '-$1-')
-    .replace(
-      /[!~*'()]/g,
-      (character) => `-${character.codePointAt(0)?.toString(16)}-`,
-    );
-  const codePoints = Array.from(value)
-    .map((character) => character.codePointAt(0)?.toString(16))
-    .join('');
-  return `${escaped}-x${codePoints}-`;
+  const encodedRoot = encodeURIComponent(rootId);
+  const encodedNode = encodeURIComponent(nodeId);
+  return `openapi-node-${encodedRoot.length}-${encodedRoot}-${encodedNode.length}-${encodedNode}`;
 }
 
 export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
@@ -57,7 +34,6 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.name,
     node.depth,
     node.required,
-    node.variant ?? null,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
     getOpenApiSchemaIdentity(node.schema),
     node.children.map(getOpenApiSchemaNodeIdentity),
@@ -65,13 +41,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
 }
 
 function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
-  const base = [
-    schema.type,
-    schema.typeName,
-    schema.aliasName,
-    schema.deprecated ?? false,
-    schema.allowedValues ?? null,
-  ];
+  const base = [schema.type];
 
   if (schema.type === 'object') {
     return [
@@ -87,7 +57,7 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
   if (schema.type === 'array') return [...base, schema.item.$type];
 
   if (schema.type === 'or' || schema.type === 'and') {
-    return [...base, schema.items.map((item) => [item.name, item.$type])];
+    return [...base, schema.items.map((item) => item.$type)];
   }
 
   return base;
@@ -145,6 +115,8 @@ export function OpenApiSchemaTree({
     () => new Set(),
   );
   const latestNodesRef = useRef(nodes);
+  const mountedRef = useRef(false);
+  const copyRequestRef = useRef(0);
   const preSearchExpandedIds = useRef<Set<string> | null>(null);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
@@ -157,6 +129,7 @@ export function OpenApiSchemaTree({
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: schema identity and root ID intentionally trigger a full interaction reset.
   useEffect(() => {
+    copyRequestRef.current += 1;
     if (copyTimer.current !== undefined) {
       window.clearTimeout(copyTimer.current);
       copyTimer.current = undefined;
@@ -171,6 +144,14 @@ export function OpenApiSchemaTree({
     preSearchExpandedIds.current = null;
     lastRevealTarget.current = undefined;
   }, [rootId, schemaIdentity]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      copyRequestRef.current += 1;
+    };
+  }, []);
 
   useEffect(
     () => () => {
@@ -493,17 +474,22 @@ export function OpenApiSchemaTree({
   }
 
   async function handleTreeCopy(node: OpenApiSchemaViewNode) {
+    const requestId = copyRequestRef.current + 1;
+    copyRequestRef.current = requestId;
     try {
       if ((await onCopyFieldLink(node)) !== true) return;
     } catch {
       return;
     }
 
+    if (!mountedRef.current || copyRequestRef.current !== requestId) return;
+
     setCopiedId(node.id);
     if (copyTimer.current !== undefined) {
       window.clearTimeout(copyTimer.current);
     }
     copyTimer.current = window.setTimeout(() => {
+      if (!mountedRef.current || copyRequestRef.current !== requestId) return;
       setCopiedId(undefined);
       copyTimer.current = undefined;
     }, 1000);
