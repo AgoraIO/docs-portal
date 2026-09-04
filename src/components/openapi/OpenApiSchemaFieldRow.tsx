@@ -150,31 +150,39 @@ export function OpenApiSchemaFieldRow({
           </Button>
         </div>
       </div>
-      {node.schema.description ? (
-        <div className="openapi-schema-description-offset openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
-          {node.schema.description}
-        </div>
-      ) : null}
-      {node.schema.allowedValues && node.schema.allowedValues.length > 0 ? (
-        <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-          <span className="text-muted-foreground">{labels.allowedValues}</span>
-          {node.schema.allowedValues.map((value, index) => {
-            const key = getAllowedValueKey(value, index);
+      {node.schema.description ||
+      (node.schema.allowedValues && node.schema.allowedValues.length > 0) ||
+      remainingInfoTags.length > 0 ? (
+        <div className="openapi-schema-field-details min-w-0">
+          {node.schema.description ? (
+            <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
+              {node.schema.description}
+            </div>
+          ) : null}
+          {node.schema.allowedValues && node.schema.allowedValues.length > 0 ? (
+            <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+              <span className="text-muted-foreground">
+                {labels.allowedValues}
+              </span>
+              {node.schema.allowedValues.map((value, index) => {
+                const key = getAllowedValueKey(value, index);
 
-            return (
-              <code
-                className="max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
-                data-openapi-allowed-value-key={key}
-                key={key}
-              >
-                {formatAllowedValue(value)}
-              </code>
-            );
-          })}
+                return (
+                  <code
+                    className="max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
+                    data-openapi-allowed-value-key={key}
+                    key={key}
+                  >
+                    {formatAllowedValue(value)}
+                  </code>
+                );
+              })}
+            </div>
+          ) : null}
+          {remainingInfoTags.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2">{remainingInfoTags}</div>
+          ) : null}
         </div>
-      ) : null}
-      {remainingInfoTags.length > 0 ? (
-        <div className="mt-2 flex flex-wrap gap-2">{remainingInfoTags}</div>
       ) : null}
     </div>
   );
