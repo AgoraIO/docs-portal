@@ -71,10 +71,14 @@ const catalogCopy = {
     installCommandScrollLabel: 'Horizontally scrollable install command',
     directDownload: 'Direct download',
     downloadSdk: 'Download SDK',
+    allPlatforms: 'All platforms',
+    allProducts: 'All products',
     md5: 'MD5',
     packageManager: 'Package manager ↗',
     packageName: 'Package',
+    platformFilter: 'Platform',
     platformTabsLabel: (product: string) => `${product} platform`,
+    productFilter: 'Product',
     releaseDate: 'Release date',
     showAll: 'Show all SDKs',
     showing: (label: string) => `Showing SDKs for ${label}`,
@@ -94,10 +98,14 @@ const catalogCopy = {
     installCommandScrollLabel: '可横向滚动的集成命令',
     directDownload: '直接下载',
     downloadSdk: '下载 SDK',
+    allPlatforms: '全部平台',
+    allProducts: '全部产品',
     md5: 'MD5',
     packageManager: '包管理器 ↗',
     packageName: '包名',
+    platformFilter: '平台',
     platformTabsLabel: (product: string) => `${product} 平台`,
+    productFilter: '产品',
     releaseDate: '发布日期',
     showAll: '查看全部 SDK',
     showing: (label: string) => `正在显示 ${label}`,
@@ -432,7 +440,7 @@ export function SdksCatalog({
     product || platform || (versionIdPrefixes && versionIdPrefixes.length > 0),
   );
   const redesigned = locale === 'zh-CN';
-  const usesCardGrid = false;
+  const showsCatalogFilters = redesigned && !isEmbedded;
   const visibleProductGroupsById = new Map(
     visibleProductGroupsWithVersionFilter.map((group) => [
       group.productId,
@@ -452,16 +460,61 @@ export function SdksCatalog({
       className={cn(
         'not-prose my-8',
         redesigned ? 'gap-4' : 'gap-3',
-        usesCardGrid ? 'grid md:grid-cols-2' : 'flex flex-col',
+        'flex flex-col',
       )}
       data-layout={isEmbedded ? 'embedded' : 'catalog'}
       data-sdk-download-catalog
     >
+      {showsCatalogFilters ? (
+        <div className="grid gap-3 border-border border-b pb-5 sm:grid-cols-2">
+          <label
+            className="grid gap-1.5 text-sm font-medium text-foreground"
+            htmlFor="sdk-product-filter"
+          >
+            {copy.productFilter}
+            <select
+              className="min-h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+              id="sdk-product-filter"
+              onChange={(event) =>
+                updateSdkCatalogSearch({ product: event.target.value })
+              }
+              value={queryFilters.productId ?? 'all'}
+            >
+              <option value="all">{copy.allProducts}</option>
+              {Object.entries(productFilters).map(([value, filter]) => (
+                <option key={value} value={value}>
+                  {getProductFilterLabel(filter, locale)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label
+            className="grid gap-1.5 text-sm font-medium text-foreground"
+            htmlFor="sdk-platform-filter"
+          >
+            {copy.platformFilter}
+            <select
+              className="min-h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+              id="sdk-platform-filter"
+              onChange={(event) =>
+                updateSdkCatalogSearch({ platform: event.target.value })
+              }
+              value={queryFilters.platformId ?? 'all'}
+            >
+              <option value="all">{copy.allPlatforms}</option>
+              {platforms.map((entry) => (
+                <option key={entry.id} value={entry.id}>
+                  {entry.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      ) : null}
       {summaryLabel && (!redesigned || !isEmbedded) ? (
         <div
           className={cn(
             'flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3',
-            usesCardGrid && 'md:col-span-2',
           )}
         >
           <p className="m-0 text-sm font-medium text-foreground">
@@ -579,41 +632,27 @@ function ProductCard({
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">
           <div className="flex items-end justify-between gap-3">
-            <div
-              aria-label={copy.platformTabsLabel(group.label)}
-              className={cn(
-                'flex min-w-0 gap-1 border-border border-b',
-                redesigned
-                  ? 'flex-nowrap overflow-x-auto overscroll-x-contain'
-                  : 'flex-wrap',
-              )}
-              role="tablist"
+            <label
+              className="grid min-w-0 flex-1 gap-1.5 text-sm font-medium text-foreground"
+              htmlFor={`${titleId}-platform`}
             >
-              {group.platforms.map((entry) => {
-                const isActive = entry.platformId === platformId;
-
-                return (
-                  <button
-                    aria-selected={isActive}
-                    className={cn(
-                      '-mb-px min-h-11 shrink-0 border-b-2 px-3 py-1.5 text-sm transition-colors',
-                      isActive
-                        ? 'border-primary font-semibold text-foreground'
-                        : 'border-transparent text-muted-foreground hover:text-foreground',
-                    )}
-                    key={entry.platformId}
-                    onClick={() => {
-                      setPlatformId(entry.platformId);
-                      setVersionIndex('0');
-                    }}
-                    role="tab"
-                    type="button"
-                  >
+              {copy.platformTabsLabel(group.label)}
+              <select
+                className="min-h-11 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                id={`${titleId}-platform`}
+                onChange={(event) => {
+                  setPlatformId(event.target.value);
+                  setVersionIndex('0');
+                }}
+                value={platformId}
+              >
+                {group.platforms.map((entry) => (
+                  <option key={entry.platformId} value={entry.platformId}>
                     {entry.platformLabel}
-                  </button>
-                );
-              })}
-            </div>
+                  </option>
+                ))}
+              </select>
+            </label>
             <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
               {command ? command.tool : ' '}
             </span>
@@ -758,6 +797,29 @@ function getLocationSearch() {
 
 function getServerLocationSearch() {
   return '';
+}
+
+function updateSdkCatalogSearch(changes: {
+  platform?: string;
+  product?: string;
+}) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+
+  for (const [key, value] of Object.entries(changes)) {
+    if (!value || value === 'all') {
+      params.delete(key);
+    } else {
+      params.set(key, value);
+    }
+  }
+
+  const search = params.toString();
+  const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
+  window.history.replaceState(window.history.state, '', nextUrl);
 }
 
 function readQueryFilters(
