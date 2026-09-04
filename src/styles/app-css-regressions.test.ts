@@ -211,7 +211,7 @@ describe('app prose CSS regressions', () => {
 
   it('defines the shared OpenAPI schema description offset', () => {
     expectDeclaration(
-      getRuleBody('.openapi-schema-description-offset').rule,
+      getRuleBody('.openapi-schema-field-details').rule,
       'padding-inline-start',
       '1.125rem',
     );

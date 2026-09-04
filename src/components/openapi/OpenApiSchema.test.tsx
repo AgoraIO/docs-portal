@@ -776,10 +776,10 @@ describe('OpenApiSchema', () => {
       nameRow.querySelector('[data-openapi-field-gutter] button'),
     ).toBeNull();
     expect(
-      configRow.querySelector('.openapi-schema-description-offset'),
+      configRow.querySelector('.openapi-schema-field-details'),
     ).toBeInTheDocument();
     expect(
-      nameRow.querySelector('.openapi-schema-description-offset'),
+      nameRow.querySelector('.openapi-schema-field-details'),
     ).toBeInTheDocument();
   });
 

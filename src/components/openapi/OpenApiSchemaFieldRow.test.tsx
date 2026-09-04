@@ -114,11 +114,17 @@ describe('OpenApiSchemaFieldRow', () => {
       leafLeading?.querySelector('.openapi-schema-field-content'),
     ).toBeInTheDocument();
     expect(screen.getByText('Profile configuration.')).toHaveClass(
-      'openapi-schema-description-offset',
+      'openapi-schema-field-description',
     );
     expect(screen.getByText('Published agent identifier.')).toHaveClass(
-      'openapi-schema-description-offset',
+      'openapi-schema-field-description',
     );
+    expect(
+      screen.getByText('Profile configuration.').parentElement,
+    ).toHaveClass('openapi-schema-field-details');
+    expect(
+      screen.getByText('Published agent identifier.').parentElement,
+    ).toHaveClass('openapi-schema-field-details');
   });
 
   it('renders required and deprecated statuses together in the row status area', () => {
@@ -435,11 +441,17 @@ describe('OpenApiSchemaFieldRow', () => {
         })}
         onCopy={() => {}}
         onExpandedChange={() => {}}
-        remainingInfoTags={[<span key="format">Format: slug</span>]}
+        remainingInfoTags={[
+          <span key="format">Format: slug</span>,
+          <span key="default">Default: byok</span>,
+        ]}
       />,
     );
 
     const allowedValues = screen.getByText('Allowed values').parentElement;
+    expect(allowedValues?.parentElement).toHaveClass(
+      'openapi-schema-field-details',
+    );
     expect(allowedValues).toHaveClass('flex-wrap');
     expect(
       within(allowedValues as HTMLElement).getByText('draft'),
@@ -463,5 +475,11 @@ describe('OpenApiSchemaFieldRow', () => {
       allowedValues?.querySelector('[class*="shadow"]'),
     ).not.toBeInTheDocument();
     expect(screen.getByText('Format: slug')).toBeInTheDocument();
+    expect(screen.getByText('Default: byok')).toBeInTheDocument();
+    expect(
+      screen
+        .getByText('Default: byok')
+        .closest('.openapi-schema-field-details'),
+    ).toBeInTheDocument();
   });
 });
