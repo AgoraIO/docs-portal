@@ -2603,12 +2603,11 @@ describe('FumadocsOpenApiContent', () => {
       'id',
       'response-body',
     );
-    expect(operation).toHaveClass(
-      '[&_h2#request-body]:font-semibold',
-      '[&_h2#request-body]:text-2xl',
-      '[&_h2#response-body]:font-semibold',
-      '[&_h2#response-body]:text-2xl',
-    );
+    for (const id of ['request-body', 'response-body']) {
+      expect(document.getElementById(id)).toHaveClass(
+        'openapi-section-heading',
+      );
+    }
   });
 
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {

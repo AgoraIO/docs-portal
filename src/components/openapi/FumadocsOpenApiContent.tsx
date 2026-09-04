@@ -51,6 +51,7 @@ import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
 import { OpenApiResponses } from './OpenApiResponses';
 import { OpenApiSchema } from './OpenApiSchema';
+import { renderOpenApiHeading } from './OpenApiSectionHeading';
 
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
@@ -78,12 +79,6 @@ const OpenApiSourceOperationContext = createContext<
 const OpenApiLocaleContext = createContext<string | undefined>(undefined);
 const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
-const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
-  '[&_h2#request-body]:font-semibold',
-  '[&_h2#request-body]:text-2xl',
-  '[&_h2#response-body]:font-semibold',
-  '[&_h2#response-body]:text-2xl',
-] as const;
 const OPENAPI_METHOD_BADGE_CLASSES = {
   GET: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
   POST: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
@@ -197,6 +192,7 @@ const OpenAPIPage = createOpenAPIPage({
   playground: {
     enabled: false,
   },
+  renderHeading: renderOpenApiHeading,
   renderMarkdown: renderOpenApiMarkdown,
   schemaUI: {
     render: (options, ctx) => {
@@ -266,11 +262,7 @@ export function FumadocsOpenApiContent({
 
   return (
     <div
-      className={cn(
-        'not-prose openapi-operation',
-        ...OPENAPI_GENERATED_BODY_HEADING_CLASSES,
-        className,
-      )}
+      className={cn('not-prose openapi-operation', className)}
       ref={containerRef}
     >
       <OpenApiLocaleContext.Provider value={locale}>
