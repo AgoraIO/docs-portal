@@ -21,6 +21,18 @@ function normalizeDeclarationValue(value: string) {
     .trim();
 }
 
+function getSelectorsContaining(selectorPart: string) {
+  const selectors: string[] = [];
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkRules((candidate) => {
+    const selector = normalizeSelector(candidate.selector);
+    if (selector.includes(normalizedSelectorPart)) selectors.push(selector);
+  });
+
+  return selectors;
+}
+
 function expectDeclaration(
   rule: postcss.Rule,
   prop: string,
@@ -148,6 +160,63 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
+  it('defines continuous logical guide lines for nested OpenAPI schema children', () => {
+    const children = getRuleBody('.openapi-schema-children').rule;
+    const nestedChildren = getRuleBody(
+      '.openapi-schema-children .openapi-schema-children',
+    ).rule;
+    const schemaGuideSelectors = getSelectorsContaining(
+      '.openapi-schema-children',
+    );
+
+    expectDeclaration(children, 'position', 'relative');
+    expectDeclaration(children, 'margin-inline-start', '16px');
+    expectDeclaration(children, 'padding-inline-start', '16px');
+    expectDeclaration(
+      children,
+      'border-inline-start',
+      '1px solid color-mix(in srgb, var(--ink-1) 14%, transparent)',
+    );
+    expectDeclaration(nestedChildren, 'margin-inline-start', '16px');
+    expectDeclaration(
+      getRuleBody('.openapi-schema-children[hidden]').rule,
+      'border-inline-start-color',
+      'transparent',
+    );
+    expect(schemaGuideSelectors).toEqual(
+      expect.arrayContaining([
+        '.openapi-schema-children',
+        '.openapi-schema-children .openapi-schema-children',
+      ]),
+    );
+    for (const selector of schemaGuideSelectors) {
+      expect(selector).not.toContain('::before');
+      expect(selector).not.toContain('::after');
+    }
+    expect(appCss).not.toContain('.openapi-schema-children::before');
+
+    const narrowChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    const narrowNestedChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children .openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    expectDeclaration(narrowChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowChildren, 'padding-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'padding-inline-start', '8px');
+  });
+
+  it('defines the shared OpenAPI schema description offset', () => {
+    expectDeclaration(
+      getRuleBody('.openapi-schema-description-offset').rule,
+      'padding-inline-start',
+      '1.125rem',
+    );
+  });
+
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
       getRuleBodyContaining(
@@ -872,6 +941,7 @@ describe('app prose CSS regressions', () => {
   });
 
   it('defines the independent desktop examples rail layout', () => {
+    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
     const layout = getRuleBodyContainingInContainer(
       '.openapi-operation-layout',
       '56rem',
@@ -884,10 +954,18 @@ describe('app prose CSS regressions', () => {
       '.openapi-examples-rail-anchor',
       '56rem',
     );
+    expectDeclaration(baseLayout.rule, 'display', 'flex');
+    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
+    expect(baseLayout.rule.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: 'grid-template-columns' }),
+    );
+    expect(layout.rule.parent?.type).toBe('atrule');
+    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
+    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
     expectDeclaration(
       layout.rule,
       'grid-template-columns',
-      'minmax(0, 1fr) clamp(320px, 32cqi, 400px)',
+      'minmax(0, 1fr) 400px',
     );
     expectDeclaration(rail.rule, 'position', 'sticky');
     expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');

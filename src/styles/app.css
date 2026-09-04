@@ -1109,10 +1109,34 @@
     min-width: 0;
   }
 
+  .openapi-schema-hidden-children {
+    display: block;
+  }
+
+  .openapi-schema-description-offset {
+    padding-inline-start: 1.125rem;
+  }
+
+  .openapi-schema-children {
+    position: relative;
+    margin-inline-start: 16px;
+    padding-inline-start: 16px;
+    border-inline-start: 1px solid
+      color-mix(in srgb, var(--ink-1) 14%, transparent);
+  }
+
+  .openapi-schema-children[hidden] {
+    border-inline-start-color: transparent;
+  }
+
+  .openapi-schema-children .openapi-schema-children {
+    margin-inline-start: 16px;
+  }
+
   @container (min-width: 56rem) {
     .openapi-operation-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) clamp(320px, 32cqi, 400px);
+      grid-template-columns: minmax(0, 1fr) 400px;
       align-items: start;
     }
 
@@ -1300,6 +1324,16 @@
   }
 
   @media (max-width: 48rem) {
+    .openapi-schema-tree .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
+    .openapi-schema-tree .openapi-schema-children .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
     .openapi-operation figure.shiki:has(> .fd-scroll-container) {
       isolation: isolate;
     }

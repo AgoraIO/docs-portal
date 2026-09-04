@@ -16,7 +16,6 @@ import {
   Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
 import { Check, Clipboard } from 'lucide-react';
 import {
@@ -25,6 +24,7 @@ import {
   isValidElement,
   type ReactNode,
   type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -34,6 +34,7 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
@@ -83,6 +84,13 @@ const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
   '[&_h2#response-body]:font-semibold',
   '[&_h2#response-body]:text-2xl',
 ] as const;
+const OPENAPI_METHOD_BADGE_CLASSES = {
+  GET: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+  POST: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
+  PUT: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  PATCH: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  DELETE: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+} as const;
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -122,18 +130,22 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'response-body': '响应 Body',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
+  'Collapse all(schema UI)': '折叠全部',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
+  'Expand all(schema UI)': '展开全部',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
   'Header Parameters': '请求 Header',
   'Items(schema UI)': '元素',
   'Length(schema UI)': '长度',
   'Match(schema UI)': '匹配',
+  'match(schema UI)': '个匹配项',
   'Multiple Of(schema UI)': '倍数',
   'No property matching(schema UI)': '没有匹配的属性',
   'Path Parameters': '路径参数',
@@ -142,6 +154,12 @@ const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Range(schema UI)': '范围',
   'Request Body': '请求 Body',
   'Response Body': '响应 Body',
+  'Required(schema UI)': '必填',
+  'Optional(schema UI)': '可选',
+  'Expand(schema UI)': '展开',
+  'Collapse(schema UI)': '折叠',
+  'properties(schema UI)': '属性',
+  'matches(schema UI)': '个匹配项',
   'Value in(schema UI)': '可选值',
 } as const;
 
@@ -157,12 +175,15 @@ const OpenAPIPage = createOpenAPIPage({
         }}
       />
     ),
-    renderOperationLayout: (slots, { ctx, operation }) => (
+    renderOperationLayout: (
+      slots,
+      { ctx, method: operationMethod, operation },
+    ) => (
       <OpenApiOperationLayoutWithSource
-        SchemaUI={ctx.SchemaUI}
         method={
           {
             ...(operation as OpenApiOperation),
+            method: operationMethod,
             __documentSecurity: ctx.schema.dereferenced.security,
             __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
@@ -178,7 +199,7 @@ const OpenAPIPage = createOpenAPIPage({
   },
   renderMarkdown: renderOpenApiMarkdown,
   schemaUI: {
-    render: (options) => {
+    render: (options, ctx) => {
       const schemaOptions = options as typeof options & {
         client: ComponentProps<RenderContext['SchemaUI']>['client'];
         legacyAnchorPrefix?: string;
@@ -188,6 +209,7 @@ const OpenAPIPage = createOpenAPIPage({
       return (
         <OpenApiSchema
           client={schemaOptions.client}
+          document={ctx.schema.bundled}
           legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
           readOnly={schemaOptions.readOnly}
           renderCodeblock={({ code, lang }) =>
@@ -336,13 +358,17 @@ function adaptOpenApiParameterSchema(value: unknown) {
   if (!schema) return value;
   const callouts = value['x-docs-callouts'];
   const example = value.example ?? getFirstExample(value.examples);
-  if (callouts === undefined && example === undefined) return value;
+  const deprecated = value.deprecated === true;
+  if (callouts === undefined && example === undefined && !deprecated) {
+    return value;
+  }
 
   return {
     ...value,
     schema: {
       ...schema,
       example: schema.example ?? example,
+      deprecated: schema.deprecated ?? deprecated,
       'x-docs-callouts': schema['x-docs-callouts'] ?? callouts,
     },
   };
@@ -408,17 +434,10 @@ type OpenApiMetadataItem = {
   label: string;
   value: string;
 };
-type OpenApiSchemaUI = RenderContext['SchemaUI'];
-type OpenApiSchemaUIWithLegacyNavigation = (
-  props: ComponentProps<OpenApiSchemaUI> & { legacyAnchorPrefix?: string },
-) => ReactNode;
-
 function OpenApiOperationLayoutWithSource({
-  SchemaUI,
   method,
   slots,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
@@ -426,7 +445,6 @@ function OpenApiOperationLayoutWithSource({
 
   return (
     <OpenApiOperationLayout
-      SchemaUI={SchemaUI}
       method={mergeOpenApiOperationExtensions(method, sourceOperation)}
       slots={slots}
     />
@@ -434,11 +452,9 @@ function OpenApiOperationLayoutWithSource({
 }
 
 function OpenApiOperationLayout({
-  SchemaUI,
   method,
   slots,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
@@ -465,7 +481,7 @@ function OpenApiOperationLayout({
             <OpenApiResponseHeaders operation={method} />
           </>
         ) : (
-          <OpenApiEnglishResponses SchemaUI={SchemaUI} operation={method} />
+          <OpenApiEnglishResponses operation={method} />
         )}
         <OpenApiDocsSections
           operation={method}
@@ -701,9 +717,12 @@ function OpenApiInlineAuthorizationSection({
 
 function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
-  const method = typeof operation.method === 'string' ? operation.method : '';
+  const method =
+    typeof operation.method === 'string'
+      ? operation.method.trim().toUpperCase()
+      : '';
   const locale = useContext(OpenApiLocaleContext);
-  const [endpointCopied, copyEndpoint] = useCopyButton(() =>
+  const [endpointCopied, copyEndpoint] = useOpenApiCopyButton(() =>
     navigator.clipboard.writeText(endpoint),
   );
 
@@ -714,11 +733,18 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   return (
     <div className="not-prose flex flex-row items-center gap-2.5 rounded-xl border bg-fd-card p-3 text-fd-card-foreground">
       {method ? (
-        <div>
-          <span className="rounded-md bg-fd-primary px-2 py-1 font-semibold text-[0.6875rem] text-fd-primary-foreground uppercase">
-            {method}
-          </span>
-        </div>
+        <Badge
+          className={cn(
+            'openapi-method-badge shrink-0 normal-case tracking-normal',
+            OPENAPI_METHOD_BADGE_CLASSES[
+              method as keyof typeof OPENAPI_METHOD_BADGE_CLASSES
+            ] ?? 'bg-muted text-muted-foreground',
+          )}
+          data-method={method}
+          data-openapi-method={method}
+        >
+          {method}
+        </Badge>
       ) : null}
       {endpoint ? (
         <>
@@ -923,10 +949,8 @@ function OpenApiResponseHeaders({
 }
 
 function OpenApiEnglishResponses({
-  SchemaUI,
   operation,
 }: {
-  SchemaUI: OpenApiSchemaUI;
   operation?: OpenApiOperation;
 }) {
   const responses = useMemo(
@@ -934,8 +958,6 @@ function OpenApiEnglishResponses({
       buildOpenApiResponseViews(operation?.responses, operation?.__document),
     [operation?.responses, operation?.__document],
   );
-  const SchemaUIWithLegacyNavigation =
-    SchemaUI as OpenApiSchemaUIWithLegacyNavigation;
   return (
     <OpenApiResponses
       renderDescription={(markdown) =>
@@ -948,14 +970,31 @@ function OpenApiEnglishResponses({
         return {
           hasFields: schema !== undefined,
           node: (
-            <SchemaUIWithLegacyNavigation
+            <OpenApiSchema
               client={{
                 as: 'body',
                 name: `response-${slugOpenApiAnchorSegment(status)}-${slugOpenApiAnchorSegment(mediaType)}`,
               }}
               legacyAnchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
+              renderCodeblock={({ code, lang }) =>
+                renderOpenApiCodeBlock(lang, code)
+              }
+              renderExtraDescription={(source) => {
+                const record = getRecord(source);
+                return record ? (
+                  <OpenApiInlineCallouts
+                    callouts={getOpenApiDocsCallouts(record)}
+                  />
+                ) : null;
+              }}
+              renderMarkdown={(markdown) =>
+                renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(markdown),
+                )
+              }
               readOnly
-              root={schema as never}
+              root={schema}
+              showExample
             />
           ),
         };
@@ -1738,7 +1777,7 @@ function getCodeBlockLanguage(className: string | undefined) {
 }
 
 function OpenApiCodeCopyButton({ source }: { source: string }) {
-  const [checked, onClick] = useCopyButton(() =>
+  const [checked, onClick] = useOpenApiCopyButton(() =>
     navigator.clipboard.writeText(source),
   );
 
@@ -1753,6 +1792,54 @@ function OpenApiCodeCopyButton({ source }: { source: string }) {
       {checked ? <Check /> : <Clipboard />}
     </button>
   );
+}
+
+function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
+  const [checked, setChecked] = useState(false);
+  const callbackRef = useRef(onCopy);
+  const timeoutRef = useRef<number | undefined>(undefined);
+  const mountedRef = useRef(false);
+  const requestRef = useRef(0);
+  callbackRef.current = onCopy;
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      requestRef.current += 1;
+      if (timeoutRef.current !== undefined) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+    };
+  }, []);
+
+  const onClick = useCallback(() => {
+    const requestId = requestRef.current + 1;
+    requestRef.current = requestId;
+    if (timeoutRef.current !== undefined) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+    }
+
+    void (async () => {
+      try {
+        await callbackRef.current();
+      } catch {
+        return;
+      }
+      if (!mountedRef.current || requestRef.current !== requestId) return;
+
+      setChecked(true);
+      timeoutRef.current = window.setTimeout(() => {
+        if (!mountedRef.current || requestRef.current !== requestId) return;
+        setChecked(false);
+        timeoutRef.current = undefined;
+      }, 1500);
+    })();
+  }, []);
+
+  return [checked, onClick] as const;
 }
 
 function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
