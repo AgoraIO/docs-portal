@@ -3670,9 +3670,7 @@ describe('FumadocsOpenApiContent', () => {
       name: '查询参数',
     }).nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
-    expect(
-      within(querySection).queryByText('可选'),
-    ).not.toBeInTheDocument();
+    expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(
       within(pathSection).getByRole('button', {
         name: '复制字段链接到 itemId',

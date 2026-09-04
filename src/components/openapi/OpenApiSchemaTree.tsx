@@ -256,7 +256,7 @@ export function OpenApiSchemaTree({
   function renderNodes(
     candidates: OpenApiSchemaViewNode[],
     seen: Set<string> = new Set(),
-  ): OpenApiSchemaMetadataItem[] {
+  ): ReactNode[] {
     return candidates.flatMap((node) => {
       if (seen.has(node.id)) return [];
 

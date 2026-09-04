@@ -156,8 +156,7 @@ export function OpenApiSchemaFieldRow({
           </Button>
         </div>
       </div>
-      {node.schema.description ||
-      remainingInfoTags.length > 0 ? (
+      {node.schema.description || remainingInfoTags.length > 0 ? (
         <div className="openapi-schema-field-details min-w-0">
           {node.schema.description ? (
             <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">

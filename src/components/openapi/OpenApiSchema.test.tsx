@@ -280,9 +280,7 @@ describe('OpenApiSchema', () => {
     expect(row).toBeInstanceOf(HTMLElement);
     expect(
       Array.from(
-        (row as HTMLElement).querySelectorAll(
-          '.openapi-schema-metadata-label',
-        ),
+        (row as HTMLElement).querySelectorAll('.openapi-schema-metadata-label'),
       ).map((label) => label.textContent),
     ).toEqual(['Default', 'Range', 'Allowed values', 'Match', 'Format']);
     expect(

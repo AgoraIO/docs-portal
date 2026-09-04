@@ -427,12 +427,13 @@ function getOpenApiSchemaMetadataItems(
   labels: OpenApiSchemaFieldRowLabels,
 ): OpenApiSchemaMetadataItem[] {
   const items = Children.toArray(schema.infoTags?.map((tag) => tag.node) ?? [])
-    .map(getSchemaMetadataItem)
+    .map((node, index) => getSchemaMetadataItem(node, index))
     .filter((item): item is OpenApiSchemaMetadataItem => item !== null);
 
   if (schema.allowedValues && schema.allowedValues.length > 0) {
     items.push({
       label: labels.allowedValues,
+      key: 'allowed-values',
       value: <OpenApiSchemaAllowedValues values={schema.allowedValues} />,
     });
   }
@@ -448,13 +449,20 @@ function getOpenApiSchemaMetadataItems(
     .map(({ item }) => item);
 }
 
-function getSchemaMetadataItem(node: ReactNode) {
+function getSchemaMetadataItem(
+  node: ReactNode,
+  index: number,
+): OpenApiSchemaMetadataItem | null {
   if (!isValidElement<{ label?: unknown; children?: ReactNode }>(node)) {
     return null;
   }
 
   return typeof node.props.label === 'string'
-    ? { label: node.props.label, value: node.props.children }
+    ? {
+        key: `info-${index}`,
+        label: node.props.label,
+        value: node.props.children,
+      }
     : null;
 }
 

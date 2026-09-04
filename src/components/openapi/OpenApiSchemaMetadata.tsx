@@ -1,15 +1,12 @@
 import type { ReactNode } from 'react';
 
 export type OpenApiSchemaMetadataItem = {
+  key?: string;
   label: string;
   value: ReactNode;
 };
 
-export function OpenApiSchemaAllowedValues({
-  values,
-}: {
-  values: unknown[];
-}) {
+export function OpenApiSchemaAllowedValues({ values }: { values: unknown[] }) {
   return (
     <span className="openapi-schema-allowed-values">
       {values.map((value, index) => {
@@ -38,8 +35,8 @@ export function OpenApiSchemaMetadata({
 
   return (
     <div className="openapi-schema-metadata">
-      {items.map(({ label, value }, index) => (
-        <div className="openapi-schema-metadata-row" key={`${label}:${index}`}>
+      {items.map(({ key, label, value }) => (
+        <div className="openapi-schema-metadata-row" key={key ?? label}>
           <div className="openapi-schema-metadata-label">{label}</div>
           <div className="openapi-schema-metadata-value break-words">
             {value}

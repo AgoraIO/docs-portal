@@ -12,8 +12,8 @@ import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
-import { OpenApiSchemaTree, stableDomId } from './OpenApiSchemaTree';
 import type { OpenApiSchemaMetadataItem } from './OpenApiSchemaMetadata';
+import { OpenApiSchemaTree, stableDomId } from './OpenApiSchemaTree';
 
 const labels = {
   allowedValues: 'Allowed values',
@@ -484,11 +484,9 @@ describe('OpenApiSchemaTree', () => {
 
   it('passes field rows the copy callback and remaining info tag renderer', () => {
     const onCopyFieldLink = vi.fn();
-    const renderRemainingInfoTags = vi.fn(
-      (): OpenApiSchemaMetadataItem[] => [
-        { label: 'Custom', value: 'Custom tag' },
-      ],
-    );
+    const renderRemainingInfoTags = vi.fn((): OpenApiSchemaMetadataItem[] => [
+      { label: 'Custom', value: 'Custom tag' },
+    ]);
     renderTree({ onCopyFieldLink, renderRemainingInfoTags });
 
     fireEvent.click(

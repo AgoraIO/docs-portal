@@ -7,9 +7,10 @@ describe('OpenApiSchemaMetadata', () => {
     render(
       <OpenApiSchemaMetadata
         items={[
-          { label: 'Format', value: <code>slug</code> },
-          { label: 'Range', value: '1 <= value <= 120' },
+          { key: 'format', label: 'Format', value: <code>slug</code> },
+          { key: 'range', label: 'Range', value: '1 <= value <= 120' },
           {
+            key: 'default',
             label: 'Default',
             value: <pre>{'{\n  "mode": "managed"\n}'}</pre>,
           },
@@ -20,9 +21,7 @@ describe('OpenApiSchemaMetadata', () => {
     const metadata = document.querySelector('.openapi-schema-metadata');
     expect(metadata).toBeInTheDocument();
 
-    const rows = metadata?.querySelectorAll(
-      '.openapi-schema-metadata-row',
-    );
+    const rows = metadata?.querySelectorAll('.openapi-schema-metadata-row');
     expect(rows).toHaveLength(3);
 
     expect(within(rows?.[0] as HTMLElement).getByText('Format')).toHaveClass(
@@ -35,9 +34,9 @@ describe('OpenApiSchemaMetadata', () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/"mode": "managed"/)).toBeInTheDocument();
     expect(
-      screen.getByText(/"mode": "managed"/).closest(
-        '.openapi-schema-metadata-value',
-      ),
+      screen
+        .getByText(/"mode": "managed"/)
+        .closest('.openapi-schema-metadata-value'),
     ).toBeInTheDocument();
   });
 

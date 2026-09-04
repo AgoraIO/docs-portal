@@ -171,9 +171,9 @@ describe('OpenApiSchemaFieldRow', () => {
     ) as HTMLElement;
     expect(fieldContent).toContainElement(required);
     expect(fieldContent).toContainElement(deprecated);
-    expect(
-      screen.getByText('string').compareDocumentPosition(required),
-    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(screen.getByText('string').compareDocumentPosition(required)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
     expect(required.compareDocumentPosition(deprecated)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
@@ -516,9 +516,7 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(screen.getByText('Default')).toBeInTheDocument();
     expect(screen.getByText('byok')).toBeInTheDocument();
     expect(
-      screen
-        .getByText('Default')
-        .closest('.openapi-schema-metadata'),
+      screen.getByText('Default').closest('.openapi-schema-metadata'),
     ).toBeInTheDocument();
   });
 });
