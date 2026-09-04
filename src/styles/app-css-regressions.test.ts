@@ -209,6 +209,14 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(narrowNestedChildren, 'padding-inline-start', '8px');
   });
 
+  it('defines the shared OpenAPI schema description offset', () => {
+    expectDeclaration(
+      getRuleBody('.openapi-schema-description-offset').rule,
+      'padding-inline-start',
+      '1.125rem',
+    );
+  });
+
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
       getRuleBodyContaining(

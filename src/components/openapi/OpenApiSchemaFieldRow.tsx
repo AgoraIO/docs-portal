@@ -69,29 +69,48 @@ export function OpenApiSchemaFieldRow({
       id={domId ?? node.id}
     >
       <div className="flex min-w-0 items-start gap-2 text-sm">
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1">
+        <div
+          className="openapi-schema-field-leading flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 gap-y-1"
+          data-openapi-field-leading={expandable ? 'expandable' : 'leaf'}
+        >
           {expandable ? (
-            <Button
-              aria-expanded={expanded}
-              aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
-              className="min-w-0 max-w-full justify-start whitespace-normal break-words px-0 py-0 text-left font-normal hover:bg-transparent [overflow-wrap:anywhere]"
-              onClick={() => onExpandedChange(!expanded)}
-              size="sm"
-              type="button"
-              variant="ghost"
-            >
-              <ChevronRight
-                aria-hidden="true"
-                className={cn(
-                  'size-3 transition-transform',
-                  expanded && 'rotate-90',
-                )}
-              />
-              {fieldIdentity}
-            </Button>
+            <>
+              <span
+                className="flex size-3 shrink-0 items-center justify-center"
+                data-openapi-field-gutter
+              >
+                <Button
+                  aria-expanded={expanded}
+                  aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
+                  className="size-3 shrink-0 p-0 hover:bg-transparent"
+                  onClick={() => onExpandedChange(!expanded)}
+                  size="sm"
+                  type="button"
+                  variant="ghost"
+                >
+                  <ChevronRight
+                    aria-hidden="true"
+                    className={cn(
+                      'size-3 transition-transform',
+                      expanded && 'rotate-90',
+                    )}
+                  />
+                </Button>
+              </span>
+              <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                {fieldIdentity}
+              </span>
+            </>
           ) : (
-            <div className="flex min-w-0 items-center gap-2">
-              {fieldIdentity}
+            <div className="flex min-w-0 items-center gap-1.5">
+              <span
+                aria-hidden="true"
+                className="flex size-3 shrink-0 items-center justify-center"
+                data-openapi-field-gutter
+              />
+              <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                {fieldIdentity}
+              </span>
             </div>
           )}
         </div>
@@ -132,7 +151,7 @@ export function OpenApiSchemaFieldRow({
         </div>
       </div>
       {node.schema.description ? (
-        <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
+        <div className="openapi-schema-description-offset openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
           {node.schema.description}
         </div>
       ) : null}

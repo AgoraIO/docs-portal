@@ -755,6 +755,34 @@ describe('OpenApiSchema', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('aligns parameter names and descriptions with the shared field gutter', () => {
+    renderSchema();
+
+    const configRow = getRenderedSchemaText('config')?.closest(
+      '.openapi-schema-field-row',
+    ) as HTMLElement;
+    const nameRow = getRenderedSchemaText('name')?.closest(
+      '.openapi-schema-field-row',
+    ) as HTMLElement;
+
+    expect(
+      configRow.querySelector('.openapi-schema-field-leading'),
+    ).toBeTruthy();
+    expect(nameRow.querySelector('.openapi-schema-field-leading')).toBeTruthy();
+    expect(
+      configRow.querySelector('[data-openapi-field-gutter] button'),
+    ).toBeInTheDocument();
+    expect(
+      nameRow.querySelector('[data-openapi-field-gutter] button'),
+    ).toBeNull();
+    expect(
+      configRow.querySelector('.openapi-schema-description-offset'),
+    ).toBeInTheDocument();
+    expect(
+      nameRow.querySelector('.openapi-schema-description-offset'),
+    ).toBeInTheDocument();
+  });
+
   it('keeps nested fields directly visible to native browser find', () => {
     renderSchema();
 

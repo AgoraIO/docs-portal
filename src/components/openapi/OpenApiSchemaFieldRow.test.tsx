@@ -45,6 +45,82 @@ function makeNode(
 }
 
 describe('OpenApiSchemaFieldRow', () => {
+  it('keeps expandable and leaf fields on the same content column', () => {
+    render(
+      <>
+        <OpenApiSchemaFieldRow
+          copied={false}
+          expanded={false}
+          labels={labels}
+          node={makeNode({
+            children: [makeNode({ id: 'child', name: 'child' })],
+            name: 'profile',
+            schema: {
+              aliasName: 'object',
+              description: 'Profile configuration.',
+              props: [],
+              type: 'object',
+              typeName: 'object',
+            },
+          })}
+          onCopy={() => {}}
+          onExpandedChange={() => {}}
+        />
+        <OpenApiSchemaFieldRow
+          copied={false}
+          expanded={false}
+          labels={labels}
+          node={makeNode({
+            id: 'pipeline-id',
+            name: 'pipeline_id',
+            schema: {
+              aliasName: 'string',
+              description: 'Published agent identifier.',
+              type: 'primitive',
+              typeName: 'string',
+            },
+          })}
+          onCopy={() => {}}
+          onExpandedChange={() => {}}
+        />
+      </>,
+    );
+
+    const expandableLeading = document.querySelector(
+      '[data-openapi-field-leading="expandable"]',
+    );
+    const leafLeading = document.querySelector(
+      '[data-openapi-field-leading="leaf"]',
+    );
+
+    expect(expandableLeading).toHaveClass('openapi-schema-field-leading');
+    expect(leafLeading).toHaveClass('openapi-schema-field-leading');
+    expect(
+      expandableLeading?.querySelector('[data-openapi-field-gutter]'),
+    ).toBeInTheDocument();
+    expect(
+      leafLeading?.querySelector('[data-openapi-field-gutter]'),
+    ).toBeInTheDocument();
+    expect(
+      leafLeading?.querySelector('[data-openapi-field-gutter] button'),
+    ).toBeNull();
+    expect(
+      expandableLeading?.querySelector('[data-openapi-field-gutter] button'),
+    ).toBeInTheDocument();
+    expect(
+      expandableLeading?.querySelector('.openapi-schema-field-content'),
+    ).toBeInTheDocument();
+    expect(
+      leafLeading?.querySelector('.openapi-schema-field-content'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Profile configuration.')).toHaveClass(
+      'openapi-schema-description-offset',
+    );
+    expect(screen.getByText('Published agent identifier.')).toHaveClass(
+      'openapi-schema-description-offset',
+    );
+  });
+
   it('renders required and deprecated statuses together in the row status area', () => {
     render(
       <OpenApiSchemaFieldRow
@@ -251,12 +327,15 @@ describe('OpenApiSchemaFieldRow', () => {
     const expandButton = screen.getByRole('button', {
       name: `Expand ${longFieldName} properties`,
     });
-    expect(expandButton).toHaveClass(
-      'whitespace-normal',
-      'text-left',
-      'justify-start',
-      'break-words',
-    );
+    expect(expandButton).toHaveClass('size-3', 'shrink-0');
+    expect(
+      expandButton.closest('[data-openapi-field-gutter]'),
+    ).toBeInTheDocument();
+    expect(
+      expandButton
+        .closest('[data-openapi-field-leading]')
+        ?.querySelector('.openapi-schema-field-content'),
+    ).toBeInTheDocument();
     expect(screen.getByText(longFieldName)).toHaveClass(
       'min-w-0',
       'break-words',
