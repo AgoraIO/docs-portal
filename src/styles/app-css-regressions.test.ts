@@ -160,6 +160,47 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
+  it('keeps OpenAPI code scrollbars thin and hidden until interaction', () => {
+    const viewportSelector =
+      '.openapi-operation figure.shiki > .fd-scroll-container';
+    const viewport = getRuleBody(viewportSelector).rule;
+    expectDeclaration(viewport, 'scrollbar-width', 'thin');
+    expectDeclaration(viewport, 'scrollbar-color', 'transparent transparent');
+
+    const viewportSelectors = getSelectorsContaining(viewportSelector).flatMap(
+      (selector) => selector.split(',').map(normalizeSelector),
+    );
+    expect(viewportSelectors).toEqual(
+      expect.arrayContaining([
+        `${viewportSelector}:hover`,
+        `${viewportSelector}:focus-within`,
+        `${viewportSelector}[data-scrollbar-visible]`,
+      ]),
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar`).rule,
+      'width',
+      '6px',
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar`).rule,
+      'height',
+      '6px',
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar-corner`).rule,
+      'background',
+      'transparent',
+    );
+    const docsScrollbar = getRuleBody('.docs-scrollbar').rule;
+    expectDeclaration(docsScrollbar, 'scrollbar-width', 'thin');
+    expectDeclaration(
+      docsScrollbar,
+      'scrollbar-color',
+      'transparent transparent',
+    );
+  });
+
   it('defines continuous logical guide lines for nested OpenAPI schema children', () => {
     const children = getRuleBody('.openapi-schema-children').rule;
     const nestedChildren = getRuleBody(
@@ -899,16 +940,11 @@ describe('app prose CSS regressions', () => {
         value: 'thin',
       }),
     );
-    expect(webkitScrollbar.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'height',
-        value: '12px',
-      }),
-    );
+    expectDeclaration(webkitScrollbar.rule, 'height', '6px');
     expect(webkitThumb.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'background',
-        value: 'color-mix(in srgb, var(--ink-1) 38%, transparent)',
+        value: 'transparent',
       }),
     );
   });
@@ -993,6 +1029,15 @@ describe('app prose CSS regressions', () => {
       'color-mix(in srgb, var(--ink-1) 16%, transparent) transparent',
     );
     const baseRail = getRuleBodyOutsideContainer('.openapi-examples-rail');
+    expectDeclaration(baseRail.rule, 'min-width', '0');
+    expectDeclaration(baseRail.rule, 'max-width', '100%');
+    expectDeclaration(baseRail.rule, 'overflow-x', 'clip');
+    const railContent = getRuleBodyOutsideContainer(
+      '.openapi-examples-rail-content',
+    );
+    expectDeclaration(railContent.rule, 'min-width', '0');
+    expectDeclaration(railContent.rule, 'max-width', '100%');
+    expectDeclaration(rail.rule, 'overflow-x', 'clip');
     for (const prop of [
       'overflow',
       'overflow-y',
