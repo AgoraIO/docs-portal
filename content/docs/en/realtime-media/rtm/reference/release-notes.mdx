@@ -3387,9 +3387,18 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
+### v2.2.6
+
+Released on November 18, 2025.
+
+#### Improvements
+
+- **New reconnection timeout configuration**
+  This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
+
 ### v2.2.5
 
-v2.2.5 was released on September 25, 2025.
+Released on September 25, 2025.
 
 #### Compatibility changes
 
@@ -3449,7 +3458,7 @@ v2.2.5 was released on September 25, 2025.
 
 ### v2.2.1
 
-v2.2.1 was released on October 15, 2024.
+Released on October 15, 2024.
 
 This is the first release of the Signaling SDK v2.x for Flutter, which brings innovation in functional coverage, performance improvement, and experience optimization.
 
