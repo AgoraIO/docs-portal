@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { API_REFERENCE_CAPABILITY_GROUPS } from '@/lib/api-reference-navigation';
-import type { SdkDownloadPlatform } from './sdk-downloads-data';
 import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
+import type { SdkDownloadPlatform } from './sdk-downloads-data';
 
 const platforms: readonly SdkDownloadPlatform[] = [
   {
@@ -80,9 +80,7 @@ describe('buildSdkCapabilityGroups', () => {
 
   it('omits capability groups that have no SDK product', () => {
     expect(
-      buildSdkCapabilityGroups([
-        { id: 'python', label: 'Python', core: [] },
-      ]),
+      buildSdkCapabilityGroups([{ id: 'python', label: 'Python', core: [] }]),
     ).toEqual([]);
   });
 });

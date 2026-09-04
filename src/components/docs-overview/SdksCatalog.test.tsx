@@ -31,9 +31,7 @@ describe('SdksCatalog', () => {
 
     await waitFor(() => {
       expect(window.location.search).toBe('?product=video');
-      expect(
-        screen.getByRole('article', { name: '视频 SDK' }),
-      ).toBeVisible();
+      expect(screen.getByRole('article', { name: '视频 SDK' })).toBeVisible();
       expect(
         screen.queryByRole('article', { name: '语音 SDK' }),
       ).not.toBeInTheDocument();
@@ -47,6 +45,16 @@ describe('SdksCatalog', () => {
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
       15,
     );
+  });
+
+  it('keeps version metadata under a labeled version-details disclosure', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const voiceCard = screen.getByRole('article', { name: '语音 SDK' });
+    expect(within(voiceCard).getByText('版本详情')).toBeVisible();
+    expect(within(voiceCard).getByText('发布日期')).toBeInTheDocument();
+    expect(within(voiceCard).getByText('包名')).toBeInTheDocument();
+    expect(within(voiceCard).getByText('MD5')).toBeInTheDocument();
   });
 
   it('renders SDK products under API reference capability headings', () => {
@@ -131,7 +139,9 @@ describe('SdksCatalog', () => {
       name: 'Video SDK platform',
     });
     expect(platformSelect).toHaveValue('android');
-    expect(within(platformSelect).getByRole('option', { name: 'Web' })).toBeInTheDocument();
+    expect(
+      within(platformSelect).getByRole('option', { name: 'Web' }),
+    ).toBeInTheDocument();
 
     // No global platform picker remains.
     expect(
@@ -337,8 +347,12 @@ describe('SdksCatalog', () => {
     const platformSelect = within(agentsCard).getByRole('combobox', {
       name: 'Agora Agents SDK platform',
     });
-    expect(within(platformSelect).getByRole('option', { name: 'TypeScript' })).toBeInTheDocument();
-    expect(within(platformSelect).getByRole('option', { name: 'Go' })).toBeInTheDocument();
+    expect(
+      within(platformSelect).getByRole('option', { name: 'TypeScript' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platformSelect).getByRole('option', { name: 'Go' }),
+    ).toBeInTheDocument();
 
     // Switching to TypeScript shows the npm command.
     fireEvent.change(platformSelect, { target: { value: 'typescript' } });
@@ -522,6 +536,7 @@ describe('SdksCatalog', () => {
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
     );
+    fireEvent.click(within(signalingCard).getByText('版本详情'));
     expect(
       within(signalingCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
     ).toBeVisible();
@@ -636,8 +651,9 @@ describe('SdksCatalog', () => {
     const videoOptions = within(videoCard)
       .getByRole('combobox', { name: '视频 SDK 版本' })
       .querySelectorAll('option');
-    const videoOptionLabels = [...videoOptions]
-      .map((option) => option.textContent);
+    const videoOptionLabels = [...videoOptions].map(
+      (option) => option.textContent,
+    );
     expect(videoOptionLabels).toEqual([
       'v4.6.3 完整版 - 最新',
       'v4.6.3 轻量版 - 最新',
@@ -648,8 +664,9 @@ describe('SdksCatalog', () => {
     const serverOptions = within(serverCard)
       .getByRole('combobox', { name: 'RTC 服务端 SDK 版本' })
       .querySelectorAll('option');
-    const serverOptionLabels = [...serverOptions]
-      .map((option) => option.textContent);
+    const serverOptionLabels = [...serverOptions].map(
+      (option) => option.textContent,
+    );
     expect(serverOptionLabels).toContain('v2.2.8 Go - 最新');
     expect(serverOptionLabels).toContain('v2.2.4 Python - 最新');
     expect(serverOptionLabels.join(' ')).not.toContain(' for ');

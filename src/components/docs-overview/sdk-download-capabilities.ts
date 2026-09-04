@@ -12,10 +12,7 @@ export type SdkCapabilityGroup = {
   products: SdkCapabilityProduct[];
 };
 
-const SDK_PRODUCT_CAPABILITY: Record<
-  string,
-  SdkCapabilityGroup['id']
-> = {
+const SDK_PRODUCT_CAPABILITY: Record<string, SdkCapabilityGroup['id']> = {
   agents: 'conversational-ai',
   voice: 'realtime-core',
   video: 'realtime-core',
@@ -49,8 +46,7 @@ export function buildSdkCapabilityGroups(
         continue;
       }
 
-      const capabilityProducts =
-        productsByCapability.get(capabilityId) ?? [];
+      const capabilityProducts = productsByCapability.get(capabilityId) ?? [];
 
       if (
         !capabilityProducts.some(

@@ -9,8 +9,8 @@ import {
   useSyncExternalStore,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import {
   getSdkDownloadProductCatalogId,
   getSdkDownloadProductGroupRank,
@@ -951,7 +951,11 @@ function InstallArea({
             </a>
           ) : null}
         </div>
-        <VersionMetadata copy={copy} version={version} />
+        {redesigned ? (
+          <VersionDetails copy={copy} version={version} />
+        ) : (
+          <VersionMetadata copy={copy} version={version} />
+        )}
       </div>
     );
   }
@@ -984,7 +988,11 @@ function InstallArea({
           </a>
         ) : null}
       </div>
-      <VersionMetadata copy={copy} version={version} />
+      {redesigned ? (
+        <VersionDetails copy={copy} version={version} />
+      ) : (
+        <VersionMetadata copy={copy} version={version} />
+      )}
     </div>
   );
 }
@@ -1101,6 +1109,31 @@ function VersionMetadata({
       ))}
     </dl>
   );
+}
+
+function VersionDetails({
+  copy,
+  version,
+}: {
+  copy: CatalogCopy;
+  version: SdkDownloadVersion;
+}) {
+  if (!hasVersionMetadata(version)) {
+    return null;
+  }
+
+  return (
+    <details className="mt-4 border-border border-t pt-3">
+      <summary className="cursor-pointer text-xs font-medium text-foreground">
+        版本详情
+      </summary>
+      <VersionMetadata copy={copy} version={version} />
+    </details>
+  );
+}
+
+function hasVersionMetadata(version: SdkDownloadVersion) {
+  return Boolean(version.releaseDate || version.packageName || version.md5);
 }
 
 function CopyButton({ copy, value }: { copy: CatalogCopy; value: string }) {
