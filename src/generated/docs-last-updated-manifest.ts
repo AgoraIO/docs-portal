@@ -408,7 +408,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/asr/amazon.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/amazon.mdx': '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/models/asr/ares.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/asr/ares.mdx': '2026-08-11T06:17:07.000Z',
+  'content/docs/en/ai/models/asr/ares.mdx': '2026-09-03T09:09:24.000Z',
   'content/docs/en/ai/models/asr/assembly-ai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/assembly-ai.mdx': '2026-07-31T07:35:49.000Z',
   'content/docs/en/ai/models/asr/deepgram.md': '2026-05-19T10:33:06.000Z',
@@ -893,7 +893,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-09-02T07:45:38.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-09-04T11:54:08.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -3572,7 +3572,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/build/optimize-multihost-video.mdx':
     '2026-06-14T08:44:15.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx':
-    '2026-07-27T11:26:03.000Z',
+    '2026-09-03T06:34:04.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/best-practices-sound-quality.mdx':
     '2026-07-20T10:53:39.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/cloud-proxy.mdx':
@@ -4736,7 +4736,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/build/meta.json':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx':
-    '2026-07-27T11:26:03.000Z',
+    '2026-09-03T06:34:04.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/best-practices-sound-quality.mdx':
     '2026-07-20T10:53:39.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy.mdx':
@@ -5066,7 +5066,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/marketplace/quickstart-integrate.mdx':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/marketplace/reference/downloads.mdx':
-    '2026-08-11T15:10:41.000Z',
+    '2026-09-03T06:34:04.000Z',
   'content/docs/en/realtime-media/marketplace/reference/firewall.md':
     '2026-08-21T06:13:24.000Z',
   'content/docs/en/realtime-media/marketplace/reference/glossary.md':
@@ -5870,7 +5870,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/release-notes.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/release-notes.mdx':
-    '2026-09-02T07:45:38.000Z',
+    '2026-09-04T11:54:08.000Z',
   'content/docs/en/realtime-media/rtc/reference/rest-api.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/sdk-downloads.md':
