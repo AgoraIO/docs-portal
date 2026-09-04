@@ -251,6 +251,64 @@ describe('OpenApiSchema', () => {
     expect(screen.queryByText('Value in')).not.toBeInTheDocument();
   });
 
+  it('renders schema metadata in a consistent order and value column', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              mode: {
+                default: { mode: 'managed' },
+                enum: ['managed', 'byok'],
+                format: 'credential-mode',
+                maximum: 120,
+                minimum: 1,
+                pattern: '^[a-z-]+$',
+                type: 'string',
+              },
+            },
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('mode')?.closest('div.border-t');
+    expect(row).toBeInstanceOf(HTMLElement);
+    expect(
+      Array.from(
+        (row as HTMLElement).querySelectorAll(
+          '.openapi-schema-metadata-label',
+        ),
+      ).map((label) => label.textContent),
+    ).toEqual(['Default', 'Range', 'Allowed values', 'Match', 'Format']);
+    expect(
+      within(row as HTMLElement)
+        .getByText(/"mode": "managed"/)
+        .closest('.openapi-schema-metadata-value'),
+    ).toBeInTheDocument();
+  });
+
+  it('uses the shared metadata structure for primitive root schemas', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{ default: 'managed', type: 'string' }}
+        />
+      </AnchorSection>,
+    );
+
+    const metadata = document.querySelector('.openapi-schema-metadata');
+    expect(metadata).toBeInTheDocument();
+    expect(within(metadata as HTMLElement).getByText('Default')).toBeVisible();
+  });
+
   it('preserves a property literally named enum while rendering its schema enum', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>

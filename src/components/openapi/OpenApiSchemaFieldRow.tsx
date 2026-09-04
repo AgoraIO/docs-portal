@@ -1,19 +1,24 @@
 import { Check, ChevronRight, Link2 } from 'lucide-react';
-import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import type { OpenApiSchemaViewNode } from '@/lib/openapi/schema-view';
+import {
+  OpenApiSchemaMetadata,
+  type OpenApiSchemaMetadataItem,
+} from './OpenApiSchemaMetadata';
 
 export type OpenApiSchemaFieldRowLabels = {
   allowedValues: string;
   collapse: string;
   copiedLink: string;
   copyLink: string;
+  default: string;
   deprecated: string;
   expand: string;
   optional: string;
   properties: string;
+  range: string;
   required: string;
 };
 
@@ -25,7 +30,7 @@ export type OpenApiSchemaFieldRowProps = {
   node: OpenApiSchemaViewNode;
   onCopy: () => void;
   onExpandedChange: (expanded: boolean) => void;
-  remainingInfoTags?: ReactNode[];
+  remainingInfoTags?: OpenApiSchemaMetadataItem[];
 };
 
 export function OpenApiSchemaFieldRow({
@@ -151,7 +156,6 @@ export function OpenApiSchemaFieldRow({
         </div>
       </div>
       {node.schema.description ||
-      (node.schema.allowedValues && node.schema.allowedValues.length > 0) ||
       remainingInfoTags.length > 0 ? (
         <div className="openapi-schema-field-details min-w-0">
           {node.schema.description ? (
@@ -159,50 +163,11 @@ export function OpenApiSchemaFieldRow({
               {node.schema.description}
             </div>
           ) : null}
-          {node.schema.allowedValues && node.schema.allowedValues.length > 0 ? (
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-              <span className="text-muted-foreground">
-                {labels.allowedValues}
-              </span>
-              {node.schema.allowedValues.map((value, index) => {
-                const key = getAllowedValueKey(value, index);
-
-                return (
-                  <code
-                    className="max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
-                    data-openapi-allowed-value-key={key}
-                    key={key}
-                  >
-                    {formatAllowedValue(value)}
-                  </code>
-                );
-              })}
-            </div>
-          ) : null}
           {remainingInfoTags.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-2">{remainingInfoTags}</div>
+            <OpenApiSchemaMetadata items={remainingInfoTags} />
           ) : null}
         </div>
       ) : null}
     </div>
   );
-}
-
-function formatAllowedValue(value: unknown) {
-  if (typeof value === 'string') return value;
-  return serializeAllowedValue(value);
-}
-
-function getAllowedValueKey(value: unknown, index: number) {
-  return `${typeof value}:${serializeAllowedValue(value)}:${index}`;
-}
-
-function serializeAllowedValue(value: unknown) {
-  if (value === undefined) return 'undefined';
-
-  try {
-    return JSON.stringify(value) ?? String(value);
-  } catch {
-    return String(value);
-  }
 }

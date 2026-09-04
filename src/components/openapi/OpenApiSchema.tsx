@@ -9,6 +9,7 @@ import type { ParsedSchema } from '@fumadocs/api-docs/schema';
 import { schemaToString } from '@fumadocs/api-docs/schema/to-string';
 import {
   Children,
+  isValidElement,
   type ReactNode,
   useCallback,
   useEffect,
@@ -29,6 +30,11 @@ import {
   OpenApiSchemaFieldRow,
   type OpenApiSchemaFieldRowLabels,
 } from './OpenApiSchemaFieldRow';
+import {
+  OpenApiSchemaAllowedValues,
+  OpenApiSchemaMetadata,
+  type OpenApiSchemaMetadataItem,
+} from './OpenApiSchemaMetadata';
 import {
   type OpenApiSchemaRevealTarget,
   OpenApiSchemaTree,
@@ -138,9 +144,10 @@ export function OpenApiSchema({
     () => getOpenApiSchemaLabels(translations),
     [translations],
   );
-  const renderRemainingInfoTags = useCallback((node: OpenApiSchemaViewNode) => {
-    return getRemainingInfoTags(node);
-  }, []);
+  const renderRemainingInfoTags = useCallback(
+    (node: OpenApiSchemaViewNode) => getRemainingInfoTags(node, labels),
+    [labels],
+  );
   const [revealTarget, setRevealTarget] = useState<
     OpenApiSchemaRevealTarget | undefined
   >();
@@ -215,7 +222,7 @@ export function OpenApiSchema({
   return (
     <>
       {rootIsBodyTree && !rootHasContainer
-        ? renderOpenApiSchemaDetails(rootSchema)
+        ? renderOpenApiSchemaDetails(rootSchema, labels)
         : null}
       {rootIsBodyTree ? (
         <OpenApiSchemaTree
@@ -248,16 +255,17 @@ export function OpenApiSchema({
   );
 }
 
-function renderOpenApiSchemaDetails(schema: OpenApiSchemaData) {
-  const infoTags = getRemainingInfoTagsFromSchema(schema);
-  if (!schema.description && infoTags.length === 0) return null;
+function renderOpenApiSchemaDetails(
+  schema: OpenApiSchemaData,
+  labels: OpenApiSchemaFieldRowLabels,
+) {
+  const metadata = getOpenApiSchemaMetadataItems(schema, labels);
+  if (!schema.description && metadata.length === 0) return null;
 
   return (
     <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
       {schema.description}
-      {infoTags.length > 0 ? (
-        <div className="mt-2 flex flex-wrap gap-2">{infoTags}</div>
-      ) : null}
+      <OpenApiSchemaMetadata items={metadata} />
     </div>
   );
 }
@@ -273,7 +281,9 @@ function OpenApiSchemaParameterFields({
   labels: OpenApiSchemaFieldRowLabels;
   nodes: OpenApiSchemaViewNode[];
   onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>;
-  renderRemainingInfoTags: (node: OpenApiSchemaViewNode) => ReactNode[];
+  renderRemainingInfoTags: (
+    node: OpenApiSchemaViewNode,
+  ) => OpenApiSchemaMetadataItem[];
   revealTarget?: OpenApiSchemaRevealTarget;
   rootId: string;
 }) {
@@ -405,12 +415,57 @@ function getOpenApiSchemaUnionParentPath(
   ];
 }
 
-function getRemainingInfoTags(node: OpenApiSchemaViewNode) {
-  return getRemainingInfoTagsFromSchema(node.schema);
+function getRemainingInfoTags(
+  node: OpenApiSchemaViewNode,
+  labels: OpenApiSchemaFieldRowLabels,
+) {
+  return getOpenApiSchemaMetadataItems(node.schema, labels);
 }
 
-function getRemainingInfoTagsFromSchema(schema: OpenApiSchemaData) {
-  return Children.toArray(schema.infoTags?.map((tag) => tag.node) ?? []);
+function getOpenApiSchemaMetadataItems(
+  schema: OpenApiSchemaData,
+  labels: OpenApiSchemaFieldRowLabels,
+): OpenApiSchemaMetadataItem[] {
+  const items = Children.toArray(schema.infoTags?.map((tag) => tag.node) ?? [])
+    .map(getSchemaMetadataItem)
+    .filter((item): item is OpenApiSchemaMetadataItem => item !== null);
+
+  if (schema.allowedValues && schema.allowedValues.length > 0) {
+    items.push({
+      label: labels.allowedValues,
+      value: <OpenApiSchemaAllowedValues values={schema.allowedValues} />,
+    });
+  }
+
+  return items
+    .map((item, index) => ({ item, index }))
+    .sort((left, right) => {
+      const priorityDifference =
+        getSchemaMetadataPriority(left.item.label, labels) -
+        getSchemaMetadataPriority(right.item.label, labels);
+      return priorityDifference || left.index - right.index;
+    })
+    .map(({ item }) => item);
+}
+
+function getSchemaMetadataItem(node: ReactNode) {
+  if (!isValidElement<{ label?: unknown; children?: ReactNode }>(node)) {
+    return null;
+  }
+
+  return typeof node.props.label === 'string'
+    ? { label: node.props.label, value: node.props.children }
+    : null;
+}
+
+function getSchemaMetadataPriority(
+  label: string,
+  labels: OpenApiSchemaFieldRowLabels,
+) {
+  if (label === labels.default) return 0;
+  if (label === labels.range) return 1;
+  if (label === labels.allowedValues) return 2;
+  return 3;
 }
 
 function getOpenApiSchemaLabel(
@@ -432,10 +487,12 @@ function getOpenApiSchemaLabels(
     collapse: translate('Collapse', 'Collapse'),
     copiedLink: translate('Copied link to', 'Copied link to'),
     copyLink: translate('Copy link to', 'Copy link to'),
+    default: translate('Default', 'Default'),
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
     optional: translate('Optional', 'Optional'),
     properties: translate('properties', 'properties'),
+    range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),
   };
 }

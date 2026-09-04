@@ -8,10 +8,12 @@ const labels = {
   collapse: 'Collapse',
   copiedLink: 'Copied link to',
   copyLink: 'Copy link to',
+  default: 'Default',
   deprecated: 'Deprecated',
   expand: 'Expand',
   optional: 'Optional',
   properties: 'properties',
+  range: 'Range',
   required: 'Required',
 };
 
@@ -442,8 +444,8 @@ describe('OpenApiSchemaFieldRow', () => {
         onCopy={() => {}}
         onExpandedChange={() => {}}
         remainingInfoTags={[
-          <span key="format">Format: slug</span>,
-          <span key="default">Default: byok</span>,
+          { label: 'Format', value: 'slug' },
+          { label: 'Default', value: 'byok' },
         ]}
       />,
     );
@@ -474,11 +476,13 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(
       allowedValues?.querySelector('[class*="shadow"]'),
     ).not.toBeInTheDocument();
-    expect(screen.getByText('Format: slug')).toBeInTheDocument();
-    expect(screen.getByText('Default: byok')).toBeInTheDocument();
+    expect(screen.getByText('Format')).toBeInTheDocument();
+    expect(screen.getByText('slug')).toBeInTheDocument();
+    expect(screen.getByText('Default')).toBeInTheDocument();
+    expect(screen.getByText('byok')).toBeInTheDocument();
     expect(
       screen
-        .getByText('Default: byok')
+        .getByText('Default')
         .closest('.openapi-schema-field-details'),
     ).toBeInTheDocument();
   });

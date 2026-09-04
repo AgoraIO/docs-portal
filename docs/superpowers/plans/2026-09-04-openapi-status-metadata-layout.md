@@ -109,7 +109,7 @@ git commit -m "feat: add OpenAPI schema metadata rows"
 In `OpenApiSchema.test.tsx`, render a schema containing `default`, numeric minimum/maximum, `enum`, `format`, and `pattern`. Assert the schema metadata labels occur in this DOM order:
 
 ```text
-Default, Range, Allowed values, Format, Pattern
+Default, Range, Allowed values, Match, Format
 ```
 
 Also render a multiline default value through `renderCodeblock` and assert its codeblock remains in the metadata value column. Assert a primitive root schema uses the same `.openapi-schema-metadata` structure.
