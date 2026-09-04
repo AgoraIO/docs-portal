@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { OpenApiSchemaViewNode } from '@/lib/openapi/schema-view';
 import { OpenApiSchemaFieldRow } from './OpenApiSchemaFieldRow';
+import { OpenApiSchemaAllowedValues } from './OpenApiSchemaMetadata';
 
 const labels = {
   allowedValues: 'Allowed values',
@@ -11,7 +12,6 @@ const labels = {
   default: 'Default',
   deprecated: 'Deprecated',
   expand: 'Expand',
-  optional: 'Optional',
   properties: 'properties',
   range: 'Range',
   required: 'Required',
@@ -129,7 +129,7 @@ describe('OpenApiSchemaFieldRow', () => {
     ).toHaveClass('openapi-schema-field-details');
   });
 
-  it('renders required and deprecated statuses together in the row status area', () => {
+  it('renders required and deprecated statuses after the field type', () => {
     render(
       <OpenApiSchemaFieldRow
         copied={false}
@@ -140,6 +140,12 @@ describe('OpenApiSchemaFieldRow', () => {
         })}
         onCopy={() => {}}
         onExpandedChange={() => {}}
+        remainingInfoTags={[
+          {
+            label: 'Allowed values',
+            value: <OpenApiSchemaAllowedValues values={['1', 1, '1', 1]} />,
+          },
+        ]}
       />,
     );
 
@@ -160,7 +166,18 @@ describe('OpenApiSchemaFieldRow', () => {
       'bg-orange-50',
       'text-orange-800',
     );
-    expect(screen.getByText('id')).toHaveClass('line-through');
+    const fieldContent = row?.querySelector(
+      '.openapi-schema-field-content',
+    ) as HTMLElement;
+    expect(fieldContent).toContainElement(required);
+    expect(fieldContent).toContainElement(deprecated);
+    expect(
+      screen.getByText('string').compareDocumentPosition(required),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(required.compareDocumentPosition(deprecated)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(screen.getByText('id')).not.toHaveClass('line-through');
     expect(screen.getByText('string')).not.toHaveClass('line-through');
     expect(screen.getByText('The user identifier.')).not.toHaveClass(
       'line-through',
@@ -242,12 +259,7 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
     fireEvent.click(button);
     expect(onExpandedChange).toHaveBeenCalledWith(true);
-    expect(screen.getByText('Optional')).toHaveClass(
-      'openapi-schema-status',
-      'border-border',
-      'bg-muted',
-      'text-muted-foreground',
-    );
+    expect(screen.queryByText('Optional')).not.toBeInTheDocument();
   });
 
   it('reflects the expanded state in the accessible button contract', () => {
@@ -293,6 +305,12 @@ describe('OpenApiSchemaFieldRow', () => {
         })}
         onCopy={() => {}}
         onExpandedChange={() => {}}
+        remainingInfoTags={[
+          {
+            label: 'Allowed values',
+            value: <OpenApiSchemaAllowedValues values={['1', 1, '1', 1]} />,
+          },
+        ]}
       />,
     );
 
@@ -329,6 +347,12 @@ describe('OpenApiSchemaFieldRow', () => {
         })}
         onCopy={() => {}}
         onExpandedChange={() => {}}
+        remainingInfoTags={[
+          {
+            label: 'Allowed values',
+            value: <OpenApiSchemaAllowedValues values={[longAllowedValue]} />,
+          },
+        ]}
       />,
     );
 
@@ -355,7 +379,7 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(screen.getByText(longAllowedValue)).toHaveClass('break-words');
   });
 
-  it('keeps requiredness badges title case and right-aligned', () => {
+  it('keeps requiredness badges title case and inline', () => {
     const { rerender } = render(
       <OpenApiSchemaFieldRow
         copied={false}
@@ -368,7 +392,6 @@ describe('OpenApiSchemaFieldRow', () => {
     );
 
     expect(screen.getByText('Required')).toHaveClass(
-      'ml-auto',
       'normal-case',
       'tracking-normal',
     );
@@ -384,12 +407,7 @@ describe('OpenApiSchemaFieldRow', () => {
         onExpandedChange={() => {}}
       />,
     );
-    expect(screen.getByText('Optional')).toHaveClass(
-      'ml-auto',
-      'normal-case',
-      'tracking-normal',
-    );
-    expect(screen.getByText('Optional')).toHaveTextContent('Optional');
+    expect(screen.queryByText('Optional')).not.toBeInTheDocument();
   });
 
   it('uses the copy callback and keeps the accessible label in the copied state', () => {
@@ -446,15 +464,27 @@ describe('OpenApiSchemaFieldRow', () => {
         remainingInfoTags={[
           { label: 'Format', value: 'slug' },
           { label: 'Default', value: 'byok' },
+          {
+            label: 'Allowed values',
+            value: (
+              <OpenApiSchemaAllowedValues
+                values={['draft', 'published', { key: 'value' }]}
+              />
+            ),
+          },
         ]}
       />,
     );
 
-    const allowedValues = screen.getByText('Allowed values').parentElement;
-    expect(allowedValues?.parentElement).toHaveClass(
-      'openapi-schema-field-details',
+    const allowedValuesLabel = screen.getByText('Allowed values');
+    const allowedValuesRow = allowedValuesLabel.parentElement;
+    const allowedValues = allowedValuesRow?.querySelector(
+      '.openapi-schema-metadata-value',
     );
-    expect(allowedValues).toHaveClass('flex-wrap');
+    expect(allowedValuesRow).toHaveClass('openapi-schema-metadata-row');
+    expect(allowedValuesRow?.parentElement).toHaveClass(
+      'openapi-schema-metadata',
+    );
     expect(
       within(allowedValues as HTMLElement).getByText('draft'),
     ).toBeInTheDocument();
@@ -483,7 +513,7 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(
       screen
         .getByText('Default')
-        .closest('.openapi-schema-field-details'),
+        .closest('.openapi-schema-metadata'),
     ).toBeInTheDocument();
   });
 });

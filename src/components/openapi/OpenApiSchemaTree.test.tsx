@@ -23,7 +23,6 @@ const labels = {
   default: 'Default',
   deprecated: 'Deprecated',
   expand: 'Expand',
-  optional: 'Optional',
   properties: 'properties',
   range: 'Range',
   required: 'Required',

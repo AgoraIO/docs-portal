@@ -16,7 +16,6 @@ export type OpenApiSchemaFieldRowLabels = {
   default: string;
   deprecated: string;
   expand: string;
-  optional: string;
   properties: string;
   range: string;
   required: string;
@@ -49,7 +48,6 @@ export function OpenApiSchemaFieldRow({
       <code
         className={cn(
           'min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]',
-          node.schema.deprecated && 'line-through decoration-2',
         )}
       >
         {node.name}
@@ -64,6 +62,26 @@ export function OpenApiSchemaFieldRow({
         >
           ({node.variant})
         </span>
+      ) : null}
+    </>
+  );
+  const fieldStatuses = (
+    <>
+      {node.required ? (
+        <Badge
+          className="openapi-schema-status normal-case tracking-normal border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300"
+          variant="outline"
+        >
+          {labels.required}
+        </Badge>
+      ) : null}
+      {node.schema.deprecated ? (
+        <Badge
+          className="openapi-schema-status normal-case tracking-normal border-orange-200 bg-orange-50 text-orange-800 dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
+          variant="outline"
+        >
+          {labels.deprecated}
+        </Badge>
       ) : null}
     </>
   );
@@ -104,6 +122,7 @@ export function OpenApiSchemaFieldRow({
               </span>
               <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 {fieldIdentity}
+                {fieldStatuses}
               </span>
             </>
           ) : (
@@ -115,30 +134,12 @@ export function OpenApiSchemaFieldRow({
               />
               <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 {fieldIdentity}
+                {fieldStatuses}
               </span>
             </div>
           )}
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
-          <Badge
-            className={cn(
-              'openapi-schema-status ml-auto normal-case tracking-normal',
-              node.required
-                ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-                : 'border-border bg-muted text-muted-foreground',
-            )}
-            variant="outline"
-          >
-            {node.required ? labels.required : labels.optional}
-          </Badge>
-          {node.schema.deprecated ? (
-            <Badge
-              className="openapi-schema-status border-orange-200 bg-orange-50 text-orange-800 normal-case tracking-normal dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
-              variant="outline"
-            >
-              {labels.deprecated}
-            </Badge>
-          ) : null}
           <Button
             aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${node.name}`}
             className="text-muted-foreground"

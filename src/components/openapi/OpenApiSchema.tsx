@@ -490,7 +490,6 @@ function getOpenApiSchemaLabels(
     default: translate('Default', 'Default'),
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
-    optional: translate('Optional', 'Optional'),
     properties: translate('properties', 'properties'),
     range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),

@@ -181,7 +181,7 @@ describe('FumadocsOpenApiContent', () => {
       .getByText('queryLimit')
       .closest('.openapi-schema-field-row');
     expect(deprecatedRow).toHaveTextContent('Deprecated');
-    expect(screen.getByText('queryLimit')).toHaveClass('line-through');
+    expect(screen.getByText('queryLimit')).not.toHaveClass('line-through');
   });
 
   it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
@@ -943,7 +943,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByText('object', { exact: true }),
     ).toHaveClass('text-muted-foreground');
     expect(within(propertiesRow).getByText('Required')).toBeVisible();
-    expect(within(asrRow).getByText('Optional')).toBeVisible();
+    expect(within(asrRow).queryByText('Optional')).not.toBeInTheDocument();
 
     expect(
       screen.queryByText('[key: string]', { exact: true }),
@@ -1986,7 +1986,9 @@ describe('FumadocsOpenApiContent', () => {
     const propertiesRow = getOfficialRow('properties');
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(within(displayNameRow).getByText('Optional')).toBeVisible();
+    expect(
+      within(displayNameRow).queryByText('Optional'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
     expect(
       within(propertiesRow.firstElementChild as HTMLElement).getByText(
@@ -3592,8 +3594,8 @@ describe('FumadocsOpenApiContent', () => {
       .closest('div.border-t') as HTMLElement;
 
     expect(within(pathRow).getByText('Required')).toBeVisible();
-    expect(within(queryRow).getByText('Optional')).toBeVisible();
-    expect(within(headerRow).getByText('Optional')).toBeVisible();
+    expect(within(queryRow).queryByText('Optional')).not.toBeInTheDocument();
+    expect(within(headerRow).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(headerRow).getByText('Deprecated')).toBeVisible();
     expect(within(cookieRow).getByText('Required')).toBeVisible();
     expect(within(pathRow).getByText('The item identifier.')).toBeVisible();
@@ -3668,7 +3670,9 @@ describe('FumadocsOpenApiContent', () => {
       name: '查询参数',
     }).nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
-    expect(within(querySection).getByText('可选')).toBeVisible();
+    expect(
+      within(querySection).queryByText('可选'),
+    ).not.toBeInTheDocument();
     expect(
       within(pathSection).getByRole('button', {
         name: '复制字段链接到 itemId',

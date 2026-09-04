@@ -169,10 +169,10 @@ describe('OpenApiSchema', () => {
     expect(
       providerNode.querySelector(':scope > .openapi-schema-children'),
     ).toHaveAttribute('hidden', 'until-found');
-    expect(within(providerRow).getByText('Optional')).toBeVisible();
+    expect(within(providerRow).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(providerRow).getByText('Deprecated')).toBeVisible();
     expect(within(nameRow).getByText('Required')).toBeInTheDocument();
-    expect(within(channelNode).getByText('Optional')).toBeVisible();
+    expect(within(channelNode).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(providerRow).getByText('Deprecated')).toHaveClass(
       'openapi-schema-status',
     );
