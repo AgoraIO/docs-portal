@@ -71,14 +71,10 @@ const catalogCopy = {
     installCommandScrollLabel: 'Horizontally scrollable install command',
     directDownload: 'Direct download',
     downloadSdk: 'Download SDK',
-    allPlatforms: 'All platforms',
-    allProducts: 'All products',
     md5: 'MD5',
     packageManager: 'Package manager ↗',
     packageName: 'Package',
-    platformFilter: 'Platform',
     platformTabsLabel: (product: string) => `${product} platform`,
-    productFilter: 'Product',
     releaseDate: 'Release date',
     showAll: 'Show all SDKs',
     showing: (label: string) => `Showing SDKs for ${label}`,
@@ -98,14 +94,10 @@ const catalogCopy = {
     installCommandScrollLabel: '可横向滚动的集成命令',
     directDownload: '直接下载',
     downloadSdk: '下载 SDK',
-    allPlatforms: '全部平台',
-    allProducts: '全部产品',
     md5: 'MD5',
     packageManager: '包管理器 ↗',
     packageName: '包名',
-    platformFilter: '平台',
     platformTabsLabel: (product: string) => `${product} 平台`,
-    productFilter: '产品',
     releaseDate: '发布日期',
     showAll: '查看全部 SDK',
     showing: (label: string) => `正在显示 ${label}`,
@@ -440,7 +432,7 @@ export function SdksCatalog({
     product || platform || (versionIdPrefixes && versionIdPrefixes.length > 0),
   );
   const redesigned = locale === 'zh-CN';
-  const showsCatalogFilters = redesigned && !isEmbedded;
+  const usesCapabilityGroups = redesigned && !isEmbedded;
   const visibleProductGroupsById = new Map(
     visibleProductGroupsWithVersionFilter.map((group) => [
       group.productId,
@@ -465,52 +457,6 @@ export function SdksCatalog({
       data-layout={isEmbedded ? 'embedded' : 'catalog'}
       data-sdk-download-catalog
     >
-      {showsCatalogFilters ? (
-        <div className="grid gap-3 border-border border-b pb-5 sm:grid-cols-2">
-          <label
-            className="grid gap-1.5 text-sm font-medium text-foreground"
-            htmlFor="sdk-product-filter"
-          >
-            {copy.productFilter}
-            <select
-              className="min-h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-              id="sdk-product-filter"
-              onChange={(event) =>
-                updateSdkCatalogSearch({ product: event.target.value })
-              }
-              value={queryFilters.productId ?? 'all'}
-            >
-              <option value="all">{copy.allProducts}</option>
-              {Object.entries(productFilters).map(([value, filter]) => (
-                <option key={value} value={value}>
-                  {getProductFilterLabel(filter, locale)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label
-            className="grid gap-1.5 text-sm font-medium text-foreground"
-            htmlFor="sdk-platform-filter"
-          >
-            {copy.platformFilter}
-            <select
-              className="min-h-11 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-              id="sdk-platform-filter"
-              onChange={(event) =>
-                updateSdkCatalogSearch({ platform: event.target.value })
-              }
-              value={queryFilters.platformId ?? 'all'}
-            >
-              <option value="all">{copy.allPlatforms}</option>
-              {platforms.map((entry) => (
-                <option key={entry.id} value={entry.id}>
-                  {entry.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      ) : null}
       {summaryLabel && (!redesigned || !isEmbedded) ? (
         <div
           className={cn(
@@ -528,38 +474,49 @@ export function SdksCatalog({
           </a>
         </div>
       ) : null}
-      {visibleCapabilityGroups.map((capability) => (
-        <section
-          aria-labelledby={`sdk-capability-${capability.id}`}
-          className="flex flex-col"
-          key={capability.id}
-        >
-          <div className="mb-2 flex items-baseline justify-between gap-3">
-            <h2
-              className="m-0 text-lg font-semibold text-foreground"
-              id={`sdk-capability-${capability.id}`}
+      {usesCapabilityGroups
+        ? visibleCapabilityGroups.map((capability) => (
+            <section
+              aria-labelledby={`sdk-capability-${capability.id}`}
+              className="flex flex-col"
+              key={capability.id}
             >
-              {capability.label}
-            </h2>
-            <span className="text-xs text-muted-foreground">
-              {capability.products.length} 个产品
-            </span>
-          </div>
-          <div className="divide-y divide-border rounded-lg border border-border bg-card">
-            {capability.products.map((group, index) => (
-              <ProductCard
-                copy={copy}
-                defaultOpen={index === 0}
-                group={group}
-                initialPlatformId={queryFilters.platformId}
-                key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
-                locale={locale}
-                redesigned={redesigned}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+              <div className="mb-2 flex items-baseline justify-between gap-3">
+                <h2
+                  className="m-0 text-lg font-semibold text-foreground"
+                  id={`sdk-capability-${capability.id}`}
+                >
+                  {capability.label}
+                </h2>
+                <span className="text-xs text-muted-foreground">
+                  {capability.products.length} 个产品
+                </span>
+              </div>
+              <div className="divide-y divide-border rounded-lg border border-border bg-card">
+                {capability.products.map((group) => (
+                  <ProductCard
+                    copy={copy}
+                    defaultOpen={false}
+                    group={group}
+                    initialPlatformId={queryFilters.platformId}
+                    key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                    locale={locale}
+                    redesigned={redesigned}
+                  />
+                ))}
+              </div>
+            </section>
+          ))
+        : visibleProductGroupsWithVersionFilter.map((group) => (
+            <ProductCard
+              copy={copy}
+              group={group}
+              initialPlatformId={queryFilters.platformId}
+              key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+              locale={locale}
+              redesigned={redesigned}
+            />
+          ))}
     </section>
   );
 }
@@ -573,7 +530,7 @@ function ProductCard({
   redesigned,
 }: {
   copy: CatalogCopy;
-  defaultOpen: boolean;
+  defaultOpen?: boolean;
   group: ProductGroup;
   initialPlatformId: string | null;
   locale: SdkCatalogLocale;
@@ -586,6 +543,7 @@ function ProductCard({
       : group.platforms[0].platformId;
   const [platformId, setPlatformId] = useState(defaultPlatformId);
   const [versionIndex, setVersionIndex] = useState('0');
+  const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
 
   const activePlatform =
     group.platforms.find((entry) => entry.platformId === platformId) ??
@@ -607,7 +565,10 @@ function ProductCard({
       data-sdk-download-product-id={group.productId}
       id={getSdkDownloadProductSectionId(group.productId)}
     >
-      <details open={defaultOpen}>
+      <details
+        onToggle={(event) => setIsOpen(event.currentTarget.open)}
+        open={isOpen}
+      >
         <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 px-4 py-3 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
           <ChevronDownIcon
             aria-hidden="true"
@@ -797,29 +758,6 @@ function getLocationSearch() {
 
 function getServerLocationSearch() {
   return '';
-}
-
-function updateSdkCatalogSearch(changes: {
-  platform?: string;
-  product?: string;
-}) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  const params = new URLSearchParams(window.location.search);
-
-  for (const [key, value] of Object.entries(changes)) {
-    if (!value || value === 'all') {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-  }
-
-  const search = params.toString();
-  const nextUrl = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
-  window.history.replaceState(window.history.state, '', nextUrl);
 }
 
 function readQueryFilters(
