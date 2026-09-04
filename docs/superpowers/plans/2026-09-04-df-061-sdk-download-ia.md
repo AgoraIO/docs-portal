@@ -1,387 +1,264 @@
 # DF-061 SDK Download IA Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (\`- [ ]\`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Reorganize the Chinese SDK download catalog according to the /zh-CN/api-reference/api capability groups, use product accordions, and replace every Chinese platform tab with a platform dropdown while preserving current download behavior.
+**Goal:** 将中文 SDK 下载页改为复用 API 参考能力分组的产品 Accordion，并统一筛选、平台选择和版本详情交互。
 
-**Architecture:** Keep the SDK data files as the facts source. Add one pure mapping module that consumes the shared API_REFERENCE_CAPABILITY_GROUPS order and maps the 15 SDK product IDs into capability groups. SdksCatalog applies its existing URL and version filters before rendering groups. The full Chinese catalog gets grouped accordions; English rendering remains unchanged, while Chinese embedded catalogs keep their compact product-specific shape and receive the same platform dropdown.
+**Architecture:** 保留 SDK 下载数据为事实源；新增纯逻辑模块把 SDK 产品 ID 映射到 API_REFERENCE_CAPABILITY_GROUPS。SdksCatalog 负责 URL 筛选与能力组渲染，ProductCard 负责原生 details/summary、平台下拉和版本操作。
 
-**Tech Stack:** React 19, TypeScript, Fumadocs MDX, Tailwind utility classes, Vitest, Testing Library, native details/summary/select, agent-browser.
+**Tech Stack:** TypeScript, React 19, Tailwind utility classes, native details/summary and select, Vitest, Testing Library, agent-browser.
 
 ---
 
-## File map
+## 文件结构
 
-- Create: src/components/docs-overview/sdk-download-capability-groups.ts — explicit SDK-product-to-capability mapping and pure grouping function.
-- Create: src/components/docs-overview/sdk-download-capability-groups.test.ts — mapping order, product coverage, and empty-group tests.
-- Modify: src/components/docs-overview/SdksCatalog.tsx — grouped Chinese catalog, product accordions, Chinese platform dropdown, version-details disclosure, and localized labels.
-- Modify: src/components/docs-overview/SdksCatalog.test.tsx — capability-group, accordion, dropdown, metadata, and regression assertions.
-- Reference only: src/lib/api-reference-navigation.ts — reuse API_REFERENCE_CAPABILITY_GROUPS; do not modify it.
-- Reference only: content/docs/zh-CN/reference/sdks.mdx — the route already renders the catalog; no content edit is required.
+- Create: src/components/docs-overview/sdk-download-capabilities.ts — 能力组映射和纯分组函数。
+- Test: src/components/docs-overview/sdk-download-capabilities.test.ts — 顺序、映射、空组测试。
+- Modify: src/components/docs-overview/SdksCatalog.tsx — 筛选、能力组、Accordion、平台下拉、版本详情。
+- Modify: src/components/docs-overview/SdksCatalog.test.tsx — 组件行为测试。
+- Modify: src/components/docs-overview/sdk-download-products.ts — 只在确实缺少中文展示文案时补充文案。
 
-### Task 1: Add capability-group mapping as pure logic
+### Task 1: 建立能力分组纯逻辑
 
 **Files:**
-- Create: src/components/docs-overview/sdk-download-capability-groups.ts
-- Test: src/components/docs-overview/sdk-download-capability-groups.test.ts
 
-- [ ] **Step 1: Write the failing mapping tests.**
+- Create: src/components/docs-overview/sdk-download-capabilities.ts
+- Test: src/components/docs-overview/sdk-download-capabilities.test.ts
 
-Use fake groups so the unit tests do not depend on the complete SDK dataset:
+- [ ] **Step 1: 编写失败测试。**
 
-~~~ts
-import { describe, expect, it } from 'vitest';
-import {
-  groupSdkDownloadProductsByCapability,
-  SDK_DOWNLOAD_PRODUCTS_BY_CAPABILITY,
-} from './sdk-download-capability-groups';
+使用包含 video-sdk-android、voice-sdk-android、fastboard-sdk-android 和 agents-sdk-android 的小型 SdkDownloadPlatform 数据。断言 buildSdkCapabilityGroups 输出的 ID 顺序为 conversational-ai、realtime-core、extensions-ecosystem；断言四个产品分别进入 agents、voice/video、fastboard 对应的组；只传入空平台时输出空数组。
 
-describe('SDK capability groups', () => {
-  it('uses API-reference capability order and labels', () => {
-    const groups = groupSdkDownloadProductsByCapability([
-      { productId: 'video', label: '视频 SDK' },
-      { productId: 'agents', label: '对话式 AI 引擎 SDK' },
-      { productId: 'iot', label: '物联网 aPaaS SDK' },
-      { productId: 'meeting', label: '智能云会议引擎 SDK' },
-    ]);
-
-    expect(groups.map((group) => group.id)).toEqual([
-      'conversational-ai',
-      'realtime-core',
-      'meeting-collaboration',
-      'smart-hardware',
-    ]);
-  });
-
-  it('keeps products in explicit mapping order', () => {
-    const groups = groupSdkDownloadProductsByCapability([
-      { productId: 'chat', label: '即时通讯 SDK' },
-      { productId: 'video', label: '视频 SDK' },
-      { productId: 'voice', label: '语音 SDK' },
-      { productId: 'signaling', label: '实时消息 SDK' },
-    ]);
-
-    expect(groups[0].products.map((product) => product.productId)).toEqual([
-      'voice',
-      'video',
-      'signaling',
-      'chat',
-    ]);
-  });
-
-  it('hides empty groups and unmapped products', () => {
-    expect(
-      groupSdkDownloadProductsByCapability([
-        { productId: 'unknown', label: '未知 SDK' },
-      ]),
-    ).toEqual([]);
-    expect(SDK_DOWNLOAD_PRODUCTS_BY_CAPABILITY['media-processing']).toEqual([]);
-  });
-});
-~~~
-
-- [ ] **Step 2: Run the focused test and verify it fails.**
+- [ ] **Step 2: 运行测试确认失败。**
 
 ~~~bash
-/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/sdk-download-capability-groups.test.ts
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/sdk-download-capabilities.test.ts
 ~~~
 
-Expected: module-resolution failure because the grouping module does not exist.
+预期：因 sdk-download-capabilities 模块不存在而失败。
 
-- [ ] **Step 3: Implement the mapping and grouping function.**
+- [ ] **Step 3: 实现映射模块。**
 
-The module imports API_REFERENCE_CAPABILITY_GROUPS and defines this complete mapping:
+导入 API_REFERENCE_CAPABILITY_GROUPS、SdkDownloadPlatform、SdkDownloadProduct 和 getSdkDownloadProductCatalogId。定义 SdkCapabilityGroup：
 
 ~~~ts
-export const SDK_DOWNLOAD_PRODUCTS_BY_CAPABILITY = {
-  'conversational-ai': ['agents'],
-  'realtime-core': ['voice', 'video', 'signaling', 'chat'],
-  'media-processing': [],
-  'meeting-collaboration': ['meeting'],
-  'monitoring-analytics': [],
-  'extensions-ecosystem': [
-    'whiteboard',
-    'fastboard',
-    'mediaplayer-kit',
-    'server-gateway',
-    'on-premise-recording',
-  ],
-  'social-entertainment': [],
-  education: ['flexible-classroom', 'cloud-scene', 'proctor'],
-  'smart-hardware': ['iot'],
-  'platform-management': [],
+type SdkCapabilityGroup = {
+  id: (typeof API_REFERENCE_CAPABILITY_GROUPS)[number]['id'];
+  label: string;
+  products: SdkCapabilityProduct[];
+};
+
+type SdkCapabilityProduct = {
+  info: string;
+  label: string;
+  platforms: SdkDownloadPlatform[];
+  productId: string;
+};
+~~~
+
+定义映射：
+
+~~~ts
+const SDK_PRODUCT_CAPABILITY = {
+  agents: 'conversational-ai',
+  voice: 'realtime-core',
+  video: 'realtime-core',
+  signaling: 'realtime-core',
+  chat: 'realtime-core',
+  meeting: 'meeting-collaboration',
+  whiteboard: 'extensions-ecosystem',
+  fastboard: 'extensions-ecosystem',
+  'mediaplayer-kit': 'extensions-ecosystem',
+  'server-gateway': 'extensions-ecosystem',
+  'on-premise-recording': 'extensions-ecosystem',
+  'flexible-classroom': 'education',
+  'cloud-scene': 'education',
+  proctor: 'education',
+  iot: 'smart-hardware',
 } as const;
 ~~~
 
-Implement groupSdkDownloadProductsByCapability<T extends { productId: string }>(products). Build a productId map, iterate API_REFERENCE_CAPABILITY_GROUPS in order, look up the mapped SDK IDs in mapping order, discard missing products, and return only groups whose products array is non-empty. Return each group as { id, label, products }.
+遍历每个平台的 core 和 addOns，按 catalog product ID 聚合产品平台；同一产品的平台按 platform.id 去重。最后按 API_REFERENCE_CAPABILITY_GROUPS 顺序返回非空组，使用 API 参考组的 id 和 label，保留产品首次出现顺序。
 
-- [ ] **Step 4: Run the focused test and verify it passes.**
-
-Run the same Vitest command. Expected: all mapping tests PASS.
-
-- [ ] **Step 5: Commit the pure grouping unit.**
+- [ ] **Step 4: 运行测试并提交。**
 
 ~~~bash
-git add src/components/docs-overview/sdk-download-capability-groups.ts \
-  src/components/docs-overview/sdk-download-capability-groups.test.ts
-git commit -m "feat: group SDK downloads by API capability"
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/sdk-download-capabilities.test.ts
+git add src/components/docs-overview/sdk-download-capabilities.ts src/components/docs-overview/sdk-download-capabilities.test.ts
+git commit -m "feat: align SDK groups with API reference capabilities"
 ~~~
 
-### Task 2: Add failing component assertions for the confirmed Chinese IA
+预期：3 个纯逻辑测试通过。
 
-**File:** src/components/docs-overview/SdksCatalog.test.tsx
-
-- [ ] **Step 1: Replace the Chinese card-grid assertion.**
-
-Replace the test named uses a responsive card grid for the full catalog with assertions that the Chinese catalog is single-column and contains these non-empty capability groups: 对话式 AI 引擎, 实时互动基础能力, 会议协作, 扩展能力与生态, 教育, 智能硬件. Assert that 实时媒体处理 is absent and that the catalog is not a grid with md:grid-cols-2.
-
-- [ ] **Step 2: Add default-open accordion assertions.**
-
-Add this focused behavior:
-
-~~~ts
-it('opens only the first product in each Chinese capability group', () => {
-  render(<SdksCatalog locale="zh-CN" />);
-
-  const group = screen.getByTestId(
-    'sdk-capability-group-realtime-core',
-  );
-  const voice = within(group).getByRole('article', { name: '语音 SDK' });
-  const video = within(group).getByRole('article', { name: '视频 SDK' });
-
-  expect(voice.querySelector('details')).toHaveAttribute('open');
-  expect(video.querySelector('details')).not.toHaveAttribute('open');
-
-  fireEvent.click(video.querySelector('summary') as HTMLElement);
-  expect(video.querySelector('details')).toHaveAttribute('open');
-});
-~~~
-
-- [ ] **Step 3: Replace Chinese platform-tab assertions with dropdown assertions.**
-
-For each Chinese test that currently calls getByRole('tab'), use:
-
-~~~ts
-const platformSelect = within(voiceCard).getByRole('combobox', {
-  name: '语音 SDK 平台',
-});
-fireEvent.change(platformSelect, { target: { value: 'web' } });
-expect(
-  within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
-).toBeVisible();
-expect(within(voiceCard).queryByRole('tablist')).not.toBeInTheDocument();
-~~~
-
-Keep English platform-tab tests unchanged.
-
-- [ ] **Step 4: Add version-details disclosure assertions.**
-
-Add a Chinese test that finds the product-scoped details element named 版本详情, asserts it is initially closed, and asserts it contains 发布日期, 包名, and MD5.
-
-- [ ] **Step 5: Run the focused component tests and verify new assertions fail.**
-
-~~~bash
-/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
-~~~
-
-Expected: the new IA assertions FAIL against the current grid/tab implementation. Do not fix unrelated baseline failures.
-
-### Task 3: Render API capability groups and product accordions
-
-**File:** src/components/docs-overview/SdksCatalog.tsx
-
-- [ ] **Step 1: Compute visible capability groups after existing filters.**
-
-Import the grouping function and add this after visibleProductGroupsWithVersionFilter:
-
-~~~ts
-const visibleCapabilityGroups = useMemo(
-  () =>
-    groupSdkDownloadProductsByCapability(
-      visibleProductGroupsWithVersionFilter,
-    ),
-  [visibleProductGroupsWithVersionFilter],
-);
-const usesCapabilityGroups = redesigned && !isEmbedded;
-~~~
-
-Do not alter existing product, platform, version-prefix normalization, or English filtering logic.
-
-- [ ] **Step 2: Render grouped Chinese sections.**
-
-For usesCapabilityGroups, render one single-column section per returned group. Each section needs:
-- data-sdk-download-capability-group-id equal to the capability group id;
-- an accessible level-2 heading using the shared group label;
-- a product count;
-- products in mapper order;
-- ProductCard with defaultOpen set to true only for index 0.
-
-Keep the existing direct product mapping for English and Chinese embedded catalogs. Use the existing data-sdk-download-catalog attribute.
-
-- [ ] **Step 3: Add optional accordion rendering to ProductCard.**
-
-Add defaultOpen?: boolean. Keep article as the anchor and accessibility boundary. When defaultOpen is defined, render a native details inside article, with the product summary in summary and the existing details body below it. When it is undefined, preserve the current direct article layout.
-
-Extract ProductSummary and ProductDetails so the embedded path shares the same content implementation. The summary preserves icon, localized title and description, a disclosure affordance, and a compact platform/version summary. The detail body preserves all current download links, package-manager links, install commands, version selection, and metadata.
-
-- [ ] **Step 4: Run focused tests.**
-
-~~~bash
-/Users/yejiayi/.bun/bin/bun x vitest run \
-  src/components/docs-overview/sdk-download-capability-groups.test.ts \
-  src/components/docs-overview/SdksCatalog.test.tsx
-~~~
-
-Expected: group order, empty-group, accordion, and default-open assertions pass; dropdown assertions remain pending until Task 4.
-
-- [ ] **Step 5: Commit grouping and accordion rendering.**
-
-~~~bash
-git add src/components/docs-overview/SdksCatalog.tsx
-git commit -m "feat: add capability accordions to SDK catalog"
-~~~
-
-### Task 4: Replace Chinese platform tabs and normalize version details
+### Task 2: 渲染能力组和产品 Accordion
 
 **Files:**
+
 - Modify: src/components/docs-overview/SdksCatalog.tsx
 - Modify: src/components/docs-overview/SdksCatalog.test.tsx
 
-- [ ] **Step 1: Add localized labels.**
+- [ ] **Step 1: 编写失败组件测试。**
 
-Add to Chinese catalogCopy:
-- platformLabel: 平台
-- versionDetails: 版本详情
-- versionLabel: product name plus 版本 / 语言 / 架构
+新增测试，断言中文页面显示“对话式 AI 引擎”“实时互动基础能力”“扩展能力与生态”“教育”“智能硬件”，不显示“监控与分析”；断言“实时互动基础能力”组中只有“语音 SDK”对应的 details 默认 open，“视频 SDK”闭合。
 
-Keep English copy and English tabs unchanged.
-
-- [ ] **Step 2: Render a native platform select for every Chinese product.**
-
-In the shared product detail body, branch on redesigned. The Chinese branch renders one labeled native select for every product:
-
-~~~tsx
-<label className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
-  <span className="shrink-0 font-medium text-foreground">
-    {copy.platformLabel}
-  </span>
-  <select
-    aria-label={copy.platformTabsLabel(group.label)}
-    className="min-h-11 min-w-0 flex-1 rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-    onChange={(event) => {
-      setPlatformId(event.target.value);
-      setVersionIndex('0');
-    }}
-    value={platformId}
-  >
-    {group.platforms.map((entry) => (
-      <option key={entry.platformId} value={entry.platformId}>
-        {entry.platformLabel}
-      </option>
-    ))}
-  </select>
-</label>
-~~~
-
-Retain the existing tab implementation only for English. Do not add horizontal overflow to the Chinese platform control. Chinese embedded product pages receive the same select.
-
-- [ ] **Step 3: Put Chinese package metadata inside a closed version-details disclosure.**
-
-Update VersionMetadata so it returns null when there are no items. For Chinese, wrap the existing metadata values in a native details/summary named 版本详情. Render the existing items in the details body; for English retain the current always-visible dl shape.
-
-- [ ] **Step 4: Preserve version behavior.**
-
-Use the new Chinese version label for the existing version select. Keep getLatestVersions, getVersionMeta, latest-variant filtering, platform-change reset, download links, package-manager links, and install-command derivation unchanged. Do not expose historical versions.
-
-- [ ] **Step 5: Run all SDK catalog tests.**
+- [ ] **Step 2: 运行组件测试确认失败。**
 
 ~~~bash
 /Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
 ~~~
 
-Expected: all SDK catalog tests PASS. English tests still find tabs; Chinese tests find comboboxes and no platform tablists.
+预期：当前实现没有能力组标题和 details 元素，新增断言失败。
 
-- [ ] **Step 6: Commit dropdown and metadata changes.**
+- [ ] **Step 3: 接入能力组数据。**
+
+在 SdksCatalog 中用 useMemo 调用 buildSdkCapabilityGroups。对现有 product/platform/version 过滤后的产品建立 productId 集合，再过滤每个能力组的 products；产品为空的能力组不渲染。使用能力组标题、产品数量和一组带 border/divide 的产品条目。
+
+保持现有 ProductGroup 的合并版本逻辑，不复制 SDK 版本数据。若纯分组模块只提供平台聚合，则在 SdksCatalog 中通过 productId 映射回已合并 ProductGroup。
+
+- [ ] **Step 4: 改造 ProductCard 外壳。**
+
+增加 defaultOpen 属性；将 article 外壳改为原生 details/summary，保留 data-sdk-download-product-id 和现有 SDK 锚点。summary 只放箭头、产品图标、产品名、简短说明、平台数量，不能放 select、button 或 link。详情 body 放现有安装工具、版本、命令、下载和包管理器内容。
+
+每个能力组调用 ProductCard 时传入 defaultOpen 为该组产品索引是否为 0。details 内容必须直接渲染在 DOM 中，不能懒加载。
+
+- [ ] **Step 5: 运行测试并提交。**
+
+focused component test 中能力组和默认折叠断言通过后提交：
 
 ~~~bash
-git add src/components/docs-overview/SdksCatalog.tsx \
-  src/components/docs-overview/SdksCatalog.test.tsx
-git commit -m "feat: simplify SDK platform selection"
+git add src/components/docs-overview/SdksCatalog.tsx src/components/docs-overview/SdksCatalog.test.tsx
+git commit -m "feat: group SDK downloads by capability"
 ~~~
 
-### Task 5: Verify rendering, URL behavior, and responsive layout
+### Task 3: 增加顶部筛选并统一平台下拉
 
-**Files:** no source changes expected unless verification finds a concrete defect.
+**Files:**
 
-- [ ] **Step 1: Start the Chinese local preview.**
+- Modify: src/components/docs-overview/SdksCatalog.tsx
+- Modify: src/components/docs-overview/SdksCatalog.test.tsx
+
+- [ ] **Step 1: 编写失败测试。**
+
+断言完整中文 catalog 有名为“产品”和“平台”的顶部 combobox；页面不再有 role=tablist；每个产品有名为“产品名 平台”的 combobox。把已有点击平台 tab 的测试改成对产品内部 select 使用 fireEvent.change。
+
+- [ ] **Step 2: 运行 focused test 确认失败。**
 
 ~~~bash
-VITE_DOCS_REGION=cn /Users/yejiayi/.bun/bin/bun run dev -- \
-  --host 127.0.0.1 --port 3002
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
 ~~~
 
-Use the actual printed port if 3002 is occupied. Open /zh-CN/reference/sdks in agent-browser.
+预期：顶部筛选不存在，平台 tablist 仍存在。
 
-- [ ] **Step 2: Verify desktop at 1440 × 900.**
+- [ ] **Step 3: 实现顶部筛选 URL 同步。**
 
-Expected:
-- capability groups follow API reference order and empty groups are absent;
-- only the first product in each non-empty group is expanded;
-- every visible product has a platform select and no platform tablist;
-- Video SDK → Web changes the command to npm i agora-rtc-sdk-ng@4.24.6;
-- version details are closed initially and reveal release date, package, and MD5 when opened;
-- document scrollWidth equals clientWidth.
+从现有 productFilters 生成产品选项，从当前 locale 数据生成去重的平台 id/label 选项。只在非 embedded catalog 渲染两个 label/select；嵌入式产品卡片不渲染全局筛选器。
 
-- [ ] **Step 3: Verify mobile at 390 × 844.**
+实现 updateSdkCatalogSearch，读取 window.location.search，选择 all 时删除 product/platform 参数，否则写入选定值；保留其它参数和 hash；调用 history.replaceState 并派发现有 LOCATION_CHANGE_EVENT。select 值使用 queryFilters 的 productId/platformId，空值回退 all。
 
-Expected:
-- headings, summaries, selects, commands, actions, and details fit without clipping;
-- no platform list requires horizontal scrolling;
-- only an install-command region may scroll horizontally;
-- native summary and select controls are keyboard/touch reachable;
-- document scrollWidth equals clientWidth.
+- [ ] **Step 4: 替换所有平台 tablist。**
 
-- [ ] **Step 4: Verify URL filters and embedded consumers.**
+ProductCard 内使用原生 select，label 文案为产品名加“平台”，选项为 group.platforms 的真实 platformLabel，value 为 platformId。保留 initialPlatformId 预选逻辑；切换平台时 setPlatformId 并把 versionIndex 重置为 0。所有产品包括单平台产品都使用同一交互。
 
-Open:
-- /zh-CN/reference/sdks?product=video&platform=android — only 视频 SDK, Android selected, no redundant group heading;
-- /zh-CN/reference/sdks?platform=unity — only products supporting Unity and the current filter summary;
-- a known Chinese product-specific download page such as /zh-CN/realtime-media/rtc/reference/downloads/android — requested content still renders with a Chinese platform select.
-
-- [ ] **Step 5: Run focused tests, lint, and type checking.**
+- [ ] **Step 5: 运行测试并提交。**
 
 ~~~bash
-/Users/yejiayi/.bun/bin/bun x vitest run \
-  src/components/docs-overview/sdk-download-capability-groups.test.ts \
-  src/components/docs-overview/SdksCatalog.test.tsx \
-  src/components/docs-shell/SdkDownloadProductNav.test.tsx
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
+git add src/components/docs-overview/SdksCatalog.tsx src/components/docs-overview/SdksCatalog.test.tsx
+git commit -m "feat: use select controls for SDK filters and platforms"
+~~~
 
-/Users/yejiayi/.bun/bin/bun x biome check \
-  src/components/docs-overview/SdksCatalog.tsx \
-  src/components/docs-overview/SdksCatalog.test.tsx \
-  src/components/docs-overview/sdk-download-capability-groups.ts \
-  src/components/docs-overview/sdk-download-capability-groups.test.ts
+预期：focused catalog tests 通过，不再出现平台 tablist。
 
+### Task 4: 统一版本详情并保护边界行为
+
+**Files:**
+
+- Modify: src/components/docs-overview/SdksCatalog.tsx
+- Modify: src/components/docs-overview/SdksCatalog.test.tsx
+
+- [ ] **Step 1: 编写失败测试。**
+
+断言视频 SDK 版本选项仍为“v4.6.3 完整版 - 最新”和“v4.6.3 轻量版 - 最新”；语音 SDK 展示“版本详情”、发布日期、包名和 MD5。
+
+- [ ] **Step 2: 运行测试确认元数据标签失败。**
+
+~~~bash
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
+~~~
+
+预期：当前没有“版本详情”标签。
+
+- [ ] **Step 3: 添加版本详情 disclosure。**
+
+新增 hasVersionMetadata(version)，当 releaseDate、packageName 或 md5 任一存在时返回 true。将 VersionMetadata 包在原生 details 中：
+
+~~~tsx
+{hasVersionMetadata(activeVersion) ? (
+  <details className="mt-4 border-border border-t pt-3">
+    <summary className="cursor-pointer text-xs font-medium text-foreground">
+      版本详情
+    </summary>
+    <VersionMetadata copy={copy} version={activeVersion} />
+  </details>
+) : null}
+~~~
+
+details 关闭时仍保留 VersionMetadata 在 SSR DOM 中。
+
+- [ ] **Step 4: 保持下载和空数据行为。**
+
+继续由 deriveInstallCommand 控制命令和复制按钮，由 downloadLink 控制下载链接，由 packageManager 控制包管理器链接。没有版本数据时不渲染空 body；没有链接时不创建伪链接；ScrollableInstallCommand 继续保留局部横向滚动、accessible label、overflow cue 和键盘焦点。
+
+- [ ] **Step 5: 运行 focused tests、Biome 并提交。**
+
+~~~bash
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx src/components/docs-overview/sdk-download-capabilities.test.ts
+/Users/yejiayi/.bun/bin/bun x biome check src/components/docs-overview/SdksCatalog.tsx src/components/docs-overview/SdksCatalog.test.tsx src/components/docs-overview/sdk-download-capabilities.ts src/components/docs-overview/sdk-download-capabilities.test.ts
+git add src/components/docs-overview/SdksCatalog.tsx src/components/docs-overview/SdksCatalog.test.tsx
+git commit -m "feat: organize SDK version details"
+~~~
+
+预期：focused tests 全部通过，Biome 退出码为 0。
+
+### Task 5: 全量验证和可视化预览
+
+**Files:**
+
+- Verify: src/components/docs-overview/SdksCatalog.tsx
+- Verify: src/components/docs-overview/SdksCatalog.test.tsx
+- Verify: src/components/docs-overview/sdk-download-capabilities.ts
+
+- [ ] **Step 1: 运行相关回归测试。**
+
+~~~bash
+/Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx src/components/docs-overview/sdk-download-capabilities.test.ts src/components/docs-shell/SdkDownloadProductNav.test.tsx src/components/docs-shell/DocsSidebar.reference-navigation.test.tsx
+~~~
+
+预期：选定文件中的测试全部通过；不修改无关 fixture。
+
+- [ ] **Step 2: 运行类型检查和变更文件 lint。**
+
+~~~bash
 /Users/yejiayi/.bun/bin/bun run types:check
+/Users/yejiayi/.bun/bin/bun x biome check src/components/docs-overview/SdksCatalog.tsx src/components/docs-overview/SdksCatalog.test.tsx src/components/docs-overview/sdk-download-capabilities.ts src/components/docs-overview/sdk-download-capabilities.test.ts
 ~~~
 
-Expected: focused tests, Biome, and type checking pass. Record unrelated full-suite or environment failures separately.
+预期：两条命令退出码均为 0；若出现基线已知失败，记录准确测试名称和输出。
 
-- [ ] **Step 6: Inspect final diff and status.**
+- [ ] **Step 3: 验证桌面端。**
+
+以 VITE_DOCS_REGION=cn 启动开发服务器，打开 /zh-CN/reference/sdks，视口设为 1440 × 900。检查 API 能力组的实际顺序、空组隐藏、每组首个展开、顶部筛选、全部产品平台 select、下载/包管理器/复制/版本详情入口和页面无横向溢出。
+
+- [ ] **Step 4: 验证移动端。**
+
+视口设为 390 × 844。检查 summary 和 select 无裁切；展开产品后内容和元数据可见；切换平台更新命令并重置版本；长命令只在自身容器内滚动；键盘焦点可见；控制台没有 SDK catalog 相关错误或警告。
+
+- [ ] **Step 5: 审核最终 diff。**
 
 ~~~bash
-git diff --check codex/cn-newdoc-html-api-migration...HEAD
-git diff --stat codex/cn-newdoc-html-api-migration...HEAD
+git diff --check
 git status --short --branch
+git diff --stat codex/cn-newdoc-html-api-migration...HEAD
 ~~~
 
-Expected implementation changes are limited to the SDK catalog component/tests and new grouping module/tests, plus the design and plan documents. No SDK data, generated output, or unrelated route files should change.
-
-- [ ] **Step 7: Commit only a concrete final verification fix.**
-
-~~~bash
-git add src/components/docs-overview/
-git commit -m "fix: polish DF-061 SDK catalog layout"
-~~~
-
-Create this commit only if verification finds and fixes a concrete issue; do not create an empty commit.
+预期：只修改计划中的 SDK 组件、测试、能力模块和设计/计划文档，不提交无关生成文件。
