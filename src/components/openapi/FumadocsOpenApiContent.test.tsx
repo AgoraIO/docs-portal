@@ -789,9 +789,12 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByRole('button', {
         name: 'Collapse properties properties',
       }),
-    ).toContainElement(
+    ).not.toContainElement(
       within(propertiesRow).getByText('object', { exact: true }),
     );
+    expect(
+      within(propertiesRow).getByText('object', { exact: true }),
+    ).toHaveClass('text-muted-foreground');
     expect(within(propertiesRow).getByText('Required')).toBeVisible();
     expect(within(asrRow).getByText('Optional')).toBeVisible();
 
