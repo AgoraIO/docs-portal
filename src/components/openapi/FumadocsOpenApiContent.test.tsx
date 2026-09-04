@@ -58,6 +58,7 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
                 {
                   in: 'query',
                   name: 'queryLimit',
+                  deprecated: true,
                   schema: { type: 'integer' },
                 },
                 {
@@ -75,7 +76,13 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
                 content: {
                   'application/json': {
                     schema: {
-                      properties: { channel: { type: 'string' } },
+                      properties: {
+                        channel: { type: 'string' },
+                        provider: {
+                          properties: { enabled: { type: 'boolean' } },
+                          type: 'object',
+                        },
+                      },
                       type: 'object',
                     },
                   },
@@ -123,7 +130,12 @@ describe('FumadocsOpenApiContent', () => {
 
       expect(heading).toBeTruthy();
       expect(sectionHeading?.tagName).toBe('H2');
-      expect(sectionHeading).toHaveClass('openapi-section-heading');
+      expect(sectionHeading).toHaveClass(
+        'openapi-section-heading',
+        'font-semibold',
+        'text-2xl',
+        'leading-7',
+      );
       expect(sectionHeading?.querySelector(`a[href="#${id}"]`)).toBeTruthy();
     }
 
@@ -144,7 +156,32 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       document.querySelectorAll('.openapi-schema-tree').length,
     ).toBeGreaterThan(0);
-    expect(document.querySelector('[aria-expanded]')).toBeTruthy();
+    expect(
+      document.querySelector('.openapi-schema-tree button[aria-expanded]'),
+    ).toBeTruthy();
+    expect(
+      screen.queryByPlaceholderText('Filter Properties'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Expand all' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Collapse all' }),
+    ).not.toBeInTheDocument();
+
+    const requiredRow = screen
+      .getByText('pathId')
+      .closest('.openapi-schema-field-row');
+    expect(requiredRow).toHaveTextContent('Required');
+    expect(
+      requiredRow?.querySelector('.openapi-schema-status'),
+    ).toBeInTheDocument();
+
+    const deprecatedRow = screen
+      .getByText('queryLimit')
+      .closest('.openapi-schema-field-row');
+    expect(deprecatedRow).toHaveTextContent('Deprecated');
+    expect(screen.getByText('queryLimit')).toHaveClass('line-through');
   });
 
   it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
