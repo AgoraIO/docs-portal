@@ -15,15 +15,90 @@ beforeEach(() => {
 });
 
 describe('SdksCatalog', () => {
-  it('uses a responsive card grid for the full catalog', () => {
+  it('renders product and platform filters on the full Chinese catalog', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(screen.getByRole('combobox', { name: '产品' })).toBeVisible();
+    expect(screen.getByRole('combobox', { name: '平台' })).toBeVisible();
+  });
+
+  it('updates the URL and visible products when the product filter changes', async () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    fireEvent.change(screen.getByRole('combobox', { name: '产品' }), {
+      target: { value: 'video' },
+    });
+
+    await waitFor(() => {
+      expect(window.location.search).toBe('?product=video');
+      expect(screen.getByRole('article', { name: '视频 SDK' })).toBeVisible();
+      expect(
+        screen.queryByRole('article', { name: '语音 SDK' }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it('uses a platform select for every product and no platform tablist', () => {
+    const { container } = render(<SdksCatalog locale="zh-CN" />);
+
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
+      15,
+    );
+  });
+
+  it('keeps version metadata under a labeled version-details disclosure', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const voiceCard = screen.getByRole('article', { name: '语音 SDK' });
+    expect(within(voiceCard).getByText('版本详情')).toBeVisible();
+    expect(within(voiceCard).getByText('发布日期')).toBeInTheDocument();
+    expect(within(voiceCard).getByText('包名')).toBeInTheDocument();
+    expect(within(voiceCard).getByText('MD5')).toBeInTheDocument();
+  });
+
+  it('renders SDK products under API reference capability headings', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(
+      screen.getByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '实时互动基础能力' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '扩展能力与生态' }),
+    ).toBeVisible();
+    expect(screen.getByRole('heading', { name: '教育' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: '智能硬件' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '监控与分析' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('opens only the first product in each capability group by default', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const realtime = screen
+      .getByRole('heading', { name: '实时互动基础能力' })
+      .closest('section');
+    expect(realtime?.querySelector('details[open]')).toHaveTextContent(
+      '语音 SDK',
+    );
+    expect(realtime?.querySelectorAll('details[open]')).toHaveLength(1);
+    const videoCard = screen.getByRole('article', { name: '视频 SDK' });
+    expect(videoCard.querySelector('details')).not.toHaveAttribute('open');
+  });
+
+  it('uses capability groups for the full catalog', () => {
     const { container } = render(<SdksCatalog locale="zh-CN" />);
 
     const catalog = container.querySelector('[data-sdk-download-catalog]');
     expect(catalog).toHaveAttribute('data-layout', 'catalog');
-    expect(catalog).toHaveClass('grid', 'md:grid-cols-2');
+    expect(catalog).toHaveClass('flex', 'flex-col');
 
     const videoCard = screen.getByRole('article', { name: '视频 SDK' });
-    expect(videoCard).toHaveClass('bg-card', 'shadow-sm');
+    expect(videoCard).toHaveAttribute('data-sdk-download-product-id', 'video');
   });
 
   it('keeps a filtered product embed full width without a redundant summary', () => {
@@ -47,11 +122,12 @@ describe('SdksCatalog', () => {
     expect(screen.getByText('Showing SDKs for Signaling SDK')).toBeVisible();
   });
 
-  it('lists each product once with platform tabs and a default install command', () => {
+  it('lists each product once with a platform select and a default install command', () => {
     render(<SdksCatalog />);
 
     // Product appears exactly once even though it spans many platforms.
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    fireEvent.click(videoCard.querySelector('summary') as HTMLElement);
 
     // Default platform (Android, first in canonical order) → Gradle command.
     expect(
@@ -59,16 +135,13 @@ describe('SdksCatalog', () => {
         "implementation 'io.agora.rtc:full-sdk:4.6.3'",
       ),
     ).toBeVisible();
+    const platformSelect = within(videoCard).getByRole('combobox', {
+      name: 'Video SDK platform',
+    });
+    expect(platformSelect).toHaveValue('android');
     expect(
-      within(videoCard).getByRole('tab', { name: 'Android' }),
-    ).toHaveAttribute('aria-selected', 'true');
-    // Tabs list other platforms this product supports.
-    expect(
-      within(videoCard).getByRole('tab', { name: 'Web' }),
+      within(platformSelect).getByRole('option', { name: 'Web' }),
     ).toBeInTheDocument();
-    expect(
-      within(videoCard).getByRole('tab', { name: 'Android' }),
-    ).not.toHaveClass('shrink-0');
 
     // No global platform picker remains.
     expect(
@@ -76,24 +149,30 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('switches the install command when the platform tab changes', () => {
+  it('switches the install command when the platform select changes', () => {
     render(<SdksCatalog />);
 
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    fireEvent.click(videoCard.querySelector('summary') as HTMLElement);
 
-    fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
+    fireEvent.change(
+      within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
+      { target: { value: 'web' } },
+    );
 
     expect(
       within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
     ).toBeVisible();
-    expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
+    expect(
+      within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
+    ).toHaveValue('web');
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
 
-    fireEvent.click(within(voiceCard).getByRole('tab', { name: 'Web' }));
+    fireEvent.change(
+      within(voiceCard).getByRole('combobox', { name: 'Voice SDK platform' }),
+      { target: { value: 'web' } },
+    );
 
     expect(
       within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
@@ -106,11 +185,11 @@ describe('SdksCatalog', () => {
     const agentsCard = screen.getByRole('article', {
       name: '对话式 AI 引擎 SDK',
     });
-    const typescriptTab = within(agentsCard).getByRole('tab', {
-      name: 'TypeScript',
+    const typescriptPlatform = within(agentsCard).getByRole('combobox', {
+      name: '对话式 AI 引擎 SDK 平台',
     });
 
-    fireEvent.click(typescriptTab);
+    fireEvent.change(typescriptPlatform, { target: { value: 'typescript' } });
 
     const command = within(agentsCard).getByText('npm i agora-agents@2.3.1');
     const copyButton = within(agentsCard).getByRole('button', {
@@ -159,14 +238,8 @@ describe('SdksCatalog', () => {
       );
     });
     expect(overflowCue).toHaveClass('opacity-0');
-    expect(typescriptTab).toHaveClass('min-h-11');
+    expect(typescriptPlatform).toHaveClass('min-h-11');
     expect(copyButton).toHaveClass('min-h-11', 'min-w-11');
-    expect(
-      within(agentsCard).getByRole('tablist', {
-        name: '对话式 AI 引擎 SDK 平台',
-      }),
-    ).toHaveClass('overflow-x-auto');
-
     const packageManager = within(agentsCard).getByRole('link', {
       name: '包管理器 ↗',
     });
@@ -183,7 +256,9 @@ describe('SdksCatalog', () => {
         "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
       ),
     ).toBeVisible();
-    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByRole('combobox', { name: /版本/ }),
+    ).not.toBeInTheDocument();
     expect(
       within(voiceCard).queryByText(
         "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
@@ -195,6 +270,7 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog />);
 
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
+    fireEvent.click(videoCard.querySelector('summary') as HTMLElement);
     const select = within(videoCard).getByRole('combobox', {
       name: 'Video SDK version',
     }) as HTMLSelectElement;
@@ -217,7 +293,9 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
-    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByRole('combobox', { name: /version$/i }),
+    ).not.toBeInTheDocument();
     expect(within(voiceCard).queryByText(/Previous/)).not.toBeInTheDocument();
   });
 
@@ -226,7 +304,10 @@ describe('SdksCatalog', () => {
 
     const chatCard = screen.getByRole('article', { name: 'Chat SDK' });
 
-    fireEvent.click(within(chatCard).getByRole('tab', { name: 'iOS' }));
+    fireEvent.change(
+      within(chatCard).getByRole('combobox', { name: 'Chat SDK platform' }),
+      { target: { value: 'ios' } },
+    );
 
     expect(
       within(chatCard).queryByRole('button', { name: /copy/i }),
@@ -246,39 +327,41 @@ describe('SdksCatalog', () => {
     expect(videoCard.querySelector('svg')).toBeTruthy();
   });
 
-  it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
+  it('lists the Agora Agents SDK with TypeScript, Python, and Go platforms', () => {
     render(<SdksCatalog />);
 
     const agentsCard = screen.getByRole('article', {
       name: 'Agora Agents SDK',
     });
 
-    // Default tab is Python → pip install command.
+    // Default platform is Python → pip install command.
     expect(
-      within(agentsCard).getByRole('tab', { name: 'Python' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(agentsCard).getByRole('combobox', {
+        name: 'Agora Agents SDK platform',
+      }),
+    ).toHaveValue('python');
     expect(
       within(agentsCard).getByText('pip install agora-agents'),
     ).toBeVisible();
 
-    // TypeScript and Go tabs are present.
+    const platformSelect = within(agentsCard).getByRole('combobox', {
+      name: 'Agora Agents SDK platform',
+    });
     expect(
-      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
+      within(platformSelect).getByRole('option', { name: 'TypeScript' }),
     ).toBeInTheDocument();
     expect(
-      within(agentsCard).getByRole('tab', { name: 'Go' }),
+      within(platformSelect).getByRole('option', { name: 'Go' }),
     ).toBeInTheDocument();
 
     // Switching to TypeScript shows the npm command.
-    fireEvent.click(
-      within(agentsCard).getByRole('tab', { name: 'TypeScript' }),
-    );
+    fireEvent.change(platformSelect, { target: { value: 'typescript' } });
     expect(
       within(agentsCard).getByText('npm i agora-agents@2.3.1'),
     ).toBeVisible();
 
     // Switching to Go shows the go get command.
-    fireEvent.click(within(agentsCard).getByRole('tab', { name: 'Go' }));
+    fireEvent.change(platformSelect, { target: { value: 'go' } });
     expect(
       within(agentsCard).getByText(
         'go get github.com/AgoraIO/agora-agents-go/v2@v2.3.1',
@@ -316,11 +399,8 @@ describe('SdksCatalog', () => {
 
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
     expect(
-      within(voiceCard).getByRole('tab', { name: 'Unity' }),
-    ).toHaveAttribute('aria-selected', 'true');
-    expect(
-      within(voiceCard).getByRole('tab', { name: 'Android' }),
-    ).toHaveAttribute('aria-selected', 'false');
+      within(voiceCard).getByRole('combobox', { name: 'Voice SDK platform' }),
+    ).toHaveValue('unity');
   });
 
   it('uses a platform-only query to show SDKs available on that platform', () => {
@@ -335,8 +415,8 @@ describe('SdksCatalog', () => {
     const voiceCard = screen.getByRole('article', { name: 'Voice SDK' });
     expect(screen.getByText('Showing SDKs for Unity')).toBeVisible();
     expect(
-      within(voiceCard).getByRole('tab', { name: 'Unity' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(voiceCard).getByRole('combobox', { name: 'Voice SDK platform' }),
+    ).toHaveValue('unity');
     expect(
       screen.queryByRole('article', { name: 'Agora Agents SDK' }),
     ).not.toBeInTheDocument();
@@ -364,8 +444,8 @@ describe('SdksCatalog', () => {
       screen.queryByRole('article', { name: 'Video SDK' }),
     ).not.toBeInTheDocument();
     expect(
-      within(voiceCard).getByRole('tab', { name: 'Unity' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(voiceCard).getByRole('combobox', { name: 'Voice SDK platform' }),
+    ).toHaveValue('unity');
   });
 
   it('renders the unfiltered static catalog on the server', () => {
@@ -422,8 +502,10 @@ describe('SdksCatalog', () => {
       name: '实时消息 SDK',
     });
     expect(
-      within(signalingCard).getByRole('tab', { name: 'HarmonyOS' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(signalingCard).getByRole('combobox', {
+        name: '实时消息 SDK 平台',
+      }),
+    ).toHaveValue('harmonyos');
     expect(
       within(signalingCard).getByRole('link', { name: '下载 SDK' }),
     ).toHaveAttribute(
@@ -444,14 +526,17 @@ describe('SdksCatalog', () => {
       name: '实时消息 SDK',
     });
     expect(
-      within(signalingCard).getByRole('tab', { name: 'Linux' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(signalingCard).getByRole('combobox', {
+        name: '实时消息 SDK 平台',
+      }),
+    ).toHaveValue('linux');
     expect(
       within(signalingCard).getByRole('link', { name: '下载 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
     );
+    fireEvent.click(within(signalingCard).getByText('版本详情'));
     expect(
       within(signalingCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
     ).toBeVisible();
@@ -505,7 +590,7 @@ describe('SdksCatalog', () => {
       within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
     ).toBeVisible();
     expect(
-      within(signalingCard).queryByRole('combobox'),
+      within(signalingCard).queryByRole('combobox', { name: /版本/ }),
     ).not.toBeInTheDocument();
     expect(
       within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
@@ -523,7 +608,7 @@ describe('SdksCatalog', () => {
       within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
     ).toBeVisible();
     expect(
-      within(signalingCard).queryByRole('combobox'),
+      within(signalingCard).queryByRole('combobox', { name: /version$/i }),
     ).not.toBeInTheDocument();
     expect(
       within(signalingCard).queryByText('flutter pub add agora_rtm:2.2.5'),
@@ -550,7 +635,9 @@ describe('SdksCatalog', () => {
       'href',
       'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
     );
-    expect(within(voiceCard).queryByRole('combobox')).not.toBeInTheDocument();
+    expect(
+      within(voiceCard).queryByRole('combobox', { name: /版本/ }),
+    ).not.toBeInTheDocument();
     expect(
       within(voiceCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
     ).not.toBeInTheDocument();
@@ -559,43 +646,48 @@ describe('SdksCatalog', () => {
   it('localizes zh-CN package variant and language labels', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
-    const videoOptions = within(
-      screen.getByRole('article', { name: '视频 SDK' }),
-    )
-      .getAllByRole('option')
-      .map((option) => option.textContent);
-    expect(videoOptions).toEqual([
+    const videoCard = screen.getByRole('article', { name: '视频 SDK' });
+    fireEvent.click(videoCard.querySelector('summary') as HTMLElement);
+    const videoOptions = within(videoCard)
+      .getByRole('combobox', { name: '视频 SDK 版本' })
+      .querySelectorAll('option');
+    const videoOptionLabels = [...videoOptions].map(
+      (option) => option.textContent,
+    );
+    expect(videoOptionLabels).toEqual([
       'v4.6.3 完整版 - 最新',
       'v4.6.3 轻量版 - 最新',
     ]);
 
-    const serverOptions = within(
-      screen.getByRole('article', { name: 'RTC 服务端 SDK' }),
-    )
-      .getAllByRole('option')
-      .map((option) => option.textContent);
-    expect(serverOptions).toContain('v2.2.8 Go - 最新');
-    expect(serverOptions).toContain('v2.2.4 Python - 最新');
-    expect(serverOptions.join(' ')).not.toContain(' for ');
+    const serverCard = screen.getByRole('article', { name: 'RTC 服务端 SDK' });
+    fireEvent.click(serverCard.querySelector('summary') as HTMLElement);
+    const serverOptions = within(serverCard)
+      .getByRole('combobox', { name: 'RTC 服务端 SDK 版本' })
+      .querySelectorAll('option');
+    const serverOptionLabels = [...serverOptions].map(
+      (option) => option.textContent,
+    );
+    expect(serverOptionLabels).toContain('v2.2.8 Go - 最新');
+    expect(serverOptionLabels).toContain('v2.2.4 Python - 最新');
+    expect(serverOptionLabels.join(' ')).not.toContain(' for ');
   });
 
-  it('orders zh-CN sdk groups as ai, realtime-media, then solutions', () => {
+  it('orders zh-CN SDK capability groups like the API reference', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const headings = screen
-      .getAllByRole('heading', { level: 3 })
+      .getAllByRole('heading', { level: 2 })
       .map((node) => node.textContent?.trim())
       .filter(Boolean);
 
-    expect(headings.indexOf('对话式 AI 引擎 SDK')).toBeLessThan(
-      headings.indexOf('语音 SDK'),
-    );
-    expect(headings.indexOf('语音 SDK')).toBeLessThan(
-      headings.indexOf('智能云会议引擎 SDK'),
-    );
-    expect(headings.indexOf('智能云会议引擎 SDK')).toBeLessThan(
-      headings.indexOf('灵动课堂 SDK'),
-    );
+    expect(headings).toEqual([
+      '对话式 AI 引擎',
+      '实时互动基础能力',
+      '会议协作',
+      '扩展能力与生态',
+      '教育',
+      '智能硬件',
+    ]);
   });
 
   it('uses canonical Chinese product names and descriptions throughout the catalog', () => {
@@ -686,7 +778,7 @@ describe('SdksCatalog', () => {
     const videoCard = screen.getByRole('article', { name: 'Video SDK' });
     expect(screen.queryByText(/showing sdks for/i)).not.toBeInTheDocument();
     expect(
-      within(videoCard).getByRole('tab', { name: 'Android' }),
-    ).toHaveAttribute('aria-selected', 'true');
+      within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
+    ).toHaveValue('android');
   });
 });
