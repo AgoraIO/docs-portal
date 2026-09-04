@@ -389,6 +389,35 @@ describe('OpenApiSchemaTree', () => {
     ).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('reveals a collapsed field when native find matches its dotted path', () => {
+    renderTree({ nodes: [advanced, unrelated] });
+
+    const searchPath = screen.getByText(
+      'advanced.advancedChild.advancedGrandchild',
+    );
+    expect(searchPath).toHaveAttribute('aria-hidden', 'true');
+    expect(searchPath).toHaveAttribute('hidden', 'until-found');
+    expect(searchPath).toHaveAttribute('data-openapi-schema-search-path', '');
+
+    fireEvent(searchPath, new Event('beforematch'));
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', {
+        name: 'Collapse advancedChild properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(getRow(advancedGrandchild)).toHaveAttribute(
+      'data-openapi-schema-highlighted',
+      '',
+    );
+    expect(
+      screen.getByRole('button', { name: 'Expand unrelated properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('reveals a target by parent path, scrolls it, and marks it highlighted', async () => {
     const scrollIntoView = vi
       .spyOn(HTMLElement.prototype, 'scrollIntoView')

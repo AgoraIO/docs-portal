@@ -179,13 +179,14 @@ export function OpenApiSchemaTree({
   );
 
   const revealNode = useCallback(
-    (nodeId: string) => {
+    (nodeId: string, highlight = false) => {
       const chain = findNodeChain((node) => node.id === nodeId);
       if (chain.length === 0) return;
 
       setExpandedIds(
         (current) => new Set([...current, ...chain.map((node) => node.id)]),
       );
+      if (highlight) setHighlightedId(nodeId);
     },
     [findNodeChain],
   );
@@ -289,6 +290,12 @@ export function OpenApiSchemaTree({
           data-openapi-schema-path={node.path}
           key={node.id}
         >
+          {node.path.includes('.') ? (
+            <HiddenSearchPath
+              onBeforeMatch={() => revealNode(node.id, true)}
+              path={node.path}
+            />
+          ) : null}
           <OpenApiSchemaFieldRow
             copied={copiedId === node.id}
             domId={stableDomId(rootId, node.id)}
@@ -346,6 +353,37 @@ export function OpenApiSchemaTree({
     >
       <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
+  );
+}
+
+function HiddenSearchPath({
+  onBeforeMatch,
+  path,
+}: {
+  onBeforeMatch: () => void;
+  path: string;
+}) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    element.setAttribute('hidden', 'until-found');
+    element.addEventListener('beforematch', onBeforeMatch);
+    return () => element.removeEventListener('beforematch', onBeforeMatch);
+  }, [onBeforeMatch]);
+
+  return createElement(
+    'openapi-schema-search-path',
+    {
+      'aria-hidden': 'true',
+      className: 'sr-only',
+      'data-openapi-schema-search-path': '',
+      hidden: 'until-found',
+      ref,
+    },
+    path,
   );
 }
 

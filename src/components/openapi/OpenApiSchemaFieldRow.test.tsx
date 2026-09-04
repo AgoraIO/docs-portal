@@ -148,16 +148,18 @@ describe('OpenApiSchemaFieldRow', () => {
     const deprecated = within(row as HTMLElement).getByText('Deprecated');
     expect(required).toHaveClass(
       'openapi-schema-status',
-      'border-red-200',
-      'bg-red-50',
-      'text-red-700',
+      'border-fd-error/30',
+      'bg-fd-error/10',
+      'text-fd-error',
     );
     expect(deprecated).toHaveClass(
       'openapi-schema-status',
-      'border-orange-200',
-      'bg-orange-50',
-      'text-orange-800',
+      'border-fd-warning/30',
+      'bg-fd-warning/10',
+      'text-fd-warning',
     );
+    expect(required.className).not.toMatch(/(?:red|orange)-/);
+    expect(deprecated.className).not.toMatch(/(?:red|orange)-/);
     expect(screen.getByText('id')).toHaveClass('line-through');
     expect(screen.getByText('string')).not.toHaveClass('line-through');
     expect(screen.getByText('The user identifier.')).not.toHaveClass(

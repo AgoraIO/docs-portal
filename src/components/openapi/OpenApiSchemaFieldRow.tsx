@@ -119,7 +119,7 @@ export function OpenApiSchemaFieldRow({
             className={cn(
               'openapi-schema-status ml-auto normal-case tracking-normal',
               node.required
-                ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+                ? 'border-fd-error/30 bg-fd-error/10 text-fd-error'
                 : 'border-border bg-muted text-muted-foreground',
             )}
             variant="outline"
@@ -128,7 +128,7 @@ export function OpenApiSchemaFieldRow({
           </Badge>
           {node.schema.deprecated ? (
             <Badge
-              className="openapi-schema-status border-orange-200 bg-orange-50 text-orange-800 normal-case tracking-normal dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
+              className="openapi-schema-status border-fd-warning/30 bg-fd-warning/10 text-fd-warning normal-case tracking-normal"
               variant="outline"
             >
               {labels.deprecated}
