@@ -64,8 +64,23 @@ describe('OpenApiSchemaFieldRow', () => {
 
     const required = within(row as HTMLElement).getByText('Required');
     const deprecated = within(row as HTMLElement).getByText('Deprecated');
-    expect(required).toHaveClass('openapi-schema-status');
-    expect(deprecated).toHaveClass('openapi-schema-status', 'text-fd-warning');
+    expect(required).toHaveClass(
+      'openapi-schema-status',
+      'border-red-200',
+      'bg-red-50',
+      'text-red-700',
+    );
+    expect(deprecated).toHaveClass(
+      'openapi-schema-status',
+      'border-orange-200',
+      'bg-orange-50',
+      'text-orange-800',
+    );
+    expect(screen.getByText('id')).toHaveClass('line-through');
+    expect(screen.getByText('string')).not.toHaveClass('line-through');
+    expect(screen.getByText('The user identifier.')).not.toHaveClass(
+      'line-through',
+    );
     expect(
       within(row as HTMLElement).getByRole('button', {
         name: 'Copy link to id',
@@ -143,7 +158,12 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
     fireEvent.click(button);
     expect(onExpandedChange).toHaveBeenCalledWith(true);
-    expect(screen.getByText('Optional')).toBeInTheDocument();
+    expect(screen.getByText('Optional')).toHaveClass(
+      'openapi-schema-status',
+      'border-border',
+      'bg-muted',
+      'text-muted-foreground',
+    );
   });
 
   it('reflects the expanded state in the accessible button contract', () => {

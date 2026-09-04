@@ -41,7 +41,12 @@ export function OpenApiSchemaFieldRow({
   const expandable = node.children.length > 0;
   const fieldIdentity = (
     <>
-      <code className="min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]">
+      <code
+        className={cn(
+          'min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]',
+          node.schema.deprecated && 'line-through decoration-2',
+        )}
+      >
         {node.name}
       </code>
       <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
@@ -92,14 +97,19 @@ export function OpenApiSchemaFieldRow({
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
           <Badge
-            className="openapi-schema-status ml-auto normal-case tracking-normal"
-            variant={node.required ? 'default' : 'outline'}
+            className={cn(
+              'openapi-schema-status ml-auto normal-case tracking-normal',
+              node.required
+                ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
+                : 'border-border bg-muted text-muted-foreground',
+            )}
+            variant="outline"
           >
             {node.required ? labels.required : labels.optional}
           </Badge>
           {node.schema.deprecated ? (
             <Badge
-              className="openapi-schema-status normal-case tracking-normal text-fd-warning"
+              className="openapi-schema-status border-orange-200 bg-orange-50 text-orange-800 normal-case tracking-normal dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
               variant="outline"
             >
               {labels.deprecated}
