@@ -15,6 +15,40 @@ beforeEach(() => {
 });
 
 describe('SdksCatalog', () => {
+  it('renders SDK products under API reference capability headings', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(
+      screen.getByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '实时互动基础能力' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '扩展能力与生态' }),
+    ).toBeVisible();
+    expect(screen.getByRole('heading', { name: '教育' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: '智能硬件' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '监控与分析' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('opens only the first product in each capability group by default', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const realtime = screen
+      .getByRole('heading', { name: '实时互动基础能力' })
+      .closest('section');
+    expect(realtime?.querySelector('details[open]')).toHaveTextContent(
+      '语音 SDK',
+    );
+    expect(realtime?.querySelectorAll('details[open]')).toHaveLength(1);
+    expect(screen.getByText('视频 SDK').closest('details')).not.toHaveAttribute(
+      'open',
+    );
+  });
+
   it('uses a responsive card grid for the full catalog', () => {
     const { container } = render(<SdksCatalog locale="zh-CN" />);
 

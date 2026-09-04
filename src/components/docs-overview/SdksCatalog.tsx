@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import {
   getSdkDownloadProductCatalogId,
@@ -354,6 +355,10 @@ export function SdksCatalog({
     () => buildProductGroups(platforms, locale),
     [locale, platforms],
   );
+  const capabilityGroups = useMemo(
+    () => buildSdkCapabilityGroups(platforms),
+    [platforms],
+  );
   const queryFilters = useSdkCatalogQueryFilters(platforms, {
     platformId: normalizePlatformFilter(platform, platforms),
     productId: normalizeProductFilter(product),
@@ -427,7 +432,20 @@ export function SdksCatalog({
     product || platform || (versionIdPrefixes && versionIdPrefixes.length > 0),
   );
   const redesigned = locale === 'zh-CN';
-  const usesCardGrid = redesigned && !isEmbedded;
+  const usesCardGrid = false;
+  const visibleProductGroupsById = new Map(
+    visibleProductGroupsWithVersionFilter.map((group) => [
+      group.productId,
+      group,
+    ]),
+  );
+  const visibleCapabilityGroups = capabilityGroups.flatMap((capability) => {
+    const products = capability.products
+      .map((product) => visibleProductGroupsById.get(product.productId))
+      .filter((group): group is ProductGroup => group !== undefined);
+
+    return products.length ? [{ ...capability, products }] : [];
+  });
 
   return (
     <section
@@ -457,15 +475,37 @@ export function SdksCatalog({
           </a>
         </div>
       ) : null}
-      {visibleProductGroupsWithVersionFilter.map((group) => (
-        <ProductCard
-          copy={copy}
-          group={group}
-          initialPlatformId={queryFilters.platformId}
-          key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
-          locale={locale}
-          redesigned={redesigned}
-        />
+      {visibleCapabilityGroups.map((capability) => (
+        <section
+          aria-labelledby={`sdk-capability-${capability.id}`}
+          className="flex flex-col"
+          key={capability.id}
+        >
+          <div className="mb-2 flex items-baseline justify-between gap-3">
+            <h2
+              className="m-0 text-lg font-semibold text-foreground"
+              id={`sdk-capability-${capability.id}`}
+            >
+              {capability.label}
+            </h2>
+            <span className="text-xs text-muted-foreground">
+              {capability.products.length} 个产品
+            </span>
+          </div>
+          <div className="divide-y divide-border rounded-lg border border-border bg-card">
+            {capability.products.map((group, index) => (
+              <ProductCard
+                copy={copy}
+                defaultOpen={index === 0}
+                group={group}
+                initialPlatformId={queryFilters.platformId}
+                key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                locale={locale}
+                redesigned={redesigned}
+              />
+            ))}
+          </div>
+        </section>
       ))}
     </section>
   );
@@ -473,12 +513,14 @@ export function SdksCatalog({
 
 function ProductCard({
   copy,
+  defaultOpen,
   group,
   initialPlatformId,
   locale,
   redesigned,
 }: {
   copy: CatalogCopy;
+  defaultOpen: boolean;
   group: ProductGroup;
   initialPlatformId: string | null;
   locale: SdkCatalogLocale;
@@ -504,118 +546,123 @@ function ProductCard({
 
   return (
     <article
-      aria-labelledby={titleId}
+      aria-label={group.label}
       className={cn(
-        'scroll-mt-40 rounded-xl border border-border p-5',
-        redesigned &&
-          'flex min-w-0 flex-col bg-card shadow-sm transition-[border-color,box-shadow] hover:border-primary/25 hover:shadow-md',
+        'scroll-mt-40',
+        !redesigned && 'rounded-xl border border-border p-5',
       )}
       data-sdk-download-product-id={group.productId}
       id={getSdkDownloadProductSectionId(group.productId)}
     >
-      <div className="flex items-start gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
-          <SolutionCardIcon
-            kind={productIconKind(group.productId, group.label)}
+      <details open={defaultOpen}>
+        <summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 px-4 py-3 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 [&::-webkit-details-marker]:hidden">
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="size-4 shrink-0 text-muted-foreground"
           />
-        </span>
-        <div className="min-w-0">
-          <h3
-            className="m-0 text-base font-semibold text-foreground"
-            id={titleId}
-          >
-            {group.label}
-          </h3>
-          <p className="m-0 mt-1 text-sm leading-6 text-muted-foreground">
-            {group.info}
-          </p>
-        </div>
-      </div>
-
-      <div
-        aria-label={copy.platformTabsLabel(group.label)}
-        className={cn(
-          'mt-4 flex gap-1 border-border border-b',
-          redesigned
-            ? 'flex-nowrap overflow-x-auto overscroll-x-contain'
-            : 'flex-wrap',
-        )}
-        role="tablist"
-      >
-        {group.platforms.map((entry) => {
-          const isActive = entry.platformId === platformId;
-
-          return (
-            <button
-              aria-selected={isActive}
-              className={cn(
-                '-mb-px min-h-11 border-b-2 px-3 py-1.5 text-sm transition-colors',
-                redesigned && 'shrink-0',
-                isActive
-                  ? 'border-primary font-semibold text-foreground'
-                  : 'border-transparent text-muted-foreground hover:text-foreground',
-              )}
-              key={entry.platformId}
-              onClick={() => {
-                setPlatformId(entry.platformId);
-                setVersionIndex('0');
-              }}
-              role="tab"
-              type="button"
-            >
-              {entry.platformLabel}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="mt-4 flex items-center justify-between gap-3">
-        <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
-          {command ? command.tool : ' '}
-        </span>
-        {versions.length > 1 ? (
-          <span className="relative shrink-0">
-            <label className="sr-only" htmlFor={versionId}>
-              {copy.versionLabel(group.label)}
-            </label>
-            <select
-              className={cn(
-                'appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40',
-                redesigned ? 'min-h-11' : 'h-9',
-              )}
-              id={versionId}
-              onChange={(event) => setVersionIndex(event.target.value)}
-              value={versionIndex}
-            >
-              {versions.map((version, index) => (
-                <option
-                  key={getVersionKey(activePlatform.platformId, version)}
-                  value={String(index)}
-                >
-                  {getVersionMeta(version, locale).optionLabel}
-                </option>
-              ))}
-            </select>
-            <ChevronDownIcon
-              aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground">
+            <SolutionCardIcon
+              kind={productIconKind(group.productId, group.label)}
             />
           </span>
-        ) : activeVersion ? (
-          <span className="shrink-0 text-sm font-medium text-foreground">
-            {getVersionMeta(activeVersion, locale).optionLabel}
+          <span className="min-w-0">
+            <span className="block text-sm font-semibold text-foreground">
+              {group.label}
+            </span>
+            <span className="block truncate text-xs text-muted-foreground">
+              {group.info}
+            </span>
           </span>
-        ) : null}
-      </div>
+          <span className="ml-auto shrink-0 text-xs text-muted-foreground">
+            {group.platforms.length} 个平台
+          </span>
+        </summary>
+        <div className="border-border border-t px-4 py-4 sm:pl-16">
+          <div className="flex items-end justify-between gap-3">
+            <div
+              aria-label={copy.platformTabsLabel(group.label)}
+              className={cn(
+                'flex min-w-0 gap-1 border-border border-b',
+                redesigned
+                  ? 'flex-nowrap overflow-x-auto overscroll-x-contain'
+                  : 'flex-wrap',
+              )}
+              role="tablist"
+            >
+              {group.platforms.map((entry) => {
+                const isActive = entry.platformId === platformId;
 
-      {activeVersion ? (
-        <InstallArea
-          command={command}
-          copy={copy}
-          redesigned={redesigned}
-          version={activeVersion}
-        />
-      ) : null}
+                return (
+                  <button
+                    aria-selected={isActive}
+                    className={cn(
+                      '-mb-px min-h-11 shrink-0 border-b-2 px-3 py-1.5 text-sm transition-colors',
+                      isActive
+                        ? 'border-primary font-semibold text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground',
+                    )}
+                    key={entry.platformId}
+                    onClick={() => {
+                      setPlatformId(entry.platformId);
+                      setVersionIndex('0');
+                    }}
+                    role="tab"
+                    type="button"
+                  >
+                    {entry.platformLabel}
+                  </button>
+                );
+              })}
+            </div>
+            <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+              {command ? command.tool : ' '}
+            </span>
+          </div>
+
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <span className="sr-only">{copy.versionLabel(group.label)}</span>
+            {versions.length > 1 ? (
+              <span className="relative ml-auto shrink-0">
+                <label className="sr-only" htmlFor={versionId}>
+                  {copy.versionLabel(group.label)}
+                </label>
+                <select
+                  className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                  id={versionId}
+                  onChange={(event) => setVersionIndex(event.target.value)}
+                  value={versionIndex}
+                >
+                  {versions.map((version, index) => (
+                    <option
+                      key={getVersionKey(activePlatform.platformId, version)}
+                      value={String(index)}
+                    >
+                      {getVersionMeta(version, locale).optionLabel}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                />
+              </span>
+            ) : activeVersion ? (
+              <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
+                {getVersionMeta(activeVersion, locale).optionLabel}
+              </span>
+            ) : null}
+          </div>
+
+          {activeVersion ? (
+            <InstallArea
+              command={command}
+              copy={copy}
+              redesigned={redesigned}
+              version={activeVersion}
+            />
+          ) : null}
+        </div>
+      </details>
     </article>
   );
 }
