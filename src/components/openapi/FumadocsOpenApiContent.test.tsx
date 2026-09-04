@@ -265,6 +265,11 @@ describe('FumadocsOpenApiContent', () => {
       document.getElementById('response-headers-200-x-request-id'),
     ).toBeInTheDocument();
     expect(
+      document.querySelector(
+        '[data-openapi-responses] input[placeholder="Filter Properties"]',
+      ),
+    ).toBeNull();
+    expect(
       within(
         document.getElementById(
           'response-headers-200-x-request-id',
@@ -2043,7 +2048,11 @@ describe('FumadocsOpenApiContent', () => {
     await screen.findByRole('heading', {
       name: 'Response Body',
     });
-    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(
+      document.querySelector(
+        '[data-openapi-responses] input[placeholder="Filter Properties"]',
+      ),
+    ).toBeNull();
     expect(screen.getByText('cname')).toBeVisible();
     expect(
       screen.getByText('The name of the channel being recorded.'),
