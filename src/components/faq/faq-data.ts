@@ -2641,27 +2641,6 @@ export const faqItems: FaqItem[] = [
   },
   {
     category: "other-issues",
-    href: "/en/api-reference/faq/other/macos_15_beta",
-    platforms: [
-      "All Platforms",
-      "Unity",
-      "Flutter",
-      "Unreal Engine",
-      "macOS",
-      "Electron"
-    ],
-    products: [
-      "All Products",
-      "Video Calling",
-      "Voice Calling",
-      "Interactive Live Streaming",
-      "Broadcast Streaming"
-    ],
-    summary: "When developing on macOS 15 Beta system, if the path of the App and the App name contain non-English characters (for example, Chinese, Japanese, Korean, or others), the compiled Metal shader library may not contain any methods, causing the",
-    title: "MacOS 15 Beta does not support apps that contain Chinese characters in the path"
-  },
-  {
-    category: "other-issues",
     href: "/en/api-reference/faq/other/android_noaudio",
     platforms: [
       "All Platforms",
