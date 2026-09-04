@@ -90,7 +90,7 @@ export function OpenApiResponses({
 
   return (
     <section className="mt-8" data-openapi-responses id={sectionId}>
-      <OpenApiSectionHeading className="mb-3 scroll-mt-24" id={sectionId}>
+      <OpenApiSectionHeading id={sectionId}>
         Response Body
       </OpenApiSectionHeading>
       <div className="border border-fd-border text-fd-card-foreground">

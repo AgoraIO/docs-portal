@@ -19,8 +19,13 @@ export function renderOpenApiHeading(
   depth: number,
 ) {
   const as = `h${depth}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  const className = OPENAPI_SECTION_HEADING_IDS.has(props.id ?? '')
-    ? cn(props.className, OPENAPI_SECTION_HEADING_CLASS)
+  const isSectionHeading = OPENAPI_SECTION_HEADING_IDS.has(props.id ?? '');
+  const generatedClassName = props.className
+    ?.split(/\s+/)
+    .filter((className) => className !== 'my-0!')
+    .join(' ');
+  const className = isSectionHeading
+    ? cn(generatedClassName, OPENAPI_SECTION_HEADING_CLASS)
     : props.className;
 
   return <Heading {...props} as={as} className={className} />;
