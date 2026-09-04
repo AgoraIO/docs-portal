@@ -32,7 +32,7 @@ describe('SdkDownloadProductNav', () => {
         .getAllByRole('article')
         .map((card) => [
           card.dataset.sdkDownloadProductId,
-          within(card).getByRole('heading', { level: 3 }).textContent,
+          card.querySelector('summary')?.textContent,
         ]),
     );
 
@@ -41,16 +41,12 @@ describe('SdkDownloadProductNav', () => {
         .getAttribute('href')
         ?.replace('#sdk-download-product-', '');
 
-      expect(link).toHaveTextContent(cardsByProductId.get(productId) ?? '');
+      expect(cardsByProductId.get(productId)).toContain(link.textContent);
     }
   });
 
   it('only lists SDK products rendered by the current query filters', async () => {
-    window.history.replaceState(
-      {},
-      '',
-      '/zh-CN/reference/sdks?product=voice',
-    );
+    window.history.replaceState({}, '', '/zh-CN/reference/sdks?product=voice');
 
     render(
       <>
