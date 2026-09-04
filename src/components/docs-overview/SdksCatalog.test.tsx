@@ -105,6 +105,13 @@ describe('SdksCatalog', () => {
     ).toHaveLength(15);
   });
 
+  it('does not show product or platform counts in the Chinese catalog', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(screen.queryByText(/\d+ 个产品/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/\d+ 个平台/)).not.toBeInTheDocument();
+  });
+
   it('uses capability groups for the full catalog', () => {
     const { container } = render(<SdksCatalog locale="zh-CN" />);
 

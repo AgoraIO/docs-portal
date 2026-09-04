@@ -488,9 +488,6 @@ export function SdksCatalog({
                 >
                   {capability.label}
                 </h2>
-                <span className="text-xs text-muted-foreground">
-                  {capability.products.length} 个产品
-                </span>
               </div>
               <div className="divide-y divide-border rounded-lg border border-border bg-card">
                 {capability.products.map((group) => (
@@ -586,9 +583,6 @@ function ProductCard({
             <span className="block truncate text-xs text-muted-foreground">
               {group.info}
             </span>
-          </span>
-          <span className="ml-auto shrink-0 text-xs text-muted-foreground">
-            {group.platforms.length} 个平台
           </span>
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">

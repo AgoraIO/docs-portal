@@ -113,13 +113,13 @@ git commit -m "feat: align SDK groups with API reference capabilities"
 
 - [ ] **Step 3: 接入能力组数据。**
 
-在 SdksCatalog 中用 useMemo 调用 buildSdkCapabilityGroups。对现有 product/platform/version 过滤后的产品建立 productId 集合，再过滤每个能力组的 products；产品为空的能力组不渲染。使用能力组标题、产品数量和一组带 border/divide 的产品条目。
+在 SdksCatalog 中用 useMemo 调用 buildSdkCapabilityGroups。对现有 product/platform/version 过滤后的产品建立 productId 集合，再过滤每个能力组的 products；产品为空的能力组不渲染。使用能力组标题和一组带 border/divide 的产品条目，不在标题行显示产品数量。
 
 保持现有 ProductGroup 的合并版本逻辑，不复制 SDK 版本数据。若纯分组模块只提供平台聚合，则在 SdksCatalog 中通过 productId 映射回已合并 ProductGroup。
 
 - [ ] **Step 4: 改造 ProductCard 外壳。**
 
-增加 defaultOpen 属性；将 article 外壳改为原生 details/summary，保留 data-sdk-download-product-id 和现有 SDK 锚点。summary 只放箭头、产品图标、产品名、简短说明、平台数量，不能放 select、button 或 link。详情 body 放现有安装工具、版本、命令、下载和包管理器内容。
+增加 defaultOpen 属性；将 article 外壳改为原生 details/summary，保留 data-sdk-download-product-id 和现有 SDK 锚点。summary 只放箭头、产品图标、产品名和简短说明，不能放产品数量、平台数量、select、button 或 link。详情 body 放现有安装工具、版本、命令、下载和包管理器内容。
 
 每个能力组调用 ProductCard 时传入 defaultOpen={false}。details 内容必须直接渲染在 DOM 中，不能懒加载。
 
