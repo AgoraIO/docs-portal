@@ -258,6 +258,35 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('defines aligned OpenAPI schema metadata rows', () => {
+    const metadata = getRuleBodyContaining('.openapi-schema-metadata').rule;
+    const row = getRuleBody('.openapi-schema-metadata-row').rule;
+    const label = getRuleBody('.openapi-schema-metadata-label').rule;
+    const value = getRuleBody('.openapi-schema-metadata-value').rule;
+
+    expectDeclaration(metadata, 'display', 'grid');
+    expectDeclaration(
+      metadata,
+      'grid-template-columns',
+      'minmax(7rem, max-content) minmax(0, 1fr)',
+    );
+    expectDeclaration(metadata, 'min-width', '0');
+    expectDeclaration(row, 'grid-template-columns', 'subgrid');
+    expectDeclaration(label, 'min-width', '7rem');
+    expectDeclaration(value, 'min-width', '0');
+    expectDeclaration(value, 'overflow-wrap', 'anywhere');
+
+    const narrowMetadata = getRuleBodyContainingInMedia(
+      '.openapi-schema-metadata',
+      'max-width: 48rem',
+    ).rule;
+    expectDeclaration(
+      narrowMetadata,
+      'grid-template-columns',
+      'minmax(0, 1fr)',
+    );
+  });
+
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
       getRuleBodyContaining(

@@ -377,6 +377,11 @@ describe('OpenApiSchemaFieldRow', () => {
       'break-words',
     );
     expect(screen.getByText(longAllowedValue)).toHaveClass('break-words');
+    expect(
+      screen
+        .getByText(longAllowedValue)
+        .closest('.openapi-schema-metadata-value'),
+    ).toBeInTheDocument();
   });
 
   it('keeps requiredness badges title case and inline', () => {
