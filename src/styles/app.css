@@ -1107,6 +1107,13 @@
 
   .openapi-examples-rail {
     min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .openapi-examples-rail-content {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .openapi-schema-hidden-children {
@@ -1155,6 +1162,7 @@
         1rem
       );
       overflow-y: auto;
+      overflow-x: clip;
       overscroll-behavior: contain;
       scrollbar-color: color-mix(in srgb, var(--ink-1) 16%, transparent)
         transparent;
@@ -1356,24 +1364,6 @@
         color-mix(in srgb, var(--ink-1) 58%, transparent);
       content: "";
     }
-
-    .openapi-operation figure.shiki > .fd-scroll-container {
-      scrollbar-color: color-mix(in srgb, var(--ink-1) 40%, transparent)
-        transparent;
-      scrollbar-width: thin;
-    }
-
-    .openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
-      height: 12px;
-    }
-
-    .openapi-operation
-      figure.shiki
-      > .fd-scroll-container::-webkit-scrollbar-thumb {
-      border: 3px solid transparent;
-      background: color-mix(in srgb, var(--ink-1) 38%, transparent);
-      background-clip: padding-box;
-    }
   }
 }
 
@@ -1386,6 +1376,51 @@
   max-block-size: 24rem !important;
   overflow: auto;
   overscroll-behavior: contain;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container {
+  max-width: 100%;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container:hover,
+.openapi-operation figure.shiki > .fd-scroll-container:focus-within,
+.openapi-operation figure.shiki > .fd-scroll-container[data-scrollbar-visible] {
+  scrollbar-color: color-mix(in srgb, var(--ink-4) 48%, transparent) transparent;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:hover::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:focus-within::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container[data-scrollbar-visible]::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .openapi-operation figure.shiki code .token-command {

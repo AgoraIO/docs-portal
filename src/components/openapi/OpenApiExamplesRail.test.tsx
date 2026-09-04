@@ -17,8 +17,12 @@ describe('OpenApiExamplesRail', () => {
 
     expect(container.firstElementChild).toBe(anchor);
     expect(anchor).toHaveClass('openapi-examples-rail-anchor');
-    expect(rail).toHaveClass('openapi-examples-rail');
-    expect(content).toHaveClass('openapi-examples-rail-content');
+    expect(rail).toHaveClass('openapi-examples-rail', 'min-w-0', 'max-w-full');
+    expect(content).toHaveClass(
+      'openapi-examples-rail-content',
+      'min-w-0',
+      'max-w-full',
+    );
     expect(child.parentElement).toBe(content);
     expect(content).toHaveTextContent('Request examples');
     expect(rail).not.toHaveAttribute('data-constrained');
