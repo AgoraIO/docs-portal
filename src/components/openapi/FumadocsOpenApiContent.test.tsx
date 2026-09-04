@@ -36,7 +36,117 @@ function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
   };
 }
 
+function makeSectionHeadingPageProps(): OpenAPIPageProps {
+  const path = '/headings/{pathId}';
+
+  return {
+    operations: [{ method: 'post', path } as OpenApiOperationItem],
+    payload: {
+      bundled: {
+        info: { title: 'Section Heading API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            post: {
+              parameters: [
+                {
+                  in: 'path',
+                  name: 'pathId',
+                  required: true,
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'query',
+                  name: 'queryLimit',
+                  schema: { type: 'integer' },
+                },
+                {
+                  in: 'header',
+                  name: 'traceId',
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'cookie',
+                  name: 'sessionId',
+                  schema: { type: 'string' },
+                },
+              ],
+              requestBody: {
+                content: {
+                  'application/json': {
+                    schema: {
+                      properties: { channel: { type: 'string' } },
+                      type: 'object',
+                    },
+                  },
+                },
+              },
+              responses: {
+                '200': {
+                  content: {
+                    'application/json': {
+                      schema: {
+                        properties: { ok: { type: 'boolean' } },
+                        type: 'object',
+                      },
+                    },
+                  },
+                  description: 'OK',
+                },
+              },
+            },
+          },
+        },
+      } as unknown as Document,
+    },
+  };
+}
+
 describe('FumadocsOpenApiContent', () => {
+  it('uses one section heading contract for all OpenAPI content sections', async () => {
+    render(
+      <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
+    );
+
+    const sections = [
+      ['parameters-path', 'Path Parameters'],
+      ['parameters-query', 'Query Parameters'],
+      ['parameters-header', 'Header Parameters'],
+      ['parameters-cookie', 'Cookie Parameters'],
+      ['request-body', 'Request Body'],
+      ['response-body', 'Response Body'],
+    ] as const;
+
+    for (const [id, title] of sections) {
+      const heading = await screen.findByRole('heading', { name: title });
+      const sectionHeading = document.getElementById(id);
+
+      expect(heading).toBeTruthy();
+      expect(sectionHeading?.tagName).toBe('H2');
+      expect(sectionHeading).toHaveClass('openapi-section-heading');
+      expect(sectionHeading?.querySelector(`a[href="#${id}"]`)).toBeTruthy();
+    }
+
+    for (const [id, name] of [
+      ['parameters-path', 'pathId'],
+      ['parameters-query', 'queryLimit'],
+      ['parameters-header', 'traceId'],
+      ['parameters-cookie', 'sessionId'],
+    ]) {
+      const section = document.getElementById(id)?.nextElementSibling;
+      expect(section).toBeTruthy();
+      expect(section).toHaveTextContent(name);
+      expect(section).not.toHaveTextContent('Filter Properties');
+      expect(section).not.toHaveTextContent('Expand all');
+      expect(section).not.toHaveTextContent('Collapse all');
+    }
+
+    expect(
+      document.querySelectorAll('.openapi-schema-tree').length,
+    ).toBeGreaterThan(0);
+    expect(document.querySelector('[aria-expanded]')).toBeTruthy();
+  });
+
   it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
     const cases = [
       {
